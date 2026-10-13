@@ -1,0 +1,354 @@
+TAP version 13
+# Subtest: causal formation native: heating requirements enter at their actual steps and final content stays visible at 1440x900
+not ok 1 - causal formation native: heating requirements enter at their actual steps and final content stays visible at 1440x900
+  ---
+  duration_ms: 14421.421169
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:911:87'
+  failureType: 'testCodeFailure'
+  error: 'the source is its actual junction'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    junctionConnections (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:907:131)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:946:19)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: causal formation native: heating requirements enter at their actual steps and final content stays visible at 1280x800
+not ok 2 - causal formation native: heating requirements enter at their actual steps and final content stays visible at 1280x800
+  ---
+  duration_ms: 13808.242249
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:911:87'
+  failureType: 'testCodeFailure'
+  error: 'the source is its actual junction'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    junctionConnections (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:907:131)
+    runNextTicks (node:internal/process/task_queues:65:5)
+    process.processImmediate (node:internal/timers:502:9)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:946:19)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: causal formation native: heating requirements enter at their actual steps and final content stays visible at 390x844
+ok 3 - causal formation native: heating requirements enter at their actual steps and final content stays visible at 390x844
+  ---
+  duration_ms: 14044.323173
+  type: 'test'
+  ...
+# Subtest: replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs
+not ok 4 - replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 12931.963984
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Recorded playback finished/. Input:
+    
+    ''
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: ''
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1080:9)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+not ok 5 - replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 12619.577381
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Recorded playback finished/. Input:
+    
+    ''
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: ''
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1080:9)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+not ok 6 - replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 51551.118228
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: 'verified v2 baseline was not requested'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'fail'
+  stack: |-
+    eventually (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:520:10)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1065:15)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+not ok 7 - replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 49428.430676
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: 'verified v2 baseline was not requested'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'fail'
+  stack: |-
+    eventually (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:520:10)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1065:15)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: overlapping opening reads preserve the newer record and source disclosure while equal revisions remain strict
+ok 8 - overlapping opening reads preserve the newer record and source disclosure while equal revisions remain strict
+  ---
+  duration_ms: 2239.562721
+  type: 'test'
+  ...
+# Subtest: quiet language: History pauses the real replay immediately and exposes exact Playback details before Resume consumes only its next prefix
+ok 9 - quiet language: History pauses the real replay immediately and exposes exact Playback details before Resume consumes only its next prefix
+  ---
+  duration_ms: 8478.093805
+  type: 'test'
+  ...
+# Subtest: focused flow: actual accepted replay prefixes stay immutable with 0ms GET latency and bounded prefetch
+ok 10 - focused flow: actual accepted replay prefixes stay immutable with 0ms GET latency and bounded prefetch
+  ---
+  duration_ms: 24954.43467
+  type: 'test'
+  ...
+# Subtest: focused flow: actual accepted replay prefixes stay immutable with 120ms GET latency and bounded prefetch
+not ok 11 - focused flow: actual accepted replay prefixes stay immutable with 120ms GET latency and bounded prefetch
+  ---
+  duration_ms: 794242.425035
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3285:33'
+  failureType: 'testCodeFailure'
+  error: 'page.evaluate: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3318:84)
+  ...
+# Subtest: replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion false
+not ok 12 - replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion false
+  ---
+  duration_ms: 39.072127
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3336:38'
+  failureType: 'testCodeFailure'
+  error: |-
+    browser.newContext: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/bq-tmp/playwright_chromiumdev_profile-PAm8B9 --remote-debugging-pipe --no-startup-window
+    <launched> pid=695516
+    [pid=695516][err] [695516:695544:1013/212235.409392:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+    [pid=695516][err] [695516:695544:1013/212235.413101:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=695516][err] [695516:695544:1013/212235.413309:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+    [pid=695516][err] [695516:695544:1013/212235.413792:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+    [pid=695516][err] [695516:695544:1013/212235.413802:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=695516][err] [695516:695556:1013/212235.417491:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695559: Read-only file system (30)
+    [pid=695516][err] [695516:695544:1013/212235.450440:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=695516][err] [695516:695516:1013/212235.464380:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=695516][err] [695516:695516:1013/212235.464468:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=695516][err] [695516:695544:1013/212235.464490:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=695516][err] [695516:695544:1013/212235.464504:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=695516][err] [695516:695556:1013/212235.477611:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695575: Read-only file system (30)
+    [pid=695516][err] [695516:695516:1013/212235.486087:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=695516][err] [695516:695516:1013/212235.487819:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=695516][err] [695516:695516:1013/212235.487838:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=695516][err] [695516:695544:1013/212235.488112:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+    [pid=695516][err] [695516:695544:1013/212235.488130:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+    [pid=695516][err] [695516:695544:1013/212235.488277:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=695516][err] [695516:695516:1013/212235.490158:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.Properties.GetAll: object_path= /org/freedesktop/UPower/devices/DisplayDevice: unknown error type: 
+    [pid=695516][err] [695516:695516:1013/212235.490179:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=695516][err] [695516:695544:1013/212235.490314:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=695516][err] [695516:695516:1013/212235.492487:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=695516][err] [695516:695544:1013/212235.495732:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=695516][err] [695516:695516:1013/212235.495796:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=695516][err] [695516:695556:1013/212235.783350:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695605: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212235.806663:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695614: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212235.811019:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695616: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212249.762088:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695684: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212249.780068:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695693: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212249.782888:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695694: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212303.576519:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695791: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212303.601963:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695800: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212303.603081:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695801: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212317.610931:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695827: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212317.625792:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695834: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212317.626992:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695835: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212330.545293:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695940: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212330.562626:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695949: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212330.564786:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695950: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212344.028220:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695972: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212344.046176:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695981: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212344.048900:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 695983: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212434.728239:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696233: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212434.752932:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696242: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212434.757513:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696243: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212524.165069:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696565: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212524.181407:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696574: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212524.184846:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696575: Read-only file system (30)
+    [pid=695516][err] [695516:695516:1013/212524.191521:ERROR:chrome/browser/ui/views/user_education/impl/browser_user_education_interface_impl.cc:186] Attempting to show IPH IPH_ExtensionsZeroStatePromo before browser initialization complete; IPH will not be shown.
+    [pid=695516][err] [695516:695556:1013/212526.493968:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696614: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212526.510869:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696623: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212526.512733:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696624: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212534.877647:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696700: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212534.898794:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696709: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212534.902799:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696710: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212559.859678:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696771: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212559.881731:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696780: Read-only file system (30)
+    [pid=695516][err] [695516:695556:1013/212559.884597:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 696781: Read-only file system (30)
+    [pid=695516] <gracefully close start>
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3102:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3338:18)
+  ...
+# Subtest: replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion true
+not ok 13 - replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion true
+  ---
+  duration_ms: 1.722672
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3336:38'
+  failureType: 'testCodeFailure'
+  error: 'browser.newContext: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3102:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3338:18)
+  ...
+# Subtest: replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume
+not ok 14 - replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 2.460181
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3386:45'
+  failureType: 'testCodeFailure'
+  error: 'browser.newContext: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3102:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3388:18)
+  ...
+# Subtest: replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume
+not ok 15 - replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 0.781874
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3386:45'
+  failureType: 'testCodeFailure'
+  error: 'browser.newContext: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3102:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3388:18)
+  ...
+# Subtest: focused flow: source cancels replay with a prefetched accepted response in flight
+not ok 16 - focused flow: source cancels replay with a prefetched accepted response in flight
+  ---
+  duration_ms: 5.061871
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3408:54'
+  failureType: 'testCodeFailure'
+  error: 'browser.newContext: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3102:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3410:18)
+  ...
+# Subtest: focused flow: navigation cancels replay with a prefetched accepted response in flight
+not ok 17 - focused flow: navigation cancels replay with a prefetched accepted response in flight
+  ---
+  duration_ms: 1.174033
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3408:54'
+  failureType: 'testCodeFailure'
+  error: 'browser.newContext: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3102:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3410:18)
+  ...
+# Subtest: focused flow: manual node inspection pauses the same accepted journal until deliberate Resume
+not ok 18 - focused flow: manual node inspection pauses the same accepted journal until deliberate Resume
+  ---
+  duration_ms: 1.495747
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3443:56'
+  failureType: 'testCodeFailure'
+  error: 'browser.newContext: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3102:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3445:18)
+  ...
+# Subtest: focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume
+not ok 19 - focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume
+  ---
+  duration_ms: 0.995098
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3443:56'
+  failureType: 'testCodeFailure'
+  error: 'browser.newContext: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3102:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3445:18)
+  ...
+# Subtest: focused flow: manual document inspection pauses the same accepted journal until deliberate Resume
+not ok 20 - focused flow: manual document inspection pauses the same accepted journal until deliberate Resume
+  ---
+  duration_ms: 0.836604
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3443:56'
+  failureType: 'testCodeFailure'
+  error: 'browser.newContext: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3102:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3445:18)
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 4
+# fail 16
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 999200.505423

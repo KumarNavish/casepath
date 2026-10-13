@@ -1,0 +1,650 @@
+{
+  "identity": "auto_a489b283495e7b03b5aab860",
+  "through": 12,
+  "nodes": [
+    "lt_intake",
+    "lt_deadline",
+    "lt_form",
+    "lt_type",
+    "lt_arrears",
+    "lt_family",
+    "lt_abuse",
+    "lt_extension",
+    "lt_evidence",
+    "lt_resolution",
+    "lt_close"
+  ],
+  "edges": [
+    {
+      "id": "lt_e01",
+      "source": "lt_intake",
+      "target": "lt_deadline"
+    },
+    {
+      "id": "lt_e02",
+      "source": "lt_deadline",
+      "target": "lt_form"
+    },
+    {
+      "id": "lt_e03",
+      "source": "lt_form",
+      "target": "lt_type"
+    },
+    {
+      "id": "lt_e04",
+      "source": "lt_type",
+      "target": "lt_arrears"
+    },
+    {
+      "id": "lt_e05",
+      "source": "lt_type",
+      "target": "lt_family"
+    },
+    {
+      "id": "lt_e06",
+      "source": "lt_type",
+      "target": "lt_abuse"
+    },
+    {
+      "id": "lt_e07",
+      "source": "lt_arrears",
+      "target": "lt_abuse"
+    },
+    {
+      "id": "lt_e08",
+      "source": "lt_family",
+      "target": "lt_abuse"
+    },
+    {
+      "id": "lt_e09",
+      "source": "lt_abuse",
+      "target": "lt_extension"
+    },
+    {
+      "id": "lt_e10",
+      "source": "lt_abuse",
+      "target": "lt_evidence"
+    },
+    {
+      "id": "lt_e11",
+      "source": "lt_extension",
+      "target": "lt_evidence"
+    },
+    {
+      "id": "lt_e12",
+      "source": "lt_evidence",
+      "target": "lt_resolution"
+    },
+    {
+      "id": "lt_e13",
+      "source": "lt_resolution",
+      "target": "lt_close"
+    }
+  ],
+  "documents": [
+    {
+      "id": "obligation:lt_deadline:notice_period_evidence",
+      "type": "notice_period_evidence",
+      "status": "needed_now"
+    },
+    {
+      "id": "obligation:lt_deadline:proof_of_receipt",
+      "type": "proof_of_receipt",
+      "status": "needed_now"
+    }
+  ],
+  "geometry": {
+    "process": {
+      "x": 26,
+      "y": 648.71875,
+      "width": 338,
+      "height": 396.375,
+      "top": 648.71875,
+      "right": 364,
+      "bottom": 1045.09375,
+      "left": 26
+    },
+    "reading": {
+      "x": 26,
+      "y": 344.390625,
+      "width": 338,
+      "height": 280.328125,
+      "top": 344.390625,
+      "right": 364,
+      "bottom": 624.71875,
+      "left": 26
+    },
+    "documents": {
+      "x": 26,
+      "y": 1069.09375,
+      "width": 338,
+      "height": 219.46875,
+      "top": 1069.09375,
+      "right": 364,
+      "bottom": 1288.5625,
+      "left": 26
+    },
+    "graph": {
+      "rect": {
+        "x": 26,
+        "y": 765.09375,
+        "width": 338,
+        "height": 280,
+        "top": 765.09375,
+        "right": 364,
+        "bottom": 1045.09375,
+        "left": 26
+      },
+      "scrollTop": 0,
+      "scrollHeight": 664,
+      "clientHeight": 280,
+      "scrollWidth": 338,
+      "clientWidth": 338
+    },
+    "nodes": [
+      {
+        "id": "lt_intake",
+        "rect": {
+          "x": 58,
+          "y": 773.09375,
+          "width": 282,
+          "height": 44,
+          "top": 773.09375,
+          "right": 340,
+          "bottom": 817.09375,
+          "left": 58
+        },
+        "rank": {
+          "x": 58,
+          "y": 773.09375,
+          "width": 282,
+          "height": 44,
+          "top": 773.09375,
+          "right": 340,
+          "bottom": 817.09375,
+          "left": 58
+        },
+        "title": {
+          "x": 78,
+          "y": 776.09375,
+          "width": 261,
+          "height": 18.890625,
+          "top": 776.09375,
+          "right": 339,
+          "bottom": 794.984375,
+          "left": 78
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 261,
+        "titleScrollWidth": 261
+      },
+      {
+        "id": "lt_deadline",
+        "rect": {
+          "x": 58,
+          "y": 825.09375,
+          "width": 282,
+          "height": 64.96875,
+          "top": 825.09375,
+          "right": 340,
+          "bottom": 890.0625,
+          "left": 58
+        },
+        "rank": {
+          "x": 58,
+          "y": 825.09375,
+          "width": 282,
+          "height": 64.96875,
+          "top": 825.09375,
+          "right": 340,
+          "bottom": 890.0625,
+          "left": 58
+        },
+        "title": {
+          "x": 78,
+          "y": 849.28125,
+          "width": 261,
+          "height": 37.78125,
+          "top": 849.28125,
+          "right": 339,
+          "bottom": 887.0625,
+          "left": 78
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 261,
+        "titleScrollWidth": 261
+      },
+      {
+        "id": "lt_form",
+        "rect": {
+          "x": 58,
+          "y": 898.0625,
+          "width": 282,
+          "height": 44,
+          "top": 898.0625,
+          "right": 340,
+          "bottom": 942.0625,
+          "left": 58
+        },
+        "rank": {
+          "x": 58,
+          "y": 898.0625,
+          "width": 282,
+          "height": 44,
+          "top": 898.0625,
+          "right": 340,
+          "bottom": 942.0625,
+          "left": 58
+        },
+        "title": {
+          "x": 78,
+          "y": 901.0625,
+          "width": 261,
+          "height": 18.890625,
+          "top": 901.0625,
+          "right": 339,
+          "bottom": 919.953125,
+          "left": 78
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 261,
+        "titleScrollWidth": 261
+      },
+      {
+        "id": "lt_type",
+        "rect": {
+          "x": 58,
+          "y": 950.0625,
+          "width": 282,
+          "height": 44,
+          "top": 950.0625,
+          "right": 340,
+          "bottom": 994.0625,
+          "left": 58
+        },
+        "rank": {
+          "x": 58,
+          "y": 950.0625,
+          "width": 282,
+          "height": 44,
+          "top": 950.0625,
+          "right": 340,
+          "bottom": 994.0625,
+          "left": 58
+        },
+        "title": {
+          "x": 78,
+          "y": 953.0625,
+          "width": 261,
+          "height": 18.890625,
+          "top": 953.0625,
+          "right": 339,
+          "bottom": 971.953125,
+          "left": 78
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 261,
+        "titleScrollWidth": 261
+      },
+      {
+        "id": "lt_arrears",
+        "rect": {
+          "x": 58,
+          "y": 1002.0625,
+          "width": 137,
+          "height": 131.640625,
+          "top": 1002.0625,
+          "right": 195,
+          "bottom": 1133.703125,
+          "left": 58
+        },
+        "rank": {
+          "x": 58,
+          "y": 1002.0625,
+          "width": 282,
+          "height": 131.640625,
+          "top": 1002.0625,
+          "right": 340,
+          "bottom": 1133.703125,
+          "left": 58
+        },
+        "title": {
+          "x": 78,
+          "y": 1042.4375,
+          "width": 116,
+          "height": 56.671875,
+          "top": 1042.4375,
+          "right": 194,
+          "bottom": 1099.109375,
+          "left": 78
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 116,
+        "titleScrollWidth": 116
+      },
+      {
+        "id": "lt_family",
+        "rect": {
+          "x": 203,
+          "y": 1002.0625,
+          "width": 137,
+          "height": 131.640625,
+          "top": 1002.0625,
+          "right": 340,
+          "bottom": 1133.703125,
+          "left": 203
+        },
+        "rank": {
+          "x": 58,
+          "y": 1002.0625,
+          "width": 282,
+          "height": 131.640625,
+          "top": 1002.0625,
+          "right": 340,
+          "bottom": 1133.703125,
+          "left": 58
+        },
+        "title": {
+          "x": 223,
+          "y": 1042.4375,
+          "width": 116,
+          "height": 56.671875,
+          "top": 1042.4375,
+          "right": 339,
+          "bottom": 1099.109375,
+          "left": 223
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 116,
+        "titleScrollWidth": 116
+      },
+      {
+        "id": "lt_abuse",
+        "rect": {
+          "x": 58,
+          "y": 1141.703125,
+          "width": 282,
+          "height": 64.96875,
+          "top": 1141.703125,
+          "right": 340,
+          "bottom": 1206.671875,
+          "left": 58
+        },
+        "rank": {
+          "x": 58,
+          "y": 1141.703125,
+          "width": 282,
+          "height": 64.96875,
+          "top": 1141.703125,
+          "right": 340,
+          "bottom": 1206.671875,
+          "left": 58
+        },
+        "title": {
+          "x": 78,
+          "y": 1165.890625,
+          "width": 261,
+          "height": 37.78125,
+          "top": 1165.890625,
+          "right": 339,
+          "bottom": 1203.671875,
+          "left": 78
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 261,
+        "titleScrollWidth": 261
+      },
+      {
+        "id": "lt_extension",
+        "rect": {
+          "x": 58,
+          "y": 1214.671875,
+          "width": 282,
+          "height": 46.078125,
+          "top": 1214.671875,
+          "right": 340,
+          "bottom": 1260.75,
+          "left": 58
+        },
+        "rank": {
+          "x": 58,
+          "y": 1214.671875,
+          "width": 282,
+          "height": 46.078125,
+          "top": 1214.671875,
+          "right": 340,
+          "bottom": 1260.75,
+          "left": 58
+        },
+        "title": {
+          "x": 78,
+          "y": 1238.859375,
+          "width": 261,
+          "height": 18.890625,
+          "top": 1238.859375,
+          "right": 339,
+          "bottom": 1257.75,
+          "left": 78
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 261,
+        "titleScrollWidth": 261
+      },
+      {
+        "id": "lt_evidence",
+        "rect": {
+          "x": 58,
+          "y": 1268.75,
+          "width": 282,
+          "height": 46.078125,
+          "top": 1268.75,
+          "right": 340,
+          "bottom": 1314.828125,
+          "left": 58
+        },
+        "rank": {
+          "x": 58,
+          "y": 1268.75,
+          "width": 282,
+          "height": 46.078125,
+          "top": 1268.75,
+          "right": 340,
+          "bottom": 1314.828125,
+          "left": 58
+        },
+        "title": {
+          "x": 78,
+          "y": 1292.9375,
+          "width": 261,
+          "height": 18.890625,
+          "top": 1292.9375,
+          "right": 339,
+          "bottom": 1311.828125,
+          "left": 78
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 261,
+        "titleScrollWidth": 261
+      },
+      {
+        "id": "lt_resolution",
+        "rect": {
+          "x": 58,
+          "y": 1322.828125,
+          "width": 282,
+          "height": 44,
+          "top": 1322.828125,
+          "right": 340,
+          "bottom": 1366.828125,
+          "left": 58
+        },
+        "rank": {
+          "x": 58,
+          "y": 1322.828125,
+          "width": 282,
+          "height": 44,
+          "top": 1322.828125,
+          "right": 340,
+          "bottom": 1366.828125,
+          "left": 58
+        },
+        "title": {
+          "x": 78,
+          "y": 1325.828125,
+          "width": 261,
+          "height": 37.78125,
+          "top": 1325.828125,
+          "right": 339,
+          "bottom": 1363.609375,
+          "left": 78
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 261,
+        "titleScrollWidth": 261
+      },
+      {
+        "id": "lt_close",
+        "rect": {
+          "x": 58,
+          "y": 1374.828125,
+          "width": 282,
+          "height": 44,
+          "top": 1374.828125,
+          "right": 340,
+          "bottom": 1418.828125,
+          "left": 58
+        },
+        "rank": {
+          "x": 58,
+          "y": 1374.828125,
+          "width": 282,
+          "height": 44,
+          "top": 1374.828125,
+          "right": 340,
+          "bottom": 1418.828125,
+          "left": 58
+        },
+        "title": {
+          "x": 78,
+          "y": 1377.828125,
+          "width": 261,
+          "height": 18.890625,
+          "top": 1377.828125,
+          "right": 339,
+          "bottom": 1396.71875,
+          "left": 78
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 261,
+        "titleScrollWidth": 261
+      }
+    ]
+  },
+  "wires": [],
+  "source": "src_64ece0e388979b98a49f84fe98b993b2",
+  "sourceHash": "5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3",
+  "checkoutCommit": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "testSha256": "8faa18e54879c6648f3abc956cb594f9403f58a624a577a2a143b71bc5658ed9",
+  "requests": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/snapshot?after=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/snapshot?after=7",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/snapshot?after=9",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/sources/auto_a489b283495e7b03b5aab860/src_64ece0e388979b98a49f84fe98b993b2/text",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/snapshot?after=11",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "prefixTransfers": [],
+  "browserRequests": [
+    {
+      "url": "http://localhost:41999/",
+      "method": "GET"
+    }
+  ],
+  "javascriptErrors": [],
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "injectedAssets": {
+    "javascript": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+    "css": "26915e7327cd553792d0f1f2513821dce0d5d04d247f47c78e2db80c282655ab"
+  },
+  "assets": {
+    "javascript": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+    "css": "26915e7327cd553792d0f1f2513821dce0d5d04d247f47c78e2db80c282655ab"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "base": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
-  "qa_file_sha256_at_review": "d2aa01e84671bfa0b64b4c1de36f475def66222bdd73c72e4b6165577d65246c",
+  "qa_file_sha256_at_review": "92ca22cdf7c366c082fb964dd2f056a141468dd2fb51d059942bd56e9a00c472",
   "through9_geometry_line_byte_identical": true,
   "reviewed_preserved_checks": [
     "36/44px native target heights,14px labels,width bounds,desktop full initial viewport/no forced graphscroll unchanged",
@@ -11,7 +11,38 @@
     "Overlapping opening source modal stays open during paint checks; full DTO only after native Close",
     "Actual completed stage slots/citations/CO/procedure selectors reflect unchanged base renderer"
   ],
-  "status": "No blocking code finding in reviewed QA observation/predicate corrections. Final QA execution status remains separate from passed independent UI acceptance.",
+  "status": "Final independent code/results signoff: no blocking finding. QA-only commit50bea2aebae4e3c60d2d803d92e030dff634e5a2, exact test SHA92ca22cdf7c366c082fb964dd2f056a141468dd2fb51d059942bd56e9a00c472, final3 all7 selected tests passed.",
   "outcome_relocation_review": "Correct: every actually painted outcome must equal its authoritative prefix; no future outcomes. All9 exact positive summaries are inspected from actual completed saved-head UI in disclosed post-traversal phase after public zero trusted input/no History assertions. Owner full DTO fields are still inspected for every208 accepted prefix.",
-  "remaining_execution_issue": "Targeted final2 first owner case failed strict .au-stage-outcome >p selection because summary and legal-basis paragraphs both match. QA owner informed to choose actual first summary paragraph and retain separate CO assertions. This is not a product finding; latest QA checkpoint/run still awaited."
+  "remaining_execution_issue": "None. Final3 completed successfully at the unchanged reviewed QA file SHA92ca22cdf7c366c082fb964dd2f056a141468dd2fb51d059942bd56e9a00c472; earlier failures and interrupted run logs remain preserved.",
+  "final_diff": "../browser-qa/candidate-review-push.diff",
+  "final_signoff": {
+    "blocking_code_findings": [],
+    "summary_selector": "Actual .au-stage-outcome > p:first-child selects the unchanged renderer summary; separate CO and procedure checks remain.",
+    "manual_latency_phase": "After unattended playback completes, void controller.openClaim schedules the actual fixture GET; advance only configured120ms mock latency, wait actual requested accepted revision, then use genuine History for full DTO equality. No product pacing change.",
+    "public_scope": "Zero trusted input/no History assertions remain before disclosed all9 manual saved-head outcome inspection. Expected fixture values are used only in assertions, never returned as actual UI.",
+    "original_geometry": "Exact through9 target-size/label/width/viewport/no-forced-scroll thresholds are byte-identical; extracted positive connector endpoint/rank/gutter/no-label-crossing assertions are retained on genuinely reached native18/19/21.",
+    "native_modal_continuity": "Actual source/body/focus remains untouched during accepted update and older-read checks; full DTO inspection occurs after normal source Close."
+  },
+  "execution": {
+    "status": "passed",
+    "exit_code": 0,
+    "raw_log": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/targeted-final3.log",
+    "command_script": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/run-focused.sh",
+    "selection": "consumes every accepted current reference prefix|actual accepted replay prefixes stay immutable with 120ms|replay visibility: trusted (keyboard|Pause)",
+    "tests": 7,
+    "passed": 7,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 291654.12752,
+    "scope": "Four fresh/migrated owner/public all-nine accepted-prefix/handoff cases,120ms actual28-prefix replay, trusted keyboard/Pause hide/show exact Resume; no full suite",
+    "verification": "Independent reviewer read terminal raw TAP, verified clean QA checkout commit and exact file SHA. Tests executed by assigned QA worker; reviewer did not duplicate them."
+  },
+  "limits": [
+    "Focused QA execution and independent UI acceptance passed; full frozen-source gate remains Mac-owned and was not run here.",
+    "UI JavaScript/CSS bytes match completed independent synthetic-fixture acceptance; no hosted-head claim.",
+    "No browser/profile reruns by independent reviewer; no full gate before Mac frozen source."
+  ],
+  "qa_commit": "50bea2aebae4e3c60d2d803d92e030dff634e5a2"
 }

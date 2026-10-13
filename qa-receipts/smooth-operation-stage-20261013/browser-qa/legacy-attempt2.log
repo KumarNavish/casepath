@@ -1,0 +1,31 @@
+✔ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x1000 (10925.989181ms)
+✔ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x900 (9557.772276ms)
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1280x800 (17317.192379ms)
+✔ forming work: live accepted sources, graph and conditional documents form one exact composition at 390x844 (9915.522713ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 48232.777361
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2583:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1280x800 (17317.192379ms)
+  AssertionError [ERR_ASSERTION]: the actual newly accepted qualification receives central focus without opening History
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2621:287)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

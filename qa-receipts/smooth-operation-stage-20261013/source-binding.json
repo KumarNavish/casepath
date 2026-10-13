@@ -1,15 +1,16 @@
 {
   "base_sha": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
-  "candidate_sha": "b2936eaab993cfda87c1a5ff6f8d9403aceb2271",
+  "candidate_sha": "2f9f2255467024a5a3cae366674bc81f65c27401",
   "candidate_branch": "codex/casepath-smooth-operation-stage-20261013",
   "hostname": "656813ef2295",
   "execution": "Managed Codex Cloud; isolated native synthetic fixtures. No hosted-head verification, full release gate, deployment or production access in this round.",
   "asset_sha256": {
     "casepath/assets/autonomous-workspace-v1.js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
     "casepath/assets/autonomous-workspace-v1.css": "ef5772e708fa5913edfb917610e0dd6da9842b92e40d1ca491083552be88d41d",
-    "casepath-qa/autonomous-workspace-v1.test.cjs": "96945f335b34f0513bfbdd010848fdbf3c6e7b49ffde0a04ac5f80a0ac3a53c4"
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "96945f335b34f0513bfbdd010848fdbf3c6e7b49ffde0a04ac5f80a0ac3a53c4",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "92ca22cdf7c366c082fb964dd2f056a141468dd2fb51d059942bd56e9a00c472"
   },
-  "qa_status": "Final browser QA-only selector correction and targeted checks pending; independent product acceptance is green.",
+  "qa_status": "Final7-case targeted correction passed with0fail/cancel/skip; independent review complete. Original geometry thresholds unchanged. Other focused passed cases retained across bounded diagnosed attempts. Full suite not run before Mac freeze.",
   "excluded_duplicate_inputs": [
     {
       "path": "performance/after-4x-frame-trace.json",
@@ -31,5 +32,13 @@
     }
   ],
   "temp_policy": "All new browser/Python/Node children use isolated HOME/TMPDIR/TMP/TEMP under /workspace before initialization; /tmp remains separate low-capacity filesystem.",
-  "measurement_limits": "Serialized matched fixture comparisons, no universal 60fps claim. Cold 6x long-task count 45 to 48, total duration slightly improves; preserved mixed result. Fixture heads are not production heads."
+  "measurement_limits": "Serialized matched fixture comparisons, no universal 60fps claim. Cold 6x long-task count 45 to 48, total duration slightly improves; preserved mixed result. Fixture heads are not production heads.",
+  "qa_commit": "50bea2aebae4e3c60d2d803d92e030dff634e5a2",
+  "qa_branch": "codex/casepath-stage-browser-qa-20261013",
+  "changed_files": [
+    "casepath-qa/autonomous-workspace-v1.test.cjs",
+    "casepath-qa/unified-product-browser-v1.test.cjs",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-workspace-v1.js"
+  ]
 }

@@ -1,0 +1,51 @@
+{
+  "url": "http://localhost:41999/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=0",
+  "text": "CasePath\nEvidence into action\nRead-only\nCases\nDemonstration\nKnowledge\nLive rules-based assessment unavailable: No current completed reference assessment is available. Showing the verified saved result; its history remains available.\n\nCases\n\nRepeated heating failure and reported repair calls\n\nSaved result · Synthetic sources · No external action · as of 2025-02-21\n\nChoose case\nHistory\n✓\nCapture the reported defect\n✓\nEstablish relevant tenancy terms\n✓\nEstablish landlord knowledge\n✓\nAssess supported cause\n✓\nAssess objective defect evidence\n✓\nRecord repair and rent reduction eligibility\n\nThe sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.\n\nLegal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)\n\nInspect operation\n0 / 0",
+  "dialogs": [
+    {
+      "class": "au-source-dialog",
+      "open": false
+    },
+    {
+      "class": "au-record-dialog",
+      "open": false
+    }
+  ],
+  "active": "<h1 class=\"au-page-heading \" id=\"auClaimTitle\" data-au-claim-title=\"\" tabindex=\"-1\">Repeated heating failure and reported repair calls</h1>",
+  "revision": "25",
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "errors": []
+}

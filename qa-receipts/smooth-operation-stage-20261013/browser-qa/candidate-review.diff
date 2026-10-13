@@ -1,0 +1,574 @@
+diff --git a/casepath-qa/unified-product-browser-v1.test.cjs b/casepath-qa/unified-product-browser-v1.test.cjs
+index 0f7d936..1365277 100644
+--- a/casepath-qa/unified-product-browser-v1.test.cjs
++++ b/casepath-qa/unified-product-browser-v1.test.cjs
+@@ -827,7 +827,7 @@ async function caseDetails(page){
+   assert.equal(new URL(page.url()).hash.split('?')[0],prior.route.split('?')[0],'technical inspection cannot replace its exact claim');
+   for(const [key,value]of before)assert.equal(after.get(key),value,`technical inspection must restore the explicit ${key} route identity`);
+   assert.equal(await page.locator('[data-au-panel]').getAttribute('data-au-panel'),prior.detail,'History inspection returns to its original local purpose');
+-  if(prior.playing)await page.locator('[data-au-demo-resume]').click();
++  if(prior.playing)assert.equal(await page.locator('[data-au-demo-resume]').count(),1,'actual History inspection holds replay until deliberate Resume');
+   return record;
+ }
+ 
+@@ -890,14 +890,16 @@ async function title(page, id) {
+     const expected = await page.evaluate(id => window.CasePathAutonomous.REFERENCE_DEMO_CASES?.find(row => row.claim_id === id)?.label || window.CasePathAutonomous.DEMO_CASES.find(row => row.claim_id === id)?.label || window.__fixture.envelopes[id].state.title, id);
+     return rendered === expected;
+   }, `The matching saved claim ${id} did not render`);
+-  // Request the actual product's single technical drawer once. Its closed
+-  // claim record stays synchronized to accepted renders, so subsequent replay
+-  // assertions read UI output without changing the scheduler on every poll.
+-  const record = page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]');
+-  if (!await record.count()) {
+-    await caseDetails(page);
+-    await eventually(() => record.count().then(count => count === 1), 'History Case details did not expose the synchronized exact accepted state');
+-  }
++}
++
++async function requirementConnector(page) {
++  const connector=await page.locator('[data-au-forming-wire="process-document"]').evaluate(path=>{const scene=path.closest('.au-forming-layout'),node=[...scene.querySelectorAll('[data-au-node]')].find(row=>row.dataset.auNode===path.dataset.auWireNode),row=[...scene.querySelectorAll('.au-forming-documents [data-au-obligation]')].find(row=>row.dataset.auObligation===path.dataset.auWireObligation),matrix=path.getScreenCTM(),screen=point=>new DOMPoint(point.x,point.y).matrixTransform(matrix),rect=element=>element.getBoundingClientRect().toJSON(),length=path.getTotalLength(),coordinates=path.getAttribute('d').match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi).map(Number),points=[];for(let index=0;index<coordinates.length;index+=2){const point=screen({x:coordinates[index],y:coordinates[index+1]});points.push({x:point.x,y:point.y});}return {start:screen(path.getPointAtLength(0)).toJSON(),end:screen(path.getPointAtLength(length)).toJSON(),points,junction:rect(node.querySelector('[data-au-junction]')),rank:rect(node.closest('.au-graph-rank')),graph:rect(node.closest('[data-au-graph-pan]')),document:rect(row),titles:[...scene.querySelectorAll('.au-forming-process .au-node-title')].map(rect),samples:Array.from({length:501},(_,index)=>screen(path.getPointAtLength(length*index/500)).toJSON())};});
++  assert.ok(Math.abs(connector.start.x-(connector.junction.left+connector.junction.width/2))<1&&Math.abs(connector.start.y-connector.junction.bottom)<1,'the requirement connector starts at the actual selected junction');
++  assert.ok(Math.abs(connector.end.x-connector.document.left)<1&&Math.abs(connector.end.y-(connector.document.top+connector.document.height/2))<1,'the same connector terminates at the exact requiring document row');
++  assert.ok(connector.points[1].y>=connector.rank.bottom+3&&Math.abs(connector.points[1].x-connector.start.x)<1,'the selected junction lane reaches below the entire parallel rank before turning');
++  assert.ok(Math.abs(connector.points[2].y-connector.points[1].y)<1&&connector.points[2].x>connector.graph.right&&connector.points[2].x<connector.document.left,'the connector crosses beneath the full rank into the outside gutter');
++  assert.equal(connector.samples.some(point=>connector.titles.some(title=>point.x>title.left+.5&&point.x<title.right-.5&&point.y>title.top+.5&&point.y<title.bottom-.5)),false,'the actual connector never crosses a branch label');
++  return connector;
+ }
+ 
+ async function junctionConnections(page){
+@@ -921,11 +923,18 @@ for(const [width,height,reduced]of [[1440,900,false],[1280,800,true],[390,844,fa
+   assert.equal(await page.locator('.au-forming-documents .au-document-review[data-au-review="sufficient"]').count(),types.length);
+   if(through<18)assert.equal(await page.locator('[data-au-forming-wire="process-document"]').count(),0,'hidden future requirements cannot leave a document connector');
+   assert.equal(await page.locator('[data-au-knowledge-publication]').count(),0,'the saved head cannot lend future knowledge to a displayed prefix');
+-  if(through===18){
++  if([18,19,21].includes(through)){
++   if(through===18){
+    const probe=await page.evaluate(state=>{const copy=structuredClone(state),row=copy.obligations.find(item=>item.document_type==='tenancy_terms_evidence');row.node_id='dh_notice';row.decision_node_id='dh_notice';row.node_ids=['dh_notice','dh_scope'];const prior=structuredClone(copy);prior.evaluation.nodes.find(item=>item.node_id==='dh_scope').execution_state='blocked';prior.evaluation.nodes.find(item=>item.node_id==='dh_scope').blocked_by=['dh_intake'];return {context:window.CasePathAutonomous.enteredRequirementContext(prior,copy),html:window.CasePathAutonomous.obligationMarkup(copy,'dh_scope',[row],{},true)};},prefix.state);
+    assert.equal(probe.context.node,'dh_scope');assert.match(probe.html,/data-au-select="dh_scope"/);assert.doesNotMatch(probe.html,/data-au-select="dh_notice"/);
+-   const row=page.locator('.au-forming-documents [data-au-obligation]').first(),origin=row.locator('[data-au-source][data-au-citation]').first();assert.equal(await origin.count(),1);
+-   const citation=JSON.parse(await origin.getAttribute('data-au-citation'));await origin.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'exact native requirement source did not open');assert.equal(await page.locator('.au-source-dialog mark').textContent(),citation.quote);await page.locator('[data-au-close]').click();assert.equal(await origin.evaluate(element=>element===document.activeElement),true);
++   }
++   const type=types.at(-1),obligation=prefix.state.obligations.find(item=>item.document_type===type),node=prefix.state.evaluation.nodes.find(item=>item.node_id===obligation.node_id),fact=prefix.state.facts.find(item=>item.fact_id===obligation.required_fact_ids[0]);
++   assert.equal(node.activation,'true');assert.ok(['ready','completed'].includes(node.execution_state),'positive interaction requires an actually reached native step');assert.equal(prefix.state.evaluation.documents.find(item=>item.document_type===type).review_state,'sufficient');assert.ok(fact.citations.length);
++   const row=page.locator(`.au-forming-documents [data-au-obligation="${obligation.obligation_id}"]`);await row.locator(`[data-au-select-obligation="${obligation.obligation_id}"]`).click();assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),obligation.node_id);
++   const origin=row.locator('[data-au-source][data-au-citation]').first();assert.equal(await origin.count(),1);const citation=JSON.parse(await origin.getAttribute('data-au-citation'));assert.ok(fact.citations.some(item=>canonical(item)===canonical(citation)));assert.equal(citation.sha256,prefix.state.source_descriptors.find(item=>item.artifact_id===citation.artifact_id).sha256);
++   await origin.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'exact native requirement source did not open');assert.equal(await page.locator('.au-source-dialog mark').textContent(),citation.quote);await page.locator('[data-au-close]').click();assert.equal(await origin.evaluate(element=>element===document.activeElement),true);
++   if(width>1000){const wires=await page.locator('[data-au-forming-wire]').evaluateAll(rows=>rows.filter(row=>getComputedStyle(row).display!=='none'&&row.getBoundingClientRect().width>0).map(row=>({kind:row.dataset.auFormingWire,fact:row.dataset.auWireFact,source:row.dataset.auWireSource,node:row.dataset.auWireNode,obligation:row.dataset.auWireObligation,path:row.getAttribute('d')})));assert.deepEqual(sorted(wires.map(row=>row.kind)),['process-document','source-process']);for(const wire of wires){assert.equal(wire.fact,obligation.required_fact_ids[0]);assert.equal(wire.source,citation.artifact_id);assert.equal(wire.node,obligation.node_id);assert.equal(wire.obligation,obligation.obligation_id);assert.ok(wire.path);}await focusedReceipt(page,`causal-native-requirement-connector-${through}-${width}x${height}`,{through,obligation:obligation.obligation_id,citation,connector:await requirementConnector(page)});}
++   else assert.equal(await page.locator('[data-au-forming-wire]:visible').count(),0,'mobile does not paint connections through stacked reading content');
+   }
+  }
+  const head=fixture.snapshots[id];await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.state.revision});await title(page,id);
+@@ -1033,17 +1042,17 @@ for(const migrated of [false,true])for(const publicReadOnly of [false,true])test
+  await eventually(()=>page.locator('[data-au-revision="0"]').count().then(count=>count===1),'fresh Demonstration must begin at reference intake prefix zero');
+  assert.ok(new URL(page.url()).hash.startsWith(`#autonomous/claim/${id}?collection=reference&mode=replay&through=0`));
+  assert.equal(await page.locator('[data-au-node],[data-au-reference-mode]').count(),0,'the verified head cannot paint into prefix zero');
+- if(!publicReadOnly){await title(page,id);assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});}
++ if(!publicReadOnly){await title(page,id);assertAcceptedPaint(await acceptedPaint(page),fixture.prefixes[id][0]);}
+  const expected=referenceIds.flatMap(claim=>{const rows=Object.values(fixture.prefixes[claim]),start=fixture.snapshots[claim].replay_start;return start?[rows[0],...rows.filter(row=>row.through_seq>=start.from_seq)]:rows;}),thresholds=[0.03,0.2,0.5,0.9].map(fraction=>Math.max(1,Math.floor(expected.length*fraction)));
+  await page.evaluate(publicReadOnly=>{
+   window.__referencePaints=[];window.__referenceTrustedInputs=[];
+   for(const type of ['click','pointerdown','keydown'])document.addEventListener(type,event=>{if(event.isTrusted)window.__referenceTrustedInputs.push(type);},true);
+   const capture=()=>{
+-   const pre=document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]'),surface=document.querySelector('[data-au-revision]');
+-   if(!surface||!publicReadOnly&&!pre)return;const record=pre?JSON.parse(pre.textContent):null,claim_id=decodeURIComponent(location.hash.split('?')[0].slice('#autonomous/claim/'.length));
++   const surface=document.querySelector('[data-au-revision]');
++   if(!surface)return;const claim_id=decodeURIComponent(location.hash.split('?')[0].slice('#autonomous/claim/'.length));
+    const identity=`${claim_id}:${surface.dataset.auRevision}:${surface.dataset.auStateSha}`;
+    if(window.__referencePaints.at(-1)?.identity===identity)return;
+-   window.__referencePaints.push({identity,claim_id,...record?{record}:{},revision:surface.dataset.auRevision,state_sha256:surface.dataset.auStateSha,route:location.hash,nav:document.querySelector('.au-nav [aria-current="page"]')?.dataset.auNav,nodes:[...surface.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),requirements:[...surface.querySelectorAll('[data-au-obligation]')].map(row=>row.dataset.auObligation),forming:[...surface.querySelectorAll('[data-au-forming-revision]')].map(row=>({revision:row.dataset.auFormingRevision,state_sha256:row.dataset.auFormingSha})),documents:[...surface.querySelectorAll('.au-forming-documents .au-obligation')].map(row=>({id:row.dataset.auObligation,type:row.dataset.auDocument,status:row.dataset.status,review:row.querySelector('[data-au-review]')?.dataset.auReview||null,checks:[...row.querySelectorAll('.au-document-review [aria-hidden="true"]')].map(mark=>mark.textContent)})),sources:[...surface.querySelectorAll('[data-au-source-identity]')].map(row=>row.dataset.auSourceIdentity),passages:[...surface.querySelectorAll('.au-acquired-text')].map(row=>({artifact_id:row.closest('[data-au-source]')?.dataset.auSource,text:row.textContent})),citations:[...surface.querySelectorAll('[data-au-citation]')].map(row=>JSON.parse(row.dataset.auCitation)),knowledge:[...surface.querySelectorAll('[data-au-knowledge][data-au-version]')].map(row=>({id:row.dataset.auKnowledge,version:row.dataset.auVersion,sha256:row.dataset.auKnowledgeSha})),outcome:surface.querySelector('.au-assessment-conclusion > p')?.textContent||null});
++   window.__referencePaints.push({identity,claim_id,revision:surface.dataset.auRevision,state_sha256:surface.dataset.auStateSha,route:location.hash,nav:document.querySelector('.au-nav [aria-current="page"]')?.dataset.auNav,nodes:[...surface.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),requirements:[...surface.querySelectorAll('[data-au-obligation]')].map(row=>row.dataset.auObligation),forming:[...surface.querySelectorAll('[data-au-forming-revision]')].map(row=>({revision:row.dataset.auFormingRevision,state_sha256:row.dataset.auFormingSha})),documents:[...surface.querySelectorAll('.au-forming-documents .au-obligation')].map(row=>({id:row.dataset.auObligation,type:row.dataset.auDocument,status:row.dataset.status,review:row.querySelector('[data-au-review]')?.dataset.auReview||null,checks:[...row.querySelectorAll('.au-document-review [aria-hidden="true"]')].map(mark=>mark.textContent)})),sources:[...surface.querySelectorAll('[data-au-source-identity]')].map(row=>row.dataset.auSourceIdentity),passages:[...surface.querySelectorAll('.au-acquired-text')].map(row=>({artifact_id:row.closest('[data-au-source]')?.dataset.auSource,text:row.textContent})),citations:[...surface.querySelectorAll('[data-au-citation]')].map(row=>JSON.parse(row.dataset.auCitation)),knowledge:[...surface.querySelectorAll('[data-au-knowledge][data-au-version]')].map(row=>({id:row.dataset.auKnowledge,version:row.dataset.auVersion,sha256:row.dataset.auKnowledgeSha})),outcome:surface.querySelector('.au-assessment-conclusion > p')?.textContent||null});
+   };
+   capture();window.__referenceObserver=new MutationObserver(capture);window.__referenceObserver.observe(document.querySelector('#workspace'),{subtree:true,childList:true});
+  },publicReadOnly);
+@@ -1064,7 +1073,7 @@ for(const migrated of [false,true])for(const publicReadOnly of [false,true])test
+  }
+  assert.match(await page.locator('.au-global-status').innerText(),/Recorded playback finished/);
+  const paints=await page.evaluate(()=>{window.__referenceObserver.disconnect();return window.__referencePaints;});
+- await focusedReceipt(page,`replay-entry-current-${migrated?'migrated':'fresh'}-${publicReadOnly?'visitor':'owner'}`,{fixtureSha256:sha(canonical(fixture)),profileSha256:fixture.profile_sha256,replayStarts:referenceIds.map(claim=>fixture.snapshots[claim].replay_start??null),expectedPrefixes:expected.map(row=>({claim_id:row.state.claim_id,through_seq:row.through_seq,state_sha256:row.state.state_sha256,event_sha256:row.state.last_event_sha256})),prefixes:paints.map(({record,...paint})=>paint),handoffs:8,interruptions,trustedInputs:await page.evaluate(()=>window.__referenceTrustedInputs),scope:publicReadOnly?'Public entry without trusted input; native DOM identities and accepted visible content.':'Existing History drawer instrumentation; complete accepted state and projection for all prefixes.'});
++ await focusedReceipt(page,`replay-entry-current-${migrated?'migrated':'fresh'}-${publicReadOnly?'visitor':'owner'}`,{fixtureSha256:sha(canonical(fixture)),profileSha256:fixture.profile_sha256,replayStarts:referenceIds.map(claim=>fixture.snapshots[claim].replay_start??null),expectedPrefixes:expected.map(row=>({claim_id:row.state.claim_id,through_seq:row.through_seq,state_sha256:row.state.state_sha256,event_sha256:row.state.last_event_sha256})),prefixes:paints.map(({record,...paint})=>paint),handoffs:8,interruptions,trustedInputs:await page.evaluate(()=>window.__referenceTrustedInputs),scope:publicReadOnly?'Public entry without trusted input; native DOM identities and accepted visible content.':'Uninterrupted native DOM playback, followed by deliberate History DTO inspection for every prefix.'});
+  assert.equal(interruptions.length,publicReadOnly?4:0);
+  assert.equal(paints.length,expected.length,'no real accepted current prefix may disappear during playback or case handoff');
+  for(const claim of referenceIds){
+@@ -1073,7 +1082,7 @@ for(const migrated of [false,true])for(const publicReadOnly of [false,true])test
+   else{assert.equal(migrated,false);assert.notEqual(claim,fixture.earlier_context.claim_id);assert.equal(Object.values(fixture.prefixes[claim]).some(row=>row.replay_start!=null),false,'a fresh investigation retains ordinary prefix-zero playback');}
+  }
+  for(let index=0;index<expected.length;index++){
+-  const paint=paints[index],prefix=expected[index];if(!publicReadOnly)assert.deepEqual(paint.record,{state:prefix.state,projection:prefix.projection},`native paint ${index} retains the complete accepted prefix`);
++  const paint=paints[index],prefix=expected[index];
+   assert.equal(paint.claim_id,prefix.state.claim_id);
+   assert.equal(paint.revision,String(prefix.through_seq));assert.equal(paint.state_sha256,prefix.state.state_sha256);assert.equal(paint.nav,'demonstration');
+   const route=`#autonomous/claim/${prefix.state.claim_id}?collection=reference&mode=replay&through=${prefix.through_seq}`;assert.ok(paint.route.startsWith(route),`native paint ${index}: actual ${paint.route}; expected ${route}`);
+@@ -1089,7 +1098,7 @@ for(const migrated of [false,true])for(const publicReadOnly of [false,true])test
+   assert.equal(paint.outcome,prefix.state.outcome?.summary||null,'only the accepted outcome appears in the conclusion');
+  }
+  assert.deepEqual([...new Set(paints.map(row=>row.claim_id))],referenceIds);assert.equal(paints.filter((row,index)=>index&&row.claim_id!==paints[index-1].claim_id).length,8);
+- if(!publicReadOnly)assert.deepEqual(await visibleRecord(page),{state:fixture.snapshots[referenceIds.at(-1)].state,projection:fixture.snapshots[referenceIds.at(-1)].projection});
++ if(!publicReadOnly){for(const prefix of expected){await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id:prefix.state.claim_id,through:prefix.through_seq});await title(page,prefix.state.claim_id);assert.deepEqual(await visibleRecord(page),{state:prefix.state,projection:prefix.projection},'deliberate History inspection retains every complete accepted prefix after uninterrupted playback');}}
+  if(publicReadOnly){assert.deepEqual(await page.evaluate(()=>window.__referenceTrustedInputs),[],'fresh public playback finishes without any trusted user input');assert.equal(await page.locator('[data-au-record-content] pre').count(),0,'the zero-input public run never opens History or Resume');}
+  assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
+ });
+@@ -1252,14 +1261,14 @@ for(const inspection of ['Pause','History','source'])test(`reference migration n
+   await eventually(()=>page.evaluate(through=>window.__fixture.held.some(row=>row.through===through),start.from_seq),'the automatic current recording did not request its real baseline');
+   await page.evaluate(through=>{window.__fixture.holdReplayThrough=through+1;for(const row of window.__fixture.held.splice(0))row.release();},start.from_seq);await eventually(()=>page.locator(`[data-au-revision="${start.from_seq}"]`).count().then(count=>count===1),'the real current baseline did not paint');
+  }
+- await title(page,id);assert.deepEqual(await visibleRecord(page),{state:prefix.state,projection:prefix.projection});
++ await title(page,id);const baselineRecord=await visibleRecord(page);assert.deepEqual(baselineRecord,{state:prefix.state,projection:prefix.projection});
+  const frame=async(name,expected,source=null)=>{if(!stills)return;assert.deepEqual(await visibleRecord(page),{state:expected.state,projection:expected.projection});const route=new URL(page.url()).hash;assert.equal(Number(new URLSearchParams(route.split('?')[1]).get('through')),expected.through_seq);fs.mkdirSync(stills,{recursive:true});const filename=path.join(stills,name+'.png');await page.screenshot({path:filename,fullPage:false,animations:'disabled'});fs.writeFileSync(path.join(stills,name+'.json'),JSON.stringify({captured_at:new Date().toISOString(),image_sha256:sha(fs.readFileSync(filename)),checkoutCommit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),testSha256:sha(fs.readFileSync(__filename)),assets:await page.evaluate(()=>window.__injectedAssets),claim_id:id,route,through_seq:expected.through_seq,state_sha256:expected.state.state_sha256,event_sha256:expected.state.last_event_sha256,events:expected.events.map(row=>({seq:row.seq,kind:row.kind,state_sha256:row.state_sha256,event_sha256:row.event_sha256})),start,source,requests:await page.evaluate(()=>window.__fixture.calls),javascriptErrors:page.__casepathErrors},null,2));};
+  await frame('01',prefix);if(!stills)await page.locator('[data-au-demo-play]').click();await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='replay')),'the genuine next v2 prefix was not held');
+  if(inspection==='Pause')await page.locator('[data-au-demo-stop]').click();else if(inspection==='History')await page.locator('.au-work-head [data-au-detail="activity"]').click();else{await page.locator('.au-context-nav [data-au-detail="sources"]').click();await page.locator('[data-au-panel="sources"] [data-au-source]').first().click();await eventually(()=>page.locator('.au-source-dialog[open]').count().then(count=>count===1),'trusted source did not open');}
+- assert.equal(await page.locator('[data-au-demo-resume]').count(),1);const record=await visibleRecord(page),route=new URL(page.url()).hash;
+- await page.evaluate(()=>{window.__fixture.hidden=true;Object.defineProperty(document,'hidden',{configurable:true,get:()=>window.__fixture.hidden});document.dispatchEvent(new Event('visibilitychange'));window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});await page.clock.runFor(8000);assert.deepEqual(await visibleRecord(page),record);
++ assert.equal(await page.locator('[data-au-demo-resume]').count(),1);const record=inspection==='source'?baselineRecord:await visibleRecord(page),route=new URL(page.url()).hash;assertAcceptedPaint(await acceptedPaint(page),prefix);
++ await page.evaluate(()=>{window.__fixture.hidden=true;Object.defineProperty(document,'hidden',{configurable:true,get:()=>window.__fixture.hidden});document.dispatchEvent(new Event('visibilitychange'));window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});await page.clock.runFor(8000);if(inspection==='source')assertAcceptedPaint(await acceptedPaint(page),prefix);else assert.deepEqual(await visibleRecord(page),record);
+  await page.evaluate(()=>{window.__fixture.hidden=false;document.dispatchEvent(new Event('visibilitychange'));document.querySelector('h1').focus();});if(inspection==='source')await page.keyboard.press('Escape');const reads=(await calls(page,`/claims/${id}/replay`)).length;await page.clock.runFor(7000);assert.deepEqual(await visibleRecord(page),record);assert.equal(new URL(page.url()).hash,route);assert.equal((await calls(page,`/claims/${id}/replay`)).length,reads);
+- await page.locator('[data-au-demo-resume]').click();let resumed=await visibleRecord(page);for(let tick=0;resumed.state.revision===start.from_seq&&tick<300;tick++){await page.clock.runFor(20);resumed=await visibleRecord(page);}const next=fixture.prefixes[id][start.from_seq+1];assert.deepEqual(resumed,{state:next.state,projection:next.projection});
++ await page.locator('[data-au-demo-resume]').click();let paint=await acceptedPaint(page);for(let tick=0;paint.revision===start.from_seq&&tick<300;tick++){await page.clock.runFor(20);paint=await acceptedPaint(page);}const next=fixture.prefixes[id][start.from_seq+1];assertAcceptedPaint(paint,next);const resumed=await visibleRecord(page);assert.deepEqual(resumed,{state:next.state,projection:next.projection});
+  await focusedReceipt(page,`reference-migration-hold-${inspection}`,{claim_id:id,start,route,before:{revision:record.state.revision,state_sha256:record.state.state_sha256,event_sha256:record.state.last_event_sha256},after:{revision:resumed.state.revision,state_sha256:resumed.state.state_sha256,event_sha256:resumed.state.last_event_sha256},requests:await page.evaluate(()=>window.__fixture.calls)});
+  if(stills){
+   const advance=async expected=>{for(let tick=0;Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<expected.through_seq&&tick<6000;tick++)await page.clock.runFor(20);assert.equal(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision')),expected.through_seq);};
+@@ -1515,7 +1524,7 @@ test('Investigation complete groups completed codes without changing the raw cla
+     await open(page, id);
+     await title(page, id);
+     assert.equal((await page.locator('[data-au-claim-status]').innerText()).replace(/\.$/,''), 'Investigation complete');
+-    const saved = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent());
++    const saved = (await visibleRecord(page));
+     assert.equal(saved.state.status, status);
+     assert.deepEqual(saved.state.outcome, expected);
+     assert.deepEqual((await visibleRecord(page)).state.outcome,expected,'the investigation label cannot rewrite the recorded legal outcome');
+@@ -1604,8 +1613,7 @@ for (const mode of ['replay']) test(`timed ${mode} presentation inspects all nin
+   if (mode === 'replay') await page.evaluate(() => {
+     window.__consumedControlStates = [];
+     new MutationObserver(() => {
+-      const record = document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]'); if (!record) return;
+-      const state = JSON.parse(record.textContent).state;if(!state?.revision)return;const previous = window.__consumedControlStates.at(-1);
++      const surface=document.querySelector('[data-au-revision]');if(!surface)return;const state={claim_id:decodeURIComponent(location.hash.split('?')[0].slice('#autonomous/claim/'.length)),revision:Number(surface.dataset.auRevision),state_sha256:surface.dataset.auStateSha};if(!state.revision)return;const previous = window.__consumedControlStates.at(-1);
+       if (!previous || previous.claim_id !== state.claim_id || previous.revision !== state.revision || previous.state_sha256 !== state.state_sha256) window.__consumedControlStates.push(state);
+     }).observe(document.querySelector('#workspace'), {childList: true, subtree: true});
+   });
+@@ -1647,7 +1655,7 @@ for (const mode of ['replay']) test(`timed ${mode} presentation inspects all nin
+     assert.deepEqual(posts, []);
+     for (const id of demoIds) assert.deepEqual((await calls(page, `/claims/${id}/replay`)).map(call => Number(new URL(call.url, 'http://fixture.invalid').searchParams.get('through_seq'))), id === demoIds[0] ? [0,1,2,1,2,1,2] : [0,1,2], 'each replay verifies both prefixes; deliberate Resume revalidates the first case\'s cancelled prefetch');
+     const consumed = await page.evaluate(() => window.__consumedControlStates);
+-    const expected = await page.evaluate(ids => ids.flatMap(id => window.__fixture.acceptedHistories[id].slice(1).map(record => record.state)), demoIds);
++    const expected = await page.evaluate(ids => ids.flatMap(id => window.__fixture.acceptedHistories[id].slice(1).map(({state}) => ({claim_id:state.claim_id,revision:state.revision,state_sha256:state.state_sha256}))), demoIds);
+     assert.deepEqual(consumed, expected, 'all nine authored control histories consume each exact accepted prefix once in roster order');
+   } else {
+     assert.equal(posts.length, 9, 'Live Play may admit one Start for each of the nine unprocessed originals');
+@@ -1677,7 +1685,7 @@ test('a replay control history without an accepted operational outcome stops hon
+   for(let tick=0;Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<2&&tick<300;tick++)await page.clock.runFor(20);
+   assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'2');
+   await eventually(() => page.locator('.au-global-status').innerText().then(text => /no settled operational outcome/i.test(text)), 'the authored history without an outcome did not stop');
+-  const saved = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent());
++  const saved = (await visibleRecord(page));
+   const expected = await page.evaluate(id => window.__fixture.acceptedHistories[id][2], demoIds[0]);
+   assert.deepEqual(saved.state, expected.state);
+   assert.deepEqual(saved.projection, {...expected.projection, parent_revision: expected.state.revision, parent_state_sha256: expected.state.state_sha256});
+@@ -1713,14 +1721,14 @@ test('overlapping opening reads preserve the newer record and source disclosure
+   await page.locator(`[data-au-panel="sources"] [data-au-source="${sourceId}"]`).click();
+   await eventually(() => page.locator('details.au-source-identity').count().then(count => count === 1), 'the current original source identity did not verify');
+   await page.locator('details.au-source-identity > summary').click();
+-  const before = await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent();
++  const before = await visibleRecord(page);
+   await page.evaluate(() => { window.__retainedSource = document.querySelector('details.au-source-identity'); for (const held of window.__fixture.held.splice(0)) held.release(); });
+   await page.evaluate(() => new Promise(resolve => queueMicrotask(resolve)));
+-  assert.equal(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent(), before, 'the delayed older opening cannot replace the verified newer record');
++  assert.deepEqual(await visibleRecord(page), before, 'the delayed older opening cannot replace the verified newer record');
+   assert.equal(await page.evaluate(() => document.querySelector('details.au-source-identity') === window.__retainedSource && window.__retainedSource.open), true);
+   assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('node'),chosen,'source inspection preserves the exact selected decision in its route');
+   await page.evaluate(() => window.__controller.refresh());
+-  assert.equal(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent(), before, 'a matching equal revision must remain valid');
++  assert.deepEqual(await visibleRecord(page), before, 'a matching equal revision must remain valid');
+   const reads = (await calls(page, `/claims/${processedId}/snapshot`)).length;
+   await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+   await eventually(async () => (await calls(page, `/claims/${processedId}/snapshot`)).length > reads, 'normal visibility resume did not refresh the saved claim');
+@@ -1728,7 +1736,7 @@ test('overlapping opening reads preserve the newer record and source disclosure
+   await page.evaluate(() => { window.__fixture.conflictingHash = true; });
+   await page.evaluate(() => window.__controller.refresh());
+   assert.match(await page.locator('.au-global-status').innerText(), /saved revision changed identity/i);
+-  assert.equal(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent(), before, 'a conflicting equal-revision hash fails closed while saved work remains visible');
++  assert.deepEqual(await visibleRecord(page), before, 'a conflicting equal-revision hash fails closed while saved work remains visible');
+ });
+ 
+ test('a Documents link returns to its process step and reload retains the step detail', async t => {
+@@ -1839,7 +1847,7 @@ test('verified new-source prefixes retain prior assessment through unavailable a
+     const source = page.locator(`[data-au-panel="sources"] [data-au-source-freshness="unassessed"]`).filter({has: page.locator(`[data-au-source="${newSource.artifact_id}"]`)});
+     assert.equal(await source.count(), 1);
+     assert.match(await source.innerText(), position==='arrived'?/Original file received · Awaiting assessment/:/Text available for assessment · Awaiting assessment/);
+-    const rendered = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state;
++    const rendered = (await visibleRecord(page)).state;
+     assert.deepEqual(rendered, fixture.states[position], `${position} presentation cannot rewrite a saved field or hash`);
+     assert.deepEqual(rendered.facts, fixture.states.assessed.facts);
+     assert.deepEqual(rendered.actions, fixture.states.assessed.actions);
+@@ -1851,7 +1859,7 @@ test('verified new-source prefixes retain prior assessment through unavailable a
+   await page.evaluate(() => window.__fixture.loadAccepted('reassessed'));
+   await page.evaluate(() => window.__controller.refresh());
+   assert.equal(await page.locator('[data-au-assessment-freshness], [data-au-panel] [data-au-source-freshness="unassessed"]').count(), 0);
+-  const after = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state;
++  const after = (await visibleRecord(page)).state;
+   assert.deepEqual(after, fixture.states.reassessed);
+   assert.equal(after.facts.find(row => row.fact_id === 'condition:family_home').status, 'false');
+   assert.deepEqual(after.actions.slice(0, fixture.states.assessed.actions.length), fixture.states.assessed.actions);
+@@ -1863,7 +1871,7 @@ test('verified new-source prefixes retain prior assessment through unavailable a
+   await open(failed, id); await title(failed, id);
+   await failed.evaluate(() => window.__controller.refresh());
+   assert.match(await failed.locator('.au-claim-constraint').innerText(),/Prior assessment/);
+-  assert.deepEqual(JSON.parse(await failed.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state, fixture.states.failed);
++  assert.deepEqual((await visibleRecord(failed)).state, fixture.states.failed);
+   assert.deepEqual(fixture.states.failed.receipts, fixture.states.assessed.receipts);
+ });
+ 
+@@ -1875,7 +1883,7 @@ test('historical verified replay derives assessment coverage from that prefix an
+     await title(page, id);
+     assert.match(await page.locator('.au-work-head').innerText(), /Recorded investigation/);
+     assert.equal(/Prior assessment/.test(await page.locator('.au-claim-constraint').innerText()),['arrived','deferred'].includes(position),position);
+-    const rendered = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state;
++    const rendered = (await visibleRecord(page)).state;
+     assert.deepEqual(rendered, fixture.states[position]);
+   }
+   assert.equal((await calls(page, `/claims/${id}/snapshot`)).length, 0);
+@@ -1988,8 +1996,7 @@ test('an explicit original Start preserves its guarded retry after background ac
+   assert.equal(first.headers['Content-Type'], 'application/json');
+   await page.clock.runFor(7000);
+   await eventually(async () => {
+-    if (!await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').count()) return false;
+-    return JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state.revision === 1;
++    return (await acceptedPaint(page))?.revision === 1;
+   }, 'background polling did not observe the accepted revision after the Start response was lost');
+   assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'1');
+   await eventually(async () => await currentReadState(page) === 'verified' && await page.locator('[data-au-start]').innerText() === 'Retry start' && await page.locator('[data-au-start]').isEnabled(), 'the fresh accepted snapshot must finish the pending admission and restore its exact Start retry');
+@@ -2015,15 +2022,13 @@ test('an explicit original Start preserves its guarded retry after background ac
+   assert.equal(await page.locator('[data-au-start]').innerText(), 'Retry start');
+   await page.locator('[data-au-start]').click();
+   await eventually(async () => {
+-    const record = await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').count();
+-    if (!record) return false;
+-    return JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state.revision >= 2;
++    return (await acceptedPaint(page))?.revision >= 2;
+   }, 'Start did not read the concurrently advanced matching snapshot');
+   const [initial, retry] = await posts();
+   assert.equal((await posts()).length, 2, 'each explicit Start click must make one POST');
+   assert.equal(retry.body, initial.body, 'retry must preserve the exact JSON and idempotency key across navigation');
+   assert.deepEqual(retry.headers, initial.headers);
+-  const saved = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent());
++  const saved = (await visibleRecord(page));
+   assert.equal(saved.state.claim_id, startId);
+   assert.equal(saved.state.revision, 2);
+   assert.equal(saved.projection.state_sha256, saved.state.state_sha256);
+@@ -2254,7 +2259,7 @@ test('a delayed response from an abandoned claim cannot replace the next claim o
+     title: document.querySelector('[data-au-claim-title]')?.textContent,
+     header: document.querySelector('.au-work-head')?.textContent,
+     nodes: [...document.querySelectorAll('[data-au-node]')].map(node => node.dataset.auNode),
+-    savedRecord: document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]')?.textContent,
++    state_sha256:document.querySelector('[data-au-revision]')?.dataset.auStateSha,
+   }));
+   const before = await renderedIdentity();
+   await page.evaluate(() => { for (const held of window.__fixture.held.splice(0)) held.release(); });
+@@ -2415,7 +2420,7 @@ test('a working claim keeps completed step and action labels scoped to Completed
+   await completedNodes.first().click();
+   assert.equal(await page.locator('.au-step-status').innerText(), 'Completed');
+   assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), id);
+-  const saved = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state;
++  const saved = (await visibleRecord(page)).state;
+   assert.equal(saved.status, 'running');
+   assert.deepEqual(saved.evaluation.nodes, expected.nodes);
+   assert.deepEqual(saved.actions, expected.actions, 'presentation labels cannot rewrite the accepted action status or receipt');
+@@ -2510,7 +2515,38 @@ async function focusedReceipt(page, name, measurements) {
+   }}, null, 2));
+   if(!process.env.CASEPATH_RECEIPTS_JSON_ONLY)await page.screenshot({path: path.join(focusedReceiptRoot, `${name}.png`), fullPage: true, animations:'disabled'});
+ }
+-const visibleRecord = page => page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent().then(JSON.parse);
++// Full DTO observation is an explicit product inspection. Passive playback
++// observers below read the accepted visible surface and never open History.
++const visibleRecord = page => caseDetails(page);
++function acceptedPaintDOM() {
++  const surface=document.querySelector('[data-au-revision]');if(!surface)return null;
++  return {claim_id:decodeURIComponent(location.hash.split('?')[0].slice('#autonomous/claim/'.length)),revision:Number(surface.dataset.auRevision),state_sha256:surface.dataset.auStateSha,
++    nodes:[...surface.querySelectorAll('[data-au-node]')].map(row=>({id:row.dataset.auNode,activation:row.dataset.activation,status:row.dataset.status})),
++    edges:[...surface.querySelectorAll('[data-au-edge]')].map(row=>({id:row.dataset.auEdge,source:row.dataset.auEdgeSource,target:row.dataset.auEdgeTarget,activation:row.dataset.state})),
++    forming:[...surface.querySelectorAll('[data-au-forming-revision]')].map(row=>({revision:Number(row.dataset.auFormingRevision),state_sha256:row.dataset.auFormingSha})),
++    documents:[...surface.querySelectorAll('.au-forming-documents .au-obligation')].map(row=>({id:row.dataset.auObligation,type:row.dataset.auDocument,status:row.dataset.status,review:row.querySelector('[data-au-review]')?.dataset.auReview||null})),
++    facts:[...surface.querySelectorAll('[data-au-fact],[data-au-fact-select]')].map(row=>({id:row.dataset.auFact||row.dataset.auFactSelect,status:row.dataset.auFactState||null})),
++    sources:[...surface.querySelectorAll('[data-au-source-identity]')].map(row=>row.dataset.auSourceIdentity),
++    citations:[...surface.querySelectorAll('[data-au-citation]')].map(row=>JSON.parse(row.dataset.auCitation)),
++    knowledge:[...surface.querySelectorAll('[data-au-knowledge][data-au-version]')].map(row=>({id:row.dataset.auKnowledge,version:row.dataset.auVersion,sha256:row.dataset.auKnowledgeSha||''})),
++    outcome:surface.querySelector('.au-assessment-conclusion > p')?.textContent||null};
++}
++const acceptedPaint = page => page.evaluate(acceptedPaintDOM);
++function assertAcceptedPaint(paint,prefix,message='the visible accepted prefix retains its exact native identities and content') {
++  const state=prefix.state;
++  assert.ok(paint,message);assert.equal(paint.claim_id,state.claim_id,message);assert.equal(paint.revision,state.revision,message);assert.equal(paint.state_sha256,state.state_sha256,message);
++  const byId=rows=>[...rows].sort((a,b)=>a.id.localeCompare(b.id)),evaluations=new Map((state.evaluation?.nodes||[]).map(row=>[row.node_id,row]));
++  if(paint.nodes.length)assert.deepEqual(byId(paint.nodes),byId((state.graph?.nodes||[]).map(row=>{const evaluated=evaluations.get(row.node_id)||{};return {id:row.node_id,activation:evaluated.activation||'unresolved',status:evaluated.execution_state||evaluated.state||'pending'};})),message);
++  if(paint.edges.length)assert.deepEqual(byId(paint.edges),byId((state.graph?.edges||[]).map(row=>({id:row.edge_id,source:row.source_node_id,target:row.target_node_id,activation:state.evaluation?.edges.find(edge=>edge.edge_id===row.edge_id)?.activation||'unresolved'}))),message);
++  for(const row of paint.forming)assert.deepEqual(row,{revision:state.revision,state_sha256:state.state_sha256},message);
++  for(const row of paint.documents){const obligation=state.obligations.find(item=>item.obligation_id===row.id),document=state.evaluation?.documents.find(item=>item.document_type===row.type);assert.ok(obligation,message);assert.equal(row.type,obligation.document_type,message);assert.equal(row.status,document?.route_state||obligation.status||'pending',message);if(row.review)assert.equal(row.review,document?.review_state,message);}
++  for(const row of paint.facts){const fact=state.facts.find(item=>item.fact_id===row.id);assert.ok(fact,message);if(row.status)assert.equal(row.status,fact.verdict||fact.status,message);}
++  for(const identity of paint.sources)assert.ok(state.source_descriptors.some(row=>identity===`${state.claim_id}:${row.artifact_id}:${row.sha256}:${state.acquired_sources.find(source=>source.artifact_id===row.artifact_id)?.text_sha256||''}`),message);
++  const citations=state.facts.flatMap(row=>row.citations||[]).concat(state.actions.flatMap(row=>(row.result||row).citations||[]));
++  for(const citation of paint.citations){assert.ok(citations.some(row=>canonical(row)===canonical(citation)),message);assert.equal(citation.sha256,state.source_descriptors.find(row=>row.artifact_id===citation.artifact_id)?.sha256,message);}
++  for(const pin of paint.knowledge)assert.ok([...state.knowledge_uses,...state.knowledge_published].some(row=>(row.knowledge_id||row.version_id)===pin.id&&String(row.version||row.version_id)===pin.version&&(row.knowledge_sha256||'')===pin.sha256),message);
++  assert.equal(paint.outcome,state.outcome?.summary||null,message);
++}
+ const currentReadState = page => page.locator('[data-au-view]').getAttribute('data-au-read-state');
+ 
+ async function formingSnapshot(page,state){
+@@ -2551,26 +2587,23 @@ for(const [width,height]of [[1440,1000],[1440,900],[1280,800],[390,844]])test(`f
+   for(const through of [9,11,12,24,25]){
+     const reads=(await calls(page,`/claims/${id}/snapshot`)).length;await page.evaluate(seq=>window.__fixture.loadAccepted(seq),through);await page.evaluate(()=>window.__controller.refresh());
+     assert.ok((await calls(page,`/claims/${id}/snapshot`)).length>reads,'each accepted live update passes through its independent fresh GET');
++    if(through===11)assert.equal(await page.evaluate(()=>Object.values(window.__formingObjects).flat().every(element=>element.isConnected)),true,'unchanged accepted graph and requirement identities retain their original native nodes and buttons');
+     const expected=fixture.prefixes[through];assert.deepEqual(await visibleRecord(page),{state:expected.state,projection:expected.projection});const proof=await formingSnapshot(page,expected.state);assert.equal(proof.nodes.length,11);assert.equal(proof.edges.length,13);
+     if(through===9){assert.equal(await page.locator('.au-forming-documents .au-document-review').count(),0,'missing review is expressed once for the rail rather than repeated on every requirement');assert.ok(proof.geometry.nodes.every(node=>node.rect.height>=(width>1000&&height<=850?36:44)&&node.titleFontSize>=14&&node.titleScrollWidth<=node.titleClientWidth+1),'actual nodes retain readable labels and native short-desktop or mobile target sizes: '+JSON.stringify({through,width,height,nodes:proof.geometry.nodes.filter(node=>node.rect.height<(width>1000&&height<=850?36:44)||node.titleFontSize<14||node.titleScrollWidth>node.titleClientWidth+1),assets:await page.evaluate(()=>window.__injectedAssets)}));if(width>1000){assert.ok(proof.geometry.reading.x<proof.geometry.process.x&&proof.geometry.process.x<proof.geometry.documents.x,'original evidence precedes the central process and its document rail');assert.ok(proof.geometry.process.width>proof.geometry.reading.width&&proof.geometry.process.width>proof.geometry.documents.width,'the whole accepted process owns the dominant center');assert.ok(proof.geometry.nodes.every(node=>node.rect.y>=proof.geometry.graph.rect.y-1&&node.rect.y+node.rect.height<=height+1),'every actual node is readable within the initial desktop viewport');assert.ok(proof.geometry.graph.scrollHeight<=proof.geometry.graph.clientHeight+1,'the accepted eleven-node graph fits without forced desktop scrolling');}}
+     if(through===9)await page.evaluate(()=>{window.__formingObjects={nodes:[...document.querySelectorAll('.au-forming-process [data-au-node]')],edges:[...document.querySelectorAll('.au-forming-process [data-au-edge]')],rows:[...document.querySelectorAll('.au-forming-documents .au-obligation')],choices:[...document.querySelectorAll('.au-forming-documents .au-document-choice')]};});
+-    if(through===11)assert.equal(await page.evaluate(()=>Object.values(window.__formingObjects).flat().every(element=>element.isConnected)),true,'unchanged accepted graph and requirement identities retain their original native nodes and buttons');
+     if(through===11){
+-      const row=page.locator('.au-forming-documents [data-au-document="spouse_notice_copy"]');assert.equal(await row.getAttribute('data-status'),'established');assert.match(await row.locator('.au-document-review').innerText(),/sufficient/i);
++      const obligation=expected.state.obligations.find(item=>item.document_type==='spouse_notice_copy'),family=expected.state.evaluation.nodes.find(item=>item.node_id===obligation.node_id),document=expected.state.evaluation.documents.find(item=>item.document_type===obligation.document_type);
++      assert.equal(family.execution_state,'blocked');assert.deepEqual(family.blocked_by,['lt_type']);assert.deepEqual(family.missing_document_types,[]);assert.equal(document.route_state,'established');assert.equal(document.review_state,'sufficient');
++      assert.equal(await page.locator('.au-forming-documents [data-au-document="spouse_notice_copy"]').count(),0,'received sufficient source evidence does not make an upstream-blocked requirement active');
+       assert.equal(await page.locator('[data-au-node="lt_family"]').getAttribute('data-status'),'blocked','sufficient source evidence does not establish an earlier process prerequisite');
+-      const obligation=expected.state.obligations.find(item=>item.document_type==='spouse_notice_copy');await row.locator(`[data-au-select-obligation="${obligation.obligation_id}"]`).click();assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),obligation.node_id);const selectedRoute=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);for(const [key,value]of Object.entries({node:obligation.node_id,document:obligation.document_type,obligation:obligation.obligation_id,fact:obligation.required_fact_ids[0]}))assert.equal(selectedRoute.get(key),value);
+-      const source=row.locator('[data-au-source][data-au-citation]').first();await source.focus();await page.keyboard.press('Enter');const citation=JSON.parse(await source.getAttribute('data-au-citation'));await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'the document source marker did not verify its accepted quote');assert.equal(await page.locator('.au-source-dialog[open] mark').textContent(),citation.quote);
+-      await page.evaluate(()=>{window.__liveSourceFocus=document.activeElement;window.__liveSourceBody=document.querySelector('.au-source-dialog .au-source-body');window.__fixture.loadAccepted(12);});await page.evaluate(()=>window.__controller.refresh());assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[12].state);assert.equal(await page.evaluate(()=>document.querySelector('.au-source-dialog').open&&document.activeElement===window.__liveSourceFocus&&document.querySelector('.au-source-dialog .au-source-body')===window.__liveSourceBody),true,'an actual accepted live update retains the inspected original source and native focus');assert.equal(await page.locator('.au-source-dialog[open] mark').textContent(),citation.quote);await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);
++      await page.locator('.au-forming-documents [data-au-detail="documents"]').click();const row=page.locator('[data-au-panel="documents"] [data-au-document="spouse_notice_copy"]');assert.equal(await row.getAttribute('data-status'),'established');assert.match(await row.locator('.au-document-review').innerText(),/sufficient/i);
++      await row.locator(`[data-au-select-obligation="${obligation.obligation_id}"]`).click();assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),obligation.node_id);const selectedRoute=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);for(const [key,value]of Object.entries({node:obligation.node_id,document:obligation.document_type,obligation:obligation.obligation_id,fact:obligation.required_fact_ids[0]}))assert.equal(selectedRoute.get(key),value);
++      const source=page.locator('.au-forming-reading [data-au-source][data-au-citation]').first();await source.focus();await page.keyboard.press('Enter');const citation=JSON.parse(await source.getAttribute('data-au-citation'));assert.deepEqual(citation,expected.state.facts.find(item=>item.fact_id===obligation.required_fact_ids[0]).citations[0]);assert.equal(citation.artifact_id,'src_64ece0e388979b98a49f84fe98b993b2');assert.equal(citation.sha256,'5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'the document source marker did not verify its accepted quote');assert.equal(await page.locator('.au-source-dialog[open] mark').textContent(),citation.quote);
++      await page.evaluate(()=>{window.__liveSourceFocus=document.activeElement;window.__liveSourceBody=document.querySelector('.au-source-dialog .au-source-body');window.__fixture.loadAccepted(12);});await page.evaluate(()=>window.__controller.refresh());assertAcceptedPaint(await acceptedPaint(page),fixture.prefixes[12]);assert.equal(await page.evaluate(()=>document.querySelector('.au-source-dialog').open&&document.activeElement===window.__liveSourceFocus&&document.querySelector('.au-source-dialog .au-source-body')===window.__liveSourceBody),true,'an actual accepted live update retains the inspected original source and native focus');assert.equal(await page.locator('.au-source-dialog[open] mark').textContent(),citation.quote);await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);
++      assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[12].state,projection:fixture.prefixes[12].projection});
+       const current=fixture.prefixes[12].state,after=await formingSnapshot(page,current),wires=await page.locator('[data-au-forming-wire]').evaluateAll(rows=>rows.filter(row=>getComputedStyle(row).display!=='none'&&row.getBoundingClientRect().width>0).map(row=>({kind:row.dataset.auFormingWire,fact:row.dataset.auWireFact,source:row.dataset.auWireSource,node:row.dataset.auWireNode,obligation:row.dataset.auWireObligation,path:row.getAttribute('d')})));
+-      if(width>1000){assert.deepEqual(sorted(wires.map(row=>row.kind)),['process-document','source-process']);for(const wire of wires){assert.equal(wire.fact,obligation.required_fact_ids[0]);assert.equal(wire.source,citation.artifact_id);assert.equal(wire.node,obligation.node_id);assert.equal(wire.obligation,obligation.obligation_id);assert.ok(wire.path);}
+-        const connector=await page.locator('[data-au-forming-wire="process-document"]').evaluate(path=>{const scene=path.closest('.au-forming-layout'),node=[...scene.querySelectorAll('[data-au-node]')].find(row=>row.dataset.auNode===path.dataset.auWireNode),row=[...scene.querySelectorAll('.au-forming-documents [data-au-obligation]')].find(row=>row.dataset.auObligation===path.dataset.auWireObligation),matrix=path.getScreenCTM(),screen=point=>new DOMPoint(point.x,point.y).matrixTransform(matrix),rect=element=>element.getBoundingClientRect().toJSON(),length=path.getTotalLength(),coordinates=path.getAttribute('d').match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi).map(Number),points=[];for(let index=0;index<coordinates.length;index+=2){const point=screen({x:coordinates[index],y:coordinates[index+1]});points.push({x:point.x,y:point.y});}return {start:screen(path.getPointAtLength(0)).toJSON(),end:screen(path.getPointAtLength(length)).toJSON(),points,junction:rect(node.querySelector('[data-au-junction]')),rank:rect(node.closest('.au-graph-rank')),graph:rect(node.closest('[data-au-graph-pan]')),document:rect(row),titles:[...scene.querySelectorAll('.au-forming-process .au-node-title')].map(rect),samples:Array.from({length:501},(_,index)=>screen(path.getPointAtLength(length*index/500)).toJSON())};});
+-        assert.ok(Math.abs(connector.start.x-(connector.junction.left+connector.junction.width/2))<1&&Math.abs(connector.start.y-connector.junction.bottom)<1,'the requirement connector starts at the actual selected junction');
+-        assert.ok(Math.abs(connector.end.x-connector.document.left)<1&&Math.abs(connector.end.y-(connector.document.top+connector.document.height/2))<1,'the same connector terminates at the exact requiring document row');
+-        assert.ok(connector.points[1].y>=connector.rank.bottom+3&&Math.abs(connector.points[1].x-connector.start.x)<1,'the selected junction lane reaches below the entire parallel rank before turning');
+-        assert.ok(Math.abs(connector.points[2].y-connector.points[1].y)<1&&connector.points[2].x>connector.graph.right&&connector.points[2].x<connector.document.left,'the connector crosses beneath the full rank into the outside gutter');
+-        assert.equal(connector.samples.some(point=>connector.titles.some(title=>point.x>title.left+.5&&point.x<title.right-.5&&point.y>title.top+.5&&point.y<title.bottom-.5)),false,'the actual connector never crosses a branch label');
+-        after.connector=connector;
+-      }else assert.equal(await page.locator('[data-au-forming-wire]:visible').count(),0,'mobile does not paint connections through stacked reading content');
++      assert.equal(await page.locator('[data-au-forming-wire="process-document"]').count(),0,'an upstream-blocked requirement cannot gain an active document connector');
++      if(width<=1000)assert.equal(await page.locator('[data-au-forming-wire]:visible').count(),0,'mobile does not paint connections through stacked reading content');
+       await focusedReceipt(page,`forming-live-after-${width}x${height}`,{identity:id,through:12,...after,wires,source: citation.artifact_id,sourceHash:citation.sha256});
+     }
+     if(through===24){const use=expected.state.knowledge_uses[0],body=page.locator(`.au-forming-knowledge [data-au-knowledge-use="${use.knowledge_sha256||use.knowledge_id||use.version_id}"]`);assert.equal(await body.count(),1);assert.ok((await body.innerText()).includes(`Version ${use.version}`));}
+@@ -2582,7 +2615,7 @@ for(const [width,height]of [[1440,1000],[1440,900],[1280,800],[390,844]])test(`f
+     // avoids rewinding accepted authority or carrying the source inspection hold
+     // above into a scene intended to follow a newly accepted publication.
+     const live=await fixturePage(t,{priorAssessment:'reassessed',acceptedPrefix:12,width,height});await open(live,originals[0].claim_id);await title(live,originals[0].claim_id);await open(live,id);await title(live,id);
+-    const normal=await formingSnapshot(live,fixture.prefixes[12].state);assert.deepEqual(await visibleRecord(live),{state:fixture.prefixes[12].state,projection:fixture.prefixes[12].projection});assert.equal(await live.locator('[data-au-publication-focus]').count(),0,'the global index cannot supply a future qualification to the normal accepted scene');
++    const normal=await formingSnapshot(live,fixture.prefixes[12].state);assertAcceptedPaint(await acceptedPaint(live),fixture.prefixes[12]);assert.equal(await live.locator('[data-au-publication-focus]').count(),0,'the global index cannot supply a future qualification to the normal accepted scene');
+     assert.ok(normal.geometry.nodes.every(node=>node.rect.bottom<height)&&normal.geometry.graph.scrollHeight<=normal.geometry.graph.clientHeight+1,'all eleven native nodes fit before publication');
+     await live.evaluate(()=>{window.__beforePublicationObjects=[...document.querySelectorAll('.au-forming-process [data-au-node], .au-forming-process [data-au-edge], .au-forming-documents .au-obligation')];window.__fixture.loadAccepted(14);});await live.evaluate(()=>window.__controller.refresh());
+     const expected=fixture.prefixes[14],publication=expected.state.knowledge_published[0],event=expected.events.at(-1),focus=live.locator(`.au-forming-process [data-au-publication-focus="${event.event_sha256}"] [data-au-knowledge-publication="${publication.knowledge_sha256}"]`);assert.equal(await focus.count(),1,'the actual newly accepted qualification receives central focus without opening History');
+@@ -2591,14 +2624,15 @@ for(const [width,height]of [[1440,1000],[1440,900],[1280,800],[390,844]])test(`f
+     assert.deepEqual(await focus.locator('[data-au-knowledge-use]').evaluateAll(rows=>rows.map(row=>row.dataset.auKnowledgeUse)),expected.state.knowledge_uses.map(use=>use.knowledge_sha256||use.knowledge_id||use.version_id),'only an actual accepted use is available alongside this publication');
+     const procedure=focus.locator(`[data-au-knowledge="${publication.knowledge_id}"][data-au-version="${publication.version}"]`);assert.equal(await procedure.getAttribute('data-au-knowledge-sha'),publication.knowledge_sha256);assert.equal(await procedure.getAttribute('data-au-definition-sha'),publication.qualification.definition_sha256);assert.equal(await procedure.isEnabled(),true);assert.equal(await procedure.evaluate(element=>element.tabIndex),0);
+     for(const recipe of publication.evidence_recipes)for(const field of recipe.required_fields)assert.ok((await focus.innerText()).toLowerCase().includes(field.replaceAll('_',' ')),`the accepted added field ${field} remains readable`);
+-    assert.deepEqual(await visibleRecord(live),{state:expected.state,projection:expected.projection});assert.deepEqual(expected.state.source_descriptors,fixture.prefixes[12].state.source_descriptors);assert.deepEqual(expected.state.acquired_sources,fixture.prefixes[12].state.acquired_sources,'the compact publication does not rewrite admitted source bytes or hashes');
++    assertAcceptedPaint(await acceptedPaint(live),expected);assert.deepEqual(expected.state.source_descriptors,fixture.prefixes[12].state.source_descriptors);assert.deepEqual(expected.state.acquired_sources,fixture.prefixes[12].state.acquired_sources,'the compact publication does not rewrite admitted source bytes or hashes');
+     const route=new URL(live.url()).hash;await procedure.click();await eventually(()=>live.locator(`[data-au-knowledge-identity="${publication.knowledge_id}:${publication.version}"]`).count().then(count=>count===1),'the compact publication did not open its exact accepted procedure');const pinned=live.locator('.au-procedure-versions [aria-pressed="true"]');assert.equal(await pinned.getAttribute('data-au-knowledge-sha'),publication.knowledge_sha256);assert.equal(await pinned.getAttribute('data-au-definition-sha'),publication.qualification.definition_sha256);const pinRoute=new URLSearchParams(new URL(live.url()).hash.split('?')[1]);for(const [key,value]of Object.entries({knowledge:publication.knowledge_id,version:String(publication.version),sha256:publication.knowledge_sha256,definition:publication.qualification.definition_sha256}))assert.equal(pinRoute.get(key),value);await live.goBack();await title(live,id);assert.equal(new URL(live.url()).hash,route);assert.deepEqual((await visibleRecord(live)).state,expected.state);
+   }
+ });
+ 
+ test('forming work: a live terminal qualification appears centrally and new source arrival clears attention without rewriting its record',async t=>{
+-  const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed',acceptedPrefix:13,width:1440,height:900});await open(page,originals[0].claim_id);await title(page,originals[0].claim_id);await open(page,id);await title(page,id);assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[13].state);
+-  for(const through of [14,15]){await page.evaluate(seq=>window.__fixture.loadAccepted(seq),through);await page.evaluate(()=>window.__controller.refresh());const expected=fixture.prefixes[through],publication=expected.state.knowledge_published[0],event=fixture.prefixes[14].events.at(-1);assert.deepEqual(await visibleRecord(page),{state:expected.state,projection:expected.projection});await formingSnapshot(page,expected.state);const focus=page.locator(`.au-forming-process .au-forming-publication-focus[data-au-publication-focus="${event.event_sha256}"] [data-au-knowledge-publication="${publication.knowledge_sha256}"]`);if(through===14){assert.equal(await focus.count(),1,'the exact accepted qualification is central despite a terminal lifecycle code');assert.equal(expected.state.status,'deferred');}else{assert.equal(expected.events.at(-1).kind,'sources.arrived');assert.equal(await focus.count(),0,'a new source cannot present the prior qualification as a new current addition');assert.deepEqual(expected.state.knowledge_published,fixture.prefixes[14].state.knowledge_published);}assert.equal(await page.locator('[data-au-forming]').getAttribute('data-au-forming-sha'),expected.state.state_sha256);}
++  const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed',acceptedPrefix:13,width:1440,height:900});await open(page,originals[0].claim_id);await title(page,originals[0].claim_id);await open(page,id);await title(page,id);assertAcceptedPaint(await acceptedPaint(page),fixture.prefixes[13]);
++  for(const through of [14,15]){await page.evaluate(seq=>window.__fixture.loadAccepted(seq),through);await page.evaluate(()=>window.__controller.refresh());const expected=fixture.prefixes[through],publication=expected.state.knowledge_published[0],event=fixture.prefixes[14].events.at(-1);assertAcceptedPaint(await acceptedPaint(page),expected);await formingSnapshot(page,expected.state);const focus=page.locator(`.au-forming-process .au-forming-publication-focus[data-au-publication-focus="${event.event_sha256}"] [data-au-knowledge-publication="${publication.knowledge_sha256}"]`);if(through===14){assert.equal(await focus.count(),1,'the exact accepted qualification is central despite a terminal lifecycle code');assert.equal(expected.state.status,'deferred');}else{assert.equal(expected.events.at(-1).kind,'sources.arrived');assert.equal(await focus.count(),0,'a new source cannot present the prior qualification as a new current addition');assert.deepEqual(expected.state.knowledge_published,fixture.prefixes[14].state.knowledge_published);}assert.equal(await page.locator('[data-au-forming]').getAttribute('data-au-forming-sha'),expected.state.state_sha256);}
++  assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[15].state,projection:fixture.prefixes[15].projection});
+   await focusedReceipt(page,'forming-live-qualified-1440x900',{identity:id,through:15,...await formingSnapshot(page,fixture.prefixes[15].state)});
+ });
+ 
+@@ -2675,7 +2709,7 @@ for (const action of ['start', 'pause', 'resume']) test(`focused flow: uncertain
+   await eventually(async () => await currentReadState(page) === 'verified' && await page.locator(selector).innerText() === `Retry ${action}` && await page.locator(selector).isEnabled(), 'the matched fresh snapshot must label and enable the current exact retry');
+   assert.deepEqual(await page.evaluate(selector => ({replaced: document.querySelector(selector) !== window.__clickedCommand, oldConnected: window.__clickedCommand.isConnected}), selector), {replaced: true, oldConnected: false});
+   const accepted = await page.evaluate(id => window.__fixture.envelopes[id].state, id);
+-  assert.deepEqual(JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state, accepted, 'the full matched accepted state remains inspectable');
++  assert.deepEqual((await visibleRecord(page)).state, accepted, 'the full matched accepted state remains inspectable');
+   assert.equal((await posts()).length, 1);
+   await page.locator(selector).click();
+   const normalSelector = action === 'pause' ? '[data-au-resume]' : '[data-au-pause]', normalLabel = action === 'pause' ? 'Resume work' : 'Pause work';
+@@ -2731,7 +2765,7 @@ test('direct replay warmth: cold accepted entry primes real Cases and Knowledge
+   await page.evaluate(()=>{window.__fixture.holdCollections=false;for(const held of window.__fixture.held.filter(row=>row.id==='collection'))held.release();window.__fixture.held=window.__fixture.held.filter(row=>row.id!=='collection');});
+   await eventually(()=>page.evaluate(()=>window.__fixture.activeSnapshotReads===2&&window.__fixture.held.some(row=>row.kind==='knowledge')),'verified collection did not prime bounded snapshot and Knowledge reads');
+   await page.evaluate(async()=>{window.__fixture.holdKnowledge=false;for(const held of window.__fixture.held.filter(row=>row.kind==='knowledge'))held.release();window.__fixture.held=window.__fixture.held.filter(row=>row.kind!=='knowledge');for(let turn=0;turn<100;turn++)await Promise.resolve();});
+-  assert.deepEqual(await visibleRecord(page),record);assert.equal(new URL(page.url()).hash,inspectedRoute);assert.equal(await page.locator('.au-source-dialog').innerText(),inspected);assert.equal(await page.evaluate(()=>document.activeElement?.outerHTML),active);
++  assertAcceptedPaint(await acceptedPaint(page),prefix);assert.equal(new URL(page.url()).hash,inspectedRoute);assert.equal(await page.locator('.au-source-dialog').innerText(),inspected);assert.equal(await page.evaluate(()=>document.activeElement?.outerHTML),active);
+   assert.equal(await page.locator('[data-au-knowledge-identity],[data-au-skeleton="knowledge"]').count(),0,'global warm Knowledge cannot appear over the current prefix');assert.equal(await page.locator('.au-global-status').innerText(),'');
+   await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);
+   await page.evaluate(()=>{window.__fixture.holdSnapshots=false;for(const held of window.__fixture.held.filter(row=>row.kind==='snapshot'))held.release();window.__fixture.held=window.__fixture.held.filter(row=>row.kind!=='snapshot');});
+@@ -2884,12 +2918,12 @@ test('focused flow: cached claim revisits paint the verified record synchronousl
+     void window.__controller.openClaim(id);
+     const host = document.querySelector('[data-au-view]');
+     return {title: host.querySelector('[data-au-claim-title]')?.textContent, state: host.dataset.auReadState,
+-      record: document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]')?.textContent,
++      revision:Number(host.querySelector('[data-au-revision]')?.dataset.auRevision),state_sha256:host.querySelector('[data-au-revision]')?.dataset.auStateSha,
+       enabledWrites: [...host.querySelectorAll('[data-au-arrival] input, [data-au-arrival] button, [data-au-pause], [data-au-resume], [data-au-start]')].filter(element => !element.disabled).length};
+   }, processedId);
+   assert.equal(immediate.title, verifiedTitle, 'the cached accepted record must paint in the same navigation turn');
+   assert.equal(immediate.state, 'refreshing');
+-  assert.deepEqual(JSON.parse(immediate.record).state, verified.state);
++  assert.equal(immediate.revision,verified.state.revision);assert.equal(immediate.state_sha256,verified.state.state_sha256);assert.deepEqual((await visibleRecord(page)).state,verified.state,'deliberate History inspection exposes the exact cached accepted DTO');
+   assert.equal(immediate.enabledWrites, 0, 'a cached revision cannot authorize a mutation while its read is pending');
+   await eventually(() => page.evaluate(() => window.__fixture.held.length > 0), 'the fresh revalidation was not requested');
+   await page.evaluate(() => { window.__fixture.holdId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
+@@ -3093,7 +3127,7 @@ for(const inspection of ['source','document','node','knowledge'])test(`forming w
+   if(inspection==='knowledge'){await page.goBack();await title(page,id);assert.equal(new URL(page.url()).hash,before);}
+   const route=new URL(page.url()).hash;await formingSnapshot(page,fixture.prefixes[through].state);assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[through].state);await page.clock.runFor(5000);assert.equal(new URL(page.url()).hash,route);assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[through].state);
+   if(inspection==='knowledge'){assert.equal(await page.locator('[data-au-demo-stop]').count(),0,'returning from global Knowledge cannot restart cancelled playback');await page.locator('.au-nav [data-au-nav="work"]').click();return;}
+-  await playIfPaused(page);let record=await visibleRecord(page);for(let tick=0;record.state.revision===through&&tick<300;tick++){await page.clock.runFor(20);record=await visibleRecord(page);}assert.deepEqual(record,{state:fixture.prefixes[through+1].state,projection:fixture.prefixes[through+1].projection},'deliberate Resume consumes exactly the next accepted prefix');await page.locator('.au-nav [data-au-nav="work"]').click();
++  await playIfPaused(page);let paint=await acceptedPaint(page);for(let tick=0;paint.revision===through&&tick<300;tick++){await page.clock.runFor(20);paint=await acceptedPaint(page);}assertAcceptedPaint(paint,fixture.prefixes[through+1]);assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[through+1].state,projection:fixture.prefixes[through+1].projection},'deliberate Resume consumes exactly the next accepted prefix');await page.locator('.au-nav [data-au-nav="work"]').click();
+ });
+ 
+ for(const reduced of [false,true])test(`forming work: actual graph creation precedes the document group with reduced motion ${reduced}`,async t=>{
+@@ -3111,7 +3145,7 @@ test('quiet language: History pauses the real replay immediately and exposes exa
+   const route=new URL(page.url()).hash,restored=new URLSearchParams(route.split('?')[1]);for(const [key,value]of prior)assert.equal(restored.get(key),value,`History retains the explicit replay ${key} identity`);
+   await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const held of window.__fixture.held.splice(0))held.release();});const reads=(await calls(page,`/claims/${id}/replay`)).length;await page.clock.runFor(7000);
+   assert.equal(new URL(page.url()).hash,route);assert.equal((await calls(page,`/claims/${id}/replay`)).length,reads);assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[11].state);
+-  await page.locator('[data-au-demo-resume]').click();let record=await visibleRecord(page);for(let tick=0;record.state.revision===11&&tick<300;tick++){await page.clock.runFor(20);record=await visibleRecord(page);}assert.deepEqual(record.state,fixture.prefixes[12].state);assert.deepEqual(record.projection,fixture.prefixes[12].projection);await page.locator('.au-nav [data-au-nav="work"]').click();
++  await page.locator('[data-au-demo-resume]').click();let paint=await acceptedPaint(page);for(let tick=0;paint.revision===11&&tick<300;tick++){await page.clock.runFor(20);paint=await acceptedPaint(page);}assertAcceptedPaint(paint,fixture.prefixes[12]);assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[12].state,projection:fixture.prefixes[12].projection});await page.locator('.au-nav [data-au-nav="work"]').click();
+ });
+ 
+ test('quiet work: Cases and global Knowledge return to the same verified claim and exact local requirement and knowledge version', async t => {
+@@ -3244,14 +3278,13 @@ for (const latency of [0, 120]) test(`focused flow: actual accepted replay prefi
+   const {page, fixture, id} = await actualJournalPresentation(t, {replayLatency: latency});
+   const rendered = [], times = [];
+   for (let through = 1; through <= fixture.snapshots.reassessed.state.revision; through++) {
+-    let record = await visibleRecord(page);
+-    for (let tick = 0; record.state.revision < through && tick < 300; tick++) {
+-      await page.clock.runFor(20); record = await visibleRecord(page);
++    let paint = await acceptedPaint(page);
++    for (let tick = 0; paint.revision < through && tick < 300; tick++) {
++      await page.clock.runFor(20); paint = await acceptedPaint(page);
+     }
+-    assert.equal(record.state.revision, through, 'replay may not skip an accepted journal prefix');
+-    assert.deepEqual(record.state, fixture.prefixes[through].state, `prefix ${through} keeps every accepted field and hash`);
+-    assert.deepEqual(record.projection, fixture.prefixes[through].projection);
+-    if(through<fixture.snapshots.reassessed.state.revision)await formingSnapshot(page,record.state);
++    assert.equal(paint.revision, through, 'replay may not skip an accepted journal prefix');
++    assertAcceptedPaint(paint,fixture.prefixes[through],`prefix ${through} keeps its accepted identity and visible objects`);
++    if(through<fixture.snapshots.reassessed.state.revision)await formingSnapshot(page,fixture.prefixes[through].state);
+     else assert.equal(await page.locator('[data-au-panel]').getAttribute('data-au-panel'),'step','the final recorded outcome retains the main work focus');
+     assert.match(await page.locator('.au-work-head').innerText(), /Recorded investigation/);
+     assert.equal(await page.locator('[data-au-arrival], [data-au-start], [data-au-pause], [data-au-resume]').count(), 0);
+@@ -3273,6 +3306,8 @@ for (const latency of [0, 120]) test(`focused flow: actual accepted replay prefi
+   const replayCalls = await calls(page, `/claims/${id}/replay`);
+   assert.equal(replayCalls.length, 28);
+   assert.doesNotMatch(await page.locator('.au-global-status').innerText(), /out of sequence|stopped|changed identity/i, 'immediate responses cannot schedule the same accepted prefix twice');
++  if(await page.locator('[data-au-demo-stop]').count())await page.locator('[data-au-demo-stop]').click();
++  for(const through of rendered){const prefix=fixture.prefixes[through];await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',through}),{id,through});await title(page,id);assert.deepEqual(await visibleRecord(page),{state:prefix.state,projection:prefix.projection},`deliberate History inspection keeps every accepted field and projection at prefix ${through}`);}
+   await page.locator('.au-nav [data-au-nav="work"]').click();
+   await focusedReceipt(page, `actual-28-prefix-replay-${latency}`, {identity: id, latency, rendered, virtualTimes: times, gaps, replayCalls});
+ });
+@@ -3280,7 +3315,7 @@ for (const latency of [0, 120]) test(`focused flow: actual accepted replay prefi
+ test('focused flow: a corrupted prefetched original identity stops before replacing the accepted replay prefix', async t => {
+   const {page, fixture, id} = await actualJournalPresentation(t, {corruptReplayThrough: 3});
+   await page.clock.runFor(1400);
+-  await eventually(async () => (await visibleRecord(page)).state.revision === 2, 'the second accepted prefix did not render');
++  await eventually(async () => (await acceptedPaint(page)).revision === 2, 'the second accepted prefix did not render');
+   await page.clock.runFor(1400);
+   await eventually(() => page.locator('.au-global-status').innerText().then(text => /stopped|provenance|identity/i.test(text)), 'corrupt prefetched provenance did not stop replay');
+   assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[2].state);
+@@ -3294,21 +3329,17 @@ for (const reduced of [false, true]) test(`replay visibility: an in-flight next
+   const fixture = priorAssessmentFixture(), id = fixture.claim_id;
+   const {page} = await actualJournalPresentation(t, {holdReplayId: id, holdReplayThrough: 9});
+   await page.emulateMedia({reducedMotion: reduced ? 'reduce' : 'no-preference'});
+-  await page.evaluate(() => {
++  await page.evaluate(captureSource => {
+     window.__visibilityPaints = [];
+-    const capture = () => {
+-      const pre = document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]');
+-      if (!pre) return; const record = JSON.parse(pre.textContent);
+-      if (record.state && window.__visibilityPaints.at(-1)?.state.revision !== record.state.revision) window.__visibilityPaints.push(record);
+-    };
++    const read=eval(`(${captureSource})`),capture=()=>{const paint=read();if(paint&&window.__visibilityPaints.at(-1)?.revision!==paint.revision)window.__visibilityPaints.push(paint);};
+     capture(); window.__visibilityObserver = new MutationObserver(capture);
+     window.__visibilityObserver.observe(document.querySelector('#workspace'), {childList: true, subtree: true});
+-  });
++  },acceptedPaintDOM.toString());
+   const rendered = [], times = [];
+   for (let through = 1; through <= 8; through++) {
+-    let record = await visibleRecord(page);
+-    for (let tick = 0; record.state.revision < through && tick < 300; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
+-    assert.deepEqual(record, {state: fixture.prefixes[through].state, projection: fixture.prefixes[through].projection}, `automatic playback consumes exact accepted prefix ${through} before visibility interruption`);
++    let paint = await acceptedPaint(page);
++    for (let tick = 0; paint.revision < through && tick < 300; tick++) { await page.clock.runFor(20); paint = await acceptedPaint(page); }
++    assertAcceptedPaint(paint,fixture.prefixes[through],`automatic playback consumes exact accepted prefix ${through} before visibility interruption`);
+     rendered.push(through); times.push(await page.evaluate(() => performance.now()));
+   }
+   await eventually(() => page.evaluate(() => window.__fixture.held.some(row => row.kind === 'replay' && row.through === 9)), 'prefix nine was not in flight at the accepted prefix eight');
+@@ -3316,7 +3347,7 @@ for (const reduced of [false, true]) test(`replay visibility: an in-flight next
+   const hiddenReads = (await calls(page, `/claims/${id}/replay`)).length;
+   await page.evaluate(() => { window.__fixture.holdReplayId = null; for (const row of window.__fixture.held.splice(0)) row.release(); });
+   await page.clock.runFor(8000);
+-  assert.deepEqual(await visibleRecord(page), {state: fixture.prefixes[8].state, projection: fixture.prefixes[8].projection}, 'a late next-prefix response cannot paint while hidden');
++  assertAcceptedPaint(await acceptedPaint(page),fixture.prefixes[8],'a late next-prefix response cannot paint while hidden');
+   assert.equal((await calls(page, `/claims/${id}/replay`)).length, hiddenReads, 'hidden playback cannot drain a replay queue');
+   assert.equal(await page.evaluate(() => document.getAnimations().filter(row => row.playState === 'running').length), 0, 'hidden playback cancels native visual motion');
+   await page.evaluate(() => {
+@@ -3328,15 +3359,16 @@ for (const reduced of [false, true]) test(`replay visibility: an in-flight next
+   });
+   assert.equal(await page.locator('[data-au-demo-resume]').count(), 0, 'visibility and untrusted focus or keyboard events cannot create an inspection hold');
+   await page.clock.runFor(100);
+-  assert.equal((await visibleRecord(page)).state.revision, 8, 'restoration gives the held prefix a reading interval before its exact next prefix');
+-  let record = await visibleRecord(page);
+-  for (let tick = 0; record.state.revision === 8 && tick < 300; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
+-  assert.deepEqual(record, {state: fixture.prefixes[9].state, projection: fixture.prefixes[9].projection}, 'automatic restoration consumes only accepted prefix nine after prefix eight');
++  assert.equal((await acceptedPaint(page)).revision, 8, 'restoration gives the held prefix a reading interval before its exact next prefix');
++  let paint = await acceptedPaint(page);
++  for (let tick = 0; paint.revision === 8 && tick < 300; tick++) { await page.clock.runFor(20); paint = await acceptedPaint(page); }
++  assertAcceptedPaint(paint,fixture.prefixes[9],'automatic restoration consumes only accepted prefix nine after prefix eight');
+   assert.equal(await page.locator('[data-au-demo-resume]').count(), 0);
+   assert.ok(new URL(page.url()).hash.includes('through=9'));
+   rendered.push(9); times.push(await page.evaluate(() => performance.now()));
+   const paints = await page.evaluate(() => { window.__visibilityObserver.disconnect(); return window.__visibilityPaints; });
+-  assert.deepEqual(paints, rendered.map(through => ({state: fixture.prefixes[through].state, projection: fixture.prefixes[through].projection})), 'every native paint remains in exact accepted journal order');
++  assert.deepEqual(paints.map(row=>row.revision),rendered,'every native paint remains in exact accepted journal order');for(const paint of paints)assertAcceptedPaint(paint,fixture.prefixes[paint.revision]);
++  assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[9].state,projection:fixture.prefixes[9].projection},'deliberate History inspection retains the complete accepted restoration prefix');
+   assert.equal((await calls(page, `/claims/${demoIds[1]}/replay`)).length, 0);
+   assert.doesNotMatch(await page.locator('.au-global-status').innerText(), /out of sequence|changed identity|stopped/i);
+   await focusedReceipt(page, `replay-visibility-at8-next9-${reduced}`, {id, reduced, rendered, virtualTimes: times, calls: await calls(page, `/claims/${id}/replay`)});
+@@ -3357,8 +3389,9 @@ for (const intent of ['keyboard', 'Pause']) test(`replay visibility: trusted ${i
+   await page.clock.runFor(7000);assert.deepEqual(await visibleRecord(page), record);assert.equal(new URL(page.url()).hash, route);
+   assert.equal((await calls(page, `/claims/${id}/replay`)).length, reads);assert.equal(await page.locator('[data-au-demo-resume]').count(), 1);
+   await page.locator('[data-au-demo-resume]').click();
+-  let resumed = await visibleRecord(page);
+-  for (let tick = 0; resumed.state.revision === record.state.revision && tick < 300; tick++) { await page.clock.runFor(20); resumed = await visibleRecord(page); }
++  let paint = await acceptedPaint(page);
++  for (let tick = 0; paint.revision === record.state.revision && tick < 300; tick++) { await page.clock.runFor(20); paint = await acceptedPaint(page); }
++  const resumed=await visibleRecord(page);assertAcceptedPaint(paint,fixture.prefixes[2]);
+   assert.deepEqual(resumed, {state: fixture.prefixes[2].state, projection: fixture.prefixes[2].projection}, 'deliberate Resume consumes only the exact next immutable prefix');
+   await focusedReceipt(page, `replay-visibility-trusted-${intent}`, {id, intent, route, prefix: record.state.revision, resumed: resumed.state.revision, calls: await calls(page, `/claims/${id}/replay`)});
+   await page.locator('.au-nav [data-au-nav="work"]').click();
+@@ -3378,7 +3411,7 @@ for (const interruption of ['source', 'navigation']) test(`focused flow: ${inter
+   await page.evaluate(() => { window.__fixture.holdReplayId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
+   await page.clock.runFor(7000);
+   if (interruption === 'navigation') assert.equal(new URL(page.url()).hash, '#autonomous/knowledge');
+-  else assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[1].state, 'trusted inspection must leave the current accepted prefix stable through hiding');
++  else assertAcceptedPaint(await acceptedPaint(page),fixture.prefixes[1],'trusted inspection must leave the current accepted prefix stable through hiding');
+   const before = (await calls(page, `/claims/${id}/replay`)).length;
+   if (interruption === 'source') {
+     await page.evaluate(() => { window.__fixture.hidden = false; document.dispatchEvent(new Event('visibilitychange')); });
+@@ -3390,8 +3423,9 @@ for (const interruption of ['source', 'navigation']) test(`focused flow: ${inter
+   if (interruption !== 'navigation') {
+     assert.equal(await page.locator('[data-au-demo-resume]').count(), 1);
+     await page.locator('[data-au-demo-resume]').click();
+-    let record = await visibleRecord(page);
+-    for (let tick = 0; record.state.revision === 1 && tick < 300; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
++    let paint = await acceptedPaint(page);
++    for (let tick = 0; paint.revision === 1 && tick < 300; tick++) { await page.clock.runFor(20); paint = await acceptedPaint(page); }
++    const record=await visibleRecord(page);assertAcceptedPaint(paint,fixture.prefixes[2]);
+     assert.deepEqual(record.state, fixture.prefixes[2].state, 'explicit Resume consumes exactly the next accepted prefix of the same journal');
+     assert.deepEqual(record.projection, fixture.prefixes[2].projection);
+     assert.doesNotMatch(await page.locator('.au-global-status').innerText(), /out of sequence|changed identity/i);
+@@ -3416,8 +3450,9 @@ for (const inspection of ['node', 'fact', 'document']) test(`focused flow: manua
+   assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), selected);
+   assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[11].state);
+   await page.locator('[data-au-demo-resume]').click();
+-  let record = await visibleRecord(page);
+-  for (let tick = 0; record.state.revision === 11 && tick < 300; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
++  let paint = await acceptedPaint(page);
++  for (let tick = 0; paint.revision === 11 && tick < 300; tick++) { await page.clock.runFor(20); paint = await acceptedPaint(page); }
++  const record=await visibleRecord(page);assertAcceptedPaint(paint,fixture.prefixes[12]);
+   assert.deepEqual(record.state, fixture.prefixes[12].state, 'Resume verifies and consumes the exact next immutable prefix');
+   assert.deepEqual(record.projection, fixture.prefixes[12].projection);
+   assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),'lt_deadline','Resume follows the actual newly reached requiring step after intake completes');const reached=fixture.prefixes[12].state.obligations.find(row=>row.node_id==='lt_deadline'&&row.document_type==='proof_of_receipt'),resumed=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);assert.equal(resumed.get('obligation'),reached.obligation_id);assert.equal(resumed.get('document'),reached.document_type);assert.equal(await page.locator(`.au-forming-documents [data-au-obligation="${reached.obligation_id}"]`).getAttribute('data-status'),'needed_now');

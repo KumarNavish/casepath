@@ -1,0 +1,18 @@
+from pathlib import Path
+p=Path('/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs')
+s=p.read_text()
+s=s.replace("const normal=await formingSnapshot(live,fixture.prefixes[12].state);assert.deepEqual(await visibleRecord(live),{state:fixture.prefixes[12].state,projection:fixture.prefixes[12].projection});", "const normal=await formingSnapshot(live,fixture.prefixes[12].state);assertAcceptedPaint(await acceptedPaint(live),fixture.prefixes[12]);")
+s=s.replace("    assert.deepEqual(await visibleRecord(live),{state:expected.state,projection:expected.projection});assert.deepEqual(expected.state.source_descriptors", "    assertAcceptedPaint(await acceptedPaint(live),expected);assert.deepEqual(expected.state.source_descriptors")
+# History is an actual inspection; it cannot precede the live attention observation.
+s=s.replace("await title(page,id);assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[13].state);\n  for(const through", "await title(page,id);assertAcceptedPaint(await acceptedPaint(page),fixture.prefixes[13]);\n  for(const through",1)
+s=s.replace("event=fixture.prefixes[14].events.at(-1);assert.deepEqual(await visibleRecord(page),{state:expected.state,projection:expected.projection});await formingSnapshot", "event=fixture.prefixes[14].events.at(-1);assertAcceptedPaint(await acceptedPaint(page),expected);await formingSnapshot",1)
+s=s.replace("  await focusedReceipt(page,'forming-live-qualified-1440x900'", "  assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[15].state,projection:fixture.prefixes[15].projection});\n  await focusedReceipt(page,'forming-live-qualified-1440x900'",1)
+# Cache observer reports actual same-turn surface output, then History inspects DTO.
+s=s.replace("    savedRecord: document.querySelector('[data-au-record-content] > pre[data-au-record-kind=\"claim\"]')?.textContent,", "    state_sha256:document.querySelector('[data-au-revision]')?.dataset.auStateSha,")
+s=s.replace("      record: document.querySelector('[data-au-record-content] > pre[data-au-record-kind=\"claim\"]')?.textContent,", "      revision:Number(host.querySelector('[data-au-revision]')?.dataset.auRevision),state_sha256:host.querySelector('[data-au-revision]')?.dataset.auStateSha,")
+s=s.replace("  assert.deepEqual(JSON.parse(immediate.record).state, verified.state);", "  assert.equal(immediate.revision,verified.state.revision);assert.equal(immediate.state_sha256,verified.state.state_sha256);assert.deepEqual((await visibleRecord(page)).state,verified.state,'deliberate History inspection exposes the exact cached accepted DTO');")
+# Migrated source hold never opens History behind the native source modal.
+s=s.replace("await title(page,id);assert.deepEqual(await visibleRecord(page),{state:prefix.state,projection:prefix.projection});\n const frame", "await title(page,id);const baselineRecord=await visibleRecord(page);assert.deepEqual(baselineRecord,{state:prefix.state,projection:prefix.projection});\n const frame",1)
+s=s.replace("assert.equal(await page.locator('[data-au-demo-resume]').count(),1);const record=await visibleRecord(page),route=new URL(page.url()).hash;", "assert.equal(await page.locator('[data-au-demo-resume]').count(),1);const record=inspection==='source'?baselineRecord:await visibleRecord(page),route=new URL(page.url()).hash;assertAcceptedPaint(await acceptedPaint(page),prefix);",1)
+s=s.replace("await page.clock.runFor(8000);assert.deepEqual(await visibleRecord(page),record);\n await page.evaluate", "await page.clock.runFor(8000);if(inspection==='source')assertAcceptedPaint(await acceptedPaint(page),prefix);else assert.deepEqual(await visibleRecord(page),record);\n await page.evaluate",1)
+p.write_text(s)

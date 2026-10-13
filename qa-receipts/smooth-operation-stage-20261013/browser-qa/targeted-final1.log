@@ -1,0 +1,202 @@
+TAP version 13
+# Subtest: causal formation native: heating requirements enter at their actual steps and final content stays visible at 1440x900
+ok 1 - causal formation native: heating requirements enter at their actual steps and final content stays visible at 1440x900
+  ---
+  duration_ms: 15716.959583
+  type: 'test'
+  ...
+# Subtest: causal formation native: heating requirements enter at their actual steps and final content stays visible at 1280x800
+ok 2 - causal formation native: heating requirements enter at their actual steps and final content stays visible at 1280x800
+  ---
+  duration_ms: 14427.487198
+  type: 'test'
+  ...
+# Subtest: causal formation native: heating requirements enter at their actual steps and final content stays visible at 390x844
+ok 3 - causal formation native: heating requirements enter at their actual steps and final content stays visible at 390x844
+  ---
+  duration_ms: 13935.763904
+  type: 'test'
+  ...
+# Subtest: replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs
+not ok 4 - replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 17279.222754
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the accepted outcome appears in the conclusion
+    + actual - expected
+    
+    + null
+    - 'The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.'
+  actual: ~
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1103:10)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+not ok 5 - replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 20317.420057
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the accepted outcome appears in the conclusion
+    + actual - expected
+    
+    + null
+    - 'The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.'
+  actual: ~
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1103:10)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+not ok 6 - replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 57039.356107
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the accepted outcome appears in the conclusion
+    + actual - expected
+    
+    + null
+    - 'The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.'
+  actual: ~
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1103:10)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+not ok 7 - replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 53619.138888
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the accepted outcome appears in the conclusion
+    + actual - expected
+    
+    + null
+    - 'The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.'
+  actual: ~
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1103:10)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion false
+ok 8 - replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion false
+  ---
+  duration_ms: 8987.848183
+  type: 'test'
+  ...
+# Subtest: replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion true
+ok 9 - replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion true
+  ---
+  duration_ms: 10299.027653
+  type: 'test'
+  ...
+# Subtest: replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume
+not ok 10 - replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 13694.642808
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3385:45'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.click: Timeout 5000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-au-panel="activity"] [data-au-inspect="claim"]')[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    caseDetails (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:822:78)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3393:50)
+  ...
+# Subtest: replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume
+not ok 11 - replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 12733.475605
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3385:45'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.click: Timeout 5000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-au-panel="activity"] [data-au-inspect="claim"]')[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    caseDetails (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:822:78)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3393:50)
+  ...
+# Subtest: focused flow: source cancels replay with a prefetched accepted response in flight
+ok 12 - focused flow: source cancels replay with a prefetched accepted response in flight
+  ---
+  duration_ms: 7943.435738
+  type: 'test'
+  ...
+# Subtest: focused flow: navigation cancels replay with a prefetched accepted response in flight
+ok 13 - focused flow: navigation cancels replay with a prefetched accepted response in flight
+  ---
+  duration_ms: 7349.11516
+  type: 'test'
+  ...
+# Subtest: focused flow: manual node inspection pauses the same accepted journal until deliberate Resume
+ok 14 - focused flow: manual node inspection pauses the same accepted journal until deliberate Resume
+  ---
+  duration_ms: 7968.937455
+  type: 'test'
+  ...
+# Subtest: focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume
+ok 15 - focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume
+  ---
+  duration_ms: 8228.883822
+  type: 'test'
+  ...
+# Subtest: focused flow: manual document inspection pauses the same accepted journal until deliberate Resume
+ok 16 - focused flow: manual document inspection pauses the same accepted journal until deliberate Resume
+  ---
+  duration_ms: 8251.266484
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 10
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 278388.532104

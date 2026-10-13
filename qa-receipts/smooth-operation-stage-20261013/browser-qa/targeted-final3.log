@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs
+ok 1 - replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 66581.631619
+  type: 'test'
+  ...
+# Subtest: replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+ok 2 - replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 18436.638498
+  type: 'test'
+  ...
+# Subtest: replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+ok 3 - replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 110794.938207
+  type: 'test'
+  ...
+# Subtest: replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+ok 4 - replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 53168.967869
+  type: 'test'
+  ...
+# Subtest: focused flow: actual accepted replay prefixes stay immutable with 120ms GET latency and bounded prefetch
+ok 5 - focused flow: actual accepted replay prefixes stay immutable with 120ms GET latency and bounded prefetch
+  ---
+  duration_ms: 25288.139994
+  type: 'test'
+  ...
+# Subtest: replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume
+ok 6 - replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 8138.79311
+  type: 'test'
+  ...
+# Subtest: replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume
+ok 7 - replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 8626.32391
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 291654.12752

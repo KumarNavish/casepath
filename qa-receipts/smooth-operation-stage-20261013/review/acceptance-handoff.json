@@ -56,6 +56,27 @@
       "exit_code": 0,
       "opening_operations": 6,
       "checks": "Untrusted focus/input cannot pause; actual Pause/Home/ArrowRight/End remain exact, future unverified positions clamp, actual operation History equals original DTO with native focus return, genuine Skip reaches exact head, reduced-motion mobile has zero running animation and correct six nodes/three source checks."
+    },
+    "browser_qa_final_review": {
+      "commit": "50bea2aebae4e3c60d2d803d92e030dff634e5a2",
+      "test_sha256": "92ca22cdf7c366c082fb964dd2f056a141468dd2fb51d059942bd56e9a00c472",
+      "blocking_findings": [],
+      "worker_targeted_final3": {
+        "status": "passed",
+        "exit_code": 0,
+        "raw_log": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/targeted-final3.log",
+        "command_script": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/run-focused.sh",
+        "selection": "consumes every accepted current reference prefix|actual accepted replay prefixes stay immutable with 120ms|replay visibility: trusted (keyboard|Pause)",
+        "tests": 7,
+        "passed": 7,
+        "failed": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 291654.12752,
+        "scope": "Four fresh/migrated owner/public all-nine accepted-prefix/handoff cases,120ms actual28-prefix replay, trusted keyboard/Pause hide/show exact Resume; no full suite",
+        "verification": "Independent reviewer read terminal raw TAP, verified clean QA checkout commit and exact file SHA. Tests executed by assigned QA worker; reviewer did not duplicate them."
+      }
     }
   },
   "commands": {
@@ -80,7 +101,7 @@
     "all-nine-knowledge-attempt2.log/.json and termination-control-diagnostic.log/.json (0.25px fractional boundary; actual center hit/focus worked)"
   ],
   "limits": [
-    "QA-only writer final commit/diff review remains separate; final gate remains Mac-owned after frozen source.",
+    "QA-only final commit50bea2aebae4e3c60d2d803d92e030dff634e5a2 reviewed; terminal targeted final3 all7 passed. Full frozen-source gate remains Mac-owned and was not run here.",
     "Performance evidence attributes JavaScript with pinned clean-base CSS, while these UI checks bind final combined CSS.",
     "Cold6x long-task count rose45->48 while total/max improved; no universal FPS or Mac compositor claim."
   ],

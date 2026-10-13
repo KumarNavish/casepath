@@ -1,0 +1,173 @@
+TAP version 13
+# Subtest: replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs
+not ok 1 - replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 68758.562061
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.textContent: Error: strict mode violation: locator('.au-stage-outcome > p') resolved to 2 elements:
+        1) <p>The sources support defect removal and proportion…</p> aka getByText('The sources support defect')
+        2) <p class="au-legal-basis" data-au-legal-basis="">…</p> aka getByText('Legal basis · CO 259 · CO')
+    
+    Call log:
+    [2m  - waiting for locator('.au-stage-outcome > p')[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1112:387)
+  ...
+# Subtest: replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+not ok 2 - replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 17560.371364
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.textContent: Error: strict mode violation: locator('.au-stage-outcome > p') resolved to 2 elements:
+        1) <p>The sources support defect removal and proportion…</p> aka getByText('The sources support defect')
+        2) <p class="au-legal-basis" data-au-legal-basis="">…</p> aka getByText('Legal basis · CO 259 · CO')
+    
+    Call log:
+    [2m  - waiting for locator('.au-stage-outcome > p')[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1112:387)
+  ...
+# Subtest: replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+not ok 3 - replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 107422.055968
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.textContent: Error: strict mode violation: locator('.au-stage-outcome > p') resolved to 3 elements:
+        1) <p>The sources support defect removal and proportion…</p> aka getByText('The sources support defect')
+        2) <p class="au-legal-basis" data-au-legal-basis="">…</p> aka getByText('Legal basis · CO 259 · CO')
+        3) <p class="au-stage-reuse">…</p> aka getByText('Procedure reused · Defects')
+    
+    Call log:
+    [2m  - waiting for locator('.au-stage-outcome > p')[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1112:387)
+  ...
+# Subtest: replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+not ok 4 - replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 52200.495623
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1043:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.textContent: Error: strict mode violation: locator('.au-stage-outcome > p') resolved to 3 elements:
+        1) <p>The sources support defect removal and proportion…</p> aka getByText('The sources support defect')
+        2) <p class="au-legal-basis" data-au-legal-basis="">…</p> aka getByText('Legal basis · CO 259 · CO')
+        3) <p class="au-stage-reuse">…</p> aka getByText('Procedure reused · Defects')
+    
+    Call log:
+    [2m  - waiting for locator('.au-stage-outcome > p')[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1112:387)
+  ...
+# Subtest: focused flow: actual accepted replay prefixes stay immutable with 120ms GET latency and bounded prefetch
+not ok 5 - focused flow: actual accepted replay prefixes stay immutable with 120ms GET latency and bounded prefetch
+  ---
+  duration_ms: 161795.768066
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3290:33'
+  failureType: 'testCodeFailure'
+  error: 'page.evaluate: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3323:84)
+  ...
+# Subtest: replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume
+not ok 6 - replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 36.442127
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3391:45'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserContext.newPage: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/bq-tmp/playwright_chromiumdev_profile-EbYogh --remote-debugging-pipe --no-startup-window
+    <launched> pid=700420
+    [pid=700420][err] [700420:700449:1013/214504.780876:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+    [pid=700420][err] [700420:700449:1013/214504.787225:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=700420][err] [700420:700449:1013/214504.787344:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+    [pid=700420][err] [700420:700449:1013/214504.787941:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+    [pid=700420][err] [700420:700449:1013/214504.787965:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=700420][err] [700420:700461:1013/214504.792705:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700464: Read-only file system (30)
+    [pid=700420][err] [700420:700449:1013/214504.835144:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=700420][err] [700420:700461:1013/214504.837000:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700480: Read-only file system (30)
+    [pid=700420][err] [700420:700420:1013/214504.851533:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=700420][err] [700420:700420:1013/214504.851602:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=700420][err] [700420:700449:1013/214504.851612:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=700420][err] [700420:700449:1013/214504.851640:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=700420][err] [700420:700420:1013/214504.857308:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=700420][err] [700420:700420:1013/214504.859412:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=700420][err] [700420:700420:1013/214504.859618:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=700420][err] [700420:700449:1013/214504.860181:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+    [pid=700420][err] [700420:700449:1013/214504.860212:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+    [pid=700420][err] [700420:700449:1013/214504.860923:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=700420][err] [700420:700420:1013/214504.862636:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.Properties.GetAll: object_path= /org/freedesktop/UPower/devices/DisplayDevice: unknown error type: 
+    [pid=700420][err] [700420:700420:1013/214504.862771:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=700420][err] [700420:700449:1013/214504.862833:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=700420][err] [700420:700420:1013/214504.868835:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=700420][err] [700420:700449:1013/214504.869229:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+    [pid=700420][err] [700420:700420:1013/214504.871186:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+    [pid=700420][err] [700420:700461:1013/214505.326167:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700509: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214505.350943:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700518: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214505.353461:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700519: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214613.467281:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700850: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214613.482190:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700859: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214613.484763:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700860: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214631.810837:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700909: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214631.866691:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700918: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214631.869212:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 700919: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214818.451525:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 701159: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214818.468901:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 701168: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214818.470788:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 701169: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214910.817021:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 701264: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214910.845307:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 701273: Read-only file system (30)
+    [pid=700420][err] [700420:700461:1013/214910.847485:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 701274: Read-only file system (30)
+    [pid=700420] <gracefully close start>
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:525:30)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3107:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3393:18)
+  ...
+# Subtest: replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume
+not ok 7 - replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 3.453326
+  type: 'test'
+  location: '/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3391:45'
+  failureType: 'testCodeFailure'
+  error: 'browser.newContext: Target page, context or browser has been closed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+    async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3107:52)
+    async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3393:18)
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 0
+# fail 7
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 408429.855362

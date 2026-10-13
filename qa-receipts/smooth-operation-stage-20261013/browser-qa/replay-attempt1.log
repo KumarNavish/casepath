@@ -1,0 +1,340 @@
+✖ causal formation native: heating requirements enter at their actual steps and final content stays visible at 1440x900 (17979.14175ms)
+✖ causal formation native: heating requirements enter at their actual steps and final content stays visible at 1280x800 (14884.543742ms)
+✖ causal formation native: heating requirements enter at their actual steps and final content stays visible at 390x844 (14065.283075ms)
+✖ replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs (17671.128458ms)
+✖ replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions (18522.690111ms)
+✖ replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs (52971.563863ms)
+✖ replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions (57980.38266ms)
+✖ replay visibility: initial hidden preserves the first accepted reference prefix before exact continuation (13808.02041ms)
+✖ replay visibility: trusted initial Tab preserves the first accepted reference prefix before exact continuation (13444.196763ms)
+✖ replay visibility: hidden reentry preserves the first accepted reference prefix before exact continuation (12614.276434ms)
+✖ reference migration native: trusted Pause holds the accepted baseline through hide show until exact next-prefix Resume (49981.488871ms)
+✖ reference migration native: trusted History holds the accepted baseline through hide show until exact next-prefix Resume (25838.881677ms)
+✖ reference migration native: trusted source holds the accepted baseline through hide show until exact next-prefix Resume (1.326057ms)
+✖ quiet language: History pauses the real replay immediately and exposes exact Playback details before Resume consumes only its next prefix (119.546065ms)
+✖ focused flow: actual accepted replay prefixes stay immutable with 0ms GET latency and bounded prefetch (1.795259ms)
+✖ focused flow: actual accepted replay prefixes stay immutable with 120ms GET latency and bounded prefetch (1.114475ms)
+✖ replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion false (1.572049ms)
+✖ replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion true (1.256574ms)
+✖ replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume (1.124249ms)
+✖ replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume (0.662037ms)
+✖ focused flow: source cancels replay with a prefetched accepted response in flight (1.121435ms)
+✖ focused flow: navigation cancels replay with a prefetched accepted response in flight (1.035377ms)
+✖ focused flow: manual node inspection pauses the same accepted journal until deliberate Resume (1.171168ms)
+✖ focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume (0.924454ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 0
+ℹ fail 24
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 310525.161406
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:911:87
+✖ causal formation native: heating requirements enter at their actual steps and final content stays visible at 1440x900 (17979.14175ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:941:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:911:87
+✖ causal formation native: heating requirements enter at their actual steps and final content stays visible at 1280x800 (14884.543742ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'process-document',
+  -   'source-process'
+    ]
+  
+      at TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:936:396)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'process-document' ],
+    expected: [ 'process-document', 'source-process' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:911:87
+✖ causal formation native: heating requirements enter at their actual steps and final content stays visible at 390x844 (14065.283075ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:941:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1039:77
+✖ replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs (17671.128458ms)
+  AssertionError [ERR_ASSERTION]: fresh Demonstration must begin at reference intake prefix zero
+      at eventually (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:520:10)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1042:2)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1039:77
+✖ replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions (18522.690111ms)
+  AssertionError [ERR_ASSERTION]: fresh Demonstration must begin at reference intake prefix zero
+      at eventually (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:520:10)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1042:2)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1039:77
+✖ replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs (52971.563863ms)
+  AssertionError [ERR_ASSERTION]: fresh Demonstration must begin at reference intake prefix zero
+      at eventually (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:520:10)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1042:2)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1039:77
+✖ replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions (57980.38266ms)
+  AssertionError [ERR_ASSERTION]: fresh Demonstration must begin at reference intake prefix zero
+      at eventually (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:520:10)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1042:2)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1118:85
+✖ replay visibility: initial hidden preserves the first accepted reference prefix before exact continuation (13808.02041ms)
+  AssertionError [ERR_ASSERTION]: hidden opening cannot qualify the head or drain prefixes
+  + actual - expected
+  
+    [
+      0,
+  +   25,
+  +   25,
+  +   25
+    ]
+  
+      at TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1131:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 0, 25, 25, 25 ],
+    expected: [ 0 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1118:85
+✖ replay visibility: trusted initial Tab preserves the first accepted reference prefix before exact continuation (13444.196763ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '0' !== '1'
+  
+      at TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1144:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '0',
+    expected: '1',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1118:85
+✖ replay visibility: hidden reentry preserves the first accepted reference prefix before exact continuation (12614.276434ms)
+  AssertionError [ERR_ASSERTION]: hidden opening cannot qualify the head or drain prefixes
+  + actual - expected
+  
+    [
+      0,
+  +   25,
+  +   25,
+  +   25
+    ]
+  
+      at TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1131:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 0, 25, 25, 25 ],
+    expected: [ 0 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1257:54
+✖ reference migration native: trusted Pause holds the accepted baseline through hide show until exact next-prefix Resume (49981.488871ms)
+  locator.click: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('[data-au-panel="activity"] [data-au-inspect="claim"]')[22m
+  
+      at caseDetails (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:822:78)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1269:435) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('[data-au-panel="activity"] [data-au-inspect="claim"]')` ]
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1257:54
+✖ reference migration native: trusted History holds the accepted baseline through hide show until exact next-prefix Resume (25838.881677ms)
+  page.evaluate: Target page, context or browser has been closed
+      at mountFixture (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:585:31)
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:566:3)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1258:223) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1257:54
+✖ reference migration native: trusted source holds the accepted baseline through hide show until exact next-prefix Resume (1.326057ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1258:223) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3138:1
+✖ quiet language: History pauses the real replay immediately and exposes exact Playback details before Resume consumes only its next prefix (119.546065ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3139:69) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3277:33
+✖ focused flow: actual accepted replay prefixes stay immutable with 0ms GET latency and bounded prefetch (1.795259ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3278:31) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3277:33
+✖ focused flow: actual accepted replay prefixes stay immutable with 120ms GET latency and bounded prefetch (1.114475ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3278:31) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3328:38
+✖ replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion false (1.572049ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3330:18) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3328:38
+✖ replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion true (1.256574ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3330:18) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3378:45
+✖ replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume (1.124249ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3380:18) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3378:45
+✖ replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume (0.662037ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3380:18) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3400:54
+✖ focused flow: source cancels replay with a prefetched accepted response in flight (1.121435ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3402:18) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3400:54
+✖ focused flow: navigation cancels replay with a prefetched accepted response in flight (1.035377ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3402:18) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3435:56
+✖ focused flow: manual node inspection pauses the same accepted journal until deliberate Resume (1.171168ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3437:18) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3435:56
+✖ focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume (0.924454ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async actualJournalPresentation (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3094:52)
+      at async TestContext.<anonymous> (/workspace/casepath-operation-count-repair-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3437:18) {
+    log: []
+  }

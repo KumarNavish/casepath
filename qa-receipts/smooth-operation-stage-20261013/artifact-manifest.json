@@ -1,5 +1,725 @@
 [
   {
+    "path": "browser-qa/candidate-review-final.diff",
+    "sha256": "25b799f0fe70a91af7db0e995919fc3b2ef08e5ec629ee8e61d5a9067d270bf5",
+    "size_bytes": 102319
+  },
+  {
+    "path": "browser-qa/candidate-review-push.diff",
+    "sha256": "91b41723b3c01b180817f68524a47b248a4e1afc43dc589d80a9ea395ee93113",
+    "size_bytes": 106016
+  },
+  {
+    "path": "browser-qa/candidate-review-signoff.diff",
+    "sha256": "a783ab8706daeed62ab7a43c6e1172903d64f25e93fe3ff48263e639f883f76e",
+    "size_bytes": 105996
+  },
+  {
+    "path": "browser-qa/candidate-review-v2.diff",
+    "sha256": "cb5b112660154ef7ccf8f737554ae8f44c93f7b084fdcb8633a22f7d0928ddb0",
+    "size_bytes": 100799
+  },
+  {
+    "path": "browser-qa/candidate-review.diff",
+    "sha256": "00e171d20c26d3730827c8373b3fc0a99ac10dc4d399aff13db19696c9d9b31d",
+    "size_bytes": 90032
+  },
+  {
+    "path": "browser-qa/edit.py",
+    "sha256": "7c6d1f37eb23a949fe581473b003282553151e7885efa78271c0da06b0f2fa9a",
+    "size_bytes": 13201
+  },
+  {
+    "path": "browser-qa/final-edit.py",
+    "sha256": "048d8e8d10d56f2727234a17a949f531a0d377c8af9349a8c6ff31c40a39e10e",
+    "size_bytes": 2981
+  },
+  {
+    "path": "browser-qa/junction-probe.cjs",
+    "sha256": "a546308407363d77a95611f53a2656c203a6143ffd386879f791c13df0e2d4c8",
+    "size_bytes": 845
+  },
+  {
+    "path": "browser-qa/junction-probe.json",
+    "sha256": "58567d6116531fa6bb23ab3760dd345776870e0e24b563dda2255f7356a72e18",
+    "size_bytes": 30788
+  },
+  {
+    "path": "browser-qa/junction-probe.log",
+    "sha256": "3fc9e0e2c2aaaf32f27c47db0b789585f43dfa70d1fcbffb825b3162882d862c",
+    "size_bytes": 1159
+  },
+  {
+    "path": "browser-qa/legacy-attempt1.log",
+    "sha256": "704457727a0ea63c69fb9c6c865bbdd528e2637f8e6acb95e1b8f6025612d808",
+    "size_bytes": 35795
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-live-after-1280x800.json",
+    "sha256": "f9d7d09c5fc9b3720124b75ce4e4b904667bc041634db67cdbc7fb2e529c7773",
+    "size_bytes": 15150
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-live-after-1440x1000.json",
+    "sha256": "af8b3090276bb916c9c1fe763013232d8eb848a0aeeb9e426204c29c1155102c",
+    "size_bytes": 15186
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-live-after-1440x900.json",
+    "sha256": "2079184cfd2454a1a60bf00636e83188a263b56a6d136979ad21b55913692926",
+    "size_bytes": 15185
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-live-after-390x844.json",
+    "sha256": "d115cfaf44b5de251d5132d91715314c40b3d781bfe0967d4e240a6ce944aeb5",
+    "size_bytes": 14890
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-live-before-1280x800.json",
+    "sha256": "7ffcd48e0bdb9a2268c78ae8d4c6f713afe3e9f795ce3ddd16e18e5f1f8678dd",
+    "size_bytes": 3648
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-live-before-1440x1000.json",
+    "sha256": "ac199b6535ae8506cbd66d117bc6240116c362c5a9784359dcae4cf5a3972778",
+    "size_bytes": 3640
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-live-before-1440x900.json",
+    "sha256": "21941916f6fe9d2def6ce1c5ce441836638522ceff09f448e5013bc7dfc1493d",
+    "size_bytes": 3639
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-live-before-390x844.json",
+    "sha256": "51035d8eff1c62ed8a1cf8fe1339ac1a872ea81901d3bbc47147de9489994853",
+    "size_bytes": 3591
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-work-live-accepted-sources-graph-and-conditional-documents-form-one-exact-composition-at-1280x800.json.gz",
+    "sha256": "c895d28b7203e6d653d9eab4903af72d07f654badb77cad758ddd312c9121099",
+    "size_bytes": 25918
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-work-live-accepted-sources-graph-and-conditional-documents-form-one-exact-composition-at-1440x1000.json.gz",
+    "sha256": "746773fb0b9705baf29fdd667fed41b4736255f0503500008a6dadd00c8522c5",
+    "size_bytes": 41146
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-work-live-accepted-sources-graph-and-conditional-documents-form-one-exact-composition-at-1440x900.json.gz",
+    "sha256": "746773fb0b9705baf29fdd667fed41b4736255f0503500008a6dadd00c8522c5",
+    "size_bytes": 41146
+  },
+  {
+    "path": "browser-qa/legacy-attempt2/forming-work-live-accepted-sources-graph-and-conditional-documents-form-one-exact-composition-at-390x844.json.gz",
+    "sha256": "33823eb60664a7601ece4375871dfb16962ac1183c18f67a1a38826e7e02383e",
+    "size_bytes": 41139
+  },
+  {
+    "path": "browser-qa/legacy-attempt2.log",
+    "sha256": "3b0e426dfde28a50fedeb1f27ba7997d6045e15b62900936b19cfae30af9b5a4",
+    "size_bytes": 1414
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-live-after-1280x800.json",
+    "sha256": "f0e3e3015e6e46222b735d64681f5a2aa691cad1eb405155d2a89a2473663853",
+    "size_bytes": 15150
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-live-after-1440x1000.json",
+    "sha256": "69a64b5046ca10ce40267e3dd9711ee4173218f7c654b08275254df0f6d89f9e",
+    "size_bytes": 15186
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-live-after-1440x900.json",
+    "sha256": "9c803cb471aae0190d7203321f6168e746d972a4ae2023c28d418d9017626336",
+    "size_bytes": 15185
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-live-after-390x844.json",
+    "sha256": "ca920355d9cca1240bb42379a88578ee3dfdfb1ebf00b4adf1b424f62a4081a4",
+    "size_bytes": 14890
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-live-before-1280x800.json",
+    "sha256": "3c532607d87e36c0f3a865f8d268a3f4e3684b1e50b6a4ddb6c537648cb09893",
+    "size_bytes": 3648
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-live-before-1440x1000.json",
+    "sha256": "63d3ad3a5285023b632816e4309c8eddcfb8e8e60ab1d146d9460f1f219ca8af",
+    "size_bytes": 3640
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-live-before-1440x900.json",
+    "sha256": "e18154cc1a19b7dd645d77360a369e6aa0eff5a766a20a2a9442c6eec2f38687",
+    "size_bytes": 3639
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-live-before-390x844.json",
+    "sha256": "d391a95e13045eda5418691ed5c4a28dfc1abdca33f5f490455d8028a13b5fd1",
+    "size_bytes": 3591
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-live-publication-1280x800.json",
+    "sha256": "4a4289a0a7a51fcd5cb20f32f347785091f08567c24d6e2b4f32f0a0060fef47",
+    "size_bytes": 29632
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-live-qualified-1440x900.json",
+    "sha256": "766ce749dc42f5ac32f7e1700f367674b8b908e017e2fc2cfaef43618f9ae3ff",
+    "size_bytes": 14700
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-work-a-live-terminal-qualification-appears-centrally-and-new-source-arrival-clears-attention-without-rewriting-its-record.json.gz",
+    "sha256": "426008b2dbb10d7053e72a5cd0eb1904c6e5d6dab66ddba0ab86cf70297d5a52",
+    "size_bytes": 31463
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-work-live-accepted-sources-graph-and-conditional-documents-form-one-exact-composition-at-1280x800.json.gz",
+    "sha256": "5a568c11d5f10980b985e093d78e54dba9feefca9658c3822cb1d1cd36e352e2",
+    "size_bytes": 31409
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-work-live-accepted-sources-graph-and-conditional-documents-form-one-exact-composition-at-1440x1000.json.gz",
+    "sha256": "746773fb0b9705baf29fdd667fed41b4736255f0503500008a6dadd00c8522c5",
+    "size_bytes": 41146
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-work-live-accepted-sources-graph-and-conditional-documents-form-one-exact-composition-at-1440x900.json.gz",
+    "sha256": "746773fb0b9705baf29fdd667fed41b4736255f0503500008a6dadd00c8522c5",
+    "size_bytes": 41146
+  },
+  {
+    "path": "browser-qa/legacy-attempt3/forming-work-live-accepted-sources-graph-and-conditional-documents-form-one-exact-composition-at-390x844.json.gz",
+    "sha256": "33823eb60664a7601ece4375871dfb16962ac1183c18f67a1a38826e7e02383e",
+    "size_bytes": 41139
+  },
+  {
+    "path": "browser-qa/legacy-attempt3.log",
+    "sha256": "2e0bba495e5aeafae40a065ff268852b58b798ecedcff42b3e95e44df67d245e",
+    "size_bytes": 783
+  },
+  {
+    "path": "browser-qa/order-edit.py",
+    "sha256": "0b9f217704c0c899122c15907b0d9a83200e664b7127c4226a293576a8ff21c7",
+    "size_bytes": 3745
+  },
+  {
+    "path": "browser-qa/original-heating.log",
+    "sha256": "53e7fc1f755f43ca7726c2c530fc2ea942a55aa216ebfa1ac8c99c1c625d0f13",
+    "size_bytes": 997
+  },
+  {
+    "path": "browser-qa/original-wrapper.cjs",
+    "sha256": "cdd3d606a9335e5f9407d273736570be86efdbc590a487efcbdbe35bdd2a7d4f",
+    "size_bytes": 437
+  },
+  {
+    "path": "browser-qa/original.test.cjs",
+    "sha256": "612e7c5af986be7dd99bc01641333953026c123924c6b9d893bb8b642662df4e",
+    "size_bytes": 413007
+  },
+  {
+    "path": "browser-qa/receipt-compression.json",
+    "sha256": "e59300f9eb7c098c1e5d038ce2d37441aae923cfef953e5578b7e1516f1fa813",
+    "size_bytes": 21358
+  },
+  {
+    "path": "browser-qa/replay-attempt1/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1280x800.json",
+    "sha256": "ffd9d18a44a08bc5ef73016128325bb82148e394c050ed1a290f6c7e696c701c",
+    "size_bytes": 6710
+  },
+  {
+    "path": "browser-qa/replay-attempt1/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json",
+    "sha256": "f5c855c88e0f3d336ecbc90054fa61d954569945a564db633b1dbd13a3869281",
+    "size_bytes": 4793
+  },
+  {
+    "path": "browser-qa/replay-attempt1/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-390x844.json",
+    "sha256": "364bf5001735b7caa7cf545447c2ce1db409282cb9ac55caf5485c232d9d2f44",
+    "size_bytes": 4771
+  },
+  {
+    "path": "browser-qa/replay-attempt1/causal-native-requirement-connector-18-1280x800.json",
+    "sha256": "f47c66cc81890bbe25d74f8c042ecb2f713831d98153adfde1ff4359167b9ebd",
+    "size_bytes": 58130
+  },
+  {
+    "path": "browser-qa/replay-attempt1/causal-native-requirement-connector-18-1440x900.json",
+    "sha256": "7af779b9112c36faabdfc82ba238318cbb3e1df9eb5c1d0a15222d856b18b675",
+    "size_bytes": 58176
+  },
+  {
+    "path": "browser-qa/replay-attempt1/causal-native-requirement-connector-19-1280x800.json",
+    "sha256": "5f1394eb4ef8b1520a8d2724be8ce40a511c4e1fbe414d04d8ed607cdb0084e2",
+    "size_bytes": 58617
+  },
+  {
+    "path": "browser-qa/replay-attempt1/causal-native-requirement-connector-19-1440x900.json",
+    "sha256": "ceafb2581cf07eac147b86eb6a9edf4f897610756c0db5dc20deeab6549ccdab",
+    "size_bytes": 58747
+  },
+  {
+    "path": "browser-qa/replay-attempt1/causal-native-requirement-connector-21-1440x900.json",
+    "sha256": "b3f8534c744310be8d9683d28900cec14c80c1ccaa272031b9e9e1594c8532be",
+    "size_bytes": 59364
+  },
+  {
+    "path": "browser-qa/replay-attempt1/reference-migration-native-trusted-Pause-holds-the-accepted-baseline-through-hide-show-until-exact-next-prefix-Resume.json.gz",
+    "sha256": "9efb9c3b3c18681f47ec6316f5c7b61a14a2f74bdbfd6926c11b82dd8c049aa0",
+    "size_bytes": 36036
+  },
+  {
+    "path": "browser-qa/replay-attempt1/replay-entry-fresh-v2-owner-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs.json",
+    "sha256": "26d1bb84a6404168dbbee9a5d63f52da1ce744a1111990f2ce8ab85b87afb98a",
+    "size_bytes": 3004
+  },
+  {
+    "path": "browser-qa/replay-attempt1/replay-entry-fresh-v2-public-visitor-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs-with-visibility-and-programmatic-focus-interruptions.json",
+    "sha256": "cdca314fc01a8e8305c7b8ac344e54efa9bbbffcd3e5622ba043af73bbce6ed3",
+    "size_bytes": 2293
+  },
+  {
+    "path": "browser-qa/replay-attempt1/replay-entry-migrated-v1-to-v2-owner-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs.json",
+    "sha256": "705cf82daee6ea00d2c346b7889c18d7ab64180c83439e2199cdc919a869ab49",
+    "size_bytes": 3710
+  },
+  {
+    "path": "browser-qa/replay-attempt1/replay-entry-migrated-v1-to-v2-public-visitor-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs-with-visibility-and-programmatic-focus-interruptions.json",
+    "sha256": "08ee601f9ef2f62c5e8ee935ab0fe3e65d29130b217a0d93ae66c381b574baa3",
+    "size_bytes": 2999
+  },
+  {
+    "path": "browser-qa/replay-attempt1/replay-visibility-hidden-reentry-preserves-the-first-accepted-reference-prefix-before-exact-continuation.json",
+    "sha256": "12430f2a31fcc4495015dfb4b6171ab243ccbeb75f97d650846df9d64f14f9c3",
+    "size_bytes": 3393
+  },
+  {
+    "path": "browser-qa/replay-attempt1/replay-visibility-initial-hidden-preserves-the-first-accepted-reference-prefix-before-exact-continuation.json",
+    "sha256": "76349f5bb1e4b59735d28eadc292bbc03f0e1b81ae044096054851158579ea65",
+    "size_bytes": 26066
+  },
+  {
+    "path": "browser-qa/replay-attempt1/replay-visibility-trusted-initial-Tab-preserves-the-first-accepted-reference-prefix-before-exact-continuation.json",
+    "sha256": "6f8c4bd74b8fc07cb7834d613d4d9356f7f87cac805df1bc0d918e826caf2c05",
+    "size_bytes": 7954
+  },
+  {
+    "path": "browser-qa/replay-attempt1.log",
+    "sha256": "657147c05567444da5a163a8d67fd6c11ac11e10bc931c6f396a6e1e330e7b5e",
+    "size_bytes": 21493
+  },
+  {
+    "path": "browser-qa/replay-edit.py",
+    "sha256": "e2284237e6f182bb354f27d50e881ff18e5ae903e008c5b7a0efeccdc15b9935",
+    "size_bytes": 11924
+  },
+  {
+    "path": "browser-qa/run-focused.sh",
+    "sha256": "764f95904ae21962b4e045414fd3651d6e058a6ef9e4a4283874485a7b1751ef",
+    "size_bytes": 1163
+  },
+  {
+    "path": "browser-qa/stage-edit.py",
+    "sha256": "e2c7c8c9421e6a06c8ace61a014b19c9957d7101da9e6247997bb458ace9fc7a",
+    "size_bytes": 8930
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/actual-28-prefix-replay-0.json",
+    "sha256": "fe84866b6f6e8859729a092d3dca5002e647890574c2b597c8d951ae0d2e61df",
+    "size_bytes": 22772
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1280x800.json",
+    "sha256": "f5c855c88e0f3d336ecbc90054fa61d954569945a564db633b1dbd13a3869281",
+    "size_bytes": 4793
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json",
+    "sha256": "f5c855c88e0f3d336ecbc90054fa61d954569945a564db633b1dbd13a3869281",
+    "size_bytes": 4793
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-390x844.json.gz",
+    "sha256": "2800e50efb49a101f0af1e51e70e8e92ece810379331d0b185a1ecd0b4671ce7",
+    "size_bytes": 76734
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/causal-native-heating-settled-390x844.json",
+    "sha256": "a6db05368fea9630a25f703545a79c2a5b2eea49642f81b7c2fe7aacf2a28076",
+    "size_bytes": 75775
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/causal-native-requirement-connector-18-1280x800.json",
+    "sha256": "50a11b39e8de7b69b4bafb80b83674f5b60b55728e7fa86ac0d9dd03da90441e",
+    "size_bytes": 58130
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/causal-native-requirement-connector-18-1440x900.json",
+    "sha256": "787d4a715046564e726412dc8556b9651a4788101a196e08fbfd09ebe5d0a14a",
+    "size_bytes": 58176
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/causal-native-requirement-connector-19-1280x800.json",
+    "sha256": "11ccf8710e9d9c95e15060d809c2ebea62753ae2922a287be0104bd6efb2256c",
+    "size_bytes": 58617
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/causal-native-requirement-connector-19-1440x900.json",
+    "sha256": "674a41a265b9924a59bf776e5608d7eb3e93258b9adf4aee2454a8658c474bf5",
+    "size_bytes": 58747
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/causal-native-requirement-connector-21-1280x800.json",
+    "sha256": "616defa0f94c6c55cd307fd55d5e1db722a15450431847d0f62677b317b8a3ff",
+    "size_bytes": 59146
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/causal-native-requirement-connector-21-1440x900.json",
+    "sha256": "85d0111fb903de60adfc220c348ea66595860341efbecdd398917b53282837ed",
+    "size_bytes": 59364
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/focused-flow-actual-accepted-replay-prefixes-stay-immutable-with-0ms-GET-latency-and-bounded-prefetch.json.gz",
+    "sha256": "532b638628bc6bb7ac4a9726e8abe24881e694d664939c034bf6e7f6fc5cbb9e",
+    "size_bytes": 44093
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/overlapping-opening-reads-preserve-the-newer-record-and-source-disclosure-while-equal-revisions-remain-strict.json.gz",
+    "sha256": "9b5838e010bece01693fe383ceb3696030a1c5cfa3ae8a2f5910be53f937f8aa",
+    "size_bytes": 59753
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/quiet-language-History-pauses-the-real-replay-immediately-and-exposes-exact-Playback-details-before-Resume-consumes-only-its-next-prefix.json.gz",
+    "sha256": "0c66979d1edb81b3816289d45bba9287e47dbab9007a49519f46ea8366433a6f",
+    "size_bytes": 28492
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/replay-entry-fresh-v2-owner-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs.json",
+    "sha256": "94d09b0ec76ab41f8b49ec1843b8747a2a8d384733be3106ce860f994490e52f",
+    "size_bytes": 31507
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/replay-entry-fresh-v2-public-visitor-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs-with-visibility-and-programmatic-focus-interruptions.json",
+    "sha256": "b36dc6ab9dc5803a70494c2e49af207133602d6d573f4ce68abf4d0466f72e4e",
+    "size_bytes": 10873
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/replay-entry-migrated-v1-to-v2-owner-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs.json",
+    "sha256": "c0f27249229e5d1debefe81b4b530ebb8c53b75279c3b6428aaa40216b4ae438",
+    "size_bytes": 9127
+  },
+  {
+    "path": "browser-qa/targeted-attempt2/replay-entry-migrated-v1-to-v2-public-visitor-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs-with-visibility-and-programmatic-focus-interruptions.json",
+    "sha256": "ce6a300a789be90e3b32436019a6373c3db645a6ef45973884b041c5f025ff5a",
+    "size_bytes": 2869
+  },
+  {
+    "path": "browser-qa/targeted-attempt2.log",
+    "sha256": "ecd1d4948d4ed72f99cb35cd8432b15f5e8e834c3119d65eb26b6798e7be7a06",
+    "size_bytes": 30916
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1280x800.json.gz",
+    "sha256": "0ba0068d7f4fe03bdff4e7b28f622fd906c5e0ae52fcc3ff27681cb68ee73fcc",
+    "size_bytes": 76745
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json.gz",
+    "sha256": "c1b681e00df9f3980919372f48e498928301631da9dc05cd00c014a405a5542d",
+    "size_bytes": 76746
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-390x844.json.gz",
+    "sha256": "2800e50efb49a101f0af1e51e70e8e92ece810379331d0b185a1ecd0b4671ce7",
+    "size_bytes": 76734
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-native-heating-settled-1280x800.json",
+    "sha256": "f7858e5c71e75389182ab79d81e2c01d484ed85475170f975d82ac2f10ecd923",
+    "size_bytes": 73919
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-native-heating-settled-1440x900.json",
+    "sha256": "5fa9b7bfbbcca85a822cebb555c5330f7fa6c6fd785d0a389c93b889ef7b2e18",
+    "size_bytes": 73924
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-native-heating-settled-390x844.json",
+    "sha256": "0f3c76b6e19c87c43aa6f4347fe1d45c31603c59f239e550dacd86965ba2a323",
+    "size_bytes": 75880
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-native-requirement-connector-18-1280x800.json",
+    "sha256": "5490116f6c34bd9a2aae434d3a37489fbea8d2217c39432b9b0e9fe3087440fb",
+    "size_bytes": 58130
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-native-requirement-connector-18-1440x900.json",
+    "sha256": "25168c7bded40c29632ef99b9059e26118825ab01256f7c4d00cef7709585ffb",
+    "size_bytes": 58176
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-native-requirement-connector-19-1280x800.json",
+    "sha256": "6e39d492a1ab838658fc9e06292b9d504d767bbd660d0b64aad5bb3191460858",
+    "size_bytes": 58617
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-native-requirement-connector-19-1440x900.json",
+    "sha256": "e5e1b8f5492ad624273af084706ecef7076d353cc5cf64e7ffdae7da8ea553f6",
+    "size_bytes": 58747
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-native-requirement-connector-21-1280x800.json",
+    "sha256": "130553018e06053386cd4033c821ec50dd7cd94ec75da11c8ff4ecab2dae7920",
+    "size_bytes": 59146
+  },
+  {
+    "path": "browser-qa/targeted-final1/causal-native-requirement-connector-21-1440x900.json",
+    "sha256": "c6178e3950c685312d915ee5cfe56a9843b09eaf461f2ef8f8a86dac55e41cce",
+    "size_bytes": 59364
+  },
+  {
+    "path": "browser-qa/targeted-final1/focused-flow-manual-document-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json.gz",
+    "sha256": "0c66979d1edb81b3816289d45bba9287e47dbab9007a49519f46ea8366433a6f",
+    "size_bytes": 28492
+  },
+  {
+    "path": "browser-qa/targeted-final1/focused-flow-manual-fact-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json.gz",
+    "sha256": "0c66979d1edb81b3816289d45bba9287e47dbab9007a49519f46ea8366433a6f",
+    "size_bytes": 28492
+  },
+  {
+    "path": "browser-qa/targeted-final1/focused-flow-manual-node-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json.gz",
+    "sha256": "0c66979d1edb81b3816289d45bba9287e47dbab9007a49519f46ea8366433a6f",
+    "size_bytes": 28492
+  },
+  {
+    "path": "browser-qa/targeted-final1/focused-flow-navigation-cancels-replay-with-a-prefetched-accepted-response-in-flight.json",
+    "sha256": "ae7fed6517ea1c20037c77830ce7996dd6ffd8f49f94666d4e0dd875a037cf2b",
+    "size_bytes": 3715
+  },
+  {
+    "path": "browser-qa/targeted-final1/focused-flow-source-cancels-replay-with-a-prefetched-accepted-response-in-flight.json",
+    "sha256": "3436cd9b4adb870422dd19b40e272af4544f3036c6cb6df184fe862d8cbc516a",
+    "size_bytes": 8494
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-entry-current-fresh-owner.json.gz",
+    "sha256": "2f78a326526e10682aa9b1406b49553ff7762d40327d891206e7451a14e1a60b",
+    "size_bytes": 53995
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-entry-current-fresh-visitor.json.gz",
+    "sha256": "e136534d5f53a5047b47f7d0b83fe94a0c393268d144310e961ca658d63499cd",
+    "size_bytes": 54259
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-entry-current-migrated-owner.json.gz",
+    "sha256": "7c74f0d18a7b9d3d3f2ce44c66218c6a0a58c95dc8b5c5fc816e7e3a2db7a5ba",
+    "size_bytes": 48756
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-entry-current-migrated-visitor.json.gz",
+    "sha256": "77a3784b8d4db49e84c7f9e8b4a9b95485ac468640e9d139f444b876b6285e3e",
+    "size_bytes": 48998
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-entry-fresh-v2-owner-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs.json",
+    "sha256": "fbf8367c7a42220c5c7f6826bc6af190518016a5474f1dd2d001103c81b41acf",
+    "size_bytes": 51683
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-entry-fresh-v2-public-visitor-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs-with-visibility-and-programmatic-focus-interruptions.json",
+    "sha256": "0cfa946be2b71057ea84ebda8f2598cf23033e9358d015e7694a0fee9d470b21",
+    "size_bytes": 51684
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-entry-migrated-v1-to-v2-owner-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs.json",
+    "sha256": "6e239106184ebf959f99bc03768735dd2c6e6e7d4d031c3692f17dcfacf42233",
+    "size_bytes": 43651
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-entry-migrated-v1-to-v2-public-visitor-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs-with-visibility-and-programmatic-focus-interruptions.json",
+    "sha256": "ff5470268d7ba741b803a5fbe65d0d12a723f48e8e840df3ec3aaa7efd1f6574",
+    "size_bytes": 43652
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-visibility-an-in-flight-next-prefix-survives-hide-show-and-programmatic-focus-at-prefix-eight-with-reduced-motion-false.json.gz",
+    "sha256": "8ae804d58696831a713b4d05c7cdfef21f52e30bac65932186fcded6fbfe80fa",
+    "size_bytes": 25854
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-visibility-an-in-flight-next-prefix-survives-hide-show-and-programmatic-focus-at-prefix-eight-with-reduced-motion-true.json.gz",
+    "sha256": "8ae804d58696831a713b4d05c7cdfef21f52e30bac65932186fcded6fbfe80fa",
+    "size_bytes": 25854
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-visibility-at8-next9-false.json",
+    "sha256": "275a81c4a97dc833c2f3e7490626e8e1cbc745ee17cf860de74782216516e07b",
+    "size_bytes": 7307
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-visibility-at8-next9-true.json",
+    "sha256": "56f4c163fe6f3f2b69c96d8b3b86b9212a8f683f31d5d7a6124e5c80329c9594",
+    "size_bytes": 7306
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-visibility-trusted-Pause-retains-an-inspection-hold-through-hide-show-until-exact-next-prefix-Resume.json",
+    "sha256": "9901061a7f929de77de6ba04a60a8290961d460af7cf6ad7120f0325f20451cd",
+    "size_bytes": 7404
+  },
+  {
+    "path": "browser-qa/targeted-final1/replay-visibility-trusted-keyboard-retains-an-inspection-hold-through-hide-show-until-exact-next-prefix-Resume.json",
+    "sha256": "9901061a7f929de77de6ba04a60a8290961d460af7cf6ad7120f0325f20451cd",
+    "size_bytes": 7404
+  },
+  {
+    "path": "browser-qa/targeted-final1.log",
+    "sha256": "5b3d2721b6911cc30478a61a78a4032bd642e305638f88ca9862f20e45c25486",
+    "size_bytes": 10495
+  },
+  {
+    "path": "browser-qa/targeted-final2/replay-entry-current-fresh-owner.json.gz",
+    "sha256": "8ba8e44485eef74adef8be7f1233804af2e931f1421665b140cd8c83feb2b75f",
+    "size_bytes": 53995
+  },
+  {
+    "path": "browser-qa/targeted-final2/replay-entry-current-fresh-visitor.json.gz",
+    "sha256": "e21f80c9a4f9c42e16270ba1f0e59cc65bb3349d63231e30391343d77696d32a",
+    "size_bytes": 54259
+  },
+  {
+    "path": "browser-qa/targeted-final2/replay-entry-current-migrated-owner.json.gz",
+    "sha256": "b8faef3322de5d15aab24d96013e0cfccc0f425232115ee6bfcf08261a049659",
+    "size_bytes": 48755
+  },
+  {
+    "path": "browser-qa/targeted-final2/replay-entry-current-migrated-visitor.json.gz",
+    "sha256": "556378a381925e1b65908e497b3efc57615bea077999f1541cfce157239529d8",
+    "size_bytes": 48996
+  },
+  {
+    "path": "browser-qa/targeted-final2/replay-entry-fresh-v2-owner-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs.json.gz",
+    "sha256": "3fc2ee93dbbe8a2f00617b92c53172c75e8984770fc023436fcd229c58075d56",
+    "size_bytes": 53380
+  },
+  {
+    "path": "browser-qa/targeted-final2/replay-entry-fresh-v2-public-visitor-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs-with-visibility-and-programmatic-focus-interruptions.json",
+    "sha256": "7765bcbffad7c8f95e010b26230505925063319f722b667845c8aafab6ccfc84",
+    "size_bytes": 51691
+  },
+  {
+    "path": "browser-qa/targeted-final2/replay-entry-migrated-v1-to-v2-owner-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs.json.gz",
+    "sha256": "6cbb2accbade4a3b1431a318c7eedc4625d9a2bd3fabdf9eede0f5c914c12023",
+    "size_bytes": 63689
+  },
+  {
+    "path": "browser-qa/targeted-final2/replay-entry-migrated-v1-to-v2-public-visitor-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs-with-visibility-and-programmatic-focus-interruptions.json",
+    "sha256": "3648dcd5898adb0ea3ee2c56b6bded5d2fbc03a487c6a36f4ef51ba4b4f84d21",
+    "size_bytes": 43715
+  },
+  {
+    "path": "browser-qa/targeted-final2.log",
+    "sha256": "906cf6c76bc3edf8adba50a13f0bc2291889c82e0c612f689bd35734298a7fa9",
+    "size_bytes": 17344
+  },
+  {
+    "path": "browser-qa/targeted-final3/actual-28-prefix-replay-120.json",
+    "sha256": "861036a77efda585dd8d0dcaf2d0d462b8afed94ccae62c766eb4a8a9940b6b5",
+    "size_bytes": 22784
+  },
+  {
+    "path": "browser-qa/targeted-final3/focused-flow-actual-accepted-replay-prefixes-stay-immutable-with-120ms-GET-latency-and-bounded-prefetch.json.gz",
+    "sha256": "bc0187453980cdeef1ecd1f3d07962f2a7b09a57ead4918e67d97d2f7bf19eba",
+    "size_bytes": 44170
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-current-fresh-owner.json.gz",
+    "sha256": "1b86520dcf791a3e2f3e4c1174748bfaf1c9610ed56b9fa8482869c7cec6ec80",
+    "size_bytes": 53996
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-current-fresh-visitor.json.gz",
+    "sha256": "060581158c23973b39088fcaa084bccd2199abc426295e695e714e5b96b1178a",
+    "size_bytes": 54259
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-current-migrated-owner.json.gz",
+    "sha256": "2794710c31be69b48f8c5f8a9a735b6efea69d95e1783d58f6f2f7023cc4c392",
+    "size_bytes": 48757
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-current-migrated-visitor.json.gz",
+    "sha256": "31c8ed25c2b9a8e6d4cb002e898820aaf7b5e15c681eaeabfa6f07ddf78029e0",
+    "size_bytes": 48998
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-fresh-v2-owner-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs.json.gz",
+    "sha256": "36d499e6ec26ea99fe55259b8dd7f5e7f645fe51b340e4bed072a46f2a439e43",
+    "size_bytes": 53295
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-fresh-v2-public-visitor-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs-with-visibility-and-programmatic-focus-interruptions.json",
+    "sha256": "85fcf08cab1f90a530f3a68cef9a4bfb4cc06661fb806444d9446857b9278d1b",
+    "size_bytes": 53452
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-migrated-v1-to-v2-owner-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs.json.gz",
+    "sha256": "7f34cc8ddca73c5d9b9b793b013a3f7632a736bae899ada6192a6f4bbaecb61d",
+    "size_bytes": 63618
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-migrated-v1-to-v2-public-visitor-consumes-every-accepted-current-reference-prefix-and-eight-native-handoffs-with-visibility-and-programmatic-focus-interruptions.json",
+    "sha256": "7f53df6ad6f04fa8216a03a4a17ff96057f97959e9935137bc19c190d296f5e0",
+    "size_bytes": 45420
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-outcomes-fresh-owner.json",
+    "sha256": "db6d8d5bd20e7fc7bdef186f13d22776a1ca282237d7d76ab2466280da071fed",
+    "size_bytes": 101852
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-outcomes-fresh-visitor.json",
+    "sha256": "7074ce84d2aad459b0cfd08ad3461e7c0534f9e9e9db558a8e0ed27878a88f73",
+    "size_bytes": 56386
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-outcomes-migrated-owner.json",
+    "sha256": "502785c66f3264d57ffa1fe024055a483196cf28df3c895fa3f57f25976e47de",
+    "size_bytes": 87231
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-entry-outcomes-migrated-visitor.json",
+    "sha256": "2dccb6571d8ac0b30870e120a446dd26ae88a043ad3358b1b8f864dc6b893625",
+    "size_bytes": 49796
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-visibility-trusted-Pause-retains-an-inspection-hold-through-hide-show-until-exact-next-prefix-Resume.json",
+    "sha256": "fa78285ac9afab698697151435af6fedba2818e6c9832bff317f31dd115cbff9",
+    "size_bytes": 15175
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-visibility-trusted-Pause.json",
+    "sha256": "0f0682ef65481a5511c78ebc418450cfd6c0788db4d0802c1055f4776cfec292",
+    "size_bytes": 5005
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-visibility-trusted-keyboard-retains-an-inspection-hold-through-hide-show-until-exact-next-prefix-Resume.json",
+    "sha256": "fa78285ac9afab698697151435af6fedba2818e6c9832bff317f31dd115cbff9",
+    "size_bytes": 15175
+  },
+  {
+    "path": "browser-qa/targeted-final3/replay-visibility-trusted-keyboard.json",
+    "sha256": "98d8bad75b5175a2b768c013c1a8b78d9709e46fc89f869232074d260aa3270f",
+    "size_bytes": 5008
+  },
+  {
+    "path": "browser-qa/targeted-final3.log",
+    "sha256": "2e4ae680d1e09e1d14574b418a2510068b3df55d5d0069382f117e4c5df2c1f1",
+    "size_bytes": 2397
+  },
+  {
     "path": "duplicate-capsule-audit.json",
     "sha256": "7b3f3a45cc061b04a7b402a2acf5a88d5404aacbb2c8e4fbdcc9986d8444e811",
     "size_bytes": 32167
@@ -551,8 +1271,8 @@
   },
   {
     "path": "review/acceptance-handoff.json",
-    "sha256": "819632a956b6388ffcf3eac8e5a664e215f748a1ab7a357bc975431c2b8a967e",
-    "size_bytes": 4788
+    "sha256": "88f37856fd95820c727271d30f5fe22c9c0c6f83fd5c08fecae29e73679cb281",
+    "size_bytes": 6096
   },
   {
     "path": "review/acceptance-preflight.json",
@@ -596,8 +1316,8 @@
   },
   {
     "path": "review/browser-qa-review.json",
-    "sha256": "82ec1786fe78abf34b4199a9ba9e87e73afcb109f2099afb805e768a66002ada",
-    "size_bytes": 2076
+    "sha256": "6a80fb169124ea61f63d8b444ef526a460f103a3ab4ac09840a364b4b9a518b1",
+    "size_bytes": 4611
   },
   {
     "path": "review/cpu-sample-audit.json",
@@ -826,7 +1546,7 @@
   },
   {
     "path": "source-binding.json",
-    "sha256": "16638f711cd618cc6e89c457adfd8431aeb9fbe6f0fe1186e7619907873b0c45",
-    "size_bytes": 2142
+    "sha256": "4aada31a57b8451bd8aefdc448cb630c344ffc6c73fdeb4a858a22fd66bbe04e",
+    "size_bytes": 2744
   }
 ]
