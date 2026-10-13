@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1680,
+  "file_count": 1702,
   "files": [
     {
       "executable": false,
@@ -887,14 +887,14 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_api_v1.py",
-      "sha256": "9c927f911f46c8b9661cbea3e568fef91b88907a74a4dd3f3462cbc6506c665b",
-      "size_bytes": 20146
+      "sha256": "5ff526971d6b6ba3d1d8d58d55aad6bc35cb851ec1bd93a4a6f9c9101538173d",
+      "size_bytes": 20275
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_controller_v1.py",
-      "sha256": "80fafc3090643da1183f9081ecccea2a58fd9c40f91c71436b9dbe207d8d16ef",
-      "size_bytes": 32158
+      "sha256": "663173c1af37661752828f31bfba935816fb777b8acf76a2f485dc05d5b54d6b",
+      "size_bytes": 33173
     },
     {
       "executable": false,
@@ -935,20 +935,20 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_reference_policy_v1.py",
-      "sha256": "87b0de097cc05664846d27e45e2a4a504f4626665b0f0a52fe1ff68c6f079569",
-      "size_bytes": 7246
+      "sha256": "c0f28e7f3d1190a3eaa1d0f303500a9c422708ab3c7558477ddd01d897f788cb",
+      "size_bytes": 7306
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_reference_v1.py",
-      "sha256": "33ba45aa09d56854aac5c7851c3da3322c341b34e79c370d3449b78a5d55096c",
-      "size_bytes": 13649
+      "sha256": "c908e5dd12f4098e47fff2b92a1bdb5b72d1d1b69a3f974028659d2f8a0e2e25",
+      "size_bytes": 27163
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_store_v1.py",
-      "sha256": "f687c7dd9bd54e1cd09f2341d184623e5da41c7ee31e7daa2aeb136697a12d18",
-      "size_bytes": 65502
+      "sha256": "27917c8761c24f22099261ead96ae32bf92102c13a6f184d27cfb4b8cd2b18b2",
+      "size_bytes": 65779
     },
     {
       "executable": false,
@@ -7498,6 +7498,138 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_0f4f13b1e3e1328c/01-sole-packet-and-tenant-clarification.txt",
+      "sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e",
+      "size_bytes": 1097
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_0f4f13b1e3e1328c/02-issuer-authority-and-complete-channel-archive.txt",
+      "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+      "size_bytes": 896
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_2c55cdd816b1d0e8/01-ordinary-tenancy-and-original-notification-packet.txt",
+      "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+      "size_bytes": 1451
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_2c55cdd816b1d0e8/02-later-email-and-original-absence-of-reasons.txt",
+      "sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28",
+      "size_bytes": 915
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_314f2d309fea25e6/01-customer-and-tenancy-clarification.txt",
+      "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+      "size_bytes": 807
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_314f2d309fea25e6/02-heating-service-observation.txt",
+      "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+      "size_bytes": 1147
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_314f2d309fea25e6/03-landlord-knowledge-and-repair-status.txt",
+      "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+      "size_bytes": 797
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_393285577dcb12c4/01-sole-packet-and-tenant-clarification.txt",
+      "sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e",
+      "size_bytes": 1108
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_393285577dcb12c4/02-issuer-authority-and-complete-channel-archive.txt",
+      "sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469",
+      "size_bytes": 906
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_4a07dbbbd859a3ce/01-customer-and-tenancy-clarification.txt",
+      "sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0",
+      "size_bytes": 807
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_4a07dbbbd859a3ce/02-heating-service-observation.txt",
+      "sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a",
+      "size_bytes": 1147
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_4a07dbbbd859a3ce/03-landlord-knowledge-and-repair-status.txt",
+      "sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916",
+      "size_bytes": 797
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_4a53299cfe619303/01-sole-packet-and-tenant-clarification.txt",
+      "sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96",
+      "size_bytes": 1101
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_4a53299cfe619303/02-issuer-authority-and-complete-channel-archive.txt",
+      "sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff",
+      "size_bytes": 903
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_543f08f2415b2a33/01-ordinary-tenancy-and-original-notification-packet.txt",
+      "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+      "size_bytes": 1452
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_543f08f2415b2a33/02-later-email-and-original-absence-of-reasons.txt",
+      "sha256": "92bda8ef8744a22132cb37f3516c40cdcd03019191a660a15578927bc5bcb8d0",
+      "size_bytes": 910
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_7dbd7c7d1c4ddf90/01-ordinary-tenancy-and-original-notification-packet.txt",
+      "sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4",
+      "size_bytes": 1445
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_7dbd7c7d1c4ddf90/02-later-email-and-original-absence-of-reasons.txt",
+      "sha256": "66717d12a5196d405dbc05f003c39224951dbabdb63522dae601e6718dc95fc7",
+      "size_bytes": 905
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_95d08975bc575592/01-customer-and-tenancy-clarification.txt",
+      "sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317",
+      "size_bytes": 804
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_95d08975bc575592/02-heating-service-observation.txt",
+      "sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8",
+      "size_bytes": 1147
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/clm_95d08975bc575592/03-landlord-knowledge-and-repair-status.txt",
+      "sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761",
+      "size_bytes": 794
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/reference_profiles/synthetic-nine-v2/profile.json",
+      "sha256": "18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869",
+      "size_bytes": 17858
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/refinement_repairs_v1.py",
       "sha256": "2e0cd6b6f2dd652cbfefedd2e43c652bd03a466d65bab826917a42c8c6d12c7c",
       "size_bytes": 5418
@@ -8153,8 +8285,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_complete_reference_intake_v1.py",
-      "sha256": "2e82ecf4d8c90788998f8176add985897d399ce38a4126242180bb8f07507273",
-      "size_bytes": 21064
+      "sha256": "e4f4b041893f8c49b78b3060337ee9d75d9c8b52d09554c1777aacc6eb90219f",
+      "size_bytes": 34492
     },
     {
       "executable": false,
@@ -8537,8 +8669,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_reference_admission_v1.py",
-      "sha256": "48ce488db87f68e8326c9c4aed62fb5930ad1c5b031c7321dce239d55d9e7e01",
-      "size_bytes": 16902
+      "sha256": "2babec7e2e79d9a5b53b150bd1751945b48a3ec3b9aa633d3f71ca2c9aca61c9",
+      "size_bytes": 30662
     },
     {
       "executable": false,
@@ -8663,8 +8795,8 @@
     {
       "executable": false,
       "path": "casepath-api/tools/admit_reference.py",
-      "sha256": "1abf0ca999ce018a508e7931b0669b888824c3e94c1423eb140442f9d393b3d0",
-      "size_bytes": 32400
+      "sha256": "0f34cad742b99fad318a3afa06476aef4a062034245ed79dc17ad7ed836642f6",
+      "size_bytes": 31870
     },
     {
       "executable": false,
@@ -8723,8 +8855,8 @@
     {
       "executable": false,
       "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
-      "sha256": "5443e6b30ce7b68cc5e6d0afe5d2f38863bb0494a645674d7246bf54bcea9bc3",
-      "size_bytes": 245984
+      "sha256": "292d252d63e3417e38a3f10003a8b57c217f5f1cefbae9f163d544f1e4bb0354",
+      "size_bytes": 250271
     },
     {
       "executable": false,
@@ -9131,8 +9263,8 @@
     {
       "executable": false,
       "path": "casepath-qa/unified-product-browser-v1.test.cjs",
-      "sha256": "3e6bf7b57668803e3cf6f73e8e717b523e3075a50a66c0ba2176c9d8afeb7620",
-      "size_bytes": 387840
+      "sha256": "b398e1d3456513531e88aa3cae5e3ef3708c387fef10e044ed5ee3b41b079d61",
+      "size_bytes": 412059
     },
     {
       "executable": false,
@@ -9221,8 +9353,8 @@
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.js",
-      "sha256": "8818482c2a05aee88ea36a5dc387d1629653cd0dad7e06686d16d37638e95ca3",
-      "size_bytes": 305561
+      "sha256": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d",
+      "size_bytes": 311458
     },
     {
       "executable": false,
@@ -9419,7 +9551,7 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "636a54756a45039a2af3dd700f30c7be549a1d0f11a8d28d5b8d8f6a9a86925c",
+      "sha256": "64460f2b1ba14764f9130873549ef17e777229c5b19debf0a3866116255ccf96",
       "size_bytes": 23698
     },
     {
@@ -9713,8 +9845,8 @@
     {
       "executable": false,
       "path": "docs/HOSTED_CASEPATH.md",
-      "sha256": "ab479e773d94db02ff922d350468e60bd5a31f1a5e0f7d04388984991cbe4426",
-      "size_bytes": 11462
+      "sha256": "7c1c030e3cf0366d00fa0721609a70a04d916c11d678389c786a6dc324a9eee9",
+      "size_bytes": 11807
     },
     {
       "executable": false,
