@@ -1793,3 +1793,10 @@ test('failed live operation records remain inspectable while recorded delivery o
  const delivered={...operation,operation_sha256:sha('same semantic object in another captured chain')};pending.rows=[delivered];
  assert.equal(ui.operationRecord(pending,'operation',operation.id),delivered);assert.equal(ui.operationRecord(pending,'operation-attempt','0:'+operation.id),operation);assert.match(ui.operationHistoryMarkup(pending),new RegExp(`data-au-record-id="0:${operation.id}"`));
 });
+
+test('operation reading uses current case labels and source summaries without exposing raw routing or Boolean scalars',()=>{
+ const f=operationFixture(),raw={contract:operationContract,type:'operation',id:'observed-node',kind:'node.evaluate',object:{type:'node',id:'branch'},result:{verdict:true,activation:'true',route_state:'needed_later'}},trace={state:f.baseline,current:raw,rows:[raw],sources:new Map()};
+ const html=ui.operationReadingMarkup(trace);assert.match(html,/Check separate service/);assert.doesNotMatch(html,/needed_later|· true|· false|>true</);assert.deepEqual(ui.operationRecord(trace,'operation',raw.id),raw,'History retains exact machine fields');
+ trace.current={...raw,kind:'document.require',object:{type:'document',id:'notice'},result:{route_state:'needed_now'}};assert.match(ui.operationReadingMarkup(trace),/Separate notice/);assert.doesNotMatch(ui.operationReadingMarkup(trace),/needed_now/);
+ trace.current={...raw,result:{summary:'The actual source describes an uncertain service date.',verdict:'unresolved'}};assert.match(ui.operationReadingMarkup(trace),/The actual source describes an uncertain service date/);
+});
