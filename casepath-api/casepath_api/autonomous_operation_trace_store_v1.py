@@ -98,13 +98,16 @@ class OperationTraceStore:
     def __init__(self, connection_factory):
         self.connect = connection_factory
 
-    def read(self, claim_id, *, head_state_sha256, head_event_sha256, run_id, profile_sha256):
+    def read(self, claim_id, *, head_state_sha256, head_event_sha256, run_id, profile_sha256, check=lambda: None):
         """Read one exact admitted trace, refusing damaged or oversized chunks."""
         identity = (claim_id, run_id, head_state_sha256, head_event_sha256, profile_sha256)
+        check()
         with self.connect() as connection:
+            check()
             if connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?",
                                   ('autonomous_operation_traces',)).fetchone() is None:
                 return None
+            check()
             row = connection.execute('SELECT * FROM autonomous_operation_traces WHERE claim_id=? AND run_id=? '
                                      'AND head_state_sha256=? AND head_event_sha256=? AND profile_sha256=?', identity).fetchone()
             if row is None:
@@ -116,6 +119,7 @@ class OperationTraceStore:
                 raise OperationTraceError('Persisted operation trace size is invalid.')
             compressed, after = bytearray(), -1
             while True:
+                check()
                 page = connection.execute('SELECT chunk_index,length(content) AS size_bytes, '
                                           "CASE WHEN typeof(content)='blob' AND length(content)<=? THEN content ELSE NULL END AS content "
                                           'FROM autonomous_operation_trace_chunks WHERE sidecar_sha256=? AND chunk_index>? '
@@ -136,6 +140,7 @@ class OperationTraceStore:
             if (after + 1 != row['chunk_count'] or len(compressed) != row['compressed_bytes']
                     or sha256(compressed).hexdigest() != row['compressed_sha256']):
                 raise OperationTraceError('Persisted operation trace bytes differ.')
+        check()
         try:
             decompressor = zlib.decompressobj(16 + zlib.MAX_WBITS)
             encoded = decompressor.decompress(bytes(compressed), MAX_TRACE_BYTES + 1)
@@ -144,6 +149,7 @@ class OperationTraceStore:
                     or sha256(encoded).hexdigest() != row['content_sha256']):
                 raise OperationTraceError('Persisted operation trace decompression differs.')
             sidecar = json.loads(encoded)
+            check()
             binding, canonical = _sealed(sidecar)
         except (zlib.error, json.JSONDecodeError, UnicodeDecodeError) as error:
             raise OperationTraceError('Persisted operation trace cannot be decoded.') from error

@@ -178,3 +178,15 @@ class OperationTraceStorageTests(unittest.TestCase):
         self.db.execute("UPDATE autonomous_operation_trace_chunks SET content=x'00' WHERE chunk_index=0")
         with self.assertRaisesRegex(OperationTraceError, 'trace (chunk|bytes) differs'):
             self.read()
+
+    def test_cancelled_recorded_read_never_fetches_another_chunk_page(self):
+        self.initialize()
+        admit_operation_trace(self.connect, self.bundle, self.sidecar)
+        self.sql.clear()
+        def check():
+            if any('FROM autonomous_operation_trace_chunks' in sql for sql in self.sql):
+                raise RuntimeError('recorded read cancelled')
+        with self.assertRaisesRegex(RuntimeError, 'read cancelled'):
+            self.read(check=check)
+        self.assertEqual(sum('FROM autonomous_operation_trace_chunks' in sql for sql in self.sql), 1)
+        self.assertTrue(all(sql.startswith('SELECT') for sql in self.sql))
