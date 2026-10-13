@@ -1,0 +1,32 @@
+{
+  "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "original": {
+    "attempt_directory": "shard4",
+    "tests": 324,
+    "passed": 323,
+    "failed": 1,
+    "skipped": 0,
+    "exit_code": 1,
+    "duration_seconds": 524.3861050605774,
+    "failed_id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication"
+  },
+  "selected": {
+    "attempt_directory": "shard4-serial",
+    "tests": 324,
+    "passed": 324,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "duration_seconds": 356.0385558605194,
+    "same_argument_bytes_sha256": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6",
+    "former_failed_node_call_seconds": 9.424117224989459
+  },
+  "rechecks": 1,
+  "whole_shard_only": true,
+  "other_shards_repeated": false,
+  "isolated_node_run": false,
+  "source_assertions_timeouts_unchanged": true,
+  "isolation": "Fresh serial HOME/TMP/DB/cache/artifact directories after all original pytest processes terminated",
+  "classification": "Initial 15-second timeout; expected journal publication constructed approximately19.8seconds after late arrival; isolated whole-shard rerun passed; root cause not conclusively established. Event created_at is not precise commit/idle time.",
+  "independent_review": "independent-failure-review/classification.json and independent-failure-review/diagnostic-review.json"
+}

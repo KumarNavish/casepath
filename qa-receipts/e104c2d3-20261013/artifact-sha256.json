@@ -1,7 +1,7 @@
 {
   "all-failures.json": {
-    "size_bytes": 256971,
-    "sha256": "3cd820054e9935209d747858f0ecf9b42754a9add589feba4d005bb8cba2ab40"
+    "size_bytes": 257123,
+    "sha256": "805c02efde88f315db603167f4897486b88948db57e2eeb9f365f4878e1b65c5"
   },
   "cloud-assigned-ids.txt": {
     "size_bytes": 1335601,
@@ -16,8 +16,8 @@
     "sha256": "fe1b76d2b0ddc097709d2f9e6915ea594469959e95ce33a505790263b9060112"
   },
   "coverage-summary.json": {
-    "size_bytes": 7134,
-    "sha256": "da85c13891de5bd90421647ef5c3a241b556149029dccb7e6fa158967da251db"
+    "size_bytes": 9001,
+    "sha256": "5d30deac93d06ce4f29f9169964376545bdbc67800a076fddb016a7fdfbf4aa9"
   },
   "failure-environment-observation.json": {
     "size_bytes": 1452,
@@ -54,6 +54,10 @@
   "independent-failure-review/classification.json": {
     "size_bytes": 2856,
     "sha256": "b4063baee9508f014e45c84ff5e4db82aae7bacb728232498a01437566ac7196"
+  },
+  "independent-failure-review/diagnostic-review.json": {
+    "size_bytes": 7397,
+    "sha256": "1a1847dc1b25a54a9cf5c3a78c9acedc7eb08b757826fd4b2e327800da4e5aff"
   },
   "independent-review/authority-navigation-inspection.log": {
     "size_bytes": 1884,
@@ -183,21 +187,25 @@
     "size_bytes": 5194,
     "sha256": "aa5d299bbfea9f3ad377ed9d9494c056650fb0f8d8ac965983ead35a8015244f"
   },
+  "mac-coordinator-attestation.json": {
+    "size_bytes": 1176,
+    "sha256": "9826796a185d2937fd6614f9d1764cce3998b744e1aab0f34311b692690a6fc4"
+  },
   "mac-ids.txt": {
     "size_bytes": 15366,
     "sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8"
   },
   "per-file-durations.json": {
-    "size_bytes": 39075,
-    "sha256": "9d2df817b84ff0752b03d66d11e9e10c08e1d0620c7cdb28a4f04e4ee5e934b5"
+    "size_bytes": 39086,
+    "sha256": "a81f930f81c64630da3038998ecf18f4b5823162886baa17970897406a584235"
   },
   "per-test-durations.json": {
-    "size_bytes": 1702701,
-    "sha256": "15bd5f1b6e7c0941959774ecf64b80ba9098c1bd1f100816234c799c2a7ec91d"
+    "size_bytes": 1702730,
+    "sha256": "8e696f6e0f6eeed394709fa67fd79eafa7261a7428627fb1820aed99502eb7af"
   },
   "post-run-seal-verification.json": {
     "size_bytes": 1824,
-    "sha256": "e4c3414fdf82315131e724efaabe1aa26d5f0b806a6788be0e7736707adf1fe8"
+    "sha256": "de44a793793fa38f3808c51754867427a0a9b7d765341997bcaa29b163bdeb0e"
   },
   "preparation-summary.json": {
     "size_bytes": 12247,
@@ -206,6 +214,14 @@
   "prior-junit-durations.json": {
     "size_bytes": 1736330,
     "sha256": "2e462d8242add39bc17143135c260b673d4fd79c4963bd3c31d1dee08da81d6c"
+  },
+  "retry-authorization.json": {
+    "size_bytes": 1158,
+    "sha256": "c8f9544dbf47b2cd4cacd654555f9d346371eca8e832cd717889591fe990d7f9"
+  },
+  "retry-summary.json": {
+    "size_bytes": 1420,
+    "sha256": "c86dfc7021448380ed7e32b00b30cb1fc8ba7aa10b3dd2a0157642b7c721bc73"
   },
   "reused-ui-evidence.json": {
     "size_bytes": 1799,
@@ -216,8 +232,12 @@
     "sha256": "cfa4b1c97be7750e4a088db1048c98007da1d915e07cc1d0f1dab2f0836874a8"
   },
   "selected-attempts.json": {
-    "size_bytes": 104,
-    "sha256": "9fd5275178c5fcb147eb5f799f1e30c6b383311cd66624b288d17a9b3ff8a00b"
+    "size_bytes": 111,
+    "sha256": "b1c6b24c5cbd85261624f94db7cd9f348823232af2c99981576f965bbee8aa23"
+  },
+  "selected-failures.json": {
+    "size_bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
   },
   "shard-map-summary.json": {
     "size_bytes": 1802,
@@ -490,6 +510,50 @@
   "shard4/worker-summary.sha256": {
     "size_bytes": 86,
     "sha256": "91fb78e4d5673c1adcf0e4bd0ad0bbda75052ef24be0047654a6617ad31e5fad"
+  },
+  "shard4-serial/agent-work-v1.sqlite3": {
+    "size_bytes": 155648,
+    "sha256": "de9405fed280638355610f41932b78f1f11bbc1d2382d8851c03027b96cadd19"
+  },
+  "shard4-serial/casepath.db": {
+    "size_bytes": 204800,
+    "sha256": "7cbd54214695668d2a7fc54b414f2c7c54fd83db9b926c488fcd7ec98de33a99"
+  },
+  "shard4-serial/collected.json": {
+    "size_bytes": 114357,
+    "sha256": "efb18752d040efe12071c7ca0b180195036544b342166a48cb6e175bcdd6ffad"
+  },
+  "shard4-serial/command.json": {
+    "size_bytes": 2269,
+    "sha256": "3081007c8f947117cbf34fb0f96a32043cdcf102cad08054fd3d3062bd605ca1"
+  },
+  "shard4-serial/junit.xml": {
+    "size_bytes": 49835,
+    "sha256": "d76922b4fee51529228b3d8db5be8d13a2c8483ebc2b12a409c1e92b015210df"
+  },
+  "shard4-serial/pytest-arguments.txt": {
+    "size_bytes": 40855,
+    "sha256": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6"
+  },
+  "shard4-serial/pytest.log": {
+    "size_bytes": 39152,
+    "sha256": "749dd49e7579e26a394ebf79921cb26e51edd8335a1861ae065e0fd39567c8d7"
+  },
+  "shard4-serial/reports.jsonl": {
+    "size_bytes": 235735,
+    "sha256": "452463d0c471df8e47205501fedbba13a6877f6fb252aeb6bc549fb3fb8dfb1e"
+  },
+  "shard4-serial/result.json": {
+    "size_bytes": 2450,
+    "sha256": "de58f2f0f6cdf868ac78be310bc8485d23c495454b3c02b5dfba45aebaaf6050"
+  },
+  "shard4-serial/runner.log": {
+    "size_bytes": 114,
+    "sha256": "a79b767a8cc8b568029c9622f7fa5cb64b7edff933ad3079d78fec5201bacd8b"
+  },
+  "shard4-serial/shard-summary.json": {
+    "size_bytes": 757,
+    "sha256": "0efe7449a5e8e9d0262a623e643142573e10d3b4b9e55167e7e6196858fb0d4f"
   },
   "shard5/checksums.sha256": {
     "size_bytes": 714,

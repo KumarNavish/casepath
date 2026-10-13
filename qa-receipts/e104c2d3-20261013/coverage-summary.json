@@ -73,12 +73,12 @@
     },
     "4": {
       "tests": 324,
-      "passed": 323,
-      "failed": 1,
+      "passed": 324,
+      "failed": 0,
       "skipped": 0,
-      "exit_code": 1,
-      "duration_seconds": 524.3861050605774,
-      "junit_duration_seconds": 517.16,
+      "exit_code": 0,
+      "duration_seconds": 356.0385558605194,
+      "junit_duration_seconds": 348.719,
       "assigned_collected_executed_junit_equal": true,
       "assigned_sorted_sha256": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6",
       "executed_sorted_sha256": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6",
@@ -86,10 +86,10 @@
       "after_status": "",
       "sealed_files_verified": 1680,
       "source_manifest_sha256": "58b29232c94fd72df65010a83c1a73bd6386433e3c94a2a3c67fd6be5943ae9a",
-      "started_epoch": 1791849667.1723611,
-      "finished_epoch": 1791850191.5584662,
-      "attempt_directory": "shard4",
-      "status": "failed"
+      "started_epoch": 1791850512.3772085,
+      "finished_epoch": 1791850868.4157643,
+      "attempt_directory": "shard4-serial",
+      "status": "passed"
     },
     "5": {
       "tests": 563,
@@ -134,38 +134,64 @@
   },
   "cloud": {
     "tests": 2390,
-    "passed": 2379,
-    "failed": 1,
+    "passed": 2380,
+    "failed": 0,
     "skipped": 10
   },
   "mac": {
     "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+    "basis": "Explicit Mac coordinator attestation; raw Mac JUnit/log not downloaded or parsed in Cloud",
     "tests": 127,
-    "status": "pending",
-    "basis": "Mac-owned assigned IDs; no result received on Cloud"
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "attempts": 1,
+    "pytest_duration_seconds": 389.97,
+    "wrapper_duration_seconds": 400.705,
+    "assigned_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "executed_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "raw_collection_order_sha256": "3c884c14f100b63a6fa3e0df749172cf960b0e664b4c5dc6bb6a866a22908b54",
+    "junit_sha256": "a1b3e4aa4848adcb94322818422b45f92e4d7181e1da33682207b6e210fa74b8",
+    "collected_executed_junit_ids_equal": true,
+    "mac_artifact_path": ".work/casepath-direct-navigation-20261013/gate/",
+    "mac_artifacts": [
+      "mac-shard-junit.xml",
+      "mac-shard-coverage.json",
+      "mac-shard-receipt.json",
+      "mac-shard.log",
+      "mac-shard-environment.json"
+    ],
+    "clean_isolated_deterministic_environment": true,
+    "provider_credentials": false,
+    "source_thread_id": "01a115f5-6dce-7700-9751-e1dc804e9a1b",
+    "status": "passed"
   },
   "full_combined": {
     "tests": 2517,
-    "passed": null,
-    "failed": null,
-    "skipped": null,
-    "mac_basis": "Pending Mac result; full assignment union verified only",
+    "passed": 2507,
+    "failed": 0,
+    "skipped": 10,
+    "mac_basis": "Explicit coordinator attestation; raw Mac JUnit not Cloud-parsed",
     "cloud_basis": "Six independently parsed Cloud JUnits and exact-ID observer phase reports"
   },
   "coverage": {
     "missing": 0,
     "duplicates": 0,
     "extra": 0,
-    "all_assigned_collected_executed_junit_equal": true
+    "all_assigned_collected_executed_junit_equal": true,
+    "cloud_execution_union_verified": true,
+    "mac_execution_verification": "Explicit Mac coordinator attestation: exact 127 assigned/collected/JUnit IDs; sorted ID hash independently matches Cloud assignment. Raw Mac JUnit remains Mac-owned.",
+    "full_execution_union_verified_with_mac_attestation": true
   },
-  "finished_epoch": 1791850273.0511007,
-  "wall_span_seconds": 564.1102349758148,
-  "full_status": "failed",
+  "finished_epoch": 1791850934.915649,
+  "wall_span_seconds": 1240.9675331115723,
+  "full_status": "passed",
   "attempt_selection": {
     "1": "shard1",
     "2": "shard2",
     "3": "shard3",
-    "4": "shard4",
+    "4": "shard4-serial",
     "5": "shard5",
     "6": "shard6"
   },
@@ -176,10 +202,14 @@
   "test_environment_transport_or_provider_variables": false,
   "paid_inference": false,
   "production_operations": false,
-  "status": "failed",
+  "status": "passed",
   "limits": [
     "Mac JUnit/receipt/coverage remain Mac-owned; the combined union relies on explicit coordinator attestation for those exact127 IDs.",
     "Ten unchanged skips require unavailable frozen research fixtures.",
     "Prior JUnit timings only estimate shard balance; no performance bound is asserted."
-  ]
+  ],
+  "original_attempt_summary": "initial-attempt-summary/coverage-summary.json",
+  "retry_summary": "retry-summary.json",
+  "root_cause": "Initial 15-second timeout; expected journal publication constructed approximately 19.8 seconds after late arrival; isolated whole-shard4 rerun passed; root cause not conclusively established. Event construction timestamp is not precise commit/idle time.",
+  "independent_diagnostic_review": "independent-failure-review/diagnostic-review.json"
 }

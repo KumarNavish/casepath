@@ -1,5 +1,5 @@
 {
-  "basis": "Sum of executed per-test setup/call/teardown and JUnit durations; not full wall-time across parallel shards",
+  "basis": "Selected attempt sums of test setup/call/teardown and JUnit duration; not wall-time across parallel shards",
   "files": [
     {
       "file": "casepath-api/tests/test_agent_delegate_journal_validation.py",
@@ -19,8 +19,8 @@
       "passed": 96,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 5.5615686738165095,
-      "junit_duration_seconds": 5.551999999999998,
+      "observer_duration_seconds": 5.493052117875777,
+      "junit_duration_seconds": 5.482999999999998,
       "shards": [
         4,
         1,
@@ -36,8 +36,8 @@
       "passed": 9,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 39.449721624027006,
-      "junit_duration_seconds": 39.448,
+      "observer_duration_seconds": 25.123783131013624,
+      "junit_duration_seconds": 25.122999999999998,
       "shards": [
         4
       ]
@@ -108,8 +108,8 @@
       "passed": 62,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 1.0992296865442768,
-      "junit_duration_seconds": 1.0980000000000003,
+      "observer_duration_seconds": 0.8423450150294229,
+      "junit_duration_seconds": 0.8400000000000005,
       "shards": [
         4
       ]
@@ -189,11 +189,11 @@
     {
       "file": "casepath-api/tests/test_autonomous_adversarial_v1.py",
       "tests": 7,
-      "passed": 6,
-      "failed": 1,
+      "passed": 7,
+      "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 46.36151772510493,
-      "junit_duration_seconds": 46.361999999999995,
+      "observer_duration_seconds": 24.009556530974805,
+      "junit_duration_seconds": 24.009,
       "shards": [
         4
       ]
@@ -216,8 +216,8 @@
       "passed": 28,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 4.2106869632261805,
-      "junit_duration_seconds": 4.213,
+      "observer_duration_seconds": 3.151910833781585,
+      "junit_duration_seconds": 3.1500000000000004,
       "shards": [
         4
       ]
@@ -360,8 +360,8 @@
       "passed": 16,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 13.274413891078439,
-      "junit_duration_seconds": 13.276,
+      "observer_duration_seconds": 10.155667702085339,
+      "junit_duration_seconds": 10.158,
       "shards": [
         4
       ]
@@ -372,8 +372,8 @@
       "passed": 31,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 42.315633558959235,
-      "junit_duration_seconds": 42.31500000000001,
+      "observer_duration_seconds": 26.916597942938097,
+      "junit_duration_seconds": 26.918999999999997,
       "shards": [
         4
       ]
@@ -384,8 +384,8 @@
       "passed": 10,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 0.12829123192932457,
-      "junit_duration_seconds": 0.12899999999999998,
+      "observer_duration_seconds": 0.07772280793869868,
+      "junit_duration_seconds": 0.078,
       "shards": [
         4
       ]
@@ -648,7 +648,7 @@
       "passed": 3,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 0.0007738118874840438,
+      "observer_duration_seconds": 0.0006148960092104971,
       "junit_duration_seconds": 0.0,
       "shards": [
         4
@@ -876,8 +876,8 @@
       "passed": 8,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 0.017937081051059067,
-      "junit_duration_seconds": 0.018000000000000006,
+      "observer_duration_seconds": 0.009228519862517715,
+      "junit_duration_seconds": 0.009000000000000001,
       "shards": [
         4
       ]
@@ -888,8 +888,8 @@
       "passed": 2,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 0.02969931607367471,
-      "junit_duration_seconds": 0.030000000000000002,
+      "observer_duration_seconds": 0.006852531980257481,
+      "junit_duration_seconds": 0.006,
       "shards": [
         4
       ]
@@ -948,8 +948,8 @@
       "passed": 27,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 1.3018857876886614,
-      "junit_duration_seconds": 1.299,
+      "observer_duration_seconds": 0.8577229823567905,
+      "junit_duration_seconds": 0.858,
       "shards": [
         4
       ]
@@ -1056,8 +1056,8 @@
       "passed": 1,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 0.23468712699832395,
-      "junit_duration_seconds": 0.235,
+      "observer_duration_seconds": 0.12788989092223346,
+      "junit_duration_seconds": 0.128,
       "shards": [
         4
       ]
@@ -1092,8 +1092,8 @@
       "passed": 5,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 0.029743891092948616,
-      "junit_duration_seconds": 0.03,
+      "observer_duration_seconds": 0.003996387997176498,
+      "junit_duration_seconds": 0.005,
       "shards": [
         4
       ]
@@ -1140,8 +1140,8 @@
       "passed": 29,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 0.34578688722103834,
-      "junit_duration_seconds": 0.338,
+      "observer_duration_seconds": 0.10341075074393302,
+      "junit_duration_seconds": 0.09799999999999999,
       "shards": [
         4
       ]
@@ -1320,8 +1320,8 @@
       "passed": 2,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 16.065968303009868,
-      "junit_duration_seconds": 16.066000000000003,
+      "observer_duration_seconds": 8.243609686032869,
+      "junit_duration_seconds": 8.242999999999999,
       "shards": [
         4
       ]
@@ -1332,8 +1332,8 @@
       "passed": 3,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 240.27533051295904,
-      "junit_duration_seconds": 240.275,
+      "observer_duration_seconds": 162.3589999070391,
+      "junit_duration_seconds": 162.359,
       "shards": [
         4
       ]
@@ -1368,8 +1368,8 @@
       "passed": 1,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 2.8044395789620467,
-      "junit_duration_seconds": 2.804,
+      "observer_duration_seconds": 1.888346582883969,
+      "junit_duration_seconds": 1.888,
       "shards": [
         4
       ]
@@ -1440,8 +1440,8 @@
       "passed": 3,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 0.9324315920239314,
-      "junit_duration_seconds": 0.932,
+      "observer_duration_seconds": 0.6362541490234435,
+      "junit_duration_seconds": 0.636,
       "shards": [
         4
       ]
@@ -1452,8 +1452,8 @@
       "passed": 4,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 8.466370473091956,
-      "junit_duration_seconds": 8.467,
+      "observer_duration_seconds": 5.096597094845492,
+      "junit_duration_seconds": 5.096,
       "shards": [
         4
       ]
@@ -1548,8 +1548,8 @@
       "passed": 31,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 92.2429873762303,
-      "junit_duration_seconds": 92.24399999999997,
+      "observer_duration_seconds": 71.06113559647929,
+      "junit_duration_seconds": 71.05900000000001,
       "shards": [
         4
       ]
@@ -1560,8 +1560,8 @@
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 0.1631619071122259,
-      "junit_duration_seconds": 0.161,
+      "observer_duration_seconds": 0.17809656099416316,
+      "junit_duration_seconds": 0.17700000000000002,
       "shards": [
         4
       ]
@@ -1572,8 +1572,8 @@
       "passed": 10,
       "failed": 0,
       "skipped": 0,
-      "observer_duration_seconds": 7.036134974914603,
-      "junit_duration_seconds": 7.037,
+      "observer_duration_seconds": 7.565277629124466,
+      "junit_duration_seconds": 7.566,
       "shards": [
         4
       ]

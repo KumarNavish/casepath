@@ -115,7 +115,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_allowance_cli_never_implicitly_starts_a_review",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0013341400190256536,
+    "observer_duration_seconds": 0.0013586179702542722,
     "junit_duration_seconds": 0.001
   },
   {
@@ -136,7 +136,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_autonomous_profile_is_explicit_and_keeps_original_budget_environment",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0014243629993870854,
+    "observer_duration_seconds": 0.0013279729755595326,
     "junit_duration_seconds": 0.001
   },
   {
@@ -178,7 +178,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_autonomous_readiness_refuses_unverified_profile[resealed_cap]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0010760980076156557,
+    "observer_duration_seconds": 0.0010220700060017407,
     "junit_duration_seconds": 0.001
   },
   {
@@ -213,7 +213,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_autonomous_serve_keeps_preflight_leases_and_records_resume_scope",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0017314860015176237,
+    "observer_duration_seconds": 0.0017626250046305358,
     "junit_duration_seconds": 0.002
   },
   {
@@ -234,7 +234,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_boot_from_another_commit_or_capsule_is_refused[source_manifest_file_sha256-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0008196799899451435,
+    "observer_duration_seconds": 0.0007678849506191909,
     "junit_duration_seconds": 0.001
   },
   {
@@ -283,7 +283,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_capacity_preservation_floor_rejects_disappearance_or_usage_rollback[call_rollback]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0015253109741024673,
+    "observer_duration_seconds": 0.0015498899738304317,
     "junit_duration_seconds": 0.002
   },
   {
@@ -325,7 +325,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_capacity_readiness_rejects_unproved_or_inconsistent_extension[missing]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0009829809423536062,
+    "observer_duration_seconds": 0.0010170230525545776,
     "junit_duration_seconds": 0.001
   },
   {
@@ -367,7 +367,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_capacity_readiness_rejects_unproved_or_inconsistent_extension[workflows]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0011855509947054088,
+    "observer_duration_seconds": 0.0010127559653483331,
     "junit_duration_seconds": 0.001
   },
   {
@@ -409,7 +409,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_dirty_checkout_stops_before_verifiers_and_credentials",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0006034919642843306,
+    "observer_duration_seconds": 0.0006726239807903767,
     "junit_duration_seconds": 0.001
   },
   {
@@ -493,7 +493,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_incomplete_prior_launch_does_not_prove_zero_provider_activity",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.000993538007605821,
+    "observer_duration_seconds": 0.0010804670164361596,
     "junit_duration_seconds": 0.001
   },
   {
@@ -563,7 +563,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_preflight_binds_every_verifier_to_validated_git_head[unknown]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0009569730027578771,
+    "observer_duration_seconds": 0.0008606810588389635,
     "junit_duration_seconds": 0.001
   },
   {
@@ -619,8 +619,8 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_read_only_budget_retains_autonomous_activation_and_typed_call",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.36804082099115476,
-    "junit_duration_seconds": 0.368
+    "observer_duration_seconds": 0.29947414802154526,
+    "junit_duration_seconds": 0.299
   },
   {
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_read_only_snapshot_includes_uncheckpointed_provider_wal",
@@ -661,7 +661,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_readiness_refuses_misalignment_or_false_budget[head]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0010476969182491302,
+    "observer_duration_seconds": 0.0013191470061428845,
     "junit_duration_seconds": 0.001
   },
   {
@@ -703,7 +703,7 @@
     "id": "casepath-api/tests/test_agent_demo_launcher.py::test_readiness_refuses_unproven_extra_allowance[too_many]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0010385839850641787,
+    "observer_duration_seconds": 0.0010182518744841218,
     "junit_duration_seconds": 0.001
   },
   {
@@ -787,64 +787,64 @@
     "id": "casepath-api/tests/test_agent_desk_live_control.py::test_external_completion_between_stop_projection_and_dispatch_preserves_handler_receipt",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.704925777914468,
-    "junit_duration_seconds": 3.705
+    "observer_duration_seconds": 2.9317401729058474,
+    "junit_duration_seconds": 2.932
   },
   {
     "id": "casepath-api/tests/test_agent_desk_live_control.py::test_external_pause_clearability_requires_known_cost_and_a_finished_local_job",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00020422105444595218,
+    "observer_duration_seconds": 0.0002628160291351378,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_desk_live_control.py::test_handler_stop_cancels_further_external_work_without_erasing_pending_outcome[interrupted]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 4.5351914800703526,
-    "junit_duration_seconds": 4.535
+    "observer_duration_seconds": 2.918106066004839,
+    "junit_duration_seconds": 2.918
   },
   {
     "id": "casepath-api/tests/test_agent_desk_live_control.py::test_handler_stop_cancels_further_external_work_without_erasing_pending_outcome[queued]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.9594187249895185,
-    "junit_duration_seconds": 3.959
+    "observer_duration_seconds": 2.9944506209576502,
+    "junit_duration_seconds": 2.994
   },
   {
     "id": "casepath-api/tests/test_agent_desk_live_control.py::test_handler_stop_cancels_further_external_work_without_erasing_pending_outcome[running]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 5.060544288018718,
-    "junit_duration_seconds": 5.061
+    "observer_duration_seconds": 2.9537265360122547,
+    "junit_duration_seconds": 2.954
   },
   {
     "id": "casepath-api/tests/test_agent_desk_live_control.py::test_known_external_terminal_pause_clears_without_any_new_execution[False]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 5.597297017055098,
-    "junit_duration_seconds": 5.597
+    "observer_duration_seconds": 3.194488993030973,
+    "junit_duration_seconds": 3.194
   },
   {
     "id": "casepath-api/tests/test_agent_desk_live_control.py::test_known_external_terminal_pause_clears_without_any_new_execution[True]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 5.322357998986263,
-    "junit_duration_seconds": 5.322
+    "observer_duration_seconds": 3.1729751860839315,
+    "junit_duration_seconds": 3.173
   },
   {
     "id": "casepath-api/tests/test_agent_desk_live_control.py::test_reference_stop_remains_resumable_local_pause",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 5.718430862936657,
-    "junit_duration_seconds": 5.718
+    "observer_duration_seconds": 3.3192420370178297,
+    "junit_duration_seconds": 3.319
   },
   {
     "id": "casepath-api/tests/test_agent_desk_live_control.py::test_unknown_external_stop_outcome_cannot_clear_mandate_or_create_a_retry",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 5.551351253001485,
-    "junit_duration_seconds": 5.551
+    "observer_duration_seconds": 3.638790702971164,
+    "junit_duration_seconds": 3.639
   },
   {
     "id": "casepath-api/tests/test_agent_desk_question_priority.py::test_draft_precedes_unknown_conditions_in_claim_and_desk_until_reviewed",
@@ -1557,434 +1557,434 @@
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_applicable_tiers_and_automatic_cache_writes_are_reserved",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0004192579654045403,
+    "observer_duration_seconds": 0.000442893011495471,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_cache_write_prices_replace_input_rate_and_respect_legacy_tier_bound[pricing0-0.000000125]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0004252479411661625,
+    "observer_duration_seconds": 0.0002929519978351891,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_cache_write_prices_replace_input_rate_and_respect_legacy_tier_bound[pricing1-0.0000001]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00023361400235444307,
+    "observer_duration_seconds": 0.00023227307246997952,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_cache_write_prices_replace_input_rate_and_respect_legacy_tier_bound[pricing2-0.0000002]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002353170420974493,
+    "observer_duration_seconds": 0.00024255795869976282,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_cache_write_prices_replace_input_rate_and_respect_legacy_tier_bound[pricing3-0.0000002]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00021059100981801748,
+    "observer_duration_seconds": 0.0002240700414404273,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_cache_write_prices_replace_input_rate_and_respect_legacy_tier_bound[pricing4-0.0000003]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00022259802790358663,
+    "observer_duration_seconds": 0.0003766760346479714,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_cache_write_prices_replace_input_rate_and_respect_legacy_tier_bound[pricing5-0.0000004]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00021632906282320619,
+    "observer_duration_seconds": 0.00023844203678891063,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_cache_write_prices_replace_input_rate_and_respect_legacy_tier_bound[pricing6-0.0000004]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0012995589640922844,
-    "junit_duration_seconds": 0.001
+    "observer_duration_seconds": 0.0002212070394307375,
+    "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_cache_write_prices_replace_input_rate_and_respect_legacy_tier_bound[pricing7-0.0000001]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00026877602795138955,
+    "observer_duration_seconds": 0.00023603806039318442,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_call_cap_and_run_cap_survive_separate_run_requests",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.008802203985396773,
+    "observer_duration_seconds": 0.009016409981995821,
     "junit_duration_seconds": 0.009
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_checked_220_character_selection_finishes_without_resending_packet",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0287091420032084,
+    "observer_duration_seconds": 0.028731468017213047,
     "junit_duration_seconds": 0.029
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_context_bound_stops_request_before_send",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.011115559027530253,
+    "observer_duration_seconds": 0.010938422929029912,
     "junit_duration_seconds": 0.011
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_default_install_remains_provider_free_even_with_a_credential",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.04741540690883994,
-    "junit_duration_seconds": 0.047
+    "observer_duration_seconds": 0.03679625206859782,
+    "junit_duration_seconds": 0.037
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_demo_configuration_failure_never_silently_selects_reference[missing-model]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.014669935975689441,
-    "junit_duration_seconds": 0.015
+    "observer_duration_seconds": 0.01766883092932403,
+    "junit_duration_seconds": 0.018
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_demo_configuration_failure_never_silently_selects_reference[over-budget]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.015706907957792282,
-    "junit_duration_seconds": 0.016
+    "observer_duration_seconds": 0.01696131593780592,
+    "junit_duration_seconds": 0.017
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_demo_configuration_failure_never_silently_selects_reference[stale-catalogue]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.014694173005409539,
+    "observer_duration_seconds": 0.014647834992501885,
     "junit_duration_seconds": 0.015
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_demo_configuration_failure_never_silently_selects_reference[wrong-catalogue-hash]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.04260832298314199,
-    "junit_duration_seconds": 0.043
+    "observer_duration_seconds": 0.0146174700348638,
+    "junit_duration_seconds": 0.015
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_durable_policy_cannot_be_replenished_or_increased_on_restart",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.011086586979217827,
-    "junit_duration_seconds": 0.011
+    "observer_duration_seconds": 0.00897013203939423,
+    "junit_duration_seconds": 0.009
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_explicit_start_replays_same_run_and_guard_rejection_spends_nothing",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.010566949960775673,
-    "junit_duration_seconds": 0.011
+    "observer_duration_seconds": 0.008633453981019557,
+    "junit_duration_seconds": 0.009
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_external_start_cannot_jump_over_an_unresolved_local_claim_effect",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.009051181026734412,
-    "junit_duration_seconds": 0.009
+    "observer_duration_seconds": 0.0066930719767697155,
+    "junit_duration_seconds": 0.007
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_external_stop_after_unknown_outcome_never_clears_pending_receipt",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.01261068700114265,
-    "junit_duration_seconds": 0.013
+    "observer_duration_seconds": 0.00880023994250223,
+    "junit_duration_seconds": 0.009
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_external_stop_racing_completed_run_is_a_safe_noop",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.008729476947337389,
-    "junit_duration_seconds": 0.009
+    "observer_duration_seconds": 0.0062996819615364075,
+    "junit_duration_seconds": 0.006
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_external_stop_retains_inflight_request_and_blocks_next_send",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.03623375098686665,
-    "junit_duration_seconds": 0.036
+    "observer_duration_seconds": 0.011437590001150966,
+    "junit_duration_seconds": 0.011
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_and_semantic_work_obey_stop_checkpoints[attachment-a]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.017268311930820346,
-    "junit_duration_seconds": 0.017
+    "observer_duration_seconds": 0.012682145985309035,
+    "junit_duration_seconds": 0.013
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_and_semantic_work_obey_stop_checkpoints[attachment-b]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.02130107703851536,
-    "junit_duration_seconds": 0.021
+    "observer_duration_seconds": 0.017894142016302794,
+    "junit_duration_seconds": 0.018
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_and_semantic_work_obey_stop_checkpoints[before-list]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.010726665961556137,
-    "junit_duration_seconds": 0.011
+    "observer_duration_seconds": 0.008096401987131685,
+    "junit_duration_seconds": 0.008
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_and_semantic_work_obey_stop_checkpoints[list_sources]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.012203937047161162,
-    "junit_duration_seconds": 0.012
+    "observer_duration_seconds": 0.0101501609897241,
+    "junit_duration_seconds": 0.01
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_and_semantic_work_obey_stop_checkpoints[propose_assertion]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.04059518902795389,
-    "junit_duration_seconds": 0.041
+    "observer_duration_seconds": 0.026491493976209313,
+    "junit_duration_seconds": 0.026
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_and_semantic_work_obey_stop_checkpoints[provider-response]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.018632977036759257,
+    "observer_duration_seconds": 0.01948965498013422,
     "junit_duration_seconds": 0.019
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_and_semantic_work_obey_stop_checkpoints[read_customer_message]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.011055561015382409,
+    "observer_duration_seconds": 0.011244133987929672,
     "junit_duration_seconds": 0.011
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_and_semantic_work_obey_stop_checkpoints[select_source_span]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.021460571966599673,
-    "junit_duration_seconds": 0.021
+    "observer_duration_seconds": 0.019719226052984595,
+    "junit_duration_seconds": 0.02
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_avoids_observed_six_request_navigation_failure",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0494150499580428,
-    "junit_duration_seconds": 0.049
+    "observer_duration_seconds": 0.027844078023917973,
+    "junit_duration_seconds": 0.028
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_failure_blocks_before_any_http[bad-text-hash]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.014928608026821166,
+    "observer_duration_seconds": 0.01504515204578638,
     "junit_duration_seconds": 0.015
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_failure_blocks_before_any_http[oversized]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.01825547992484644,
-    "junit_duration_seconds": 0.018
+    "observer_duration_seconds": 0.020236387092154473,
+    "junit_duration_seconds": 0.02
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_failure_blocks_before_any_http[source-changed]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.013808806019369513,
-    "junit_duration_seconds": 0.014
+    "observer_duration_seconds": 0.010309915989637375,
+    "junit_duration_seconds": 0.01
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_preparation_failure_blocks_before_any_http[tool-budget]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.035927999939303845,
-    "junit_duration_seconds": 0.036
+    "observer_duration_seconds": 0.009597635944373906,
+    "junit_duration_seconds": 0.01
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_publication_and_completion_recheck_current_packet[propose_assertion]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.02432163496268913,
+    "observer_duration_seconds": 0.024334373068995774,
     "junit_duration_seconds": 0.024
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_host_publication_and_completion_recheck_current_packet[select_source_span]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.022299549949821085,
-    "junit_duration_seconds": 0.022
+    "observer_duration_seconds": 0.02501310099614784,
+    "junit_duration_seconds": 0.025
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_installed_demo_requires_owner_and_respects_paused_delegate_without_calls",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.026117317029275,
-    "junit_duration_seconds": 0.026
+    "observer_duration_seconds": 0.029943844943773,
+    "junit_duration_seconds": 0.03
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_cache_prices_and_unknown_paid_tier_fields_still_fail_closed[pricing0]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0005464580026455224,
-    "junit_duration_seconds": 0.001
+    "observer_duration_seconds": 0.00031112798023968935,
+    "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_cache_prices_and_unknown_paid_tier_fields_still_fail_closed[pricing1]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002691069967113435,
+    "observer_duration_seconds": 0.0002096699899993837,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_cache_prices_and_unknown_paid_tier_fields_still_fail_closed[pricing2]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002089279587380588,
+    "observer_duration_seconds": 0.00029043894028291106,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_cache_prices_and_unknown_paid_tier_fields_still_fail_closed[pricing3]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00021766196005046368,
+    "observer_duration_seconds": 0.00021695002214983106,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_provider_envelopes_never_produce_work_or_retry[different-model]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.03588591801235452,
-    "junit_duration_seconds": 0.036
+    "observer_duration_seconds": 0.01807696302421391,
+    "junit_duration_seconds": 0.018
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_provider_envelopes_never_produce_work_or_retry[duplicate-json]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.019222297065425664,
-    "junit_duration_seconds": 0.019
+    "observer_duration_seconds": 0.017613078060094267,
+    "junit_duration_seconds": 0.018
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_provider_envelopes_never_produce_work_or_retry[host-only-finish]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.018930957070551813,
-    "junit_duration_seconds": 0.019
+    "observer_duration_seconds": 0.021068003959953785,
+    "junit_duration_seconds": 0.021
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_provider_envelopes_never_produce_work_or_retry[host-only-publish]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.018874263972975314,
-    "junit_duration_seconds": 0.019
+    "observer_duration_seconds": 0.01716108195250854,
+    "junit_duration_seconds": 0.017
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_provider_envelopes_never_produce_work_or_retry[host-only-tool]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.04113604698795825,
-    "junit_duration_seconds": 0.041
+    "observer_duration_seconds": 0.01877922803396359,
+    "junit_duration_seconds": 0.019
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_provider_envelopes_never_produce_work_or_retry[no-tools]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.018470917944796383,
+    "observer_duration_seconds": 0.018186745001003146,
     "junit_duration_seconds": 0.018
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_provider_envelopes_never_produce_work_or_retry[oversized]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.01904755999566987,
-    "junit_duration_seconds": 0.019
+    "observer_duration_seconds": 0.017353395000100136,
+    "junit_duration_seconds": 0.017
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_invalid_provider_envelopes_never_produce_work_or_retry[unavailable-tool]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.04474448598921299,
-    "junit_duration_seconds": 0.045
+    "observer_duration_seconds": 0.020869239990133792,
+    "junit_duration_seconds": 0.021
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_known_receipt_releases_slot_but_unknown_cost_stays_reserved",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.01219653693260625,
-    "junit_duration_seconds": 0.012
+    "observer_duration_seconds": 0.013173379004001617,
+    "junit_duration_seconds": 0.013
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_mocked_model_uses_real_source_gates_and_never_records_private_reasoning",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.01955273502971977,
+    "observer_duration_seconds": 0.019688451022375375,
     "junit_duration_seconds": 0.02
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_observed_provider_overrun_is_retained_and_stops_further_calls",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.008488122082781047,
-    "junit_duration_seconds": 0.008
+    "observer_duration_seconds": 0.008886275929398835,
+    "junit_duration_seconds": 0.009
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_prepared_sources_do_not_bypass_exact_quote_gate_or_any_budget[20-6]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.06747200695099309,
-    "junit_duration_seconds": 0.067
+    "observer_duration_seconds": 0.04463372193276882,
+    "junit_duration_seconds": 0.045
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_prepared_sources_do_not_bypass_exact_quote_gate_or_any_budget[7-1]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.022645741933956742,
-    "junit_duration_seconds": 0.023
+    "observer_duration_seconds": 0.020838606054894626,
+    "junit_duration_seconds": 0.021
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_selected_batch_counts_all_tools_and_publishes_each_unique_span_once[False]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.02871247800067067,
-    "junit_duration_seconds": 0.029
+    "observer_duration_seconds": 0.028023032995406538,
+    "junit_duration_seconds": 0.028
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_selected_batch_counts_all_tools_and_publishes_each_unique_span_once[True]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.04559864703333005,
-    "junit_duration_seconds": 0.046
+    "observer_duration_seconds": 0.024395381973590702,
+    "junit_duration_seconds": 0.024
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_selected_model_is_pinned_and_unknown_surcharges_or_tiers_are_rejected",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.000620596983935684,
+    "observer_duration_seconds": 0.0005999550339765847,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_two_store_instances_admit_one_physical_provider_call",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.011650759901385754,
+    "observer_duration_seconds": 0.012406428984832019,
     "junit_duration_seconds": 0.012
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_unknown_provider_timeout_is_never_retried_or_unreserved",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.023638317070435733,
-    "junit_duration_seconds": 0.024
+    "observer_duration_seconds": 0.022045806050300598,
+    "junit_duration_seconds": 0.022
   },
   {
     "id": "casepath-api/tests/test_agent_work_openrouter_demo.py::test_whole_run_reservations_enforce_aggregate_limit_before_send",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.007248831039760262,
+    "observer_duration_seconds": 0.006706921965815127,
     "junit_duration_seconds": 0.007
   },
   {
@@ -2439,50 +2439,50 @@
     "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_arrival_during_inference_cannot_be_overwritten_by_old_terminal_outcome",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.27634838898666203,
-    "junit_duration_seconds": 0.276
+    "observer_duration_seconds": 0.1789435959653929,
+    "junit_duration_seconds": 0.179
   },
   {
     "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_changed_rule_pack_reassesses_instead_of_accepting_old_terminal_workflow",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 9.033245086029638,
-    "junit_duration_seconds": 9.033
+    "observer_duration_seconds": 6.489060823048931,
+    "junit_duration_seconds": 6.489
   },
   {
     "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_document_fact_aggregates_all_sources_instead_of_last_file",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.8530615430208854,
-    "junit_duration_seconds": 2.853
+    "observer_duration_seconds": 2.0684238580288365,
+    "junit_duration_seconds": 2.068
   },
   {
     "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_pause_during_inference_stops_before_the_verifier_and_graph_commit",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.21583068399922922,
-    "junit_duration_seconds": 0.216
+    "observer_duration_seconds": 0.16427045298041776,
+    "junit_duration_seconds": 0.164
   },
   {
     "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_startup_skips_paused_terminal_and_incomplete_claims",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.4947867930168286,
-    "junit_duration_seconds": 2.495
+    "observer_duration_seconds": 1.789271674992051,
+    "junit_duration_seconds": 1.789
   },
   {
     "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_automatically_resumes_new_evidence_arriving_during_inference",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 8.875576730060857,
-    "junit_duration_seconds": 8.876
+    "observer_duration_seconds": 3.895005177007988,
+    "junit_duration_seconds": 3.895
   },
   {
     "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication",
     "shard": 4,
-    "outcome": "failed",
-    "observer_duration_seconds": 22.612668499990832,
-    "junit_duration_seconds": 22.613
+    "outcome": "passed",
+    "observer_duration_seconds": 9.424580948951188,
+    "junit_duration_seconds": 9.425
   },
   {
     "id": "casepath-api/tests/test_autonomous_api_v1.py::test_intake_api_headers_idempotency_saved_events_and_source_readback",
@@ -2495,197 +2495,197 @@
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_both_stages_share_the_same_original_workflow_cost_ceiling",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.2001212599570863,
-    "junit_duration_seconds": 0.2
+    "observer_duration_seconds": 0.1182835049694404,
+    "junit_duration_seconds": 0.118
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_capacity_grant_is_immutable_at_sql_boundary[DELETE FROM work_autonomous_capacity_grant]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.1287500990438275,
-    "junit_duration_seconds": 0.129
+    "observer_duration_seconds": 0.10126928600948304,
+    "junit_duration_seconds": 0.101
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_capacity_grant_is_immutable_at_sql_boundary[INSERT OR REPLACE INTO work_autonomous_capacity_grant SELECT * FROM work_autonomous_capacity_grant]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.12317885196534917,
-    "junit_duration_seconds": 0.123
+    "observer_duration_seconds": 0.09922321588965133,
+    "junit_duration_seconds": 0.099
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_capacity_grant_is_immutable_at_sql_boundary[UPDATE work_autonomous_capacity_grant SET record_sha256='changed']",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.14289272401947528,
-    "junit_duration_seconds": 0.143
+    "observer_duration_seconds": 0.09959066001465544,
+    "junit_duration_seconds": 0.1
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_early_rejections_consume_workflow_slots_without_inventing_calls_or_retries",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.18283147003967315,
-    "junit_duration_seconds": 0.183
+    "observer_duration_seconds": 0.1353413240867667,
+    "junit_duration_seconds": 0.135
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_is_cas_bound_and_concurrent_exact_replay_is_idempotent",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.13715315103763714,
-    "junit_duration_seconds": 0.137
+    "observer_duration_seconds": 0.1119848049711436,
+    "junit_duration_seconds": 0.112
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_preserves_all_history_and_dollars_then_admits_exactly_three_pairs",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.22397667705081403,
-    "junit_duration_seconds": 0.224
+    "observer_duration_seconds": 0.18221484794048592,
+    "junit_duration_seconds": 0.182
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[active_legacy]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.14592548098880798,
-    "junit_duration_seconds": 0.146
+    "observer_duration_seconds": 0.09941153600811958,
+    "junit_duration_seconds": 0.099
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[insufficient_dollars]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.11762363801244646,
-    "junit_duration_seconds": 0.118
+    "observer_duration_seconds": 0.09990591503446922,
+    "junit_duration_seconds": 0.1
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[pending]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.1198654500185512,
-    "junit_duration_seconds": 0.12
+    "observer_duration_seconds": 0.0943789099692367,
+    "junit_duration_seconds": 0.094
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[unknown]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.1208101449883543,
-    "junit_duration_seconds": 0.121
+    "observer_duration_seconds": 0.10107068298384547,
+    "junit_duration_seconds": 0.101
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_requires_existing_exact_policy_activation_and_exhausted_calls",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.006536242028232664,
-    "junit_duration_seconds": 0.007
+    "observer_duration_seconds": 0.006418188975658268,
+    "junit_duration_seconds": 0.006
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_missing_grant_or_ancestors_reject_replay[grant]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.15599097998347133,
-    "junit_duration_seconds": 0.156
+    "observer_duration_seconds": 0.12162665894720703,
+    "junit_duration_seconds": 0.122
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_missing_grant_or_ancestors_reject_replay[policy]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.16494698903989047,
-    "junit_duration_seconds": 0.165
+    "observer_duration_seconds": 0.11493462801445276,
+    "junit_duration_seconds": 0.115
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_missing_grant_or_ancestors_reject_replay[prior_workflow]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.1432107730070129,
-    "junit_duration_seconds": 0.143
+    "observer_duration_seconds": 0.11652320093708113,
+    "junit_duration_seconds": 0.117
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_provider_overrun_after_grant_freezes_new_work_and_retains_observed_cost",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.17260466900188476,
-    "junit_duration_seconds": 0.173
+    "observer_duration_seconds": 0.11517305899178609,
+    "junit_duration_seconds": 0.115
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[activation]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.13230555900372565,
-    "junit_duration_seconds": 0.132
+    "observer_duration_seconds": 0.10098863195162266,
+    "junit_duration_seconds": 0.101
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[base]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.14962073403876275,
-    "junit_duration_seconds": 0.15
+    "observer_duration_seconds": 0.10545276704942808,
+    "junit_duration_seconds": 0.105
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[calls]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.13591092400019988,
-    "junit_duration_seconds": 0.136
+    "observer_duration_seconds": 0.10110722697572783,
+    "junit_duration_seconds": 0.101
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[prior_count]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.16002980701159686,
-    "junit_duration_seconds": 0.16
+    "observer_duration_seconds": 0.10028563399100676,
+    "junit_duration_seconds": 0.1
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[prior_money]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.12390821502776816,
-    "junit_duration_seconds": 0.124
+    "observer_duration_seconds": 0.10383617301704362,
+    "junit_duration_seconds": 0.104
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[roster]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.12560930103063583,
-    "junit_duration_seconds": 0.126
+    "observer_duration_seconds": 0.11993896402418613,
+    "junit_duration_seconds": 0.12
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[unsealed]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.12276031594956294,
-    "junit_duration_seconds": 0.123
+    "observer_duration_seconds": 0.10460563702508807,
+    "junit_duration_seconds": 0.105
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[workflows]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.14309905702248216,
-    "junit_duration_seconds": 0.143
+    "observer_duration_seconds": 0.10592316201655194,
+    "junit_duration_seconds": 0.106
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_seventeen_calls_after_one_stage_rejection_grants_exactly_three_pairs",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.22658321500057355,
-    "junit_duration_seconds": 0.227
+    "observer_duration_seconds": 0.1898992700735107,
+    "junit_duration_seconds": 0.19
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_sixteen_calls_still_allow_a_pair_and_cannot_receive_a_capacity_grant",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.12040472606895491,
-    "junit_duration_seconds": 0.12
+    "observer_duration_seconds": 0.08720099000493065,
+    "junit_duration_seconds": 0.087
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_three_full_cost_workflows_remain_inside_original_aggregate_dollar_limit",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.25324329698923975,
-    "junit_duration_seconds": 0.253
+    "observer_duration_seconds": 0.18136494292411953,
+    "junit_duration_seconds": 0.181
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_workflow_ceiling_pending_slot_and_unknown_reservations_still_apply",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.23079321190016344,
-    "junit_duration_seconds": 0.231
+    "observer_duration_seconds": 0.13395701098488644,
+    "junit_duration_seconds": 0.134
   },
   {
     "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_abandon_cannot_release_unknown_call_cost_or_enable_resend",
@@ -4056,400 +4056,400 @@
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_actual_omission_is_compiled_before_verification_and_raw_output_is_unchanged",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.1614408630412072,
-    "junit_duration_seconds": 0.161
+    "observer_duration_seconds": 0.11762339499546215,
+    "junit_duration_seconds": 0.118
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_compilation_cannot_overflow_the_closed_candidate_or_verifier_rosters",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.1810777589562349,
-    "junit_duration_seconds": 0.181
+    "observer_duration_seconds": 0.10613658704096451,
+    "junit_duration_seconds": 0.106
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_compiler_cannot_invent_support_for_ineligible_documents[incomplete]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.13383512903237715,
-    "junit_duration_seconds": 0.134
+    "observer_duration_seconds": 0.10667636402649805,
+    "junit_duration_seconds": 0.107
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_compiler_cannot_invent_support_for_ineligible_documents[insufficient]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.13067012501414865,
-    "junit_duration_seconds": 0.131
+    "observer_duration_seconds": 0.10653208097210154,
+    "junit_duration_seconds": 0.107
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_compiler_cannot_invent_support_for_ineligible_documents[invented_quote]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.15871637896634638,
-    "junit_duration_seconds": 0.159
+    "observer_duration_seconds": 0.1211159459198825,
+    "junit_duration_seconds": 0.121
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_compiler_cannot_invent_support_for_ineligible_documents[message]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.1320019870181568,
-    "junit_duration_seconds": 0.132
+    "observer_duration_seconds": 0.10703921806998551,
+    "junit_duration_seconds": 0.107
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_compiler_cannot_invent_support_for_ineligible_documents[unsupported]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.14486188092269003,
-    "junit_duration_seconds": 0.145
+    "observer_duration_seconds": 0.10526946804020554,
+    "junit_duration_seconds": 0.105
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_compiler_cannot_invent_support_for_ineligible_documents[wrong_artifact_quote]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.1331320499884896,
-    "junit_duration_seconds": 0.133
+    "observer_duration_seconds": 0.13098290405469015,
+    "junit_duration_seconds": 0.131
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_compiler_cannot_invent_support_for_ineligible_documents[wrong_source]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.13358672003960237,
-    "junit_duration_seconds": 0.134
+    "observer_duration_seconds": 0.10157182300463319,
+    "junit_duration_seconds": 0.102
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_controller_rejects_verifier_receipt_without_exact_compilation_binding",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.35304896807065234,
-    "junit_duration_seconds": 0.353
+    "observer_duration_seconds": 0.21779163397150114,
+    "junit_duration_seconds": 0.218
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_independent_rejection_of_derived_candidate_remains_a_rejection",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.13015225902199745,
-    "junit_duration_seconds": 0.13
+    "observer_duration_seconds": 0.10479860298801214,
+    "junit_duration_seconds": 0.105
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_invalid_model_candidate_is_preserved_and_duplicates_are_never_repaired",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.14464812696678564,
-    "junit_duration_seconds": 0.145
+    "observer_duration_seconds": 0.10438858804991469,
+    "junit_duration_seconds": 0.104
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_omitted_recipe_produces_verified_v2_then_reuse_without_rewriting_v1",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 7.019890377006959,
-    "junit_duration_seconds": 7.02
+    "observer_duration_seconds": 5.309663622931112,
+    "junit_duration_seconds": 5.31
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_real_adapter_binds_raw_parent_and_compiled_verifier_request_then_replays_without_send[False]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.15388914599316195,
-    "junit_duration_seconds": 0.154
+    "observer_duration_seconds": 0.14675397297833115,
+    "junit_duration_seconds": 0.147
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_real_adapter_binds_raw_parent_and_compiled_verifier_request_then_replays_without_send[True]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.1757724600029178,
-    "junit_duration_seconds": 0.176
+    "observer_duration_seconds": 0.14266426902031526,
+    "junit_duration_seconds": 0.143
   },
   {
     "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_rejected_parent_document_cannot_qualify_a_derived_recipe",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.987689661036711,
-    "junit_duration_seconds": 3.988
+    "observer_duration_seconds": 3.1266592260217294,
+    "junit_duration_seconds": 3.127
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_busy_hosted_lease_denies_without_queue_or_event[hosted]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.5303311829920858,
-    "junit_duration_seconds": 0.53
+    "observer_duration_seconds": 0.3120823099743575,
+    "junit_duration_seconds": 0.312
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_closed_controller_refuses_saved_reconciliation_without_writes[hosted]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.4395330180414021,
-    "junit_duration_seconds": 0.44
+    "observer_duration_seconds": 0.3367514460696839,
+    "junit_duration_seconds": 0.337
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_closed_controller_refuses_saved_reconciliation_without_writes[legacy]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.2532807419775054,
-    "junit_duration_seconds": 0.253
+    "observer_duration_seconds": 0.2177771819406189,
+    "junit_duration_seconds": 0.218
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[actor]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.1363798420061357,
-    "junit_duration_seconds": 3.136
+    "observer_duration_seconds": 2.044091748946812,
+    "junit_duration_seconds": 2.044
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[head]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.5131067209877074,
-    "junit_duration_seconds": 2.513
+    "observer_duration_seconds": 2.2049271350260824,
+    "junit_duration_seconds": 2.205
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[key]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.0412252280511893,
-    "junit_duration_seconds": 3.041
+    "observer_duration_seconds": 2.0008745479863137,
+    "junit_duration_seconds": 2.001
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[reason]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.156885870033875,
-    "junit_duration_seconds": 3.157
+    "observer_duration_seconds": 2.155669904954266,
+    "junit_duration_seconds": 2.156
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[canonical]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.842470235947985,
-    "junit_duration_seconds": 3.842
+    "observer_duration_seconds": 2.4603629470220767,
+    "junit_duration_seconds": 2.46
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[hosted]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 4.6333173110033385,
-    "junit_duration_seconds": 4.633
+    "observer_duration_seconds": 2.5418193089426495,
+    "junit_duration_seconds": 2.542
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[legacy]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.8465210699941963,
-    "junit_duration_seconds": 3.847
+    "observer_duration_seconds": 2.415548046003096,
+    "junit_duration_seconds": 2.416
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_control_plane_cache_only_route_keeps_existing_origin_guard_and_denials",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 4.359253828006331,
-    "junit_duration_seconds": 4.359
+    "observer_duration_seconds": 2.3862737320014276,
+    "junit_duration_seconds": 2.386
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_failed_deterministic_application_preserves_failure_and_requires_new_command",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.697376141033601,
-    "junit_duration_seconds": 3.697
+    "observer_duration_seconds": 2.113051034975797,
+    "junit_duration_seconds": 2.113
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_failure_is_not_resumed_or_retried_by_normal_controller",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.31938298599561676,
-    "junit_duration_seconds": 0.319
+    "observer_duration_seconds": 0.21766234905226156,
+    "junit_duration_seconds": 0.218
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[binding]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.2854995320085436,
-    "junit_duration_seconds": 0.285
+    "observer_duration_seconds": 0.20116454199887812,
+    "junit_duration_seconds": 0.201
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[config]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.2471716110012494,
-    "junit_duration_seconds": 0.247
+    "observer_duration_seconds": 0.2045841959770769,
+    "junit_duration_seconds": 0.205
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[context]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.2787836159695871,
-    "junit_duration_seconds": 0.279
+    "observer_duration_seconds": 0.20299294701544568,
+    "junit_duration_seconds": 0.203
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[proposal]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.2904378430102952,
-    "junit_duration_seconds": 0.29
+    "observer_duration_seconds": 0.20178988098632544,
+    "junit_duration_seconds": 0.202
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[request]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.27964257495477796,
-    "junit_duration_seconds": 0.28
+    "observer_duration_seconds": 0.1995805889600888,
+    "junit_duration_seconds": 0.2
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[schema]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.30063003301620483,
-    "junit_duration_seconds": 0.301
+    "observer_duration_seconds": 0.20710272301221266,
+    "junit_duration_seconds": 0.207
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_oversized_child_event_keys_reject_before_admission[171]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.28011872700881213,
-    "junit_duration_seconds": 0.28
+    "observer_duration_seconds": 0.19978111603995785,
+    "junit_duration_seconds": 0.2
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_oversized_child_event_keys_reject_before_admission[180]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.3335250560194254,
-    "junit_duration_seconds": 0.334
+    "observer_duration_seconds": 0.20456562901381403,
+    "junit_duration_seconds": 0.205
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_pause_or_new_evidence_during_application_keeps_its_own_head[new_source]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.3966965039726347,
-    "junit_duration_seconds": 0.397
+    "observer_duration_seconds": 0.2835177590022795,
+    "junit_duration_seconds": 0.284
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_pause_or_new_evidence_during_application_keeps_its_own_head[paused]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.3997645920026116,
-    "junit_duration_seconds": 0.4
+    "observer_duration_seconds": 0.272655172040686,
+    "junit_duration_seconds": 0.273
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_rejected_document_is_preserved_but_never_reviewed_or_learned[bad_document]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.5205310790333897,
-    "junit_duration_seconds": 3.521
+    "observer_duration_seconds": 1.95642283099005,
+    "junit_duration_seconds": 1.956
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_saved_workflow_accessor_is_select_only_and_requires_complete_pair",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.04234644595999271,
-    "junit_duration_seconds": 0.042
+    "observer_duration_seconds": 0.017443372053094208,
+    "junit_duration_seconds": 0.017
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[absent]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.2857306929654442,
-    "junit_duration_seconds": 0.286
+    "observer_duration_seconds": 0.22728789498796687,
+    "junit_duration_seconds": 0.227
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[bad_terminal]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.28063604299677536,
-    "junit_duration_seconds": 0.281
+    "observer_duration_seconds": 0.22533291904255748,
+    "junit_duration_seconds": 0.225
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[missing_verify]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.2797153319697827,
-    "junit_duration_seconds": 0.28
+    "observer_duration_seconds": 0.2357275389949791,
+    "junit_duration_seconds": 0.236
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[pending]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.3680793090024963,
-    "junit_duration_seconds": 0.368
+    "observer_duration_seconds": 0.2206009139190428,
+    "junit_duration_seconds": 0.221
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[rejected]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.37832914700265974,
-    "junit_duration_seconds": 0.378
+    "observer_duration_seconds": 0.22822416695998982,
+    "junit_duration_seconds": 0.228
   },
   {
     "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[unknown]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.29893124499358237,
-    "junit_duration_seconds": 0.299
+    "observer_duration_seconds": 0.22093205904820934,
+    "junit_duration_seconds": 0.221
   },
   {
     "id": "casepath-api/tests/test_autonomous_store_v1.py::test_acquisition_is_read_only_then_exactly_journaled_and_cross_claim_closed",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.007497117971070111,
+    "observer_duration_seconds": 0.0071593879838474095,
     "junit_duration_seconds": 0.007
   },
   {
     "id": "casepath-api/tests/test_autonomous_store_v1.py::test_action_context_updates_fact_projection_and_preserves_old_namespaces",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0037276630173437297,
-    "junit_duration_seconds": 0.004
+    "observer_duration_seconds": 0.003394432016648352,
+    "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_autonomous_store_v1.py::test_cas_replay_chain_tamper_and_namespace_isolation",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.006809692946262658,
-    "junit_duration_seconds": 0.007
+    "observer_duration_seconds": 0.006107877008616924,
+    "junit_duration_seconds": 0.006
   },
   {
     "id": "casepath-api/tests/test_autonomous_store_v1.py::test_email_headers_and_nested_decode_defects_are_part_of_extraction_coverage",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.006878122047055513,
-    "junit_duration_seconds": 0.007
+    "observer_duration_seconds": 0.005529153975658119,
+    "junit_duration_seconds": 0.006
   },
   {
     "id": "casepath-api/tests/test_autonomous_store_v1.py::test_exact_concurrent_intake_and_later_retries_preserve_original_result",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.016117985942400992,
-    "junit_duration_seconds": 0.016
+    "observer_duration_seconds": 0.009187506977468729,
+    "junit_duration_seconds": 0.009
   },
   {
     "id": "casepath-api/tests/test_autonomous_store_v1.py::test_graph_acceptance_seals_evaluates_and_rejects_wrong_claim",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.008562770031858236,
-    "junit_duration_seconds": 0.009
+    "observer_duration_seconds": 0.007721593952737749,
+    "junit_duration_seconds": 0.008
   },
   {
     "id": "casepath-api/tests/test_autonomous_store_v1.py::test_intake_is_immutable_idempotent_and_only_message_is_acquired",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.030325460014864802,
-    "junit_duration_seconds": 0.03
+    "observer_duration_seconds": 0.005560420919209719,
+    "junit_duration_seconds": 0.006
   },
   {
     "id": "casepath-api/tests/test_autonomous_store_v1.py::test_new_sources_reopen_deferral_and_file_validation",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.005199625971727073,
+    "observer_duration_seconds": 0.004692050046287477,
     "junit_duration_seconds": 0.005
   },
   {
     "id": "casepath-api/tests/test_autonomous_store_v1.py::test_pdf_email_and_unsupported_extraction_preserve_limits",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.02152670902432874,
-    "junit_duration_seconds": 0.022
+    "observer_duration_seconds": 0.014079862041398883,
+    "junit_duration_seconds": 0.014
   },
   {
     "id": "casepath-api/tests/test_autonomous_store_v1.py::test_receipts_bind_parent_and_graph_sources_require_real_acquisition",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.021646084962412715,
-    "junit_duration_seconds": 0.022
+    "observer_duration_seconds": 0.014290523016825318,
+    "junit_duration_seconds": 0.014
   },
   {
     "id": "casepath-api/tests/test_autonomous_supplied_review_v1.py::test_context_without_review_policy_retains_historical_skip_and_quarantine",
@@ -7360,21 +7360,21 @@
     "id": "casepath-api/tests/test_evidence_document_mapper_v2.py::test_missing_mapping_row_fails_closed",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002991309156641364,
+    "observer_duration_seconds": 0.0002142760786227882,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_evidence_document_mapper_v2.py::test_source_named_sim_report_is_preserved",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00024077598936855793,
+    "observer_duration_seconds": 0.00023618893465027213,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_evidence_document_mapper_v2.py::test_unknown_document_is_rejected_without_silent_substitution",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002339049824513495,
+    "observer_duration_seconds": 0.00016443099593743682,
     "junit_duration_seconds": 0.0
   },
   {
@@ -8207,71 +8207,71 @@
     "id": "casepath-api/tests/test_hosted_lease_v1.py::HostedLeaseTests::test_busy_controller_has_no_effect_and_retries_on_http_wake_only",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00618670298717916,
-    "junit_duration_seconds": 0.006
+    "observer_duration_seconds": 0.0020253739203326404,
+    "junit_duration_seconds": 0.002
   },
   {
     "id": "casepath-api/tests/test_hosted_lease_v1.py::HostedLeaseTests::test_concurrent_acquisition_has_one_committed_winner",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.002677932963706553,
-    "junit_duration_seconds": 0.003
+    "observer_duration_seconds": 0.0013459609472192824,
+    "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_lease_v1.py::HostedLeaseTests::test_generation_continues_above_32_bit",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0007200530380941927,
-    "junit_duration_seconds": 0.001
+    "observer_duration_seconds": 0.00046961597399786115,
+    "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_hosted_lease_v1.py::HostedLeaseTests::test_owned_autocommit_and_changed_context_are_refused",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0008519580005668104,
+    "observer_duration_seconds": 0.0006687690038233995,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_lease_v1.py::HostedLeaseTests::test_prefetch_and_commit_failure_bypass_generic_abandon",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.001254142029210925,
+    "observer_duration_seconds": 0.0013341939775273204,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_lease_v1.py::HostedLeaseTests::test_renewal_uses_db_clock_and_expired_begin_rolls_back",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0011315810261294246,
+    "observer_duration_seconds": 0.0007386340294033289,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_lease_v1.py::HostedLeaseTests::test_startup_learning_is_guarded_and_survives_nested_shutdown",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0043240629602223635,
-    "junit_duration_seconds": 0.004
+    "observer_duration_seconds": 0.0020896740024909377,
+    "junit_duration_seconds": 0.002
   },
   {
     "id": "casepath-api/tests/test_hosted_lease_v1.py::HostedLeaseTests::test_unconfirmed_acquisition_grants_no_local_authority",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0007906480459496379,
+    "observer_duration_seconds": 0.000556298007722944,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_migration_v1.py::test_frozen_manifest_survives_json_roundtrip_without_changing_sources",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.029071409022435546,
-    "junit_duration_seconds": 0.029
+    "observer_duration_seconds": 0.006458420946728438,
+    "junit_duration_seconds": 0.006
   },
   {
     "id": "casepath-api/tests/test_hosted_migration_v1.py::test_migration_insert_skips_identical_immutable_rows_and_refuses_conflict",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0006279070512391627,
-    "junit_duration_seconds": 0.001
+    "observer_duration_seconds": 0.0003941110335290432,
+    "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_busy_accepted_work_resumes_after_release_without_http_or_resubmission[canonical]",
@@ -8690,189 +8690,189 @@
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_disappearing_transaction_baton_does_not_open_fresh_transaction",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0020416229963302612,
+    "observer_duration_seconds": 0.0015066160121932626,
     "junit_duration_seconds": 0.002
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_exact_int64_unicode_blob_and_cursor_rows",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0015751750324852765,
-    "junit_duration_seconds": 0.002
+    "observer_duration_seconds": 0.0012422940344549716,
+    "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_failed_sequence_rolls_back_schema_and_successful_context_commits",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0063120980048552155,
-    "junit_duration_seconds": 0.006
+    "observer_duration_seconds": 0.004516171000432223,
+    "junit_duration_seconds": 0.005
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_interrupted_source_upload_admits_no_event_and_exact_retry_recovers",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.19287249800981954,
-    "junit_duration_seconds": 0.193
+    "observer_duration_seconds": 0.09817950596334413,
+    "junit_duration_seconds": 0.098
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_invalid_parameters_are_rejected_before_transport[-9223372036854775809]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.005470466974657029,
-    "junit_duration_seconds": 0.005
+    "observer_duration_seconds": 0.001239258039277047,
+    "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_invalid_parameters_are_rejected_before_transport[9223372036854775808]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0011155959218740463,
+    "observer_duration_seconds": 0.0010130230220966041,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_invalid_parameters_are_rejected_before_transport[inf]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0010556799825280905,
+    "observer_duration_seconds": 0.0009730120073072612,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_invalid_parameters_are_rejected_before_transport[nan]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0010500109638087451,
+    "observer_duration_seconds": 0.0010453029535710812,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_invalid_parameters_are_rejected_before_transport[value4]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.005224362015724182,
-    "junit_duration_seconds": 0.005
+    "observer_duration_seconds": 0.0010284570162184536,
+    "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_lost_commit_acknowledgement_poisons_without_retry_or_hidden_rollback[http_error]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0028930319822393358,
+    "observer_duration_seconds": 0.0027599040186032653,
     "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_lost_commit_acknowledgement_poisons_without_retry_or_hidden_rollback[missing_result]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.007245304994285107,
-    "junit_duration_seconds": 0.007
+    "observer_duration_seconds": 0.002590666990727186,
+    "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_lost_commit_acknowledgement_poisons_without_retry_or_hidden_rollback[origin]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.007084479962941259,
-    "junit_duration_seconds": 0.007
+    "observer_duration_seconds": 0.002515993022825569,
+    "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_lost_commit_acknowledgement_poisons_without_retry_or_hidden_rollback[timeout]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.003539385972544551,
+    "observer_duration_seconds": 0.004452362947631627,
     "junit_duration_seconds": 0.004
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_malformed_http_responses_are_sanitized_and_never_followed[invalid_cell]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0013784249895252287,
+    "observer_duration_seconds": 0.0007546210545115173,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_malformed_http_responses_are_sanitized_and_never_followed[missing_statement_result]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0004997880314476788,
+    "observer_duration_seconds": 0.00047725701006129384,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_malformed_http_responses_are_sanitized_and_never_followed[non_json]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0004956019693054259,
-    "junit_duration_seconds": 0.0
+    "observer_duration_seconds": 0.000533773098140955,
+    "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_malformed_http_responses_are_sanitized_and_never_followed[redirect]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0005469080060720444,
+    "observer_duration_seconds": 0.000632663955911994,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_maximum_source_survives_restart_under_small_response_bound",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 1.0521460529998876,
-    "junit_duration_seconds": 1.052
+    "observer_duration_seconds": 0.7238671189988963,
+    "junit_duration_seconds": 0.724
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_received_sql_failure_keeps_latest_baton_for_rollback",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.002798472996801138,
+    "observer_duration_seconds": 0.0027296399930492043,
     "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_response_byte_limit_closes_stream_and_poisons_connection",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0006492379470728338,
+    "observer_duration_seconds": 0.0005697080050595105,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_slow_drip_cannot_hide_total_response_deadline",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0004950009752064943,
+    "observer_duration_seconds": 0.0004644780419766903,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_trimmed_batches_cache_only_inside_current_unmodified_transaction",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.004164187936112285,
-    "junit_duration_seconds": 0.004
+    "observer_duration_seconds": 0.00344438711181283,
+    "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_turso_unpadded_blob_encoding_preserves_exact_bytes[\\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\t\\n\\x0b\\x0c\\r\\x0e\\x0f\\x10\\x11\\x12\\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\x1b\\x1c\\x1d\\x1e\\x1f !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\\x7f\\x80\\x81\\x82\\x83\\x84\\x85\\x86\\x87\\x88\\x89\\x8a\\x8b\\x8c\\x8d\\x8e\\x8f\\x90\\x91\\x92\\x93\\x94\\x95\\x96\\x97\\x98\\x99\\x9a\\x9b\\x9c\\x9d\\x9e\\x9f\\xa0\\xa1\\xa2\\xa3\\xa4\\xa5\\xa6\\xa7\\xa8\\xa9\\xaa\\xab\\xac\\xad\\xae\\xaf\\xb0\\xb1\\xb2\\xb3\\xb4\\xb5\\xb6\\xb7\\xb8\\xb9\\xba\\xbb\\xbc\\xbd\\xbe\\xbf\\xc0\\xc1\\xc2\\xc3\\xc4\\xc5\\xc6\\xc7\\xc8\\xc9\\xca\\xcb\\xcc\\xcd\\xce\\xcf\\xd0\\xd1\\xd2\\xd3\\xd4\\xd5\\xd6\\xd7\\xd8\\xd9\\xda\\xdb\\xdc\\xdd\\xde\\xdf\\xe0\\xe1\\xe2\\xe3\\xe4\\xe5\\xe6\\xe7\\xe8\\xe9\\xea\\xeb\\xec\\xed\\xee\\xef\\xf0\\xf1\\xf2\\xf3\\xf4\\xf5\\xf6\\xf7\\xf8\\xf9\\xfa\\xfb\\xfc\\xfd\\xfe\\xff]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0003451579832471907,
+    "observer_duration_seconds": 0.00035034300526604056,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_turso_unpadded_blob_encoding_preserves_exact_bytes[]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0001933860476128757,
+    "observer_duration_seconds": 0.00018841703422367573,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_turso_unpadded_blob_encoding_preserves_exact_bytes[x]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002387120039202273,
+    "observer_duration_seconds": 0.0001885080710053444,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_turso_unpadded_blob_encoding_preserves_exact_bytes[xy]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00017616001423448324,
+    "observer_duration_seconds": 0.000275049009360373,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_hosted_sql_v1.py::test_turso_unpadded_blob_encoding_preserves_exact_bytes[xyz]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002789829741232097,
+    "observer_duration_seconds": 0.0001844509388320148,
     "junit_duration_seconds": 0.0
   },
   {
@@ -10356,8 +10356,8 @@
     "id": "casepath-api/tests/test_native_live_export_v1.py::test_mounted_export_loop_charges_actions_and_admits_exact_source_bytes",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.23468712699832395,
-    "junit_duration_seconds": 0.235
+    "observer_duration_seconds": 0.12788989092223346,
+    "junit_duration_seconds": 0.128
   },
   {
     "id": "casepath-api/tests/test_native_live_knowledge_v1.py::test_mounted_public_knowledge_bytes_and_revision_preserve_prior_aliases",
@@ -10398,36 +10398,36 @@
     "id": "casepath-api/tests/test_native_openrouter_transport_v1.py::test_call_cap_must_cover_full_token_reserve",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0009298539953306317,
+    "observer_duration_seconds": 0.0009953650296665728,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_native_openrouter_transport_v1.py::test_http_once_transport_sends_one_exact_payload_without_receipting_key",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0011020160745829344,
+    "observer_duration_seconds": 0.0008351620053872466,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_native_openrouter_transport_v1.py::test_known_overrun_is_retained_and_fails_qualification",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0008534389780834317,
+    "observer_duration_seconds": 0.0008522089337930083,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_native_openrouter_transport_v1.py::test_openrouter_request_is_pinned_native_and_reserved_before_send",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0005544680170714855,
+    "observer_duration_seconds": 0.0006320130196399987,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_native_openrouter_transport_v1.py::test_provider_receipt_keeps_actual_openrouter_usage",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.026304114027880132,
-    "junit_duration_seconds": 0.026
+    "observer_duration_seconds": 0.0006816390086896718,
+    "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_changed_source_prefix_is_rejected_even_with_updated_file_receipt",
@@ -11329,204 +11329,204 @@
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_all_writes_bound",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0004434440052136779,
+    "observer_duration_seconds": 0.0002728459658101201,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_array_add_remove",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0003961749607697129,
+    "observer_duration_seconds": 0.0002953499788418412,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_boolean_usage_rejected",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00026589201297611,
+    "observer_duration_seconds": 0.00024775805650278926,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_category_partition",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00026219605933874846,
+    "observer_duration_seconds": 0.00017817103071138263,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_complete_replacement_still_allowed",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00031558598857373,
+    "observer_duration_seconds": 0.00021426600869745016,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_edit_only_changed_leaf",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00045673397835344076,
+    "observer_duration_seconds": 0.00024282000958919525,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_expansion_bound",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00033532496308907866,
+    "observer_duration_seconds": 0.00020990008488297462,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_invalid_pointer_rejected",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0003206140245310962,
+    "observer_duration_seconds": 0.00021950493101030588,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_missing_target_rejected",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00027128204237669706,
-    "junit_duration_seconds": 0.0
+    "observer_duration_seconds": 0.0005797939375042915,
+    "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_negative_index_rejected",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.004475215973798186,
-    "junit_duration_seconds": 0.004
+    "observer_duration_seconds": 0.0002107099280692637,
+    "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_never_authorizes_spend",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.007092831016052514,
-    "junit_duration_seconds": 0.007
+    "observer_duration_seconds": 0.002461019961629063,
+    "junit_duration_seconds": 0.002
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_no_hit_assumption",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0004044170491397381,
+    "observer_duration_seconds": 0.00021791207836940885,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_no_multimodal_assumption",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002460329560562968,
+    "observer_duration_seconds": 0.00020159705309197307,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_overlapping_counts_rejected",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002351959701627493,
+    "observer_duration_seconds": 0.0003030230291187763,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_parent_and_message_exact_bounds",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.007034855952952057,
-    "junit_duration_seconds": 0.007
+    "observer_duration_seconds": 0.003645806049462408,
+    "junit_duration_seconds": 0.004
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_pointer_escapes",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0004728360800072551,
+    "observer_duration_seconds": 0.00025243498384952545,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_rates_exclusive",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0003032879903912544,
+    "observer_duration_seconds": 0.00021549791563302279,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_retained_incomplete_draft_not_certified",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0003113689599558711,
+    "observer_duration_seconds": 0.0002372520393691957,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_retaining_entire_draft",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00029309303499758244,
+    "observer_duration_seconds": 0.00022276496747508645,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_revised_cost_lower_without_ceiling_reduction",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.008249256992712617,
-    "junit_duration_seconds": 0.008
+    "observer_duration_seconds": 0.0032618269906379282,
+    "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_root_removal_rejected",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00033459399128332734,
+    "observer_duration_seconds": 0.0002225079806521535,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_root_replacement_possible",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002641490427777171,
+    "observer_duration_seconds": 0.00021905399626120925,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_unchanged_model_route_samples_and_output",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00030376907670870423,
+    "observer_duration_seconds": 0.0002432299661450088,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_unicode_bound",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00016661599511280656,
+    "observer_duration_seconds": 0.00021270400611683726,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_unknown_cost_categories_not_zero",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00016639503883197904,
+    "observer_duration_seconds": 0.00018639693735167384,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_unknown_envelope_rejected",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00029501604149118066,
+    "observer_duration_seconds": 0.00021934491815045476,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_unknown_reservation_rule_rejected",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00028697308152914047,
+    "observer_duration_seconds": 0.0002488470054231584,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::CreditBoundsTests::test_wire_escaping_is_not_text",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00022480299230664968,
+    "observer_duration_seconds": 0.00022081698989495635,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_obligation_credit_bounds_v2.py::ReviewIntegrationTests::test_all_five_arms_keep_generated_full_output_with_real_native_parser",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.3115589319495484,
-    "junit_duration_seconds": 0.312
+    "observer_duration_seconds": 0.08794759394368157,
+    "junit_duration_seconds": 0.088
   },
   {
     "id": "casepath-api/tests/test_obligation_release_binding.py::FrozenReleaseTests::test_changed_manifest_fails",
@@ -13660,36 +13660,36 @@
     "id": "casepath-api/tests/test_public_hosted_read_only_v1.py::test_public_restarts_reads_commands_and_callback_races_preserve_all_saved_rows[flags0]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 9.745920569985174,
-    "junit_duration_seconds": 9.746
+    "observer_duration_seconds": 4.127127151063178,
+    "junit_duration_seconds": 4.127
   },
   {
     "id": "casepath-api/tests/test_public_hosted_read_only_v1.py::test_public_restarts_reads_commands_and_callback_races_preserve_all_saved_rows[flags1]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 6.320047733024694,
-    "junit_duration_seconds": 6.32
+    "observer_duration_seconds": 4.116482534969691,
+    "junit_duration_seconds": 4.116
   },
   {
     "id": "casepath-api/tests/test_reference_admission_v1.py::test_hosted_canonical_draft_submit_run_startup_recovery_never_calls_model_or_writes",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.7099968399270438,
-    "junit_duration_seconds": 0.71
+    "observer_duration_seconds": 0.4912762169842608,
+    "junit_duration_seconds": 0.491
   },
   {
     "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_prepare_apply_all_nine_preserves_old_rows_budget_restart_and_exact_retry",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 239.38116960099433,
-    "junit_duration_seconds": 239.381
+    "observer_duration_seconds": 161.7945268220501,
+    "junit_duration_seconds": 161.795
   },
   {
     "id": "casepath-api/tests/test_reference_admission_v1.py::test_selected_rejected_provider_stage_and_global_unknown_outcome_refuse_read_only",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.1841640720376745,
-    "junit_duration_seconds": 0.184
+    "observer_duration_seconds": 0.07319686800474301,
+    "junit_duration_seconds": 0.073
   },
   {
     "id": "casepath-api/tests/test_reference_read_performance_v1.py::test_base_future_completion_after_shutdown_never_reads_authority",
@@ -13919,8 +13919,8 @@
     "id": "casepath-api/tests/test_reviewed_memory_v1.py::test_reviewed_memory_matches_only_same_family_statement_and_apply_is_journaled",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.8044395789620467,
-    "junit_duration_seconds": 2.804
+    "observer_duration_seconds": 1.888346582883969,
+    "junit_duration_seconds": 1.888
   },
   {
     "id": "casepath-api/tests/test_sites_public_read_only_v1.py::test_sites_build_declares_public_readonly_before_entry_without_worker_rewriting",
@@ -14241,50 +14241,50 @@
     "id": "casepath-api/tests/test_theft_benchmark_v2.py::test_built_benchmark_preserves_route_alternatives_and_shortcut_gate",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.9320011360105127,
-    "junit_duration_seconds": 0.932
+    "observer_duration_seconds": 0.6358584660338238,
+    "junit_duration_seconds": 0.636
   },
   {
     "id": "casepath-api/tests/test_theft_benchmark_v2.py::test_either_alternative_receives_full_credit",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00022340996656566858,
+    "observer_duration_seconds": 0.0002417249488644302,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_theft_benchmark_v2.py::test_predicting_both_alternatives_is_penalized",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002070460468530655,
+    "observer_duration_seconds": 0.0001539580407552421,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_theft_benchmark_v3.py::test_bicycle_projection_is_source_derived_and_conjunctive",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 1.6736426940769888,
-    "junit_duration_seconds": 1.674
+    "observer_duration_seconds": 1.3181076800101437,
+    "junit_duration_seconds": 1.318
   },
   {
     "id": "casepath-api/tests/test_theft_benchmark_v3.py::test_scheduled_valuable_alternatives_survive_v3",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 1.7653657519840635,
-    "junit_duration_seconds": 1.765
+    "observer_duration_seconds": 1.2722798719769344,
+    "junit_duration_seconds": 1.272
   },
   {
     "id": "casepath-api/tests/test_theft_benchmark_v3.py::test_v3_preserves_roster_and_hidden_boundary",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.5046311970218085,
-    "junit_duration_seconds": 2.505
+    "observer_duration_seconds": 1.2530419839313254,
+    "junit_duration_seconds": 1.253
   },
   {
     "id": "casepath-api/tests/test_theft_benchmark_v3.py::test_v3_shortcut_preflight_still_passes",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.5227308300090954,
-    "junit_duration_seconds": 2.523
+    "observer_duration_seconds": 1.253167558927089,
+    "junit_duration_seconds": 1.253
   },
   {
     "id": "casepath-api/tests/test_theft_confirmatory_analysis_v3.py::test_exact_family_swap_uses_family_as_unit",
@@ -14696,414 +14696,414 @@
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_admission_and_rejection_terminal_cas_has_one_deterministic_winner[admitted]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 4.172485768969636,
-    "junit_duration_seconds": 4.172
+    "observer_duration_seconds": 2.1644860020605847,
+    "junit_duration_seconds": 2.164
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_admission_and_rejection_terminal_cas_has_one_deterministic_winner[rejected]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 4.145706862036604,
-    "junit_duration_seconds": 4.146
+    "observer_duration_seconds": 1.9643307380611077,
+    "junit_duration_seconds": 1.964
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_all_generic_surfaces_reject_workspace_session_with_zero_mutation",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.8588322529685684,
-    "junit_duration_seconds": 2.859
+    "observer_duration_seconds": 0.9719112440361641,
+    "junit_duration_seconds": 0.972
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_autonomous_surface_cannot_redirect_into_workspace_namespace[omitted]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.461633362050634,
-    "junit_duration_seconds": 2.462
+    "observer_duration_seconds": 1.0517239469918422,
+    "junit_duration_seconds": 1.052
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_autonomous_surface_cannot_redirect_into_workspace_namespace[returns_none]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.711658791056834,
-    "junit_duration_seconds": 2.712
+    "observer_duration_seconds": 0.8717858890304342,
+    "junit_duration_seconds": 0.872
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_claim_and_cached_queue_get_fail_closed_on_authority_sidecar_tamper",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 4.865521828935016,
-    "junit_duration_seconds": 4.866
+    "observer_duration_seconds": 2.5571004020166583,
+    "junit_duration_seconds": 2.557
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_decisive_health_source_pair_has_distinct_authorized_business_effects",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 6.95058565295767,
-    "junit_duration_seconds": 6.951
+    "observer_duration_seconds": 4.906469460984226,
+    "junit_duration_seconds": 4.906
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_duplicate_keys_and_semantic_aliases_have_zero_authoritative_effect",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.072459670016542,
-    "junit_duration_seconds": 2.072
+    "observer_duration_seconds": 1.337956079049036,
+    "junit_duration_seconds": 1.338
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_durable_acquisition_recovers_after_browser_storage_and_intent_expiry",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 4.913267858966719,
-    "junit_duration_seconds": 4.913
+    "observer_duration_seconds": 3.8413537529995665,
+    "junit_duration_seconds": 3.841
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_exact_registration_rejects_browser_semantics_and_admits_server_proposal",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.9101891600876115,
-    "junit_duration_seconds": 2.91
+    "observer_duration_seconds": 2.168620940996334,
+    "junit_duration_seconds": 2.169
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_flagship_unresolved_end_date_is_not_sufficient_evidence",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 4.831396570953075,
-    "junit_duration_seconds": 4.831
+    "observer_duration_seconds": 3.7634533980162814,
+    "junit_duration_seconds": 3.763
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_generic_and_workspace_reconcilers_expire_only_their_own_namespaces",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.238119054993149,
-    "junit_duration_seconds": 2.238
+    "observer_duration_seconds": 1.6579138230881654,
+    "junit_duration_seconds": 1.658
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[action_sha256]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.3047187209594995,
-    "junit_duration_seconds": 3.305
+    "observer_duration_seconds": 2.4999506900203414,
+    "junit_duration_seconds": 2.5
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[byte_start]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.4705932970391586,
-    "junit_duration_seconds": 3.471
+    "observer_duration_seconds": 2.6322434050380252,
+    "junit_duration_seconds": 2.632
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[catalog_sha256]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 3.2398289970005862,
-    "junit_duration_seconds": 3.24
+    "observer_duration_seconds": 2.4271738849929534,
+    "junit_duration_seconds": 2.427
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[claim_id]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.7807658460224047,
-    "junit_duration_seconds": 2.781
+    "observer_duration_seconds": 2.414545614970848,
+    "junit_duration_seconds": 2.415
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[interpreter_source_sha256]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.491827545047272,
-    "junit_duration_seconds": 2.492
+    "observer_duration_seconds": 2.481077050033491,
+    "junit_duration_seconds": 2.481
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[parent_revision]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.412333528045565,
-    "junit_duration_seconds": 2.412
+    "observer_duration_seconds": 2.42289993603481,
+    "junit_duration_seconds": 2.423
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[policy_sha256]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.582293314044364,
-    "junit_duration_seconds": 2.582
+    "observer_duration_seconds": 2.5592997409403324,
+    "junit_duration_seconds": 2.559
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[proposed_normalized_value]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.755949179001618,
-    "junit_duration_seconds": 2.756
+    "observer_duration_seconds": 2.566204541013576,
+    "junit_duration_seconds": 2.566
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[schema_sha256]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.7887438730103895,
-    "junit_duration_seconds": 2.789
+    "observer_duration_seconds": 2.6719617430353537,
+    "junit_duration_seconds": 2.672
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[source_acquisition_receipt_sha256]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.4045879340264946,
-    "junit_duration_seconds": 2.405
+    "observer_duration_seconds": 2.727843187050894,
+    "junit_duration_seconds": 2.728
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_independent_authority_rejects_each_single_field_proposal_mutation[source_artifact_sha256]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.523189432977233,
-    "junit_duration_seconds": 2.523
+    "observer_duration_seconds": 2.3500602110289037,
+    "junit_duration_seconds": 2.35
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_nuisance_source_pair_changes_identity_not_business_projection",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 5.222856983018573,
-    "junit_duration_seconds": 5.223
+    "observer_duration_seconds": 4.7673512189649045,
+    "junit_duration_seconds": 4.767
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_source_negative_matrix_is_fail_closed_and_audit_only[contradictory-health]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.6034444259712473,
-    "junit_duration_seconds": 2.603
+    "observer_duration_seconds": 2.658614450949244,
+    "junit_duration_seconds": 2.659
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_source_negative_matrix_is_fail_closed_and_audit_only[embedded-nul]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 1.8027210049913265,
-    "junit_duration_seconds": 1.803
+    "observer_duration_seconds": 1.6407085889950395,
+    "junit_duration_seconds": 1.641
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_source_negative_matrix_is_fail_closed_and_audit_only[instruction-bearing]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.509199438034557,
-    "junit_duration_seconds": 2.509
+    "observer_duration_seconds": 2.622470661997795,
+    "junit_duration_seconds": 2.622
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_source_negative_matrix_is_fail_closed_and_audit_only[nfd]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 1.7189320179750212,
-    "junit_duration_seconds": 1.719
+    "observer_duration_seconds": 1.6851250540348701,
+    "junit_duration_seconds": 1.685
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_source_negative_matrix_is_fail_closed_and_audit_only[ordinary-unit]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 2.4985478240414523,
-    "junit_duration_seconds": 2.499
+    "observer_duration_seconds": 2.6758689380367287,
+    "junit_duration_seconds": 2.676
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_unresolved_source_span_cannot_establish_an_intake_fact[lt_intake-The termination notice was received; the intended end date remains unresolved.-lt_e01]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00034260505344718695,
+    "observer_duration_seconds": 0.00038691097870469093,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_unresolved_source_span_cannot_establish_an_intake_fact[ri_intake-The rent increase was received; the notification date is unknown.-ri_e01]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0002545759780332446,
+    "observer_duration_seconds": 0.00024409103207290173,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_image_dimensions_and_scaling",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.03601543698459864,
-    "junit_duration_seconds": 0.036
+    "observer_duration_seconds": 0.03953025001101196,
+    "junit_duration_seconds": 0.04
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_office_unsafe_input_fails_closed[entity]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0021227639517746866,
-    "junit_duration_seconds": 0.002
+    "observer_duration_seconds": 0.002717204042710364,
+    "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_office_unsafe_input_fails_closed[huge]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.08178777201101184,
-    "junit_duration_seconds": 0.082
+    "observer_duration_seconds": 0.08726206998107955,
+    "junit_duration_seconds": 0.087
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_office_unsafe_input_fails_closed[macro]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0003972959821112454,
-    "junit_duration_seconds": 0.0
+    "observer_duration_seconds": 0.000509801902808249,
+    "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_office_unsafe_input_fails_closed[traversal]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.000300563988275826,
+    "observer_duration_seconds": 0.00031750003108754754,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_office_unsafe_input_fails_closed[utf16]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.00033816799987107515,
+    "observer_duration_seconds": 0.00035342195769771934,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_page_bounds[0-300]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0029271499952301383,
+    "observer_duration_seconds": 0.003238032979425043,
     "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_page_bounds[1-10]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0022325339959934354,
+    "observer_duration_seconds": 0.002417089941445738,
     "junit_duration_seconds": 0.002
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_page_bounds[1-2000]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0024115690612234175,
+    "observer_duration_seconds": 0.0021499660215340555,
     "junit_duration_seconds": 0.002
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_page_bounds[3-300]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.002272112062200904,
-    "junit_duration_seconds": 0.002
+    "observer_duration_seconds": 0.0027006390155293047,
+    "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_pdf_preview_is_an_actual_raster_of_original_bytes",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0056052120053209364,
-    "junit_duration_seconds": 0.006
+    "observer_duration_seconds": 0.006591486046090722,
+    "junit_duration_seconds": 0.007
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_preview_routes_are_read_only_and_claim_scoped",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.01859817502554506,
-    "junit_duration_seconds": 0.019
+    "observer_duration_seconds": 0.02099008299410343,
+    "junit_duration_seconds": 0.021
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_product_app_exposes_only_get_preview_routes",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0003623559605330229,
+    "observer_duration_seconds": 0.00044377503218129277,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_source_drift_never_yields_a_preview[bytes]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.002472579013556242,
-    "junit_duration_seconds": 0.002
+    "observer_duration_seconds": 0.002874355996027589,
+    "junit_duration_seconds": 0.003
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_source_drift_never_yields_a_preview[hash]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.002147299994248897,
+    "observer_duration_seconds": 0.0023433020105585456,
     "junit_duration_seconds": 0.002
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_source_drift_never_yields_a_preview[size]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0020970249897800386,
+    "observer_duration_seconds": 0.002405323029961437,
     "junit_duration_seconds": 0.002
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_spreadsheet_preserves_addresses_and_does_not_recalculate",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0007652390631847084,
+    "observer_duration_seconds": 0.0008483030251227319,
     "junit_duration_seconds": 0.001
   },
   {
     "id": "casepath-api/tests/test_workspace_packet_preview.py::test_word_returns_text_not_executable_markup",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.0003086550277657807,
+    "observer_duration_seconds": 0.00040395697578787804,
     "junit_duration_seconds": 0.0
   },
   {
     "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_append_changes_current_state_while_historical_prefix_stays_bound",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.7199170169769786,
-    "junit_duration_seconds": 0.72
+    "observer_duration_seconds": 0.9554294970585033,
+    "junit_duration_seconds": 0.955
   },
   {
     "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[command_sha256-0000000000000000000000000000000000000000000000000000000000000000-True]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.7040111479582265,
-    "junit_duration_seconds": 0.704
+    "observer_duration_seconds": 0.6759469089447521,
+    "junit_duration_seconds": 0.676
   },
   {
     "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[created_at-raw metadata changed-False]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.7770279379910789,
-    "junit_duration_seconds": 0.777
+    "observer_duration_seconds": 0.7181049110367894,
+    "junit_duration_seconds": 0.718
   },
   {
     "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[event_json-{}-True]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.6636176380561665,
-    "junit_duration_seconds": 0.664
+    "observer_duration_seconds": 0.7347426180494949,
+    "junit_duration_seconds": 0.735
   },
   {
     "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[event_sha256-0000000000000000000000000000000000000000000000000000000000000000-True]",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.6692575000342913,
-    "junit_duration_seconds": 0.669
+    "observer_duration_seconds": 0.7455439548939466,
+    "junit_duration_seconds": 0.746
   },
   {
     "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cached_parent_cannot_hide_changed_authority_context",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.7715900399489328,
-    "junit_duration_seconds": 0.772
+    "observer_duration_seconds": 0.836591598985251,
+    "junit_duration_seconds": 0.837
   },
   {
     "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_corpus_drift_during_a_cache_hit_is_rechecked",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.6765981640201062,
-    "junit_duration_seconds": 0.677
+    "observer_duration_seconds": 0.6918511739932001,
+    "junit_duration_seconds": 0.692
   },
   {
     "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_corpus_drift_is_checked_before_reusing_a_prefix",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.6697902960004285,
-    "junit_duration_seconds": 0.67
+    "observer_duration_seconds": 0.729448473022785,
+    "junit_duration_seconds": 0.729
   },
   {
     "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_deleted_historical_row_cannot_reuse_verified_prefix",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.6669682320207357,
-    "junit_duration_seconds": 0.667
+    "observer_duration_seconds": 0.7516531430883333,
+    "junit_duration_seconds": 0.752
   },
   {
     "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_same_prefix_reuses_validation_and_returns_independent_states",
     "shard": 4,
     "outcome": "passed",
-    "observer_duration_seconds": 0.7173570019076578,
-    "junit_duration_seconds": 0.717
+    "observer_duration_seconds": 0.7259653500514105,
+    "junit_duration_seconds": 0.726
   },
   {
     "id": "casepath/tools/test_build_deployment_identity.py::test_curated_asset_allowlist_is_the_recursive_runtime_closure",

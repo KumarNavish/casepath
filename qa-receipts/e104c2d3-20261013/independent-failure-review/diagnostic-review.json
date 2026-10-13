@@ -1,0 +1,188 @@
+{
+  "reviewer": "e104_timeout_classification",
+  "reviewed_utc": "2026-10-13T00:23:25.919933+00:00",
+  "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "review_status": "ready",
+  "authorized_scope": "One unchanged whole 324-test serial diagnostic run after all six original processes finished; no isolated-node retry.",
+  "attempts": {
+    "shard4": {
+      "tests": 324,
+      "phase_counts": {
+        "setup": {
+          "passed": 324
+        },
+        "call": {
+          "passed": 323,
+          "failed": 1
+        },
+        "teardown": {
+          "passed": 324
+        }
+      },
+      "outcomes": {
+        "passed": 323,
+        "failed": 1
+      },
+      "exit_code": 1,
+      "assigned_arguments_collection_observer_junit_equal": true,
+      "assigned_sorted_sha256": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6",
+      "original_failed_node_call_outcome": "failed",
+      "original_failed_node_call_seconds": 22.61212904402055,
+      "started_epoch": 1791849667.1723611,
+      "finished_epoch": 1791850191.5584662
+    },
+    "shard4-serial": {
+      "tests": 324,
+      "phase_counts": {
+        "setup": {
+          "passed": 324
+        },
+        "call": {
+          "passed": 324
+        },
+        "teardown": {
+          "passed": 324
+        }
+      },
+      "outcomes": {
+        "passed": 324
+      },
+      "exit_code": 0,
+      "assigned_arguments_collection_observer_junit_equal": true,
+      "assigned_sorted_sha256": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6",
+      "original_failed_node_call_outcome": "passed",
+      "original_failed_node_call_seconds": 9.424117224989459,
+      "started_epoch": 1791850512.3772085,
+      "finished_epoch": 1791850868.4157643
+    }
+  },
+  "serial_isolation": {
+    "started_after_all_originals_finished": true,
+    "latest_original_finished_epoch": 1791850191.5584662,
+    "test_arguments_byte_identical": true,
+    "command_and_env_equal_except_isolated_output_paths": true,
+    "runner_source_equal_except_single_output_directory_assignment": true,
+    "observer_byte_identical_to_accepted_aa10": true
+  },
+  "source": {
+    "head": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+    "status": "",
+    "normal_clone": true,
+    "source_manifest_sha256": "58b29232c94fd72df65010a83c1a73bd6386433e3c94a2a3c67fd6be5943ae9a",
+    "source_manifest_matches_HEAD_original_and_serial": true,
+    "sealed_files_verified": 1680,
+    "file_size_hash_and_executable_bits_verified": true,
+    "failed_test_sha256": "1bb9abf36c41e195ec0c7bfafbc43b02cd26f62b0214ba8e888bf79434d6ba9b",
+    "timeout_seconds": 15
+  },
+  "failure_interpretation": {
+    "original_failure": "Initial 15-second polling timeout; failed assertion contains revision 26 with late source acquired, second outcome present, knowledge count zero.",
+    "eventual_expected_journal_outcome": "Original frozen journal revision 27 has exactly one qualified knowledge publication matching the second workflow.",
+    "publication_created_at_seconds_after_late_arrival": 19.78318,
+    "timestamp_caveat": "created_at is stamped before event reduction/commit and is not a monotonic deadline/idle time. Failed call report follows shutdown(wait=True).",
+    "diagnostic_result": "Isolated whole-shard serial rerun passed all 324 tests; original failing node passed in 9.424117 seconds.",
+    "root_cause": "Not conclusively established; contention is strongly supported, and this successful diagnostic strengthens that explanation without proving causality.",
+    "original_strict_conditional_classification_preserved": true
+  },
+  "artifact_binding": {
+    "shard4/command.json": {
+      "sha256": "04dcb7e3941dac7f02fe7e2c327d06e1fadca9afaaea6f3e8537764e40c420e3",
+      "size_bytes": 2199
+    },
+    "shard4/result.json": {
+      "sha256": "e6160efff56da53a0a6f0c5b85e9c191f3af8e025dc2bb7794557d941a79ef5c",
+      "size_bytes": 2380
+    },
+    "shard4/pytest-arguments.txt": {
+      "sha256": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6",
+      "size_bytes": 40855
+    },
+    "shard4/collected.json": {
+      "sha256": "efb18752d040efe12071c7ca0b180195036544b342166a48cb6e175bcdd6ffad",
+      "size_bytes": 114357
+    },
+    "shard4/reports.jsonl": {
+      "sha256": "5e3530bbd0477ecd253948caab0e8c0ea7be600a6282b5d51aa883364735b657",
+      "size_bytes": 492356
+    },
+    "shard4/junit.xml": {
+      "sha256": "5bab6c11dc5a572f351f1bb0b0e4ce3235d5b858fa01967ba41521027d8b7590",
+      "size_bytes": 561738
+    },
+    "shard4/pytest.log": {
+      "sha256": "b74f6f5412cc422040c919fe77f1ee1eace02393b2f2f6f32e945f022e8db2dd",
+      "size_bytes": 297107
+    },
+    "shard4-serial/command.json": {
+      "sha256": "3081007c8f947117cbf34fb0f96a32043cdcf102cad08054fd3d3062bd605ca1",
+      "size_bytes": 2269
+    },
+    "shard4-serial/result.json": {
+      "sha256": "de58f2f0f6cdf868ac78be310bc8485d23c495454b3c02b5dfba45aebaaf6050",
+      "size_bytes": 2450
+    },
+    "shard4-serial/pytest-arguments.txt": {
+      "sha256": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6",
+      "size_bytes": 40855
+    },
+    "shard4-serial/collected.json": {
+      "sha256": "efb18752d040efe12071c7ca0b180195036544b342166a48cb6e175bcdd6ffad",
+      "size_bytes": 114357
+    },
+    "shard4-serial/reports.jsonl": {
+      "sha256": "452463d0c471df8e47205501fedbba13a6877f6fb252aeb6bc549fb3fb8dfb1e",
+      "size_bytes": 235735
+    },
+    "shard4-serial/junit.xml": {
+      "sha256": "d76922b4fee51529228b3d8db5be8d13a2c8483ebc2b12a409c1e92b015210df",
+      "size_bytes": 49835
+    },
+    "shard4-serial/pytest.log": {
+      "sha256": "749dd49e7579e26a394ebf79921cb26e51edd8335a1861ae065e0fd39567c8d7",
+      "size_bytes": 39152
+    },
+    "retry-authorization.json": {
+      "sha256": "c8f9544dbf47b2cd4cacd654555f9d346371eca8e832cd717889591fe990d7f9",
+      "size_bytes": 1158
+    },
+    "shard-map.json": {
+      "sha256": "27d06af1e057bbb42dbde94df5c46e68a73ffafc8ec9c7a7262073cd4779acaa",
+      "size_bytes": 1358806
+    },
+    "source-manifest.json": {
+      "sha256": "58b29232c94fd72df65010a83c1a73bd6386433e3c94a2a3c67fd6be5943ae9a",
+      "size_bytes": 444353
+    },
+    "shard4/initialfailure-call.txt": {
+      "sha256": "716693444a4a4dab82f289fb40ef77ca55104fd0b89d80925446449233182454",
+      "size_bytes": 256049
+    },
+    "shard4/postdeadline-timing-evidence.json": {
+      "sha256": "5781123e3a9d4309aa003cf4830df940e97ec75c5ea399c0f17e3ba19461cf33",
+      "size_bytes": 10548
+    },
+    "independent-failure-review/classification.json": {
+      "sha256": "b4063baee9508f014e45c84ff5e4db82aae7bacb728232498a01437566ac7196",
+      "size_bytes": 2856
+    },
+    "harness/run_shard.py": {
+      "sha256": "6b6b0e64979f0fe6c7afa1533cf4aa9882efa00cf4e5b3497e1e5cdb9b4095b7",
+      "size_bytes": 3726
+    },
+    "harness/run_shard_serial.py": {
+      "sha256": "ebb950991686bd84c33fcf42cc3e1036c1e93f44b4fc7ed78954fc03c22b506c",
+      "size_bytes": 3720
+    },
+    "harness/casepath_shard_observer.py": {
+      "sha256": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30",
+      "size_bytes": 984
+    }
+  },
+  "review_actions": {
+    "tests_executed": 0,
+    "provider_or_controller_constructed": false,
+    "production_source_test_backend_edits": false,
+    "original_classification_edited": false,
+    "only_new_file": "independent-failure-review/diagnostic-review.json"
+  }
+}
