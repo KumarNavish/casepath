@@ -1,0 +1,45 @@
+{
+  "reviewed_frontend_commit": "ef2029ccb6a5ec9b60c8cb8b34833538527856ca",
+  "root_integrated_commit": "935689a12569737bc6c15dbff2de76e1dcf1a77f",
+  "sources": [
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "sha256": "24524034183be898b402a30f0c78ca49c537c6efa278af6bf26dd311b946ec62",
+      "equals_root_integrated": false,
+      "integrated_sha256": "cb801471353d671675e0e37747c75d7e2e09fa7170a2d37e319f4c08b6d4f9dd"
+    },
+    {
+      "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
+      "sha256": "a1c0bf91b847b474a9a6e8064eda6e3747e4cbe310201a07d44e1195a45ae690",
+      "equals_root_integrated": false,
+      "integrated_sha256": "81bf5931e104712f6146d8e25b251b4ed0094063d2de0e382eb81f1b5dd2b9a0"
+    }
+  ],
+  "artifacts": {
+    "/workspace/op-browser/pointer-inspection-before.json": {
+      "sha256": "a5f977cf4b911f40e429f3e9ed79e931fbbb83e3cd0ea02ea4b91e9cd22217d8",
+      "bytes": 911
+    },
+    "/workspace/op-browser/pointer-inspection-fixed.json": {
+      "sha256": "78b5ffbbd9a95530dba5a48ba35d18d8c7941e068f457869454dc5cbf59cb003",
+      "bytes": 3339
+    },
+    "/workspace/casepath-operation-review-evidence/pointer-copy-ef2029-review.log": {
+      "sha256": "53dd22a8b5acfa699be7b1c81f20d215a5318df128481f2b796156acc781a73a",
+      "bytes": 587
+    },
+    "/workspace/casepath-operation-review-evidence/recorded-stream-saved-fallback-copy-ef2029.log": {
+      "sha256": "ae091e56f2c0de816eea1e31707e78359e5948d2428ceb56230debf32ab63a98",
+      "bytes": 284
+    }
+  },
+  "targeted_test_command": "node --test --test-name-pattern='recorded delivery retains|operation delivery names existing procedure|actual working graphs|restarting Demonstration opens its own' casepath-qa/autonomous-workspace-v1.test.cjs",
+  "targeted_tests_passed": 4,
+  "skipped": 0,
+  "reviewer_clean": true,
+  "pending_mac_owned_changes": [
+    "Add .au-operation-passage to trusted-only mounted inspection selector",
+    "Prioritize savedFallback before recorded in delivery heading"
+  ],
+  "final_mac_source_not_yet_reviewed": true
+}

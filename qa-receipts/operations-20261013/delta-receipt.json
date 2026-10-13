@@ -67,10 +67,27 @@
   "full_suite_run": false,
   "deployment": false,
   "production_access": false,
-  "independent_review": "Pointer mechanism approved, four independent focused checks passed; reachable recorded-stream saved-result fallback label precedence requires minimal correction before final freeze.",
+  "independent_review": "Pointer mechanism and expected Mac source-text selector approved;4focusedchecks passed. Reachable saved-result fallback label precedence issue reported before freeze; no Cloudsourceedit.",
   "review_logs": [
     "review/pointer-copy-ef2029-review.log",
     "review/recorded-stream-saved-fallback-copy-ef2029.log"
   ],
-  "mac_owned_addition": "Mac adds .au-operation-passage to the same trusted-only mounted-target selector; no concurrent Cloud edit."
+  "mac_owned_addition": "Mac adds .au-operation-passage to the same trusted-only mounted-target selector; no concurrent Cloud edit.",
+  "review_source_receipt": "review/pointer-copy-product-4ddf4f46-receipt.json",
+  "frozen_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "frozen_authored_binding": {
+    "casepath/assets/autonomous-workspace-v1.js": {
+      "sha256": "7b8ed58ee5aac3b354e87d8c062e9ed0d8ba8d4ba2da07185c9a7b8c1def0887",
+      "bytes": 363519
+    },
+    "casepath/assets/autonomous-workspace-v1.css": {
+      "sha256": "8aa1ffec12e2ece0fbfc277c6eedffc47f760336b26e77e28e6aac87f5da0320",
+      "bytes": 209679
+    },
+    "casepath-qa/autonomous-workspace-v1.test.cjs": {
+      "sha256": "a1c0bf91b847b474a9a6e8064eda6e3747e4cbe310201a07d44e1195a45ae690",
+      "bytes": 275309
+    }
+  },
+  "frozen_delta_to_reviewed_product": "Mac trusted source-text selector, proxy cancellation fix/test, hosted usage docs, asset hashes/source seal; no other operation source change."
 }

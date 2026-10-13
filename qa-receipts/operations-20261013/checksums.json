@@ -1,6 +1,7 @@
 {
   "contract": "casepath.qa-checksums/1.0.0",
   "source_commit": "4ddf4f46f0f8d34b3c971f0249245bd7d10b325d",
+  "frozen_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
   "files": [
     {
       "path": "browser/check.cjs",
@@ -389,8 +390,8 @@
     },
     {
       "path": "delta-receipt.json",
-      "bytes": 3505,
-      "sha256": "7b764d6f80fba9df42f124659733528521256a9e1a7dd688fc435951d42caf5f"
+      "bytes": 4372,
+      "sha256": "a584e0f123d9b312f244efaa4b9d890e9c814c56e5da7de4f9b5d92563d4caeb"
     },
     {
       "path": "fixtures/native-fixture.json",
@@ -846,6 +847,16 @@
       "path": "review/pointer-copy-ef2029-review.log",
       "bytes": 587,
       "sha256": "53dd22a8b5acfa699be7b1c81f20d215a5318df128481f2b796156acc781a73a"
+    },
+    {
+      "path": "review/pointer-copy-ef2029-source-receipt.json",
+      "bytes": 2062,
+      "sha256": "5811961149662de2dd2da66f5fb341c1098320043c3ffa65f8941bc0e8b4474e"
+    },
+    {
+      "path": "review/pointer-copy-product-4ddf4f46-receipt.json",
+      "bytes": 2175,
+      "sha256": "644c4209bd637c57d2f2a136c439a62dbddfa0a7ac88d9290e6ca3256349d8d6"
     },
     {
       "path": "review/public-read-only-baseline.log",
