@@ -1,0 +1,37 @@
+{
+  "base_commit": "343393922df82a3dbd337e6895981ef4736f1344",
+  "ready_commit": "321de541dd40a0e6425c6448e6ce39a4d225ba85",
+  "branch": "codex/casepath-quiet-operation-completion-20261013",
+  "hostname": "656813ef2295",
+  "worker_model": "gpt-6.1-sol xhigh",
+  "changed_files": [
+    "casepath/assets/autonomous-workspace-v1.js"
+  ],
+  "source_diff": "One line: successful terminal live/recorded operation stream calls notice('') instead of success machinery announcement. Verification/finish/handoff/error/wait paths otherwise unchanged.",
+  "js_sha256": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+  "module_command": [
+    "node",
+    "--test",
+    "--test-name-pattern=recorded delivery retains|failed live operation records|NDJSON operations decode",
+    "casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "module_passed": 3,
+  "module_failed": 0,
+  "module_skipped": 0,
+  "module_duration_ms": 117.031038,
+  "native_command": [
+    "node",
+    "/workspace/op-browser/quiet-completion.cjs"
+  ],
+  "native_case_modes": [
+    "live",
+    "recorded",
+    "failure"
+  ],
+  "native_scope": "Existing local native fixtures; actual served candidate asset bytes bound to commit. Not production/browser acceptance.",
+  "native_result": "Live and recorded completion exact saved fixture head/finished/verified flags with empty hidden nonerror notice. Failed deliveries keep visible error notice and honest saved-result fallback. All GET/HEAD; no page errors.",
+  "first_native_attempt": "Temporary harness failed its blanket 3 operation-source-check assertion on failed delivery fallback, which has 0 observed operation checks. Raw first log preserved; temporary assertion narrowed to successful streams. No further product changes.",
+  "root_review": "Fetched remote commit, parent exact base343, source scope exactly1line/1file; checked three native results, actual served JS hashes and GET-only requests from raw receipt.",
+  "full_gate_run": false,
+  "deployment_run": false
+}
