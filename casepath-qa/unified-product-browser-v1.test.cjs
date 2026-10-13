@@ -1177,6 +1177,8 @@ test('reference native: exact nine actual accepted assessments retain graph docu
   assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Historical synthetic recording · as of ${expected.state.outcome.reference_provenance.as_of} · rules-based`);
   assert.match(await page.locator('[data-au-claim-status]').innerText(),/Assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/Assessment only; no external action taken/);
   assert.equal(await page.locator('.au-assessment-conclusion > p').first().textContent(),expected.state.outcome.summary);
+  assert.equal((await page.locator('.au-quiet-claim').innerText()).match(/no external action taken/gi)?.length,1);
+  for (const comparison of await page.locator('[data-au-law-comparison]').all()) assert.match(await comparison.innerText(),/^Earlier law text \(\d{4}-\d{2}-\d{2}\)$/);
   const context=expected.state.semantic_contexts[expected.state.run_id],authority=context.rule_packs.find(row=>row.family===expected.state.graph.family).legal_authority;
   const articles=[...new Set(expected.state.outcome.legal_predicates.flatMap(row=>row.rule_refs).map(ref=>/^CO:(\d+[a-z]?)$/.exec(ref)?.[1]).filter(Boolean))];
   assert.deepEqual(sorted(await page.locator('[data-au-law-article]').evaluateAll(rows=>rows.map(row=>row.dataset.auLawArticle))),sorted(articles));
@@ -1187,10 +1189,10 @@ test('reference native: exact nine actual accepted assessments retain graph docu
   await page.locator('.au-context-nav [data-au-detail="sources"]').click();
   const originalIds=new Set(expected.state.original_binding.source_map.map(row=>row.artifact_id)),supplements=expected.state.source_descriptors.filter(row=>!originalIds.has(row.artifact_id));
   for(const supplement of supplements){
-   assert.match(await page.locator(`li[data-au-source-arrival="${supplement.artifact_id}"]`).innerText(),/Authored synthetic supplement/);
+   assert.match(await page.locator(`li[data-au-source-arrival="${supplement.artifact_id}"]`).innerText(),/Synthetic demonstration document/);
    await page.locator(`[data-au-source="${supplement.artifact_id}"]`).click();
    await eventually(()=>page.locator('.au-source-body').count().then(count=>count===1),'the native synthetic supplement did not open');
-   assert.equal(await page.locator('.au-source-dialog .au-eyebrow').innerText(),'Authored synthetic supplement');
+   assert.equal(await page.locator('.au-source-dialog .au-eyebrow').innerText(),'Synthetic demonstration document');
    assert.equal(await page.locator('.au-source-body').textContent(),fixture.sources[`${id}/${supplement.artifact_id}`].source?.text || fixture.sources[`${id}/${supplement.artifact_id}`].text);
    assert.equal(sha(Buffer.from(fixture.raw_sources[`${id}/${supplement.artifact_id}`],'base64')),supplement.sha256);
    await page.keyboard.press('Escape');

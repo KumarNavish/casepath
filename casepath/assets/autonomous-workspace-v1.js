@@ -108,7 +108,7 @@
   }
   function sourceExcerpt(state, source, projection = {}) {
     let body = readableSourceText(state,source) || '';
-    if (referenceSourcePin(state,source,projection) && body.startsWith('SYNTHETIC SUPPLEMENT — FICTIONAL DEMONSTRATION SOURCE\n')) {
+    if (referenceSourcePin(state,source,projection) && ['SYNTHETIC SUPPLEMENT — FICTIONAL DEMONSTRATION SOURCE\n','Synthetic demonstration document (fictional)\n'].some(header => body.startsWith(header))) {
       const separator = body.indexOf('\n\n');
       if (separator >= 0) body = body.slice(separator + 2);
     }
@@ -119,7 +119,7 @@
     const original = list(state.original_binding?.source_map).some(row => row.artifact_id === source.artifact_id && row.sha256 === source.sha256);
     if (original) return 'Original source';
     const acquired = list(state.acquired_sources).find(row => row.artifact_id === source.artifact_id && row.sha256 === source.sha256);
-    return acquired?.text?.startsWith('SYNTHETIC SUPPLEMENT — FICTIONAL DEMONSTRATION SOURCE\n') || referenceSourcePin(state,source,projection) ? 'Authored synthetic supplement' : source.role === 'customer_message' ? 'Original source' : 'Supporting source';
+    return ['SYNTHETIC SUPPLEMENT — FICTIONAL DEMONSTRATION SOURCE\n','Synthetic demonstration document (fictional)\n'].some(header => acquired?.text?.startsWith(header)) || referenceSourcePin(state,source,projection) ? 'Synthetic demonstration document' : source.role === 'customer_message' ? 'Original source' : 'Supporting source';
   }
   function legalBasisMarkup(state) {
     const context = state.semantic_contexts?.[state.run_id];
@@ -132,7 +132,7 @@
     if (!links.length) return '';
     const law = context.normative_sources || {}, compared = list(law.historical_comparison?.substantive_paragraphs_reported_same), older = law.older_snapshot, asOf = context.reference_provenance?.as_of;
     const olderURL = official(older?.publisher_url), showComparison = asOf && rows.some(row => row.source?.consolidation_date > asOf && compared.includes(row.article));
-    return `<p class="au-legal-basis" data-au-legal-basis>Legal basis · ${links.join(' · ')}${showComparison && olderURL ? ` · <a href="${h(olderURL)}" target="_blank" rel="noopener noreferrer" data-au-law-comparison>Recorded ${h(older.consolidation_date)} comparison</a>` : ''}</p>`;
+    return `<p class="au-legal-basis" data-au-legal-basis>Legal basis · ${links.join(' · ')}${showComparison && olderURL ? ` · <a href="${h(olderURL)}" target="_blank" rel="noopener noreferrer" data-au-law-comparison>Earlier law text (${h(older.consolidation_date)})</a>` : ''}</p>`;
   }
 
   function readState(response, claimId) {
@@ -839,7 +839,7 @@
     return `<ul class="au-source-list">${sources.map(source => {
       const acquired = list(state.acquired_sources).find(row => row.artifact_id === source.artifact_id), unassessed = assessmentFreshness(state).sources.some(row => row.artifact_id === source.artifact_id);
       const capability = acquired?.extraction === 'unsupported_metadata' ? 'Interpretation unsupported' : acquired && !acquired.complete ? 'Only part of the source is readable' : '';
-      const context = [sourceKind(state,source,projection) === 'Authored synthetic supplement' ? 'Authored synthetic supplement' : '',capability,unassessed ? 'Awaiting assessment' : ''].filter(Boolean).join(' · ');
+      const context = [sourceKind(state,source,projection) === 'Synthetic demonstration document' ? 'Synthetic demonstration document' : '',capability,unassessed ? 'Awaiting assessment' : ''].filter(Boolean).join(' · ');
       return `<li data-au-source-arrival="${h(source.artifact_id)}"${unassessed ? ' data-au-source-freshness="unassessed"' : ''}>${button(source.file_name || name(source) || 'Original source',`data-au-source="${h(source.artifact_id)}" data-au-source-origin="${h(origin)}:${h(source.artifact_id)}"`)}${context ? `<span>${h(context)}</span>` : ''}${acquired?.reason || acquired?.limitation ? `<p>${h(acquired.reason || acquired.limitation)}</p>` : ''}</li>`;
     }).join('') || '<li>No original source recorded.</li>'}</ul>`;
   }

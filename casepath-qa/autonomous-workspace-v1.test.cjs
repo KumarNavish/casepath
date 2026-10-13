@@ -54,14 +54,14 @@ test('reference source labels require the exact recorded pin and later uploads r
  const supplement={artifact_id:'synthetic-source',sha256:hash('5'),file_name:'01-clarification.txt',role:'supporting_document'},original={artifact_id:'original',sha256:hash('d'),role:'customer_message'};
  const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',source_roster_sha256:hash('6')};
  const s=state({run_id:'reference-run',source_roster_sha256:hash('6'),source_descriptors:[original,supplement],original_binding:{source_map:[original]},semantic_contexts:{'reference-run':{claim_id:'claim-a',execution_mode:'deterministic_reference',reference_provenance:provenance,sources:[original,supplement]}},receipts:[{kind:'interpretation.accepted',receipt:{workflow_id:'reference-run',receipt_sha256:hash('7'),reference_execution:{provenance}}}]});
- assert.equal(ui.sourceKind(s,original),'Original source');assert.equal(ui.sourceKind(s,supplement),'Authored synthetic supplement');
+ assert.equal(ui.sourceKind(s,original),'Original source');assert.equal(ui.sourceKind(s,supplement),'Synthetic demonstration document');
  const arrived=structuredClone(s),late={artifact_id:'unrelated-later-jpeg',sha256:hash('8'),file_name:supplement.file_name,media_type:'image/jpeg',role:'supporting_document'};
  arrived.source_descriptors.push(late);arrived.source_roster_sha256=hash('9');
  assert.equal(ui.sourceKind(arrived,late),'Supporting source');assert.equal(ui.sourceKind(arrived,{...late,media_type:'text/csv'}),'Supporting source');assert.equal(ui.sourceKind(arrived,{...supplement,sha256:hash('8')}),'Supporting source','filename and an old artifact ID cannot classify changed bytes');
  const projection={intake:{contract:'casepath.source-backed-intake/1.0.0',gate_sha256:hash('3'),status:'complete',eligible:true,provenance}};
  assert.equal(ui.sourceKind(arrived,late,projection),'Supporting source','a prior preflight roster cannot classify a later upload');
  assert.equal(ui.referenceExecution(arrived).as_of,'2025-02-21');assert.equal(ui.assessmentFreshness(arrived).status,'prior');assert.deepEqual(ui.assessmentFreshness(arrived).sources,[late]);
- const html=ui.workMarkup(arrived,{},'branch',[],'sources');assert.match(html,/Authored synthetic supplement/);assert.doesNotMatch(html,/unrelated-later-jpeg[^<]*Authored synthetic/);
+ const html=ui.workMarkup(arrived,{},'branch',[],'sources');assert.match(html,/Synthetic demonstration document/);assert.doesNotMatch(html,/unrelated-later-jpeg[^<]*Synthetic demonstration/);
  assert.equal(JSON.stringify(s.source_descriptors),JSON.stringify([original,supplement]));
 });
 
@@ -75,10 +75,12 @@ test('completed reference assessments filter with completed assessments while ex
 });
 
 test('pinned synthetic source excerpts show the actual body while the full acquired bytes remain exact',()=>{
- const body='SYNTHETIC SUPPLEMENT — FICTIONAL DEMONSTRATION SOURCE\nFixture header and hash declarations.\n\nThe service observation records a continuing heating fault.',source={artifact_id:'source',sha256:hash('5'),media_type:'text/plain',role:'supporting_document',text:body};
+ for (const header of ['SYNTHETIC SUPPLEMENT — FICTIONAL DEMONSTRATION SOURCE\nFixture header and hash declarations.','Synthetic demonstration document (fictional)']) {
+ const body=header+'\n\nThe service observation records a continuing heating fault.',source={artifact_id:'source',sha256:hash('5'),media_type:'text/plain',role:'supporting_document',text:body};
  const s=state({source_descriptors:[source],semantic_contexts:{recorded:{execution_mode:'deterministic_reference',reference_provenance:{synthetic:true},sources:[{artifact_id:source.artifact_id,sha256:source.sha256}]}}}),before=JSON.stringify(s);
  assert.equal(ui.sourceExcerpt(s,source),'The service observation records a continuing heating fault.');assert.equal(ui.sourceExcerpt(state(),source),body,'a declared synthetic header alone cannot authorize hiding an unpinned source header');
  assert.equal(ui.sourceExcerpt(s,{...source,sha256:hash('6')}),body);assert.equal(JSON.stringify(s),before);
+ }
 });
 
 test('actual DAG topology determines rank and branches independently of input order',()=>{
