@@ -499,9 +499,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace summary > span { margin-left:8px; }
 .au-workspace details > :is(p,dl,pre,ul) { margin-top:12px; }
 @media (min-width:1001px) and (max-height:850px) {
-  .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-graph { gap:12px; padding-top:4px; padding-bottom:6px; }
+  .au-workspace .au-forming-process:not(.au-stage-process) .au-graph-viewport[data-au-graph-overview=true] .au-graph { gap:12px; padding-top:4px; padding-bottom:6px; }
   .au-workspace .au-forming-process:not(.au-stage-process) .au-graph-viewport[data-au-graph-overview=true] .au-graph { gap:6px; }
-  .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-node { min-height:36px; padding-top:0; padding-bottom:0; }
+  .au-workspace .au-forming-process:not(.au-stage-process) .au-graph-viewport[data-au-graph-overview=true] .au-node { min-height:36px; padding-top:0; padding-bottom:0; }
   .au-workspace .au-forming-publication-focus { margin:0 0 6px; padding:4px 12px; }
   .au-workspace .au-main:has(.au-forming-publication-focus) { padding-top:8px; }
   .au-workspace .au-evidence-stage:has(.au-forming-publication-focus) > .au-assessment-conclusion { margin-bottom:0; }

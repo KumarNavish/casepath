@@ -908,6 +908,39 @@ async function junctionConnections(page){
  return geometry;
 }
 
+test('causal formation native: settled stage dependency strokes stay inside the clipping viewport at short desktop and mobile sizes',async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0],head=fixture.snapshots[id];
+ for(const [width,height]of [[1280,800],[1428,771],[1360,900],[390,844]])await t.test(`${width}x${height}`,async t=>{
+  const page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,width,height});await page.emulateMedia({reducedMotion:'reduce'});
+  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.state.revision});await title(page,id);
+  assert.equal(await page.locator('.au-operation-stage[data-au-stage-phase="map"]').count(),1);assertAcceptedPaint(await acceptedPaint(page),head);
+  const geometry=await page.locator('.au-stage-process [data-au-graph-pan]').evaluate(viewport=>{
+   const frame=viewport.getBoundingClientRect(),graph=viewport.querySelector('[data-au-graph]'),style=getComputedStyle(viewport);
+   const clip={left:frame.left+viewport.clientLeft,top:frame.top+viewport.clientTop,right:frame.left+viewport.clientLeft+viewport.clientWidth,bottom:frame.top+viewport.clientTop+viewport.clientHeight};
+   return {clip,overflow:{x:style.overflowX,y:style.overflowY},vertical:matchMedia('(max-width:700px)').matches,nodes:[...graph.querySelectorAll('[data-au-node]')].map(node=>({id:node.dataset.auNode,height:node.getBoundingClientRect().height,font:parseFloat(getComputedStyle(node.querySelector('.au-node-title')).fontSize)})),edges:[...graph.querySelectorAll('path[data-au-edge]')].map(path=>{
+    // Sample the dependency's own stroke, never the marker or SVG bounds.
+    const length=path.getTotalLength(),matrix=path.getScreenCTM(),style=getComputedStyle(path),screen=point=>{const p=new DOMPoint(point.x,point.y).matrixTransform(matrix);return {x:p.x,y:p.y};};
+    const samples=Array.from({length:401},(_,index)=>screen(path.getPointAtLength(length*index/400)));
+    const horizontal=samples.slice(1).flatMap((point,index)=>Math.abs(point.y-samples[index].y)<.1&&Math.abs(point.x-samples[index].x)>.1?[{start:samples[index],end:point}]:[]);
+    return {id:path.dataset.auEdge,source:path.dataset.auEdgeSource,target:path.dataset.auEdgeTarget,d:path.getAttribute('d'),length,stroke:style.stroke,strokeWidth:parseFloat(style.strokeWidth),opacity:parseFloat(style.opacity),visibility:style.visibility,display:style.display,strokeRadius:parseFloat(style.strokeWidth)*Math.max(Math.hypot(matrix.a,matrix.b),Math.hypot(matrix.c,matrix.d))/2,samples,horizontal};
+   })};
+  });
+  await focusedReceipt(page,`stage-dependency-clearance-${width}x${height}`,{claim_id:id,revision:head.state.revision,state_sha256:head.state.state_sha256,geometry});
+  assert.deepEqual(sorted(geometry.nodes.map(row=>row.id)),sorted(head.state.graph.nodes.map(row=>row.node_id)));
+  assert.deepEqual(geometry.edges.map(({id,source,target})=>({id,source,target})),head.state.graph.edges.map(row=>({id:row.edge_id,source:row.source_node_id,target:row.target_node_id})));
+  assert.equal(geometry.overflow.x,'auto');assert.equal(geometry.overflow.y,'auto');
+  for(const edge of geometry.edges){
+   assert.ok(edge.length>20&&edge.stroke!=='none'&&edge.strokeWidth>0&&edge.opacity>0&&edge.visibility==='visible'&&edge.display!=='none','a real dependency has a painted stroke beyond its marker');
+   if(!geometry.vertical)assert.ok(edge.horizontal.reduce((total,segment)=>total+Math.abs(segment.end.x-segment.start.x),0)>20,`${edge.id} has a substantial horizontal dependency line`);
+   const points=geometry.vertical?edge.samples:edge.horizontal.flatMap(segment=>[segment.start,segment.end]);
+   const outside=points.filter(point=>point.x-edge.strokeRadius<geometry.clip.left||point.x+edge.strokeRadius>geometry.clip.right||point.y-edge.strokeRadius<geometry.clip.top||point.y+edge.strokeRadius>geometry.clip.bottom);
+   assert.equal(outside.length,0,`${edge.id} dependency stroke paints inside the actual overflow clipping viewport; first clipped point ${JSON.stringify(outside[0])}; arrowheads alone cannot satisfy this check`);
+  }
+  assert.ok(geometry.nodes.every(row=>row.height>=44&&row.font>=18),'stage nodes retain their existing target and text sizes');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
+ });
+});
+
 for(const [width,height,reduced]of [[1440,900,false],[1280,800,true],[390,844,false]])test(`causal formation native: heating requirements enter at their actual steps and final content stays visible at ${width}x${height}`,async t=>{
  const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,width,height});
  if(reduced)await page.emulateMedia({reducedMotion:'reduce'});
