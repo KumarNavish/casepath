@@ -637,6 +637,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-operation-passage { margin: .8rem 0; max-height: 18rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.6; color: var(--au-ink, #253b45); }
 .au-operation-passage mark { background: #f0e7b3; color: inherit; border-radius: 3px; box-decoration-break: clone; }
 .au-operation-summary { margin: .8rem 0; font-size: .9rem; line-height: 1.5; }
-.au-operation-attention { position: absolute; left: 0; top: 0; z-index: 5; pointer-events: none; border: 2px solid #4c796f; border-radius: 8px; box-shadow: 0 0 0 4px rgb(76 121 111 / 9%); }
+.au-operation-attention { position:absolute; left:0; top:0; z-index:5; width:8px; height:8px; pointer-events:none; border-radius:50%; background:#4c796f; box-shadow:0 0 0 4px rgb(76 121 111 / 12%); }
+.au-operation-fact-token { position:absolute; left:0; top:0; z-index:6; max-width:210px; padding:5px 8px; border-radius:4px; background:#eff4e8; color:#234e43; box-shadow:0 2px 12px rgb(35 78 67 / 10%); font-size:12px; line-height:1.4; pointer-events:none; }
 .au-operation-history { margin-bottom: 2rem; }
 @media (prefers-reduced-motion: reduce) { .au-operation-attention { display: none; } }

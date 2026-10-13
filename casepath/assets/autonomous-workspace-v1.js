@@ -1075,6 +1075,7 @@
     return JSON.stringify(value);
   }
   const OPERATIONS_CONTRACT = 'casepath.operations-stream/1.0.0';
+  const OPERATION_INSTRUMENTATION = 'casepath.reference-operations/1.0.0';
   const OPERATION_FRAME_BYTES = 2 * 1024 * 1024, OPERATION_HISTORY_BYTES = 8 * 1024 * 1024;
   async function* operationFrames(response) {
     if (!response?.body?.getReader) throw new Error('Operation streaming is unavailable.');
@@ -1122,7 +1123,7 @@
     }});
   }
   function checkedOperationBinding(frame, head, start) {
-    if (frame?.contract !== OPERATIONS_CONTRACT || frame.type !== 'binding' || !start ||
+    if (frame?.contract !== OPERATIONS_CONTRACT || frame.type !== 'binding' || frame.instrumentation_id !== OPERATION_INSTRUMENTATION || !start ||
         frame.claim_id !== head.claimId || frame.run_id !== start.run_id || frame.from_seq !== start.from_seq ||
         frame.profile_id !== start.profile_id || frame.profile_sha256 !== start.profile_sha256 ||
         frame.current_revision !== head.revision || frame.current_state_sha256 !== head.state_sha256 ||
@@ -1166,20 +1167,34 @@
   function operationLabel(operation) {
     if (operation?.kind === 'fact.extract' && operation.result?.verification_required === false) return 'Inspect verified finding';
     if (operation?.kind === 'branch.activate' && operation.result?.activation === 'unresolved') return 'Evaluate unresolved branch';
+    if (operation?.kind === 'node.evaluate') return 'Evaluate step';
+    if (operation?.kind === 'dependency.evaluate') return 'Check dependency';
+    if (operation?.kind === 'branch.evaluate') return 'Evaluate unresolved branch';
     return ({'source.open':'Open source','span.read':'Read passage','phrase.match':'Check source phrase','fact.extract':'Extract provisional finding','verification.check':'Verify source support','condition.evaluate':'Evaluate condition','branch.activate':'Activate branch','branch.drop':'Exclude branch','document.require':'Derive document requirement','document.check':'Check document source','decision':'Derive assessment','knowledge.reuse':'Reuse recorded procedure','knowledge.add':'Inspect historical addition','step.complete':'Complete recorded step'})[operation?.kind] || words(operation?.kind);
   }
   function operationReadingMarkup(trace) {
     const operation = trace?.current;
     if (!operation) return '';
-    const cause = trace.rows.find(row => row.id === operation.cause_ids?.at(-1)), pin = operation.source || (operation.kind === 'phrase.match' ? cause?.source : null), source = trace.sources.get(pin?.artifact_id || (operation.kind === 'source.open' ? operation.object.id : '')), chars = source && Array.from(source.text);
+    const cause = trace.rows.find(row => row.id === operation.cause_ids?.at(-1)), currentPin = operation.source || (operation.kind === 'phrase.match' ? cause?.source : null);
+    const reading = currentPin ? {artifact_id:currentPin.artifact_id,pin:currentPin,id:operation.id} : operation.kind === 'source.open' ? {artifact_id:operation.object.id,id:operation.id} : trace.displaySource;
+    const pin = reading?.pin, source = trace.sources.get(reading?.artifact_id), chars = source && Array.from(source.text);
     const objectLabel = operation.object.label || name(list(trace.state?.graph?.nodes).find(row => row.node_id === operation.object.id)) || name(list(trace.state?.facts).find(row => row.fact_id === operation.object.id)) || name(list(trace.state?.obligations).find(row => row.obligation_id === operation.object.id || row.document_type === operation.object.id)) || words(operation.object.id.replace(/^(fact|condition):/,''));
     const summary = operation.result?.summary || operation.result?.reason || operation.result?.verdict || operation.result?.route_state || operation.result?.activation || operation.result?.status || (typeof operation.result?.matched === 'boolean' ? operation.result.matched ? 'Phrase found' : 'Phrase absent' : '');
-    const passage = chars ? pin ? `${h(chars.slice(Math.max(0,pin.start_char-60),pin.start_char).join(''))}<mark data-au-operation-span="${h(operation.id)}">${h(pin.quote)}</mark>${h(chars.slice(pin.end_char,pin.end_char+120).join(''))}` : h(chars.slice(0,800).join('')) : '';
-    return `<section class="au-operation-reading" data-au-operation-object="${h(operation.object.id)}" data-au-object-type="${h(operation.object.type)}" data-au-object-id="${h(operation.object.id)}"><p class="au-reading-label">${h(operationLabel(operation))}</p>${source ? `<button type="button" class="au-link" data-au-source="${h(source.artifact_id)}" data-au-source-origin="operation:${h(operation.id)}">${h(source.file_name || 'Original source')} ↗</button><pre class="au-operation-passage">${passage}</pre>` : ''}${operation.object.type !== 'source' || summary ? `<p class="au-operation-summary">${operation.object.type === 'source' ? '' : h(objectLabel)}${summary ? `${operation.object.type === 'source' ? '' : ' · '}${h(summary)}` : ''}</p>` : ''}${operation.kind === 'fact.extract' && operation.result?.verification_required !== false ? '<p class="au-meta">Provisional finding · the saved process changes after verification.</p>' : operation.kind === 'knowledge.add' ? '<p class="au-meta">Historical addition · this demonstration saves no knowledge.</p>' : ''}<button type="button" class="au-link" data-au-inspect="operation" data-au-record-id="${h(operation.id)}">Inspect operation</button></section>`;
+    const sourceHTML = value => h(value).replace(/\r/g,'&#13;');
+    const passage = chars ? pin ? `${sourceHTML(chars.slice(0,pin.start_char).join(''))}<mark data-au-operation-span="${h(reading.id)}" data-au-operation-start-char="${pin.start_char}" data-au-operation-end-char="${pin.end_char}">${sourceHTML(pin.quote)}</mark>${sourceHTML(chars.slice(pin.end_char).join(''))}` : sourceHTML(source.text) : '';
+    return `<section class="au-operation-reading" data-au-operation-object="${h(operation.object.id)}" data-au-object-type="${h(operation.object.type)}" data-au-object-id="${h(operation.object.id)}"><p class="au-reading-label">${h(operationLabel(operation))}</p>${trace.previousCurrent?.id === operation.id && !trace.rows.some(row => row.id === operation.id) ? '<p class="au-meta">Earlier attempt stopped · waiting for the stored trace.</p>' : ''}${source ? `<button type="button" class="au-link" data-au-source="${h(source.artifact_id)}" data-au-source-origin="operation:${h(operation.id)}">${h(source.file_name || 'Original source')} ↗</button><pre class="au-operation-passage" data-au-operation-source="${h(source.artifact_id)}" data-au-operation-text-sha="${h(source.text_sha256)}">${passage}</pre>` : ''}${operation.object.type !== 'source' || summary ? `<p class="au-operation-summary">${operation.object.type === 'source' ? '' : h(objectLabel)}${summary ? `${operation.object.type === 'source' ? '' : ' · '}${h(summary)}` : ''}</p>` : ''}${operation.kind === 'fact.extract' && operation.result?.verification_required !== false ? '<p class="au-meta">Provisional finding · the saved process changes after verification.</p>' : operation.kind === 'knowledge.add' ? '<p class="au-meta">Historical addition · this demonstration saves no knowledge.</p>' : ''}<button type="button" class="au-link" data-au-inspect="operation" data-au-record-id="${h(operation.id)}">Inspect operation</button></section>`;
   }
   function operationHistoryMarkup(trace) {
-    if (!trace?.binding) return '';
-    return `<section class="au-operation-history"><h3>Assessment operations</h3><p class="au-meta">${!trace.recorded && trace.binding.mode === 'historical_recomputed' ? 'Recomputed from the saved source packet.' : 'Recorded operation trace.'} Saved case history remains below.</p><ol class="au-event-list">${trace.rows.slice().reverse().map(operation => `<li><button type="button" class="au-link" data-au-inspect="operation" data-au-record-id="${h(operation.id)}">${h(operationLabel(operation))} · ${h(operation.object.label || words(operation.object.id))}</button></li>`).join('')}</ol></section>`;
+    if (!trace?.binding && !trace?.previousAttempts?.length) return '';
+    const previous = list(trace.previousAttempts).map((attempt,index) => `<section class="au-history-record"><h4>Earlier ${attempt.recorded ? 'recorded trace' : 'live assessment'} stopped</h4><p class="au-meta">${h(attempt.reason)}</p><ol class="au-event-list">${attempt.rows.slice().reverse().map(operation => `<li><button type="button" class="au-link" data-au-inspect="operation-attempt" data-au-record-id="${index}:${h(operation.id)}">${h(operationLabel(operation))} · ${h(operation.object.label || words(operation.object.id))}</button></li>`).join('')}</ol></section>`).join('');
+    return `<section class="au-operation-history"><h3>Assessment operations</h3><p class="au-meta">${trace.savedFallback ? 'The attempted assessment stopped.' : !trace.binding ? 'Waiting for the stored operation trace.' : !trace.recorded && trace.binding.mode === 'historical_recomputed' ? 'Recomputed from the saved source packet.' : 'Recorded operation trace.'} Saved case history remains below.</p><ol class="au-event-list">${trace.rows.slice().reverse().map(operation => `<li><button type="button" class="au-link" data-au-inspect="operation" data-au-record-id="${h(operation.id)}">${h(operationLabel(operation))} · ${h(operation.object.label || words(operation.object.id))}</button></li>`).join('')}</ol>${previous}</section>`;
+  }
+  function operationRecord(trace, kind, id) {
+    if (kind === 'operation-attempt') {
+      const separator = id.indexOf(':'), index = Number(id.slice(0,separator));
+      return trace?.previousAttempts?.[index]?.rows.find(row => row.id === id.slice(separator+1)) || null;
+    }
+    return trace?.rows.find(row => row.id === id) || list(trace?.previousAttempts).flatMap(attempt => attempt.rows).find(row => row.id === id) || null;
   }
   async function checkedOperationCheckpoint(frame, trace) {
     const previous = trace.transportState;
@@ -1368,7 +1383,7 @@
     const mainTag = container.tagName === 'MAIN' ? 'div' : 'main';
     if (!fetcher) throw new Error('The autonomous API is unavailable.');
     let publicReadOnly = root.CASEPATH_PUBLIC_READ_ONLY === true;
-    let publicationAttention = null, inspectionHold = false, operationTrace = null, attentionMarker = null, attentionPosition = null, attentionAnimation = null;
+    let publicationAttention = null, inspectionHold = false, operationTrace = null, attentionMarker = null, attentionPosition = null, attentionAnimation = null, factToken = null, factTokenAnimation = null, factTokenOperation = null;
     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, recordReturn = null, recordSelection = null, sourceEpoch = 0, polling = null, claimRead = 0;
     let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'reference', demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
     let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, statusAuthority = null, readGeneration = 0;
@@ -1774,6 +1789,7 @@
       if (operationTrace) { operationTrace.state = current; host.setAttribute?.('data-au-current-operation',operationTrace.current?.id || ''); host.setAttribute?.('data-au-operation-run-mode',operationTrace.savedFallback ? 'saved_result' : operationTrace.recorded ? 'recorded_operations' : operationTrace.binding?.mode || 'opening'); host.setAttribute?.('data-au-operation-presentation',operationTrace.finished ? 'completed' : pausedPresentation ? 'paused' : 'playing'); host.setAttribute?.('data-au-operation-result-available',String(operationTrace.finished || operationTrace.buffer?.result?.exact_output_verified === true && operationTrace.buffer.result.state_sha256 === operationTrace.binding?.current_state_sha256 && operationTrace.buffer.result.current_event_sha256 === operationTrace.binding?.current_event_sha256)); host.setAttribute?.('data-au-operation-result-verified',String(operationTrace.verifiedResult === true)); } else { for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute); }
       claimRenderComplete = false;
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); interactionMotion = null;
+      const priorSourcePane = host.querySelector('.au-operation-passage');
       const focused = doc.activeElement, focusKey = focusToken(focused), sources = sourceControls(host), objects = renderedClaimId === current.claim_id ? formingObjects(host) : new Map();
       const previous = claimViews.get(current.claim_id);
       const sameClaim = renderedClaimId === current.claim_id;
@@ -1786,6 +1802,7 @@
       arrival?.remove?.();
       host.innerHTML = workMarkup(current,projection,selected,history,detail,evidenceContext,{mode:presentationMode,readOnly:publicReadOnly,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),operations:operationTrace,playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
       reuseSourceControls(host,sources);
+      retainOperationSource(priorSourcePane);
       reuseFormingObjects(host,objects);
       if (arrival) host.querySelector('[data-au-arrival]')?.replaceWith(arrival);
       const presentArrival = host.querySelector('[data-au-arrival]');
@@ -1972,7 +1989,7 @@
       if (!preferences.demo) stopPresentation();
       else { if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; if (demoSession) demoSession.preparing = null; }
       leaveView(); route(claimFragment(id,preferences),writeHistory);
-      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); operationTrace = null; attentionMarker?.remove?.(); attentionPosition = null; current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo || presentationMode === 'replay' ? 'demonstration' : 'work'); notice('');
+      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); operationTrace = null; factTokenOperation = null; factTokenAnimation?.cancel(); factToken?.remove?.(); attentionMarker?.remove?.(); attentionPosition = null; current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo || presentationMode === 'replay' ? 'demonstration' : 'work'); notice('');
       claimRenderComplete = false;
       if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
       const opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
@@ -2210,35 +2227,61 @@
     function stopPresentation() {
       const session = demoSession || pausedPresentation;
       session?.operationController?.abort(); session?.operationWake?.();
-      attentionAnimation?.cancel();
+      attentionAnimation?.cancel(); factTokenAnimation?.cancel(); factToken?.remove?.(); const pane = host.querySelector('.au-operation-passage'); pane?.scrollTo?.({top:pane.scrollTop,behavior:'instant'});
       if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; demoSession = null; pausedPresentation = null; replayPrefixes.clear();
     }
-    function positionOperationAttention() {
+    function retainOperationSource(previous) {
+      let pane = host.querySelector('.au-operation-passage');
+      if (!pane) return;
+      if (previous && previous.dataset.auOperationSource === pane.dataset.auOperationSource && previous.dataset.auOperationTextSha === pane.dataset.auOperationTextSha && previous.replaceChildren) {
+        const scroll = previous.scrollTop;
+        previous.replaceChildren(...pane.childNodes); pane.replaceWith(previous); pane = previous; pane.scrollTop = scroll;
+      }
+      if (inspectionHold || doc.hidden || reduced?.matches) return;
+      const operation = operationTrace?.current, mark = pane.querySelector('[data-au-operation-span]');
+      if (mark && mark.dataset.auOperationSpan === operation?.id) {
+        const top = pane.scrollTop + mark.getBoundingClientRect().top - pane.getBoundingClientRect().top - 28;
+        pane.scrollTo?.({top:Math.max(0,top),behavior:'smooth'});
+      } else if (operation?.kind === 'source.open') pane.scrollTo?.({top:0,behavior:'smooth'});
+    }
+    function positionOperationAttention(animate = true) {
       attentionAnimation?.cancel();
-      if (!operationTrace?.current || detail !== 'step' || doc.hidden || reduced?.matches || operationTrace.finished) { attentionMarker?.remove?.(); return; }
+      if (!operationTrace?.current || detail !== 'step' || doc.hidden || reduced?.matches || operationTrace.finished) { attentionMarker?.remove?.(); factTokenAnimation?.cancel(); factToken?.remove?.(); return; }
       const operation = operationTrace.current, object = operation.object, canvas = host.querySelector('[data-au-canvas]');
       if (!canvas?.getBoundingClientRect) return;
       const nodes = [...host.querySelectorAll('[data-au-node]')], facts = [...host.querySelectorAll('[data-au-fact]')], documents = [...host.querySelectorAll('[data-au-obligation]')];
       const factNodes = object.type === 'fact' ? list(current.obligations).filter(row => list(row.required_fact_ids).includes(object.id)).flatMap(row => list(row.node_ids).concat(row.node_id || row.decision_node_id || [])) : [];
       const nodeId = object.node_id || operation.result?.node_id || operation.input?.node_id || factNodes[0] || (object.type === 'node' ? object.id : null);
-      const edge = object.type === 'edge' ? [...host.querySelectorAll('[data-au-edge]')].find(item => item.dataset.auEdge === object.id) : null;
-      const target = edge || (operation.kind === 'fact.extract' ? nodes.find(item => item.dataset.auNode === nodeId) :
-        operation.kind.startsWith('source.') || ['span.read','phrase.match'].includes(operation.kind) ? host.querySelector('[data-au-operation-span]') :
+      const node = nodes.find(item => item.dataset.auNode === nodeId), edge = object.type === 'edge' ? [...host.querySelectorAll('[data-au-edge]')].find(item => item.dataset.auEdge === object.id) : null;
+      const target = edge || (operation.kind === 'fact.extract' ? node || host.querySelector('.au-operation-summary') :
+        operation.kind === 'source.open' ? host.querySelector('.au-operation-passage') : ['span.read','phrase.match'].includes(operation.kind) ? host.querySelector('[data-au-operation-span]') :
         operation.kind.startsWith('document.') ? documents.find(item => item.dataset.auObligation === object.id || item.dataset.auDocument === (object.document_type || object.id)) :
         operation.kind.startsWith('knowledge.') ? host.querySelector('[data-au-knowledge-use]') || host.querySelector('[data-au-knowledge-publication]') :
-        nodes.find(item => item.dataset.auNode === nodeId) || facts.find(item => item.dataset.auFact === object.id));
+        node || facts.find(item => item.dataset.auFact === object.id));
       const destination = target || host.querySelector('[data-au-operation-object]');
       if (!destination?.getBoundingClientRect) return;
       attentionMarker ||= doc.createElement('div'); attentionMarker.className = 'au-operation-attention'; attentionMarker.setAttribute('aria-hidden','true'); attentionMarker.dataset.auOperationAttention = operation.id;
       canvas.appendChild(attentionMarker);
       const area = canvas.getBoundingClientRect(); let rect = destination.getBoundingClientRect();
       const passage = destination.closest?.('.au-operation-passage');
-      if (passage) { const clip = passage.getBoundingClientRect(), left = Math.max(rect.left,clip.left), top = Math.max(rect.top,clip.top), right = Math.min(rect.right,clip.right), bottom = Math.min(rect.bottom,clip.bottom); rect = {left,top,width:Math.max(0,right-left),height:Math.max(0,bottom-top)}; }
-      const next = {x:rect.left-area.left+canvas.scrollLeft-5,y:rect.top-area.top+canvas.scrollTop-5,width:Math.max(12,rect.width+10),height:Math.max(12,rect.height+10)};
+      if (passage) { const clip = passage.getBoundingClientRect(); rect = {...rect,left:Math.max(rect.left,clip.left),top:Math.max(rect.top,clip.top),width:Math.max(0,Math.min(rect.right,clip.right)-Math.max(rect.left,clip.left))}; }
+      const next = {x:Math.max(4,rect.left-area.left+canvas.scrollLeft-6),y:rect.top-area.top+canvas.scrollTop+9};
       const transform = position => `translate(${position.x}px,${position.y}px)`;
-      attentionMarker.style.transform = transform(next); attentionMarker.style.width = `${next.width}px`; attentionMarker.style.height = `${next.height}px`;
-      if (attentionPosition && !inspectionHold && attentionMarker.animate) attentionAnimation = attentionMarker.animate([{transform:transform(attentionPosition),width:`${attentionPosition.width}px`,height:`${attentionPosition.height}px`},{transform:transform(next),width:`${next.width}px`,height:`${next.height}px`}],{duration:520,easing:'cubic-bezier(.2,.7,.2,1)',fill:'none'});
+      attentionMarker.style.transform = transform(next);
+      if (animate && attentionPosition && !inspectionHold && attentionMarker.animate) attentionAnimation = attentionMarker.animate([{transform:transform(attentionPosition),opacity:.35},{transform:transform(next),opacity:1}],{duration:520,easing:'cubic-bezier(.2,.7,.2,1)',fill:'none'});
       attentionPosition = next;
+      if (node) node.dataset.auOperationId = operation.id;
+      if (operation.kind === 'fact.extract' && operation.result?.verification_required === false && node && list(current.facts).some(fact => fact.fact_id === object.id) && !inspectionHold && factTokenOperation !== operation.id) {
+        const mark = host.querySelector(`[data-au-operation-span]`), sourcePane = mark?.closest('.au-operation-passage');
+        if (mark && sourcePane) {
+          factTokenAnimation?.cancel(); factToken?.remove?.(); factTokenOperation = operation.id;
+          const original = mark.getBoundingClientRect(), clip = sourcePane.getBoundingClientRect(), origin = {x:Math.max(original.left,clip.left)-area.left+canvas.scrollLeft,y:Math.max(clip.top,Math.min(original.top,clip.bottom-20))-area.top+canvas.scrollTop};
+          factToken = doc.createElement('span'); factToken.className = 'au-operation-fact-token'; factToken.dataset.auOperationId = operation.id; factToken.dataset.auObjectType = 'fact'; factToken.dataset.auObjectId = object.id; factToken.setAttribute('aria-hidden','true');
+          factToken.textContent = Array.from(operation.result.summary || operation.source?.quote || object.id).slice(0,110).join(''); factToken.style.transform = transform(next); canvas.appendChild(factToken);
+          factTokenAnimation = factToken.animate([{transform:transform(origin),opacity:.95},{transform:transform(next),opacity:.95,offset:.85},{transform:transform(next),opacity:0}],{duration:600,easing:'cubic-bezier(.2,.7,.2,1)',fill:'none'});
+          const token = factToken; factTokenAnimation.onfinish = () => token.remove();
+        }
+      }
     }
     function operationActive(session, token) { return !disposed && token === epoch && !pendingRoute() && view === 'claim' && current?.claim_id === session.claimId && !session.operationController?.signal.aborted; }
     async function operationGate(session, token, duration = 0) {
@@ -2252,7 +2295,7 @@
       if (!session) return;
       inspectionHold = false; pausedPresentation = null; demoSession = session; session.skip = true;
       if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; session.operationWake?.();
-      attentionAnimation?.cancel(); attentionMarker?.remove?.();
+      attentionAnimation?.cancel(); factTokenAnimation?.cancel(); factToken?.remove?.(); attentionMarker?.remove?.(); const pane = host.querySelector('.au-operation-passage'); pane?.scrollTo?.({top:pane.scrollTop,behavior:'instant'});
     }
     async function fallbackOperations(session, token, reason) {
       const response = await request(`/claims/${key(session.claimId)}/replay?through_seq=${session.replayHead.revision}`), incoming = readReplay(response,session.claimId,session.replayHead.revision);
@@ -2266,7 +2309,8 @@
       if (!operationActive(session,token) || session.operationStarted) return;
       session.operationStarted = true; session.operationController = new AbortController(); controllers.add(session.operationController);
       const operationController = session.operationController;
-      operationTrace = {binding:null,rows:[],bytes:0,sources:new Map(),current:null,journal:[],pinnedJournal:session.verifiedJournal || [],transportState:null,finished:false,frameHashes:[],visibleResults:new Map()};
+      const previousAttempts = session.previousAttempts || [], previousCurrent = operationTrace?.current, previousSources = operationTrace?.sources, previousDisplaySource = operationTrace?.displaySource;
+      operationTrace = {binding:null,rows:[],bytes:previousAttempts.reduce((sum,attempt) => sum+attempt.bytes,0),sources:new Map(previousSources || []),current:previousCurrent || null,previousCurrent,displaySource:previousDisplaySource,journal:[],pinnedJournal:session.verifiedJournal || [],transportState:null,finished:false,frameHashes:[],visibleResults:new Map(),previousAttempts};
       try {
         if ((!session.referenceReady && !await verifyReferenceHead(session)) || !session.verifiedReplayStart) throw new Error('No current completed reference assessment is available.');
         operationTrace.pinnedJournal = session.verifiedJournal || []; operationTrace.asOf = session.referenceAsOf;
@@ -2298,10 +2342,13 @@
             const repeat = operationTrace.visibleResults.get(semanticKey) === identity;
             if (!repeat && !session.skip && !reduced?.matches) {
               operationTrace.visibleResults.set(semanticKey,identity); operationTrace.current = operation;
+              const sourceCause = operationTrace.rows.find(row => row.id === operation.cause_ids.at(-1)), pin = operation.source || (operation.kind === 'phrase.match' ? sourceCause?.source : null);
+              if (pin) operationTrace.displaySource = {artifact_id:pin.artifact_id,pin,id:operation.id};
+              else if (operation.kind === 'source.open') operationTrace.displaySource = {artifact_id:operation.object.id,id:operation.id};
               const nodeId = operation.object.node_id || operation.result?.node_id || (operation.object.type === 'node' ? operation.object.id : null);
               if (nodeId && list(current.graph?.nodes).some(node => node.node_id === nodeId)) { selected = nodeId; evidenceContext = evidenceSelection(current,selected); }
               detail = 'step'; renderClaim();
-              if (!await operationGate(session,token,['fact.extract','branch.activate','branch.drop','document.require','document.check','decision'].includes(operation.kind) ? 700 : operation.kind === 'phrase.match' ? 450 : 180)) return;
+              if (!await operationGate(session,token,['fact.extract','branch.activate','branch.drop','branch.evaluate','document.require','document.check','decision'].includes(operation.kind) ? 700 : operation.kind === 'phrase.match' ? 450 : 180)) return;
             }
           } else if (frame.type === 'checkpoint') {
             const incoming = await checkedOperationCheckpoint(frame,operationTrace);
@@ -2317,7 +2364,7 @@
             if (next && !session.skip && !reduced?.matches) {
               presentationOpening(session,next.claim_id);
               if (!await operationGate(session,token,1000)) return;
-              session.operationStarted = false; session.useRecorded = false; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null;
+              session.operationStarted = false; session.previousAttempts = []; session.useRecorded = false; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null;
               await openPresentationCase(session,true,session.index+1); return;
             }
             stopPresentation(); renderClaim(); notice(session.recorded ? 'Recorded operation trace finished. No case or knowledge changes were saved.' : 'Rules-based assessment complete. Recomputed from the saved synthetic packet; no case or knowledge changes were saved.'); return;
@@ -2327,7 +2374,9 @@
         throw new Error('The operation stream ended without a verified result.');
       } catch (error) {
         if (operationActive(session,token)) {
-          if (!session.recorded && !session.useRecorded) { session.useRecorded = true; session.operationStarted = false; operationController.abort(); session.operationController = null; startOperations(session,token); return; }
+          if (!session.recorded && !session.useRecorded) {
+            if (operationTrace?.rows.length) session.previousAttempts = [...list(operationTrace.previousAttempts),{rows:operationTrace.rows,bytes:operationTrace.bytes,recorded:false,reason:error.message}];
+            session.useRecorded = true; session.operationStarted = false; operationController.abort(); session.operationController = null; startOperations(session,token); return; }
           try { await fallbackOperations(session,token,error.message); }
           catch (fallback) { if (operationActive(session,token)) { stopPresentation(); renderClaim(); notice(`Assessment stopped: ${error.message} Saved result unavailable: ${fallback.message}`,true); } }
         }
@@ -2344,7 +2393,7 @@
       pausedPresentation = demoSession.mode === 'operations' ? demoSession : {...demoSession,preparing:null};
       if (demoTimer) root.clearTimeout(demoTimer);
       demoTimer = null; demoSession = null; pausedPresentation.operationWake?.(); replayPrefixes.clear();
-      motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); attentionAnimation?.cancel();
+      motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); attentionAnimation?.cancel(); factTokenAnimation?.cancel(); factToken?.remove?.(); const pane = host.querySelector('.au-operation-passage'); pane?.scrollTo?.({top:pane.scrollTop,behavior:'instant'});
       if (pausedPresentation?.mode === 'operations') host.setAttribute?.('data-au-operation-presentation','paused');
       return true;
     }
@@ -2822,7 +2871,7 @@
         body.innerHTML = `<div class="au-demo-picker"><h2>Demonstration cases</h2><p class="au-meta">Live rules-based assessments recompute saved synthetic source packets. Saved histories retain their original execution mode.</p>${roster(REFERENCE_DEMO_CASES,'reference')}<details data-au-disclosure="earlier-recordings"><summary>Earlier recordings</summary><p class="au-meta">Original recorded histories retain their execution modes and receipts.</p>${roster(DEMO_CASES,'legacy')}</details></div>`;
         return;
       }
-      const record = kind === 'operation' ? operationTrace?.rows.find(row => row.id === id) : contextualRecord(current,projection,history,kind,id,knowledgeCache?.value || {},replayRecord);
+      const record = ['operation','operation-attempt'].includes(kind) ? operationRecord(operationTrace,kind,id) : contextualRecord(current,projection,history,kind,id,knowledgeCache?.value || {},replayRecord);
       if (!body.querySelector('pre')) body.innerHTML = '<pre class="au-record-body"></pre>';
       const pre = body.querySelector('pre'); pre.dataset.auRecordKind = kind; pre.dataset.auRecordId = id; pre.textContent = JSON.stringify(record ?? null,null,2);
     }
@@ -2946,7 +2995,7 @@
       if (doc.hidden) {
         cancelWarmReads();
         if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null;
-        if (demoSession?.mode === 'operations') { attentionAnimation?.cancel(); demoSession.operationWake?.(); }
+        if (demoSession?.mode === 'operations') { attentionAnimation?.cancel(); factTokenAnimation?.cancel(); factToken?.remove?.(); const pane = host.querySelector('.au-operation-passage'); pane?.scrollTo?.({top:pane.scrollTop,behavior:'instant'}); demoSession.operationWake?.(); }
         // Backgrounding suspends verified replay, not the user's inspection.
         // A live presentation cannot dispatch a new case on visibility restore.
         if (demoSession?.mode === 'live') stopPresentation();
@@ -2972,7 +3021,7 @@
     function pointerInput() { keyboard=false;container.removeAttribute('data-au-keyboard'); }
     function motionPreference() { if (reduced?.matches) { skipOperations(); motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
     doc.addEventListener('keydown',keyboardInput);container.addEventListener('pointerdown',pointerInput);reduced?.addEventListener?.('change',motionPreference);
-    function geometryEvent(event) { if (event.type === 'toggle') { drawEdges(); if (event.target?.open) interact(event.target.querySelector(':scope > :not(summary)')); } else if (event.target?.hasAttribute?.('data-au-graph-pan')) drawEdges(); }
+    function geometryEvent(event) { if (event.target?.matches?.('.au-operation-passage')) { if (!doc.hidden && !inspectionHold) positionOperationAttention(false); return; } if (event.type === 'toggle') { drawEdges(); if (event.target?.open) interact(event.target.querySelector(':scope > :not(summary)')); } else if (event.target?.hasAttribute?.('data-au-graph-pan')) drawEdges(); }
     container.addEventListener('scroll',geometryEvent,true);container.addEventListener('toggle',geometryEvent,true);
     doc.fonts?.ready?.then(() => { if (!disposed) drawEdges(); });
     container.addEventListener('click',click); container.addEventListener('pointerover',claimWarmIntent); container.addEventListener('focusin',claimWarmIntent); container.addEventListener('submit',submit); container.addEventListener('change',change); container.addEventListener('input',input); dialog.addEventListener('close',closed); recordDialog.addEventListener('close',closedRecord); doc.addEventListener('visibilitychange',visibility);
@@ -2990,5 +3039,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });
