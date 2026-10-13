@@ -1080,13 +1080,14 @@ for(const scenario of ['failed-only','partial-outcome-with-failure','failed-reco
  }});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  await controller.openClaim(id,true,{mode:'replay',through:head,detail:'activity'});assert.match(f.host.innerHTML,/data-au-context="activity"/);f.listeners.get('click')({target:control(f,'data-au-inspect','claim')});assert.deepEqual(JSON.parse(f.recordPre.textContent).state,JSON.parse(JSON.stringify(saved(head))));f.recordDialog.close();
+ const closedRecord=f.recordPre.textContent;
  const priorReads=api.calls.filter(call=>call.path.includes(`/claims/${id}/replay?`)).length;
  await controller.showDemonstration(true,'legacy');
  assert.match(f.host.innerHTML,/data-au-revision="0"/,'Demonstration opens the actual first canonical packet before playback');await settle();
  for(let seq=1;seq<=head;seq++){
   t.mock.timers.tick(4100);await settle();const prefix=saved(seq),html=f.host.innerHTML;assert.match(html,new RegExp(`data-au-revision="${seq}" data-au-state-sha="${prefix.state_sha256}"`));assert.match(html,/data-au-context="step"/);assert.match(html,/<section class="au-(?:forming-process|process-hero) au-evidence-process" aria-label="(?:Complete recorded process|Decision neighborhood)">/);
   assert.deepEqual([...html.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1]),prefix.graph.nodes.map(node=>node.node_id),'forming and settled layouts preserve every actual prefix node');assert.deepEqual([...html.matchAll(/data-au-edge="([^"]+)"/g)].map(match=>match[1]),prefix.graph.edges.map(edge=>edge.edge_id),'presentation preserves the exact accepted edge identities');assert.match(html,/data-au-node="branch"[^>]*aria-pressed="true"/);assert.match(html,/data-au-selected-step="branch"/);if(html.includes('data-au-forming="true"'))assert.match(html,new RegExp(`data-au-forming-revision="${seq}" data-au-forming-sha="${prefix.state_sha256}"`));
-  assert.deepEqual(JSON.parse(f.recordPre.textContent).state,JSON.parse(JSON.stringify(saved(seq))),'the loaded record retains every exact prefix field despite quiet presentation');if(scenario==='failed-then-reconciled'&&seq>=12){assert.equal(JSON.parse(f.recordPre.textContent).state.reconciliations[0].status,seq===15?'completed':'started');assert.equal(JSON.parse(f.recordPre.textContent).state.reconciliations[0].original_deferral.reason,stopped.reason);}
+  assert.equal(f.recordPre.textContent,closedRecord,'quiet replay does not serialize into a closed History dialog');
  }
  assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${id}/replay?`)).length-priorReads,head+1,'every saved prefix, including failure, remains inspectable');
  if(blocked)assert.match(f.host.innerHTML,/data-au-claim-status>Execution failed\.<\/span>/);
@@ -1097,6 +1098,11 @@ for(const scenario of ['failed-only','partial-outcome-with-failure','failed-reco
   assert.match(f.status.textContent,/no settled operational outcome.*stopped at its saved head/i);
   assert.ok(f.host.innerHTML.includes(stopped.reason));assert.doesNotMatch(f.host.innerHTML,/data-au-demo-stop/);
   t.mock.timers.tick(20000);await settle();assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${next}/replay?`)).length,0);
+ }
+ for(let seq=1;seq<=head;seq++){
+  await controller.openClaim(id,false,{mode:'replay',through:seq,detail:'activity'});f.listeners.get('click')({target:control(f,'data-au-inspect','claim')});
+  assert.deepEqual(JSON.parse(f.recordPre.textContent).state,JSON.parse(JSON.stringify(saved(seq))),'opening History retains every exact prefix field despite quiet presentation');if(scenario==='failed-then-reconciled'&&seq>=12){assert.equal(JSON.parse(f.recordPre.textContent).state.reconciliations[0].status,seq===15?'completed':'started');assert.equal(JSON.parse(f.recordPre.textContent).state.reconciliations[0].original_deferral.reason,stopped.reason);}
+  f.recordDialog.close();
  }
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
@@ -1645,6 +1651,18 @@ test('accepted refresh keeps History Case details exact and closing its drawer r
  f.recordDialog.close();assert.equal(f.container.ownerDocument.activeElement,trigger);assert.deepEqual(trigger.focusOptions,{preventScroll:true});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
+test('closed History keeps its snapshot quiet and reopening reads the newest exact case record',async t=>{
+ const f=dom();let saved=state();
+ const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ const trigger=control(f,'data-au-inspect','claim');trigger.textContent='Case details';
+ f.listeners.get('click')({target:trigger});assert.equal(f.recordDialog.open,true);const original=f.recordPre.textContent;
+ f.recordDialog.close();saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();
+ assert.equal(f.recordPre.textContent,original,'closed inspectors must not serialize new accepted state during presentation');
+ f.listeners.get('click')({target:trigger});assert.equal(f.recordDialog.open,true);
+ assert.deepEqual(JSON.parse(f.recordPre.textContent),JSON.parse(JSON.stringify(ui.contextualRecord(saved,{},events(saved).events,'claim'))));
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
 test('global Knowledge History opens the full exact DTO including versions uses quarantine and public extensions',async t=>{
  const attack='<svg onload="alert(1)">',data={versions:[{knowledge_id:'procedure.one',version:2,knowledge_sha256:hash('a'),definition_sha256:hash('b'),qualification:{status:'qualified',checks:['no_case_values_or_files']},public_extension:{text:attack}}],uses:[{knowledge_id:'procedure.one',version:2,knowledge_sha256:hash('a'),definition_sha256:hash('b'),claim_id:'receiving-case',reason:'Exact recorded reuse reason.'}],quarantined:[{knowledge_id:'withheld',qualification:{status:'quarantined',reason:'Exact withheld reason.'}}],public_extension:{source:'Exact public catalog extension.'}},before=JSON.stringify(data),f=dom(),api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();navClick(f,'knowledge');await settle();
  assert.equal([...f.host.innerHTML.matchAll(/data-au-inspect="knowledge-index"/g)].length,1);assert.match(f.host.innerHTML,/data-au-inspect="knowledge-index"[^>]*>History/);assert.doesNotMatch(f.host.innerHTML,/data-au-inspect="(?:knowledge|use|quarantine|withheld-index)"/);
@@ -1914,4 +1932,21 @@ test('an actually checked stage document receives a named source card inside its
 test('a stage fact lifts the same exact compact Unicode subspan that carries its source ink',()=>{
  const quote='I, Riley Foster, am the tenant under an indefinite ordinary residential lease. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.',source={artifact_id:'checked-source',file_name:'01-tenancy-clarification.txt',text:'😀 '+quote},pin={artifact_id:source.artifact_id,start_char:2,end_char:2+Array.from(quote).length,quote},op={id:'native-tenancy-fact',kind:'fact.extract',object:{type:'fact',id:'fact:tenancy_terms_evidence'},source:pin,result:{verification_required:false},cause_ids:[]},trace={current:op,rows:[op],sources:new Map([[source.artifact_id,source]])},compact=ui.stageFactSpan(op,true),html=ui.operationReadingMarkup(trace,true);assert.equal(compact.quote,'CHF1800');assert.match(html,new RegExp(`data-au-operation-start-char="${compact.start_char}" data-au-operation-end-char="${compact.end_char}"`));assert.match(html,/>CHF1800<\/mark>/);assert.equal(Array.from(source.text).slice(compact.start_char,compact.end_char).join(''),compact.quote);assert.equal(ui.operationReading(trace).pin,pin,'the full native inspection citation remains unchanged');
  trace.current={...op,id:'native-matched-phrase',kind:'phrase.match',result:{matched:true}};assert.match(ui.operationReadingMarkup(trace,true),/>monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.<\/mark>/,'ordinary cited reading retains its longer native meaning clause');
+});
+
+test('stage document history follows the latest observed requirement and never borrows a future checked source',()=>{
+ const f=operationFixture(),source={...f.descriptor,text:f.sourceText,text_sha256:sha(f.sourceText)},pin={artifact_id:source.artifact_id,start_char:0,end_char:6,quote:'Before'},node={node_id:'branch',document_types:['notice']};
+ const state={...f.baseline,evaluation:{...f.baseline.evaluation,documents:[{document_type:'notice',review_state:'sufficient'}]}};
+ const requirement={id:'required-first',seq:1,kind:'document.require',object:{id:'notice'},result:{activation:'true',active_node_ids:['branch']},cause_ids:[]},check={id:'checked-first',seq:2,kind:'document.check',object:{id:'notice'},source:pin,result:{assessment:'sufficient'},cause_ids:['required-first']};
+ const trace={rows:[requirement],sources:new Map([[source.artifact_id,source]]),current:requirement,checkpoints:[{after_operation:0,state,projection:{},events:[]}]};
+ assert.doesNotMatch(ui.stageNodeContents(node,state,trace,null),/data-au-check-operation|data-au-document-checked="true"/);
+ trace.rows.push(check);assert.match(ui.stageNodeContents(node,state,trace,null),/data-au-check-operation="checked-first"/);
+ trace.rows.push({...requirement,id:'requirement-excluded',result:{activation:'false',active_node_ids:[]}});
+ assert.equal(ui.stageNodeContents(node,state,trace,null),'','a later excluded requirement retires its visible slot');
+ const earlier=ui.operationInspection(trace,0);
+ assert.match(ui.stageNodeContents(node,state,earlier.trace,null),/data-au-stage-document="notice"/);
+ assert.doesNotMatch(ui.stageNodeContents(node,state,earlier.trace,null),/data-au-check-operation|data-au-document-checked="true"/,'scrubbing cannot borrow a later observed check');
+ trace.rows.push({...requirement,id:'required-again'});assert.match(ui.stageNodeContents(node,state,trace,null),/data-au-operation-id="required-again"/);
+ assert.deepEqual([...ui.operationHistoryMarkup({...trace,binding:f.binding}).matchAll(/data-au-record-id="([^"]+)"/g)].map(row=>row[1]),['required-again','requirement-excluded','checked-first','required-first']);
+ assert.deepEqual(trace.rows.map(row=>row.id),['required-first','checked-first','requirement-excluded','required-again']);
 });

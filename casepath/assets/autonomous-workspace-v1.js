@@ -1208,9 +1208,15 @@
     const rows = operation.kind === 'condition.evaluate' ? working.conditions : operation.object.type === 'node' ? working.nodes : operation.object.type === 'edge' ? working.edges : operation.object.type === 'document' ? working.documents : null;
     rows?.set(operation.object.id,operation); working.stage = operation.stage; working.current = operation; trace.working = working;
   }
+  const workingPresentations = new WeakMap();
   function workingProcessState(trace) {
     const working = !trace?.finished && !trace?.savedFallback && trace?.working;
-    return working ? {claim_id:working.graph.claim_id,graph:working.graph,conditions:working.inspect.result.effective_conditions,facts:[],evaluation:{nodes:[...working.nodes.values()].map(row => ({...row.result,node_id:row.object.id})),edges:[...working.edges.values()].map(row => ({...row.result,edge_id:row.object.id}))}} : null;
+    if (!working) return null;
+    const prior = workingPresentations.get(working);
+    if (prior && prior.operation === working.current && prior.nodes === working.nodes.size && prior.edges === working.edges.size) return prior.state;
+    const state = {claim_id:working.graph.claim_id,graph:working.graph,conditions:working.inspect.result.effective_conditions,facts:[],evaluation:{nodes:[...working.nodes.values()].map(row => ({...row.result,node_id:row.object.id})),edges:[...working.edges.values()].map(row => ({...row.result,edge_id:row.object.id}))}};
+    workingPresentations.set(working,{operation:working.current,nodes:working.nodes.size,edges:working.edges.size,state});
+    return state;
   }
   function workingReadiness(node, graph) {
     if (!node.execution_state) return '';
@@ -1247,7 +1253,7 @@
     if (!operation) return null;
     const cause = trace.rows.find(row => row.id === operation.cause_ids?.at(-1)), currentPin = operation.source || (operation.kind === 'phrase.match' ? cause?.source : null);
     const reading = currentPin ? {artifact_id:currentPin.artifact_id,pin:currentPin,id:operation.id} : operation.kind === 'source.open' ? {artifact_id:operation.object.id,id:operation.id} : trace.displaySource;
-    const source = trace.sources.get(reading?.artifact_id), chars = source && Array.from(source.text);
+    const source = trace.sources.get(reading?.artifact_id), chars = source && sourceCharacters(source);
     // Retained text is useful context. Only a current, bounded cited read gets
     // agent ink; a whole-file scan or an absent phrase has no active underline.
     const active = Boolean(!trace.inkRetired && currentPin && source && !(operation.kind === 'phrase.match' && operation.result.matched === false) &&
@@ -1292,15 +1298,32 @@
     const type = fact?.document_type || obligation?.document_type || (operation.object.id.startsWith('fact:') ? operation.object.id.slice(5) : operation.input?.document_type);
     return name(list(graph?.document_catalog).find(row => row.document_type === type)) || fact?.label || fact?.title || fact?.name || words(operation.object.id.replace(/^fact:/,''));
   }
+  // Accepted operation rows are append-only. Inspection prefixes use distinct
+  // arrays, so their presentation indexes cannot see later source checks.
+  const stageDocumentIndexes = new WeakMap();
+  function stageDocumentIndex(rows) {
+    let index = stageDocumentIndexes.get(rows);
+    if (!index || index.length > rows.length || index.last !== rows[index.length-1]) {
+      index = {length:0,last:null,requirements:new Map(),checks:new Map()}; stageDocumentIndexes.set(rows,index);
+    }
+    for (let position = index.length; position < rows.length; position++) {
+      const row = rows[position], id = row.object?.id;
+      if (row.kind === 'document.require') { index.requirements.delete(id); index.requirements.set(id,row); }
+      if (row.kind === 'document.check' && row.result.assessment === 'sufficient' && row.source) index.checks.set(id,row);
+    }
+    index.length = rows.length; index.last = rows.at(-1);
+    return index;
+  }
   function stageNodeContents(node, state, trace, working, map = false) {
     const graph = working?.graph || state.graph, rows = list(trace?.rows);
     const facts = [...(trace?.dockedFacts?.values() || [])].filter(row => row.node === node.node_id && list(state.facts).some(fact => fact.fact_id === row.operation.object.id));
     const chips = facts.map(row => { const span = stageFactSpan(row.operation,true); if (map && stageFactSpan(row.operation) === row.operation.source) return ''; return `<button type="button" class="au-stage-fact" data-au-stage-fact="${h(row.operation.object.id)}" data-au-current-fact="${trace?.current?.id === row.operation.id}" data-au-fact-operation="${h(row.operation.id)}" data-au-fact-start-char="${span.start_char}" data-au-fact-end-char="${span.end_char}" data-au-inspect="operation" data-au-record-id="${h(row.operation.id)}" aria-label="${h(stageFactLabel(row.operation,state,graph))}: ${h(span.quote)}"><span>${h(span.quote)}</span></button>`; }).join('');
     const accepted = new Map(list(state.evaluation?.documents).map(row => [row.document_type,row]));
-    const requirements = trace ? [...rows].reverse().filter((row,index,all) => row.kind === 'document.require' && all.findIndex(item => item.kind === row.kind && item.object.id === row.object.id) === index && row.result.activation === 'true' && list(row.result.active_node_ids).includes(node.node_id) && list(node.document_types).includes(row.object.id)) : list(state.obligations).filter(row => requiringNodeIds(row,accepted.get(row.document_type)).includes(node.node_id));
+    const observed = trace && stageDocumentIndex(rows);
+    const requirements = trace ? [...observed.requirements.values()].reverse().filter(row => row.result.activation === 'true' && list(row.result.active_node_ids).includes(node.node_id) && list(node.document_types).includes(row.object.id)) : list(state.obligations).filter(row => requiringNodeIds(row,accepted.get(row.document_type)).includes(node.node_id));
     const slots = requirements.map(requirement => {
       const type = requirement.object?.id || requirement.document_type, doc = accepted.get(type), label = name(list(graph?.document_catalog).find(row => row.document_type === type)) || name(requirement) || words(type);
-      const check = [...rows].reverse().find(row => row.kind === 'document.check' && row.object.id === type && row.result.assessment === 'sufficient' && row.source);
+      const check = observed?.checks.get(type);
       const obligation = list(state.obligations).find(row => row.document_type === type);
       const citation = check?.source || list(obligation?.required_fact_ids).flatMap(id => citationRows(list(state.facts).find(row => row.fact_id === id)))[0];
       const checked = doc?.review_state === 'sufficient' && (!trace || Boolean(check));
@@ -1333,6 +1356,12 @@
     const identity = canonicalJSON(material), key = `${operation.kind}:${operation.object.type}:${operation.object.id}${operation.kind === 'phrase.match' ? `:${operation.source?.start_char}:${operation.source?.end_char}` : ''}`;
     if (trace.visibleResults.get(key) === identity) return false;
     trace.visibleResults.set(key,identity); return operation.kind !== 'process.inspect' || operation.result.graph.family !== 'incoming_packet';
+  }
+  const sourcePresentations = new WeakMap();
+  function sourceCharacters(source) {
+    let presentation = sourcePresentations.get(source);
+    if (!presentation || presentation.text !== source.text) { presentation = {text:source.text,chars:Object.freeze(Array.from(source.text))}; sourcePresentations.set(source,presentation); }
+    return presentation.chars;
   }
   function sourceBodySpan(source) {
     for (const match of source.text.matchAll(/[^\n]+(?:\n(?!\n)[^\n]+)*/gu)) {
@@ -1966,8 +1995,8 @@
         if (!original || original === replacement || !original.attributes || !replacement.attributes || typeof original.replaceChildren !== 'function') continue;
         controls.delete(replacement.dataset.auSourceIdentity);
         for (const attribute of [...original.attributes]) if (!replacement.hasAttribute(attribute.name)) original.removeAttribute(attribute.name);
-        for (const attribute of [...replacement.attributes]) original.setAttribute(attribute.name,attribute.value);
-        original.replaceChildren(...replacement.childNodes);
+        for (const attribute of [...replacement.attributes]) if (original.getAttribute(attribute.name) !== attribute.value) original.setAttribute(attribute.name,attribute.value);
+        if (original.innerHTML !== replacement.innerHTML) original.replaceChildren(...replacement.childNodes);
         replacement.replaceWith(original);
       }
     }
@@ -1982,9 +2011,10 @@
         const original = objects.get(identity);
         if (!original || original === replacement || !original.attributes || typeof original.replaceChildren !== 'function') continue;
         for (const attribute of [...original.attributes]) if (!replacement.hasAttribute(attribute.name)) original.removeAttribute(attribute.name);
-        for (const attribute of [...replacement.attributes]) original.setAttribute(attribute.name,attribute.value);
+        for (const attribute of [...replacement.attributes]) if (original.getAttribute(attribute.name) !== attribute.value) original.setAttribute(attribute.name,attribute.value);
         if (replacement.hasAttribute('data-au-operation-scrub')) original.value = replacement.value;
-        original.replaceChildren(...replacement.childNodes); replacement.replaceWith(original);
+        if (original.innerHTML !== replacement.innerHTML) original.replaceChildren(...replacement.childNodes);
+        replacement.replaceWith(original);
       }
     }
     function renderClaim(changes = null, navigation = false) {
@@ -2006,7 +2036,9 @@
       const arrival = sameClaim && host.querySelector('[data-au-arrival]') || arrivalForms.get(current.claim_id), focusInArrival = arrival?.contains?.(focused);
       // Moving the original node keeps native FileList, entered text and retry state.
       arrival?.remove?.();
-      const stageBefore = host.querySelector('.au-operation-stage'), priorStagePhase = stageBefore?.dataset.auStagePhase, priorProcessBounds = stageBefore?.querySelector('.au-stage-process')?.getBoundingClientRect();
+      const stageBefore = host.querySelector('.au-operation-stage'), priorStagePhase = stageBefore?.dataset.auStagePhase;
+      const enteringMap = priorStagePhase === 'source' && (displayedTrace?.finished || displayedTrace?.current?.kind === 'decision');
+      const priorProcessBounds = enteringMap && !doc.hidden && !inspectionHold && !reduced?.matches ? stageBefore.querySelector('.au-stage-process')?.getBoundingClientRect() : null;
       host.innerHTML = workMarkup(displayedState,displayedProjection,operationPeek?.node || selected,operationPeek?.events || history,detail,evidenceContext,{mode:presentationMode,readOnly:publicReadOnly,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),operations:displayedTrace,transportOperations:operationTrace,inspectionIndex:operationPeek?.index,operationOpening:(demoSession || pausedPresentation)?.mode === 'operations',playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
       reuseSourceControls(host,sources);
       const stageAfter = host.querySelector('.au-operation-stage'), processAfter = stageAfter?.querySelector('.au-stage-process');
@@ -2025,6 +2057,7 @@
       for (const disclosure of host.querySelectorAll('[data-au-disclosure]')) disclosure.open = open.has(disclosure.dataset.auDisclosure);
       focusTarget(focusKey)?.focus({preventScroll:true});
       if (navigation || !priorViewport && !host.querySelector('[data-au-forming="true"]')) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
+      positionOperationSource();
       drawEdges(navigation);
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open || recordDialog.open,reducedMotion:reduced?.matches,keyboard,inspecting:inspectionHold,activeElement:doc.activeElement,selected});
       synchronizeAuthority(); synchronizeRecord(); rememberLastCase(); positionOperationAttention();
@@ -2449,8 +2482,13 @@
       if (previous?.replaceChildren) {
         const same = previous.dataset.auOperationSource === pane.dataset.auOperationSource && previous.dataset.auOperationTextSha === pane.dataset.auOperationTextSha, scroll = same ? previous.scrollTop : 0;
         previous.dataset.auOperationSource = pane.dataset.auOperationSource; previous.dataset.auOperationTextSha = pane.dataset.auOperationTextSha; previous.dataset.auSourceActive = pane.dataset.auSourceActive;
-        previous.replaceChildren(...pane.childNodes); pane.replaceWith(previous); pane = previous; pane.scrollTop = scroll;
+        if (previous.innerHTML !== pane.innerHTML) previous.replaceChildren(...pane.childNodes);
+        pane.replaceWith(previous); pane = previous; pane.scrollTop = scroll;
       }
+    }
+    function positionOperationSource() {
+      const pane = host.querySelector('.au-operation-passage');
+      if (!pane) return;
       if (doc.hidden) return;
       const operation = (operationPeek?.trace || operationTrace)?.current, mark = pane.querySelector('[data-au-operation-span]');
       if (mark && mark.dataset.auOperationSpan === operation?.id) {
@@ -3111,8 +3149,8 @@
         interact(body); body.querySelector('mark')?.scrollIntoView({block:'center',behavior:'instant'});
       } catch (error) { if (!disposed && token === epoch && sourceToken === sourceEpoch && dialog.open) body.innerHTML = `<div class="au-source-meta"><a href="${h(url)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div>${nativeMarkup}<p class="au-error" role="alert">${h(error.message)}</p>`; }
     }
-    function synchronizeRecord() {
-      if (!recordSelection) return;
+    function synchronizeRecord(opening = false) {
+      if (!recordSelection || !opening && !recordDialog.open) return;
       const {kind,id} = recordSelection, body = recordDialog.querySelector('[data-au-record-content]');
       if (kind === 'demo') {
         const roster = (rows,collection) => DOMAINS.map(domain => `<section><h3>${h(domain.label)}</h3>${rows.filter(row => row.domain === domain.id).map(row => `<button type="button" class="au-demo-case-open" data-au-demo-case="${h(row.claim_id)}" data-au-demo-collection="${collection}">${h(row.label)}</button>${collection === 'reference' ? `<button type="button" class="au-link" data-au-demo-case="${h(row.claim_id)}" data-au-demo-collection="reference" data-au-demo-saved="true">Saved history</button>` : ''}`).join('')}</section>`).join('');
@@ -3129,7 +3167,7 @@
       recordSelection = {kind:target.dataset.auInspect,id:target.dataset.auRecordId || ''};
       recordReturn = {element:target,token:focusToken(target)};
       recordDialog.querySelector('#auRecordTitle').textContent = recordSelection.kind === 'demo' ? 'Recorded investigations' : target.textContent.trim() || 'Details';
-      synchronizeRecord(); recordDialog.showModal();
+      synchronizeRecord(true); recordDialog.showModal();
     }
     function restoreRecordFocus(returning) {
       if (!returning) return;
