@@ -341,3 +341,46 @@ def test_one_shot_read_rejects_writes_and_existing_stream_before_transport(serve
             db.execute_read_once('SELECT 2')
         assert len(server.requests) == before
     assert server.open_streams == 0
+
+
+def test_fresh_source_verification_uses_one_closed_read_pipeline(server, tmp_path):
+    HostedJournal(tmp_path / 'unused-source-read-journal', server.connection)
+    sources = HostedSources(server.connection)
+    raw = b'Exact persisted source, including Unicode: ' + 'Réception 😀'.encode()
+    digest = sources.publish(raw)
+    assert sources.read(digest) == raw
+    baseline = len(server.requests)
+    sources.verify_many([digest])
+    reads = server.requests[baseline:]
+    assert len(reads) == 1 and server.open_streams == 0
+    assert [item['type'] for item in reads[0]['requests']] == ['execute', 'close']
+    assert reads[0]['requests'][0]['stmt']['sql'].startswith('SELECT ')
+    assert sources.read(digest) == raw and len(server.requests) == baseline + 1
+
+
+def test_source_cancel_after_first_page_sends_no_next_read_and_keeps_no_stream(server, tmp_path, monkeypatch):
+    from threading import Event
+    from casepath_api.autonomous_operations_v1 import OperationCancelled
+    HostedJournal(tmp_path / 'unused-cancel-read-journal', server.connection)
+    sources = HostedSources(server.connection)
+    raw = b'x' * (sources.CHUNK_BYTES * 9)
+    digest = sources.publish(raw)
+    stop = Event()
+    original = server.handle
+    def stop_after_read(request):
+        response = original(request)
+        data = json.loads(request.content)
+        if any(item.get('stmt', {}).get('sql', '').startswith('SELECT sha256,chunk_index') for item in data['requests']):
+            stop.set()
+        return response
+    monkeypatch.setattr(server, 'handle', stop_after_read)
+    def check():
+        if stop.is_set():
+            raise OperationCancelled('Fixture disconnected during one source page')
+    baseline = len(server.requests)
+    with pytest.raises(OperationCancelled):
+        sources.verify_many([digest], check=check)
+    reads = server.requests[baseline:]
+    assert len(reads) == 1 and server.open_streams == 0
+    assert [item['type'] for item in reads[0]['requests']] == ['execute', 'close']
+    assert digest not in sources._cache
