@@ -1,0 +1,319 @@
+{
+  "id": "public_mock-unknown_valid-sources",
+  "profile": "public read-only capability MOCK",
+  "seed": {
+    "id": "unknown_valid",
+    "value": "ui-unknown-valid-session-20261013"
+  },
+  "journey": "sources",
+  "status": "failed",
+  "stages": [
+    {
+      "stage": "explicit-reference-prefix-18-Sources-inspection",
+      "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=18&detail=sources",
+      "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=18&detail=sources",
+      "revision": 18,
+      "state_sha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037",
+      "nav": "demonstration",
+      "panel": "sources",
+      "nodeIds": [],
+      "sourceControls": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        }
+      ],
+      "playing": false,
+      "play": true,
+      "resume": false,
+      "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+      "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+      "virtualTime": 1791892809000,
+      "workspaceMode": "true",
+      "publicReadOnly": true,
+      "scriptURLs": [
+        "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+      ],
+      "cssURLs": [
+        "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+        "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+        "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+        "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+        "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+        "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+      ],
+      "message": "",
+      "expectedClaim": "clm_314f2d309fea25e6",
+      "expectedRevision": 18,
+      "expectedStateSha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037",
+      "technicalRecord": {
+        "completeStateAndProjectionEqual": true,
+        "recordSha256": "ae5d59c8ab7b5c3e7ccf196f20cec5b580438f05ad6c95cf43894285b48e6a3a",
+        "state_sha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037",
+        "revision": 18,
+        "projectionSha256": "fb3e63443d2975bcaeb613ab45a66d25bb06486cc1aa5ef76a79f458e626d6c2",
+        "original_binding_sha256": "4349cce39dba44f65fa58fe396659b04f9e8082986abfb92cbb918b59e935a67"
+      }
+    }
+  ],
+  "sources": [],
+  "requests": [
+    {
+      "path": "/",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.635Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "4f1afa9c7bba6cb7ff01a6bd8f359afe0eca45985395938bec5a1ba93d64fa2d",
+      "servedBodySha256": "f09e3a209da15e2b22f154d23c398b918b98c609157d2604f345e866312aa7eb"
+    },
+    {
+      "path": "/assets/fonts/Merriweather-Light.ttf",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.663Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "7aaf7a3a48076702e829e86ab63d5f0aa4d94fa146322f93c281f60b3fa24e7e",
+      "servedBodySha256": "7aaf7a3a48076702e829e86ab63d5f0aa4d94fa146322f93c281f60b3fa24e7e"
+    },
+    {
+      "path": "/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.672Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b",
+      "servedBodySha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b"
+    },
+    {
+      "path": "/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.675Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+      "servedBodySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+    },
+    {
+      "path": "/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.676Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "servedBodySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed"
+    },
+    {
+      "path": "/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.677Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "servedBodySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557"
+    },
+    {
+      "path": "/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.678Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "servedBodySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9"
+    },
+    {
+      "path": "/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.678Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "servedBodySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22"
+    },
+    {
+      "path": "/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.679Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "servedBodySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb"
+    },
+    {
+      "path": "/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.680Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "servedBodySha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+    },
+    {
+      "path": "/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.681Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "servedBodySha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8"
+    },
+    {
+      "path": "/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.711Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+      "servedBodySha256": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=18",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.771Z",
+      "sessionHeader": null,
+      "fixtureRevision": 18,
+      "fixtureStateSha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.862Z",
+      "sessionHeader": null
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:48.956Z",
+      "sessionHeader": null
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/sources/clm_314f2d309fea25e6/src_c8b880d7429b1879b9ae483029facd97/text",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:13:49.246Z",
+      "sessionHeader": null
+    }
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "servedAssets": {
+    "casepath/index.html": {
+      "sourceSha256": "4f1afa9c7bba6cb7ff01a6bd8f359afe0eca45985395938bec5a1ba93d64fa2d",
+      "servedSha256": "f09e3a209da15e2b22f154d23c398b918b98c609157d2604f345e866312aa7eb"
+    },
+    "casepath/assets/fonts/Merriweather-Light.ttf": {
+      "sourceSha256": "7aaf7a3a48076702e829e86ab63d5f0aa4d94fa146322f93c281f60b3fa24e7e",
+      "servedSha256": "7aaf7a3a48076702e829e86ab63d5f0aa4d94fa146322f93c281f60b3fa24e7e"
+    },
+    "casepath/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf": {
+      "sourceSha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b",
+      "servedSha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b"
+    },
+    "casepath/assets/claims-workspace-v1.css": {
+      "sourceSha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+      "servedSha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+    },
+    "casepath/assets/causal-process-v1.css": {
+      "sourceSha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "servedSha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed"
+    },
+    "casepath/assets/claims-workspace-presentation-v1.css": {
+      "sourceSha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "servedSha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557"
+    },
+    "casepath/assets/agent-work-v1.css": {
+      "sourceSha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "servedSha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9"
+    },
+    "casepath/assets/process-evidence-v2.css": {
+      "sourceSha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "servedSha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22"
+    },
+    "casepath/assets/agent-native-v2.css": {
+      "sourceSha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "servedSha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb"
+    },
+    "casepath/assets/autonomous-workspace-v1.css": {
+      "sourceSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "servedSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+    },
+    "casepath/assets/autonomous-entry-v1.js": {
+      "sourceSha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "servedSha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8"
+    },
+    "casepath/assets/autonomous-workspace-v1.js": {
+      "sourceSha256": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+      "servedSha256": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+    }
+  },
+  "startedAt": "2026-10-13T02:13:48.597Z",
+  "session": {
+    "key": "casepath:demo-session",
+    "before": "ui-unknown-valid-session-20261013",
+    "after": "ui-unknown-valid-session-20261013",
+    "retainedInitially": true
+  },
+  "failure": {
+    "message": "locator.waitFor: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.au-source-dialog[open] .au-source-body') to be visible\u001b[22m\n",
+    "stack": "locator.waitFor: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.au-source-dialog[open] .au-source-body') to be visible\u001b[22m\n\n    at inspectSource (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:123:65)\n    at async createCase (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:224:22)\n    at async main (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:258:5)"
+  },
+  "currentDOM": {
+    "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=18&detail=sources&node=dh_notice&document=landlord_knowledge_evidence&obligation=obligation%3Adh_notice%3Alandlord_knowledge_evidence&fact=fact%3Alandlord_knowledge_evidence",
+    "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=18&detail=sources&node=dh_notice&document=landlord_knowledge_evidence&obligation=obligation%3Adh_notice%3Alandlord_knowledge_evidence&fact=fact%3Alandlord_knowledge_evidence",
+    "revision": 18,
+    "state_sha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037",
+    "nav": "demonstration",
+    "panel": "sources",
+    "nodeIds": [],
+    "sourceControls": [
+      {
+        "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+      },
+      {
+        "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+      },
+      {
+        "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+      },
+      {
+        "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+      }
+    ],
+    "playing": false,
+    "play": true,
+    "resume": false,
+    "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+    "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+    "virtualTime": 1791892809000,
+    "workspaceMode": "true",
+    "publicReadOnly": true,
+    "scriptURLs": [
+      "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+    ],
+    "cssURLs": [
+      "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+      "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+    ],
+    "message": ""
+  },
+  "bodyText": "CasePath\nEvidence into action\nRead-only\nCases\nDemonstration\nKnowledge\n\nCases / Synthetic claim / Recorded investigation\n\nRepeated heating failure and reported repair calls\n\nHistorical synthetic recording · as of 2025-02-21 · rules-based\n\nWorking.\n\nPlay\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\nSources\n\nQuestion about my documents: repeated heating failure\n\nGood afternoon\n\nAs I understand it: The living room is around 16 degrees in the morning; After a reset the heating works briefly and stops again; I have called three times; this is how I recorded it.\n\nRegarding “repeated heating failure”, my notes show: the calibrated temperature remains unresolved; for the request “lasting repair and review of possible remedies”: I have included everything currently available to me; on “repeated heating failure”, I want clarity before acting; also unresolved: the service cause; I cannot currently support anything further.\n\nI am specifically asking for: lasting repair and review of possible remedies; in particular, I need clarity about the service cause and whether the records support an initial assessment.\n\nMy first note about it is dated 01 February 2025.\n\nThank you for clarifying; Before acting I need to know the calibrated temperature; I want to base what I do on that.\n\nBest regards\nQuestion-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt\n01-customer-and-tenancy-clarification.txt\nAuthored synthetic supplement\n02-heating-service-observation.txt\nAuthored synthetic supplement\n03-landlord-knowledge-and-repair-status.txt\nAuthored synthetic supplement\n\nOriginal source\n\nQuestion-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt\nClose source\nDownload original\n\nSource identity cannot be checked in this browser."
+}

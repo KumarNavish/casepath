@@ -1,0 +1,15 @@
+{"status":"BROWSER_STARTED","commit":"bc0ddb5340e4251360ee0f4dcb960ddb190a4114","scope":"latest parent narrowing: retained owner old token and public unknown token; default and legacy, plus one public Sources control"}
+AssertionError [ERR_ASSERTION]: manual-Demonstration-native-nav-fresh-prefix-0
+
+null !== 0
+
+    at check (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:91:10)
+    at async createCase (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:212:24)
+    at async main (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:248:121) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: null,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

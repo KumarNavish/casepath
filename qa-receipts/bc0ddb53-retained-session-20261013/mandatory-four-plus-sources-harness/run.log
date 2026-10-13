@@ -1,0 +1,29 @@
+{"status":"BROWSER_STARTED","commit":"bc0ddb5340e4251360ee0f4dcb960ddb190a4114","scope":"latest parent narrowing: retained owner old token and public unknown token; default and legacy, plus one public Sources control"}
+{"id":"owner_mock-old_valid-default","status":"passed","session":{"key":"casepath:demo-session","before":"ui-00000000-0000-4000-8000-000000000001","after":"ui-00000000-0000-4000-8000-000000000001","retainedInitially":true,"final":"ui-00000000-0000-4000-8000-000000000001"},"stages":[{"stage":"requested-demonstration-opening","revision":0,"state_sha256":"d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"},{"stage":"autoplay-real-prefix-1","revision":1,"state_sha256":"b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"},{"stage":"autoplay-real-prefix-2","revision":2,"state_sha256":"a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"},{"stage":"paused-before-reload","revision":2,"state_sha256":"a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"},{"stage":"canonical-reload-keeps-exact-prefix-2","revision":2,"state_sha256":"a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"},{"stage":"reload-deliberate-Play-exact-prefix-3","revision":3,"state_sha256":"6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"},{"stage":"prefix-3-complete-state","revision":3,"state_sha256":"6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"},{"stage":"manual-Demonstration-native-nav-fresh-prefix-0","revision":0,"state_sha256":"d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"},{"stage":"manual-Demonstration-autoplay-exact-prefix-1","revision":1,"state_sha256":"b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"}],"requests":62,"wallElapsedMs":1844}
+{"id":"owner_mock-old_valid-legacy","status":"passed","session":{"key":"casepath:demo-session","before":"ui-00000000-0000-4000-8000-000000000001","after":"ui-00000000-0000-4000-8000-000000000001","retainedInitially":true,"final":"ui-00000000-0000-4000-8000-000000000001"},"stages":[{"stage":"legacy-absent-collection-prefix-0-inspection","revision":0,"state_sha256":"4dafc91aee78b720d80952d0132d514f29384588df8ea4c3c6e7139c2440291d"},{"stage":"legacy-deliberate-Play-exact-prefix-1","revision":1,"state_sha256":"b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5"},{"stage":"legacy-prefix-1-complete-state","revision":1,"state_sha256":"b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5"}],"requests":26,"wallElapsedMs":901}
+{"id":"public_mock-unknown_valid-default","status":"passed","session":{"key":"casepath:demo-session","before":"ui-unknown-valid-session-20261013","after":"ui-unknown-valid-session-20261013","retainedInitially":true,"final":"ui-unknown-valid-session-20261013"},"stages":[{"stage":"requested-demonstration-opening","revision":0,"state_sha256":"d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"},{"stage":"autoplay-real-prefix-1","revision":1,"state_sha256":"b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"},{"stage":"autoplay-real-prefix-2","revision":2,"state_sha256":"a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"},{"stage":"paused-before-reload","revision":2,"state_sha256":"a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"},{"stage":"canonical-reload-keeps-exact-prefix-2","revision":2,"state_sha256":"a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"},{"stage":"reload-deliberate-Play-exact-prefix-3","revision":3,"state_sha256":"6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"},{"stage":"prefix-3-complete-state","revision":3,"state_sha256":"6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"},{"stage":"manual-Demonstration-native-nav-fresh-prefix-0","revision":0,"state_sha256":"d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"},{"stage":"manual-Demonstration-autoplay-exact-prefix-1","revision":1,"state_sha256":"b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"}],"requests":62,"wallElapsedMs":1674}
+{"id":"public_mock-unknown_valid-legacy","status":"passed","session":{"key":"casepath:demo-session","before":"ui-unknown-valid-session-20261013","after":"ui-unknown-valid-session-20261013","retainedInitially":true,"final":"ui-unknown-valid-session-20261013"},"stages":[{"stage":"legacy-absent-collection-prefix-0-inspection","revision":0,"state_sha256":"4dafc91aee78b720d80952d0132d514f29384588df8ea4c3c6e7139c2440291d"},{"stage":"legacy-deliberate-Play-exact-prefix-1","revision":1,"state_sha256":"b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5"},{"stage":"legacy-prefix-1-complete-state","revision":1,"state_sha256":"b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5"}],"requests":26,"wallElapsedMs":861}
+AssertionError [ERR_ASSERTION]: explicit-reference-prefix-18-Sources-inspection
++ actual - expected
+
++ []
+- [
+-   'dh_cause',
+-   'dh_evidence',
+-   'dh_intake',
+-   'dh_notice',
+-   'dh_response',
+-   'dh_scope'
+- ]
+
+    at check (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:95:10)
+    at async hold (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:112:17)
+    at async createCase (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:223:7)
+    at async main (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:250:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [],
+  expected: [Array],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

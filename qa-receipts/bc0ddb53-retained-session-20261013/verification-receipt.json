@@ -1,0 +1,353 @@
+{
+  "status": "passed",
+  "commit": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "mandatoryCases": 4,
+  "optionalCases": 1,
+  "totalPassed": 5,
+  "totalFailedProductCases": 0,
+  "sourceHashes": {
+    "casepath/index.html": "4f1afa9c7bba6cb7ff01a6bd8f359afe0eca45985395938bec5a1ba93d64fa2d",
+    "casepath/assets/autonomous-workspace-v1.js": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+    "casepath/assets/autonomous-entry-v1.js": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+    "casepath/assets/autonomous-workspace-v1.css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  },
+  "repositoryUnchanged": true,
+  "caseArtifacts": [
+    {
+      "id": "owner_mock-old_valid-default",
+      "profile": "owner-capability MOCK",
+      "seed": {
+        "id": "old_valid",
+        "value": "ui-00000000-0000-4000-8000-000000000001"
+      },
+      "status": "passed",
+      "path": "/tmp/casepath-retained-session-bc0-20261013/owner_mock-old_valid-default.json",
+      "session": {
+        "key": "casepath:demo-session",
+        "before": "ui-00000000-0000-4000-8000-000000000001",
+        "after": "ui-00000000-0000-4000-8000-000000000001",
+        "retainedInitially": true,
+        "final": "ui-00000000-0000-4000-8000-000000000001"
+      },
+      "requests": 62,
+      "wallElapsedMs": 1844,
+      "stageRevisions": [
+        {
+          "stage": "requested-demonstration-opening",
+          "revision": 0,
+          "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+        },
+        {
+          "stage": "autoplay-real-prefix-1",
+          "revision": 1,
+          "state_sha256": "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"
+        },
+        {
+          "stage": "autoplay-real-prefix-2",
+          "revision": 2,
+          "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"
+        },
+        {
+          "stage": "paused-before-reload",
+          "revision": 2,
+          "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"
+        },
+        {
+          "stage": "canonical-reload-keeps-exact-prefix-2",
+          "revision": 2,
+          "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"
+        },
+        {
+          "stage": "reload-deliberate-Play-exact-prefix-3",
+          "revision": 3,
+          "state_sha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"
+        },
+        {
+          "stage": "prefix-3-complete-state",
+          "revision": 3,
+          "state_sha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"
+        },
+        {
+          "stage": "manual-Demonstration-native-nav-fresh-prefix-0",
+          "revision": 0,
+          "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+        },
+        {
+          "stage": "manual-Demonstration-autoplay-exact-prefix-1",
+          "revision": 1,
+          "state_sha256": "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"
+        }
+      ]
+    },
+    {
+      "id": "owner_mock-old_valid-legacy",
+      "profile": "owner-capability MOCK",
+      "seed": {
+        "id": "old_valid",
+        "value": "ui-00000000-0000-4000-8000-000000000001"
+      },
+      "status": "passed",
+      "path": "/tmp/casepath-retained-session-bc0-20261013/owner_mock-old_valid-legacy.json",
+      "session": {
+        "key": "casepath:demo-session",
+        "before": "ui-00000000-0000-4000-8000-000000000001",
+        "after": "ui-00000000-0000-4000-8000-000000000001",
+        "retainedInitially": true,
+        "final": "ui-00000000-0000-4000-8000-000000000001"
+      },
+      "requests": 26,
+      "wallElapsedMs": 901,
+      "stageRevisions": [
+        {
+          "stage": "legacy-absent-collection-prefix-0-inspection",
+          "revision": 0,
+          "state_sha256": "4dafc91aee78b720d80952d0132d514f29384588df8ea4c3c6e7139c2440291d"
+        },
+        {
+          "stage": "legacy-deliberate-Play-exact-prefix-1",
+          "revision": 1,
+          "state_sha256": "b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5"
+        },
+        {
+          "stage": "legacy-prefix-1-complete-state",
+          "revision": 1,
+          "state_sha256": "b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5"
+        }
+      ]
+    },
+    {
+      "id": "public_mock-unknown_valid-default",
+      "profile": "public read-only capability MOCK",
+      "seed": {
+        "id": "unknown_valid",
+        "value": "ui-unknown-valid-session-20261013"
+      },
+      "status": "passed",
+      "path": "/tmp/casepath-retained-session-bc0-20261013/public_mock-unknown_valid-default.json",
+      "session": {
+        "key": "casepath:demo-session",
+        "before": "ui-unknown-valid-session-20261013",
+        "after": "ui-unknown-valid-session-20261013",
+        "retainedInitially": true,
+        "final": "ui-unknown-valid-session-20261013"
+      },
+      "requests": 62,
+      "wallElapsedMs": 1674,
+      "stageRevisions": [
+        {
+          "stage": "requested-demonstration-opening",
+          "revision": 0,
+          "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+        },
+        {
+          "stage": "autoplay-real-prefix-1",
+          "revision": 1,
+          "state_sha256": "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"
+        },
+        {
+          "stage": "autoplay-real-prefix-2",
+          "revision": 2,
+          "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"
+        },
+        {
+          "stage": "paused-before-reload",
+          "revision": 2,
+          "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"
+        },
+        {
+          "stage": "canonical-reload-keeps-exact-prefix-2",
+          "revision": 2,
+          "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"
+        },
+        {
+          "stage": "reload-deliberate-Play-exact-prefix-3",
+          "revision": 3,
+          "state_sha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"
+        },
+        {
+          "stage": "prefix-3-complete-state",
+          "revision": 3,
+          "state_sha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"
+        },
+        {
+          "stage": "manual-Demonstration-native-nav-fresh-prefix-0",
+          "revision": 0,
+          "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+        },
+        {
+          "stage": "manual-Demonstration-autoplay-exact-prefix-1",
+          "revision": 1,
+          "state_sha256": "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"
+        }
+      ]
+    },
+    {
+      "id": "public_mock-unknown_valid-legacy",
+      "profile": "public read-only capability MOCK",
+      "seed": {
+        "id": "unknown_valid",
+        "value": "ui-unknown-valid-session-20261013"
+      },
+      "status": "passed",
+      "path": "/tmp/casepath-retained-session-bc0-20261013/public_mock-unknown_valid-legacy.json",
+      "session": {
+        "key": "casepath:demo-session",
+        "before": "ui-unknown-valid-session-20261013",
+        "after": "ui-unknown-valid-session-20261013",
+        "retainedInitially": true,
+        "final": "ui-unknown-valid-session-20261013"
+      },
+      "requests": 26,
+      "wallElapsedMs": 861,
+      "stageRevisions": [
+        {
+          "stage": "legacy-absent-collection-prefix-0-inspection",
+          "revision": 0,
+          "state_sha256": "4dafc91aee78b720d80952d0132d514f29384588df8ea4c3c6e7139c2440291d"
+        },
+        {
+          "stage": "legacy-deliberate-Play-exact-prefix-1",
+          "revision": 1,
+          "state_sha256": "b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5"
+        },
+        {
+          "stage": "legacy-prefix-1-complete-state",
+          "revision": 1,
+          "state_sha256": "b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5"
+        }
+      ]
+    },
+    {
+      "id": "public_mock-unknown_valid-sources",
+      "profile": "public read-only capability MOCK",
+      "seed": {
+        "id": "unknown_valid",
+        "value": "ui-unknown-valid-session-20261013"
+      },
+      "status": "passed",
+      "path": "/tmp/casepath-retained-session-bc0-20261013/public_mock-unknown_valid-sources.json",
+      "session": {
+        "key": "casepath:demo-session",
+        "before": "ui-unknown-valid-session-20261013",
+        "after": "ui-unknown-valid-session-20261013",
+        "retainedInitially": true,
+        "final": "ui-unknown-valid-session-20261013"
+      },
+      "requests": 29,
+      "wallElapsedMs": 1528,
+      "stageRevisions": [
+        {
+          "stage": "explicit-reference-prefix-18-Sources-inspection",
+          "revision": 18,
+          "state_sha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037"
+        },
+        {
+          "stage": "source-close-retains-prefix-18-context",
+          "revision": 18,
+          "state_sha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037"
+        },
+        {
+          "stage": "explicit-Play-exact-native-prefix-19",
+          "revision": 19,
+          "state_sha256": "13d482664b7d1a53a563900b96e6daea8b4e087fb1ba40401d60a7384f231813"
+        },
+        {
+          "stage": "prefix-19-complete-state",
+          "revision": 19,
+          "state_sha256": "13d482664b7d1a53a563900b96e6daea8b4e087fb1ba40401d60a7384f231813"
+        },
+        {
+          "stage": "source-inspection-retains-prefix-19",
+          "revision": 19,
+          "state_sha256": "13d482664b7d1a53a563900b96e6daea8b4e087fb1ba40401d60a7384f231813"
+        }
+      ],
+      "secureContext": true,
+      "subtleAvailable": true
+    }
+  ],
+  "requestSummary": {
+    "total": 205,
+    "methods": [
+      "GET"
+    ],
+    "statuses": [
+      200
+    ],
+    "postCount": 0,
+    "demoWakeCount": 0,
+    "sessionHeaderCount": 0,
+    "pageErrors": [],
+    "consoleErrors": []
+  },
+  "clock": {
+    "kind": "Playwright virtual clock",
+    "initial": "2026-10-13T12:00:00Z",
+    "stepMs": 100,
+    "maximumAdvancePerExpectedPrefixMs": 12000,
+    "inspectionHoldMs": 9000,
+    "note": "Virtual dwell verifies scheduler behavior, not hosted latency or wall-clock speed."
+  },
+  "attempts": [
+    {
+      "id": 1,
+      "snapshot": "initial-harness-wait",
+      "command": "NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules XDG_CONFIG_HOME=/tmp/casepath-retained-session-bc0-20261013/config XDG_CACHE_HOME=/tmp/casepath-retained-session-bc0-20261013/cache TMPDIR=/tmp/casepath-retained-session-bc0-20261013/tmp CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs",
+      "exit": 1,
+      "result": "Harness sampled manual re-entry during asynchronous loading shell; diagnostic already showed correct fresh prefix0. No completed passing cases repeated from this aborted attempt.",
+      "executedScript": "/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs",
+      "scriptSnapshot": "/tmp/casepath-retained-session-bc0-20261013/initial-harness-wait/verify-retained-session.cjs",
+      "scriptSha256": "140ac8b5bd77796547657d50670751a585e83118421d03bd80deedbe8e6d3680",
+      "log": "/tmp/casepath-retained-session-bc0-20261013/initial-harness-wait/run.log",
+      "exitFile": "/tmp/casepath-retained-session-bc0-20261013/initial-harness-wait/exit.code",
+      "matrix": "/tmp/casepath-retained-session-bc0-20261013/initial-harness-wait/matrix.json"
+    },
+    {
+      "id": 2,
+      "snapshot": "mandatory-four-plus-sources-harness",
+      "command": "NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules XDG_CONFIG_HOME=/tmp/casepath-retained-session-bc0-20261013/config XDG_CACHE_HOME=/tmp/casepath-retained-session-bc0-20261013/cache TMPDIR=/tmp/casepath-retained-session-bc0-20261013/tmp CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs",
+      "exit": 1,
+      "result": "Four required default/legacy cases passed. Optional Sources harness incorrectly expected graph nodes while Sources panel intentionally omits the graph.",
+      "executedScript": "/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs",
+      "scriptSnapshot": "/tmp/casepath-retained-session-bc0-20261013/mandatory-four-plus-sources-harness/verify-retained-session.cjs",
+      "scriptSha256": "043d2eb52eaa504520c078a0774344aa5da6fcd2d107ca66820979b3c4c9700d",
+      "log": "/tmp/casepath-retained-session-bc0-20261013/mandatory-four-plus-sources-harness/run.log",
+      "exitFile": "/tmp/casepath-retained-session-bc0-20261013/mandatory-four-plus-sources-harness/exit.code",
+      "matrix": "/tmp/casepath-retained-session-bc0-20261013/mandatory-four-plus-sources-harness/matrix.json"
+    },
+    {
+      "id": 3,
+      "snapshot": "sources-insecure-fixture",
+      "command": "CASEPATH_RETAINED_SOURCES_ONLY=1 NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules XDG_CONFIG_HOME=/tmp/casepath-retained-session-bc0-20261013/config XDG_CACHE_HOME=/tmp/casepath-retained-session-bc0-20261013/cache TMPDIR=/tmp/casepath-retained-session-bc0-20261013/tmp CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs",
+      "exit": 1,
+      "result": "Only optional Sources retried; complete exact prefix18/Sources held9s. Source identity correctly refused in insecure http://retained-session.invalid fixture without crypto.subtle.",
+      "executedScript": "/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs",
+      "scriptSnapshot": "/tmp/casepath-retained-session-bc0-20261013/sources-insecure-fixture/verify-retained-session.cjs",
+      "scriptSha256": "517a9655e2d7b729d1f0f86bfea89354a676badbb8afde12689553c0ecf3ecf4",
+      "log": "/tmp/casepath-retained-session-bc0-20261013/sources-insecure-fixture/run.log",
+      "exitFile": "/tmp/casepath-retained-session-bc0-20261013/sources-insecure-fixture/exit.code",
+      "matrix": "/tmp/casepath-retained-session-bc0-20261013/sources-insecure-fixture/matrix.json"
+    },
+    {
+      "id": 4,
+      "snapshot": ".",
+      "command": "CASEPATH_RETAINED_SOURCES_ONLY=1 NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules XDG_CONFIG_HOME=/tmp/casepath-retained-session-bc0-20261013/config XDG_CACHE_HOME=/tmp/casepath-retained-session-bc0-20261013/cache TMPDIR=/tmp/casepath-retained-session-bc0-20261013/tmp CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs",
+      "exit": 0,
+      "result": "Only optional Sources retried at standard intercepted http://localhost:41999 secure context; passed. The four required green cases were retained without rerun.",
+      "executedScript": "/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs",
+      "scriptSnapshot": "/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs",
+      "scriptSha256": "ea3603de49b0393953a59a81cc8dbcc2895ea26c8be29df26945aac21aa83cf3",
+      "log": "/tmp/casepath-retained-session-bc0-20261013/run.log",
+      "exitFile": "/tmp/casepath-retained-session-bc0-20261013/exit.code",
+      "matrix": "/tmp/casepath-retained-session-bc0-20261013/matrix.json"
+    }
+  ],
+  "limitations": [
+    "Selected native coverage is two retained valid-format values in four owner/public mock default+legacy journeys, plus one public Sources control. Other initial session values were not tested natively in this narrowed task.",
+    "Mac reported its separate 10-case bootstrap VM attestation; this reviewer did not execute or independently certify those Mac checks.",
+    "Profiles are capability mocks, not authenticated accounts. Reference prefixes are native synthetic controller GET fixtures; legacy prefixes are the existing authored navigation/scheduler-only fixture.",
+    "All browser requests were intercepted synthetic/local fixtures. No server, public network destination, TLS bypass, provider call, live journal, deployment, repository/test edit, broad suite, or Mac browser workaround occurred.",
+    "Three nonzero initial command exits were diagnosed temporary harness/setup failures; all original scripts/logs/diagnostics are retained above. No product repair was made."
+  ],
+  "matrix": "/tmp/casepath-retained-session-bc0-20261013/matrix.json"
+}

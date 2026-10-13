@@ -1,0 +1,152 @@
+{
+  "candidate": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "host": "656813ef2295",
+  "worker_model": "gpt-6.1-sol",
+  "worker_reasoning": "xhigh",
+  "current_requested_scope": "four retained-token default/legacy actual-index Chromium journeys; no additional runs after latest narrowing",
+  "mandatory_passed": 4,
+  "mandatory_failed": 0,
+  "mandatory_requests": 176,
+  "request_methods": [
+    "GET"
+  ],
+  "post_count": 0,
+  "session_dependency_requests": 0,
+  "javascript_errors": 0,
+  "checks": [
+    {
+      "id": "owner_mock-old_valid-default",
+      "status": "passed",
+      "retained_token": "ui-00000000-0000-4000-8000-000000000001",
+      "revisions": [
+        0,
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        0,
+        1
+      ],
+      "state_hashes": [
+        "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+        "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb",
+        "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+        "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+        "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+        "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+        "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+        "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+        "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"
+      ],
+      "requests": 62,
+      "wall_elapsed_ms": 1844
+    },
+    {
+      "id": "public_mock-unknown_valid-default",
+      "status": "passed",
+      "retained_token": "ui-unknown-valid-session-20261013",
+      "revisions": [
+        0,
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        0,
+        1
+      ],
+      "state_hashes": [
+        "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+        "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb",
+        "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+        "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+        "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+        "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+        "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+        "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+        "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"
+      ],
+      "requests": 62,
+      "wall_elapsed_ms": 1674
+    },
+    {
+      "id": "owner_mock-old_valid-legacy",
+      "status": "passed",
+      "retained_token": "ui-00000000-0000-4000-8000-000000000001",
+      "revisions": [
+        0,
+        1,
+        1
+      ],
+      "state_hashes": [
+        "4dafc91aee78b720d80952d0132d514f29384588df8ea4c3c6e7139c2440291d",
+        "b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5",
+        "b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5"
+      ],
+      "requests": 26,
+      "wall_elapsed_ms": 901
+    },
+    {
+      "id": "public_mock-unknown_valid-legacy",
+      "status": "passed",
+      "retained_token": "ui-unknown-valid-session-20261013",
+      "revisions": [
+        0,
+        1,
+        1
+      ],
+      "state_hashes": [
+        "4dafc91aee78b720d80952d0132d514f29384588df8ea4c3c6e7139c2440291d",
+        "b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5",
+        "b0601e0593a1e8d6e87a4958eb048f6fb0f952fc004a752b5c957323147889b5"
+      ],
+      "requests": 26,
+      "wall_elapsed_ms": 861
+    }
+  ],
+  "source_asset_sha256": {
+    "casepath/assets/autonomous-entry-v1.js": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+    "casepath/assets/autonomous-workspace-v1.css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+    "casepath/assets/autonomous-workspace-v1.js": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+    "casepath/index.html": "4f1afa9c7bba6cb7ff01a6bd8f359afe0eca45985395938bec5a1ba93d64fa2d"
+  },
+  "no_product_or_test_source_changes": true,
+  "source_behavior": "The index retains a valid UI token. Autonomous workspace resolves the demo bootstrap promise to null and does not read that retained token for playback. Both retained values behave as fresh playback with exact recorded prefixes.",
+  "index_fixture_binding": "Original index boot and meta asset references are unchanged. Mock capability configuration is injected before boot; both original-source and served-index hashes are recorded. Active JS/CSS response bytes equal candidate bytes.",
+  "attempt_classification": [
+    {
+      "attempt": 1,
+      "kind": "temporary wait/sampling failure",
+      "evidence": "initial-harness-wait/",
+      "detail": "Manual Demonstration re-entry sampled asynchronous loading shell before fresh prefix0; corrected the temporary wait only."
+    },
+    {
+      "attempt": 2,
+      "kind": "out-of-scope temporary DOM invariant",
+      "evidence": "mandatory-four-plus-sources-harness/",
+      "detail": "Four mandatory journeys passed. Optional Sources hold compared actual graph DOM [] with expected dh_* nodes although that panel does not render graph nodes. This is not classified as a wait race or playback failure."
+    },
+    {
+      "attempt": 3,
+      "kind": "temporary insecure fixture setup",
+      "evidence": "sources-insecure-fixture/",
+      "detail": "Optional source access correctly refused without crypto.subtle on http://retained-session.invalid. No product change."
+    },
+    {
+      "attempt": 4,
+      "kind": "completed optional control",
+      "evidence": "public_mock-unknown_valid-sources.json",
+      "detail": "Only optional control reran on standard intercepted localhost secure context, passed exact18 hold and Play19. No mandatory green case reran; complete before final scope narrowing."
+    }
+  ],
+  "limits": [
+    "Mock owner-capability and public-read-only contexts, not live authenticated checks.",
+    "Intercepted existing synthetic GET fixtures; no public endpoint, production data or Mac browser used.",
+    "Playwright virtual clock checks scheduling; timings are not hosted performance measurements.",
+    "Other session seeds are covered only by the separately reported Mac VM attestation, not this four-case Chromium result."
+  ],
+  "result": "No new product change required. Verification stopped."
+}

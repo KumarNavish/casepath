@@ -1,0 +1,1121 @@
+{
+  "id": "public_mock-unknown_valid-default",
+  "profile": "public read-only capability MOCK",
+  "seed": {
+    "id": "unknown_valid",
+    "value": "ui-unknown-valid-session-20261013"
+  },
+  "journey": "default",
+  "status": "passed",
+  "stages": [
+    {
+      "stage": "requested-demonstration-opening",
+      "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=0",
+      "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=0",
+      "revision": 0,
+      "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+      "nav": "demonstration",
+      "panel": "step",
+      "nodeIds": [],
+      "sourceControls": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+        }
+      ],
+      "playing": true,
+      "play": false,
+      "resume": false,
+      "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+      "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+      "virtualTime": 1791892800000,
+      "workspaceMode": "true",
+      "publicReadOnly": true,
+      "scriptURLs": [
+        "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+      ],
+      "cssURLs": [
+        "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+        "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+        "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+        "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+        "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+        "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+      ],
+      "message": "",
+      "expectedClaim": "clm_314f2d309fea25e6",
+      "expectedRevision": 0,
+      "expectedStateSha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    },
+    {
+      "stage": "autoplay-real-prefix-1",
+      "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=1",
+      "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=1",
+      "revision": 1,
+      "state_sha256": "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb",
+      "nav": "demonstration",
+      "panel": "step",
+      "nodeIds": [],
+      "sourceControls": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+        }
+      ],
+      "playing": true,
+      "play": false,
+      "resume": false,
+      "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+      "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+      "virtualTime": 1791892800300,
+      "workspaceMode": "true",
+      "publicReadOnly": true,
+      "scriptURLs": [
+        "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+      ],
+      "cssURLs": [
+        "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+        "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+        "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+        "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+        "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+        "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+      ],
+      "message": "",
+      "expectedClaim": "clm_314f2d309fea25e6",
+      "expectedRevision": 1,
+      "expectedStateSha256": "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb",
+      "advance": {
+        "from": 0,
+        "to": 1,
+        "virtualElapsedMs": 300
+      }
+    },
+    {
+      "stage": "autoplay-real-prefix-2",
+      "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=2",
+      "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=2",
+      "revision": 2,
+      "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+      "nav": "demonstration",
+      "panel": "step",
+      "nodeIds": [],
+      "sourceControls": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        }
+      ],
+      "playing": true,
+      "play": false,
+      "resume": false,
+      "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+      "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+      "virtualTime": 1791892800600,
+      "workspaceMode": "true",
+      "publicReadOnly": true,
+      "scriptURLs": [
+        "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+      ],
+      "cssURLs": [
+        "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+        "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+        "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+        "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+        "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+        "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+      ],
+      "message": "",
+      "expectedClaim": "clm_314f2d309fea25e6",
+      "expectedRevision": 2,
+      "expectedStateSha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+      "advance": {
+        "from": 1,
+        "to": 2,
+        "virtualElapsedMs": 300
+      }
+    },
+    {
+      "stage": "paused-before-reload",
+      "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=2",
+      "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=2",
+      "revision": 2,
+      "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+      "nav": "demonstration",
+      "panel": "step",
+      "nodeIds": [],
+      "sourceControls": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        }
+      ],
+      "playing": false,
+      "play": false,
+      "resume": true,
+      "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+      "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+      "virtualTime": 1791892800600,
+      "workspaceMode": "true",
+      "publicReadOnly": true,
+      "scriptURLs": [
+        "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+      ],
+      "cssURLs": [
+        "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+        "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+        "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+        "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+        "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+        "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+      ],
+      "message": "",
+      "expectedClaim": "clm_314f2d309fea25e6",
+      "expectedRevision": 2,
+      "expectedStateSha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+      "technicalRecord": {
+        "completeStateAndProjectionEqual": true,
+        "recordSha256": "2510202eee4748f3be8b8418d0b905557e7ffa6c48b3340f8f8afc917d76f23a",
+        "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+        "revision": 2,
+        "projectionSha256": "858173c55caadb8c99b14cada8641461bb03eaa672418cbaf1f0e31a92da9089",
+        "original_binding_sha256": "4349cce39dba44f65fa58fe396659b04f9e8082986abfb92cbb918b59e935a67"
+      }
+    },
+    {
+      "stage": "canonical-reload-keeps-exact-prefix-2",
+      "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=2",
+      "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=2",
+      "revision": 2,
+      "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+      "nav": "demonstration",
+      "panel": "step",
+      "nodeIds": [],
+      "sourceControls": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        }
+      ],
+      "playing": false,
+      "play": true,
+      "resume": false,
+      "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+      "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+      "virtualTime": 1791892809600,
+      "workspaceMode": "true",
+      "publicReadOnly": true,
+      "scriptURLs": [
+        "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+      ],
+      "cssURLs": [
+        "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+        "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+        "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+        "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+        "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+        "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+      ],
+      "message": "",
+      "expectedClaim": "clm_314f2d309fea25e6",
+      "expectedRevision": 2,
+      "expectedStateSha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+      "technicalRecord": {
+        "completeStateAndProjectionEqual": true,
+        "recordSha256": "2510202eee4748f3be8b8418d0b905557e7ffa6c48b3340f8f8afc917d76f23a",
+        "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+        "revision": 2,
+        "projectionSha256": "858173c55caadb8c99b14cada8641461bb03eaa672418cbaf1f0e31a92da9089",
+        "original_binding_sha256": "4349cce39dba44f65fa58fe396659b04f9e8082986abfb92cbb918b59e935a67"
+      }
+    },
+    {
+      "stage": "reload-deliberate-Play-exact-prefix-3",
+      "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=3",
+      "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=3",
+      "revision": 3,
+      "state_sha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+      "nav": "demonstration",
+      "panel": "step",
+      "nodeIds": [],
+      "sourceControls": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        }
+      ],
+      "playing": true,
+      "play": false,
+      "resume": false,
+      "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+      "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+      "virtualTime": 1791892813600,
+      "workspaceMode": "true",
+      "publicReadOnly": true,
+      "scriptURLs": [
+        "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+      ],
+      "cssURLs": [
+        "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+        "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+        "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+        "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+        "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+        "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+      ],
+      "message": "",
+      "expectedClaim": "clm_314f2d309fea25e6",
+      "expectedRevision": 3,
+      "expectedStateSha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+      "advance": {
+        "from": 2,
+        "to": 3,
+        "virtualElapsedMs": 4000
+      }
+    },
+    {
+      "stage": "prefix-3-complete-state",
+      "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=3",
+      "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=3",
+      "revision": 3,
+      "state_sha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+      "nav": "demonstration",
+      "panel": "step",
+      "nodeIds": [],
+      "sourceControls": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2"
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+        }
+      ],
+      "playing": false,
+      "play": false,
+      "resume": true,
+      "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+      "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+      "virtualTime": 1791892813600,
+      "workspaceMode": "true",
+      "publicReadOnly": true,
+      "scriptURLs": [
+        "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+      ],
+      "cssURLs": [
+        "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+        "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+        "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+        "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+        "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+        "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+      ],
+      "message": "",
+      "expectedClaim": "clm_314f2d309fea25e6",
+      "expectedRevision": 3,
+      "expectedStateSha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+      "technicalRecord": {
+        "completeStateAndProjectionEqual": true,
+        "recordSha256": "d0c41a27bd7e2ed9e531d55b2d29d82ce4159e2d5263600f8892c151f0d34b61",
+        "state_sha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+        "revision": 3,
+        "projectionSha256": "cd8493dcc648cee1550009e2fa4fc863a06b3702047765dbb65dfb43f662324b",
+        "original_binding_sha256": "4349cce39dba44f65fa58fe396659b04f9e8082986abfb92cbb918b59e935a67"
+      }
+    },
+    {
+      "stage": "manual-Demonstration-native-nav-fresh-prefix-0",
+      "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=0",
+      "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=0",
+      "revision": 0,
+      "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+      "nav": "demonstration",
+      "panel": "step",
+      "nodeIds": [],
+      "sourceControls": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+        }
+      ],
+      "playing": true,
+      "play": false,
+      "resume": false,
+      "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+      "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+      "virtualTime": 1791892813600,
+      "workspaceMode": "true",
+      "publicReadOnly": true,
+      "scriptURLs": [
+        "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+      ],
+      "cssURLs": [
+        "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+        "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+        "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+        "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+        "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+        "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+      ],
+      "message": "",
+      "expectedClaim": "clm_314f2d309fea25e6",
+      "expectedRevision": 0,
+      "expectedStateSha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    },
+    {
+      "stage": "manual-Demonstration-autoplay-exact-prefix-1",
+      "url": "http://retained-session.invalid/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=1",
+      "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=1",
+      "revision": 1,
+      "state_sha256": "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb",
+      "nav": "demonstration",
+      "panel": "step",
+      "nodeIds": [],
+      "sourceControls": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97"
+        }
+      ],
+      "playing": true,
+      "play": false,
+      "resume": false,
+      "sessionBeforeBoot": "ui-unknown-valid-session-20261013",
+      "sessionAfterBoot": "ui-unknown-valid-session-20261013",
+      "virtualTime": 1791892813900,
+      "workspaceMode": "true",
+      "publicReadOnly": true,
+      "scriptURLs": [
+        "http://retained-session.invalid/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+      ],
+      "cssURLs": [
+        "http://retained-session.invalid/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+        "http://retained-session.invalid/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+        "http://retained-session.invalid/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+        "http://retained-session.invalid/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+        "http://retained-session.invalid/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+        "http://retained-session.invalid/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+        "http://retained-session.invalid/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+      ],
+      "message": "",
+      "expectedClaim": "clm_314f2d309fea25e6",
+      "expectedRevision": 1,
+      "expectedStateSha256": "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb",
+      "advance": {
+        "from": 0,
+        "to": 1,
+        "virtualElapsedMs": 300
+      }
+    }
+  ],
+  "sources": [],
+  "requests": [
+    {
+      "path": "/",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.690Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "4f1afa9c7bba6cb7ff01a6bd8f359afe0eca45985395938bec5a1ba93d64fa2d",
+      "servedBodySha256": "f09e3a209da15e2b22f154d23c398b918b98c609157d2604f345e866312aa7eb"
+    },
+    {
+      "path": "/assets/fonts/Merriweather-Light.ttf",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.715Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "7aaf7a3a48076702e829e86ab63d5f0aa4d94fa146322f93c281f60b3fa24e7e",
+      "servedBodySha256": "7aaf7a3a48076702e829e86ab63d5f0aa4d94fa146322f93c281f60b3fa24e7e"
+    },
+    {
+      "path": "/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.720Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b",
+      "servedBodySha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b"
+    },
+    {
+      "path": "/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.727Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+      "servedBodySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+    },
+    {
+      "path": "/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.727Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "servedBodySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed"
+    },
+    {
+      "path": "/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.728Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "servedBodySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557"
+    },
+    {
+      "path": "/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.728Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "servedBodySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9"
+    },
+    {
+      "path": "/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.730Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "servedBodySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22"
+    },
+    {
+      "path": "/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.730Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "servedBodySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb"
+    },
+    {
+      "path": "/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.730Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "servedBodySha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+    },
+    {
+      "path": "/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.731Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "servedBodySha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8"
+    },
+    {
+      "path": "/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.763Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+      "servedBodySha256": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.809Z",
+      "sessionHeader": null,
+      "fixtureRevision": 0,
+      "fixtureStateSha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.826Z",
+      "sessionHeader": null,
+      "fixtureRevision": 25,
+      "fixtureStateSha256": "46f4a3aada93f921bc73564e034e3739fe5157b5e8aee9d44d3a6cc279e5d3f5"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=1",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.869Z",
+      "sessionHeader": null,
+      "fixtureRevision": 1,
+      "fixtureStateSha256": "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=2",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.870Z",
+      "sessionHeader": null,
+      "fixtureRevision": 2,
+      "fixtureStateSha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.886Z",
+      "sessionHeader": null
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.966Z",
+      "sessionHeader": null
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.968Z",
+      "sessionHeader": null,
+      "fixtureRevision": 25,
+      "fixtureStateSha256": "46f4a3aada93f921bc73564e034e3739fe5157b5e8aee9d44d3a6cc279e5d3f5"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:14.972Z",
+      "sessionHeader": null,
+      "fixtureRevision": 25,
+      "fixtureStateSha256": "1b8980f595e5accb8be8a4b7a9ca00b1070ae964a1d9ff00d57c1ae94b125152"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.007Z",
+      "sessionHeader": null,
+      "fixtureRevision": 25,
+      "fixtureStateSha256": "06f7d59b581bacea7d5e316358626a728870bd1f77e8d00300e626c1f70267cb"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.016Z",
+      "sessionHeader": null,
+      "fixtureRevision": 21,
+      "fixtureStateSha256": "704084d3f389af39b87e705d5ef3e61e0fa1ba18c4d97024bbbc71a1515f690e"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=3",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.025Z",
+      "sessionHeader": null,
+      "fixtureRevision": 3,
+      "fixtureStateSha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.046Z",
+      "sessionHeader": null,
+      "fixtureRevision": 21,
+      "fixtureStateSha256": "3649ddc3549793009209a66be637a494800078dac819e7e7461aa6597ec2ea8c"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.053Z",
+      "sessionHeader": null,
+      "fixtureRevision": 21,
+      "fixtureStateSha256": "02d8f5a24721eece62abb18b8e50a94df2f05a24fff8e87e72644d0c648db0c9"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.065Z",
+      "sessionHeader": null,
+      "fixtureRevision": 22,
+      "fixtureStateSha256": "a273f98ba735ddf1f89326452621cba007c6515e16b61727ab803a340e768341"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.082Z",
+      "sessionHeader": null,
+      "fixtureRevision": 22,
+      "fixtureStateSha256": "d7e84e89b5c92accfa838c7b022a74c60c188b71e9ebfa93c4e4ffcb0d3d9533"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.096Z",
+      "sessionHeader": null,
+      "fixtureRevision": 27,
+      "fixtureStateSha256": "8c066007e2db2b419bb4972b2a026864d4cf91f31ab3f259051abdf57e9898d4"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=4",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.131Z",
+      "sessionHeader": null,
+      "fixtureRevision": 4,
+      "fixtureStateSha256": "20918b22f9f039b9779884acb1dcb081f05beaa8455921ab00c3ea0d5124009b"
+    },
+    {
+      "path": "/",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.358Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "4f1afa9c7bba6cb7ff01a6bd8f359afe0eca45985395938bec5a1ba93d64fa2d",
+      "servedBodySha256": "f09e3a209da15e2b22f154d23c398b918b98c609157d2604f345e866312aa7eb"
+    },
+    {
+      "path": "/assets/fonts/Merriweather-Light.ttf",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.378Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "7aaf7a3a48076702e829e86ab63d5f0aa4d94fa146322f93c281f60b3fa24e7e",
+      "servedBodySha256": "7aaf7a3a48076702e829e86ab63d5f0aa4d94fa146322f93c281f60b3fa24e7e"
+    },
+    {
+      "path": "/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.379Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b",
+      "servedBodySha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b"
+    },
+    {
+      "path": "/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.381Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+      "servedBodySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+    },
+    {
+      "path": "/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.381Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "servedBodySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed"
+    },
+    {
+      "path": "/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.381Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "servedBodySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557"
+    },
+    {
+      "path": "/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.381Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "servedBodySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9"
+    },
+    {
+      "path": "/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.384Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "servedBodySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22"
+    },
+    {
+      "path": "/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.384Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "servedBodySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb"
+    },
+    {
+      "path": "/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.385Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "servedBodySha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+    },
+    {
+      "path": "/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.387Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "servedBodySha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8"
+    },
+    {
+      "path": "/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.400Z",
+      "sessionHeader": null,
+      "sourceAssetSha256": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+      "servedBodySha256": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=2",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.417Z",
+      "sessionHeader": null,
+      "fixtureRevision": 2,
+      "fixtureStateSha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.448Z",
+      "sessionHeader": null
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.533Z",
+      "sessionHeader": null
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.747Z",
+      "sessionHeader": null,
+      "fixtureRevision": 25,
+      "fixtureStateSha256": "46f4a3aada93f921bc73564e034e3739fe5157b5e8aee9d44d3a6cc279e5d3f5"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=3",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.776Z",
+      "sessionHeader": null,
+      "fixtureRevision": 3,
+      "fixtureStateSha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=4",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.776Z",
+      "sessionHeader": null,
+      "fixtureRevision": 4,
+      "fixtureStateSha256": "20918b22f9f039b9779884acb1dcb081f05beaa8455921ab00c3ea0d5124009b"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.785Z",
+      "sessionHeader": null,
+      "fixtureRevision": 25,
+      "fixtureStateSha256": "46f4a3aada93f921bc73564e034e3739fe5157b5e8aee9d44d3a6cc279e5d3f5"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.789Z",
+      "sessionHeader": null,
+      "fixtureRevision": 25,
+      "fixtureStateSha256": "1b8980f595e5accb8be8a4b7a9ca00b1070ae964a1d9ff00d57c1ae94b125152"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.821Z",
+      "sessionHeader": null,
+      "fixtureRevision": 25,
+      "fixtureStateSha256": "06f7d59b581bacea7d5e316358626a728870bd1f77e8d00300e626c1f70267cb"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.832Z",
+      "sessionHeader": null,
+      "fixtureRevision": 21,
+      "fixtureStateSha256": "704084d3f389af39b87e705d5ef3e61e0fa1ba18c4d97024bbbc71a1515f690e"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.856Z",
+      "sessionHeader": null,
+      "fixtureRevision": 21,
+      "fixtureStateSha256": "3649ddc3549793009209a66be637a494800078dac819e7e7461aa6597ec2ea8c"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.862Z",
+      "sessionHeader": null,
+      "fixtureRevision": 21,
+      "fixtureStateSha256": "02d8f5a24721eece62abb18b8e50a94df2f05a24fff8e87e72644d0c648db0c9"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.875Z",
+      "sessionHeader": null,
+      "fixtureRevision": 22,
+      "fixtureStateSha256": "a273f98ba735ddf1f89326452621cba007c6515e16b61727ab803a340e768341"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.885Z",
+      "sessionHeader": null,
+      "fixtureRevision": 22,
+      "fixtureStateSha256": "d7e84e89b5c92accfa838c7b022a74c60c188b71e9ebfa93c4e4ffcb0d3d9533"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/snapshot?after=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:15.905Z",
+      "sessionHeader": null,
+      "fixtureRevision": 27,
+      "fixtureStateSha256": "8c066007e2db2b419bb4972b2a026864d4cf91f31ab3f259051abdf57e9898d4"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=5",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:16.024Z",
+      "sessionHeader": null,
+      "fixtureRevision": 5,
+      "fixtureStateSha256": "3f1535a18eed2d6825cb9f139b840091ddd4da3a2593d5c3658e9bea409b0211"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:16.249Z",
+      "sessionHeader": null,
+      "fixtureRevision": 0,
+      "fixtureStateSha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:16.262Z",
+      "sessionHeader": null,
+      "fixtureRevision": 25,
+      "fixtureStateSha256": "46f4a3aada93f921bc73564e034e3739fe5157b5e8aee9d44d3a6cc279e5d3f5"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=1",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:16.289Z",
+      "sessionHeader": null,
+      "fixtureRevision": 1,
+      "fixtureStateSha256": "b325878c355eb08df63f174ea45fb3fff8d72704fef5f5d7437414e0e45268fb"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=2",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:16.290Z",
+      "sessionHeader": null,
+      "fixtureRevision": 2,
+      "fixtureStateSha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=3",
+      "method": "GET",
+      "status": 200,
+      "wallTime": "2026-10-13T02:12:16.308Z",
+      "sessionHeader": null,
+      "fixtureRevision": 3,
+      "fixtureStateSha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2"
+    }
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "servedAssets": {
+    "casepath/index.html": {
+      "sourceSha256": "4f1afa9c7bba6cb7ff01a6bd8f359afe0eca45985395938bec5a1ba93d64fa2d",
+      "servedSha256": "f09e3a209da15e2b22f154d23c398b918b98c609157d2604f345e866312aa7eb"
+    },
+    "casepath/assets/fonts/Merriweather-Light.ttf": {
+      "sourceSha256": "7aaf7a3a48076702e829e86ab63d5f0aa4d94fa146322f93c281f60b3fa24e7e",
+      "servedSha256": "7aaf7a3a48076702e829e86ab63d5f0aa4d94fa146322f93c281f60b3fa24e7e"
+    },
+    "casepath/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf": {
+      "sourceSha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b",
+      "servedSha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b"
+    },
+    "casepath/assets/claims-workspace-v1.css": {
+      "sourceSha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+      "servedSha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+    },
+    "casepath/assets/causal-process-v1.css": {
+      "sourceSha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "servedSha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed"
+    },
+    "casepath/assets/claims-workspace-presentation-v1.css": {
+      "sourceSha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "servedSha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557"
+    },
+    "casepath/assets/agent-work-v1.css": {
+      "sourceSha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "servedSha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9"
+    },
+    "casepath/assets/process-evidence-v2.css": {
+      "sourceSha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "servedSha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22"
+    },
+    "casepath/assets/agent-native-v2.css": {
+      "sourceSha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "servedSha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb"
+    },
+    "casepath/assets/autonomous-workspace-v1.css": {
+      "sourceSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "servedSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+    },
+    "casepath/assets/autonomous-entry-v1.js": {
+      "sourceSha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "servedSha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8"
+    },
+    "casepath/assets/autonomous-workspace-v1.js": {
+      "sourceSha256": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+      "servedSha256": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+    }
+  },
+  "startedAt": "2026-10-13T02:12:14.658Z",
+  "session": {
+    "key": "casepath:demo-session",
+    "before": "ui-unknown-valid-session-20261013",
+    "after": "ui-unknown-valid-session-20261013",
+    "retainedInitially": true,
+    "final": "ui-unknown-valid-session-20261013"
+  },
+  "finishedAt": "2026-10-13T02:12:16.332Z",
+  "wallElapsedMs": 1674
+}

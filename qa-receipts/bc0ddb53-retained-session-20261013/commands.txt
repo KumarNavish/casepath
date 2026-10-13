@@ -1,0 +1,23 @@
+Attempt 1 (exit 1)
+Working directory: /workspace/casepath-release-ae0-inventory
+NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules XDG_CONFIG_HOME=/tmp/casepath-retained-session-bc0-20261013/config XDG_CACHE_HOME=/tmp/casepath-retained-session-bc0-20261013/cache TMPDIR=/tmp/casepath-retained-session-bc0-20261013/tmp CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs
+Script snapshot: /tmp/casepath-retained-session-bc0-20261013/initial-harness-wait/verify-retained-session.cjs
+Harness sampled manual re-entry during asynchronous loading shell; diagnostic already showed correct fresh prefix0. No completed passing cases repeated from this aborted attempt.
+
+Attempt 2 (exit 1)
+Working directory: /workspace/casepath-release-ae0-inventory
+NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules XDG_CONFIG_HOME=/tmp/casepath-retained-session-bc0-20261013/config XDG_CACHE_HOME=/tmp/casepath-retained-session-bc0-20261013/cache TMPDIR=/tmp/casepath-retained-session-bc0-20261013/tmp CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs
+Script snapshot: /tmp/casepath-retained-session-bc0-20261013/mandatory-four-plus-sources-harness/verify-retained-session.cjs
+Four required default/legacy cases passed. Optional Sources harness incorrectly expected graph nodes while Sources panel intentionally omits the graph.
+
+Attempt 3 (exit 1)
+Working directory: /workspace/casepath-release-ae0-inventory
+CASEPATH_RETAINED_SOURCES_ONLY=1 NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules XDG_CONFIG_HOME=/tmp/casepath-retained-session-bc0-20261013/config XDG_CACHE_HOME=/tmp/casepath-retained-session-bc0-20261013/cache TMPDIR=/tmp/casepath-retained-session-bc0-20261013/tmp CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs
+Script snapshot: /tmp/casepath-retained-session-bc0-20261013/sources-insecure-fixture/verify-retained-session.cjs
+Only optional Sources retried; complete exact prefix18/Sources held9s. Source identity correctly refused in insecure http://retained-session.invalid fixture without crypto.subtle.
+
+Attempt 4 (exit 0)
+Working directory: /workspace/casepath-release-ae0-inventory
+CASEPATH_RETAINED_SOURCES_ONLY=1 NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules XDG_CONFIG_HOME=/tmp/casepath-retained-session-bc0-20261013/config XDG_CACHE_HOME=/tmp/casepath-retained-session-bc0-20261013/cache TMPDIR=/tmp/casepath-retained-session-bc0-20261013/tmp CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs
+Script snapshot: /tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs
+Only optional Sources retried at standard intercepted http://localhost:41999 secure context; passed. The four required green cases were retained without rerun.

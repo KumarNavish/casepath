@@ -1,0 +1,13 @@
+{"status":"BROWSER_STARTED","commit":"bc0ddb5340e4251360ee0f4dcb960ddb190a4114","scope":"latest parent narrowing: retained owner old token and public unknown token; default and legacy, plus one public Sources control"}
+locator.waitFor: Timeout 7000ms exceeded.
+Call log:
+[2m  - waiting for locator('.au-source-dialog[open] .au-source-body') to be visible[22m
+
+    at inspectSource (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:123:65)
+    at async createCase (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:224:22)
+    at async main (/tmp/casepath-retained-session-bc0-20261013/verify-retained-session.cjs:258:5) {
+  log: [
+    "  - waiting for locator('.au-source-dialog[open] .au-source-body') to be visible"
+  ],
+  name: 'TimeoutError'
+}
