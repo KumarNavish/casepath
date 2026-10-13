@@ -1,0 +1,413 @@
+{
+  "document": {
+    "row": {
+      "op": "op_0134dd4557c1ce926529517ca7598a15",
+      "revision": 0,
+      "stateSha": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+      "mode": "playing",
+      "verified": "false",
+      "scope": "op_e76f03a89a4e79fc04557a5037485cb5",
+      "graphSha": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+      "stage": "native_reducer",
+      "nodes": [
+        {
+          "id": "investigate_packet",
+          "status": "provisional",
+          "record": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+          "text": "·This decisionInvestigate incoming evidenceApplicability · AppliesExecution · Source support needed: 01-customer-and-tenancy-clarification.txt + 02-heating-service-observation.txt + 03-landlord-knowledge-and-repair-status.txt",
+          "pointOp": "op_0134dd4557c1ce926529517ca7598a15"
+        }
+      ],
+      "edges": [],
+      "document": "incoming_0",
+      "point": "op_0134dd4557c1ce926529517ca7598a15",
+      "text": "Cases / Synthetic claim / Recorded investigation\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · historical synthetic packet · as of 2025-02-21\n\nNot started.\n\nSkip to result\nPause\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\n\nDerive document requirement\n\n01-customer-and-tenancy-clarification.txt\n\nInspect operation\n\nWorking model · provisional Inspect calculation\n\nInvestigate incoming evidence\nOpen larger process\n·\nInvestigate incoming evidence\nApplicability · Applies\nExecution · Source support needed: 01-customer-and-tenancy-clarification.txt + 02-heating-service-observation.txt + 03-landlord-knowledge-and-repair-status.txt\n\nRequirement calculation · 01-customer-and-tenancy-clarification.txt Inspect\n\nIntake incomplete\nDetails\nRelevant tenancy terms\nNot established\nLandlord knowledge and continuing repair status\nNot established\nDated technical defect observation\nNot established"
+    },
+    "op": {
+      "cause_ids": [
+        "op_e76f03a89a4e79fc04557a5037485cb5"
+      ],
+      "contract": "casepath.operations-stream/1.0.0",
+      "id": "op_0134dd4557c1ce926529517ca7598a15",
+      "input": {
+        "condition": {
+          "const": "true"
+        },
+        "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+        "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+        "node_activations": {
+          "investigate_packet": "true"
+        },
+        "required_at_node_ids": [
+          "investigate_packet"
+        ]
+      },
+      "input_sha256": "a02802608e6ea284f7ccc0a67df7133ef5734f09354c64893e71197d5ba66f72",
+      "journal_seq": 28,
+      "kind": "document.require",
+      "object": {
+        "id": "incoming_0",
+        "type": "document"
+      },
+      "operation_sha256": "1a343d0711db1554e09c4ec5d572d5cf087f39ead2c88ae7edc022b256a5235f",
+      "previous_operation_sha256": "1190021309ee5df7ac41b65b3d64cfe91acc61d5ba2fe7e6764cf238aab73a05",
+      "result": {
+        "activation": "true",
+        "active_node_ids": [
+          "investigate_packet"
+        ],
+        "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+        "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+        "phase": "provisional",
+        "request": true,
+        "required_at_node_ids": [
+          "investigate_packet"
+        ],
+        "review_state": "missing",
+        "route_state": "needed_now"
+      },
+      "result_sha256": "15fbf7bc5c659d1fd05277a4b61893ddb0f65abd9eb77f5aa390241fdf26dc23",
+      "seq": 4,
+      "stage": "native_reducer",
+      "type": "operation"
+    }
+  },
+  "inspection": {
+    "cause_ids": [
+      "op_e76f03a89a4e79fc04557a5037485cb5",
+      "op_de8cbd2b31c193ff1bcb18c10dabf1aa"
+    ],
+    "contract": "casepath.operations-stream/1.0.0",
+    "id": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+    "input": {
+      "condition_verdict": "true",
+      "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+      "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+      "path": "true",
+      "suppressing_edge_ids": []
+    },
+    "input_sha256": "82510959a009dea3143744117d2db081ca5e2f823c7780c95f859fa218745dac",
+    "journal_seq": 28,
+    "kind": "node.evaluate",
+    "object": {
+      "id": "investigate_packet",
+      "type": "node"
+    },
+    "operation_sha256": "1190021309ee5df7ac41b65b3d64cfe91acc61d5ba2fe7e6764cf238aab73a05",
+    "previous_operation_sha256": "f5e87ad6d758df58f3b3d185ff3be458e233d26a7e4ef8fc0387da20f6437abf",
+    "result": {
+      "activation": "true",
+      "blocked_by": [],
+      "effective_completed": false,
+      "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+      "execution_state": "ready",
+      "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+      "inconsistent_completion": false,
+      "missing_document_types": [
+        "incoming_0",
+        "incoming_1",
+        "incoming_2"
+      ],
+      "phase": "provisional",
+      "unresolved_dependencies": []
+    },
+    "result_sha256": "793cd1086550053dafa98e53949f5e0426af3bd7220eadd3a6b5d472df396b29",
+    "seq": 3,
+    "stage": "native_reducer",
+    "type": "operation"
+  },
+  "blocked": {
+    "row": {
+      "op": "op_250e1f6d3f1ced191ced6c5e62ea3df8",
+      "revision": 36,
+      "stateSha": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b",
+      "mode": "playing",
+      "verified": "false",
+      "scope": "op_414de1779028325a5495983616033cc2",
+      "graphSha": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b",
+      "stage": "native_execution",
+      "nodes": [
+        {
+          "id": "dh_intake",
+          "status": "provisional",
+          "record": "op_b7dd314323789e3a2e7a97385e553a3e",
+          "text": "·BeforeCapture the reported defect",
+          "pointOp": "op_b7dd314323789e3a2e7a97385e553a3e"
+        },
+        {
+          "id": "dh_scope",
+          "status": "provisional",
+          "record": "op_250e1f6d3f1ced191ced6c5e62ea3df8",
+          "text": "·This decisionEstablish relevant tenancy termsApplicability · AppliesExecution · Waiting for Capture the reported defect",
+          "pointOp": "op_250e1f6d3f1ced191ced6c5e62ea3df8"
+        },
+        {
+          "id": "dh_notice",
+          "status": "provisional",
+          "record": "op_414de1779028325a5495983616033cc2",
+          "text": "·ThenEstablish landlord knowledge",
+          "pointOp": "op_414de1779028325a5495983616033cc2"
+        },
+        {
+          "id": "dh_cause",
+          "status": "provisional",
+          "record": "op_414de1779028325a5495983616033cc2",
+          "text": "·Assess supported cause",
+          "pointOp": "op_414de1779028325a5495983616033cc2"
+        },
+        {
+          "id": "dh_evidence",
+          "status": "provisional",
+          "record": "op_414de1779028325a5495983616033cc2",
+          "text": "·Assess objective defect evidence",
+          "pointOp": "op_414de1779028325a5495983616033cc2"
+        },
+        {
+          "id": "dh_response",
+          "status": "provisional",
+          "record": "op_414de1779028325a5495983616033cc2",
+          "text": "·Record repair and rent reduction eligibility",
+          "pointOp": "op_414de1779028325a5495983616033cc2"
+        }
+      ],
+      "edges": [
+        {
+          "id": "reference_defect_mold_heating_0",
+          "d": "M40 27 L40 50 C40 50,40 50,40 50 L40 61"
+        },
+        {
+          "id": "reference_defect_mold_heating_1",
+          "d": "M40 75 L40 121.484375 C40 121.484375,40 121.484375,40 121.484375 L40 132.484375"
+        },
+        {
+          "id": "reference_defect_mold_heating_2",
+          "d": "M40 146.484375 L40 169.484375 C40 169.484375,40 169.484375,40 169.484375 L40 180.484375"
+        },
+        {
+          "id": "reference_defect_mold_heating_3",
+          "d": "M40 194.484375 L40 217.484375 C40 217.484375,40 217.484375,40 217.484375 L40 228.484375"
+        },
+        {
+          "id": "reference_defect_mold_heating_4",
+          "d": "M40 242.484375 L40 265.484375 C40 265.484375,40 265.484375,40 265.484375 L40 276.484375"
+        }
+      ],
+      "point": "op_250e1f6d3f1ced191ced6c5e62ea3df8",
+      "text": "Cases / Synthetic claim / Recorded investigation\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · historical synthetic packet · as of 2025-02-21\n\nWorking. Earlier findings · new sources await review.\n\nSkip to result\nPause\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\n\nEvaluate step\n\n01-customer-and-tenancy-clarification.txt ↗\nSynthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-02-21\n\nI, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\n\nMy active request is removal of the continuing heating defect and assessment of proportional rent-reduction eligibility from the landlord's first knowledge until remedy. I report no incurred monetary loss, no health-compensation claim, no self-help expense and no deposit/withholding request. The repair is not complete; no reduction percentage or award has been agreed.\n\n\nEstablish relevant tenancy terms\n\nInspect operation\n\nWorking model · provisional Inspect calculation\n\nEstablish relevant tenancy terms\nOpen larger process\n·\nCapture the reported defect\n·\nEstablish relevant tenancy terms\nApplicability · Applies\nExecution · Waiting for Capture the reported defect\n·\nEstablish landlord knowledge\n·\nAssess supported cause\n·\nAssess objective defect evidence\n·\nRecord repair and rent reduction eligibility"
+    },
+    "op": {
+      "cause_ids": [
+        "op_414de1779028325a5495983616033cc2",
+        "op_fbbe6da44bd6ff6abcd348259d173f52"
+      ],
+      "contract": "casepath.operations-stream/1.0.0",
+      "id": "op_250e1f6d3f1ced191ced6c5e62ea3df8",
+      "input": {
+        "condition_verdict": "true",
+        "evaluation_sha256": "62da514cd5ef0568dea61ed39fcfe52fb2fe7b956824c8ba249cfd1982e57845",
+        "graph_sha256": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b",
+        "path": "true",
+        "suppressing_edge_ids": []
+      },
+      "input_sha256": "20088983c70dfe81808dd7ed517364ca481c4d5b2287b515aaab2e98c7193105",
+      "journal_seq": 37,
+      "kind": "node.evaluate",
+      "object": {
+        "id": "dh_scope",
+        "type": "node"
+      },
+      "operation_sha256": "ec405fc36f20ec7e753e3e4da3707e4f2956b49c5c7904f5e0511c7372b2e030",
+      "previous_operation_sha256": "cead40e1f915aac13ae475183da18e92a55799aae9d236d45d0387c636ae8969",
+      "result": {
+        "activation": "true",
+        "blocked_by": [
+          "dh_intake"
+        ],
+        "effective_completed": false,
+        "evaluation_sha256": "62da514cd5ef0568dea61ed39fcfe52fb2fe7b956824c8ba249cfd1982e57845",
+        "execution_state": "blocked",
+        "graph_sha256": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b",
+        "inconsistent_completion": false,
+        "missing_document_types": [
+          "tenancy_terms_evidence"
+        ],
+        "phase": "provisional",
+        "unresolved_dependencies": []
+      },
+      "result_sha256": "aa3a23189ac43320be9b73c8b6e1f154730c3af6017c860e1089436c620bf7a5",
+      "seq": 101,
+      "stage": "native_execution",
+      "type": "operation"
+    }
+  },
+  "transfer": {
+    "row": {
+      "op": "op_d867690b64a42823c40957aa759afb0a",
+      "revision": 39,
+      "stateSha": "b38be34be9a5d7a4ae5acfed0ba24414c71354d909fc935136670e3a97dfd9b7",
+      "mode": "playing",
+      "verified": "false",
+      "nodes": [
+        {
+          "id": "dh_intake",
+          "status": "ready",
+          "text": "·BeforeCapture the reported defect"
+        },
+        {
+          "id": "dh_scope",
+          "status": "blocked",
+          "text": "·This decisionEstablish relevant tenancy termsWaiting for prerequisites",
+          "pointOp": "op_d867690b64a42823c40957aa759afb0a"
+        },
+        {
+          "id": "dh_notice",
+          "status": "blocked",
+          "text": "·ThenEstablish landlord knowledge"
+        },
+        {
+          "id": "dh_cause",
+          "status": "blocked",
+          "text": "·Assess supported cause"
+        },
+        {
+          "id": "dh_evidence",
+          "status": "blocked",
+          "text": "·Assess objective defect evidence"
+        },
+        {
+          "id": "dh_response",
+          "status": "blocked",
+          "text": "·Record repair and rent reduction eligibility"
+        }
+      ],
+      "edges": [
+        {
+          "id": "reference_defect_mold_heating_0",
+          "d": "M40 27 L40 50 C40 50,40 50,40 50 L40 61"
+        },
+        {
+          "id": "reference_defect_mold_heating_1",
+          "d": "M40 75 L40 104.1875 C40 104.1875,40 104.1875,40 104.1875 L40 115.1875"
+        },
+        {
+          "id": "reference_defect_mold_heating_2",
+          "d": "M40 129.1875 L40 152.1875 C40 152.1875,40 152.1875,40 152.1875 L40 163.1875"
+        },
+        {
+          "id": "reference_defect_mold_heating_3",
+          "d": "M40 177.1875 L40 200.1875 C40 200.1875,40 200.1875,40 200.1875 L40 211.1875"
+        },
+        {
+          "id": "reference_defect_mold_heating_4",
+          "d": "M40 225.1875 L40 248.1875 C40 248.1875,40 248.1875,40 248.1875 L40 259.1875"
+        }
+      ],
+      "point": "op_d867690b64a42823c40957aa759afb0a",
+      "wire": "M280 349.71875 C318.5 349.71875,318.5 179.1875,357 179.1875",
+      "wireOp": "op_d867690b64a42823c40957aa759afb0a",
+      "text": "Cases / Synthetic claim / Recorded investigation\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · historical synthetic packet · as of 2025-02-21\n\nWorking.\n\nSkip to result\nPause\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\n\nLegal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)\n\nInspect verified finding\n\n01-customer-and-tenancy-clarification.txt ↗\nSynthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-02-21\n\nI, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\n\nMy active request is removal of the continuing heating defect and assessment of proportional rent-reduction eligibility from the landlord's first knowledge until remedy. I report no incurred monetary loss, no health-compensation claim, no self-help expense and no deposit/withholding request. The repair is not complete; no reduction percentage or award has been agreed.\n\n\nRelevant residential tenancy terms, parties and dwelling; this is not a complete lease contract · Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.\n\nInspect operation\nDefects and repairs\n\nProcedure used for this case · Version 1\n\nFrom this case’s source evidence.\n\nOpen procedure\nEstablish relevant tenancy terms\nOpen larger process\n·\nCapture the reported defect\n·\nEstablish relevant tenancy terms\nWaiting for prerequisites\n·\nEstablish landlord knowledge\n·\nAssess supported cause\n·\nAssess objective defect evidence\n·\nRecord repair and rent reduction eligibility\nDocument requirements\n\nRequirements appear when their process step is reached.\n\nAll recorded requirements\nSource attestation establishes the relevant tenancy terms; no complete lease is claimed received."
+    },
+    "op": {
+      "cause_ids": [
+        "op_239fff8e940e09cd50d910cbaff753b7",
+        "op_7eb3aa88db8ffa97ede5a9a122c8583c"
+      ],
+      "contract": "casepath.operations-stream/1.0.0",
+      "id": "op_d867690b64a42823c40957aa759afb0a",
+      "input": {
+        "document_type": "tenancy_terms_evidence"
+      },
+      "input_sha256": "c46f234b0859fb7f40c8dc6a04b3c79a3689a922fe79c3b53c0739db6e3bb5f5",
+      "journal_seq": 39,
+      "kind": "fact.extract",
+      "object": {
+        "id": "fact:tenancy_terms_evidence",
+        "type": "fact"
+      },
+      "operation_sha256": "c20d88e94b8c8217d196b736f4b6a50197f73937858ac744c354cd1a756ca3bc",
+      "previous_operation_sha256": "b95e399e6d7690e7e35bb0e7a9520f5785b4b3c4e2ce2d90ac6419e0f1491bc2",
+      "result": {
+        "status": "established",
+        "summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+        "verification_required": false
+      },
+      "result_sha256": "035f82220318afa1cbe283f594c2badabce0f554771e88bcc929c3feaf598539",
+      "seq": 169,
+      "source": {
+        "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+        "end_char": 434,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+        "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start_char": 95,
+        "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+      },
+      "stage": "native_execution",
+      "type": "operation"
+    }
+  },
+  "finished": {
+    "op": "",
+    "revision": 48,
+    "stateSha": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+    "mode": "completed",
+    "verified": "true",
+    "nodes": [
+      {
+        "id": "dh_intake",
+        "status": "completed",
+        "text": "✓BeforeCapture the reported defect"
+      },
+      {
+        "id": "dh_scope",
+        "status": "completed",
+        "text": "✓This decisionEstablish relevant tenancy termsCompleted"
+      },
+      {
+        "id": "dh_notice",
+        "status": "completed",
+        "text": "✓ThenEstablish landlord knowledge"
+      },
+      {
+        "id": "dh_cause",
+        "status": "completed",
+        "text": "✓Assess supported cause"
+      },
+      {
+        "id": "dh_evidence",
+        "status": "completed",
+        "text": "✓Assess objective defect evidence"
+      },
+      {
+        "id": "dh_response",
+        "status": "completed",
+        "text": "✓Record repair and rent reduction eligibility"
+      }
+    ],
+    "edges": [
+      {
+        "id": "reference_defect_mold_heating_0",
+        "d": "M40 27 L40 50 C40 50,40 50,40 50 L40 61"
+      },
+      {
+        "id": "reference_defect_mold_heating_1",
+        "d": "M40 75 L40 104.1875 C40 104.1875,40 104.1875,40 104.1875 L40 115.1875"
+      },
+      {
+        "id": "reference_defect_mold_heating_2",
+        "d": "M40 129.1875 L40 152.1875 C40 152.1875,40 152.1875,40 152.1875 L40 163.1875"
+      },
+      {
+        "id": "reference_defect_mold_heating_3",
+        "d": "M40 177.1875 L40 200.1875 C40 200.1875,40 200.1875,40 200.1875 L40 211.1875"
+      },
+      {
+        "id": "reference_defect_mold_heating_4",
+        "d": "M40 225.1875 L40 248.1875 C40 248.1875,40 248.1875,40 248.1875 L40 259.1875"
+      }
+    ],
+    "text": "Cases / Synthetic claim / Recorded investigation\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · historical synthetic packet · as of 2025-02-21\n\nAssessment complete. Assessment only; no external action taken.\n\nSkip to result\nPlay saved history\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\n\nThe sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.\n\nLegal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)\n\nFrom the sources\n01-customer-and-tenancy-clarification.txt\n↗\nI, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\nWhat this shows\n\nSource attestation establishes the relevant tenancy terms; no complete lease is claimed received.\n\nEstablished\n\nDefects and repairs\n\nProcedure used for this case · Version 1\n\nFrom this case’s source evidence.\n\nOpen procedure\nEstablish relevant tenancy terms\nOpen larger process\n✓\nCapture the reported defect\n✓\nEstablish relevant tenancy terms\nCompleted\n✓\nEstablish landlord knowledge\n✓\nAssess supported cause\n✓\nAssess objective defect evidence\n✓\nRecord repair and rent reduction eligibility\nDocument requirements\nRelevant tenancy terms\nEstablished\nSupplied evidence is sufficient. ✓\nEstablish relevant tenancy terms\nSource evidence · 01-customer-and-tenancy-clarification.txt\nLandlord knowledge and continuing repair status\nEstablished\nSupplied evidence is sufficient. ✓\nEstablish landlord knowledge\nSource evidence · 03-landlord-knowledge-and-repair-status.txt\nDated technical defect observation\nEstablished\nSupplied evidence is sufficient. ✓\nAssess objective defect evidence\nSource evidence · 02-heating-service-observation.txt\nAll recorded requirements"
+  },
+  "errors": [],
+  "writes": []
+}

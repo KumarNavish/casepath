@@ -1,0 +1,9 @@
+AssertionError [ERR_ASSERTION]: one retained DOM pane per immutable source
+    at /workspace/op-browser/normal-point.cjs:8:379 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

@@ -1,0 +1,16 @@
+....                                                                     [100%]
+=============================== warnings summary ===============================
+tests/test_autonomous_operations_v1.py::test_public_get_rejects_warm_cached_but_corrupt_persistent_sources
+tests/test_autonomous_operations_v1.py::test_public_get_rejects_warm_cached_but_corrupt_persistent_sources
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_autonomous_operations_v1.py::test_public_get_rejects_warm_cached_but_corrupt_persistent_sources
+tests/test_autonomous_operations_v1.py::test_public_get_rejects_warm_cached_but_corrupt_persistent_sources
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_autonomous_operations_v1.py::test_public_get_rejects_warm_cached_but_corrupt_persistent_sources
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+4 passed, 5 warnings in 10.39s
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

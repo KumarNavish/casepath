@@ -1,0 +1,107 @@
+........F........                                                        [100%]
+=================================== FAILURES ===================================
+_____ test_stream_delivers_operations_during_compute_and_cancel_stops_work _____
+
+self = <casepath_api.autonomous_operations_v1._memory_store.<locals>.MemoryReducer object at 0x7febc8520ad0>
+value = {'assessment_context': {'facts': [{'citations': [], 'fact_id': 'source:src_6773fe78e05454274bd6e195781dee0d', 'label':...ing_2', ...}]}, 'claim_id': 'clm_0f4f13b1e3e1328c', 'conditions': {}, 'contract': 'casepath.causal-process/1.0.0', ...}
+claim_id = 'clm_0f4f13b1e3e1328c'
+
+    def _graph(self, value, claim_id):
+        if not isinstance(value, dict) or value.get("claim_id") != claim_id:
+            raise AutonomousStoreError("graph belongs to another claim")
+        try:
+            # Sealing supplies defaults, but reject extra fields before sealing
+            # can discard them. The accepted graph must already be canonical.
+            validate_graph(value)
+            sealed = seal_graph(value)
+            if sealed != value:
+                raise ValueError("graph must carry its exact canonical seal")
+>           assessment = evaluate(sealed)
+                         ^^^^^^^^^^^^^^^^
+
+casepath-api/casepath_api/autonomous_store_v1.py:526: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/causal_process_v1.py:455: in evaluate
+    observe('branch.drop' if activation == 'false' else 'branch.activate', 'node', key,
+casepath-api/casepath_api/autonomous_operations_v1.py:39: in observe
+    return sink.emit(kind, object_type, object_id, inputs, result, source=source, causes=causes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_operations_v1.py:107: in emit
+    _SINK.reset(token)
+    ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.autonomous_operations_v1.OperationSink object at 0x7febc8f8add0>
+
+    self.retain = send is None
+    self.stage, self.journal_seq = 'validation', None
+>   self.latest, self.opened, self.occurrences = {}, set(), {}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   casepath_api.autonomous_operations_v1.OperationCancelled: Recomputation stopped before completion.
+
+casepath-api/casepath_api/autonomous_operations_v1.py:80: OperationCancelled
+
+The above exception was the direct cause of the following exception:
+
+migrated = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7febc863f250>, <casepath_api.autonomous_corpu...47ca52afb1a4664b1e9294cf452d290192be3fb6b4c70', 'policy_id': 'casepath.bounded-reference-assessment/1.0.0', ...}, ...})
+
+    def test_stream_delivers_operations_during_compute_and_cancel_stops_work(migrated):
+        bundle = migrated[-1]
+        stop, received = Event(), []
+        def send(frame):
+            received.append(frame)
+            if frame['type'] == 'operation':
+                stop.set()
+        with pytest.raises(runtime.OperationCancelled):
+>           runtime.recompute_operations(bundle, send=send, cancellation=stop)
+
+casepath-api/tests/test_autonomous_operations_v1.py:178: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_operations_v1.py:405: in recompute_operations
+    def _extract(self, raw, media):
+                   ^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_operations_v1.py:155: in _reduce
+    raise AutonomousStoreError('snapshot source bytes are unavailable') from error
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_store_v1.py:757: in _reduce
+    graph, evaluation = self._graph(payload["graph"], claim_id)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.autonomous_operations_v1._memory_store.<locals>.MemoryReducer object at 0x7febc8520ad0>
+value = {'assessment_context': {'facts': [{'citations': [], 'fact_id': 'source:src_6773fe78e05454274bd6e195781dee0d', 'label':...ing_2', ...}]}, 'claim_id': 'clm_0f4f13b1e3e1328c', 'conditions': {}, 'contract': 'casepath.causal-process/1.0.0', ...}
+claim_id = 'clm_0f4f13b1e3e1328c'
+
+    def _graph(self, value, claim_id):
+        if not isinstance(value, dict) or value.get("claim_id") != claim_id:
+            raise AutonomousStoreError("graph belongs to another claim")
+        try:
+            # Sealing supplies defaults, but reject extra fields before sealing
+            # can discard them. The accepted graph must already be canonical.
+            validate_graph(value)
+            sealed = seal_graph(value)
+            if sealed != value:
+                raise ValueError("graph must carry its exact canonical seal")
+            assessment = evaluate(sealed)
+        except (KeyError, TypeError, ValueError) as exc:
+>           raise AutonomousStoreError("invalid accepted graph: " + str(exc)) from exc
+E           casepath_api.autonomous_store_v1.AutonomousStoreError: invalid accepted graph: Recomputation stopped before completion.
+
+casepath-api/casepath_api/autonomous_store_v1.py:528: AutonomousStoreError
+=============================== warnings summary ===============================
+tests/test_autonomous_operations_v1.py::test_real_callsite_trace_preserves_every_prefix_and_exact_final_output
+tests/test_autonomous_operations_v1.py::test_real_callsite_trace_preserves_every_prefix_and_exact_final_output
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_autonomous_operations_v1.py::test_real_callsite_trace_preserves_every_prefix_and_exact_final_output
+tests/test_autonomous_operations_v1.py::test_real_callsite_trace_preserves_every_prefix_and_exact_final_output
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_autonomous_operations_v1.py::test_real_callsite_trace_preserves_every_prefix_and_exact_final_output
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_stream_delivers_operations_during_compute_and_cancel_stops_work
+1 failed, 16 passed, 5 warnings in 29.60s
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

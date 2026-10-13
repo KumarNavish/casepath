@@ -1,0 +1,45 @@
+{
+  "last": "op_1b1fed6e2f9699e382b607e9c0f1596b",
+  "old": {
+    "cause_ids": [
+      "op_e2ee179b8ea5c8418a8c56309d1fc69e"
+    ],
+    "contract": "casepath.operations-stream/1.0.0",
+    "id": "op_1b1fed6e2f9699e382b607e9c0f1596b",
+    "input": {
+      "flags": [
+        "DOTALL"
+      ],
+      "pattern": "removal\\ of\\ the\\ continuing\\ heating\\ defect\\ and\\ assessment\\ of\\ proportional\\ rent\\-reduction\\ eligibility"
+    },
+    "input_sha256": "09a09c2b4a54a3a9553b3a1c02ca05013fa761e9d6ad615332e132f3da7ed045",
+    "journal_seq": 37,
+    "kind": "phrase.match",
+    "object": {
+      "id": "src_106168f9c33152b3d88f02469ad57782",
+      "type": "source"
+    },
+    "operation_sha256": "69492370a78ffd0cc602ebfa49a675dff70472ecefe2dc94daa7ea615308f395",
+    "previous_operation_sha256": "0af0fc2706b91537b63e5d1c6d8f2ddaa28d192c6153f6b791b7bbac88722f07",
+    "result": {
+      "admissible_length": true,
+      "matched": true
+    },
+    "result_sha256": "c040d7130212810a6d036625f6b7da73e318236f57c52e4815c0a039460d5673",
+    "seq": 9,
+    "source": {
+      "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+      "end_char": 555,
+      "offset_unit": "unicode_code_point",
+      "quote": "removal of the continuing heating defect and assessment of proportional rent-reduction eligibility",
+      "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+      "start_char": 457,
+      "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+    },
+    "stage": "interpret_reference",
+    "type": "operation"
+  },
+  "errors": [],
+  "pausedInspectionRetained": true,
+  "historicalAttemptRetained": true
+}

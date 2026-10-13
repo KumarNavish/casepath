@@ -1,0 +1,149 @@
+........F...........................................................F... [ 69%]
+................................                                         [100%]
+=================================== FAILURES ===================================
+_____ test_stream_delivers_operations_during_compute_and_cancel_stops_work _____
+
+self = <casepath_api.autonomous_operations_v1._memory_store.<locals>.MemoryReducer object at 0x7f067ae81be0>
+value = {'assessment_context': {'facts': [{'citations': [], 'fact_id': 'source:src_6773fe78e05454274bd6e195781dee0d', 'label':...ing_2', ...}]}, 'claim_id': 'clm_0f4f13b1e3e1328c', 'conditions': {}, 'contract': 'casepath.causal-process/1.0.0', ...}
+claim_id = 'clm_0f4f13b1e3e1328c'
+
+    def _graph(self, value, claim_id):
+        if not isinstance(value, dict) or value.get("claim_id") != claim_id:
+            raise AutonomousStoreError("graph belongs to another claim")
+        try:
+            # Sealing supplies defaults, but reject extra fields before sealing
+            # can discard them. The accepted graph must already be canonical.
+            validate_graph(value)
+            sealed = seal_graph(value)
+            if sealed != value:
+                raise ValueError("graph must carry its exact canonical seal")
+>           assessment = evaluate(sealed)
+                         ^^^^^^^^^^^^^^^^
+
+casepath-api/casepath_api/autonomous_store_v1.py:526: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/causal_process_v1.py:455: in evaluate
+    observe('branch.drop' if activation == 'false' else 'branch.activate', 'node', key,
+casepath-api/casepath_api/autonomous_operations_v1.py:39: in observe
+    return sink.emit(kind, object_type, object_id, inputs, result, source=source, causes=causes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_operations_v1.py:107: in emit
+    self.check()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.autonomous_operations_v1.OperationSink object at 0x7f067b00ec10>
+
+    def check(self):
+        if self.cancel.is_set() or monotonic() >= self.deadline:
+>           raise OperationCancelled('Recomputation stopped before completion.')
+E           casepath_api.autonomous_operations_v1.OperationCancelled: Recomputation stopped before completion.
+
+casepath-api/casepath_api/autonomous_operations_v1.py:80: OperationCancelled
+
+The above exception was the direct cause of the following exception:
+
+migrated = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f067b065090>, <casepath_api.autonomous_corpu...47ca52afb1a4664b1e9294cf452d290192be3fb6b4c70', 'policy_id': 'casepath.bounded-reference-assessment/1.0.0', ...}, ...})
+
+    def test_stream_delivers_operations_during_compute_and_cancel_stops_work(migrated):
+        bundle = migrated[-1]
+        stop, received = Event(), []
+        def send(frame):
+            received.append(frame)
+            if frame['type'] == 'operation':
+                stop.set()
+        with pytest.raises(runtime.OperationCancelled):
+>           runtime.recompute_operations(bundle, send=send, cancellation=stop)
+
+casepath-api/tests/test_autonomous_operations_v1.py:178: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_operations_v1.py:405: in recompute_operations
+    computed = store._reduce(prior, event)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_operations_v1.py:155: in _reduce
+    return super()._reduce(state, event)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_store_v1.py:757: in _reduce
+    graph, evaluation = self._graph(payload["graph"], claim_id)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.autonomous_operations_v1._memory_store.<locals>.MemoryReducer object at 0x7f067ae81be0>
+value = {'assessment_context': {'facts': [{'citations': [], 'fact_id': 'source:src_6773fe78e05454274bd6e195781dee0d', 'label':...ing_2', ...}]}, 'claim_id': 'clm_0f4f13b1e3e1328c', 'conditions': {}, 'contract': 'casepath.causal-process/1.0.0', ...}
+claim_id = 'clm_0f4f13b1e3e1328c'
+
+    def _graph(self, value, claim_id):
+        if not isinstance(value, dict) or value.get("claim_id") != claim_id:
+            raise AutonomousStoreError("graph belongs to another claim")
+        try:
+            # Sealing supplies defaults, but reject extra fields before sealing
+            # can discard them. The accepted graph must already be canonical.
+            validate_graph(value)
+            sealed = seal_graph(value)
+            if sealed != value:
+                raise ValueError("graph must carry its exact canonical seal")
+            assessment = evaluate(sealed)
+        except (KeyError, TypeError, ValueError) as exc:
+>           raise AutonomousStoreError("invalid accepted graph: " + str(exc)) from exc
+E           casepath_api.autonomous_store_v1.AutonomousStoreError: invalid accepted graph: Recomputation stopped before completion.
+
+casepath-api/casepath_api/autonomous_store_v1.py:528: AutonomousStoreError
+______ test_verifier_rejects_wrong_quote_source_and_changed_field_roster _______
+
+tmp_path = PosixPath('/workspace/operation-runtime-evidence/tmp/pytest-of-agent/pytest-0/test_verifier_rejects_wrong_qu0')
+corpus = <casepath_api.autonomous_corpus_v1.CanonicalCorpus object at 0x7f067d6bb9d0>
+
+    def test_verifier_rejects_wrong_quote_source_and_changed_field_roster(tmp_path, corpus):
+        service = service_at(tmp_path / 'claims.sqlite', corpus)
+        try:
+            cid = ReferenceProfile().ids[0]
+            admit(service, corpus, cid)
+            state = service.run(cid)
+            context = state['semantic_contexts'][state['run_id']]
+            adapter = service.reference_adapter
+            result = adapter.interpret_reference(context, {'claim_id': cid})['result']
+            result['documents'][0]['citations'][0]['artifact_id'] = context['sources'][0]['artifact_id']
+>           checked = adapter.verify_reference(context, result, {'claim_id': cid})['result']
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_complete_reference_intake_v1.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_reference_v1.py:401: in verify_reference
+    source=citation_source(row.get('citations', [None])[0] if row.get('citations') else None, context['sources']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+citation = {'artifact_id': 'src_23f92324b0de5e7f486827361ba6a4b4', 'quote': 'I, Taylor Miller, rent the dwelling atSeefeldstrasse...t for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.'}
+sources = [{'artifact_id': 'src_23f92324b0de5e7f486827361ba6a4b4', 'complete': False, 'coverage': {'characters_read': 1881, 'cha..., 'visual_interpretation_performed': False}, 'file_name': '02-issuer-authority-and-complete-channel-archive.txt', ...}]
+
+    def citation_source(citation, sources):
+        if not citation:
+            return None
+        source = next((row for row in sources if row['artifact_id'] == citation['artifact_id']), None)
+        if source is None:
+            raise ValueError('operation citation source is unavailable')
+        quote = citation['quote']
+        start = citation.get('start_char', source['text'].find(quote))
+        end = citation.get('end_char', start + len(quote))
+        if type(start) is not int or type(end) is not int or start < 0 or source['text'][start:end] != quote:
+>           raise ValueError('operation citation is not an exact source span')
+E           ValueError: operation citation is not an exact source span
+
+casepath-api/casepath_api/autonomous_operations_v1.py:62: ValueError
+=============================== warnings summary ===============================
+tests/test_autonomous_operations_v1.py::test_real_callsite_trace_preserves_every_prefix_and_exact_final_output
+tests/test_autonomous_operations_v1.py::test_real_callsite_trace_preserves_every_prefix_and_exact_final_output
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_autonomous_operations_v1.py::test_real_callsite_trace_preserves_every_prefix_and_exact_final_output
+tests/test_autonomous_operations_v1.py::test_real_callsite_trace_preserves_every_prefix_and_exact_final_output
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_autonomous_operations_v1.py::test_real_callsite_trace_preserves_every_prefix_and_exact_final_output
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_stream_delivers_operations_during_compute_and_cancel_stops_work
+FAILED casepath-api/tests/test_complete_reference_intake_v1.py::test_verifier_rejects_wrong_quote_source_and_changed_field_roster
+2 failed, 102 passed, 5 warnings in 215.45s (0:03:35)
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

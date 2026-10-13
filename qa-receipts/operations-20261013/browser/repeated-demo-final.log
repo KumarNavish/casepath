@@ -1,0 +1,11 @@
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+route.continue: Route is already handled!
+    at /workspace/op-browser/repeated-demo.cjs:8:160 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v24.19.0

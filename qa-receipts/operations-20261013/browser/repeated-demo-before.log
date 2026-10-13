@@ -1,0 +1,9 @@
+AssertionError [ERR_ASSERTION]: fresh first-case operation consumer must exist
+    at /workspace/op-browser/repeated-demo.cjs:12:180 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

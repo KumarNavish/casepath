@@ -1,0 +1,1077 @@
+{
+  "claim_id": "clm_314f2d309fea25e6",
+  "accepted_before": {
+    "op": "op_a925ebc42ebd1e45369b1fd831c2e892",
+    "revision": 36,
+    "stateSha": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b",
+    "mode": "playing",
+    "verified": "false",
+    "scope": "op_414de1779028325a5495983616033cc2",
+    "graphSha": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b",
+    "stage": "native_execution",
+    "nodes": [
+      {
+        "id": "dh_intake",
+        "status": "provisional",
+        "record": "op_b7dd314323789e3a2e7a97385e553a3e",
+        "text": "·BeforeCapture the reported defect",
+        "pointOp": "op_b7dd314323789e3a2e7a97385e553a3e"
+      },
+      {
+        "id": "dh_scope",
+        "status": "provisional",
+        "record": "op_250e1f6d3f1ced191ced6c5e62ea3df8",
+        "text": "·This decisionEstablish relevant tenancy termsApplicability · AppliesExecution · Waiting for Capture the reported defect",
+        "pointOp": "op_a925ebc42ebd1e45369b1fd831c2e892"
+      },
+      {
+        "id": "dh_notice",
+        "status": "provisional",
+        "record": "op_7edd03050bcf99af135f5e1e8c5fd005",
+        "text": "·ThenEstablish landlord knowledge",
+        "pointOp": "op_7edd03050bcf99af135f5e1e8c5fd005"
+      },
+      {
+        "id": "dh_cause",
+        "status": "provisional",
+        "record": "op_7e5846049fc08e80d2e8f9ebbe5d9611",
+        "text": "·Assess supported cause",
+        "pointOp": "op_7e5846049fc08e80d2e8f9ebbe5d9611"
+      },
+      {
+        "id": "dh_evidence",
+        "status": "provisional",
+        "record": "op_46e47cd62c506f668f91ed9749c6236d",
+        "text": "·Assess objective defect evidence",
+        "pointOp": "op_46e47cd62c506f668f91ed9749c6236d"
+      },
+      {
+        "id": "dh_response",
+        "status": "provisional",
+        "record": "op_baa1bb53ecf0633db229778107dd75bd",
+        "text": "·Record repair and rent reduction eligibility",
+        "pointOp": "op_baa1bb53ecf0633db229778107dd75bd"
+      }
+    ],
+    "edges": [
+      {
+        "id": "reference_defect_mold_heating_0",
+        "d": "M40 27 L40 50 C40 50,40 50,40 50 L40 61"
+      },
+      {
+        "id": "reference_defect_mold_heating_1",
+        "d": "M40 75 L40 121.484375 C40 121.484375,40 121.484375,40 121.484375 L40 132.484375"
+      },
+      {
+        "id": "reference_defect_mold_heating_2",
+        "d": "M40 146.484375 L40 169.484375 C40 169.484375,40 169.484375,40 169.484375 L40 180.484375"
+      },
+      {
+        "id": "reference_defect_mold_heating_3",
+        "d": "M40 194.484375 L40 217.484375 C40 217.484375,40 217.484375,40 217.484375 L40 228.484375"
+      },
+      {
+        "id": "reference_defect_mold_heating_4",
+        "d": "M40 242.484375 L40 265.484375 C40 265.484375,40 265.484375,40 265.484375 L40 276.484375"
+      }
+    ],
+    "document": "tenancy_terms_evidence",
+    "point": "op_a925ebc42ebd1e45369b1fd831c2e892",
+    "text": "Cases / Synthetic claim / Recorded investigation\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · historical synthetic packet · as of 2025-02-21\n\nWorking. Earlier findings · new sources await review.\n\nSkip to result\nPause\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\n\nDerive document requirement\n\n01-customer-and-tenancy-clarification.txt ↗\nSynthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-02-21\n\nI, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\n\nMy active request is removal of the continuing heating defect and assessment of proportional rent-reduction eligibility from the landlord's first knowledge until remedy. I report no incurred monetary loss, no health-compensation claim, no self-help expense and no deposit/withholding request. The repair is not complete; no reduction percentage or award has been agreed.\n\n\nRelevant tenancy terms\n\nInspect operation\n\nWorking model · provisional Inspect calculation\n\nEstablish relevant tenancy terms\nOpen larger process\n·\nCapture the reported defect\n·\nEstablish relevant tenancy terms\nApplicability · Applies\nExecution · Waiting for Capture the reported defect\n·\nEstablish landlord knowledge\n·\nAssess supported cause\n·\nAssess objective defect evidence\n·\nRecord repair and rent reduction eligibility\n\nRequirement calculation · Relevant tenancy terms Inspect"
+  },
+  "accepted_during": {
+    "op": "op_a925ebc42ebd1e45369b1fd831c2e892",
+    "revision": 36,
+    "stateSha": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b",
+    "mode": "playing",
+    "verified": "false",
+    "scope": "op_414de1779028325a5495983616033cc2",
+    "graphSha": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b",
+    "stage": "native_execution",
+    "nodes": [
+      {
+        "id": "dh_intake",
+        "status": "provisional",
+        "record": "op_b7dd314323789e3a2e7a97385e553a3e",
+        "text": "·BeforeCapture the reported defect",
+        "pointOp": "op_b7dd314323789e3a2e7a97385e553a3e"
+      },
+      {
+        "id": "dh_scope",
+        "status": "provisional",
+        "record": "op_250e1f6d3f1ced191ced6c5e62ea3df8",
+        "text": "·This decisionEstablish relevant tenancy termsApplicability · AppliesExecution · Waiting for Capture the reported defect",
+        "pointOp": "op_a925ebc42ebd1e45369b1fd831c2e892"
+      },
+      {
+        "id": "dh_notice",
+        "status": "provisional",
+        "record": "op_7edd03050bcf99af135f5e1e8c5fd005",
+        "text": "·ThenEstablish landlord knowledge",
+        "pointOp": "op_7edd03050bcf99af135f5e1e8c5fd005"
+      },
+      {
+        "id": "dh_cause",
+        "status": "provisional",
+        "record": "op_7e5846049fc08e80d2e8f9ebbe5d9611",
+        "text": "·Assess supported cause",
+        "pointOp": "op_7e5846049fc08e80d2e8f9ebbe5d9611"
+      },
+      {
+        "id": "dh_evidence",
+        "status": "provisional",
+        "record": "op_46e47cd62c506f668f91ed9749c6236d",
+        "text": "·Assess objective defect evidence",
+        "pointOp": "op_46e47cd62c506f668f91ed9749c6236d"
+      },
+      {
+        "id": "dh_response",
+        "status": "provisional",
+        "record": "op_baa1bb53ecf0633db229778107dd75bd",
+        "text": "·Record repair and rent reduction eligibility",
+        "pointOp": "op_baa1bb53ecf0633db229778107dd75bd"
+      }
+    ],
+    "edges": [
+      {
+        "id": "reference_defect_mold_heating_0",
+        "d": "M40 27 L40 50 C40 50,40 50,40 50 L40 61"
+      },
+      {
+        "id": "reference_defect_mold_heating_1",
+        "d": "M40 75 L40 121.484375 C40 121.484375,40 121.484375,40 121.484375 L40 132.484375"
+      },
+      {
+        "id": "reference_defect_mold_heating_2",
+        "d": "M40 146.484375 L40 169.484375 C40 169.484375,40 169.484375,40 169.484375 L40 180.484375"
+      },
+      {
+        "id": "reference_defect_mold_heating_3",
+        "d": "M40 194.484375 L40 217.484375 C40 217.484375,40 217.484375,40 217.484375 L40 228.484375"
+      },
+      {
+        "id": "reference_defect_mold_heating_4",
+        "d": "M40 242.484375 L40 265.484375 C40 265.484375,40 265.484375,40 265.484375 L40 276.484375"
+      }
+    ],
+    "document": "tenancy_terms_evidence",
+    "point": "op_a925ebc42ebd1e45369b1fd831c2e892",
+    "text": "Cases / Synthetic claim / Recorded investigation\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · historical synthetic packet · as of 2025-02-21\n\nWorking. Earlier findings · new sources await review.\n\nSkip to result\nPause\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\n\nDerive document requirement\n\n01-customer-and-tenancy-clarification.txt ↗\nSynthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-02-21\n\nI, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\n\nMy active request is removal of the continuing heating defect and assessment of proportional rent-reduction eligibility from the landlord's first knowledge until remedy. I report no incurred monetary loss, no health-compensation claim, no self-help expense and no deposit/withholding request. The repair is not complete; no reduction percentage or award has been agreed.\n\n\nRelevant tenancy terms\n\nInspect operation\n\nWorking model · provisional Inspect calculation\n\nEstablish relevant tenancy terms\nOpen larger process\n·\nCapture the reported defect\n·\nEstablish relevant tenancy terms\nApplicability · Applies\nExecution · Waiting for Capture the reported defect\n·\nEstablish landlord knowledge\n·\nAssess supported cause\n·\nAssess objective defect evidence\n·\nRecord repair and rent reduction eligibility\n\nRequirement calculation · Relevant tenancy terms Inspect"
+  },
+  "actual_operation": {
+    "cause_ids": [
+      "op_414de1779028325a5495983616033cc2"
+    ],
+    "contract": "casepath.operations-stream/1.0.0",
+    "id": "op_a925ebc42ebd1e45369b1fd831c2e892",
+    "input": {
+      "condition": {
+        "const": "true"
+      },
+      "evaluation_sha256": "62da514cd5ef0568dea61ed39fcfe52fb2fe7b956824c8ba249cfd1982e57845",
+      "graph_sha256": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b",
+      "node_activations": {
+        "dh_scope": "true"
+      },
+      "required_at_node_ids": [
+        "dh_scope"
+      ]
+    },
+    "input_sha256": "4f0161f3caa839f11cff94316fd995eabbc8ba325ed2fc99cfc2f5d70c404f1a",
+    "journal_seq": 37,
+    "kind": "document.require",
+    "object": {
+      "id": "tenancy_terms_evidence",
+      "type": "document"
+    },
+    "operation_sha256": "33c94e119147a29c2b385fb547b0e75c5cf11af2f01adc7181c473d4ce63cbe1",
+    "previous_operation_sha256": "4dad1c8aeb694cedc194e6b04d3315b03f0372f0f00f79a0119d718569bf2bbf",
+    "result": {
+      "activation": "true",
+      "active_node_ids": [
+        "dh_scope"
+      ],
+      "evaluation_sha256": "62da514cd5ef0568dea61ed39fcfe52fb2fe7b956824c8ba249cfd1982e57845",
+      "graph_sha256": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b",
+      "phase": "provisional",
+      "request": true,
+      "required_at_node_ids": [
+        "dh_scope"
+      ],
+      "review_state": "missing",
+      "route_state": "needed_later"
+    },
+    "result_sha256": "0746d96caad77465b912590cdf55b4d5ffed27991838994dc45cb57cee974fd3",
+    "seq": 114,
+    "stage": "native_execution",
+    "type": "operation"
+  },
+  "actual_inspection": {
+    "cause_ids": [],
+    "contract": "casepath.operations-stream/1.0.0",
+    "id": "op_414de1779028325a5495983616033cc2",
+    "input": {
+      "conditions_override": null,
+      "evaluation_sha256": "62da514cd5ef0568dea61ed39fcfe52fb2fe7b956824c8ba249cfd1982e57845",
+      "graph_sha256": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b"
+    },
+    "input_sha256": "304bd6e382242ffb897b8a32d0dad601d15857c27c8472648930eb991ed8e1c5",
+    "journal_seq": 37,
+    "kind": "process.inspect",
+    "object": {
+      "id": "clm_314f2d309fea25e6",
+      "type": "process"
+    },
+    "operation_sha256": "2de6c98cc6d625963282ce033bff3d1b0be6b80a6e2fddc35585b94edb692f67",
+    "previous_operation_sha256": "a782f1a430a644567c99040111bf329282aaeddd9aa0225ed11fd27c3d2424b1",
+    "result": {
+      "effective_conditions": {
+        "deposit_considered": {
+          "citations": [],
+          "summary": "The supplied evidence has not established this condition.",
+          "verdict": "unresolved",
+          "worker": "autonomous_verification"
+        },
+        "health_effects": {
+          "citations": [],
+          "summary": "The supplied evidence has not established this condition.",
+          "verdict": "unresolved",
+          "worker": "autonomous_verification"
+        },
+        "heating": {
+          "citations": [],
+          "summary": "The supplied evidence has not established this condition.",
+          "verdict": "unresolved",
+          "worker": "autonomous_verification"
+        },
+        "mold": {
+          "citations": [],
+          "summary": "The supplied evidence has not established this condition.",
+          "verdict": "unresolved",
+          "worker": "autonomous_verification"
+        },
+        "specialist_needed": {
+          "citations": [],
+          "summary": "The supplied evidence has not established this condition.",
+          "verdict": "unresolved",
+          "worker": "autonomous_verification"
+        }
+      },
+      "evaluation_sha256": "62da514cd5ef0568dea61ed39fcfe52fb2fe7b956824c8ba249cfd1982e57845",
+      "graph": {
+        "claim_id": "clm_314f2d309fea25e6",
+        "conditions": {
+          "deposit_considered": {
+            "citations": [],
+            "summary": "The supplied evidence has not established this condition.",
+            "verdict": "unresolved",
+            "worker": "autonomous_verification"
+          },
+          "health_effects": {
+            "citations": [],
+            "summary": "The supplied evidence has not established this condition.",
+            "verdict": "unresolved",
+            "worker": "autonomous_verification"
+          },
+          "heating": {
+            "citations": [],
+            "summary": "The supplied evidence has not established this condition.",
+            "verdict": "unresolved",
+            "worker": "autonomous_verification"
+          },
+          "mold": {
+            "citations": [],
+            "summary": "The supplied evidence has not established this condition.",
+            "verdict": "unresolved",
+            "worker": "autonomous_verification"
+          },
+          "specialist_needed": {
+            "citations": [],
+            "summary": "The supplied evidence has not established this condition.",
+            "verdict": "unresolved",
+            "worker": "autonomous_verification"
+          }
+        },
+        "contract": "casepath.causal-process/1.0.0",
+        "document_catalog": [
+          {
+            "authority": {
+              "kind": "operational_rule",
+              "quote": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility.",
+              "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+            },
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "document_type": "tenancy_terms_evidence",
+            "held_files": [],
+            "label": "Relevant tenancy terms",
+            "reason": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility.",
+            "requirement_class": "mandatory"
+          },
+          {
+            "authority": {
+              "kind": "operational_rule",
+              "quote": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility.",
+              "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+            },
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "document_type": "landlord_knowledge_evidence",
+            "held_files": [],
+            "label": "Landlord knowledge and continuing repair status",
+            "reason": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility.",
+            "requirement_class": "mandatory"
+          },
+          {
+            "authority": {
+              "kind": "operational_rule",
+              "quote": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility.",
+              "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+            },
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "document_type": "objective_defect_observation",
+            "held_files": [],
+            "label": "Dated technical defect observation",
+            "reason": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility.",
+            "requirement_class": "mandatory"
+          }
+        ],
+        "edges": [
+          {
+            "condition": {
+              "const": "true"
+            },
+            "edge_id": "reference_defect_mold_heating_0",
+            "label": "assessment recorded",
+            "provenance": {
+              "assertion": "The preceding source-backed internal assessment must be recorded first.",
+              "kind": "inferred",
+              "source": "static_policy"
+            },
+            "relation": "enables",
+            "source_node_id": "dh_intake",
+            "target_node_id": "dh_scope",
+            "validation": {
+              "status": "unvalidated"
+            }
+          },
+          {
+            "condition": {
+              "const": "true"
+            },
+            "edge_id": "reference_defect_mold_heating_1",
+            "label": "assessment recorded",
+            "provenance": {
+              "assertion": "The preceding source-backed internal assessment must be recorded first.",
+              "kind": "inferred",
+              "source": "static_policy"
+            },
+            "relation": "enables",
+            "source_node_id": "dh_scope",
+            "target_node_id": "dh_notice",
+            "validation": {
+              "status": "unvalidated"
+            }
+          },
+          {
+            "condition": {
+              "const": "true"
+            },
+            "edge_id": "reference_defect_mold_heating_2",
+            "label": "assessment recorded",
+            "provenance": {
+              "assertion": "The preceding source-backed internal assessment must be recorded first.",
+              "kind": "inferred",
+              "source": "static_policy"
+            },
+            "relation": "enables",
+            "source_node_id": "dh_notice",
+            "target_node_id": "dh_cause",
+            "validation": {
+              "status": "unvalidated"
+            }
+          },
+          {
+            "condition": {
+              "const": "true"
+            },
+            "edge_id": "reference_defect_mold_heating_3",
+            "label": "assessment recorded",
+            "provenance": {
+              "assertion": "The preceding source-backed internal assessment must be recorded first.",
+              "kind": "inferred",
+              "source": "static_policy"
+            },
+            "relation": "enables",
+            "source_node_id": "dh_cause",
+            "target_node_id": "dh_evidence",
+            "validation": {
+              "status": "unvalidated"
+            }
+          },
+          {
+            "condition": {
+              "const": "true"
+            },
+            "edge_id": "reference_defect_mold_heating_4",
+            "label": "assessment recorded",
+            "provenance": {
+              "assertion": "The preceding source-backed internal assessment must be recorded first.",
+              "kind": "inferred",
+              "source": "static_policy"
+            },
+            "relation": "enables",
+            "source_node_id": "dh_evidence",
+            "target_node_id": "dh_response",
+            "validation": {
+              "status": "unvalidated"
+            }
+          }
+        ],
+        "family": "defect_mold_heating",
+        "graph_sha256": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b",
+        "nodes": [
+          {
+            "authority": {
+              "kind": "operational_rule",
+              "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Capture the reported defect', an internal assessment only.",
+              "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+            },
+            "completed": false,
+            "condition": {
+              "const": "true"
+            },
+            "document_types": [],
+            "entry": true,
+            "kind": "action",
+            "label": "Capture the reported defect",
+            "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Capture the reported defect', an internal assessment only.",
+            "node_id": "dh_intake",
+            "provenance": {
+              "kind": "machine_validated",
+              "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+            },
+            "responsibility": "claim_handler",
+            "terminal": false,
+            "validation": {
+              "status": "unvalidated"
+            }
+          },
+          {
+            "authority": {
+              "kind": "operational_rule",
+              "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Establish relevant tenancy terms', an internal assessment only.",
+              "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+            },
+            "completed": false,
+            "condition": {
+              "const": "true"
+            },
+            "document_types": [
+              "tenancy_terms_evidence"
+            ],
+            "entry": false,
+            "kind": "action",
+            "label": "Establish relevant tenancy terms",
+            "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Establish relevant tenancy terms', an internal assessment only.",
+            "node_id": "dh_scope",
+            "provenance": {
+              "kind": "machine_validated",
+              "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+            },
+            "responsibility": "claim_handler",
+            "terminal": false,
+            "validation": {
+              "status": "unvalidated"
+            }
+          },
+          {
+            "authority": {
+              "kind": "operational_rule",
+              "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Establish landlord knowledge', an internal assessment only.",
+              "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+            },
+            "completed": false,
+            "condition": {
+              "const": "true"
+            },
+            "document_types": [
+              "landlord_knowledge_evidence"
+            ],
+            "entry": false,
+            "kind": "action",
+            "label": "Establish landlord knowledge",
+            "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Establish landlord knowledge', an internal assessment only.",
+            "node_id": "dh_notice",
+            "provenance": {
+              "kind": "machine_validated",
+              "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+            },
+            "responsibility": "claim_handler",
+            "terminal": false,
+            "validation": {
+              "status": "unvalidated"
+            }
+          },
+          {
+            "authority": {
+              "kind": "operational_rule",
+              "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Assess supported cause', an internal assessment only.",
+              "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+            },
+            "completed": false,
+            "condition": {
+              "const": "true"
+            },
+            "document_types": [],
+            "entry": false,
+            "kind": "action",
+            "label": "Assess supported cause",
+            "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Assess supported cause', an internal assessment only.",
+            "node_id": "dh_cause",
+            "provenance": {
+              "kind": "machine_validated",
+              "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+            },
+            "responsibility": "claim_handler",
+            "terminal": false,
+            "validation": {
+              "status": "unvalidated"
+            }
+          },
+          {
+            "authority": {
+              "kind": "operational_rule",
+              "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Assess objective defect evidence', an internal assessment only.",
+              "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+            },
+            "completed": false,
+            "condition": {
+              "const": "true"
+            },
+            "document_types": [
+              "objective_defect_observation"
+            ],
+            "entry": false,
+            "kind": "action",
+            "label": "Assess objective defect evidence",
+            "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Assess objective defect evidence', an internal assessment only.",
+            "node_id": "dh_evidence",
+            "provenance": {
+              "kind": "machine_validated",
+              "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+            },
+            "responsibility": "claim_handler",
+            "terminal": false,
+            "validation": {
+              "status": "unvalidated"
+            }
+          },
+          {
+            "authority": {
+              "kind": "operational_rule",
+              "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Record repair and rent reduction eligibility', an internal assessment only.",
+              "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+            },
+            "completed": false,
+            "condition": {
+              "const": "true"
+            },
+            "document_types": [],
+            "entry": false,
+            "kind": "outcome",
+            "label": "Record repair and rent reduction eligibility",
+            "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Record repair and rent reduction eligibility', an internal assessment only.",
+            "node_id": "dh_response",
+            "provenance": {
+              "kind": "machine_validated",
+              "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+            },
+            "responsibility": "claim_handler",
+            "terminal": true,
+            "validation": {
+              "status": "unvalidated"
+            }
+          }
+        ],
+        "revision": 0
+      },
+      "graph_sha256": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b",
+      "phase": "provisional"
+    },
+    "result_sha256": "6a16b9f43c4b3ffbd929f13244da03d923445f913edcd1a0f5d8dd47cb490ca3",
+    "seq": 91,
+    "stage": "native_execution",
+    "type": "operation"
+  },
+  "accepted_checkpoint": {
+    "base_state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+    "contract": "casepath.operations-stream/1.0.0",
+    "current_event_sha256": "3d69e3ccd0519765d200fbb86e0ce9b4b05d33fe98c32188d184cdce6340e802",
+    "current_revision": 48,
+    "current_state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+    "cursor_sha256": "9f3a02a5b406c3eb6d9670812a4c25fe76ef514570bcad458a9719d7446d8136",
+    "event_sha256": "9f3a02a5b406c3eb6d9670812a4c25fe76ef514570bcad458a9719d7446d8136",
+    "events": [
+      {
+        "claim_id": "clm_314f2d309fea25e6",
+        "command_sha256": "aef0d2b1b4f0b92814ee2d34ddb82304e04a09bcb65ee8e9ec2299c98315c022",
+        "contract": "casepath.autonomous-event/1.0.0",
+        "created_at": "2026-10-11T12:00:00+00:00",
+        "event_sha256": "9f3a02a5b406c3eb6d9670812a4c25fe76ef514570bcad458a9719d7446d8136",
+        "expected_revision": 35,
+        "expected_state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "idempotency_key": "autonomy.afefba81a4e2f2fca03d8ded.reuse",
+        "kind": "knowledge.used",
+        "payload": {
+          "knowledge": {
+            "applicability": "same_verified_family_and_rule_version",
+            "avoided_rule_compilations": 1,
+            "definition_sha256": "cf4829a27d8fcf110b72f0cf2f56a011ff8380deda4d4bdd45de9b2bbb77b0a5",
+            "knowledge_id": "procedure.defect_mold_heating",
+            "reused_evidence_recipes": 3,
+            "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+            "version": 1,
+            "workflow_id": "autonomy.afefba81a4e2f2fca03d8ded"
+          }
+        },
+        "previous_event_sha256": "9565bc6e7e196bc1440195289db823857fad399e3498c99374f8b00cdac66181",
+        "resulting_state_sha256": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b",
+        "revision": 36,
+        "seq": 36,
+        "sequence": 36,
+        "session_id": "casepath-autonomous-local-v1",
+        "state_sha256": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b",
+        "timestamp": "2026-10-11T12:00:00+00:00"
+      }
+    ],
+    "journal_seq": 36,
+    "mode": "replay",
+    "projection": {
+      "node_capabilities": {
+        "investigate_packet": {
+          "authorized": true,
+          "id": "local_inbox.read",
+          "reason": "Acquire supplied bytes and record their extraction coverage."
+        }
+      },
+      "revision": 36,
+      "state_sha256": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b"
+    },
+    "provenance": {
+      "claim_binding_sha256": "c121e223860d7509a29fa96c0955dbe06a752699c47d6d3a193fc6fd43ab5a13",
+      "corpus_manifest_sha256": "921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e",
+      "event_sha256": "9f3a02a5b406c3eb6d9670812a4c25fe76ef514570bcad458a9719d7446d8136",
+      "original_binding_sha256": "4349cce39dba44f65fa58fe396659b04f9e8082986abfb92cbb918b59e935a67",
+      "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+      "rule_pack_sha256": [
+        "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831"
+      ],
+      "run_id": "autonomy.afefba81a4e2f2fca03d8ded",
+      "source_map": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97",
+          "original_artifact_id": "com_df83feba0e9e4428",
+          "sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2"
+        }
+      ],
+      "source_roster_sha256": "a2a557ce30f9d1649b8faff330d0959968ecb79ca2e6f2c4ffadad9aebff490e",
+      "sources": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "ed346a9d1ec0b886b069a06ad5ded16fee432162f7fe84e15c9713325ff64ae8",
+          "file_name": "Question-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt",
+          "media_type": "text/plain; charset=utf-8",
+          "role": "customer_message",
+          "sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2",
+          "size_bytes": 1092
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "c102e87c9234833df3a89195404fb15f5bb3d4d68097578c39250e8be06483f2",
+          "file_name": "01-customer-and-tenancy-clarification.txt",
+          "media_type": "text/plain",
+          "role": "supporting_document",
+          "sha256": "b6059e7a5d663f6263675c100f3bc5c399341ad57108a6730b10171a4db10615",
+          "size_bytes": 1353
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "e4b1db71fc006e3f95ed3cbaf09fd6469474b5f712bd52901fe7ca02bdc6f9da",
+          "file_name": "02-heating-service-observation.txt",
+          "media_type": "text/plain",
+          "role": "supporting_document",
+          "sha256": "ad1d46adcf2f5cff2e4be0b9db7bbc5fdd07577badbea246604470f38bcf9fa3",
+          "size_bytes": 1744
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "9743b8a0b14ed991f2f37d769925d89ef5694359687e67b4795cc925fa167ebf",
+          "file_name": "03-landlord-knowledge-and-repair-status.txt",
+          "media_type": "text/plain",
+          "role": "supporting_document",
+          "sha256": "ae66233b1e2853056ced10f26ebe615adef8fb17bf18293a94b93a984825576c",
+          "size_bytes": 1334
+        },
+        {
+          "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "0ca883958dc476cab77962324108e7b71a74f6961478e083eb147bbddfeb6591",
+          "file_name": "01-customer-and-tenancy-clarification.txt",
+          "media_type": "text/plain",
+          "role": "supporting_document",
+          "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+          "size_bytes": 807
+        },
+        {
+          "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "481c45194fb4ef4014c176b51577b956f670fc6b8585522b1def7ad032bea3d6",
+          "file_name": "02-heating-service-observation.txt",
+          "media_type": "text/plain",
+          "role": "supporting_document",
+          "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+          "size_bytes": 1147
+        },
+        {
+          "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "51a9b35b36ff9bad6023df2e77946d76349b7636501cfbd30b8aacb3c5edcef7",
+          "file_name": "03-landlord-knowledge-and-repair-status.txt",
+          "media_type": "text/plain",
+          "role": "supporting_document",
+          "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+          "size_bytes": 797
+        }
+      ],
+      "static_template_sha256": "84f576cc7f8f2bcb6e638d02e0549fd32e4bb183e4957f2b4a4ab7dcf2beb232"
+    },
+    "replay_only": true,
+    "replay_start": {
+      "claim_id": "clm_314f2d309fea25e6",
+      "contract": "casepath.reference-replay-start/1.0.0",
+      "event_sha256": "25135a6cdda00756ad791e897bb01e22be07a7f1dc70e9b2b2af676d6b8be9ff",
+      "from_seq": 28,
+      "profile_id": "synthetic-nine-v2",
+      "profile_sha256": "18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869",
+      "run_id": "autonomy.afefba81a4e2f2fca03d8ded",
+      "source_artifact_ids": [
+        "src_c8b880d7429b1879b9ae483029facd97",
+        "src_106168f9c33152b3d88f02469ad57782",
+        "src_000ccf161644df9e82d29a8595b7b727",
+        "src_c57d943a64c85cf37369ccbf747b6e3f"
+      ],
+      "state_sha256": "045c9ef199827900d660380f3de0b7e4781b3c3626494d6e4c07f03ade6e848e"
+    },
+    "state_delta": {
+      "remove": [],
+      "set": {
+        "events": [
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "0cf7f654839ce3b91102623b38a1f3146df3962d2915c227f2d1f126bb2dd0ec",
+            "kind": "intake",
+            "sequence": 1
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "b576c6e9026e2d33c409058ac03de8afcdca10023eabfa533e5ff0bba49d3e28",
+            "kind": "sources.arrived",
+            "sequence": 2
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "13b741fecd677e0b4c437b46ae85d581f724c18fddc4bf02db82ba574780653b",
+            "kind": "work.started",
+            "sequence": 3
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "8904c3a8a438e9b15833383111155b4892075e2a5f6f26e3d2ffa9302aab9c67",
+            "kind": "process.prepared",
+            "sequence": 4
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "8ad4c162113bc793f4105119019d9d46b07e5ec12c7d6fc7ad1272903f75b369",
+            "kind": "work.phase",
+            "sequence": 5
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "25a1cddd7818e640355e60ae1d57c0823a8dbf91e8b27af950bcc77622509a7d",
+            "kind": "sources.acquired",
+            "sequence": 6
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "6344cefcf463fa8ee4956c74063a7871d37d98a1f0dd2c48452e89cd01840778",
+            "kind": "sources.acquired",
+            "sequence": 7
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "5e9beb901dd689827adc64eaf393d47c765c0d75beffcd298e10c666d7963b72",
+            "kind": "sources.acquired",
+            "sequence": 8
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "2499f38228f45606bb452292292b68f6b0177845b08ba321be7a4dd0bff905ce",
+            "kind": "sources.acquired",
+            "sequence": 9
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "8c68b3def3a814fcb2121182863d00026180265b1e310e5ba6869420185f6e8b",
+            "kind": "work.phase",
+            "sequence": 10
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "f2b8972c92587c29b8dcc4079ed51edff845c5b6c52da49be6e41e1c61bc1ed1",
+            "kind": "work.context",
+            "sequence": 11
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "1cea16c96cb9fb737f51237bfe721f49b963d5ce98339397983b000911cc3a04",
+            "kind": "work.phase",
+            "sequence": 12
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "2ba2bfd1c4119c1bf6951b4cc9cc46c5445238c4c2d3f29ea511576abb4ce562",
+            "kind": "interpretation.accepted",
+            "sequence": 13
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "2c6298ac04e01b48a7afa6e22861bd13196f499be9fc1ce35a7dd205c41388ae",
+            "kind": "work.phase",
+            "sequence": 14
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "cbc36fc0dc06c5393094906f80e9bc987d2a2ba1b56ae91da9d337b14c929f0d",
+            "kind": "action.completed",
+            "sequence": 15
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "de389937f22b1c1906b965fc0e389b0191f30a281dbc026659322197c33185d9",
+            "kind": "action.completed",
+            "sequence": 16
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "68c22630e09bb23ae0f49ec25bf14112a39e8d714d58dcd82d62fe21946321d3",
+            "kind": "action.completed",
+            "sequence": 17
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "4ae19e2fbbd123f2156c7e8f406a656bf9d5659fed11420f93eb2edd4e084bfa",
+            "kind": "action.completed",
+            "sequence": 18
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "fe8b361e753495bcf2677f383a652357554e3df845265089fc82ca5f42247447",
+            "kind": "action.completed",
+            "sequence": 19
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "027d1980949cd11c5f5fbc0ce1e84e469dc98b4937a11ee8fb9943cd5379d655",
+            "kind": "action.completed",
+            "sequence": 20
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "fa65537bad2660f378719a075a31baabbe4736d44092dde5af68b12178fddd72",
+            "kind": "action.completed",
+            "sequence": 21
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "ecd6038b296b29d5377ff7bb8542c683404604934a032b8bc8389936e60f60b0",
+            "kind": "action.completed",
+            "sequence": 22
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "3ff4c222340ab5201c9bd35a0888ccba61aa49725f7e4af88a44eda7420ed0fe",
+            "kind": "action.completed",
+            "sequence": 23
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "186edc68fe92a2ca7eb394f5878e1606fddb4feba63adcba8b0278af34f89c52",
+            "kind": "outcome.recorded",
+            "sequence": 24
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "bbf28e12297a4884180dce2fd3d85f624720ee004a53cec8193c581ddaa3bb67",
+            "kind": "knowledge.published",
+            "sequence": 25
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "fc16101bf50c16b87afe0840382e6b116daeba95435aa3f89e2f39d144d416f4",
+            "kind": "sources.arrived",
+            "sequence": 26
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "2954cede7b5c1bc3b7c207ed324cd8a6d6d5324e5f59989af99848e088f7bf13",
+            "kind": "work.started",
+            "sequence": 27
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "25135a6cdda00756ad791e897bb01e22be07a7f1dc70e9b2b2af676d6b8be9ff",
+            "kind": "process.prepared",
+            "sequence": 28
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "75e60275a82f0a01e172e160553faa2c5d93fb5f872a2b88bc3c5f1bbc5b3546",
+            "kind": "work.phase",
+            "sequence": 29
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "8fc6c0fd4a8385adb63102479c5786ee008d0bf23c699b014007055d1d570a21",
+            "kind": "sources.acquired",
+            "sequence": 30
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "4f7a83629f60ecfbb0f6f1073407d2dca8fb4af47a083252a83e3722c6f5867a",
+            "kind": "sources.acquired",
+            "sequence": 31
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "42ce43e0768e0d3a876a91d58b0569f93be80ed53d000f863e714c7e1133a17f",
+            "kind": "sources.acquired",
+            "sequence": 32
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "c3dd873f807ede795e669030a8bba17aaa4dc1dd443dd117b03ba502472b2dc0",
+            "kind": "work.phase",
+            "sequence": 33
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "9684f3721d2259e0ee3041c359c4e10c4688cf825c793e2a02269456e7553570",
+            "kind": "work.context",
+            "sequence": 34
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "9565bc6e7e196bc1440195289db823857fad399e3498c99374f8b00cdac66181",
+            "kind": "work.phase",
+            "sequence": 35
+          },
+          {
+            "created_at": "2026-10-11T12:00:00+00:00",
+            "event_sha256": "9f3a02a5b406c3eb6d9670812a4c25fe76ef514570bcad458a9719d7446d8136",
+            "kind": "knowledge.used",
+            "sequence": 36
+          }
+        ],
+        "knowledge_uses": [
+          {
+            "applicability": "same_verified_family_and_rule_version",
+            "avoided_rule_compilations": 1,
+            "definition_sha256": "cf4829a27d8fcf110b72f0cf2f56a011ff8380deda4d4bdd45de9b2bbb77b0a5",
+            "knowledge_id": "procedure.defect_mold_heating",
+            "reused_evidence_recipes": 3,
+            "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+            "version": 1,
+            "workflow_id": "autonomy.afefba81a4e2f2fca03d8ded"
+          }
+        ],
+        "last_event_sha256": "9f3a02a5b406c3eb6d9670812a4c25fe76ef514570bcad458a9719d7446d8136",
+        "revision": 36,
+        "state_sha256": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b"
+      }
+    },
+    "state_sha256": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b",
+    "through_seq": 36,
+    "type": "checkpoint",
+    "verified": true
+  },
+  "geometry": {
+    "point": {
+      "left": 386,
+      "top": 450.625,
+      "right": 394,
+      "bottom": 458.625,
+      "width": 8,
+      "height": 8
+    },
+    "node": {
+      "left": 392,
+      "top": 441.625,
+      "right": 996,
+      "bottom": 501.109375,
+      "width": 604,
+      "height": 59.484375
+    }
+  },
+  "errors": [],
+  "writes": []
+}

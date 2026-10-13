@@ -1,0 +1,13 @@
+✔ actual working graphs and applicability stay separately inspectable without advancing accepted execution (11.127529ms)
+✔ working evaluations cannot borrow a different graph, override condition scope, stage or target (4.55027ms)
+✔ same working graph with a different actual override retains independent scope and provisional document targets (2.517082ms)
+✔ source-to-working-step relationships use exact observed fact/document pins rather than retained reading state (1.449087ms)
+✔ selected provisional readiness explains the actual blocker independently of applicability (1.841015ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 98.082126

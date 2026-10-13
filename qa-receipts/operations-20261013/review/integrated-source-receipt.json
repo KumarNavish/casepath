@@ -1,0 +1,81 @@
+{
+  "integrated_commit": "5959d1ded6c0e22ae6ac7a32f279a45bd552aaa2",
+  "runtime_commit": "7d3945c4173e3eda2f54dcc50893cab53827d459",
+  "frontend_commit": "945cb39c0b6fef0eab8daef76f3587316691b222",
+  "storage_sha256": "35a4cc933f81a987b137f739f9c8b56d185cf0a2a729295b3aab0642672e6a6a",
+  "reviewer_tracked_worktree_clean": true,
+  "files": [
+    {
+      "owner": "runtime",
+      "path": "casepath-api/casepath_api/autonomous_api_v1.py",
+      "sha256": "48e0078dde68360ed7fdf4fec008253bf3e22d469b5dfaa8fe2710f431f10b0d",
+      "matches_integrated": true
+    },
+    {
+      "owner": "runtime",
+      "path": "casepath-api/casepath_api/autonomous_controller_v1.py",
+      "sha256": "1ae1a98e5902657df317681431cd03580478b32714650c9c28b053bd58ab1868",
+      "matches_integrated": true
+    },
+    {
+      "owner": "runtime",
+      "path": "casepath-api/casepath_api/autonomous_knowledge_v1.py",
+      "sha256": "203022fe5ba2dc29cae721ac79fe359d7d039c9a415f21c76a089400d35a1be4",
+      "matches_integrated": true
+    },
+    {
+      "owner": "runtime",
+      "path": "casepath-api/casepath_api/autonomous_operations_v1.py",
+      "sha256": "9982d25da73fb5bf0e0440bf37450606f35d10efdce94a78fcd92e29b0bcfcfd",
+      "matches_integrated": true
+    },
+    {
+      "owner": "runtime",
+      "path": "casepath-api/casepath_api/autonomous_reference_v1.py",
+      "sha256": "5bf5a712d225338c99e23dffb90d9d135d21a200a31af3fefb142236b344151a",
+      "matches_integrated": true
+    },
+    {
+      "owner": "runtime",
+      "path": "casepath-api/casepath_api/causal_process_v1.py",
+      "sha256": "77753873f704510ec7a4ba3eb845e7ebf24c53beacee89183780aea39648301b",
+      "matches_integrated": true
+    },
+    {
+      "owner": "runtime",
+      "path": "casepath-api/casepath_api/hosted_storage_v1.py",
+      "sha256": "0e0e1b597fb520a026a286cf93d54ab89f1bd35e465a5a1927407f74f47cecd4",
+      "matches_integrated": true
+    },
+    {
+      "owner": "runtime",
+      "path": "casepath-api/tests/test_autonomous_operations_v1.py",
+      "sha256": "18e75d70f870dd770e8e5a5d4d0a9a220f8d832432310f4763e2b7bc87a7a82d",
+      "matches_integrated": true
+    },
+    {
+      "owner": "frontend",
+      "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
+      "sha256": "b1e126868327cc5fdad059d35dc0eb7d6390a54c0c98dff199d63088e8249683",
+      "matches_integrated": true
+    },
+    {
+      "owner": "frontend",
+      "path": "casepath-qa/serve-autonomous-evidence-fixture-v2.py",
+      "sha256": "87ddb68d35e77d44554bf0bed887b9356998a97b2cb7f1e97c8db12c93f4b1c3",
+      "matches_integrated": true
+    },
+    {
+      "owner": "frontend",
+      "path": "casepath/assets/autonomous-workspace-v1.css",
+      "sha256": "cf649ad0fb710490317531d3f5881cfc6e02699e22c70d9b3b789423398acfc0",
+      "matches_integrated": true
+    },
+    {
+      "owner": "frontend",
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "sha256": "735b39c14b71635dee8878e72fe89b8d0c555285f5d30248f3fd91e7a23f3da5",
+      "matches_integrated": true
+    }
+  ]
+}

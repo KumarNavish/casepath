@@ -1,0 +1,13 @@
+✔ operation source spans preserve Python codepoints, exact original/text hashes and provisional authority (10.136483ms)
+✔ compact operation checkpoints reconstruct only the exact pinned native journal and head (2.949439ms)
+✔ NDJSON operations decode fragmented Unicode and cancel without consuming another frame (7.85235ms)
+✔ wire draining completes before paused application consumption and abort prevents the next frame (1.468746ms)
+✔ recorded delivery retains the captured binding while each visible mode keeps its historical as-of qualifier (4.453067ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 105.995523

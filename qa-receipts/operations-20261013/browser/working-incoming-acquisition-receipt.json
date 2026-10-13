@@ -1,0 +1,76 @@
+{
+  "document": {
+    "row": {
+      "op": "op_0134dd4557c1ce926529517ca7598a15",
+      "revision": 0,
+      "stateSha": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+      "mode": "playing",
+      "verified": "false",
+      "scope": "op_e76f03a89a4e79fc04557a5037485cb5",
+      "graphSha": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+      "stage": "native_reducer",
+      "nodes": [
+        {
+          "id": "investigate_packet",
+          "status": "provisional",
+          "record": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+          "text": "·This decisionInvestigate incoming evidenceApplicability · AppliesExecution · Source support needed: 01-customer-and-tenancy-clarification.txt + 02-heating-service-observation.txt + 03-landlord-knowledge-and-repair-status.txt",
+          "pointOp": "op_0134dd4557c1ce926529517ca7598a15"
+        }
+      ],
+      "edges": [],
+      "document": "incoming_0",
+      "point": "op_0134dd4557c1ce926529517ca7598a15",
+      "text": "Cases / Synthetic claim / Recorded investigation\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · historical synthetic packet · as of 2025-02-21\n\nNot started.\n\nSkip to result\nPause\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\n\nDerive document requirement\n\n01-customer-and-tenancy-clarification.txt\n\nInspect operation\n\nWorking model · provisional Inspect calculation\n\nInvestigate incoming evidence\nOpen larger process\n·\nInvestigate incoming evidence\nApplicability · Applies\nExecution · Source support needed: 01-customer-and-tenancy-clarification.txt + 02-heating-service-observation.txt + 03-landlord-knowledge-and-repair-status.txt\n\nRequirement calculation · 01-customer-and-tenancy-clarification.txt Inspect\n\nIntake incomplete\nDetails\nRelevant tenancy terms\nNot established\nLandlord knowledge and continuing repair status\nNot established\nDated technical defect observation\nNot established"
+    },
+    "op": {
+      "cause_ids": [
+        "op_e76f03a89a4e79fc04557a5037485cb5"
+      ],
+      "contract": "casepath.operations-stream/1.0.0",
+      "id": "op_0134dd4557c1ce926529517ca7598a15",
+      "input": {
+        "condition": {
+          "const": "true"
+        },
+        "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+        "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+        "node_activations": {
+          "investigate_packet": "true"
+        },
+        "required_at_node_ids": [
+          "investigate_packet"
+        ]
+      },
+      "input_sha256": "a02802608e6ea284f7ccc0a67df7133ef5734f09354c64893e71197d5ba66f72",
+      "journal_seq": 28,
+      "kind": "document.require",
+      "object": {
+        "id": "incoming_0",
+        "type": "document"
+      },
+      "operation_sha256": "1a343d0711db1554e09c4ec5d572d5cf087f39ead2c88ae7edc022b256a5235f",
+      "previous_operation_sha256": "1190021309ee5df7ac41b65b3d64cfe91acc61d5ba2fe7e6764cf238aab73a05",
+      "result": {
+        "activation": "true",
+        "active_node_ids": [
+          "investigate_packet"
+        ],
+        "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+        "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+        "phase": "provisional",
+        "request": true,
+        "required_at_node_ids": [
+          "investigate_packet"
+        ],
+        "review_state": "missing",
+        "route_state": "needed_now"
+      },
+      "result_sha256": "15fbf7bc5c659d1fd05277a4b61893ddb0f65abd9eb77f5aa390241fdf26dc23",
+      "seq": 4,
+      "stage": "native_reducer",
+      "type": "operation"
+    }
+  },
+  "classification": "incoming_packet acquisition requirement"
+}

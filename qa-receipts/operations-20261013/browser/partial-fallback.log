@@ -1,0 +1,14 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ ''
+- 'op_19abd93d275e383573caedd41b821225'
+
+    at /workspace/op-browser/partial-fallback.cjs:8:539 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: 'op_19abd93d275e383573caedd41b821225',
+  operator: 'strictEqual',
+  diff: 'simple'
+}

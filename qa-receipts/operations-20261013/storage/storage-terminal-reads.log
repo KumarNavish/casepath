@@ -1,0 +1,154 @@
+EEE                                                                      [100%]
+==================================== ERRORS ====================================
+_ ERROR at setup of OperationTraceStorageTests.test_recorded_reads_use_terminal_selects_without_a_read_transaction _
+
+cls = <class 'test_operation_trace_storage_v1.OperationTraceStorageTests'>
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temporary = tempfile.TemporaryDirectory(prefix='operation-trace-storage-')
+        path = Path(cls.temporary.name) / 'native.sqlite'
+        corpus = CanonicalCorpus()
+        claim_id = 'clm_0f4f13b1e3e1328c'
+>       prior = service_at(path, corpus, ReferenceProfile.for_profile('synthetic-nine-v1'))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_operation_trace_storage_v1.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/tests/test_complete_reference_intake_v1.py:20: in service_at
+    store = AutonomousStore(path)
+            ^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_store_v1.py:103: in __init__
+    from .claim_loop_store import ClaimLoopStore
+casepath-api/casepath_api/claim_loop_store.py:11: in <module>
+    from .claim_loop import (
+casepath-api/casepath_api/claim_loop.py:40: in <module>
+    from .claim_loop_cycle import (
+casepath-api/casepath_api/claim_loop_cycle.py:13: in <module>
+    from .multi_agent import (
+casepath-api/casepath_api/multi_agent.py:62: in <module>
+    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate
+casepath-api/casepath_api/playbook_template.py:7: in <module>
+    from .data import CLAIMS
+casepath-api/casepath_api/data.py:87: in <module>
+    artifact(
+casepath-api/casepath_api/data.py:69: in artifact
+    "size_bytes": path.stat().st_size,
+                  ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/workspace/casepath-operations-coordinator-20261013/casepath-api/artifacts/lease-agreement.pdf')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-operations-coordinator-20261013/casepath-api/artifacts/lease-agreement.pdf'
+
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py:515: FileNotFoundError
+_ ERROR at setup of OperationTraceStorageTests.test_cancelled_recorded_read_never_fetches_another_chunk_page _
+
+cls = <class 'test_operation_trace_storage_v1.OperationTraceStorageTests'>
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temporary = tempfile.TemporaryDirectory(prefix='operation-trace-storage-')
+        path = Path(cls.temporary.name) / 'native.sqlite'
+        corpus = CanonicalCorpus()
+        claim_id = 'clm_0f4f13b1e3e1328c'
+>       prior = service_at(path, corpus, ReferenceProfile.for_profile('synthetic-nine-v1'))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_operation_trace_storage_v1.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/tests/test_complete_reference_intake_v1.py:20: in service_at
+    store = AutonomousStore(path)
+            ^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_store_v1.py:103: in __init__
+    from .claim_loop_store import ClaimLoopStore
+casepath-api/casepath_api/claim_loop_store.py:11: in <module>
+    from .claim_loop import (
+casepath-api/casepath_api/claim_loop.py:40: in <module>
+    from .claim_loop_cycle import (
+casepath-api/casepath_api/claim_loop_cycle.py:13: in <module>
+    from .multi_agent import (
+casepath-api/casepath_api/multi_agent.py:62: in <module>
+    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate
+casepath-api/casepath_api/playbook_template.py:7: in <module>
+    from .data import CLAIMS
+casepath-api/casepath_api/data.py:87: in <module>
+    artifact(
+casepath-api/casepath_api/data.py:69: in artifact
+    "size_bytes": path.stat().st_size,
+                  ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/workspace/casepath-operations-coordinator-20261013/casepath-api/artifacts/lease-agreement.pdf')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-operations-coordinator-20261013/casepath-api/artifacts/lease-agreement.pdf'
+
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py:515: FileNotFoundError
+_ ERROR at setup of OperationTraceStorageTests.test_native_sidecar_admission_is_idempotent_and_preserves_every_journal_row _
+
+cls = <class 'test_operation_trace_storage_v1.OperationTraceStorageTests'>
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temporary = tempfile.TemporaryDirectory(prefix='operation-trace-storage-')
+        path = Path(cls.temporary.name) / 'native.sqlite'
+        corpus = CanonicalCorpus()
+        claim_id = 'clm_0f4f13b1e3e1328c'
+>       prior = service_at(path, corpus, ReferenceProfile.for_profile('synthetic-nine-v1'))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_operation_trace_storage_v1.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/tests/test_complete_reference_intake_v1.py:20: in service_at
+    store = AutonomousStore(path)
+            ^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_store_v1.py:103: in __init__
+    from .claim_loop_store import ClaimLoopStore
+casepath-api/casepath_api/claim_loop_store.py:11: in <module>
+    from .claim_loop import (
+casepath-api/casepath_api/claim_loop.py:40: in <module>
+    from .claim_loop_cycle import (
+casepath-api/casepath_api/claim_loop_cycle.py:13: in <module>
+    from .multi_agent import (
+casepath-api/casepath_api/multi_agent.py:62: in <module>
+    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate
+casepath-api/casepath_api/playbook_template.py:7: in <module>
+    from .data import CLAIMS
+casepath-api/casepath_api/data.py:87: in <module>
+    artifact(
+casepath-api/casepath_api/data.py:69: in artifact
+    "size_bytes": path.stat().st_size,
+                  ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/workspace/casepath-operations-coordinator-20261013/casepath-api/artifacts/lease-agreement.pdf')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-operations-coordinator-20261013/casepath-api/artifacts/lease-agreement.pdf'
+
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py:515: FileNotFoundError
+=========================== short test summary info ============================
+ERROR casepath-api/tests/test_operation_trace_storage_v1.py::OperationTraceStorageTests::test_recorded_reads_use_terminal_selects_without_a_read_transaction
+ERROR casepath-api/tests/test_operation_trace_storage_v1.py::OperationTraceStorageTests::test_cancelled_recorded_read_never_fetches_another_chunk_page
+ERROR casepath-api/tests/test_operation_trace_storage_v1.py::OperationTraceStorageTests::test_native_sidecar_admission_is_idempotent_and_preserves_every_journal_row
+3 errors in 1.68s

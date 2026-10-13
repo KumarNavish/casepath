@@ -1,0 +1,22 @@
+{
+  "contract": "casepath.qa-targeted-result/1.0.0",
+  "source_commit": "e2e222c3d53749c876bda71970eb21f52298a318",
+  "status": "reviewed implementation; targeted checks green; no full gate or deployment",
+  "commands": "commands.json",
+  "independent_review": "review/final-e2e222c-source-receipt.json",
+  "native_sidecar_index": "runtime/native-sidecars/index.json",
+  "compiled_graph_receipt": "browser/working-reference-document-receipt.json",
+  "raw_failures_preserved": true,
+  "failure_notes": [
+    "Original runtime observer/cancellation/quote-validation failures retained with corrected checks.",
+    "Original source-pane replacement and repeated Demonstration retained-case/session failure logs retained.",
+    "Storage terminal-read first attempt failed in setup due to missing sealed fixture PDFs; all25files hash-verified/copied, then scoped checks passed.",
+    "One targeted backend command used a mistyped test ID and collected no tests; corrected explicit IDs passed.",
+    "Compiled document capture first asserted geometry before layout completed; later capture settled within the same actual operation dwell, with accepted state unchanged."
+  ],
+  "limitations": [
+    "Earlier9negative real-history ancestry checks and remote timing failures are retained by Mac; no production payloads copied to Cloud.",
+    "Remote cold timing needs Mac retest; local MockHrana durations are not hosted latency measurements.",
+    "Mac owns final sealed full gate, normal-speed actual browser acceptance and publication."
+  ]
+}

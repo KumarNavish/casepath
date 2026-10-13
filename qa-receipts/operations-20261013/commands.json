@@ -1,0 +1,88 @@
+[
+  {
+    "cwd": "/workspace/casepath-operations-runtime-20261013",
+    "command": "env HOME=/workspace/operation-runtime-evidence/home TMPDIR=/workspace/operation-runtime-evidence/tmp PYTHONPATH=casepath-api /workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python -m pytest casepath-api/tests/test_autonomous_operations_v1.py casepath-api/tests/test_hosted_sql_v1.py -q > /workspace/operation-runtime-evidence/working-snapshot-tests-attempt1.log 2>&1",
+    "result": "46 passed in 46.85s",
+    "log": "runtime/working-snapshot-tests-attempt1.log"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-runtime-20261013",
+    "command": "env HOME=/workspace/operation-runtime-evidence/home TMPDIR=/workspace/operation-runtime-evidence/tmp PYTHONPATH=casepath-api /workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python -m pytest casepath-api/tests/test_autonomous_operations_v1.py::test_capture_fresh_verifies_union_sources_once casepath-api/tests/test_autonomous_operations_v1.py::test_public_get_rejects_warm_cached_but_corrupt_persistent_sources casepath-api/tests/test_causal_process_v1.py -q > /workspace/operation-runtime-evidence/working-snapshot-final-targeted-attempt2.log 2>&1",
+    "result": "59 passed in 26.02s",
+    "log": "runtime/working-snapshot-final-targeted-attempt2.log"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-runtime-20261013",
+    "command": "env HOME=/workspace/operation-runtime-evidence/home TMPDIR=/workspace/operation-runtime-evidence/tmp PYTHONPATH=casepath-api /workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python -m pytest casepath-api/tests/test_hosted_sql_v1.py::test_fresh_source_verification_uses_one_closed_read_pipeline casepath-api/tests/test_hosted_sql_v1.py::test_source_cancel_after_first_page_sends_no_next_read_and_keeps_no_stream casepath-api/tests/test_hosted_sql_v1.py::test_maximum_source_survives_restart_under_small_response_bound casepath-api/tests/test_autonomous_operations_v1.py::test_public_get_rejects_warm_cached_but_corrupt_persistent_sources -q > /workspace/operation-runtime-evidence/source-terminal-read-tests.log 2>&1",
+    "result": "4 passed in 10.39s",
+    "log": "runtime/source-terminal-read-tests.log"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-coordinator-20261013",
+    "command": "PYTHONPATH=casepath-api:casepath-api/tests TMPDIR=/workspace/op-storage-tmp /workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider casepath-api/tests/test_operation_trace_storage_v1.py --junitxml=/workspace/operation-storage-evidence/storage-1.1-junit.xml > /workspace/operation-storage-evidence/storage-1.1-final.log 2>&1",
+    "result": "11 passed in 18.06s",
+    "log": "storage/storage-1.1-final.log"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "node --test casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/autonomous-evidence-identity-v2.test.cjs casepath-qa/sites-autonomous-entry.test.cjs > /workspace/op-frontend-working-focused.log 2>&1",
+    "result": "190 passed, 0 skipped",
+    "log": "frontend/op-frontend-working-focused.log"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "CASEPATH_OPERATION_NATIVE_FIXTURE=/workspace/casepath-reference-polish-evidence-20261013/native-v1-v2-reference.json CASEPATH_OPERATION_NATIVE_SIDECARS=/workspace/operation-runtime-evidence/native-sidecars node /workspace/op-browser/native-sidecars.cjs > /workspace/op-browser/native-sidecars-working-final.log 2>&1",
+    "result": "passed: nine exact native trace consumers",
+    "log": "browser/native-sidecars-working-final.log",
+    "browser_scope": "isolated Chromium with native synthetic fixtures, not hosted production"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules node /workspace/op-browser/check.cjs > /workspace/op-browser/nine-working.log 2>&1",
+    "result": "passed: nine streams/eight handoffs/zero empty frames",
+    "log": "browser/nine-working.log",
+    "browser_scope": "isolated Chromium with native synthetic fixtures, not hosted production"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules node /workspace/op-browser/working-graph.cjs > /workspace/op-browser/working-graph-final.log 2>&1",
+    "result": "passed: working scopes, prerequisite explanations, source connector",
+    "log": "browser/working-graph-final.log",
+    "browser_scope": "isolated Chromium with native synthetic fixtures, not hosted production"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "CASEPATH_WORKING_CAPTURE_COMPILED=1 NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules node /workspace/op-browser/working-graph.cjs > /workspace/op-browser/working-reference-document-capture.log 2>&1",
+    "result": "passed: compiled provisional graph/document point, authoritative revision unchanged",
+    "log": "browser/working-reference-document-capture.log",
+    "browser_scope": "isolated Chromium with native synthetic fixtures, not hosted production"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules node /workspace/op-browser/lifecycle.cjs > /workspace/op-browser/lifecycle-working.log 2>&1",
+    "result": "passed: inspection/visibility/Skip/reduced motion/recorded fallback",
+    "log": "browser/lifecycle-working.log",
+    "browser_scope": "isolated Chromium with native synthetic fixtures, not hosted production"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules node /workspace/op-browser/repeated-demo.cjs > /workspace/op-browser/repeated-demo-working.log 2>&1",
+    "result": "passed: repeated demonstration/source inspection/paused Skip",
+    "log": "browser/repeated-demo-working.log",
+    "browser_scope": "isolated Chromium with native synthetic fixtures, not hosted production"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules node /workspace/op-browser/normal-point-v2.cjs > /workspace/op-browser/normal-working-point-first.log 2>&1",
+    "result": "passed: normal-speed fixed point/source scroll/verified fact transfer",
+    "log": "browser/normal-working-point-first.log",
+    "browser_scope": "isolated Chromium with native synthetic fixtures, not hosted production"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules node /workspace/op-browser/partial-fallback.cjs > /workspace/op-browser/partial-fallback-working.log 2>&1",
+    "result": "passed: partial failure preserves exact prior operations",
+    "log": "browser/partial-fallback-working.log",
+    "browser_scope": "isolated Chromium with native synthetic fixtures, not hosted production"
+  }
+]
