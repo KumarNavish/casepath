@@ -1,0 +1,45 @@
+{
+  "base_commit": "343393922df82a3dbd337e6895981ef4736f1344",
+  "ready_commit": "321de541dd40a0e6425c6448e6ce39a4d225ba85",
+  "actual_served_js_sha256": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+  "all_actual_body_hashes_match_ready_source": true,
+  "browser_receipt": "/workspace/op-browser/quiet-completion/receipt.json",
+  "delivery_results": [
+    {
+      "delivery": "live",
+      "mode": "historical_recomputed",
+      "finished": "completed",
+      "verified": "true",
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "notice": {
+        "text": "",
+        "visible": false,
+        "error": false
+      }
+    },
+    {
+      "delivery": "recorded",
+      "mode": "recorded_operations",
+      "finished": "completed",
+      "verified": "true",
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "notice": {
+        "text": "",
+        "visible": false,
+        "error": false
+      }
+    },
+    {
+      "delivery": "failure",
+      "mode": "saved_result",
+      "finished": "completed",
+      "verified": "false",
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "notice": {
+        "text": "Live rules-based assessment unavailable: Stored operation trace unavailable (HTTP 409). Showing the verified saved result; its history remains available.",
+        "visible": true,
+        "error": true
+      }
+    }
+  ]
+}

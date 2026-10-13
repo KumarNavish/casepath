@@ -1,0 +1,20 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "focused_receipts_evidence_commit": "d8ff9e56c033afa34b5b93e5a8027cfa212240d7",
+  "focused_source_commit": "321de541dd40a0e6425c6448e6ce39a4d225ba85",
+  "js_sha256": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+  "targeted_browser_actual_js_body_equals_frozen_candidate": true,
+  "focused_retested_on_frozen_candidate": false,
+  "reason": "Authored JavaScript byte identical; only index source hash pin and regenerated source manifest added. No additional browser/profile tests authorized or run.",
+  "focused_raw_files": [
+    "qa-receipts/quiet-operation-completion-20261013/artifact-sha256.json",
+    "qa-receipts/quiet-operation-completion-20261013/focused-module.log",
+    "qa-receipts/quiet-operation-completion-20261013/native-first.log",
+    "qa-receipts/quiet-operation-completion-20261013/native-receipt.json",
+    "qa-receipts/quiet-operation-completion-20261013/native-second.log",
+    "qa-receipts/quiet-operation-completion-20261013/quiet-completion.cjs",
+    "qa-receipts/quiet-operation-completion-20261013/ready-binding.json",
+    "qa-receipts/quiet-operation-completion-20261013/result.json"
+  ],
+  "original_temporary_harness_failure_retained": true
+}

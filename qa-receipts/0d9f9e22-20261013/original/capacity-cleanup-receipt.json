@@ -1,0 +1,141 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "authorization": "Root explicitly authorized only owned completed older-gate reproducible uv-cache cleanup if needed",
+  "capacity_before": {
+    "total": 33770192896,
+    "used": 31096565760,
+    "free": 938864640
+  },
+  "removed_only_uv_cache_paths": [
+    {
+      "path": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard1/uv-cache",
+      "bytes": 17848173,
+      "prior_candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+      "prior_runner_complete": true,
+      "prior_exit_code": 0,
+      "raw_JUnit_sha256": "1f0b4b291f089f71511e7d06a326a423035eef527e89a92e6fda2970e0788619",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard2/uv-cache",
+      "bytes": 17848177,
+      "prior_candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+      "prior_runner_complete": true,
+      "prior_exit_code": 0,
+      "raw_JUnit_sha256": "73ed13a86058b41f9c774851d6ca60db2cbd514629ed455a7a372307b5e0f17c",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard3/uv-cache",
+      "bytes": 17848177,
+      "prior_candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+      "prior_runner_complete": true,
+      "prior_exit_code": 0,
+      "raw_JUnit_sha256": "d5e9b368682e50b02e9d84a5928cbb5d37ac6a9b09e802f327c102ec1c7311c3",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard4/uv-cache",
+      "bytes": 17848177,
+      "prior_candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+      "prior_runner_complete": true,
+      "prior_exit_code": 0,
+      "raw_JUnit_sha256": "0e4bcad7b70a5ac2d8a682e0536c53e7850aecfeb4ecef876cf974aa6f27b6fe",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/uv-cache",
+      "bytes": 17848177,
+      "prior_candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+      "prior_runner_complete": true,
+      "prior_exit_code": 0,
+      "raw_JUnit_sha256": "6956940b80105a82b8dcabd8ffe1cf06cf1a84e3dd841493ba39d133079ca200",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/uv-cache",
+      "bytes": 17848173,
+      "prior_candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+      "prior_runner_complete": true,
+      "prior_exit_code": 0,
+      "raw_JUnit_sha256": "90c21069067fb0bc9d9c62d472c9bbc682903ed74aa975782d46db4219a63d5b",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/uv-cache",
+      "bytes": 17847053,
+      "prior_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+      "prior_runner_complete": true,
+      "prior_exit_code": 1,
+      "raw_JUnit_sha256": "cb23111e3d0420109674321b974b80bc39bae71550ec417a2ebdf9e8dc7b64a0",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard2/uv-cache",
+      "bytes": 17847057,
+      "prior_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+      "prior_runner_complete": true,
+      "prior_exit_code": 0,
+      "raw_JUnit_sha256": "f37b2fb8b62b03e5f4afa38b62c3b2a849ca9a39445538a6db714958204d020d",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/uv-cache",
+      "bytes": 17847057,
+      "prior_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+      "prior_runner_complete": true,
+      "prior_exit_code": 1,
+      "raw_JUnit_sha256": "ee66f87d161ef120ee38c88803efd0a6bc3400075e54eb164cfdca0c27449e1d",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard4/uv-cache",
+      "bytes": 17847057,
+      "prior_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+      "prior_runner_complete": true,
+      "prior_exit_code": 0,
+      "raw_JUnit_sha256": "0543827a7f235edcd0d943930cdbcf2ed2d4409dc6344542dd3deb4861203e63",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/uv-cache",
+      "bytes": 17847057,
+      "prior_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+      "prior_runner_complete": true,
+      "prior_exit_code": 1,
+      "raw_JUnit_sha256": "a3f452499309d1fa0db5ec152f5708f8802b1448b2b841d83330d4fd4a75da48",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/uv-cache",
+      "bytes": 17847053,
+      "prior_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+      "prior_runner_complete": true,
+      "prior_exit_code": 1,
+      "raw_JUnit_sha256": "d08b0023bac97993705cafbe2fe24c5541a809780c831b030648e8c04a9dbcb7",
+      "excluded_from_durable_raw_bundle": true,
+      "classification": "Obsolete reproducible uv package cache, not failed-test fixture or raw attempt evidence"
+    }
+  ],
+  "preserved": "All source, immutable capsules, venvs, raw receipts/logs/JUnits and ALL failed-test artifacts; no pytest-tmp cleanup",
+  "state": "Completed only listed owned uv-cache paths",
+  "started_epoch": 1791918454.0258882,
+  "capacity_after": {
+    "total": 33770192896,
+    "used": 30880600064,
+    "free": 1154830336
+  },
+  "assessed_bytes_removed": 214171388,
+  "finished_epoch": 1791918454.0545352
+}

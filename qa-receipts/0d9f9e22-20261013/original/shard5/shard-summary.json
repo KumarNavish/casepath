@@ -1,0 +1,104 @@
+{
+  "after_head": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "after_status": "",
+  "artifacts": {
+    "attempt_latch": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/ATTEMPT_STARTED.json",
+    "capsule_after_log": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/capsule-verification-after.log",
+    "capsule_after_result": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/capsule-verification-after-result.json",
+    "capsule_before_log": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/capsule-verification-before.log",
+    "collected_ids": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/collected.json",
+    "command_and_env": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/command.json",
+    "junit": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/junit.xml",
+    "pytest_arguments": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/pytest-arguments.txt",
+    "pytest_log": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/pytest.log",
+    "pytest_temporary_root": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/pytest-tmp",
+    "raw_phase_reports": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/reports.jsonl",
+    "runner_result": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/result.json",
+    "runner_terminal_log": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/runner-terminal.log",
+    "runner_wrapper_result": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/runner-wrapper-result.json"
+  },
+  "assigned_vs_collected": {
+    "all_collected_have_passed_teardown": true,
+    "assigned_count": 335,
+    "assigned_unique_count": 335,
+    "collected_count": 335,
+    "collected_unique_count": 335,
+    "missing_assigned_ids": [],
+    "missing_report_ids": [],
+    "report_unique_ids": 335,
+    "same_ids_and_order": true,
+    "unexpected_collected_ids": [],
+    "unexpected_report_ids": []
+  },
+  "attempts": 1,
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "counts": {
+    "failed": 0,
+    "passed": 335,
+    "skipped": 0,
+    "unresolved": 0,
+    "unrun_assigned": 0
+  },
+  "duration_seconds": 733.9486606121063,
+  "exit_code": 0,
+  "expected_counts": {
+    "failed": 0,
+    "passed": 335,
+    "skipped": 0,
+    "unresolved": 0,
+    "unrun_assigned": 0
+  },
+  "expected_counts_match": true,
+  "failed_phases": [],
+  "finished_epoch": 1791919561.1269026,
+  "junit_counts": {
+    "duration_seconds": 729.162,
+    "errors": 0,
+    "failures": 0,
+    "passed": 335,
+    "skipped": 0,
+    "tests": 335
+  },
+  "known_skip_comparison": {
+    "assigned_known_skip_ids": [],
+    "exact_expected_ids": true,
+    "global_known_skip_count": 10,
+    "missing_known_skipped_ids": [],
+    "observed_count": 0,
+    "observed_skipped_ids": [],
+    "records": [],
+    "reference_known_skips_path": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/known-skips.json",
+    "unexpected_skipped_ids": []
+  },
+  "phase_counts": {
+    "call:passed": 335,
+    "setup:passed": 335,
+    "teardown:passed": 335
+  },
+  "phase_record_count": 1005,
+  "reports_match_junit": true,
+  "retries": 0,
+  "retry_allowed": false,
+  "shard": 5,
+  "source_capsule_before_after": {
+    "after_path": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/source-after/capsule-verification.json",
+    "after_verifier_attempts": 1,
+    "after_verifier_exit_code": 0,
+    "before_after_identity_equal": true,
+    "before_path": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/source-before/capsule-verification.json",
+    "capsule_receipt_file_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+    "head": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+    "manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+    "source_artifact_static_bindings_verified_after": true,
+    "source_artifact_static_bindings_verified_before": true,
+    "source_artifact_static_counts": [
+      1706,
+      25,
+      37
+    ],
+    "status": ""
+  },
+  "started_epoch": 1791918827.178242,
+  "tmp_path_retention_policy": "failed",
+  "wrapper_exit_code": 0
+}

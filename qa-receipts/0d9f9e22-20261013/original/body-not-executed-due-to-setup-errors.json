@@ -1,0 +1,15 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "original_attempt_only": true,
+  "retry_count": 0,
+  "ids": [
+    "casepath-api/tests/test_reference_read_performance_v1.py::test_oversized_row_or_primary_key_refuses_before_payload_transport[True]",
+    "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[created_at-raw metadata changed-False]",
+    "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[event_sha256-0000000000000000000000000000000000000000000000000000000000000000-True]",
+    "casepath/tools/test_build_deployment_identity.py::test_curated_static_build_refuses_symlink_output",
+    "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-model-ledger.json]",
+    "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[learning-proof.json]"
+  ],
+  "count": 6,
+  "cause": "Pytest temporary numbered directory creation failed after ten attempts; underlying mkdir errno was suppressed and remains unconfirmed"
+}

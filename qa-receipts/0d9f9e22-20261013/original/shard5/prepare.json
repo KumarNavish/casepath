@@ -1,0 +1,66 @@
+{
+  "repo": "/workspace/casepath-release-ae0-shard5",
+  "normal_clone": true,
+  "old_head": "343393922df82a3dbd337e6895981ef4736f1344",
+  "before_status": "",
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "canonical_url": "https://github.com/KumarNavish/casepath.git",
+  "branch": "codex/casepath-causal-experience-integration-20261009",
+  "started_epoch": 1791918580.650658,
+  "host": "656813ef2295",
+  "capacity_before_bytes": 665030656,
+  "fetch_command": [
+    "git",
+    "-c",
+    "credential.helper=!gh auth git-credential",
+    "fetch",
+    "https://github.com/KumarNavish/casepath.git",
+    "codex/casepath-causal-experience-integration-20261009"
+  ],
+  "checkout_command": [
+    "git",
+    "checkout",
+    "--detach",
+    "0d9f9e225776195f47d335b38b4ca5244d8c555c"
+  ],
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/home",
+    "TMPDIR": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "PYTHONHASHSEED": "0",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5/pycache"
+  },
+  "capsule_strategy": "Distinct normally generated immutable capsule; prior capsules/source/venvs/raw preserved",
+  "fetch_exit_code": 0,
+  "canonical_fetched_head": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "exit_code": 0,
+  "after_head": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "after_status": "",
+  "finished_epoch": 1791918587.5025926,
+  "source_manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+  "JS_file_sha256": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+  "capacity_after_bytes": 544227328,
+  "duration_seconds": 6.8519346714019775
+}
