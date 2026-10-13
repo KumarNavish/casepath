@@ -3097,7 +3097,7 @@
     function keyboardInput(event) { if (event.isTrusted && (event.key === 'Tab' || event.key?.startsWith('Arrow'))) { keyboard=true;container.setAttribute('data-au-keyboard','true');pauseInspection();motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
     function pointerInput(event) {
       keyboard=false;container.removeAttribute('data-au-keyboard');
-      const target = event?.isTrusted && event.target?.closest?.('[data-au-inspect],[data-au-source],[data-au-node],[data-au-select],[data-au-detail],[data-au-fact-select],[data-au-document-select],[data-au-expand-process]');
+      const target = event?.isTrusted && event.target?.closest?.('.au-operation-passage,[data-au-inspect],[data-au-source],[data-au-node],[data-au-select],[data-au-detail],[data-au-fact-select],[data-au-document-select],[data-au-expand-process]');
       if (target && container.contains(target)) pauseInspection();
     }
     function sourceWheel(event) { if (event.isTrusted && event.target?.closest?.('.au-operation-passage')) { pauseInspection(); attentionMarker?.remove?.(); } }
