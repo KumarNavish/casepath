@@ -2978,9 +2978,10 @@
         if (!active()) throw new Error('The next operation opening was cancelled.');
         if (delivery && !delivery.response.ok && !prepared.recorded) {
           await delivery.response.body?.cancel?.();
+          if (!active()) throw new Error('The next operation opening was cancelled.');
           const response = await fetcher(base+`/claims/${key(id)}/operations?mode=recorded`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:prepared.controller.signal});
           if (!active()) { await response.body?.cancel?.(); throw new Error('The next operation opening was cancelled.'); }
-          delivery = {response,buffer:response.ok ? bufferedOperations(response,prepared.controller.signal) : null};
+          delivery = {response,buffer:response.ok ? bufferedOperations(response,prepared.controller.signal,result => prepared.resultAvailable?.(result)) : null};
           prepared.recorded = true; owner.useRecorded = true; prepared.delivery = Promise.resolve(delivery);
         }
         if (!delivery?.response.ok) throw new Error('The next operation trace is unavailable.');
