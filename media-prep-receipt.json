@@ -1,0 +1,69 @@
+{
+  "status": "V5_MEDIA_PREP_ONLY_AWAITING_ACTUAL_PUBLISHED_V5_CAPTURE",
+  "workspace": "/workspace/cp-v5-media/repo",
+  "branch": "codex/agentic-v5-media-prep-20261015",
+  "renderer_sha256": "e134dfc077f61a5bcee33a4b3eafa85b706d2196ec3fb1c0e26aba78a6527f19",
+  "adapted_from": {
+    "renderer": "/workspace/casepath-agentic-film-v4-20261015/render-agentic-v4.py",
+    "media_commit": "88e401328bd9c6121fd3abede62d63ec1c6016d4"
+  },
+  "scope": "Renderer and this prep receipt only; no product, backend, tests, journal, corpus, provider or deployment changes",
+  "runtime": {
+    "HOME": "/workspace/cp-v5-media/h",
+    "TMPDIR": "/workspace/cp-v5-media/t",
+    "TMP": "/workspace/cp-v5-media/t",
+    "TEMP": "/workspace/cp-v5-media/t",
+    "dependencies_added": false,
+    "services_started": false,
+    "configuration_draft_changes": false
+  },
+  "checks": {
+    "syntax": "passed",
+    "identity_rejections": [
+      "source argument required",
+      "malformed source SHA",
+      "capture/source mismatch",
+      "v4 encoding as v5 forbidden"
+    ],
+    "v4_metadata_only": {
+      "label": "V4_COMPATIBILITY_ONLY_NOT_V5_ACCEPTANCE",
+      "capture_index_sha256": "3952176a54f9d4317f20b80177c321ce1e15cf5d2fb0dd7b683a91fadc358947",
+      "capture_source_commit": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+      "native_frames": 615,
+      "raw_frame_files_read": false,
+      "full_required_unions_checked": 285,
+      "unions_kept_in_frame": 285,
+      "truthfully_reported_below_1_4": 285,
+      "zoom_range": [
+        1.1527377521613833,
+        1.1527377521613833
+      ],
+      "protected_segments_at_1x": 25,
+      "native_clicks_checked_full_ui": 3,
+      "minimum_seconds_with_1x_protection_and_endcard": 93.07411944866178,
+      "final_state_visible_by_last_frame": false,
+      "correctly_fails_v5_acceptance": true
+    }
+  },
+  "v5_contract": {
+    "capture_source_commit": "Required capture.source_commit must exactly match required explicit --source-commit ACTUAL40HEX; no default",
+    "capture_geometry": "CSS viewport and deviceScale; frame file/t; samples activeStepRect/excerptRect/exactSpanRect/factRect/readheadRect/railRect/transportRect/facts/documents/state/operation; true pointer/click/hold/resume/final events",
+    "output": "45\u201360s silent 1920x1080 h264, encoded 30fps; duplicate preceding actual native frames; never claim native 30fps",
+    "camera": "Active >=1.4x when full excerpt plus actual destination fits; otherwise report measured bound and preserve union; full UI on inspection, native clicks/travel, decision/final",
+    "captions": "42px reserved external gutter; 2\u20134 word active verbs; no product overlap",
+    "endcard": [
+      "CasePath \u00b7 Evidence into action",
+      "Synthetic claims \u00b7 recorded replay"
+    ],
+    "final_hold": "Actual final frame only, just enough to reach 45s; no invented progress"
+  },
+  "plan_cli": "python3 /workspace/cp-v5-media/repo/render-agentic-v5.py /path/to/actual-published-v5/capture.json --source-commit ACTUAL40HEX --output /workspace/cp-v5-media/v5-plan --plan-only",
+  "future_encode_cli": "python3 /workspace/cp-v5-media/repo/render-agentic-v5.py /path/to/actual-published-v5/capture.json --source-commit ACTUAL40HEX --output /workspace/cp-v5-media/v5-film --encode",
+  "unrun": [
+    "v5 capture (not yet provided)",
+    "raw pixel reads / contact sheets",
+    "encoding / ffprobe / rendered visual QA",
+    "live published UI requests"
+  ],
+  "no_future_media_claims": true
+}
