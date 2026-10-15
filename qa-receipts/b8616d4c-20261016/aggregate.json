@@ -1,0 +1,221 @@
+{
+  "status": "CLOUD_PASSED_WITH_MAC_OWNER_ATTESTATION_PENDING_INDEPENDENT_RAW_COMBINATION",
+  "mac_source_clean_before": null,
+  "mac_source_clean_after": true,
+  "candidate": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "full_inventory": 2613,
+  "cloud_assigned": 2486,
+  "cloud_passed": 2476,
+  "cloud_known_skipped": 10,
+  "cloud_failed": 0,
+  "mac_attestation_status": "OWNER_ATTESTED",
+  "mac_attested_passed": 127,
+  "combined_passed_with_mac_attestation": 2603,
+  "mac_raw_receipts_not_local": true,
+  "mac_independent_raw_combination_pending": true,
+  "no_overlap_or_gaps": true,
+  "selected_attempts_per_shard": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "authorized_full_shard_rechecks": 0,
+  "native_test_setup_failures": 0,
+  "packaging_failure_preserved": true,
+  "packaging_recovery_only": true,
+  "source_capsule_unchanged": true,
+  "known_skips_exact_phase_file_line_reason": true,
+  "shards": [
+    {
+      "shard": 1,
+      "tests": 9,
+      "passed": 9,
+      "skipped": 0,
+      "runner_seconds": 581.431489944458,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 2,
+      "tests": 421,
+      "passed": 421,
+      "skipped": 0,
+      "runner_seconds": 445.69273233413696,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 3,
+      "tests": 643,
+      "passed": 642,
+      "skipped": 1,
+      "runner_seconds": 443.71542143821716,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 4,
+      "tests": 391,
+      "passed": 391,
+      "skipped": 0,
+      "runner_seconds": 420.24156880378723,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 5,
+      "tests": 346,
+      "passed": 346,
+      "skipped": 0,
+      "runner_seconds": 426.84427309036255,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 6,
+      "tests": 676,
+      "passed": 667,
+      "skipped": 9,
+      "runner_seconds": 412.534241437912,
+      "all_raw_phases_and_junit_ids_exact": true
+    }
+  ],
+  "known_skips": {
+    "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows": {
+      "when": "call",
+      "file": "test_document_lifecycle_shadow_v1.py",
+      "line": 605,
+      "reason": "Skipped: frozen independent-transition packet is not available"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 457,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 548,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 559,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 579,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 592,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 610,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 636,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 646,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 696,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    }
+  },
+  "full_cloud_gate_complete": true,
+  "independent_cross_host_raw_receipt_combination_complete": false,
+  "source_verification_physical_normal_clones": 6,
+  "collection_reuses_physical_clone": "shard1",
+  "completed_runtimes_retired_after_actual_pre_post_source_proofs": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "no_automatic_retries": true,
+  "packaging_metadata_failure_preserved": true,
+  "packaging_recovery_receipt": {
+    "failure": "Checkpoint git commit could not find configured author because scoped HOME omitted existing global Git config",
+    "affected_test_attempts": [],
+    "native_test_results_unchanged": true,
+    "preserved_original_failure_log": "parallel-dispatch-wrapper.log",
+    "old_two_worker_coordinator_exit_code": 1,
+    "old_serial_coordinator_exit_code": 143,
+    "serial_coordinator_exit_expected_after_native1_terminal": true,
+    "waiting_third_coordinator_exit_code": 143,
+    "waiting_third_coordinator_had_no_native_children": true,
+    "recovery": "Use existing /home/agent/.gitconfig by GIT_CONFIG_GLOBAL selector in scoped coordinator environment; no Git auth or credential settings changed",
+    "raw_checkpoint_committed_and_remote_verified": "951d3da7fcf9c47789ef28d21de095a635f35753",
+    "epoch": 1792107000.3005757,
+    "git_author_error_messages_in_original_log": 2,
+    "native_test_setup_failures": 0,
+    "native_retries": 0,
+    "original_error_log_sha256": "3ee13ce34fd83828942f06e6bd1915b0f557e95b29593c2b9ae42b4b23dc40d1",
+    "checkpoint_included_exact_original_error_copy": "coordinator/packaging-author-original-error.log"
+  },
+  "manifest_sha256": "f96041e43695b6cc82899e4ccf8bb08ade79a69a0b74792acedb40716166f23e",
+  "full_inventory_ids_sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+  "cloud_ids_sha256": "577259f948c49fca012b47352c9d18718f8b94244026b0f8481b498a05cccbf3",
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "source_artifact_static_counts": [
+    1709,
+    25,
+    39
+  ],
+  "all_six_capsules_verified_before_after": true,
+  "capsule_receipt_file_sha256": "f681d4fdc7d91febb3082f1c1a36f9d8f1dc3de92f26359dd74d3e2a0ef8526e",
+  "resource_after": {
+    "epoch": 1792107913.175038,
+    "free_bytes": 4094201856,
+    "tmp_free_bytes": 218361856,
+    "minimum_observed_workspace_free_bytes": 3249991680,
+    "minimum_prelaunch_headroom_bytes": 3221225472,
+    "minimum_actual_prelaunch_free_bytes": 3468312576,
+    "all_attempt_start_headroom_checks_passed": true,
+    "max_native_interval_concurrency": 3,
+    "allowed_host_ceiling": 3,
+    "scheduling_limit_used": 3,
+    "completed_runtime_retirements_after_archived_source_proofs": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "below_floor_terminal_events": []
+  },
+  "native_attempt_interval_max_concurrency": 3,
+  "raw_phase_rows": 7449,
+  "artifact_manifest_sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2",
+  "no_product_edits": true,
+  "no_source_seal_deploy_provider_or_production_requests": true,
+  "focused_receipt_reference": {
+    "branch": "qa-receipts/startup-itinerary-20261016",
+    "commit": "45ee77add89ff73da991dd320ccfcc6d52175c55",
+    "receipt_subtree": "qa-receipts/startup-itinerary-20261016",
+    "files_including_checksum_manifest": 159,
+    "checksum_manifest_sha256": "7fb9361221de6e8b3a01d90d20d640136355b9487b4c16253e5fc463a81c4efe",
+    "verification_status": "ROOT_REPORTED_DURABLY_PUSHED_AND_VERIFIED",
+    "scope": "Focused native/hash/physical browser receipts; raw bulk retained in separate receipt branch",
+    "size_owner_reported": "6.59 MB"
+  }
+}

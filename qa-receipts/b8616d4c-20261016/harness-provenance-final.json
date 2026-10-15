@@ -1,0 +1,74 @@
+[
+  {
+    "path": "coordinator/bootstrap.py",
+    "sha256": "b7ab8793c79848475c05a81c608cc932578c3df2cc3f7cf37bc2bf6f6d1b6ad4"
+  },
+  {
+    "path": "coordinator/coordinator-reconcile.py",
+    "sha256": "b1af66082b4416dbdc430025449b61a0fc27dc51b13d69d635500fdbed071267"
+  },
+  {
+    "path": "coordinator/export-final.py",
+    "sha256": "306563ee6f9d830f0b274a88c1ef547b4ee57a3aa9c9b0d1f32c4c001a8e6dee"
+  },
+  {
+    "path": "coordinator/final_reconcile.py",
+    "sha256": "5b970f611a5a9483c42bf40a6bfa074680978947eb436a317c402e9e8c978c23"
+  },
+  {
+    "path": "coordinator/parallel_capacity_dispatch.py",
+    "sha256": "69e9580040c49167d46ee7062ff07f9a39a8d595791f3946a6060e8b143f15c2"
+  },
+  {
+    "path": "coordinator/retire_completed_map_stage.py",
+    "sha256": "4bf73fe509e3c570c8fb161adafe9e704f3506a14c4e0ede09ab48c6952625ee"
+  },
+  {
+    "path": "coordinator/retire_completed_writer_clones.py",
+    "sha256": "4facb41d96a0c47c17165c32862a4827810e50b47ff0035eedd09b6b22faf06f"
+  },
+  {
+    "path": "coordinator/serial_dispatch.py",
+    "sha256": "094629bcae96f1d6431dde6d24189a32fe636dc78551bb26edd443e1eadf859d"
+  },
+  {
+    "path": "coordinator/three_capacity_dispatch.py",
+    "sha256": "aab32b9256834173604c718b5d5d1f96805314cbb38e38def3664b77c1306300"
+  },
+  {
+    "path": "coordinator/verify-export-literals.py",
+    "sha256": "c6d213af519fb78921afbfa43707d6d26fbd9aa75a237c91e2c2ba2df8f3b1bf"
+  },
+  {
+    "path": "harness/bundle.py",
+    "sha256": "b5eefc54d87ac04b8d8d7705fc11f20ca245da973fcee6aae46eab7b299dd488"
+  },
+  {
+    "path": "harness/casepath_shard_observer.py",
+    "sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+  },
+  {
+    "path": "harness/finalize.py",
+    "sha256": "8dca270815b4b6f6487d72f483900ebf26790cc248c0227b148cb2d703a92c00"
+  },
+  {
+    "path": "harness/preflight_inventory.py",
+    "sha256": "d83a30e0ad0ffbec84369555eb26a5452c287008a055595a0d5dc91f65f7c2c4"
+  },
+  {
+    "path": "harness/prepare_clones.py",
+    "sha256": "254b482e706a235b597beeaee9a4ea021c54cf8a4adc61c85b862a27dab5587c"
+  },
+  {
+    "path": "harness/run_shard.py",
+    "sha256": "b6ea2da41e02e8ea430f1d00ca8734b3e4c3eddec5312f56ecf451e8648f5387"
+  },
+  {
+    "path": "harness/status.py",
+    "sha256": "f9a86b58398665894ab4d3af177df30724845000a4f2886206b59dfc635403c1"
+  },
+  {
+    "path": "harness/verify_prepared_capsules.py",
+    "sha256": "07ef97999d1d5e7b6463594f2f2bd9b606bc7da326f866dcaf513e1a5f0a5c12"
+  }
+]

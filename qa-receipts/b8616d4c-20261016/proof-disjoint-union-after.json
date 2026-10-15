@@ -1,0 +1,40 @@
+{
+  "candidate": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "full_inventory": 2613,
+  "cloud_assigned": 2486,
+  "cloud_raw_passed": 2476,
+  "cloud_known_skipped": 10,
+  "cloud_failed": 0,
+  "mac_explicit_partition": 127,
+  "mac_owner_attested_passed": 127,
+  "mac_raw_inspected_in_cloud": false,
+  "mac_independent_raw_combination_pending": true,
+  "no_overlap_or_gaps": true,
+  "selected_collected_executed_junit_cloud_ids_identical": true,
+  "cloud_ids_sha256": "577259f948c49fca012b47352c9d18718f8b94244026b0f8481b498a05cccbf3",
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "full_ids_sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+  "all_six_source_capsules_unchanged_at_actual_pre_post_verification": true,
+  "all_attempts_first_only": true,
+  "max_heavy_active_observed": 3,
+  "resource_after": {
+    "epoch": 1792107913.175038,
+    "free_bytes": 4094201856,
+    "tmp_free_bytes": 218361856,
+    "minimum_observed_workspace_free_bytes": 3249991680,
+    "minimum_prelaunch_headroom_bytes": 3221225472,
+    "minimum_actual_prelaunch_free_bytes": 3468312576,
+    "all_attempt_start_headroom_checks_passed": true,
+    "max_native_interval_concurrency": 3,
+    "allowed_host_ceiling": 3,
+    "scheduling_limit_used": 3,
+    "completed_runtime_retirements_after_archived_source_proofs": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "below_floor_terminal_events": []
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "candidate": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "finalizer_command": [
+    "python3",
+    "/workspace/casepath-startup-itinerary-gate-b8616d4c-20261016/harness/finalize.py"
+  ],
+  "finalizer_exit_code": 0,
+  "finalizer_log": "finalize-wrapper.log",
+  "literal_review_command": [
+    "python3",
+    "/workspace/casepath-startup-itinerary-gate-b8616d4c-20261016/coordinator/verify-export-literals.py"
+  ],
+  "literal_review_exit_code": 0,
+  "existing_reconciler_only": true,
+  "native_tests_executed_during_packaging": 0,
+  "source_edits_during_gate": 0,
+  "working_directory": "/workspace",
+  "coordinator_scoped_HOME": "/workspace/bh0",
+  "coordinator_scoped_TMPDIR_TMP_TEMP": "/workspace/bt0",
+  "Git_configuration_selector": "Existing /home/agent/.gitconfig; no auth or credential settings changed",
+  "native_runner_exit_code": 0
+}
