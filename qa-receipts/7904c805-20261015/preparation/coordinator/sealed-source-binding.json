@@ -1,0 +1,31 @@
+{
+  "candidate": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "authored_candidate": "7e4fcb1526da7f6c20f9f78f0efe572f1a204fa9",
+  "hostname": "656813ef2295",
+  "timestamp": 1792053023.3099267,
+  "difference": [
+    "casepath/index.html",
+    "casepath/source-manifest.json"
+  ],
+  "sha256": {
+    "casepath/assets/autonomous-workspace-v1.js": "b1178e50f8461ea6a0c0ca1d8bb30ecfde85fe016175532cf8ba53bf85928f19",
+    "casepath/assets/autonomous-workspace-v1.css": "a8feaa886853f1ab2f6798adf61f9fa6d9b4cc53197e2395ed6d642a18fabb7c",
+    "casepath/source-manifest.json": "a0a63dedc5c22a1618bc4f179f8428c3391d21e098588cfb25bb2ed4d661d25e"
+  },
+  "host_conditions": {
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "cpu_count": 5,
+    "cgroup_cpu_max": "400000 100000",
+    "cgroup_memory_max": "34359738368",
+    "loadavg": "2.87 1.67 0.87 4/2185 847475"
+  },
+  "workspace_free_bytes": 4389851136,
+  "tmp_free_bytes": 218349568,
+  "schedule": {
+    "isolated_normal_clones": 7,
+    "cloud_shards": 6,
+    "max_active_heavy": 3,
+    "profiling_finished_before_gate": true
+  },
+  "scope": "Deterministic local synthetic gate only. No production/provider/deployment credentials passed; exact127Mac partition assigned separately, no Cloud skips or weakening of proc audit. All child HOME/TMPDIR/TMP/TEMP isolated under/workspace before startup."
+}

@@ -1,0 +1,38 @@
+{
+  "candidate": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "scope": "Existing gate harness with exact root/SHA/manifest, isolated short HOME/TMP, max3 preparation; no product/test assertions changed; corrected fetch provenance labels for this successful local canonical fetch",
+  "files": [
+    {
+      "source": "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/harness/prepare_clones.py",
+      "source_sha256": "6bd6e1c75c19432cd74e4bf24bf159a538778d01cbec7f3a1efae7c3ece07911",
+      "adapted": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/prepare_clones.py",
+      "adapted_sha256": "2e602a417715b472183b415c29d6caa0f32415993c0d423fa32d3352b11329a6"
+    },
+    {
+      "source": "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/harness/run_shard.py",
+      "source_sha256": "72e352782865fea734add5cba01e3e1ffb8b66692c3409fcd7fe15b91d5becb2",
+      "adapted": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/run_shard.py",
+      "adapted_sha256": "3cc49382742d399160605ecf804348d7a2961ded59c3d0eec028edf02ca9dcd8"
+    },
+    {
+      "source": "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/harness/casepath_shard_observer.py",
+      "source_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "adapted": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/casepath_shard_observer.py",
+      "adapted_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+    },
+    {
+      "source": "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/harness/verify_prepared_capsules.py",
+      "source_sha256": "9e0bf25b4cc3438d0a7dd8a383591d8d702995941ae9471a9e1d6fdf5524bd5c",
+      "adapted": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/verify_prepared_capsules.py",
+      "adapted_sha256": "321be4dfc5833d52f3c85920fa29a535cebb0406110b90e00b5b680c3ae0ed4f"
+    },
+    {
+      "source": "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/coordinator/coordinator-reconcile.py",
+      "source_sha256": "e2ea253d1ee3d999ee10bf05a7cf1d253b5ef59a59dc7d0f2deda2d7ee52b584",
+      "adapted": "/workspace/casepath-visible-agent-gate-7904c805-20261015/coordinator/coordinator-reconcile.py",
+      "adapted_sha256": "b975e8ea50509afe69a384eca59aa4ca54dc89e594e6866682e0e8b6b36b65cf",
+      "changes": "exactSHA/manifest and wait for explicit current Mac attestation rather than prior historical127 pass; no coverage/phase/JUnit/skip/capsule checks weakened"
+    }
+  ],
+  "tests_started": false
+}
