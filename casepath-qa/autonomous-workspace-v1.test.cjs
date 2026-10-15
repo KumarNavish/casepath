@@ -1783,6 +1783,93 @@ function pendingOperationResponse(binding) {
  return {ok:true,status:200,body:new ReadableStream({start(controller){controller.enqueue(new TextEncoder().encode(JSON.stringify(binding)+'\n'));},cancel(){}})};
 }
 
+function recordedPacketFixture(native=operationOpeningFixture(),bodies=null) {
+ const raw=bodies||[JSON.stringify(native.zero),JSON.stringify(native.snapshot),JSON.stringify(native.binding)+'\n'];
+ const claim={claim_id:native.id,head:{revision:native.head.revision,state_sha256:native.head.state_sha256,event_sha256:native.head.last_event_sha256}};
+ for(const [index,kind]of ['opening','head_snapshot','operations'].entries())claim[kind]={bytes:Buffer.byteLength(raw[index]),sha256:sha(raw[index]),root:index};
+ const packet={contract:'casepath.recorded-session-packet/1.0.0',deployment_commit:null,history_kind:'native_fixture',claims:[claim],fragments:raw};
+ const seal=value=>{const bytes=Buffer.from(JSON.stringify(value));return{bytes,descriptor:{url:'/recorded-prototype.json',bytes:bytes.length,sha256:sha(bytes),deployment_commit:value.deployment_commit,history_kind:value.history_kind}};};
+ return{native,packet,raw,seal,...seal(packet)};
+}
+
+test('recorded packet selected codec preserves exact UTF8 numeric spellings escapes and CRLF without expanding other claims',async()=>{
+ const fixture=recordedPacketFixture(undefined,['{"value":-0,"other":0.0,"name":"\\u00e9"} \r\n','{"x":1.00e+3,"n":0e0}','{"v":"😀"}\r\n{"q":"\\\\u00e9"}\n']);
+ let root=fixture.packet.fragments.push('x')-1;for(let i=0;i<40;i++)root=fixture.packet.fragments.push([root,root])-1;
+ const other=structuredClone(fixture.packet.claims[0]);other.claim_id=ui.REFERENCE_DEMO_CASES[1].claim_id;for(const kind of ['opening','head_snapshot','operations'])other[kind]={bytes:1,sha256:sha('x'),root};fixture.packet.claims.push(other);
+ const asset=fixture.seal(fixture.packet),packet=await ui.checkedRecordedPacket(asset.bytes,asset.descriptor,true),decoded=await ui.decodeRecordedSession(packet,fixture.native.id);
+ assert.equal(Object.is(decoded.opening.value,-0),true);assert.equal(decoded.opening.name,'é');
+ for(const [index,kind]of ['opening','head_snapshot','operations'].entries())assert.equal(Buffer.from(decoded.raw[kind]).toString(),fixture.raw[index]);
+ await assert.rejects(ui.decodeRecordedSession(packet,other.claim_id),/bound/);assert.equal(Object.isFrozen(packet.fragments),true);
+});
+
+test('recorded packet codec rejects unbound assets invalid publication DAG roots expansion and raw hashes',async()=>{
+ const f=recordedPacketFixture();await assert.rejects(ui.checkedRecordedPacket(f.bytes,f.descriptor),/contract|publication/);await assert.rejects(ui.checkedRecordedPacket(f.bytes,{...f.descriptor,sha256:sha('other')},true),/asset identity/);await assert.rejects(ui.decodeRecordedSession(f.packet,f.native.id),/not verified/);
+ for(const change of [copy=>copy.fragments[0]=[0],copy=>copy.fragments[0]=[1],copy=>copy.claims[0].opening.root=999,copy=>copy.claims.push(structuredClone(copy.claims[0])),copy=>copy.claims[0].operations.bytes=25*1024*1024]){const copy=structuredClone(f.packet);change(copy);const asset=f.seal(copy);await assert.rejects(ui.checkedRecordedPacket(asset.bytes,asset.descriptor,true));}
+ const copy=structuredClone(f.packet);copy.claims[0].operations.sha256=sha('different trace');const asset=f.seal(copy),packet=await ui.checkedRecordedPacket(asset.bytes,asset.descriptor,true);await assert.rejects(ui.decodeRecordedSession(packet,f.native.id),/exact byte/);
+ const signal=new AbortController();signal.abort();await assert.rejects(ui.decodeRecordedSession(await ui.checkedRecordedPacket(f.bytes,f.descriptor,true),f.native.id,signal.signal),/cancelled/);
+});
+
+test('ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session',async t=>{
+ const routing=routingFixture(t),f=operationOpeningDOM(),packet=recordedPacketFixture(),opening=deferredRead(),snapshot=deferredRead();let liveSignal;
+ const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?(liveSignal=init.signal,pendingOperationResponse(packet.native.binding)):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});assert.equal(await controller.recordedPacketReady,true);const selecting=controller.showDemonstration();
+ assert.match(f.host.innerHTML,/Opening investigation/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|data-au-revision=/);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');
+ assert.match(f.host.innerHTML,/Recorded replay/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|The later accepted outcome|data-au-stage-fact=/);assert.match(routing.hash,/operations=recorded/);assert.equal(liveSignal.aborted,true);
+ const before=f.host.innerHTML;opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before,'late live responses cannot take over an admitted Recorded session');assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1,'recorded body uses packet bytes without another API trace');
+});
+
+test('independently verified live opening wins before500ms and never consumes available recorded packet frames',async t=>{
+ const f=operationOpeningDOM(),packet=recordedPacketFixture();
+ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());assert.equal(await controller.recordedPacketReady,true);const started=Date.now();await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.ok(Date.now()-started<500);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
+});
+
+test('unfinished recorded asset never delays Cases or selected live work and cannot join a later opening',async t=>{
+ const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead();let assetSignal;
+ const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));});await settle();await new Promise(resolve=>setTimeout(resolve,5));assert.match(f.host.innerHTML,/Cases|No .*claims|All cases/i);const selecting=controller.showDemonstration();await settle();assert.equal(assetSignal.aborted,true);assert.match(f.host.innerHTML,/Live rules-based check/);
+ asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,false);opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
+});
+
+test('unusable recorded packet retains the existing live503 to recorded endpoint fallback',async t=>{
+ const f=operationOpeningDOM(),packet=recordedPacketFixture();packet.packet.claims[0].head.state_sha256=sha('different recorded head');const asset=packet.seal(packet.packet);
+ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(asset.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?mode=live')?response({detail:'Live not available'},503):path.includes('/operations?mode=recorded')?pendingOperationResponse(packet.native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:asset.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());assert.equal(await controller.recordedPacketReady,true);await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');
+ assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,1);assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=recorded')).length,1);assert.match(f.host.innerHTML,/Recorded replay/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=/);
+});
+
+test('explicit Recorded route uses whole packet identity and retires release provenance before accepted opening paint',async t=>{
+ const routing=routingFixture(t),f=operationOpeningDOM(),packet=recordedPacketFixture(),opening=deferredRead(),snapshot=deferredRead();
+ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});assert.equal(await controller.recordedPacketReady,true);const before=api.calls.length;await controller.showDemonstration(true,'reference','recorded');
+ assert.equal(api.calls.slice(before).length,0,'explicit Recorded admission uses no selected API reads; this authored binding-only fixture later takes its expected incomplete-stream fallback');await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,0);assert.match(routing.hash,/operations=recorded/);assert.match(f.host.innerHTML,/Recorded replay/);assert.doesNotMatch(f.host.innerHTML,/data-au-release-plan=/);assert.match(f.host.innerHTML,/data-au-planned-process=/);
+});
+
+test('idle recorded packet owner cancels on hidden or leaving Cases while an available asset remains reusable',async t=>{
+ for(const hide of [false,true]){
+  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead();let signal;const documentListeners=new Map();f.container.ownerDocument.addEventListener=(kind,fn)=>documentListeners.set(kind,fn);
+  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(signal=init.signal,asset.promise):null});const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});await settle();await new Promise(resolve=>setTimeout(resolve,5));assert.equal(signal.aborted,false);
+  if(hide){f.container.ownerDocument.hidden=true;documentListeners.get('visibilitychange')();}else await controller.showKnowledge();assert.equal(signal.aborted,true);asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,false);controller.destroy();
+ }
+});
+
+test('held recorded opening retires a mismatched release catalog without replacing the focused Pause context',async t=>{
+ const f=operationOpeningDOM(),native=operationOpeningFixture(),plan=ui.releaseOperationProcess(native.id),opening=deferredRead(),snapshot=deferredRead();
+ for(const saved of [native.zero.state,native.head])Object.assign(saved.original_binding,{claim_binding_sha256:plan.release.claim_binding_sha256,corpus_manifest_sha256:plan.release.corpus_manifest_sha256});
+ delete native.head.state_sha256;native.head.state_sha256=sha(ui.canonicalJSON(native.head));for(const envelope of [native.zero,native.snapshot,native.replay])envelope.current_state_sha256=native.head.state_sha256;native.snapshot.projection.state_sha256=native.head.state_sha256;native.snapshot.events.at(-1).state_sha256=native.head.state_sha256;native.snapshot.events.at(-1).resulting_state_sha256=native.head.state_sha256;native.binding.current_state_sha256=native.head.state_sha256;
+ assert.equal(ui.releaseOpeningMatches(plan,native.zero.state),true);const packet=recordedPacketFixture(native);
+ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(native.zero));snapshot.resolve(response(native.snapshot));});assert.equal(await controller.recordedPacketReady,true);const selecting=controller.showDemonstration();f.listeners.get('click')({target:f.host.querySelector('[data-au-demo-stop]')});const focus={};f.container.ownerDocument.activeElement=focus;await selecting;
+ assert.doesNotMatch(f.host.innerHTML,/data-au-release-plan=/,'known mismatched release topology retires even while held');assert.ok(f.host.querySelector('[data-au-demo-resume]'));assert.equal(f.container.ownerDocument.activeElement,focus);assert.doesNotMatch(f.host.innerHTML,/data-au-revision=|data-au-stage-fact=/);
+});
+
+test('recorded opening decision preserves trusted pending Pause and route cancellation without repainting late work',async t=>{
+ const f=operationOpeningDOM(),packet=recordedPacketFixture(),opening=deferredRead(),snapshot=deferredRead();
+ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});assert.equal(await controller.recordedPacketReady,true);const selecting=controller.showDemonstration();f.listeners.get('click')({target:f.host.querySelector('[data-au-demo-stop]')});await selecting;assert.ok(f.host.querySelector('[data-au-demo-resume]'));assert.doesNotMatch(f.host.innerHTML,/data-au-revision=|data-au-stage-fact=/);
+ await controller.showKnowledge();const before=f.host.innerHTML;opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle();assert.equal(f.host.innerHTML,before);
+});
+
 test('complete atomic operation heads retain real saved envelopes and pinned source history without replay provenance',async()=>{
  const native=operationOpeningFixture(),head={claimId:native.id,revision:4,state_sha256:native.head.state_sha256,event_sha256:native.head.last_event_sha256},before=JSON.stringify(native.snapshot);
  for(const key of ['replay_only','through_seq','provenance','current_head'])assert.equal(Object.hasOwn(native.snapshot,key),false);

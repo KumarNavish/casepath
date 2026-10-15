@@ -1117,7 +1117,7 @@
   function bufferedOperations(response, signal, resultAvailable = null) {
     // Drain the HTTP response at compute speed. Only application consumption
     // is paced or paused; the engine and proxy never wait for presentation.
-    const queue = [], buffer = {result:null};
+    let firstFrame; const queue = [], buffer = {result:null,first:new Promise(resolve => { firstFrame=resolve; })};
     let bytes = 0, ended = false, failure = null, wake = null;
     const release = () => { const resolve = wake; wake = null; resolve?.(); };
     signal.addEventListener('abort',release,{once:true});
@@ -1127,10 +1127,10 @@
           if (signal.aborted) break;
           const size = new TextEncoder().encode(canonicalJSON(frame)).byteLength;
           if (bytes + size > 24 * 1024 * 1024 || queue.length >= 10002) throw new Error('The buffered operation stream exceeds its bound.');
-          queue.push({frame,size}); bytes += size; if (frame.type === 'result') { buffer.result = frame; resultAvailable?.(frame); } release();
+          queue.push({frame,size}); firstFrame?.(frame); firstFrame=null; bytes += size; if (frame.type === 'result') { buffer.result = frame; resultAvailable?.(frame); } release();
         }
       } catch (error) { failure = error; }
-      finally { ended = true; release(); signal.removeEventListener('abort',release); }
+      finally { firstFrame?.(null); firstFrame=null; ended = true; release(); signal.removeEventListener('abort',release); }
     })();
     return Object.assign(buffer,{producer,[Symbol.asyncIterator]() { return this; },async next() {
       while (!queue.length && !ended && !signal.aborted) await new Promise(resolve => { wake = resolve; });
@@ -1338,7 +1338,7 @@
   }
   function releaseProcedurePreview(plan, mode = 'live') {
     const trace = {releasePlan:plan,rows:[],sources:new Map()};
-    return `<section class="au-quiet-claim" data-au-stage-view="true" data-au-release-opening="${h(plan.claim_id)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p><h1 class="au-page-heading" tabindex="-1">${h(featuredCase(plan.claim_id)?.label || 'Synthetic case')}</h1><p class="au-reference-mode">${mode === 'recorded' ? 'Recorded replay' : 'Live rules-based check'} · Synthetic sources · No external action</p></div></header><section class="au-evidence-canvas" data-au-canvas><div class="au-evidence-stage" data-au-evidence-stage>${operationStageMarkup(plan,{},null,trace)}<div class="au-stage-transport">${button('Pause','data-au-demo-stop')}</div></div></section></section>`;
+    return `<section class="au-quiet-claim" data-au-stage-view="true" data-au-release-opening="${h(plan.claim_id)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p><h1 class="au-page-heading" tabindex="-1">${h(featuredCase(plan.claim_id)?.label || 'Synthetic case')}</h1><p class="au-reference-mode">${mode === 'recorded' ? 'Recorded replay' : mode === 'pending' ? 'Opening investigation' : 'Live rules-based check'} · Synthetic sources · No external action</p></div></header><section class="au-evidence-canvas" data-au-canvas><div class="au-evidence-stage" data-au-evidence-stage>${operationStageMarkup(plan,{},null,trace)}<div class="au-stage-transport">${button('Pause','data-au-demo-stop')}</div></div></section></section>`;
   }
   // A verified historical head supplies a plan, never the earlier prefix's
   // facts, conditions, requirements, completion flags or accepted outcome.
@@ -1777,6 +1777,50 @@
     if (!checkedReferenceReplayStart(start,incoming) || !referenceExecution(state) || state.outcome?.assessment_status !== 'complete' || !replayCanAdvance(state)) throw new Error('The atomic head has no complete current reference assessment.');
     return incoming;
   }
+  const RECORDED_PACKET_BYTES = 8 * 1024 * 1024, RECORDED_BODY_BYTES = 24 * 1024 * 1024, recordedPacketValues = new WeakSet();
+  async function checkedRecordedPacket(bytes, descriptor, allowNative = false) {
+    const raw = new Uint8Array(bytes);
+    if (!descriptor || !Number.isSafeInteger(descriptor.bytes) || descriptor.bytes < 1 || descriptor.bytes > RECORDED_PACKET_BYTES || raw.byteLength !== descriptor.bytes || !isHash(descriptor.sha256) || await digest(raw) !== descriptor.sha256) throw new Error('The recorded packet failed its asset identity check.');
+    const packet = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));
+    if (packet.contract !== 'casepath.recorded-session-packet/1.0.0' || packet.history_kind !== descriptor.history_kind || packet.deployment_commit !== descriptor.deployment_commit ||
+        !(packet.history_kind === 'published_public_synthetic' && /^[a-f0-9]{40}$/.test(packet.deployment_commit) || allowNative && packet.history_kind === 'native_fixture' && packet.deployment_commit === null) ||
+        !Array.isArray(packet.claims) || !packet.claims.length || packet.claims.length > 9 || !Array.isArray(packet.fragments) || !packet.fragments.length || packet.fragments.length > 250000) throw new Error('The recorded packet contract or publication identity is unavailable.');
+    let references = 0; const ids = new Set();
+    for (let id=0;id<packet.fragments.length;id++) {
+      const fragment = packet.fragments[id];
+      if (typeof fragment !== 'string' && (!Array.isArray(fragment) || !fragment.length || (references+=fragment.length) > 2000000 || fragment.some(ref => !Number.isSafeInteger(ref) || ref < 0 || ref >= id))) throw new Error('The recorded packet fragment graph is invalid.');
+    }
+    for (const claim of packet.claims) {
+      if (!REFERENCE_DEMO_CASES.some(row => row.claim_id === claim.claim_id) || ids.has(claim.claim_id) || !Number.isSafeInteger(claim.head?.revision) || claim.head.revision < 1 || !isHash(claim.head.state_sha256) || !isHash(claim.head.event_sha256)) throw new Error('The recorded packet claim identity is invalid.');
+      ids.add(claim.claim_id);
+      for (const kind of ['opening','head_snapshot','operations']) { const entry = claim[kind]; if (!entry || !Number.isSafeInteger(entry.bytes) || entry.bytes < 1 || entry.bytes > RECORDED_BODY_BYTES || !isHash(entry.sha256) || !Number.isSafeInteger(entry.root) || entry.root < 0 || entry.root >= packet.fragments.length) throw new Error('The recorded packet body identity is invalid.'); }
+    }
+    recordedPacketValues.add(packet); return freezeRelease(packet);
+  }
+  async function decodeRecordedSession(packet, claimId, signal = null) {
+    if (!recordedPacketValues.has(packet)) throw new Error('The recorded packet asset was not verified.');
+    const claim = packet.claims.find(row => row.claim_id === claimId);
+    if (!claim) throw new Error('The selected case is absent from the recorded packet.');
+    const cancelled = () => { if (signal?.aborted) throw new Error('Recorded packet selection cancelled.'); };
+    const output = {head:{claimId,...claim.head},raw:{}}, cache = new Map(); let expanded = 0;
+    for (const kind of ['opening','head_snapshot','operations']) {
+      cancelled(); const entry = claim[kind], needed = new Set(), pending = [entry.root];
+      while (pending.length) { const id = pending.pop(); if (needed.has(id) || cache.has(id)) continue; needed.add(id); const fragment = packet.fragments[id]; if (Array.isArray(fragment)) for (const ref of fragment) pending.push(ref); }
+      let count = 0;
+      for (const id of [...needed].sort((a,b) => a-b)) {
+        cancelled(); const fragment = packet.fragments[id];
+        const length = typeof fragment === 'string' ? fragment.length : fragment.reduce((sum,ref) => sum+cache.get(ref).length,0);
+        if (length > entry.bytes || (expanded+=length) > 96 * 1024 * 1024) throw new Error('The selected recorded packet expansion exceeds its bound.');
+        cache.set(id,typeof fragment === 'string' ? fragment : fragment.map(ref => cache.get(ref)).join(''));
+        if (++count % 2048 === 0) await new Promise(resolve => root.setTimeout(resolve,0));
+      }
+      const bytes = new TextEncoder().encode(cache.get(entry.root));
+      if (bytes.byteLength !== entry.bytes || await digest(bytes) !== entry.sha256) throw new Error('The recorded body failed its exact byte identity check.');
+      cancelled(); output.raw[kind] = bytes; output[kind] = kind === 'operations' ? bytes : JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));
+      await new Promise(resolve => root.setTimeout(resolve,0));
+    }
+    return output;
+  }
   async function checkedReadCache(serialized, apiIdentity, now = Date.now()) {
     if (typeof serialized !== 'string' || serialized.length * 2 > READ_CACHE_BYTES) throw new Error('The saved read cache exceeds its bound.');
     const envelope = JSON.parse(serialized), {sha256,...material} = envelope || {};
@@ -1812,6 +1856,7 @@
     let storage = null, apiIdentity = null;
     try { if (root.location?.href) { apiIdentity = new URL(base,root.location.href).href; storage = root.sessionStorage; } } catch (_) { /* Session storage is optional. */ }
     const controllers = new Set();
+    let recordedPacket = null, packetLoadController = null;
     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
     let motion = null, keyboard = false, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0, claimRenderComplete = false, renderedClaimId = null;
     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map(), starts = new Map();
@@ -2168,6 +2213,7 @@
       if (pendingControl) controls.set(current.claim_id,pendingControl); else controls.delete(current.claim_id);
     }
     function leaveView() {
+      if (!recordedPacket) packetLoadController?.abort();
       cancelWarmReads();
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); tetherGeometry = null;
       if (view === 'intake') { intakeForm = host.querySelector('[data-au-intake]') || intakeForm; intakeForm?.remove?.(); }
@@ -2431,25 +2477,37 @@
       claimRenderComplete = false; detail = preferences.detail || 'step';
       for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute);
       if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
-      const opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
+      let opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
       const session = preferences.demo ? demoSession : null;
+      const packetAtSelection = session?.mode === 'operations' ? recordedPacket : null;
+      if (session?.mode === 'operations' && !packetAtSelection) packetLoadController?.abort();
       if (session?.mode === 'operations') { session.releasePlan = releaseOperationProcess(id); if (session.releasePlan) operationTrace = {releasePlan:session.releasePlan,rows:[],sources:new Map()}; }
       if (demoSession) demoSession.verifiedOpening = null;
       const cached = presentationMode !== 'replay' && paintSavedClaim(id,preferences);
-      if (!doc.hidden && !cached && !opening) { host.innerHTML = session?.releasePlan ? releaseProcedurePreview(session.releasePlan,session.operations) : catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); if (session?.releasePlan) drawEdges(); }
+      if (!doc.hidden && !cached && !opening) { host.innerHTML = session?.releasePlan ? releaseProcedurePreview(session.releasePlan,packetAtSelection ? 'pending' : session.operations) : catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); if (session?.releasePlan) drawEdges(); }
       interact(host);
       if (presentationMode !== 'replay') {
         sessionRestore?.then(() => { if (!disposed && token === epoch && !pendingRoute() && view === 'claim' && !current && id === openingId) paintSavedClaim(id,preferences); });
         return loadOpenedClaim(id,token,preferences);
       }
       if (session) session.preparing = token;
-      if (session?.mode === 'operations') { cancelIdleReadOwners(); if (!opening?.referenceReady && !doc.hidden && !inspectionHold) prepareOperationReads(session,id,token); }
+      if (session?.mode === 'operations') { cancelIdleReadOwners(); if (!opening?.referenceReady && !doc.hidden && !inspectionHold && !(packetAtSelection && session.useRecorded)) prepareOperationReads(session,id,token); }
       try {
         const through = preferences.through ?? 0;
+        if (!opening && session?.mode === 'operations' && packetAtSelection && through === 0 && (session.operationPreparation || session.useRecorded)) {
+          opening = await chooseRecordedOpening(packetAtSelection,session,id,token);
+          if (!opening && !session.operationPreparation && !disposed && token === epoch && !pendingRoute()) prepareOperationReads(session,id,token);
+        }
         const incoming = readReplay(opening?.response || await request(`/claims/${key(id)}/replay?through_seq=${through}`),id,through);
         if (disposed || token !== epoch || pendingRoute() || view !== 'claim') return;
         if (opening) checkedReplayHead(incoming,{replayHead:opening.head});
         if (session?.releasePlan && !releaseOpeningMatches(session.releasePlan,incoming.state)) { session.releasePlan = null; operationTrace.releasePlan = null; host.querySelector('[data-au-release-plan]')?.remove(); }
+        if (opening?.referenceReady && session?.releasePlan) {
+          const plan = session.releasePlan, matched = await releaseHeadMatches(plan,opening.verifiedHeadState,opening.plannedProcess);
+          if (disposed || token !== epoch || pendingRoute() || view !== 'claim') return;
+          session.releaseMatched=matched; session.releasePlan=null; if (operationTrace?.releasePlan === plan) { operationTrace.releasePlan=null; operationTrace.releaseMatched=matched; }
+          if (!matched) host.querySelector('[data-au-release-plan]')?.remove();
+        }
         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
         const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous); detail = inspectionHold ? detail : preferences.detail || previous?.detail || 'step';
         renderClaim(); notice(''); if (!inspectionHold && !doc.hidden && !dialog.open && !recordDialog.open) focusTitle();
@@ -2668,7 +2726,8 @@
     }
     function stopPresentation() {
       const session = demoSession || pausedPresentation;
-      session?.operationController?.abort(); session?.operationWake?.();
+      if (session?.operationPreparation) cancelPreparedOperationReads(session.operationPreparation);
+      session?.operationChoiceController?.abort(); session?.operationController?.abort(); session?.operationWake?.();
       cancelStageMotion(); const pane = host.querySelector('.au-operation-passage'); pane?.scrollTo?.({top:pane.scrollTop,behavior:'instant'});
       if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; demoSession = null; pausedPresentation = null; replayPrefixes.clear();
     }
@@ -2820,14 +2879,14 @@
       if (!REFERENCE_DEMO_CASES.some(row => row.claim_id === id)) return null;
       const controller = new AbortController(); controllers.add(controller); session.operationController = controller;
       controller.signal.addEventListener('abort',() => controllers.delete(controller),{once:true});
-      const prepared = {claimId:id,controller,token,recorded:Boolean(session.useRecorded)};
+      const prepared = {claimId:id,controller,token,recorded:Boolean(session.useRecorded),readControllers:new Set()};
       session.operationPreparation = prepared;
       const hint = claims.find(row => row.claim_id === id)?.revision;
       // A catalog revision chooses a speculative GET, never a replay authority.
       // Without that hint, a complete atomic head can replace the replay GET
       // only after its identity, history and sources match the real opening.
-      if (Number.isSafeInteger(hint) && hint > 0) { prepared.revision = hint; prepared.head = request(`/claims/${key(id)}/replay?through_seq=${hint}`); prepared.head.catch(() => {}); }
-      else { prepared.snapshot = request(`/claims/${key(id)}/snapshot?after=0`); prepared.snapshot.catch(() => {}); }
+      if (Number.isSafeInteger(hint) && hint > 0) { prepared.revision = hint; prepared.head = operationRequest(prepared,`/claims/${key(id)}/replay?through_seq=${hint}`); prepared.head.catch(() => {}); }
+      else { prepared.snapshot = operationRequest(prepared,`/claims/${key(id)}/snapshot?after=0`); prepared.snapshot.catch(() => {}); }
       prepared.delivery = (async () => {
         const response = await fetcher(base+`/claims/${key(id)}/operations?mode=${prepared.recorded ? 'recorded' : 'live'}`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:controller.signal});
         if (controller.signal.aborted || disposed || token !== epoch || pendingRoute()) { await response.body?.cancel?.(); return null; }
@@ -3078,6 +3137,91 @@
       const head = session.replayHead, record = incoming.replay;
       if (!head || incoming.state.claim_id !== head.claimId || record.current_revision !== head.revision || record.current_state_sha256 !== head.state_sha256 || record.current_event_sha256 !== head.event_sha256) throw new Error('The recorded replay head changed. Reopen to verify its newest history.');
     }
+    async function loadRecordedPacket() {
+      const descriptor = options.recordedPacket;
+      if (!descriptor || disposed || doc.hidden || view !== 'work') return false;
+      try {
+        await new Promise(resolve => root.setTimeout(resolve,0));
+        if (disposed || doc.hidden || view !== 'work') return false;
+        const url = new URL(descriptor.url,root.location?.href || 'http://localhost/');
+        if (url.origin !== new URL(root.location?.href || 'http://localhost/').origin || url.username || url.password || !Number.isSafeInteger(descriptor.bytes) || descriptor.bytes < 1 || descriptor.bytes > RECORDED_PACKET_BYTES) return false;
+        packetLoadController = new AbortController();
+        const response = await fetcher(url.href,{method:'GET',cache:'force-cache',credentials:'same-origin',redirect:'error',signal:packetLoadController.signal});
+        if (!response.ok || !response.body?.getReader) return false;
+        const reader = response.body.getReader(), chunks = []; let length = 0;
+        const cancel = () => { reader.cancel().catch(() => {}); }; packetLoadController.signal.addEventListener('abort',cancel,{once:true});
+        try { while (!packetLoadController.signal.aborted) { const chunk = await reader.read(); if (chunk.done) break; length += chunk.value.byteLength; if (length > descriptor.bytes) throw new Error('Recorded packet asset exceeds its bound.'); chunks.push(chunk.value); } }
+        finally { packetLoadController.signal.removeEventListener('abort',cancel); await reader.cancel().catch(() => {}); reader.releaseLock?.(); }
+        if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work') return false;
+        const bytes = new Uint8Array(length); let offset = 0; for (const chunk of chunks) { bytes.set(chunk,offset); offset+=chunk.byteLength; }
+        const packet = await checkedRecordedPacket(bytes,descriptor,options.allowNativeRecordedPacket === true);
+        if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work') return false;
+        recordedPacket = packet; return true;
+      } catch (_) { return false; }
+    }
+    function operationRequest(prepared, path) {
+      const identity = `${readGeneration}:${path}`, prior = readOwners.get(identity), promise = request(path), owner = readOwners.get(identity);
+      if (owner && owner !== prior) prepared.readControllers.add(owner.controller);
+      return promise;
+    }
+    function cancelPreparedOperationReads(prepared) {
+      prepared.controller.abort(); for (const controller of prepared.readControllers) controller.abort();
+    }
+    async function chooseRecordedOpening(packet, session, id, token) {
+      const prepared = session.operationPreparation, choice = new AbortController(); session.operationChoiceController = choice;
+      const active = () => !disposed && token === epoch && !pendingRoute() && openingId === id && !choice.signal.aborted;
+      const openingResult = (response, head, verification) => ({claimId:id,generation:readGeneration,response,head,referenceReady:true,verifiedHeadState:verification.verifiedHeadState,verifiedReplayStart:verification.verifiedReplayStart,verifiedJournal:verification.verifiedJournal,referenceAsOf:verification.referenceAsOf,operationBinding:verification.operationBinding,plannedProcess:verification.plannedProcess});
+      let packetOpening = null;
+      const packetCandidate = (async () => {
+        const decoded = await decodeRecordedSession(packet,id,choice.signal), incoming = readReplay(decoded.opening,id,0), head = decoded.head;
+        checkedReplayHead(incoming,{replayHead:head});
+        const full = await checkedAtomicOperationHead(decoded.head_snapshot,head,incoming.replay.replay_start,incoming.state), plannedProcess = await plannedOperationProcess(full.state), start = checkedReferenceReplayStart(incoming.replay.replay_start,full);
+        const operationBinding = {source_roster_sha256:full.state.source_roster_sha256,rule_set_sha256:referenceExecution(full.state)?.rule_set_sha256};
+        const newline = decoded.operations.indexOf(10); if (newline < 0 || newline > OPERATION_FRAME_BYTES) throw new Error('The recorded packet has no bounded operation binding.');
+        checkedOperationBinding(JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(decoded.operations.subarray(0,newline))),{...head,...operationBinding},start);
+        if (active()) packetOpening = {opening:openingResult(decoded.opening,head,{verifiedHeadState:full.state,verifiedReplayStart:start,verifiedJournal:full.accepted.events,referenceAsOf:referenceExecution(full.state)?.as_of,operationBinding,plannedProcess}),bytes:decoded.operations};
+      })(); packetCandidate.catch(() => {});
+      if (!prepared) {
+        let timer;
+        await Promise.race([packetCandidate.catch(() => {}),new Promise(resolve => { timer=root.setTimeout(resolve,500); })]); root.clearTimeout(timer);
+        if (!active()) throw new Error('The selected opening changed.');
+        if (!packetOpening) { choice.abort(); return null; }
+        return selectRecorded();
+      }
+      const liveOpening = operationRequest(prepared,`/claims/${key(id)}/replay?through_seq=0`);
+      const liveCandidate = (async () => {
+        const response = await liveOpening, incoming = readReplay(response,id,0), head = {claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256};
+        const verification = {replayHead:head,replayStart:incoming.replay.replay_start,operationOpeningAnchor:{state:incoming.state}};
+        if (!await verifyReferenceHead(verification,prepared) || !verification.verifiedReplayStart) throw new Error('The live reference opening is incomplete.');
+        const delivery = await prepared.delivery, first = await delivery?.buffer?.first;
+        if (!first) throw new Error('The live operation binding is unavailable.');
+        checkedOperationBinding(first,{...head,...verification.operationBinding},verification.verifiedReplayStart);
+        if (disposed || token !== epoch || pendingRoute() || openingId !== id || prepared.controller.signal.aborted) throw new Error('The selected opening changed.');
+        return openingResult(response,head,verification);
+      })(); liveCandidate.catch(() => {});
+      let timer;
+      const winner = await Promise.race([liveCandidate.catch(() => new Promise(() => {})),new Promise(resolve => { timer=root.setTimeout(() => resolve(null),500); })]);
+      root.clearTimeout(timer);
+      if (!active()) throw new Error('The selected opening changed.');
+      if (winner) { choice.abort(); return winner; }
+      if (!packetOpening) {
+        choice.abort(); const response = await liveOpening, incoming = readReplay(response,id,0);
+        return {claimId:id,generation:readGeneration,response,head:{claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256},referenceReady:false};
+      }
+      return selectRecorded();
+      function selectRecorded() {
+        if (prepared) cancelPreparedOperationReads(prepared);
+        session.operations = 'recorded'; session.useRecorded = true; session.recorded = true; openingPreferences.operations = 'recorded';
+        if (operationTrace) operationTrace.recorded = true;
+        const controller = new AbortController(); controllers.add(controller); controller.signal.addEventListener('abort',() => controllers.delete(controller),{once:true}); session.operationController = controller;
+        const response = new root.Response(packetOpening.bytes,{headers:{'Content-Type':'application/x-ndjson'}});
+        session.operationPreparation = {claimId:id,controller,token,recorded:true,readControllers:new Set(),delivery:Promise.resolve({response,buffer:bufferedOperations(response,controller.signal)})};
+        const fragment = claimFragment(id,{...openingPreferences,operations:'recorded'});
+        if (root.history?.replaceState) { root.history.replaceState(null,'',root.location.pathname+root.location.search+fragment); routedFragment=fragment; }
+        const label = host.querySelector('.au-reference-mode'); if (label) label.textContent='Recorded replay · Synthetic sources · No external action';
+        choice.abort(); return packetOpening.opening;
+      }
+    }
     async function verifyReferenceHead(session, prepared = null) {
       const head = session.replayHead;
       if (!head?.revision) return false;
@@ -3101,6 +3245,7 @@
         session.releasePlan = null;
       }
       session.verifiedJournal = incoming.accepted.events; session.referenceAsOf = referenceExecution(incoming.state)?.as_of; session.operationBinding = {source_roster_sha256:incoming.state.source_roster_sha256,rule_set_sha256:referenceExecution(incoming.state)?.rule_set_sha256};
+      session.verifiedHeadState = incoming.state;
       return Boolean(referenceExecution(incoming.state) && incoming.state.outcome?.assessment_status === 'complete' && replayCanAdvance(incoming.state));
     }
     function replayPrefix(id, through, session) {
@@ -3576,6 +3721,7 @@
       const returning = dialogReturn; dialogReturn = null; sourceEpoch++; clearNativeSource(); restoreSourceFocus(returning);
     }
     function visibility() {
+      if (doc.hidden && !recordedPacket) packetLoadController?.abort();
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel();
       if (doc.hidden) {
         cancelWarmReads();
@@ -3624,12 +3770,12 @@
       drawEdges(); positionOperationAttention();
     }
     const resize = root.ResizeObserver ? new root.ResizeObserver(resized) : null; resize?.observe(host); root.addEventListener?.('resize',resized);
-    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,refresh:poll,destroy() { if (disposed) return; disposed = true; cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',claimWarmIntent); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
+    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),refresh:poll,destroy() { if (disposed) return; disposed = true; packetLoadController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',claimWarmIntent); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
     mounts.set(container,controller); activeMount = controller;
     sessionRestore = restoreReadCache();
     routeChanged();
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });
