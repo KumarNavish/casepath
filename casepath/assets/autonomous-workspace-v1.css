@@ -736,7 +736,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-stage-intake { display:flex; flex-direction:column; min-height:0; flex:1; }
   .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-stage-intake pre { margin:0; min-height:0; overflow:auto; flex:1; }
   .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-stage-process .au-graph-viewport { min-height:0; max-height:none; flex:1; }
-  .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=map] { max-height:calc(100dvh - 340px); overflow:auto; }
 }
 @media (max-width:700px) {
   .au-workspace [data-au-stage-view] .au-work-head { display:block; }
