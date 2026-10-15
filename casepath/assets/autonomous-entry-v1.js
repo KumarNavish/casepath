@@ -17,7 +17,12 @@
   try {
     if (document.documentElement.dataset.autonomousWorkspace === 'true') {
       await load('casepath-autonomous-script');
-      window.CasePathAutonomous.mount(document.getElementById('autonomousWorkspace'));
+      let recordedPacket;
+      if (window.CASEPATH_PUBLIC_READ_ONLY === true) {
+        try { recordedPacket = JSON.parse(document.querySelector('meta[name="casepath-recorded-opening"]')?.content || 'null'); }
+        catch (_) { /* A missing replay asset leaves the verified API path available. */ }
+      }
+      window.CasePathAutonomous.mount(document.getElementById('autonomousWorkspace'), {recordedPacket});
       window.addEventListener('pagehide', event => { if (!event.persisted) window.CasePathAutonomous.destroy(); });
     } else {
       await load('casepath-review-workspace-script');

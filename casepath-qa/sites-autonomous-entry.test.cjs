@@ -60,3 +60,27 @@ test('autonomous entry preserves the cached controller on persisted pagehide and
   listeners.get('pagehide')({persisted:true});assert.equal(destroys,0,'a native back-forward cache entry retains its controller and verified view');assert.equal(workspace.innerHTML,'verified prefix');
   listeners.get('pagehide')({persisted:false});assert.equal(destroys,1);assert.equal(workspace.innerHTML,'');
 });
+
+test('the hosted opening preloads exact recorded bytes without waiting or enabling private replay data',async()=>{
+  const {runInNewContext}=require('node:vm');
+  const {createHash}=require('node:crypto');
+  const descriptor=JSON.parse(index.match(/<meta name="casepath-recorded-opening" content='([^']+)'/)[1]);
+  const bytes=readFileSync(resolve(__dirname,'../casepath/assets/autonomous-recorded-heating-v1.json'));
+  assert.equal(bytes.length,descriptor.bytes);
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),descriptor.sha256);
+  assert.equal(JSON.parse(bytes).deployment_commit,descriptor.deployment_commit);
+  for(const publicReadOnly of [true,false]) {
+    const location=new URL('https://casepath.invalid/'),links=[],calls=[],mounted=[];
+    const window={location,CASEPATH_PUBLIC_READ_ONLY:publicReadOnly,CasePathAutonomous:{mount:(_container,options)=>mounted.push(options)},addEventListener(){}};
+    const document={documentElement:{dataset:{}},createElement:()=>({}),querySelector:selector=>({content:selector.includes('casepath-recorded-opening')?JSON.stringify(descriptor):'workspace.js'}),head:{append:link=>links.push(link)},body:{append:script=>script.onload()},getElementById:()=>({})};
+    const context={location,URLSearchParams,window,document,sessionStorage:{getItem:()=>null,setItem(){}},crypto:{randomUUID:()=> 'fixture-uuid'},fetch:async(...args)=>{calls.push(args);throw Error('Boot must not fetch the API');}};
+    const boot=index.match(/<script>\n([\s\S]*?)<\/script>/)[1];
+    runInNewContext(boot,context);
+    assert.equal(links.length,publicReadOnly?1:0);
+    if(publicReadOnly) { assert.equal(links[0].rel,'preload');assert.equal(links[0].as,'fetch');assert.equal(links[0].href,descriptor.url);assert.equal(links[0].fetchPriority,'high'); }
+    await runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-entry-v1.js'),'utf8'),context);
+    assert.equal(mounted.length,1,'mount must not await preload completion');
+    assert.equal(JSON.stringify(mounted[0].recordedPacket),publicReadOnly?JSON.stringify(descriptor):undefined);
+    assert.deepEqual(calls,[],'opening assets never grant API write or inference authority');
+  }
+});

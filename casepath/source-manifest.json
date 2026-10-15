@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1706,
+  "file_count": 1708,
   "files": [
     {
       "executable": false,
@@ -8879,8 +8879,8 @@
     {
       "executable": false,
       "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
-      "sha256": "7701c5e827b5707cc9cd23b871a0ed98d0f69e9179d671374602814d76315add",
-      "size_bytes": 325046
+      "sha256": "e50c5be19eb1ae8228158af944ae04175a5bb4dd9fa50360d1c417b8cdb9d283",
+      "size_bytes": 385300
     },
     {
       "executable": false,
@@ -9275,8 +9275,8 @@
     {
       "executable": false,
       "path": "casepath-qa/sites-autonomous-entry.test.cjs",
-      "sha256": "493fcbd0a5b8623e516c39bb1487f1ccf06682f10833690cb5d3b96caac2fb0c",
-      "size_bytes": 4696
+      "sha256": "64fc95055ff85f09e34c61bb95f230e9b9a06efcd5d18ce719d4a475ec4d57b2",
+      "size_bytes": 6903
     },
     {
       "executable": false,
@@ -9365,8 +9365,14 @@
     {
       "executable": false,
       "path": "casepath/assets/autonomous-entry-v1.js",
-      "sha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
-      "size_bytes": 1325
+      "sha256": "e1dfcdefb7fc094db37a7bb03bd788a1ebd1405531f3548ed610c758d9246d7d",
+      "size_bytes": 1653
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/autonomous-recorded-heating-v1.json",
+      "sha256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+      "size_bytes": 523167
     },
     {
       "executable": false,
@@ -9377,8 +9383,8 @@
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.js",
-      "sha256": "2a5e229f4a316bb68392c124b76cf89caafe263c47724d79f9991f9b7845fa30",
-      "size_bytes": 414648
+      "sha256": "364bc44c4a10a8a57afcaad28b765f476ba31ee2478d190b552fe9f7c74c74bb",
+      "size_bytes": 457352
     },
     {
       "executable": false,
@@ -9575,8 +9581,8 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "2d105aba9bc7339b534d1e032b22d9e8fbc1d94e0d00f764951d36977d603e8d",
-      "size_bytes": 23698
+      "sha256": "7499652779e456ced095c030d3227ba93e0b636da24775ac82668ca2032005da",
+      "size_bytes": 24754
     },
     {
       "executable": false,
@@ -9785,8 +9791,8 @@
     {
       "executable": false,
       "path": "casepath/tools/build_static_site.py",
-      "sha256": "e1983069e9a3bbf303300cbfd8284e0c166d41e0670c2e9beb921010cfb9c64d",
-      "size_bytes": 9687
+      "sha256": "678b762a5226a1288c81e48a691549e09fc966277ba162fb855726e4cab0fe8f",
+      "size_bytes": 9787
     },
     {
       "executable": false,
@@ -9799,6 +9805,12 @@
       "path": "casepath/tools/fixtures/render-legacy-20260811.yaml",
       "sha256": "1f09d967350893988b8c253e286723c069a4013ce88659dc95029c850ec5a913",
       "size_bytes": 2326
+    },
+    {
+      "executable": false,
+      "path": "casepath/tools/pack_recorded_session.cjs",
+      "sha256": "bfb10a5d1dbca98a24c3d195c0be2cf68a2773978fc8df40d555f857bb8fd6bd",
+      "size_bytes": 9118
     },
     {
       "executable": false,
