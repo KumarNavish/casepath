@@ -1,0 +1,34 @@
+{
+  "status": "Diagnostic checkpoint: 39 raw frames retained; actual final decision caret targets a hidden source mark and FAILS readhead geometry. Not final acceptance. Writer correction pending.",
+  "source_candidate": "9604a9a3aab84c5a5b1f944cd30d91b9dfc27ffb",
+  "combined_candidate": "a2a989746d41a4d065977d066258541e8d87210c",
+  "qa_commit": "efc145f122d305c5dfb6cc66d64d0239414a57c5",
+  "browser": "Browser plugin not available; installed pinned Playwright1.55.0 and /usr/bin/chromium reused",
+  "environment": {
+    "HOME": "/workspace/qh",
+    "TMPDIR": "/workspace/qt",
+    "TMP": "/workspace/qt",
+    "TEMP": "/workspace/qt"
+  },
+  "fixture": "http://127.0.0.1:4189/?journey=autonomous#autonomous/demonstration",
+  "fixture_data": "/workspace/casepath-reference-polish-evidence-20261013/native-v1-v2-reference.json",
+  "sidecars": "/workspace/operation-runtime-evidence/native-sidecars",
+  "commands": [
+    {
+      "command": "env HOME=/workspace/qh TMPDIR=/workspace/qt TMP=/workspace/qt TEMP=/workspace/qt node /workspace/casepath-visible-agent-20261015-evidence/qa/native-frames.cjs > /workspace/casepath-visible-agent-20261015-evidence/qa/native-frames-9604-attempt1.log 2>&1",
+      "exit_code": 1,
+      "scope": "Unattended first actual heating native trace; 2-second frame cadence with same-operation source-positioning probes inside the interval; no trusted input until completion attempt."
+    },
+    {
+      "command": "env HOME=/workspace/qh TMPDIR=/workspace/qt TMP=/workspace/qt TEMP=/workspace/qt node /workspace/casepath-visible-agent-20261015-evidence/qa/native-controls.cjs > /workspace/casepath-visible-agent-20261015-evidence/qa/native-controls-e619-attempt1.log 2>&1",
+      "exit_code": 0,
+      "scope": "e619 actual running native four-viewport layout, real3controls and immediateSkip, trusted exactsourcepin/focus, hiddeninspectionhold/Resume, reducedmotion, all824actualHistoryoperations."
+    }
+  ],
+  "asset_loading": "Exact Git-show source assets copied outside checkout into ../assets/final.js and final.css; each script reads immutable bytes once before browser startup and intercepts only those two asset GETs. All other allowed requests stay GET/HEAD on127.0.0.1:4189. native-frames-final.json contains actualserved SHA256 verification and workload identity.",
+  "archives": [
+    "native-frames-9604-attempt1.cjs",
+    "native-frames-9604-attempt1.json",
+    "frames-9604-attempt1/"
+  ]
+}
