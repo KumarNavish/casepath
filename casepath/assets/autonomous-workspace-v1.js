@@ -1758,6 +1758,25 @@
     if (state.graph) layoutGraph(state.graph);
     return snapshot;
   }
+  async function checkedAtomicOperationHead(response, head, start, openingState) {
+    const incoming = readSnapshot(response,head?.claimId,null,true), state = incoming.state, events = incoming.accepted.events;
+    // The atomic saved endpoint runs the same complete server replay as a head
+    // replay GET. Its state is pinned by the separate revision-zero response;
+    // it has no replay provenance mirror and must not acquire a synthetic one.
+    if (response.mode !== 'saved' || ['replay_only','through_seq','provenance','current_head'].some(field => Object.prototype.hasOwnProperty.call(response,field)) ||
+        state.claim_id !== head.claimId || state.revision !== head.revision || state.state_sha256 !== head.state_sha256 ||
+        response.current_event_sha256 !== head.event_sha256 || response.cursor_sha256 !== head.event_sha256 || state.last_event_sha256 !== head.event_sha256 ||
+        !isHash(head.event_sha256) || !events.length || events.length !== head.revision ||
+        events.some((event,index) => event.seq !== index+1 || event.sequence !== index+1 || event.revision !== index+1 || event.state_sha256 !== event.resulting_state_sha256 || event.contract !== 'casepath.autonomous-event/1.0.0' || event.claim_id !== head.claimId || !Object.prototype.hasOwnProperty.call(event,'previous_event_sha256')) ||
+        !start || canonicalJSON(response.replay_start) !== canonicalJSON(start) ||
+        openingState?.claim_id !== head.claimId || openingState?.revision !== 0 || !openingState.original_binding || canonicalJSON(state.original_binding) !== canonicalJSON(openingState.original_binding) ||
+        list(openingState.source_descriptors).some(source => canonicalJSON(source) !== canonicalJSON(list(state.source_descriptors).find(row => row.artifact_id === source.artifact_id)))) throw new Error('The complete atomic head differs from its verified opening.');
+    const material = {...state}; delete material.state_sha256;
+    if (await digest(canonicalJSON(material)) !== state.state_sha256) throw new Error('The atomic head failed its pinned state hash.');
+    await checkedSavedSnapshot({state,projection:incoming.projection,cursor:state.revision,history:events},head.claimId);
+    if (!checkedReferenceReplayStart(start,incoming) || !referenceExecution(state) || state.outcome?.assessment_status !== 'complete' || !replayCanAdvance(state)) throw new Error('The atomic head has no complete current reference assessment.');
+    return incoming;
+  }
   async function checkedReadCache(serialized, apiIdentity, now = Date.now()) {
     if (typeof serialized !== 'string' || serialized.length * 2 > READ_CACHE_BYTES) throw new Error('The saved read cache exceeds its bound.');
     const envelope = JSON.parse(serialized), {sha256,...material} = envelope || {};
@@ -2801,14 +2820,14 @@
       if (!REFERENCE_DEMO_CASES.some(row => row.claim_id === id)) return null;
       const controller = new AbortController(); controllers.add(controller); session.operationController = controller;
       controller.signal.addEventListener('abort',() => controllers.delete(controller),{once:true});
-      const prepared = {claimId:id,controller,recorded:Boolean(session.useRecorded)};
+      const prepared = {claimId:id,controller,token,recorded:Boolean(session.useRecorded)};
       session.operationPreparation = prepared;
       const hint = claims.find(row => row.claim_id === id)?.revision;
       // A catalog revision chooses a speculative GET, never a replay authority.
-      // Without that hint, the atomic head supplies only a sanitized outline;
-      // the complete replay/provenance checks still precede every operation.
+      // Without that hint, a complete atomic head can replace the replay GET
+      // only after its identity, history and sources match the real opening.
       if (Number.isSafeInteger(hint) && hint > 0) { prepared.revision = hint; prepared.head = request(`/claims/${key(id)}/replay?through_seq=${hint}`); prepared.head.catch(() => {}); }
-      else if (!session.releasePlan) { prepared.snapshot = request(`/claims/${key(id)}/snapshot?after=0`); prepared.snapshot.catch(() => {}); }
+      else { prepared.snapshot = request(`/claims/${key(id)}/snapshot?after=0`); prepared.snapshot.catch(() => {}); }
       prepared.delivery = (async () => {
         const response = await fetcher(base+`/claims/${key(id)}/operations?mode=${prepared.recorded ? 'recorded' : 'live'}`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:controller.signal});
         if (controller.signal.aborted || disposed || token !== epoch || pendingRoute()) { await response.body?.cancel?.(); return null; }
@@ -2818,19 +2837,6 @@
       })();
       prepared.delivery.catch(() => {});
       return prepared;
-    }
-    async function earlyOperationOutline(prepared, session, token, trace) {
-      if (!prepared?.snapshot) return;
-      try {
-        const incoming = readSnapshot(await prepared.snapshot,session.claimId,null,true), state = incoming.state, head = session.replayHead;
-        if (state.claim_id !== head.claimId || state.revision !== head.revision || state.state_sha256 !== head.state_sha256 || state.last_event_sha256 !== head.event_sha256) return;
-        if (!checkedReferenceReplayStart(session.replayStart,incoming)) return;
-        if (!referenceExecution(state) || state.outcome?.assessment_status !== 'complete' || !replayCanAdvance(state)) return;
-        const plan = await plannedOperationProcess(state);
-        if (!plan || !operationActive(session,token) || operationTrace !== trace || trace.binding || session.referenceReady) return;
-        trace.plannedProcess = plan;
-        if (demoSession === session && !doc.hidden && !inspectionHold && !dialog.open && !recordDialog.open) renderClaim();
-      } catch (_) { /* A speculative outline failure cannot admit or fail playback. */ }
     }
     async function startOperations(session, token) {
       if (!operationActive(session,token) || session.operationStarted) return;
@@ -2842,7 +2848,6 @@
       const previousAttempts = session.previousAttempts || [], previousCurrent = operationTrace?.current, previousSources = operationTrace?.sources, previousDisplaySource = operationTrace?.displaySource;
       operationTrace = {binding:null,releasePlan:session.releasePlan,rows:[],bytes:previousAttempts.reduce((sum,attempt) => sum+attempt.bytes,0),sources:new Map(previousSources || []),current:previousCurrent || null,previousCurrent,displaySource:previousDisplaySource,journal:[],pinnedJournal:session.verifiedJournal || [],transportState:null,finished:false,frameHashes:[],visibleResults:new Map(),checkpoints:[session.operationOpeningAnchor],previousAttempts};
       const trace = operationTrace;
-      earlyOperationOutline(prepared,session,token,trace);
       try {
         if ((!session.referenceReady && !await verifyReferenceHead(session,prepared)) || !session.verifiedReplayStart) throw new Error('No current completed reference assessment is available.');
         if (!operationActive(session,token) || operationTrace !== trace) return;
@@ -3078,8 +3083,12 @@
       if (!head?.revision) return false;
       let incoming;
       if (prepared?.revision === head.revision) { try { incoming = readReplay(await prepared.head,head.claimId,head.revision); checkedReplayHead(incoming,session); } catch (_) { incoming = null; } }
-      if (!incoming) incoming = readReplay(await request(`/claims/${key(head.claimId)}/replay?through_seq=${head.revision}`),head.claimId,head.revision);
-      checkedReplayHead(incoming,session);
+      if (prepared?.snapshot) { try { incoming = await checkedAtomicOperationHead(await prepared.snapshot,head,session.replayStart,session.operationOpeningAnchor?.state); } catch (_) { incoming = null; } }
+      if (!incoming) {
+        if (prepared && (prepared.controller.signal.aborted || disposed || prepared.token !== epoch || pendingRoute())) throw new Error('The selected operation opening was cancelled.');
+        incoming = readReplay(await request(`/claims/${key(head.claimId)}/replay?through_seq=${head.revision}`),head.claimId,head.revision);
+        checkedReplayHead(incoming,session);
+      }
       // Admission of playback does not paint the head or borrow its context
       // for an earlier prefix. The displayed prefix keeps its own identity.
       session.verifiedReplayStart = checkedReferenceReplayStart(session.replayStart,incoming);
@@ -3622,5 +3631,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });
