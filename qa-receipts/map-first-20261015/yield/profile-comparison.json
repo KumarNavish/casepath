@@ -1,0 +1,351 @@
+{
+  "paths": {
+    "original": "/workspace/casepath-visible-agent-20261015-evidence/qa/final-4x-cold.json",
+    "pre_yield": "/workspace/casepath-map-first-qa-evidence-20261015/map-first-final-4x-cold.json",
+    "yield": "/workspace/casepath-map-first-yield-qa-evidence-20261015/map-first-yield-4x-cold.json"
+  },
+  "same_workload": true,
+  "workload": {
+    "operation_count": 824,
+    "checkpoint_count": 21,
+    "operation_chain_sha256": "ba61ea3ea1ff03faa1002af2b1e85671448e31a3922b11024f5603151b784561",
+    "trace_sha256": "2839da7e334a4f2086fd91cf18b525cdc64c9dbc98d60ac6ac71df62840b850e",
+    "verified_result": {
+      "at": 26633.19999998808,
+      "revision": "48",
+      "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+      "operation_count": 824,
+      "checked": 3
+    }
+  },
+  "rows": {
+    "original": {
+      "candidate": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+      "wall_ms": 83742,
+      "frame": {
+        "count": 4679,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999999272,
+        "p99": 33.399999999999636
+      },
+      "longtask": {
+        "count": 36,
+        "max": 517,
+        "total": 5092
+      },
+      "layout_count": 368,
+      "style_count": 3917,
+      "layout_ms": 943.238,
+      "style_ms": 3409.214,
+      "task_ms": 17819.027000000002,
+      "first_visible_operation_at_ms": 1423.0999999642372,
+      "last_document_at_ms": 50958.5,
+      "decision_at_ms": 82013.69999998808,
+      "pre_first_visible": {
+        "start_ms": 0,
+        "end_ms": 1423.0999999642372,
+        "count": 7,
+        "max_ms": 517,
+        "total_ms": 1006,
+        "tasks": [
+          {
+            "at": 266.39999997615814,
+            "ms": 98
+          },
+          {
+            "at": 558.3999999761581,
+            "ms": 57
+          },
+          {
+            "at": 621.5,
+            "ms": 66
+          },
+          {
+            "at": 730.8999999761581,
+            "ms": 51
+          },
+          {
+            "at": 782.0999999642372,
+            "ms": 121
+          },
+          {
+            "at": 911,
+            "ms": 96
+          },
+          {
+            "at": 1010.3999999761581,
+            "ms": 517
+          }
+        ]
+      },
+      "last_document_to_decision": {
+        "start_ms": 50958.5,
+        "end_ms": 82013.69999998808,
+        "count": 10,
+        "max_ms": 319,
+        "total_ms": 2075,
+        "tasks": [
+          {
+            "at": 53241.69999998808,
+            "ms": 50
+          },
+          {
+            "at": 55608,
+            "ms": 284
+          },
+          {
+            "at": 58791.89999997616,
+            "ms": 268
+          },
+          {
+            "at": 61957.89999997616,
+            "ms": 319
+          },
+          {
+            "at": 65175.30000001192,
+            "ms": 257
+          },
+          {
+            "at": 68342,
+            "ms": 295
+          },
+          {
+            "at": 71541.80000001192,
+            "ms": 275
+          },
+          {
+            "at": 74724.69999998808,
+            "ms": 99
+          },
+          {
+            "at": 77090.5,
+            "ms": 87
+          },
+          {
+            "at": 81872.89999997616,
+            "ms": 141
+          }
+        ]
+      },
+      "completed": {
+        "at": 83255.69999998808,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "assets": {
+        "css": "a8feaa886853f1ab2f6798adf61f9fa6d9b4cc53197e2395ed6d642a18fabb7c",
+        "js": "b1178e50f8461ea6a0c0ca1d8bb30ecfde85fe016175532cf8ba53bf85928f19"
+      },
+      "errors": []
+    },
+    "pre_yield": {
+      "candidate": "7677fe8f86b61bab3ad73204af5d886afe1e4e11",
+      "wall_ms": 26447,
+      "frame": {
+        "count": 1291,
+        "p50": 16.699999999999818,
+        "p95": 16.799999999999272,
+        "p99": 66.69999999999999
+      },
+      "longtask": {
+        "count": 21,
+        "max": 1583,
+        "total": 4270
+      },
+      "layout_count": 180,
+      "style_count": 1108,
+      "layout_ms": 545.781,
+      "style_ms": 1245.181,
+      "task_ms": 8489.098,
+      "first_visible_operation_at_ms": 1301.800000011921,
+      "last_document_at_ms": 21526.599999964237,
+      "decision_at_ms": 24870.30000001192,
+      "pre_first_visible": {
+        "start_ms": 0,
+        "end_ms": 1301.800000011921,
+        "count": 6,
+        "max_ms": 471,
+        "total_ms": 880,
+        "tasks": [
+          {
+            "at": 217,
+            "ms": 120
+          },
+          {
+            "at": 453.80000001192093,
+            "ms": 50
+          },
+          {
+            "at": 595.6999999880791,
+            "ms": 63
+          },
+          {
+            "at": 716.1999999880791,
+            "ms": 106
+          },
+          {
+            "at": 829.5999999642372,
+            "ms": 70
+          },
+          {
+            "at": 901.8999999761581,
+            "ms": 471
+          }
+        ]
+      },
+      "last_document_to_decision": {
+        "start_ms": 21526.599999964237,
+        "end_ms": 24870.30000001192,
+        "count": 1,
+        "max_ms": 1583,
+        "total_ms": 1583,
+        "tasks": [
+          {
+            "at": 23289,
+            "ms": 1583
+          }
+        ]
+      },
+      "completed": {
+        "at": 26120.5,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "assets": {
+        "css": "404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87",
+        "js": "d741a1af6bf769f243cd0d961f724222544046e6bb959cf9c0ffdc59b5c35440"
+      },
+      "errors": []
+    },
+    "yield": {
+      "candidate": "2908c2dedeb82bc45a969d65e3c956b57c8c21fe",
+      "wall_ms": 26846,
+      "frame": {
+        "count": 1310,
+        "p50": 16.699999999999818,
+        "p95": 16.80000000000109,
+        "p99": 133.29999999999927
+      },
+      "longtask": {
+        "count": 36,
+        "max": 261,
+        "total": 3465
+      },
+      "layout_count": 188,
+      "style_count": 1110,
+      "layout_ms": 535.0559999999999,
+      "style_ms": 1256.735,
+      "task_ms": 8977.778,
+      "first_visible_operation_at_ms": 1876.800000011921,
+      "last_document_at_ms": 22230.80000001192,
+      "decision_at_ms": 25395.69999998808,
+      "pre_first_visible": {
+        "start_ms": 0,
+        "end_ms": 1876.800000011921,
+        "count": 10,
+        "max_ms": 261,
+        "total_ms": 1024,
+        "tasks": [
+          {
+            "at": 378.80000001192093,
+            "ms": 96
+          },
+          {
+            "at": 593.9000000357628,
+            "ms": 56
+          },
+          {
+            "at": 700.9000000357628,
+            "ms": 67
+          },
+          {
+            "at": 772.3000000119209,
+            "ms": 65
+          },
+          {
+            "at": 956.9000000357628,
+            "ms": 69
+          },
+          {
+            "at": 1026.300000011921,
+            "ms": 138
+          },
+          {
+            "at": 1174,
+            "ms": 89
+          },
+          {
+            "at": 1267.699999988079,
+            "ms": 261
+          },
+          {
+            "at": 1549.199999988079,
+            "ms": 98
+          },
+          {
+            "at": 1791.1000000238419,
+            "ms": 85
+          }
+        ]
+      },
+      "last_document_to_decision": {
+        "start_ms": 22230.80000001192,
+        "end_ms": 25395.69999998808,
+        "count": 7,
+        "max_ms": 142,
+        "total_ms": 810,
+        "tasks": [
+          {
+            "at": 24042.600000023842,
+            "ms": 123
+          },
+          {
+            "at": 24254.600000023842,
+            "ms": 123
+          },
+          {
+            "at": 24464,
+            "ms": 142
+          },
+          {
+            "at": 24681.900000035763,
+            "ms": 100
+          },
+          {
+            "at": 24858.69999998808,
+            "ms": 129
+          },
+          {
+            "at": 25064.5,
+            "ms": 115
+          },
+          {
+            "at": 25317.5,
+            "ms": 78
+          }
+        ]
+      },
+      "completed": {
+        "at": 26633.19999998808,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "assets": {
+        "css": "404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87",
+        "js": "2a5e229f4a316bb68392c124b76cf89caafe263c47724d79f9991f9b7845fa30"
+      },
+      "errors": []
+    }
+  },
+  "disclosure": "One authorized changed4x run, no extra iterations. Existing native824ops21CP. p95 unchanged and maximum long task reduced, but p99 and longtaskcount worsened; no universal smoothness claim. Phase partitions use observed operation mutation timestamps, not exact animation callbacks. Original profileURL query cachehash differs from fulfilled assethash; served body SHA above is authoritative."
+}

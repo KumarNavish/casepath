@@ -1,0 +1,20 @@
+▶ map first native: requested viewports keep controls usable and real inspection holds until Resume
+  ✔ 1280x800 (5574.415535ms)
+  ✔ 1428x771 (5644.306264ms)
+  ✔ 1360x900 (5415.908753ms)
+  ✔ 390x844 (5295.528901ms)
+✔ map first native: requested viewports keep controls usable and real inspection holds until Resume (23169.596253ms)
+▶ map first native: reduced motion reaches the exact checked result without pending flights or hidden landings
+  ✔ reduced at entry (2366.919566ms)
+  ✔ reduced during actual reading (2469.149072ms)
+✔ map first native: reduced motion reaches the exact checked result without pending flights or hidden landings (4861.029855ms)
+✔ map first native: a late valid old operation response cannot replace a newly inspected recorded case (3727.065128ms)
+✔ map first native: default live transport remains the first bounded GET (2897.401072ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 35113.535994

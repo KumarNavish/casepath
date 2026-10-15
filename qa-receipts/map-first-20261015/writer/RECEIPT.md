@@ -87,3 +87,21 @@ Pushed worker branch clean and frozen for final QA/integration. No pacing, motio
 CSS-only commit `7677fe8f86b61bab3ad73204af5d886afe1e4e11` restores the settled legal-basis text, reused-procedure paragraph and reused-version button to 18px. Map nodes/facts/source cards remain 16px; outcome remains 20px. No geometry assertions or tests weakened. CSS SHA256 is now `404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87`; JS unchanged (`d741a1af6bf769f243cd0d961f724222544046e6bb959cf9c0ffdc59b5c35440`).
 
 The same focused module command was run once for this delta with output redirected to `outcome-font-focused.log`: exit 0, 211/211 passed, 0 failed/skipped. Worker branch pushed and clean, frozen for final geometry/performance acceptance.
+
+## Authorized browser-task yield after existing 4x diagnosis
+
+Read-only inspection of the existing native trace found 549 operations (seq275–823; 991,744 canonical UTF8 bytes total), seven checkpoints and six changed render identities after the last genuine document check. Largest individual tail operation was 18,237 bytes; checkpoint reconstructed states were 449,540–564,058 bytes. Existing QA CPU sampling identified many short checked-operation/checkpoint/render groups rather than one one-second invocation. No writer browser/performance rerun was made for that diagnosis.
+
+After explicit Mac/root authorization, commit `2908c2dedeb82bc45a969d65e3c956b57c8c21fe` adds one private 10ms elapsed-budget helper and a common post-verification loop call. It yields through native `scheduler.yield()` or a `setTimeout(0)` fallback, without requestAnimationFrame or DOM polling. After the browser task it rechecks active/owning trace, then the existing pause/inspection/visibility gate and active state before another frame. Native frame order, hashes, source validation and accepted state remain unchanged. Skip/reduced-motion paths retain their existing presentation branches and use the common verified-frame yield. A single expensive frame can still exceed 10ms; this change bounds accumulation between frames.
+
+Three new focused regressions exercise real checked-operation order plus rejected hashes, native scheduler precedence, timer-fallback pause/visibility holds and cancellation/stale-route gates. The focused command ran once after this delta, exit 0, 214/214 passed, 0 failed/skipped. Raw output `task-yield-focused.log`.
+
+```bash
+HOME=/workspace/map-writer-home TMPDIR=/workspace/map-writer-tmp TMP=/workspace/map-writer-tmp TEMP=/workspace/map-writer-tmp node --test casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/unified-product-v1.test.cjs > /workspace/casepath-map-first-writer-evidence-20261015/task-yield-focused.log 2>&1
+```
+
+JS SHA256: `2a5e229f4a316bb68392c124b76cf89caafe263c47724d79f9991f9b7845fa30`.
+CSS remains `404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87`.
+Worker branch pushed and clean at `2908c2d`; integration owner will cherry-pick this scoped delta onto the retained gate base and owns the new quiet 4x/full-gate window.
+
+Incidental tooling failures during diagnosis/implementation: a read-only ad hoc profile-summary command exited1 with a JavaScript syntax error (`for(const[id,us]ofself)` missing a space); existing QA had already produced the correct sampled grouping and its evidence was reused. The first `apply_patch` for the yield helper failed atomically because its export-line context expected a partial line; no files changed. Corrected patch matched the existing full source. Neither was a product-test failure.

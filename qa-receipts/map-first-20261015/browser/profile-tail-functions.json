@@ -1,0 +1,118 @@
+{
+  "scope": "Existing CPU profile only, one approximate 23.0–25.0 second window relative to Profiler.start; navigation/performance.now offset not captured. Not an exact function-level long-task attribution.",
+  "profile_start_us": 517538892303,
+  "profile_end_us": 517565239330,
+  "profile_duration_ms": 26347.027,
+  "sample_end_ms": 26345.3440000001,
+  "window_ms": [
+    23000,
+    25000
+  ],
+  "top": [
+    {
+      "function": "(root)",
+      "url": "",
+      "line": 0,
+      "self_ms": 0,
+      "total_ms": 2000
+    },
+    {
+      "function": "startOperations",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 2736,
+      "self_ms": 18,
+      "total_ms": 1266
+    },
+    {
+      "function": "renderClaim",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 2142,
+      "self_ms": 228.2,
+      "total_ms": 482
+    },
+    {
+      "function": "(idle)",
+      "url": "",
+      "line": 0,
+      "self_ms": 309.6,
+      "total_ms": 309.6
+    },
+    {
+      "function": "checkedOperationCheckpoint",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 1545,
+      "self_ms": 3.7,
+      "total_ms": 218.7
+    },
+    {
+      "function": "checkedOperation",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 1150,
+      "self_ms": 5.6,
+      "total_ms": 179.4
+    },
+    {
+      "function": "canonicalJSON",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 1085,
+      "self_ms": 11.8,
+      "total_ms": 178.6
+    },
+    {
+      "function": "(anonymous)",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 1087,
+      "self_ms": 1.2,
+      "total_ms": 166.8
+    },
+    {
+      "function": "canonicalJSON",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 1085,
+      "self_ms": 19.5,
+      "total_ms": 165.6
+    },
+    {
+      "function": "checkedOperation",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 1150,
+      "self_ms": 29.7,
+      "total_ms": 147.8
+    },
+    {
+      "function": "(anonymous)",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 1087,
+      "self_ms": 4.8,
+      "total_ms": 130.7
+    },
+    {
+      "function": "canonicalJSON",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 1085,
+      "self_ms": 15.8,
+      "total_ms": 125.9
+    },
+    {
+      "function": "digest",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 1080,
+      "self_ms": 123.6,
+      "total_ms": 123.6
+    },
+    {
+      "function": "canonicalJSON",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 1085,
+      "self_ms": 12.8,
+      "total_ms": 122.2
+    },
+    {
+      "function": "retainOperationSource",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "line": 2592,
+      "self_ms": 115.8,
+      "total_ms": 115.8
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "host": "656813ef2295",
+  "cwd": "/workspace/casepath-map-first-qa-20261015",
+  "argv": [
+    "node",
+    "--test",
+    "--test-name-pattern=^map first native: (requested viewports|reduced motion|a late valid old|default live)",
+    "/workspace/casepath-map-first-yield-qa-evidence-20261015/map-first-native.test.cjs"
+  ],
+  "environment": {
+    "HOME": "/workspace/mqh",
+    "TMPDIR": "/workspace/mqt",
+    "TMP": "/workspace/mqt",
+    "TEMP": "/workspace/mqt",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "CASEPATH_BROWSER_JS_ASSET": "/workspace/casepath-map-first-yield-qa-evidence-20261015/assets/2908c2d.js",
+    "CASEPATH_BROWSER_CSS_ASSET": "/workspace/casepath-map-first-yield-qa-evidence-20261015/assets/2908c2d.css",
+    "CASEPATH_CANDIDATE_COMMIT": "2908c2dedeb82bc45a969d65e3c956b57c8c21fe",
+    "CASEPATH_QA_COMMIT": "27e7419dcf7d47fac15da4fe43176b01c33e8ea4",
+    "CASEPATH_MAP_FIRST_NATIVE_URL": "http://127.0.0.1:4189",
+    "CASEPATH_MAP_FIRST_RECORDED": "1",
+    "CASEPATH_OPERATION_NATIVE_FIXTURE": "/workspace/casepath-reference-polish-evidence-20261013/native-v1-v2-reference.json",
+    "CASEPATH_OPERATION_NATIVE_SIDECARS": "/workspace/operation-runtime-evidence/native-sidecars",
+    "CASEPATH_FOCUSED_RECEIPTS": "/workspace/casepath-map-first-yield-qa-evidence-20261015/controls"
+  },
+  "runner_sha256": "b5a20ca6d06d7646fa4f09b0e6af69de18f9e9adbe0c10bfcfffbb400a850140",
+  "scope": "Existing affected actual controls/pause/skip/reduced/late-response/default-live/hash checks, only after profile finishes."
+}

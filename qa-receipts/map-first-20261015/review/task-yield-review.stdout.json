@@ -1,0 +1,128 @@
+{
+  "status": "PASS: no introduced blocking correctness finding in bounded immutable yield delta",
+  "writer_commit": "2908c2dedeb82bc45a969d65e3c956b57c8c21fe",
+  "writer_parent": "7677fe8f86b61bab3ad73204af5d886afe1e4e11",
+  "integrated_root_commit": "1b493f3cbaae18131751c015c5d428fd32911932",
+  "javascript_sha256": "2a5e229f4a316bb68392c124b76cf89caafe263c47724d79f9991f9b7845fa30",
+  "css_sha256": "404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87",
+  "review_checkout": "local no-checkout clone; immutable Git objects only",
+  "preexisting_production_js_identical_after_exact_yield_insertions_removed": true,
+  "native_validators_crypto_order_source_authority_and_existing_lifecycle_bytes_unchanged": true,
+  "common_yield_only_after_complete_verified_binding_operation_or_checkpoint": true,
+  "result_error_unknown_and_rejected_frames_exit_before_yield": true,
+  "integrated_assets_identical": true,
+  "focused_cases": [
+    {
+      "case": "pause",
+      "held_after_task": true,
+      "resumed_after_actual_gate": true,
+      "task_delay": null
+    },
+    {
+      "case": "hidden",
+      "held_after_task": true,
+      "resumed_after_actual_gate": true,
+      "task_delay": null
+    },
+    {
+      "case": "inspection",
+      "held_after_task": true,
+      "resumed_after_actual_gate": true,
+      "task_delay": null
+    },
+    {
+      "case": "dialog",
+      "held_after_task": true,
+      "resumed_after_actual_gate": true,
+      "task_delay": null
+    },
+    {
+      "case": "recordDialog",
+      "held_after_task": true,
+      "resumed_after_actual_gate": true,
+      "task_delay": null
+    },
+    {
+      "case": "inspection-fallback",
+      "held_after_task": true,
+      "resumed_after_actual_gate": true,
+      "task_delay": 0
+    },
+    {
+      "case": "abort-during-task",
+      "continued": false,
+      "gates": 0
+    },
+    {
+      "case": "stale-during-task",
+      "continued": false,
+      "gates": 0
+    },
+    {
+      "case": "route-during-task",
+      "continued": false,
+      "gates": 0
+    },
+    {
+      "case": "disposed-during-task",
+      "continued": false,
+      "gates": 0
+    },
+    {
+      "case": "owner-during-task",
+      "continued": false,
+      "gates": 0
+    },
+    {
+      "case": "claim-during-task",
+      "continued": false,
+      "gates": 0
+    },
+    {
+      "case": "abort-during-gate",
+      "continued": false,
+      "gates": 1
+    },
+    {
+      "case": "stale-during-gate",
+      "continued": false,
+      "gates": 1
+    },
+    {
+      "case": "route-during-gate",
+      "continued": false,
+      "gates": 1
+    },
+    {
+      "case": "disposed-during-gate",
+      "continued": false,
+      "gates": 1
+    },
+    {
+      "case": "claim-during-gate",
+      "continued": false,
+      "gates": 1
+    },
+    {
+      "case": "skip",
+      "verified_processing_continues": true,
+      "presentation_timer_count": 0
+    },
+    {
+      "case": "reduced",
+      "verified_processing_continues": true,
+      "presentation_timer_count": 0
+    },
+    {
+      "case": "budget-and-task-failure",
+      "below_10ms_no_task": true,
+      "inactive_no_task": true,
+      "rejection_propagates_to_existing_outer_catch": true
+    }
+  ],
+  "limits": [
+    "No product or test writes; this artifact exercises immutable exported helper with exact production operationActive/operationGate source.",
+    "No browser, rendering, native fixture replay, network, provider, production2.0 or performance acceptance claim in this check. Existing native receipts remain applicable because their validators and authority code are byte-identical.",
+    "Ten milliseconds is a between-frame budget, not a cap on an individual hash, checkpoint, operation or render. scheduler.yield rejection propagates to the unchanged stream failure handling."
+  ]
+}

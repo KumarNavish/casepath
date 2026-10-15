@@ -1,0 +1,38 @@
+{
+  "superseded_canonical": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "reason": "4x profile found late accumulated verification drain; narrow performance correction authorized",
+  "partial_gate_evidence_branch": "qa-receipts/2a9aa89f-20261015",
+  "partial_gate_commit": "b674a924304139c4d569367753ddec1c9f49f759",
+  "partial_gate_status": "INTERRUPTED_SUPERSEDED; never green; shards1/2 exit2,3 exit-15,4\u20136 unstarted; all raw receipts retained",
+  "authored_fix_commit": "1b493f3cbaae18131751c015c5d428fd32911932",
+  "writer_fix_commit": "2908c2dedeb82bc45a969d65e3c956b57c8c21fe",
+  "source_js_sha256": "2a5e229f4a316bb68392c124b76cf89caafe263c47724d79f9991f9b7845fa30",
+  "source_css_sha256": "404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87",
+  "focused_module_passed": 214,
+  "affected_native_browser_passed": 10,
+  "profile_runs_for_fix": 1,
+  "profile_workload": "same824nativeoperations21checkpoints/exactstate/event/operationchain/tracehash",
+  "max_longtask_ms_before_after": [
+    1583,
+    261
+  ],
+  "late_document_to_decision_max_ms_before_after": [
+    1583,
+    142
+  ],
+  "frame_p95_ms_before_after": [
+    16.8,
+    16.8
+  ],
+  "frame_p99_ms_before_after": [
+    66.7,
+    133.3
+  ],
+  "scope_limit": "Individual checkpoint/render work can exceed10ms; no universal smoothness claim. No production/public browser verification. Mac must reseal; next gate must cover exact newSHA freshly.",
+  "independent_review": {
+    "result": "PASS",
+    "focused_lifecycle_cases": 20,
+    "receipt": "review/task-yield-review.stdout.json",
+    "scope": "Immutable production delta and actual gate/active source lifecycle; pre-existing production JS byte-identical after removing only the budget-yield insertions."
+  }
+}
