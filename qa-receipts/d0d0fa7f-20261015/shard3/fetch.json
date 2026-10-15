@@ -1,0 +1,37 @@
+{
+  "candidate": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "normal_git_directory": true,
+  "local_fetch_source": "/workspace/casepath-map-first-stage-20261015",
+  "source_normal_git_directory": true,
+  "head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "status": "",
+  "commands": [
+    [
+      "git",
+      "fetch",
+      "--no-tags",
+      "/workspace/casepath-map-first-stage-20261015",
+      "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b"
+    ],
+    [
+      "git",
+      "checkout",
+      "--detach",
+      "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b"
+    ]
+  ],
+  "transport_names_preserved": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "temporary_environment": {
+    "HOME": "/workspace/d0h3",
+    "TMPDIR": "/workspace/d0t3",
+    "TMP": "/workspace/d0t3",
+    "TEMP": "/workspace/d0t3"
+  },
+  "finished_epoch": 1792067263.548494
+}

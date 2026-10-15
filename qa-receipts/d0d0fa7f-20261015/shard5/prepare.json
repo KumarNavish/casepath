@@ -1,0 +1,51 @@
+{
+  "candidate": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "cwd": "/workspace/casepath-release-ae0-shard5",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/d0h5",
+    "TMPDIR": "/workspace/d0t5",
+    "TMP": "/workspace/d0t5",
+    "TEMP": "/workspace/d0t5",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/shard5/pycache",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "UV_PYTHON_INSTALL_DIR": "/workspace/.local/share/uv/python"
+  },
+  "started_epoch": 1792067283.54561,
+  "before_head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "before_status": "",
+  "manifest_sha256": "cf3bfbe377fb6bd2a3dd4f44f3c3ec1c3fce8864ba19840b822abf30fa1bdd8f",
+  "canonical_fetched_head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "canonical_fetch_source": "/workspace/casepath-map-first-stage-20261015",
+  "canonical_local_fetch_log": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/shard5/fetch.log",
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "internal_launcher_env_contract": "Exact source preserved: stdlib env-i probes omit temp aliases; locked/product env-i uses controlled runtime TMPDIR only.",
+  "exit_code": 0,
+  "finished_epoch": 1792067292.1442378,
+  "after_head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "after_status": "",
+  "duration_seconds": 8.598627805709839
+}

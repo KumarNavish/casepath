@@ -1,0 +1,68 @@
+{
+  "candidate": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "before_free_bytes": 4400357376,
+  "after_free_bytes": 3674177536,
+  "minimum_headroom_bytes": 3221225472,
+  "adequate_headroom": true,
+  "prepared": [
+    "/workspace/casepath-release-ae0-inventory",
+    "/workspace/casepath-release-ae0-shard1",
+    "/workspace/casepath-release-ae0-shard2",
+    "/workspace/casepath-release-ae0-shard3",
+    "/workspace/casepath-release-ae0-shard4",
+    "/workspace/casepath-release-ae0-shard5",
+    "/workspace/casepath-release-ae0-shard6"
+  ],
+  "tests_launched": false,
+  "results": [
+    {
+      "cwd": "/workspace/casepath-release-ae0-inventory",
+      "exit_code": 0,
+      "after_head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+      "after_status": "",
+      "duration_seconds": 11.463994979858398
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard1",
+      "exit_code": 0,
+      "after_head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+      "after_status": "",
+      "duration_seconds": 11.4285409450531
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard2",
+      "exit_code": 0,
+      "after_head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+      "after_status": "",
+      "duration_seconds": 11.503650188446045
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard3",
+      "exit_code": 0,
+      "after_head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+      "after_status": "",
+      "duration_seconds": 8.695444107055664
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard4",
+      "exit_code": 0,
+      "after_head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+      "after_status": "",
+      "duration_seconds": 8.831216812133789
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard5",
+      "exit_code": 0,
+      "after_head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+      "after_status": "",
+      "duration_seconds": 8.598627805709839
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard6",
+      "exit_code": 0,
+      "after_head": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+      "after_status": "",
+      "duration_seconds": 7.6076319217681885
+    }
+  ]
+}

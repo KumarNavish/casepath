@@ -1,0 +1,38 @@
+{
+  "candidate": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "scope": "Reuse prior complete normal-clone gate: exact root/SHA/manifest, fresh short HOME/TMP and canonical fetch-source substitutions only; original observer unchanged; no reused test results",
+  "files": [
+    {
+      "source": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/prepare_clones.py",
+      "source_sha256": "2e602a417715b472183b415c29d6caa0f32415993c0d423fa32d3352b11329a6",
+      "adapted": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/harness/prepare_clones.py",
+      "adapted_sha256": "6ccfd3e5322658c822405503cfcc7dab634d1d866b8dcfc30b7dacee6b33e3f0"
+    },
+    {
+      "source": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/run_shard.py",
+      "source_sha256": "3cc49382742d399160605ecf804348d7a2961ded59c3d0eec028edf02ca9dcd8",
+      "adapted": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/harness/run_shard.py",
+      "adapted_sha256": "bd13b23ee29159679273dbb5533b849948902f1a1bd93db25fb348d09a0503b3"
+    },
+    {
+      "source": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/casepath_shard_observer.py",
+      "source_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "adapted": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/harness/casepath_shard_observer.py",
+      "adapted_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+    },
+    {
+      "source": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/verify_prepared_capsules.py",
+      "source_sha256": "321be4dfc5833d52f3c85920fa29a535cebb0406110b90e00b5b680c3ae0ed4f",
+      "adapted": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/harness/verify_prepared_capsules.py",
+      "adapted_sha256": "bac8117dd204d3da4dc9b378f60a8e1136ad8f154ac4c568c2d6b41b52ce15ea"
+    },
+    {
+      "source": "/workspace/casepath-visible-agent-gate-7904c805-20261015/coordinator/coordinator-reconcile.py",
+      "source_sha256": "b975e8ea50509afe69a384eca59aa4ca54dc89e594e6866682e0e8b6b36b65cf",
+      "adapted": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/coordinator/coordinator-reconcile.py",
+      "adapted_sha256": "ab52c218d24a7ecae154c39b1c6802181b2567c7472dfb04c6e6a216c0103101"
+    }
+  ],
+  "maximum_active_heavy": 3,
+  "prior_interrupted_bundle_untouched": "b674a924304139c4d569367753ddec1c9f49f759"
+}

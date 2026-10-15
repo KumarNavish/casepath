@@ -1,0 +1,19 @@
+{
+  "candidate": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "operation": [
+    "git",
+    "ls-remote",
+    "origin",
+    "refs/heads/codex/casepath-causal-experience-integration-20261009"
+  ],
+  "readback": "8887ce1c2b6d693ae83f743764d1c26f8d4834d6\trefs/heads/codex/casepath-causal-experience-integration-20261009\n",
+  "initial_preflight_assertion_exit_code": 1,
+  "full_test_attempts_already_started": true,
+  "source_normal_clones_remain_exact_candidate": true,
+  "needs_diagnosis": false,
+  "recorded_epoch": 1792067424.7594755,
+  "diagnosis": "Existing reusable normal clone origin is local /workspace/casepath-unified-ui, not GitHub. Its old integration ref is not canonical remote authority. Exact frozen SHA fetches used explicit normal root source and remain valid.",
+  "correction": "Read explicit canonical GitHub repository URL via managed proxy; exact integration branch readback is d0d0fa7f.",
+  "canonical_remote_readback": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b\trefs/heads/codex/casepath-causal-experience-integration-20261009\n",
+  "test_attempts_affected": 0
+}
