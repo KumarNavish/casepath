@@ -1,0 +1,10 @@
+AssertionError [ERR_ASSERTION]: each sampled cited work window has an actual visible actor or its exact docked handoff
+    at check (/workspace/casepath-visible-agent-20261015-evidence/qa/native-frames.cjs:13:59)
+    at /workspace/casepath-visible-agent-20261015-evidence/qa/native-frames.cjs:20:256 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

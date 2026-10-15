@@ -1,0 +1,142 @@
+{
+  "candidate": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "baseline": "257eb7615587f63ecf36953deb13e84538b35462",
+  "conditions": {
+    "viewport": {
+      "width": 1360,
+      "height": 900
+    },
+    "reduced_motion": "no-preference",
+    "browser": "isolated Linux Chromium via pinned Playwright",
+    "cache": "new cold browser for each run",
+    "sequence": "baseline1x, baseline4x; final1x, final4x; serialized, no other browser/tests/Gitpack in measurement windows",
+    "stopping": "actual exact verified first result; full same824operation trace",
+    "instrumentation": "same adapted existing profile.cjs; CDP Performance+V8Profiler, rAFintervals and LongTaskobserver"
+  },
+  "conclusion": "More explicit reading/flight pacing increases wall time and total main-thread CPU. The4x rAFp99 is lower, but this is not a CPU optimization and longer pacing changes the frame-quantile denominator. No universal FPS claim.",
+  "limitations": [
+    "One bounded firstcase per condition, not a variance study.",
+    "rAFintervals are observations in this headless Linux condition, not compositor or Mac FPS.",
+    "All runs are local native synthetic GET-only fixtures; provider/network production behavior is untested."
+  ],
+  "pairs": [
+    {
+      "rate": 1,
+      "baseline": {
+        "wall_ms": 48595,
+        "main_cpu_ms": 3137.934,
+        "script_ms": 262.974,
+        "layout_ms": 149.044,
+        "longtask": {
+          "count": 4,
+          "max": 90,
+          "total": 317
+        },
+        "frame": {
+          "count": 2872,
+          "p50": 16.69999999999709,
+          "p95": 16.700000000004366,
+          "p99": 16.80000000000291
+        },
+        "visible_operation_changes": 38,
+        "frame_gaps_ge50ms": 5,
+        "assets": {
+          "css": "92ebb98aa5ac364d57680db9be2321efdc73c7684e4e14c097657d4284631f40",
+          "js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe"
+        }
+      },
+      "final": {
+        "wall_ms": 78510,
+        "main_cpu_ms": 4452.808,
+        "script_ms": 414.563,
+        "layout_ms": 196.83800000000002,
+        "longtask": {
+          "count": 5,
+          "max": 113,
+          "total": 350
+        },
+        "frame": {
+          "count": 4673,
+          "p50": 16.69999999999709,
+          "p95": 16.70000000001164,
+          "p99": 16.80000000000291
+        },
+        "visible_operation_changes": 38,
+        "frame_gaps_ge50ms": 3,
+        "assets": {
+          "css": "a8feaa886853f1ab2f6798adf61f9fa6d9b4cc53197e2395ed6d642a18fabb7c",
+          "js": "b1178e50f8461ea6a0c0ca1d8bb30ecfde85fe016175532cf8ba53bf85928f19"
+        }
+      },
+      "main_cpu_change_percent": 41.90253842177687,
+      "wall_change_percent": 61.55983125835991,
+      "workload": {
+        "operations": 824,
+        "checkpoints": 21,
+        "trace_sha256": "2839da7e334a4f2086fd91cf18b525cdc64c9dbc98d60ac6ac71df62840b850e",
+        "operation_chain_sha256": "ba61ea3ea1ff03faa1002af2b1e85671448e31a3922b11024f5603151b784561",
+        "result_state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "fixture_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5"
+      }
+    },
+    {
+      "rate": 4,
+      "baseline": {
+        "wall_ms": 52674,
+        "main_cpu_ms": 10930.284,
+        "script_ms": 780.803,
+        "layout_ms": 628.673,
+        "longtask": {
+          "count": 27,
+          "max": 486,
+          "total": 4258
+        },
+        "frame": {
+          "count": 2861,
+          "p50": 16.69999999999709,
+          "p95": 16.799999999999272,
+          "p99": 66.59999999999991
+        },
+        "visible_operation_changes": 38,
+        "frame_gaps_ge50ms": 36,
+        "assets": {
+          "css": "92ebb98aa5ac364d57680db9be2321efdc73c7684e4e14c097657d4284631f40",
+          "js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe"
+        }
+      },
+      "final": {
+        "wall_ms": 83742,
+        "main_cpu_ms": 17819.027000000002,
+        "script_ms": 1495.4089999999999,
+        "layout_ms": 943.238,
+        "longtask": {
+          "count": 36,
+          "max": 517,
+          "total": 5092
+        },
+        "frame": {
+          "count": 4679,
+          "p50": 16.69999999999709,
+          "p95": 16.799999999999272,
+          "p99": 33.399999999999636
+        },
+        "visible_operation_changes": 38,
+        "frame_gaps_ge50ms": 35,
+        "assets": {
+          "css": "a8feaa886853f1ab2f6798adf61f9fa6d9b4cc53197e2395ed6d642a18fabb7c",
+          "js": "b1178e50f8461ea6a0c0ca1d8bb30ecfde85fe016175532cf8ba53bf85928f19"
+        }
+      },
+      "main_cpu_change_percent": 63.02437338316187,
+      "wall_change_percent": 58.981660781410184,
+      "workload": {
+        "operations": 824,
+        "checkpoints": 21,
+        "trace_sha256": "2839da7e334a4f2086fd91cf18b525cdc64c9dbc98d60ac6ac71df62840b850e",
+        "operation_chain_sha256": "ba61ea3ea1ff03faa1002af2b1e85671448e31a3922b11024f5603151b784561",
+        "result_state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "fixture_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5"
+      }
+    }
+  ]
+}

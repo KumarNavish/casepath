@@ -1,0 +1,81 @@
+{
+  "claim_id": "clm_314f2d309fea25e6",
+  "phase": "completed",
+  "map": {
+    "maxHeight": "none",
+    "overflowX": "visible",
+    "overflowY": "visible",
+    "summary": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.",
+    "articles": [
+      "259",
+      "259a",
+      "259d"
+    ],
+    "reuse": [],
+    "clipped": []
+  },
+  "checkoutCommit": "4d5e4e1637e8fa6290f2b57061cd8bafbc6f8573",
+  "testSha256": "e2921d49da8b34db4e806e7d22d4c7de8a28825a2f042632f0c79c3ce164524b",
+  "requests": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "prefixTransfers": [],
+  "browserRequests": [
+    {
+      "url": "http://localhost:41999/",
+      "method": "GET"
+    }
+  ],
+  "javascriptErrors": [],
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "injectedAssets": {
+    "javascript": "b1178e50f8461ea6a0c0ca1d8bb30ecfde85fe016175532cf8ba53bf85928f19",
+    "css": "a8feaa886853f1ab2f6798adf61f9fa6d9b4cc53197e2395ed6d642a18fabb7c"
+  },
+  "assets": {
+    "javascript": "b1178e50f8461ea6a0c0ca1d8bb30ecfde85fe016175532cf8ba53bf85928f19",
+    "css": "a8feaa886853f1ab2f6798adf61f9fa6d9b4cc53197e2395ed6d642a18fabb7c"
+  }
+}

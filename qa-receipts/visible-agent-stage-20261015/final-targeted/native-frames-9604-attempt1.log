@@ -1,0 +1,10 @@
+AssertionError [ERR_ASSERTION]: actual moving or locked readhead intersects an actual pinned line after source scrolling
+    at check (/workspace/casepath-visible-agent-20261015-evidence/qa/native-frames.cjs:12:295)
+    at /workspace/casepath-visible-agent-20261015-evidence/qa/native-frames.cjs:20:278 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

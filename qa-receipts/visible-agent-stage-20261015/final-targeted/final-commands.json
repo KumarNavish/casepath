@@ -1,0 +1,105 @@
+{
+  "cwd": "/workspace",
+  "runs": [
+    {
+      "name": "matched baseline1x then4x",
+      "environment": {
+        "HOME": "/workspace/qh",
+        "TMPDIR": "/workspace/qt",
+        "TMP": "/workspace/qt",
+        "TEMP": "/workspace/qt"
+      },
+      "argv": [
+        "node",
+        "/workspace/casepath-visible-agent-20261015-evidence/qa/profile.cjs",
+        "baseline",
+        "1,4"
+      ],
+      "log": "baseline-perf.log",
+      "exit_code": 0
+    },
+    {
+      "name": "matched final1x then4x",
+      "environment": {
+        "HOME": "/workspace/qh",
+        "TMPDIR": "/workspace/qt",
+        "TMP": "/workspace/qt",
+        "TEMP": "/workspace/qt",
+        "CASEPATH_BROWSER_JS_ASSET": "/workspace/casepath-visible-agent-20261015-evidence/assets/final.js",
+        "CASEPATH_BROWSER_CSS_ASSET": "/workspace/casepath-visible-agent-20261015-evidence/assets/final.css",
+        "CASEPATH_CANDIDATE_COMMIT": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+        "CASEPATH_QA_COMMIT": "9c55d52ae8e717c502087903af0db0e933555227"
+      },
+      "argv": [
+        "node",
+        "/workspace/casepath-visible-agent-20261015-evidence/qa/profile.cjs",
+        "final",
+        "1,4"
+      ],
+      "log": "final-perf.log",
+      "exit_code": 0
+    },
+    {
+      "name": "nine native operation/checkpoint bindings and exactheads",
+      "environment": {
+        "HOME": "/workspace/qh",
+        "TMPDIR": "/workspace/qt",
+        "TMP": "/workspace/qt",
+        "TEMP": "/workspace/qt",
+        "CASEPATH_CANDIDATE_COMMIT": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+        "CASEPATH_BROWSER_JS_ASSET": "/workspace/casepath-visible-agent-20261015-evidence/assets/final.js",
+        "CASEPATH_OPERATION_NATIVE_FIXTURE": "/workspace/casepath-reference-polish-evidence-20261013/native-v1-v2-reference.json",
+        "CASEPATH_OPERATION_NATIVE_SIDECARS": "/workspace/operation-runtime-evidence/native-sidecars"
+      },
+      "argv": [
+        "node",
+        "/workspace/casepath-visible-agent-20261015-evidence/qa/native-nine-verifier.cjs"
+      ],
+      "log": "native-nine-verifier-final.log",
+      "exit_code": 0
+    },
+    {
+      "name": "nine actual native heads/citations/Knowledge: failed first oracle contract comparison",
+      "environment": {
+        "HOME": "/workspace/qh",
+        "TMPDIR": "/workspace/qt",
+        "TMP": "/workspace/qt",
+        "TEMP": "/workspace/qt",
+        "CASEPATH_BROWSER_JS_ASSET": "/workspace/casepath-visible-agent-20261015-evidence/assets/final.js",
+        "CASEPATH_BROWSER_CSS_ASSET": "/workspace/casepath-visible-agent-20261015-evidence/assets/final.css",
+        "CASEPATH_CANDIDATE_COMMIT": "7904c8050a10568d4168c92b77ee55ec1d7b2b13"
+      },
+      "argv": [
+        "node",
+        "/workspace/casepath-visible-agent-20261015-evidence/qa/all-nine-knowledge-attempt1.cjs"
+      ],
+      "log": "all-nine-knowledge-attempt1.log",
+      "exit_code": 1
+    },
+    {
+      "name": "nine actual native heads/citations/Knowledge: corrected explicit Unicode operation-pin comparison",
+      "environment": {
+        "HOME": "/workspace/qh",
+        "TMPDIR": "/workspace/qt",
+        "TMP": "/workspace/qt",
+        "TEMP": "/workspace/qt",
+        "CASEPATH_BROWSER_JS_ASSET": "/workspace/casepath-visible-agent-20261015-evidence/assets/final.js",
+        "CASEPATH_BROWSER_CSS_ASSET": "/workspace/casepath-visible-agent-20261015-evidence/assets/final.css",
+        "CASEPATH_CANDIDATE_COMMIT": "7904c8050a10568d4168c92b77ee55ec1d7b2b13"
+      },
+      "argv": [
+        "node",
+        "/workspace/casepath-visible-agent-20261015-evidence/qa/all-nine-knowledge.cjs"
+      ],
+      "log": "all-nine-knowledge-final-attempt2.log",
+      "exit_code": 0
+    }
+  ],
+  "redirection": "Each command stdout and stderr were redirected to the named log under this directory.",
+  "fixture": "Protected existing GET-only127.0.0.1:4189; all browser routes reject nonGET/HEAD and foreign origins.",
+  "notes": [
+    "No new browser dependencies, provider/production calls, source changes, fullsuite, seal or live publication by QA.",
+    "Additional prepared native-controls.cjs probes after the e619 run were not executed; final validation does not claim those extra probes passed.",
+    "Source callbacks and final native geometry were checked by the actual final40-frame sequence; earlier lifecycle evidence remains bound to its e619 asset receipt."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "status": "Oracle contract mismatch; no product source change",
+  "failed_attempt": "all-nine-knowledge-attempt1.cjs/.json/.log",
+  "difference": "Native operation pin adds offset_unit=unicode_code_point; accepted fact citation omits that one contract field. Artifact identity, original/text hashes, exact Unicode range and quote are equal.",
+  "correction": "Require explicit Unicode offset unit; compare every remaining field exactly to accepted fact citation; compare complete DOM pin exactly to native sufficient document.check source.",
+  "scope": "Only temporary QA oracle; repository and authority checks unchanged."
+}

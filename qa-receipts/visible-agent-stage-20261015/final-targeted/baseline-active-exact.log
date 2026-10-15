@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: visible operation stage: transport follows the exact accepted content at 1280x800
+not ok 1 - visible operation stage: transport follows the exact accepted content at 1280x800
+  ---
+  duration_ms: 13957.080065
+  type: 'test'
+  location: '/workspace/casepath-visible-agent-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:944:73'
+  failureType: 'testCodeFailure'
+  error: 'active transport participates in the document flow'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-visible-agent-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:969:9)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14463.548589

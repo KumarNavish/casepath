@@ -1,0 +1,411 @@
+{
+  "disclosure": "No new browser run. Exact continuous real visible-attention gap cannot be determined: the capture records animation creation/scheduled duration, but no cancellation/removal intervals for solid locked heads or static docked chips. Two-second screenshots cannot supply subframe visibility bounds. Recorded dataset intervals and animation-start latencies below are narrower observations, not a maximum real visual-gap claim.",
+  "maximum_recorded_cited_operation_to_first_head_animation_ms": {
+    "operation": "op_4f935af1785d232600fc72be1eebcab3",
+    "kind": "fact.extract",
+    "cited": true,
+    "entry_at": 29972.69999998808,
+    "next_at": 31824.600000023842,
+    "dataset_interval_ms": 1851.9000000357628,
+    "first_head_animation_at": 30383.100000023842,
+    "recorded_head_start_latency_ms": 410.4000000357628
+  },
+  "uncited_source_intervals": [
+    {
+      "operation": "op_d5939b2d68c20a2636fe628befc35784",
+      "kind": "source.open",
+      "cited": false,
+      "entry_at": 549.8000000119209,
+      "next_at": 958.8999999761581,
+      "dataset_interval_ms": 409.0999999642372,
+      "recorded_head_start_latency_ms": null
+    },
+    {
+      "operation": "op_b13a3045a34649de925f1e9ccfd57e0d",
+      "kind": "source.open",
+      "cited": false,
+      "entry_at": 10526,
+      "next_at": 10935.899999976158,
+      "dataset_interval_ms": 409.89999997615814,
+      "recorded_head_start_latency_ms": null
+    },
+    {
+      "operation": "op_2049d0a24629fa4a659b417200b67353",
+      "kind": "source.open",
+      "cited": false,
+      "entry_at": 17509.19999998808,
+      "next_at": 17918.80000001192,
+      "dataset_interval_ms": 409.60000002384186,
+      "recorded_head_start_latency_ms": null
+    }
+  ],
+  "all_uncited_operation_intervals": [
+    {
+      "operation": "op_d5939b2d68c20a2636fe628befc35784",
+      "kind": "source.open",
+      "cited": false,
+      "entry_at": 549.8000000119209,
+      "next_at": 958.8999999761581,
+      "dataset_interval_ms": 409.0999999642372,
+      "recorded_head_start_latency_ms": null
+    },
+    {
+      "operation": "op_b13a3045a34649de925f1e9ccfd57e0d",
+      "kind": "source.open",
+      "cited": false,
+      "entry_at": 10526,
+      "next_at": 10935.899999976158,
+      "dataset_interval_ms": 409.89999997615814,
+      "recorded_head_start_latency_ms": null
+    },
+    {
+      "operation": "op_2049d0a24629fa4a659b417200b67353",
+      "kind": "source.open",
+      "cited": false,
+      "entry_at": 17509.19999998808,
+      "next_at": 17918.80000001192,
+      "dataset_interval_ms": 409.60000002384186,
+      "recorded_head_start_latency_ms": null
+    },
+    {
+      "operation": "op_f6b46b23e3dc17f0d7f6792b48713b2f",
+      "kind": "knowledge.reuse",
+      "cited": false,
+      "entry_at": 36916.10000002384,
+      "next_at": 37330.19999998808,
+      "dataset_interval_ms": 414.0999999642372,
+      "recorded_head_start_latency_ms": null
+    },
+    {
+      "operation": "op_414de1779028325a5495983616033cc2",
+      "kind": "process.inspect",
+      "cited": false,
+      "entry_at": 37330.19999998808,
+      "next_at": 37744.89999997616,
+      "dataset_interval_ms": 414.69999998807907,
+      "recorded_head_start_latency_ms": null
+    },
+    {
+      "operation": "op_a925ebc42ebd1e45369b1fd831c2e892",
+      "kind": "document.require",
+      "cited": false,
+      "entry_at": 37744.89999997616,
+      "next_at": 38153.30000001192,
+      "dataset_interval_ms": 408.4000000357628,
+      "first_head_animation_at": 37744.80000001192,
+      "recorded_head_start_latency_ms": -0.09999996423721313
+    },
+    {
+      "operation": "op_a27125056f62822ff135ae04b870f1d1",
+      "kind": "document.require",
+      "cited": false,
+      "entry_at": 38153.30000001192,
+      "next_at": 38562.19999998808,
+      "dataset_interval_ms": 408.89999997615814,
+      "first_head_animation_at": 38153.19999998808,
+      "recorded_head_start_latency_ms": -0.10000002384185791
+    },
+    {
+      "operation": "op_f4ed2cf2597364996fc8cf479c4578e3",
+      "kind": "document.require",
+      "cited": false,
+      "entry_at": 38562.19999998808,
+      "next_at": 39026.80000001192,
+      "dataset_interval_ms": 464.60000002384186,
+      "first_head_animation_at": 38562,
+      "recorded_head_start_latency_ms": -0.19999998807907104
+    }
+  ],
+  "cited_rows": [
+    {
+      "operation": "op_1b1fed6e2f9699e382b607e9c0f1596b",
+      "kind": "phrase.match",
+      "cited": true,
+      "entry_at": 958.8999999761581,
+      "next_at": 3907.699999988079,
+      "dataset_interval_ms": 2948.800000011921,
+      "first_head_animation_at": 1235.300000011921,
+      "recorded_head_start_latency_ms": 276.4000000357628
+    },
+    {
+      "operation": "op_19abd93d275e383573caedd41b821225",
+      "kind": "phrase.match",
+      "cited": true,
+      "entry_at": 3907.699999988079,
+      "next_at": 6808.5,
+      "dataset_interval_ms": 2900.800000011921,
+      "first_head_animation_at": 4119.199999988079,
+      "recorded_head_start_latency_ms": 211.5
+    },
+    {
+      "operation": "op_1715b98c5f009b94cad03526c1c661be",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 6808.5,
+      "next_at": 9048.899999976158,
+      "dataset_interval_ms": 2240.399999976158,
+      "first_head_animation_at": 7016.699999988079,
+      "recorded_head_start_latency_ms": 208.19999998807907
+    },
+    {
+      "operation": "op_71551c6b86a6ffc9d77423b4ef842dea",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 9048.899999976158,
+      "next_at": 10526,
+      "dataset_interval_ms": 1477.1000000238419,
+      "first_head_animation_at": 9266.600000023842,
+      "recorded_head_start_latency_ms": 217.70000004768372
+    },
+    {
+      "operation": "op_404355207219891af3593ad08dac2d46",
+      "kind": "phrase.match",
+      "cited": true,
+      "entry_at": 10935.899999976158,
+      "next_at": 13124.600000023842,
+      "dataset_interval_ms": 2188.7000000476837,
+      "first_head_animation_at": 11217.199999988079,
+      "recorded_head_start_latency_ms": 281.30000001192093
+    },
+    {
+      "operation": "op_e09ce37007c0543df7cfaf665abce94d",
+      "kind": "phrase.match",
+      "cited": true,
+      "entry_at": 13124.600000023842,
+      "next_at": 17509.19999998808,
+      "dataset_interval_ms": 4384.599999964237,
+      "first_head_animation_at": 13501.699999988079,
+      "recorded_head_start_latency_ms": 377.0999999642372
+    },
+    {
+      "operation": "op_a9a96b57d945731735e03dec7e05f71e",
+      "kind": "phrase.match",
+      "cited": true,
+      "entry_at": 17918.80000001192,
+      "next_at": 20922.899999976158,
+      "dataset_interval_ms": 3004.099999964237,
+      "first_head_animation_at": 18200.69999998808,
+      "recorded_head_start_latency_ms": 281.89999997615814
+    },
+    {
+      "operation": "op_0f70d11251821b4fe926a0c076df31c1",
+      "kind": "phrase.match",
+      "cited": true,
+      "entry_at": 20922.899999976158,
+      "next_at": 25339.600000023842,
+      "dataset_interval_ms": 4416.700000047684,
+      "first_head_animation_at": 21234.19999998808,
+      "recorded_head_start_latency_ms": 311.30000001192093
+    },
+    {
+      "operation": "op_12368bafbf1e6c58a43a2a13af446bcb",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 25339.600000023842,
+      "next_at": 27638.80000001192,
+      "dataset_interval_ms": 2299.199999988079,
+      "first_head_animation_at": 25615.899999976158,
+      "recorded_head_start_latency_ms": 276.2999999523163
+    },
+    {
+      "operation": "op_31bcd3404de1cb6592883fb7509d9cfc",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 27638.80000001192,
+      "next_at": 29972.69999998808,
+      "dataset_interval_ms": 2333.899999976158,
+      "first_head_animation_at": 27932.80000001192,
+      "recorded_head_start_latency_ms": 294
+    },
+    {
+      "operation": "op_4f935af1785d232600fc72be1eebcab3",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 29972.69999998808,
+      "next_at": 31824.600000023842,
+      "dataset_interval_ms": 1851.9000000357628,
+      "first_head_animation_at": 30383.100000023842,
+      "recorded_head_start_latency_ms": 410.4000000357628
+    },
+    {
+      "operation": "op_a677aec77b40589e0d0580e3dc6d5677",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 31824.600000023842,
+      "next_at": 33472.19999998808,
+      "dataset_interval_ms": 1647.5999999642372,
+      "first_head_animation_at": 32149,
+      "recorded_head_start_latency_ms": 324.39999997615814
+    },
+    {
+      "operation": "op_14f9eb670b91d7289150ef3a51717af4",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 33472.19999998808,
+      "next_at": 35189.39999997616,
+      "dataset_interval_ms": 1717.199999988079,
+      "first_head_animation_at": 33751.19999998808,
+      "recorded_head_start_latency_ms": 279
+    },
+    {
+      "operation": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 35189.39999997616,
+      "next_at": 36916.10000002384,
+      "dataset_interval_ms": 1726.7000000476837,
+      "first_head_animation_at": 35516.30000001192,
+      "recorded_head_start_latency_ms": 326.9000000357628
+    },
+    {
+      "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+      "kind": "document.check",
+      "cited": true,
+      "entry_at": 39026.80000001192,
+      "next_at": 41273.69999998808,
+      "dataset_interval_ms": 2246.899999976158,
+      "first_head_animation_at": 39248.80000001192,
+      "recorded_head_start_latency_ms": 222
+    },
+    {
+      "operation": "op_d867690b64a42823c40957aa759afb0a",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 41273.69999998808,
+      "next_at": 43540.39999997616,
+      "dataset_interval_ms": 2266.699999988079,
+      "first_head_animation_at": 41482.39999997616,
+      "recorded_head_start_latency_ms": 208.69999998807907
+    },
+    {
+      "operation": "op_1b4045f495bd7c43aee1c82408feaba3",
+      "kind": "document.check",
+      "cited": true,
+      "entry_at": 43540.39999997616,
+      "next_at": 45856.39999997616,
+      "dataset_interval_ms": 2316,
+      "first_head_animation_at": 43815.39999997616,
+      "recorded_head_start_latency_ms": 275
+    },
+    {
+      "operation": "op_96409d828972027728b45b12bb6b9ea1",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 45856.39999997616,
+      "next_at": 48185.5,
+      "dataset_interval_ms": 2329.100000023842,
+      "first_head_animation_at": 46132.19999998808,
+      "recorded_head_start_latency_ms": 275.80000001192093
+    },
+    {
+      "operation": "op_96acd4eb60e2706174feaa5552f164f8",
+      "kind": "document.check",
+      "cited": true,
+      "entry_at": 48185.5,
+      "next_at": 50510.10000002384,
+      "dataset_interval_ms": 2324.600000023842,
+      "first_head_animation_at": 48465,
+      "recorded_head_start_latency_ms": 279.5
+    },
+    {
+      "operation": "op_47a62a5a6f4bfa647becfd5dba1c73f0",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 50510.10000002384,
+      "next_at": 52863.60000002384,
+      "dataset_interval_ms": 2353.5,
+      "first_head_animation_at": 50798.30000001192,
+      "recorded_head_start_latency_ms": 288.19999998807907
+    },
+    {
+      "operation": "op_78ab34b7521d5c694813a76224b5975a",
+      "kind": "step.complete",
+      "cited": true,
+      "entry_at": 52863.60000002384,
+      "next_at": 55814.10000002384,
+      "dataset_interval_ms": 2950.5,
+      "first_head_animation_at": 53083.80000001192,
+      "recorded_head_start_latency_ms": 220.19999998807907
+    },
+    {
+      "operation": "op_ba68a476ea8289e87f3074c010784f55",
+      "kind": "step.complete",
+      "cited": true,
+      "entry_at": 55814.10000002384,
+      "next_at": 58758.80000001192,
+      "dataset_interval_ms": 2944.699999988079,
+      "first_head_animation_at": 56034.19999998808,
+      "recorded_head_start_latency_ms": 220.0999999642372
+    },
+    {
+      "operation": "op_a63efa92ca7029d17a2bd137f122033c",
+      "kind": "step.complete",
+      "cited": true,
+      "entry_at": 58758.80000001192,
+      "next_at": 61703.5,
+      "dataset_interval_ms": 2944.699999988079,
+      "first_head_animation_at": 58986.39999997616,
+      "recorded_head_start_latency_ms": 227.5999999642372
+    },
+    {
+      "operation": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+      "kind": "step.complete",
+      "cited": true,
+      "entry_at": 61703.5,
+      "next_at": 64675.39999997616,
+      "dataset_interval_ms": 2971.899999976158,
+      "first_head_animation_at": 61916.39999997616,
+      "recorded_head_start_latency_ms": 212.89999997615814
+    },
+    {
+      "operation": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+      "kind": "step.complete",
+      "cited": true,
+      "entry_at": 64675.39999997616,
+      "next_at": 67631.80000001192,
+      "dataset_interval_ms": 2956.400000035763,
+      "first_head_animation_at": 64899.89999997616,
+      "recorded_head_start_latency_ms": 224.5
+    },
+    {
+      "operation": "op_193bef006745abf6a81e5adde872cadc",
+      "kind": "step.complete",
+      "cited": true,
+      "entry_at": 67631.80000001192,
+      "next_at": 70546.5,
+      "dataset_interval_ms": 2914.699999988079,
+      "first_head_animation_at": 67850.10000002384,
+      "recorded_head_start_latency_ms": 218.30000001192093
+    },
+    {
+      "operation": "op_1016690703de933a0b04832bac53f789",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 70546.5,
+      "next_at": 72816.10000002384,
+      "dataset_interval_ms": 2269.600000023842,
+      "first_head_animation_at": 70764.5,
+      "recorded_head_start_latency_ms": 218
+    },
+    {
+      "operation": "op_03eef83c6c3a9802747b15ceafb63226",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 72816.10000002384,
+      "next_at": 75123.39999997616,
+      "dataset_interval_ms": 2307.2999999523163,
+      "first_head_animation_at": 73098,
+      "recorded_head_start_latency_ms": 281.89999997615814
+    },
+    {
+      "operation": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+      "kind": "fact.extract",
+      "cited": true,
+      "entry_at": 75123.39999997616,
+      "next_at": 77440.19999998808,
+      "dataset_interval_ms": 2316.800000011921,
+      "first_head_animation_at": 75397.39999997616,
+      "recorded_head_start_latency_ms": 274
+    }
+  ]
+}

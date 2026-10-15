@@ -1,0 +1,24 @@
+{
+  "candidate": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "implementation": "7e4fcb1526da7f6c20f9f78f0efe572f1a204fa9",
+  "scope": "Final targeted synthetic native fixture evidence; no production verification",
+  "corrected_frames": "../final-c841/",
+  "prior_checkpoint": "../checkpoint-9604/",
+  "final_passes": {
+    "modules": 200,
+    "new_viewport_tests": 4,
+    "unchanged_legacy_geometry_tests": 4,
+    "native_cases": 9,
+    "operations": 4653,
+    "checkpoints": 162,
+    "working_graphs": 87,
+    "knowledge_browser_cases": 9
+  },
+  "limits": [
+    "1x/4x matched single-run measurements; longer pacing and higher total CPU, no CPU reduction/universalFPS claim.",
+    "Animation-derived maximumgap1148.5ms; no continuous pixel visibility maximum measured.",
+    "Lifecycle/source inspection evidence explicitly bound to earlier e619 assets in final-commands.json; final exact assets covered by native sequence and final mandatory active/map assertions.",
+    "Gate map is preparation only; final full gate output is separate.",
+    "All failed raw attempts retained; citation oracle and actual hostflag harness corrections are distinguished from product defects."
+  ]
+}

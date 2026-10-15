@@ -1,0 +1,8 @@
+Independent read-only review: no blocking introduced defect found in 7eb8aafbeab5a4549dc1ee3e94ba7714c2184b7c.
+
+- The decision/map fix retires active source ink and removes the readhead before hidden-source geometry is used. Exact citations remain inspectable; decisions retain a 1200ms hold.
+- Planned reuse links preserve the actual version and definition hash, including an empty publication hash when absent.
+- Existing native fixture metadata confirms the workflow selector: fresh cases contain six current-run reuses and three first uses; migrated cases contain nine reuses. Each reuse matches one pinned compatible version.
+- The narrow changes preserve observed/accepted separation, Unicode/source verification, topology and authority boundaries.
+
+Working tree was clean. I ran no tests, browser/profile work or writes. Actual geometry confirmation remains with QA; earlier approvals remain bound to their recorded hashes.

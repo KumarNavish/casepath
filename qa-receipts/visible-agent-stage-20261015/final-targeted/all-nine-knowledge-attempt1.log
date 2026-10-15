@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(head.facts.flatMap(f=>f.citations||[]).some(c=>ui.canonicalJSON(c)===ui.canonicalJSON(citation)))
+
+    at /workspace/casepath-visible-agent-20261015-evidence/qa/all-nine-knowledge.cjs:6:2132 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

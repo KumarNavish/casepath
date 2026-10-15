@@ -1,0 +1,805 @@
+{
+  "input": "native-frames-final.json",
+  "input_sha256": "a688933ffc68fd9c89133b927ce7d2ee00cd07248aa6529daf7955bdee1fa00a",
+  "method": "Union of recorded WAAPI attention/read-head and fact-transfer call intervals, capped by next different recorded operation entry; ignores persisted static ink/chips. Source phase only, excludes actual decision from77440.19999998808ms onward.",
+  "window_ms": [
+    549.8000000119209,
+    77440.19999998808
+  ],
+  "maximum_animation_interval_gap": {
+    "start_ms": 36596.30000001192,
+    "end_ms": 37744.80000001192,
+    "duration_ms": 1148.5,
+    "intervening_operation_entries": [
+      {
+        "id": "op_f6b46b23e3dc17f0d7f6792b48713b2f",
+        "at": 36916.10000002384
+      },
+      {
+        "id": "op_414de1779028325a5495983616033cc2",
+        "at": 37330.19999998808
+      }
+    ]
+  },
+  "intervals": [
+    {
+      "start_ms": 1235.300000011921,
+      "end_ms": 3587.300000011921,
+      "operation": "op_1b1fed6e2f9699e382b607e9c0f1596b",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 4119.199999988079,
+      "end_ms": 6495.199999988079,
+      "operation": "op_19abd93d275e383573caedd41b821225",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 7016.699999988079,
+      "end_ms": 7716.699999988079,
+      "operation": "op_1715b98c5f009b94cad03526c1c661be",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 7716.600000023842,
+      "end_ms": 8716.600000023842,
+      "operation": "op_1715b98c5f009b94cad03526c1c661be",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 9266.600000023842,
+      "end_ms": 10202.600000023842,
+      "operation": "op_71551c6b86a6ffc9d77423b4ef842dea",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 11217.199999988079,
+      "end_ms": 12801.199999988079,
+      "operation": "op_404355207219891af3593ad08dac2d46",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 13501.699999988079,
+      "end_ms": 17197.69999998808,
+      "operation": "op_e09ce37007c0543df7cfaf665abce94d",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 18200.69999998808,
+      "end_ms": 20600.69999998808,
+      "operation": "op_a9a96b57d945731735e03dec7e05f71e",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 21234.19999998808,
+      "end_ms": 25026.19999998808,
+      "operation": "op_0f70d11251821b4fe926a0c076df31c1",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 25615.899999976158,
+      "end_ms": 26315.899999976158,
+      "operation": "op_12368bafbf1e6c58a43a2a13af446bcb",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 26333,
+      "end_ms": 27333,
+      "operation": "op_12368bafbf1e6c58a43a2a13af446bcb",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 27932.80000001192,
+      "end_ms": 28632.80000001192,
+      "operation": "op_31bcd3404de1cb6592883fb7509d9cfc",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 28648.80000001192,
+      "end_ms": 29648.80000001192,
+      "operation": "op_31bcd3404de1cb6592883fb7509d9cfc",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 30383.100000023842,
+      "end_ms": 31511.100000023842,
+      "operation": "op_4f935af1785d232600fc72be1eebcab3",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 32149,
+      "end_ms": 33157,
+      "operation": "op_a677aec77b40589e0d0580e3dc6d5677",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 33751.19999998808,
+      "end_ms": 34879.19999998808,
+      "operation": "op_14f9eb670b91d7289150ef3a51717af4",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 35516.30000001192,
+      "end_ms": 36596.30000001192,
+      "operation": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 37744.80000001192,
+      "end_ms": 38153.30000001192,
+      "operation": "op_a925ebc42ebd1e45369b1fd831c2e892",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 38153.19999998808,
+      "end_ms": 38562.19999998808,
+      "operation": "op_a27125056f62822ff135ae04b870f1d1",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 38562,
+      "end_ms": 39026.80000001192,
+      "operation": "op_f4ed2cf2597364996fc8cf479c4578e3",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 38980.80000001192,
+      "end_ms": 39026.80000001192,
+      "operation": "op_f4ed2cf2597364996fc8cf479c4578e3",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 39013.80000001192,
+      "end_ms": 39026.80000001192,
+      "operation": "op_f4ed2cf2597364996fc8cf479c4578e3",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 39248.80000001192,
+      "end_ms": 39948.80000001192,
+      "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 39965,
+      "end_ms": 40965,
+      "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 41482.39999997616,
+      "end_ms": 42182.39999997616,
+      "operation": "op_d867690b64a42823c40957aa759afb0a",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 42181.89999997616,
+      "end_ms": 43181.89999997616,
+      "operation": "op_d867690b64a42823c40957aa759afb0a",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 43532.69999998808,
+      "end_ms": 43540.39999997616,
+      "operation": "op_d867690b64a42823c40957aa759afb0a",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 43815.39999997616,
+      "end_ms": 44515.39999997616,
+      "operation": "op_1b4045f495bd7c43aee1c82408feaba3",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 44531.69999998808,
+      "end_ms": 45531.69999998808,
+      "operation": "op_1b4045f495bd7c43aee1c82408feaba3",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 46132.19999998808,
+      "end_ms": 46832.19999998808,
+      "operation": "op_96409d828972027728b45b12bb6b9ea1",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 46831.19999998808,
+      "end_ms": 47831.19999998808,
+      "operation": "op_96409d828972027728b45b12bb6b9ea1",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 48177.80000001192,
+      "end_ms": 48185.5,
+      "operation": "op_96409d828972027728b45b12bb6b9ea1",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 48465,
+      "end_ms": 49165,
+      "operation": "op_96acd4eb60e2706174feaa5552f164f8",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 49181.39999997616,
+      "end_ms": 50181.39999997616,
+      "operation": "op_96acd4eb60e2706174feaa5552f164f8",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 50798.30000001192,
+      "end_ms": 51498.30000001192,
+      "operation": "op_47a62a5a6f4bfa647becfd5dba1c73f0",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 51514.89999997616,
+      "end_ms": 52514.89999997616,
+      "operation": "op_47a62a5a6f4bfa647becfd5dba1c73f0",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 52856.30000001192,
+      "end_ms": 52863.60000002384,
+      "operation": "op_47a62a5a6f4bfa647becfd5dba1c73f0",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 53083.80000001192,
+      "end_ms": 55459.80000001192,
+      "operation": "op_78ab34b7521d5c694813a76224b5975a",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 55804.5,
+      "end_ms": 55814.10000002384,
+      "operation": "op_78ab34b7521d5c694813a76224b5975a",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 56034.19999998808,
+      "end_ms": 58410.19999998808,
+      "operation": "op_ba68a476ea8289e87f3074c010784f55",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 58750.60000002384,
+      "end_ms": 58758.80000001192,
+      "operation": "op_ba68a476ea8289e87f3074c010784f55",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 58986.39999997616,
+      "end_ms": 61362.39999997616,
+      "operation": "op_a63efa92ca7029d17a2bd137f122033c",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 61696.60000002384,
+      "end_ms": 61703.5,
+      "operation": "op_a63efa92ca7029d17a2bd137f122033c",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 61916.39999997616,
+      "end_ms": 64292.39999997616,
+      "operation": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 64664.89999997616,
+      "end_ms": 64675.39999997616,
+      "operation": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 64899.89999997616,
+      "end_ms": 67275.89999997616,
+      "operation": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 67622.10000002384,
+      "end_ms": 67631.80000001192,
+      "operation": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 67850.10000002384,
+      "end_ms": 70226.10000002384,
+      "operation": "op_193bef006745abf6a81e5adde872cadc",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 70764.5,
+      "end_ms": 71464.5,
+      "operation": "op_1016690703de933a0b04832bac53f789",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 71480.60000002384,
+      "end_ms": 72480.60000002384,
+      "operation": "op_1016690703de933a0b04832bac53f789",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 73098,
+      "end_ms": 73798,
+      "operation": "op_03eef83c6c3a9802747b15ceafb63226",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 73796.89999997616,
+      "end_ms": 74796.89999997616,
+      "operation": "op_03eef83c6c3a9802747b15ceafb63226",
+      "actor": "au-operation-fact-token"
+    },
+    {
+      "start_ms": 75397.39999997616,
+      "end_ms": 76097.39999997616,
+      "operation": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+      "actor": "au-operation-attention"
+    },
+    {
+      "start_ms": 76096.69999998808,
+      "end_ms": 77096.69999998808,
+      "operation": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+      "actor": "au-operation-fact-token"
+    }
+  ],
+  "gaps": [
+    {
+      "start_ms": 549.8000000119209,
+      "end_ms": 1235.300000011921,
+      "duration_ms": 685.5,
+      "intervening_operation_entries": [
+        {
+          "id": "op_d5939b2d68c20a2636fe628befc35784",
+          "at": 549.8000000119209
+        },
+        {
+          "id": "op_1b1fed6e2f9699e382b607e9c0f1596b",
+          "at": 958.8999999761581
+        }
+      ]
+    },
+    {
+      "start_ms": 3587.300000011921,
+      "end_ms": 4119.199999988079,
+      "duration_ms": 531.8999999761581,
+      "intervening_operation_entries": [
+        {
+          "id": "op_19abd93d275e383573caedd41b821225",
+          "at": 3907.699999988079
+        }
+      ]
+    },
+    {
+      "start_ms": 6495.199999988079,
+      "end_ms": 7016.699999988079,
+      "duration_ms": 521.5,
+      "intervening_operation_entries": [
+        {
+          "id": "op_1715b98c5f009b94cad03526c1c661be",
+          "at": 6808.5
+        }
+      ]
+    },
+    {
+      "start_ms": 8716.600000023842,
+      "end_ms": 9266.600000023842,
+      "duration_ms": 550.0,
+      "intervening_operation_entries": [
+        {
+          "id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+          "at": 9048.899999976158
+        }
+      ]
+    },
+    {
+      "start_ms": 10202.600000023842,
+      "end_ms": 11217.199999988079,
+      "duration_ms": 1014.5999999642372,
+      "intervening_operation_entries": [
+        {
+          "id": "op_b13a3045a34649de925f1e9ccfd57e0d",
+          "at": 10526
+        },
+        {
+          "id": "op_404355207219891af3593ad08dac2d46",
+          "at": 10935.899999976158
+        }
+      ]
+    },
+    {
+      "start_ms": 12801.199999988079,
+      "end_ms": 13501.699999988079,
+      "duration_ms": 700.5,
+      "intervening_operation_entries": [
+        {
+          "id": "op_e09ce37007c0543df7cfaf665abce94d",
+          "at": 13124.600000023842
+        }
+      ]
+    },
+    {
+      "start_ms": 17197.69999998808,
+      "end_ms": 18200.69999998808,
+      "duration_ms": 1003.0,
+      "intervening_operation_entries": [
+        {
+          "id": "op_2049d0a24629fa4a659b417200b67353",
+          "at": 17509.19999998808
+        },
+        {
+          "id": "op_a9a96b57d945731735e03dec7e05f71e",
+          "at": 17918.80000001192
+        }
+      ]
+    },
+    {
+      "start_ms": 20600.69999998808,
+      "end_ms": 21234.19999998808,
+      "duration_ms": 633.5,
+      "intervening_operation_entries": [
+        {
+          "id": "op_0f70d11251821b4fe926a0c076df31c1",
+          "at": 20922.899999976158
+        }
+      ]
+    },
+    {
+      "start_ms": 25026.19999998808,
+      "end_ms": 25615.899999976158,
+      "duration_ms": 589.6999999880791,
+      "intervening_operation_entries": [
+        {
+          "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+          "at": 25339.600000023842
+        }
+      ]
+    },
+    {
+      "start_ms": 26315.899999976158,
+      "end_ms": 26333,
+      "duration_ms": 17.100000023841858,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 27333,
+      "end_ms": 27932.80000001192,
+      "duration_ms": 599.8000000119209,
+      "intervening_operation_entries": [
+        {
+          "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+          "at": 27638.80000001192
+        }
+      ]
+    },
+    {
+      "start_ms": 28632.80000001192,
+      "end_ms": 28648.80000001192,
+      "duration_ms": 16.0,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 29648.80000001192,
+      "end_ms": 30383.100000023842,
+      "duration_ms": 734.3000000119209,
+      "intervening_operation_entries": [
+        {
+          "id": "op_4f935af1785d232600fc72be1eebcab3",
+          "at": 29972.69999998808
+        }
+      ]
+    },
+    {
+      "start_ms": 31511.100000023842,
+      "end_ms": 32149,
+      "duration_ms": 637.8999999761581,
+      "intervening_operation_entries": [
+        {
+          "id": "op_a677aec77b40589e0d0580e3dc6d5677",
+          "at": 31824.600000023842
+        }
+      ]
+    },
+    {
+      "start_ms": 33157,
+      "end_ms": 33751.19999998808,
+      "duration_ms": 594.1999999880791,
+      "intervening_operation_entries": [
+        {
+          "id": "op_14f9eb670b91d7289150ef3a51717af4",
+          "at": 33472.19999998808
+        }
+      ]
+    },
+    {
+      "start_ms": 34879.19999998808,
+      "end_ms": 35516.30000001192,
+      "duration_ms": 637.1000000238419,
+      "intervening_operation_entries": [
+        {
+          "id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+          "at": 35189.39999997616
+        }
+      ]
+    },
+    {
+      "start_ms": 36596.30000001192,
+      "end_ms": 37744.80000001192,
+      "duration_ms": 1148.5,
+      "intervening_operation_entries": [
+        {
+          "id": "op_f6b46b23e3dc17f0d7f6792b48713b2f",
+          "at": 36916.10000002384
+        },
+        {
+          "id": "op_414de1779028325a5495983616033cc2",
+          "at": 37330.19999998808
+        }
+      ]
+    },
+    {
+      "start_ms": 39026.80000001192,
+      "end_ms": 39248.80000001192,
+      "duration_ms": 222.0,
+      "intervening_operation_entries": [
+        {
+          "id": "op_239fff8e940e09cd50d910cbaff753b7",
+          "at": 39026.80000001192
+        }
+      ]
+    },
+    {
+      "start_ms": 39948.80000001192,
+      "end_ms": 39965,
+      "duration_ms": 16.19999998807907,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 40965,
+      "end_ms": 41482.39999997616,
+      "duration_ms": 517.3999999761581,
+      "intervening_operation_entries": [
+        {
+          "id": "op_d867690b64a42823c40957aa759afb0a",
+          "at": 41273.69999998808
+        }
+      ]
+    },
+    {
+      "start_ms": 43181.89999997616,
+      "end_ms": 43532.69999998808,
+      "duration_ms": 350.80000001192093,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 43540.39999997616,
+      "end_ms": 43815.39999997616,
+      "duration_ms": 275.0,
+      "intervening_operation_entries": [
+        {
+          "id": "op_1b4045f495bd7c43aee1c82408feaba3",
+          "at": 43540.39999997616
+        }
+      ]
+    },
+    {
+      "start_ms": 44515.39999997616,
+      "end_ms": 44531.69999998808,
+      "duration_ms": 16.30000001192093,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 45531.69999998808,
+      "end_ms": 46132.19999998808,
+      "duration_ms": 600.5,
+      "intervening_operation_entries": [
+        {
+          "id": "op_96409d828972027728b45b12bb6b9ea1",
+          "at": 45856.39999997616
+        }
+      ]
+    },
+    {
+      "start_ms": 47831.19999998808,
+      "end_ms": 48177.80000001192,
+      "duration_ms": 346.60000002384186,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 48185.5,
+      "end_ms": 48465,
+      "duration_ms": 279.5,
+      "intervening_operation_entries": [
+        {
+          "id": "op_96acd4eb60e2706174feaa5552f164f8",
+          "at": 48185.5
+        }
+      ]
+    },
+    {
+      "start_ms": 49165,
+      "end_ms": 49181.39999997616,
+      "duration_ms": 16.399999976158142,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 50181.39999997616,
+      "end_ms": 50798.30000001192,
+      "duration_ms": 616.9000000357628,
+      "intervening_operation_entries": [
+        {
+          "id": "op_47a62a5a6f4bfa647becfd5dba1c73f0",
+          "at": 50510.10000002384
+        }
+      ]
+    },
+    {
+      "start_ms": 51498.30000001192,
+      "end_ms": 51514.89999997616,
+      "duration_ms": 16.599999964237213,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 52514.89999997616,
+      "end_ms": 52856.30000001192,
+      "duration_ms": 341.4000000357628,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 52863.60000002384,
+      "end_ms": 53083.80000001192,
+      "duration_ms": 220.19999998807907,
+      "intervening_operation_entries": [
+        {
+          "id": "op_78ab34b7521d5c694813a76224b5975a",
+          "at": 52863.60000002384
+        }
+      ]
+    },
+    {
+      "start_ms": 55459.80000001192,
+      "end_ms": 55804.5,
+      "duration_ms": 344.69999998807907,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 55814.10000002384,
+      "end_ms": 56034.19999998808,
+      "duration_ms": 220.0999999642372,
+      "intervening_operation_entries": [
+        {
+          "id": "op_ba68a476ea8289e87f3074c010784f55",
+          "at": 55814.10000002384
+        }
+      ]
+    },
+    {
+      "start_ms": 58410.19999998808,
+      "end_ms": 58750.60000002384,
+      "duration_ms": 340.4000000357628,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 58758.80000001192,
+      "end_ms": 58986.39999997616,
+      "duration_ms": 227.5999999642372,
+      "intervening_operation_entries": [
+        {
+          "id": "op_a63efa92ca7029d17a2bd137f122033c",
+          "at": 58758.80000001192
+        }
+      ]
+    },
+    {
+      "start_ms": 61362.39999997616,
+      "end_ms": 61696.60000002384,
+      "duration_ms": 334.2000000476837,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 61703.5,
+      "end_ms": 61916.39999997616,
+      "duration_ms": 212.89999997615814,
+      "intervening_operation_entries": [
+        {
+          "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+          "at": 61703.5
+        }
+      ]
+    },
+    {
+      "start_ms": 64292.39999997616,
+      "end_ms": 64664.89999997616,
+      "duration_ms": 372.5,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 64675.39999997616,
+      "end_ms": 64899.89999997616,
+      "duration_ms": 224.5,
+      "intervening_operation_entries": [
+        {
+          "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+          "at": 64675.39999997616
+        }
+      ]
+    },
+    {
+      "start_ms": 67275.89999997616,
+      "end_ms": 67622.10000002384,
+      "duration_ms": 346.2000000476837,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 67631.80000001192,
+      "end_ms": 67850.10000002384,
+      "duration_ms": 218.30000001192093,
+      "intervening_operation_entries": [
+        {
+          "id": "op_193bef006745abf6a81e5adde872cadc",
+          "at": 67631.80000001192
+        }
+      ]
+    },
+    {
+      "start_ms": 70226.10000002384,
+      "end_ms": 70764.5,
+      "duration_ms": 538.3999999761581,
+      "intervening_operation_entries": [
+        {
+          "id": "op_1016690703de933a0b04832bac53f789",
+          "at": 70546.5
+        }
+      ]
+    },
+    {
+      "start_ms": 71464.5,
+      "end_ms": 71480.60000002384,
+      "duration_ms": 16.100000023841858,
+      "intervening_operation_entries": []
+    },
+    {
+      "start_ms": 72480.60000002384,
+      "end_ms": 73098,
+      "duration_ms": 617.3999999761581,
+      "intervening_operation_entries": [
+        {
+          "id": "op_03eef83c6c3a9802747b15ceafb63226",
+          "at": 72816.10000002384
+        }
+      ]
+    },
+    {
+      "start_ms": 74796.89999997616,
+      "end_ms": 75397.39999997616,
+      "duration_ms": 600.5,
+      "intervening_operation_entries": [
+        {
+          "id": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+          "at": 75123.39999997616
+        }
+      ]
+    },
+    {
+      "start_ms": 77096.69999998808,
+      "end_ms": 77440.19999998808,
+      "duration_ms": 343.5,
+      "intervening_operation_entries": [
+        {
+          "id": "op_568943696026415fa063d190086424ee",
+          "at": 77440.19999998808
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Call-time intervals are not continuous pixel/compositor measurements.",
+    "Persisted locked head/ink can reduce real gaps; static docked chips have no exact lifetime log.",
+    "No exact continuous real-pixel maximum claimed; two-second frames and same-operation settling probes are separate geometry evidence.",
+    "No additional browser run, source change, or filler animation."
+  ]
+}
