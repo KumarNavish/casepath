@@ -1,0 +1,45 @@
+{
+  "source_commit": "15776b7d9d09a5e97c502984c4915ecdc97baaf6",
+  "cwd": "/workspace/casepath-cold-start-20261015",
+  "environment": {
+    "TMPDIR": "/workspace/cp-cold-tmp",
+    "TMP": "/workspace/cp-cold-tmp",
+    "TEMP": "/workspace/cp-cold-tmp",
+    "CASEPATH_PYTHON": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "--test-name-pattern=complete atomic|cold operation selection|selected operation priority|release procedure (opening|pending Pause)",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "exit": 0,
+      "passed": 14,
+      "log": "atomic-head-focused-first.log"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "exit": 0,
+      "passed": 210,
+      "log": "module-atomic-final.log"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/workspace/casepath-cold-start-qa-evidence-20261015/atomic-native-latency.cjs"
+      ],
+      "additional_environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+      },
+      "exit": 0,
+      "log": "atomic-native-latency.log",
+      "note": "Driver source_commit suffix metadata corrected after run and raw initial receipt retained; JS exactbytehash binds actual immutable source throughout."
+    }
+  ]
+}

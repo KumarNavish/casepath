@@ -1,0 +1,47 @@
+{
+  "source_commit": "15776b7d9d09a5e97c502984c4915ecdc97baaf6",
+  "javascript_sha256": "f8b435e01a0e6087ed462f7c6486409cc98ccf932b4f4389c91acfe6569fe35a",
+  "test_module_sha256": "9dc5d08bdedd70618d9bffe038189c55e62e7ad16630a31d02a6712fd4075131",
+  "scope": "Narrow frontend full-atomic-head reuse, JS and existing module tests only; no backend or public API changes.",
+  "read_graph": {
+    "no_hint": "selection -> [snapshot?after=0, replay?through_seq=0, selected operations?mode=live] concurrently -> exact opening/head/start/source/history/hash checks -> existing frame validators",
+    "catalog_hint": "selection -> [replay?through_seq=hint, replay?through_seq=0, selected operations] concurrently; unchanged exact pinned-head gate",
+    "normal_selected_gets": 3,
+    "invalid_atomic_fallback_selected_gets": 4,
+    "fallback": "Malformed, partial, stale or unsupported atomic response retires reuse and requests exactly one fully verified actual-head replay. Navigation/abort/epoch change cannot start this fallback."
+  },
+  "validation": {
+    "affected_module": {
+      "passed": 210,
+      "failed": 0,
+      "log": "module-atomic-final.log"
+    },
+    "focused": {
+      "passed": 14,
+      "failed": 0,
+      "log": "atomic-head-focused-first.log"
+    },
+    "native": "Existing actual fictional native snapshot and replay envelopes compare9/9; no engine rerun; see reviewer artifact.",
+    "browser": {
+      "map_ms": 54.5,
+      "binding_ms": 5191.399999976158,
+      "first_fact_ms": 6717.199999928474,
+      "eighth_arrival_ms": 19499.099999904633,
+      "distinct_arrivals": 8,
+      "read_count": 3,
+      "selected_case_payload_bytes": 6980306
+    }
+  },
+  "limits": [
+    "Browser experiment artificially delays every loopback API read5000ms; no bandwidth throttle or actual hosted/cold-server measurement.",
+    "The fresh authentic first fact cannot meet3s when read availability exceeds5s; no preaccepted facts or recorded-mode substitution.",
+    "Allnine native fixture heads and sidecars remain separate from actual publicv2 data. Mac owns actual public timings and latest historical11-step target."
+  ],
+  "browser_source_metadata": {
+    "field": "source_commit",
+    "initial_value": "15776b7e01c6eca3ace6076039a94b6c22ad0e1c",
+    "corrected_value": "15776b7d9d09a5e97c502984c4915ecdc97baaf6",
+    "reason": "The driver initially recorded an incorrect full suffix for the unique15776b7 commit; actual executed JS SHA matches immutable15776b7 commit bytes. Initial raw receipt retained."
+  },
+  "preserved_prior_evidence_commit": "90f453c7155a8dc1aa227c4de7ae902fc3e36b44"
+}

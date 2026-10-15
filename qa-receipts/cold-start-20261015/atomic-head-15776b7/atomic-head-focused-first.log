@@ -1,0 +1,22 @@
+✔ complete atomic operation heads retain real saved envelopes and pinned source history without replay provenance (10.944741ms)
+✔ complete atomic operation heads reject partial forks stale identities and changed source or start bindings (6.033158ms)
+✔ cold operation selection starts the pinned head hint and live transport before its opening read finishes (17.918517ms)
+✔ cold operation selection reuses one complete atomic head while showing only a release outline before any response (5.9466ms)
+✔ cold operation selection falls back once for a partial atomic head without admitting its state (4.630467ms)
+✔ cold operation selection never starts a fallback head read from an invalid atomic response after navigation (4.095698ms)
+✔ cold operation selection refetches a stale catalog revision without consuming its hinted state (12.19371ms)
+✔ cold operation selection aborts its early reader and ignores late opening and outline responses after navigation (1.756924ms)
+✔ cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback (4.939473ms)
+✔ selected operation priority cancels only idle reads and suppresses new warming until foreground navigation (3.875182ms)
+✔ selected operation priority leaves an explicit foreground Cases read intact and defers direct-entry collection warming (2.463137ms)
+✔ selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends (4.559492ms)
+✔ release procedure opening retains trusted History detail and focus while a valid late opening arrives (4.123168ms)
+✔ release procedure pending Pause can Resume before any response and retires a mismatched outline while held (4.651724ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 196.934986
