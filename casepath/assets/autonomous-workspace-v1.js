@@ -1287,8 +1287,9 @@
     const reading = currentPin ? {artifact_id:currentPin.artifact_id,pin:currentPin,id:operation.id} : operation.kind === 'source.open' ? {artifact_id:operation.object.id,id:operation.id} : trace.displaySource;
     const source = trace.sources.get(reading?.artifact_id), chars = source && sourceCharacters(source);
     // Retained text is useful context. Only a current, bounded cited read gets
-    // agent ink; a whole-file scan or an absent phrase has no active underline.
-    const active = Boolean(!trace.inkRetired && currentPin && source && !(operation.kind === 'phrase.match' && operation.result.matched === false) &&
+    // agent ink. A decision's citation remains inspection context while its
+    // visible map and outcome take focus; its hidden source is never read.
+    const active = Boolean(operation.kind !== 'decision' && !trace.inkRetired && currentPin && source && !(operation.kind === 'phrase.match' && operation.result.matched === false) &&
       !(operation.kind === 'span.read' && currentPin.start_char === 0 && currentPin.end_char === chars.length));
     return source ? {...reading,source,chars,active} : null;
   }
@@ -2559,7 +2560,7 @@
     function positionOperationAttention(animate = true, sourceReady = false, pending = null) {
       if (!sourceReady) cancelStageRead();
       const operation = operationTrace?.current, canvas = host.querySelector('[data-au-canvas]');
-      if (!operation || !canvas || detail !== 'step' || doc.hidden || reduced?.matches || operationTrace.finished || inspectionHold) { attentionMarker?.remove?.(); return; }
+      if (!operation || !canvas || detail !== 'step' || doc.hidden || reduced?.matches || operationTrace.finished || inspectionHold || host.querySelector('.au-operation-stage[data-au-stage-phase=map]')) { attentionMarker?.remove?.(); return; }
       const reading = operationReading(operationTrace), mark = host.querySelector('[data-au-operation-span]');
       if (sourceReady && (stageChoreography !== pending || pending?.cancelled)) return;
       if (!sourceReady && animate && reading?.active && mark) {
@@ -2633,7 +2634,7 @@
         const choreography=stageChoreography; if (!choreography || choreography.operation !== operation) break;
         await choreography.promise; if (choreography.complete) break;
       }
-      return operationGate(session,token,operation.source ? 300 : operation.kind === 'decision' ? 1200 : 400);
+      return operationGate(session,token,operation.kind === 'decision' ? 1200 : operation.source ? 300 : 400);
     }
     function operationActive(session, token) { return !disposed && token === epoch && !pendingRoute() && view === 'claim' && current?.claim_id === session.claimId && !session.operationController?.signal.aborted; }
     async function operationGate(session, token, duration = 0) {
