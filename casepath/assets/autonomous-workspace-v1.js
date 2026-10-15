@@ -3358,14 +3358,33 @@
         return openingResult(response,head,verification);
       })(); liveCandidate.catch(() => {});
       let timer;
-      const winner = await Promise.race([liveCandidate.catch(() => new Promise(() => {})),new Promise(resolve => { timer=root.setTimeout(() => resolve(null),OPERATION_CHOICE_GRACE_MS); })]);
+      const cancelled = new Promise((_resolve,reject) => choice.signal.addEventListener('abort',() => reject(new Error('The selected opening changed.')),{once:true}));
+      cancelled.catch(() => {});
+      const winner = await Promise.race([cancelled,liveCandidate.catch(() => new Promise(() => {})),new Promise(resolve => { timer=root.setTimeout(() => resolve(null),OPERATION_CHOICE_GRACE_MS); })]);
       root.clearTimeout(timer);
       if (!active()) throw new Error('The selected opening changed.');
       if (winner) { choice.abort(); return winner; }
       if (packetOpening && observedLiveHead && canonicalJSON(packetOpening.opening.head) !== canonicalJSON(observedLiveHead)) packetOpening = null;
       if (!packetOpening) {
-        choice.abort(); const response = await liveOpening, incoming = readReplay(response,id,0);
-        return {claimId:id,generation:readGeneration,response,head:{claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256},referenceReady:false};
+        try {
+          // The grace interval prefers complete Live, not an unready transport.
+          // Until one session commits, either fully checked candidate may win.
+          const ready = await Promise.race([cancelled,Promise.any([
+            liveCandidate.then(opening => ({opening})),
+            packetCandidate.then(() => {
+              if (!packetOpening || observedLiveHead && canonicalJSON(packetOpening.opening.head) !== canonicalJSON(observedLiveHead)) throw new Error('No matching verified recorded opening is available.');
+              return {recorded:true};
+            })
+          ])]);
+          if (!active()) throw new Error('The selected opening changed.');
+          if (ready.opening) { choice.abort(); return ready.opening; }
+          return selectRecorded();
+        } catch (error) {
+          if (!active()) throw error;
+          // Both candidates were unusable; preserve the native endpoint fallback.
+          choice.abort(); const response = await liveOpening, incoming = readReplay(response,id,0);
+          return {claimId:id,generation:readGeneration,response,head:{claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256},referenceReady:false};
+        }
       }
       return selectRecorded();
       function selectRecorded() {
