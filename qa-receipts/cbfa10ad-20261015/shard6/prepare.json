@@ -1,0 +1,51 @@
+{
+  "candidate": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+  "cwd": "/workspace/casepath-release-ae0-shard6",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/ch6",
+    "TMPDIR": "/workspace/ct6",
+    "TMP": "/workspace/ct6",
+    "TEMP": "/workspace/ct6",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard6/pycache",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "UV_PYTHON_INSTALL_DIR": "/workspace/.local/share/uv/python"
+  },
+  "started_epoch": 1792090447.9504783,
+  "before_head": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+  "before_status": "",
+  "manifest_sha256": "d671b244cdc6a9c5a8d7729fe4facf2cbf51bf11db2eb128c5fc3102748bc089",
+  "canonical_fetched_head": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+  "canonical_fetch_source": "/workspace/casepath-stream-transport-20261015",
+  "canonical_local_fetch_log": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard6/fetch.log",
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "internal_launcher_env_contract": "Exact source preserved: stdlib env-i probes omit temp aliases; locked/product env-i uses controlled runtime TMPDIR only.",
+  "exit_code": 0,
+  "finished_epoch": 1792090455.5673146,
+  "after_head": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+  "after_status": "",
+  "duration_seconds": 7.616836309432983
+}

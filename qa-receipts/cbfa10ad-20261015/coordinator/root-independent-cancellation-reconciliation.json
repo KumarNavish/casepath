@@ -1,0 +1,74 @@
+{
+  "candidate": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+  "status": "CANCELLED_SUPERSEDED",
+  "full_gate_passed": false,
+  "old_raw_checksums_verified": 195,
+  "collected_partition_union": {
+    "full": 2613,
+    "cloud": 2486,
+    "mac": 127,
+    "no_overlap_or_gaps": true
+  },
+  "completed": [
+    {
+      "shard": 1,
+      "ids": 9,
+      "passed_calls": 9,
+      "known_skips": 0,
+      "raw_phases_junit_exact": true,
+      "capsule_unchanged": true
+    },
+    {
+      "shard": 2,
+      "ids": 421,
+      "passed_calls": 421,
+      "known_skips": 0,
+      "raw_phases_junit_exact": true,
+      "capsule_unchanged": true
+    },
+    {
+      "shard": 3,
+      "ids": 643,
+      "passed_calls": 642,
+      "known_skips": 1,
+      "raw_phases_junit_exact": true,
+      "capsule_unchanged": true
+    }
+  ],
+  "interrupted": [
+    {
+      "shard": 4,
+      "assigned_ids": 391,
+      "partial_phase_rows": 91,
+      "observed_ids": 31,
+      "native_result_present": false,
+      "native_junit_present": false,
+      "status": "INTERRUPTED_USER_SUPERSESSION",
+      "capsule_unchanged": true
+    },
+    {
+      "shard": 5,
+      "assigned_ids": 346,
+      "partial_phase_rows": 7,
+      "observed_ids": 3,
+      "native_result_present": false,
+      "native_junit_present": false,
+      "status": "INTERRUPTED_USER_SUPERSESSION",
+      "capsule_unchanged": true
+    },
+    {
+      "shard": 6,
+      "assigned_ids": 676,
+      "partial_phase_rows": 4,
+      "observed_ids": 2,
+      "native_result_present": false,
+      "native_junit_present": false,
+      "status": "INTERRUPTED_USER_SUPERSESSION",
+      "capsule_unchanged": true
+    }
+  ],
+  "mac_current_result_not_claimed": true,
+  "no_retries": true,
+  "partial_passes_not_selected_for_new_candidate": true,
+  "source_capsules_unchanged": true
+}

@@ -1,0 +1,137 @@
+{
+  "candidate": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+  "manifest_sha256": "d671b244cdc6a9c5a8d7729fe4facf2cbf51bf11db2eb128c5fc3102748bc089",
+  "status": "CANCELLED_SUPERSEDED",
+  "reason": "Root relayed urgent explicit user supersession: stop only this gate, prevent queued launches, no further gate or retries",
+  "full_gate_complete": false,
+  "final_green_claim": false,
+  "full_inventory_collected": 2613,
+  "completed_shards": [
+    {
+      "shard": 1,
+      "tests": 9,
+      "passed": 9,
+      "known_skipped": 0,
+      "failed": 0,
+      "exit_code": 0,
+      "runner_seconds": 670.121514081955,
+      "source_after_exit_code": 0,
+      "result": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard1/result.json",
+      "junit": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard1/junit.xml"
+    },
+    {
+      "shard": 2,
+      "tests": 421,
+      "passed": 421,
+      "known_skipped": 0,
+      "failed": 0,
+      "exit_code": 0,
+      "runner_seconds": 531.865594625473,
+      "source_after_exit_code": 0,
+      "result": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard2/result.json",
+      "junit": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard2/junit.xml"
+    },
+    {
+      "shard": 3,
+      "tests": 643,
+      "passed": 642,
+      "known_skipped": 1,
+      "failed": 0,
+      "exit_code": 0,
+      "runner_seconds": 523.1674501895905,
+      "source_after_exit_code": 0,
+      "result": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard3/result.json",
+      "junit": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard3/junit.xml"
+    }
+  ],
+  "completed_passed": 1072,
+  "completed_known_skipped": 1,
+  "interrupted_shards": [
+    4,
+    5,
+    6
+  ],
+  "interrupted_native_result_or_junit_not_manufactured": true,
+  "raw_attempt_observations": [
+    {
+      "shard": 1,
+      "selected_ids": 9,
+      "phase_rows": 27,
+      "call_reports": 9,
+      "failed_reports": 0,
+      "skipped_reports": 0,
+      "junit_present": true,
+      "result_present": true,
+      "interrupted": false
+    },
+    {
+      "shard": 2,
+      "selected_ids": 421,
+      "phase_rows": 1263,
+      "call_reports": 421,
+      "failed_reports": 0,
+      "skipped_reports": 0,
+      "junit_present": true,
+      "result_present": true,
+      "interrupted": false
+    },
+    {
+      "shard": 3,
+      "selected_ids": 643,
+      "phase_rows": 1929,
+      "call_reports": 643,
+      "failed_reports": 0,
+      "skipped_reports": 1,
+      "junit_present": true,
+      "result_present": true,
+      "interrupted": false
+    },
+    {
+      "shard": 4,
+      "selected_ids": 391,
+      "phase_rows": 91,
+      "call_reports": 30,
+      "failed_reports": 0,
+      "skipped_reports": 0,
+      "junit_present": false,
+      "result_present": false,
+      "interrupted": true
+    },
+    {
+      "shard": 5,
+      "selected_ids": 346,
+      "phase_rows": 7,
+      "call_reports": 2,
+      "failed_reports": 0,
+      "skipped_reports": 0,
+      "junit_present": false,
+      "result_present": false,
+      "interrupted": true
+    },
+    {
+      "shard": 6,
+      "selected_ids": 676,
+      "phase_rows": 4,
+      "call_reports": 1,
+      "failed_reports": 0,
+      "skipped_reports": 0,
+      "junit_present": false,
+      "result_present": false,
+      "interrupted": true
+    }
+  ],
+  "mac_attestation_status": "PENDING",
+  "no_test_retries": true,
+  "all_seven_sources_and_capsules_unchanged": true,
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "cancellation_receipt": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/CANCELLATION.json",
+  "owned_live_processes_after_term": 0,
+  "owned_defunct_descendants_preserved_as_observed": true,
+  "protected_server_pid": 595190,
+  "no_product_edits": true,
+  "no_seal_deploy_provider_or_product_requests": true
+}

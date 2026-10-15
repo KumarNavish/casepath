@@ -1,0 +1,61 @@
+diff --git a/casepath/assets/autonomous-workspace-v1.css b/casepath/assets/autonomous-workspace-v1.css
+index be50b5c..f9230d2 100644
+--- a/casepath/assets/autonomous-workspace-v1.css
++++ b/casepath/assets/autonomous-workspace-v1.css
+@@ -481,8 +481,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+ .au-workspace :is([data-au-source-content],[data-au-record-content]) { padding:24px; min-width:0; }
+ .au-workspace :is([data-au-source-content],[data-au-record-content]) :is(h3,p,dl,ul,pre) { margin-bottom:16px; }
+ .au-workspace .au-source-meta { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; color:var(--au-muted); font-size:13px; }
+-.au-workspace .au-source-text { max-width:80ch; margin:24px 0; white-space:pre-wrap; overflow-wrap:anywhere; font:400 16px/1.75 'CasePath Instrument',Arial,sans-serif; }
+-.au-workspace .au-source-text mark { background:#e5eeb5; color:var(--au-ink); scroll-margin-block:100px 24px; }
++.au-workspace :is(.au-source-text,.au-source-body) { max-width:80ch; margin:24px 0; white-space:pre-wrap; overflow-wrap:anywhere; font:400 16px/1.75 'CasePath Instrument',Arial,sans-serif; }
++.au-workspace :is(.au-source-text,.au-source-body) mark { background:#e5eeb5; color:var(--au-ink); scroll-margin-block:100px 24px; }
+ .au-workspace .au-native-source { margin:16px 0 24px; }
+ .au-workspace .au-native-source img { display:block; max-width:100%; max-height:560px; width:auto; height:auto; margin:0 auto; object-fit:contain; }
+ .au-workspace .au-native-source :is(iframe,object) { display:block; width:100%; height:500px; border:1px solid var(--au-line); }
+@@ -609,7 +609,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+   .au-workspace :is(.au-source-dialog-header,.au-record-dialog-header,.au-dialog-header) h2 { font-size:19px; }
+   .au-workspace :is([data-au-source-content],[data-au-record-content]) { padding:18px 16px; }
+   .au-workspace .au-native-source :is(iframe,object) { height:360px; }
+-  .au-workspace .au-source-text { font-size:15px; }
++  .au-workspace :is(.au-source-text,.au-source-body) { font-size:15px; }
+ }
+ @media (prefers-reduced-motion:reduce) {
+   .au-workspace *, .au-workspace *::before, .au-workspace *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+diff --git a/casepath/index.html b/casepath/index.html
+index 7759434..f34ef98 100644
+--- a/casepath/index.html
++++ b/casepath/index.html
+@@ -90,7 +90,7 @@
+ <link rel="stylesheet" href="assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9">
+   <link rel="stylesheet" href="assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22">
+   <link rel="stylesheet" href="assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb">
+-  <link rel="stylesheet" href="assets/autonomous-workspace-v1.css?sha256=404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87">
++  <link rel="stylesheet" href="assets/autonomous-workspace-v1.css?sha256=b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4">
+ </head>
+ <body>
+   <div id="autonomousWorkspace"><p role="status">Opening your claim workspace…</p></div>
+diff --git a/casepath/source-manifest.json b/casepath/source-manifest.json
+index 51dca63..fa37632 100644
+--- a/casepath/source-manifest.json
++++ b/casepath/source-manifest.json
+@@ -9371,8 +9371,8 @@
+     {
+       "executable": false,
+       "path": "casepath/assets/autonomous-workspace-v1.css",
+-      "sha256": "404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87",
+-      "size_bytes": 223356
++      "sha256": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4",
++      "size_bytes": 223419
+     },
+     {
+       "executable": false,
+@@ -9575,7 +9575,7 @@
+     {
+       "executable": false,
+       "path": "casepath/index.html",
+-      "sha256": "7a141f9fddc5774b3bd9189b4ad4f6b2482c7695aae2ecbc3178c6db26b6585c",
++      "sha256": "2d105aba9bc7339b534d1e032b22d9e8fbc1d94e0d00f764951d36977d603e8d",
+       "size_bytes": 23698
+     },
+     {

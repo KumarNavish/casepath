@@ -1,0 +1,9 @@
+{"type": "start", "shard": 1, "active": [1], "free_bytes": 4011110400, "tmp": "/workspace/ct1", "home": "/workspace/ch1", "epoch": 1792090505.12374}
+{"type": "start", "shard": 2, "active": [1, 2], "free_bytes": 4011102208, "tmp": "/workspace/ct2", "home": "/workspace/ch2", "epoch": 1792090505.1252055}
+{"type": "start", "shard": 3, "active": [1, 2, 3], "free_bytes": 4011102208, "tmp": "/workspace/ct3", "home": "/workspace/ch3", "epoch": 1792090505.125395}
+{"type": "finish", "shard": 3, "exit_code": 0, "source_after_exit_code": 0, "result_path": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard3/result.json", "attempt_count": 1, "active": [1, 2], "free_bytes": 3985948672, "epoch": 1792091029.094226}
+{"type": "start", "shard": 4, "active": [1, 2, 4], "free_bytes": 3985948672, "tmp": "/workspace/ct4", "home": "/workspace/ch4", "epoch": 1792091029.09469}
+{"type": "finish", "shard": 2, "exit_code": 0, "source_after_exit_code": 0, "result_path": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard2/result.json", "attempt_count": 1, "active": [1, 4], "free_bytes": 3985600512, "epoch": 1792091037.7928994}
+{"type": "start", "shard": 5, "active": [1, 4, 5], "free_bytes": 3985600512, "tmp": "/workspace/ct5", "home": "/workspace/ch5", "epoch": 1792091037.7932544}
+{"type": "finish", "shard": 1, "exit_code": 0, "source_after_exit_code": 0, "result_path": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard1/result.json", "attempt_count": 1, "active": [4, 5], "free_bytes": 3490029568, "epoch": 1792091176.018083}
+{"type": "start", "shard": 6, "active": [4, 5, 6], "free_bytes": 3490029568, "tmp": "/workspace/ct6", "home": "/workspace/ch6", "epoch": 1792091176.018368}

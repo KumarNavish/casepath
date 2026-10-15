@@ -1,0 +1,31 @@
+{
+  "candidate": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+  "shards": [
+    {
+      "shard": 2,
+      "collected_junit_phase_id_equality": true,
+      "tests": 421,
+      "phase_rows": 1263,
+      "pass": 421,
+      "skip": 0,
+      "source_capsule_unchanged": true,
+      "duration_seconds": 531.865594625473
+    },
+    {
+      "shard": 3,
+      "collected_junit_phase_id_equality": true,
+      "tests": 643,
+      "phase_rows": 1929,
+      "pass": 642,
+      "skip": 1,
+      "source_capsule_unchanged": true,
+      "duration_seconds": 523.1674501895905
+    }
+  ],
+  "remaining_shards_pending": [
+    1,
+    4,
+    5,
+    6
+  ]
+}

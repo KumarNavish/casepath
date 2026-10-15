@@ -1,0 +1,357 @@
+{
+  "candidate": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+  "status": "CANCELLED_BY_USER_SUPERSEDING_GATE",
+  "requested_epoch": 1792091187.8097997,
+  "reason": "Root relayed urgent explicit user supersession: stop only this gate, prevent queued launches, no further gate or retries",
+  "dispatch_pid": 920491,
+  "owned_pid_tree": [
+    {
+      "pid": 920491,
+      "ppid": 920486,
+      "comm": "python"
+    },
+    {
+      "pid": 922558,
+      "ppid": 920491,
+      "comm": "python"
+    },
+    {
+      "pid": 922583,
+      "ppid": 922558,
+      "comm": "python"
+    },
+    {
+      "pid": 922642,
+      "ppid": 920491,
+      "comm": "python"
+    },
+    {
+      "pid": 922651,
+      "ppid": 922642,
+      "comm": "python"
+    },
+    {
+      "pid": 923234,
+      "ppid": 920491,
+      "comm": "python"
+    },
+    {
+      "pid": 923245,
+      "ppid": 923234,
+      "comm": "python"
+    }
+  ],
+  "protected_server_pid": 595190,
+  "signals": [
+    {
+      "pid": 920491,
+      "signal": "SIGSTOP",
+      "epoch": 1792091187.8097165,
+      "purpose": "Prevent queued launches before cancellation"
+    },
+    {
+      "pid": 922558,
+      "signal": "SIGSTOP",
+      "epoch": 1792091187.809746
+    },
+    {
+      "pid": 922583,
+      "signal": "SIGSTOP",
+      "epoch": 1792091187.8097565
+    },
+    {
+      "pid": 922642,
+      "signal": "SIGSTOP",
+      "epoch": 1792091187.809766
+    },
+    {
+      "pid": 922651,
+      "signal": "SIGSTOP",
+      "epoch": 1792091187.809773
+    },
+    {
+      "pid": 923234,
+      "signal": "SIGSTOP",
+      "epoch": 1792091187.809786
+    },
+    {
+      "pid": 923245,
+      "signal": "SIGSTOP",
+      "epoch": 1792091187.8097975
+    },
+    {
+      "pid": 923245,
+      "signal": "SIGTERM",
+      "epoch": 1792091187.8105302
+    },
+    {
+      "pid": 923245,
+      "signal": "SIGCONT",
+      "epoch": 1792091187.8105502
+    },
+    {
+      "pid": 923234,
+      "signal": "SIGTERM",
+      "epoch": 1792091187.8105536
+    },
+    {
+      "pid": 923234,
+      "signal": "SIGCONT",
+      "epoch": 1792091187.8105636
+    },
+    {
+      "pid": 922651,
+      "signal": "SIGTERM",
+      "epoch": 1792091187.8105674
+    },
+    {
+      "pid": 922651,
+      "signal": "SIGCONT",
+      "epoch": 1792091187.8105798
+    },
+    {
+      "pid": 922642,
+      "signal": "SIGTERM",
+      "epoch": 1792091187.8105826
+    },
+    {
+      "pid": 922642,
+      "signal": "SIGCONT",
+      "epoch": 1792091187.8105843
+    },
+    {
+      "pid": 922583,
+      "signal": "SIGTERM",
+      "epoch": 1792091187.8105867
+    },
+    {
+      "pid": 922583,
+      "signal": "SIGCONT",
+      "epoch": 1792091187.8106
+    },
+    {
+      "pid": 922558,
+      "signal": "SIGTERM",
+      "epoch": 1792091187.8106027
+    },
+    {
+      "pid": 922558,
+      "signal": "SIGCONT",
+      "epoch": 1792091187.8106039
+    },
+    {
+      "pid": 920491,
+      "signal": "SIGTERM",
+      "epoch": 1792091187.8106081
+    },
+    {
+      "pid": 920491,
+      "signal": "SIGCONT",
+      "epoch": 1792091187.8108332
+    }
+  ],
+  "completed_shards": [
+    1,
+    2,
+    3
+  ],
+  "interrupted_shards": [
+    4,
+    5,
+    6
+  ],
+  "not_started_shards": [],
+  "final_green_claim": false,
+  "termination_sent_epoch": 1792091187.8108344,
+  "post_term_process_observations": [
+    {
+      "pid": 922558,
+      "ppid": 1,
+      "stat": "Z",
+      "comm": "python"
+    },
+    {
+      "pid": 922583,
+      "ppid": 1,
+      "stat": "Z",
+      "comm": "python"
+    },
+    {
+      "pid": 922642,
+      "ppid": 1,
+      "stat": "Z",
+      "comm": "python"
+    },
+    {
+      "pid": 922651,
+      "ppid": 1,
+      "stat": "Z",
+      "comm": "python"
+    },
+    {
+      "pid": 923234,
+      "ppid": 1,
+      "stat": "Z",
+      "comm": "python"
+    },
+    {
+      "pid": 923245,
+      "ppid": 1,
+      "stat": "Z",
+      "comm": "python"
+    }
+  ],
+  "post_term_epoch": 1792091206.6197596,
+  "protected_server_observation": "    PID    PPID STAT COMMAND\n 595190  595187 S    python\n",
+  "after_source_proofs": [
+    {
+      "name": "inventory",
+      "proof": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/inventory/source-after/capsule-verification.json",
+      "proof_sha256": "7961a580a6426d3a70179ec17ee75416a5fad1c9b425a93352fdb2d218f21140",
+      "head": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+      "status": "",
+      "manifest_sha256": "d671b244cdc6a9c5a8d7729fe4facf2cbf51bf11db2eb128c5fc3102748bc089",
+      "sealed_files_verified": 1706,
+      "source_artifact_static_bindings_verified": true,
+      "capsule_receipt_unchanged": true
+    },
+    {
+      "name": "shard1",
+      "proof": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard1/source-after/capsule-verification.json",
+      "proof_sha256": "3e135fccd8efffbb0364ad760d5f493a7df820fd605e408e457da474efd394e9",
+      "head": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+      "status": "",
+      "manifest_sha256": "d671b244cdc6a9c5a8d7729fe4facf2cbf51bf11db2eb128c5fc3102748bc089",
+      "sealed_files_verified": 1706,
+      "source_artifact_static_bindings_verified": true,
+      "capsule_receipt_unchanged": true
+    },
+    {
+      "name": "shard2",
+      "proof": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard2/source-after/capsule-verification.json",
+      "proof_sha256": "1a92357664d59f43fbf975fdfa651157ed8e6df90cf8f3f1d6454aecd6df154a",
+      "head": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+      "status": "",
+      "manifest_sha256": "d671b244cdc6a9c5a8d7729fe4facf2cbf51bf11db2eb128c5fc3102748bc089",
+      "sealed_files_verified": 1706,
+      "source_artifact_static_bindings_verified": true,
+      "capsule_receipt_unchanged": true
+    },
+    {
+      "name": "shard3",
+      "proof": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard3/source-after/capsule-verification.json",
+      "proof_sha256": "e00bffbe85ea2cf7f1eb4fe21109aec0f7ad3c268cc63a8e8584371e46e9fa16",
+      "head": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+      "status": "",
+      "manifest_sha256": "d671b244cdc6a9c5a8d7729fe4facf2cbf51bf11db2eb128c5fc3102748bc089",
+      "sealed_files_verified": 1706,
+      "source_artifact_static_bindings_verified": true,
+      "capsule_receipt_unchanged": true
+    },
+    {
+      "name": "shard4",
+      "proof": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard4/source-after/capsule-verification.json",
+      "proof_sha256": "0d975b54011e9e9e99f0e76f607b4e7f17b88619d27951a26ac98aab6b1287bd",
+      "head": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+      "status": "",
+      "manifest_sha256": "d671b244cdc6a9c5a8d7729fe4facf2cbf51bf11db2eb128c5fc3102748bc089",
+      "sealed_files_verified": 1706,
+      "source_artifact_static_bindings_verified": true,
+      "capsule_receipt_unchanged": true
+    },
+    {
+      "name": "shard5",
+      "proof": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard5/source-after/capsule-verification.json",
+      "proof_sha256": "55a8590afcae550dfa3fe33c0f7ff779c1c9e077ebc5474b96272abcebcb0320",
+      "head": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+      "status": "",
+      "manifest_sha256": "d671b244cdc6a9c5a8d7729fe4facf2cbf51bf11db2eb128c5fc3102748bc089",
+      "sealed_files_verified": 1706,
+      "source_artifact_static_bindings_verified": true,
+      "capsule_receipt_unchanged": true
+    },
+    {
+      "name": "shard6",
+      "proof": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/shard6/source-after/capsule-verification.json",
+      "proof_sha256": "cef6e76c9feed7af6893af19cb0dc0aca6c6ecaaf2711302452631b5e6593e36",
+      "head": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+      "status": "",
+      "manifest_sha256": "d671b244cdc6a9c5a8d7729fe4facf2cbf51bf11db2eb128c5fc3102748bc089",
+      "sealed_files_verified": 1706,
+      "source_artifact_static_bindings_verified": true,
+      "capsule_receipt_unchanged": true
+    }
+  ],
+  "after_source_verification_complete_epoch": 1792091240.011383,
+  "gate_status": "CANCELLED_BY_USER",
+  "no_test_retries": true,
+  "all_seven_sources_and_capsules_unchanged": true,
+  "raw_attempt_observations": [
+    {
+      "shard": 1,
+      "selected_ids": 9,
+      "phase_rows": 27,
+      "call_reports": 9,
+      "failed_reports": 0,
+      "skipped_reports": 0,
+      "junit_present": true,
+      "result_present": true,
+      "interrupted": false
+    },
+    {
+      "shard": 2,
+      "selected_ids": 421,
+      "phase_rows": 1263,
+      "call_reports": 421,
+      "failed_reports": 0,
+      "skipped_reports": 0,
+      "junit_present": true,
+      "result_present": true,
+      "interrupted": false
+    },
+    {
+      "shard": 3,
+      "selected_ids": 643,
+      "phase_rows": 1929,
+      "call_reports": 643,
+      "failed_reports": 0,
+      "skipped_reports": 1,
+      "junit_present": true,
+      "result_present": true,
+      "interrupted": false
+    },
+    {
+      "shard": 4,
+      "selected_ids": 391,
+      "phase_rows": 91,
+      "call_reports": 30,
+      "failed_reports": 0,
+      "skipped_reports": 0,
+      "junit_present": false,
+      "result_present": false,
+      "interrupted": true
+    },
+    {
+      "shard": 5,
+      "selected_ids": 346,
+      "phase_rows": 7,
+      "call_reports": 2,
+      "failed_reports": 0,
+      "skipped_reports": 0,
+      "junit_present": false,
+      "result_present": false,
+      "interrupted": true
+    },
+    {
+      "shard": 6,
+      "selected_ids": 676,
+      "phase_rows": 4,
+      "call_reports": 1,
+      "failed_reports": 0,
+      "skipped_reports": 0,
+      "junit_present": false,
+      "result_present": false,
+      "interrupted": true
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "candidate": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+  "parent_release": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "host": "656813ef2295",
+  "review_epoch": 1792090375.5296016,
+  "files": {
+    "casepath/assets/autonomous-workspace-v1.css": {
+      "prior_sha256": "404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87",
+      "current_sha256": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4",
+      "same": false
+    },
+    "casepath/index.html": {
+      "prior_sha256": "7a141f9fddc5774b3bd9189b4ad4f6b2482c7695aae2ecbc3178c6db26b6585c",
+      "current_sha256": "2d105aba9bc7339b534d1e032b22d9e8fbc1d94e0d00f764951d36977d603e8d",
+      "same": false
+    },
+    "casepath/source-manifest.json": {
+      "prior_sha256": "8261e891c9403d486bdb60d1abe485ae56a6b6e556bb9b3125a3702d76e72331",
+      "current_sha256": "d671b244cdc6a9c5a8d7729fe4facf2cbf51bf11db2eb128c5fc3102748bc089",
+      "same": false
+    },
+    "casepath/assets/autonomous-workspace-v1.js": {
+      "prior_sha256": "2a5e229f4a316bb68392c124b76cf89caafe263c47724d79f9991f9b7845fa30",
+      "current_sha256": "2a5e229f4a316bb68392c124b76cf89caafe263c47724d79f9991f9b7845fa30",
+      "same": true
+    }
+  },
+  "review": "Only existing source pre wrapping/typography/highlight/mobile styles extended to actual .au-source-body. CSS query pin and seal match authored bytes. No JS, backend, test, journal, fixture, trace or gate-semantic edits.",
+  "test_source_changes": [],
+  "full_gate_required_and_authorized": true,
+  "mac_partition_excluded_from_cloud_count": 127
+}
