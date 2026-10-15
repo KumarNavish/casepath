@@ -1,0 +1,16 @@
+{
+  "source": {
+    "commit": "15776b7d9d09a5e97c502984c4915ecdc97baaf6",
+    "branch": "codex/casepath-cold-start-20261015",
+    "push_exit": 0,
+    "push_output": "To https://github.com/KumarNavish/casepath.git\n   b297ec1..15776b7  codex/casepath-cold-start-20261015 -> codex/casepath-cold-start-20261015",
+    "separate_ls_remote": "Not repeated after successful source push; managed auth later failed."
+  },
+  "evidence": {
+    "attempted_commit": "2536748d6487a0d551cbc8710e50c835733f2eb0",
+    "branch": "codex/casepath-cold-start-evidence-20261015",
+    "push_exit": 128,
+    "push_output": "fatal: could not read Username for 'https://github.com': No such device or address",
+    "status": "Local commit complete; root investigating managed auth; no credential read/login workaround or retry performed."
+  }
+}
