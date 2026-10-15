@@ -723,3 +723,4 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-stage-outcome > p { font-size:20px; }
 }
 .au-workspace .au-stage-unbound-source { max-width:380px; margin:0 auto 14px; }
+.au-workspace :is(.au-stage-fact,.au-stage-thumbnail):is([data-au-dock-phase=read],[data-au-dock-phase=transfer]) { visibility:hidden; }
