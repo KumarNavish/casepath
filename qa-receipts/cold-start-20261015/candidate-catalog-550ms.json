@@ -1,0 +1,503 @@
+{
+  "label": "candidate-catalog-550ms",
+  "disclosure": "Isolated existing native v1-to-v2 fictional fixture + matching native1.1 sidecar on protected loopback GET-only server; native Chromium clock; per-API artificial delay, no bandwidth throttle; no production/provider/write. Selection clock is start of showDemonstration for catalog, first replay0 GET for direct route.",
+  "source_commit": "5f3ebdf",
+  "javascript_sha256": "81749271e7967cfdc018e3266d7804e68c2aba68f437e870e6ec05c3b3f9424f",
+  "stylesheet_sha256": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4",
+  "sidecar_file_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+  "sidecar_material_sha256": "82c125f4fb2702218864ef22071f4e60d4552dc8e7e8c93407724a367db2980c",
+  "trace_sha256": "2839da7e334a4f2086fd91cf18b525cdc64c9dbc98d60ac6ac71df62840b850e",
+  "selected_at": 980.3999999761581,
+  "simulated_read_delay_ms": 550,
+  "catalog": true,
+  "metrics": {
+    "map_ms": 621.8999999761581,
+    "binding_ms": 671,
+    "first_fact_ms": 2200.600000023842,
+    "eighth_arrival_ms": 14949.5,
+    "distinct_arrivals": 8,
+    "read_count": 4,
+    "selected_case_payload_bytes": 6980741
+  },
+  "receipt": {
+    "selected": 980.3999999761581,
+    "map": {
+      "at": 1602.2999999523163,
+      "head": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "authority": "none",
+      "revision": 0,
+      "nodes": [
+        {
+          "id": "dh_intake",
+          "status": "planned"
+        },
+        {
+          "id": "dh_scope",
+          "status": "planned"
+        },
+        {
+          "id": "dh_notice",
+          "status": "planned"
+        },
+        {
+          "id": "dh_cause",
+          "status": "planned"
+        },
+        {
+          "id": "dh_evidence",
+          "status": "planned"
+        },
+        {
+          "id": "dh_response",
+          "status": "planned"
+        }
+      ],
+      "facts": 0,
+      "checked": 0
+    },
+    "binding": 1651.3999999761581,
+    "firstFact": 3181,
+    "docks": [
+      {
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "at": 2564.899999976158,
+        "kind": "fact",
+        "text": "CHF1800",
+        "quote": "CHF1800",
+        "artifact": "src_106168f9c33152b3d88f02469ad57782",
+        "source_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start": 298,
+        "end": 305,
+        "citation_start": 95,
+        "citation_end": 434,
+        "finished": 3179.5,
+        "landed": 3181,
+        "visible": true,
+        "node": "dh_scope",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_71551c6b86a6ffc9d77423b4ef842dea",
+        "at": 4313.799999952316,
+        "kind": "fact",
+        "text": "ordinary residential lease",
+        "quote": "ordinary residential lease",
+        "artifact": "src_106168f9c33152b3d88f02469ad57782",
+        "source_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start": 146,
+        "end": 172,
+        "citation_start": 95,
+        "citation_end": 434,
+        "finished": 4912.699999928474,
+        "landed": 4914,
+        "visible": true,
+        "node": "dh_scope",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "at": 6030.599999904633,
+        "kind": "fact",
+        "text": "15.8C",
+        "quote": "15.8C",
+        "artifact": "src_000ccf161644df9e82d29a8595b7b727",
+        "source_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start": 329,
+        "end": 334,
+        "citation_start": 199,
+        "citation_end": 764,
+        "finished": 6645.699999928474,
+        "landed": 6646.899999976158,
+        "visible": true,
+        "node": "dh_evidence",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "at": 7763.699999928474,
+        "kind": "fact",
+        "text": "three heating-failure reports",
+        "quote": "three heating-failure reports",
+        "artifact": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "source_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start": 229,
+        "end": 258,
+        "citation_start": 193,
+        "citation_end": 494,
+        "finished": 8379.199999928474,
+        "landed": 8380.5,
+        "visible": true,
+        "node": "dh_notice",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_4f935af1785d232600fc72be1eebcab3",
+        "at": 9513.799999952316,
+        "kind": "fact",
+        "text": "Heating is inadequate",
+        "quote": "Heating is inadequate",
+        "artifact": "src_000ccf161644df9e82d29a8595b7b727",
+        "source_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start": 873,
+        "end": 894,
+        "citation_start": 766,
+        "citation_end": 967,
+        "finished": 10129.199999928474,
+        "landed": 10130.699999928474,
+        "visible": true,
+        "node": "dh_evidence",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_a677aec77b40589e0d0580e3dc6d5677",
+        "at": 11563.599999904633,
+        "kind": "fact",
+        "text": "outside ordinary small tenant maintenance.",
+        "quote": "outside ordinary small tenant maintenance.",
+        "artifact": "src_000ccf161644df9e82d29a8595b7b727",
+        "source_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start": 608,
+        "end": 650,
+        "citation_start": 199,
+        "citation_end": 764,
+        "finished": 12179,
+        "landed": 12180.099999904633,
+        "visible": true,
+        "node": "dh_evidence",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_14f9eb670b91d7289150ef3a51717af4",
+        "at": 13496.699999928474,
+        "kind": "fact",
+        "text": "received the first report on2025-02-01",
+        "quote": "received the first report on2025-02-01",
+        "artifact": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "source_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start": 390,
+        "end": 428,
+        "citation_start": 193,
+        "citation_end": 494,
+        "finished": 14112.299999952316,
+        "landed": 14113.5,
+        "visible": true,
+        "node": "dh_notice",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "at": 15330.099999904633,
+        "kind": "fact",
+        "text": "no lasting repair has yet occurred",
+        "quote": "no lasting repair has yet occurred",
+        "artifact": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "source_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start": 735,
+        "end": 769,
+        "citation_start": 496,
+        "citation_end": 796,
+        "finished": 15928.799999952316,
+        "landed": 15929.899999976158,
+        "visible": true,
+        "node": "dh_notice",
+        "fact_state": "observed"
+      }
+    ],
+    "flights": [
+      {
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "at": 2564.899999976158,
+        "kind": "fact",
+        "text": "CHF1800",
+        "quote": "CHF1800",
+        "artifact": "src_106168f9c33152b3d88f02469ad57782",
+        "source_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start": 298,
+        "end": 305,
+        "citation_start": 95,
+        "citation_end": 434,
+        "finished": 3179.5,
+        "landed": 3181,
+        "visible": true,
+        "node": "dh_scope",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_71551c6b86a6ffc9d77423b4ef842dea",
+        "at": 4313.799999952316,
+        "kind": "fact",
+        "text": "ordinary residential lease",
+        "quote": "ordinary residential lease",
+        "artifact": "src_106168f9c33152b3d88f02469ad57782",
+        "source_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start": 146,
+        "end": 172,
+        "citation_start": 95,
+        "citation_end": 434,
+        "finished": 4912.699999928474,
+        "landed": 4914,
+        "visible": true,
+        "node": "dh_scope",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "at": 6030.599999904633,
+        "kind": "fact",
+        "text": "15.8C",
+        "quote": "15.8C",
+        "artifact": "src_000ccf161644df9e82d29a8595b7b727",
+        "source_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start": 329,
+        "end": 334,
+        "citation_start": 199,
+        "citation_end": 764,
+        "finished": 6645.699999928474,
+        "landed": 6646.899999976158,
+        "visible": true,
+        "node": "dh_evidence",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "at": 7763.699999928474,
+        "kind": "fact",
+        "text": "three heating-failure reports",
+        "quote": "three heating-failure reports",
+        "artifact": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "source_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start": 229,
+        "end": 258,
+        "citation_start": 193,
+        "citation_end": 494,
+        "finished": 8379.199999928474,
+        "landed": 8380.5,
+        "visible": true,
+        "node": "dh_notice",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_4f935af1785d232600fc72be1eebcab3",
+        "at": 9513.799999952316,
+        "kind": "fact",
+        "text": "Heating is inadequate",
+        "quote": "Heating is inadequate",
+        "artifact": "src_000ccf161644df9e82d29a8595b7b727",
+        "source_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start": 873,
+        "end": 894,
+        "citation_start": 766,
+        "citation_end": 967,
+        "finished": 10129.199999928474,
+        "landed": 10130.699999928474,
+        "visible": true,
+        "node": "dh_evidence",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_a677aec77b40589e0d0580e3dc6d5677",
+        "at": 11563.599999904633,
+        "kind": "fact",
+        "text": "outside ordinary small tenant maintenance.",
+        "quote": "outside ordinary small tenant maintenance.",
+        "artifact": "src_000ccf161644df9e82d29a8595b7b727",
+        "source_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start": 608,
+        "end": 650,
+        "citation_start": 199,
+        "citation_end": 764,
+        "finished": 12179,
+        "landed": 12180.099999904633,
+        "visible": true,
+        "node": "dh_evidence",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_14f9eb670b91d7289150ef3a51717af4",
+        "at": 13496.699999928474,
+        "kind": "fact",
+        "text": "received the first report on2025-02-01",
+        "quote": "received the first report on2025-02-01",
+        "artifact": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "source_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start": 390,
+        "end": 428,
+        "citation_start": 193,
+        "citation_end": 494,
+        "finished": 14112.299999952316,
+        "landed": 14113.5,
+        "visible": true,
+        "node": "dh_notice",
+        "fact_state": "observed"
+      },
+      {
+        "operation": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "at": 15330.099999904633,
+        "kind": "fact",
+        "text": "no lasting repair has yet occurred",
+        "quote": "no lasting repair has yet occurred",
+        "artifact": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "source_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start": 735,
+        "end": 769,
+        "citation_start": 496,
+        "citation_end": 796,
+        "finished": 15928.799999952316,
+        "landed": 15929.899999976158,
+        "visible": true,
+        "node": "dh_notice",
+        "fact_state": "observed"
+      }
+    ],
+    "calls": [
+      {
+        "url": "/api/claim-loops/v1/autonomous/status",
+        "method": "GET",
+        "at": 147.89999997615814,
+        "headersAt": 709.1999999284744
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/claims",
+        "method": "GET",
+        "at": 149.39999997615814,
+        "headersAt": 753.6999999284744
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/knowledge",
+        "method": "GET",
+        "at": 835.2999999523163,
+        "headersAt": 1392.7999999523163
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+        "method": "GET",
+        "at": 987.5999999046326,
+        "headersAt": 1562.7999999523163
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live",
+        "method": "GET",
+        "at": 988.3999999761581,
+        "headersAt": 1641
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+        "method": "GET",
+        "at": 988.5999999046326,
+        "headersAt": 1560.8999999761581
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/knowledge",
+        "method": "GET",
+        "at": 1577.1999999284744,
+        "headersAt": 2148.5
+      }
+    ],
+    "results": [],
+    "errors": [],
+    "current": {
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    "status": ""
+  },
+  "selected_calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "method": "GET",
+      "at": 987.5999999046326,
+      "headersAt": 1562.7999999523163
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live",
+      "method": "GET",
+      "at": 988.3999999761581,
+      "headersAt": 1641
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "at": 988.5999999046326,
+      "headersAt": 1560.8999999761581
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "at": 1577.1999999284744,
+      "headersAt": 2148.5
+    }
+  ],
+  "bodies": [
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/status",
+      "bytes": 56,
+      "sha256": "3b880e9cbf65b5cae3b801dbbf2080f6df86a105c34b9f7e90a4b23afc4cd77d"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims",
+      "bytes": 4037225,
+      "sha256": "2b7078a3487cbe241c8086023bab3210887b77e26cfe753c7b9693b13523fc17"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/knowledge",
+      "bytes": 85447,
+      "sha256": "69d15d1a203827860efaa43555a7f7d854ead22900eedd3980405d7a0b2439dd"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "bytes": 7709,
+      "sha256": "ff6d0edf4ca2ab4ef74771cef08ec9b60c7af13f24057dec0d525bc4debb1422"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "bytes": 1559209,
+      "sha256": "41ee5355b79f003f4ee194a1371c11146bd53a5c969751c271d909c34e87c48c"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live",
+      "bytes": 5413823,
+      "sha256": "77e9be18160fa1de025c4bb2575e0bc01a6d5cefb2b3930715f77c108a745234"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/knowledge",
+      "bytes": 85447,
+      "sha256": "69d15d1a203827860efaa43555a7f7d854ead22900eedd3980405d7a0b2439dd"
+    }
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/knowledge"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/knowledge"
+    }
+  ],
+  "errors": [],
+  "timeout": null
+}

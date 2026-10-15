@@ -1,0 +1,67 @@
+{
+  "classification": "Exact existing local native opening/head/operation sidecar; GET-only loopback; native browser control/pause check, no latency acceptance claim.",
+  "source_commit": "b297ec1",
+  "javascript_sha256": "eb1b93f02ff9d49ae8d2d0c57f8459d26c7249a8f6d29c8d105ee08ffb72cdbe",
+  "stylesheet_sha256": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4",
+  "mismatch": false,
+  "before": {
+    "at": 221,
+    "selected": 130.60000002384186,
+    "release": "0dc901886e4399084f9600df8a3311445ca92d3c4ea4ba65d515261e0fd1e01a",
+    "accepted": false,
+    "facts": 0
+  },
+  "held": {
+    "release": "0dc901886e4399084f9600df8a3311445ca92d3c4ea4ba65d515261e0fd1e01a",
+    "accepted": false,
+    "facts": 0,
+    "focused": true,
+    "resume": true
+  },
+  "result": {
+    "revision": "48",
+    "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+    "release": false
+  },
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live",
+      "at": 180.20000004768372
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "at": 181.60000002384186
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "at": 544.6000000238419
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "at": 1494.8999999761581
+    }
+  ],
+  "requests": [
+    {
+      "url": "http://127.0.0.1:4189/",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims",
+      "method": "GET"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,26 @@
+✖ selected operation priority cancels only idle reads and suppresses new warming until foreground navigation (27.760242ms)
+✔ selected operation priority leaves an explicit foreground Cases read intact and defers direct-entry collection warming (6.278604ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 132.269161
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:1850:1
+✖ selected operation priority cancels only idle reads and suppresses new warming until foreground navigation (27.760242ms)
+  AssertionError [ERR_ASSERTION]: selection aborts active idle Knowledge and snapshots rather than only ignoring their results
+      at TestContext.<anonymous> (/workspace/casepath-cold-start-20261015/casepath-qa/autonomous-workspace-v1.test.cjs:1860:91)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

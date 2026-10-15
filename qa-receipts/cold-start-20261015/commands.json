@@ -1,0 +1,110 @@
+{
+  "classification": "Executed command arguments/common environment reconstructed from the session; underlying raw logs and receipts preserved.",
+  "cwd": "/workspace/casepath-cold-start-20261015",
+  "common_environment": {
+    "TMPDIR": "/workspace/cp-cold-tmp",
+    "TMP": "/workspace/cp-cold-tmp",
+    "TEMP": "/workspace/cp-cold-tmp",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "CASEPATH_PYTHON": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "log": "module-preload-binding-final.log",
+      "exit": 0,
+      "count": 206,
+      "source_commit": "b297ec13ce32fc3e9a5575edec53bb997b32230b"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "--test-name-pattern=cold operation selection starts|cold operation selection can show",
+        "/workspace/casepath-cold-start-qa-evidence-20261015/base-startup.test.cjs"
+      ],
+      "log": "base-startup-regression-corrected.log",
+      "exit": 1,
+      "expected_failure": true,
+      "count": 2,
+      "source_commit": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/workspace/casepath-cold-start-qa-evidence-20261015/cold-native-latency.cjs"
+      ],
+      "log": "cold-native-latency.log",
+      "exit": 0,
+      "classification": "Prior5f3 three-case artificial-delay550ms native comparison; direct clock superseded by subsequent run."
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/workspace/casepath-cold-start-qa-evidence-20261015/cold-native-latency.cjs"
+      ],
+      "environment": {
+        "CASEPATH_COLD_SCENARIO": "candidate-empty-550ms"
+      },
+      "log": "cold-native-direct-clockfix.log",
+      "exit": 0,
+      "source_commit": "5f3ebdf"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/workspace/casepath-cold-start-qa-evidence-20261015/preload-native-latency.cjs"
+      ],
+      "log": "preload-native-latency.log",
+      "exit": 0,
+      "source_commit": "a612d12",
+      "classification": "Prior a612 bytes, artificial5000ms/read,8authenticlandings; oldmisnamedbindingcausedpreviewretirementafteropening and wasfixedinb297."
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/workspace/casepath-cold-start-qa-evidence-20261015/preload-final-controls.cjs"
+      ],
+      "log": "preload-final-controls.log",
+      "exit": 0,
+      "count": 2,
+      "source_commit": "b297ec13ce32fc3e9a5575edec53bb997b32230b"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/workspace/casepath-cold-start-qa-evidence-20261015/native-nine-verifier.cjs"
+      ],
+      "environment": {
+        "CASEPATH_OPERATION_NATIVE_FIXTURE": "/workspace/casepath-reference-polish-evidence-20261013/native-v1-v2-reference.json",
+        "CASEPATH_OPERATION_NATIVE_SIDECARS": "/workspace/operation-runtime-evidence/native-sidecars",
+        "CASEPATH_BROWSER_JS_ASSET": "/workspace/casepath-cold-start-20261015/casepath/assets/autonomous-workspace-v1.js",
+        "CASEPATH_CANDIDATE_COMMIT": "5f3ebdf"
+      },
+      "log": "native-nine-verifier.log",
+      "exit": 0,
+      "classification": "Native stream/checkpoint/source validators at5f3; those validators unchanged afterpriority/preloaddelta."
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "--test-name-pattern=actual incomplete eleven-step legacy",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/workspace/op-browser/stage-prior-fixture.json",
+        "CASEPATH_BROWSER_JS_ASSET": "/workspace/casepath-cold-start-20261015/casepath/assets/autonomous-workspace-v1.js",
+        "CASEPATH_FOCUSED_RECEIPTS": "/workspace/casepath-cold-start-qa-evidence-20261015/legacy-eleven"
+      },
+      "log": "legacy-eleven.log",
+      "exit": 0,
+      "count": 2,
+      "classification": "Distinctactualauto_prefix9legacyfixture; notlatestrequestedmixeddebtclaim."
+    }
+  ]
+}

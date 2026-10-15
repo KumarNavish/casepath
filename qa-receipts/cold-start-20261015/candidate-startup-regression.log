@@ -1,0 +1,21 @@
+✔ cold operation selection starts the pinned head hint and live transport before its opening read finishes (29.0354ms)
+✔ cold operation selection can show an exactly bound snapshot outline while full replay provenance remains gated (4.136374ms)
+▶ cold operation selection rejects mismatched, unbound and pruned speculative outlines
+  ✔ head (3.290987ms)
+  ✔ profile (1.820016ms)
+  ✔ missing-start (2.039229ms)
+  ✔ catalog (1.840246ms)
+✔ cold operation selection rejects mismatched, unbound and pruned speculative outlines (9.701487ms)
+✔ cold operation selection refetches a stale catalog revision without consuming its hinted state (2.573218ms)
+✔ cold operation selection aborts its early reader and ignores late opening and outline responses after navigation (3.199743ms)
+✔ cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback (2.979377ms)
+✔ NDJSON operations decode fragmented Unicode and cancel without consuming another frame (7.76504ms)
+✔ wire draining completes before paused application consumption and abort prevents the next frame (1.108767ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 156.595335

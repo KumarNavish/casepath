@@ -1,0 +1,22 @@
+✔ initial deep links and duplicate browser history events read saved state once without adding entries (27.920028ms)
+✔ cold operation selection starts the pinned head hint and live transport before its opening read finishes (16.708581ms)
+✔ cold operation selection shows a release outline before any response without a redundant atomic head read (6.254081ms)
+✔ cold operation selection refetches a stale catalog revision without consuming its hinted state (3.581106ms)
+✔ cold operation selection aborts its early reader and ignores late opening and outline responses after navigation (2.539689ms)
+✔ cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback (3.444303ms)
+✔ selected operation priority cancels only idle reads and suppresses new warming until foreground navigation (4.50514ms)
+✔ selected operation priority leaves an explicit foreground Cases read intact and defers direct-entry collection warming (1.881146ms)
+✔ selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends (2.597864ms)
+✔ release procedure outlines carry only the exact nine release catalogs and no accepted state identity (1.426205ms)
+✔ release procedure reconciliation requires original binding profile catalog and exact active request source pins (3.715724ms)
+✔ release procedure opening retains trusted History detail and focus while a valid late opening arrives (4.027474ms)
+✔ an early planned rail comes only from the complete current-run pinned catalog and carries no accepted prefix state (2.991506ms)
+✔ release procedure embedded data regenerates exactly from policy profile and immutable source bytes (66.450107ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 266.967978

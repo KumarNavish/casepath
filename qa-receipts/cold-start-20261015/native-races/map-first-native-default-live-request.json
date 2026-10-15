@@ -1,0 +1,450 @@
+{
+  "operationReads": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live"
+    }
+  ],
+  "sidecar_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+  "result": {
+    "at": 2750,
+    "bound": 444.89999997615814,
+    "operation": "",
+    "verified": "true",
+    "revision": 48,
+    "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+    "stage_phase": "map",
+    "stage": {
+      "x": 36,
+      "y": 203.4375,
+      "width": 1208,
+      "height": 547.75,
+      "top": 203.4375,
+      "right": 1244,
+      "bottom": 751.1875,
+      "left": 36
+    },
+    "rail": {
+      "x": 36,
+      "y": 211.4375,
+      "width": 1208,
+      "height": 386.5625,
+      "top": 211.4375,
+      "right": 1244,
+      "bottom": 598,
+      "left": 36
+    },
+    "graph": {
+      "rect": {
+        "x": 36,
+        "y": 219.4375,
+        "width": 1208,
+        "height": 370.5625,
+        "top": 219.4375,
+        "right": 1244,
+        "bottom": 590,
+        "left": 36
+      },
+      "clientWidth": 1208,
+      "scrollWidth": 1208,
+      "scrollLeft": 0,
+      "scrollTop": 0
+    },
+    "nodes": [
+      {
+        "id": "dh_intake",
+        "status": "completed",
+        "rect": {
+          "x": 40,
+          "y": 231.4375,
+          "width": 190,
+          "height": 53.59375,
+          "top": 231.4375,
+          "right": 230,
+          "bottom": 285.03125,
+          "left": 40
+        },
+        "font": 16
+      },
+      {
+        "id": "dh_scope",
+        "status": "completed",
+        "rect": {
+          "x": 242,
+          "y": 231.4375,
+          "width": 190,
+          "height": 53.59375,
+          "top": 231.4375,
+          "right": 432,
+          "bottom": 285.03125,
+          "left": 242
+        },
+        "font": 16
+      },
+      {
+        "id": "dh_notice",
+        "status": "completed",
+        "rect": {
+          "x": 444,
+          "y": 231.4375,
+          "width": 190,
+          "height": 53.59375,
+          "top": 231.4375,
+          "right": 634,
+          "bottom": 285.03125,
+          "left": 444
+        },
+        "font": 16
+      },
+      {
+        "id": "dh_cause",
+        "status": "completed",
+        "rect": {
+          "x": 646,
+          "y": 231.4375,
+          "width": 190,
+          "height": 53.59375,
+          "top": 231.4375,
+          "right": 836,
+          "bottom": 285.03125,
+          "left": 646
+        },
+        "font": 16
+      },
+      {
+        "id": "dh_evidence",
+        "status": "completed",
+        "rect": {
+          "x": 848,
+          "y": 231.4375,
+          "width": 190,
+          "height": 53.59375,
+          "top": 231.4375,
+          "right": 1038,
+          "bottom": 285.03125,
+          "left": 848
+        },
+        "font": 16
+      },
+      {
+        "id": "dh_response",
+        "status": "completed",
+        "rect": {
+          "x": 1050,
+          "y": 231.4375,
+          "width": 190,
+          "height": 74.390625,
+          "top": 231.4375,
+          "right": 1240,
+          "bottom": 305.828125,
+          "left": 1050
+        },
+        "font": 16
+      }
+    ],
+    "edges": [
+      {
+        "id": "reference_defect_mold_heating_0",
+        "source": "dh_intake",
+        "target": "dh_scope"
+      },
+      {
+        "id": "reference_defect_mold_heating_1",
+        "source": "dh_scope",
+        "target": "dh_notice"
+      },
+      {
+        "id": "reference_defect_mold_heating_2",
+        "source": "dh_notice",
+        "target": "dh_cause"
+      },
+      {
+        "id": "reference_defect_mold_heating_3",
+        "source": "dh_cause",
+        "target": "dh_evidence"
+      },
+      {
+        "id": "reference_defect_mold_heating_4",
+        "source": "dh_evidence",
+        "target": "dh_response"
+      }
+    ],
+    "marks": [],
+    "pane": null,
+    "facts": [
+      {
+        "id": "fact:tenancy_terms_evidence",
+        "operation": "op_1016690703de933a0b04832bac53f789",
+        "start": 298,
+        "end": 305,
+        "text": "CHF1800",
+        "state": "observed"
+      },
+      {
+        "id": "residential_tenancy_scope",
+        "operation": "op_7eae3c56c396adc63cf5e86d936b128e",
+        "start": 146,
+        "end": 172,
+        "text": "ordinary residential lease",
+        "state": "observed"
+      },
+      {
+        "id": "fact:landlord_knowledge_evidence",
+        "operation": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+        "start": 229,
+        "end": 258,
+        "text": "three heating-failure reports",
+        "state": "observed"
+      },
+      {
+        "id": "landlord_first_knowledge",
+        "operation": "op_71a216c1d5ed10f5a5dfc7a8f55a5590",
+        "start": 390,
+        "end": 428,
+        "text": "received the first report on2025-02-01",
+        "state": "observed"
+      },
+      {
+        "id": "continuing_defect_without_remedy",
+        "operation": "op_096fbf71b6d1343003dbcedf78cd4ef3",
+        "start": 735,
+        "end": 769,
+        "text": "no lasting repair has yet occurred",
+        "state": "observed"
+      },
+      {
+        "id": "fact:objective_defect_observation",
+        "operation": "op_03eef83c6c3a9802747b15ceafb63226",
+        "start": 329,
+        "end": 334,
+        "text": "15.8C",
+        "state": "observed"
+      },
+      {
+        "id": "objective_use_impairment",
+        "operation": "op_f1a94f17ba11f910360d21ec27bdd64f",
+        "start": 873,
+        "end": 894,
+        "text": "Heating is inadequate",
+        "state": "observed"
+      },
+      {
+        "id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+        "operation": "op_e2fc076a2f9acc2da80bc5938c212e37",
+        "start": 608,
+        "end": 650,
+        "text": "outside ordinary small tenant maintenance.",
+        "state": "observed"
+      }
+    ],
+    "documents": [
+      {
+        "id": "tenancy_terms_evidence",
+        "checked": "true",
+        "check": "op_239fff8e940e09cd50d910cbaff753b7",
+        "citation": "{\"artifact_id\":\"src_106168f9c33152b3d88f02469ad57782\",\"end_char\":434,\"offset_unit\":\"unicode_code_point\",\"quote\":\"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\",\"sha256\":\"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9\",\"start_char\":95,\"text_sha256\":\"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9\"}"
+      },
+      {
+        "id": "landlord_knowledge_evidence",
+        "checked": "true",
+        "check": "op_96acd4eb60e2706174feaa5552f164f8",
+        "citation": "{\"artifact_id\":\"src_c57d943a64c85cf37369ccbf747b6e3f\",\"end_char\":494,\"offset_unit\":\"unicode_code_point\",\"quote\":\"Our call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.\",\"sha256\":\"1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569\",\"start_char\":193,\"text_sha256\":\"1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569\"}"
+      },
+      {
+        "id": "objective_defect_observation",
+        "checked": "true",
+        "check": "op_1b4045f495bd7c43aee1c82408feaba3",
+        "citation": "{\"artifact_id\":\"src_000ccf161644df9e82d29a8595b7b727\",\"end_char\":764,\"offset_unit\":\"unicode_code_point\",\"quote\":\"On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.\",\"sha256\":\"a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c\",\"start_char\":199,\"text_sha256\":\"a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c\"}"
+      }
+    ],
+    "transport": {
+      "rect": {
+        "x": 310,
+        "y": 763.1875,
+        "width": 660,
+        "height": 49,
+        "top": 763.1875,
+        "right": 970,
+        "bottom": 812.1875,
+        "left": 310
+      },
+      "controls": [
+        {
+          "text": "",
+          "rect": {
+            "x": 320,
+            "y": 780.1875,
+            "width": 640,
+            "height": 16,
+            "top": 780.1875,
+            "right": 960,
+            "bottom": 796.1875,
+            "left": 320
+          }
+        }
+      ]
+    },
+    "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.",
+    "outcome_rect": {
+      "x": 80,
+      "y": 610,
+      "width": 1120,
+      "height": 58,
+      "top": 610,
+      "right": 1200,
+      "bottom": 668,
+      "left": 80
+    },
+    "procedure_rect": {
+      "x": 80,
+      "y": 709.1875,
+      "width": 1120,
+      "height": 42,
+      "top": 709.1875,
+      "right": 1200,
+      "bottom": 751.1875,
+      "left": 80
+    },
+    "outcome_font": 20,
+    "procedure_font": 18,
+    "articles": [
+      "259",
+      "259a",
+      "259d"
+    ],
+    "reuse": [
+      {
+        "id": "procedure.defect_mold_heating",
+        "version": "1"
+      }
+    ],
+    "overflow": false,
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "disclosure": "Existing local native fictional fixture and operation sidecars; actual Chromium time; no provider, production request or write.",
+  "checkout_commit": "27e7419dcf7d47fac15da4fe43176b01c33e8ea4",
+  "candidate_commit": "5f3ebdf",
+  "test_sha256": "b5a20ca6d06d7646fa4f09b0e6af69de18f9e9adbe0c10bfcfffbb400a850140",
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/?journey=autonomous"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/fonts/Merriweather-Light.ttf"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.css?sha256=a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/knowledge"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/snapshot?after=0"
+    }
+  ],
+  "served": {
+    "css": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4",
+    "javascript": "81749271e7967cfdc018e3266d7804e68c2aba68f437e870e6ec05c3b3f9424f"
+  },
+  "assets": {
+    "javascript": "81749271e7967cfdc018e3266d7804e68c2aba68f437e870e6ec05c3b3f9424f",
+    "css": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "classification": "Existing local captured fictional GET server bytes. gzip6 is an offline estimate, not the public deployed encoding or payload.",
+  "rows": [
+    {
+      "path": "/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "sha256": "ff6d0edf4ca2ab4ef74771cef08ec9b60c7af13f24057dec0d525bc4debb1422",
+      "raw_bytes": 7709,
+      "gzip6_bytes": 2466
+    },
+    {
+      "path": "/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "sha256": "41ee5355b79f003f4ee194a1371c11146bd53a5c969751c271d909c34e87c48c",
+      "raw_bytes": 1559209,
+      "gzip6_bytes": 162211
+    },
+    {
+      "path": "/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "sha256": "8bd0b247ea0e8bba3d34afda04a5edb5b7378423ba59851a2bdfd31a05575884",
+      "raw_bytes": 1558774,
+      "gzip6_bytes": 162049
+    },
+    {
+      "path": "/claims/clm_314f2d309fea25e6/operations?mode=live",
+      "sha256": "77e9be18160fa1de025c4bb2575e0bc01a6d5cefb2b3930715f77c108a745234",
+      "raw_bytes": 5413823,
+      "gzip6_bytes": 453223
+    }
+  ]
+}

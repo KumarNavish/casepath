@@ -1,0 +1,68 @@
+{
+  "source_base": "cbfa10adaee2dd777b2aea3fc888c5ee4fa3f236",
+  "source_branch": "codex/casepath-cold-start-20261015",
+  "source_commit": "b297ec13ce32fc3e9a5575edec53bb997b32230b",
+  "changed_paths": [
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "javascript_sha256": "eb1b93f02ff9d49ae8d2d0c57f8459d26c7249a8f6d29c8d105ee08ffb72cdbe",
+  "test_sha256": "72d02f847aa8f62ae8e9f61382d1b013677f1c207c973c2087a00b35dba8b199",
+  "release_material_sha256": "0dc901886e4399084f9600df8a3311445ca92d3c4ea4ba65d515261e0fd1e01a",
+  "final_module": {
+    "passed": 206,
+    "failed": 0,
+    "exit": 0,
+    "log": "module-preload-binding-final.log"
+  },
+  "final_browser": {
+    "passed": 2,
+    "failed": 0,
+    "exit": 0,
+    "log": "preload-final-controls.log"
+  },
+  "final_release_compatibility": {
+    "openings": 9,
+    "heads": 9,
+    "exit": 0,
+    "receipt": "release-nine-compatibility-b297ec1.json"
+  },
+  "previous_native_verifier": {
+    "heads": 9,
+    "operations": 4653,
+    "checkpoints": 162,
+    "working_graphs": 87,
+    "exit": 0,
+    "source_commit": "5f3ebdf",
+    "validators_unchanged": true
+  },
+  "prior_preload_timing": {
+    "source_commit": "a612d12",
+    "artificial_delay_per_API_read_ms": 5000,
+    "release_map_ms": 58.8,
+    "fresh_binding_ms": 10161.4,
+    "first_real_fact_ms": 11656.8,
+    "eighth_real_arrival_ms": 24472.7,
+    "distinct_visible_finished_flights": 8,
+    "selected_case_reads": 3,
+    "raw_selected_case_bytes": 6980741,
+    "disclosure": "Not hosted RTT, bandwidth or cold-backend acceptance. Binding field was subsequently corrected; finalbyte controlcheck+9headcompatibility separatelyprovevalidcontinuity."
+  },
+  "final_read_graph": {
+    "catalog_revision": "selection -> release outline immediately; concurrent replay0 + hinted head replay + requested operation GET; existing full validators before frame consumption",
+    "empty_catalog": "selection -> release outline immediately; concurrent replay0 + requested operation GET; replay0 -> actual full head replay; no extra atomic snapshot; full validators before frame consumption",
+    "idle": "Idle-only ownedreads cancelled on selectedoperation entry; queue/warming suspendedthrough unfinishedselected/pausedrun; foregroundCases/Knowledge andsharedcachesretained; warmingresumesafterresult/navigation"
+  },
+  "review_fixes": [
+    "Held disproved outline is removed without focus loss.",
+    "Pause/Resume works before any original-opening response and retains hold.",
+    "Release profile legacy original_binding_sha256 field is explicitly mapped to actual claim_binding_sha256 as backendReferenceProfile.match does."
+  ],
+  "scope_limits": [
+    "Mac owns CSS/query hashes/combined sealing/full gate/public timing and film.",
+    "No full suite, providers, credentials, production requests or writes ran.",
+    "A fresh live response that takes several seconds cannot produce a genuinely sourced fact within3seconds.",
+    "Requestedactualhistoricalclm_2a9c260c26afaa34revision15notavailable inCloud retainedrecorded-fixturescache; earlier11nodeauto-prefix9proofis separate; Macverifiesactualpublishedtarget.",
+    "Evidence includes all prior attempts and supersededclock/bindingreceipts; FINAL.json and final logs define currentclaims."
+  ]
+}

@@ -1,0 +1,31 @@
+✔ initial deep links and duplicate browser history events read saved state once without adding entries (27.318266ms)
+✔ cold operation selection starts the pinned head hint and live transport before its opening read finishes (18.028854ms)
+✔ cold operation selection shows a release outline before any response without a redundant atomic head read (7.124631ms)
+▶ cold operation selection rejects mismatched, unbound and pruned speculative outlines
+  ✔ head (4.297353ms)
+  ✔ profile (2.801095ms)
+  ✔ missing-start (2.494161ms)
+  ✔ catalog (3.898906ms)
+✔ cold operation selection rejects mismatched, unbound and pruned speculative outlines (14.472223ms)
+✔ cold operation selection refetches a stale catalog revision without consuming its hinted state (3.215096ms)
+✔ cold operation selection aborts its early reader and ignores late opening and outline responses after navigation (1.596937ms)
+▶ cold operation selection does not replace hidden or inspected content when its outline arrives
+  ✔ hidden (2.523004ms)
+  ✔ History (8.65765ms)
+✔ cold operation selection does not replace hidden or inspected content when its outline arrives (11.725168ms)
+✔ cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback (4.081676ms)
+✔ selected operation priority cancels only idle reads and suppresses new warming until foreground navigation (2.800203ms)
+✔ selected operation priority leaves an explicit foreground Cases read intact and defers direct-entry collection warming (2.962863ms)
+✔ selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends (2.149453ms)
+✔ release procedure outlines carry only the exact nine release catalogs and no accepted state identity (1.557259ms)
+✔ release procedure reconciliation requires original binding profile catalog and exact active request source pins (3.562779ms)
+✔ release procedure opening retains trusted History detail and focus while a valid late opening arrives (2.013121ms)
+✔ release procedure embedded data regenerates exactly from policy profile and immutable source bytes (67.274667ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 314.999316

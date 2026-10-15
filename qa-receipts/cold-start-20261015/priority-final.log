@@ -1,0 +1,27 @@
+✔ initial deep links and duplicate browser history events read saved state once without adding entries (24.630536ms)
+✔ cold operation selection starts the pinned head hint and live transport before its opening read finishes (15.232102ms)
+✔ cold operation selection can show an exactly bound snapshot outline while full replay provenance remains gated (3.974832ms)
+▶ cold operation selection rejects mismatched, unbound and pruned speculative outlines
+  ✔ head (2.437841ms)
+  ✔ profile (2.645318ms)
+  ✔ missing-start (2.058ms)
+  ✔ catalog (2.288621ms)
+✔ cold operation selection rejects mismatched, unbound and pruned speculative outlines (10.246297ms)
+✔ cold operation selection refetches a stale catalog revision without consuming its hinted state (5.477757ms)
+✔ cold operation selection aborts its early reader and ignores late opening and outline responses after navigation (2.22093ms)
+▶ cold operation selection does not replace hidden or inspected content when its outline arrives
+  ✔ hidden (2.065291ms)
+  ✔ History (3.26251ms)
+✔ cold operation selection does not replace hidden or inspected content when its outline arrives (5.817654ms)
+✔ cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback (2.358374ms)
+✔ selected operation priority cancels only idle reads and suppresses new warming until foreground navigation (3.665365ms)
+✔ selected operation priority leaves an explicit foreground Cases read intact and defers direct-entry collection warming (1.668294ms)
+✔ selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends (2.060444ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 191.354951
