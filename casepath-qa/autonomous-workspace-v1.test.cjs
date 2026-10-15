@@ -1792,6 +1792,44 @@ function recordedPacketFixture(native=operationOpeningFixture(),bodies=null) {
  return{native,packet,raw,seal,...seal(packet)};
 }
 
+function delayedPacketHash(t,bytes) {
+ const subtle=globalThis.crypto.subtle,original=subtle.digest,started=deferredRead(),release=deferredRead();
+ subtle.digest=function(algorithm,input){if(Buffer.from(input).equals(bytes)){started.resolve();return release.promise.then(()=>original.call(subtle,algorithm,input));}return original.call(subtle,algorithm,input);};
+ let restored=false;const restore=()=>{if(!restored){restored=true;subtle.digest=original;release.resolve();}};t.after(restore);return{started:started.promise,release:()=>release.resolve(),restore};
+}
+
+test('complete acquired packet may finish local SHA inside the original500ms immediate-click choice',async t=>{
+ const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead(),snapshot=deferredRead(),timers=[];let assetSignal,liveSignal;
+ const originalTimeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===500)timers.push(Date.now());return originalTimeout(fn,ms,...args);};t.after(()=>{globalThis.setTimeout=originalTimeout;});
+ const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,new Response(packet.bytes)):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?(liveSignal=init.signal,pendingOperationResponse(packet.native.binding)):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});await hash.started;assert.match(f.host.innerHTML,/Cases|No .*claims|All cases/i,'Cases renders while acquired bytes await local verification');
+ const started=Date.now(),selecting=controller.showDemonstration();await settle();assert.equal(assetSignal.aborted,false,'exact acquired bytes remain eligible; no network is being awaited');assert.equal(timers.length,1,'the choice deadline starts before the pending asset SHA finishes');assert.ok(api.calls.some(row=>row.path.includes('/operations?mode=live')),'Live reads run concurrently with local packet verification');
+ const pause=f.host.querySelector('[data-au-demo-stop]');f.listeners.get('click')({target:pause});const focus={};f.container.ownerDocument.activeElement=focus;
+ await new Promise(resolve=>originalTimeout(resolve,300));hash.release();await selecting;assert.equal(timers.length,1,'verification cannot restart another500ms window');assert.ok(Date.now()-started<700);assert.equal(await controller.recordedPacketReady,true);assert.equal(liveSignal.aborted,true);assert.ok(f.host.querySelector('[data-au-demo-resume]'));assert.equal(f.container.ownerDocument.activeElement,focus);assert.doesNotMatch(f.host.innerHTML,/data-au-revision=|data-au-stage-fact=|Live rules-based check/);
+});
+
+test('complete acquired packet missing the500ms choice cannot paint or splice into later verified Live',async t=>{
+ const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead();
+ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));});await hash.started;const selecting=controller.showDemonstration();await new Promise(resolve=>setTimeout(resolve,550));opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;
+ hash.release();await controller.recordedPacketReady;await settle();await settle();assert.equal(f.host.innerHTML,before,'late local verification cannot join the completed choice');assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1);
+});
+
+test('ready verified Live wins while a completely acquired packet still awaits local SHA',async t=>{
+ const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes);
+ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());await hash.started;await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;hash.release();await controller.recordedPacketReady;await settle();assert.equal(f.host.innerHTML,before);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
+});
+
+test('navigation and hidden ownership cancel acquired packet verification without late Recorded paint',async t=>{
+ for(const hide of [false,true]){
+  const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead(),listeners=new Map();let assetSignal;f.container.ownerDocument.addEventListener=(name,fn)=>listeners.set(name,fn);
+  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,new Response(packet.bytes)):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});await hash.started;const selecting=controller.showDemonstration();
+  if(hide){f.container.ownerDocument.hidden=true;listeners.get('visibilitychange')();}else await controller.showKnowledge();const before=f.host.innerHTML;assert.equal(assetSignal.aborted,true);hash.release();assert.equal(await controller.recordedPacketReady,false);if(hide)await new Promise(resolve=>setTimeout(resolve,550));else{opening.resolve(response(packet.native.zero));await selecting;}await settle();assert.equal(f.host.innerHTML,before,'packet verification cannot repaint while cancelled; unrelated Live opening remains held');assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);controller.destroy();opening.resolve(response(packet.native.zero));await selecting;hash.restore();
+ }
+});
+
 test('recorded packet selected codec preserves exact UTF8 numeric spellings escapes and CRLF without expanding other claims',async()=>{
  const fixture=recordedPacketFixture(undefined,['{"value":-0,"other":0.0,"name":"\\u00e9"} \r\n','{"x":1.00e+3,"n":0e0}','{"v":"😀"}\r\n{"q":"\\\\u00e9"}\n']);
  let root=fixture.packet.fragments.push('x')-1;for(let i=0;i<40;i++)root=fixture.packet.fragments.push([root,root])-1;

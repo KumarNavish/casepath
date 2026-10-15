@@ -1856,7 +1856,7 @@
     let storage = null, apiIdentity = null;
     try { if (root.location?.href) { apiIdentity = new URL(base,root.location.href).href; storage = root.sessionStorage; } } catch (_) { /* Session storage is optional. */ }
     const controllers = new Set();
-    let recordedPacket = null, packetLoadController = null;
+    let recordedPacket = null, packetVerification = null, packetLoadController = null;
     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
     let motion = null, keyboard = false, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0, claimRenderComplete = false, renderedClaimId = null;
     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map(), starts = new Map();
@@ -2212,8 +2212,8 @@
       if (pendingArrival) arrivals.set(current.claim_id,pendingArrival); else arrivals.delete(current.claim_id);
       if (pendingControl) controls.set(current.claim_id,pendingControl); else controls.delete(current.claim_id);
     }
-    function leaveView() {
-      if (!recordedPacket) packetLoadController?.abort();
+    function leaveView(keepAcquiredPacket = false) {
+      if (!recordedPacket && !(keepAcquiredPacket && packetVerification)) packetLoadController?.abort();
       cancelWarmReads();
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); tetherGeometry = null;
       if (view === 'intake') { intakeForm = host.querySelector('[data-au-intake]') || intakeForm; intakeForm?.remove?.(); }
@@ -2472,14 +2472,14 @@
       if (preferences.mode === 'replay') preferences = {...preferences,collection:replayCollection(id,preferences.collection)};
       if (!preferences.demo) stopPresentation();
       else { if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; if (demoSession) demoSession.preparing = null; }
-      leaveView(); route(claimFragment(id,preferences),writeHistory);
+      leaveView(Boolean(preferences.demo && demoSession?.mode === 'operations' && !doc.hidden)); route(claimFragment(id,preferences),writeHistory);
       operationPeek = null; host.removeAttribute?.('data-au-inspection-operation'); cancelStageMotion(); epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); operationTrace = null; factTokenOperation = null; factTokenAnimation?.cancel(); factToken?.remove?.(); attentionMarker?.remove?.(); attentionPosition = null; current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo || presentationMode === 'replay' ? 'demonstration' : 'work'); notice('');
       claimRenderComplete = false; detail = preferences.detail || 'step';
       for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute);
       if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
       let opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
       const session = preferences.demo ? demoSession : null;
-      const packetAtSelection = session?.mode === 'operations' ? recordedPacket : null;
+      const packetAtSelection = session?.mode === 'operations' ? recordedPacket || packetVerification : null;
       if (session?.mode === 'operations' && !packetAtSelection) packetLoadController?.abort();
       if (session?.mode === 'operations') { session.releasePlan = releaseOperationProcess(id); if (session.releasePlan) operationTrace = {releasePlan:session.releasePlan,rows:[],sources:new Map()}; }
       if (demoSession) demoSession.verifiedOpening = null;
@@ -3140,6 +3140,7 @@
     async function loadRecordedPacket() {
       const descriptor = options.recordedPacket;
       if (!descriptor || disposed || doc.hidden || view !== 'work') return false;
+      let verification;
       try {
         await new Promise(resolve => root.setTimeout(resolve,0));
         if (disposed || doc.hidden || view !== 'work') return false;
@@ -3154,10 +3155,13 @@
         finally { packetLoadController.signal.removeEventListener('abort',cancel); await reader.cancel().catch(() => {}); reader.releaseLock?.(); }
         if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work') return false;
         const bytes = new Uint8Array(length); let offset = 0; for (const chunk of chunks) { bytes.set(chunk,offset); offset+=chunk.byteLength; }
-        const packet = await checkedRecordedPacket(bytes,descriptor,options.allowNativeRecordedPacket === true);
-        if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work') return false;
+        if (length !== descriptor.bytes) throw new Error('Recorded packet acquisition is incomplete.');
+        verification = {controller:packetLoadController,promise:checkedRecordedPacket(bytes,descriptor,options.allowNativeRecordedPacket === true)}; packetVerification=verification;
+        const packet = await verification.promise;
+        if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work' && !(view === 'claim' && (demoSession || pausedPresentation)?.mode === 'operations')) return false;
         recordedPacket = packet; return true;
       } catch (_) { return false; }
+      finally { if (packetVerification === verification) packetVerification=null; }
     }
     function operationRequest(prepared, path) {
       const identity = `${readGeneration}:${path}`, prior = readOwners.get(identity), promise = request(path), owner = readOwners.get(identity);
@@ -3173,7 +3177,9 @@
       const openingResult = (response, head, verification) => ({claimId:id,generation:readGeneration,response,head,referenceReady:true,verifiedHeadState:verification.verifiedHeadState,verifiedReplayStart:verification.verifiedReplayStart,verifiedJournal:verification.verifiedJournal,referenceAsOf:verification.referenceAsOf,operationBinding:verification.operationBinding,plannedProcess:verification.plannedProcess});
       let packetOpening = null;
       const packetCandidate = (async () => {
-        const decoded = await decodeRecordedSession(packet,id,choice.signal), incoming = readReplay(decoded.opening,id,0), head = decoded.head;
+        const verified = packet.promise ? await packet.promise : packet;
+        if (!active() || packet.controller?.signal.aborted) return;
+        const decoded = await decodeRecordedSession(verified,id,choice.signal), incoming = readReplay(decoded.opening,id,0), head = decoded.head;
         checkedReplayHead(incoming,{replayHead:head});
         const full = await checkedAtomicOperationHead(decoded.head_snapshot,head,incoming.replay.replay_start,incoming.state), plannedProcess = await plannedOperationProcess(full.state), start = checkedReferenceReplayStart(incoming.replay.replay_start,full);
         const operationBinding = {source_roster_sha256:full.state.source_roster_sha256,rule_set_sha256:referenceExecution(full.state)?.rule_set_sha256};
