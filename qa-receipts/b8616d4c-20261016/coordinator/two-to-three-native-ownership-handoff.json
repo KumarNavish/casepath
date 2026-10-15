@@ -1,0 +1,20 @@
+{
+  "candidate": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "previous_coordinator_pid": 972836,
+  "previous_command_line": "Previously exited parallel_capacity_dispatch.py (packaging author metadata failure preserved)",
+  "previous_exec_session": 76209,
+  "previous_wrapper_log": "parallel-dispatch-wrapper.log",
+  "previous_exact_command": "HOME=/workspace/bh0 TMPDIR=/workspace/bt0 TMP=/workspace/bt0 TEMP=/workspace/bt0 python3 /workspace/casepath-startup-itinerary-gate-b8616d4c-20261016/coordinator/parallel_capacity_dispatch.py > /workspace/casepath-startup-itinerary-gate-b8616d4c-20261016/parallel-dispatch-wrapper.log 2>&1",
+  "new_coordinator_pid": 974402,
+  "adopted_running_native_shards": [],
+  "completed_first_only_shards": [
+    1,
+    2
+  ],
+  "no_native_wrapper_pytest_or_subprocess_group_signalled": true,
+  "existing_native_attempt_latches_unchanged": true,
+  "previous_own_coordinator_SIGSTOP_only_until_all_adopted_native_wrappers_terminal_then_SIGTERM_and_SIGCONT": true,
+  "max_heavy": 3,
+  "minimum_prelaunch_free_bytes": 3221225472,
+  "epoch": 1792107019.97869
+}

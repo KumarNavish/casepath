@@ -9,7 +9,7 @@ for p in sorted(R.iterdir()):
 for name in ['harness','coordinator','review','retirement-receipts']:
     directory=R/name
     if directory.exists():
-        included.extend(p for p in sorted(directory.rglob('*')) if p.is_file() and not p.is_symlink() and p.suffix in {'.py','.json','.jsonl','.txt','.log','.md','.xml'})
+        included.extend(p for p in sorted(directory.rglob('*')) if p.is_file() and not p.is_symlink() and p.suffix in {'.py','.json','.jsonl','.txt','.log','.md','.xml','.cfg','.gz'})
 for name in ['inventory']+[f'shard{i}' for i in range(1,7)]:
     directory=R/name
     included.extend(p for p in sorted(directory.iterdir()) if p.is_file() and p.suffix in {'.json','.jsonl','.txt','.log','.xml'})

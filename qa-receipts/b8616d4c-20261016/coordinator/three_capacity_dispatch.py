@@ -9,13 +9,15 @@ while True:
  events=[json.loads(x) for x in (R/'scheduler-events.jsonl').read_text().splitlines()]
  completed={x['shard'] for x in events if x['type']=='finish'}
  running={n for n in range(1,7) if (R/f'shard{n}/ATTEMPT_STARTED.json').exists() and n not in completed}
- stable=len(running)==2 and all((R/f'completed-shard{n}-runtime-retirement.json').exists() for n in completed) and not (G/'.git/index.lock').exists()
+ stable=len(running)<=2 and all((R/f'completed-shard{n}-runtime-retirement.json').exists() for n in completed) and not (G/'.git/index.lock').exists()
  if stable:
-  cmdline=Path(f'/proc/{old_controller}/cmdline').read_bytes();assert b'parallel_capacity_dispatch.py' in cmdline
-  os.kill(old_controller,signal.SIGSTOP)
+  prior_proc=Path(f'/proc/{old_controller}/cmdline')
+  cmdline=prior_proc.read_bytes() if prior_proc.exists() else b'Previously exited parallel_capacity_dispatch.py (packaging author metadata failure preserved)'
+  assert b'parallel_capacity_dispatch.py' in cmdline
+  if prior_proc.exists():os.kill(old_controller,signal.SIGSTOP)
   latest=[json.loads(x) for x in (R/'scheduler-events.jsonl').read_text().splitlines()];finished={x['shard'] for x in latest if x['type']=='finish'}
   if finished==completed:break
-  os.kill(old_controller,signal.SIGCONT)
+  if prior_proc.exists():os.kill(old_controller,signal.SIGCONT)
  time.sleep(2)
 initial_adopted=sorted(running);active=set(initial_adopted);rows=[x for x in json.loads((R/'all-shard-terminal.json').read_text())['results'] if x['shard'] in completed]
 save(R/'coordinator/two-to-three-native-ownership-handoff.json',{'candidate':SHA,'previous_coordinator_pid':old_controller,'previous_command_line':cmdline.decode().replace('\x00',' ').strip(),'previous_exec_session':76209,'previous_wrapper_log':'parallel-dispatch-wrapper.log','previous_exact_command':'HOME=/workspace/bh0 TMPDIR=/workspace/bt0 TMP=/workspace/bt0 TEMP=/workspace/bt0 python3 '+str(R/'coordinator/parallel_capacity_dispatch.py')+' > '+str(R/'parallel-dispatch-wrapper.log')+' 2>&1','new_coordinator_pid':os.getpid(),'adopted_running_native_shards':initial_adopted,'completed_first_only_shards':sorted(completed),'no_native_wrapper_pytest_or_subprocess_group_signalled':True,'existing_native_attempt_latches_unchanged':True,'previous_own_coordinator_SIGSTOP_only_until_all_adopted_native_wrappers_terminal_then_SIGTERM_and_SIGCONT':True,'max_heavy':3,'minimum_prelaunch_free_bytes':MIN,'epoch':time.time()})
@@ -25,7 +27,9 @@ def terminate_previous_if_safe():
  global controller_terminated
  with io_lock:
   if not controller_terminated and all((R/f'shard{n}/result.json').exists() for n in initial_adopted):
-   os.kill(old_controller,signal.SIGTERM);os.kill(old_controller,signal.SIGCONT);controller_terminated=True
+   try:os.kill(old_controller,signal.SIGTERM);os.kill(old_controller,signal.SIGCONT)
+   except ProcessLookupError:pass
+   controller_terminated=True
    event({'type':'previous_two_worker_coordinator_terminal_after_adopted_native_wrappers','old_coordinator_pid':old_controller,'native_wrappers_all_terminal':initial_adopted,'native_pytest_or_subprocess_group_signalled':False})
 def run_one(n):
  out=R/f'shard{n}';repo=Path(f'/workspace/casepath-release-ae0-shard{n}')

@@ -8,12 +8,24 @@
     {
       "name": "shard2",
       "exit_code": 0
+    },
+    {
+      "name": "shard3",
+      "exit_code": 0
+    },
+    {
+      "name": "shard4",
+      "exit_code": 0
+    },
+    {
+      "name": "shard5",
+      "exit_code": 0
     }
   ],
   "source_clones": 6,
   "runtime_preparation": "Just before each shard",
   "collection_physical_clone": "shard1",
-  "free_bytes": 3287015424,
+  "free_bytes": 3355348992,
   "adequate_headroom": true,
   "minimum_headroom_bytes": 3221225472,
   "test_execution_started": false

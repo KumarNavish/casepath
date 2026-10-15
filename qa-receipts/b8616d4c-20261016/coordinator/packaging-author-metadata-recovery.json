@@ -1,0 +1,19 @@
+{
+  "failure": "Checkpoint git commit could not find configured author because scoped HOME omitted existing global Git config",
+  "affected_test_attempts": [],
+  "native_test_results_unchanged": true,
+  "preserved_original_failure_log": "parallel-dispatch-wrapper.log",
+  "old_two_worker_coordinator_exit_code": 1,
+  "old_serial_coordinator_exit_code": 143,
+  "serial_coordinator_exit_expected_after_native1_terminal": true,
+  "waiting_third_coordinator_exit_code": 143,
+  "waiting_third_coordinator_had_no_native_children": true,
+  "recovery": "Use existing /home/agent/.gitconfig by GIT_CONFIG_GLOBAL selector in scoped coordinator environment; no Git auth or credential settings changed",
+  "raw_checkpoint_committed_and_remote_verified": "951d3da7fcf9c47789ef28d21de095a635f35753",
+  "epoch": 1792107000.3005757,
+  "git_author_error_messages_in_original_log": 2,
+  "native_test_setup_failures": 0,
+  "native_retries": 0,
+  "original_error_log_sha256": "3ee13ce34fd83828942f06e6bd1915b0f557e95b29593c2b9ae42b4b23dc40d1",
+  "checkpoint_included_exact_original_error_copy": "coordinator/packaging-author-original-error.log"
+}
