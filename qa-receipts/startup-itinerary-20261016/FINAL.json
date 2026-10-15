@@ -1,0 +1,105 @@
+{
+  "status": "FOCUSED_IMPLEMENTATION_ACCEPTED_WITH_DISCLOSED_STRESS_LIMIT",
+  "host": "656813ef2295",
+  "base_commit": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "source": {
+    "js_commit": "c57faa59f7533b1317166a8cb484a40e2b76b75e",
+    "js_branch": "codex/startup-itinerary-js-20261016",
+    "js_sha256": "990df183af3a4592063b684b0b146df09f597df17e1f7bc3fa417291ab73cea4",
+    "css_commit": "b8f9a694dbf4016a9da269a88fd263ddce6993ac",
+    "css_branch": "codex/stage-edge-css-20261016",
+    "css_sha256": "e049267ad2ad59f98f48f09a45695a5e8180ed2f90ea4ba0d81e6e7c99e2f019",
+    "files": [
+      "casepath/assets/autonomous-workspace-v1.js",
+      "casepath/assets/autonomous-workspace-v1.css",
+      "casepath-qa/autonomous-workspace-v1.test.cjs"
+    ]
+  },
+  "checks": {
+    "module": {
+      "passed": 249,
+      "failed": 0,
+      "log": "js/module-c57-final.log"
+    },
+    "focused_latest": {
+      "passed": 23,
+      "failed": 0,
+      "log": "js/late-acquisition-recorded-final.log"
+    },
+    "css_focused": {
+      "passed": 6,
+      "failed": 0,
+      "log": "css/focused-node.log"
+    },
+    "css_browser": "desktop/mobile/reduced; 9 equal-pan comparisons, active excerpt and destination text pixels unchanged; native fixture Version1, not hostedVersion2",
+    "source_review": "review/final-review.json",
+    "actual_first_landing_after_map": {
+      "click": {
+        "first_visible_map_ms": 194.09999990463257,
+        "first_text_after_map_ms": 573.4000000953674,
+        "first_actual_landing_after_map_ms": 1271.8000000715256
+      },
+      "direct": {
+        "first_visible_map_ms": 41.200000047683716,
+        "first_text_after_map_ms": 512.3999999761581,
+        "first_actual_landing_after_map_ms": 1190.3999999761581
+      },
+      "early": {
+        "first_visible_map_ms": 113.10000002384186,
+        "first_text_after_map_ms": 489.10000002384186,
+        "first_actual_landing_after_map_ms": 1195.2000000476837
+      }
+    },
+    "physical_next_case": {
+      "completed_outcome_hold_ms": 8012.299999952316,
+      "next_first_landed_after_map_ms": 723.1000000238419
+    },
+    "next_case_counts": [
+      824,
+      299
+    ],
+    "nine_native_heads": 9,
+    "native_operations_verified": 4653,
+    "native_checkpoints_verified": 162
+  },
+  "timing_semantics": {
+    "selection": "300ms preference for fully verified Live; if neither candidate admitted, first fully verified matching packet or native candidate may win until commitment; no later splice",
+    "first_consequence": "360ms exact source sweep, 300ms authentic transfer; no scroll wait for non-scrolling compact excerpt",
+    "outcome_hold": "8000ms independently of next-case network preparation; pause/hide/cancel guards retained"
+  },
+  "timing_limits": {
+    "api_delay_ms": 5000,
+    "normal_native_uses": "exact shipped published heating packet in local read-only renderer; no production requests",
+    "early_click_asset_delay_ms": 100,
+    "artificial_600ms_asset_after_mount": {
+      "default_landed_after_map_ms": 1672.8000000715256,
+      "recorded_landed_after_map_ms": 1605,
+      "strict_1500ms_met": false,
+      "interpretation": "This deliberately starts acquisition after mount rather than reproducing the existing HTML-head preload. It proves no forced5sAPI fallback and truthful Recorded commitment; it does not meet the1.5s target. Mac separately measured existing hosted head preload completing before its map. No duplicate preload/entry change was added."
+    }
+  },
+  "failures_retained": [
+    "native/attempt1-insecure-origin-*: HTTP nonloopback mock origin lacked crypto.subtle; changed isolated test origin to secure loopback, not a product defect",
+    "native/checkpoint081-missed-target-*: actual1546/1573ms missed bar; fixed compact settle and first sweep",
+    "native/checkpoint0f088-small-margin-*:1407/1430ms lacked margin; authorized300ms preference",
+    "native/af-delayed-packet-*:600ms asset after map abandoned at300, selected slowLive; fixed uncommitted race",
+    "native/attempt1-route-title-observation-*: sampler attributed old visible heading/range to new URL; source observation corrected to displayed heading",
+    "native/attempt2-intake-title-*: observer used intake title rather than roster display label and timed out; original log/script retained; final observer records raw state before assertions",
+    "js/*: exact-base negative regressions and all diagnosed fixture/environment/timer failures retained in handoff.txt",
+    "css/browser.log and pixel-initial-failure.txt: initial missing plan/nonTTY harness and71 junction antialiasing pixels≤2/255, active text identical"
+  ],
+  "gate": {
+    "canonical": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+    "authorized_separately": true,
+    "results_not_in_this_focused_receipt": true
+  },
+  "safety": {
+    "new_provider_or_paid_calls": 0,
+    "production_requests": 0,
+    "product_api_writes": 0,
+    "engine_corpus_journals_ledger_changes": false,
+    "entry_index_preload_changes": false,
+    "deployment": false,
+    "TMPDIR": "/workspace/casepath-startup-itinerary-evidence-20261016/t"
+  }
+}

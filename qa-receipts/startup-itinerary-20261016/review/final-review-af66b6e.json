@@ -1,0 +1,141 @@
+{
+  "contract": "casepath.bounded-source-review/1",
+  "host": "656813ef2295",
+  "base_commit": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "verdict": "No remaining blocking findings in the reviewed bounded source diffs. Final JavaScript af66b6e and CSS b8f9a69 are accepted by read-only source review. Browser timing, physical hold/count and all-nine native verification remain separately owned by root/Mac.",
+  "reviewed": [
+    {
+      "commit": "af66b6e722c8c90d09d90f9e4adf2ba6c333ad3f",
+      "files": [
+        "casepath/assets/autonomous-workspace-v1.js",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "javascript_sha256": "84b3d545472170b977e172d9e061ae274f598ba0e5c84576bb3a750b77124eb8",
+      "working_tree_clean_at_review": true,
+      "intermediate_commits": [
+        "081d31a4a308b48393b32dde138b2c175a0bbec7",
+        "0f0884df212fe6ae64c68fc82588bc0e1f510211",
+        "b62b34638973e64ce54c3ca568d2657969840559"
+      ]
+    },
+    {
+      "commit": "b8f9a694dbf4016a9da269a88fd263ddce6993ac",
+      "files": [
+        "casepath/assets/autonomous-workspace-v1.css"
+      ],
+      "css_sha256": "e049267ad2ad59f98f48f09a45695a5e8180ed2f90ea4ba0d81e6e7c99e2f019",
+      "working_tree_clean_at_review": true
+    }
+  ],
+  "blocking_findings": [],
+  "resolved_during_review": [
+    {
+      "id": "transition-pause",
+      "resolution": "openPresentationCase gates an already prepared next opening through operationGate before committing the transition; pause preserves the awaiting continuation."
+    },
+    {
+      "id": "transition-visibility",
+      "resolution": "Owned slot cancellation settles immediately through a cancellation race. A cancelled next slot is renewed after the visible/inspection gate, without repeating the completed hold."
+    },
+    {
+      "id": "stale-consumer-hash",
+      "resolution": "Non-result frame digest and final trace digest now recheck operationActive plus exact trace ownership before binding/completion mutation."
+    },
+    {
+      "id": "cases-packet-inflight",
+      "resolution": "packetAcquisition represents bounded in-flight acquisition; eligible Cases-to-operations navigation retains it for the existing500ms choice."
+    },
+    {
+      "id": "observed-head-rollback",
+      "resolution": "A valid observed live opening head that differs from the packet head prevents packet fallback."
+    },
+    {
+      "id": "next-live-http-fallback",
+      "resolution": "A nonOK next Live operations response can make exactly one same-controller RecordedGET fallback before binding admission. Handoff is marked recorded while the current visible case retains its current mode. Fresh cancellation checks surround the fallback fetch; the fallback buffer retains the prepared.resultAvailable callback for late own-case count refresh."
+    }
+  ],
+  "confirmed_by_source": [
+    "One next-case slot starts opening, complete-head and operations GETs while current binding is playing; native buffer bounded24MiB/10002queued frames.",
+    "Next slot has independent choice/read controllers and exact head/binding admission; next facts/outcomes are not applied to current prefix.",
+    "Explicit8000ms outcome hold tracks remaining visible running time independently from next network readiness.",
+    "Prefetched buffer and openingBinding supply only their matching result count; new-case trace and title reset precede next paced operation consumption.",
+    "Existing operation hash/order, source, checkpoint and final result validators remain intact; no provider/store mutation was introduced.",
+    "First genuine consequence uses360ms read/300ms transfer with compact-only no-scroll-settle bypass; full passage and subsequent consequence pacing remain unchanged.",
+    "CSS applies source-phase edge masks only, matching graph padding, focus-within unmask and narrower mobile edges; settled map selectors and semantic accessibility content unchanged.",
+    "Next Live HTTP failure performs at most one same-owner RecordedGET; fallback head binding and truthful mode handoff remain checked without repainting the current case as Recorded."
+  ],
+  "verification": {
+    "reviewer_tests_run": false,
+    "reviewer_checks": [
+      "read full bounded JS/CSS diffs against base",
+      "trace live/packet opening choice and next-slot ownership",
+      "inspect hold/pause/visibility continuation",
+      "inspect delayed consumer digest guards",
+      "inspect result/binding/count ownership",
+      "inspect new824-to299 and interruption regression test assertions",
+      "git diff --check both commits (exit0)",
+      "verify source SHA and clean working trees",
+      "inspect0f088 compact-only settle delta",
+      "inspect single300ms deadline and controlled cutoff regression assertions",
+      "inspect same-owner503 fallback and labels/cancellation/result callback",
+      "git diff --check final af66b6e (exit0), verify final JS SHA and clean tree"
+    ],
+    "writer_reported_tests": "Root reports final module245/245 passed on frozen af66b6e; focused29/29 passed earlier. Reviewer did not rerun tests.",
+    "root_runtime_checks": {
+      "source_commit": "af66b6e722c8c90d09d90f9e4adf2ba6c333ad3f",
+      "reported_by": "root",
+      "native_first_land_after_map_ms": {
+        "Cases": 1174.1,
+        "direct": 1189.8,
+        "early_Cases_asset_acquiring": 1195.4
+      },
+      "errors": 0,
+      "physical_8s_and_824_to_299_check": "running at receipt creation",
+      "reviewer_independently_executed": false
+    }
+  },
+  "packet_recommendation": {
+    "requirement": "All-nine published data or per-case published shards is needed for guaranteed Recorded availability beyond first heating; no whole-nine startup latency guarantee follows.",
+    "keep_small_first_startup_priority": true,
+    "native_fixture_sizes_only": {
+      "first_raw_bytes": 572463,
+      "first_br_bytes": 141139,
+      "nine_raw_bytes": 3323717,
+      "nine_br_bytes": 756866
+    },
+    "slow_link_limit": "At0.15Mbps the native br payload lower bounds are7.53s first and40.37s nine, excluding assets/RTT/validation. An unready cold packet cannot be made ready by a500ms choice.",
+    "mac_public_contract": [
+      "published_public_synthetic with exact40hex deployment commit",
+      "same-origin immutable packet URL, exact raw bytes and SHA",
+      "all selected claim head revision/state/event triples",
+      "exact original opening/head_snapshot/operations body lengths and SHA",
+      "operation bytes/order/hash preserved",
+      "native_fixture/null deployment stays test-only",
+      "actual served compression and slow-network timing require browser evidence"
+    ]
+  },
+  "scope": "Read-only source review. Only JSON receipts were written under the assigned evidence directory; no source edits, tests, provider calls, store writes, docs or research changes.",
+  "follow_up_review": {
+    "from": "081d31a4a308b48393b32dde138b2c175a0bbec7",
+    "to": "0f0884df212fe6ae64c68fc82588bc0e1f510211",
+    "accepted_delta": [
+      "Compact excerpt skip of source scroll settle matches positionOperationSource compact branch, which never scrolls.",
+      "Full source passage quiet/scrollend/bounded fallback unchanged.",
+      "First read360ms/transfer300ms remains genuine choreography; all subsequent pacing and bounded choice unchanged.",
+      "Dedicated binding/final-result delayed digest regression covers replacement session mutations."
+    ],
+    "timing_evidence": "Root preserved081d31a failures1546/1573ms and0f088 narrow passes1407/1430ms. Final exactaf66b6e native first landing reported Cases1174.1/direct1189.8/earlyCases-acquiring1195.4ms with no errors; independent runtime artifacts remain root-owned.",
+    "additional_commits": {
+      "b62b34638973e64ce54c3ca568d2657969840559": [
+        "Root-authorized300ms grace is a single unchanged-owner cutoff within the former500ms maximum. All packet/head/binding/source validation remains required.",
+        "Late packet decode cannot join a completed choice or splice into Live playback.",
+        "Same-owner next503\u2192Recorded fallback added.",
+        "Skip/reduced changes during completed hold or next transition cannot cause automatic next-case opening."
+      ],
+      "af66b6e722c8c90d09d90f9e4adf2ba6c333ad3f": [
+        "Fresh active check after awaited error-body cancellation prevents abandoned fallback fetch initiation.",
+        "Recorded fallback buffer forwards late results through the prepared owner callback for selected current-case denominator refresh."
+      ]
+    }
+  }
+}

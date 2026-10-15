@@ -1,0 +1,767 @@
+diff --git a/casepath-qa/autonomous-workspace-v1.test.cjs b/casepath-qa/autonomous-workspace-v1.test.cjs
+index b0a93f2..c823e87 100644
+--- a/casepath-qa/autonomous-workspace-v1.test.cjs
++++ b/casepath-qa/autonomous-workspace-v1.test.cjs
+@@ -1833,8 +1833,8 @@ function operationFixture() {
+  const seal=(kind,object,result,source)=>{const input={source_artifact_id:descriptor.artifact_id},frame={contract:operationContract,type:'operation',seq:trace.rows.length+1,id:`real-${trace.rows.length+1}`,kind,object,input,result,cause_ids:trace.rows.length?[trace.rows.at(-1).id]:[],previous_operation_sha256:trace.rows.at(-1)?.operation_sha256||null,input_sha256:sha(ui.canonicalJSON(input)),result_sha256:sha(ui.canonicalJSON(result)),...source?{source}:{}};const material={...frame};delete material.contract;delete material.type;return {...frame,operation_sha256:sha(ui.canonicalJSON(material))};};
+  return {sourceText,descriptor,baseline,head,start,binding,journal,trace,seal};
+ }
+-function operationOpeningFixture() {
+- const id=ui.REFERENCE_DEMO_CASES[0].claim_id,run='opening-reference-run',profile=sha('opening-profile'),roster=sha('opening-roster');
++function operationOpeningFixture(id=ui.REFERENCE_DEMO_CASES[0].claim_id) {
++ const run='opening-reference-run',profile=sha('opening-profile'),roster=sha('opening-roster');
+  const catalog={nodes:[{node_id:'start',label:'Read the received message'},{node_id:'branch',label:'Assess the received notice'}],transitions:[{edge_id:'next',source_node_id:'start',target_node_id:'branch'}],documents:[{document_type:'notice',label:'Received notice',required_at_node_ids:['branch']}]};
+  const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',profile_id:'synthetic-nine-v2',profile_sha256:profile,rule_set_sha256:sha('opening-rules')};
+  const opening=state({claim_id:id,title:'Actual original opening',revision:0,state_sha256:sha('opening-state'),last_event_sha256:null,mode:'unprocessed',phase:'not_run',graph:null,evaluation:null,facts:[],obligations:[],actions:[],status:'not_started'});
+@@ -1875,21 +1875,21 @@ function delayedPacketHash(t,bytes) {
+  let restored=false;const restore=()=>{if(!restored){restored=true;subtle.digest=original;release.resolve();}};t.after(restore);return{started:started.promise,release:()=>release.resolve(),restore};
+ }
+ 
+-test('complete acquired packet may finish local SHA inside the original500ms immediate-click choice',async t=>{
++test('complete acquired packet may finish local SHA inside the original300ms immediate-click choice',async t=>{
+  const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead(),snapshot=deferredRead(),timers=[];let assetSignal,liveSignal;
+- const originalTimeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===500)timers.push(Date.now());return originalTimeout(fn,ms,...args);};t.after(()=>{globalThis.setTimeout=originalTimeout;});
++ const originalTimeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===300)timers.push(Date.now());return originalTimeout(fn,ms,...args);};t.after(()=>{globalThis.setTimeout=originalTimeout;});
+  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,new Response(packet.bytes)):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?(liveSignal=init.signal,pendingOperationResponse(packet.native.binding)):null});
+  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});await hash.started;assert.match(f.host.innerHTML,/Cases|No .*claims|All cases/i,'Cases renders while acquired bytes await local verification');
+  const started=Date.now(),selecting=controller.showDemonstration();await settle();assert.equal(assetSignal.aborted,false,'exact acquired bytes remain eligible; no network is being awaited');assert.equal(timers.length,1,'the choice deadline starts before the pending asset SHA finishes');assert.ok(api.calls.some(row=>row.path.includes('/operations?mode=live')),'Live reads run concurrently with local packet verification');
+  const pause=f.host.querySelector('[data-au-demo-stop]');f.listeners.get('click')({target:pause});const focus={};f.container.ownerDocument.activeElement=focus;
+- await new Promise(resolve=>originalTimeout(resolve,300));hash.release();await selecting;assert.equal(timers.length,1,'verification cannot restart another500ms window');assert.ok(Date.now()-started<700);assert.equal(await controller.recordedPacketReady,true);assert.equal(liveSignal.aborted,true);assert.ok(f.host.querySelector('[data-au-demo-resume]'));assert.equal(f.container.ownerDocument.activeElement,focus);assert.doesNotMatch(f.host.innerHTML,/data-au-revision=|data-au-stage-fact=|Live rules-based check/);
++ await new Promise(resolve=>originalTimeout(resolve,150));hash.release();await selecting;assert.equal(timers.length,1,'verification cannot restart another300ms window');assert.ok(Date.now()-started<700);assert.equal(await controller.recordedPacketReady,true);assert.equal(liveSignal.aborted,true);assert.ok(f.host.querySelector('[data-au-demo-resume]'));assert.equal(f.container.ownerDocument.activeElement,focus);assert.doesNotMatch(f.host.innerHTML,/data-au-revision=|data-au-stage-fact=|Live rules-based check/);
+ });
+ 
+-test('complete acquired packet missing the500ms choice cannot paint or splice into later verified Live',async t=>{
++test('complete acquired packet missing the300ms choice cannot paint or splice into later verified Live',async t=>{
+  const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead();
+  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+- const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));});await hash.started;const selecting=controller.showDemonstration();await new Promise(resolve=>setTimeout(resolve,550));opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;
+- hash.release();await controller.recordedPacketReady;await settle();await settle();assert.equal(f.host.innerHTML,before,'late local verification cannot join the completed choice');assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1);
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));});await hash.started;const selecting=controller.showDemonstration();await new Promise(resolve=>setTimeout(resolve,350));opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;
++ hash.release();await controller.recordedPacketReady;await settle();await settle();assert.equal(f.host.innerHTML,before,'late local verification cannot join the completed choice');assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?`)).length,1);
+ });
+ 
+ test('ready verified Live wins while a completely acquired packet still awaits local SHA',async t=>{
+@@ -1903,7 +1903,7 @@ test('navigation and hidden ownership cancel acquired packet verification withou
+   const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead(),listeners=new Map();let assetSignal;f.container.ownerDocument.addEventListener=(name,fn)=>listeners.set(name,fn);
+   const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,new Response(packet.bytes)):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+   const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});await hash.started;const selecting=controller.showDemonstration();
+-  if(hide){f.container.ownerDocument.hidden=true;listeners.get('visibilitychange')();}else await controller.showKnowledge();const before=f.host.innerHTML;assert.equal(assetSignal.aborted,true);hash.release();assert.equal(await controller.recordedPacketReady,false);if(hide)await new Promise(resolve=>setTimeout(resolve,550));else{opening.resolve(response(packet.native.zero));await selecting;}await settle();assert.equal(f.host.innerHTML,before,'packet verification cannot repaint while cancelled; unrelated Live opening remains held');assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);controller.destroy();opening.resolve(response(packet.native.zero));await selecting;hash.restore();
++  if(hide){f.container.ownerDocument.hidden=true;listeners.get('visibilitychange')();}else await controller.showKnowledge();const before=f.host.innerHTML;assert.equal(assetSignal.aborted,true);hash.release();assert.equal(await controller.recordedPacketReady,false);if(hide)await new Promise(resolve=>setTimeout(resolve,350));else{opening.resolve(response(packet.native.zero));await selecting;}await settle();assert.equal(f.host.innerHTML,before,'packet verification cannot repaint while cancelled; unrelated Live opening remains held');assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);controller.destroy();opening.resolve(response(packet.native.zero));await selecting;hash.restore();
+  }
+ });
+ 
+@@ -1930,27 +1930,27 @@ test('ready recorded packet wins the bounded opening choice and late live replie
+  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();incompleteFallback.resolve(response(packet.native.replay));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});assert.equal(await controller.recordedPacketReady,true);const writes=[];let markup=f.host.innerHTML;Object.defineProperty(f.host,'innerHTML',{get:()=>markup,set:value=>{markup=value;writes.push(value);},configurable:true});const selecting=controller.showDemonstration();
+  assert.match(f.host.innerHTML,/Opening investigation/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|data-au-revision=/);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');
+  assert.ok(writes.every(html=>!html.includes('Live rules-based check')),'every opening/playback render retains whole-session Recorded identity');assert.match(f.host.innerHTML,/Recorded replay/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|The later accepted outcome|data-au-stage-fact=/);assert.match(routing.hash,/operations=recorded/);assert.equal(liveSignal.aborted,true);
+- await waitFor(()=>api.calls.some(row=>row.path.endsWith('/replay?through_seq=4')));const before=f.host.innerHTML;opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before,'late live responses cannot take over an admitted Recorded session');assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1,'recorded body uses packet bytes without another API trace');
++ await waitFor(()=>api.calls.some(row=>row.path.endsWith('/replay?through_seq=4')));const before=f.host.innerHTML;opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before,'late live responses cannot take over an admitted Recorded session');assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?`)).length,1,'recorded body uses packet bytes without another API trace');
+ });
+ 
+-test('independently verified live opening wins before500ms and never consumes available recorded packet frames',async t=>{
++test('independently verified live opening wins before300ms and never consumes available recorded packet frames',async t=>{
+  const f=operationOpeningDOM(),packet=recordedPacketFixture();
+  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+- const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());assert.equal(await controller.recordedPacketReady,true);const started=Date.now();await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.ok(Date.now()-started<500);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());assert.equal(await controller.recordedPacketReady,true);const started=Date.now();await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.ok(Date.now()-started<300);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
+ });
+ 
+ test('unfinished recorded asset never delays Cases or selected live work and cannot join a later opening',async t=>{
+  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead();let assetSignal;
+  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+- const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));});await settle();await new Promise(resolve=>setTimeout(resolve,5));assert.match(f.host.innerHTML,/Cases|No .*claims|All cases/i);const selecting=controller.showDemonstration();await settle();assert.equal(assetSignal.aborted,true);assert.match(f.host.innerHTML,/Live rules-based check/);
+- asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,false);opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));});await settle();await new Promise(resolve=>setTimeout(resolve,5));assert.match(f.host.innerHTML,/Cases|No .*claims|All cases/i);const selecting=controller.showDemonstration();await settle();assert.equal(assetSignal.aborted,false);assert.match(f.host.innerHTML,/Opening investigation/);
++ await new Promise(resolve=>setTimeout(resolve,350));opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const committed=f.host.innerHTML;asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await settle();assert.equal(f.host.innerHTML,committed);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
+ });
+ 
+ test('unusable recorded packet retains the existing live503 to recorded endpoint fallback',async t=>{
+  const f=operationOpeningDOM(),packet=recordedPacketFixture();packet.packet.claims[0].head.state_sha256=sha('different recorded head');const asset=packet.seal(packet.packet);
+  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(asset.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?mode=live')?response({detail:'Live not available'},503):path.includes('/operations?mode=recorded')?pendingOperationResponse(packet.native.binding):null});
+  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:asset.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());assert.equal(await controller.recordedPacketReady,true);await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');
+- assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,1);assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=recorded')).length,1);assert.match(f.host.innerHTML,/Recorded replay/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=/);
++ assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?mode=live`)).length,1);assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?mode=recorded`)).length,1);assert.match(f.host.innerHTML,/Recorded replay/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=/);
+ });
+ 
+ test('explicit Recorded route uses whole packet identity and retires release provenance before accepted opening paint',async t=>{
+@@ -2023,7 +2023,7 @@ test('cold operation selection reuses one complete atomic head while showing onl
+  snapshot.resolve(response(native.snapshot));await settle();assert.doesNotMatch(f.host.innerHTML,/data-au-planned-process=/,'a complete atomic head alone cannot bind its opening');
+  opening.resolve(response(native.zero));await selecting;await waitFor(()=>f.host.innerHTML.includes('data-au-planned-process='));
+  assert.doesNotMatch(f.host.innerHTML,/data-au-release-plan=/);assert.match(f.host.innerHTML,/data-au-revision="0"/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=|data-status="completed"/);
+- assert.equal(api.calls.filter(row=>row.path.endsWith('/snapshot?after=0')).length,1);assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,0,'valid atomic history replaces the full replay payload');assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=recorded')).length,0);await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');
++ assert.equal(api.calls.filter(row=>row.path.endsWith(`/claims/${native.id}/snapshot?after=0`)).length,1);assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,0,'valid atomic history replaces the full replay payload');assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=recorded')).length,0);await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');
+ });
+ 
+ test('cold operation selection falls back once for a partial atomic head without admitting its state',async t=>{
+@@ -2031,14 +2031,14 @@ test('cold operation selection falls back once for a partial atomic head without
+  const api=fakeApi({handle:async path=>path.endsWith('/snapshot?after=0')?response(partial):path.endsWith('/replay?through_seq=0')?response(native.zero):path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();head.resolve(response(native.replay));});await settle();const before=api.calls.length;await controller.showDemonstration();await waitFor(()=>api.calls.some(row=>row.path.endsWith('/replay?through_seq=4')));
+  assert.doesNotMatch(f.host.innerHTML,/data-au-planned-process=|data-au-stage-fact=/);assert.equal(f.attributes.get('data-au-operation-run-mode'),'opening');assert.equal(api.calls.slice(before).length,4,'invalid atomic history adds exactly one verified replay fallback');
+- head.resolve(response(native.replay));await waitFor(()=>f.host.innerHTML.includes('data-au-planned-process='));assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,1);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1);
++ head.resolve(response(native.replay));await waitFor(()=>f.host.innerHTML.includes('data-au-planned-process='));assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,1);assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${native.id}/operations?`)).length,1);
+ });
+ 
+ test('cold operation selection never starts a fallback head read from an invalid atomic response after navigation',async t=>{
+  const f=operationOpeningDOM(),native=operationOpeningFixture(),snapshot=deferredRead(),partial=structuredClone(native.snapshot);partial.events.pop();
+  const api=fakeApi({handle:async path=>path.endsWith('/snapshot?after=0')?snapshot.promise:path.endsWith('/replay?through_seq=0')?response(native.zero):path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();snapshot.resolve(response(partial));});await settle();await controller.showDemonstration();await settle();await controller.showKnowledge();const after=f.host.innerHTML;
+- snapshot.resolve(response(partial));await settle();await settle();assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,0,'an abandoned verifier cannot create a new owned request');assert.equal(f.host.innerHTML,after);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1);
++ snapshot.resolve(response(partial));await settle();await settle();assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,0,'an abandoned verifier cannot create a new owned request');assert.equal(f.host.innerHTML,after);assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${native.id}/operations?`)).length,1);
+ });
+ 
+ test('cold operation selection refetches a stale catalog revision without consuming its hinted state',async t=>{
+@@ -2473,3 +2473,172 @@ test('release procedure embedded data regenerates exactly from policy profile an
+  const script="#!/usr/bin/env python3\n\"\"\"Read-only canonical release DTO derivation; stdout only, no journal or head.\"\"\"\nimport hashlib\nimport json\nfrom pathlib import Path\nimport sys\n\n\ndef generate(root):\n    root = Path(root).resolve()\n    sys.path.insert(0, str(root / 'casepath-api'))\n    from casepath_api.autonomous_reference_policy_v1 import bounded_reference_policy, SCOPES\n    from casepath_api.workspace_corpus import canonical_json_bytes, digest_value\n\n    sha = lambda raw: hashlib.sha256(raw).hexdigest()\n    profile_root = root / 'casepath-api/casepath_api/reference_profiles/synthetic-nine-v2'\n    profile_raw = (profile_root / 'profile.json').read_bytes()\n    profile = json.loads(profile_raw)\n    base_path = root / 'casepath-api/casepath_api/corpora/synthetic-150/policy/static-rule-templates-v3.json'\n    base = json.loads(base_path.read_bytes())\n    policy = bounded_reference_policy(base)\n    catalogs = []\n    for template in policy['templates']:\n        catalog = template['process_catalog']\n        catalogs.append({\n            'family': template['domain'],\n            'rule_pack_sha256': digest_value(template),\n            'nodes': [{\n                'node_id': node['node_id'], 'label': node['label'],\n                'document_types': [doc['document_type'] for doc in catalog['documents']\n                                   if node['node_id'] in doc['required_at_node_ids']],\n            } for node in catalog['nodes']],\n            'transitions': [{\n                'edge_id': edge['edge_id'], 'source_node_id': edge['source_node_id'],\n                'target_node_id': edge['target_node_id'],\n            } for edge in catalog['transitions']],\n            'documents': [{\n                'document_type': doc['document_type'], 'label': doc['label'],\n                'required_at_node_ids': doc['required_at_node_ids'],\n            } for doc in catalog['documents']],\n        })\n    claims = []\n    for claim_id, entry in profile['claims'].items():\n        matches = []\n        for source in entry['sources']:\n            raw = (profile_root / claim_id / source['file_name']).read_bytes()\n            if sha(raw) != source['sha256'] or len(raw) != source['size_bytes']:\n                raise ValueError('release source bytes differ: ' + claim_id)\n            text = raw.decode('utf-8')\n            for family, scope in SCOPES.items():\n                start = text.find(scope['request'])\n                if start >= 0:\n                    matches.append({\n                        'family': family, 'file_name': source['file_name'],\n                        'source_sha256': source['sha256'], 'text_sha256': sha(text.encode('utf-8')),\n                        'offset_unit': 'unicode_code_point', 'start_char': start,\n                        'end_char': start + len(scope['request']), 'quote': scope['request'],\n                    })\n        if len(matches) != 1:\n            raise ValueError('release request must have one exact source match: ' + claim_id)\n        claims.append({\n            'claim_id': claim_id, 'family': matches[0]['family'],\n            # The legacy profile key names the corpus claim binding, not the\n            # derived autonomous original-binding wrapper. Match the native\n            # ReferenceProfile.match contract explicitly.\n            'claim_binding_sha256': entry['original_binding_sha256'],\n            'corpus_manifest_sha256': entry['corpus_manifest_sha256'],\n            # These are release-profile supplement hashes. They do not assert\n            # the selected run's full/current source roster or active sources.\n            'source_sha256s': sorted(source['sha256'] for source in entry['sources']),\n            'request_source_pin': matches[0],\n        })\n    value = {\n        'contract': 'casepath.release-procedure-outline/1',\n        'profile_id': profile['profile_id'], 'profile_raw_sha256': sha(profile_raw),\n        'base_policy_sha256': digest_value(base), 'bounded_policy_sha256': digest_value(policy),\n        'source_files_sha256': {name: sha((root / name).read_bytes()) for name in [\n            'casepath-api/casepath_api/autonomous_reference_policy_v1.py',\n            'casepath-api/casepath_api/corpora/synthetic-150/policy/static-rule-templates-v3.json',\n            'casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/normative_sources.json',\n        ]},\n        'catalogs': catalogs, 'claims': claims,\n    }\n    for catalog in value['catalogs']:\n        catalog['catalog_sha256'] = digest_value(catalog)\n    value['artifact_material_sha256'] = digest_value(value)\n    return value\n\n\nif __name__ == '__main__':\n    result = generate(sys.argv[1] if len(sys.argv) > 1 else '/workspace/casepath-cold-start-20261015')\n    print(json.dumps(result, ensure_ascii=False, allow_nan=False, sort_keys=True, separators=(',', ':')))\n";
+  const expected=JSON.parse(execFileSync(python,['-c',script,root],{cwd:root,encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'},maxBuffer:1024*1024}));assert.deepEqual(ui.RELEASE_PROCEDURE_OUTLINE,expected,'policy/profile/source drift requires regenerating the release asset; no journal or head participates');assert.ok(Object.isFrozen(ui.RELEASE_PROCEDURE_OUTLINE.catalogs[0].nodes));
+ });
++
++
++// These exercise the selected route and the production ownership handoff.
++test('direct autonomous routes acquire a same-origin packet behind the immediate map and retain the original300ms choice',async t=>{
++ for(const fragment of ['#autonomous/demonstration']) {
++  routingFixture(t,fragment);const f=operationOpeningDOM(),packet=recordedPacketFixture(),opening=deferredRead(),snapshot=deferredRead();
++  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
++  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});
++  try {
++   assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.doesNotMatch(f.host.innerHTML,/data-au-stage-fact=|data-au-revision=/);
++   assert.equal(await controller.recordedPacketReady,true,'direct selection must acquire the bounded asset');
++   await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Recorded replay/);assert.ok(api.calls.every(row=>!row.init.method||row.init.method==='GET'));
++  } finally { controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle(); }
++ }
++});
++
++test('current verified binding prefetches exactly one next opening snapshot and trace without painting its facts and cancels all owned reads on exit',async t=>{
++ const f=operationOpeningDOM(),first=operationOpeningFixture(),next=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[1].claim_id),held=deferredRead();let nextSignal,cancelled=0;
++ const api=fakeApi({handle:async(path,init)=>{
++  if(path.includes(next.id)) { if(path.includes('/operations?')) {nextSignal=init.signal;return {ok:true,status:200,body:new ReadableStream({cancel(){cancelled++;}})};}return held.promise; }
++  if(path.endsWith('/replay?through_seq=0'))return response(first.zero);if(path.endsWith('/snapshot?after=0'))return response(first.snapshot);if(path.includes('/operations?'))return pendingOperationResponse(first.binding);
++ }});
++ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();held.resolve(response(next.zero));});await settle();await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');await settle();
++ const requests=api.calls.filter(row=>row.path.includes(next.id));assert.deepEqual(requests.map(row=>row.path.split('/').at(-1)).sort(),['operations?mode=live','replay?through_seq=0','snapshot?after=0']);assert.doesNotMatch(f.host.innerHTML,/data-au-stage-fact=|The later accepted outcome/);assert.ok(!api.calls.some(row=>row.path.includes(ui.REFERENCE_DEMO_CASES[2].claim_id)),'only one future case is owned');
++ await controller.showWork();const after=f.host.innerHTML;assert.equal(nextSignal.aborted,true);assert.ok(requests.every(row=>row.init.signal.aborted));held.resolve(response(next.zero));await settle();await settle();assert.equal(cancelled,1);assert.equal(f.host.innerHTML,after);assert.equal(api.calls.filter(row=>row.path.includes(next.id)).length,3,'late snapshots cannot create a fallback read');
++});
++
++
++test('a valid observed newer live opening prevents the300ms packet fallback from rolling the selected head back',async t=>{
++ const f=operationOpeningDOM(),packet=recordedPacketFixture(),head=deferredRead(),zero=structuredClone(packet.native.zero);
++ zero.current_revision=5;zero.current_state_sha256=sha('newer-observed-head');zero.current_event_sha256=sha('newer-observed-event');
++ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(zero):path.includes('/snapshot?')||path.endsWith('/replay?through_seq=5')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();head.resolve(response(packet.native.snapshot));});assert.equal(await controller.recordedPacketReady,true);const selecting=controller.showDemonstration();await new Promise(resolve=>setTimeout(resolve,350));
++ assert.doesNotMatch(f.host.innerHTML,/Recorded replay|The later accepted outcome/);assert.equal(api.calls.filter(row=>row.path.includes('mode=recorded')).length,0,'mismatched cached packet cannot replace observed live identity');assert.notEqual(f.attributes.get('data-au-operation-run-mode'),'recorded_operations');assert.doesNotMatch(f.host.innerHTML,/data-au-revision=/,'neither candidate is admitted while the observed newer head is still unverified');controller.destroy();await selecting;
++});
++
++
++function completedItineraryFixture(id,count) {
++ const native=operationOpeningFixture(id),journal=native.snapshot.events,start=native.zero.replay_start;native.zero.state.state_sha256=sha('opening-'+id);native.zero.projection.state_sha256=native.zero.state.state_sha256;
++ const baseline={...native.zero.state,revision:3,run_id:native.head.run_id,last_event_sha256:journal[2].event_sha256,graph:native.head.graph,source_roster_sha256:native.head.source_roster_sha256};delete baseline.state_sha256;baseline.state_sha256=sha(ui.canonicalJSON(baseline));
++ journal[2].state_sha256=baseline.state_sha256;journal[2].resulting_state_sha256=baseline.state_sha256;start.state_sha256=baseline.state_sha256;native.binding.state_sha256=baseline.state_sha256;
++ const frames=[native.binding];let previous=null;
++ for(let seq=1;seq<=count;seq++) {
++  const input={},result={activation:'true',execution_state:'ready'},operation={contract:operationContract,type:'operation',seq,id:`native-${seq}`,kind:'node.evaluate',object:{type:'node',id:'branch'},input,result,cause_ids:previous?[previous.id]:[],previous_operation_sha256:previous?.operation_sha256||null,input_sha256:sha(ui.canonicalJSON(input)),result_sha256:sha(ui.canonicalJSON(result))};const material={...operation};delete material.contract;delete material.type;operation.operation_sha256=sha(ui.canonicalJSON(material));frames.push(operation);previous=operation;
++ }
++ const checkpoint=saved=>({contract:operationContract,type:'checkpoint',verified:true,journal_seq:saved.revision,event_sha256:saved.last_event_sha256,state_sha256:saved.state_sha256,events:[journal[saved.revision-1]],mode:'replay',through_seq:saved.revision,current_revision:4,current_state_sha256:native.head.state_sha256,current_event_sha256:native.head.last_event_sha256,cursor_sha256:saved.last_event_sha256,provenance:{run_id:saved.run_id,event_sha256:saved.last_event_sha256,source_roster_sha256:saved.source_roster_sha256,policy_id:saved.policy_id}});
++ frames.push({...checkpoint(baseline),state:baseline});frames.push({...checkpoint(native.head),base_state_sha256:baseline.state_sha256,state_delta:{set:native.head,remove:Object.keys(baseline).filter(key=>!(key in native.head))}});
++ const hashes=JSON.parse(JSON.stringify(frames)).map(frame=>sha(ui.canonicalJSON(frame)));
++ frames.push({contract:operationContract,type:'result',state_sha256:native.head.state_sha256,current_event_sha256:native.head.last_event_sha256,operation_count:count,operation_chain_sha256:previous.operation_sha256,exact_output_verified:true,trace_sha256:sha(ui.canonicalJSON(hashes))});
++ return {...native,frames,body:frames.map(JSON.stringify).join('\n')+'\n'};
++}
++
++test('completed outcome holds8000ms independently of a ready next case and reuses its824 to299 operation transport without a zero or stale count',async t=>{
++ const first=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[0].claim_id,824),next=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[1].claim_id,299),f=operationOpeningDOM(),future=deferredRead(),timers=[],writes=[];
++ let markup=f.host.innerHTML,elapsed=0;Object.defineProperty(f.host,'innerHTML',{get:()=>markup,set:value=>{markup=value;writes.push(value);},configurable:true});const now=Date.now.bind(Date);t.mock.method(Date,'now',()=>now()+elapsed);
++ const timeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===8000){const handle=timeout(()=>{},60000);timers.push({fn,handle});return handle;}return timeout(fn,ms,...args);};t.after(()=>{globalThis.setTimeout=timeout;for(const timer of timers)clearTimeout(timer.handle);});
++ const api=fakeApi({handle:async path=>{const native=path.includes(first.id)?first:path.includes(next.id)?next:null;if(!native){if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;return null;}if(path.endsWith('/replay?through_seq=0'))return response(native.zero);if(path.endsWith('/snapshot?after=0'))return response(native.snapshot);if(path.includes('/operations?'))return new Response(native.body);}});
++ const checkedTrace={binding:first.binding,rows:[],sources:new Map(),pinnedJournal:first.snapshot.events,journal:[],transportState:null};await ui.checkedOperationCheckpoint(first.frames.at(-3),checkedTrace);await ui.checkedOperationCheckpoint(first.frames.at(-2),checkedTrace);
++ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();future.resolve(response({}));});await settle();await controller.showDemonstration();await waitFor(()=>timers.length===1);
++ assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.match(f.host.innerHTML,/max="823"/);assert.match(f.host.innerHTML,/The later accepted outcome/);assert.equal(f.attributes.get('data-au-operation-result-verified'),'true');
++ assert.equal(api.calls.filter(row=>row.path.includes(next.id)).length,3,'one opening, one atomic head, one stream prepare during the current case');await settle();assert.ok(f.host.innerHTML.includes(`data-au-state-sha="${first.head.state_sha256}"`));assert.doesNotMatch(f.host.innerHTML,new RegExp(`data-au-claim-id="${next.id}"`));
++ const boundary=writes.length;elapsed+=8000;clearTimeout(timers[0].handle);timers[0].fn();await waitFor(()=>timers.length===2);
++ const nextWrites=writes.slice(boundary).filter(html=>html.includes(`data-au-state-sha="${next.zero.state.state_sha256}"`)||html.includes(`data-au-state-sha="${next.head.state_sha256}"`));
++ assert.ok(nextWrites.length);assert.ok(nextWrites.every(html=>html.includes('max="298"')),'every second-case render uses its own admitted299-operation total');assert.ok(nextWrites.every(html=>!html.includes('max="823"')&&!html.includes('0 received')));assert.match(nextWrites[0],/value="0"/);assert.doesNotMatch(nextWrites[0],/The later accepted outcome|data-au-stage-fact=/,'a prefetched head never donates facts or its outcome to revision zero');assert.equal(api.calls.filter(row=>row.path.includes(next.id)).length,3,'handoff does not refetch the prepared native stream');
++});
++
++test('first genuine consequence retains a real sweep and transfer while subsequent reads keep their full pacing',()=>{
++ const first={id:'first',kind:'fact.extract',source:{quote:'The actual bounded source statement.'}},later={...first,id:'later'},trace={openingConsequenceId:'first'};
++ assert.deepEqual(ui.operationChoreographyTiming(first,trace),{read:360,transfer:300});assert.deepEqual(ui.operationChoreographyTiming(later,trace),{read:ui.operationReadDuration(later),transfer:600});assert.equal(ui.operationChoreographyTiming(first,{openingConsequenceId:'another-case'}).transfer,600);
++});
++
++
++test('pause and hide after the8000ms outcome hold preserve the finished case and resume the delayed next opening',async t=>{
++ for(const action of ['pause','hide']) {
++  const f=operationOpeningDOM(),first=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[0].claim_id,1),next=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[1].claim_id),opening=deferredRead(),future=deferredRead(),visibility=new Map(),timers=[];let elapsed=0,allowNext=false;
++  f.container.ownerDocument.addEventListener=(name,fn)=>visibility.set(name,fn);const realNow=Date.now.bind(Date),restoreDate=Date.now;Date.now=()=>realNow()+elapsed;
++  const timeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===8000){const handle=timeout(()=>{},60000);timers.push({fn,handle});return handle;}return timeout(fn,ms,...args);};
++  const api=fakeApi({handle:async path=>{if(path.includes(first.id)){if(path.includes('/snapshot?'))return response(first.snapshot);if(path.endsWith('/replay?through_seq=0'))return response(first.zero);if(path.includes('/operations?'))return new Response(first.body);}if(path.includes(next.id)){if(path.includes('/snapshot?'))return response(next.snapshot);if(path.includes('/operations?'))return pendingOperationResponse(next.binding);if(path.endsWith('/replay?through_seq=0'))return allowNext?response(next.zero):opening.promise;}if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;}});
++  const controller=ui.mount(f.container,{fetch:api.fetch});
++  try {
++   await settle();await controller.showDemonstration();await waitFor(()=>timers.length===1);elapsed+=8000;clearTimeout(timers[0].handle);timers[0].fn();await settle();
++   if(action==='pause') {f.listeners.get('click')({target:control(f,'data-au-demo-stop')});allowNext=true;opening.resolve(response(next.zero));await settle();await settle();assert.ok(f.host.innerHTML.includes(first.head.state_sha256));f.listeners.get('click')({target:control(f,'data-au-demo-resume')});}
++   else {f.container.ownerDocument.hidden=true;visibility.get('visibilitychange')();await settle();allowNext=true;opening.resolve(response(next.zero));await settle();assert.ok(f.host.innerHTML.includes(first.head.state_sha256));f.container.ownerDocument.hidden=false;visibility.get('visibilitychange')();}
++   await waitFor(()=>f.host.innerHTML.includes(`data-au-planned-process="${next.head.state_sha256}"`));assert.equal(timers.length,1,'the completed visible hold is not repeated after resuming');assert.doesNotMatch(f.status.textContent,/unavailable|stopped|cancelled/);assert.equal(f.attributes.get('data-au-operation-result-verified'),'false');
++  } finally {controller.destroy();opening.resolve(response(next.zero));future.resolve(response({}));for(const timer of timers)clearTimeout(timer.handle);globalThis.setTimeout=timeout;Date.now=restoreDate;await settle();}
++ }
++});
++
++test('Cases cold click can finish packet acquisition inside its original300ms choice',async t=>{
++ const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),head=deferredRead();let assetSignal;
++ const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')||path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));});await settle();await new Promise(resolve=>setTimeout(resolve,5));const selecting=controller.showDemonstration();assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.equal(assetSignal.aborted,false);asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Recorded replay/);
++});
++
++
++test('late binding and result hashes cannot mutate a newly selected operation session',async t=>{
++ for(const phase of ['binding','result']) {
++  const first=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[0].claim_id,1),f=operationOpeningDOM(),future=deferredRead();
++  const bytes=Buffer.from(phase==='binding'?ui.canonicalJSON(first.binding):ui.canonicalJSON(JSON.parse(JSON.stringify(first.frames.slice(0,-1))).map(frame=>sha(ui.canonicalJSON(frame))))),hash=delayedPacketHash(t,bytes);
++  const api=fakeApi({handle:async path=>{if(!path.includes(first.id)){if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;return null;}if(path.includes('/snapshot?'))return response(first.snapshot);if(path.endsWith('/replay?through_seq=0'))return response(first.zero);if(path.includes('/operations?mode=recorded'))return pendingOperationResponse({...first.binding,mode:'recorded_operations'});if(path.includes('/operations?'))return phase==='binding'?pendingOperationResponse(first.binding):new Response(first.body);}});
++  const controller=ui.mount(f.container,{fetch:api.fetch});
++  try {await settle();await controller.showDemonstration();await hash.started;await controller.showDemonstration(true,'reference','recorded');await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');const before=f.host.innerHTML;hash.release();await settle();await settle();assert.equal(f.host.innerHTML,before,`${phase} completion keeps the replacement session unchanged`);assert.equal(f.attributes.get('data-au-operation-result-verified'),'false');assert.doesNotMatch(f.status.textContent,/stopped|differs/);}
++  finally {controller.destroy();future.resolve(response({}));hash.restore();await settle();}
++ }
++});
++
++
++test('next-case prefetch retains the live503 to recorded trace fallback and cancels its bounded owner on exit',async t=>{
++ const f=operationOpeningDOM(),first=operationOpeningFixture(),next=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[1].claim_id);let recordedSignal,cancelled=0;
++ const api=fakeApi({handle:async(path,init)=>{const native=path.includes(next.id)?next:first;if(path.endsWith('/replay?through_seq=0'))return response(native.zero);if(path.includes('/snapshot?'))return response(native.snapshot);if(path.includes(next.id)&&path.includes('/operations?mode=live'))return response({detail:'Live unavailable'},503);if(path.includes(next.id)&&path.includes('/operations?mode=recorded')){recordedSignal=init.signal;return {ok:true,status:200,body:new ReadableStream({start(controller){controller.enqueue(new TextEncoder().encode(JSON.stringify({...next.binding,mode:'recorded_operations'})+'\n'));},cancel(){cancelled++;}})};}if(path.includes('/operations?'))return pendingOperationResponse(first.binding);}});
++ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.showDemonstration();await waitFor(()=>Boolean(recordedSignal));assert.equal(api.calls.filter(row=>row.path.includes(next.id)&&row.path.includes('/operations?')).length,2);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=/);await controller.showWork();await settle();assert.equal(recordedSignal.aborted,true);assert.equal(cancelled,1);
++});
++
++
++test('the300ms choice accepts verified Live before the cutoff and commits Recorded at the cutoff without a late splice',async t=>{
++ for(const liveFirst of [true,false]) {
++  const f=operationOpeningDOM(),packet=recordedPacketFixture(),opening=deferredRead(),head=deferredRead(),fallback=deferredRead(),deadlines=[];
++  const timeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===300){const handle=timeout(()=>{},60000);deadlines.push({fn,handle});return handle;}return timeout(fn,ms,...args);};
++  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')?head.promise:path.endsWith('/replay?through_seq=4')?fallback.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
++  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});
++  try {assert.equal(await controller.recordedPacketReady,true);const selecting=controller.showDemonstration();await settle();assert.equal(deadlines.length,1,'one300ms timer owns the entire choice');
++   if(liveFirst){opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);}
++   else {await new Promise(resolve=>timeout(resolve,50));clearTimeout(deadlines[0].handle);deadlines[0].fn();await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');await waitFor(()=>api.calls.some(row=>row.path.includes(packet.native.id)&&row.path.endsWith('/replay?through_seq=4')));const before=f.host.innerHTML;opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before);assert.match(f.host.innerHTML,/Recorded replay/);}
++  } finally {controller.destroy();opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));fallback.resolve(response(packet.native.replay));for(const timer of deadlines)clearTimeout(timer.handle);globalThis.setTimeout=timeout;await settle();}
++ }
++});
++
++
++test('after the300ms Live preference an uncommitted opening accepts a fully verified packet acquired at600ms before Live at5s',async t=>{
++ const routing=routingFixture(t),f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),snapshot=deferredRead(),fallback=deferredRead(),deadline=deferredRead();let liveSignal,elapsed=0;const now=Date.now.bind(Date);t.mock.method(Date,'now',()=>now()+elapsed);
++ const timeout=globalThis.setTimeout;let grace;
++ globalThis.setTimeout=(fn,ms,...args)=>{if(ms===300){const handle=timeout(()=>{},60000);grace={fn,handle};deadline.resolve();return handle;}return timeout(fn,ms,...args);};t.after(()=>{globalThis.setTimeout=timeout;if(grace)clearTimeout(grace.handle);});
++ const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?asset.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')?snapshot.promise:path.endsWith('/replay?through_seq=4')?fallback.promise:path.includes('/operations?')?(liveSignal=init.signal,pendingOperationResponse(packet.native.binding)):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});let selected=false;
++ t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));fallback.resolve(response(packet.native.replay));});await settle();const selecting=controller.showDemonstration().then(()=>{selected=true;});await deadline.promise;
++ elapsed=300;clearTimeout(grace.handle);grace.fn();await settle();assert.equal(selected,false);assert.match(f.host.innerHTML,/Opening investigation/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|Recorded replay|data-au-stage-fact=|data-au-revision=/);
++ // Controlled readiness: the preference interval has elapsed; packet acquisition
++ // completes at the600ms scenario point while the5s Live responses remain held.
++ elapsed=600;asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');await selecting;assert.equal(liveSignal.aborted,true);assert.match(routing.hash,/operations=recorded/);assert.match(f.host.innerHTML,/Recorded replay/);
++ await waitFor(()=>api.calls.some(row=>row.path.includes(packet.native.id)&&row.path.endsWith('/replay?through_seq=4')));const before=f.host.innerHTML;elapsed=5000;opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before,'late Live cannot take over the committed packet session');
++});
++
++
++test('navigation settles the post300ms uncommitted choice even when both fetch candidates ignore abort',async t=>{
++ const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),snapshot=deferredRead();let selected=false;
++ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?asset.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')?snapshot.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});await settle();const selecting=controller.showDemonstration().then(()=>{selected=true;});await new Promise(resolve=>setTimeout(resolve,350));assert.equal(selected,false);assert.match(f.host.innerHTML,/Opening investigation/);
++ await controller.showWork();const before=f.host.innerHTML;await waitFor(()=>selected);await selecting;asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before);assert.doesNotMatch(f.host.innerHTML,/Recorded replay|Live rules-based check/);
++});
++
++
++test('a newer Live head observed between packet readiness and commitment still prevents a recorded rollback',async t=>{
++ const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),head=deferredRead(),ready=deferredRead(),zero=structuredClone(packet.native.zero);let selected=false;
++ zero.current_revision=5;zero.current_state_sha256=sha('newer-at-commit');zero.current_event_sha256=sha('newer-event-at-commit');const any=Promise.any.bind(Promise);
++ t.mock.method(Promise,'any',async candidates=>{const result=await any(candidates);if(result.recorded){opening.resolve(response(zero));await settle();ready.resolve();}return result;});
++ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?asset.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')||path.endsWith('/replay?through_seq=5')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(zero));head.resolve(response(packet.native.snapshot));});await settle();const selecting=controller.showDemonstration().then(()=>{selected=true;});await new Promise(resolve=>setTimeout(resolve,350));asset.resolve(new Response(packet.bytes));await ready.promise;await settle();await settle();
++ assert.equal(selected,false,'an older ready packet cannot commit after newer native metadata arrives');assert.doesNotMatch(f.host.innerHTML,/Recorded replay|data-au-revision=|Live rules-based check/);controller.destroy();await selecting;
++});
++
++
++test('explicit Recorded keeps a600ms packet eligible after300ms while starting only owned Recorded endpoint reads',async t=>{
++ const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),snapshot=deferredRead(),fallback=deferredRead(),deadline=deferredRead();let grace,elapsed=0;const now=Date.now.bind(Date);t.mock.method(Date,'now',()=>now()+elapsed);
++ const timeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===300){const handle=timeout(()=>{},60000);grace={fn,handle};deadline.resolve();return handle;}return timeout(fn,ms,...args);};t.after(()=>{globalThis.setTimeout=timeout;if(grace)clearTimeout(grace.handle);});
++ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?asset.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')?snapshot.promise:path.endsWith('/replay?through_seq=4')?fallback.promise:path.includes('/operations?')?pendingOperationResponse({...packet.native.binding,mode:'recorded_operations'}):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));fallback.resolve(response(packet.native.replay));});await settle();const selecting=controller.showDemonstration(true,'reference','recorded');await deadline.promise;
++ assert.equal(api.calls.filter(row=>/\/(operations|replay|snapshot)\?/.test(row.path)).length,0,'an immediately ready packet needs no speculative native reads');elapsed=300;clearTimeout(grace.handle);grace.fn();await waitFor(()=>api.calls.some(row=>row.path.includes('/operations?mode=recorded')));assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,0);assert.equal(api.calls.filter(row=>row.path.includes(packet.native.id)&&/\/(operations|replay|snapshot)\?/.test(row.path)).length,3);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|data-au-revision=/);
++ elapsed=600;asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Recorded replay/);assert.ok(api.calls.filter(row=>row.path.includes(packet.native.id)&&row.path.includes('/operations?')).every(row=>row.init.signal.aborted),'packet commitment cancels the competing recorded endpoint owner');
++});
+diff --git a/casepath/assets/autonomous-workspace-v1.js b/casepath/assets/autonomous-workspace-v1.js
+index b5e63d6..3536f65 100644
+--- a/casepath/assets/autonomous-workspace-v1.js
++++ b/casepath/assets/autonomous-workspace-v1.js
+@@ -1091,6 +1091,7 @@
+     return JSON.stringify(value);
+   }
+   const OPERATIONS_CONTRACT = 'casepath.operations-stream/1.0.0';
++  const OPERATION_CHOICE_GRACE_MS = 300;
+   const OPERATION_INSTRUMENTATION = 'casepath.reference-operations/1.1.0';
+   const OPERATION_FRAME_BYTES = 2 * 1024 * 1024, OPERATION_HISTORY_BYTES = 8 * 1024 * 1024;
+   async function* operationFrames(response, signal = null) {
+@@ -1373,6 +1374,9 @@
+     const span = stageFactSpan(operation,operation?.kind === 'fact.extract' || operation?.kind === 'document.check');
+     return Math.min(4200,Math.max(700,Array.from(span?.quote || '').length*24));
+   }
++  function operationChoreographyTiming(operation,trace) {
++    return trace?.openingConsequenceId === operation?.id ? {read:360,transfer:300} : {read:Math.min(1000,operationReadDuration(operation)),transfer:600};
++  }
+   function operationReading(trace) {
+     const operation = trace?.current;
+     if (!operation) return null;
+@@ -1533,7 +1537,7 @@
+     return null;
+   }
+   function bufferedOperationCount(trace) {
+-    const result = trace?.buffer?.result, binding = trace?.binding;
++    const result = trace?.buffer?.result, binding = trace?.binding || trace?.openingBinding;
+     return result?.contract === OPERATIONS_CONTRACT && result.exact_output_verified === true && result.state_sha256 === binding?.current_state_sha256 && result.current_event_sha256 === binding?.current_event_sha256 && Number.isSafeInteger(result.operation_count) && result.operation_count > 0 && result.operation_count <= 4096 ? result.operation_count : null;
+   }
+   function operationInspection(trace, index) {
+@@ -1880,7 +1884,7 @@
+     let storage = null, apiIdentity = null;
+     try { if (root.location?.href) { apiIdentity = new URL(base,root.location.href).href; storage = root.sessionStorage; } } catch (_) { /* Session storage is optional. */ }
+     const controllers = new Set();
+-    let recordedPacket = null, packetVerification = null, packetLoadController = null;
++    let recordedPacket = null, packetVerification = null, packetLoadController = null, packetAcquisition = null;
+     let savedSnapshotLoad = null, savedSnapshotController = null;
+     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
+     let motion = null, keyboard = false, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0, claimRenderComplete = false, renderedClaimId = null;
+@@ -2007,6 +2011,7 @@
+       }
+     }
+     function invalidateReads(id) {
++      cancelNextOperationOpening(demoSession || pausedPresentation);
+       cancelWarmReads(); warmAttempts.clear(); warmIntents.clear(); storageWrite++; savedHeads.clear(); savedKnowledge = null;
+       try { storage?.removeItem(READ_CACHE_CONTRACT); } catch (_) { /* Storage is optional. */ }
+       readGeneration++; claimRead++; claimsRead++; knowledgeRead++; collectionCache = null; knowledgeCache = null; statusCache = null;
+@@ -2238,7 +2243,7 @@
+       if (pendingControl) controls.set(current.claim_id,pendingControl); else controls.delete(current.claim_id);
+     }
+     function leaveView(keepAcquiredPacket = false, keepSavedSnapshot = false) {
+-      if (!recordedPacket && !(keepAcquiredPacket && packetVerification)) packetLoadController?.abort();
++      if (!recordedPacket && !(keepAcquiredPacket && (packetVerification || packetAcquisition))) packetLoadController?.abort();
+       if (!keepSavedSnapshot) savedSnapshotController?.abort();
+       cancelWarmReads();
+       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); tetherGeometry = null;
+@@ -2505,7 +2510,11 @@
+       if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
+       let opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
+       const session = preferences.demo ? demoSession : null;
+-      const packetAtSelection = session?.mode === 'operations' ? recordedPacket || packetVerification : null;
++      const packetAtSelection = session?.mode === 'operations' ? recordedPacket || packetVerification || packetAcquisition : null;
++      if (opening?.operationPreparation && session?.mode === 'operations') {
++        session.operationPreparation = opening.operationPreparation; session.operationPreparation.token = token; session.operationController = opening.operationPreparation.controller;
++        session.useRecorded = opening.operationPreparation.recorded; session.recorded = session.useRecorded;
++      }
+       if (session?.mode === 'operations' && !packetAtSelection) packetLoadController?.abort();
+       if (session?.mode === 'operations') { session.releasePlan = releaseOperationProcess(id); if (session.releasePlan) operationTrace = {releasePlan:session.releasePlan,rows:[],sources:new Map()}; }
+       if (demoSession) demoSession.verifiedOpening = null;
+@@ -2519,7 +2528,7 @@
+         return loadOpenedClaim(id,token,preferences);
+       }
+       if (session) session.preparing = token;
+-      if (session?.mode === 'operations') { cancelIdleReadOwners(); if (!opening?.referenceReady && !doc.hidden && !inspectionHold && !(packetAtSelection && session.useRecorded)) prepareOperationReads(session,id,token); }
++      if (session?.mode === 'operations') { cancelIdleReadOwners(); if (!session.operationPreparation && !opening?.referenceReady && !doc.hidden && !inspectionHold && !(packetAtSelection && session.useRecorded)) prepareOperationReads(session,id,token); }
+       try {
+         const through = preferences.through ?? 0;
+         if (!opening && session?.mode === 'operations' && packetAtSelection && through === 0 && (session.operationPreparation || session.useRecorded)) {
+@@ -2537,6 +2546,7 @@
+           if (!matched) host.querySelector('[data-au-release-plan]')?.remove();
+         }
+         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
++        if (opening?.openingBinding && session?.mode === 'operations') operationTrace = {openingBinding:opening.openingBinding,buffer:opening.operationBuffer,plannedProcess:opening.plannedProcess,recorded:opening.operationPreparation.recorded,rows:[],sources:new Map()};
+         const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous); detail = inspectionHold ? detail : preferences.detail || previous?.detail || 'step';
+         renderClaim(); notice(''); if (!inspectionHold && !doc.hidden && !dialog.open && !recordDialog.open) focusTitle();
+         primeClaimReads(token,!claimsLoaded);
+@@ -2544,6 +2554,7 @@
+           session.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256};
+           session.referenceReady = Boolean(opening?.referenceReady);
+           session.replayStart = through === 0 && session.collection !== 'legacy' ? incoming.replay.replay_start : null;
++          session.openingBinding = opening?.openingBinding || null; session.operationBuffer = opening?.operationBuffer || null;
+           session.verifiedReplayStart = opening?.verifiedReplayStart || null; session.verifiedJournal = opening?.verifiedJournal || null; session.referenceAsOf = opening?.referenceAsOf; session.operationBinding = opening?.operationBinding; session.plannedProcess = opening?.plannedProcess || null;
+           session.preparing = null; session.displayedAt = Date.now(); session.motionDuration = motion?.duration || 0;
+           if (session.mode === 'operations') startOperations(session,token);
+@@ -2754,6 +2765,7 @@
+     }
+     function stopPresentation() {
+       const session = demoSession || pausedPresentation;
++      cancelNextOperationOpening(session);
+       if (session?.operationPreparation) cancelPreparedOperationReads(session.operationPreparation);
+       session?.operationChoiceController?.abort(); session?.operationController?.abort(); session?.operationWake?.();
+       cancelStageMotion(); const pane = host.querySelector('.au-operation-passage'); pane?.scrollTo?.({top:pane.scrollTop,behavior:'instant'});
+@@ -2793,6 +2805,8 @@
+     }
+     function cancelStageMotion() { cancelStageRead(); stageCameraAnimation?.cancel(); }
+     function afterSourceScroll(pane, callback) {
++      // Compact excerpts never scroll; no scroll event or quiet interval is due.
++      if (pane?.hasAttribute('data-au-compact-excerpt')) { callback(); return; }
+       let quiet = null, fallback = null, closed = false;
+       const clear = () => { if (closed) return; closed=true; root.clearTimeout(quiet); root.clearTimeout(fallback); pane.removeEventListener?.('scroll',scrolled); pane.removeEventListener?.('scrollend',ended); };
+       const finish = () => { if (closed) return; clear(); stageScrollCancel=null; callback(); };
+@@ -2848,7 +2862,7 @@
+         // Sample one cubic curve once, never on animation frames.
+         const bend = Math.max(32,Math.min(100,Math.abs(next.x-origin.x)*.25));
+         for (let step=1; step<=8; step++) { const t=step/8, u=1-t; const point={x:u*u*u*origin.x+3*u*u*t*(origin.x+bend)+3*u*t*t*(next.x-bend)+t*t*t*next.x,y:u*u*u*origin.y+3*u*u*t*(origin.y-24)+3*u*t*t*(next.y-24)+t*t*t*next.y}; flight.push({transform:transform(point),opacity:1,offset:.18+.82*t}); }
+-        factTokenAnimation = factToken.animate(flight,{duration:600,easing:'cubic-bezier(.18,.7,.25,1)',fill:'none'});
++        factTokenAnimation = factToken.animate(flight,{duration:operationChoreographyTiming(operation,ownerTrace).transfer,easing:'cubic-bezier(.18,.7,.25,1)',fill:'none'});
+         const token = factToken; factTokenAnimation.onfinish = () => { token.remove(); if (operationTrace !== ownerTrace || ownerTrace.current !== operation) { complete(); return; } ownerTrace.dockPhases.set(operation.id,'landed'); if (dock.isConnected) { dock.dataset.auDockPhase='landed'; dock.style.opacity=''; dock.removeAttribute('data-au-fact-docking'); const slot=dock.closest('[data-au-stage-document]'); if (slot) slot.dataset.auDocumentChecked='true'; } complete(); };
+         node.dataset.auOperationId = operation.id; attentionPosition = next;
+       };
+@@ -2857,7 +2871,7 @@
+       canvas.appendChild(attentionMarker); attentionMarker.style.transform = transform(origin);
+       if (animate && reading?.active && operationTrace.dockPhases?.get(operation.id) === 'transfer') { mark.dataset.auPhraseLocked=operation.id; transfer(); return; }
+       if (animate && reading?.active && lineRects.length) {
+-        const visible = lineRects.filter(line => line.width > 0 && (!clip || line.top >= clip.top-1 && line.bottom <= clip.bottom+1)), duration = Math.min(1000,operationReadDuration(operation));
++        const visible = lineRects.filter(line => line.width > 0 && (!clip || line.top >= clip.top-1 && line.bottom <= clip.bottom+1)), duration = operationChoreographyTiming(operation,ownerTrace).read;
+         if (visible.length) {
+           const first=visible[0], point=local(first.left,first.top+2);
+           attentionMarker.style.width=`${first.width}px`; attentionMarker.style.height=`${Math.max(18,first.height-4)}px`;
+@@ -2917,7 +2931,7 @@
+       else { prepared.snapshot = operationRequest(prepared,`/claims/${key(id)}/snapshot?after=0`); prepared.snapshot.catch(() => {}); }
+       prepared.delivery = (async () => {
+         const response = await fetcher(base+`/claims/${key(id)}/operations?mode=${prepared.recorded ? 'recorded' : 'live'}`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:controller.signal});
+-        if (controller.signal.aborted || disposed || token !== epoch || pendingRoute()) { await response.body?.cancel?.(); return null; }
++        if (controller.signal.aborted || disposed || prepared.token !== epoch || pendingRoute()) { await response.body?.cancel?.(); return null; }
+         // The existing bounded wire buffer is untrusted until head admission.
+         // No early result callback can paint or advertise an accepted result.
+         return {response,buffer:response.ok ? bufferedOperations(response,controller.signal,result => prepared.resultAvailable?.(result)) : null};
+@@ -2925,6 +2939,71 @@
+       prepared.delivery.catch(() => {});
+       return prepared;
+     }
++    function cancelNextOperationOpening(session) {
++      const slot = session?.nextOperationOpening; if (!slot) return;
++      session.nextOperationOpening = null; slot.cancelled = true; slot.cancel?.();
++      slot.owner.operationChoiceController?.abort();
++      if (slot.owner.operationPreparation) cancelPreparedOperationReads(slot.owner.operationPreparation);
++    }
++    function prefetchNextOperationOpening(session) {
++      const next = demoCases(session.collection)[session.index+1];
++      if (next && !session.skip && !reduced?.matches && !doc.hidden) nextOperationOpening(session,next.claim_id).catch(() => {});
++    }
++    function nextOperationOpening(session,id) {
++      const existing = session.nextOperationOpening;
++      if (existing?.id === id && !existing.cancelled && existing.generation === readGeneration) return existing.promise;
++      cancelNextOperationOpening(session);
++      const token = epoch, generation = readGeneration, owner = {useRecorded:session.operations === 'recorded'}, slot = {id,generation,owner,cancelled:false};
++      session.nextOperationOpening = slot;
++      const active = () => !slot.cancelled && !disposed && token === epoch && generation === readGeneration && !pendingRoute() && !doc.hidden && (demoSession === session || pausedPresentation === session);
++      // One bounded next-case buffer is owned independently of the visible trace.
++      // Its admitted head supplies only the next case's plan, never prefix facts.
++      const packet = recordedPacket;
++      if (!(packet && owner.useRecorded)) prepareOperationReads(owner,id,token);
++      const cancelled = new Promise((_resolve,reject) => { slot.cancel = () => reject(new Error('The next operation opening was cancelled.')); });
++      slot.promise = Promise.race([cancelled,(async () => {
++        let opening = packet ? await chooseRecordedOpening(packet,owner,id,token,{active}) : null;
++        if (!active()) throw new Error('The next operation opening was cancelled.');
++        if (!opening?.referenceReady) {
++          if (!owner.operationPreparation) prepareOperationReads(owner,id,token);
++          const prepared = owner.operationPreparation, response = opening?.response || await operationRequest(prepared,`/claims/${key(id)}/replay?through_seq=0`), incoming = readReplay(response,id,0);
++          const head = {claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256};
++          const verification = {replayHead:head,replayStart:incoming.replay.replay_start,operationOpeningAnchor:{state:incoming.state}};
++          if (!await verifyReferenceHead(verification,prepared) || !verification.verifiedReplayStart) throw new Error('No completed recorded reference assessment is available.');
++          if (!active()) throw new Error('The next operation opening was cancelled.');
++          opening = {claimId:id,generation,response,head,referenceReady:true,...verification};
++        }
++        if (!active()) throw new Error('The next operation opening was cancelled.');
++        const prepared = owner.operationPreparation; let delivery = await prepared.delivery;
++        if (!active()) throw new Error('The next operation opening was cancelled.');
++        if (delivery && !delivery.response.ok && !prepared.recorded) {
++          await delivery.response.body?.cancel?.();
++          if (!active()) throw new Error('The next operation opening was cancelled.');
++          const response = await fetcher(base+`/claims/${key(id)}/operations?mode=recorded`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:prepared.controller.signal});
++          if (!active()) { await response.body?.cancel?.(); throw new Error('The next operation opening was cancelled.'); }
++          delivery = {response,buffer:response.ok ? bufferedOperations(response,prepared.controller.signal,result => prepared.resultAvailable?.(result)) : null};
++          prepared.recorded = true; owner.useRecorded = true; prepared.delivery = Promise.resolve(delivery);
++        }
++        if (!delivery?.response.ok) throw new Error('The next operation trace is unavailable.');
++        const first = await delivery.buffer.first;
++        if (!active()) throw new Error('The next operation opening was cancelled.');
++        const openingBinding = checkedOperationBinding(first,{...opening.head,...opening.operationBinding},opening.verifiedReplayStart);
++        return {...opening,generation,openingBinding,operationBuffer:delivery.buffer,operationPreparation:prepared};
++      })()]);
++      slot.promise.catch(() => {}); return slot.promise;
++    }
++    async function operationOutcomeHold(session,token) {
++      let remaining = 8000;
++      while (remaining > 0 && !session.skip && !reduced?.matches) {
++        if (!await operationGate(session,token)) return false;
++        const started = Date.now();
++        await new Promise(resolve => { session.operationWake = resolve; demoTimer = root.setTimeout(resolve,remaining); });
++        if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; session.operationWake = null;
++        remaining -= Math.max(0,Date.now()-started);
++        if (!operationActive(session,token)) return false;
++      }
++      return operationGate(session,token);
++    }
+     async function startOperations(session, token) {
+       if (!operationActive(session,token) || session.operationStarted) return;
+       const prepared = session.operationPreparation?.claimId === session.claimId && !session.operationPreparation.controller.signal.aborted && session.operationPreparation.recorded === Boolean(session.useRecorded) ? session.operationPreparation : null;
+@@ -2933,7 +3012,7 @@
+       const operationController = session.operationController;
+       if (!session.operationOpeningAnchor || session.operationOpeningAnchor.state.claim_id !== session.claimId) session.operationOpeningAnchor = {after_operation:0,state:current,projection,events:history,revision:current.revision,state_sha256:current.state_sha256,event_sha256:current.last_event_sha256,anchor:'verified_opening'};
+       const previousAttempts = session.previousAttempts || [], previousCurrent = operationTrace?.current, previousSources = operationTrace?.sources, previousDisplaySource = operationTrace?.displaySource;
+-      operationTrace = {binding:null,recorded:Boolean(session.useRecorded || session.recorded),releasePlan:session.releasePlan,rows:[],bytes:previousAttempts.reduce((sum,attempt) => sum+attempt.bytes,0),sources:new Map(previousSources || []),current:previousCurrent || null,previousCurrent,displaySource:previousDisplaySource,journal:[],pinnedJournal:session.verifiedJournal || [],transportState:null,finished:false,frameHashes:[],visibleResults:new Map(),checkpoints:[session.operationOpeningAnchor],previousAttempts};
++      operationTrace = {binding:null,openingBinding:session.openingBinding,buffer:session.operationBuffer,recorded:Boolean(session.useRecorded || session.recorded),releasePlan:session.releasePlan,rows:[],bytes:previousAttempts.reduce((sum,attempt) => sum+attempt.bytes,0),sources:new Map(previousSources || []),current:previousCurrent || null,previousCurrent,displaySource:previousDisplaySource,journal:[],pinnedJournal:session.verifiedJournal || [],transportState:null,finished:false,frameHashes:[],visibleResults:new Map(),checkpoints:[session.operationOpeningAnchor],previousAttempts};
+       const trace = operationTrace;
+       try {
+         if ((!session.referenceReady && !await verifyReferenceHead(session,prepared)) || !session.verifiedReplayStart) throw new Error('No current completed reference assessment is available.');
+@@ -2961,10 +3040,14 @@
+         for await (const frame of trace.buffer) {
+           if (!await operationGate(session,token)) return;
+           if (frame.contract !== OPERATIONS_CONTRACT) throw new Error('The operation stream contract is unavailable.');
+-          if (frame.type !== 'result') operationTrace.frameHashes.push(await digest(canonicalJSON(frame)));
++          if (frame.type !== 'result') {
++            const frameHash = await digest(canonicalJSON(frame));
++            if (!operationActive(session,token) || operationTrace !== trace) return;
++            trace.frameHashes.push(frameHash);
++          }
+           if (frame.type === 'binding') {
+             if (operationTrace.binding) throw new Error('The stream repeated its operation binding.');
+-            operationTrace.binding = checkedOperationBinding(frame,{...session.replayHead,...session.operationBinding},session.verifiedReplayStart); renderClaim();
++            operationTrace.binding = checkedOperationBinding(frame,{...session.replayHead,...session.operationBinding},session.verifiedReplayStart); renderClaim(); prefetchNextOperationOpening(session);
+           } else if (frame.type === 'operation') {
+             const operation = await checkedOperation(frame,operationTrace,current);
+             if (!await operationGate(session,token)) return;
+@@ -2978,6 +3061,7 @@
+             operationTrace.consumed = operation;
+             if (show && !session.skip && !reduced?.matches) {
+               operationTrace.current = operation; operationTrace.inkRetired = false;
++              if (['fact.extract','document.check'].includes(operation.kind)) operationTrace.openingConsequenceId ||= operation.id;
+               const sourceCause = operationTrace.rows.find(row => row.id === operation.cause_ids.at(-1)), pin = operation.source || (operation.kind === 'phrase.match' ? sourceCause?.source : null);
+               if (pin) operationTrace.displaySource = {artifact_id:pin.artifact_id,pin,id:operation.id};
+               else if (operation.kind === 'source.open') operationTrace.displaySource = {artifact_id:operation.object.id,id:operation.id};
+@@ -2996,14 +3080,17 @@
+             const stageIdentity = canonicalJSON({graph:current.graph?.graph_sha256,facts:list(current.facts).map(row => row.fact_id),documents:current.evaluation?.documents?.map(row => [row.document_type,row.review_state]),completed:current.evaluation?.nodes?.filter(row => row.execution_state === 'completed').map(row => row.node_id)});
+             if (operationTrace.stageStateIdentity !== stageIdentity && !session.skip && !reduced?.matches) { operationTrace.stageStateIdentity = stageIdentity; renderClaim(); }
+           } else if (frame.type === 'result') {
++            const traceHash = await digest(canonicalJSON(trace.frameHashes));
++            if (!operationActive(session,token) || operationTrace !== trace) return;
+             if (!operationTrace.binding || current.revision !== session.replayHead.revision || current.state_sha256 !== session.replayHead.state_sha256 ||
+-                frame.state_sha256 !== current.state_sha256 || frame.operation_count !== operationTrace.rows.length || frame.operation_chain_sha256 !== operationTrace.rows.at(-1)?.operation_sha256 || frame.exact_output_verified !== true || frame.trace_sha256 !== await digest(canonicalJSON(operationTrace.frameHashes))) throw new Error('The operation result differs from its pinned saved result.');
++                frame.state_sha256 !== current.state_sha256 || frame.operation_count !== operationTrace.rows.length || frame.operation_chain_sha256 !== operationTrace.rows.at(-1)?.operation_sha256 || frame.exact_output_verified !== true || frame.trace_sha256 !== traceHash) throw new Error('The operation result differs from its pinned saved result.');
+             operationTrace.finished = true; operationTrace.verifiedResult = true; operationTrace.current = null; selected = preferredNode(current,selected,history); renderClaim();
+             const next = demoCases(session.collection)[session.index+1];
+             if (next && !session.skip && !reduced?.matches) {
+               presentationOpening(session,next.claim_id);
+-              if (!await operationGate(session,token,1000)) return;
+-              session.operationStarted = false; session.operationOpeningAnchor = null; session.previousAttempts = []; session.useRecorded = session.operations === 'recorded'; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null; session.plannedProcess = null;
++              if (!await operationOutcomeHold(session,token)) return;
++              if (session.skip || reduced?.matches) { stopPresentation(); renderClaim(); primeClaimReads(token); return; }
++              session.operationStarted = false; session.operationOpeningAnchor = null; session.previousAttempts = []; session.useRecorded = session.operations === 'recorded'; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null; session.verifiedHeadState = null; session.verifiedJournal = null; session.operationBinding = null; session.plannedProcess = null;
+               await openPresentationCase(session,true,session.index+1); return;
+             }
+             stopPresentation(); renderClaim(); primeClaimReads(token); notice(''); return;
+@@ -3119,6 +3206,10 @@
+         session.preparing = token;
+         try {
+           const opening = await presentationOpening(session,id);
++          if (session.mode === 'operations' && token === epoch && generation === readGeneration && (demoSession === session || pausedPresentation === session)) {
++            if (!await operationGate(session,token)) return;
++            if (session.skip || reduced?.matches) { stopPresentation(); renderClaim(); return; }
++          }
+           if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
+           if (session.collection !== 'legacy' && !opening.referenceReady) {
+             const verification = {replayHead:opening.head,replayStart:opening.response.replay_start};
+@@ -3128,14 +3219,20 @@
+             if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
+           }
+           session.verifiedOpening = opening;
+-          const remaining = Math.max(0,(session.mode === 'operations' ? 1000 : 4000) - (Date.now() - session.displayedAt));
++          const remaining = session.mode === 'operations' ? 0 : Math.max(0,4000 - (Date.now() - session.displayedAt));
+           if (remaining) { demoTimer = root.setTimeout(() => { demoTimer = null; openPresentationCase(session,writeHistory,index); },remaining); return; }
+         } catch (error) {
++          if (session.mode === 'operations' && token === epoch && generation === readGeneration && !disposed && !pendingRoute() && (demoSession === session || pausedPresentation === session) && !session.nextOperationOpening) {
++            if (!await operationGate(session,token)) return;
++            session.preparing = null; return openPresentationCase(session,writeHistory,index);
++          }
+           if (demoSession === session && token === epoch && !disposed && !pendingRoute()) presentationFailed(session,`Next case ${featuredCase(id)?.label || id} is unavailable: ${error.message} The last verified case remains visible.`);
+           return;
+         }
+         finally { if (session.preparing === token) session.preparing = null; }
+       }
++      if (session.verifiedOpening?.operationPreparation?.recorded) { session.operations = 'recorded'; session.useRecorded = true; }
++      if (session.nextOperationOpening?.id === id) session.nextOperationOpening = null;
+       session.index = index; session.claimId = id; session.startAttempted = false;
+       await openClaim(id,writeHistory,{mode:session.mode === 'operations' ? 'replay' : session.mode,collection:session.collection || 'reference',operations:session.operations,through:0,detail:'step',demo:true});
+       if (demoSession !== session || !current || disposed || pendingRoute()) return;
+@@ -3144,6 +3241,7 @@
+       } else { resumeLivePresentation(); advanceLivePresentation(); }
+     }
+     function presentationOpening(session,id) {
++      if (session.mode === 'operations') return nextOperationOpening(session,id);
+       const token = epoch, generation = readGeneration, identity = `opening:${id}:0`;
+       if (replayPrefixes.has(identity)) return replayPrefixes.get(identity);
+       const promise = (async () => {
+@@ -3167,11 +3265,12 @@
+     }
+     async function loadRecordedPacket() {
+       const descriptor = options.recordedPacket;
+-      if (!descriptor || disposed || doc.hidden || view !== 'work') return false;
++      const eligible = () => !disposed && !doc.hidden && (view === 'work' || view === 'claim' && (demoSession || pausedPresentation)?.mode === 'operations');
++      if (!descriptor || !eligible()) return false;
+       let verification;
+       try {
+         await new Promise(resolve => root.setTimeout(resolve,0));
+-        if (disposed || doc.hidden || view !== 'work') return false;
++        if (!eligible()) return false;
+         const url = new URL(descriptor.url,root.location?.href || 'http://localhost/');
+         if (url.origin !== new URL(root.location?.href || 'http://localhost/').origin || url.username || url.password || !Number.isSafeInteger(descriptor.bytes) || descriptor.bytes < 1 || descriptor.bytes > RECORDED_PACKET_BYTES) return false;
+         packetLoadController = new AbortController();
+@@ -3181,7 +3280,7 @@
+         const cancel = () => { reader.cancel().catch(() => {}); }; packetLoadController.signal.addEventListener('abort',cancel,{once:true});
+         try { while (!packetLoadController.signal.aborted) { const chunk = await reader.read(); if (chunk.done) break; length += chunk.value.byteLength; if (length > descriptor.bytes) throw new Error('Recorded packet asset exceeds its bound.'); chunks.push(chunk.value); } }
+         finally { packetLoadController.signal.removeEventListener('abort',cancel); await reader.cancel().catch(() => {}); reader.releaseLock?.(); }
+-        if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work') return false;
++        if (!eligible() || packetLoadController.signal.aborted) return false;
+         const bytes = new Uint8Array(length); let offset = 0; for (const chunk of chunks) { bytes.set(chunk,offset); offset+=chunk.byteLength; }
+         if (length !== descriptor.bytes) throw new Error('Recorded packet acquisition is incomplete.');
+         verification = {controller:packetLoadController,promise:checkedRecordedPacket(bytes,descriptor,options.allowNativeRecordedPacket === true)}; packetVerification=verification;
+@@ -3223,11 +3322,13 @@
+     function cancelPreparedOperationReads(prepared) {
+       prepared.controller.abort(); for (const controller of prepared.readControllers) controller.abort();
+     }
+-    async function chooseRecordedOpening(packet, session, id, token) {
+-      const prepared = session.operationPreparation, choice = new AbortController(); session.operationChoiceController = choice;
+-      const active = () => !disposed && token === epoch && !pendingRoute() && openingId === id && !choice.signal.aborted;
++    async function chooseRecordedOpening(packet, session, id, token, ownership = null) {
++      let prepared = session.operationPreparation; const choice = new AbortController(); session.operationChoiceController = choice;
++      const active = () => !choice.signal.aborted && (ownership ? ownership.active() : !disposed && token === epoch && !pendingRoute() && openingId === id);
+       const openingResult = (response, head, verification) => ({claimId:id,generation:readGeneration,response,head,referenceReady:true,verifiedHeadState:verification.verifiedHeadState,verifiedReplayStart:verification.verifiedReplayStart,verifiedJournal:verification.verifiedJournal,referenceAsOf:verification.referenceAsOf,operationBinding:verification.operationBinding,plannedProcess:verification.plannedProcess});
+-      let packetOpening = null;
++      let packetOpening = null, observedLiveHead = null, packetSettled = false, preferenceElapsed = false;
++      const cancelled = new Promise((_resolve,reject) => choice.signal.addEventListener('abort',() => reject(new Error('The selected opening changed.')),{once:true}));
++      cancelled.catch(() => {});
+       const packetCandidate = (async () => {
+         const verified = packet.promise ? await packet.promise : packet;
+         if (!active() || packet.controller?.signal.aborted) return;
+@@ -3238,45 +3339,77 @@
+         const newline = decoded.operations.indexOf(10); if (newline < 0 || newline > OPERATION_FRAME_BYTES) throw new Error('The recorded packet has no bounded operation binding.');
+         checkedOperationBinding(JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(decoded.operations.subarray(0,newline))),{...head,...operationBinding},start);
+         if (active()) packetOpening = {opening:openingResult(decoded.opening,head,{verifiedHeadState:full.state,verifiedReplayStart:start,verifiedJournal:full.accepted.events,referenceAsOf:referenceExecution(full.state)?.as_of,operationBinding,plannedProcess}),bytes:decoded.operations};
+-      })(); packetCandidate.catch(() => {});
++      })(); packetCandidate.then(() => { packetSettled = true; },() => { packetSettled = true; });
+       if (!prepared) {
+         let timer;
+-        await Promise.race([packetCandidate.catch(() => {}),new Promise(resolve => { timer=root.setTimeout(resolve,500); })]); root.clearTimeout(timer);
++        try { await Promise.race([cancelled,packetCandidate.catch(() => {}),new Promise(resolve => { timer=root.setTimeout(resolve,OPERATION_CHOICE_GRACE_MS); })]); }
++        finally { root.clearTimeout(timer); }
+         if (!active()) throw new Error('The selected opening changed.');
+-        if (!packetOpening) { choice.abort(); return null; }
+-        return selectRecorded();
++        if (packetOpening) return selectRecorded();
++        if (packetSettled) { choice.abort(); return null; }
++        // Explicit Recorded keeps the pending packet eligible while its existing
++        // owned recorded endpoint reads become the other candidate.
++        prepared = prepareOperationReads(session,id,token); preferenceElapsed = true;
+       }
+       const liveOpening = operationRequest(prepared,`/claims/${key(id)}/replay?through_seq=0`);
+       const liveCandidate = (async () => {
+         const response = await liveOpening, incoming = readReplay(response,id,0), head = {claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256};
++        observedLiveHead = head;
+         const verification = {replayHead:head,replayStart:incoming.replay.replay_start,operationOpeningAnchor:{state:incoming.state}};
+         if (!await verifyReferenceHead(verification,prepared) || !verification.verifiedReplayStart) throw new Error('The live reference opening is incomplete.');
+         const delivery = await prepared.delivery, first = await delivery?.buffer?.first;
+         if (!first) throw new Error('The live operation binding is unavailable.');
+         checkedOperationBinding(first,{...head,...verification.operationBinding},verification.verifiedReplayStart);
+-        if (disposed || token !== epoch || pendingRoute() || openingId !== id || prepared.controller.signal.aborted) throw new Error('The selected opening changed.');
++        if (!active() || prepared.controller.signal.aborted) throw new Error('The selected opening changed.');
+         return openingResult(response,head,verification);
+       })(); liveCandidate.catch(() => {});
+-      let timer;
+-      const winner = await Promise.race([liveCandidate.catch(() => new Promise(() => {})),new Promise(resolve => { timer=root.setTimeout(() => resolve(null),500); })]);
+-      root.clearTimeout(timer);
++      let timer, winner = null;
++      if (!preferenceElapsed) {
++        try { winner = await Promise.race([cancelled,liveCandidate.catch(() => new Promise(() => {})),new Promise(resolve => { timer=root.setTimeout(() => resolve(null),OPERATION_CHOICE_GRACE_MS); })]); }
++        finally { root.clearTimeout(timer); }
++      }
+       if (!active()) throw new Error('The selected opening changed.');
+       if (winner) { choice.abort(); return winner; }
++      if (packetOpening && observedLiveHead && canonicalJSON(packetOpening.opening.head) !== canonicalJSON(observedLiveHead)) packetOpening = null;
+       if (!packetOpening) {
+-        choice.abort(); const response = await liveOpening, incoming = readReplay(response,id,0);
+-        return {claimId:id,generation:readGeneration,response,head:{claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256},referenceReady:false};
++        try {
++          // The grace interval prefers complete Live, not an unready transport.
++          // Until one session commits, either fully checked candidate may win.
++          const ready = await Promise.race([cancelled,Promise.any([
++            liveCandidate.then(opening => ({opening})),
++            packetCandidate.then(() => {
++              if (!packetOpening || observedLiveHead && canonicalJSON(packetOpening.opening.head) !== canonicalJSON(observedLiveHead)) throw new Error('No matching verified recorded opening is available.');
++              return {recorded:true};
++            })
++          ])]);
++          if (!active()) throw new Error('The selected opening changed.');
++          if (ready.opening) { choice.abort(); return ready.opening; }
++          // Live metadata may arrive while the readiness promises settle.
++          // Recheck immediately before committing the recorded presentation.
++          if (observedLiveHead && canonicalJSON(packetOpening.opening.head) !== canonicalJSON(observedLiveHead)) {
++            const opening = await Promise.race([cancelled,liveCandidate]);
++            if (!active()) throw new Error('The selected opening changed.');
++            choice.abort(); return opening;
++          }
++          return selectRecorded();
++        } catch (error) {
++          if (!active()) throw error;
++          // Both candidates were unusable; preserve the native endpoint fallback.
++          choice.abort(); const response = await liveOpening, incoming = readReplay(response,id,0);
++          return {claimId:id,generation:readGeneration,response,head:{claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256},referenceReady:false};
++        }
+       }
+       return selectRecorded();
+       function selectRecorded() {
+         if (prepared) cancelPreparedOperationReads(prepared);
+-        session.operations = 'recorded'; session.useRecorded = true; session.recorded = true; openingPreferences.operations = 'recorded';
+-        if (operationTrace) operationTrace.recorded = true;
++        session.operations = 'recorded'; session.useRecorded = true; session.recorded = true;
++        if (!ownership) { openingPreferences.operations = 'recorded'; if (operationTrace) operationTrace.recorded = true; }
+         const controller = new AbortController(); controllers.add(controller); controller.signal.addEventListener('abort',() => controllers.delete(controller),{once:true}); session.operationController = controller;
+         const response = new root.Response(packetOpening.bytes,{headers:{'Content-Type':'application/x-ndjson'}});
+         session.operationPreparation = {claimId:id,controller,token,recorded:true,readControllers:new Set(),delivery:Promise.resolve({response,buffer:bufferedOperations(response,controller.signal)})};
+         const fragment = claimFragment(id,{...openingPreferences,operations:'recorded'});
+-        if (root.history?.replaceState) { root.history.replaceState(null,'',root.location.pathname+root.location.search+fragment); routedFragment=fragment; }
+-        const label = host.querySelector('.au-reference-mode'); if (label) label.textContent='Recorded replay · Synthetic sources · No external action';
++        if (!ownership && root.history?.replaceState) { root.history.replaceState(null,'',root.location.pathname+root.location.search+fragment); routedFragment=fragment; }
++        const label = host.querySelector('.au-reference-mode'); if (!ownership && label) label.textContent='Recorded replay · Synthetic sources · No external action';
+         choice.abort(); return packetOpening.opening;
+       }
+     }
+@@ -3288,7 +3421,8 @@
+       if (prepared?.snapshot) { try { incoming = await checkedAtomicOperationHead(await prepared.snapshot,head,session.replayStart,session.operationOpeningAnchor?.state); } catch (_) { incoming = null; } }
+       if (!incoming) {
+         if (prepared && (prepared.controller.signal.aborted || disposed || prepared.token !== epoch || pendingRoute())) throw new Error('The selected operation opening was cancelled.');
+-        incoming = readReplay(await request(`/claims/${key(head.claimId)}/replay?through_seq=${head.revision}`),head.claimId,head.revision);
++        const path = `/claims/${key(head.claimId)}/replay?through_seq=${head.revision}`;
++        incoming = readReplay(await (prepared ? operationRequest(prepared,path) : request(path)),head.claimId,head.revision);
+         checkedReplayHead(incoming,session);
+       }
+       // Admission of playback does not paint the head or borrow its context
+@@ -3366,7 +3500,7 @@
+         if (!replayCanAdvance(current)) { stopPresentation(); renderClaim(); notice('This recorded investigation has no settled operational outcome. Replay stopped at its saved head.',true); return; }
+         const next = demoCases(session.collection)[session.index+1];
+         if (next) presentationOpening(session,next.claim_id);
+-        const remaining = Math.max(0,(session.mode === 'operations' ? 1000 : 4000) - (Date.now() - session.displayedAt));
++        const remaining = session.mode === 'operations' ? 0 : Math.max(0,4000 - (Date.now() - session.displayedAt));
+         demoTimer = root.setTimeout(() => { demoTimer = null; if (!replayActive(session,token) || doc.hidden || dialog.open) return; openPresentationCase(session,true,session.index+1); },remaining);
+         return;
+       }
+@@ -3779,7 +3913,7 @@
+       const returning = dialogReturn; dialogReturn = null; sourceEpoch++; clearNativeSource(); restoreSourceFocus(returning);
+     }
+     function visibility() {
+-      if (doc.hidden) { if (!recordedPacket) packetLoadController?.abort(); savedSnapshotController?.abort(); }
++      if (doc.hidden) { if (!recordedPacket) packetLoadController?.abort(); savedSnapshotController?.abort(); cancelNextOperationOpening(demoSession || pausedPresentation); }
+       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel();
+       if (doc.hidden) {
+         cancelWarmReads();
+@@ -3831,9 +3965,11 @@
+     const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),savedSnapshotReady:savedSnapshotLoad=Promise.resolve().then(loadSavedSnapshot),refresh:poll,destroy() { if (disposed) return; disposed = true; packetLoadController?.abort(); savedSnapshotController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',claimWarmIntent); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
+     mounts.set(container,controller); activeMount = controller;
+     sessionRestore = restoreReadCache();
++    if (options.recordedPacket) packetAcquisition = {promise:controller.recordedPacketReady.then(ready => { if (!ready) throw new Error('The recorded packet asset is unavailable.'); return recordedPacket; })};
++    packetAcquisition?.promise.catch(() => {});
+     routeChanged();
+     return controller;
+   }
+   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
+-  return {checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
++  return {checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+ });

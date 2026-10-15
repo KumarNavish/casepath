@@ -1,0 +1,70 @@
+Cloud JavaScript startup itinerary handoff
+Host: 656813ef2295
+Repository: /workspace/casepath-startup-itinerary-js-20261016
+Branch: codex/startup-itinerary-js-20261016
+Base: 5086624c8a024ba298819e5e27d749efbd0cc7fc
+Final pushed commit: af66b6e722c8c90d09d90f9e4adf2ba6c333ad3f
+Commits: 081d31a4a308b48393b32dde138b2c175a0bbec7, 0f0884df212fe6ae64c68fc82588bc0e1f510211, b62b34638973e64ce54c3ca568d2657969840559, af66b6e722c8c90d09d90f9e4adf2ba6c333ad3f
+Changed files only:
+casepath/assets/autonomous-workspace-v1.js
+casepath-qa/autonomous-workspace-v1.test.cjs
+
+Behavior:
+- Same-origin bounded packet acquisition can finish inside the selected opening's single deadline on Cases click and direct /demonstration.
+- Latest root-authorized Live/Recorded deadline is300ms (original500ms preserved in081 and0f; reduced only after native margin feedback).
+- One next-case replay0+head/snapshot+bounded trace owner starts at the current verified binding. Its checked opening and buffer transfer to the new epoch without refetch.
+- Actual current binding/result determines totals; regression changes824 to299 and verifies every next-case paint max298, initial value0, no prior total or head facts/outcome.
+- Explicit8000ms visible completed outcome hold is independent of acquisition. Pause/hide during delayed transition can resume; cancellation uses a separate promise race and releases all read/stream owners.
+- First genuine consequence has360ms sweep and300ms real transfer; subsequent reads keep their old duration. Compact excerpts skip a scroll-settle wait because they do not scroll; full passages retain scrollend and bounded fallback.
+- Next-case live503 performs one same-owner Recorded GET fallback with binding admission, retained mode and late-result total callback.
+- Observed valid newer live opening rejects a mismatched older packet. Async binding/result hashes recheck epoch and trace before touching visible state.
+
+Validation environments (set before Node initializes):
+HOME=/workspace/startup-itinerary-js-evidence-20261016/home
+TMP=/workspace/startup-itinerary-js-evidence-20261016/tmp
+TEMP=/workspace/startup-itinerary-js-evidence-20261016/tmp
+TMPDIR=/workspace/startup-itinerary-js-evidence-20261016/tmp
+CASEPATH_PYTHON=/usr/bin/python3
+
+Commands/results:
+node --test casepath-qa/autonomous-workspace-v1.test.cjs
+  module-checkpoint.log:242 passed/0failed, exit0 on081 implementation before later tests/grace/fallback additions.
+  module-final.log:245 passed/0failed, exit0; includes final300ms and active-after-cancel guard; late-result callback was added immediately afterward.
+node --test --test-name-pattern='next-case prefetch retains|current verified binding prefetches|completed outcome holds|pause and hide after|late binding and result hashes|wire draining' casepath-qa/autonomous-workspace-v1.test.cjs
+  final-fallback-owner.log:6 passed/0failed, exit0 on the final callback version committed asaf66.
+node --test --test-name-pattern='packet|cold operation|prefetches|direct autonomous|observed newer|completed outcome holds|first genuine|pause and hide after|Cases cold click|late binding|next-case prefetch|the300ms choice' casepath-qa/autonomous-workspace-v1.test.cjs
+  grace300-focused-final.log:29 passed/0failed, exit0 onb62.
+Exact-base companion: git show5086624 JS copied to base-autonomous-workspace-v1.js; same regression test file imports that artifact.
+  exact-base-regressions.log:7 new regressions failed/0passed, exit1.
+  exact-base-late-hash.log:1 failed/0passed, exit1 (old result hash completion repaints replacement session).
+git diff --check:pass. Final working tree clean; branch pushed.
+
+Limits and raw failures:
+All raw logs retained. Early hold fixture attempts had escaped-newline and undefined canonical serialization errors; corrected before successful checkpoint. Early module had5 old all-case request counts affected by intentional next prefetch and1 missing optional Python override; selected-case counts and CASEPATH_PYTHON corrected. Initial direct regression also used bare #autonomous (out of requested /demonstration scope) and was narrowed before exact-base evidence. Controlled300ms timer attempt initially fired before local packet verification and was terminated; a subsequent attempt observed legitimate binding-only fallback work as a late paint, then was corrected to wait for that already-existing fallback request before measuring late Live. grace300-focused-final.log is terminal29/29.
+Module tests use virtual8000ms time for the outcome; they do not establish wall-clock browser timing. Native firstlanding and physical8s transition are integration-owner QA and are not claimed here. No full suite, backend changes, asset generation/expansion, browser runs, production/paid/model calls, index hash, sealing, source manifest or docs changes were performed by this worker.
+
+
+LATEST AUTHORIZED CHOOSER FOLLOW-UP (supersedes earlier fixed-cutoff description)
+Final pushed SHA: c57faa59f7533b1317166a8cb484a40e2b76b75e
+Additional commits: 674cbdb0bd1b77eef3ef296b34fcc96dec904134, c57faa59f7533b1317166a8cb484a40e2b76b75e
+Latest root/Mac policy:300ms is a preference for fully verified Live, not an abandonment deadline when both candidates remain unready. After preference, first fully verified matching packet/native candidate wins until a presentation commits; later candidates cannot splice into it.
+ExplicitRecorded: if packet still pending after300ms, start the existing owned Recorded opening/head/stream reads (noLive request, nosecond grace); packet remains eligible. Immediately ready packet still0API.
+Final synchronous head comparison prevents metadata arriving between readiness and commitment from rolling back a newer native head. Waiting race settles on cancellation even if fake fetch ignores abort. Existing verification, error fallback and timeout behavior remain; no hold/trace/pacing/index changes in this follow-up.
+Read-only bounded reviewer accepted final chooser diff, no remaining actionable findings.
+
+Narrow validation command with isolated environment variables above:
+node --test --test-name-pattern='an uncommitted opening accepts|post300ms uncommitted|packet|the300ms choice|observed newer|unfinished recorded asset|between packet readiness and commitment|current verified binding prefetches|next-case prefetch retains|explicit Recorded keeps' casepath-qa/autonomous-workspace-v1.test.cjs
+late-acquisition-recorded-final.log:23passed/0failed, terminalexit0 on finalc57.
+Controlled virtual readiness uses packet600ms versus native5s; physical acquisition/landing remains root native QA.
+late-acquisition-base.log: delayed packet regression FAILS prioraf66 implementation, exit1.
+late-acquisition-head-race-before.log: adversarial observed-newer-head commitment regression FAILS674, exit1.
+late-acquisition-first-repair.log: initial focused attempt timed out (exit124) because existing newer-head test awaited raw unverified Live admission; expectation narrowed to require no admission until verification or cancellation under newpolicy. Raw log preserved; final23/23 passed.
+No full module rerun after chooser follow-up, per root bounded narrow-check instruction; earlier module245/245 applies to prioraf66 implementation. New scope changes only the same two assigned files. Finalworkingtreeclean. Source freeze resumed for root native QA.
+
+FINAL EXACT-COMMIT MODULE VALIDATION AFTER ROOT GO
+Commit: c57faa59f7533b1317166a8cb484a40e2b76b75e (unchanged/frozen)
+Command: node --test casepath-qa/autonomous-workspace-v1.test.cjs
+Environment: same isolated HOME/TMP/TEMP/TMPDIR and CASEPATH_PYTHON=/usr/bin/python3 above; timeout35s wrapper preserved Node exit.
+Result:249 tests passed,0failed,0cancelled,0skipped, exit0, duration15.33s.
+Log: module-c57-final.log
+This final exact-commit subsystem module result supersedes the prior note that no module rerun followed chooser changes. No full gate or broad repository suite ran. Test process completed before root physical8s next-case QA.

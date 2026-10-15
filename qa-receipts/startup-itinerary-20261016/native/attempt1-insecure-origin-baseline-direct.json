@@ -1,0 +1,70 @@
+{
+  "label": "baseline",
+  "mode": "direct",
+  "disclosure": "Native isolated Chromium over exact shipped public synthetic heating packet; public-mode renderer, 5s artificial selected API delay, no production requests; default Live-versus-Recorded500ms budget retained.",
+  "source_base": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "asset_sha256": "6dd825738a0cdd498f9e9da84ac439751a6285aed95435ceebca35df7c2ad45a",
+  "css_sha256": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4",
+  "packet_sha256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+  "head": {
+    "claimId": "clm_314f2d309fea25e6",
+    "revision": 48,
+    "state_sha256": "df5f95e988c60ec91b36f7435375549ffc3c532103d51dfddd4a929ca8b3dcf4",
+    "event_sha256": "f9812537ef8e14ebf19f09c6fc027b11afee26a35ab62bcf61c23fbbe6d35f41"
+  },
+  "api_delay_ms": 5000,
+  "metrics": {
+    "first_visible_map_ms": 36.699999928474426,
+    "first_text_after_map_ms": -140.29999995231628,
+    "first_actual_landing_after_map_ms": null
+  },
+  "receipt": {
+    "mounted": 103.60000002384186,
+    "map": 140.29999995231628,
+    "firstText": null,
+    "flights": [],
+    "landings": [],
+    "labels": [
+      "Live rules-based check · Synthetic sources · No external action"
+    ],
+    "samples": [],
+    "status": "",
+    "title": "Repeated heating failure and reported repair calls",
+    "current_operation": "",
+    "read_mode": "opening"
+  },
+  "requests": [
+    {
+      "url": "http://casepath.test/",
+      "method": "GET",
+      "t": 1792104443844
+    },
+    {
+      "url": "http://casepath.test/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "method": "GET",
+      "t": 1792104443988
+    },
+    {
+      "url": "http://casepath.test/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live",
+      "method": "GET",
+      "t": 1792104443988
+    },
+    {
+      "url": "http://casepath.test/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "t": 1792104443988
+    },
+    {
+      "url": "http://casepath.test/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "method": "GET",
+      "t": 1792104449200
+    },
+    {
+      "url": "http://casepath.test/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "method": "GET",
+      "t": 1792104454209
+    }
+  ],
+  "errors": [],
+  "timeout": "page.waitForFunction: Timeout 12000ms exceeded."
+}

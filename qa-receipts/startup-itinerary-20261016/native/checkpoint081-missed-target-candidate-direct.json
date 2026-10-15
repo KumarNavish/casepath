@@ -1,0 +1,104 @@
+{
+  "label": "candidate",
+  "mode": "direct",
+  "disclosure": "Native isolated Chromium over exact shipped public synthetic heating packet; public-mode renderer, 5s artificial selected API delay, no production requests; default Live-versus-Recorded500ms budget retained.",
+  "source_base": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "asset_sha256": "26b0c2b678808e2fcd635105392cd93cc78ad8ff43f3257b2ccdb25d410be772",
+  "css_sha256": "e049267ad2ad59f98f48f09a45695a5e8180ed2f90ea4ba0d81e6e7c99e2f019",
+  "packet_sha256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+  "head": {
+    "claimId": "clm_314f2d309fea25e6",
+    "revision": 48,
+    "state_sha256": "df5f95e988c60ec91b36f7435375549ffc3c532103d51dfddd4a929ca8b3dcf4",
+    "event_sha256": "f9812537ef8e14ebf19f09c6fc027b11afee26a35ab62bcf61c23fbbe6d35f41"
+  },
+  "api_delay_ms": 5000,
+  "metrics": {
+    "first_visible_map_ms": 72.20000004768372,
+    "first_text_after_map_ms": 717.5,
+    "first_actual_landing_after_map_ms": 1572.5
+  },
+  "receipt": {
+    "mounted": 175.19999992847443,
+    "map": 247.39999997615814,
+    "firstText": 964.8999999761581,
+    "flights": [
+      {
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "kind": "fact",
+        "text": "CHF1800",
+        "at": 1502,
+        "duration": 300,
+        "finished": 1818,
+        "landed": 1819.8999999761581,
+        "node": "dh_scope"
+      }
+    ],
+    "landings": [
+      {
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "kind": "fact",
+        "text": "CHF1800",
+        "at": 1502,
+        "duration": 300,
+        "finished": 1818,
+        "landed": 1819.8999999761581,
+        "node": "dh_scope"
+      }
+    ],
+    "labels": [
+      "Opening investigation · Synthetic sources · No external action",
+      "Recorded replay · Synthetic sources · No external action",
+      "Recorded replay · Synthetic sources · No external action · as of 2025-02-21"
+    ],
+    "samples": [],
+    "status": "",
+    "title": "Repeated heating failure and reported repair calls",
+    "current_operation": "op_1715b98c5f009b94cad03526c1c661be",
+    "read_mode": "recorded_operations"
+  },
+  "requests": [
+    {
+      "url": "http://127.0.0.1:4199/",
+      "method": "GET",
+      "t": 1792104769487
+    },
+    {
+      "url": "http://127.0.0.1:4199/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "method": "GET",
+      "t": 1792104769733
+    },
+    {
+      "url": "http://127.0.0.1:4199/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live",
+      "method": "GET",
+      "t": 1792104769733
+    },
+    {
+      "url": "http://127.0.0.1:4199/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "t": 1792104769733
+    },
+    {
+      "url": "http://127.0.0.1:4199/packet.json",
+      "method": "GET",
+      "t": 1792104769742
+    },
+    {
+      "url": "http://127.0.0.1:4199/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0",
+      "method": "GET",
+      "t": 1792104770377
+    },
+    {
+      "url": "http://127.0.0.1:4199/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/operations?mode=recorded",
+      "method": "GET",
+      "t": 1792104770378
+    },
+    {
+      "url": "http://127.0.0.1:4199/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=0",
+      "method": "GET",
+      "t": 1792104770378
+    }
+  ],
+  "errors": [],
+  "timeout": null
+}

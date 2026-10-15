@@ -1,0 +1,12 @@
+✔ completed outcome holds8000ms independently of a ready next case and reuses its824 to299 operation transport without a zero or stale count (481.220521ms)
+✔ pause and hide after the8000ms outcome hold preserve the finished case and resume the delayed next opening (15.996323ms)
+✔ late binding and result hashes cannot mutate a newly selected operation session (10.780937ms)
+✔ next-case prefetch retains the live503 to recorded trace fallback and cancels its bounded owner on exit (4.540405ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 606.783597

@@ -1,0 +1,8 @@
+page.evaluate: TypeError: Cannot read properties of null (reading 'getBoundingClientRect')
+    at eval (eval at evaluate (:311:30), <anonymous>:4:18)
+    at UtilityScript.evaluate (<anonymous>:313:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at geometry (/workspace/casepath-stage-edge-css-evidence-20261016/edge-inspection.cjs:34:43)
+    at /workspace/casepath-stage-edge-css-evidence-20261016/edge-inspection.cjs:45:107 {
+  log: []
+}

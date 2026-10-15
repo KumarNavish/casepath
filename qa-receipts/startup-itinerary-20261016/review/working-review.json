@@ -1,0 +1,43 @@
+{
+  "base": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "source": "working diff before writer commit",
+  "review": "static; no tests executed",
+  "findings": [
+    {
+      "id": "transition-pause",
+      "severity": "high",
+      "trigger": "After verified result8000ms hold, next opening still pending; pause; next resolves; Resume.",
+      "root_cause": "openPresentationCase returns on demoSession mismatch; caller exits operation loop; Resume only operationWake with no continuation.",
+      "status": "sent writer/root"
+    },
+    {
+      "id": "transition-visibility",
+      "severity": "high",
+      "trigger": "After result8000ms hold, next opening still pending; hide page then restore.",
+      "root_cause": "hide cancels next slot; awaiting transition catch sets deferred session.failure; restore stops playback instead of renewing cancelled slot.",
+      "status": "sent writer/root"
+    },
+    {
+      "id": "stale-consumer-hash",
+      "severity": "high",
+      "trigger": "Delay frame/result digest, navigate to new case, resolve old digest.",
+      "root_cause": "Consumer binding/result branches mutate global operationTrace after await without fresh epoch/trace guard. Producer resultAvailable guard does not cover consumer.",
+      "status": "sent writer/root"
+    },
+    {
+      "id": "cases-packet-inflight",
+      "severity": "medium",
+      "trigger": "Cases first click while packet network not complete.",
+      "root_cause": "packetAtSelection lacks acquiring owner outside initialRoutePacket path; openClaim aborts packet controller.",
+      "status": "sent writer/root; latency feasibility depends acquisition"
+    }
+  ],
+  "confirmed_improvements": [
+    "one bounded next case starts opening/head/operations at current binding",
+    "prefetched openingBinding+buffer supports own current denominator",
+    "explicit8000ms result hold independent of network wait",
+    "observed live opening mismatch retires packet fallback",
+    "first visible consequence read420/transfer300 without changing operation frames",
+    "CSS source-phase mask/focus-within only; settled map selector unaffected"
+  ]
+}

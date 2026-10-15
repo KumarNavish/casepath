@@ -1,0 +1,24 @@
+diff --git a/casepath/assets/autonomous-workspace-v1.css b/casepath/assets/autonomous-workspace-v1.css
+index f9230d2..48c9b0f 100644
+--- a/casepath/assets/autonomous-workspace-v1.css
++++ b/casepath/assets/autonomous-workspace-v1.css
+@@ -742,6 +742,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+ }
+ .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport { height:calc(100dvh - 365px); min-height:260px; max-height:none; }
+ .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-stage-process .au-graph { padding-top:20px; }
++/* Let peripheral labels leave the reading stage softly; keep its active rail inside the fade. */
++.au-workspace .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport { --au-stage-edge:64px; mask-image:linear-gradient(to right,transparent,#000 var(--au-stage-edge),#000 calc(100% - var(--au-stage-edge)),transparent),linear-gradient(to bottom,transparent,#000 12px,#000 calc(100% - 12px),transparent); mask-composite:intersect; }
++.au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-process .au-graph { padding-inline:64px; }
++.au-workspace .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport:focus-within { mask-image:none; }
+ .au-workspace [data-au-stage-view] .au-stage-transport { margin-top:12px; }
+ @media (min-width:901px) {
+   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) { min-height:var(--au-stage-excerpt-height,180px); }
+@@ -750,6 +754,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+ }
+ @media (max-width:700px) {
+   .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport { height:calc(100dvh - 340px); }
++  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport { --au-stage-edge:8px; }
++  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-process .au-graph { padding-inline:12px; }
+   .au-workspace .au-operation-stage[data-au-stage-phase=source] [data-au-stage-active=true] .au-stage-fact:not([data-au-current-fact=true]) { display:none; }
+   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-thumbnail .au-stage-paper { display:none; }
+ }

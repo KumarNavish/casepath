@@ -1,0 +1,99 @@
+✔ an exhausted authoritative call allowance is visible before intake while packet saving remains available (10.271194ms)
+✔ complete acquired packet may finish local SHA inside the original500ms immediate-click choice (532.859618ms)
+✖ complete acquired packet missing the500ms choice cannot paint or splice into later verified Live (560.510145ms)
+✔ ready verified Live wins while a completely acquired packet still awaits local SHA (6.33716ms)
+✔ navigation and hidden ownership cancel acquired packet verification without late Recorded paint (1058.268118ms)
+✔ recorded packet selected codec preserves exact UTF8 numeric spellings escapes and CRLF without expanding other claims (5.868719ms)
+✔ recorded packet codec rejects unbound assets invalid publication DAG roots expansion and raw hashes (7.305809ms)
+✖ ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session (506.008458ms)
+✔ independently verified live opening wins before500ms and never consumes available recorded packet frames (5.298798ms)
+✖ unusable recorded packet retains the existing live503 to recorded endpoint fallback (503.655295ms)
+✔ explicit Recorded route uses whole packet identity and retires release provenance before accepted opening paint (7.306859ms)
+✔ idle recorded packet owner cancels on hidden or leaving Cases while an available asset remains reusable (13.482582ms)
+✔ cold operation selection starts the pinned head hint and live transport before its opening read finishes (2.15534ms)
+✔ cold operation selection reuses one complete atomic head while showing only a release outline before any response (4.930394ms)
+✖ cold operation selection falls back once for a partial atomic head without admitting its state (3.473806ms)
+✔ cold operation selection never starts a fallback head read from an invalid atomic response after navigation (1.581433ms)
+✔ cold operation selection refetches a stale catalog revision without consuming its hinted state (3.183306ms)
+✔ cold operation selection aborts its early reader and ignores late opening and outline responses after navigation (1.435007ms)
+✔ cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback (2.105447ms)
+✔ direct autonomous routes acquire a same-origin packet behind the immediate map and retain the original500ms choice (503.607255ms)
+✔ current verified binding prefetches exactly one next opening snapshot and trace without painting its facts and cancels all owned reads on exit (7.807149ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 17
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3832.04952
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:1888:1
+✖ complete acquired packet missing the500ms choice cannot paint or splice into later verified Live (560.510145ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:1892:300)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:1927:1
+✖ ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session (506.008458ms)
+  AssertionError [ERR_ASSERTION]: recorded body uses packet bytes without another API trace
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:1933:355)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:1949:1
+✖ unusable recorded packet retains the existing live503 to recorded endpoint fallback (503.655295ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:1953:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:2029:1
+✖ cold operation selection falls back once for a partial atomic head without admitting its state (3.473806ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:2034:209)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

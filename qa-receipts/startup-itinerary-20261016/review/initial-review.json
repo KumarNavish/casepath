@@ -1,0 +1,57 @@
+{
+  "host": "656813ef2295",
+  "base": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "review_type": "read-only static call-path review; no tests run",
+  "findings": [
+    {
+      "id": "cold-acquisition",
+      "source": "casepath/assets/autonomous-workspace-v1.js:2508",
+      "description": "Early operation selection aborts still-acquiring packet; idle loader requires work view."
+    },
+    {
+      "id": "late-next-prefetch",
+      "source": "casepath/assets/autonomous-workspace-v1.js:3004",
+      "description": "Next case opening starts at result completion; opening then verifies head serially; no next operations buffer."
+    },
+    {
+      "id": "result-hold",
+      "source": "casepath/assets/autonomous-workspace-v1.js:3005",
+      "description": "Completed result holds1000ms, followed by old displayedAt based transition delay."
+    },
+    {
+      "id": "observed-head-rollback",
+      "source": "casepath/assets/autonomous-workspace-v1.js:3264",
+      "description": "Packet/live separately validated; already observed newer live opening is not compared before packet fallback."
+    },
+    {
+      "id": "cross-case-transport",
+      "source": "casepath/assets/autonomous-workspace-v1.js:2935",
+      "description": "Trace current/sources/displaySource retention is not explicitly keyed to same claim; new case must reset before new binding."
+    }
+  ],
+  "packet_assessment": {
+    "native_fixture_only": true,
+    "first_raw_bytes": 572463,
+    "first_br_bytes": 141139,
+    "nine_raw_bytes": 3323717,
+    "nine_br_bytes": 756866,
+    "first_br_seconds_0_15Mbps_payload_only": 7.5274133333333335,
+    "nine_br_seconds_0_15Mbps_payload_only": 40.366186666666664,
+    "recommendation": "Preserve small first asset startup priority; background subsequent public packet(s) during current playback. Whole-nine data is an availability fallback, not a cold-entry latency guarantee.",
+    "public_contract": [
+      "published_public_synthetic",
+      "deployment_commit40hex",
+      "same-origin immutable URL, raw packet bytes and SHA",
+      "per-claim head revision/state/event triple",
+      "exact original opening/head_snapshot/operations bytes and hashes",
+      "no native_fixture public substitution",
+      "no older packet after observed current head differs"
+    ]
+  },
+  "distinct_operation_counts": {
+    "heating": 824,
+    "termination": 299,
+    "rent": 428
+  },
+  "scope": "No source edits, provider calls, store writes, tests, research work or docs changes."
+}

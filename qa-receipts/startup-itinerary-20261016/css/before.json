@@ -1,0 +1,251 @@
+{
+  "native": {
+    "operation": "op_12368bafbf1e6c58a43a2a13af446bcb",
+    "source": {
+      "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+      "end_char": 764,
+      "offset_unit": "unicode_code_point",
+      "quote": "On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+      "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+      "start_char": 199,
+      "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+    },
+    "node": "dh_evidence",
+    "revision": 35,
+    "graph": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+    "packet_sha256": "daf10a11caca64aa141d268f59b6dd81f1a3dbbaf7915f1602992f7bc265471d",
+    "operations": 824
+  },
+  "runs": [
+    {
+      "config": {
+        "name": "desktop",
+        "width": 1280,
+        "height": 800,
+        "reducedMotion": "no-preference"
+      },
+      "before": {
+        "viewport": {
+          "left": 36,
+          "top": 267.4375,
+          "right": 1244,
+          "bottom": 702.4375,
+          "width": 1208,
+          "height": 435
+        },
+        "active": {
+          "left": 320,
+          "top": 287.4375,
+          "right": 960,
+          "bottom": 562.03125,
+          "width": 640,
+          "height": 274.59375
+        },
+        "source": {
+          "left": 320,
+          "top": 287.4375,
+          "right": 620,
+          "bottom": 439.21875,
+          "width": 300,
+          "height": 151.78125
+        },
+        "node": {
+          "left": 642,
+          "top": 287.4375,
+          "right": 960,
+          "bottom": 345.4375,
+          "width": 318,
+          "height": 58
+        },
+        "mask": "none",
+        "scrollLeft": 862,
+        "scrollTop": 0,
+        "text": "02-heating-service-observation.txtuncertainty±0.2C) measured the living room at15.8C after overnight normal operation.15.8C",
+        "labels": [
+          {
+            "text": "Assess supported cause",
+            "rect": {
+              "left": 74,
+              "top": 297.4375,
+              "right": 284,
+              "bottom": 322.625,
+              "width": 210,
+              "height": 25.1875
+            }
+          },
+          {
+            "text": "Assess objective defect evidence",
+            "rect": {
+              "left": 678,
+              "top": 297.4375,
+              "right": 954,
+              "bottom": 322.625,
+              "width": 276,
+              "height": 25.1875
+            }
+          },
+          {
+            "text": "Record repair and rent reduction eligibility",
+            "rect": {
+              "left": 1026,
+              "top": 297.4375,
+              "right": 1236,
+              "bottom": 347.8125,
+              "width": 210,
+              "height": 50.375
+            }
+          }
+        ],
+        "animations": 0,
+        "accessible": "Complete process; use arrow keys or scroll to explore",
+        "tabindex": 0
+      }
+    },
+    {
+      "config": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844,
+        "reducedMotion": "no-preference"
+      },
+      "before": {
+        "viewport": {
+          "left": 18,
+          "top": 366.28125,
+          "right": 372,
+          "bottom": 870.28125,
+          "width": 354,
+          "height": 504
+        },
+        "active": {
+          "left": 30,
+          "top": 386.28125,
+          "right": 360,
+          "bottom": 744.15625,
+          "width": 330,
+          "height": 357.875
+        },
+        "source": {
+          "left": 30,
+          "top": 454.28125,
+          "right": 360,
+          "bottom": 593.46875,
+          "width": 330,
+          "height": 139.1875
+        },
+        "node": {
+          "left": 30,
+          "top": 386.28125,
+          "right": 360,
+          "bottom": 444.28125,
+          "width": 330,
+          "height": 58
+        },
+        "mask": "none",
+        "scrollLeft": 1068,
+        "scrollTop": 0,
+        "text": "02-heating-service-observation.txtuncertainty±0.2C) measured the living room at15.8C after overnight normal operation.15.8C",
+        "labels": [
+          {
+            "text": "Assess objective defect evidence",
+            "rect": {
+              "left": 66,
+              "top": 396.28125,
+              "right": 354,
+              "bottom": 421.46875,
+              "width": 288,
+              "height": 25.1875
+            }
+          }
+        ],
+        "animations": 0,
+        "accessible": "Complete process; use arrow keys or scroll to explore",
+        "tabindex": 0
+      }
+    },
+    {
+      "config": {
+        "name": "reduced",
+        "width": 1280,
+        "height": 800,
+        "reducedMotion": "reduce"
+      },
+      "before": {
+        "viewport": {
+          "left": 36,
+          "top": 267.4375,
+          "right": 1244,
+          "bottom": 702.4375,
+          "width": 1208,
+          "height": 435
+        },
+        "active": {
+          "left": 320,
+          "top": 287.4375,
+          "right": 960,
+          "bottom": 562.03125,
+          "width": 640,
+          "height": 274.59375
+        },
+        "source": {
+          "left": 320,
+          "top": 287.4375,
+          "right": 620,
+          "bottom": 439.21875,
+          "width": 300,
+          "height": 151.78125
+        },
+        "node": {
+          "left": 642,
+          "top": 287.4375,
+          "right": 960,
+          "bottom": 345.4375,
+          "width": 318,
+          "height": 58
+        },
+        "mask": "none",
+        "scrollLeft": 862,
+        "scrollTop": 0,
+        "text": "02-heating-service-observation.txtuncertainty±0.2C) measured the living room at15.8C after overnight normal operation.15.8C",
+        "labels": [
+          {
+            "text": "Assess supported cause",
+            "rect": {
+              "left": 74,
+              "top": 297.4375,
+              "right": 284,
+              "bottom": 322.625,
+              "width": 210,
+              "height": 25.1875
+            }
+          },
+          {
+            "text": "Assess objective defect evidence",
+            "rect": {
+              "left": 678,
+              "top": 297.4375,
+              "right": 954,
+              "bottom": 322.625,
+              "width": 276,
+              "height": 25.1875
+            }
+          },
+          {
+            "text": "Record repair and rent reduction eligibility",
+            "rect": {
+              "left": 1026,
+              "top": 297.4375,
+              "right": 1236,
+              "bottom": 347.8125,
+              "width": 210,
+              "height": 50.375
+            }
+          }
+        ],
+        "animations": 0,
+        "accessible": "Complete process; use arrow keys or scroll to explore",
+        "tabindex": 0
+      }
+    }
+  ]
+}

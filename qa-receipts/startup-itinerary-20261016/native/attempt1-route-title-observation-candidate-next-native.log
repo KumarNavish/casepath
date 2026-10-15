@@ -1,0 +1,9 @@
+AssertionError [ERR_ASSERTION]: no stale heatingcount
+    at /workspace/casepath-startup-itinerary-evidence-20261016/next-case-native.cjs:33:684 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

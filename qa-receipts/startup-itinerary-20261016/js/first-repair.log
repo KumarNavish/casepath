@@ -1,0 +1,31 @@
+✖ direct autonomous routes acquire a same-origin packet behind the immediate map and retain the original500ms choice (10.439883ms)
+✔ current verified binding prefetches exactly one next opening snapshot and trace without painting its facts and cancels all owned reads on exit (27.399134ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 134.110333
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:2479:1
+✖ direct autonomous routes acquire a same-origin packet behind the immediate map and retain the original500ms choice (10.439883ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /data-au-release-plan=/. Input:
+  
+  '<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><h1 class="au-page-heading" tabindex="-1">Cases</h1><p class="au-lead">150 synthetic claims</p></div></header><nav class="au-collection-scope" aria-label="Case collection"><button type="button" data-au-collection-scope="originals" aria-pressed="true">Original cases</button><button type="button" data-au-collection-scope="added" aria-pressed="false">Added cases</button></nav><nav class="au-domain-browse" aria-label="Case domains"><button type="button" data-au-domain="all" aria-pressed="true">All cases</button><button type="button" data-au-domain="defect_mold_heating" aria-pressed="false">Defects &amp; repairs</button><button type="button" data-au-domain="lease_termination_dispute" aria-pressed="false">Lease termination</button><button type="button" data-au-domain="rent_increase_dispute" aria-pressed="false">Rent changes</button></nav><div class="au-collection-tools"><label for="auClaimSearch">Search cases<input id="auClaimSearch" type="search" data-au-claim-search value="" placeholder="Message, title or case ID" autocomplete="off"></label></div><nav class="au-case-filter" aria-label="Case status"><button type="button" data-au-filter="all" aria-pressed="true">All statuses</button><button type="button" data-au-filter="not_started" aria-pressed="false">Not started</button><button type="button" data-au-filter="working" aria-pressed="false">In progress</button><button type="button" data-au-filter="deferred" aria-pressed="false">Deferred</button><button type="button" data-au-filter="investigation_complete" aria-pressed="false">Assessment complete</button></nav><div class="au-claim-list" data-au-claims><p class="au-empty">No cases match this search.</p></div><nav class="au-pagination" data-au-pagination aria-label="Case pages"><button type="button" class="au-link" data-au-page="0" disabled>Previous</button><span>Page 1 of 1</span><button type="button" class="au-link" data-au-page="2" disabled>Next</button></nav></section>'
+  
+      at TestContext.<anonymous> (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:2485:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><h1 class="au-page-heading" tabindex="-1">Cases</h1><p class="au-lead">150 synthetic claims</p></div></header><nav class="au-collection-scope" aria-label="Case collection"><button type="button" data-au-collection-scope="originals" aria-pressed="true">Original cases</button><button type="button" data-au-collection-scope="added" aria-pressed="false">Added cases</button></nav><nav class="au-domain-browse" aria-label="Case domains"><button type="button" data-au-domain="all" aria-pressed="true">All cases</button><button type="button" data-au-domain="defect_mold_heating" aria-pressed="false">Defects &amp; repairs</button><button type="button" data-au-domain="lease_termination_dispute" aria-pressed="false">Lease termination</button><button type="button" data-au-domain="rent_increase_dispute" aria-pressed="false">Rent changes</button></nav><div class="au-collection-tools"><label for="auClaimSearch">Search cases<input id="auClaimSearch" type="search" data-au-claim-search value="" placeholder="Message, title or case ID" autocomplete="off"></label></div><nav class="au-case-filter" aria-label="Case status"><button type="button" data-au-filter="all" aria-pressed="true">All statuses</button><button type="button" data-au-filter="not_started" aria-pressed="false">Not started</button><button type="button" data-au-filter="working" aria-pressed="false">In progress</button><button type="button" data-au-filter="deferred" aria-pressed="false">Deferred</button><button type="button" data-au-filter="investigation_complete" aria-pressed="false">Assessment complete</button></nav><div class="au-claim-list" data-au-claims><p class="au-empty">No cases match this search.</p></div><nav class="au-pagination" data-au-pagination aria-label="Case pages"><button type="button" class="au-link" data-au-page="0" disabled>Previous</button><span>Page 1 of 1</span><button type="button" class="au-link" data-au-page="2" disabled>Next</button></nav></section>',
+    expected: /data-au-release-plan=/,
+    operator: 'match',
+    diff: 'simple'
+  }

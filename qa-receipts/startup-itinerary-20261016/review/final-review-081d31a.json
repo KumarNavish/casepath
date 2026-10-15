@@ -1,0 +1,93 @@
+{
+  "contract": "casepath.bounded-source-review/1",
+  "host": "656813ef2295",
+  "base_commit": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "verdict": "No remaining blocking findings in the reviewed bounded source diffs. Source review accepted; runtime timing and browser layout evidence remain separately owned by root/Mac.",
+  "reviewed": [
+    {
+      "commit": "081d31a4a308b48393b32dde138b2c175a0bbec7",
+      "files": [
+        "casepath/assets/autonomous-workspace-v1.js",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "javascript_sha256": "26b0c2b678808e2fcd635105392cd93cc78ad8ff43f3257b2ccdb25d410be772",
+      "working_tree_clean_at_review": true
+    },
+    {
+      "commit": "b8f9a694dbf4016a9da269a88fd263ddce6993ac",
+      "files": [
+        "casepath/assets/autonomous-workspace-v1.css"
+      ],
+      "css_sha256": "e049267ad2ad59f98f48f09a45695a5e8180ed2f90ea4ba0d81e6e7c99e2f019",
+      "working_tree_clean_at_review": true
+    }
+  ],
+  "blocking_findings": [],
+  "resolved_during_review": [
+    {
+      "id": "transition-pause",
+      "resolution": "openPresentationCase gates an already prepared next opening through operationGate before committing the transition; pause preserves the awaiting continuation."
+    },
+    {
+      "id": "transition-visibility",
+      "resolution": "Owned slot cancellation settles immediately through a cancellation race. A cancelled next slot is renewed after the visible/inspection gate, without repeating the completed hold."
+    },
+    {
+      "id": "stale-consumer-hash",
+      "resolution": "Non-result frame digest and final trace digest now recheck operationActive plus exact trace ownership before binding/completion mutation."
+    },
+    {
+      "id": "cases-packet-inflight",
+      "resolution": "packetAcquisition represents bounded in-flight acquisition; eligible Cases-to-operations navigation retains it for the existing500ms choice."
+    },
+    {
+      "id": "observed-head-rollback",
+      "resolution": "A valid observed live opening head that differs from the packet head prevents packet fallback."
+    }
+  ],
+  "confirmed_by_source": [
+    "One next-case slot starts opening, complete-head and operations GETs while current binding is playing; native buffer bounded24MiB/10002queued frames.",
+    "Next slot has independent choice/read controllers and exact head/binding admission; next facts/outcomes are not applied to current prefix.",
+    "Explicit8000ms outcome hold tracks remaining visible running time independently from next network readiness.",
+    "Prefetched buffer and openingBinding supply only their matching result count; new-case trace and title reset precede next paced operation consumption.",
+    "Existing operation hash/order, source, checkpoint and final result validators remain intact; no provider/store mutation was introduced.",
+    "First genuine consequence uses420ms read/300ms transfer; subsequent consequence pacing remains unchanged.",
+    "CSS applies source-phase edge masks only, matching graph padding, focus-within unmask and narrower mobile edges; settled map selectors and semantic accessibility content unchanged."
+  ],
+  "verification": {
+    "reviewer_tests_run": false,
+    "reviewer_checks": [
+      "read full bounded JS/CSS diffs against base",
+      "trace live/packet opening choice and next-slot ownership",
+      "inspect hold/pause/visibility continuation",
+      "inspect delayed consumer digest guards",
+      "inspect result/binding/count ownership",
+      "inspect new824-to299 and interruption regression test assertions",
+      "git diff --check both commits (exit0)",
+      "verify source SHA and clean working trees"
+    ],
+    "writer_reported_tests": "26 focused tests passed; reported by writer, not rerun by reviewer",
+    "root_runtime_checks": "In progress at receipt creation; no timing/browser pass claimed here."
+  },
+  "packet_recommendation": {
+    "requirement": "All-nine published data or per-case published shards is needed for guaranteed Recorded availability beyond first heating; no whole-nine startup latency guarantee follows.",
+    "keep_small_first_startup_priority": true,
+    "native_fixture_sizes_only": {
+      "first_raw_bytes": 572463,
+      "first_br_bytes": 141139,
+      "nine_raw_bytes": 3323717,
+      "nine_br_bytes": 756866
+    },
+    "slow_link_limit": "At0.15Mbps the native br payload lower bounds are7.53s first and40.37s nine, excluding assets/RTT/validation. An unready cold packet cannot be made ready by a500ms choice.",
+    "mac_public_contract": [
+      "published_public_synthetic with exact40hex deployment commit",
+      "same-origin immutable packet URL, exact raw bytes and SHA",
+      "all selected claim head revision/state/event triples",
+      "exact original opening/head_snapshot/operations body lengths and SHA",
+      "operation bytes/order/hash preserved",
+      "native_fixture/null deployment stays test-only",
+      "actual served compression and slow-network timing require browser evidence"
+    ]
+  },
+  "scope": "Read-only source review. Only JSON receipts were written under the assigned evidence directory; no source edits, tests, provider calls, store writes, docs or research changes."
+}

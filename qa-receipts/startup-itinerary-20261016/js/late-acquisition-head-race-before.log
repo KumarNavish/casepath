@@ -1,0 +1,28 @@
+✖ a newer Live head observed between packet readiness and commitment still prevents a recorded rollback (413.721138ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 517.689898
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:2627:1
+✖ a newer Live head observed between packet readiness and commitment still prevents a recorded rollback (413.721138ms)
+  AssertionError [ERR_ASSERTION]: an older ready packet cannot commit after newer native metadata arrives
+  
+  true !== false
+  
+      at TestContext.<anonymous> (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:2633:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

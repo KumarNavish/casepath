@@ -1,0 +1,32 @@
+✖ completed outcome holds8000ms independently of a ready next case and reuses its824 to299 operation transport without a zero or stale count (1073.210228ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1167.84183
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:2527:1
+✖ completed outcome holds8000ms independently of a ready next case and reuses its824 to299 operation transport without a zero or stale count (1073.210228ms)
+  Error: {"status":"Assessment stopped: The response belongs to another claim. Saved result unavailable: The response belongs to another claim.","attributes":[["data-au-view-state","claim"],["data-au-current-operation",""],["data-au-operation-run-mode","recorded_operations"],["data-au-operation-presentation","playing"],["data-au-operation-result-available","false"],["data-au-operation-result-verified","false"],["data-au-read-state","verified"]],"tail":"ue\">·</span><span class=\"au-node-copy\"><span class=\"au-node-relation\">Then</span><strong class=\"au-node-title\">Assess the received notice</strong></span></button><div class=\"au-stage-slot\" data-au-document=\"notice\" data-au-stage-document=\"notice\" data-au-document-active=\"false\" data-au-document-planned=\"true\" data-au-document-supported=\"false\" data-au-document-checked=\"false\" data-au-document-focused=\"false\"><span>Received notice</span><div class=\"au-stage-landing\"></div></div></div></div></div></div></section></div></section></section></div><div class=\"au-stage-transport\" aria-label=\"Assessment playback\"><label class=\"au-stage-scrubber\" style=\"--au-operation-ticks:1\"><span class=\"au-visually-hidden\">Inspect this step</span><input type=\"range\" data-au-operation-scrub min=\"0\" max=\"0\" step=\"1\" value=\"0\" aria-valuetext=\"Operation 1 of 0\" aria-label=\"Inspect this step\" disabled><span class=\"au-visually-hidden\" data-au-scrub-position>0 received</span></label></div></div></section></section>","calls":["/api/claim-loops/v1/autonomous/status","/api/claim-loops/v1/autonomous/claims","/api/claim-loops/v1/autonomous/knowledge","/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0","/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live","/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0","/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0","/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/operations?mode=live","/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=0","/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=4","/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=4"]}
+      at /workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:2533:234
+      at async TestContext.<anonymous> (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:2533:177)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    [cause]: AssertionError [ERR_ASSERTION]: the expected asynchronous operation did not complete
+        at waitFor (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:1359:165)
+        at async TestContext.<anonymous> (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:2533:177)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+      generatedMessage: false,
+      code: 'ERR_ASSERTION',
+      actual: false,
+      expected: true,
+      operator: '==',
+      diff: 'simple'
+    }
+  }

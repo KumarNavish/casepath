@@ -1,0 +1,132 @@
+✖ direct autonomous routes acquire a same-origin packet behind the immediate map and retain the original500ms choice (33.288529ms)
+✖ current verified binding prefetches exactly one next opening snapshot and trace without painting its facts and cancels all owned reads on exit (24.807155ms)
+✖ a valid observed newer live opening prevents the500ms packet fallback from rolling the selected head back (537.121542ms)
+✖ completed outcome holds8000ms independently of a ready next case and reuses its824 to299 operation transport without a zero or stale count (1063.429141ms)
+✖ first genuine consequence retains a real sweep and transfer while subsequent reads keep their full pacing (0.387471ms)
+✖ pause and hide after the8000ms outcome hold preserve the finished case and resume the delayed next opening (1009.861688ms)
+✖ Cases cold click can finish packet acquisition inside its original500ms choice (8.72896ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 0
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2828.384466
+
+✖ failing tests:
+
+test at ../startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2479:1
+✖ direct autonomous routes acquire a same-origin packet behind the immediate map and retain the original500ms choice (33.288529ms)
+  AssertionError [ERR_ASSERTION]: direct selection must acquire the bounded asset
+  
+  false !== true
+  
+      at TestContext.<anonymous> (/workspace/startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2486:11)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2492:1
+✖ current verified binding prefetches exactly one next opening snapshot and trace without painting its facts and cancels all owned reads on exit (24.807155ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   'operations?mode=live',
+  -   'replay?through_seq=0',
+  -   'snapshot?after=0'
+  - ]
+  
+      at TestContext.<anonymous> (/workspace/startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2499:74)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ 'operations?mode=live', 'replay?through_seq=0', 'snapshot?after=0' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2504:1
+✖ a valid observed newer live opening prevents the500ms packet fallback from rolling the selected head back (537.121542ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /Recorded replay|The later accepted outcome/. Input:
+  
+  '<section class="au-quiet-claim" data-au-revision="0" data-au-state-sha="4e4899a37f69b123ef7d26fb296124668ae4aca74c90842a78775bf45f0e2f47" data-au-stage-view="true"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p><h1 class="au-page-heading " id="auClaimTitle" data-au-claim-title tabindex="-1">Repeated heating failure and reported repair calls</h1><p class="au-reference-mode" data-au-operation-mode>Recorded replay · Synthetic sources · No external action · as of 2025-02-21</p><p class="au-claim-constraint"><span data-au-claim-status>Not started.</span> <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls"><button type="button" class="au-link au-record-link" data-au-inspect="demo" data-au-record-id="">Choose case</button><button type="button" class="au-link" data-au-detail="activity" aria-pressed="false" aria-controls="auPanel-activity">History</button></div></header><section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views"><button type="button" data-au-detail="step" aria-pressed="true" aria-controls="auPanel-step">Process</button><button type="button" data-au-detail="documents" aria-pressed="false" aria-controls="auPanel-documents">Documents</button><button type="button" data-au-detail="knowledge" aria-pressed="false" aria-controls="auPanel-knowledge">Knowledge</button><button type="button" class="au-context-utility" data-au-detail="sources" aria-pressed="false" aria-controls="auPanel-sources">Sources</button></nav><div class="au-evidence-stage" data-au-evidence-stage><div class="au-context-body" data-au-context="step"><section class="au-context-view" id="auPanel-step" data-au-panel="step"><section class="au-forming-work au-operation-stage" data-au-stage-phase="source" data-au-forming="true" data-au-forming-revision="0" data-au-forming-sha="4e4899a37f69b123ef7d26fb296124668ae4aca74c90842a78775bf45f0e2f47"><div class="au-forming-layout au-stage-layout"><section class="au-forming-process au-evidence-process au-stage-process" aria-label="Planned recorded process" data-au-planned-process="c5cb03bab8eae17a054aa2922c49f3c5ea3e78c0b1804ea641fbb8a016413d24" data-au-planned-head-revision="4" data-au-planned-graph-sha="19b349d432c9897323a933a41dc031ad0f54782720e76453f298c28bdb0fc15e" data-au-planned-rule-pack-sha="4694defa14a73c94bbd5ec8a355f3eea6513da4a141d5c436163955b40795696" data-au-planned-knowledge="" data-au-planned-version="" data-au-planned-definition-sha="" data-au-planned-authority="none"><p class="au-stage-plan-label">Recorded procedure · planned steps</p><div class="au-graph-chrome"><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">Open larger process</button></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-overview="true" data-au-graph-expanded="false" tabindex="0" role="region" aria-label="Complete process; use arrow keys or scroll to explore"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="horizontal" style="--au-ranks:2"><svg class="au-graph-lines" aria-hidden="true"><defs><marker id="au-process-arrow-true" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="true" d="M1 1 L9 5 L1 9 Z" /></marker><marker id="au-process-arrow-false" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="false" d="M1 1 L9 5 L1 9 Z" /></marker><marker id="au-process-arrow-unresolved" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="unresolved" d="M1 1 L9 5 L1 9 Z" /></marker></defs><path data-au-edge="next" data-au-edge-source="start" data-au-edge-target="branch" data-au-neighborhood="false" data-state="unresolved" marker-end="url(#au-process-arrow-unresolved)" data-selected="false"><title>Process connection · Unresolved</title></path></svg><div class="au-graph-rank" data-rank="0" data-au-neighborhood="false"><div class="au-stage-step" data-au-stage-step="start" data-au-stage-active="false"><button type="button" class="au-node au-evidence-node" data-au-node="start" data-au-planned-node disabled data-au-neighborhood="false" data-status="planned" data-activation="unresolved" aria-pressed="false" aria-label="Read the received message. Planned step; source support is not yet assessed"><span class="au-node-index au-evidence-junction" data-au-junction="start" aria-hidden="true">·</span><span class="au-node-copy"><span class="au-node-relation" hidden></span><strong class="au-node-title">Read the received message</strong></span></button></div></div><div class="au-graph-rank" data-rank="1" data-au-neighborhood="false"><div class="au-stage-step" data-au-stage-step="branch" data-au-stage-active="false"><button type="button" class="au-node au-evidence-node" data-au-node="branch" data-au-planned-node disabled data-au-neighborhood="false" data-status="planned" data-activation="unresolved" aria-pressed="false" aria-label="Assess the received notice. Planned step; source support is not yet assessed. After Read the received message"><span class="au-node-index au-evidence-junction" data-au-junction="branch" aria-hidden="true">·</span><span class="au-node-copy"><span class="au-node-relation" hidden></span><strong class="au-node-title">Assess the received notice</strong></span></button><div class="au-stage-slot" data-au-document="notice" data-au-stage-document="notice" data-au-document-active="false" data-au-document-planned="true" data-au-document-supported="false" data-au-document-checked="false" data-au-document-focused="false"><span>Received notice</span><div class="au-stage-landing"></div></div></div></div></div></div></section></div></section></section></div><div class="au-stage-transport" aria-label="Assessment playback"><button type="button" class="au-secondary" data-au-demo-stop>Pause</button><label class="au-stage-scrubber" style="--au-operation-ticks:1"><span class="au-visually-hidden">Inspect this step</span><input type="range" data-au-operation-scrub min="0" max="0" step="1" value="0" aria-valuetext="Operation 1 of 0" aria-label="Inspect this step" disabled><span class="au-visually-hidden" data-au-scrub-position>0 received</span></label></div></div></section></section>'
+  
+      at TestContext.<anonymous> (/workspace/startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2509:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '<section class="au-quiet-claim" data-au-revision="0" data-au-state-sha="4e4899a37f69b123ef7d26fb296124668ae4aca74c90842a78775bf45f0e2f47" data-au-stage-view="true"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p><h1 class="au-page-heading " id="auClaimTitle" data-au-claim-title tabindex="-1">Repeated heating failure and reported repair calls</h1><p class="au-reference-mode" data-au-operation-mode>Recorded replay · Synthetic sources · No external action · as of 2025-02-21</p><p class="au-claim-constraint"><span data-au-claim-status>Not started.</span> <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls"><button type="button" class="au-link au-record-link" data-au-inspect="demo" data-au-record-id="">Choose case</button><button type="button" class="au-link" data-au-detail="activity" aria-pressed="false" aria-controls="auPanel-activity">History</button></div></header><section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views"><button type="button" data-au-detail="step" aria-pressed="true" aria-controls="auPanel-step">Process</button><button type="button" data-au-detail="documents" aria-pressed="false" aria-controls="auPanel-documents">Documents</button><button type="button" data-au-detail="knowledge" aria-pressed="false" aria-controls="auPanel-knowledge">Knowledge</button><button type="button" class="au-context-utility" data-au-detail="sources" aria-pressed="false" aria-controls="auPanel-sources">Sources</button></nav><div class="au-evidence-stage" data-au-evidence-stage><div class="au-context-body" data-au-context="step"><section class="au-context-view" id="auPanel-step" data-au-panel="step"><section class="au-forming-work au-operation-stage" data-au-stage-phase="source" data-au-forming="true" data-au-forming-revision="0" data-au-forming-sha="4e4899a37f69b123ef7d26fb296124668ae4aca74c90842a78775bf45f0e2f47"><div class="au-forming-layout au-stage-layout"><section class="au-forming-process au-evidence-process au-stage-process" aria-label="Planned recorded process" data-au-planned-process="c5cb03bab8eae17a054aa2922c49f3c5ea3e78c0b1804ea641fbb8a016413d24" data-au-planned-head-revision="4" data-au-planned-graph-sha="19b349d432c9897323a933a41dc031ad0f54782720e76453f298c28bdb0fc15e" data-au-planned-rule-pack-sha="4694defa14a73c94bbd5ec8a355f3eea6513da4a141d5c436163955b40795696" data-au-planned-knowledge="" data-au-planned-version="" data-au-planned-definition-sha="" data-au-planned-authority="none"><p class="au-stage-plan-label">Recorded procedure · planned steps</p><div class="au-graph-chrome"><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">Open larger process</button></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-overview="true" data-au-graph-expanded="false" tabindex="0" role="region" aria-label="Complete process; use arrow keys or scroll to explore"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="horizontal" style="--au-ranks:2"><svg class="au-graph-lines" aria-hidden="true"><defs><marker id="au-process-arrow-true" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="true" d="M1 1 L9 5 L1 9 Z" /></marker><marker id="au-process-arrow-false" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="false" d="M1 1 L9 5 L1 9 Z" /></marker><marker id="au-process-arrow-unresolved" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="unresolved" d="M1 1 L9 5 L1 9 Z" /></marker></defs><path data-au-edge="next" data-au-edge-source="start" data-au-edge-target="branch" data-au-neighborhood="false" data-state="unresolved" marker-end="url(#au-process-arrow-unresolved)" data-selected="false"><title>Process connection · Unresolved</title></path></svg><div class="au-graph-rank" data-rank="0" data-au-neighborhood="false"><div class="au-stage-step" data-au-stage-step="start" data-au-stage-active="false"><button type="button" class="au-node au-evidence-node" data-au-node="start" data-au-planned-node disabled data-au-neighborhood="false" data-status="planned" data-activation="unresolved" aria-pressed="false" aria-label="Read the received message. Planned step; source support is not yet assessed"><span class="au-node-index au-evidence-junction" data-au-junction="start" aria-hidden="true">·</span><span class="au-node-copy"><span class="au-node-relation" hidden></span><strong class="au-node-title">Read the received message</strong></span></button></div></div><div class="au-graph-rank" data-rank="1" data-au-neighborhood="false"><div class="au-stage-step" data-au-stage-step="branch" data-au-stage-active="false"><button type="button" class="au-node au-evidence-node" data-au-node="branch" data-au-planned-node disabled data-au-neighborhood="false" data-status="planned" data-activation="unresolved" aria-pressed="false" aria-label="Assess the received notice. Planned step; source support is not yet assessed. After Read the received message"><span class="au-node-index au-evidence-junction" data-au-junction="branch" aria-hidden="true">·</span><span class="au-node-copy"><span class="au-node-relation" hidden></span><strong class="au-node-title">Assess the received notice</strong></span></button><div class="au-stage-slot" data-au-document="notice" data-au-stage-document="notice" data-au-document-active="false" data-au-document-planned="true" data-au-document-supported="false" data-au-document-checked="false" data-au-document-focused="false"><span>Received notice</span><div class="au-stage-landing"></div></div></div></div></div></div></section></div></section></section></div><div class="au-stage-transport" aria-label="Assessment playback"><button type="button" class="au-secondary" data-au-demo-stop>Pause</button><label class="au-stage-scrubber" style="--au-operation-ticks:1"><span class="au-visually-hidden">Inspect this step</span><input type="range" data-au-operation-scrub min="0" max="0" step="1" value="0" aria-valuetext="Operation 1 of 0" aria-label="Inspect this step" disabled><span class="au-visually-hidden" data-au-scrub-position>0 received</span></label></div></div></section></section>',
+    expected: /Recorded replay|The later accepted outcome/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at ../startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2528:1
+✖ completed outcome holds8000ms independently of a ready next case and reuses its824 to299 operation transport without a zero or stale count (1063.429141ms)
+  AssertionError [ERR_ASSERTION]: the expected asynchronous operation did not complete
+      at waitFor (/workspace/startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:1359:165)
+      at async TestContext.<anonymous> (/workspace/startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2534:177)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ../startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2542:1
+✖ first genuine consequence retains a real sweep and transfer while subsequent reads keep their full pacing (0.387471ms)
+  TypeError: ui.operationChoreographyTiming is not a function
+      at TestContext.<anonymous> (/workspace/startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2544:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ../startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2548:1
+✖ pause and hide after the8000ms outcome hold preserve the finished case and resume the delayed next opening (1009.861688ms)
+  AssertionError [ERR_ASSERTION]: the expected asynchronous operation did not complete
+      at waitFor (/workspace/startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:1359:165)
+      at async TestContext.<anonymous> (/workspace/startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2556:56)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ../startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2564:1
+✖ Cases cold click can finish packet acquisition inside its original500ms choice (8.72896ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (/workspace/startup-itinerary-js-evidence-20261016/base-regression-tests.cjs:2567:427)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

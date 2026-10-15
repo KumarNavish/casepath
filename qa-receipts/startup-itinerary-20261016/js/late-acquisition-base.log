@@ -1,0 +1,26 @@
+✖ after the300ms Live preference an uncommitted opening accepts a fully verified packet acquired at600ms before Live at5s (1046.144954ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1145.195496
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:2604:1
+✖ after the300ms Live preference an uncommitted opening accepts a fully verified packet acquired at600ms before Live at5s (1046.144954ms)
+  AssertionError [ERR_ASSERTION]: the expected asynchronous operation did not complete
+      at waitFor (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:1359:165)
+      at async TestContext.<anonymous> (/workspace/casepath-startup-itinerary-js-20261016/casepath-qa/autonomous-workspace-v1.test.cjs:2614:100)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
