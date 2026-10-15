@@ -1,0 +1,24 @@
+{
+  "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "reviewed_patch": "4c5bce3ea912aa025eb42c7b75bad059e631b123",
+  "diff_paths": [
+    "casepath/source-manifest.json"
+  ],
+  "only_manifest_changed": true,
+  "four_authored_files_match_independent_prior_review": true,
+  "authored_sha256": {
+    "casepath-api/casepath_api/autonomous_api_v1.py": "480399ad34a9babc6e0b2ca5488b1082d2060102c490d7bf9b803bdee50367c4",
+    "casepath-api/tests/test_autonomous_operations_v1.py": "76f13c301b5c9c0d25cb4352e21b31add82d5d67a3efea8801db082c97ae215a",
+    "casepath-qa/sites-proxy.test.cjs": "26fbda2f23458e1687aa3d0dee07b0fff3fef3cb68e83b3493425dce884aed08",
+    "casepath/tools/sites_worker.mjs": "00314e6e02168e5ed80dfaa76f3ccb7f33c0b58d5c583212d44753595eb3f091"
+  },
+  "manifest_sha256": "8261e891c9403d486bdb60d1abe485ae56a6b6e556bb9b3125a3702d76e72331",
+  "git_reads_only": true,
+  "history_read_limitation": null,
+  "initial_history_read_negative": {
+    "repository": "/workspace/casepath-release-ae0-inventory",
+    "command": "git diff --name-only 4c5bce3ea912aa025eb42c7b75bad059e631b123 0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+    "exit_code": 128,
+    "reason": "Shallow frozen inventory clone does not contain the earlier reviewed commit object; no fetch or clone mutation performed."
+  }
+}

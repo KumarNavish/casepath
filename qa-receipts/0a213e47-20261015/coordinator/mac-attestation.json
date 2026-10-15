@@ -1,0 +1,20 @@
+{
+  "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "origin": "Mac integration owner explicit execution attestation",
+  "passed": 127,
+  "failed": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "duration_seconds": 122.0475,
+  "manifest_sha256": "8261e891c9403d486bdb60d1abe485ae56a6b6e556bb9b3125a3702d76e72331",
+  "source_file_count": 1706,
+  "source_clean_before_after": true,
+  "partition": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_local_data_root.py": 52,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6
+  },
+  "raw_mac_receipts_local_to_mac": true,
+  "raw_mac_junit_or_phase_rows_inspected_in_cloud": false,
+  "owner_will_independently_reconcile_raw_mac_ids_against_cloud_map": true
+}
