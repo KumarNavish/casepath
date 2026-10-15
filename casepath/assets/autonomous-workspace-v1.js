@@ -1777,6 +1777,30 @@
     if (!checkedReferenceReplayStart(start,incoming) || !referenceExecution(state) || state.outcome?.assessment_status !== 'complete' || !replayCanAdvance(state)) throw new Error('The atomic head has no complete current reference assessment.');
     return incoming;
   }
+  const SAVED_SNAPSHOT_BYTES = 8 * 1024 * 1024;
+  async function checkedSavedSnapshotAsset(bytes, descriptor, allowNative = false) {
+    const raw = new Uint8Array(bytes);
+    if (!descriptor || !Number.isSafeInteger(descriptor.bytes) || descriptor.bytes < 1 || descriptor.bytes > SAVED_SNAPSHOT_BYTES || raw.byteLength !== descriptor.bytes || !isHash(descriptor.sha256) ||
+        typeof descriptor.claim_id !== 'string' || !descriptor.claim_id || !Number.isSafeInteger(descriptor.revision) || descriptor.revision < 1 || descriptor.revision > 2000 || !isHash(descriptor.state_sha256) || !isHash(descriptor.event_sha256) ||
+        !(descriptor.history_kind === 'published_public_synthetic' && /^[a-f0-9]{40}$/.test(descriptor.deployment_commit) || allowNative && descriptor.history_kind === 'native_fixture' && descriptor.deployment_commit === null) ||
+        await digest(raw) !== descriptor.sha256) throw new Error('The saved snapshot asset identity is invalid.');
+    const response = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw)), incoming = readSnapshot(response,descriptor.claim_id,null,true), state = incoming.state, events = incoming.accepted.events;
+    if (response.mode !== 'saved' || ['replay_only','through_seq','provenance','current_head'].some(field => Object.prototype.hasOwnProperty.call(response,field)) ||
+        state.revision !== descriptor.revision || state.state_sha256 !== descriptor.state_sha256 || response.current_event_sha256 !== descriptor.event_sha256 || response.cursor_sha256 !== descriptor.event_sha256 || state.last_event_sha256 !== descriptor.event_sha256 || events.length !== descriptor.revision || response.events.some((event,index) => event.sequence !== index+1)) throw new Error('The saved snapshot differs from its published head.');
+    let previousEvent = null, previousState = null;
+    for (let index=0;index<events.length;index++) {
+      const event = events[index], command = {kind:event.kind,payload:event.payload,expected_revision:event.expected_revision,expected_state_sha256:event.expected_state_sha256};
+      if (event.contract !== 'casepath.autonomous-event/1.0.0' || event.claim_id !== descriptor.claim_id || event.sequence !== index+1 || event.seq !== event.sequence || event.revision !== event.sequence ||
+          event.timestamp !== event.created_at || typeof event.created_at !== 'string' || event.state_sha256 !== event.resulting_state_sha256 || !isHash(event.resulting_state_sha256) ||
+          event.previous_event_sha256 !== previousEvent || event.expected_revision !== index || event.expected_state_sha256 !== previousState || !isHash(event.command_sha256) || await digest(canonicalJSON(command)) !== event.command_sha256) throw new Error('The saved snapshot command or event chain changed identity.');
+      const material = {...event}; for (const field of ['seq','revision','timestamp','state_sha256','event_sha256','resulting_state_sha256']) delete material[field];
+      if (!isHash(event.event_sha256) || await digest(canonicalJSON(material)) !== event.event_sha256) throw new Error('The saved snapshot event failed its native hash.');
+      previousEvent=event.event_sha256; previousState=event.resulting_state_sha256;
+    }
+    const material = {...state}; delete material.state_sha256;
+    if (await digest(canonicalJSON(material)) !== descriptor.state_sha256) throw new Error('The saved snapshot failed its published state hash.');
+    return checkedSavedSnapshot({state,projection:incoming.projection,cursor:state.revision,history:events},descriptor.claim_id);
+  }
   const RECORDED_PACKET_BYTES = 8 * 1024 * 1024, RECORDED_BODY_BYTES = 24 * 1024 * 1024, recordedPacketValues = new WeakSet();
   async function checkedRecordedPacket(bytes, descriptor, allowNative = false) {
     const raw = new Uint8Array(bytes);
@@ -1857,6 +1881,7 @@
     try { if (root.location?.href) { apiIdentity = new URL(base,root.location.href).href; storage = root.sessionStorage; } } catch (_) { /* Session storage is optional. */ }
     const controllers = new Set();
     let recordedPacket = null, packetVerification = null, packetLoadController = null;
+    let savedSnapshotLoad = null, savedSnapshotController = null;
     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
     let motion = null, keyboard = false, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0, claimRenderComplete = false, renderedClaimId = null;
     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map(), starts = new Map();
@@ -2212,8 +2237,9 @@
       if (pendingArrival) arrivals.set(current.claim_id,pendingArrival); else arrivals.delete(current.claim_id);
       if (pendingControl) controls.set(current.claim_id,pendingControl); else controls.delete(current.claim_id);
     }
-    function leaveView(keepAcquiredPacket = false) {
+    function leaveView(keepAcquiredPacket = false, keepSavedSnapshot = false) {
       if (!recordedPacket && !(keepAcquiredPacket && packetVerification)) packetLoadController?.abort();
+      if (!keepSavedSnapshot) savedSnapshotController?.abort();
       cancelWarmReads();
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); tetherGeometry = null;
       if (view === 'intake') { intakeForm = host.querySelector('[data-au-intake]') || intakeForm; intakeForm?.remove?.(); }
@@ -2459,20 +2485,20 @@
     }
     function selectedClaimFragment() { return claimFragment(current.claim_id,{mode:presentationMode,collection:openingPreferences.collection,operations:openingPreferences.operations,through:replayRecord?.through_seq,detail,node:selected,...evidenceContext}); }
     function rememberSelectionRoute() { if (current) route(selectedClaimFragment()); }
-    function paintSavedClaim(id, preferences) {
+    function paintSavedClaim(id, preferences, focus = true) {
       const cached = cachedRead(snapshots,id);
       if (!cached) return false;
       const failed = host.getAttribute?.('data-au-read-state') === 'failed';
       current = cached.state; projection = cached.projection; cursor = cached.cursor; history = [...cached.history];
       const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous); detail = preferences.detail || previous?.detail || 'step';
-      renderClaim(); synchronizeAuthority(failed ? 'failed' : 'refreshing'); focusTitle(); if (!failed) notice('');
+      renderClaim(); synchronizeAuthority(failed ? 'failed' : 'refreshing'); if (focus) focusTitle(); if (!failed) notice('');
       return true;
     }
     async function openClaim(id, writeHistory = true, preferences = {}) {
       if (preferences.mode === 'replay') preferences = {...preferences,collection:replayCollection(id,preferences.collection)};
       if (!preferences.demo) stopPresentation();
       else { if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; if (demoSession) demoSession.preparing = null; }
-      leaveView(Boolean(preferences.demo && demoSession?.mode === 'operations' && !doc.hidden)); route(claimFragment(id,preferences),writeHistory);
+      leaveView(Boolean(preferences.demo && demoSession?.mode === 'operations' && !doc.hidden),(preferences.mode || 'saved') === 'saved' && id === options.savedSnapshot?.claim_id && !doc.hidden); route(claimFragment(id,preferences),writeHistory);
       operationPeek = null; host.removeAttribute?.('data-au-inspection-operation'); cancelStageMotion(); epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); operationTrace = null; factTokenOperation = null; factTokenAnimation?.cancel(); factToken?.remove?.(); attentionMarker?.remove?.(); attentionPosition = null; current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo || presentationMode === 'replay' ? 'demonstration' : 'work'); notice('');
       claimRenderComplete = false; detail = preferences.detail || 'step';
       for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute);
@@ -2488,6 +2514,8 @@
       interact(host);
       if (presentationMode !== 'replay') {
         sessionRestore?.then(() => { if (!disposed && token === epoch && !pendingRoute() && view === 'claim' && !current && id === openingId) paintSavedClaim(id,preferences); });
+        const generation = readGeneration;
+        savedSnapshotLoad?.then(ready => { if (ready && !disposed && token === epoch && generation === readGeneration && !pendingRoute() && view === 'claim' && presentationMode === 'saved' && id === openingId && !current && !inspectionHold && !doc.hidden && !dialog.open && !recordDialog.open) paintSavedClaim(id,preferences,false); });
         return loadOpenedClaim(id,token,preferences);
       }
       if (session) session.preparing = token;
@@ -3163,6 +3191,30 @@
       } catch (_) { return false; }
       finally { if (packetVerification === verification) packetVerification=null; }
     }
+    async function loadSavedSnapshot() {
+      const descriptor = options.savedSnapshot, generation = readGeneration;
+      if (!descriptor || !publicReadOnly && options.allowNativeSavedSnapshot !== true || disposed || doc.hidden || view !== 'work' && !(view === 'claim' && presentationMode === 'saved' && openingId === descriptor.claim_id)) return false;
+      const eligible = () => !disposed && !doc.hidden && generation === readGeneration && !savedSnapshotController?.signal.aborted && (view === 'work' || view === 'claim' && presentationMode === 'saved' && openingId === descriptor.claim_id);
+      let timeout;
+      try {
+        const url = new URL(descriptor.url,root.location?.href || 'http://localhost/');
+        if (url.origin !== new URL(root.location?.href || 'http://localhost/').origin || url.username || url.password || !Number.isSafeInteger(descriptor.bytes) || descriptor.bytes < 1 || descriptor.bytes > SAVED_SNAPSHOT_BYTES) return false;
+        savedSnapshotController = new AbortController();
+        timeout = root.setTimeout(() => savedSnapshotController.abort(),15000);
+        const response = await fetcher(url.href,{method:'GET',cache:'force-cache',credentials:'same-origin',redirect:'error',signal:savedSnapshotController.signal});
+        if (!response.ok || !response.body?.getReader) return false;
+        const reader = response.body.getReader(), chunks = []; let length = 0;
+        const cancel = () => { reader.cancel().catch(() => {}); }; savedSnapshotController.signal.addEventListener('abort',cancel,{once:true});
+        try { while (!savedSnapshotController.signal.aborted) { const chunk = await reader.read(); if (chunk.done) break; length+=chunk.value.byteLength; if (length > descriptor.bytes) throw new Error('The saved snapshot asset exceeds its bound.'); chunks.push(chunk.value); } }
+        finally { savedSnapshotController.signal.removeEventListener('abort',cancel); await reader.cancel().catch(() => {}); reader.releaseLock?.(); }
+        if (!eligible() || length !== descriptor.bytes) return false;
+        const bytes = new Uint8Array(length); let offset = 0; for (const chunk of chunks) { bytes.set(chunk,offset); offset+=chunk.byteLength; }
+        const snapshot = await checkedSavedSnapshotAsset(bytes,descriptor,options.allowNativeSavedSnapshot === true);
+        if (!eligible()) return false;
+        rememberSnapshot(descriptor.claim_id,snapshot,true); return snapshots.has(descriptor.claim_id);
+      } catch (_) { return false; }
+      finally { root.clearTimeout(timeout); }
+    }
     function operationRequest(prepared, path) {
       const identity = `${readGeneration}:${path}`, prior = readOwners.get(identity), promise = request(path), owner = readOwners.get(identity);
       if (owner && owner !== prior) prepared.readControllers.add(owner.controller);
@@ -3727,7 +3779,7 @@
       const returning = dialogReturn; dialogReturn = null; sourceEpoch++; clearNativeSource(); restoreSourceFocus(returning);
     }
     function visibility() {
-      if (doc.hidden && !recordedPacket) packetLoadController?.abort();
+      if (doc.hidden) { if (!recordedPacket) packetLoadController?.abort(); savedSnapshotController?.abort(); }
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel();
       if (doc.hidden) {
         cancelWarmReads();
@@ -3776,12 +3828,12 @@
       drawEdges(); positionOperationAttention();
     }
     const resize = root.ResizeObserver ? new root.ResizeObserver(resized) : null; resize?.observe(host); root.addEventListener?.('resize',resized);
-    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),refresh:poll,destroy() { if (disposed) return; disposed = true; packetLoadController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',claimWarmIntent); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
+    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),savedSnapshotReady:savedSnapshotLoad=Promise.resolve().then(loadSavedSnapshot),refresh:poll,destroy() { if (disposed) return; disposed = true; packetLoadController?.abort(); savedSnapshotController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',claimWarmIntent); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
     mounts.set(container,controller); activeMount = controller;
     sessionRestore = restoreReadCache();
     routeChanged();
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });
