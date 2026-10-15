@@ -1,0 +1,126 @@
+{
+  "source_commit": "413ca028a56eef2ce6f6dd66d20686731db8bf50",
+  "base_commit": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "branch": "codex/casepath-saved-history-preload-20261015",
+  "remote_pushed": true,
+  "source_sha256": "6dd825738a0cdd498f9e9da84ac439751a6285aed95435ceebca35df7c2ad45a",
+  "module_sha256": "75adc7c545a60667374d8c112daaca2a7a88016d0c3b0a866186ce6640a169b6",
+  "node": "v24.19.0",
+  "cwd": "/workspace/casepath-saved-history-preload-20261015",
+  "env_overrides": {
+    "TMPDIR": "/workspace/cp-saved-tmp",
+    "TMP": "/workspace/cp-saved-tmp",
+    "TEMP": "/workspace/cp-saved-tmp",
+    "CASEPATH_PYTHON": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python"
+  },
+  "commands": [
+    {
+      "kind": "initial focused",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "--test-name-pattern=saved snapshot asset|saved selection|late saved snapshot",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "log": "focused-initial.log",
+      "result": {
+        "tests": 9,
+        "pass": 8,
+        "fail": 1
+      },
+      "classification": "QA observation mistake: read-state lives on the host attribute, not host.innerHTML. Replaced innerHTML regular expression with actual host getAttribute assertion. Raw failure retained."
+    },
+    {
+      "kind": "intermediate focused",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "--test-name-pattern=saved snapshot asset|saved snapshot preload|saved snapshot acquisition|saved selection|late saved snapshot",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "log": "focused-checkpoint.log",
+      "result": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0
+      }
+    },
+    {
+      "kind": "final focused",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "--test-name-pattern=saved snapshot asset|saved snapshot preload|saved snapshot acquisition|saved selection|late saved snapshot",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "log": "focused-final.log",
+      "result": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0
+      }
+    },
+    {
+      "kind": "affected module",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--experimental-webstorage",
+        "--test",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "log": "module-webstorage-413ca02.log",
+      "result": {
+        "tests": 235,
+        "pass": 235,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0
+      }
+    }
+  ],
+  "actual_published_input": {
+    "ok": true,
+    "source_commit": "413ca028a56eef2ce6f6dd66d20686731db8bf50",
+    "source_sha256": "6dd825738a0cdd498f9e9da84ac439751a6285aed95435ceebca35df7c2ad45a",
+    "asset_source_commit": "0a87080",
+    "descriptor": {
+      "url": "/assets/autonomous-saved-history-v1.json",
+      "bytes": 565908,
+      "sha256": "a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0",
+      "claim_id": "clm_2a9c260c26afaa34",
+      "revision": 15,
+      "state_sha256": "63c7f9663040ad966daf87266b72dc31b0369de67b16c35a7b13fdd68fdcfe17",
+      "event_sha256": "efe81d202e86e3b7e58f252feef236a2caabe4e27e38af427e404e3da719f203",
+      "deployment_commit": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+      "history_kind": "published_public_synthetic"
+    },
+    "actual": {
+      "revision": 15,
+      "events": 15,
+      "nodes": 11,
+      "edges": 13,
+      "sources": 2
+    },
+    "strict_admission_ms": 31.809573999999998,
+    "classification": "Exact published saved snapshot admission; local pure-JS validation, no browser/network/authority or hosted timing claim",
+    "operations_requests": 0
+  },
+  "scope": [
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "semantics": [
+    "Single same-origin content-pinned saved snapshot; no Cases await; owned acquisition/verification cancellation and 15-second deadline.",
+    "Public-only unless explicit native QA opt-in. Exact body/hash, native command/event/state hashes and full1..N envelope, then existing source/citation/graph checks.",
+    "Derivative idle-cache seed only. Existing freshClaim=false, projection authority guard and ordinary foreground GET unchanged.",
+    "Ready cache paints synchronously; pending same-ID saved selection retains acquisition without blocking. Late render requires same epoch/read-generation/saved route, no current/inspection/hidden/dialog; never focuses title.",
+    "Existing newer or foreground snapshot cache remains; replay/operation paths excluded; no operations/trace/provider/backend writes."
+  ],
+  "limitations": [
+    "No browser or hosted timing check in this amendment. Mac owns public asset wiring, static inventory, integration seal and hosted acceptance.",
+    "Authored small module data exercises crypto/control flow; actual published legacy asset admission is separately bound.",
+    "The helper checks native cryptographic identities and source/citation consistency; the browser does not reexecute the backend reducer."
+  ]
+}

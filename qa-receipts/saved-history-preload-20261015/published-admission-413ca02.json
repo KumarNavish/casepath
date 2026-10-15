@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "source_commit": "413ca028a56eef2ce6f6dd66d20686731db8bf50",
+  "source_sha256": "6dd825738a0cdd498f9e9da84ac439751a6285aed95435ceebca35df7c2ad45a",
+  "asset_source_commit": "0a87080",
+  "descriptor": {
+    "url": "/assets/autonomous-saved-history-v1.json",
+    "bytes": 565908,
+    "sha256": "a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0",
+    "claim_id": "clm_2a9c260c26afaa34",
+    "revision": 15,
+    "state_sha256": "63c7f9663040ad966daf87266b72dc31b0369de67b16c35a7b13fdd68fdcfe17",
+    "event_sha256": "efe81d202e86e3b7e58f252feef236a2caabe4e27e38af427e404e3da719f203",
+    "deployment_commit": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+    "history_kind": "published_public_synthetic"
+  },
+  "actual": {
+    "revision": 15,
+    "events": 15,
+    "nodes": 11,
+    "edges": 13,
+    "sources": 2
+  },
+  "strict_admission_ms": 31.809573999999998,
+  "classification": "Exact published saved snapshot admission; local pure-JS validation, no browser/network/authority or hosted timing claim",
+  "operations_requests": 0
+}

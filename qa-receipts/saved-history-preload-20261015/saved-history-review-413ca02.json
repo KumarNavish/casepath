@@ -1,0 +1,88 @@
+{
+  "review": "saved-history-preload",
+  "verdict": "CLEAR: no blocker in bounded JS and existing-test delta",
+  "base_commit": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "source_commit": "413ca028a56eef2ce6f6dd66d20686731db8bf50",
+  "js_sha256": "6dd825738a0cdd498f9e9da84ac439751a6285aed95435ceebca35df7c2ad45a",
+  "test_module_sha256": "75adc7c545a60667374d8c112daaca2a7a88016d0c3b0a866186ce6640a169b6",
+  "asset_input_commit": "0a87080bbcc7eae224f856f3bfff4ce58a56e302",
+  "descriptor": {
+    "url": "/assets/autonomous-saved-history-v1.json",
+    "bytes": 565908,
+    "sha256": "a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0",
+    "claim_id": "clm_2a9c260c26afaa34",
+    "revision": 15,
+    "state_sha256": "63c7f9663040ad966daf87266b72dc31b0369de67b16c35a7b13fdd68fdcfe17",
+    "event_sha256": "efe81d202e86e3b7e58f252feef236a2caabe4e27e38af427e404e3da719f203",
+    "deployment_commit": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+    "history_kind": "published_public_synthetic"
+  },
+  "actual_asset": {
+    "result": "PASS",
+    "bytes": 565908,
+    "sha256": "a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0",
+    "revision": 15,
+    "history_count": 15,
+    "raw_event_sequence": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "nodes": 11,
+    "edges": 13,
+    "acquired_sources": 2,
+    "operation_trace_present": false
+  },
+  "admission": [
+    "exact acquired byte length and SHA-256",
+    "published capture descriptor and claim/revision/state/event tuple",
+    "saved envelope; no fabricated replay provenance",
+    "complete raw events1..15 in original order; mandatory previous-event and expected-state links; native aliases",
+    "canonical native command/event hashes and canonical final state hash",
+    "existing readSnapshot/acceptEvents plus checkedSavedSnapshot source-byte/text/citation and graph validators"
+  ],
+  "authority": [
+    "memory derivative only; freshClaim remains false",
+    "independent foreground snapshot after0 retained",
+    "idle cache insertion cannot overwrite newer or same-revision foreground projection",
+    "late paint requires currentnull and selected epoch/generation/id/savedmode/visible/noinspection/nodialog; no focusTitle",
+    "hidden/other-navigation/destroy abort; owned15s deadline; public-only except explicit native QA opt-in",
+    "explicit replay and operation presentation remain separate"
+  ],
+  "validation": {
+    "independent": "single exported pure-helper admission on actual published asset at frozen source; read-only source/diff/log inspection",
+    "writer_focused": {
+      "log": "/workspace/casepath-saved-history-preload-evidence-20261015/focused-final.log",
+      "sha256": "ca8c372c43c5ca0bec5e25098bee0c7a24c7defcdf8ddad96bf2b866aa302f10",
+      "pass": 11,
+      "fail": 0
+    },
+    "writer_affected_module": {
+      "log": "/workspace/casepath-saved-history-preload-evidence-20261015/module-webstorage-413ca02.log",
+      "sha256": "f704b29b9bc7d8c89ec3fd082295dbec64a45f890a3e061c61351397ba30a8c8",
+      "command_mode": "Node existing affected module with --experimental-webstorage",
+      "pass": 235,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    }
+  },
+  "limits": [
+    "No backend reducer replay or browser timing was run by reviewer",
+    "Historical capture is not proof of current API freshness or write authority",
+    "No measured less-than1s claim; benefit requires bytes and local verification available before saved-content paint",
+    "Root entry/index/static/asset integration is outside this writer checkpoint"
+  ]
+}
