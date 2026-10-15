@@ -1762,10 +1762,13 @@ function operationOpeningFixture() {
  const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',profile_id:'synthetic-nine-v2',profile_sha256:profile,rule_set_sha256:sha('opening-rules')};
  const opening=state({claim_id:id,title:'Actual original opening',revision:0,state_sha256:sha('opening-state'),last_event_sha256:null,mode:'unprocessed',phase:'not_run',graph:null,evaluation:null,facts:[],obligations:[],actions:[],status:'not_started'});
  const head=state({claim_id:id,title:opening.title,revision:4,state_sha256:sha('opening-head'),last_event_sha256:sha('opening-event-4'),run_id:run,source_roster_sha256:roster,policy_id:'casepath.bounded-reference-assessment/1.0.0',status:'deferred',outcome:{assessment_status:'complete',summary:'The later accepted outcome must stay hidden.',reference_provenance:provenance},graph:{claim_id:id,family:'opening_family',graph_sha256:sha('opening-graph'),nodes:catalog.nodes.map(node=>({...node,document_types:node.node_id==='branch'?['notice']:[]})),edges:catalog.transitions,document_catalog:catalog.documents},semantic_contexts:{[run]:{claim_id:id,execution_mode:'deterministic_reference',reference_provenance:provenance,sources:[{artifact_id:'original'}],rule_packs:[{family:'opening_family',template_sha256:sha('opening-pack'),process_catalog:catalog}],compatible_knowledge:[]}},knowledge_uses:[]});
- const journal=Array.from({length:4},(_,index)=>({claim_id:id,seq:index+1,revision:index+1,kind:index===2?'process.prepared':'work.phase',event_sha256:sha(`opening-event-${index+1}`),previous_event_sha256:index?sha(`opening-event-${index}`):null,state_sha256:index===3?head.state_sha256:sha(`opening-state-${index+1}`)}));
+ opening.original_binding={claim_id:id,source_map:opening.source_descriptors.map(row=>({artifact_id:row.artifact_id,sha256:row.sha256}))};
+ opening.source_descriptors=opening.source_descriptors.map(row=>({...row,claim_id:id}));head.source_descriptors=structuredClone(opening.source_descriptors);head.original_binding=structuredClone(opening.original_binding);head.contract='casepath.autonomous-claim/1.0.0';delete head.state_sha256;head.state_sha256=sha(ui.canonicalJSON(head));
+ const journal=Array.from({length:4},(_,index)=>({contract:'casepath.autonomous-event/1.0.0',claim_id:id,seq:index+1,sequence:index+1,revision:index+1,kind:index===2?'process.prepared':'work.phase',event_sha256:sha(`opening-event-${index+1}`),previous_event_sha256:index?sha(`opening-event-${index}`):null,state_sha256:index===3?head.state_sha256:sha(`opening-state-${index+1}`)}));
+ for(const event of journal)event.resulting_state_sha256=event.state_sha256;
  const start={contract:'casepath.reference-replay-start/1.0.0',claim_id:id,from_seq:3,state_sha256:journal[2].state_sha256,event_sha256:journal[2].event_sha256,run_id:run,profile_id:'synthetic-nine-v2',profile_sha256:profile,source_artifact_ids:['original']};
  const envelope=(saved,through)=>({state:saved,projection:{claim_id:id,revision:through,state_sha256:saved.state_sha256},events:journal.slice(0,through),cursor_sha256:saved.last_event_sha256,mode:'replay',replay_only:true,through_seq:through,current_revision:4,current_state_sha256:head.state_sha256,current_event_sha256:head.last_event_sha256,replay_start:start,provenance:{source_roster_sha256:saved.source_roster_sha256,policy_id:saved.policy_id,run_id:saved.run_id,event_sha256:saved.last_event_sha256}});
- const zero=envelope(opening,0),replay=envelope(head,4),snapshot={...replay,mode:'saved'};
+ const zero=envelope(opening,0),replay=envelope(head,4),snapshot={state:head,projection:replay.projection,events:journal,cursor_sha256:head.last_event_sha256,mode:'saved',current_revision:4,current_state_sha256:head.state_sha256,current_event_sha256:head.last_event_sha256,replay_start:start};
  const binding={...start,contract:operationContract,type:'binding',instrumentation_id:'casepath.reference-operations/1.1.0',mode:'historical_recomputed',newly_recomputed:true,source_roster_sha256:roster,rule_set_sha256:provenance.rule_set_sha256,input_sha256:sha('opening-input'),current_revision:4,current_state_sha256:head.state_sha256,current_event_sha256:head.last_event_sha256};
  return {id,head,zero,replay,snapshot,binding};
 }
@@ -1780,6 +1783,22 @@ function pendingOperationResponse(binding) {
  return {ok:true,status:200,body:new ReadableStream({start(controller){controller.enqueue(new TextEncoder().encode(JSON.stringify(binding)+'\n'));},cancel(){}})};
 }
 
+test('complete atomic operation heads retain real saved envelopes and pinned source history without replay provenance',async()=>{
+ const native=operationOpeningFixture(),head={claimId:native.id,revision:4,state_sha256:native.head.state_sha256,event_sha256:native.head.last_event_sha256},before=JSON.stringify(native.snapshot);
+ for(const key of ['replay_only','through_seq','provenance','current_head'])assert.equal(Object.hasOwn(native.snapshot,key),false);
+ const incoming=await ui.checkedAtomicOperationHead(native.snapshot,head,native.zero.replay_start,native.zero.state);
+ assert.equal(incoming.state,native.head);assert.equal(incoming.accepted.events.length,4);assert.equal(incoming.replay,undefined);assert.equal(JSON.stringify(native.snapshot),before,'validation cannot manufacture replay provenance or mutate the atomic response');
+});
+
+test('complete atomic operation heads reject partial forks stale identities and changed source or start bindings',async()=>{
+ const native=operationOpeningFixture(),head={claimId:native.id,revision:4,state_sha256:native.head.state_sha256,event_sha256:native.head.last_event_sha256};
+ const cases=[['missing prefix',copy=>copy.events.shift()],['missing tail',copy=>copy.events.pop()],['duplicate sequence',copy=>copy.events.splice(1,0,copy.events[0])],['fork',copy=>copy.events[1].previous_event_sha256=sha('fork')],['missing link',copy=>delete copy.events[1].previous_event_sha256],['native sequence alias',copy=>copy.events[1].sequence=9],['native state alias',copy=>copy.events[1].resulting_state_sha256=sha('other state')],['stale state',copy=>copy.current_state_sha256=sha('stale')],['different current event',copy=>copy.current_event_sha256=sha('other head')],['missing current event',copy=>delete copy.current_event_sha256],['missing start',copy=>delete copy.replay_start],['changed start',copy=>copy.replay_start.profile_sha256=sha('other profile')],['changed original binding',copy=>copy.state.original_binding.claim_id='other'],['changed original source',copy=>copy.state.source_descriptors[0].sha256=sha('other bytes')],['unhashed accepted fact',copy=>copy.state.facts[0].summary='Changed fact'],['replay provenance stand-in',copy=>copy.provenance={}]];
+ for(const [label,change]of cases){const copy=structuredClone(native.snapshot);change(copy);await assert.rejects(ui.checkedAtomicOperationHead(copy,head,native.zero.replay_start,native.zero.state),undefined,label);}
+ // Even a self-consistent supplied head cannot borrow another opening's source packet.
+ const changed=structuredClone(native.snapshot);changed.state.original_binding.claim_id='different';delete changed.state.state_sha256;changed.state.state_sha256=sha(ui.canonicalJSON(changed.state));changed.current_state_sha256=changed.state.state_sha256;changed.projection.state_sha256=changed.state.state_sha256;changed.events.at(-1).state_sha256=changed.state.state_sha256;changed.events.at(-1).resulting_state_sha256=changed.state.state_sha256;
+ await assert.rejects(ui.checkedAtomicOperationHead(changed,{...head,state_sha256:changed.state.state_sha256},native.zero.replay_start,native.zero.state),/opening/);
+});
+
 test('cold operation selection starts the pinned head hint and live transport before its opening read finishes',async t=>{
  const f=operationOpeningDOM(),native=operationOpeningFixture(),opening=deferredRead(),head=deferredRead();
  const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:[{...native.head}]}):path.includes('/snapshot?')?response(native.snapshot):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
@@ -1793,13 +1812,31 @@ test('cold operation selection starts the pinned head hint and live transport be
  assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,1,'the verified hint reuses the normal head validation without another payload');assert.equal(api.calls.filter(row=>row.init.method==='POST').length,0);
 });
 
-test('cold operation selection shows a release outline before any response without a redundant atomic head read',async t=>{
- const f=operationOpeningDOM(),native=operationOpeningFixture(),opening=deferredRead(),head=deferredRead();
- const api=fakeApi({handle:async path=>path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
- const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();opening.resolve(response(native.zero));head.resolve(response(native.replay));});await settle();const selecting=controller.showDemonstration();
- assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.match(f.host.innerHTML,/>Procedure outline</);assert.doesNotMatch(f.host.innerHTML,/data-au-(?:revision|state-sha|forming-revision|forming-sha|planned-process)=|data-au-stage-fact=|data-status="completed"/);assert.equal(api.calls.filter(row=>row.path.includes('/snapshot?')).length,0);
- opening.resolve(response(native.zero));await selecting;await settle();assert.doesNotMatch(f.host.innerHTML,/data-au-release-plan=/,'an opening with a different original binding retires release context');assert.match(f.host.innerHTML,/data-au-revision="0"/);assert.equal(f.attributes.get('data-au-operation-run-mode'),'opening');
- head.resolve(response(native.replay));await waitFor(()=>f.host.innerHTML.includes('data-au-planned-process='));assert.doesNotMatch(f.host.innerHTML,/data-au-release-plan=/);
+test('cold operation selection reuses one complete atomic head while showing only a release outline before any response',async t=>{
+ const f=operationOpeningDOM(),native=operationOpeningFixture(),opening=deferredRead(),snapshot=deferredRead();
+ const api=fakeApi({handle:async path=>path.endsWith('/snapshot?after=0')?snapshot.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();opening.resolve(response(native.zero));snapshot.resolve(response(native.snapshot));});await settle();const before=api.calls.length,selecting=controller.showDemonstration();await settle();
+ assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.match(f.host.innerHTML,/>Procedure outline</);assert.doesNotMatch(f.host.innerHTML,/data-au-(?:revision|state-sha|forming-revision|forming-sha|planned-process)=|data-au-stage-fact=|data-status="completed"/);
+ assert.deepEqual(api.calls.slice(before).map(row=>row.path.split('/').at(-1)).sort(),['operations?mode=live','replay?through_seq=0','snapshot?after=0'],'all three selected reads start before opening resolves');
+ snapshot.resolve(response(native.snapshot));await settle();assert.doesNotMatch(f.host.innerHTML,/data-au-planned-process=/,'a complete atomic head alone cannot bind its opening');
+ opening.resolve(response(native.zero));await selecting;await waitFor(()=>f.host.innerHTML.includes('data-au-planned-process='));
+ assert.doesNotMatch(f.host.innerHTML,/data-au-release-plan=/);assert.match(f.host.innerHTML,/data-au-revision="0"/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=|data-status="completed"/);
+ assert.equal(api.calls.filter(row=>row.path.endsWith('/snapshot?after=0')).length,1);assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,0,'valid atomic history replaces the full replay payload');assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=recorded')).length,0);await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');
+});
+
+test('cold operation selection falls back once for a partial atomic head without admitting its state',async t=>{
+ const f=operationOpeningDOM(),native=operationOpeningFixture(),head=deferredRead(),partial=structuredClone(native.snapshot);partial.events.shift();
+ const api=fakeApi({handle:async path=>path.endsWith('/snapshot?after=0')?response(partial):path.endsWith('/replay?through_seq=0')?response(native.zero):path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();head.resolve(response(native.replay));});await settle();const before=api.calls.length;await controller.showDemonstration();await waitFor(()=>api.calls.some(row=>row.path.endsWith('/replay?through_seq=4')));
+ assert.doesNotMatch(f.host.innerHTML,/data-au-planned-process=|data-au-stage-fact=/);assert.equal(f.attributes.get('data-au-operation-run-mode'),'opening');assert.equal(api.calls.slice(before).length,4,'invalid atomic history adds exactly one verified replay fallback');
+ head.resolve(response(native.replay));await waitFor(()=>f.host.innerHTML.includes('data-au-planned-process='));assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,1);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1);
+});
+
+test('cold operation selection never starts a fallback head read from an invalid atomic response after navigation',async t=>{
+ const f=operationOpeningDOM(),native=operationOpeningFixture(),snapshot=deferredRead(),partial=structuredClone(native.snapshot);partial.events.pop();
+ const api=fakeApi({handle:async path=>path.endsWith('/snapshot?after=0')?snapshot.promise:path.endsWith('/replay?through_seq=0')?response(native.zero):path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();snapshot.resolve(response(partial));});await settle();await controller.showDemonstration();await settle();await controller.showKnowledge();const after=f.host.innerHTML;
+ snapshot.resolve(response(partial));await settle();await settle();assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,0,'an abandoned verifier cannot create a new owned request');assert.equal(f.host.innerHTML,after);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1);
 });
 
 test('cold operation selection refetches a stale catalog revision without consuming its hinted state',async t=>{
@@ -1878,7 +1915,7 @@ test('release procedure opening retains trusted History detail and focus while a
  const api=fakeApi({handle:async path=>path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();opening.resolve(response(zero));head.resolve(response(native.replay));});await settle();const selecting=controller.showDemonstration();const target=control(f,'data-au-detail','activity');target.focus();f.listeners.get('click')({target});const before=f.host.innerHTML;
  opening.resolve(response(zero));await selecting;await settle();assert.equal(f.host.innerHTML,before,'late accepted revision zero cannot replace the held release map');assert.equal(f.container.ownerDocument.activeElement,target,'late opening cannot steal trusted focus');assert.doesNotMatch(f.host.innerHTML,/data-au-revision=/);
- f.listeners.get('click')({target:control(f,'data-au-demo-resume')});assert.match(f.host.innerHTML,/data-au-context="activity"/,'Resume retains the actual pending History choice');assert.match(f.host.innerHTML,/data-au-revision="0"/);assert.equal(api.calls.filter(row=>row.path.includes('/snapshot?')).length,0);
+ f.listeners.get('click')({target:control(f,'data-au-demo-resume')});assert.match(f.host.innerHTML,/data-au-context="activity"/,'Resume retains the actual pending History choice');assert.match(f.host.innerHTML,/data-au-revision="0"/);assert.equal(api.calls.filter(row=>row.path.includes('/snapshot?')).length,1);
 });
 
 test('release procedure pending Pause can Resume before any response and retires a mismatched outline while held',async t=>{
