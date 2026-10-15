@@ -903,7 +903,7 @@ async function requirementConnector(page) {
 }
 
 async function junctionConnections(page){
- const geometry=await page.locator('[data-au-graph]').evaluate(graph=>{const rectangle=element=>element.getBoundingClientRect().toJSON(),junction=id=>[...graph.querySelectorAll('[data-au-junction]')].find(row=>row.dataset.auJunction===id);return [...graph.querySelectorAll('[data-au-edge]')].map(path=>{const length=path.getTotalLength(),matrix=path.getScreenCTM(),screen=point=>new DOMPoint(point.x,point.y).matrixTransform(matrix).toJSON();return {id:path.dataset.auEdge,stage:Boolean(graph.closest('.au-operation-stage')),vertical:graph.dataset.orientation==='vertical'||Boolean(graph.closest('.au-operation-stage'))&&matchMedia('(max-width:700px)').matches,source:rectangle(junction(path.dataset.auEdgeSource)),target:rectangle(junction(path.dataset.auEdgeTarget)),start:screen(path.getPointAtLength(0)),end:screen(path.getPointAtLength(length)),length,samples:Array.from({length:101},(_,index)=>screen(path.getPointAtLength(length*index/100))),titles:[...graph.querySelectorAll('.au-node-title,.au-node-condition')].map(rectangle)};});});
+ const geometry=await page.locator('[data-au-graph]').evaluate(graph=>{const rectangle=element=>element.getBoundingClientRect().toJSON(),junction=id=>[...graph.querySelectorAll('[data-au-junction]')].find(row=>row.dataset.auJunction===id);return [...graph.querySelectorAll('[data-au-edge]')].map(path=>{const length=path.getTotalLength(),matrix=path.getScreenCTM(),screen=point=>new DOMPoint(point.x,point.y).matrixTransform(matrix).toJSON();return {id:path.dataset.auEdge,stage:Boolean(graph.closest('.au-operation-stage')),vertical:graph.dataset.orientation==='vertical',source:rectangle(junction(path.dataset.auEdgeSource)),target:rectangle(junction(path.dataset.auEdgeTarget)),start:screen(path.getPointAtLength(0)),end:screen(path.getPointAtLength(length)),length,samples:Array.from({length:101},(_,index)=>screen(path.getPointAtLength(length*index/100))),titles:[...graph.querySelectorAll('.au-node-title,.au-node-condition')].map(rectangle)};});});
  for(const edge of geometry){assert.ok(edge.length>20,'a real dependency has a continuous visible route beyond its arrow');assert.ok(Math.abs(edge.start.x-(edge.vertical||edge.stage?edge.source.left+edge.source.width/2:edge.source.right))<1&&Math.abs(edge.start.y-(edge.vertical?edge.source.bottom:edge.stage?edge.source.top:edge.source.top+edge.source.height/2))<1,'the source is its actual junction');assert.ok(Math.abs(edge.end.x-(edge.vertical||edge.stage?edge.target.left+edge.target.width/2:edge.target.left))<1&&Math.abs(edge.end.y-(edge.vertical||edge.stage?edge.target.top:edge.target.top+edge.target.height/2))<1,'the target is its actual junction');assert.equal(edge.samples.some(point=>edge.titles.some(title=>point.x>title.left+.5&&point.x<title.right-.5&&point.y>title.top+.5&&point.y<title.bottom-.5)),false,'dependencies route through clear margins and row gaps');}
  return geometry;
 }
@@ -911,13 +911,13 @@ async function junctionConnections(page){
 test('causal formation native: settled stage dependency strokes stay inside the clipping viewport at short desktop and mobile sizes',async t=>{
  const fixture=referenceFixture(),id=referenceIds[0],head=fixture.snapshots[id];
  for(const [width,height]of [[1280,800],[1428,771],[1360,900],[390,844]])await t.test(`${width}x${height}`,async t=>{
-  const page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,width,height});await page.emulateMedia({reducedMotion:'reduce'});
+  const page=await fixturePage(t,{referenceFixture:true,referenceReplayIds:[id],publicReadOnly:true,width,height});await page.emulateMedia({reducedMotion:'reduce'});
   await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.state.revision});await title(page,id);
   assert.equal(await page.locator('.au-operation-stage[data-au-stage-phase="map"]').count(),1);assertAcceptedPaint(await acceptedPaint(page),head);
   const geometry=await page.locator('.au-stage-process [data-au-graph-pan]').evaluate(viewport=>{
    const frame=viewport.getBoundingClientRect(),graph=viewport.querySelector('[data-au-graph]'),style=getComputedStyle(viewport);
    const clip={left:frame.left+viewport.clientLeft,top:frame.top+viewport.clientTop,right:frame.left+viewport.clientLeft+viewport.clientWidth,bottom:frame.top+viewport.clientTop+viewport.clientHeight};
-   return {clip,overflow:{x:style.overflowX,y:style.overflowY},vertical:matchMedia('(max-width:700px)').matches,nodes:[...graph.querySelectorAll('[data-au-node]')].map(node=>({id:node.dataset.auNode,height:node.getBoundingClientRect().height,font:parseFloat(getComputedStyle(node.querySelector('.au-node-title')).fontSize)})),edges:[...graph.querySelectorAll('path[data-au-edge]')].map(path=>{
+   return {clip,overflow:{x:style.overflowX,y:style.overflowY},vertical:graph.dataset.orientation==='vertical',nodes:[...graph.querySelectorAll('[data-au-node]')].map(node=>({id:node.dataset.auNode,height:node.getBoundingClientRect().height,font:parseFloat(getComputedStyle(node.querySelector('.au-node-title')).fontSize)})),edges:[...graph.querySelectorAll('path[data-au-edge]')].map(path=>{
     // Sample the dependency's own stroke, never the marker or SVG bounds.
     const length=path.getTotalLength(),matrix=path.getScreenCTM(),style=getComputedStyle(path),screen=point=>{const p=new DOMPoint(point.x,point.y).matrixTransform(matrix);return {x:p.x,y:p.y};};
     const samples=Array.from({length:401},(_,index)=>screen(path.getPointAtLength(length*index/400)));
@@ -931,41 +931,45 @@ test('causal formation native: settled stage dependency strokes stay inside the 
   assert.equal(geometry.overflow.x,'auto');assert.equal(geometry.overflow.y,'auto');
   for(const edge of geometry.edges){
    assert.ok(edge.length>20&&edge.stroke!=='none'&&edge.strokeWidth>0&&edge.opacity>0&&edge.visibility==='visible'&&edge.display!=='none','a real dependency has a painted stroke beyond its marker');
-   if(!geometry.vertical)assert.ok(edge.horizontal.reduce((total,segment)=>total+Math.abs(segment.end.x-segment.start.x),0)>20,`${edge.id} has a substantial horizontal dependency line`);
-   const points=geometry.vertical?edge.samples:edge.horizontal.flatMap(segment=>[segment.start,segment.end]);
+   if(Math.abs(edge.samples.at(-1).x-edge.samples[0].x)>20)assert.ok(edge.horizontal.reduce((total,segment)=>total+Math.abs(segment.end.x-segment.start.x),0)>20,`${edge.id} has a substantial horizontal dependency line`);else assert.ok(Math.max(...edge.samples.map(point=>point.y))-Math.min(...edge.samples.map(point=>point.y))>20,`${edge.id} has a substantial vertical connection when the complete outcome map wraps`);
+   const points=edge.samples;
    const outside=points.filter(point=>point.x-edge.strokeRadius<geometry.clip.left||point.x+edge.strokeRadius>geometry.clip.right||point.y-edge.strokeRadius<geometry.clip.top||point.y+edge.strokeRadius>geometry.clip.bottom);
    assert.equal(outside.length,0,`${edge.id} dependency stroke paints inside the actual overflow clipping viewport; first clipped point ${JSON.stringify(outside[0])}; arrowheads alone cannot satisfy this check`);
   }
-  assert.ok(geometry.nodes.every(row=>row.height>=44&&row.font>=18),'stage nodes retain their existing target and text sizes');
+  assert.ok(geometry.nodes.every(row=>row.height>=44&&row.font>=16),'settled map nodes retain their target size and at least16px labels');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
  });
 });
 
 for(const [width,height]of [[1280,800],[1428,771],[1360,900],[390,844]])test(`visible operation stage: transport follows the exact accepted content at ${width}x${height}`,async t=>{
- const fixture=referenceFixture(),id=referenceIds[0],head=fixture.snapshots[id],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,width,height});
+ const fixture=referenceFixture(),id=referenceIds[0],head=fixture.snapshots[id],page=await fixturePage(t,{referenceFixture:true,referenceReplayIds:[id],publicReadOnly:true,width,height});
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.state.revision});await title(page,id);
  assertAcceptedPaint(await acceptedPaint(page),head);
  const activePrefix=Object.values(fixture.prefixes[id]).find(row=>row.state.graph?.family&&row.state.graph.family!=='incoming_packet'&&!row.state.outcome&&row.state.facts.some(fact=>fact.citations?.length));
  assert.ok(activePrefix,'the native fixture supplies an accepted process before its outcome');
- const pin=activePrefix.state.facts.flatMap(fact=>fact.citations||[]).find(citation=>citation.quote),source=fixture.sources[`${id}/${pin.artifact_id}`];
+ const fact=activePrefix.state.facts.find(fact=>fact.citations?.some(citation=>citation.quote)),pin=fact.citations.find(citation=>citation.quote),source=fixture.sources[`${id}/${pin.artifact_id}`];
  assert.equal(Array.from(source.text).slice(pin.start_char,pin.end_char).join(''),pin.quote);
  // Renderer-only active-reading fixture: the accepted prefix and source pin
- // are native. This constructed phrase record claims no sealed operation
+ // are native. This constructed fact record claims no sealed operation
  // stream or result availability, so its controls are Pause and the slider.
- await page.evaluate(({state,projection,pin,source})=>{
-  const operation={id:'fixture-cited-reading',kind:'phrase.match',object:{type:'source',id:source.artifact_id},source:pin,result:{matched:true},cause_ids:[]};
+ await page.evaluate(({state,projection,pin,source,fact})=>{
+  const operation={id:'fixture-cited-reading',kind:'fact.extract',object:{type:'fact',id:fact.fact_id},source:pin,result:{verification_required:false},cause_ids:[]};
   const trace={finished:false,current:operation,rows:[operation],sources:new Map([[source.artifact_id,source]]),checkpoints:[]};
   document.querySelector('[data-au-view]').dataset.auOperationPresentation='playing';
   document.querySelector('.au-quiet-claim').outerHTML=window.CasePathAutonomous.workMarkup(state,projection,state.graph.nodes[0].node_id,[],'step',{}, {mode:'replay',operations:trace,playing:true});
- },{state:activePrefix.state,projection:activePrefix.projection,pin,source});
+ },{state:activePrefix.state,projection:activePrefix.projection,pin,source,fact});
  const running=await page.locator('.au-quiet-claim').evaluate(claim=>{
   const rect=element=>element.getBoundingClientRect().toJSON(),transport=claim.querySelector('.au-stage-transport'),mark=claim.querySelector('mark[data-au-operation-span]');
-  return {revision:Number(claim.dataset.auRevision),state_sha256:claim.dataset.auStateSha,source:rect(claim.querySelector('.au-stage-source')),rail:rect(claim.querySelector('.au-stage-process')),transport:rect(transport),position:getComputedStyle(transport).position,controls:[...transport.querySelectorAll('button,input,select')].map(element=>({text:element.textContent,rect:rect(element)})),mark:{text:mark.textContent,start:Number(mark.dataset.auOperationStartChar),end:Number(mark.dataset.auOperationEndChar)},overflow:document.documentElement.scrollWidth>innerWidth+1};
+  const pane=mark.closest('.au-operation-passage');
+  return {revision:Number(claim.dataset.auRevision),state_sha256:claim.dataset.auStateSha,source:rect(claim.querySelector('.au-stage-source')),rail:rect(claim.querySelector('.au-stage-process')),transport:rect(transport),position:getComputedStyle(transport).position,controls:[...transport.querySelectorAll('button,input,select')].map(element=>({text:element.textContent,rect:rect(element)})),mark:{text:mark.textContent,start:Number(mark.dataset.auOperationStartChar),end:Number(mark.dataset.auOperationEndChar),font:parseFloat(getComputedStyle(mark).fontSize)},excerpt:{scrollTop:pane.scrollTop,scrollHeight:pane.scrollHeight,clientHeight:pane.clientHeight},overflow:document.documentElement.scrollWidth>innerWidth+1};
  });
- await focusedReceipt(page,`visible-stage-running-${width}x${height}`,{classification:'Constructed renderer-only phrase record over an unchanged actual native prefix and exact native source citation; no operation-stream verification or result availability claim.',claim_id:id,source_pin:pin,running});
+ await focusedReceipt(page,`visible-stage-running-${width}x${height}`,{classification:'Constructed renderer-only fact record over an unchanged actual native prefix, fact identity and exact native source citation; no operation-stream verification or result availability claim.',claim_id:id,source_pin:pin,running});
  assert.equal(running.revision,activePrefix.state.revision);assert.equal(running.state_sha256,activePrefix.state.state_sha256);
  assert.equal(Array.from(source.text).slice(running.mark.start,running.mark.end).join(''),running.mark.text);
+ assert.ok(running.mark.font>=18,'the exact compact excerpt remains at least18px');
+ assert.equal(running.excerpt.scrollTop,0,'the compact excerpt does not scroll a whole source document');
+ assert.ok(running.excerpt.scrollHeight<=running.excerpt.clientHeight+1,'the exact excerpt fits its source pocket');
  assert.ok(['static','relative'].includes(running.position),'active transport participates in the document flow');
  assert.ok(running.transport.top>=Math.max(running.source.bottom,running.rail.bottom)-.5,'active transport clears both the actual source and process rail');
  assert.equal(running.controls.length,2,'an active reading without a result exposes Pause and its slider');
@@ -981,14 +985,14 @@ for(const [width,height]of [[1280,800],[1428,771],[1360,900],[390,844]])test(`vi
  const geometry=await page.locator('.au-quiet-claim').evaluate(claim=>{
   const rect=element=>element.getBoundingClientRect().toJSON(),stage=claim.querySelector('.au-operation-stage'),transport=claim.querySelector('.au-stage-transport');
   const leaves=[...stage.querySelectorAll('.au-node-title,.au-stage-outcome > p:first-child,.au-stage-reuse button')].filter(element=>!element.closest('[aria-hidden="true"],.au-visually-hidden')&&element.textContent.trim()&&element.getClientRects().length);
-  return {stage:rect(stage),transport:rect(transport),position:getComputedStyle(transport).position,controls:transport.querySelectorAll('button,input,select').length,leaves:leaves.map(element=>({text:element.textContent,font:parseFloat(getComputedStyle(element).fontSize),rect:rect(element)})),overflow:document.documentElement.scrollWidth>innerWidth+1};
+  return {stage:rect(stage),transport:rect(transport),position:getComputedStyle(transport).position,controls:transport.querySelectorAll('button,input,select').length,leaves:leaves.map(element=>({text:element.textContent,map_label:element.classList.contains('au-node-title'),font:parseFloat(getComputedStyle(element).fontSize),rect:rect(element)})),overflow:document.documentElement.scrollWidth>innerWidth+1};
  });
  await focusedReceipt(page,`visible-stage-transport-${width}x${height}`,{claim_id:id,revision:head.state.revision,state_sha256:head.state.state_sha256,geometry});
  assert.ok(['static','relative'].includes(geometry.position),'transport participates in the document flow');
  assert.ok(geometry.transport.top>=geometry.stage.bottom-.5,'transport starts below the complete process and outcome rather than covering content');
  assert.ok(geometry.controls>0&&geometry.controls<=3,'transport retains at most three actual controls');
  assert.ok(geometry.leaves.length>=head.state.graph.nodes.length+1+(head.state.knowledge_uses?.length?1:0),'actual graph labels, outcome and any recorded reused procedure are measured');
- assert.ok(geometry.leaves.every(leaf=>leaf.font>=18),'meaningful visible text is at least 18px; aria-hidden decoration cannot satisfy the check');
+ assert.ok(geometry.leaves.every(leaf=>leaf.font>=(leaf.map_label?16:18)),'actual map labels are at least16px and outcome/reused procedure text remains at least18px; aria-hidden decoration cannot satisfy the check');
  assert.equal(geometry.overflow,false);
  assertAcceptedPaint(await acceptedPaint(page),head);
  // The same accepted outcome map must flow naturally while the controller is
@@ -3761,4 +3765,80 @@ test('focused flow: accepted changes settle every record while animating only th
   await focusedReceipt(page, 'accepted-visible-causal-motion', {identity: id, event_sha256: event.event_sha256, sequence: event.seq, targets});
   await page.emulateMedia({reducedMotion: 'reduce'});
   await eventually(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length === 0), 'reduced motion cancels the whole accepted wave');
+});
+
+async function mapFirstRail(page) {
+  return page.locator('.au-stage-process').evaluate(rail => {
+    const pan = rail.querySelector('[data-au-graph-pan]'), rect = element => element.getBoundingClientRect().toJSON();
+    return {rect: rect(rail), authority: rail.dataset.auPlannedAuthority, head: rail.dataset.auPlannedProcess,
+      pan: {rect: rect(pan), width: pan.clientWidth, scrollWidth: pan.scrollWidth, scrollLeft: pan.scrollLeft},
+      nodes: [...rail.querySelectorAll('[data-au-node]')].map(element => ({id: element.dataset.auNode, status: element.dataset.status, rect: rect(element), font: parseFloat(getComputedStyle(element.querySelector('.au-node-title')).fontSize)})),
+      edges: [...rail.querySelectorAll('[data-au-edge]')].map(element => ({id: element.dataset.auEdge, source: element.dataset.auEdgeSource, target: element.dataset.auEdgeTarget})),
+      checked: rail.querySelectorAll('[data-au-document-checked="true"]').length,
+      checks: rail.querySelectorAll('[data-au-check-operation]').length,
+      overflow: document.documentElement.scrollWidth > innerWidth + 1};
+  });
+}
+
+async function assertMapFirstRail(page, expected) {
+  const before = await mapFirstRail(page);
+  assert.deepEqual(sorted(before.nodes.map(row => row.id)), sorted(expected.nodes.map(row => row.node_id)), 'the map retains every actual process step');
+  assert.deepEqual(before.edges, expected.edges.map(row => ({id: row.edge_id, source: row.source_node_id, target: row.target_node_id})), 'the map retains the actual dependencies');
+  assert.ok(before.nodes.every(row => row.font >= 16), 'actual process labels remain at least16px');
+  assert.ok(Math.max(...before.nodes.map(row => row.rect.left)) > Math.min(...before.nodes.map(row => row.rect.left)) + 20, 'the map keeps a horizontal process axis, including mobile');
+  assert.equal(before.overflow, false, 'the map pans inside its rail without horizontal page overflow');
+  // Reach the actual farthest step through the product rail. No topology or
+  // accepted state is changed to fit the requested viewport.
+  const farthest = before.nodes.reduce((last, row) => row.rect.right > last.rect.right ? row : last);
+  await page.locator('.au-stage-process [data-au-graph-pan]').evaluate(element => { element.scrollLeft = element.scrollWidth; });
+  const after = await mapFirstRail(page), reached = after.nodes.find(row => row.id === farthest.id);
+  assert.ok(reached.rect.right <= after.pan.rect.right + 1 && reached.rect.left >= after.pan.rect.left - 1, 'horizontal panning makes the complete farthest real step reachable');
+  if (before.pan.scrollWidth > before.pan.width + 1) assert.ok(after.pan.scrollLeft > before.pan.scrollLeft, 'a wider real process uses its native horizontal pan');
+  assert.deepEqual(after.nodes.map(row => ({id: row.id, status: row.status})), before.nodes.map(row => ({id: row.id, status: row.status})), 'panning preserves the actual node states');
+  return {before, after};
+}
+
+for (const [width, height] of [[1280,800], [1428,771], [1360,900], [390,844]]) test(`map first layout: a verified native outline has no checked source or accepted progress at ${width}x${height}`, async t => {
+  const fixture = referenceFixture(), id = referenceIds[0], head = fixture.snapshots[id], opening = fixture.unprocessed[id];
+  const page = await fixturePage(t, {referenceFixture: true, referenceReplayIds: [id], publicReadOnly: true, width, height});
+  await page.emulateMedia({reducedMotion: 'reduce'});
+  await open(page, id); await title(page, id);
+  await page.evaluate(async ({head, opening}) => {
+    const plannedProcess = await window.CasePathAutonomous.plannedOperationProcess(head.state);
+    if (!plannedProcess) throw new Error('The actual native head did not verify its reusable topology');
+    const trace = {plannedProcess, rows: [], sources: new Map(), checkpoints: [], finished: false};
+    // This is a pure renderer assertion. Stop the live controller before placing
+    // a planned DTO in its former host; no private controller trace is invented.
+    window.__controller.destroy();
+    document.querySelector('#workspace').innerHTML = '<section class="au-workspace"><main class="au-main">' + window.CasePathAutonomous.workMarkup(opening.state, opening.projection, null, [], 'step', {}, {mode: 'replay', operations: trace, playing: true}) + '</main></section>';
+  }, {head, opening});
+  const geometry = await assertMapFirstRail(page, head.state.graph);
+  assert.equal(geometry.before.authority, 'none');
+  assert.equal(geometry.before.head, head.state.state_sha256);
+  assert.ok(geometry.before.nodes.every(row => row.status === 'planned'), 'a reusable outline grants no accepted execution state');
+  assert.equal(geometry.before.checked, 0);
+  assert.equal(geometry.before.checks, 0, 'empty planned slots cannot claim a checked source');
+  assert.equal(await page.locator('[data-au-stage-fact],[data-au-fact-docking]').count(), 0, 'a planned outline invents no finding or transfer');
+  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'), String(opening.state.revision));
+  assert.equal(await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha'), opening.state.state_sha256);
+  await focusedReceipt(page, `map-first-planned-${width}x${height}`, {classification: 'Renderer-only verified native outline over its exact unprocessed native state; no operation stream, accepted progress or timing claim.', claim_id: id, geometry});
+});
+
+for (const [width, height] of [[1280,800], [390,844]]) test(`map first layout: the actual incomplete eleven-step legacy branch graph remains reachable at ${width}x${height}`, async t => {
+  const fixture = priorAssessmentFixture(), prefix = fixture.prefixes[9], id = fixture.claim_id;
+  assert.equal(prefix.state.graph.nodes.length, 11);
+  assert.equal(prefix.state.graph.edges.length, 13);
+  assert.notEqual(prefix.state.status, 'completed', 'this retained legacy branch fixture is separate from the nine completed reference heads');
+  const page = await fixturePage(t, {priorAssessment: 'reassessed', acceptedPrefix: 9, publicReadOnly: true, width, height});
+  await open(page, id); await title(page, id);
+  await page.evaluate(({state, projection}) => {
+    const trace = {finished: false, rows: [], sources: new Map(), checkpoints: []};
+    document.querySelector('.au-quiet-claim').outerHTML = window.CasePathAutonomous.workMarkup(state, projection, state.graph.nodes[0].node_id, [], 'step', {}, {mode: 'replay', operations: trace});
+  }, prefix);
+  const geometry = await assertMapFirstRail(page, prefix.state.graph);
+  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'), String(prefix.state.revision));
+  assert.equal(await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha'), prefix.state.state_sha256);
+  const actualBranches = prefix.state.graph.edges.filter(row => row.condition);
+  assert.ok(actualBranches.length >= 5, 'the real retained fixture exercises its existing conditional branches');
+  await focusedReceipt(page, `map-first-legacy-eleven-${width}x${height}`, {classification: 'Renderer-only panning over actual incomplete legacy prefix9 from the existing prior-assessment fixture; distinct from the nine completed reference heads.', claim_id: id, revision: prefix.state.revision, state_sha256: prefix.state.state_sha256, branches: actualBranches, geometry});
 });
