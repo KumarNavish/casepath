@@ -946,10 +946,36 @@ for(const [width,height]of [[1280,800],[1428,771],[1360,900],[390,844]])test(`vi
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.state.revision});await title(page,id);
  assertAcceptedPaint(await acceptedPaint(page),head);
+ const activePrefix=Object.values(fixture.prefixes[id]).find(row=>row.state.graph?.family&&row.state.graph.family!=='incoming_packet'&&!row.state.outcome&&row.state.facts.some(fact=>fact.citations?.length));
+ assert.ok(activePrefix,'the native fixture supplies an accepted process before its outcome');
+ const pin=activePrefix.state.facts.flatMap(fact=>fact.citations||[]).find(citation=>citation.quote),source=fixture.sources[`${id}/${pin.artifact_id}`];
+ assert.equal(Array.from(source.text).slice(pin.start_char,pin.end_char).join(''),pin.quote);
+ // Renderer-only active-reading fixture: the accepted prefix and source pin
+ // are native. This constructed phrase record claims no sealed operation
+ // stream or result availability, so its controls are Pause and the slider.
+ await page.evaluate(({state,projection,pin,source})=>{
+  const operation={id:'fixture-cited-reading',kind:'phrase.match',object:{type:'source',id:source.artifact_id},source:pin,result:{matched:true},cause_ids:[]};
+  const trace={finished:false,current:operation,rows:[operation],sources:new Map([[source.artifact_id,source]]),checkpoints:[]};
+  document.querySelector('[data-au-view]').dataset.auOperationPresentation='playing';
+  document.querySelector('.au-quiet-claim').outerHTML=window.CasePathAutonomous.workMarkup(state,projection,state.graph.nodes[0].node_id,[],'step',{}, {mode:'replay',operations:trace,playing:true});
+ },{state:activePrefix.state,projection:activePrefix.projection,pin,source});
+ const running=await page.locator('.au-quiet-claim').evaluate(claim=>{
+  const rect=element=>element.getBoundingClientRect().toJSON(),transport=claim.querySelector('.au-stage-transport'),mark=claim.querySelector('mark[data-au-operation-span]');
+  return {revision:Number(claim.dataset.auRevision),state_sha256:claim.dataset.auStateSha,source:rect(claim.querySelector('.au-stage-source')),rail:rect(claim.querySelector('.au-stage-process')),transport:rect(transport),position:getComputedStyle(transport).position,controls:[...transport.querySelectorAll('button,input,select')].map(element=>({text:element.textContent,rect:rect(element)})),mark:{text:mark.textContent,start:Number(mark.dataset.auOperationStartChar),end:Number(mark.dataset.auOperationEndChar)},overflow:document.documentElement.scrollWidth>innerWidth+1};
+ });
+ await focusedReceipt(page,`visible-stage-running-${width}x${height}`,{classification:'Constructed renderer-only phrase record over an unchanged actual native prefix and exact native source citation; no operation-stream verification or result availability claim.',claim_id:id,source_pin:pin,running});
+ assert.equal(running.revision,activePrefix.state.revision);assert.equal(running.state_sha256,activePrefix.state.state_sha256);
+ assert.equal(Array.from(source.text).slice(running.mark.start,running.mark.end).join(''),running.mark.text);
+ assert.ok(['static','relative'].includes(running.position),'active transport participates in the document flow');
+ assert.ok(running.transport.top>=Math.max(running.source.bottom,running.rail.bottom)-.5,'active transport clears both the actual source and process rail');
+ assert.equal(running.controls.length,2,'an active reading without a result exposes Pause and its slider');
+ if(width===1280||width===1428)assert.ok(running.controls.every(control=>control.rect.top>=0&&control.rect.bottom<=height+1&&control.rect.left>=0&&control.rect.right<=width+1),'every active transport control fits inside the short desktop viewport before scrolling');
+ assert.equal(running.overflow,false);
  // Exercise the real transport renderer over an exact accepted head. An empty
  // finished trace supplies no operation, fact, requirement or future result.
  await page.evaluate(({state,projection})=>{
   const trace={finished:true,rows:[],sources:new Map(),checkpoints:[]};
+  document.querySelector('[data-au-view]').dataset.auOperationPresentation='completed';
   document.querySelector('.au-quiet-claim').outerHTML=window.CasePathAutonomous.workMarkup(state,projection,state.graph.nodes[0].node_id,[],'step',{}, {mode:'replay',operations:trace});
  },{state:head.state,projection:head.projection});
  const geometry=await page.locator('.au-quiet-claim').evaluate(claim=>{
