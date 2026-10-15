@@ -1,0 +1,204 @@
+{
+  "status": "PASSED_WITH_MAC_OWNER_ATTESTATION",
+  "mac_source_clean_before": null,
+  "mac_source_clean_after": true,
+  "candidate": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "full_inventory": 2613,
+  "cloud_assigned": 2486,
+  "cloud_passed": 2476,
+  "cloud_known_skipped": 10,
+  "cloud_failed": 0,
+  "mac_attestation_status": "OWNER_ATTESTED",
+  "mac_attested_passed": 127,
+  "combined_passed_with_mac_attestation": 2603,
+  "mac_raw_receipts_not_local": true,
+  "no_overlap_or_gaps": true,
+  "selected_attempts_per_shard": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "authorized_full_shard_rechecks": 0,
+  "initial_setup_failures_preserved": false,
+  "source_capsule_unchanged": true,
+  "known_skips_exact_phase_file_line_reason": true,
+  "shards": [
+    {
+      "shard": 1,
+      "tests": 9,
+      "passed": 9,
+      "skipped": 0,
+      "runner_seconds": 622.1457917690277,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 2,
+      "tests": 421,
+      "passed": 421,
+      "skipped": 0,
+      "runner_seconds": 485.76158690452576,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 3,
+      "tests": 643,
+      "passed": 642,
+      "skipped": 1,
+      "runner_seconds": 480.6835708618164,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 4,
+      "tests": 391,
+      "passed": 391,
+      "skipped": 0,
+      "runner_seconds": 472.0239803791046,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 5,
+      "tests": 346,
+      "passed": 346,
+      "skipped": 0,
+      "runner_seconds": 475.7782039642334,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 6,
+      "tests": 676,
+      "passed": 667,
+      "skipped": 9,
+      "runner_seconds": 455.84702706336975,
+      "all_raw_phases_and_junit_ids_exact": true
+    }
+  ],
+  "known_skips": {
+    "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows": {
+      "when": "call",
+      "file": "test_document_lifecycle_shadow_v1.py",
+      "line": 605,
+      "reason": "Skipped: frozen independent-transition packet is not available"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 457,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 548,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 559,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 579,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 592,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 610,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 636,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 646,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 696,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    }
+  },
+  "full_gate_complete": true,
+  "source_verification_physical_clones": 6,
+  "collection_reuses_physical_clone": "shard6",
+  "completed_runtimes_retired_after_actual_source_after_proofs": [
+    1
+  ],
+  "completed_runtime_retirement_receipt": "/workspace/casepath-saved-history-gate-5086624c-20261015/completed-shard1-runtime-retirement.json",
+  "prelaunch_resource_block_did_not_execute_or_retry_shard6": true,
+  "resource_after": {
+    "epoch": 1792102048.9314039,
+    "free_bytes": 3552018432,
+    "tmp_free_bytes": 218365952,
+    "minimum_observed_workspace_free_bytes": 3090976768,
+    "minimum_prelaunch_headroom_bytes": 3221225472,
+    "post_prepare_headroom_check_passed": true,
+    "all_attempt_start_headroom_checks_passed": true,
+    "all_terminal_event_headroom_checks_passed": false,
+    "below_floor_terminal_events": [
+      {
+        "type": "finish",
+        "shard": 1,
+        "exit_code": 0,
+        "source_after_exit_code": 0,
+        "result_path": "/workspace/casepath-saved-history-gate-5086624c-20261015/shard1/result.json",
+        "attempt_count": 1,
+        "active": [
+          4,
+          5
+        ],
+        "free_bytes": 3133427712,
+        "epoch": 1792101483.5953622
+      }
+    ],
+    "prelaunch_resource_blocks": [
+      {
+        "type": "blocked_before_attempt",
+        "shard": 6,
+        "free_bytes": 3133427712,
+        "required_free_bytes": 3221225472,
+        "epoch": 1792101483.5959492
+      }
+    ],
+    "completed_runtime_retirement_receipt": "/workspace/casepath-saved-history-gate-5086624c-20261015/completed-shard1-runtime-retirement.json",
+    "previously_protected_server_pid595190_present": true
+  },
+  "native_attempt_interval_max_concurrency": 3,
+  "no_automatic_retries": true,
+  "manifest_sha256": "39f03a9ebb1287c5e03f57a444ea97bb079dc44e84cff90a86805c19fba35c3f",
+  "full_inventory_ids_sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+  "cloud_ids_sha256": "577259f948c49fca012b47352c9d18718f8b94244026b0f8481b498a05cccbf3",
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "source_artifact_static_counts": [
+    1709,
+    25,
+    39
+  ],
+  "all_six_capsules_verified_before_after": true,
+  "capsule_receipt_file_sha256": "00345b8947650567484ddb9ae771fa620f84971fbe4dc0854d2906d4a7bd1799",
+  "headroom_gib_after": 3.308074951171875,
+  "max_heavy_active_observed": 3,
+  "raw_phase_rows": 7449,
+  "artifact_manifest_sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2",
+  "no_product_edits": true,
+  "no_seal_deploy_provider_or_product_requests": true
+}

@@ -1,0 +1,10 @@
+{
+  "signal": "PREPARATION_AND_COLLECTION_ONLY_HOLD_TEST_LAUNCH",
+  "candidate": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "manifest_sha256": "39f03a9ebb1287c5e03f57a444ea97bb079dc44e84cff90a86805c19fba35c3f",
+  "prepared_physical_clones": 6,
+  "collection_physical_clone": "shard6",
+  "max_heavy_active": 3,
+  "no_test_run_authorized": true,
+  "source": "Root explicitly authorized prepare+freshcollect only; actualpytestRUN requires separate browserGO"
+}

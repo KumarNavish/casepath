@@ -1,0 +1,43 @@
+{
+  "epoch": 1792100649.973185,
+  "scope": "Root explicitly authorized idle reproducible published CasePath dev-v2 venv/source capsules ONLY",
+  "live_same_uid_dev_v2_users_before": [],
+  "before_free_bytes": 2862338048,
+  "after_free_bytes": 2888384512,
+  "proofs": [
+    {
+      "path": "/workspace/casepath/.runtime/casepath-dev-v2/source-capsules/c47d2fa0e68323c311ff518ec4f75caac4e065643aa532b8ac72f6552654e2e1",
+      "receipt_sha256": "7ecfa204950c2ea055511fa7c4c19e97cdf1d32453d3c0bc3fcbcd03e4acf272",
+      "source_file_count": 1487,
+      "artifact_file_count": 25,
+      "static_file_count": 23,
+      "all_source_artifact_static_hashes_verified": true,
+      "retained_proofs": "/workspace/casepath-saved-history-gate-5086624c-20261015/retirement-receipts/published-setup-c47d2fa0e68323c311ff518ec4f75caac4e065643aa532b8ac72f6552654e2e1"
+    },
+    {
+      "path": "/workspace/casepath/.runtime/casepath-dev-v2/source-capsules/fdf31f22590a3491e61385454e87c26d8264701f113624bd9ac8e3b94a115f32",
+      "receipt_sha256": "ec071ef79ab370291d8b6a9cbe0a2a2f2903c3cd72d58864e5d86da4dd32cf36",
+      "source_file_count": 1613,
+      "artifact_file_count": 25,
+      "static_file_count": 37,
+      "all_source_artifact_static_hashes_verified": true,
+      "retained_proofs": "/workspace/casepath-saved-history-gate-5086624c-20261015/retirement-receipts/published-setup-fdf31f22590a3491e61385454e87c26d8264701f113624bd9ac8e3b94a115f32"
+    }
+  ],
+  "retired": [
+    {
+      "path": "/workspace/casepath/.runtime/casepath-dev-v2/venv",
+      "apparent_file_bytes": 197718369
+    },
+    {
+      "path": "/workspace/casepath/.runtime/casepath-dev-v2/source-capsules/c47d2fa0e68323c311ff518ec4f75caac4e065643aa532b8ac72f6552654e2e1",
+      "apparent_file_bytes": 87239757
+    },
+    {
+      "path": "/workspace/casepath/.runtime/casepath-dev-v2/source-capsules/fdf31f22590a3491e61385454e87c26d8264701f113624bd9ac8e3b94a115f32",
+      "apparent_file_bytes": 92470606
+    }
+  ],
+  "preserved": "Root normalGit/source untouched; casepath-data-v1/journals/bootstrap untouched; dev-v2 home/tmp/boots retained; all new6runtimes and oldfailed4fixture/rawproof untouched",
+  "protected_data_v1_exists_after": true
+}

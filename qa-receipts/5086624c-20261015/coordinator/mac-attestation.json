@@ -1,0 +1,18 @@
+{
+  "candidate": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "manifest_sha256": "39f03a9ebb1287c5e03f57a444ea97bb079dc44e84cff90a86805c19fba35c3f",
+  "source_files_verified": 1709,
+  "passed": 127,
+  "failed": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "phases_passed": 381,
+  "wrapper_seconds": 170.4,
+  "pytest_seconds": 159.16,
+  "source_clean_before": null,
+  "source_clean_after": true,
+  "raw_mac_junit_or_phase_rows_inspected_in_cloud": false,
+  "raw_receipt_location_owner_reported": "Mac F18/gate",
+  "provenance": "Parent forwarded current Mac owner attestation, not locally inspected raw execution. No clean-before value was supplied.",
+  "attestation_literal": "Mac final 5086624 current partition PASSED 127 IDs (all 381 phases passed), exit0, 170.40s wrapper /159.16 pytest,1709 manifest39f03a... clean, raw Mac F18/gate."
+}

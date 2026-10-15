@@ -1,0 +1,65 @@
+{
+  "candidate": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "status": "PASSED_WITH_MAC_OWNER_ATTESTATION",
+  "mac_source_clean_before": null,
+  "mac_source_clean_after": true,
+  "collection_physical_clone": "shard6",
+  "full_inventory": 2613,
+  "cloud_assigned": 2486,
+  "cloud_raw_passed": 2476,
+  "cloud_known_skipped": 10,
+  "cloud_failed": 0,
+  "mac_partition": 127,
+  "mac_owner_attested_passed": 127,
+  "mac_raw_inspected_in_cloud": false,
+  "no_overlap_or_gaps": true,
+  "selected_collected_executed_junit_cloud_ids_identical": true,
+  "cloud_ids_sha256": "577259f948c49fca012b47352c9d18718f8b94244026b0f8481b498a05cccbf3",
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "full_ids_sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+  "all_6_source_capsules_unchanged_at_actual_verification": true,
+  "source_artifact_static_counts": [
+    1709,
+    25,
+    39
+  ],
+  "all_attempts_first_only": true,
+  "max_heavy_active_observed": 3,
+  "resource_after": {
+    "epoch": 1792102048.9314039,
+    "free_bytes": 3552018432,
+    "tmp_free_bytes": 218365952,
+    "minimum_observed_workspace_free_bytes": 3090976768,
+    "minimum_prelaunch_headroom_bytes": 3221225472,
+    "post_prepare_headroom_check_passed": true,
+    "all_attempt_start_headroom_checks_passed": true,
+    "all_terminal_event_headroom_checks_passed": false,
+    "below_floor_terminal_events": [
+      {
+        "type": "finish",
+        "shard": 1,
+        "exit_code": 0,
+        "source_after_exit_code": 0,
+        "result_path": "/workspace/casepath-saved-history-gate-5086624c-20261015/shard1/result.json",
+        "attempt_count": 1,
+        "active": [
+          4,
+          5
+        ],
+        "free_bytes": 3133427712,
+        "epoch": 1792101483.5953622
+      }
+    ],
+    "prelaunch_resource_blocks": [
+      {
+        "type": "blocked_before_attempt",
+        "shard": 6,
+        "free_bytes": 3133427712,
+        "required_free_bytes": 3221225472,
+        "epoch": 1792101483.5959492
+      }
+    ],
+    "completed_runtime_retirement_receipt": "/workspace/casepath-saved-history-gate-5086624c-20261015/completed-shard1-runtime-retirement.json",
+    "previously_protected_server_pid595190_present": true
+  }
+}

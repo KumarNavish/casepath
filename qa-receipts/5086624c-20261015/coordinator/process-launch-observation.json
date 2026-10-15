@@ -1,0 +1,69 @@
+{
+  "candidate": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "epoch": 1792101194.822801,
+  "dispatch_pid": 954106,
+  "owned_processes": [
+    {
+      "pid": 954106,
+      "ppid": 954102,
+      "stat": "Sl",
+      "comm": "python",
+      "pytest_process": false,
+      "shard_wrapper": false
+    },
+    {
+      "pid": 954111,
+      "ppid": 954106,
+      "stat": "S",
+      "comm": "python",
+      "pytest_process": false,
+      "shard_wrapper": true
+    },
+    {
+      "pid": 954112,
+      "ppid": 954106,
+      "stat": "S",
+      "comm": "python",
+      "pytest_process": false,
+      "shard_wrapper": true
+    },
+    {
+      "pid": 954113,
+      "ppid": 954106,
+      "stat": "S",
+      "comm": "python",
+      "pytest_process": false,
+      "shard_wrapper": true
+    },
+    {
+      "pid": 954138,
+      "ppid": 954112,
+      "stat": "R",
+      "comm": "python",
+      "pytest_process": true,
+      "shard_wrapper": false
+    },
+    {
+      "pid": 954139,
+      "ppid": 954111,
+      "stat": "R",
+      "comm": "python",
+      "pytest_process": true,
+      "shard_wrapper": false
+    },
+    {
+      "pid": 954140,
+      "ppid": 954113,
+      "stat": "R",
+      "comm": "python",
+      "pytest_process": true,
+      "shard_wrapper": false
+    }
+  ],
+  "actual_live_pytest_pids": [
+    954138,
+    954139,
+    954140
+  ],
+  "process_args_and_environ_values_not_dumped": true
+}

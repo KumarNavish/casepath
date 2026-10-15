@@ -1,0 +1,146 @@
+{
+  "review": "saved-history-root-wiring",
+  "verdict": "CLEAR: no blocker in bounded integration delta",
+  "base_commit": "413ca028a56eef2ce6f6dd66d20686731db8bf50",
+  "source_commit": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "manifest_sha256": "39f03a9ebb1287c5e03f57a444ea97bb079dc44e84cff90a86805c19fba35c3f",
+  "manifest_file_count": 1709,
+  "manifest_entries": 1709,
+  "source_files": [
+    {
+      "path": "casepath-qa/sites-autonomous-entry.test.cjs",
+      "bytes": 7802,
+      "sha256": "e2267adb91aea676b0e3413d7ea47878ed6b08dc50ce0c6d5ac41214763f61d8",
+      "manifest_matches": true
+    },
+    {
+      "path": "casepath/assets/autonomous-entry-v1.js",
+      "bytes": 1889,
+      "sha256": "ba4a04fea4c90e62db9e0d465084bf801912707a26c722922a0f86ad75d8ba89",
+      "manifest_matches": true
+    },
+    {
+      "path": "casepath/assets/autonomous-saved-history-v1.json",
+      "bytes": 565908,
+      "sha256": "a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0",
+      "manifest_matches": true
+    },
+    {
+      "path": "casepath/index.html",
+      "bytes": 25464,
+      "sha256": "60ccf66a2658083a986e4de8ac1828c70382d1cb15cba910ba04f03097d82b42",
+      "manifest_matches": true
+    },
+    {
+      "path": "casepath/source-manifest.json",
+      "bytes": 452351,
+      "sha256": "39f03a9ebb1287c5e03f57a444ea97bb079dc44e84cff90a86805c19fba35c3f",
+      "manifest_matches": null
+    },
+    {
+      "path": "casepath/tools/build_static_site.py",
+      "bytes": 9881,
+      "sha256": "87e67fffecf1b83d1eabc4fba1d39af328f7195da147bdc00d150fb7da3a53c6",
+      "manifest_matches": true
+    },
+    {
+      "path": "casepath/tools/test_build_deployment_identity.py",
+      "bytes": 14648,
+      "sha256": "6026acaf78e257cdbd205c7a4230b89091940b8245ede8f2a6cb9d6384a13eff",
+      "manifest_matches": true
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "bytes": 464302,
+      "sha256": "6dd825738a0cdd498f9e9da84ac439751a6285aed95435ceebca35df7c2ad45a",
+      "manifest_matches": true
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.css",
+      "bytes": 223419,
+      "sha256": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4",
+      "manifest_matches": true
+    }
+  ],
+  "public_saved_descriptor": {
+    "url": "assets/autonomous-saved-history-v1.json?sha256=a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0",
+    "bytes": 565908,
+    "sha256": "a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0",
+    "deployment_commit": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+    "history_kind": "published_public_synthetic",
+    "claim_id": "clm_2a9c260c26afaa34",
+    "revision": 15,
+    "state_sha256": "63c7f9663040ad966daf87266b72dc31b0369de67b16c35a7b13fdd68fdcfe17",
+    "event_sha256": "efe81d202e86e3b7e58f252feef236a2caabe4e27e38af427e404e3da719f203"
+  },
+  "actual_asset": {
+    "nodes": 11,
+    "edges": 13,
+    "events": 15,
+    "acquired_sources": 2,
+    "strict_admission_inherited_from": "saved-history-review-413ca02.json; identical JS and actual asset byte hashes"
+  },
+  "static_inventory_count": 39,
+  "static_inventory": [
+    "_headers",
+    "assets/agent-claim-v2.js",
+    "assets/agent-desk-v2.js",
+    "assets/agent-native-v2.css",
+    "assets/agent-work-motion-v3.js",
+    "assets/agent-work-v1.css",
+    "assets/agent-work-v1.js",
+    "assets/autonomous-demo-packets.json",
+    "assets/autonomous-entry-v1.js",
+    "assets/autonomous-recorded-heating-v1.json",
+    "assets/autonomous-saved-history-v1.json",
+    "assets/autonomous-workspace-v1.css",
+    "assets/autonomous-workspace-v1.js",
+    "assets/causal-process-v1.css",
+    "assets/causal-process-v1.js",
+    "assets/claims-workspace-presentation-v1.css",
+    "assets/claims-workspace-presentation-v1.js",
+    "assets/claims-workspace-v1.css",
+    "assets/claims-workspace-v1.js",
+    "assets/corpus-index.json",
+    "assets/corpus.css",
+    "assets/corpus.js",
+    "assets/fonts/Merriweather-Light.ttf",
+    "assets/fonts/Merriweather-OFL.txt",
+    "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+    "assets/fonts/Open_Sans-OFL.txt",
+    "assets/method-guide-data.json",
+    "assets/method-guide.css",
+    "assets/native-study-evidence.json",
+    "assets/paired-study-evidence.json",
+    "assets/process-evidence-v2.css",
+    "assets/process-evidence-v2.js",
+    "assets/research-evidence.css",
+    "corpus.html",
+    "deployment.json",
+    "index.html",
+    "method.html",
+    "release.json",
+    "research.html"
+  ],
+  "source_findings": [
+    "index preload and descriptor delivery restricted to CASEPATH_PUBLIC_READ_ONLY===true",
+    "navigation and mount never await asset preload",
+    "heating fetchPriority high remains first; saved-history preload low",
+    "relative exact SHA URL resolves same-origin; loader retains credentials same-origin and redirect error",
+    "static allowlist and content-bound URL validation copy exact regular source asset",
+    "inventory regression repaired to39 including both published history assets",
+    "no bootstrap freshness/write authority; historical capture remains0a213e4",
+    "source-dialog wrapping and core JS are byte-identical to reviewed413ca02"
+  ],
+  "review_scope": "read-only Git fetch/checkout exact existing normal clone, bounded diff/metadata/hash/AST inspection; no test/build/engine/browser/API run",
+  "reported_validation_not_rerun": {
+    "workspace_plus_entry_pass": 241,
+    "static_checks_pass": 16,
+    "source": "root coordinator report"
+  },
+  "limits": [
+    "No browser latency or sub-second claim",
+    "Browser-owned head-link preload cancellation is not proven by core AbortController",
+    "Gate execution remains controlled by root pending cold-browser authorization"
+  ]
+}

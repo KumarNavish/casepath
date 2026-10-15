@@ -1,0 +1,34 @@
+{
+  "candidate": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "full_inventory": 2613,
+  "cloud_assigned": 2486,
+  "mac_pending": 127,
+  "known_skips": 10,
+  "counts": {
+    "1": 9,
+    "2": 421,
+    "3": 643,
+    "4": 391,
+    "5": 346,
+    "6": 676
+  },
+  "estimated_phase_seconds": {
+    "1": 644.7654078457854,
+    "2": 489.1658810915542,
+    "3": 489.16573583887657,
+    "4": 489.1658745651948,
+    "5": 489.16557894781,
+    "6": 489.1659211528604
+  },
+  "no_overlap_or_gaps": true,
+  "whole_file_partition": true,
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "free_bytes": 3295117312,
+  "minimum_headroom_bytes": 3221225472,
+  "adequate_headroom": true,
+  "test_run_authorization": "FINAL_GATE_AUTHORIZED",
+  "prepared_physical_clones": 6,
+  "collection_physical_clone": "shard6",
+  "after_free_bytes": 3295117312,
+  "resource_rechecked_after_authorized_recovery_epoch": 1792100860.4662306
+}

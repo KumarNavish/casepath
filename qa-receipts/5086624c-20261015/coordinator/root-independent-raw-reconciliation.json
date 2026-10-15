@@ -1,0 +1,106 @@
+{
+  "candidate": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "classification": "CLOUD_GREEN_WITH_MAC_OWNER_ATTESTATION_PENDING_OWNER_RAW_COMBINATION",
+  "method": "root independent read-only audit of raw observer rows, selected map, XML testcase identities/outcomes, skip source lines/reasons, source before/after verification receipts; no tests rerun",
+  "Cloud": {
+    "passed": 2476,
+    "failed": 0,
+    "skipped": 10,
+    "IDs": 2486,
+    "phase_rows": 7449
+  },
+  "Mac": {
+    "assigned_IDs": 127,
+    "current_attestation": "127 unique IDs/all381phases passed/exit0,170.40s wrapper159.16s pytest,clean1709source manifest39f03a; rawF18/gate retained on Mac, not read inCloud"
+  },
+  "with_Mac_attestation": {
+    "passed": 2603,
+    "failed": 0,
+    "skipped": 10
+  },
+  "full_inventory": 2613,
+  "exact_disjoint_Cloud_Mac_union": true,
+  "all_JUnit_selected_executed_IDs_equal": true,
+  "exact_ten_known_skip_ID_phase_file_line_reason": true,
+  "shards": [
+    {
+      "shard": 1,
+      "IDs": 9,
+      "phase_rows": 27,
+      "outcomes": {
+        "passed": 9
+      },
+      "exit": 0,
+      "seconds": 622.1457917690277
+    },
+    {
+      "shard": 2,
+      "IDs": 421,
+      "phase_rows": 1263,
+      "outcomes": {
+        "passed": 421
+      },
+      "exit": 0,
+      "seconds": 485.76158690452576
+    },
+    {
+      "shard": 3,
+      "IDs": 643,
+      "phase_rows": 1929,
+      "outcomes": {
+        "passed": 642,
+        "skipped": 1
+      },
+      "exit": 0,
+      "seconds": 480.6835708618164
+    },
+    {
+      "shard": 4,
+      "IDs": 391,
+      "phase_rows": 1173,
+      "outcomes": {
+        "passed": 391
+      },
+      "exit": 0,
+      "seconds": 472.0239803791046
+    },
+    {
+      "shard": 5,
+      "IDs": 346,
+      "phase_rows": 1038,
+      "outcomes": {
+        "passed": 346
+      },
+      "exit": 0,
+      "seconds": 475.7782039642334
+    },
+    {
+      "shard": 6,
+      "IDs": 676,
+      "phase_rows": 2019,
+      "outcomes": {
+        "passed": 667,
+        "skipped": 9
+      },
+      "exit": 0,
+      "seconds": 455.84702706336975
+    }
+  ],
+  "sources": {
+    "normal_physical_clones": 6,
+    "collection_reused_shard6": true,
+    "before_after_all_pass_and_identical": true,
+    "source_artifact_static_counts": [
+      1709,
+      25,
+      39
+    ],
+    "manifest_sha256": "39f03a9ebb1287c5e03f57a444ea97bb079dc44e84cff90a86805c19fba35c3f",
+    "capsule_receipt_file_sha256": "00345b8947650567484ddb9ae771fa620f84971fbe4dc0854d2906d4a7bd1799",
+    "retired_shard1_runtime": "actual source-after/native receipts archived and verified before only reproducible venv/capsule retired; no claim those bytes remain"
+  },
+  "test_retries": 0,
+  "resource_incident": "original shard6 resource guard held BEFORE any ATTEMPT/test; block preserved, verified completed1 runtime retirement restored guard, initial6 then ran once",
+  "prior_attempt": "failed/superseded28247 preserved separately at26548cdd; no result reused",
+  "verified_epoch": 1792102131.9424832
+}

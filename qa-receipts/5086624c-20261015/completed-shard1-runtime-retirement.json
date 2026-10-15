@@ -1,0 +1,37 @@
+{
+  "candidate": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "epoch": 1792101575.2613473,
+  "authorization": "Root explicitly authorized completedshard1 reproducible runtime retirement after exact receipt archive; initialshard6 not attempted, no retry",
+  "archive": "/workspace/casepath-saved-history-gate-5086624c-20261015-completed1-pre-runtime-retirement.tar.gz",
+  "archive_sha256": "bce7944832ff90544f85f5c931f8019604aa8eeedf0e19eab593302783a4ab81",
+  "archived_files_sha256": {
+    "shard1/fetch.log": "02dc754327135b3b7feba7191927d697fdf814a62ad2fd4316f1261c4296ec04",
+    "shard1/verify-before.log": "8d47aedb0fb3c3d0552b79427be4720148f5f8eb6ac29e89703f45fdab76de46",
+    "shard1/verify-after.log": "8d47aedb0fb3c3d0552b79427be4720148f5f8eb6ac29e89703f45fdab76de46",
+    "shard1/pytest.log": "e5c71253f964daea76b8ee90f02b8894d68fe5990a64d14d61abc26aec0e2ec3",
+    "shard1/prepare.log": "2e4df23671d0f775e664340b9871b931fb9ab3a17f7a0a0ff559bb872bc6ea67",
+    "shard1/collected.json": "9ee9bad3fd0db79188b6dccde1bfbdc32429fb0d522a35aef3e4954f2487c9e1",
+    "shard1/PREPARE_STARTED.json": "3eae004bfe207b6e5477ffbbf08929c2a993b0d37fbe7e0b9d2ec1421b6bd71f",
+    "shard1/pytest-arguments.txt": "73313ef3876eb37ad8ec35224bcc994ab39b79da9a5345d0867334969ed567e7",
+    "shard1/result.json": "223fbae5b3af534d6683b0e02afc92633ffa8d1001ed49d1b40d6b6b0c94cff7",
+    "shard1/wrapper.log": "74b1ff48292d4a5c791d8c859676ba78f9a0455837523f1f2f37a7aab1a77703",
+    "shard1/ATTEMPT_STARTED.json": "f015d521ffd4407d318698f970e953c96c1fc12f08c01cfe03f0f2c16f19e925",
+    "shard1/reports.jsonl": "1aa3c2f8796c5abffad05a8ccb047592f93cfb1e87a592fc8478246e35e4d508",
+    "shard1/junit.xml": "271676c843622f12c1b04beccfbfdf984d7241d84ef472d7918c7225e19016a8",
+    "shard1/checkout.json": "f4855732bb86af1dd4f41f959122a7cba63b16427da3252edddeb858e8c5210a",
+    "shard1/prepare.json": "8c970754085e985a84099d4032bfb3e8da69af86711597b0b1d2cfc63f02315c",
+    "shard1/command.json": "03c0197c7392c46a383dcdc07fe7bb9a632afc26a85f23898f42a271c171c8b8",
+    "shard1/source-before/CAPSULE_RECEIPT.json": "00345b8947650567484ddb9ae771fa620f84971fbe4dc0854d2906d4a7bd1799",
+    "shard1/source-before/capsule-verification.json": "566d32cc73ec9fd1a3dda031c002fce7ed297ef85618152dd060e10a11ffff4e",
+    "shard1/source-after/CAPSULE_RECEIPT.json": "00345b8947650567484ddb9ae771fa620f84971fbe4dc0854d2906d4a7bd1799",
+    "shard1/source-after/capsule-verification.json": "9ccb013423ecea04fd383e90da72de8e5e14a1dd959b4cfb0b0ab6eaa3c821c2"
+  },
+  "before_free_bytes": 3269103616,
+  "source_after_proof": "/workspace/casepath-saved-history-gate-5086624c-20261015/shard1/source-after/capsule-verification.json",
+  "paths": [
+    "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/source-capsules/39f03a9ebb1287c5e03f57a444ea97bb079dc44e84cff90a86805c19fba35c3f",
+    "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/venv"
+  ],
+  "preserved": "Git/source/allrawreceipts/fixtures/journals/runtimehome/tmp/boots; active4/5 and prepared6 untouched",
+  "after_free_bytes": 3562741760
+}

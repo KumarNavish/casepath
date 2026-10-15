@@ -1,0 +1,70 @@
+[
+  {
+    "path": "coordinator/bootstrap.py",
+    "sha256": "85ebfefdea95978fd8d4f0f6e3525d1ffb2bff904e98de0c52580be9cb00bfaf"
+  },
+  {
+    "path": "coordinator/coordinator-reconcile.py",
+    "sha256": "d3b6c0d8ce34409ccf4f20ac071fe18a4620e1c2db5f6c45fbe3384fe9de9027"
+  },
+  {
+    "path": "coordinator/export-evidence.py",
+    "sha256": "2289d101a876abac28e977e91f941ebfd4049ddb165bafb4e80a3f0c9432eddb"
+  },
+  {
+    "path": "coordinator/launch-dispatch.py",
+    "sha256": "98c358988ea1bb90ce47ceba685699328c0134a8edff75fab12fe9264cb8f4ea"
+  },
+  {
+    "path": "coordinator/launch-unattempted-shard6.py",
+    "sha256": "419368feb465cf3f9181feeb69d9e2f8be7122e057973e09830147e129286890"
+  },
+  {
+    "path": "coordinator/merge-initial-shard6-terminal.py",
+    "sha256": "ef0009d9d1a762c9c97f0c96606827f07720f91dd934b001e3264089b87d78c7"
+  },
+  {
+    "path": "coordinator/verify-export-literals.py",
+    "sha256": "8cc2c5bfdfb02e4522a4f265448db3c9f4b92ae262bb19aba192db70562baf84"
+  },
+  {
+    "path": "coordinator/watch-remaining-shard6.py",
+    "sha256": "d36f5f51dec84686ac0d51eccc6676e213e387dfdf122f8fe7715486a4759ff0"
+  },
+  {
+    "path": "harness/bundle.py",
+    "sha256": "04f32800eeb4ba577e4580937f79acad14808391a3c7276fd57f494dab5cb3e5"
+  },
+  {
+    "path": "harness/casepath_shard_observer.py",
+    "sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+  },
+  {
+    "path": "harness/dispatch.py",
+    "sha256": "10fc079cbf4732574fb0c32c0968c1b010097bd9abf8199652a3b1eb14fae567"
+  },
+  {
+    "path": "harness/finalize.py",
+    "sha256": "2d74df28676a887de826a1c71b200af4c66ae4f7ca04aaec270bba6ab2b4804e"
+  },
+  {
+    "path": "harness/preflight_inventory.py",
+    "sha256": "0ebb6ef860f40254e48146d070e90c1cfa05dcd050012b592ebc65b00d740a2c"
+  },
+  {
+    "path": "harness/prepare_clones.py",
+    "sha256": "101539cfb45b56a3a58af46725969339dc5b9a9d3eaa81c79fc0bfe1058f3151"
+  },
+  {
+    "path": "harness/run_shard.py",
+    "sha256": "c71f181c5e90771c5db3444ff4a3941e3c0ff9e05b5ef0a84b3867353a1d3eba"
+  },
+  {
+    "path": "harness/status.py",
+    "sha256": "289f5a099cf21883127389f0f153c823257032cb4d5f6647d21f70a0287c6b7d"
+  },
+  {
+    "path": "harness/verify_prepared_capsules.py",
+    "sha256": "c360e9a464cb9920538274e3093d066f9c5fa3b4d88f83766cf4a327a42a9da7"
+  }
+]
