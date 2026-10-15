@@ -2541,7 +2541,7 @@ test('completed outcome holds8000ms independently of a ready next case and reuse
 
 test('first genuine consequence retains a real sweep and transfer while subsequent reads keep their full pacing',()=>{
  const first={id:'first',kind:'fact.extract',source:{quote:'The actual bounded source statement.'}},later={...first,id:'later'},trace={openingConsequenceId:'first'};
- assert.deepEqual(ui.operationChoreographyTiming(first,trace),{read:420,transfer:300});assert.deepEqual(ui.operationChoreographyTiming(later,trace),{read:ui.operationReadDuration(later),transfer:600});assert.equal(ui.operationChoreographyTiming(first,{openingConsequenceId:'another-case'}).transfer,600);
+ assert.deepEqual(ui.operationChoreographyTiming(first,trace),{read:360,transfer:300});assert.deepEqual(ui.operationChoreographyTiming(later,trace),{read:ui.operationReadDuration(later),transfer:600});assert.equal(ui.operationChoreographyTiming(first,{openingConsequenceId:'another-case'}).transfer,600);
 });
 
 
@@ -2565,4 +2565,16 @@ test('Cases cold click can finish packet acquisition inside its original500ms ch
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),head=deferredRead();let assetSignal;
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')||path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));});await settle();await new Promise(resolve=>setTimeout(resolve,5));const selecting=controller.showDemonstration();assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.equal(assetSignal.aborted,false);asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Recorded replay/);
+});
+
+
+test('late binding and result hashes cannot mutate a newly selected operation session',async t=>{
+ for(const phase of ['binding','result']) {
+  const first=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[0].claim_id,1),f=operationOpeningDOM(),future=deferredRead();
+  const bytes=Buffer.from(phase==='binding'?ui.canonicalJSON(first.binding):ui.canonicalJSON(JSON.parse(JSON.stringify(first.frames.slice(0,-1))).map(frame=>sha(ui.canonicalJSON(frame))))),hash=delayedPacketHash(t,bytes);
+  const api=fakeApi({handle:async path=>{if(!path.includes(first.id)){if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;return null;}if(path.includes('/snapshot?'))return response(first.snapshot);if(path.endsWith('/replay?through_seq=0'))return response(first.zero);if(path.includes('/operations?mode=recorded'))return pendingOperationResponse({...first.binding,mode:'recorded_operations'});if(path.includes('/operations?'))return phase==='binding'?pendingOperationResponse(first.binding):new Response(first.body);}});
+  const controller=ui.mount(f.container,{fetch:api.fetch});
+  try {await settle();await controller.showDemonstration();await hash.started;await controller.showDemonstration(true,'reference','recorded');await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');const before=f.host.innerHTML;hash.release();await settle();await settle();assert.equal(f.host.innerHTML,before,`${phase} completion keeps the replacement session unchanged`);assert.equal(f.attributes.get('data-au-operation-result-verified'),'false');assert.doesNotMatch(f.status.textContent,/stopped|differs/);}
+  finally {controller.destroy();future.resolve(response({}));hash.restore();await settle();}
+ }
 });

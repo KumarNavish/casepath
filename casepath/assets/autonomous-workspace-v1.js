@@ -1374,7 +1374,7 @@
     return Math.min(4200,Math.max(700,Array.from(span?.quote || '').length*24));
   }
   function operationChoreographyTiming(operation,trace) {
-    return trace?.openingConsequenceId === operation?.id ? {read:420,transfer:300} : {read:Math.min(1000,operationReadDuration(operation)),transfer:600};
+    return trace?.openingConsequenceId === operation?.id ? {read:360,transfer:300} : {read:Math.min(1000,operationReadDuration(operation)),transfer:600};
   }
   function operationReading(trace) {
     const operation = trace?.current;
@@ -2804,6 +2804,8 @@
     }
     function cancelStageMotion() { cancelStageRead(); stageCameraAnimation?.cancel(); }
     function afterSourceScroll(pane, callback) {
+      // Compact excerpts never scroll; no scroll event or quiet interval is due.
+      if (pane?.hasAttribute('data-au-compact-excerpt')) { callback(); return; }
       let quiet = null, fallback = null, closed = false;
       const clear = () => { if (closed) return; closed=true; root.clearTimeout(quiet); root.clearTimeout(fallback); pane.removeEventListener?.('scroll',scrolled); pane.removeEventListener?.('scrollend',ended); };
       const finish = () => { if (closed) return; clear(); stageScrollCancel=null; callback(); };
