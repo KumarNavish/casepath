@@ -338,13 +338,12 @@ class Movie:
             q = 1 - math.exp(-6 / FPS)
             preferred = prior[0] + q * (goal[0] - prior[0]), prior[1] + q * (goal[1] - prior[1])
         fitted, bound = fit_camera(self.cw, self.ch, bounds, preferred=preferred)
-        # Actual supplied UI's title/header and reused-version line end above
-        # CSS y=224. Exclude them entirely in a deliberate body close-up.
-        # A body close-up excludes it completely instead of cutting its letters.
+        # Start the close-up just above the genuine working card. The viewport's
+        # title/reused-version header stays entirely outside this body close-up.
+        # A lower crop may be shorter than the viewport; render without stretching.
         cx, cy, zoom = fitted
         crop_h = self.ch / zoom
-        if bounds[1] >= 224 and 224 + crop_h <= self.ch:
-            cy = max(cy, 224 + crop_h / 2)
+        cy = max(cy, bounds[1] - 14 + crop_h / 2)
         fitted = cx, cy, zoom
         return fitted, bound, mode
 
@@ -364,6 +363,9 @@ class Movie:
         bounds_limited = [r for r in camera_rows if r["mode"] == "active" and not r["meets_1_4"]]
         if bounds_limited:
             self.issues.append(f"{len(bounds_limited)} active samples cannot fit required union at 1.4x; truthful lower bound reported")
+        transitions = sum(r['mode'] == 'native-pan-transition-full-ui' for r in camera_rows)
+        if transitions:
+            self.issues.append(f'{transitions} transient native pan samples kept full UI because part of destination is outside original viewport; no missing pixels reconstructed')
         return {
             "status": "V4_COMPATIBILITY_ONLY_NOT_V5_ACCEPTANCE" if self.compat else "V5_METADATA_PLAN_ONLY_NOT_MEDIA_ACCEPTANCE",
             "source_commit": self.commit, "capture_index_sha256": digest(self.args.input),
@@ -430,6 +432,7 @@ class Movie:
         cx, cy, zoom = camera
         crop_w, crop_h = self.cw / zoom, self.ch / zoom
         x, y = max(0, cx - crop_w / 2), max(0, cy - crop_h / 2)
+        crop_h = min(crop_h, self.ch - y)
         scale = min(W / crop_w, (H - GUTTER) / crop_h)
         width, height = round(crop_w * scale), round(crop_h * scale)
         left, top = (W - width) // 2, (H - GUTTER - height) // 2
