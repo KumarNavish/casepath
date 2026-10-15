@@ -3,6 +3,8 @@ from functools import lru_cache
 import asyncio
 import json
 import os
+import re
+import zlib
 from queue import Empty, Full, Queue
 from threading import Event, Thread, Lock
 from time import monotonic
@@ -55,6 +57,37 @@ class OriginalStart(StrictBody):
     idempotency_key: str = Field(min_length=8, max_length=128, pattern=r'^[a-zA-Z0-9_.:-]+$')
     expected_revision: int = Field(ge=0)
     expected_state_sha256: str = Field(pattern=r'^[a-f0-9]{64}$')
+
+
+def _operation_encoding(request):
+    # Repeated field lines form one list. Refusals win conflicting duplicates;
+    # invalid weights never accidentally enable an encoding.
+    fields = request.headers.getlist('accept-encoding')
+    if not fields or not ','.join(fields).strip():
+        return None
+    weights = {}
+    for item in ','.join(fields).split(','):
+        coding, *parameters = [part.strip().lower() for part in item.split(';')]
+        if coding not in {'gzip', 'identity', '*'}:
+            continue
+        weight = 1000
+        if parameters:
+            match = re.fullmatch(r'q=(0(?:\.[0-9]{0,3})?|1(?:\.0{0,3})?)', parameters[0])
+            if len(parameters) != 1 or match is None:
+                weight = 0
+            else:
+                whole, _, fraction = match[1].partition('.')
+                weight = int(whole) * 1000 + int(fraction.ljust(3, '0'))
+        weights[coding] = min(weight, weights.get(coding, 1000))
+    gzip_weight = weights.get('gzip', weights.get('*', 0))
+    # Implicit identity is acceptable, but only explicit weights express a
+    # preference over a positively accepted compression coding (RFC 9110 12.5.3).
+    identity_weight = weights.get('identity', 0 if weights.get('*') == 0 else None)
+    if gzip_weight > 0 and (identity_weight is None or gzip_weight >= identity_weight):
+        return 'gzip'
+    if identity_weight != 0:
+        return None
+    raise HTTPException(406, 'No acceptable operation stream encoding is available.', headers={'Vary': 'Accept-Encoding'})
 
 
 def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corpus_getter=None, saved_work_getter=None,
@@ -213,13 +246,14 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
         # Identity-independent admission precedes saved reads or execution.
         if claim_id not in ReferenceProfile().ids:
             raise HTTPException(403, 'Only the nine synthetic reference claims support this check.')
+        encoding = _operation_encoding(request)
         if not runtime.PUBLIC_LIMITS.acquire():
             raise HTTPException(429, 'The shared check limit is busy. Retry shortly.', headers={'Retry-After': '60'})
         cancellation, finished = Event(), Event()
         deadline = monotonic() + runtime.MAX_SECONDS
         # A count bound plus a byte bound prevents large checkpoint frames from
         # defeating backpressure. At most 2 MiB of encoded frames can queue.
-        queue, queued_bytes, byte_lock = Queue(maxsize=8), [0], Lock()
+        queue, queued_bytes, queued_frames, byte_lock = Queue(maxsize=8), [0], [0], Lock()
 
         def check():
             if cancellation.is_set() or monotonic() >= deadline:
@@ -232,13 +266,14 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
             while True:
                 check()
                 with byte_lock:
-                    if queued_bytes[0] + len(encoded) <= 2 * 1024 * 1024:
+                    if queued_frames[0] < 8 and queued_bytes[0] + len(encoded) <= 2 * 1024 * 1024:
                         try:
                             queue.put_nowait(encoded)
                         except Full:
                             pass
                         else:
                             queued_bytes[0] += len(encoded)
+                            queued_frames[0] += 1
                             return
                 # Event wait is cancellation-responsive backpressure; no engine
                 # or presentation delay is introduced when the consumer reads.
@@ -302,6 +337,7 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
                 else:
                     with byte_lock:
                         queued_bytes[0] -= len(chunk)
+                        queued_frames[0] -= 1
                     return chunk
         try:
             first = await first_chunk()
@@ -314,17 +350,24 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
             raise HTTPException(409, first_frame['detail'])
 
         async def stream():
+            compressor = zlib.compressobj(level=1, wbits=31) if encoding == 'gzip' else None
+            def encode(chunk):
+                return compressor.compress(chunk) + compressor.flush(zlib.Z_SYNC_FLUSH) if compressor else chunk
             try:
-                yield first
+                # Never accumulate across the verified binding: incremental
+                # decompressors can read it before any further engine work.
+                yield encode(first)
+                pending = None
                 while True:
                     if await request.is_disconnected():
+                        cancellation.set()
                         break
                     if monotonic() >= deadline:
-                        yield canonical_json_bytes({'contract': runtime.CONTRACT, 'type': 'error', 'code': 'deadline',
-                                                    'detail': 'The bounded check stopped. The saved assessment remains available.'}) + b'\n'
+                        yield encode(canonical_json_bytes({'contract': runtime.CONTRACT, 'type': 'error', 'code': 'deadline',
+                                                    'detail': 'The bounded check stopped. The saved assessment remains available.'}) + b'\n')
                         break
                     try:
-                        chunk = queue.get_nowait()
+                        chunk = pending if pending is not None else queue.get_nowait()
                     except Empty:
                         if finished.is_set():
                             break
@@ -332,7 +375,29 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
                     else:
                         with byte_lock:
                             queued_bytes[0] -= len(chunk)
-                        yield chunk
+                            queued_frames[0] -= 1
+                        pending = None
+                        batch, batch_bytes, started = [chunk], len(chunk), monotonic()
+                        # Drain only frames already available. The producer
+                        # never waits for a batch timer; large frames stand alone.
+                        while batch_bytes < 65536 and monotonic() - started < 0.01:
+                            try:
+                                following = queue.get_nowait()
+                            except Empty:
+                                break
+                            if batch_bytes + len(following) > 65536:
+                                # Lookahead remains charged to the waiting-byte
+                                # budget until it enters the next batch.
+                                pending = following
+                                break
+                            with byte_lock:
+                                queued_bytes[0] -= len(following)
+                                queued_frames[0] -= 1
+                            batch.append(following)
+                            batch_bytes += len(following)
+                        yield encode(b''.join(batch))
+                if compressor:
+                    yield compressor.flush(zlib.Z_FINISH)
             finally:
                 cancellation.set()
                 with byte_lock:
@@ -342,10 +407,14 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
                         except Empty:
                             break
                     queued_bytes[0] = 0
+                    queued_frames[0] = 0
 
-        return StreamingResponse(stream(), media_type='application/x-ndjson', headers={
+        headers = {
             'Cache-Control': 'no-store', 'X-Accel-Buffering': 'no', 'X-Content-Type-Options': 'nosniff',
-            'X-CasePath-Operation-Mode': mode})
+            'X-CasePath-Operation-Mode': mode, 'Vary': 'Accept-Encoding'}
+        if encoding == 'gzip':
+            headers['Content-Encoding'] = 'gzip'
+        return StreamingResponse(stream(), media_type='application/x-ndjson', headers=headers)
 
     @router.get('/claims/{claim_id}/events')
     def events(claim_id: str, after: int = Query(0, ge=0)):

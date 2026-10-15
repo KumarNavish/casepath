@@ -1,12 +1,15 @@
 """Real deterministic execution, immutable checkpoints, and public read boundaries."""
 from copy import deepcopy
 from hashlib import sha256
+import asyncio
+import gzip
 import json
 import base64
 import sqlite3
 from types import SimpleNamespace
 from threading import Event
 from time import monotonic
+import zlib
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -22,6 +25,192 @@ from casepath_api.causal_process_v1 import evaluate
 from casepath_api.workspace_corpus import canonical_json_bytes, digest_value
 from test_causal_process_v1 import graph
 from test_complete_reference_intake_v1 import admit, service_at
+
+
+async def raw_operations(app, cid, encoding, *, on_chunk=None, disconnected=None, mode='live'):
+    """Observe actual ASGI bytes without HTTP client's transparent decoding."""
+    messages, chunks = [], []
+    async def receive():
+        if disconnected is not None and disconnected.is_set():
+            return {'type': 'http.disconnect'}
+        await asyncio.Future()
+    async def send(message):
+        messages.append(message)
+        if message['type'] == 'http.response.body' and message.get('body'):
+            chunks.append(message['body'])
+            if on_chunk is not None:
+                await on_chunk(chunks)
+    fields = encoding if isinstance(encoding, list) else [encoding]
+    headers = [(b'accept-encoding', field.encode()) for field in fields if field is not None]
+    await app({'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.4'},
+               'http_version': '1.1', 'method': 'GET', 'scheme': 'http', 'server': ('test', 80),
+               'client': ('test', 1), 'root_path': '', 'path':
+               '/api/claim-loops/v1/autonomous/claims/' + cid + '/operations',
+               'query_string': ('mode=' + mode).encode(), 'headers': headers}, receive, send)
+    start = next(message for message in messages if message['type'] == 'http.response.start')
+    return start['status'], dict(start['headers']), chunks
+
+
+@pytest.fixture
+def transport_app(monkeypatch):
+    from casepath_api.autonomous_reference_policy_v1 import REFERENCE_POLICY_ID
+    service = SimpleNamespace(policy={'policy_id': REFERENCE_POLICY_ID}, store=SimpleNamespace())
+    monkeypatch.setattr(runtime, 'capture_operation_inputs', lambda *args, **kwargs: None)
+    monkeypatch.setattr(runtime, 'PUBLIC_LIMITS', runtime.PublicOperationLimits(concurrency=1, total=100))
+    app = FastAPI()
+    app.include_router(create_autonomous_router(lambda: service, read_only=True))
+    return app, ReferenceProfile().ids[0]
+
+
+@pytest.mark.parametrize(('encoding', 'expected'), [
+    (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+    ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+    ('gzip;q=0.5', 'gzip'), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+    ('gzip;q=0.5, identity;q=1', None),
+    ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+    ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+    ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+    ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+    ('gzip;q=1, gzip;q=0', None),
+    ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+    ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    (['gzip;q=1', 'gzip;q=0'], None), (['gzip;q=0', 'identity;q=0'], 'reject'),
+    (['identity;q=0', 'gzip;q=1'], 'gzip'),
+])
+def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+    app, cid = transport_app
+    frames = [{'type': 'binding'}, {'type': 'result'}]
+    def recompute(_, *, send, **kwargs):
+        for frame in frames:
+            send(frame)
+    monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+    status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+    if expected == 'reject':
+        assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+        return
+    assert status == 200
+    assert headers.get(b'content-encoding') == (expected.encode() if expected else None)
+    assert headers[b'vary'] == b'Accept-Encoding'
+    body = b''.join(chunks)
+    assert (gzip.decompress(body) if expected else body) == b''.join(canonical_json_bytes(f) + b'\n' for f in frames)
+
+
+@pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+def test_operation_transport_flushes_binding_then_batches_available_frames(transport_app, monkeypatch, encoding):
+    app, cid = transport_app
+    binding_sent, release = Event(), Event()
+    frames = [{'type': 'binding', 'claim_id': cid}]
+    frames += [{'type': 'operation', 'id': index, 'text': 'é😀' * 1700} for index in range(16)]
+    frames += [{'type': 'checkpoint', 'text': 'x' * 70000}, {'type': 'result'}]
+    def recompute(_, *, send, **kwargs):
+        send(frames[0])
+        binding_sent.set()
+        assert release.wait(1), 'binding was buffered until computation finished'
+        for frame in frames[1:]:
+            send(frame)
+    monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+    inflater = zlib.decompressobj(31) if encoding == 'gzip' else None
+    decoded = []
+    async def on_chunk(chunks):
+        chunk = inflater.decompress(chunks[-1]) if inflater else chunks[-1]
+        decoded.append(chunk)
+        if len(chunks) == 1:
+            assert binding_sent.is_set() and not release.is_set()
+            assert chunk == canonical_json_bytes(frames[0]) + b'\n'
+            release.set()
+            # Allow the bounded producer queue to fill, so batching is observable.
+            await asyncio.sleep(0.02)
+    status, _, chunks = asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk))
+    assert status == 200 and (inflater is None or inflater.eof)
+    assert b''.join(decoded) == b''.join(canonical_json_bytes(f) + b'\n' for f in frames)
+    batches = [chunk for chunk in decoded[1:] if chunk]
+    assert any(chunk.count(b'\n') > 1 for chunk in batches)
+    assert len(batches) < len(frames) - 1
+    assert all(len(chunk) <= 65536 or chunk.count(b'\n') == 1 for chunk in batches)
+    assert len(chunks) < len(frames) + 1
+
+
+@pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+@pytest.mark.parametrize('stop', ['disconnect', 'deadline', 'error'])
+def test_operation_transport_closes_bounded_worker_and_encoded_errors(transport_app, monkeypatch, encoding, stop):
+    app, cid = transport_app
+    disconnected, stopped, produced = Event(), Event(), []
+    if stop == 'deadline':
+        monkeypatch.setattr(runtime, 'MAX_SECONDS', 0.06)
+    def recompute(_, *, send, cancellation, **kwargs):
+        try:
+            send({'type': 'binding'})
+            if stop == 'error':
+                raise ValueError('controlled transport failure')
+            if stop == 'deadline':
+                assert cancellation.wait(1)
+            else:
+                # A nonreading client must leave the producer at the existing queue bound.
+                for index in range(100):
+                    send({'type': 'operation', 'id': index, 'text': 'x' * 400000})
+                    produced.append(index)
+        finally:
+            stopped.set()
+    monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+    async def on_chunk(chunks):
+        if stop == 'disconnect' and len(chunks) == 1:
+            await asyncio.sleep(0.02)
+            assert not stopped.is_set(), 'producer escaped bounded backpressure'
+            assert 1 <= len(produced) <= 5, 'producer escaped the 2 MiB queued-byte bound'
+            disconnected.set()
+    _, _, chunks = asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk, disconnected=disconnected))
+    assert stopped.wait(1) and runtime.PUBLIC_LIMITS.active == 0
+    data = gzip.decompress(b''.join(chunks)) if encoding == 'gzip' else b''.join(chunks)
+    frames = [json.loads(line) for line in data.splitlines()]
+    assert frames[0]['type'] == 'binding'
+    if stop == 'disconnect':
+        assert len(frames) == 1
+    else:
+        assert frames[-1]['type'] == 'error'
+        assert frames[-1]['code'] == ('deadline' if stop == 'deadline' else 'recomputation_unavailable')
+
+
+@pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+def test_operation_transport_rejects_oversized_frame_without_emitting_its_bytes(transport_app, monkeypatch, encoding):
+    app, cid = transport_app
+    def recompute(_, *, send, **kwargs):
+        send({'type': 'binding'})
+        send({'type': 'checkpoint', 'text': 'x' * (2 * 1024 * 1024)})
+    monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+    status, _, chunks = asyncio.run(raw_operations(app, cid, encoding))
+    data = gzip.decompress(b''.join(chunks)) if encoding == 'gzip' else b''.join(chunks)
+    frames = [json.loads(line) for line in data.splitlines()]
+    assert status == 200 and [frame['type'] for frame in frames] == ['binding', 'error']
+    assert frames[-1]['code'] == 'recomputation_unavailable' and b'checkpoint' not in data
+
+
+@pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+def test_operation_transport_keeps_lookahead_charged_under_backpressure(transport_app, monkeypatch, encoding):
+    app, cid = transport_app
+    release, disconnected, stopped, produced = Event(), Event(), Event(), []
+    def recompute(_, *, send, **kwargs):
+        try:
+            send({'type': 'binding'})
+            assert release.wait(1)
+            for size in [40000, 1500000] + [400000] * 10:
+                send({'type': 'checkpoint', 'text': 'x' * size})
+                produced.append(size)
+        finally:
+            stopped.set()
+    monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+    async def on_chunk(chunks):
+        if len(chunks) == 1:
+            release.set()
+            await asyncio.sleep(0.03)
+        elif len(chunks) == 2:
+            # A 1.5 MiB frame does not fit after the small batch. While this
+            # send is blocked, lookahead plus the queue must still fit 2 MiB.
+            await asyncio.sleep(0.03)
+            assert produced == [40000, 1500000, 400000]
+            assert not stopped.is_set()
+            disconnected.set()
+    asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk, disconnected=disconnected))
+    assert stopped.wait(1) and runtime.PUBLIC_LIMITS.active == 0
 
 
 @pytest.fixture(scope='module')
@@ -271,6 +460,42 @@ def test_recorded_get_requires_admitted_trace_and_never_recomputes(migrated, mon
         assert [json.loads(row) for row in response.text.splitlines()] == sidecar['frames']
         assert service.store.events(cid) == before and service.store.get(cid) == head
         assert runtime.PUBLIC_LIMITS.active == 0
+
+
+@pytest.mark.parametrize('mode', ['live', 'recorded'])
+def test_real_operation_transport_preserves_exact_ndjson_and_hashes_in_both_encodings(migrated, monkeypatch, mode):
+    from casepath_api.autonomous_operation_trace_store_v1 import initialize_operation_trace_storage, admit_operation_trace
+    service, corpus, cid, head, bundle = migrated
+    sidecar = runtime.build_operation_sidecar(bundle)
+    initialize_operation_trace_storage(service.store.journal.connect)
+    admit_operation_trace(service.store.journal.connect, bundle, sidecar)
+    expected = b''.join(canonical_json_bytes(frame) + b'\n' for frame in sidecar['frames'])
+    before = service.store.events(cid)
+    def forbidden(*args, **kwargs):
+        raise AssertionError('Read-only transport invoked a writer or model')
+    for cls in (AutonomousStore, AutonomousController):
+        monkeypatch.setattr(cls, '__init__', forbidden)
+    monkeypatch.setattr(AutonomousStore, 'append', forbidden)
+    monkeypatch.setattr(service.store, '_publish', forbidden)
+    monkeypatch.setattr(service, 'model', SimpleNamespace(infer=forbidden))
+    if mode == 'recorded':
+        monkeypatch.setattr(runtime, 'recompute_operations', forbidden)
+        monkeypatch.setattr(runtime, 'capture_operation_inputs', forbidden)
+    monkeypatch.setattr(runtime, 'PUBLIC_LIMITS', runtime.PublicOperationLimits())
+    app = FastAPI()
+    app.include_router(create_autonomous_router(lambda: service, corpus_getter=lambda: corpus, read_only=True))
+    for encoding in ('identity', 'gzip'):
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding, mode=mode))
+        assert status == 200 and headers[b'x-casepath-operation-mode'] == mode.encode()
+        assert b'content-length' not in headers
+        body = gzip.decompress(b''.join(chunks)) if encoding == 'gzip' else b''.join(chunks)
+        assert body == expected and sha256(body).digest() == sha256(expected).digest()
+        result = json.loads(body.splitlines()[-1])
+        assert result['state_sha256'] == head['state_sha256']
+        assert result['trace_sha256'] == sidecar['frames'][-1]['trace_sha256']
+        assert result['operation_chain_sha256'] == sidecar['frames'][-1]['operation_chain_sha256']
+    assert service.store.events(cid) == before and service.store.get(cid) == head
+    assert runtime.PUBLIC_LIMITS.active == 0
 
 
 @pytest.fixture(scope='module')
