@@ -1771,7 +1771,10 @@ function operationOpeningFixture() {
 }
 const deferredRead=()=>{let resolve;const promise=new Promise(done=>{resolve=done;});return {promise,resolve};};
 function operationOpeningDOM() {
- const f=dom(),attributes=new Map(),query=f.host.querySelector;f.host.querySelector=key=>key==='[data-au-release-opening]'&&f.host.innerHTML.includes('data-au-release-opening=')?{}:query(key);f.host.setAttribute=(key,value)=>attributes.set(key,String(value));f.host.getAttribute=key=>attributes.get(key);f.host.removeAttribute=key=>attributes.delete(key);return {...f,attributes};
+ const f=dom(),attributes=new Map(),query=f.host.querySelector;
+ const transport={textContent:'Pause',hasAttribute:key=>['data-au-demo-stop','data-au-demo-resume'].includes(key)&&f.host.innerHTML.includes(' '+key),closest(){return this;},removeAttribute(key){f.host.innerHTML=f.host.innerHTML.replace(' '+key,'');},setAttribute(key){f.host.innerHTML=f.host.innerHTML.replace('<div class="au-stage-transport"><button','<div class="au-stage-transport"><button '+key);}};
+ f.host.querySelector=key=>key==='[data-au-release-opening]'&&f.host.innerHTML.includes('data-au-release-opening=')?{}:key==='[data-au-release-plan]'&&f.host.innerHTML.includes('data-au-release-plan=')?{remove(){f.host.innerHTML=f.host.innerHTML.replace(/<section[^>]*data-au-release-plan=[\s\S]*?<\/section>/,'');}}:['[data-au-demo-stop]','[data-au-demo-resume]'].includes(key)&&transport.hasAttribute(key.slice(1,-1))?transport:query(key);
+ f.host.setAttribute=(key,value)=>attributes.set(key,String(value));f.host.getAttribute=key=>attributes.get(key);f.host.removeAttribute=key=>attributes.delete(key);return {...f,attributes};
 }
 function pendingOperationResponse(binding) {
  return {ok:true,status:200,body:new ReadableStream({start(controller){controller.enqueue(new TextEncoder().encode(JSON.stringify(binding)+'\n'));},cancel(){}})};
@@ -1876,6 +1879,16 @@ test('release procedure opening retains trusted History detail and focus while a
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();opening.resolve(response(zero));head.resolve(response(native.replay));});await settle();const selecting=controller.showDemonstration();const target=control(f,'data-au-detail','activity');target.focus();f.listeners.get('click')({target});const before=f.host.innerHTML;
  opening.resolve(response(zero));await selecting;await settle();assert.equal(f.host.innerHTML,before,'late accepted revision zero cannot replace the held release map');assert.equal(f.container.ownerDocument.activeElement,target,'late opening cannot steal trusted focus');assert.doesNotMatch(f.host.innerHTML,/data-au-revision=/);
  f.listeners.get('click')({target:control(f,'data-au-demo-resume')});assert.match(f.host.innerHTML,/data-au-context="activity"/,'Resume retains the actual pending History choice');assert.match(f.host.innerHTML,/data-au-revision="0"/);assert.equal(api.calls.filter(row=>row.path.includes('/snapshot?')).length,0);
+});
+
+test('release procedure pending Pause can Resume before any response and retires a mismatched outline while held',async t=>{
+ const native=operationOpeningFixture(),f=operationOpeningDOM(),opening=deferredRead(),head=deferredRead();
+ const api=fakeApi({handle:async path=>path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();opening.resolve(response(native.zero));head.resolve(response(native.replay));});await settle();const selecting=controller.showDemonstration();
+ f.listeners.get('click')({target:f.host.querySelector('[data-au-demo-stop]')});assert.ok(f.host.querySelector('[data-au-demo-resume]'),'pre-response Pause immediately exposes Resume');assert.equal(f.host.querySelector('[data-au-demo-stop]'),null);
+ f.listeners.get('click')({target:f.host.querySelector('[data-au-demo-resume]')});assert.ok(f.host.querySelector('[data-au-demo-stop]'),'Resume works while current is still unknown');
+ f.listeners.get('click')({target:f.host.querySelector('[data-au-demo-stop]')});const focus={};f.container.ownerDocument.activeElement=focus;
+ opening.resolve(response(native.zero));await selecting;await settle();assert.doesNotMatch(f.host.innerHTML,/data-au-release-plan=/,'an actually mismatched original retires the outline despite the pause');assert.ok(f.host.querySelector('[data-au-demo-resume]'));assert.equal(f.container.ownerDocument.activeElement,focus,'retirement preserves the focused control rather than repainting the claim');assert.doesNotMatch(f.host.innerHTML,/data-au-revision=/);
 });
 test('operation source spans preserve Python codepoints, exact original/text hashes and provisional authority',async()=>{
  const f=operationFixture(),prior=JSON.stringify(f.baseline);f.sourceText += '\n' + 'Deep original line.\n'.repeat(200);

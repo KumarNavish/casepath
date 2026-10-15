@@ -2430,7 +2430,7 @@
         const incoming = readReplay(opening?.response || await request(`/claims/${key(id)}/replay?through_seq=${through}`),id,through);
         if (disposed || token !== epoch || pendingRoute() || view !== 'claim') return;
         if (opening) checkedReplayHead(incoming,{replayHead:opening.head});
-        if (session?.releasePlan && !releaseOpeningMatches(session.releasePlan,incoming.state)) { session.releasePlan = null; operationTrace.releasePlan = null; }
+        if (session?.releasePlan && !releaseOpeningMatches(session.releasePlan,incoming.state)) { session.releasePlan = null; operationTrace.releasePlan = null; host.querySelector('[data-au-release-plan]')?.remove(); }
         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
         const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous); detail = inspectionHold ? detail : preferences.detail || previous?.detail || 'step';
         renderClaim(); notice(''); if (!inspectionHold && !doc.hidden && !dialog.open && !recordDialog.open) focusTitle();
@@ -2943,6 +2943,10 @@
       demoTimer = null; demoSession = null; pausedPresentation.operationWake?.(); replayPrefixes.clear();
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); cancelStageMotion(); const pane = host.querySelector('.au-operation-passage'); pane?.scrollTo?.({top:pane.scrollTop,behavior:'instant'});
       if (pausedPresentation?.mode === 'operations') host.setAttribute?.('data-au-operation-presentation','paused');
+      if (!current && pausedPresentation?.releasePlan) {
+        inspectionHold = true;
+        const control = host.querySelector('[data-au-demo-stop]'); if (control) { control.removeAttribute('data-au-demo-stop'); control.setAttribute('data-au-demo-resume',''); control.textContent='Resume'; }
+      }
       return true;
     }
     function pauseInspection() {
