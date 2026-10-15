@@ -1,0 +1,18 @@
+{
+  "candidate": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "affected_raw_prepare_records": [
+    "shard1/prepare.json",
+    "shard2/prepare.json"
+  ],
+  "field": "canonical_fetch_source",
+  "inherited_template_value": "/workspace/casepath-entry-wiring-review-20261015",
+  "actual_fetch_source": "https://github.com/KumarNavish/casepath",
+  "actual_fetch_branch": "codex/casepath-causal-experience-integration-20261009",
+  "canonical_fetch_logs": [
+    "shard1/fetch.log",
+    "shard2/fetch.log"
+  ],
+  "raw_prepare_records_preserved": true,
+  "future_template_corrected": true,
+  "effect_on_source_commit_manifest_or_normal_preparation": "None; all six canonical fetches are logged and exact b861 HEAD was asserted before normal prepare"
+}

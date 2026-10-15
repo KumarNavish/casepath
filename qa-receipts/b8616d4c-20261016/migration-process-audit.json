@@ -1,0 +1,16 @@
+{
+  "path": "/proc/1/maps",
+  "readable": false,
+  "error_type": "PermissionError",
+  "errno": 13,
+  "error": "[Errno 13] Permission denied: '/proc/1/maps'",
+  "fail_closed_source_unchanged": true,
+  "mac_partition_explicitly_assigned": true,
+  "cloud_skips_for_mac_partition": 0,
+  "fail_closed_engine_source": {
+    "path": "casepath-api/casepath_api/local_data_root.py",
+    "prior_sha256": "90fba41dc5fdd48014d08d6df34aca8d85495ffcb4df4058c0cae86bd9f9f1f6",
+    "current_sha256": "90fba41dc5fdd48014d08d6df34aca8d85495ffcb4df4058c0cae86bd9f9f1f6",
+    "byte_identical": true
+  }
+}

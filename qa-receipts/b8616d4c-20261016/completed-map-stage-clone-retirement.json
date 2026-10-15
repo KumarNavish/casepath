@@ -1,0 +1,33 @@
+{
+  "path": "/workspace/casepath-map-first-stage-20261015",
+  "head": "1b493f3cbaae18131751c015c5d428fd32911932",
+  "branch": "codex/map-first-stage-20261015",
+  "status": "",
+  "ignored_or_untracked_files": [],
+  "all_tracked_source_file_Git_blobs_verified": 3173,
+  "local_refs_durably_reachable_from_canonical_remote_branches": [
+    {
+      "local_ref": "refs/heads/codex/map-first-stage-20261015",
+      "local_sha": "1b493f3cbaae18131751c015c5d428fd32911932",
+      "remote_branch_tip": "1b493f3cbaae18131751c015c5d428fd32911932",
+      "local_commit_reachable_from_canonical_remote_branch": true
+    },
+    {
+      "local_ref": "refs/heads/codex/visible-agent-stage-qa-20261015",
+      "local_sha": "9c55d52ae8e717c502087903af0db0e933555227",
+      "remote_branch_tip": "9c55d52ae8e717c502087903af0db0e933555227",
+      "local_commit_reachable_from_canonical_remote_branch": true
+    }
+  ],
+  "Git_metadata_recovery_archive": "/workspace/casepath-startup-itinerary-gate-b8616d4c-20261016-preserved-writer-clones/completed-map-first-stage-Git-metadata.tar.gz",
+  "archive_sha256": "1a7cbdeb1650ad5d14bb0fea94c954cd8f4164ae0e366f4a3fb2f29cbf00f6b5",
+  "archive_size_bytes": 2863939,
+  "shared_external_Git_object_stores_preserved": [
+    "/workspace/casepath-visible-agent-qa-20261015/.git/objects"
+  ],
+  "authoritative_raw_evidence_outside_clone_preserved": true,
+  "user_authorization": "Root relayed explicit permission to retire clean pushed completed CasePath gate task checkouts; full source archive optional when commits demonstrably durable remotely",
+  "before_free_bytes": 3483209728,
+  "epoch": 1792106804.443809,
+  "after_free_bytes": 3848126464
+}

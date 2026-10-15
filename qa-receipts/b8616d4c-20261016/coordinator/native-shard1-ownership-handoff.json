@@ -1,0 +1,17 @@
+{
+  "candidate": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "original_coordinator_pid": 972341,
+  "original_command_line": "python3 /workspace/casepath-startup-itinerary-gate-b8616d4c-20261016/coordinator/serial_dispatch.py",
+  "original_exec_session": 73878,
+  "original_command": "HOME=/workspace/bh0 TMPDIR=/workspace/bt0 TMP=/workspace/bt0 TEMP=/workspace/bt0 python3 /workspace/casepath-startup-itinerary-gate-b8616d4c-20261016/coordinator/serial_dispatch.py > /workspace/casepath-startup-itinerary-gate-b8616d4c-20261016/dispatch-wrapper.log 2>&1",
+  "original_wrapper_log": "dispatch-wrapper.log",
+  "new_coordinator_pid": 972836,
+  "native_wrapper_pid_preserved": 972342,
+  "native_pytest_or_subprocess_group_signalled": false,
+  "native_attempt_latch_preserved": true,
+  "coordinator_SIGSTOP_only_until_native_terminal_then_SIGTERM_and_SIGCONT_to_own_coordinator_only": true,
+  "max_heavy": 2,
+  "host_ceiling": 3,
+  "reason": "Newly authorized byte-verified retirement of completed writer clones creates capacity for a second isolated normal runtime",
+  "epoch": 1792106461.0345178
+}
