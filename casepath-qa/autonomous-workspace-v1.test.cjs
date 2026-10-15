@@ -1846,6 +1846,38 @@ test('cold operation selection retains explicit recorded delivery and never star
  assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=recorded')).length,1);assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,0);
  const count=api.calls.filter(row=>row.path.includes('/operations?')).length;await controller.showDemonstration(true,'legacy');await settle();assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,count,'only the selected allowed reference operation session can start a stream');
 });
+
+test('selected operation priority cancels only idle reads and suppresses new warming until foreground navigation',async t=>{
+ const f=operationOpeningDOM(),native=operationOpeningFixture(),head=deferredRead(),pending=[],idle=[];const previousIdle=globalThis.requestIdleCallback,previousCancel=globalThis.cancelIdleCallback;
+ globalThis.requestIdleCallback=callback=>(idle.push(callback),idle.length);globalThis.cancelIdleCallback=()=>{};
+ const api=fakeApi({handle:async(path,init)=>{
+  if(path.endsWith('/claims'))return response({claims:[native.head]});
+  if(path.endsWith('/knowledge')||path.includes('/snapshot?')){const read=deferredRead();pending.push({...read,path,signal:init.signal});return read.promise;}
+  if(path.endsWith('/replay?through_seq=0'))return response(native.zero);if(path.endsWith('/replay?through_seq=4'))return head.promise;if(path.includes('/operations?'))return pendingOperationResponse(native.binding);
+ }});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();head.resolve(response(native.replay));for(const row of pending)row.resolve(row.path.endsWith('/knowledge')?response({versions:[],uses:[],quarantined:[]}):response(native.snapshot));globalThis.requestIdleCallback=previousIdle;globalThis.cancelIdleCallback=previousCancel;});
+ await settle();assert.ok(idle.length);idle.shift()();await settle();assert.equal(pending.filter(row=>row.path.includes('/snapshot?')).length,2,'the existing bounded idle queue was actually running');
+ const warming=pending.slice();await controller.showDemonstration();await settle();assert.ok(warming.every(row=>row.signal.aborted),'selection aborts active idle Knowledge and snapshots rather than only ignoring their results');
+ const afterSelection=api.calls.length;for(const callback of idle.splice(0))callback();await settle();assert.equal(api.calls.length,afterSelection,'selected startup cannot refill the idle queue');
+ assert.ok(api.calls.filter(row=>row.path.includes('/replay?')||row.path.includes('/operations?')).every(row=>!row.init.signal.aborted),'selected head, opening and operation reads retain ownership');
+ const knowledge=controller.showKnowledge();await settle();assert.ok(pending.length>warming.length,'explicit Knowledge starts its foreground read despite suspended warming');assert.equal(pending.at(-1).signal.aborted,false);pending.at(-1).resolve(response({versions:[],uses:[],quarantined:[]}));await knowledge;
+});
+
+test('selected operation priority leaves an explicit foreground Cases read intact and defers direct-entry collection warming',async t=>{
+ const native=operationOpeningFixture(),f=operationOpeningDOM(),collection=deferredRead(),head=deferredRead();let collectionSignal;
+ const api=fakeApi({handle:async(path,init)=>{if(path.endsWith('/claims')){collectionSignal=init.signal;return collection.promise;}if(path.includes('/snapshot?'))return response(native.snapshot);if(path.endsWith('/replay?through_seq=0'))return response(native.zero);if(path.endsWith('/replay?through_seq=4'))return head.promise;if(path.includes('/operations?'))return pendingOperationResponse(native.binding);}});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();collection.resolve(response({claims:[native.head]}));head.resolve(response(native.replay));});await settle();assert.ok(collectionSignal);
+ await controller.showDemonstration();await settle();assert.equal(collectionSignal.aborted,false,'selection cannot cancel the explicitly requested Cases collection');assert.equal(api.calls.filter(row=>row.path.endsWith('/claims')).length,1,'an unfinished selected run cannot add a quiet collection read');
+ assert.equal(api.calls.filter(row=>row.path.endsWith('/knowledge')).length,0,'direct-entry warm Knowledge waits for selected work');
+});
+
+test('selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends',async t=>{
+ routingFixture(t,'#autonomous/demonstration');const native=operationOpeningFixture(),f=operationOpeningDOM(),head=deferredRead();
+ const api=fakeApi({handle:async path=>path.includes('/snapshot?')?response(native.snapshot):path.endsWith('/replay?through_seq=0')?response(native.zero):path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();head.resolve(response(native.replay));});await settle();await settle();
+ assert.equal(api.calls.filter(row=>row.path.endsWith('/claims')||row.path.endsWith('/knowledge')).length,0,'a cold operation route cannot start background catalog or Knowledge traffic while its head is pending');
+ await controller.showWork();await settle();assert.equal(api.calls.filter(row=>row.path.endsWith('/claims')).length,1,'explicit Cases navigation still loads its collection');assert.equal(api.calls.filter(row=>row.path.endsWith('/knowledge')).length,1,'ordinary idle Knowledge warming resumes after leaving the selected run');
+});
 test('operation source spans preserve Python codepoints, exact original/text hashes and provisional authority',async()=>{
  const f=operationFixture(),prior=JSON.stringify(f.baseline);f.sourceText += '\n' + 'Deep original line.\n'.repeat(200);
  const open=f.seal('source.open',{type:'source',id:'source'},{...f.descriptor,text:f.sourceText,text_sha256:sha(f.sourceText)});

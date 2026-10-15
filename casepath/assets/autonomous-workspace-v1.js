@@ -1749,8 +1749,8 @@
     let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'reference', demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
     let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, statusAuthority = null, readGeneration = 0;
     let knowledgeWarmGeneration = -1, knowledgeFacet = 'process', knowledgePin = null, lastCaseContext = null, collectionCache = null, knowledgeCache = null, statusCache = null, knowledgeRead = 0, renderedKnowledge = null;
-    const snapshots = new Map(), sourcePreviews = new Map(), nativeBytes = new Map(), replayPrefixes = new Map(), inflightReads = new Map();
-    const savedHeads = new Map(), warmQueue = [], warmAttempts = new Set(), warmIntents = new Set();
+    const snapshots = new Map(), sourcePreviews = new Map(), nativeBytes = new Map(), replayPrefixes = new Map(), inflightReads = new Map(), readOwners = new Map();
+    const savedHeads = new Map(), warmQueue = [], warmAttempts = new Set(), warmIntents = new Set(), warmWorkers = new Set();
     let savedKnowledge = null, sessionRestore = null, storageWrite = 0, warmActive = 0, warmTicket = 0, warmIdle = null;
     let storage = null, apiIdentity = null;
     try { if (root.location?.href) { apiIdentity = new URL(base,root.location.href).href; storage = root.sessionStorage; } } catch (_) { /* Session storage is optional. */ }
@@ -1873,6 +1873,12 @@
       if (warmIdle !== null) root.cancelIdleCallback?.(warmIdle);
       warmIdle = null;
     }
+    function cancelIdleReadOwners() {
+      warmAttempts.clear(); warmWorkers.clear(); warmActive = 0;
+      for (const [identity,owner] of readOwners) if (!owner.foreground) {
+        owner.controller.abort(); readOwners.delete(identity); inflightReads.delete(identity);
+      }
+    }
     function invalidateReads(id) {
       cancelWarmReads(); warmAttempts.clear(); warmIntents.clear(); storageWrite++; savedHeads.clear(); savedKnowledge = null;
       try { storage?.removeItem(READ_CACHE_CONTRACT); } catch (_) { /* Storage is optional. */ }
@@ -1912,12 +1918,13 @@
       interactionMotion = animation;
       animation.finished?.then(() => { if (interactionMotion === animation) interactionMotion = null; },() => { if (interactionMotion === animation) interactionMotion = null; });
     }
-    function request(path, init = {}) {
+    function request(path, init = {}, quiet = false) {
       const readonly = !init.method || init.method === 'GET';
       if (!readonly && (publicReadOnly || !status || !writable(status))) { const error = new Error(PUBLIC_READ_ONLY_MESSAGE); error.status = 403; return Promise.reject(error); }
       const identity = `${readGeneration}:${path}`;
-      if (readonly && inflightReads.has(identity)) return inflightReads.get(identity);
+      if (readonly && inflightReads.has(identity)) { if (!quiet && readOwners.has(identity)) readOwners.get(identity).foreground = true; return inflightReads.get(identity); }
       const controller = new AbortController(); controllers.add(controller);
+      const owner = {controller,foreground:!quiet}; if (readonly) readOwners.set(identity,owner);
       const timeout = root.setTimeout(() => controller.abort(),15000);
       const operation = (async () => {
         try {
@@ -1925,7 +1932,7 @@
           const data = await response.json();
           if (!response.ok) { const error = new Error(typeof data.detail === 'string' ? data.detail : data.detail?.message || data.message || `Request refused (${response.status}).`); error.status = response.status; throw error; }
           return data;
-        } finally { root.clearTimeout(timeout); controllers.delete(controller); }
+        } finally { root.clearTimeout(timeout); controllers.delete(controller); if (readOwners.get(identity) === owner) readOwners.delete(identity); }
       })();
       if (readonly) { inflightReads.set(identity,operation); const clear = () => { if (inflightReads.get(identity) === operation) inflightReads.delete(identity); }; operation.then(clear,clear); }
       return operation;
@@ -2247,13 +2254,13 @@
       if (writeRoute && root.history?.replaceState && current) { const fragment = selectedClaimFragment(); root.history.replaceState(null,'',root.location.pathname + root.location.search + fragment); routedFragment = fragment; }
       if (focusFiles) host.querySelector('#auAdditionalFiles')?.focus({preventScroll:true});
     }
-    async function consistentRead(id, after, reconnect = false, token = epoch, valid = null) {
+    async function consistentRead(id, after, reconnect = false, token = epoch, valid = null, quiet = false) {
       let missingSnapshot = false;
       const check = () => { if (disposed || token !== epoch || valid && !valid()) throw new Error('The claim view changed while reading its snapshot.'); };
       if (valid) check();
       if (snapshotAvailable !== false) {
         try {
-          const response = await request(`/claims/${key(id)}/snapshot?after=${after ?? 0}`);
+          const response = await request(`/claims/${key(id)}/snapshot?after=${after ?? 0}`,{},quiet);
           check();
           const result = readSnapshot(response,id,after,reconnect);
           snapshotAvailable = true;
@@ -2264,9 +2271,9 @@
         }
       }
       if (valid) check();
-      const incoming = readState(await request(`/claims/${key(id)}`),id);
+      const incoming = readState(await request(`/claims/${key(id)}`,{},quiet),id);
       check();
-      const batch = await request(`/claims/${key(id)}/events?after=${after ?? 0}`);
+      const batch = await request(`/claims/${key(id)}/events?after=${after ?? 0}`,{},quiet);
       const accepted = acceptEvents(after,batch,incoming.state,reconnect);
       if (missingSnapshot) snapshotAvailable = false;
       return {...incoming,accepted};
@@ -2377,7 +2384,7 @@
       }
       const session = preferences.demo ? demoSession : null;
       if (session) session.preparing = token;
-      if (session?.mode === 'operations' && !opening?.referenceReady && !doc.hidden && !inspectionHold) prepareOperationReads(session,id,token);
+      if (session?.mode === 'operations') { cancelIdleReadOwners(); if (!opening?.referenceReady && !doc.hidden && !inspectionHold) prepareOperationReads(session,id,token); }
       try {
         const through = preferences.through ?? 0;
         const incoming = readReplay(opening?.response || await request(`/claims/${key(id)}/replay?through_seq=${through}`),id,through);
@@ -2439,14 +2446,15 @@
       if (filter) filter.innerHTML = collectionFilters(scoped).map(value => `<option value="${h(value)}"${collection.filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : value === 'investigation_complete' ? 'Assessment complete' : statusLabel(value))}</option>`).join('');
     }
     function canWarmReads(token = epoch, generation = readGeneration, ticket = warmTicket) {
-      return !disposed && token === epoch && generation === readGeneration && ticket === warmTicket && !doc.hidden && !pendingRoute() && (view === 'work' || view === 'claim' && current);
+      const selectedOperation = view === 'claim' && (demoSession || pausedPresentation)?.mode === 'operations' && !operationTrace?.finished;
+      return !selectedOperation && !disposed && token === epoch && generation === readGeneration && ticket === warmTicket && !doc.hidden && !pendingRoute() && (view === 'work' || view === 'claim' && current);
     }
     async function warmKnowledge(token = epoch) {
       const generation = readGeneration, ticket = warmTicket, attempt = `${generation}:${ticket}`;
       if (!canWarmReads(token,generation,ticket) || knowledgeCache || knowledgeWarmGeneration === attempt) return;
       const read = knowledgeRead; knowledgeWarmGeneration = attempt;
       try {
-        const data = readKnowledge(await request('/knowledge'));
+        const data = readKnowledge(await request('/knowledge',{},true));
         if (!canWarmReads(token,generation,ticket) || read !== knowledgeRead) return;
         if (JSON.stringify(data).length * 2 <= 8 * 1024 * 1024) knowledgeCache = {value:data};
       } catch (_) { /* A quiet GET warm never replaces a successful read or reports an error. */ }
@@ -2465,16 +2473,16 @@
     }
     function runClaimWarmQueue() {
       while (warmActive < 2 && warmQueue.length && canWarmReads()) {
-        const row = warmQueue.shift(); warmAttempts.add(row.id); warmActive++;
+        const row = warmQueue.shift(); warmAttempts.add(row.id); warmWorkers.add(row); warmActive++;
         (async () => {
           try {
             const valid = () => canWarmReads(row.token,row.generation,row.ticket);
-            const incoming = await consistentRead(row.id,null,true,row.token,valid);
+            const incoming = await consistentRead(row.id,null,true,row.token,valid,true);
             if (!incoming.accepted.ready || !valid()) return;
             const value = {state:incoming.state,projection:incoming.projection,cursor:incoming.accepted.cursor,history:incoming.accepted.events};
             rememberSnapshot(row.id,value,!row.intent && !warmIntents.has(row.id));
           } catch (_) { /* Speculative GET failures never change the current view. */ }
-          finally { warmActive--; runClaimWarmQueue(); }
+          finally { if (warmWorkers.delete(row)) warmActive--; runClaimWarmQueue(); }
         })();
       }
     }
@@ -2507,14 +2515,14 @@
       const valid = () => !disposed && token === epoch && generation === readGeneration && read === claimsRead && (!quiet || canWarmReads(token,generation,ticket));
       if (!valid()) return;
       const fromCache = !force && collectionCache && Date.now() - collectionCache.at < 15000;
-      const data = fromCache ? collectionCache.value : await request('/claims');
+      const data = fromCache ? collectionCache.value : await request('/claims',{},quiet);
       if (!valid()) return;
       const rows = [...list(data.claims)];
       if (Number.isSafeInteger(data.total) && data.total > rows.length) {
         let offset = rows.length;
         while (offset < data.total) {
           if (!valid()) return;
-          const page = await request(`/claims?limit=200&offset=${offset}`);
+          const page = await request(`/claims?limit=200&offset=${offset}`,{},quiet);
           if (!valid()) return;
           if (page.total !== data.total || page.offset !== offset || !list(page.claims).length || (data.collection_sha256 && page.collection_sha256 !== data.collection_sha256)) throw new Error('The case collection changed while loading. Refresh to read one collection identity.');
           rows.push(...page.claims); offset += page.claims.length;
@@ -2747,7 +2755,7 @@
       if (!await operationGate(session,token)) return;
       current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
       if (operationTrace) { operationTrace.finished = true; operationTrace.current = null; operationTrace.savedFallback = true; }
-      stopPresentation(); renderClaim(); notice(`Live rules-based assessment unavailable: ${reason} Showing the verified saved result; its history remains available.`,true);
+      stopPresentation(); renderClaim(); primeClaimReads(token); notice(`Live rules-based assessment unavailable: ${reason} Showing the verified saved result; its history remains available.`,true);
     }
     function prepareOperationReads(session, id, token) {
       if (!REFERENCE_DEMO_CASES.some(row => row.claim_id === id)) return null;
@@ -2866,7 +2874,7 @@
               session.operationStarted = false; session.operationOpeningAnchor = null; session.previousAttempts = []; session.useRecorded = session.operations === 'recorded'; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null; session.plannedProcess = null;
               await openPresentationCase(session,true,session.index+1); return;
             }
-            stopPresentation(); renderClaim(); notice(''); return;
+            stopPresentation(); renderClaim(); primeClaimReads(token); notice(''); return;
           } else if (frame.type === 'error') throw new Error(frame.message || frame.reason || frame.detail || 'The rules-based assessment stopped.');
           else throw new Error('The operation stream contains an unknown frame.');
           if (!await operationFrameYield(frameBudget,root,() => operationActive(session,token) && operationTrace === trace,() => operationGate(session,token))) return;
