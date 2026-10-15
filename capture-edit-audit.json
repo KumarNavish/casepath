@@ -1,0 +1,106 @@
+{
+  "contract": "casepath.public-capture-edit/1.0.0",
+  "source_commit": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "claim_id": "clm_314f2d309fea25e6",
+  "site": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+  "capture_transfer_commit": "f78585ff5ced43946ca6632ac76d7b581d1fcf58",
+  "capture_archive_sha256": "ff04c1bd373a7d281f5e35d06b36ab0528d6f35f2777f523f887d92109a802a2",
+  "capture_index_sha256": "3952176a54f9d4317f20b80177c321ce1e15cf5d2fb0dd7b683a91fadc358947",
+  "capture_owner": "Mac release owner; actual published UI, native inputs",
+  "cloud_role": "Offline edit/encoding of supplied verified frames only. No public request, product mutation or credentials used.",
+  "viewport_css": {
+    "width": 1600,
+    "height": 900,
+    "deviceScaleFactor": 1.2
+  },
+  "native_frame_pixels": [
+    1920,
+    1080
+  ],
+  "actual_frames": 615,
+  "dom_samples": 398,
+  "capture_error": null,
+  "changed_frame_cadence": {
+    "average_delivery_hz": 5.904193360915767,
+    "interval_median_s": 0.08017897605895996,
+    "interval_p95_s": 0.5349478721618652,
+    "interval_min_s": 0.015804052352905273,
+    "note": "Variable-rate CDP changed-frame capture. 30fps encoded delivery repeats real captured frames; no optical flow, generated UI or native30fps claim."
+  },
+  "real_inputs_and_milestones": [
+    {
+      "t": 1792055518.779,
+      "type": "film-start",
+      "film_t": 0.8
+    },
+    {
+      "t": 1792055565.079,
+      "type": "inspection-start",
+      "film_t": 24.066495
+    },
+    {
+      "t": 1792055566.082,
+      "type": "click",
+      "x": 500.09765625,
+      "y": 233.4453125,
+      "role": "inspect-source",
+      "film_t": 25.069495
+    },
+    {
+      "t": 1792055566.935,
+      "type": "inspection-held",
+      "op": 167,
+      "film_t": 25.922495
+    },
+    {
+      "t": 1792055569.949,
+      "type": "click",
+      "x": 1144.4453125,
+      "y": 292.1328125,
+      "role": "close-source",
+      "film_t": 28.936494
+    },
+    {
+      "t": 1792055571.136,
+      "type": "click",
+      "x": 524.70703125,
+      "y": 807.4453125,
+      "role": "resume",
+      "film_t": 30.123494
+    },
+    {
+      "t": 1792055571.343,
+      "type": "resumed",
+      "film_t": 30.330495
+    },
+    {
+      "t": 1792055614.623,
+      "type": "film-result",
+      "op": 823,
+      "checkedSlots": 3,
+      "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis \u00b7 CO 259 \u00b7 CO 259a \u00b7 CO 259d \u00b7 Earlier law text (2024-01-01)Procedure reused \u00b7 Defects and repairs \u00b7 Version 2",
+      "film_t": 55.368
+    },
+    {
+      "t": 1792055616.755,
+      "type": "film-end",
+      "film_t": 57.5
+    }
+  ],
+  "source_inspection_hold_operation": 167,
+  "final_checked_slots": 3,
+  "final_outcome_text": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis \u00b7 CO 259 \u00b7 CO 259a \u00b7 CO 259d \u00b7 Earlier law text (2024-01-01)Procedure reused \u00b7 Defects and repairs \u00b7 Version 2",
+  "procedure": "Defects and repairs \u00b7 Version2",
+  "recording_kind": "Recording of an actual live rules-based check. The endcard describes the edited recording as recorded replay; no fallback mode is claimed.",
+  "editorial_changes": [
+    "Small crop-constrained eased camera transforms over actual screenshots",
+    "Neutral cursor drawn only at native logged pointer positions",
+    "Short captions in reserved gutter",
+    "Routine speed ramps;15 protected consequential windows at real time",
+    "2.5s editorial hold of actual last decision image",
+    "5s exact requested endcard"
+  ],
+  "limitations": [
+    "Last delivered JPEG precedes completed DOM sample by about1.29s. It contains the exact full decision/three slots/Version2, with genuine prior transport paint retained. No synthetic completed UI was constructed."
+  ]
+}

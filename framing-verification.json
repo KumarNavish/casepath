@@ -1,0 +1,28 @@
+{
+  "frames_checked": 1725,
+  "actual_source_and_rail_crop_violations": [],
+  "native_click_full_frame": [
+    {
+      "t": 1792055566.082,
+      "role": "inspect-source",
+      "zoom": 1.0
+    },
+    {
+      "t": 1792055569.949,
+      "role": "close-source",
+      "zoom": 1.0
+    },
+    {
+      "t": 1792055571.136,
+      "role": "resume",
+      "zoom": 1.0
+    }
+  ],
+  "caption_gutter_y": [
+    998,
+    1080
+  ],
+  "caption_center_y": 1027,
+  "ui_bottom_at_most": 998,
+  "policy": "All crops constrained to actual visible source and rail. Inspection/native clicks full UI. No UI pixels fabricated."
+}
