@@ -22,8 +22,7 @@ import time
 
 W, H, FPS, GUTTER = 1920, 1080, 30, 64
 CAPTION_SIZE = 42
-MIN_ZOOM, MAX_ZOOM, MAX_SPEED, ENDCARD = 1.4, 2.2, 6.0, 5.0
-ACTIVE_MARGIN = 28
+MIN_ZOOM, MAX_SPEED, ENDCARD = 1.4, 6.0, 5.0
 END_TEXT = ["CasePath · Evidence into action", "Synthetic claims · recorded replay"]
 BG, INK = (239, 242, 236), (24, 61, 51)
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
@@ -101,7 +100,7 @@ def work_identity(items, fact=False):
     return tuple(sorted(json.dumps(item, sort_keys=True, separators=(",", ":")) for item in stable))
 
 
-def fit_camera(cw, ch, bounds, desired=MAX_ZOOM, preferred=None):
+def fit_camera(cw, ch, bounds, desired=MIN_ZOOM, preferred=None):
     """CSS-coordinate crop; never discard the complete required pixel union.
 
     A required rectangle outside the captured viewport is an input failure, not
@@ -113,13 +112,11 @@ def fit_camera(cw, ch, bounds, desired=MAX_ZOOM, preferred=None):
     require(x >= -.01 and y >= -.01 and x + w <= cw + .01 and y + h <= ch + .01,
             "Required excerpt/destination extends outside the captured viewport")
     # Padding is editorial; the original full union remains mandatory.
-    left, top = max(0, x - ACTIVE_MARGIN), max(0, y - ACTIVE_MARGIN)
-    right, bottom = min(cw, x + w + ACTIVE_MARGIN), min(ch, y + h + ACTIVE_MARGIN)
+    left, top = max(0, x - 10), max(0, y - 10)
+    right, bottom = min(cw, x + w + 10), min(ch, y + h + 10)
     bound = min(cw / (right - left), ch / (bottom - top))
     zoom = min(desired, bound)
-    # Frame the working region, not its viewport-height blank space. Keep the
-    # complete source/landing target with margin, then center it in the film.
-    crop_w, crop_h = cw / zoom, bottom - top
+    crop_w, crop_h = cw / zoom, ch / zoom
     px, py = preferred if preferred else ((left + right) / 2, (top + bottom) / 2)
     min_x, max_x = max(crop_w / 2, right - crop_w / 2), min(cw - crop_w / 2, left + crop_w / 2)
     min_y, max_y = max(crop_h / 2, bottom - crop_h / 2), min(ch - crop_h / 2, top + crop_h / 2)
@@ -332,9 +329,6 @@ class Movie:
                         rect(sample.get("exactSpanRect")), rect(sample.get("readheadRect"))])
         if bounds[0] < 0 or bounds[1] < 0 or bounds[0] + bounds[2] > self.cw or bounds[1] + bounds[3] > self.ch:
             return None, 'native-pan-transition-full-ui'
-        transport = rect(sample.get('transportRect'))
-        if transport and bounds[1] + bounds[3] + ACTIVE_MARGIN >= transport[1]:
-            return None, 'native-content-transport-conflict-full-ui'
         return bounds, "active"
 
     def camera(self, t, prior=None):
@@ -348,16 +342,14 @@ class Movie:
             q = 1 - math.exp(-6 / FPS)
             preferred = prior[0] + q * (goal[0] - prior[0]), prior[1] + q * (goal[1] - prior[1])
         fitted, bound = fit_camera(self.cw, self.ch, bounds, preferred=preferred)
+        # Start the close-up just above the genuine working card. The viewport's
+        # title/reused-version header stays entirely outside this body close-up.
+        # A lower crop may be shorter than the viewport; render without stretching.
+        cx, cy, zoom = fitted
+        crop_h = self.ch / zoom
+        cy = max(cy, bounds[1] - 14 + crop_h / 2)
+        fitted = cx, cy, zoom
         return fitted, bound, mode
-
-    def crop_box(self, t, camera):
-        bounds, mode = self.camera_geometry(t)
-        if mode != 'active':
-            return (0, 0, self.cw, self.ch)
-        top = max(0, bounds[1] - ACTIVE_MARGIN)
-        bottom = min(self.ch, bounds[1] + bounds[3] + ACTIVE_MARGIN)
-        width = self.cw / camera[2]
-        return (max(0, camera[0] - width / 2), top, width, bottom - top)
 
     def plan(self):
         camera_rows, missing = [], 0
@@ -368,7 +360,6 @@ class Movie:
             if mode == "missing-excerpt-or-destination":
                 missing += 1
             camera_rows.append({"t": t, "mode": mode, "center_css": list(camera[:2]), "zoom": camera[2],
-                                "crop_css": list(self.crop_box(t, camera)),
                                 "maximum_zoom_preserving_required_union": bound,
                                 "meets_1_4": camera[2] >= MIN_ZOOM - 1e-9 if mode == "active" else None})
         if missing:
@@ -399,7 +390,7 @@ class Movie:
             "segments": self.segments, "caption_gutter_pixels": GUTTER,
             "caption_font_pixels": CAPTION_SIZE,
             "captions": self.labels, "camera_samples": camera_rows,
-            "camera_rule": "Up to 2.2x, complete excerpt plus actual destination and moving fact with 28 CSS px margin, vertically centered; transport excluded from active closeups. Full UI on inspection, native pointer travel/clicks, decision/final or native pan/geometry exceptions.",
+            "camera_rule": "Complete excerpt plus actual destination and moving fact; no whole header/map lock during active work. Full UI on inspection, native pointer travel/clicks, decision and final.",
             "cursor_rule": "Only supplied actual logged x/y positions; no generated travel or click glow",
             "issues": self.issues,
             "not_verified": ["publication/source identity beyond supplied receipt", "actual source pixels and complete final state", "encoded video and rendered framing"],
@@ -442,8 +433,10 @@ class Movie:
         editorial_hold = out_t >= self.ui_duration and self.final_still is not None
         source = self.final_still if editorial_hold else self.read_frame(source_t)
         camera, _, _ = ((self.cw / 2, self.ch / 2, 1), None, 'actual-final-still') if editorial_hold else self.camera(source_t, prior)
-        x, y, crop_w, crop_h = ((0, 0, self.cw, self.ch) if editorial_hold
-                              else self.crop_box(source_t, camera))
+        cx, cy, zoom = camera
+        crop_w, crop_h = self.cw / zoom, self.ch / zoom
+        x, y = max(0, cx - crop_w / 2), max(0, cy - crop_h / 2)
+        crop_h = min(crop_h, self.ch - y)
         scale = min(W / crop_w, (H - GUTTER) / crop_h)
         width, height = round(crop_w * scale), round(crop_h * scale)
         left, top = (W - width) // 2, (H - GUTTER - height) // 2

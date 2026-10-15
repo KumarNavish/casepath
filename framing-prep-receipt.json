@@ -21,8 +21,12 @@
     ],
     "native_pan_fullUI_exceptions": 5,
     "planned_seconds": 45.0,
-    "native_pixels_read": false,
-    "encoded": false
+    "encoded": false,
+    "native_JPEG_frames_read": false,
+    "prior_final_png_loaded_for_declaration_validation": true,
+    "frames_rendered": false
   },
-  "next": "Use replacement real capture only after corrected product gate/publish; run actual pixel/branding/caption/framing review before encode."
+  "next": "Use replacement real capture only after corrected product gate/publish; run actual pixel/branding/caption/framing review before encode.",
+  "renderer_file": "render-agentic-v5-tight.py",
+  "preservation": "Original dd787194 film, renderer and SHA256SUMS retained byte-exact; new tighter renderer is separate and has not encoded."
 }
