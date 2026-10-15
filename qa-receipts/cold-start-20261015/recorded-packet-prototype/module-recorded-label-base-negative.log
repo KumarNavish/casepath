@@ -1,0 +1,25 @@
+✖ ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session (547.122114ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 637.49595
+
+✖ failing tests:
+
+test at ../cp-cold-tmp/recorded-label-regression-base.cjs:1812:1
+✖ ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session (547.122114ms)
+  AssertionError [ERR_ASSERTION]: every opening/playback render retains whole-session Recorded identity
+      at TestContext.<anonymous> (/workspace/cp-cold-tmp/recorded-label-regression-base.cjs:1817:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

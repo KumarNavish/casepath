@@ -1,0 +1,50 @@
+✔ recorded packet selected codec preserves exact UTF8 numeric spellings escapes and CRLF without expanding other claims (13.454574ms)
+✔ recorded packet codec rejects unbound assets invalid publication DAG roots expansion and raw hashes (6.363155ms)
+✔ ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session (540.323631ms)
+✔ independently verified live opening wins before500ms and never consumes available recorded packet frames (7.159544ms)
+✔ unfinished recorded asset never delays Cases or selected live work and cannot join a later opening (12.180933ms)
+✔ unusable recorded packet retains the existing live503 to recorded endpoint fallback (507.339264ms)
+✖ explicit Recorded route uses whole packet identity and retires release provenance before accepted opening paint (11.630292ms)
+✔ idle recorded packet owner cancels on hidden or leaving Cases while an available asset remains reusable (15.737252ms)
+✔ recorded opening decision preserves trusted pending Pause and route cancellation without repainting late work (505.663462ms)
+✔ complete atomic operation heads retain real saved envelopes and pinned source history without replay provenance (1.460505ms)
+✔ complete atomic operation heads reject partial forks stale identities and changed source or start bindings (3.861648ms)
+✔ cold operation selection starts the pinned head hint and live transport before its opening read finishes (3.050101ms)
+✔ cold operation selection reuses one complete atomic head while showing only a release outline before any response (6.030399ms)
+✔ cold operation selection falls back once for a partial atomic head without admitting its state (2.380152ms)
+✔ cold operation selection never starts a fallback head read from an invalid atomic response after navigation (2.095022ms)
+✔ cold operation selection refetches a stale catalog revision without consuming its hinted state (2.612315ms)
+✔ cold operation selection aborts its early reader and ignores late opening and outline responses after navigation (1.840476ms)
+✔ cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback (2.743108ms)
+✔ selected operation priority cancels only idle reads and suppresses new warming until foreground navigation (4.545732ms)
+✔ selected operation priority leaves an explicit foreground Cases read intact and defers direct-entry collection warming (1.915106ms)
+✔ selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends (1.952351ms)
+✔ release procedure opening retains trusted History detail and focus while a valid late opening arrives (5.571412ms)
+✔ release procedure pending Pause can Resume before any response and retires a mismatched outline while held (1.510679ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 22
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1749.132774
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:1841:1
+✖ explicit Recorded route uses whole packet identity and retires release provenance before accepted opening paint (11.630292ms)
+  AssertionError [ERR_ASSERTION]: explicit Recorded with an available valid packet needs no selected API reads
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/workspace/casepath-recorded-opening-prototype-20261015/casepath-qa/autonomous-workspace-v1.test.cjs:1845:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

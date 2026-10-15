@@ -1,0 +1,64 @@
+{
+  "classification": "Independent pure exported decoder/native fixture checks only; no browser, engine, network, production heads or operation recomputation.",
+  "javascript_sha256": "7f8ac9ff452ce733ac6e74f6a775049b13bc077f29179c7267790705b84bd58f",
+  "packet_sha256": "c2d9afcf820149c87c25c9e12049f069c2c95a993ff2dd440d586666f0c5138e",
+  "history_kind": "native_fixture",
+  "deployment_commit": null,
+  "checks": [
+    "native_requires_explicit_QA_permission",
+    "exact_asset_hash_required",
+    "all_nine_individually_selected_raw_body_and_existing_head_binding_checks",
+    "unselected_exponential_fragment_tree_is_not_expanded",
+    "selected_expansion_rejects_before_exceeding_declared_body_bound",
+    "aborted_selection_rejected",
+    "unchecked_packet_object_rejected",
+    "forward_or_cyclic_reference_rejected"
+  ],
+  "rows": [
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "revision": 48,
+      "exact_decoded_bodies_and_existing_head_start_binding_checks": true
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "revision": 48,
+      "exact_decoded_bodies_and_existing_head_start_binding_checks": true
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "revision": 48,
+      "exact_decoded_bodies_and_existing_head_start_binding_checks": true
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "revision": 39,
+      "exact_decoded_bodies_and_existing_head_start_binding_checks": true
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "revision": 39,
+      "exact_decoded_bodies_and_existing_head_start_binding_checks": true
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "revision": 39,
+      "exact_decoded_bodies_and_existing_head_start_binding_checks": true
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "revision": 41,
+      "exact_decoded_bodies_and_existing_head_start_binding_checks": true
+    },
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "revision": 41,
+      "exact_decoded_bodies_and_existing_head_start_binding_checks": true
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "revision": 41,
+      "exact_decoded_bodies_and_existing_head_start_binding_checks": true
+    }
+  ]
+}

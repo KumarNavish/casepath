@@ -1,0 +1,19 @@
+locator.click: Element is not visible
+Call log:
+[2m  - waiting for locator('[data-au-demo-stop]')[22m
+[2m    - locator resolved to <button type="button" class="au-secondary" data-au-demo-stop="">Pause</button>[22m
+[2m  - attempting click action[22m
+[2m    - scrolling into view if needed[22m
+[2m    - done scrolling[22m
+
+    at run (/workspace/casepath-recorded-packet-prototype-evidence-20261015/recorded-controls-native.cjs:24:44)
+    at async /workspace/casepath-recorded-packet-prototype-evidence-20261015/recorded-controls-native.cjs:37:282 {
+  log: [
+    "  - waiting for locator('[data-au-demo-stop]')",
+    '    - locator resolved to <button type="button" class="au-secondary" data-au-demo-stop="">Pause</button>',
+    '  - attempting click action',
+    '    - scrolling into view if needed',
+    '    - done scrolling'
+  ],
+  name: 'Error'
+}

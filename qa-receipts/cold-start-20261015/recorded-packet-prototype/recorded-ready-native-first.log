@@ -1,0 +1,10 @@
+AssertionError [ERR_ASSERTION]: whole selected session stays Recorded
+    at run (/workspace/casepath-recorded-packet-prototype-evidence-20261015/recorded-ready-native.cjs:30:112)
+    at async /workspace/casepath-recorded-packet-prototype-evidence-20261015/recorded-ready-native.cjs:34:269 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

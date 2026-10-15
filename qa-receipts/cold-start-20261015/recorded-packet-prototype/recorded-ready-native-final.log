@@ -1,0 +1,13 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+0 !== 1
+
+    at run (/workspace/casepath-recorded-packet-prototype-evidence-20261015/recorded-ready-native.cjs:30:1105)
+    at async /workspace/casepath-recorded-packet-prototype-evidence-20261015/recorded-ready-native.cjs:34:269 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 0,
+  expected: 1,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

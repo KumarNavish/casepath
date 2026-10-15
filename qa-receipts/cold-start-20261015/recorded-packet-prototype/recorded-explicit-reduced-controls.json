@@ -1,0 +1,194 @@
+{
+  "label": "recorded-explicit-reduced-controls",
+  "held": {
+    "paused": "paused",
+    "release": true,
+    "no_revision": true,
+    "no_facts": true,
+    "resume": true,
+    "focus_retained": true,
+    "label": "Recorded replay · Synthetic sources · No external action"
+  },
+  "disclosure": "Isolated existing native v1-to-v2 fictional fixture + matching native1.1 sidecar on protected loopback GET-only server; native Chromium clock; per-API artificial delay, no bandwidth throttle; no production/provider/write. Selection clock is start of showDemonstration for catalog, immediately before controller mount for direct route.",
+  "packet_descriptor": {
+    "url": "/recorded-prototype.json",
+    "bytes": 572463,
+    "sha256": "daf10a11caca64aa141d268f59b6dd81f1a3dbbaf7915f1602992f7bc265471d",
+    "deployment_commit": null,
+    "history_kind": "native_fixture"
+  },
+  "source_commit": "7aa6c9a329ceb3c3e1e16cdeda9daacbf66cc575",
+  "javascript_sha256": "8b690c8065ed09100d75c575396ec3a137648161fb693296b4ea2c5fd65173e3",
+  "stylesheet_sha256": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4",
+  "sidecar_file_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+  "sidecar_material_sha256": "82c125f4fb2702218864ef22071f4e60d4552dc8e7e8c93407724a367db2980c",
+  "trace_sha256": "2839da7e334a4f2086fd91cf18b525cdc64c9dbc98d60ac6ac71df62840b850e",
+  "selected_at": 5615.100000023842,
+  "simulated_read_delay_ms": 5000,
+  "catalog": true,
+  "metrics": {
+    "map_ms": 15.100000023841858,
+    "binding_ms": 762.6000000238419,
+    "first_fact_ms": -5615.100000023842,
+    "eighth_arrival_ms": null,
+    "distinct_arrivals": 0,
+    "read_count": 1,
+    "selected_case_payload_bytes": 0
+  },
+  "receipt": {
+    "selected": 5615.100000023842,
+    "map": {
+      "at": 5630.200000047684,
+      "release": "0dc901886e4399084f9600df8a3311445ca92d3c4ea4ba65d515261e0fd1e01a",
+      "catalog_sha256": "d23d143adc79bdf96bc2cbcf5573297aeb63a8566b73b089a903875285a6f5a9",
+      "profile_sha256": "18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869",
+      "authority": "none",
+      "revision": null,
+      "nodes": [
+        {
+          "id": "dh_intake",
+          "status": "planned"
+        },
+        {
+          "id": "dh_scope",
+          "status": "planned"
+        },
+        {
+          "id": "dh_notice",
+          "status": "planned"
+        },
+        {
+          "id": "dh_cause",
+          "status": "planned"
+        },
+        {
+          "id": "dh_evidence",
+          "status": "planned"
+        },
+        {
+          "id": "dh_response",
+          "status": "planned"
+        }
+      ],
+      "facts": 0,
+      "checked": 0
+    },
+    "binding": 6377.700000047684,
+    "firstFact": null,
+    "docks": [],
+    "flights": [],
+    "calls": [
+      {
+        "url": "/api/claim-loops/v1/autonomous/status",
+        "method": "GET",
+        "at": 195.5,
+        "result_verified_at_start": false,
+        "headersAt": 5212.200000047684
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/claims",
+        "method": "GET",
+        "at": 196.89999997615814,
+        "result_verified_at_start": false,
+        "headersAt": 5233.300000071526
+      },
+      {
+        "url": "http://127.0.0.1:4189/recorded-prototype.json",
+        "method": "GET",
+        "at": 211.89999997615814,
+        "result_verified_at_start": false,
+        "headersAt": 231.5
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/knowledge",
+        "method": "GET",
+        "at": 5304.300000071526,
+        "result_verified_at_start": false
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/knowledge",
+        "method": "GET",
+        "at": 6708.899999976158,
+        "result_verified_at_start": true,
+        "presentation_at_start": "completed"
+      }
+    ],
+    "results": [
+      {
+        "at": 6709.5,
+        "revision": 48,
+        "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d"
+      }
+    ],
+    "errors": [],
+    "labels": [
+      "Opening investigation · Synthetic sources · No external action",
+      "Recorded replay · Synthetic sources · No external action",
+      "Recorded replay · Synthetic sources · No external action · as of 2025-02-21"
+    ],
+    "trusted_controls": [
+      {
+        "trusted": true,
+        "resume": false
+      },
+      {
+        "trusted": true,
+        "resume": true
+      }
+    ],
+    "current": {
+      "revision": "48",
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d"
+    },
+    "status": ""
+  },
+  "selected_calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "at": 6708.899999976158,
+      "result_verified_at_start": true,
+      "presentation_at_start": "completed"
+    }
+  ],
+  "bodies": [
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/status",
+      "bytes": 56,
+      "sha256": "3b880e9cbf65b5cae3b801dbbf2080f6df86a105c34b9f7e90a4b23afc4cd77d"
+    },
+    {
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims",
+      "bytes": 4037225,
+      "sha256": "2b7078a3487cbe241c8086023bab3210887b77e26cfe753c7b9693b13523fc17"
+    }
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/recorded-prototype.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/knowledge"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/knowledge"
+    }
+  ],
+  "errors": [],
+  "timeout": null
+}

@@ -1,0 +1,53 @@
+{
+  "classification": "Offline validation of retained actual native Chromium attempt, whose terminal stale driver assertion incorrectly required no-hint snapshot despite a loaded catalog. No second long native run; no product/data modification. The corrected foreground window ends at the eighth completed landing. Knowledge starts after Skip and in the same task as the verified-result MutationObserver (clock cannot order that synchronous render via observer timestamp). The short native control variant captures actual result-verified DOM at fetch to verify this ownership.",
+  "source_commit": "7aa6c9a329ceb3c3e1e16cdeda9daacbf66cc575",
+  "javascript_sha256": "8b690c8065ed09100d75c575396ec3a137648161fb693296b4ea2c5fd65173e3",
+  "history_kind": "native_fixture",
+  "deployment_commit": null,
+  "raw_attempt_sha256": "050df5f4f5d2de3b10798e2e8a62125fad6b5daf54f29afc97bcb9d396ee6f4a",
+  "sidecar_file_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+  "trace_sha256": "2839da7e334a4f2086fd91cf18b525cdc64c9dbc98d60ac6ac71df62840b850e",
+  "packet_sha256": "daf10a11caca64aa141d268f59b6dd81f1a3dbbaf7915f1602992f7bc265471d",
+  "metrics": {
+    "map_ms": 12.299999952316284,
+    "first_fact_ms": 2195.7999999523163,
+    "eighth_arrival_ms": 14978.199999928474,
+    "distinct_completed_visible_arrivals": 8,
+    "foreground_selected_gets": 3
+  },
+  "selected_case_calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "method": "GET",
+      "at": 5614.200000047684
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live",
+      "method": "GET",
+      "at": 5614.5
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "at": 5616.100000023842
+    }
+  ],
+  "all_mode_labels": [
+    "Opening investigation · Synthetic sources · No external action",
+    "Recorded replay · Synthetic sources · No external action",
+    "Recorded replay · Synthetic sources · No external action · as of 2025-02-21"
+  ],
+  "exact_skip_result": {
+    "at": 20855.300000071526,
+    "revision": 48,
+    "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d"
+  },
+  "idle_after_eighth": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "at": 20854.800000071526
+    }
+  ],
+  "limits": "Packet already verified in Cases before selection; selected Live API reads delayed5000ms before forwarding and aborted on Recorded choice. No bandwidth throttle or hosted/public timing claim. Native fixture is separate from actual publishedv2."
+}

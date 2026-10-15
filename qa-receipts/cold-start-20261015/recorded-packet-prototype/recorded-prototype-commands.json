@@ -1,0 +1,62 @@
+{
+  "cwd": "/workspace/casepath-recorded-opening-prototype-20261015",
+  "environment": {
+    "TMPDIR": "/workspace/cp-cold-tmp",
+    "TMP": "/workspace/cp-cold-tmp",
+    "TEMP": "/workspace/cp-cold-tmp"
+  },
+  "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+  "module_environment": {
+    "CASEPATH_PYTHON": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python"
+  },
+  "browser_environment": {
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "log": "module-recorded-affected-corrected.log",
+      "exit": 0,
+      "passed": 220
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/workspace/casepath-recorded-packet-prototype-evidence-20261015/recorded-ready-native.cjs"
+      ],
+      "log": "recorded-ready-native-final.log",
+      "exit": 1,
+      "classification": "Actual native session completed8flights+Skip exact head with no Live labels; stale postprocessing asserted snapshot despite catalog hint and counted legal postresult idle call. Raw retained."
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/workspace/casepath-recorded-packet-prototype-evidence-20261015/validate-recorded-native-attempt.cjs"
+      ],
+      "log": "validate-recorded-native-attempt-corrected.log",
+      "exit": 0,
+      "classification": "Revalidates retained raw ready-cache native session, same immutable JS, source spans/operation IDs/visible completed landings/exacthead, no native rerun."
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/workspace/casepath-recorded-packet-prototype-evidence-20261015/recorded-controls-native.cjs"
+      ],
+      "log": "recorded-controls-native-dom-at-fetch.log",
+      "exit": 0,
+      "classification": "Explicit Recorded/reduced trusted Pause and Resume; actual result-verified DOM captured at postresult Knowledge fetch."
+    }
+  ],
+  "preserved_failures": [
+    "recorded-ready-native-first.log: d44 true transient Live label bug (fixed7aa)",
+    "module-recorded-label-base-negative.log: new transient every-render regression fails d44 as expected",
+    "module-recorded-label-fix.log / module-recorded-affected-final.log: old Recorded marker became early; strict DOM baseline raced legitimate binding render. QA-onlya83 waits actual consumed binding/fallback boundary.",
+    "recorded-controls-native.log: attempted pointer click raced native element visibility; changed external control harness to focused trusted Enter, no product edit.",
+    "recorded-controls-native-corrected.log: valid controls/exactresult but observer timestamp asserted before same-task postresult warming; final helper captures actual result-verified DOM at fetch.",
+    "validate-recorded-native-attempt.log: same MutationObserver ordering assumption, corrected first8window; actual postresult DOM proof in final short variant."
+  ]
+}

@@ -1,0 +1,299 @@
+{
+  "classification": "Existing fictional native fixture only; exact exercised fixture JSON wire serializer and actual native canonical NDJSON serializer; no network or production material.",
+  "reviewed_frontend_commit": "15776b7d9d09a5e97c502984c4915ecdc97baaf6",
+  "deployment_commit": null,
+  "history_kind": "native_fixture",
+  "fixture_sha256": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce",
+  "first_case_matches_existing_browser_GET_byte_hashes": true,
+  "method": "Exact raw lexemes and structural subtrees interned in one JSON DAG; raw whitespace, escaping, ordering and numeric spelling retained. Decode bytes SHA/length/equality verified for every original response. No parsed-object reserialization used by codec. Compression uses Node builtin whole-body gzip6 and Brotli5, no dependencies.",
+  "limits": "Node CPU medians are local unthrottled warm measurements, not browser/mobile predictions. Offline whole-body compression is not the existing streaming gzip1 flush wire size. 0.15Mbps calculations are ideal payload-only lower bounds, excluding RTT, headers, competing assets, TLS, validation and paint. Native fixtures are not public production heads.",
+  "node": "v24.19.0",
+  "baselineJS": {
+    "bytes": 441496,
+    "sha256": "f8b435e01a0e6087ed462f7c6486409cc98ccf932b4f4389c91acfe6569fe35a",
+    "gzip6_bytes": 106591,
+    "br5_bytes": 96275
+  },
+  "first": {
+    "label": "recorded-first-case",
+    "files": 3,
+    "claims": 1,
+    "original_body_bytes": 6980306,
+    "original_individual_gzip6_bytes": 617738,
+    "original_individual_br5_bytes": 148083,
+    "original_concatenated_gzip6_bytes": 614408,
+    "original_concatenated_br5_bytes": 129133,
+    "packet_bytes": 572217,
+    "packet_gzip6_bytes": 155767,
+    "packet_br5_bytes": 141059,
+    "packet_sha256": "525ce327056d5e33382d6a40e82b20e1afcfd1da3836734d068ca4d1c4555a70",
+    "exact_original_bytes_reconstructed": true,
+    "originals": [
+      {
+        "claim_id": "clm_314f2d309fea25e6",
+        "kind": "zero",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_314f2d309fea25e6/replay-zero.json",
+        "bytes": 7709,
+        "sha256": "ff6d0edf4ca2ab4ef74771cef08ec9b60c7af13f24057dec0d525bc4debb1422"
+      },
+      {
+        "claim_id": "clm_314f2d309fea25e6",
+        "kind": "head",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_314f2d309fea25e6/head-snapshot.json",
+        "bytes": 1558774,
+        "sha256": "8bd0b247ea0e8bba3d34afda04a5edb5b7378423ba59851a2bdfd31a05575884"
+      },
+      {
+        "claim_id": "clm_314f2d309fea25e6",
+        "kind": "operations",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_314f2d309fea25e6/operations.ndjson",
+        "bytes": 5413823,
+        "sha256": "77e9be18160fa1de025c4bb2575e0bc01a6d5cefb2b3930715f77c108a745234"
+      }
+    ],
+    "cpu_node_ms": {
+      "offline_pack": 139.67808499999998,
+      "offline_gzip6": 16.853274999999996,
+      "offline_br5": 13.828651000000008,
+      "unpack_only": 68.61077,
+      "median4_original_JSONparse": 26.270264999999995,
+      "median4_packet_JSONparse_expand_original_JSONparse": 64.627613,
+      "median4_gzip_inflate_packet_expand_original_JSONparse": 72.19678499999998,
+      "median4_br_inflate_packet_expand_original_JSONparse": 81.16370500000005
+    },
+    "ideal_transfer_seconds_at_0_15_Mbps": {
+      "raw": 372.28298666666666,
+      "original_individual_gzip6": 32.94602666666667,
+      "original_individual_br5": 7.89776,
+      "packet_gzip6": 8.307573333333334,
+      "packet_br5": 7.523146666666666,
+      "JS_plus_packet_gzip6": 13.992426666666667,
+      "JS_plus_packet_br5": 12.657813333333333
+    }
+  },
+  "all": {
+    "label": "recorded-shared-nine",
+    "files": 27,
+    "claims": 9,
+    "original_body_bytes": 41912227,
+    "original_individual_gzip6_bytes": 4060408,
+    "original_individual_br5_bytes": 1037744,
+    "original_concatenated_gzip6_bytes": 4030038,
+    "original_concatenated_br5_bytes": 759899,
+    "packet_bytes": 3321567,
+    "packet_gzip6_bytes": 871195,
+    "packet_br5_bytes": 756117,
+    "packet_sha256": "4e055ff6abbe76c58aa24b2fadecede573dfc34f2d058c084f3221b9a2dda517",
+    "exact_original_bytes_reconstructed": true,
+    "originals": [
+      {
+        "claim_id": "clm_314f2d309fea25e6",
+        "kind": "zero",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_314f2d309fea25e6/replay-zero.json",
+        "bytes": 7709,
+        "sha256": "ff6d0edf4ca2ab4ef74771cef08ec9b60c7af13f24057dec0d525bc4debb1422"
+      },
+      {
+        "claim_id": "clm_314f2d309fea25e6",
+        "kind": "head",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_314f2d309fea25e6/head-snapshot.json",
+        "bytes": 1558774,
+        "sha256": "8bd0b247ea0e8bba3d34afda04a5edb5b7378423ba59851a2bdfd31a05575884"
+      },
+      {
+        "claim_id": "clm_314f2d309fea25e6",
+        "kind": "operations",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_314f2d309fea25e6/operations.ndjson",
+        "bytes": 5413823,
+        "sha256": "77e9be18160fa1de025c4bb2575e0bc01a6d5cefb2b3930715f77c108a745234"
+      },
+      {
+        "claim_id": "clm_4a07dbbbd859a3ce",
+        "kind": "zero",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_4a07dbbbd859a3ce/replay-zero.json",
+        "bytes": 8372,
+        "sha256": "e60fe99cf61cc0df1289bc57f553303480ad3ed0bdbb19ff0e57e608fbacc054"
+      },
+      {
+        "claim_id": "clm_4a07dbbbd859a3ce",
+        "kind": "head",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_4a07dbbbd859a3ce/head-snapshot.json",
+        "bytes": 1503474,
+        "sha256": "8b05cbf89e5f66c0516334a4974907099e9b3bbd4fccdcd80270655761a19b03"
+      },
+      {
+        "claim_id": "clm_4a07dbbbd859a3ce",
+        "kind": "operations",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_4a07dbbbd859a3ce/operations.ndjson",
+        "bytes": 5390520,
+        "sha256": "ab9a32702166794a7a498dbb1da0d234b21c25163f3455c75aeb44bf3ab9b756"
+      },
+      {
+        "claim_id": "clm_95d08975bc575592",
+        "kind": "zero",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_95d08975bc575592/replay-zero.json",
+        "bytes": 8300,
+        "sha256": "2d08c4079628f07b48e176b14fd672213c3965343fecb287e62353cd69c80831"
+      },
+      {
+        "claim_id": "clm_95d08975bc575592",
+        "kind": "head",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_95d08975bc575592/head-snapshot.json",
+        "bytes": 1502143,
+        "sha256": "4a341fa996efb364858bbf388eb5aeafa2bc10296cb249fd6c7e53c81a6018ae"
+      },
+      {
+        "claim_id": "clm_95d08975bc575592",
+        "kind": "operations",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_95d08975bc575592/operations.ndjson",
+        "bytes": 5386825,
+        "sha256": "16b05683eef66d669a7e0ac10a2b9b8bd1c0dbb63feff6e9ceda2a3d0ec0caf1"
+      },
+      {
+        "claim_id": "clm_0f4f13b1e3e1328c",
+        "kind": "zero",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_0f4f13b1e3e1328c/replay-zero.json",
+        "bytes": 9213,
+        "sha256": "5995daa82ea2e31af31beca10ce8b18f63368f19f924e1654a4da5cb7b22ac1a"
+      },
+      {
+        "claim_id": "clm_0f4f13b1e3e1328c",
+        "kind": "head",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_0f4f13b1e3e1328c/head-snapshot.json",
+        "bytes": 913412,
+        "sha256": "d80fdd4f0dd4004dae7d595f8b21c34fa399ad212528ba7eae5889c635f95691"
+      },
+      {
+        "claim_id": "clm_0f4f13b1e3e1328c",
+        "kind": "operations",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_0f4f13b1e3e1328c/operations.ndjson",
+        "bytes": 2109724,
+        "sha256": "7ae6059cfe75cf1291c3d29e2af7b6ff99d13c0dcd2d9209b9645b43db0ef3f6"
+      },
+      {
+        "claim_id": "clm_393285577dcb12c4",
+        "kind": "zero",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_393285577dcb12c4/replay-zero.json",
+        "bytes": 9758,
+        "sha256": "f84b447932790f9333371a1d6ece58cb7eacd45d589856c1e9c5603852b7b466"
+      },
+      {
+        "claim_id": "clm_393285577dcb12c4",
+        "kind": "head",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_393285577dcb12c4/head-snapshot.json",
+        "bytes": 881157,
+        "sha256": "5ab205753e0a2b71a87f5972644e8d1855333511f00874d0669a1ce9ae2fff9d"
+      },
+      {
+        "claim_id": "clm_393285577dcb12c4",
+        "kind": "operations",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_393285577dcb12c4/operations.ndjson",
+        "bytes": 2106882,
+        "sha256": "b54197d45a8f13dcb063b634beeb66ac3fa41167765a326b8d3080f948013712"
+      },
+      {
+        "claim_id": "clm_4a53299cfe619303",
+        "kind": "zero",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_4a53299cfe619303/replay-zero.json",
+        "bytes": 9761,
+        "sha256": "6717a6ce5824ad083d5e9ed5d4e139d8f65f5c47313e498da439e5928965d4f1"
+      },
+      {
+        "claim_id": "clm_4a53299cfe619303",
+        "kind": "head",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_4a53299cfe619303/head-snapshot.json",
+        "bytes": 876133,
+        "sha256": "fb42e4a569c74fd6d4508fd5de46f873a5be0300a87afa5b29febe73fe0b876c"
+      },
+      {
+        "claim_id": "clm_4a53299cfe619303",
+        "kind": "operations",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_4a53299cfe619303/operations.ndjson",
+        "bytes": 2100263,
+        "sha256": "5d07e3299ce5bc8ea5ae5d320b1c5f3ee1c1aad10c2b5f9291e74289b087f9a9"
+      },
+      {
+        "claim_id": "clm_2c55cdd816b1d0e8",
+        "kind": "zero",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_2c55cdd816b1d0e8/replay-zero.json",
+        "bytes": 9670,
+        "sha256": "c7186e55ae3dab3c2161240a2b7be0e7e8acfd7ea7208c361b4e0e79ea8ae719"
+      },
+      {
+        "claim_id": "clm_2c55cdd816b1d0e8",
+        "kind": "head",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_2c55cdd816b1d0e8/head-snapshot.json",
+        "bytes": 1075724,
+        "sha256": "c8d532306ccc91ec8fbf60d953cfd778e3c17b80f219fe74d752af1deff3fcff"
+      },
+      {
+        "claim_id": "clm_2c55cdd816b1d0e8",
+        "kind": "operations",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_2c55cdd816b1d0e8/operations.ndjson",
+        "bytes": 2992209,
+        "sha256": "c59976ab3f0b7153a84490b8381b6864624021afec78505c5663f34b66c7555c"
+      },
+      {
+        "claim_id": "clm_543f08f2415b2a33",
+        "kind": "zero",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_543f08f2415b2a33/replay-zero.json",
+        "bytes": 9516,
+        "sha256": "513e90ab7c6a8e1f6d9483b9aaed90e9a7bbedc22b9e993f9158b6c46c79941f"
+      },
+      {
+        "claim_id": "clm_543f08f2415b2a33",
+        "kind": "head",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_543f08f2415b2a33/head-snapshot.json",
+        "bytes": 1033531,
+        "sha256": "aec3a7d801cbd5106bff5c72028cbd484857b8852dfe3b0caea91fc9ee184a77"
+      },
+      {
+        "claim_id": "clm_543f08f2415b2a33",
+        "kind": "operations",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_543f08f2415b2a33/operations.ndjson",
+        "bytes": 2975688,
+        "sha256": "82f4ebfc458364cecd84a3be7b081bd2c1c3614a8d88536430ed2b9b31acbbb3"
+      },
+      {
+        "claim_id": "clm_7dbd7c7d1c4ddf90",
+        "kind": "zero",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_7dbd7c7d1c4ddf90/replay-zero.json",
+        "bytes": 8954,
+        "sha256": "345e28ba2ebf7b4c0dc0098d378dbe5cd949e87d3e7f95a24b37a77e888746b2"
+      },
+      {
+        "claim_id": "clm_7dbd7c7d1c4ddf90",
+        "kind": "head",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_7dbd7c7d1c4ddf90/head-snapshot.json",
+        "bytes": 1034259,
+        "sha256": "b20af0d53c9665d70ebca4648d754a76f0b1c49f23b5f77af87614948608169a"
+      },
+      {
+        "claim_id": "clm_7dbd7c7d1c4ddf90",
+        "kind": "operations",
+        "path": "/workspace/casepath-cold-start-review-20261015/recorded-wire-inputs/clm_7dbd7c7d1c4ddf90/operations.ndjson",
+        "bytes": 2976433,
+        "sha256": "07a354fd218b0bf1c42b85db2c114cba7e3461abe84be4f53167a8d2f4217484"
+      }
+    ],
+    "cpu_node_ms": {
+      "offline_pack": 751.9783769999999,
+      "offline_gzip6": 87.17113700000027,
+      "offline_br5": 71.47215500000038,
+      "unpack_only": 295.06492800000024,
+      "median4_original_JSONparse": 119.97817099999975,
+      "median4_packet_JSONparse_expand_original_JSONparse": 391.01273799999944,
+      "median4_gzip_inflate_packet_expand_original_JSONparse": 395.2000939999998,
+      "median4_br_inflate_packet_expand_original_JSONparse": 390.4386059999997
+    },
+    "ideal_transfer_seconds_at_0_15_Mbps": {
+      "raw": 2235.3187733333334,
+      "original_individual_gzip6": 216.55509333333333,
+      "original_individual_br5": 55.34634666666667,
+      "packet_gzip6": 46.46373333333333,
+      "packet_br5": 40.32624,
+      "JS_plus_packet_gzip6": 52.14858666666667,
+      "JS_plus_packet_br5": 45.460906666666666
+    }
+  }
+}

@@ -1,0 +1,13 @@
+AssertionError [ERR_ASSERTION]: idle collection and Knowledge do not compete with selected playback
+
+1 !== 0
+
+    at run (/workspace/casepath-recorded-packet-prototype-evidence-20261015/recorded-controls-native.cjs:33:1588)
+    at async /workspace/casepath-recorded-packet-prototype-evidence-20261015/recorded-controls-native.cjs:37:282 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

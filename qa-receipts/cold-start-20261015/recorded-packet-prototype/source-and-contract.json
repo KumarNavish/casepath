@@ -1,0 +1,51 @@
+{
+  "classification": "Cloud native-fixture packet prototype; actual published packet sizing is a separate Mac attestation, not independently retrieved here.",
+  "host": "656813ef2295",
+  "source_commit": "a83ab05bcf55ac390768e318cb829cd9d432a026",
+  "source_branch": "codex/casepath-recorded-opening-prototype-20261015",
+  "base_commit": "15776b7d9d09a5e97c502984c4915ecdc97baaf6",
+  "assets": {
+    "casepath/assets/autonomous-workspace-v1.js": "8b690c8065ed09100d75c575396ec3a137648161fb693296b4ea2c5fd65173e3",
+    "casepath/tools/pack_recorded_session.cjs": "bfb10a5d1dbca98a24c3d195c0be2cf68a2773978fc8df40d555f857bb8fd6bd",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "7c67b5d079c21a05bcca8c4272d13505d9077df98c9c21532ac6a9f0ba9067ad"
+  },
+  "history_kinds_separate": true,
+  "public_network_attempts": 0,
+  "production_writes": 0,
+  "full_suite_runs": 0,
+  "mount_contract": {
+    "recordedPacket": {
+      "url": "<same-origin packet JSON URL>",
+      "bytes": "<decoded packet JSON byte count>",
+      "sha256": "<decoded packet JSON SHA256>",
+      "deployment_commit": "<captured publication 40hex>",
+      "history_kind": "published_public_synthetic"
+    }
+  },
+  "native_QA_only_option": "allowNativeRecordedPacket:true",
+  "startup_budget_ms": 500,
+  "availability": "Packet asset must be verified and available before selection; late or incomplete preload cannot join selected session. Cases/navigation do not await readiness.",
+  "mac_attested_first_packet": {
+    "publication_head_revision": 48,
+    "publication_head_state_sha256": "df5f95e988c60ec91b36f7435375549ffc3c532103d51dfddd4a929ca8b3dcf4",
+    "body_bytes": 6940556,
+    "packet_bytes": 523167,
+    "packet_sha256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+    "gzip9_bytes": 141670,
+    "br5_bytes": 134965,
+    "pack_ms": 160,
+    "selected_decode_and_hash_ms": 34,
+    "attestation_source": "Mac integration owner user message; production bodies remain on Mac."
+  },
+  "environment": {
+    "temporary_root": "/workspace/casepath-recorded-packet-prototype-evidence-20261015/tmp",
+    "tmp_separate_near_full": true,
+    "configuration_changes": false,
+    "managed_proxy_and_CA_preserved": true
+  },
+  "mac_attested_nine_packet": {
+    "packet_bytes": 3094362,
+    "gzip9_bytes": 814935,
+    "attestation_source": "Mac integration owner; public input bodies remain on Mac."
+  }
+}
