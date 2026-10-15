@@ -1,0 +1,34 @@
+{
+  "classification": "Independent offline validation of exact Git-shipped published synthetic first-case packet; no native fixture substituted, no provider/product network or runtime recomputation.",
+  "source_commit": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "javascript_sha256": "364bc44c4a10a8a57afcaad28b765f476ba31ee2478d190b552fe9f7c74c74bb",
+  "packet_sha256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+  "bytes": 523167,
+  "capture_deployment_commit": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "history_kind": "published_public_synthetic",
+  "head": {
+    "claimId": "clm_314f2d309fea25e6",
+    "revision": 48,
+    "state_sha256": "df5f95e988c60ec91b36f7435375549ffc3c532103d51dfddd4a929ca8b3dcf4",
+    "event_sha256": "f9812537ef8e14ebf19f09c6fc027b11afee26a35ab62bcf61c23fbbe6d35f41"
+  },
+  "opening_full_head_reference_start_binding_release_catalog_valid": true,
+  "operations": 824,
+  "checkpoints": 21,
+  "trace_sha256": "cc564b73f04426080fb4e06f40fb9a070c3aceb847021e65fb2def09385e32c2",
+  "stored_binding_mode": "historical_recomputed",
+  "raw_body_hashes": {
+    "opening": {
+      "bytes": 7847,
+      "sha256": "7704ed58fdcbf2b5d19aebf66be86d8813cc839d4ec0f4f5d60403041db05308"
+    },
+    "head_snapshot": {
+      "bytes": 1511895,
+      "sha256": "9d77f68d23be9a4c0bd10c3eb991feefe35679fad326e16484c7d836859ef42e"
+    },
+    "operations": {
+      "bytes": 5420814,
+      "sha256": "a551e747d948b1d62ce41490fac6f28b571ed267fdc57fc59207bef0f8faa6dd"
+    }
+  }
+}

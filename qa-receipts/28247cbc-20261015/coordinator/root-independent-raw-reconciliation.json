@@ -1,0 +1,40 @@
+{
+  "candidate": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "classification": "FAILED_SUPERSEDED_UNPUBLISHED",
+  "performed_by": "root independent read-only raw audit; no test rerun",
+  "Cloud": {
+    "passed": 2475,
+    "failed": 1,
+    "skipped": 10,
+    "unique_ids": 2486,
+    "phase_rows": 7449
+  },
+  "JUnit_mapping": "all six raw JUnits exactly match selected observer IDs and outcomes; native outside-root tool cases have empty classname",
+  "partition": {
+    "full_inventory": 2613,
+    "Cloud": 2486,
+    "Mac_assigned": 127,
+    "disjoint": true,
+    "exact_union": true
+  },
+  "known_skips": "exact ten IDs, phase, source filename, line and reason match previous accepted list",
+  "Mac": "current owner-attested127pass only; raw Mac receipts independently retained/verified on Mac, no Cloud claim of reading them",
+  "with_current_Mac_attestation": {
+    "passed": 2602,
+    "failed": 1,
+    "skipped": 10
+  },
+  "source_proofs": {
+    "normal_clones": 7,
+    "before_after_bindings_match": true,
+    "source_files": 1708,
+    "artifact_files": 25,
+    "static_files": 38,
+    "manifest_sha256": "62bb41a293c3ad95fab19225d4c8d2af4c92937f285726bd2000e4f8bce640a2",
+    "capsule_receipt_file_sha256": "b7a5115261c40b0d9666946584461696cfbcb34b7d1c1004ec4f5f08d0ad7544",
+    "runtime_retirement": "finished shards1/2/3 runtime bytes retired only after archived actual before/after proofs; no claim bytes remain"
+  },
+  "failure_id": "casepath/tools/test_build_deployment_identity.py::test_curated_static_build_has_exact_runtime_inventory",
+  "retry_count": 0,
+  "verified_epoch": 1792099965.752595
+}

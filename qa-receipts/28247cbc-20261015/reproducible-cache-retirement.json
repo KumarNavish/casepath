@@ -1,0 +1,352 @@
+{
+  "epoch": 1792098298.6658766,
+  "before_free_bytes": 3766456320,
+  "after_free_bytes": 3767140352,
+  "scope": "Only generated CPython __pycache__/*.pyc with corresponding retained .py within the seven owned reusable venvs; no source, dependency .py/.so, Git, raw receipts, fixtures, or journals removed",
+  "venvs": [
+    {
+      "venv": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv",
+      "rebuildable_bytecode_file_count": 49,
+      "bytes": 547673,
+      "py_sources_preserved": true,
+      "removed_files": [
+        {
+          "path": "lib/python3.13/site-packages/__pycache__/_virtualenv.cpython-313.pyc",
+          "sha256": "03410802b11b5b7c2255a1e531ad1b2aeef1c10bfd83340d6a4a67e1b0a57aa0",
+          "size_bytes": 4886,
+          "source_path": "lib/python3.13/site-packages/_virtualenv.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/__pycache__/__init__.cpython-313.pyc",
+          "sha256": "16eb011c725f553be3b5a485b86d356ce465e78902bbd5fc3acb4cf4c8d0ed79",
+          "size_bytes": 4680,
+          "source_path": "lib/python3.13/site-packages/anyio/__init__.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/__pycache__/from_thread.cpython-313.pyc",
+          "sha256": "3eff1fb131db5dd7bfc6458ec637c112dcc0eb7ba7279db96345e0c63027c88a",
+          "size_bytes": 25500,
+          "source_path": "lib/python3.13/site-packages/anyio/from_thread.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/__pycache__/lowlevel.cpython-313.pyc",
+          "sha256": "ce378a0b745f758489671e0e977015c62b170772f7ff990e4f54bbd3d5a9117f",
+          "size_bytes": 8033,
+          "source_path": "lib/python3.13/site-packages/anyio/lowlevel.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/__pycache__/to_thread.cpython-313.pyc",
+          "sha256": "64ae370db6f237471647a4c358ab223c77ffeb2322f0b53abc3dd8611337fd54",
+          "size_bytes": 3121,
+          "source_path": "lib/python3.13/site-packages/anyio/to_thread.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_signals.cpython-313.pyc",
+          "sha256": "3f41a6245ae7e16fe873d2562af059edfa74002c9a2f633dbc50c0a548dc2db3",
+          "size_bytes": 1372,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_signals.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_tasks.cpython-313.pyc",
+          "sha256": "ea8a0b5977de45f60dbb1bf655be2a5924219876c41f9198f6afa1a889de6b0f",
+          "size_bytes": 7542,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_tasks.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_typedattr.cpython-313.pyc",
+          "sha256": "da11312f071c4be298c1bf4bd233ff92d00682226f7a4eae9f28caf2bacd0420",
+          "size_bytes": 3811,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_typedattr.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_eventloop.cpython-313.pyc",
+          "sha256": "bf0fcb21f7a1ae4bafd2e6a3dd901c60c13edf481ca0c52cc047cd6f251aaeb1",
+          "size_bytes": 8152,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_eventloop.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_synchronization.cpython-313.pyc",
+          "sha256": "39819f045abace1acf6289cb1570561880502df7d1674215c6445f04733ae94d",
+          "size_bytes": 32988,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_synchronization.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_testing.cpython-313.pyc",
+          "sha256": "8f7141d015b548faa3948a8edbd73f5e2df07f759f4a9ab47a3a1b1a19d74951",
+          "size_bytes": 3835,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_testing.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_contextmanagers.cpython-313.pyc",
+          "sha256": "fd8fd810e3eecb3180627ab90c7b9994f44101667be113986881661dba2d3cc4",
+          "size_bytes": 9100,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_contextmanagers.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_exceptions.cpython-313.pyc",
+          "sha256": "0c8e324f711a32531f24f76599c0cde5391ac6af79a1abc32b68d5efac05378e",
+          "size_bytes": 7688,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_exceptions.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_subprocesses.cpython-313.pyc",
+          "sha256": "cb250bd8e31cc8c70ca6fe11ea166fc59e76a034e4ee8f22e765f8724013871c",
+          "size_bytes": 9480,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_subprocesses.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_resources.cpython-313.pyc",
+          "sha256": "fa75785ca6d57d70e453f8f7925147bf54ca39c8fbf82cb0654876bd799411ea",
+          "size_bytes": 957,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_resources.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_sockets.cpython-313.pyc",
+          "sha256": "9302a5397c46303792e7f4e2daf41db85e9378d9cb392272436b81a6027195b1",
+          "size_bytes": 40141,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_sockets.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/__init__.cpython-313.pyc",
+          "sha256": "b738429e05bc9623843c01c67a20a161c97c3d4c3acffa5deb2678c76025b3ee",
+          "size_bytes": 221,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/__init__.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_fileio.cpython-313.pyc",
+          "sha256": "077ae0b5894570a8018d383c7cc536ab9d85e27500835dffb3676749321f7753",
+          "size_bytes": 43302,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_fileio.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_streams.cpython-313.pyc",
+          "sha256": "e4939e633d9c4597459c78a4e57ac1857775a4eae524a6680eac3fcc67118b23",
+          "size_bytes": 2409,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_streams.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/_core/__pycache__/_tempfile.cpython-313.pyc",
+          "sha256": "ababb3f565a865b43699af184e09187b88a430559297b16d3d407be762ddaf7d",
+          "size_bytes": 27937,
+          "source_path": "lib/python3.13/site-packages/anyio/_core/_tempfile.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/streams/__pycache__/memory.cpython-313.pyc",
+          "sha256": "89bf7edcaba1624838209365aeb278c28dc6f0a9c301ff6af417e6c48d5f3c23",
+          "size_bytes": 14965,
+          "source_path": "lib/python3.13/site-packages/anyio/streams/memory.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/streams/__pycache__/__init__.cpython-313.pyc",
+          "sha256": "6505b8b7590119675ab465d8835ba3f517ded6e350fa188f6abc7062b8adfc1c",
+          "size_bytes": 223,
+          "source_path": "lib/python3.13/site-packages/anyio/streams/__init__.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/streams/__pycache__/tls.cpython-313.pyc",
+          "sha256": "603c11b8ce5d75f52a92b06407049786c5e0ccfc0352e8e7ac66b930df7299df",
+          "size_bytes": 20130,
+          "source_path": "lib/python3.13/site-packages/anyio/streams/tls.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/streams/__pycache__/stapled.cpython-313.pyc",
+          "sha256": "6db915f58da87c7ab33e42f0748ab69c34f49d62a827510b2dcfc2e33975ded5",
+          "size_bytes": 7633,
+          "source_path": "lib/python3.13/site-packages/anyio/streams/stapled.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/abc/__pycache__/_tasks.cpython-313.pyc",
+          "sha256": "ea6601b10c9a31a5bd8f46e67dcb603c899d07b461026c58e98388bd57ffa2a0",
+          "size_bytes": 5010,
+          "source_path": "lib/python3.13/site-packages/anyio/abc/_tasks.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/abc/__pycache__/_eventloop.cpython-313.pyc",
+          "sha256": "2e3bb02f299672c315117514f6928d27b673834263cdf3dd06da81d7d9c4654a",
+          "size_bytes": 16451,
+          "source_path": "lib/python3.13/site-packages/anyio/abc/_eventloop.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/abc/__pycache__/_testing.cpython-313.pyc",
+          "sha256": "34090f4300411bff084e097ed11a42f02930180bdbaa3ac197949fbd4898d8dc",
+          "size_bytes": 2806,
+          "source_path": "lib/python3.13/site-packages/anyio/abc/_testing.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/abc/__pycache__/_subprocesses.cpython-313.pyc",
+          "sha256": "a03c5f3b54ed4006f4cd831c1dfe04976a39ceb9794711213286d7913c467d49",
+          "size_bytes": 3191,
+          "source_path": "lib/python3.13/site-packages/anyio/abc/_subprocesses.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/abc/__pycache__/_resources.cpython-313.pyc",
+          "sha256": "220cafa7f49b8aaddd39ef48ceadbcd856e3007e6317721b6968138f67c8bf83",
+          "size_bytes": 1702,
+          "source_path": "lib/python3.13/site-packages/anyio/abc/_resources.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/abc/__pycache__/_sockets.cpython-313.pyc",
+          "sha256": "e36d25232c2c1ce0dbd4ee8c6d0edb6af0364b58e636ed3b3fd46cf10d24ecf0",
+          "size_bytes": 18024,
+          "source_path": "lib/python3.13/site-packages/anyio/abc/_sockets.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/abc/__pycache__/__init__.cpython-313.pyc",
+          "sha256": "d27b4a077984a8560a39ee53a2a1850e209abb3be9f84599864d3c8b7b8393e0",
+          "size_bytes": 2415,
+          "source_path": "lib/python3.13/site-packages/anyio/abc/__init__.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/anyio/abc/__pycache__/_streams.cpython-313.pyc",
+          "sha256": "c7dcb158dadc87ab3600d3dd053cb79d730a635212dc6de487d2fcc7881a83de",
+          "size_bytes": 9803,
+          "source_path": "lib/python3.13/site-packages/anyio/abc/_streams.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/sniffio/__pycache__/__init__.cpython-313.pyc",
+          "sha256": "cdd7f9de57ff4c34b09f58914ecd7f373c1b43e4cbdc91fb2308580483a1648a",
+          "size_bytes": 493,
+          "source_path": "lib/python3.13/site-packages/sniffio/__init__.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/sniffio/__pycache__/_impl.cpython-313.pyc",
+          "sha256": "9e424fc27e927d7948b0c771023bc8d35d86705e203eb94208547066e666acd5",
+          "size_bytes": 3196,
+          "source_path": "lib/python3.13/site-packages/sniffio/_impl.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/sniffio/__pycache__/_version.cpython-313.pyc",
+          "sha256": "80a1716bf1968f51494a973472b5c350da047f266b5872d35957f7513d843977",
+          "size_bytes": 245,
+          "source_path": "lib/python3.13/site-packages/sniffio/_version.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/python_multipart/__pycache__/decoders.cpython-313.pyc",
+          "sha256": "ec00c9430289e711a61e31615f19be3a56f49492e36ab9654d196307b1468f37",
+          "size_bytes": 8237,
+          "source_path": "lib/python3.13/site-packages/python_multipart/decoders.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/python_multipart/__pycache__/multipart.cpython-313.pyc",
+          "sha256": "b282dd881165e0d37a51a09896018ef1fc51844bb2db744c498d76dbfacafd37",
+          "size_bytes": 67660,
+          "source_path": "lib/python3.13/site-packages/python_multipart/multipart.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/python_multipart/__pycache__/exceptions.cpython-313.pyc",
+          "sha256": "90429e418b87493449172f0d2e29beacd119e68ffbc194df2cfce8984e2d70e0",
+          "size_bytes": 1913,
+          "source_path": "lib/python3.13/site-packages/python_multipart/exceptions.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/python_multipart/__pycache__/__init__.cpython-313.pyc",
+          "sha256": "4042c53cf38a6770fffef126683d48e9d095e458e586fc9f1eb423732e51f279",
+          "size_bytes": 618,
+          "source_path": "lib/python3.13/site-packages/python_multipart/__init__.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/starlette/__pycache__/formparsers.cpython-313.pyc",
+          "sha256": "9d174cf80661941611939b4997c0f05e14e0b849d356218d3345e350ae6e55c8",
+          "size_bytes": 14595,
+          "source_path": "lib/python3.13/site-packages/starlette/formparsers.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/starlette/__pycache__/responses.cpython-313.pyc",
+          "sha256": "5710f12a4c09015485ad36984026b5c06a11787bd23d03ffa4c4ae27978e89c4",
+          "size_bytes": 30281,
+          "source_path": "lib/python3.13/site-packages/starlette/responses.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/starlette/__pycache__/types.cpython-313.pyc",
+          "sha256": "8e25487f1cc70944f2c47289365eebe3b6dc5e14b4e16912c7990f4122c03e83",
+          "size_bytes": 1397,
+          "source_path": "lib/python3.13/site-packages/starlette/types.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/starlette/__pycache__/exceptions.cpython-313.pyc",
+          "sha256": "6ede7cd98cf92dd280adaa8ba600c10dbff3666cca4c7a840f95ab06eb7f4c50",
+          "size_bytes": 2540,
+          "source_path": "lib/python3.13/site-packages/starlette/exceptions.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/starlette/__pycache__/_utils.cpython-313.pyc",
+          "sha256": "a52c08a770a26826d1083682dd037a5d443324009b0e3f5adbd19cd4f955be19",
+          "size_bytes": 5385,
+          "source_path": "lib/python3.13/site-packages/starlette/_utils.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/starlette/__pycache__/background.cpython-313.pyc",
+          "sha256": "19366e2c413f0e390abb443258b849efdc13e1e30cf6cde7fde984953773b1ed",
+          "size_bytes": 2826,
+          "source_path": "lib/python3.13/site-packages/starlette/background.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/starlette/__pycache__/__init__.cpython-313.pyc",
+          "sha256": "3c36cca3234b5fed8ac50d111121a52332d3e992946b07c6b2bd548b23c96b43",
+          "size_bytes": 246,
+          "source_path": "lib/python3.13/site-packages/starlette/__init__.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/starlette/__pycache__/concurrency.cpython-313.pyc",
+          "sha256": "78427cc5b6d0ae79925fc74fa2ad1ba8124bc9a72901bceccf9ee2b4b8b08bb9",
+          "size_bytes": 3430,
+          "source_path": "lib/python3.13/site-packages/starlette/concurrency.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/starlette/__pycache__/datastructures.cpython-313.pyc",
+          "sha256": "3a437970937c25b09316ff8cf897fc8c88a7c5b1ea365cd7761376097df21915",
+          "size_bytes": 40357,
+          "source_path": "lib/python3.13/site-packages/starlette/datastructures.py"
+        },
+        {
+          "path": "lib/python3.13/site-packages/starlette/__pycache__/requests.cpython-313.pyc",
+          "sha256": "dfba5e150155ba1460d5741c024b8ed145b1c1cd14b2b9532c869c6371c0547f",
+          "size_bytes": 16746,
+          "source_path": "lib/python3.13/site-packages/starlette/requests.py"
+        }
+      ]
+    },
+    {
+      "venv": "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/venv",
+      "rebuildable_bytecode_file_count": 0,
+      "bytes": 0,
+      "py_sources_preserved": true,
+      "removed_files": []
+    },
+    {
+      "venv": "/workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/venv",
+      "rebuildable_bytecode_file_count": 0,
+      "bytes": 0,
+      "py_sources_preserved": true,
+      "removed_files": []
+    },
+    {
+      "venv": "/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv",
+      "rebuildable_bytecode_file_count": 0,
+      "bytes": 0,
+      "py_sources_preserved": true,
+      "removed_files": []
+    },
+    {
+      "venv": "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv",
+      "rebuildable_bytecode_file_count": 0,
+      "bytes": 0,
+      "py_sources_preserved": true,
+      "removed_files": []
+    },
+    {
+      "venv": "/workspace/casepath-release-ae0-shard5/.runtime/casepath-dev-v2/venv",
+      "rebuildable_bytecode_file_count": 0,
+      "bytes": 0,
+      "py_sources_preserved": true,
+      "removed_files": []
+    },
+    {
+      "venv": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv",
+      "rebuildable_bytecode_file_count": 0,
+      "bytes": 0,
+      "py_sources_preserved": true,
+      "removed_files": []
+    }
+  ]
+}

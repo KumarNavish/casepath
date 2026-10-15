@@ -1,0 +1,18 @@
+{
+  "classification": "Contention disclosure correction only; no measurement rerun. Raw measurement, lifecycle, runner and timing results are unchanged.",
+  "original_statement": "One unrelated heavy QA shard was active; owner paused queued shards before GO. No dedicated CPU isolation.",
+  "original_receipt_sha256": "13ba84d83a0a444465ecfc7c7f8880e1a026a065e31690e958cc9dac31c46c11",
+  "original_statement_basis": "Scheduling expectation at GO; independent completion timestamps later showed the remaining heavy shard had already finished.",
+  "scheduler_evidence_source": "Parent supplied independent raw shard1 result.finished_epoch and queued-shards start epochs; original scheduler artifacts remain with owner.",
+  "timeline": {
+    "last_heavy_pytest_finished_epoch": "1792099119.434688",
+    "recorded_measurement_wall_started": "2026-10-15T21:18:39.614Z",
+    "recorded_measurement_started_epoch": "1792099119.614",
+    "last_heavy_shard_finished_before_start_ms": 179.312,
+    "recorded_measurement_wall_ended": "2026-10-15T21:18:43.898Z",
+    "recorded_measurement_ended_epoch": "1792099123.898",
+    "queued_shards4_6_unstarted_until_epoch": "1792099176.15",
+    "queued_shards_started_after_end_ms": 52252.0
+  },
+  "corrected_statement": "No heavy pytest overlapped the recorded browser measurement interval. The last heavy shard finished179.312ms before recorded measurement start; queued shards4\u20136 remained unstarted until52.252s after measurement end. Scheduler was paused. A lightweight monitor may still have existed; no dedicated CPU isolation is claimed."
+}

@@ -1,0 +1,15 @@
+{
+  "candidate": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "archive": "/workspace/casepath-startup-gate-28247cbc-20261015-raw-evidence.tar.gz",
+  "archive_sha256": "1f82100750fcdde39c1a1dee55bdf216a55a88192ae5f99d9f4ea963871d869f",
+  "archive_size_bytes": 3272202,
+  "file_count_excluding_checksum_manifest": 263,
+  "checksum_manifest": "/workspace/casepath-startup-gate-28247cbc-20261015/raw-evidence-files-SHA256SUMS.txt",
+  "checksum_manifest_sha256": "d7992c890dfb445fe60d5d5065c8047de095aff79687005b38886d66a8c99092",
+  "created_epoch": 1792100133.727005,
+  "gate_status": "FAILED_SUPERSEDED",
+  "cloud_failed": 1,
+  "candidate_status": "SUPERSEDED_UNPUBLISHED",
+  "includes": "every raw collection/attempt/phase/JUnit/result/prepare/source proof, exact assignment IDs, source and artifact manifests, authorization, resource and cleanup receipts, QA scripts, coordinator and independent review evidence available at bundle creation",
+  "excludes": "dependency caches, pycache, temporary passing fixtures and runtime DBs; original evidence and failed fixtures remain preserved on host; Mac raw phase/JUnit receipts absent in Cloud"
+}

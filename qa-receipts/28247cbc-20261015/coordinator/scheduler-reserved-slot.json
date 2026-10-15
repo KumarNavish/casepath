@@ -1,0 +1,25 @@
+{
+  "candidate": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "dispatch_pid": 944165,
+  "signal": "SIGSTOP",
+  "epoch": 1792098948.9227703,
+  "scope": "Scheduler process only; running pytest and wrapper descendants receive no signal",
+  "purpose": "Root relayed user-authorized one native Chromium firstdock measurement in first freed heavy slot before queued nextshard launch",
+  "max_heavy_total": 3,
+  "status": "RESUMED_AFTER_SINGLE_AUTHORIZED_MEASUREMENT",
+  "no_test_stop_restart_or_retry": true,
+  "queued_shards": [
+    4,
+    5,
+    6
+  ],
+  "process_observation": "    PID    PPID STAT COMMAND\n 944165  944161 Tl   python\n",
+  "resume_epoch": 1792099175.3976939,
+  "resume_signal": "SIGCONT",
+  "root_measurement_exit_code": 0,
+  "root_measurement_browser_closed": true,
+  "root_measurement_own_profile_cleaned": true,
+  "no_measurement_repeat": true,
+  "free_bytes_on_resume": 3317096448,
+  "process_observation_after_resume": "    PID    PPID STAT COMMAND\n 944165  944161 Sl   python\n"
+}

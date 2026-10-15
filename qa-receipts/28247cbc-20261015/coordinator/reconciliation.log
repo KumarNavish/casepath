@@ -1,0 +1,101 @@
+{
+  "candidate": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "full_inventory": 2613,
+  "cloud_assigned": 2486,
+  "cloud_passed": 2475,
+  "cloud_known_skipped": 10,
+  "cloud_failed": 1,
+  "cloud_failures": {
+    "casepath/tools/test_build_deployment_identity.py::test_curated_static_build_has_exact_runtime_inventory": {
+      "id": "casepath/tools/test_build_deployment_identity.py::test_curated_static_build_has_exact_runtime_inventory",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 0.012576069915667176,
+      "utc_epoch": 1792099641.9715474,
+      "failure": "tmp_path = PosixPath('/workspace/casepath-startup-gate-28247cbc-20261015/shard4/pytest-tmp/test_curated_static_build_has_0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fec8e9d6120>\n\n    def test_curated_static_build_has_exact_runtime_inventory(\n        tmp_path: Path,\n        monkeypatch,\n    ) -> None:\n        output = tmp_path / static_site.OUTPUT_DIRECTORY_NAME\n        monkeypatch.setattr(static_site, \"DEFAULT_OUTPUT\", output)\n        payload = static_site.build_static_site(output, {})\n    \n        assert payload[\"source_commit\"] == \"unknown\"\n        assert payload[\"alignment_eligible\"] is False\n        files, directories = static_site.inventory(output)\n        expected_files = {\n            \"assets/autonomous-demo-packets.json\",\n            \"assets/autonomous-workspace-v1.js\", \"assets/autonomous-workspace-v1.css\", \"assets/autonomous-entry-v1.js\",\n            \"_headers\", \"index.html\", \"corpus.html\", \"method.html\", \"research.html\",\n            \"release.json\", \"deployment.json\",\n            \"assets/corpus.css\", \"assets/corpus.js\", \"assets/corpus-index.json\",\n            \"assets/method-guide.css\", \"assets/method-guide-data.json\",\n            \"assets/research-evidence.css\", \"assets/paired-study-evidence.json\",\n            \"assets/native-study-evidence.json\",\n            \"assets/claims-workspace-v1.css\", \"assets/claims-workspace-v1.js\",\n            \"assets/claims-workspace-presentation-v1.js\",\n            \"assets/claims-workspace-presentation-v1.css\",\n            \"assets/agent-work-v1.js\", \"assets/agent-work-v1.css\",\n            \"assets/causal-process-v1.js\", \"assets/causal-process-v1.css\",\n            \"assets/process-evidence-v2.css\", \"assets/process-evidence-v2.js\",\n            \"assets/agent-claim-v2.js\", \"assets/agent-desk-v2.js\",\n            \"assets/agent-native-v2.css\",\n            \"assets/agent-work-motion-v3.js\",\n            \"assets/fonts/Merriweather-Light.ttf\", \"assets/fonts/Merriweather-OFL.txt\",\n            \"assets/fonts/OpenSans-VariableFont_wdth-wght.ttf\",\n            \"assets/fonts/Open_Sans-OFL.txt\",\n        }\n>       assert files == static_site.PUBLIC_INVENTORY == expected_files\nE       AssertionError: assert frozenset({'_...v1.css', ...}) == {'_headers', ...-v1.css', ...}\nE         \nE         Extra items in the left set:\nE         'assets/autonomous-recorded-heating-v1.json'\nE         Use -v to get more diff\n\ncasepath/tools/test_build_deployment_identity.py:107: AssertionError"
+    }
+  },
+  "status": "FAILED_SUPERSEDED",
+  "mac_attestation_status": "OWNER_ATTESTED",
+  "mac_attested_passed": 127,
+  "combined_passed_with_mac_attestation": 2602,
+  "mac_raw_receipts_not_local": true,
+  "mac_source_clean_before": null,
+  "mac_source_clean_after": true,
+  "mac_attestation_verbatim": "127 passed, exit0,129.25s,1708sourcefilesverified,manifest62bb41...,clean source after. Raw reports/JUnit retained F17/gate.",
+  "no_overlap_or_gaps": true,
+  "selected_attempts_per_shard": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "authorized_full_shard_rechecks": 0,
+  "initial_setup_failures_preserved": false,
+  "source_capsule_unchanged": true,
+  "known_skips_exact_phase_file_line_reason": true,
+  "shards": [
+    {
+      "shard": 1,
+      "tests": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failed": 0,
+      "native_exit_code": 0,
+      "runner_seconds": 616.6931817531586,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 2,
+      "tests": 421,
+      "passed": 421,
+      "skipped": 0,
+      "failed": 0,
+      "native_exit_code": 0,
+      "runner_seconds": 497.0838394165039,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 3,
+      "tests": 643,
+      "passed": 642,
+      "skipped": 1,
+      "failed": 0,
+      "native_exit_code": 0,
+      "runner_seconds": 491.5333559513092,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 4,
+      "tests": 391,
+      "passed": 390,
+      "skipped": 0,
+      "failed": 1,
+      "native_exit_code": 1,
+      "runner_seconds": 467.9501371383667,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 5,
+      "tests": 346,
+      "passed": 346,
+      "skipped": 0,
+      "failed": 0,
+      "native_exit_code": 0,
+      "runner_seconds": 473.46736669540405,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 6,
+      "tests": 676,
+      "passed": 667,
+      "skipped": 9,
+      "failed": 0,
+      "native_exit_code": 0,
+      "runner_seconds": 471.63173508644104,
+      "all_raw_phases_and_junit_ids_exact": true
+    }
+  ]
+}

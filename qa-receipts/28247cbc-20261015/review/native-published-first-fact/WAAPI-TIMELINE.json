@@ -1,0 +1,546 @@
+{
+  "first_fact_operation": "op_1715b98c5f009b94cad03526c1c661be",
+  "animations": [
+    {
+      "id": 1,
+      "kind": "sweep",
+      "operation": "op_1715b98c5f009b94cad03526c1c661be",
+      "at": 1192.3999999761581,
+      "duration": 700,
+      "classes": "au-operation-attention",
+      "selected_ms": 837.6
+    },
+    {
+      "id": 2,
+      "kind": "flight",
+      "operation": "op_1715b98c5f009b94cad03526c1c661be",
+      "at": 1923.1000000238419,
+      "duration": 600,
+      "classes": "au-operation-fact-token",
+      "selected_ms": 1568.3
+    }
+  ],
+  "lifecycle": [
+    {
+      "id": 1,
+      "kind": "created",
+      "at": 1192.6000000238419,
+      "startTime": null,
+      "currentTime": 0,
+      "pending": true,
+      "playState": "running",
+      "selected_ms": 837.8
+    },
+    {
+      "id": 1,
+      "kind": "ready",
+      "at": 1221,
+      "startTime": 1203.7659999914467,
+      "currentTime": 16.734000008553185,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 866.2
+    },
+    {
+      "id": 1,
+      "kind": "finished-promise",
+      "at": 1921.2000000476837,
+      "startTime": 1203.7659999914467,
+      "currentTime": 700,
+      "pending": false,
+      "playState": "finished",
+      "selected_ms": 1566.4
+    },
+    {
+      "id": 1,
+      "kind": "finish-event",
+      "at": 1921.5,
+      "startTime": 1203.7659999914467,
+      "currentTime": 700,
+      "pending": false,
+      "playState": "finished",
+      "selected_ms": 1566.7
+    },
+    {
+      "id": 1,
+      "kind": "cancel-called",
+      "at": 1921.7000000476837,
+      "startTime": 1203.7659999914467,
+      "currentTime": 700,
+      "pending": false,
+      "playState": "finished",
+      "selected_ms": 1566.9
+    },
+    {
+      "id": 2,
+      "kind": "created",
+      "at": 1923.1000000238419,
+      "startTime": null,
+      "currentTime": 0,
+      "pending": true,
+      "playState": "running",
+      "selected_ms": 1568.3
+    },
+    {
+      "id": 2,
+      "kind": "ready",
+      "at": 1937.7000000476837,
+      "startTime": 1920.4039999749511,
+      "currentTime": 16.59600002504891,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 1582.9
+    },
+    {
+      "id": 1,
+      "kind": "cancel-event",
+      "at": 1937.7999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 1583.0
+    },
+    {
+      "id": 2,
+      "kind": "finished-promise",
+      "at": 2537.7000000476837,
+      "startTime": 1920.4039999749511,
+      "currentTime": 600,
+      "pending": false,
+      "playState": "finished",
+      "selected_ms": 2182.9
+    },
+    {
+      "id": 2,
+      "kind": "finish-event",
+      "at": 2537.7999999523163,
+      "startTime": 1920.4039999749511,
+      "currentTime": 600,
+      "pending": false,
+      "playState": "finished",
+      "selected_ms": 2183.0
+    },
+    {
+      "id": 1,
+      "kind": "cancel-called",
+      "at": 2847.5,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2492.7
+    },
+    {
+      "id": 2,
+      "kind": "cancel-called",
+      "at": 2847.600000023842,
+      "startTime": 1920.4039999749511,
+      "currentTime": 600,
+      "pending": false,
+      "playState": "finished",
+      "selected_ms": 2492.8
+    },
+    {
+      "id": 2,
+      "kind": "cancel-event",
+      "at": 2855.2999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2500.5
+    },
+    {
+      "id": 2,
+      "kind": "cancel-called",
+      "at": 3611.7999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 3257.0
+    },
+    {
+      "id": 2,
+      "kind": "cancel-called",
+      "at": 3612,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 3257.2
+    }
+  ],
+  "samples_100ms": [
+    {
+      "id": 1,
+      "at": 1226.2000000476837,
+      "startTime": 1203.7659999914467,
+      "currentTime": 16.734000008553185,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 871.4
+    },
+    {
+      "id": 1,
+      "at": 1326.2000000476837,
+      "startTime": 1203.7659999914467,
+      "currentTime": 116.73400000855327,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 971.4
+    },
+    {
+      "id": 1,
+      "at": 1426.2000000476837,
+      "startTime": 1203.7659999914467,
+      "currentTime": 216.6340000085534,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 1071.4
+    },
+    {
+      "id": 1,
+      "at": 1526.1000000238419,
+      "startTime": 1203.7659999914467,
+      "currentTime": 316.7340000085532,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 1171.3
+    },
+    {
+      "id": 1,
+      "at": 1626.2999999523163,
+      "startTime": 1203.7659999914467,
+      "currentTime": 416.63400000855336,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 1271.5
+    },
+    {
+      "id": 1,
+      "at": 1726.2999999523163,
+      "startTime": 1203.7659999914467,
+      "currentTime": 516.6340000085532,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 1371.5
+    },
+    {
+      "id": 1,
+      "at": 1826.2000000476837,
+      "startTime": 1203.7659999914467,
+      "currentTime": 616.6340000085532,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 1471.4
+    },
+    {
+      "id": 1,
+      "at": 1926.2999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 1571.5
+    },
+    {
+      "id": 2,
+      "at": 1926.2999999523163,
+      "startTime": null,
+      "currentTime": 0,
+      "pending": true,
+      "playState": "running",
+      "selected_ms": 1571.5
+    },
+    {
+      "id": 1,
+      "at": 2026.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 1671.4
+    },
+    {
+      "id": 2,
+      "at": 2026.2000000476837,
+      "startTime": 1920.4039999749511,
+      "currentTime": 99.99600002504883,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 1671.4
+    },
+    {
+      "id": 1,
+      "at": 2126.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 1771.4
+    },
+    {
+      "id": 2,
+      "at": 2126.2000000476837,
+      "startTime": 1920.4039999749511,
+      "currentTime": 199.99600002504891,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 1771.4
+    },
+    {
+      "id": 1,
+      "at": 2226.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 1871.4
+    },
+    {
+      "id": 2,
+      "at": 2226.2000000476837,
+      "startTime": 1920.4039999749511,
+      "currentTime": 299.996000025049,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 1871.4
+    },
+    {
+      "id": 1,
+      "at": 2326.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 1971.4
+    },
+    {
+      "id": 2,
+      "at": 2326.2000000476837,
+      "startTime": 1920.4039999749511,
+      "currentTime": 399.99600002504866,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 1971.4
+    },
+    {
+      "id": 1,
+      "at": 2426.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2071.4
+    },
+    {
+      "id": 2,
+      "at": 2426.2000000476837,
+      "startTime": 1920.4039999749511,
+      "currentTime": 499.9960000250487,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 2071.4
+    },
+    {
+      "id": 1,
+      "at": 2526.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2171.4
+    },
+    {
+      "id": 2,
+      "at": 2526.2000000476837,
+      "startTime": 1920.4039999749511,
+      "currentTime": 599.9960000250488,
+      "pending": false,
+      "playState": "running",
+      "selected_ms": 2171.4
+    },
+    {
+      "id": 1,
+      "at": 2626.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2271.4
+    },
+    {
+      "id": 2,
+      "at": 2626.2000000476837,
+      "startTime": 1920.4039999749511,
+      "currentTime": 600,
+      "pending": false,
+      "playState": "finished",
+      "selected_ms": 2271.4
+    },
+    {
+      "id": 1,
+      "at": 2726.2999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2371.5
+    },
+    {
+      "id": 2,
+      "at": 2726.2999999523163,
+      "startTime": 1920.4039999749511,
+      "currentTime": 600,
+      "pending": false,
+      "playState": "finished",
+      "selected_ms": 2371.5
+    },
+    {
+      "id": 1,
+      "at": 2826.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2471.4
+    },
+    {
+      "id": 2,
+      "at": 2826.2000000476837,
+      "startTime": 1920.4039999749511,
+      "currentTime": 600,
+      "pending": false,
+      "playState": "finished",
+      "selected_ms": 2471.4
+    },
+    {
+      "id": 1,
+      "at": 2926.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2571.4
+    },
+    {
+      "id": 2,
+      "at": 2926.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2571.4
+    },
+    {
+      "id": 1,
+      "at": 3026.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2671.4
+    },
+    {
+      "id": 2,
+      "at": 3026.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2671.4
+    },
+    {
+      "id": 1,
+      "at": 3126.2999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2771.5
+    },
+    {
+      "id": 2,
+      "at": 3126.2999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2771.5
+    },
+    {
+      "id": 1,
+      "at": 3226.2999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2871.5
+    },
+    {
+      "id": 2,
+      "at": 3226.2999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2871.5
+    },
+    {
+      "id": 1,
+      "at": 3326.2999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2971.5
+    },
+    {
+      "id": 2,
+      "at": 3326.2999999523163,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 2971.5
+    },
+    {
+      "id": 1,
+      "at": 3426.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 3071.4
+    },
+    {
+      "id": 2,
+      "at": 3426.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 3071.4
+    },
+    {
+      "id": 1,
+      "at": 3526.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 3171.4
+    },
+    {
+      "id": 2,
+      "at": 3526.2000000476837,
+      "startTime": null,
+      "currentTime": null,
+      "pending": false,
+      "playState": "idle",
+      "selected_ms": 3171.4
+    }
+  ]
+}

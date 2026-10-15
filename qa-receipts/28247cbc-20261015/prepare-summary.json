@@ -1,0 +1,76 @@
+{
+  "candidate": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "before_free_bytes": 4060831744,
+  "after_free_bytes": 3322056704,
+  "minimum_headroom_bytes": 3221225472,
+  "adequate_headroom": true,
+  "prepared": [
+    "/workspace/casepath-release-ae0-inventory",
+    "/workspace/casepath-release-ae0-shard1",
+    "/workspace/casepath-release-ae0-shard2",
+    "/workspace/casepath-release-ae0-shard3",
+    "/workspace/casepath-release-ae0-shard4",
+    "/workspace/casepath-release-ae0-shard5",
+    "/workspace/casepath-release-ae0-shard6"
+  ],
+  "tests_launched": false,
+  "max_heavy_preparation_workers": 3,
+  "worker_pids": [
+    943129,
+    943251,
+    943637
+  ],
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "xhigh",
+  "results": [
+    {
+      "cwd": "/workspace/casepath-release-ae0-inventory",
+      "exit_code": 0,
+      "after_head": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+      "after_status": "",
+      "duration_seconds": 10.378257989883423
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard1",
+      "exit_code": 0,
+      "after_head": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+      "after_status": "",
+      "duration_seconds": 9.770922422409058
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard2",
+      "exit_code": 0,
+      "after_head": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+      "after_status": "",
+      "duration_seconds": 9.53428840637207
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard3",
+      "exit_code": 0,
+      "after_head": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+      "after_status": "",
+      "duration_seconds": 8.885173797607422
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard4",
+      "exit_code": 0,
+      "after_head": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+      "after_status": "",
+      "duration_seconds": 8.988603591918945
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard5",
+      "exit_code": 0,
+      "after_head": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+      "after_status": "",
+      "duration_seconds": 8.855448007583618
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard6",
+      "exit_code": 0,
+      "after_head": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+      "after_status": "",
+      "duration_seconds": 8.566847324371338
+    }
+  ]
+}

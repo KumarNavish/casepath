@@ -1,0 +1,15 @@
+# Legacy eleven-step saved opening
+
+Read-only diagnosis at28247cbc87785b366fa542bb0aa0bd5f37e6c2e3; JS SHA256364bc44c4a10a8a57afcaad28b765f476ba31ee2478d190b552fe9f7c74c74bb. Target supplied by the integration owner:clm_2a9c260c26afaa34, recorded revision15,11 nodes/13 edges, no operation trace. No new runtime test, browser/profile, API request or product edit was performed.
+
+Source references below are in casepath/assets/autonomous-workspace-v1.js:
+
+- Plain #autonomous/claim/ID defaults to saved mode in routeChanged:1876/openClaim:2471. It first tries paintSavedClaim:2462, then loadOpenedClaim:2425→consistentRead:2361. A cold supported server needs one atomic snapshot?after=0; availability starts independently. Only an unavailable snapshot capability falls back to the older claim-plus-events reads. Existing checked memory/session snapshots can already paint a saved copy while fresh refresh continues.
+- mode=replay&collection=legacy&through=15 displays the actual recorded prefix15 via readReplay. Omitting through defaults to0; it does not select revision15. claimFragment:1494 and openClaim's through default preserve that distinction. The earlier-recording picker starts legacy state-prefix replay from0.
+- New speculative/atomic operation-head preparation:2878, release outlines and the500ms Recorded-packet choice:3174 apply to allowed reference operations, not this legacy saved case. The shipped first-heating packet does not contain it. No new reference change improves its cold saved-view dependency; no operation trace may be invented for it.
+
+With a necessary response taking about3s, a newly verified current-latest saved map cannot appear within1s after selection. Concurrency cannot remove that response floor. A structural outline alone is not the actual saved graph/content and cannot replace full saved-state validation.
+
+Smallest principled option: make the exact published revision15 full saved representation available before selection:state, matching projection, complete events1–15 and required source/citation/receipt material, pinned by captured claim/revision/state/event/body identities. Validate the canonical state and existing generic readSnapshot/checkedSavedSnapshot:1728 checks, retaining published capture provenance. Reuse existing saved-copy rendering with freshClaim=false and an honest Recorded revision15/Saved copy refreshing presentation while the independent current snapshot GET completes. Do not apply checkedAtomicOperationHead:1761, whose reference-run admission is nine-specific, or relabel the snapshot as fresh/current before that GET.
+
+An exact historical replay15 envelope is another truthful representation if the route explicitly selects that prefix; never fabricate its replay provenance from a saved envelope. The initial asset must actually finish acquisition and validation before selection to meet the proposed target. Its download/validation still costs time; no measured sub-second result or cold-initial-navigation guarantee is claimed. Existing epoch, route, visibility, inspection and fresh-identity guards must remain.

@@ -1,0 +1,56 @@
+{
+  "epoch": 1792098347.7662091,
+  "before_free_bytes": 3767119872,
+  "after_free_bytes": 4060831744,
+  "cache_paths": [
+    {
+      "path": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/uv-cache",
+      "successful_prepare_receipt": "/workspace/casepath-source-wrap-gate-cbfa10ad-20261015/inventory/prepare.json",
+      "bytes": 17870934,
+      "files": 71,
+      "rebuild": "uv cache populated by exact pinned ./bin/casepath prepare; package locks/source retained",
+      "excluded_from_prior_raw_bundles": true
+    },
+    {
+      "path": "/workspace/casepath-transport-gate-0a213e47-20261015/uv-cache",
+      "successful_prepare_receipt": "/workspace/casepath-transport-gate-0a213e47-20261015/inventory/prepare.json",
+      "bytes": 17869814,
+      "files": 71,
+      "rebuild": "uv cache populated by exact pinned ./bin/casepath prepare; package locks/source retained",
+      "excluded_from_prior_raw_bundles": true
+    },
+    {
+      "path": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/uv-cache",
+      "successful_prepare_receipt": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/inventory/prepare.json",
+      "bytes": 17867590,
+      "files": 71,
+      "rebuild": "uv cache populated by exact pinned ./bin/casepath prepare; package locks/source retained",
+      "excluded_from_prior_raw_bundles": true
+    },
+    {
+      "path": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/uv-cache",
+      "successful_prepare_receipt": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/inventory/prepare.json",
+      "bytes": 17867590,
+      "files": 71,
+      "rebuild": "uv cache populated by exact pinned ./bin/casepath prepare; package locks/source retained",
+      "excluded_from_prior_raw_bundles": true
+    },
+    {
+      "path": "/workspace/casepath-visible-agent-gate-7904c805-20261015/uv-cache",
+      "successful_prepare_receipt": "/workspace/casepath-visible-agent-gate-7904c805-20261015/inventory/prepare.json",
+      "bytes": 17867006,
+      "files": 71,
+      "rebuild": "uv cache populated by exact pinned ./bin/casepath prepare; package locks/source retained",
+      "excluded_from_prior_raw_bundles": true
+    },
+    {
+      "path": "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/uv-cache",
+      "successful_prepare_receipt": "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/inventory/prepare.json",
+      "bytes": 192444154,
+      "files": 3839,
+      "rebuild": "uv cache populated by exact pinned ./bin/casepath prepare; package locks/source retained",
+      "excluded_from_prior_raw_bundles": true
+    }
+  ],
+  "preserved": "all gate raw files/receipts, Git/source, venvs, failed/interrupted fixtures, journals"
+}

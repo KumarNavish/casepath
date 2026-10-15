@@ -1,0 +1,46 @@
+{
+  "candidate": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "cwd": "/workspace/casepath-release-ae0-shard2",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/nh2",
+    "TMPDIR": "/workspace/nt2",
+    "TMP": "/workspace/nt2",
+    "TEMP": "/workspace/nt2",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-startup-gate-28247cbc-20261015/shard2/pycache",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-startup-gate-28247cbc-20261015/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "UV_PYTHON_INSTALL_DIR": "/workspace/.local/share/uv/python"
+  },
+  "started_epoch": 1792098395.135521,
+  "before_head": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "before_status": "",
+  "manifest_sha256": "62bb41a293c3ad95fab19225d4c8d2af4c92937f285726bd2000e4f8bce640a2",
+  "canonical_fetched_head": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "canonical_fetch_source": "/workspace/casepath-recorded-opening-prototype-20261015",
+  "canonical_local_fetch_log": "/workspace/casepath-startup-gate-28247cbc-20261015/shard2/fetch.log",
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "internal_launcher_env_contract": "Exact source preserved: stdlib env-i probes omit temp aliases; locked/product env-i uses controlled runtime TMPDIR only."
+}

@@ -1,0 +1,52 @@
+{
+  "epoch": 1792099906.598895,
+  "free_bytes": 3524952064,
+  "tmp_free_bytes": 218365952,
+  "minimum_observed_workspace_free_bytes": 2599936000,
+  "minimum_headroom_bytes": 3221225472,
+  "post_prepare_headroom_check_passed": true,
+  "all_attempt_start_headroom_checks_passed": true,
+  "all_terminal_event_headroom_checks_passed": false,
+  "below_floor_terminal_events": [
+    {
+      "type": "finish",
+      "shard": 4,
+      "exit_code": 1,
+      "source_after_exit_code": 0,
+      "result_path": "/workspace/casepath-startup-gate-28247cbc-20261015/shard4/result.json",
+      "attempt_count": 1,
+      "active": [
+        5,
+        6
+      ],
+      "free_bytes": 2637844480,
+      "epoch": 1792099644.615845
+    },
+    {
+      "type": "finish",
+      "shard": 6,
+      "exit_code": 0,
+      "source_after_exit_code": 0,
+      "result_path": "/workspace/casepath-startup-gate-28247cbc-20261015/shard6/result.json",
+      "attempt_count": 1,
+      "active": [
+        5
+      ],
+      "free_bytes": 2673336320,
+      "epoch": 1792099648.3721688
+    },
+    {
+      "type": "finish",
+      "shard": 5,
+      "exit_code": 0,
+      "source_after_exit_code": 0,
+      "result_path": "/workspace/casepath-startup-gate-28247cbc-20261015/shard5/result.json",
+      "attempt_count": 1,
+      "active": [],
+      "free_bytes": 2673303552,
+      "epoch": 1792099650.1262357
+    }
+  ],
+  "post_authorized_completed_runtime_retirement_headroom_check_passed": true,
+  "protected_server": "    PID    PPID COMMAND\n 595190  595187 python\n"
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "worker": "prep_worker_a",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "wrapper_pid": 943129,
+    "session": 51913,
+    "clones": [
+      "inventory",
+      "shard1",
+      "shard4"
+    ],
+    "exit_code": 0,
+    "command": [
+      "python",
+      "-P",
+      "/workspace/casepath-startup-gate-28247cbc-20261015/harness/prepare_clones.py",
+      "inventory",
+      "shard1",
+      "shard4"
+    ],
+    "before_start_env": {
+      "HOME": "/workspace/nhh",
+      "TMPDIR": "/workspace/nth",
+      "TMP": "/workspace/nth",
+      "TEMP": "/workspace/nth",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "child_prepare_env_receipts": [
+      "/workspace/casepath-startup-gate-28247cbc-20261015/inventory/prepare.json",
+      "/workspace/casepath-startup-gate-28247cbc-20261015/shard1/prepare.json",
+      "/workspace/casepath-startup-gate-28247cbc-20261015/shard4/prepare.json"
+    ],
+    "actual_tests_or_retries_run_by_worker": false
+  },
+  {
+    "worker": "prep_worker_b",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "wrapper_pid": 943251,
+    "session": 98723,
+    "clones": [
+      "shard2",
+      "shard5"
+    ],
+    "exit_code": 0,
+    "command": [
+      "python",
+      "-P",
+      "/workspace/casepath-startup-gate-28247cbc-20261015/harness/prepare_clones.py",
+      "shard2",
+      "shard5"
+    ],
+    "before_start_env": {
+      "HOME": "/workspace/nhh",
+      "TMPDIR": "/workspace/nth",
+      "TMP": "/workspace/nth",
+      "TEMP": "/workspace/nth",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "child_prepare_env_receipts": [
+      "/workspace/casepath-startup-gate-28247cbc-20261015/shard2/prepare.json",
+      "/workspace/casepath-startup-gate-28247cbc-20261015/shard5/prepare.json"
+    ],
+    "actual_tests_or_retries_run_by_worker": false
+  },
+  {
+    "worker": "prep_worker_c",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "wrapper_pid": 943637,
+    "session": 27203,
+    "clones": [
+      "shard3",
+      "shard6"
+    ],
+    "exit_code": 0,
+    "command": [
+      "python",
+      "-P",
+      "/workspace/casepath-startup-gate-28247cbc-20261015/harness/prepare_clones.py",
+      "shard3",
+      "shard6"
+    ],
+    "before_start_env": {
+      "HOME": "/workspace/nhh",
+      "TMPDIR": "/workspace/nth",
+      "TMP": "/workspace/nth",
+      "TEMP": "/workspace/nth",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "child_prepare_env_receipts": [
+      "/workspace/casepath-startup-gate-28247cbc-20261015/shard3/prepare.json",
+      "/workspace/casepath-startup-gate-28247cbc-20261015/shard6/prepare.json"
+    ],
+    "actual_tests_or_retries_run_by_worker": false
+  }
+]

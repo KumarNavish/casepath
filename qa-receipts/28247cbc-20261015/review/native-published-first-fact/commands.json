@@ -1,0 +1,21 @@
+{
+  "cwd": "/workspace/casepath-release-ae0-inventory",
+  "preparation": "mkdir -p /workspace/cpff28247; runner refuses nonempty temporary directory, writes an ownership sentinel, and removes only that owned directory after browser exit.",
+  "environment": {
+    "TMPDIR": "/workspace/cpff28247",
+    "TMP": "/workspace/cpff28247",
+    "TEMP": "/workspace/cpff28247",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+  },
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "/workspace/casepath-recorded-packet-prototype-evidence-20261015/cloud-published-first-fact-28247/runner.cjs"
+  ],
+  "stdout_stderr": "command.log",
+  "exit": 0,
+  "runs": 1,
+  "actual_started": "2026-10-15T21:18:39.614Z",
+  "actual_ended": "2026-10-15T21:18:43.898Z",
+  "authorization": "Parent explicit MEASUREMENT GO; owner notified when the browser closed. Independent scheduler timestamps show no heavy pytest overlap during the recorded measurement; queued shards4\u20136 started52.252s after its recorded end.",
+  "contention_evidence": "contention-metadata-correction.json; last heavy pytest finished179.312ms before recorded measurement start. Lightweight monitor presence is not excluded."
+}

@@ -1,0 +1,1873 @@
+{
+  "classification": "Single quiet native headless Chromium first-fact-only measurement over exact shipped published packet, preverified before trusted Demonstration selection. Standalone workspace document with exact product JS/CSS; selected Live API reads held until abort; no network/provider/write, video, CDP trace or rendering override. Minimal status/catalog/Knowledge GET wrappers use actual packet head metadata and empty read-only Knowledge; no native v1 fixture.",
+  "commit": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "javascript_sha256": "364bc44c4a10a8a57afcaad28b765f476ba31ee2478d190b552fe9f7c74c74bb",
+  "stylesheet_sha256": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4",
+  "packet_sha256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+  "packet_descriptor": {
+    "url": "/recorded.json",
+    "bytes": 523167,
+    "sha256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+    "deployment_commit": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+    "history_kind": "published_public_synthetic"
+  },
+  "actual_head": {
+    "claimId": "clm_314f2d309fea25e6",
+    "revision": 48,
+    "state_sha256": "df5f95e988c60ec91b36f7435375549ffc3c532103d51dfddd4a929ca8b3dcf4",
+    "event_sha256": "f9812537ef8e14ebf19f09c6fc027b11afee26a35ab62bcf61c23fbbe6d35f41"
+  },
+  "wallStarted": "2026-10-15T21:18:39.614Z",
+  "wallEnded": "2026-10-15T21:18:43.898Z",
+  "chromium": "151.0.7922.173",
+  "launch": {
+    "headless": true,
+    "args": [
+      "--no-sandbox",
+      "--disk-cache-size=1048576",
+      "--media-cache-size=1048576"
+    ],
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "tmp": "/workspace/cpff28247",
+    "video": false,
+    "trace": false
+  },
+  "metrics": {
+    "first_current_ms": 745.2000000476837,
+    "first_flight_finish_ms": 2182.9000000953674,
+    "first_land_ms": 2185.2000000476837,
+    "capture_ms": 3256.600000023842,
+    "raf": {
+      "count": 181,
+      "p50": 16.699999999999818,
+      "p95": 16.799999999999955,
+      "p99": 50,
+      "max": 133.29999999999995,
+      "gaps_over100ms": [
+        {
+          "at": 1020.4,
+          "delta": 133.29999999999995
+        }
+      ]
+    },
+    "timer100ms": {
+      "count": 30,
+      "p50": 100,
+      "p95": 100.09999990463257,
+      "max": 274.1999999284744
+    },
+    "longtasks": {
+      "count": 2,
+      "max": 151
+    }
+  },
+  "first_operation": {
+    "id": "op_1715b98c5f009b94cad03526c1c661be",
+    "kind": "fact.extract",
+    "source": {
+      "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+      "end_char": 434,
+      "offset_unit": "unicode_code_point",
+      "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+      "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+      "start_char": 95,
+      "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+    },
+    "object": {
+      "id": "fact:tenancy_terms_evidence",
+      "type": "fact"
+    }
+  },
+  "raw": {
+    "selected": 354.7999999523163,
+    "events": [
+      {
+        "id": 1,
+        "kind": "created",
+        "at": 1192.6000000238419,
+        "startTime": null,
+        "currentTime": 0,
+        "pending": true,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "kind": "ready",
+        "at": 1221,
+        "startTime": 1203.7659999914467,
+        "currentTime": 16.734000008553185,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "kind": "finished-promise",
+        "at": 1921.2000000476837,
+        "startTime": 1203.7659999914467,
+        "currentTime": 700,
+        "pending": false,
+        "playState": "finished"
+      },
+      {
+        "id": 1,
+        "kind": "finish-event",
+        "at": 1921.5,
+        "startTime": 1203.7659999914467,
+        "currentTime": 700,
+        "pending": false,
+        "playState": "finished"
+      },
+      {
+        "id": 1,
+        "kind": "cancel-called",
+        "at": 1921.7000000476837,
+        "startTime": 1203.7659999914467,
+        "currentTime": 700,
+        "pending": false,
+        "playState": "finished"
+      },
+      {
+        "id": 2,
+        "kind": "created",
+        "at": 1923.1000000238419,
+        "startTime": null,
+        "currentTime": 0,
+        "pending": true,
+        "playState": "running"
+      },
+      {
+        "id": 2,
+        "kind": "ready",
+        "at": 1937.7000000476837,
+        "startTime": 1920.4039999749511,
+        "currentTime": 16.59600002504891,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "kind": "cancel-event",
+        "at": 1937.7999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "kind": "finished-promise",
+        "at": 2537.7000000476837,
+        "startTime": 1920.4039999749511,
+        "currentTime": 600,
+        "pending": false,
+        "playState": "finished"
+      },
+      {
+        "id": 2,
+        "kind": "finish-event",
+        "at": 2537.7999999523163,
+        "startTime": 1920.4039999749511,
+        "currentTime": 600,
+        "pending": false,
+        "playState": "finished"
+      },
+      {
+        "id": 1,
+        "kind": "cancel-called",
+        "at": 2847.5,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "kind": "cancel-called",
+        "at": 2847.600000023842,
+        "startTime": 1920.4039999749511,
+        "currentTime": 600,
+        "pending": false,
+        "playState": "finished"
+      },
+      {
+        "id": 2,
+        "kind": "cancel-event",
+        "at": 2855.2999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 3,
+        "kind": "created",
+        "at": 2940.2000000476837,
+        "startTime": null,
+        "currentTime": 0,
+        "pending": true,
+        "playState": "running"
+      },
+      {
+        "id": 3,
+        "kind": "ready",
+        "at": 2970.899999976158,
+        "startTime": 2953.6959999240935,
+        "currentTime": 16.704000075906666,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 3,
+        "kind": "cancel-called",
+        "at": 3611.7999999523163,
+        "startTime": 2953.6959999240935,
+        "currentTime": 649.9040000759067,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 2,
+        "kind": "cancel-called",
+        "at": 3611.7999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 3,
+        "kind": "cancel-called",
+        "at": 3612,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "kind": "cancel-called",
+        "at": 3612,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      }
+    ],
+    "animations": [
+      {
+        "id": 1,
+        "kind": "sweep",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "at": 1192.3999999761581,
+        "duration": 700,
+        "classes": "au-operation-attention"
+      },
+      {
+        "id": 2,
+        "kind": "flight",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "at": 1923.1000000238419,
+        "duration": 600,
+        "classes": "au-operation-fact-token"
+      },
+      {
+        "id": 3,
+        "kind": "sweep",
+        "operation": "op_71551c6b86a6ffc9d77423b4ef842dea",
+        "at": 2940.100000023842,
+        "duration": 700,
+        "classes": "au-operation-attention"
+      }
+    ],
+    "animation_samples": [
+      {
+        "id": 1,
+        "at": 1226.2000000476837,
+        "startTime": 1203.7659999914467,
+        "currentTime": 16.734000008553185,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 1326.2000000476837,
+        "startTime": 1203.7659999914467,
+        "currentTime": 116.73400000855327,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 1426.2000000476837,
+        "startTime": 1203.7659999914467,
+        "currentTime": 216.6340000085534,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 1526.1000000238419,
+        "startTime": 1203.7659999914467,
+        "currentTime": 316.7340000085532,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 1626.2999999523163,
+        "startTime": 1203.7659999914467,
+        "currentTime": 416.63400000855336,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 1726.2999999523163,
+        "startTime": 1203.7659999914467,
+        "currentTime": 516.6340000085532,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 1826.2000000476837,
+        "startTime": 1203.7659999914467,
+        "currentTime": 616.6340000085532,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 1926.2999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 1926.2999999523163,
+        "startTime": null,
+        "currentTime": 0,
+        "pending": true,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 2026.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 2026.2000000476837,
+        "startTime": 1920.4039999749511,
+        "currentTime": 99.99600002504883,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 2126.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 2126.2000000476837,
+        "startTime": 1920.4039999749511,
+        "currentTime": 199.99600002504891,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 2226.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 2226.2000000476837,
+        "startTime": 1920.4039999749511,
+        "currentTime": 299.996000025049,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 2326.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 2326.2000000476837,
+        "startTime": 1920.4039999749511,
+        "currentTime": 399.99600002504866,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 2426.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 2426.2000000476837,
+        "startTime": 1920.4039999749511,
+        "currentTime": 499.9960000250487,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 2526.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 2526.2000000476837,
+        "startTime": 1920.4039999749511,
+        "currentTime": 599.9960000250488,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 2626.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 2626.2000000476837,
+        "startTime": 1920.4039999749511,
+        "currentTime": 600,
+        "pending": false,
+        "playState": "finished"
+      },
+      {
+        "id": 1,
+        "at": 2726.2999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 2726.2999999523163,
+        "startTime": 1920.4039999749511,
+        "currentTime": 600,
+        "pending": false,
+        "playState": "finished"
+      },
+      {
+        "id": 1,
+        "at": 2826.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 2826.2000000476837,
+        "startTime": 1920.4039999749511,
+        "currentTime": 600,
+        "pending": false,
+        "playState": "finished"
+      },
+      {
+        "id": 1,
+        "at": 2926.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 2926.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 1,
+        "at": 3026.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 3026.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 3,
+        "at": 3026.2000000476837,
+        "startTime": 2953.6959999240935,
+        "currentTime": 66.60400007590673,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 3126.2999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 3126.2999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 3,
+        "at": 3126.2999999523163,
+        "startTime": 2953.6959999240935,
+        "currentTime": 166.60400007590636,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 3226.2999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 3226.2999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 3,
+        "at": 3226.2999999523163,
+        "startTime": 2953.6959999240935,
+        "currentTime": 266.70400007590666,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 3326.2999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 3326.2999999523163,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 3,
+        "at": 3326.2999999523163,
+        "startTime": 2953.6959999240935,
+        "currentTime": 366.6040000759065,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 3426.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 3426.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 3,
+        "at": 3426.2000000476837,
+        "startTime": 2953.6959999240935,
+        "currentTime": 466.60400007590664,
+        "pending": false,
+        "playState": "running"
+      },
+      {
+        "id": 1,
+        "at": 3526.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 2,
+        "at": 3526.2000000476837,
+        "startTime": null,
+        "currentTime": null,
+        "pending": false,
+        "playState": "idle"
+      },
+      {
+        "id": 3,
+        "at": 3526.2000000476837,
+        "startTime": 2953.6959999240935,
+        "currentTime": 566.7040000759065,
+        "pending": false,
+        "playState": "running"
+      }
+    ],
+    "raf": [
+      {
+        "at": 370.5,
+        "delta": 16.69999999999999
+      },
+      {
+        "at": 420.5,
+        "delta": 50
+      },
+      {
+        "at": 437.1,
+        "delta": 16.600000000000023
+      },
+      {
+        "at": 453.8,
+        "delta": 16.69999999999999
+      },
+      {
+        "at": 503.8,
+        "delta": 50
+      },
+      {
+        "at": 520.5,
+        "delta": 16.69999999999999
+      },
+      {
+        "at": 537.2,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 553.8,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 570.4,
+        "delta": 16.600000000000023
+      },
+      {
+        "at": 587.1,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 603.8,
+        "delta": 16.699999999999932
+      },
+      {
+        "at": 620.5,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 637.1,
+        "delta": 16.600000000000023
+      },
+      {
+        "at": 653.7,
+        "delta": 16.600000000000023
+      },
+      {
+        "at": 670.5,
+        "delta": 16.799999999999955
+      },
+      {
+        "at": 687.2,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 703.8,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 720.5,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 737.1,
+        "delta": 16.600000000000023
+      },
+      {
+        "at": 753.7,
+        "delta": 16.600000000000023
+      },
+      {
+        "at": 770.4,
+        "delta": 16.699999999999932
+      },
+      {
+        "at": 787.1,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 803.8,
+        "delta": 16.699999999999932
+      },
+      {
+        "at": 820.5,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 837.1,
+        "delta": 16.600000000000023
+      },
+      {
+        "at": 853.8,
+        "delta": 16.699999999999932
+      },
+      {
+        "at": 870.5,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 887.1,
+        "delta": 16.600000000000023
+      },
+      {
+        "at": 1020.4,
+        "delta": 133.29999999999995
+      },
+      {
+        "at": 1087.1,
+        "delta": 66.69999999999993
+      },
+      {
+        "at": 1103.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1120.5,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1137.1,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 1153.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1170.5,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1187.1,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 1203.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1220.5,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1237.1,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 1253.7,
+        "delta": 16.600000000000136
+      },
+      {
+        "at": 1270.4,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1287,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 1303.7,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1320.5,
+        "delta": 16.799999999999955
+      },
+      {
+        "at": 1337.1,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 1353.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1370.4,
+        "delta": 16.600000000000136
+      },
+      {
+        "at": 1387.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 1403.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1420.4,
+        "delta": 16.600000000000136
+      },
+      {
+        "at": 1437.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 1453.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1470.5,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1487.1,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 1503.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1520.5,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1537.1,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 1553.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1570.4,
+        "delta": 16.600000000000136
+      },
+      {
+        "at": 1587.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 1603.7,
+        "delta": 16.600000000000136
+      },
+      {
+        "at": 1620.4,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1637.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 1653.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1670.4,
+        "delta": 16.600000000000136
+      },
+      {
+        "at": 1687,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 1703.7,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1720.4,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1737,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 1753.7,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1770.4,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1787.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 1803.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1820.4,
+        "delta": 16.600000000000136
+      },
+      {
+        "at": 1837.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 1853.8,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1870.4,
+        "delta": 16.600000000000136
+      },
+      {
+        "at": 1887.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 1903.7,
+        "delta": 16.600000000000136
+      },
+      {
+        "at": 1920.4,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1937,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 1953.7,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1970.4,
+        "delta": 16.700000000000045
+      },
+      {
+        "at": 1987,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2003.8,
+        "delta": 16.799999999999955
+      },
+      {
+        "at": 2020.4,
+        "delta": 16.600000000000136
+      },
+      {
+        "at": 2037.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2053.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2070.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2087.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2103.8,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2120.4,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2137.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2153.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2170.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2187.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2203.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2220.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2237.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2253.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2270.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2287.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2303.8,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2320.4,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2337,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2353.8,
+        "delta": 16.800000000000182
+      },
+      {
+        "at": 2370.4,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2387,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2403.8,
+        "delta": 16.800000000000182
+      },
+      {
+        "at": 2420.4,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2437,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2453.8,
+        "delta": 16.800000000000182
+      },
+      {
+        "at": 2470.3,
+        "delta": 16.5
+      },
+      {
+        "at": 2487.1,
+        "delta": 16.799999999999727
+      },
+      {
+        "at": 2503.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2520.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2537.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2553.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2570.3,
+        "delta": 16.600000000000364
+      },
+      {
+        "at": 2587.1,
+        "delta": 16.799999999999727
+      },
+      {
+        "at": 2603.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2620.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2637,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2653.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2670.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2687,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2703.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2720.3,
+        "delta": 16.600000000000364
+      },
+      {
+        "at": 2737.1,
+        "delta": 16.799999999999727
+      },
+      {
+        "at": 2753.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2770.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2787.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2803.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2820.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2837,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2853.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2870.3,
+        "delta": 16.600000000000364
+      },
+      {
+        "at": 2887,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2903.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2920.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2937.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 2953.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 2970.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 2987,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3003.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3020.3,
+        "delta": 16.600000000000364
+      },
+      {
+        "at": 3037.1,
+        "delta": 16.799999999999727
+      },
+      {
+        "at": 3053.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3070.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 3087,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3103.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3120.3,
+        "delta": 16.600000000000364
+      },
+      {
+        "at": 3137,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3153.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3170.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 3187.1,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3203.7,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3220.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 3237,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3253.6,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3270.4,
+        "delta": 16.800000000000182
+      },
+      {
+        "at": 3287,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3303.6,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3320.3,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 3337,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3353.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3370.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 3387,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3403.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3420.3,
+        "delta": 16.600000000000364
+      },
+      {
+        "at": 3437,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3453.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3470.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 3487,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3503.6,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3520.4,
+        "delta": 16.800000000000182
+      },
+      {
+        "at": 3537,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3553.7,
+        "delta": 16.699999999999818
+      },
+      {
+        "at": 3570.4,
+        "delta": 16.700000000000273
+      },
+      {
+        "at": 3587,
+        "delta": 16.59999999999991
+      },
+      {
+        "at": 3603.6,
+        "delta": 16.59999999999991
+      }
+    ],
+    "timers": [
+      {
+        "at": 454.7999999523163,
+        "delta": null,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 526.2000000476837,
+        "delta": 71.40000009536743,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 626.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 726.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 826.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 1100.3999999761581,
+        "delta": 274.1999999284744,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 1126.2000000476837,
+        "delta": 25.800000071525574,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 1226.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 1326.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 1426.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 1526.1000000238419,
+        "delta": 99.89999997615814,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 1626.2999999523163,
+        "delta": 100.19999992847443,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 1726.2999999523163,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 1826.2000000476837,
+        "delta": 99.90000009536743,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 1926.2999999523163,
+        "delta": 100.09999990463257,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 2026.2000000476837,
+        "delta": 99.90000009536743,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 2126.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 2226.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 2326.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 2426.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 2526.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 2626.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 2726.2999999523163,
+        "delta": 100.09999990463257,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 2826.2000000476837,
+        "delta": 99.90000009536743,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 2926.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 3026.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 3126.2999999523163,
+        "delta": 100.09999990463257,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 3226.2999999523163,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 3326.2999999523163,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 3426.2000000476837,
+        "delta": 99.90000009536743,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      },
+      {
+        "at": 3526.2000000476837,
+        "delta": 100,
+        "visibility": "visible",
+        "hidden": false,
+        "focus": true,
+        "active": "H1",
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "dpr": 1
+      }
+    ],
+    "longtasks": [
+      {
+        "at": 121.70000004768372,
+        "duration": 62,
+        "name": "self"
+      },
+      {
+        "at": 456.39999997615814,
+        "duration": 53,
+        "name": "self"
+      },
+      {
+        "at": 876.7999999523163,
+        "duration": 151,
+        "name": "self"
+      }
+    ],
+    "calls": [
+      {
+        "url": "/api/claim-loops/v1/autonomous/status",
+        "at": 182.10000002384186,
+        "aborted": false
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/claims",
+        "at": 183.20000004768372,
+        "aborted": false
+      },
+      {
+        "url": "http://127.0.0.1:4199/recorded.json",
+        "at": 193.10000002384186,
+        "aborted": false
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/knowledge",
+        "at": 203.29999995231628,
+        "aborted": false
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+        "at": 371.60000002384186,
+        "aborted": true,
+        "abortAt": 877.6000000238419
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live",
+        "at": 371.7000000476837,
+        "aborted": true,
+        "abortAt": 877.6000000238419
+      },
+      {
+        "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+        "at": 376.60000002384186,
+        "aborted": true,
+        "abortAt": 877.6000000238419
+      }
+    ],
+    "firstCurrent": {
+      "at": 1100,
+      "operation": "op_1715b98c5f009b94cad03526c1c661be",
+      "mode": "recorded_operations"
+    },
+    "firstFlightFinish": {
+      "at": 2537.7000000476837,
+      "id": 2,
+      "operation": "op_1715b98c5f009b94cad03526c1c661be"
+    },
+    "firstLand": {
+      "at": 2540,
+      "id": 2,
+      "operation": "op_1715b98c5f009b94cad03526c1c661be",
+      "quote": "CHF1800",
+      "node": "dh_scope",
+      "visible": true,
+      "visibility": "visible",
+      "hidden": false,
+      "focus": true,
+      "active": "H1",
+      "innerWidth": 1280,
+      "innerHeight": 800,
+      "dpr": 1
+    },
+    "stopped": true,
+    "visibility": [],
+    "labels": [
+      "Opening investigation · Synthetic sources · No external action",
+      "Recorded replay · Synthetic sources · No external action",
+      "Recorded replay · Synthetic sources · No external action · as of 2025-02-21"
+    ],
+    "initial": {
+      "visibility": "visible",
+      "hidden": false,
+      "focus": true,
+      "active": "BODY",
+      "innerWidth": 1280,
+      "innerHeight": 800,
+      "dpr": 1
+    },
+    "interval": 1,
+    "selection": {
+      "trusted": true,
+      "visibility": "visible",
+      "hidden": false,
+      "focus": true,
+      "active": "BODY",
+      "innerWidth": 1280,
+      "innerHeight": 800,
+      "dpr": 1
+    },
+    "final": {
+      "at": 3611.399999976158,
+      "visibility": "visible",
+      "focus": true,
+      "reduced": false,
+      "mode": "recorded_operations"
+    }
+  },
+  "network": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4199/"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4199/api/claim-loops/v1/autonomous/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4199/api/claim-loops/v1/autonomous/claims"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4199/recorded.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4199/api/claim-loops/v1/autonomous/knowledge"
+    }
+  ],
+  "errors": [],
+  "limits": "One Cloud headless run, ready packet, no hosted-network or slow2g simulation and no recording/screencast. Does not diagnose Mac compositing conclusively. No product timing edit."
+}

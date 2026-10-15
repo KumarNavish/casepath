@@ -1,0 +1,43 @@
+{
+  "source_commit": "28247cbc87785b366fa542bb0aa0bd5f37e6c2e3",
+  "static_authored_validator": "pass",
+  "exact_new_asset_allowlist_inventory_content_pin": true,
+  "source_dialog_wrap_unchanged": true,
+  "files": [
+    {
+      "path": "casepath/index.html",
+      "bytes": 24754,
+      "sha256": "7499652779e456ced095c030d3227ba93e0b636da24775ac82668ca2032005da"
+    },
+    {
+      "path": "casepath/assets/autonomous-entry-v1.js",
+      "bytes": 1653,
+      "sha256": "e1dfcdefb7fc094db37a7bb03bd788a1ebd1405531f3548ed610c758d9246d7d"
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "bytes": 457352,
+      "sha256": "364bc44c4a10a8a57afcaad28b765f476ba31ee2478d190b552fe9f7c74c74bb"
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.css",
+      "bytes": 223419,
+      "sha256": "b815b99e8d4c5d93a2de41fa065e73a16dae8bad7b8fab19616c3fcc920765a4"
+    },
+    {
+      "path": "casepath/assets/autonomous-recorded-heating-v1.json",
+      "bytes": 523167,
+      "sha256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383"
+    },
+    {
+      "path": "casepath/tools/build_static_site.py",
+      "bytes": 9787,
+      "sha256": "678b762a5226a1288c81e48a691549e09fc966277ba162fb855726e4cab0fe8f"
+    },
+    {
+      "path": "casepath-qa/sites-autonomous-entry.test.cjs",
+      "bytes": 6903,
+      "sha256": "64fc95055ff85f09e34c61bb95f230e9b9a06efcd5d18ce719d4a475ec4d57b2"
+    }
+  ]
+}
