@@ -481,8 +481,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace :is([data-au-source-content],[data-au-record-content]) { padding:24px; min-width:0; }
 .au-workspace :is([data-au-source-content],[data-au-record-content]) :is(h3,p,dl,ul,pre) { margin-bottom:16px; }
 .au-workspace .au-source-meta { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; color:var(--au-muted); font-size:13px; }
-.au-workspace .au-source-text { max-width:80ch; margin:24px 0; white-space:pre-wrap; overflow-wrap:anywhere; font:400 16px/1.75 'CasePath Instrument',Arial,sans-serif; }
-.au-workspace .au-source-text mark { background:#e5eeb5; color:var(--au-ink); scroll-margin-block:100px 24px; }
+.au-workspace :is(.au-source-text,.au-source-body) { max-width:80ch; margin:24px 0; white-space:pre-wrap; overflow-wrap:anywhere; font:400 16px/1.75 'CasePath Instrument',Arial,sans-serif; }
+.au-workspace :is(.au-source-text,.au-source-body) mark { background:#e5eeb5; color:var(--au-ink); scroll-margin-block:100px 24px; }
 .au-workspace .au-native-source { margin:16px 0 24px; }
 .au-workspace .au-native-source img { display:block; max-width:100%; max-height:560px; width:auto; height:auto; margin:0 auto; object-fit:contain; }
 .au-workspace .au-native-source :is(iframe,object) { display:block; width:100%; height:500px; border:1px solid var(--au-line); }
@@ -609,7 +609,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace :is(.au-source-dialog-header,.au-record-dialog-header,.au-dialog-header) h2 { font-size:19px; }
   .au-workspace :is([data-au-source-content],[data-au-record-content]) { padding:18px 16px; }
   .au-workspace .au-native-source :is(iframe,object) { height:360px; }
-  .au-workspace .au-source-text { font-size:15px; }
+  .au-workspace :is(.au-source-text,.au-source-body) { font-size:15px; }
 }
 @media (prefers-reduced-motion:reduce) {
   .au-workspace *, .au-workspace *::before, .au-workspace *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
