@@ -418,7 +418,7 @@
       "Reach a decision"
     ]
   ],
-  "camera": "Small eased camera motion from actual recorded head/fact rectangles; actual UI pixels only. No actor reconstruction or frame interpolation.",
+  "camera": "Small eased camera motion from actual recorded head/fact rectangles; the complete actual source/rail bounds constrain every crop. Full UI during native clicks/inspection. No actor reconstruction or frame interpolation.",
   "cursor": "Neutral editorial pointer from actual logged x/y events only; no invented inputs.",
   "audio": false,
   "endcard": [

@@ -116,6 +116,16 @@ class Movie:
   cx,cy=self.iw/2,self.ih/2
   if point:cx=(point[0]+point[2]/2)*self.sx*.2+self.iw*.4;cy=(point[1]+point[3]/2)*self.sy*.12+self.ih*.44
   return cx,cy,zoom
+ def keep_destinations(self,t,camera):
+  s=self.sample(t);cx,cy,z=camera
+  # Real source/rail bounds constrain the editorial crop; never erase a landing slot.
+  if s.get('dialog') or s.get('state')=='paused' or any(abs(stamp(e['t'])-t)<.9 for e in self.events if e.get('type')=='click'):return self.iw/2,self.ih/2,1.
+  rr=[rect(s.get(k)) for k in ['sourceRect','railRect']];rr=[r for r in rr if r]
+  if rr:
+   pad=12;left=max(0,min(r[0] for r in rr)-pad)*self.sx;right=min(self.cw,max(r[0]+r[2] for r in rr)+pad)*self.sx;top=max(0,min(r[1] for r in rr)-pad)*self.sy;bottom=min(self.ch,max(r[1]+r[3] for r in rr)+pad)*self.sy
+   z=min(z,self.iw/(right-left),self.ih/(bottom-top));cw,ch=self.iw/z,self.ih/z
+   cx=max(max(cw/2,right-cw/2),min(min(self.iw-cw/2,left+cw/2),cx));cy=max(max(ch/2,bottom-ch/2),min(min(self.ih-ch/2,top+ch/2),cy))
+  return cx,cy,z
  def caption(self,t):
   active=[label for a,b,label in self.labels if a<=t<=b]
   if active:return active[-1]
@@ -130,7 +140,7 @@ class Movie:
   if out_t>=self.ui_duration+self.final_freeze:
    for text,y,font in [('CasePath · Evidence into action',446,self.title_font),('Synthetic claims · recorded replay',540,self.sub_font)]:draw.text((W/2,y),text,font=font,fill=INK,anchor='mt')
    return im
-  t=self.input_time(min(out_t,self.ui_duration));src=self.frame(t);cx,cy,z=camera or self.camera(t);crop_w=self.iw/z;crop_h=self.ih/z;x=max(0,min(self.iw-crop_w,cx-crop_w/2));y=max(0,min(self.ih-crop_h,cy-crop_h/2));box=(x,y,x+crop_w,y+crop_h)
+  t=self.input_time(min(out_t,self.ui_duration));src=self.frame(t);cx,cy,z=self.keep_destinations(t,camera or self.camera(t));crop_w=self.iw/z;crop_h=self.ih/z;x=max(0,min(self.iw-crop_w,cx-crop_w/2));y=max(0,min(self.ih-crop_h,cy-crop_h/2));box=(x,y,x+crop_w,y+crop_h)
   # Real screenshot pixels only. Reserved caption matte never covers product content.
   maxw,maxh=1856,984;scale=min(maxw/crop_w,maxh/crop_h);ow,oh=round(crop_w*scale),round(crop_h*scale);left=(W-ow)//2;top=14+(984-oh)//2
   content=src.resize((ow,oh),Image.Resampling.LANCZOS,box=box);im.paste(content,(left,top))
@@ -162,7 +172,7 @@ class Movie:
    k=max(0,min(len(self.grid)-2,bisect.bisect_right(self.grid,t)-1));a,b=self.grid[k:k+2];q=0 if b==a else (t-a)/(b-a);ot=self.out_times[k]+q*(self.out_times[k+1]-self.out_times[k]);ot=max(0,min(self.ui_duration-.05,ot));sheet.paste(self.render_frame(ot).resize((640,360),Image.Resampling.LANCZOS),((i%3)*640,(i//3)*360));moments.append({'tile':i+1,'source_t':t,'film_t':ot})
   sheet.save(path);(path.parent/'contact-moments.json').write_text(json.dumps(moments,indent=2)+'\n')
  def receipt(self):
-  return {'source_commit':self.source_commit,'claim_id':CLAIM,'source_basis':'Mac-owned capture of actual public UI; Cloud network denial prevents independent Cloud live fetch. Source identity is bound to supplied capture receipt.','input_index_sha256':sha(self.args.input),'input_frames':len(self.frames),'input_manifest_sha256':hashlib.sha256(json.dumps(self.frame_manifest,sort_keys=True,separators=(',',':')).encode()).hexdigest(),'native_image_size':[self.iw,self.ih],'css_viewport':[self.cw,self.ch],'output_size':[W,H],'output_fps':FPS,'source_range':[self.start,self.end],'duration_seconds':self.duration,'ui_duration_seconds':self.ui_duration,'endcard_seconds':5,'editorial_final_image_hold_seconds':self.final_freeze,'final_native_frame_t':self.ft[-1],'actual_capture_end_t':self.end,'routine_speed':self.routine_speed,'realtime_windows':self.windows,'captions':self.labels,'camera':'Small eased camera motion from actual recorded head/fact rectangles; actual UI pixels only. No actor reconstruction or frame interpolation.','cursor':'Neutral editorial pointer from actual logged x/y events only; no invented inputs.','audio':False,'endcard':['CasePath · Evidence into action','Synthetic claims · recorded replay'],'limits':['Timeline protection derives from supplied samples/events; inspect contact sheet and EDL before final encoding.','CDP frames are variable-rate;30fps output uses actual preceding captured frames, never invented intermediate UI motion.','The final2.5s is an editorial hold of the actual last decision image, not added engine work.']}
+  return {'source_commit':self.source_commit,'claim_id':CLAIM,'source_basis':'Mac-owned capture of actual public UI; Cloud network denial prevents independent Cloud live fetch. Source identity is bound to supplied capture receipt.','input_index_sha256':sha(self.args.input),'input_frames':len(self.frames),'input_manifest_sha256':hashlib.sha256(json.dumps(self.frame_manifest,sort_keys=True,separators=(',',':')).encode()).hexdigest(),'native_image_size':[self.iw,self.ih],'css_viewport':[self.cw,self.ch],'output_size':[W,H],'output_fps':FPS,'source_range':[self.start,self.end],'duration_seconds':self.duration,'ui_duration_seconds':self.ui_duration,'endcard_seconds':5,'editorial_final_image_hold_seconds':self.final_freeze,'final_native_frame_t':self.ft[-1],'actual_capture_end_t':self.end,'routine_speed':self.routine_speed,'realtime_windows':self.windows,'captions':self.labels,'camera':'Small eased camera motion from actual recorded head/fact rectangles; the complete actual source/rail bounds constrain every crop. Full UI during native clicks/inspection. No actor reconstruction or frame interpolation.','cursor':'Neutral editorial pointer from actual logged x/y events only; no invented inputs.','audio':False,'endcard':['CasePath · Evidence into action','Synthetic claims · recorded replay'],'limits':['Timeline protection derives from supplied samples/events; inspect contact sheet and EDL before final encoding.','CDP frames are variable-rate;30fps output uses actual preceding captured frames, never invented intermediate UI motion.','The final2.5s is an editorial hold of the actual last decision image, not added engine work.']}
 def main():
  p=argparse.ArgumentParser();p.add_argument('input',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--css-size');p.add_argument('--duration',type=float,default=65);p.add_argument('--source-commit',default=COMMIT);p.add_argument('--plan-only',action='store_true');p.add_argument('--no-cursor',action='store_true');args=p.parse_args();args.output.mkdir(parents=True,exist_ok=True);movie=Movie(args);receipt=movie.receipt();(args.output/'edit-plan.json').write_text(json.dumps(receipt,indent=2)+'\n');movie.contact(args.output/'contact-sheet-agentic-v4.png')
  print(json.dumps({'status':'PLAN_READY','duration':movie.duration,'routine_speed':movie.routine_speed,'realtime_windows':len(movie.windows)}),flush=True)
