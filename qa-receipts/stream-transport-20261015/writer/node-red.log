@@ -1,0 +1,58 @@
+✔ public Sites refuses visitor-forged work authority before any upstream request (41.992917ms)
+✔ public Sites rejects every work verb across current generic aliased and unknown paths without reading bodies (12.981402ms)
+✔ public Sites keeps GET and HEAD inspection transport available on every public API shape (12.041065ms)
+✔ Sites sends native and normalized legacy collection entries to Cases without fetching data (1.498682ms)
+✔ Sites authenticates its upstream request without leaking browser credentials (1.361089ms)
+✔ Sites streams an operation before completion and cancels upstream when its reader leaves (3.290347ms)
+✖ Sites forwards operation encoding negotiation and untouched compressed bytes without buffering (3.303656ms)
+✖ Sites preserves operation identity refusals and leaves other API negotiation unchanged (1.550539ms)
+✔ Sites refuses cross-origin mutations before calling the backend (0.786081ms)
+✔ Sites requires configured HTTPS upstream and a server secret (1.000307ms)
+✔ Sites reports an unavailable backend without exposing upstream details (0.822825ms)
+✔ Sites preserves allowlisted Review read headers without requiring an agent-work header (0.747964ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 10
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 177.764645
+
+✖ failing tests:
+
+test at casepath-qa/sites-proxy.test.cjs:112:1
+✖ Sites forwards operation encoding negotiation and untouched compressed bytes without buffering (3.303656ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  null !== 'gzip'
+  
+      at TestContext.<anonymous> (/workspace/casepath-stream-transport-20261015/casepath-qa/sites-proxy.test.cjs:129:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 'gzip',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/sites-proxy.test.cjs:146:1
+✖ Sites preserves operation identity refusals and leaves other API negotiation unchanged (1.550539ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '{"detail":"CasePath is temporarily unavailable. Your saved work is preserved."}'
+  - '{"type":"binding"}\n'
+  
+      at TestContext.<anonymous> (/workspace/casepath-stream-transport-20261015/casepath-qa/sites-proxy.test.cjs:157:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{"detail":"CasePath is temporarily unavailable. Your saved work is preserved."}',
+    expected: '{"type":"binding"}\n',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

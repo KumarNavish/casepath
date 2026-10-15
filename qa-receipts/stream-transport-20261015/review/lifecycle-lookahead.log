@@ -1,0 +1,172 @@
+......FF                                                                 [100%]
+=================================== FAILURES ===================================
+_____ test_nonfitting_lookahead_stays_within_waiting_byte_budget[identity] _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f833b4ed750>
+encoding = 'identity'
+
+    @pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+    def test_nonfitting_lookahead_stays_within_waiting_byte_budget(monkeypatch, encoding):
+        first_large_queued, second_large_queued, stopped = Event(), Event(), Event()
+    
+        def recompute(_, *, send, **kwargs):
+            try:
+                send({'type': 'binding'})
+                send({'type': 'operation', 'text': 'x' * 100})
+                send({'type': 'checkpoint', 'text': 'a' * 1300000})
+                first_large_queued.set()
+                send({'type': 'checkpoint', 'text': 'b' * 1300000})
+                second_large_queued.set()
+            finally:
+                stopped.set()
+    
+        monkeypatch.setattr(runtime, 'PUBLIC_LIMITS', runtime.PublicOperationLimits(concurrency=1, total=100))
+        monkeypatch.setattr(runtime, 'capture_operation_inputs', lambda *args, **kwargs: None)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        service = SimpleNamespace(policy={'policy_id': REFERENCE_POLICY_ID}, store=SimpleNamespace())
+        router = create_autonomous_router(lambda: service, read_only=True)
+        endpoint = next(route.endpoint for route in router.routes if route.path.endswith('/operations'))
+    
+        async def exercise():
+            async def receive():
+                await asyncio.Future()
+    
+            request = Request({'type': 'http', 'method': 'GET', 'path': '/',
+                               'headers': [(b'accept-encoding', encoding.encode())]}, receive)
+            response = await endpoint(ReferenceProfile().ids[0], request, mode='live')
+            iterator = response.body_iterator
+            try:
+                assert await anext(iterator)
+                assert await asyncio.to_thread(first_large_queued.wait, 1)
+                # A small batch is in flight, and the first checkpoint is the
+                # non-fitting lookahead. A second 1.3MB checkpoint must still block.
+                assert await anext(iterator)
+                await asyncio.sleep(0.03)
+                assert not second_large_queued.is_set()
+            finally:
+                await iterator.aclose()
+            assert await asyncio.to_thread(stopped.wait, 1)
+    
+>       asyncio.run(exercise())
+
+../cp-stream-transport-evidence-20261015/review/test_transport_lifecycle_review.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    async def exercise():
+        async def receive():
+            await asyncio.Future()
+    
+        request = Request({'type': 'http', 'method': 'GET', 'path': '/',
+                           'headers': [(b'accept-encoding', encoding.encode())]}, receive)
+        response = await endpoint(ReferenceProfile().ids[0], request, mode='live')
+        iterator = response.body_iterator
+        try:
+            assert await anext(iterator)
+            assert await asyncio.to_thread(first_large_queued.wait, 1)
+            # A small batch is in flight, and the first checkpoint is the
+            # non-fitting lookahead. A second 1.3MB checkpoint must still block.
+            assert await anext(iterator)
+            await asyncio.sleep(0.03)
+>           assert not second_large_queued.is_set()
+E           assert not True
+E            +  where True = is_set()
+E            +    where is_set = <threading.Event at 0x7f833b4fc830: set>.is_set
+
+../cp-stream-transport-evidence-20261015/review/test_transport_lifecycle_review.py:120: AssertionError
+_______ test_nonfitting_lookahead_stays_within_waiting_byte_budget[gzip] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f833b40bc50>
+encoding = 'gzip'
+
+    @pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+    def test_nonfitting_lookahead_stays_within_waiting_byte_budget(monkeypatch, encoding):
+        first_large_queued, second_large_queued, stopped = Event(), Event(), Event()
+    
+        def recompute(_, *, send, **kwargs):
+            try:
+                send({'type': 'binding'})
+                send({'type': 'operation', 'text': 'x' * 100})
+                send({'type': 'checkpoint', 'text': 'a' * 1300000})
+                first_large_queued.set()
+                send({'type': 'checkpoint', 'text': 'b' * 1300000})
+                second_large_queued.set()
+            finally:
+                stopped.set()
+    
+        monkeypatch.setattr(runtime, 'PUBLIC_LIMITS', runtime.PublicOperationLimits(concurrency=1, total=100))
+        monkeypatch.setattr(runtime, 'capture_operation_inputs', lambda *args, **kwargs: None)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        service = SimpleNamespace(policy={'policy_id': REFERENCE_POLICY_ID}, store=SimpleNamespace())
+        router = create_autonomous_router(lambda: service, read_only=True)
+        endpoint = next(route.endpoint for route in router.routes if route.path.endswith('/operations'))
+    
+        async def exercise():
+            async def receive():
+                await asyncio.Future()
+    
+            request = Request({'type': 'http', 'method': 'GET', 'path': '/',
+                               'headers': [(b'accept-encoding', encoding.encode())]}, receive)
+            response = await endpoint(ReferenceProfile().ids[0], request, mode='live')
+            iterator = response.body_iterator
+            try:
+                assert await anext(iterator)
+                assert await asyncio.to_thread(first_large_queued.wait, 1)
+                # A small batch is in flight, and the first checkpoint is the
+                # non-fitting lookahead. A second 1.3MB checkpoint must still block.
+                assert await anext(iterator)
+                await asyncio.sleep(0.03)
+                assert not second_large_queued.is_set()
+            finally:
+                await iterator.aclose()
+            assert await asyncio.to_thread(stopped.wait, 1)
+    
+>       asyncio.run(exercise())
+
+../cp-stream-transport-evidence-20261015/review/test_transport_lifecycle_review.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    async def exercise():
+        async def receive():
+            await asyncio.Future()
+    
+        request = Request({'type': 'http', 'method': 'GET', 'path': '/',
+                           'headers': [(b'accept-encoding', encoding.encode())]}, receive)
+        response = await endpoint(ReferenceProfile().ids[0], request, mode='live')
+        iterator = response.body_iterator
+        try:
+            assert await anext(iterator)
+            assert await asyncio.to_thread(first_large_queued.wait, 1)
+            # A small batch is in flight, and the first checkpoint is the
+            # non-fitting lookahead. A second 1.3MB checkpoint must still block.
+            assert await anext(iterator)
+            await asyncio.sleep(0.03)
+>           assert not second_large_queued.is_set()
+E           assert not True
+E            +  where True = is_set()
+E            +    where is_set = <threading.Event at 0x7f833b3b1d90: set>.is_set
+
+../cp-stream-transport-evidence-20261015/review/test_transport_lifecycle_review.py:120: AssertionError
+=========================== short test summary info ============================
+FAILED ../cp-stream-transport-evidence-20261015/review/test_transport_lifecycle_review.py::test_nonfitting_lookahead_stays_within_waiting_byte_budget[identity]
+FAILED ../cp-stream-transport-evidence-20261015/review/test_transport_lifecycle_review.py::test_nonfitting_lookahead_stays_within_waiting_byte_budget[gzip]
+2 failed, 6 passed in 0.66s

@@ -1,0 +1,1631 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEE                                       [100%]
+==================================== ERRORS ====================================
+_ ERROR at setup of test_real_operation_transport_preserves_exact_ndjson_and_hashes_in_both_encodings[live] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x7f71d34e6ea0>, _basetemp=PosixP...pace/cp-stream-transport-evidence-20261015/tmp/pytest-of-agent/pytest-0'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def migrated(tmp_path_factory):
+        root = tmp_path_factory.mktemp('real-operation-history')
+        corpus = CanonicalCorpus()
+        cid = ReferenceProfile().ids[0]
+>       old = service_at(root / 'journal.sqlite', corpus, ReferenceProfile.for_profile('synthetic-nine-v1'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_operations_v1.py:172: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/tests/test_complete_reference_intake_v1.py:20: in service_at
+    store = AutonomousStore(path)
+            ^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_store_v1.py:103: in __init__
+    from .claim_loop_store import ClaimLoopStore
+casepath-api/casepath_api/claim_loop_store.py:11: in <module>
+    from .claim_loop import (
+casepath-api/casepath_api/claim_loop.py:40: in <module>
+    from .claim_loop_cycle import (
+casepath-api/casepath_api/claim_loop_cycle.py:13: in <module>
+    from .multi_agent import (
+casepath-api/casepath_api/multi_agent.py:62: in <module>
+    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate
+casepath-api/casepath_api/playbook_template.py:7: in <module>
+    from .data import CLAIMS
+casepath-api/casepath_api/data.py:87: in <module>
+    artifact(
+casepath-api/casepath_api/data.py:69: in artifact
+    "size_bytes": path.stat().st_size,
+                  ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/workspace/casepath-stream-transport-20261015/casepath-api/artifacts/lease-agreement.pdf')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-stream-transport-20261015/casepath-api/artifacts/lease-agreement.pdf'
+
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py:515: FileNotFoundError
+_ ERROR at setup of test_real_operation_transport_preserves_exact_ndjson_and_hashes_in_both_encodings[recorded] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x7f71d34e6ea0>, _basetemp=PosixP...pace/cp-stream-transport-evidence-20261015/tmp/pytest-of-agent/pytest-0'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def migrated(tmp_path_factory):
+        root = tmp_path_factory.mktemp('real-operation-history')
+        corpus = CanonicalCorpus()
+        cid = ReferenceProfile().ids[0]
+>       old = service_at(root / 'journal.sqlite', corpus, ReferenceProfile.for_profile('synthetic-nine-v1'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_operations_v1.py:172: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/tests/test_complete_reference_intake_v1.py:20: in service_at
+    store = AutonomousStore(path)
+            ^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_store_v1.py:103: in __init__
+    from .claim_loop_store import ClaimLoopStore
+casepath-api/casepath_api/claim_loop_store.py:11: in <module>
+    from .claim_loop import (
+casepath-api/casepath_api/claim_loop.py:40: in <module>
+    from .claim_loop_cycle import (
+casepath-api/casepath_api/claim_loop_cycle.py:13: in <module>
+    from .multi_agent import (
+casepath-api/casepath_api/multi_agent.py:62: in <module>
+    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate
+casepath-api/casepath_api/playbook_template.py:7: in <module>
+    from .data import CLAIMS
+casepath-api/casepath_api/data.py:87: in <module>
+    artifact(
+casepath-api/casepath_api/data.py:69: in artifact
+    "size_bytes": path.stat().st_size,
+                  ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/workspace/casepath-stream-transport-20261015/casepath-api/artifacts/lease-agreement.pdf')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-stream-transport-20261015/casepath-api/artifacts/lease-agreement.pdf'
+
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py:515: FileNotFoundError
+=================================== FAILURES ===================================
+___ test_operation_transport_negotiates_encoding_before_admission[None-None] ___
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d32be3c0>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2e12520>
+encoding = None, expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_____ test_operation_transport_negotiates_encoding_before_admission[-None] _____
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d3296710>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2e12fd0>
+encoding = '', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+___ test_operation_transport_negotiates_encoding_before_admission[gzip-gzip] ___
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2d74050>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2b156d0>
+encoding = 'gzip', expected = 'gzip'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[GZip;Q=1-gzip] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2a61f90>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2a6f130>
+encoding = 'GZip;Q=1', expected = 'gzip'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=0-None] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2ae9310>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2a3ae00>
+encoding = 'gzip;q=0', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=0, *;q=1-None] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2aebed0>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2e05c50>
+encoding = 'gzip;q=0, *;q=1', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+__ test_operation_transport_negotiates_encoding_before_admission[*;q=1-gzip] ___
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2bc6ad0>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2e05b50>
+encoding = '*;q=1', expected = 'gzip'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.5-None] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2bc4050>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2bfc410>
+encoding = 'gzip;q=0.5', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.5, identity;q=0.2-gzip] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2a62990>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2c047d0>
+encoding = 'gzip;q=0.5, identity;q=0.2', expected = 'gzip'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=1, identity;q=1-gzip] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2a611d0>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2a333f0>
+encoding = 'gzip;q=1, identity;q=1', expected = 'gzip'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=0.1-gzip] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2aaccd0>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d33d9a90>
+encoding = 'identity;q=0, gzip;q=0.1', expected = 'gzip'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[*;q=0, gzip;q=0.5-gzip] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d336a0d0>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d3c001f0>
+encoding = '*;q=0, gzip;q=0.5', expected = 'gzip'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[br, gzip;q=0.7, identity;q=0.3-gzip] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d3348cd0>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2d30950>
+encoding = 'br, gzip;q=0.7, identity;q=0.3', expected = 'gzip'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=1.001-None] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2d74050>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2d31550>
+encoding = 'gzip;q=1.001', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=2-None] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d3369f90>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2d36ba0>
+encoding = 'gzip;q=2', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=.5-None] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2aafc50>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2d36e60>
+encoding = 'gzip;q=.5', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.0000-None] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2bc5a90>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2a5e670>
+encoding = 'gzip;q=0.0000', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=wat-None] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2a63750>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2bb6fd0>
+encoding = 'gzip;q=wat', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=1;other=x-None] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d334b9d0>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2bc0b90>
+encoding = 'gzip;q=1;other=x', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[gzip;q=1, gzip;q=0-None] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d3348050>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d29d7950>
+encoding = 'gzip;q=1, gzip;q=0', expected = None
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+            assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+            return
+>       assert status == 200
+E       assert 409 == 200
+
+casepath-api/tests/test_autonomous_operations_v1.py:87: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=0-reject] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2a611d0>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d29d7050>
+encoding = 'identity;q=0, gzip;q=0', expected = 'reject'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+>           assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+E           assert (409 == 406)
+
+casepath-api/tests/test_autonomous_operations_v1.py:85: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[*;q=0-reject] __
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2a63610>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2becd00>
+encoding = '*;q=0', expected = 'reject'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+>           assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+E           assert (409 == 406)
+
+casepath-api/tests/test_autonomous_operations_v1.py:85: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[br, identity;q=0-reject] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2aac910>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2a7f380>
+encoding = 'br, identity;q=0', expected = 'reject'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+>           assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+E           assert (409 == 406)
+
+casepath-api/tests/test_autonomous_operations_v1.py:85: AssertionError
+_ test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=invalid-reject] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2d74050>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2a7a0b0>
+encoding = 'identity;q=0, gzip;q=invalid', expected = 'reject'
+
+    @pytest.mark.parametrize(('encoding', 'expected'), [
+        (None, None), ('', None), ('gzip', 'gzip'), ('GZip;Q=1', 'gzip'),
+        ('gzip;q=0', None), ('gzip;q=0, *;q=1', None), ('*;q=1', 'gzip'),
+        ('gzip;q=0.5', None), ('gzip;q=0.5, identity;q=0.2', 'gzip'),
+        ('gzip;q=1, identity;q=1', 'gzip'), ('identity;q=0, gzip;q=0.1', 'gzip'),
+        ('*;q=0, gzip;q=0.5', 'gzip'), ('br, gzip;q=0.7, identity;q=0.3', 'gzip'),
+        ('gzip;q=1.001', None), ('gzip;q=2', None), ('gzip;q=.5', None),
+        ('gzip;q=0.0000', None), ('gzip;q=wat', None), ('gzip;q=1;other=x', None),
+        ('gzip;q=1, gzip;q=0', None),
+        ('identity;q=0, gzip;q=0', 'reject'), ('*;q=0', 'reject'),
+        ('br, identity;q=0', 'reject'), ('identity;q=0, gzip;q=invalid', 'reject'),
+    ])
+    def test_operation_transport_negotiates_encoding_before_admission(transport_app, monkeypatch, encoding, expected):
+        app, cid = transport_app
+        frames = [{'type': 'binding'}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            for frame in frames:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        status, headers, chunks = asyncio.run(raw_operations(app, cid, encoding))
+        if expected == 'reject':
+>           assert status == 406 and not runtime.PUBLIC_LIMITS.starts
+E           assert (409 == 406)
+
+casepath-api/tests/test_autonomous_operations_v1.py:85: AssertionError
+_ test_operation_transport_flushes_binding_then_batches_available_frames[identity] _
+
+scope = {'app': <fastapi.applications.FastAPI object at 0x7f71d3369e50>, 'asgi': {'spec_version': '2.4', 'version': '3.0'}, 'client': ('test', 1), 'endpoint': <function create_autonomous_router.<locals>.operations at 0x7f71d2cc6fc0>, ...}
+receive = <function raw_operations.<locals>.receive at 0x7f71d2cef1a0>
+send = <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7f71d2cef560>
+
+    async def wrapped_app(scope: Scope, receive: Receive, send: Send) -> None:
+        response_started = False
+    
+        async def sender(message: Message) -> None:
+            nonlocal response_started
+    
+            if message["type"] == "http.response.start":
+                response_started = True
+            await send(message)
+    
+        try:
+>           await app(scope, receive, sender)
+
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:75: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/routing.py:302: in app
+    raw_response = await run_endpoint_function(
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/routing.py:213: in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+claim_id = 'clm_0f4f13b1e3e1328c'
+request = <starlette.requests.Request object at 0x7f71d2cef610>, mode = 'live'
+
+    @router.get('/claims/{claim_id}/operations')
+    async def operations(claim_id: str, request: Request, mode: str = Query('live', pattern='^(live|recorded)$')):
+        from . import autonomous_operations_v1 as runtime
+        from .autonomous_reference_v1 import ReferenceProfile
+        from .autonomous_reference_policy_v1 import bounded_reference_policy, REFERENCE_POLICY_ID
+        from .workspace_corpus import canonical_json_bytes
+        # Identity-independent admission precedes saved reads or execution.
+        if claim_id not in ReferenceProfile().ids:
+            raise HTTPException(403, 'Only the nine synthetic reference claims support this check.')
+        if not runtime.PUBLIC_LIMITS.acquire():
+            raise HTTPException(429, 'The shared check limit is busy. Retry shortly.', headers={'Retry-After': '60'})
+        cancellation, finished = Event(), Event()
+        deadline = monotonic() + runtime.MAX_SECONDS
+        # A count bound plus a byte bound prevents large checkpoint frames from
+        # defeating backpressure. At most 2 MiB of encoded frames can queue.
+        queue, queued_bytes, byte_lock = Queue(maxsize=8), [0], Lock()
+    
+        def check():
+            if cancellation.is_set() or monotonic() >= deadline:
+                raise runtime.OperationCancelled('The check stopped before completion.')
+    
+        def send(frame):
+            encoded = canonical_json_bytes(frame) + b'\n'
+            if len(encoded) > 2 * 1024 * 1024:
+                raise runtime.OperationCancelled('A check frame exceeds the streaming bound.')
+            while True:
+                check()
+                with byte_lock:
+                    if queued_bytes[0] + len(encoded) <= 2 * 1024 * 1024:
+                        try:
+                            queue.put_nowait(encoded)
+                        except Full:
+                            pass
+                        else:
+                            queued_bytes[0] += len(encoded)
+                            return
+                # Event wait is cancellation-responsive backpressure; no engine
+                # or presentation delay is introduced when the consumer reads.
+                cancellation.wait(0.01)
+    
+        def work():
+            try:
+                service = service_getter()
+                if mode == 'recorded':
+                    from .autonomous_operation_trace_store_v1 import OperationTraceStore
+                    saved = service.store.snapshot(claim_id)
+                    head, start = saved['state'], saved['replay_start']
+                    if start is None:
+                        raise runtime.OperationsUnavailable('No recorded reference check is available.')
+                    sidecar = OperationTraceStore(service.store.journal.connect).read(
+                        claim_id, head_state_sha256=head['state_sha256'], head_event_sha256=head['last_event_sha256'],
+                        run_id=start['run_id'], profile_sha256=start['profile_sha256'],
+                        instrumentation_id=runtime.INSTRUMENTATION_ID, check=check)
+                    if sidecar is None:
+                        raise runtime.OperationsUnavailable('No recorded operation trace is available for this exact saved head.')
+                    for frame in sidecar['frames']:
+                        check()
+                        send(frame)
+                else:
+                    policy = service.policy
+                    if policy.get('policy_id') != REFERENCE_POLICY_ID:
+                        policy = bounded_reference_policy(policy)
+                    bundle = runtime.capture_operation_inputs(service.store, claim_id, policy, check=check)
+                    runtime.recompute_operations(bundle, send=send, cancellation=cancellation, deadline=deadline)
+            except Exception as error:
+                if not cancellation.is_set() and monotonic() < deadline:
+                    try:
+                        send({'contract': runtime.CONTRACT, 'type': 'error', 'code': 'recomputation_unavailable',
+                              'detail': str(error) if isinstance(error, ValueError) else 'The saved check is unavailable.'})
+                    except runtime.OperationCancelled:
+                        pass
+            finally:
+                finished.set()
+                # Keep concurrency owned until the actual worker exits, even
+                # when a visitor disconnects while a bounded read is pending.
+                runtime.PUBLIC_LIMITS.release()
+    
+        thread = Thread(target=work, name='casepath-read-only-operations', daemon=True)
+        try:
+            thread.start()
+        except BaseException:
+            runtime.PUBLIC_LIMITS.release()
+            raise
+        # Return an ordinary rejection before opening a stream when immutable
+        # inputs or an admitted recorded sidecar are unavailable.
+        async def first_chunk():
+            while True:
+                if await request.is_disconnected() or monotonic() >= deadline:
+                    raise HTTPException(408, 'The bounded check stopped before its saved inputs were verified.')
+                try:
+                    chunk = queue.get_nowait()
+                except Empty:
+                    if finished.is_set():
+                        raise HTTPException(409, 'No verified operation trace is available.')
+                    await asyncio.sleep(0.005)
+                else:
+                    with byte_lock:
+                        queued_bytes[0] -= len(chunk)
+                    return chunk
+        try:
+            first = await first_chunk()
+        except BaseException:
+            cancellation.set()
+            raise
+        first_frame = json.loads(first)
+        if first_frame['type'] == 'error':
+            cancellation.set()
+>           raise HTTPException(409, first_frame['detail'])
+E           fastapi.exceptions.HTTPException: 409: The saved check is unavailable.
+
+casepath-api/casepath_api/autonomous_api_v1.py:314: HTTPException
+
+During handling of the above exception, another exception occurred:
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d3369e50>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2b177e0>
+encoding = 'identity'
+
+    @pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+    def test_operation_transport_flushes_binding_then_batches_available_frames(transport_app, monkeypatch, encoding):
+        app, cid = transport_app
+        binding_sent, release = Event(), Event()
+        frames = [{'type': 'binding', 'claim_id': cid}]
+        frames += [{'type': 'operation', 'id': index, 'text': 'é😀' * 1700} for index in range(16)]
+        frames += [{'type': 'checkpoint', 'text': 'x' * 70000}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            send(frames[0])
+            binding_sent.set()
+            assert release.wait(1), 'binding was buffered until computation finished'
+            for frame in frames[1:]:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        inflater = zlib.decompressobj(31) if encoding == 'gzip' else None
+        decoded = []
+        async def on_chunk(chunks):
+            chunk = inflater.decompress(chunks[-1]) if inflater else chunks[-1]
+            decoded.append(chunk)
+            if len(chunks) == 1:
+                assert binding_sent.is_set() and not release.is_set()
+                assert chunk == canonical_json_bytes(frames[0]) + b'\n'
+                release.set()
+                # Allow the bounded producer queue to fill, so batching is observable.
+                await asyncio.sleep(0.02)
+>       status, _, chunks = asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_operations_v1.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+casepath-api/tests/test_autonomous_operations_v1.py:44: in raw_operations
+    await app({'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.4'},
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:736: in app
+    await route.handle(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:290: in handle
+    await self.app(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:78: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:63: in wrapped_app
+    await response(scope, receive, sender)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/responses.py:165: in __call__
+    await send({"type": prefix + "http.response.body", "body": self.body})
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:39: in sender
+    await send(message)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:39: in sender
+    await send(message)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:161: in _send
+    await send(message)
+casepath-api/tests/test_autonomous_operations_v1.py:42: in send
+    await on_chunk(chunks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+chunks = [b'{"detail":"The saved check is unavailable."}']
+
+    async def on_chunk(chunks):
+        chunk = inflater.decompress(chunks[-1]) if inflater else chunks[-1]
+        decoded.append(chunk)
+        if len(chunks) == 1:
+>           assert binding_sent.is_set() and not release.is_set()
+E           assert (False)
+E            +  where False = is_set()
+E            +    where is_set = <threading.Event at 0x7f71d2b19c70: unset>.is_set
+
+casepath-api/tests/test_autonomous_operations_v1.py:114: AssertionError
+_ test_operation_transport_flushes_binding_then_batches_available_frames[gzip] _
+
+scope = {'app': <fastapi.applications.FastAPI object at 0x7f71d2d77b10>, 'asgi': {'spec_version': '2.4', 'version': '3.0'}, 'client': ('test', 1), 'endpoint': <function create_autonomous_router.<locals>.operations at 0x7f71d2acc5e0>, ...}
+receive = <function raw_operations.<locals>.receive at 0x7f71d2cc5260>
+send = <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7f71d2a9aac0>
+
+    async def wrapped_app(scope: Scope, receive: Receive, send: Send) -> None:
+        response_started = False
+    
+        async def sender(message: Message) -> None:
+            nonlocal response_started
+    
+            if message["type"] == "http.response.start":
+                response_started = True
+            await send(message)
+    
+        try:
+>           await app(scope, receive, sender)
+
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:75: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/routing.py:302: in app
+    raw_response = await run_endpoint_function(
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/routing.py:213: in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+claim_id = 'clm_0f4f13b1e3e1328c'
+request = <starlette.requests.Request object at 0x7f71d2a98870>, mode = 'live'
+
+    @router.get('/claims/{claim_id}/operations')
+    async def operations(claim_id: str, request: Request, mode: str = Query('live', pattern='^(live|recorded)$')):
+        from . import autonomous_operations_v1 as runtime
+        from .autonomous_reference_v1 import ReferenceProfile
+        from .autonomous_reference_policy_v1 import bounded_reference_policy, REFERENCE_POLICY_ID
+        from .workspace_corpus import canonical_json_bytes
+        # Identity-independent admission precedes saved reads or execution.
+        if claim_id not in ReferenceProfile().ids:
+            raise HTTPException(403, 'Only the nine synthetic reference claims support this check.')
+        if not runtime.PUBLIC_LIMITS.acquire():
+            raise HTTPException(429, 'The shared check limit is busy. Retry shortly.', headers={'Retry-After': '60'})
+        cancellation, finished = Event(), Event()
+        deadline = monotonic() + runtime.MAX_SECONDS
+        # A count bound plus a byte bound prevents large checkpoint frames from
+        # defeating backpressure. At most 2 MiB of encoded frames can queue.
+        queue, queued_bytes, byte_lock = Queue(maxsize=8), [0], Lock()
+    
+        def check():
+            if cancellation.is_set() or monotonic() >= deadline:
+                raise runtime.OperationCancelled('The check stopped before completion.')
+    
+        def send(frame):
+            encoded = canonical_json_bytes(frame) + b'\n'
+            if len(encoded) > 2 * 1024 * 1024:
+                raise runtime.OperationCancelled('A check frame exceeds the streaming bound.')
+            while True:
+                check()
+                with byte_lock:
+                    if queued_bytes[0] + len(encoded) <= 2 * 1024 * 1024:
+                        try:
+                            queue.put_nowait(encoded)
+                        except Full:
+                            pass
+                        else:
+                            queued_bytes[0] += len(encoded)
+                            return
+                # Event wait is cancellation-responsive backpressure; no engine
+                # or presentation delay is introduced when the consumer reads.
+                cancellation.wait(0.01)
+    
+        def work():
+            try:
+                service = service_getter()
+                if mode == 'recorded':
+                    from .autonomous_operation_trace_store_v1 import OperationTraceStore
+                    saved = service.store.snapshot(claim_id)
+                    head, start = saved['state'], saved['replay_start']
+                    if start is None:
+                        raise runtime.OperationsUnavailable('No recorded reference check is available.')
+                    sidecar = OperationTraceStore(service.store.journal.connect).read(
+                        claim_id, head_state_sha256=head['state_sha256'], head_event_sha256=head['last_event_sha256'],
+                        run_id=start['run_id'], profile_sha256=start['profile_sha256'],
+                        instrumentation_id=runtime.INSTRUMENTATION_ID, check=check)
+                    if sidecar is None:
+                        raise runtime.OperationsUnavailable('No recorded operation trace is available for this exact saved head.')
+                    for frame in sidecar['frames']:
+                        check()
+                        send(frame)
+                else:
+                    policy = service.policy
+                    if policy.get('policy_id') != REFERENCE_POLICY_ID:
+                        policy = bounded_reference_policy(policy)
+                    bundle = runtime.capture_operation_inputs(service.store, claim_id, policy, check=check)
+                    runtime.recompute_operations(bundle, send=send, cancellation=cancellation, deadline=deadline)
+            except Exception as error:
+                if not cancellation.is_set() and monotonic() < deadline:
+                    try:
+                        send({'contract': runtime.CONTRACT, 'type': 'error', 'code': 'recomputation_unavailable',
+                              'detail': str(error) if isinstance(error, ValueError) else 'The saved check is unavailable.'})
+                    except runtime.OperationCancelled:
+                        pass
+            finally:
+                finished.set()
+                # Keep concurrency owned until the actual worker exits, even
+                # when a visitor disconnects while a bounded read is pending.
+                runtime.PUBLIC_LIMITS.release()
+    
+        thread = Thread(target=work, name='casepath-read-only-operations', daemon=True)
+        try:
+            thread.start()
+        except BaseException:
+            runtime.PUBLIC_LIMITS.release()
+            raise
+        # Return an ordinary rejection before opening a stream when immutable
+        # inputs or an admitted recorded sidecar are unavailable.
+        async def first_chunk():
+            while True:
+                if await request.is_disconnected() or monotonic() >= deadline:
+                    raise HTTPException(408, 'The bounded check stopped before its saved inputs were verified.')
+                try:
+                    chunk = queue.get_nowait()
+                except Empty:
+                    if finished.is_set():
+                        raise HTTPException(409, 'No verified operation trace is available.')
+                    await asyncio.sleep(0.005)
+                else:
+                    with byte_lock:
+                        queued_bytes[0] -= len(chunk)
+                    return chunk
+        try:
+            first = await first_chunk()
+        except BaseException:
+            cancellation.set()
+            raise
+        first_frame = json.loads(first)
+        if first_frame['type'] == 'error':
+            cancellation.set()
+>           raise HTTPException(409, first_frame['detail'])
+E           fastapi.exceptions.HTTPException: 409: The saved check is unavailable.
+
+casepath-api/casepath_api/autonomous_api_v1.py:314: HTTPException
+
+During handling of the above exception, another exception occurred:
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2d77b10>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d20d34d0>
+encoding = 'gzip'
+
+    @pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+    def test_operation_transport_flushes_binding_then_batches_available_frames(transport_app, monkeypatch, encoding):
+        app, cid = transport_app
+        binding_sent, release = Event(), Event()
+        frames = [{'type': 'binding', 'claim_id': cid}]
+        frames += [{'type': 'operation', 'id': index, 'text': 'é😀' * 1700} for index in range(16)]
+        frames += [{'type': 'checkpoint', 'text': 'x' * 70000}, {'type': 'result'}]
+        def recompute(_, *, send, **kwargs):
+            send(frames[0])
+            binding_sent.set()
+            assert release.wait(1), 'binding was buffered until computation finished'
+            for frame in frames[1:]:
+                send(frame)
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        inflater = zlib.decompressobj(31) if encoding == 'gzip' else None
+        decoded = []
+        async def on_chunk(chunks):
+            chunk = inflater.decompress(chunks[-1]) if inflater else chunks[-1]
+            decoded.append(chunk)
+            if len(chunks) == 1:
+                assert binding_sent.is_set() and not release.is_set()
+                assert chunk == canonical_json_bytes(frames[0]) + b'\n'
+                release.set()
+                # Allow the bounded producer queue to fill, so batching is observable.
+                await asyncio.sleep(0.02)
+>       status, _, chunks = asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_operations_v1.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+casepath-api/tests/test_autonomous_operations_v1.py:44: in raw_operations
+    await app({'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.4'},
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:736: in app
+    await route.handle(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:290: in handle
+    await self.app(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:78: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:63: in wrapped_app
+    await response(scope, receive, sender)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/responses.py:165: in __call__
+    await send({"type": prefix + "http.response.body", "body": self.body})
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:39: in sender
+    await send(message)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:39: in sender
+    await send(message)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:161: in _send
+    await send(message)
+casepath-api/tests/test_autonomous_operations_v1.py:42: in send
+    await on_chunk(chunks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+chunks = [b'{"detail":"The saved check is unavailable."}']
+
+    async def on_chunk(chunks):
+>       chunk = inflater.decompress(chunks[-1]) if inflater else chunks[-1]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       zlib.error: Error -3 while decompressing data: incorrect header check
+
+casepath-api/tests/test_autonomous_operations_v1.py:111: error
+_ test_operation_transport_closes_bounded_worker_and_encoded_errors[disconnect-identity] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d3296710>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2cdaa50>
+encoding = 'identity', stop = 'disconnect'
+
+    @pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+    @pytest.mark.parametrize('stop', ['disconnect', 'deadline', 'error'])
+    def test_operation_transport_closes_bounded_worker_and_encoded_errors(transport_app, monkeypatch, encoding, stop):
+        app, cid = transport_app
+        disconnected, stopped = Event(), Event()
+        if stop == 'deadline':
+            monkeypatch.setattr(runtime, 'MAX_SECONDS', 0.06)
+        def recompute(_, *, send, cancellation, **kwargs):
+            try:
+                send({'type': 'binding'})
+                if stop == 'error':
+                    raise ValueError('controlled transport failure')
+                if stop == 'deadline':
+                    assert cancellation.wait(1)
+                else:
+                    # A nonreading client must leave the producer at the existing queue bound.
+                    for index in range(100):
+                        send({'type': 'operation', 'id': index, 'text': 'x' * 400000})
+            finally:
+                stopped.set()
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        async def on_chunk(chunks):
+            if stop == 'disconnect' and len(chunks) == 1:
+                await asyncio.sleep(0.02)
+                assert not stopped.is_set(), 'producer escaped bounded backpressure'
+                disconnected.set()
+        _, _, chunks = asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk, disconnected=disconnected))
+>       assert stopped.wait(1) and runtime.PUBLIC_LIMITS.active == 0
+E       assert (False)
+E        +  where False = wait(1)
+E        +    where wait = <threading.Event at 0x7f71d1991f70: unset>.wait
+
+casepath-api/tests/test_autonomous_operations_v1.py:156: AssertionError
+_ test_operation_transport_closes_bounded_worker_and_encoded_errors[disconnect-gzip] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2aafb10>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2b2b150>
+encoding = 'gzip', stop = 'disconnect'
+
+    @pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+    @pytest.mark.parametrize('stop', ['disconnect', 'deadline', 'error'])
+    def test_operation_transport_closes_bounded_worker_and_encoded_errors(transport_app, monkeypatch, encoding, stop):
+        app, cid = transport_app
+        disconnected, stopped = Event(), Event()
+        if stop == 'deadline':
+            monkeypatch.setattr(runtime, 'MAX_SECONDS', 0.06)
+        def recompute(_, *, send, cancellation, **kwargs):
+            try:
+                send({'type': 'binding'})
+                if stop == 'error':
+                    raise ValueError('controlled transport failure')
+                if stop == 'deadline':
+                    assert cancellation.wait(1)
+                else:
+                    # A nonreading client must leave the producer at the existing queue bound.
+                    for index in range(100):
+                        send({'type': 'operation', 'id': index, 'text': 'x' * 400000})
+            finally:
+                stopped.set()
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        async def on_chunk(chunks):
+            if stop == 'disconnect' and len(chunks) == 1:
+                await asyncio.sleep(0.02)
+                assert not stopped.is_set(), 'producer escaped bounded backpressure'
+                disconnected.set()
+        _, _, chunks = asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk, disconnected=disconnected))
+>       assert stopped.wait(1) and runtime.PUBLIC_LIMITS.active == 0
+E       assert (False)
+E        +  where False = wait(1)
+E        +    where wait = <threading.Event at 0x7f71d1992450: unset>.wait
+
+casepath-api/tests/test_autonomous_operations_v1.py:156: AssertionError
+_ test_operation_transport_closes_bounded_worker_and_encoded_errors[deadline-identity] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2bc5d10>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2b2b690>
+encoding = 'identity', stop = 'deadline'
+
+    @pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+    @pytest.mark.parametrize('stop', ['disconnect', 'deadline', 'error'])
+    def test_operation_transport_closes_bounded_worker_and_encoded_errors(transport_app, monkeypatch, encoding, stop):
+        app, cid = transport_app
+        disconnected, stopped = Event(), Event()
+        if stop == 'deadline':
+            monkeypatch.setattr(runtime, 'MAX_SECONDS', 0.06)
+        def recompute(_, *, send, cancellation, **kwargs):
+            try:
+                send({'type': 'binding'})
+                if stop == 'error':
+                    raise ValueError('controlled transport failure')
+                if stop == 'deadline':
+                    assert cancellation.wait(1)
+                else:
+                    # A nonreading client must leave the producer at the existing queue bound.
+                    for index in range(100):
+                        send({'type': 'operation', 'id': index, 'text': 'x' * 400000})
+            finally:
+                stopped.set()
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        async def on_chunk(chunks):
+            if stop == 'disconnect' and len(chunks) == 1:
+                await asyncio.sleep(0.02)
+                assert not stopped.is_set(), 'producer escaped bounded backpressure'
+                disconnected.set()
+        _, _, chunks = asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk, disconnected=disconnected))
+>       assert stopped.wait(1) and runtime.PUBLIC_LIMITS.active == 0
+E       assert (False)
+E        +  where False = wait(1)
+E        +    where wait = <threading.Event at 0x7f71d2aed250: unset>.wait
+
+casepath-api/tests/test_autonomous_operations_v1.py:156: AssertionError
+_ test_operation_transport_closes_bounded_worker_and_encoded_errors[deadline-gzip] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2a63110>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d29dfcb0>
+encoding = 'gzip', stop = 'deadline'
+
+    @pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+    @pytest.mark.parametrize('stop', ['disconnect', 'deadline', 'error'])
+    def test_operation_transport_closes_bounded_worker_and_encoded_errors(transport_app, monkeypatch, encoding, stop):
+        app, cid = transport_app
+        disconnected, stopped = Event(), Event()
+        if stop == 'deadline':
+            monkeypatch.setattr(runtime, 'MAX_SECONDS', 0.06)
+        def recompute(_, *, send, cancellation, **kwargs):
+            try:
+                send({'type': 'binding'})
+                if stop == 'error':
+                    raise ValueError('controlled transport failure')
+                if stop == 'deadline':
+                    assert cancellation.wait(1)
+                else:
+                    # A nonreading client must leave the producer at the existing queue bound.
+                    for index in range(100):
+                        send({'type': 'operation', 'id': index, 'text': 'x' * 400000})
+            finally:
+                stopped.set()
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        async def on_chunk(chunks):
+            if stop == 'disconnect' and len(chunks) == 1:
+                await asyncio.sleep(0.02)
+                assert not stopped.is_set(), 'producer escaped bounded backpressure'
+                disconnected.set()
+        _, _, chunks = asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk, disconnected=disconnected))
+>       assert stopped.wait(1) and runtime.PUBLIC_LIMITS.active == 0
+E       assert (False)
+E        +  where False = wait(1)
+E        +    where wait = <threading.Event at 0x7f71d2aefb30: unset>.wait
+
+casepath-api/tests/test_autonomous_operations_v1.py:156: AssertionError
+_ test_operation_transport_closes_bounded_worker_and_encoded_errors[error-identity] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d3348050>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d29dfe00>
+encoding = 'identity', stop = 'error'
+
+    @pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+    @pytest.mark.parametrize('stop', ['disconnect', 'deadline', 'error'])
+    def test_operation_transport_closes_bounded_worker_and_encoded_errors(transport_app, monkeypatch, encoding, stop):
+        app, cid = transport_app
+        disconnected, stopped = Event(), Event()
+        if stop == 'deadline':
+            monkeypatch.setattr(runtime, 'MAX_SECONDS', 0.06)
+        def recompute(_, *, send, cancellation, **kwargs):
+            try:
+                send({'type': 'binding'})
+                if stop == 'error':
+                    raise ValueError('controlled transport failure')
+                if stop == 'deadline':
+                    assert cancellation.wait(1)
+                else:
+                    # A nonreading client must leave the producer at the existing queue bound.
+                    for index in range(100):
+                        send({'type': 'operation', 'id': index, 'text': 'x' * 400000})
+            finally:
+                stopped.set()
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        async def on_chunk(chunks):
+            if stop == 'disconnect' and len(chunks) == 1:
+                await asyncio.sleep(0.02)
+                assert not stopped.is_set(), 'producer escaped bounded backpressure'
+                disconnected.set()
+        _, _, chunks = asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk, disconnected=disconnected))
+>       assert stopped.wait(1) and runtime.PUBLIC_LIMITS.active == 0
+E       assert (False)
+E        +  where False = wait(1)
+E        +    where wait = <threading.Event at 0x7f71d2aecc50: unset>.wait
+
+casepath-api/tests/test_autonomous_operations_v1.py:156: AssertionError
+_ test_operation_transport_closes_bounded_worker_and_encoded_errors[error-gzip] _
+
+transport_app = (<fastapi.applications.FastAPI object at 0x7f71d2bc4050>, 'clm_0f4f13b1e3e1328c')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f71d2cdb380>
+encoding = 'gzip', stop = 'error'
+
+    @pytest.mark.parametrize('encoding', ['identity', 'gzip'])
+    @pytest.mark.parametrize('stop', ['disconnect', 'deadline', 'error'])
+    def test_operation_transport_closes_bounded_worker_and_encoded_errors(transport_app, monkeypatch, encoding, stop):
+        app, cid = transport_app
+        disconnected, stopped = Event(), Event()
+        if stop == 'deadline':
+            monkeypatch.setattr(runtime, 'MAX_SECONDS', 0.06)
+        def recompute(_, *, send, cancellation, **kwargs):
+            try:
+                send({'type': 'binding'})
+                if stop == 'error':
+                    raise ValueError('controlled transport failure')
+                if stop == 'deadline':
+                    assert cancellation.wait(1)
+                else:
+                    # A nonreading client must leave the producer at the existing queue bound.
+                    for index in range(100):
+                        send({'type': 'operation', 'id': index, 'text': 'x' * 400000})
+            finally:
+                stopped.set()
+        monkeypatch.setattr(runtime, 'recompute_operations', recompute)
+        async def on_chunk(chunks):
+            if stop == 'disconnect' and len(chunks) == 1:
+                await asyncio.sleep(0.02)
+                assert not stopped.is_set(), 'producer escaped bounded backpressure'
+                disconnected.set()
+        _, _, chunks = asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk, disconnected=disconnected))
+>       assert stopped.wait(1) and runtime.PUBLIC_LIMITS.active == 0
+E       assert (False)
+E        +  where False = wait(1)
+E        +    where wait = <threading.Event at 0x7f71d2d217f0: unset>.wait
+
+casepath-api/tests/test_autonomous_operations_v1.py:156: AssertionError
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[None-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip-gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[GZip;Q=1-gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0, *;q=1-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[*;q=1-gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.5-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.5, identity;q=0.2-gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1, identity;q=1-gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=0.1-gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[*;q=0, gzip;q=0.5-gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[br, gzip;q=0.7, identity;q=0.3-gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1.001-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=2-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=.5-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.0000-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=wat-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1;other=x-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1, gzip;q=0-None]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=0-reject]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[*;q=0-reject]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[br, identity;q=0-reject]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=invalid-reject]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_flushes_binding_then_batches_available_frames[identity]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_flushes_binding_then_batches_available_frames[gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[disconnect-identity]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[disconnect-gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[deadline-identity]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[deadline-gzip]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[error-identity]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[error-gzip]
+ERROR casepath-api/tests/test_autonomous_operations_v1.py::test_real_operation_transport_preserves_exact_ndjson_and_hashes_in_both_encodings[live]
+ERROR casepath-api/tests/test_autonomous_operations_v1.py::test_real_operation_transport_preserves_exact_ndjson_and_hashes_in_both_encodings[recorded]
+32 failed, 18 deselected, 2 errors in 11.06s

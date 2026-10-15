@@ -1,0 +1,132 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_operation_transport_keeps_lookahead_charged_under_backpressure[identity] _
+casepath-api/tests/test_autonomous_operations_v1.py:212: in test_operation_transport_keeps_lookahead_charged_under_backpressure
+    asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk, disconnected=disconnected))
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+casepath-api/tests/test_autonomous_operations_v1.py:45: in raw_operations
+    await app({'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.4'},
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:736: in app
+    await route.handle(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:290: in handle
+    await self.app(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:78: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:76: in app
+    await response(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/responses.py:266: in __call__
+    await self.stream_response(send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/responses.py:257: in stream_response
+    await send({"type": "http.response.body", "body": chunk, "more_body": True})
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:39: in sender
+    await send(message)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:39: in sender
+    await send(message)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:161: in _send
+    await send(message)
+casepath-api/tests/test_autonomous_operations_v1.py:42: in send
+    await on_chunk(chunks)
+casepath-api/tests/test_autonomous_operations_v1.py:209: in on_chunk
+    assert produced == [40000, 1500000, 400000]
+E   assert [40000, 15000..., 400000, ...] == [40000, 1500000, 400000]
+E     
+E     Left contains 4 more items, first extra item: 400000
+E     Use -v to get more diff
+__ test_operation_transport_keeps_lookahead_charged_under_backpressure[gzip] ___
+casepath-api/tests/test_autonomous_operations_v1.py:212: in test_operation_transport_keeps_lookahead_charged_under_backpressure
+    asyncio.run(raw_operations(app, cid, encoding, on_chunk=on_chunk, disconnected=disconnected))
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+casepath-api/tests/test_autonomous_operations_v1.py:45: in raw_operations
+    await app({'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.4'},
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:736: in app
+    await route.handle(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:290: in handle
+    await self.app(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:78: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:76: in app
+    await response(scope, receive, send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/responses.py:266: in __call__
+    await self.stream_response(send)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/responses.py:257: in stream_response
+    await send({"type": "http.response.body", "body": chunk, "more_body": True})
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:39: in sender
+    await send(message)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/_exception_handler.py:39: in sender
+    await send(message)
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:161: in _send
+    await send(message)
+casepath-api/tests/test_autonomous_operations_v1.py:42: in send
+    await on_chunk(chunks)
+casepath-api/tests/test_autonomous_operations_v1.py:209: in on_chunk
+    assert produced == [40000, 1500000, 400000]
+E   assert [40000, 15000..., 400000, ...] == [40000, 1500000, 400000]
+E     
+E     Left contains 4 more items, first extra item: 400000
+E     Use -v to get more diff
+=============================== warnings summary ===============================
+../casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/config/__init__.py:1290
+  /workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/config/__init__.py:1290: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; anyio
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_keeps_lookahead_charged_under_backpressure[identity]
+FAILED casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_keeps_lookahead_charged_under_backpressure[gzip]
+2 failed, 58 deselected, 1 warning in 0.83s

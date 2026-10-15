@@ -1,0 +1,53 @@
+{
+  "base_commit": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "source_commit": "4c5bce3ea912aa025eb42c7b75bad059e631b123",
+  "source_branch": "codex/operation-stream-transport-20261015",
+  "host": "656813ef2295",
+  "workers": {
+    "implementation": "gpt-6.1-sol xhigh",
+    "independent_review": "gpt-6.1-sol xhigh"
+  },
+  "scope": [
+    "casepath-api/casepath_api/autonomous_api_v1.py",
+    "casepath-api/tests/test_autonomous_operations_v1.py",
+    "casepath-qa/sites-proxy.test.cjs",
+    "casepath/tools/sites_worker.mjs"
+  ],
+  "source_sha256": {
+    "casepath-api/casepath_api/autonomous_api_v1.py": "480399ad34a9babc6e0b2ca5488b1082d2060102c490d7bf9b803bdee50367c4",
+    "casepath-api/tests/test_autonomous_operations_v1.py": "76f13c301b5c9c0d25cb4352e21b31add82d5d67a3efea8801db082c97ae215a",
+    "casepath-qa/sites-proxy.test.cjs": "26fbda2f23458e1687aa3d0dee07b0fff3fef3cb68e83b3493425dce884aed08",
+    "casepath/tools/sites_worker.mjs": "00314e6e02168e5ed80dfaa76f3ccb7f33c0b58d5c583212d44753595eb3f091"
+  },
+  "working_tree_clean": true,
+  "final_python_junit": {
+    "unique_cases": 42,
+    "passed": 42,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "targeted_deselected": 18
+  },
+  "final_node": {
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0
+  },
+  "independent_lifecycle": {
+    "passed": 8
+  },
+  "final_source_before_after_equal": true,
+  "earlier_focused_modules": {
+    "passed": 67,
+    "stage": "before final lookahead budget correction; not represented as final-source full-suite coverage"
+  },
+  "full_gate_run": false,
+  "source_seal_owner": "Mac integration owner",
+  "no_public_product_network_requests": true,
+  "head_cache_changes": false,
+  "limits": [
+    "Public/Workers-native transfer speed not measured in Cloud; proxy pass-through checked against official Cloudflare contract and byte-preserving local mocks.",
+    "Existing cooperative 10-second worker deadline is preserved; it does not cap delivery of bytes already handed downstream.",
+    "Two serial opening/head reads remain unchanged."
+  ]
+}

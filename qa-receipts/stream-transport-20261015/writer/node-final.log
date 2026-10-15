@@ -1,0 +1,20 @@
+✔ public Sites refuses visitor-forged work authority before any upstream request (35.495076ms)
+✔ public Sites rejects every work verb across current generic aliased and unknown paths without reading bodies (8.99686ms)
+✔ public Sites keeps GET and HEAD inspection transport available on every public API shape (11.749251ms)
+✔ Sites sends native and normalized legacy collection entries to Cases without fetching data (0.815413ms)
+✔ Sites authenticates its upstream request without leaking browser credentials (1.284164ms)
+✔ Sites streams an operation before completion and cancels upstream when its reader leaves (2.273704ms)
+✔ Sites forwards operation encoding negotiation and untouched compressed bytes without buffering (2.168709ms)
+✔ Sites preserves operation identity refusals and leaves other API negotiation unchanged (1.242192ms)
+✔ Sites refuses cross-origin mutations before calling the backend (0.540777ms)
+✔ Sites requires configured HTTPS upstream and a server secret (0.64407ms)
+✔ Sites reports an unavailable backend without exposing upstream details (0.682417ms)
+✔ Sites preserves allowlisted Review read headers without requiring an agent-work header (0.53552ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 139.579579

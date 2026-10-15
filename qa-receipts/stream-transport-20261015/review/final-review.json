@@ -1,0 +1,73 @@
+{
+  "reviewed_at_utc": "2026-10-15T17:23:46.767466+00:00",
+  "host": "656813ef2295",
+  "repository": "/workspace/casepath-stream-transport-20261015",
+  "base_commit": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "reviewed_commit": "4c5bce3ea912aa025eb42c7b75bad059e631b123",
+  "branch": "codex/operation-stream-transport-20261015",
+  "working_tree_clean": true,
+  "changed_files_sha256": {
+    "casepath-api/casepath_api/autonomous_api_v1.py": "480399ad34a9babc6e0b2ca5488b1082d2060102c490d7bf9b803bdee50367c4",
+    "casepath-api/tests/test_autonomous_operations_v1.py": "76f13c301b5c9c0d25cb4352e21b31add82d5d67a3efea8801db082c97ae215a",
+    "casepath-qa/sites-proxy.test.cjs": "26fbda2f23458e1687aa3d0dee07b0fff3fef3cb68e83b3493425dce884aed08",
+    "casepath/tools/sites_worker.mjs": "00314e6e02168e5ed80dfaa76f3ccb7f33c0b58d5c583212d44753595eb3f091"
+  },
+  "verdict": "No remaining blocking correctness findings in the authorized operation-stream gzip, batching, and Sites header scope.",
+  "source_review": [
+    "RFC 9110 Accept-Encoding negotiation handles repeated field lines, case-insensitive gzip/identity tokens, q=0, wildcard fallback, explicit identity preference/refusal, malformed weights, and conflicting duplicates conservatively. Positive gzip is selected when identity is only implicit; unsupported acceptable codings alone do not enable gzip. 406 occurs before public-limit admission when both supported representations are refused.",
+    "Gzip uses level 1 and a single member. The first binding and each available-frame batch are flushed with Z_SYNC_FLUSH for incremental decompression; normal completion sends Z_FINISH. Decoded canonical NDJSON bytes, line order, frame payloads, and operation hashes are preserved.",
+    "Batches drain only already-available frames, capped at 64KiB and 10ms drain time; a larger accepted frame stands alone. Producer checks and original 2MiB per-frame, 8-frame/2MiB waiting-data limits remain in force. Non-fitting lookahead retains both byte and logical frame charges until consumed. Existing runtime MAX_OUTPUT_BYTES=24MiB and MAX_SECONDS=10 remain unchanged.",
+    "Disconnect now sets cancellation before a gzip footer can be yielded. Explicit iterator close and cancellation run the single stream generator cleanup; no nested iterator wrapper requires separate close propagation.",
+    "Sites forwards Accept-Encoding only for operation paths, passes the native unread origin stream through with Content-Encoding and Vary retained, and retains existing no-store, credential filtering, and public read-only behavior. The exact response-body pattern is documented by Cloudflare Fetch passthrough guidance."
+  ],
+  "independent_validation": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/casepath-stream-transport-20261015/casepath-api /workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider /workspace/cp-stream-transport-evidence-20261015/review/test_transport_lifecycle_review.py",
+    "temp_root": "/workspace/cp-stream-transport-evidence-20261015/tmp",
+    "exit_status": 0,
+    "passed": 8,
+    "coverage": [
+      "identity and gzip iterator aclose after first binding",
+      "identity and gzip disconnect cancels before next footer yield",
+      "identity and gzip explicit task cancellation",
+      "identity and gzip non-fitting lookahead preserves aggregate waiting-byte bound"
+    ],
+    "log": "/workspace/cp-stream-transport-evidence-20261015/review/lifecycle-final-4c5bce3.log",
+    "whitespace_check": "git diff base..reviewed_commit --check passed"
+  },
+  "writer_validation_evidence": {
+    "python_junit_totals": {
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "node_summary": "",
+    "final_status": "python_exit=0\nnode_exit=0",
+    "source_hashes_start_end_equal": true,
+    "logs": [
+      "/workspace/cp-stream-transport-evidence-20261015/writer/python-affected-final.log",
+      "/workspace/cp-stream-transport-evidence-20261015/writer/node-final.log"
+    ],
+    "note": "Inspected existing writer evidence; did not independently repeat the broader affected-module runs."
+  },
+  "resolved_findings": [
+    {
+      "issue": "Gzip disconnect footer could precede worker cancellation.",
+      "resolution": "Cancellation is set immediately on detected disconnect before footer generation.",
+      "evidence": "/workspace/cp-stream-transport-evidence-20261015/review/lifecycle-final-4c5bce3.log"
+    },
+    {
+      "issue": "Non-fitting lookahead was uncharged while still waiting, allowing another 1.3MB checkpoint to queue alongside a pending 1.3MB checkpoint.",
+      "resolution": "Lookahead retains byte and logical frame charges until entering the next batch.",
+      "red_evidence": "/workspace/cp-stream-transport-evidence-20261015/review/lifecycle-lookahead.log",
+      "green_evidence": "/workspace/cp-stream-transport-evidence-20261015/review/lifecycle-final-4c5bce3.log"
+    }
+  ],
+  "official_worker_contract_evidence": "/workspace/cp-stream-transport-evidence-20261015/review/official-worker-encoding-contract.json",
+  "known_limits": [
+    "Native Cloudflare Workers execution and public deployed transport were not run. Node mocks verify forwarding/preservation; official Cloudflare documentation supplies the native passthrough contract.",
+    "The existing 10-second bound is cooperative computation/producer/consumer behavior. It is not an absolute client-download or stalled-ASGI-send timer; this patch adds no send watchdog.",
+    "No full suite, release/source seal, browser review, deployment, production journal access, paid inference, backend semantics change, or public product network request was performed by this reviewer."
+  ],
+  "scratch_harness_note": "An initial scratch-only run failed because its fake service omitted a store attribute; adding that fixture attribute fixed the harness. This was not a product finding. The later lookahead red run was a real source regression and is resolved above."
+}
