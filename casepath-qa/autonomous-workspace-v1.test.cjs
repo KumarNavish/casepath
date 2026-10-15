@@ -1829,6 +1829,16 @@ test('cold operation selection aborts its early reader and ignores late opening 
  snapshot.resolve(response(native.snapshot));opening.resolve(response(native.zero));await selecting;await settle();assert.equal(f.host.innerHTML,after);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1,'stale work cannot trigger a fallback trace');
 });
 
+test('cold operation selection does not replace hidden or inspected content when its outline arrives',async t=>{
+ for(const hold of ['hidden','History'])await t.test(hold,async child=>{
+  const f=operationOpeningDOM(),native=operationOpeningFixture(),snapshot=deferredRead(),head=deferredRead();
+  const api=fakeApi({handle:async path=>path.includes('/snapshot?')?snapshot.promise:path.endsWith('/replay?through_seq=0')?response(native.zero):path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+  const controller=ui.mount(f.container,{fetch:api.fetch});child.after(()=>{controller.destroy();snapshot.resolve(response(native.snapshot));head.resolve(response(native.replay));});await settle();await controller.showDemonstration();
+  if(hold==='hidden')f.container.ownerDocument.hidden=true;else f.listeners.get('click')({target:control(f,'data-au-detail','activity')});
+  const before=f.host.innerHTML;snapshot.resolve(response(native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before,'speculative outline completion cannot repaint hidden or operator-selected content');assert.doesNotMatch(f.host.innerHTML,/data-au-planned-process=/);assert.ok([undefined,'opening'].includes(f.attributes.get('data-au-operation-run-mode')));
+ });
+});
+
 test('cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback',async t=>{
  const f=operationOpeningDOM(),native=operationOpeningFixture();
  const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:[native.head]}):path.endsWith('/replay?through_seq=0')?response(native.zero):path.endsWith('/replay?through_seq=4')?response(native.replay):path.includes('/operations?')?pendingOperationResponse(native.binding):null});
