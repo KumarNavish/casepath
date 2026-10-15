@@ -37,6 +37,10 @@ async function proxyApi(request, env, url) {
     "x-casepath-idempotency-key", "x-casepath-native-research-mode", "x-casepath-session"]) {
     if (request.headers.has(name)) headers.set(name, request.headers.get(name));
   }
+  if (/^\/api\/claim-loops\/v1\/autonomous\/claims\/[^/]+\/operations$/.test(url.pathname) &&
+      request.headers.has("accept-encoding")) {
+    headers.set("Accept-Encoding", request.headers.get("accept-encoding"));
+  }
   headers.set("X-CasePath-Proxy-Token", env.CASEPATH_PROXY_TOKEN);
   headers.set("X-CasePath-Site-Origin", url.origin);
   try {
@@ -48,6 +52,8 @@ async function proxyApi(request, env, url) {
     const responseHeaders = new Headers(response.headers);
     responseHeaders.set("Cache-Control", "no-store");
     responseHeaders.delete("set-cookie");
+    // Workers Fetch preserves compressed origin bytes when the body is unread
+    // and Content-Encoding is retained; pass the native stream through intact.
     return new Response(response.body, {status: response.status, headers: responseHeaders});
   } catch { return unavailable(); }
 }

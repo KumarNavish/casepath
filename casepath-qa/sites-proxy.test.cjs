@@ -3,6 +3,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const {pathToFileURL} = require('node:url');
 const {resolve} = require('node:path');
+const {gzipSync, gunzipSync} = require('node:zlib');
 const origin = 'https://casepath-demo.example';
 const env = {CASEPATH_API_ORIGIN: 'https://casepath-api.example', CASEPATH_PROXY_TOKEN: 'x'.repeat(48)};
 const load = async () => (await import(pathToFileURL(resolve(__dirname, '../casepath/tools/sites_worker.mjs')).href)).default;
@@ -106,6 +107,55 @@ test('Sites streams an operation before completion and cancels upstream when its
   controller.abort();
   assert.equal(upstream.signal.aborted, true);
   await assert.rejects(reader.read(), {name:'AbortError'});
+});
+
+test('Sites forwards operation encoding negotiation and untouched compressed bytes without buffering', async t => {
+  const worker = await load();
+  const clear = Buffer.from('{"type":"binding","claim_id":"example"}\n{"type":"result"}\n');
+  const encoded = gzipSync(clear), requests = [];
+  let source;
+  t.mock.method(globalThis, 'fetch', async request => {
+    requests.push(request);
+    assert.equal(request.headers.get('accept-encoding'), 'gzip;q=0.8, identity;q=0.2');
+    return new Response(new ReadableStream({start(controller) {
+      source = controller;
+      controller.enqueue(encoded.subarray(0, 12));
+    }}), {headers:{'Content-Type':'application/x-ndjson', 'Content-Encoding':'gzip', 'Vary':'Accept-Encoding'}});
+  });
+  for (const mode of ['live', 'recorded']) {
+    const response = await worker.fetch(new Request(origin+`/api/claim-loops/v1/autonomous/claims/example/operations?mode=${mode}`, {
+      headers:{'Accept-Encoding':'gzip;q=0.8, identity;q=0.2'},
+    }), env);
+    assert.equal(response.headers.get('content-encoding'), 'gzip');
+    assert.equal(response.headers.get('vary'), 'Accept-Encoding');
+    assert.equal(response.headers.get('cache-control'), 'no-store');
+    const reader = response.body.getReader();
+    const first = await reader.read();
+    assert.deepEqual(Buffer.from(first.value), encoded.subarray(0, 12));
+    source.enqueue(encoded.subarray(12));
+    source.close();
+    const rest = await reader.read();
+    assert.equal((await reader.read()).done, true);
+    const body = Buffer.concat([first.value, rest.value]);
+    assert.deepEqual(body, encoded);
+    assert.deepEqual(gunzipSync(body), clear);
+  }
+  assert.equal(requests.length, 2);
+});
+
+test('Sites preserves operation identity refusals and leaves other API negotiation unchanged', async t => {
+  const worker = await load();
+  t.mock.method(globalThis, 'fetch', async request => {
+    const operation = new URL(request.url).pathname.endsWith('/operations');
+    assert.equal(request.headers.get('accept-encoding'), operation ? 'gzip;q=0, identity;q=1' : null);
+    return new Response('{"type":"binding"}\n', {headers:{'Content-Type':'application/x-ndjson'}});
+  });
+  for (const path of ['/api/claim-loops/v1/autonomous/claims/example/operations',
+    '/api/claim-loops/v1/autonomous/claims/example/snapshot']) {
+    const response = await worker.fetch(new Request(origin+path, {headers:{'Accept-Encoding':'gzip;q=0, identity;q=1'}}), env);
+    assert.equal(response.headers.get('content-encoding'), null);
+    assert.equal(await response.text(), '{"type":"binding"}\n');
+  }
 });
 
 test('Sites refuses cross-origin mutations before calling the backend', async t => {
