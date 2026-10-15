@@ -671,7 +671,7 @@
       const visibleStatus = options.working ? evaluated.activation && (selected === node.node_id || evaluated.activation === 'false') ? `Applicability · ${routeLabel(evaluated.activation)}` : '' : ['false','excluded'].includes(evaluated.activation) && !conditional.length ? 'Does not apply' : selected === node.node_id && ['completed','complete','resolved','ready','blocked','running','working','queued','paused','failed','deferred'].includes(status) ? statusLabel(status) : '';
       const readiness = options.working && selected === node.node_id ? workingReadiness(evaluated,state.graph) : '';
       const nodeHTML = `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}"${options.stage?.planned ? ' data-au-planned-node disabled' : ''}${inspection ? ` data-au-inspect="operation" data-au-record-id="${h(inspection.id)}" data-au-operation-id="${h(inspection.id)}" data-au-working-graph-sha="${h(options.working.graph.graph_sha256)}" data-au-working-scope="${h(options.working.inspect.id)}" data-au-working-evaluation-sha="${h(options.working.inspect.result.evaluation_sha256)}" data-au-operation-stage="${h(options.working.stage)}"` : ''} data-au-neighborhood="${neighborhood.has(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" aria-pressed="${selected === node.node_id}" aria-label="${h(name(node))}. ${h(options.stage ? options.stage.planned ? 'Planned step; source support is not yet assessed' : status === 'completed' ? 'Completed' : options.working ? 'Awaiting verification' : 'Awaiting source support' : options.working ? evaluated.activation ? `Provisional applicability: ${routeLabel(evaluated.activation)}${readiness ? `. ${readiness}` : ''}` : 'Provisional working step; not yet evaluated' : statusLabel(status))}${parents.length ? `. After ${h(parents.join(' + '))}` : ''}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}" aria-hidden="true">${status === 'completed' && (!options.working || accepted) ? '✓' : evaluated.activation === 'false' ? '−' : '·'}</span><span class="au-node-copy"><span class="au-node-relation"${neighborhood.has(node.node_id) ? '' : ' hidden'}>${neighborhood.has(node.node_id) ? node.node_id === selected ? 'This decision' : layout.parents.get(selected)?.includes(node.node_id) ? 'Before' : 'Then' : ''}</span>${options.stage ? '' : labels}${ownCondition && !options.stage ? `<span class="au-node-condition" data-au-node-condition="${h(node.node_id)}">${h(ownCondition)}<span>${h(routeLabel(evaluated.activation))}</span></span>` : ''}<strong class="au-node-title">${h(name(node))}</strong>${visibleStatus && !options.stage ? `<span class="au-node-state">${h(visibleStatus)}</span>` : ''}${readiness && !options.stage ? `<span class="au-node-state" data-au-working-readiness>${h(readiness)}</span>` : ''}</span></button>`;
-      return options.stage ? `<div class="au-stage-step" data-au-stage-step="${h(node.node_id)}">${nodeHTML}${options.stage.planned ? '' : stageNodeContents(node,options.stage.state,options.stage.trace,options.working,options.stage.map)}</div>` : nodeHTML;
+      return options.stage ? `<div class="au-stage-step" data-au-stage-step="${h(node.node_id)}">${nodeHTML}${stageNodeContents(node,options.stage.state,options.stage.trace,options.working,options.stage.map,options.stage.planned ? state.graph : null)}</div>` : nodeHTML;
     }).join('')}</div>`).join('')}</div></div>`;
   }
 
@@ -1346,10 +1346,11 @@
     index.length = rows.length; index.last = rows.at(-1);
     return index;
   }
-  function stageNodeContents(node, state, trace, working, map = false) {
-    const graph = working?.graph || state.graph, rows = list(trace?.rows);
-    const facts = [...(trace?.dockedFacts?.values() || [])].filter(row => row.node === node.node_id && list(state.facts).some(fact => fact.fact_id === row.operation.object.id));
-    const chips = facts.map(row => { const span = stageFactSpan(row.operation,true); return `<button type="button" class="au-stage-fact" data-au-stage-fact="${h(row.operation.object.id)}" data-au-current-fact="${trace?.current?.id === row.operation.id}" data-au-fact-operation="${h(row.operation.id)}" data-au-fact-start-char="${span.start_char}" data-au-fact-end-char="${span.end_char}" data-au-inspect="operation" data-au-record-id="${h(row.operation.id)}" aria-label="${h(stageFactLabel(row.operation,state,graph))}: ${h(span.quote)}"><span>${h(span.quote)}</span></button>`; }).join('');
+  function stageNodeContents(node, state, trace, working, map = false, plannedGraph = null) {
+    const graph = plannedGraph || working?.graph || state.graph, rows = list(trace?.rows);
+    const facts = [...(trace?.dockedFacts?.values() || [])].filter(row => row.node === node.node_id && (row.observed || list(state.facts).some(fact => fact.fact_id === row.operation.object.id)));
+    const chips = facts.map(row => { const span = stageFactSpan(row.operation,true); return `<button type="button" class="au-stage-fact" data-au-fact-state="${row.operation.result.verification_required === false && list(state.facts).some(fact => fact.fact_id === row.operation.object.id) ? 'accepted' : 'observed'}" data-au-stage-fact="${h(row.operation.object.id)}" data-au-current-fact="${trace?.current?.id === row.operation.id}" data-au-fact-operation="${h(row.operation.id)}" data-au-fact-start-char="${span.start_char}" data-au-fact-end-char="${span.end_char}" data-au-inspect="operation" data-au-record-id="${h(row.operation.id)}" aria-label="${h(stageFactLabel(row.operation,state,graph))}: ${h(span.quote)}"><span>${h(span.quote)}</span></button>`; }).join('');
+    if (plannedGraph) return chips;
     const accepted = new Map(list(state.evaluation?.documents).map(row => [row.document_type,row]));
     const observed = trace && stageDocumentIndex(rows);
     const requirements = trace ? [...observed.requirements.values()].reverse().filter(row => row.result.activation === 'true' && list(row.result.active_node_ids).includes(node.node_id) && list(node.document_types).includes(row.object.id)) : list(state.obligations).filter(row => requiringNodeIds(row,accepted.get(row.document_type)).includes(node.node_id));
@@ -1422,10 +1423,10 @@
       else if (row.kind === 'source.open') display.displaySource = {artifact_id:row.object.id,id:row.id};
       if (row.seq > checkpoint.after_operation) applyWorkingOperation(row,display,checkpoint.state);
     }
-    const graph = workingProcessState(display)?.graph || checkpoint.state.graph;
+    const graph = operationStageGraph(display,checkpoint.state);
     for (const row of rows) {
-      if (row.kind !== 'fact.extract' || row.result.verification_required !== false || !row.source || !list(checkpoint.state.facts).some(fact => fact.fact_id === row.object.id)) continue;
-      const node = operationNodeId(row,graph,checkpoint.state); if (node) display.dockedFacts.set(row.object.id,{operation:row,node});
+      if (row.kind !== 'fact.extract' || !row.source) continue;
+      const node = operationNodeId(row,graph,checkpoint.state); if (node) display.dockedFacts.set(row.object.id,{operation:row,node,observed:true});
     }
     return {index,trace:display,state:checkpoint.state,projection:checkpoint.projection,events:checkpoint.events,checkpoint,node:operationNodeId(operation,graph,checkpoint.state)};
   }
@@ -1642,7 +1643,7 @@
     const mainTag = container.tagName === 'MAIN' ? 'div' : 'main';
     if (!fetcher) throw new Error('The autonomous API is unavailable.');
     let publicReadOnly = root.CASEPATH_PUBLIC_READ_ONLY === true;
-    let publicationAttention = null, inspectionHold = false, operationTrace = null, attentionMarker = null, attentionPosition = null, attentionAnimation = null, factToken = null, factTokenAnimation = null, factTokenOperation = null, stageMotionTimer = null, stageCameraAnimation = null, stageReadAnimations = [], operationPeek = null;
+    let publicationAttention = null, inspectionHold = false, operationTrace = null, attentionMarker = null, attentionPosition = null, attentionAnimation = null, factToken = null, factTokenAnimation = null, factTokenOperation = null, stageMotionTimer = null, stageCameraAnimation = null, stageReadAnimations = [], stageScrollCancel = null, stageScrollTarget = null, stageChoreography = null, operationPeek = null;
     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, recordReturn = null, recordSelection = null, sourceEpoch = 0, polling = null, claimRead = 0;
     let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'reference', demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
     let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, statusAuthority = null, readGeneration = 0;
@@ -2528,37 +2529,53 @@
       const operation = (operationPeek?.trace || operationTrace)?.current, mark = pane.querySelector('[data-au-operation-span]');
       if (mark && mark.dataset.auOperationSpan === operation?.id) {
         const frame = pane.getBoundingClientRect(), bounds = mark.getBoundingClientRect(), body = pane.querySelector('[data-au-source-body-anchor]'), floor = body ? pane.scrollTop+body.getBoundingClientRect().top-frame.top-28 : 0, top = pane.scrollTop + bounds.top-frame.top-Math.max(28,(frame.height-bounds.height)/2);
-        pane.scrollTo?.({top:Math.max(0,floor,top),behavior:operationPeek || inspectionHold || reduced?.matches ? 'instant' : 'smooth'});
+        const target = Math.max(0,Math.min(pane.scrollHeight-pane.clientHeight,Math.max(floor,top))); stageScrollTarget = {pane,top:target};
+        pane.scrollTo?.({top:target,behavior:operationPeek || inspectionHold || reduced?.matches ? 'instant' : 'smooth'});
       } else if (operation?.kind === 'source.open') { const body = pane.querySelector('[data-au-operation-read-context]'); const top = body ? pane.scrollTop+body.getBoundingClientRect().top-pane.getBoundingClientRect().top-30 : 0; pane.scrollTo?.({top:Math.max(0,top),behavior:'instant'}); }
     }
-    function cancelStageMotion() {
+    function cancelStageRead() {
+      stageScrollCancel?.(); stageScrollCancel = null;
       if (stageMotionTimer) root.clearTimeout(stageMotionTimer); stageMotionTimer = null;
-      stageCameraAnimation?.cancel(); attentionAnimation?.cancel(); factTokenAnimation?.cancel(); factToken?.remove?.();
+      if (factTokenAnimation?.playState === 'running') factTokenOperation = null;
+      attentionAnimation?.cancel(); factTokenAnimation?.cancel(); factToken?.remove?.(); attentionMarker?.remove?.();
       for (const animation of stageReadAnimations) animation.cancel(); stageReadAnimations = [];
       for (const trail of host.querySelectorAll('[data-au-read-trail]')) trail.remove();
       for (const chip of host.querySelectorAll('[data-au-fact-docking]')) { chip.style.opacity = ''; chip.removeAttribute('data-au-fact-docking'); }
+      if (stageChoreography && !stageChoreography.complete) { stageChoreography.cancelled=true; stageChoreography.resolve(); }
     }
-    function positionOperationAttention(animate = true, sourceReady = false) {
-      if (stageMotionTimer) root.clearTimeout(stageMotionTimer); stageMotionTimer = null;
-      attentionAnimation?.cancel();
-      for (const animation of stageReadAnimations) animation.cancel(); stageReadAnimations = [];
-      for (const trail of host.querySelectorAll('[data-au-read-trail]')) trail.remove();
+    function cancelStageMotion() { cancelStageRead(); stageCameraAnimation?.cancel(); }
+    function afterSourceScroll(pane, callback) {
+      let quiet = null, fallback = null, closed = false;
+      const clear = () => { if (closed) return; closed=true; root.clearTimeout(quiet); root.clearTimeout(fallback); pane.removeEventListener?.('scroll',scrolled); pane.removeEventListener?.('scrollend',ended); };
+      const finish = () => { if (closed) return; clear(); stageScrollCancel=null; callback(); };
+      const ended = () => { const target=stageScrollTarget?.pane === pane ? stageScrollTarget.top : pane.scrollTop; if (Math.abs(pane.scrollTop-target) <= 1) finish(); };
+      const scrolled = () => { root.clearTimeout(quiet); quiet=root.setTimeout(ended,90); };
+      pane.addEventListener?.('scroll',scrolled,{passive:true}); pane.addEventListener?.('scrollend',ended,{passive:true}); scrolled();
+      // A browser without scrollend, or an interrupted native smooth scroll,
+      // gets one bounded instant settle. No frame loop samples geometry.
+      fallback=root.setTimeout(() => { const top=stageScrollTarget?.pane === pane ? stageScrollTarget.top : pane.scrollTop; pane.scrollTo?.({top,behavior:'instant'}); root.clearTimeout(quiet); quiet=root.setTimeout(finish,0); },1200);
+      stageScrollCancel=clear;
+    }
+    function positionOperationAttention(animate = true, sourceReady = false, pending = null) {
+      if (!sourceReady) cancelStageRead();
       const operation = operationTrace?.current, canvas = host.querySelector('[data-au-canvas]');
       if (!operation || !canvas || detail !== 'step' || doc.hidden || reduced?.matches || operationTrace.finished || inspectionHold) { attentionMarker?.remove?.(); return; }
       const reading = operationReading(operationTrace), mark = host.querySelector('[data-au-operation-span]');
-      if (animate && reading?.active && !sourceReady) {
-        attentionMarker?.remove?.();
-        stageMotionTimer = root.setTimeout(() => { stageMotionTimer = null; if (operationTrace?.current === operation && !doc.hidden && !inspectionHold) positionOperationAttention(true,true); },260);
+      if (sourceReady && (stageChoreography !== pending || pending?.cancelled)) return;
+      if (!sourceReady && animate && reading?.active && mark) {
+        const choreography = {operation,complete:false,cancelled:false}; choreography.promise=new Promise(resolve => { choreography.resolve=resolve; }); stageChoreography=choreography;
+        afterSourceScroll(mark.closest('.au-operation-passage'),() => { if (operationTrace?.current === operation && !doc.hidden && !inspectionHold) positionOperationAttention(true,true,choreography); else { choreography.cancelled=true; choreography.resolve(); } });
         return;
       }
+      const complete = () => { if (pending && !pending.cancelled) { pending.complete=true; pending.resolve(); } };
       const graph = operationStageGraph(operationTrace,current), nodeId = operationNodeId(operation,graph,current);
-      const node = [...host.querySelectorAll('[data-au-node]:not([data-au-planned-node])')].find(item => item.dataset.auNode === nodeId);
+      const node = [...host.querySelectorAll('[data-au-node]')].find(item => item.dataset.auNode === nodeId);
       const factDock = [...host.querySelectorAll('[data-au-stage-fact]')].find(item => item.dataset.auStageFact === operation.object.id);
       const documentDock = operation.kind === 'document.check' ? [...host.querySelectorAll('[data-au-check-operation]')].find(item => item.dataset.auCheckOperation === operation.id && item.closest('[data-au-document-checked=true]')) : null;
       const dock = documentDock || factDock;
       if (node) revealGraphNode(dock || node);
       const passage = mark?.closest('.au-operation-passage'), destination = reading?.active && mark ? mark : node;
-      if (!destination) { attentionMarker?.remove?.(); return; }
+      if (!destination) { attentionMarker?.remove?.(); complete(); return; }
       // Read geometry once after source centering. Every sweep, fade, growth and
       // curved transfer below uses bounded compositor transforms and opacity.
       const lineRects = destination === mark ? [...mark.getClientRects()].slice(0,24) : [], area = canvas.getBoundingClientRect(), rect = lineRects[0] || destination.getBoundingClientRect(), clip = passage?.getBoundingClientRect(), dockRect = dock?.getBoundingClientRect();
@@ -2566,11 +2583,11 @@
       const transform = point => `translate(${point.x}px,${point.y}px)`;
       const origin = local(rect.left,clip ? Math.max(clip.top+6,Math.min(rect.top,clip.bottom-24)) : rect.top);
       const canDock = reading?.active && dock && dockRect && node && factTokenOperation !== operation.id && (
-        operation.kind === 'fact.extract' && operation.result.verification_required === false && list(current.facts).some(fact => fact.fact_id === operation.object.id) ||
+        operation.kind === 'fact.extract' ||
         operation.kind === 'document.check' && operation.result.assessment === 'sufficient' && list(current.evaluation?.documents).some(row => row.document_type === operation.object.id && row.review_state === 'sufficient'));
       const transfer = () => {
-        if (!canDock || operationTrace?.current !== operation || doc.hidden || inspectionHold || reduced?.matches || !dock.isConnected) return;
-        factTokenOperation = operation.id; attentionMarker?.remove?.();
+        if (!canDock || operationTrace?.current !== operation || doc.hidden || inspectionHold || reduced?.matches || !dock.isConnected) { complete(); return; }
+        factTokenOperation = operation.id;
         const next = local(dockRect.left,dockRect.top), span = stageFactSpan(operation,true);
         factToken = doc.createElement('span'); factToken.className = 'au-operation-fact-token'; factToken.dataset.auOperationId = operation.id; factToken.dataset.auObjectType = documentDock ? 'document' : 'fact'; factToken.dataset.auObjectId = operation.object.id; factToken.setAttribute('aria-hidden','true');
         factToken.textContent = span.quote;
@@ -2584,11 +2601,11 @@
         const bend = Math.max(32,Math.min(100,Math.abs(next.x-origin.x)*.25));
         for (let step=1; step<=8; step++) { const t=step/8, u=1-t; const point={x:u*u*u*origin.x+3*u*u*t*(origin.x+bend)+3*u*t*t*(next.x-bend)+t*t*t*next.x,y:u*u*u*origin.y+3*u*u*t*(origin.y-24)+3*u*t*t*(next.y-24)+t*t*t*next.y}; flight.push({transform:transform(point),opacity:1,offset:.18+.82*t}); }
         factTokenAnimation = factToken.animate(flight,{duration:1000,easing:'cubic-bezier(.18,.7,.25,1)',fill:'none'});
-        const token = factToken; factTokenAnimation.onfinish = () => { token.remove(); if (dock.isConnected) { dock.style.opacity=''; dock.removeAttribute('data-au-fact-docking'); } };
+        const token = factToken; factTokenAnimation.onfinish = () => { token.remove(); if (dock.isConnected) { dock.style.opacity=''; dock.removeAttribute('data-au-fact-docking'); } complete(); };
         node.dataset.auOperationId = operation.id; attentionPosition = next;
       };
       if (factTokenAnimation?.playState === 'running') return;
-      attentionMarker ||= doc.createElement('div'); attentionMarker.className = 'au-operation-attention'; attentionMarker.setAttribute('aria-hidden','true'); attentionMarker.dataset.auOperationAttention = operation.id; attentionMarker.dataset.auActor = reading?.active ? 'reading' : 'process';
+      attentionMarker ||= doc.createElement('div'); attentionMarker.className = 'au-operation-attention'; attentionMarker.setAttribute('aria-hidden','true'); attentionMarker.dataset.auOperationAttention = operation.id; attentionMarker.dataset.auActor = reading?.active ? 'reading' : 'process'; delete attentionMarker.dataset.auReadPhase; attentionMarker.style.height='';
       canvas.appendChild(attentionMarker); attentionMarker.style.transform = transform(origin);
       if (animate && reading?.active && lineRects.length) {
         const visible = lineRects.filter(line => line.width > 0 && (!clip || line.top >= clip.top && line.bottom <= clip.bottom)), width = visible.reduce((sum,line) => sum+line.width,0), duration = operationReadDuration(operation); let distance = 0;
@@ -2603,10 +2620,20 @@
         if (frames.length) {
           attentionMarker.style.height=`${Math.max(18,Math.min(30,visible[0].height-4))}px`;
           attentionAnimation=attentionMarker.animate(frames,{duration,easing:'linear',fill:'forwards'});
-          attentionAnimation.onfinish=() => { if (operationTrace?.current !== operation || !mark.isConnected || doc.hidden || inspectionHold) return; attentionMarker?.remove?.(); if (operation.kind !== 'span.read') mark.dataset.auPhraseLocked=operation.id; transfer(); };
-        } else attentionMarker.remove();
+          attentionAnimation.onfinish=() => { if (operationTrace?.current !== operation || !mark.isConnected || doc.hidden || inspectionHold) { complete(); return; } const last=visible.at(-1); attentionAnimation.cancel(); attentionMarker.style.transform=transform(local(Math.max(last.left,last.right-4),last.top+2)); attentionMarker.dataset.auReadPhase='locked'; mark.dataset.auPhraseLocked=operation.id; transfer(); };
+        } else { attentionMarker.remove(); complete(); }
       } else if (animate && attentionPosition) attentionAnimation = attentionMarker.animate([{transform:transform(attentionPosition),opacity:.2},{transform:transform(origin),opacity:1}],{duration:480,easing:'cubic-bezier(.18,.8,.25,1)',fill:'none'});
-      attentionPosition = origin; if (node) node.dataset.auOperationId = operation.id;
+      attentionPosition = origin; if (node) node.dataset.auOperationId = operation.id; if (!reading?.active) complete();
+    }
+    async function operationPresentationGate(session,token,operation) {
+      while (operationActive(session,token) && operationTrace?.current === operation && !session.skip && !reduced?.matches) {
+        if (!await operationGate(session,token)) return false;
+        if (!operationReading(operationTrace)?.active) break;
+        if (!stageChoreography || stageChoreography.operation !== operation || stageChoreography.cancelled) { positionOperationSource(); positionOperationAttention(); }
+        const choreography=stageChoreography; if (!choreography || choreography.operation !== operation) break;
+        await choreography.promise; if (choreography.complete) break;
+      }
+      return operationGate(session,token,operation.source ? 300 : operation.kind === 'decision' ? 1200 : 400);
     }
     function operationActive(session, token) { return !disposed && token === epoch && !pendingRoute() && view === 'claim' && current?.claim_id === session.claimId && !session.operationController?.signal.aborted; }
     async function operationGate(session, token, duration = 0) {
@@ -2666,8 +2693,8 @@
             if (!await operationGate(session,token)) return;
             applyWorkingOperation(operation,operationTrace,current);
             const graph = operationStageGraph(operationTrace,current), dockingNode = operationNodeId(operation,graph,current);
-            if (operation.kind === 'fact.extract' && operation.source && dockingNode && operation.result.verification_required === false && list(current.facts).some(row => row.fact_id === operation.object.id)) {
-              operationTrace.dockedFacts ||= new Map(); operationTrace.dockedFacts.set(operation.object.id,{operation,node:dockingNode});
+            if (operation.kind === 'fact.extract' && operation.source && dockingNode) {
+              operationTrace.dockedFacts ||= new Map(); operationTrace.dockedFacts.set(operation.object.id,{operation,node:dockingNode,observed:true});
             }
             const show = operationAttention(operation,operationTrace);
             operationTrace.consumed = operation;
@@ -2689,7 +2716,7 @@
               const nodeId = operation.object.node_id || operation.result?.node_id || (operation.object.type === 'node' ? operation.object.id : null);
               if (nodeId && list(current.graph?.nodes).some(node => node.node_id === nodeId)) { selected = nodeId; evidenceContext = evidenceSelection(current,selected); }
               detail = 'step'; renderClaim();
-              if (!await operationGate(session,token,operation.kind === 'phrase.match' || operation.kind === 'span.read' ? 450+operationReadDuration(operation) : operation.kind === 'fact.extract' || operation.kind === 'document.check' ? 1450+operationReadDuration(operation) : operation.kind === 'decision' ? 1200 : 400)) return;
+              if (!await operationPresentationGate(session,token,operation)) return;
             }
           } else if (frame.type === 'checkpoint') {
             const incoming = await checkedOperationCheckpoint(frame,operationTrace);
