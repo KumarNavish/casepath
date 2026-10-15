@@ -205,11 +205,15 @@ class Movie:
     def build_plan(self):
         protected, full, self.labels, self.inspections = [], [], [], []
         prior_documents, prior_facts = None, None
+        document_operations = {item['operation'] for s in self.samples
+                               for item in s.get('documents', [])
+                               if isinstance(item, dict) and item.get('operation')}
         for i, (t, sample) in enumerate(zip(self.st, self.samples)):
             next_t = self.st[i + 1] if i + 1 < len(self.st) else self.end
             if self.active(sample):
                 protected.append((t - .15, next_t + .15))
-                label = "Connect the fact" if rect(sample.get("factRect")) else "Read the evidence"
+                label = ('Check the document' if sample.get('operation') in document_operations
+                         else "Connect the fact" if rect(sample.get("factRect")) else "Read the evidence")
                 self.labels.append((t, next_t, label))
             documents = work_identity(sample.get("documents", sample.get("checkedSlots")))
             if prior_documents is not None and documents != prior_documents:
@@ -451,6 +455,11 @@ class Movie:
         image.paste(content, (left, top))
         if out_t < self.ui_duration:
             labels = [label for a, b, label in self.labels if a <= source_t <= b]
+            if any(contains(window, source_t) for window in self.inspections):
+                labels = ['Inspect the source']
+            elif any('resume' in self.event_text(event) and t <= source_t <= t + 1.2
+                     for t, event in zip(self.et, self.events)):
+                labels = ['Resume the check']
             if labels:
                 caption = labels[-1]
                 require(2 <= len(caption.split()) <= 4, "Caption must contain 2–4 words")

@@ -1,0 +1,726 @@
+{
+  "status": "verified supplied media; offline only",
+  "host": "656813ef2295",
+  "media_source_commit": "ed851b3dd73040e0ea792573fba067ef6a6c91b7",
+  "published_product_commit": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "archive": {
+    "source_commit": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+    "capture_sha256": "73ab7b172a56b3c1c100005f940021cd928a6b889490fcfcdd5692bfc92a4393",
+    "archive_sha256": "4da8ab534cf560818e0d707083c2cb65a02d7c257de67e8dc438d4f88f3eaeea",
+    "archive_bytes": 30007711,
+    "parts": [
+      {
+        "name": "capture.part-00",
+        "bytes": 30007711,
+        "sha256": "4da8ab534cf560818e0d707083c2cb65a02d7c257de67e8dc438d4f88f3eaeea"
+      }
+    ],
+    "frame_count": 418,
+    "files": 420,
+    "public_ui_only": true,
+    "encoding_requested": {
+      "duration_seconds": 50,
+      "max_seconds": 60,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "captions_px": 42,
+      "active_zoom_min": 1.4
+    }
+  },
+  "original_capture_json_sha256": "73ab7b172a56b3c1c100005f940021cd928a6b889490fcfcdd5692bfc92a4393",
+  "original_capture_error": null,
+  "original_capture_modified": false,
+  "native_frames": 418,
+  "native_frame_dimensions": [
+    1920,
+    1080
+  ],
+  "viewport_css": {
+    "width": 1600,
+    "height": 900,
+    "deviceScaleFactor": 1.2
+  },
+  "native_time_range": [
+    1792088734.01519,
+    1792088774.516146
+  ],
+  "selected_native_time_range": [
+    1792088743.265,
+    1792088774.516146
+  ],
+  "selected_native_frame_count": 414,
+  "sample_count": 123,
+  "recorded_route": "https://casepath-autonomous.kumarnavish.chatgpt.site/#autonomous/claim/clm_314f2d309fea25e6?operations=recorded&collection=reference&mode=replay&through=0",
+  "final_state_sample": {
+    "t": 1792088775.783,
+    "op": 823,
+    "state": "completed",
+    "operation": "",
+    "readheadRect": null,
+    "factRect": null,
+    "sourceRect": null,
+    "railRect": {
+      "x": 116,
+      "y": 211.4453125,
+      "w": 1368,
+      "h": 344.96875
+    },
+    "activeStepRect": {
+      "x": 577.3359375,
+      "y": 231.4453125,
+      "w": 216.6640625,
+      "h": 304.96875
+    },
+    "excerptRect": null,
+    "exactSpanRect": null,
+    "facts": [
+      {
+        "id": "fact:tenancy_terms_evidence",
+        "operation": "op_1016690703de933a0b04832bac53f789",
+        "rect": {
+          "x": 372.6640625,
+          "y": 290.0390625,
+          "w": 87.875,
+          "h": 34
+        },
+        "text": "CHF1800"
+      },
+      {
+        "id": "residential_tenancy_scope",
+        "operation": "op_7eae3c56c396adc63cf5e86d936b128e",
+        "rect": {
+          "x": 372.6640625,
+          "y": 330.0390625,
+          "w": 192.671875,
+          "h": 53.59375
+        },
+        "text": "ordinary residential lease"
+      },
+      {
+        "id": "fact:landlord_knowledge_evidence",
+        "operation": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+        "rect": {
+          "x": 601.3359375,
+          "y": 290.0390625,
+          "w": 192.6640625,
+          "h": 53.59375
+        },
+        "text": "three heating-failure reports"
+      },
+      {
+        "id": "landlord_first_knowledge",
+        "operation": "op_71a216c1d5ed10f5a5dfc7a8f55a5590",
+        "rect": {
+          "x": 601.3359375,
+          "y": 349.6328125,
+          "w": 192.6640625,
+          "h": 53.59375
+        },
+        "text": "received the first report on2025-02-01"
+      },
+      {
+        "id": "continuing_defect_without_remedy",
+        "operation": "op_096fbf71b6d1343003dbcedf78cd4ef3",
+        "rect": {
+          "x": 601.3359375,
+          "y": 409.2265625,
+          "w": 192.6640625,
+          "h": 53.59375
+        },
+        "text": "no lasting repair has yet occurred"
+      },
+      {
+        "id": "fact:objective_defect_observation",
+        "operation": "op_03eef83c6c3a9802747b15ceafb63226",
+        "rect": {
+          "x": 1058.671875,
+          "y": 290.0390625,
+          "w": 57.171875,
+          "h": 34
+        },
+        "text": "15.8C"
+      },
+      {
+        "id": "objective_use_impairment",
+        "operation": "op_f1a94f17ba11f910360d21ec27bdd64f",
+        "rect": {
+          "x": 1058.671875,
+          "y": 330.0390625,
+          "w": 176.8828125,
+          "h": 34
+        },
+        "text": "Heating is inadequate"
+      },
+      {
+        "id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+        "operation": "op_e2fc076a2f9acc2da80bc5938c212e37",
+        "rect": {
+          "x": 1058.671875,
+          "y": 370.0390625,
+          "w": 192.6640625,
+          "h": 53.59375
+        },
+        "text": "outside ordinary small tenant maintenance."
+      }
+    ],
+    "documents": [
+      {
+        "id": "tenancy_terms_evidence",
+        "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+        "rect": {
+          "x": 372.6640625,
+          "y": 389.6328125,
+          "w": 192.671875,
+          "h": 59.59375
+        }
+      },
+      {
+        "id": "landlord_knowledge_evidence",
+        "operation": "op_96acd4eb60e2706174feaa5552f164f8",
+        "rect": {
+          "x": 601.3359375,
+          "y": 468.8203125,
+          "w": 192.6640625,
+          "h": 59.59375
+        }
+      },
+      {
+        "id": "objective_defect_observation",
+        "operation": "op_1b4045f495bd7c43aee1c82408feaba3",
+        "rect": {
+          "x": 1058.671875,
+          "y": 429.6328125,
+          "w": 192.6640625,
+          "h": 59.59375
+        }
+      }
+    ],
+    "transportRect": {
+      "x": 470,
+      "y": 721.609375,
+      "w": 660,
+      "h": 73
+    },
+    "checkedSlots": 3,
+    "dialog": false,
+    "heading": "Repeated heating failure and reported repair calls",
+    "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis \u00b7 CO 259 \u00b7 CO 259a \u00b7 CO 259d \u00b7 Earlier law text (2024-01-01)Procedure reused \u00b7 Defects and repairs \u00b7 Version 2",
+    "mode": "Recorded replay \u00b7 Synthetic sources \u00b7 No external action \u00b7 as of 2025-02-21",
+    "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/#autonomous/claim/clm_314f2d309fea25e6?operations=recorded&collection=reference&mode=replay&through=0"
+  },
+  "actual_final_still": {
+    "file": "result.png",
+    "sha256": "299e62b15f7e6594bbcf84338ff9358707d3350d1630f8e207fb7a4dfb13ae71",
+    "width": 1600,
+    "height": 900,
+    "source_commit": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+    "capture_json_sha256": "73ab7b172a56b3c1c100005f940021cd928a6b889490fcfcdd5692bfc92a4393",
+    "captured_after_event": {
+      "type": "film-result",
+      "t": 1792088775.783
+    },
+    "captured_before_event": {
+      "type": "film-end",
+      "t": 1792088777.08
+    },
+    "provenance": "Mac operator supplied actual public UI screenshot, taken synchronously immediately after film-result; exact screenshot timestamp not asserted. Separate from earlier CDP JPEG sequence.",
+    "editorial_use": "Final completed UI hold only; no fabricated native frame timestamp or motion."
+  },
+  "first_plan_failure": {
+    "renderer_commit": "052f2575ef95da6a40851d00193733064de00e06",
+    "error": "Required excerpt/destination extends outside the captured viewport",
+    "classification": "Strict metadata plan rejected transient native pan geometry; no encoding was attempted. Full-UI framing is retained for those actual samples, with no reconstruction."
+  },
+  "limits": [
+    "Published source/API identity attested by Mac capture owner; Cloud made no public product requests.",
+    "Native JPEG timestamps are variable and do not establish native 30fps. Encoded 30fps repeats actual frames; camera can move independently.",
+    "Five transient pan samples have destination geometry partly outside original viewport; shown full UI instead of clipping or reconstructing.",
+    "Completed UI screenshot has a bounded capture interval, not an asserted exact timestamp; used only for declared editorial hold."
+  ],
+  "events": [
+    {
+      "t": 1792088733.59,
+      "type": "ptr",
+      "x": 1515,
+      "y": 840
+    },
+    {
+      "t": 1792088733.64,
+      "type": "ptr",
+      "x": 1498.959333750569,
+      "y": 831.7983614019117
+    },
+    {
+      "t": 1792088733.69,
+      "type": "ptr",
+      "x": 1454.305587164315,
+      "y": 808.9667728720983
+    },
+    {
+      "t": 1792088733.738,
+      "type": "ptr",
+      "x": 1386.2411384842967,
+      "y": 774.1652253072372
+    },
+    {
+      "t": 1792088733.771,
+      "type": "ptr",
+      "x": 1305.5633364683658,
+      "y": 732.9144340537096
+    },
+    {
+      "t": 1792088733.808,
+      "type": "ptr",
+      "x": 1239.6167274155666,
+      "y": 699.1957439563041
+    },
+    {
+      "t": 1792088733.854,
+      "type": "ptr",
+      "x": 1160.635733087392,
+      "y": 658.8125353336368
+    },
+    {
+      "t": 1792088733.885,
+      "type": "ptr",
+      "x": 1062.93444539736,
+      "y": 608.8575870951297
+    },
+    {
+      "t": 1792088733.919,
+      "type": "ptr",
+      "x": 997.051111137005,
+      "y": 575.1712495803368
+    },
+    {
+      "t": 1792088733.955,
+      "type": "ptr",
+      "x": 925.444703,
+      "y": 538.5586880000001
+    },
+    {
+      "t": 1792088734.017,
+      "type": "ptr",
+      "x": 843.974336,
+      "y": 496.902656
+    },
+    {
+      "t": 1792088734.076,
+      "type": "ptr",
+      "x": 727.3145137705962,
+      "y": 437.25415474920345
+    },
+    {
+      "t": 1792088734.155,
+      "type": "ptr",
+      "x": 641.4235819299046,
+      "y": 393.3378752844789
+    },
+    {
+      "t": 1792088734.21,
+      "type": "ptr",
+      "x": 570.0767516577151,
+      "y": 356.8580366099227
+    },
+    {
+      "t": 1792088734.262,
+      "type": "ptr",
+      "x": 562.53125,
+      "y": 353
+    },
+    {
+      "t": 1792088734.345,
+      "type": "ptr",
+      "x": 562.53125,
+      "y": 353
+    },
+    {
+      "t": 1792088734.345,
+      "type": "click",
+      "x": 562.53125,
+      "y": 353,
+      "role": "choose-first-case"
+    },
+    {
+      "t": 1792088734.647,
+      "type": "ptr",
+      "x": 562.53125,
+      "y": 353
+    },
+    {
+      "t": 1792088734.73,
+      "type": "ptr",
+      "x": 642.3219345495,
+      "y": 393.797205552
+    },
+    {
+      "t": 1792088734.81,
+      "type": "ptr",
+      "x": 825.7026784034999,
+      "y": 487.560305136
+    },
+    {
+      "t": 1792088734.942,
+      "type": "ptr",
+      "x": 1044.480315584,
+      "y": 599.4219376640001
+    },
+    {
+      "t": 1792088734.995,
+      "type": "ptr",
+      "x": 1380.892887664,
+      "y": 771.430649344
+    },
+    {
+      "t": 1792088735.094,
+      "type": "ptr",
+      "x": 1473.4464096315,
+      "y": 818.7535302240001
+    },
+    {
+      "t": 1792088735.14,
+      "type": "ptr",
+      "x": 1515,
+      "y": 840
+    },
+    {
+      "t": 1792088743.265,
+      "type": "film-start"
+    },
+    {
+      "t": 1792088759.763,
+      "type": "inspection-start"
+    },
+    {
+      "t": 1792088759.772,
+      "type": "ptr",
+      "x": 1515,
+      "y": 840
+    },
+    {
+      "t": 1792088759.825,
+      "type": "ptr",
+      "x": 1260.485792,
+      "y": 748.690052625
+    },
+    {
+      "t": 1792088759.902,
+      "type": "ptr",
+      "x": 631.1089920000001,
+      "y": 522.89376825
+    },
+    {
+      "t": 1792088759.934,
+      "type": "ptr",
+      "x": 566,
+      "y": 499.53515625
+    },
+    {
+      "t": 1792088759.955,
+      "type": "ptr",
+      "x": 566,
+      "y": 499.53515625
+    },
+    {
+      "t": 1792088759.955,
+      "type": "click",
+      "x": 566,
+      "y": 499.53515625,
+      "role": "inspect-source"
+    },
+    {
+      "t": 1792088766.151,
+      "type": "inspection-held",
+      "op": 167
+    },
+    {
+      "t": 1792088769.16,
+      "type": "ptr",
+      "x": 566,
+      "y": 499.53515625
+    },
+    {
+      "t": 1792088769.203,
+      "type": "ptr",
+      "x": 569.8216209913519,
+      "y": 498.16490891044606
+    },
+    {
+      "t": 1792088769.255,
+      "type": "ptr",
+      "x": 587.3263861231225,
+      "y": 491.8885518604916
+    },
+    {
+      "t": 1792088769.302,
+      "type": "ptr",
+      "x": 621.9488524835002,
+      "y": 479.4746200429563
+    },
+    {
+      "t": 1792088769.334,
+      "type": "ptr",
+      "x": 666.0747861875285,
+      "y": 463.653207244538
+    },
+    {
+      "t": 1792088769.37,
+      "type": "ptr",
+      "x": 701.1658390632681,
+      "y": 451.0712631025262
+    },
+    {
+      "t": 1792088769.42,
+      "type": "ptr",
+      "x": 746.8368520648612,
+      "y": 434.6958600466545
+    },
+    {
+      "t": 1792088769.456,
+      "type": "ptr",
+      "x": 811.3232098197542,
+      "y": 411.57418985719164
+    },
+    {
+      "t": 1792088769.504,
+      "type": "ptr",
+      "x": 859.2271639035048,
+      "y": 394.3981627770824
+    },
+    {
+      "t": 1792088769.55,
+      "type": "ptr",
+      "x": 921.4397687187072,
+      "y": 372.09174975819303
+    },
+    {
+      "t": 1792088769.587,
+      "type": "ptr",
+      "x": 979.6434847561447,
+      "y": 351.22272919520935
+    },
+    {
+      "t": 1792088769.619,
+      "type": "ptr",
+      "x": 1022.8501069360491,
+      "y": 335.73093677856167
+    },
+    {
+      "t": 1792088769.65,
+      "type": "ptr",
+      "x": 1054.563296156577,
+      "y": 324.3601301871871
+    },
+    {
+      "t": 1792088769.691,
+      "type": "ptr",
+      "x": 1084.287,
+      "y": 313.70265624999996
+    },
+    {
+      "t": 1792088769.74,
+      "type": "ptr",
+      "x": 1114.881123705849,
+      "y": 302.7330921020141
+    },
+    {
+      "t": 1792088769.778,
+      "type": "ptr",
+      "x": 1138.1432337562585,
+      "y": 294.39243129836143
+    },
+    {
+      "t": 1792088769.831,
+      "type": "ptr",
+      "x": 1144.4453125,
+      "y": 292.1328125
+    },
+    {
+      "t": 1792088769.868,
+      "type": "ptr",
+      "x": 1144.4453125,
+      "y": 292.1328125
+    },
+    {
+      "t": 1792088769.868,
+      "type": "click",
+      "x": 1144.4453125,
+      "y": 292.1328125,
+      "role": "close-source"
+    },
+    {
+      "t": 1792088770.015,
+      "type": "ptr",
+      "x": 1144.4453125,
+      "y": 292.1328125
+    },
+    {
+      "t": 1792088770.114,
+      "type": "ptr",
+      "x": 1138.9528279633591,
+      "y": 296.7352647967683
+    },
+    {
+      "t": 1792088770.169,
+      "type": "ptr",
+      "x": 1074.406620532772,
+      "y": 350.8220516879836
+    },
+    {
+      "t": 1792088770.237,
+      "type": "ptr",
+      "x": 1015.3587469301319,
+      "y": 400.30148484228494
+    },
+    {
+      "t": 1792088770.295,
+      "type": "ptr",
+      "x": 930.4082706859923,
+      "y": 471.4861212109695
+    },
+    {
+      "t": 1792088770.342,
+      "type": "ptr",
+      "x": 846.0151831592513,
+      "y": 542.2036911791079
+    },
+    {
+      "t": 1792088770.39,
+      "type": "ptr",
+      "x": 781.888671406577,
+      "y": 595.9387921759218
+    },
+    {
+      "t": 1792088770.441,
+      "type": "ptr",
+      "x": 713.1238431549841,
+      "y": 653.5605914931725
+    },
+    {
+      "t": 1792088770.47,
+      "type": "ptr",
+      "x": 651.4268092716773,
+      "y": 705.2599005045516
+    },
+    {
+      "t": 1792088770.517,
+      "type": "ptr",
+      "x": 616.759296354802,
+      "y": 734.3096999865726
+    },
+    {
+      "t": 1792088770.549,
+      "type": "ptr",
+      "x": 573.5660893182749,
+      "y": 770.5036434749659
+    },
+    {
+      "t": 1792088770.585,
+      "type": "ptr",
+      "x": 551.1801925410218,
+      "y": 789.262007080792
+    },
+    {
+      "t": 1792088770.645,
+      "type": "ptr",
+      "x": 532.4847291904871,
+      "y": 804.9279552801547
+    },
+    {
+      "t": 1792088770.686,
+      "type": "ptr",
+      "x": 524.70703125,
+      "y": 811.4453125
+    },
+    {
+      "t": 1792088770.738,
+      "type": "ptr",
+      "x": 524.70703125,
+      "y": 811.4453125
+    },
+    {
+      "t": 1792088770.738,
+      "type": "click",
+      "x": 524.70703125,
+      "y": 811.4453125,
+      "role": "resume"
+    },
+    {
+      "t": 1792088770.863,
+      "type": "resumed"
+    },
+    {
+      "t": 1792088770.897,
+      "type": "ptr",
+      "x": 524.70703125,
+      "y": 811.4453125
+    },
+    {
+      "t": 1792088770.968,
+      "type": "ptr",
+      "x": 545.2866472303207,
+      "y": 812.0387172011662
+    },
+    {
+      "t": 1792088771.026,
+      "type": "ptr",
+      "x": 617.0683477696793,
+      "y": 814.1085127988338
+    },
+    {
+      "t": 1792088771.103,
+      "type": "ptr",
+      "x": 700.6299960349854,
+      "y": 816.5179783090379
+    },
+    {
+      "t": 1792088771.206,
+      "type": "ptr",
+      "x": 843.0248687334868,
+      "y": 820.6238754726221
+    },
+    {
+      "t": 1792088771.314,
+      "type": "ptr",
+      "x": 1060.1329805510886,
+      "y": 826.8840979343568
+    },
+    {
+      "t": 1792088771.51,
+      "type": "ptr",
+      "x": 1277.5266893962964,
+      "y": 833.1525554680667
+    },
+    {
+      "t": 1792088771.716,
+      "type": "ptr",
+      "x": 1510.693715356118,
+      "y": 839.875830066281
+    },
+    {
+      "t": 1792088771.844,
+      "type": "ptr",
+      "x": 1515,
+      "y": 840
+    },
+    {
+      "t": 1792088775.783,
+      "type": "film-result",
+      "op": 823,
+      "checkedSlots": 3,
+      "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis \u00b7 CO 259 \u00b7 CO 259a \u00b7 CO 259d \u00b7 Earlier law text (2024-01-01)Procedure reused \u00b7 Defects and repairs \u00b7 Version 2"
+    },
+    {
+      "t": 1792088777.08,
+      "type": "film-end"
+    }
+  ],
+  "draft_encode_review": {
+    "video_sha256": "32970f289b8e847445aa49048117084f84b2e4692148307e4d07becafd5d4320",
+    "duration_seconds": 50,
+    "classification": "Superseded draft: caption review found Read the evidence on held inspection and Connect the fact on document transfer. UI pixels/timeline unchanged in replacement; labels now follow actual held window and exact document.operation IDs.",
+    "raw_edit_receipt_sha256": "1b6dd5e135f91e913cfcd3aeade487080ae2ed6902971a05a07c061fe83a6c20"
+  }
+}
