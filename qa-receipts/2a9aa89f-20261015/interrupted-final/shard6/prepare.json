@@ -1,0 +1,51 @@
+{
+  "candidate": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "cwd": "/workspace/casepath-release-ae0-shard6",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/m2h6",
+    "TMPDIR": "/workspace/m2t6",
+    "TMP": "/workspace/m2t6",
+    "TEMP": "/workspace/m2t6",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard6/pycache",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "UV_PYTHON_INSTALL_DIR": "/workspace/.local/share/uv/python"
+  },
+  "started_epoch": 1792061728.5385664,
+  "before_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "before_status": "",
+  "manifest_sha256": "7d0ff8316b243d2d0b5eacd64909c94fe94f64613c65857b44e315844127bea2",
+  "canonical_fetched_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "canonical_fetch_source": "/workspace/casepath-map-first-stage-20261015",
+  "canonical_local_fetch_log": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard6/fetch.log",
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "internal_launcher_env_contract": "Exact source preserved: stdlib env-i probes omit temp aliases; locked/product env-i uses controlled runtime TMPDIR only.",
+  "exit_code": 0,
+  "finished_epoch": 1792061735.9381912,
+  "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "after_status": "",
+  "duration_seconds": 7.399624824523926
+}

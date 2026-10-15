@@ -1,0 +1,25 @@
+{
+  "shard": 3,
+  "status": "INTERRUPTED",
+  "assigned_ids": 486,
+  "collected_ids": 486,
+  "observed_phase_ids": 45,
+  "completed_three_pass_phase_ids": 44,
+  "incomplete_phase_ids": [
+    "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-startup_reconciler]"
+  ],
+  "assigned_ids_without_phase_rows": 441,
+  "raw_phase_outcomes": {
+    "setup:passed": 45,
+    "call:passed": 44,
+    "teardown:passed": 44
+  },
+  "junit_testcase_rows": 45,
+  "junit_header_tests": 44,
+  "junit_is_incomplete": true,
+  "exit_code": -15,
+  "duration_seconds": 262.5245792865753,
+  "source_after_clean_exact_candidate": true,
+  "attempts": 1,
+  "retries": 0
+}

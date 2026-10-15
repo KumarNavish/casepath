@@ -1,0 +1,10 @@
+{
+  "exit_code": 1,
+  "phase": "Evidence packaging, after tests interrupted and after verification completed",
+  "diagnosis": "Initial preparation copy2 preserved read-only receipt mode in evidence destination. Later blanket copy2 could not overwrite identical read-only receipt. No source/test/capsule fault.",
+  "raw_traceback_file": "packaging-copy2-negative.log",
+  "correction": "Fresh interrupted-final evidence directory with byte copies into newly created writable files; no chmod or original-capsule mutation; no rerun of tests or verifiers.",
+  "partial_prior_push": "f2a4b4d",
+  "prior_partial_push_does_not_contain_final_raw_bundle": true,
+  "recorded_epoch": 1792062316.384696
+}

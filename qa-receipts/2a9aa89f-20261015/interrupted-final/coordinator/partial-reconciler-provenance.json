@@ -1,0 +1,13 @@
+{
+  "original": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/coordinator/coordinator-reconcile.py",
+  "original_sha256": "608d874c877f5f6ee0463a58b85366de77bac3c9fe3f81112a59fadf60f0a78d",
+  "partial": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/coordinator/coordinator-reconcile-partial.py",
+  "partial_sha256": "d692d9a649861dc20e679090a8e7ecaadbc88b5d7068f4853a6fdf2d45717e42",
+  "reason": "Root superseded candidate while 1-3 running; 4-6 never started. Preserve exact original full inventory/partition/phase/JUnit/source/skip validation for executed subset; explicitly report incomplete gate and no combined green. Original all-six reconciler retained unchanged and not run.",
+  "coverage_scope": [
+    1,
+    2,
+    3
+  ],
+  "test_attempts_added": 0
+}

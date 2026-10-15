@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "<stdin>", line 10, in <module>
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py", line 475, in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py", line 262, in copyfile
+    with open(dst, 'wb') as fdst:
+         ^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '/workspace/casepath-release-ae0-evidence/qa-receipts/2a9aa89f-20261015/inventory/source-before/CAPSULE_RECEIPT.json'

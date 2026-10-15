@@ -1,0 +1,70 @@
+{
+  "candidate": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "scope": "Fixtures/journals/runtime state retained locally; only source/capsule receipts and deterministic gate raw evidence copied into Git",
+  "paths": [
+    {
+      "name": "inventory",
+      "isolated_output_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/inventory",
+      "pytest_tmp_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/inventory/pytest-tmp",
+      "pytest_tmp_exists": false,
+      "capsule_path": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/source-capsules/7d0ff8316b243d2d0b5eacd64909c94fe94f64613c65857b44e315844127bea2",
+      "capsule_exists": true,
+      "preserved_without_deletion_or_permission_changes": true
+    },
+    {
+      "name": "shard1",
+      "isolated_output_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard1",
+      "pytest_tmp_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard1/pytest-tmp",
+      "pytest_tmp_exists": true,
+      "capsule_path": "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/source-capsules/7d0ff8316b243d2d0b5eacd64909c94fe94f64613c65857b44e315844127bea2",
+      "capsule_exists": true,
+      "preserved_without_deletion_or_permission_changes": true
+    },
+    {
+      "name": "shard2",
+      "isolated_output_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard2",
+      "pytest_tmp_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard2/pytest-tmp",
+      "pytest_tmp_exists": true,
+      "capsule_path": "/workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/source-capsules/7d0ff8316b243d2d0b5eacd64909c94fe94f64613c65857b44e315844127bea2",
+      "capsule_exists": true,
+      "preserved_without_deletion_or_permission_changes": true
+    },
+    {
+      "name": "shard3",
+      "isolated_output_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3",
+      "pytest_tmp_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/pytest-tmp",
+      "pytest_tmp_exists": true,
+      "capsule_path": "/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/source-capsules/7d0ff8316b243d2d0b5eacd64909c94fe94f64613c65857b44e315844127bea2",
+      "capsule_exists": true,
+      "preserved_without_deletion_or_permission_changes": true
+    },
+    {
+      "name": "shard4",
+      "isolated_output_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard4",
+      "pytest_tmp_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard4/pytest-tmp",
+      "pytest_tmp_exists": false,
+      "capsule_path": "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/source-capsules/7d0ff8316b243d2d0b5eacd64909c94fe94f64613c65857b44e315844127bea2",
+      "capsule_exists": true,
+      "preserved_without_deletion_or_permission_changes": true
+    },
+    {
+      "name": "shard5",
+      "isolated_output_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard5",
+      "pytest_tmp_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard5/pytest-tmp",
+      "pytest_tmp_exists": false,
+      "capsule_path": "/workspace/casepath-release-ae0-shard5/.runtime/casepath-dev-v2/source-capsules/7d0ff8316b243d2d0b5eacd64909c94fe94f64613c65857b44e315844127bea2",
+      "capsule_exists": true,
+      "preserved_without_deletion_or_permission_changes": true
+    },
+    {
+      "name": "shard6",
+      "isolated_output_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard6",
+      "pytest_tmp_root": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard6/pytest-tmp",
+      "pytest_tmp_exists": false,
+      "capsule_path": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/source-capsules/7d0ff8316b243d2d0b5eacd64909c94fe94f64613c65857b44e315844127bea2",
+      "capsule_exists": true,
+      "preserved_without_deletion_or_permission_changes": true
+    }
+  ],
+  "recorded_epoch": 1792062316.3851314
+}

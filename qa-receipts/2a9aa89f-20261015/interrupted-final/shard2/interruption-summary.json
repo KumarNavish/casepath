@@ -1,0 +1,25 @@
+{
+  "shard": 2,
+  "status": "INTERRUPTED",
+  "assigned_ids": 558,
+  "collected_ids": 558,
+  "observed_phase_ids": 24,
+  "completed_three_pass_phase_ids": 23,
+  "incomplete_phase_ids": [
+    "casepath-api/tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[process]"
+  ],
+  "assigned_ids_without_phase_rows": 534,
+  "raw_phase_outcomes": {
+    "setup:passed": 24,
+    "call:passed": 23,
+    "teardown:passed": 23
+  },
+  "junit_testcase_rows": 24,
+  "junit_header_tests": 23,
+  "junit_is_incomplete": true,
+  "exit_code": 2,
+  "duration_seconds": 254.9998059272766,
+  "source_after_clean_exact_candidate": true,
+  "attempts": 1,
+  "retries": 0
+}

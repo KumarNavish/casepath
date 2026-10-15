@@ -1,0 +1,25 @@
+{
+  "shard": 1,
+  "status": "INTERRUPTED",
+  "assigned_ids": 9,
+  "collected_ids": 9,
+  "observed_phase_ids": 2,
+  "completed_three_pass_phase_ids": 1,
+  "incomplete_phase_ids": [
+    "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix"
+  ],
+  "assigned_ids_without_phase_rows": 7,
+  "raw_phase_outcomes": {
+    "setup:passed": 2,
+    "call:passed": 1,
+    "teardown:passed": 1
+  },
+  "junit_testcase_rows": 2,
+  "junit_header_tests": 1,
+  "junit_is_incomplete": true,
+  "exit_code": 2,
+  "duration_seconds": 244.73406887054443,
+  "source_after_clean_exact_candidate": true,
+  "attempts": 1,
+  "retries": 0
+}

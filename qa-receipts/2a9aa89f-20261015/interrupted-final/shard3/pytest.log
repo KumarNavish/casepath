@@ -1,0 +1,94 @@
+............................................
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+casepath-api/casepath_api/app.py:424
+  /workspace/casepath-release-ae0-shard3/casepath-api/casepath_api/app.py:424: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+  /workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+casepath-api/casepath_api/app.py:444
+  /workspace/casepath-release-ae0-shard3/casepath-api/casepath_api/app.py:444: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/junit.xml -
+============================== slowest durations ===============================
+9.73s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-duplicate]
+9.53s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-duplicate]
+8.66s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-explicit_reconciler]
+8.57s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-explicit_reconciler]
+8.25s call     tests/test_insurance_protocol_v1.py::test_crash_after_observation_completes_exactly_one_v2_receipt
+8.10s call     tests/test_insurance_protocol_v1.py::test_handler_selects_hash_bound_correction_and_can_restore_exact_source
+7.83s call     tests/test_insurance_protocol_v1.py::test_concurrent_callers_before_execution_marker_share_one_lineage
+7.66s call     tests/test_insurance_protocol_v1.py::test_unknown_response_cannot_mix_with_concurrent_terminal_projection
+7.32s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-startup_reconciler]
+7.29s call     tests/test_insurance_protocol_v1.py::test_fault_14_commit_claim_unknown_reconciles_without_execute_retry
+6.99s call     tests/test_insurance_protocol_v1.py::test_fault_19_case_local_correction_replans_and_reloads
+6.83s call     tests/test_insurance_protocol_v1.py::test_concurrent_same_key_registration_never_cancels_winner
+6.80s call     tests/test_insurance_protocol_v1.py::test_terminal_response_uses_one_prefix_during_concurrent_correction
+6.75s call     tests/test_insurance_protocol_v1.py::test_fault_12_response_loss_replays_completed_journal_result
+6.66s call     tests/test_insurance_protocol_v1.py::test_process_death_after_commit_resumes_from_registry_authority[AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-1]
+6.61s call     tests/test_insurance_protocol_v1.py::test_live_registration_and_reconcile_never_cancel_shared_effect
+6.06s call     tests/test_insurance_protocol_v1.py::test_distinct_valid_documents_are_server_admitted_and_unresolved_is_not_ready
+5.88s call     tests/test_insurance_protocol_v1.py::test_process_death_after_commit_resumes_from_registry_authority[AFTER_ARTIFACT_BEFORE_EFFECT_RECEIPT-0]
+5.79s call     tests/test_insurance_protocol_v1.py::test_startup_reconciler_completes_v2_terminal_lineage_without_retry
+5.73s call     tests/test_insurance_protocol_v1.py::test_fault_02_duplicate_registration_replays_exact_result
+5.55s call     tests/test_insurance_protocol_v1.py::test_fault_20_tampered_action_receipt_locator_fails_without_journal_drift
+5.51s call     tests/test_insurance_protocol_v1.py::test_fault_16_corrupt_checkpoint_rebuilds_exact_protocol_projection
+5.35s call     tests/test_insurance_protocol_v1.py::test_fault_18_cancel_after_commit_preserves_committed_result
+5.28s call     tests/test_insurance_protocol_v1.py::test_fault_03_duplicate_execute_after_receipt_has_one_effect
+5.24s call     tests/test_insurance_protocol_v1.py::test_fault_13_crash_after_intent_before_execution_resumes_once
+5.21s call     tests/test_insurance_protocol_v1.py::test_fault_15_crash_after_receipt_resumes_epistemic_chain
+4.91s call     tests/test_insurance_protocol_v1.py::test_fault_09_unauthorized_capability_fails_adapter_boundary
+4.77s call     tests/test_insurance_protocol_v1.py::test_protocol_clean_registration_replans_same_graph
+4.26s call     tests/test_insurance_protocol_v1.py::test_v2_rehashed_semantic_tamper_rejected_before_append[interpretation-policy_version-forged.policy/9]
+4.12s call     tests/test_insurance_protocol_v1.py::test_v2_rehashed_semantic_tamper_rejected_before_append[decision_proposal-session_id-forged-session-0001]
+4.00s call     tests/test_insurance_protocol_v1.py::test_v2_rehashed_semantic_tamper_rejected_before_append[interpretation-status-disputed]
+3.98s call     tests/test_insurance_protocol_v1.py::test_epistemic_stage_rehashed_tamper_rejected_before_journal_growth[BEFORE_INTERPRETATION-PROTOCOL_INTERPRETATION_RECORDED-interpretation]
+3.84s call     tests/test_insurance_protocol_v1.py::test_v2_rehashed_semantic_tamper_rejected_before_append[normalized_assertion-extraction_method-forged.extractor/9]
+3.64s call     tests/test_insurance_protocol_v1.py::test_epistemic_stage_rehashed_tamper_rejected_before_journal_growth[BEFORE_NORMALIZED_ASSERTION-PROTOCOL_ASSERTION_NORMALIZED-normalized-assertion]
+3.10s call     tests/test_insurance_protocol_v1.py::test_fault_11_timeout_before_commit_cancels_on_same_intent
+2.96s call     tests/test_insurance_protocol_v1.py::test_epistemic_stage_rehashed_tamper_rejected_before_journal_growth[BEFORE_SOURCE_OBSERVATION-PROTOCOL_SOURCE_OBSERVATION_RECORDED-source-observation]
+2.82s call     tests/test_insurance_protocol_v1.py::test_startup_reconciler_preserves_expired_protocol_partial_lineage
+2.64s call     tests/test_insurance_protocol_v1.py::test_pace_request_is_exactly_claim_derived_without_invariant_fixture_ids
+2.51s call     tests/test_insurance_protocol_v1.py::test_typed_evidence_admission_is_closed_and_terminal_before_quarantine
+2.43s call     tests/test_insurance_protocol_v1.py::test_fault_10_adapter_unavailable_before_effect_is_safe_block
+2.39s call     tests/test_insurance_protocol_v1.py::test_fault_17_cancel_before_execute_claims_zero_effects
+1.87s call     tests/test_insurance_protocol_v1.py::test_faults_07_08_stale_revision_and_proposal_have_no_effect
+0.47s call     tests/test_insurance_protocol_v1.py::test_faults_05_06_invalid_type_and_hash_fail_before_quarantine
+0.40s call     tests/test_insurance_protocol_v1.py::test_fault_04_same_bytes_new_filename_deduplicates_content
+
+(89 durations < 0.005s hidden.  Use -vv to show these durations.)
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/threading.py:363: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+44 passed, 9 warnings in 242.00s (0:04:02)

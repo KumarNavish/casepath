@@ -1,0 +1,32 @@
+{
+  "candidate": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "full_inventory": 2571,
+  "cloud_assigned": 2444,
+  "mac_excluded": 127,
+  "mac_per_file": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6,
+    "casepath-api/tests/test_local_data_root.py": 52
+  },
+  "shard_counts": {
+    "1": 9,
+    "2": 558,
+    "3": 486,
+    "4": 379,
+    "5": 349,
+    "6": 663
+  },
+  "unique_shard_assignments": true,
+  "whole_file_partitions": true,
+  "cloud_mac_disjoint": true,
+  "union_equals_full": true,
+  "missing": [],
+  "extra": [],
+  "duplicates": [],
+  "deselected": [],
+  "tests_launched": false,
+  "full_sorted_sha256": "4ab5398dd5969ac3267ca0c5146d9f2bc5b3bb90125236161db59467abcb6761",
+  "full_collection_order_sha256": "b032593e5d1f5b0c27116e0ce98b6e4053ff842867d8f6c517d3a3124e518fa8",
+  "cloud_sorted_sha256": "b3852753031b295c88a0059048233f8600d3e45dc0ace5f9a83b3127dc5a0467",
+  "mac_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8"
+}

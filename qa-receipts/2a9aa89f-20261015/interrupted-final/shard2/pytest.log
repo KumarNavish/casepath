@@ -1,0 +1,98 @@
+.......................
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+casepath-api/casepath_api/app.py:424
+  /workspace/casepath-release-ae0-shard2/casepath-api/casepath_api/app.py:424: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+  /workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+casepath-api/casepath_api/app.py:444
+  /workspace/casepath-release-ae0-shard2/casepath-api/casepath_api/app.py:444: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /workspace/casepath-map-first-gate-2a9aa89f-20261015/shard2/junit.xml -
+============================== slowest durations ===============================
+28.89s teardown tests/test_agent_desk_v1.py::test_exact_arrival_replay_uses_one_verified_batch_without_full_work_views
+24.07s call     tests/test_agent_desk_v1.py::test_rapid_process_edits_cancel_at_checkpoint_then_review_only_latest_context[False]
+21.82s call     tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[manual_draft]
+21.80s call     tests/test_agent_desk_v1.py::test_resume_recovers_an_expired_running_executor_through_existing_service
+20.50s call     tests/test_agent_desk_v1.py::test_active_reference_pause_persists_checkpoint_and_resumes_real_source_work
+19.91s call     tests/test_agent_desk_v1.py::test_reference_pause_then_resume_preserves_the_run_and_completed_calls
+19.48s call     tests/test_agent_desk_v1.py::test_direct_causal_apply_hook_prepares_current_draft_and_is_exactly_replayable[process]
+10.75s teardown tests/test_agent_desk_v1.py::test_pause_idempotency_stale_revision_and_restart
+4.89s call     tests/test_agent_desk_v1.py::test_rapid_process_edits_cancel_at_checkpoint_then_review_only_latest_context[True]
+4.61s call     tests/test_agent_desk_v1.py::test_decision_preview_override_reason_and_exact_replay
+3.60s call     tests/test_agent_desk_v1.py::test_pause_idempotency_stale_revision_and_restart
+3.52s call     tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_pending]
+3.48s call     tests/test_agent_desk_v1.py::test_desk_fingerprints_work_tables_in_one_snapshot_during_run_creation
+3.29s call     tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+3.16s call     tests/test_agent_desk_v1.py::test_exact_arrival_replay_uses_one_verified_batch_without_full_work_views
+3.16s call     tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_safe]
+3.07s call     tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[interrupted]
+3.01s call     tests/test_agent_desk_v1.py::test_routes_reject_invented_authority_and_require_idempotency
+3.00s call     tests/test_agent_desk_v1.py::test_desk_reads_are_side_effect_free_and_unknown_is_not_completed
+1.79s call     tests/test_agent_desk_v1.py::test_queued_supersession_survives_restart_gap_and_exact_latest_retry
+1.24s call     tests/test_agent_desk_v1.py::test_direct_causal_apply_hook_prepares_current_draft_and_is_exactly_replayable[documents]
+0.85s call     tests/test_agent_desk_v1.py::test_supersession_reconciles_finish_between_snapshot_and_cancel
+0.81s setup    tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[process]
+0.75s setup    tests/test_agent_desk_v1.py::test_routes_reject_invented_authority_and_require_idempotency
+0.74s setup    tests/test_agent_desk_v1.py::test_desk_fingerprints_work_tables_in_one_snapshot_during_run_creation
+0.70s call     tests/test_agent_desk_v1.py::test_process_hook_rechecks_latest_edit_after_draft_preparation
+0.70s call     tests/test_agent_desk_v1.py::test_continuation_and_terminal_callback_do_not_retry_unfinished_effect
+0.69s setup    tests/test_agent_desk_v1.py::test_active_reference_pause_persists_checkpoint_and_resumes_real_source_work
+0.66s setup    tests/test_agent_desk_v1.py::test_resume_recovers_an_expired_running_executor_through_existing_service
+0.66s setup    tests/test_agent_desk_v1.py::test_reference_pause_then_resume_preserves_the_run_and_completed_calls
+0.66s setup    tests/test_agent_desk_v1.py::test_direct_causal_apply_hook_prepares_current_draft_and_is_exactly_replayable[documents]
+0.64s setup    tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[manual_draft]
+0.64s setup    tests/test_agent_desk_v1.py::test_rapid_process_edits_cancel_at_checkpoint_then_review_only_latest_context[False]
+0.63s setup    tests/test_agent_desk_v1.py::test_queued_supersession_survives_restart_gap_and_exact_latest_retry
+0.62s setup    tests/test_agent_desk_v1.py::test_decision_preview_override_reason_and_exact_replay
+0.61s setup    tests/test_agent_desk_v1.py::test_supersession_reconciles_finish_between_snapshot_and_cancel
+0.60s setup    tests/test_agent_desk_v1.py::test_pause_idempotency_stale_revision_and_restart
+0.60s setup    tests/test_agent_desk_v1.py::test_exact_arrival_replay_uses_one_verified_batch_without_full_work_views
+0.60s setup    tests/test_agent_desk_v1.py::test_direct_causal_apply_hook_prepares_current_draft_and_is_exactly_replayable[process]
+0.60s setup    tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_pending]
+0.60s setup    tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[interrupted]
+0.57s setup    tests/test_agent_desk_v1.py::test_continuation_and_terminal_callback_do_not_retry_unfinished_effect
+0.57s setup    tests/test_agent_desk_v1.py::test_rapid_process_edits_cancel_at_checkpoint_then_review_only_latest_context[True]
+0.57s setup    tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_safe]
+0.57s setup    tests/test_agent_desk_v1.py::test_process_hook_rechecks_latest_edit_after_draft_preparation
+0.56s setup    tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+0.55s setup    tests/test_agent_desk_v1.py::test_desk_reads_are_side_effect_free_and_unknown_is_not_completed
+
+(23 durations < 0.005s hidden.  Use -vv to show these durations.)
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/threading.py:1094: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+23 passed, 9 warnings in 251.28s (0:04:11)
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

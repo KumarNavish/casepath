@@ -1,0 +1,68 @@
+{
+  "candidate": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "before_free_bytes": 5222432768,
+  "after_free_bytes": 4496338944,
+  "minimum_headroom_bytes": 3221225472,
+  "adequate_headroom": true,
+  "prepared": [
+    "/workspace/casepath-release-ae0-inventory",
+    "/workspace/casepath-release-ae0-shard1",
+    "/workspace/casepath-release-ae0-shard2",
+    "/workspace/casepath-release-ae0-shard3",
+    "/workspace/casepath-release-ae0-shard4",
+    "/workspace/casepath-release-ae0-shard5",
+    "/workspace/casepath-release-ae0-shard6"
+  ],
+  "tests_launched": false,
+  "results": [
+    {
+      "cwd": "/workspace/casepath-release-ae0-inventory",
+      "exit_code": 0,
+      "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+      "after_status": "",
+      "duration_seconds": 10.659107208251953
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard1",
+      "exit_code": 0,
+      "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+      "after_status": "",
+      "duration_seconds": 10.517402648925781
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard2",
+      "exit_code": 0,
+      "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+      "after_status": "",
+      "duration_seconds": 10.490333318710327
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard3",
+      "exit_code": 0,
+      "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+      "after_status": "",
+      "duration_seconds": 10.187567949295044
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard4",
+      "exit_code": 0,
+      "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+      "after_status": "",
+      "duration_seconds": 10.417773008346558
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard5",
+      "exit_code": 0,
+      "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+      "after_status": "",
+      "duration_seconds": 10.27375602722168
+    },
+    {
+      "cwd": "/workspace/casepath-release-ae0-shard6",
+      "exit_code": 0,
+      "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+      "after_status": "",
+      "duration_seconds": 7.399624824523926
+    }
+  ]
+}

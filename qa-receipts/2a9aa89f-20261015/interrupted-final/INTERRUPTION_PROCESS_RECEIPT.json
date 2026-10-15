@@ -1,0 +1,158 @@
+{
+  "candidate": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "status": "INTERRUPTED",
+  "root_authorization": "Explicit Mac/root instruction to gracefully stop owned obsolete running shards now; no retries or queued launches",
+  "scheduler_pid": 872185,
+  "captured_epoch": 1792062040.4673185,
+  "owned_process_identities_before": [
+    {
+      "pid": 872185,
+      "ppid": 872182,
+      "pgid": 872181,
+      "sid": 872181,
+      "stat": "Tl",
+      "args": "python -"
+    },
+    {
+      "pid": 872189,
+      "ppid": 872185,
+      "pgid": 872181,
+      "sid": 872181,
+      "stat": "S",
+      "args": "python /workspace/casepath-map-first-gate-2a9aa89f-20261015/harness/run_shard.py run 1"
+    },
+    {
+      "pid": 872190,
+      "ppid": 872185,
+      "pgid": 872181,
+      "sid": 872181,
+      "stat": "S",
+      "args": "python /workspace/casepath-map-first-gate-2a9aa89f-20261015/harness/run_shard.py run 2"
+    },
+    {
+      "pid": 872191,
+      "ppid": 872185,
+      "pgid": 872181,
+      "sid": 872181,
+      "stat": "S",
+      "args": "python /workspace/casepath-map-first-gate-2a9aa89f-20261015/harness/run_shard.py run 3"
+    },
+    {
+      "pid": 872216,
+      "ppid": 872190,
+      "pgid": 872181,
+      "sid": 872181,
+      "stat": "Sl",
+      "args": "/workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/venv/bin/python -P -m pytest -q -p no:cacheprovider -p casepath_shard_observer -o tmp_path_retention_policy=failed --junitxml=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard2/junit.xml --durations=0 --basetemp=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard2/pytest-tmp @/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard2/pytest-arguments.txt"
+    },
+    {
+      "pid": 872217,
+      "ppid": 872189,
+      "pgid": 872181,
+      "sid": 872181,
+      "stat": "R",
+      "args": "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/venv/bin/python -P -m pytest -q -p no:cacheprovider -p casepath_shard_observer -o tmp_path_retention_policy=failed --junitxml=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard1/junit.xml --durations=0 --basetemp=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard1/pytest-tmp @/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard1/pytest-arguments.txt"
+    },
+    {
+      "pid": 872218,
+      "ppid": 872191,
+      "pgid": 872181,
+      "sid": 872181,
+      "stat": "Sl",
+      "args": "/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python -P -m pytest -q -p no:cacheprovider -p casepath_shard_observer -o tmp_path_retention_policy=failed --junitxml=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/junit.xml --durations=0 --basetemp=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/pytest-tmp @/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/pytest-arguments.txt"
+    }
+  ],
+  "pytest_processes": [
+    {
+      "pid": 872217,
+      "ppid": 872189,
+      "pgid": 872181,
+      "sid": 872181,
+      "stat": "R",
+      "args": "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/venv/bin/python -P -m pytest -q -p no:cacheprovider -p casepath_shard_observer -o tmp_path_retention_policy=failed --junitxml=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard1/junit.xml --durations=0 --basetemp=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard1/pytest-tmp @/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard1/pytest-arguments.txt",
+      "shard": 1
+    },
+    {
+      "pid": 872216,
+      "ppid": 872190,
+      "pgid": 872181,
+      "sid": 872181,
+      "stat": "Sl",
+      "args": "/workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/venv/bin/python -P -m pytest -q -p no:cacheprovider -p casepath_shard_observer -o tmp_path_retention_policy=failed --junitxml=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard2/junit.xml --durations=0 --basetemp=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard2/pytest-tmp @/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard2/pytest-arguments.txt",
+      "shard": 2
+    },
+    {
+      "pid": 872218,
+      "ppid": 872191,
+      "pgid": 872181,
+      "sid": 872181,
+      "stat": "Sl",
+      "args": "/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python -P -m pytest -q -p no:cacheprovider -p casepath_shard_observer -o tmp_path_retention_policy=failed --junitxml=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/junit.xml --durations=0 --basetemp=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/pytest-tmp @/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/pytest-arguments.txt",
+      "shard": 3
+    }
+  ],
+  "signals": [
+    {
+      "pid": 872217,
+      "shard": 1,
+      "signal": "SIGINT",
+      "epoch": 1792062040.4673536
+    },
+    {
+      "pid": 872216,
+      "shard": 2,
+      "signal": "SIGINT",
+      "epoch": 1792062040.467377
+    },
+    {
+      "pid": 872218,
+      "shard": 3,
+      "signal": "SIGINT",
+      "epoch": 1792062040.4673884
+    },
+    {
+      "pid": 872218,
+      "signal": "SIGTERM",
+      "epoch": 1792062059.5792723,
+      "reason": "Owned pytest did not exit promptly after graceful SIGINT; root requires prompt quiet window"
+    },
+    {
+      "pid": 872185,
+      "signal": "SIGKILL",
+      "epoch": 1792062080.4431567,
+      "reason": "All pytest runner results terminal. Kill held scheduler only so queued futures 4-6 can never start; no test process receives this signal."
+    }
+  ],
+  "unstarted_shards": [
+    4,
+    5,
+    6
+  ],
+  "after_sigint_observation_epoch": 1792062059.5792115,
+  "after_sigint_ps": " 872218 Sl   /workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python -P -m pytest -q -p no:cacheprovider -p casepath_shard_observer -o tmp_path_retention_policy=failed --junitxml=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/junit.xml --durations=0 --basetemp=/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/pytest-tmp @/workspace/casepath-map-first-gate-2a9aa89f-20261015/shard3/pytest-arguments.txt\n",
+  "terminal_results": [
+    {
+      "shard": 1,
+      "exit_code": 2,
+      "duration_seconds": 244.73406887054443,
+      "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+      "after_status": ""
+    },
+    {
+      "shard": 2,
+      "exit_code": 2,
+      "duration_seconds": 254.9998059272766,
+      "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+      "after_status": ""
+    },
+    {
+      "shard": 3,
+      "exit_code": -15,
+      "duration_seconds": 262.5245792865753,
+      "after_head": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+      "after_status": ""
+    }
+  ],
+  "scheduler_termination_epoch": 1792062080.4431605,
+  "all_owned_test_processes_stopped": true
+}

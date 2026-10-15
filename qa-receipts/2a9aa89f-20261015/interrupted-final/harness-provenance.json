@@ -1,0 +1,37 @@
+{
+  "candidate": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "scope": "Reuse prior normal-clone gate; exact root/SHA/manifest and fresh short HOME/TMP substitutions only. Same observer unchanged. Maximum three heavy processes. No automatic retries. Prepare fetch provenance points to root normal clone at fetched exact SHA (not its different checked-out worktree).",
+  "files": [
+    {
+      "source": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/prepare_clones.py",
+      "source_sha256": "2e602a417715b472183b415c29d6caa0f32415993c0d423fa32d3352b11329a6",
+      "adapted": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/harness/prepare_clones.py",
+      "adapted_sha256": "ffb568b3a14d8933a2bc2c826bcf1008f4801f16e35e77062455c032cc547a30"
+    },
+    {
+      "source": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/run_shard.py",
+      "source_sha256": "3cc49382742d399160605ecf804348d7a2961ded59c3d0eec028edf02ca9dcd8",
+      "adapted": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/harness/run_shard.py",
+      "adapted_sha256": "631903d9906d9465b3c30bdf9078c625b3ce9fdd2402472f4a630efa57568f7d"
+    },
+    {
+      "source": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/casepath_shard_observer.py",
+      "source_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "adapted": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/harness/casepath_shard_observer.py",
+      "adapted_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+    },
+    {
+      "source": "/workspace/casepath-visible-agent-gate-7904c805-20261015/harness/verify_prepared_capsules.py",
+      "source_sha256": "321be4dfc5833d52f3c85920fa29a535cebb0406110b90e00b5b680c3ae0ed4f",
+      "adapted": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/harness/verify_prepared_capsules.py",
+      "adapted_sha256": "378d2414b4a78f269cf6b2e7512f885b6ce6ba0fbb91dcb241dfccb5d0600cca"
+    },
+    {
+      "source": "/workspace/casepath-visible-agent-gate-7904c805-20261015/coordinator/coordinator-reconcile.py",
+      "source_sha256": "b975e8ea50509afe69a384eca59aa4ca54dc89e594e6866682e0e8b6b36b65cf",
+      "adapted": "/workspace/casepath-map-first-gate-2a9aa89f-20261015/coordinator/coordinator-reconcile.py",
+      "adapted_sha256": "608d874c877f5f6ee0463a58b85366de77bac3c9fe3f81112a59fadf60f0a78d"
+    }
+  ],
+  "tests_started": false
+}
