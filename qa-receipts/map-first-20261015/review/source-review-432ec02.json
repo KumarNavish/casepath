@@ -1,0 +1,57 @@
+{
+  "findings_status": "No blocking introduced correctness or authority finding in the bounded source and native1.1 review.",
+  "candidate_commit": "432ec02b28992f2adaf9d708ada8f134b4494532",
+  "task_base": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "host": "656813ef2295",
+  "javascript_sha256": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+  "css_sha256": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5",
+  "native_fixture_sha256": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce",
+  "native_operations": 4653,
+  "sequential_checkpoints": 162,
+  "exact_native_heads": 9,
+  "validated_selected_subspans_and_context_within_native_pins": 261,
+  "heating_distinct_first_fact_docks": [
+    {
+      "id": "clm_314f2d309fea25e6",
+      "fact_count": 8,
+      "mapped": 8
+    },
+    {
+      "id": "clm_4a07dbbbd859a3ce",
+      "fact_count": 8,
+      "mapped": 8
+    },
+    {
+      "id": "clm_95d08975bc575592",
+      "fact_count": 8,
+      "mapped": 8
+    }
+  ],
+  "causal_helper_checks": 10,
+  "dedupe_helper_checks": 5,
+  "recorded_case_selector_and_stale_response": {
+    "first_two_modes": [
+      "recorded",
+      "recorded"
+    ],
+    "retired_body_reader_opens": 0,
+    "old_aborted": true,
+    "new_not_aborted_before_cleanup": true,
+    "new_prefix_stayed_visible": true
+  },
+  "source_review_notes": [
+    "Every real operation/checkpoint remains sequentially verified and retained; presentation coalescing never changes native state.",
+    "Planned catalog supplies structure and empty slots only. Observed fact/source-context chips remain provisional; accepted sufficient document state and consumed check jointly gate support.",
+    "All eight heating first facts have actual prior native causal/source ancestry; ambiguous consumers, separate opens and changed hashes fail closed.",
+    "Exact selected Unicode subspans remain inside unchanged native pins; surrounding context is whitespace-normalized display text inside the native citation/body, not a new citation.",
+    "Status-only repeat/verification changes do not dwell again; actual source or substantive value changes do.",
+    "Explicit recorded preference is preserved by the case selector and automatic next-case source path. An actual mount regression simulates an old response resolving after abort and after the next recorded case opens; its body is never consumed.",
+    "Pending read/transfer phases remain pending during inspection per the explicit Mac acceptance; opening inspection does not manufacture a landed target."
+  ],
+  "limits": [
+    "Existing local synthetic native1.1 fixtures only; no production2.0 execution or comparison.",
+    "No timing, geometry, animation smoothness, real browser pause/seek/skip or reduced-motion acceptance is claimed by this source review; those remain with the separate browser QA.",
+    "Helper mutation cases test presentation behavior only; they are not accepted native operation-chain fixtures.",
+    "No API/network/provider/credential/research/gold access, product/test edits, or broad suites were performed."
+  ]
+}

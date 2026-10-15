@@ -1,0 +1,26 @@
+{
+  "scope": "Actual native same-fact repeated/verified rows plus narrowly mutated attention-helper source/value changes. Mutations are not accepted operation-chain fixtures and do not claim source admission. No network, provider or product/test writes.",
+  "source_sha256": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+  "results": [
+    {
+      "name": "native repeated same fact and verified status-only upgrade do not create another dwell",
+      "status": "passed"
+    },
+    {
+      "name": "same fact with another actual artifact pin receives a new dwell",
+      "status": "passed"
+    },
+    {
+      "name": "same fact and original bytes with another exact source subspan receives a new dwell",
+      "status": "passed"
+    },
+    {
+      "name": "same source and fact with a substantive result change receives a new dwell",
+      "status": "passed"
+    },
+    {
+      "name": "same legal predicate pin with a different proposed value receives a new dwell",
+      "status": "passed"
+    }
+  ]
+}

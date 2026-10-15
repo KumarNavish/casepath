@@ -1,0 +1,213 @@
+{
+  "scope": "Read-only existing synthetic native1.1 trace. Relation extraction uses only actual operation causes and preceding document-fact operations. Source-context association is provisional and does not claim a unique legal consumer, accepted evidence sufficiency, requirement activation, or completion. No current/future head facts are used for association.",
+  "native_sidecar_file_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+  "rows": [
+    {
+      "seq": 12,
+      "fact_id": "fact:tenancy_terms_evidence",
+      "native_operation_id": "op_1715b98c5f009b94cad03526c1c661be",
+      "native_operation_sha256": "548fc1d5456536f3ad5c2c9a57f3b94bd46fdcc20929c1a37aceb55bf18b3e19",
+      "native_source_pin": {
+        "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+        "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start_char": 95,
+        "end_char": 434
+      },
+      "source_open_ancestor_seq": [
+        7
+      ],
+      "prior_document_fact_associations": []
+    },
+    {
+      "seq": 13,
+      "fact_id": "residential_tenancy_scope",
+      "native_operation_id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+      "native_operation_sha256": "b699bc3ab6396f36f7df7bb684a2edd18089cd881b910c8c288f5a5ce5ff8236",
+      "native_source_pin": {
+        "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+        "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start_char": 95,
+        "end_char": 434
+      },
+      "source_open_ancestor_seq": [
+        7
+      ],
+      "prior_document_fact_associations": [
+        {
+          "seq": 12,
+          "document_type": "tenancy_terms_evidence",
+          "shared_source_open_seq": [
+            7
+          ],
+          "same_direct_cause": true
+        }
+      ]
+    },
+    {
+      "seq": 36,
+      "fact_id": "fact:objective_defect_observation",
+      "native_operation_id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+      "native_operation_sha256": "0db1ad2c21f6107eb6cdcb3b26e2c9cda7fcbf6aed697c2e70f641003e0d8e25",
+      "native_source_pin": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 199,
+        "end_char": 764
+      },
+      "source_open_ancestor_seq": [
+        16
+      ],
+      "prior_document_fact_associations": []
+    },
+    {
+      "seq": 37,
+      "fact_id": "fact:landlord_knowledge_evidence",
+      "native_operation_id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+      "native_operation_sha256": "d5eb3a6ca8454c831e70dc437a4198bd0d185cdcfadda72247f3330c3b10ebaf",
+      "native_source_pin": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 193,
+        "end_char": 494
+      },
+      "source_open_ancestor_seq": [
+        27
+      ],
+      "prior_document_fact_associations": []
+    },
+    {
+      "seq": 38,
+      "fact_id": "objective_use_impairment",
+      "native_operation_id": "op_4f935af1785d232600fc72be1eebcab3",
+      "native_operation_sha256": "4b84a3e33b51defc16a2be14b5ff52d4f569f0468f0ef9227f875b5c05b1c7e6",
+      "native_source_pin": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 766,
+        "end_char": 967
+      },
+      "source_open_ancestor_seq": [
+        16
+      ],
+      "prior_document_fact_associations": [
+        {
+          "seq": 36,
+          "document_type": "objective_defect_observation",
+          "shared_source_open_seq": [
+            16
+          ],
+          "same_direct_cause": false
+        }
+      ]
+    },
+    {
+      "seq": 39,
+      "fact_id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+      "native_operation_id": "op_a677aec77b40589e0d0580e3dc6d5677",
+      "native_operation_sha256": "b62c79c6bf05fdec50abf75e4f696b73f625f8c838017ade00a1a55673028d3e",
+      "native_source_pin": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 199,
+        "end_char": 764
+      },
+      "source_open_ancestor_seq": [
+        16
+      ],
+      "prior_document_fact_associations": [
+        {
+          "seq": 36,
+          "document_type": "objective_defect_observation",
+          "shared_source_open_seq": [
+            16
+          ],
+          "same_direct_cause": true
+        }
+      ]
+    },
+    {
+      "seq": 40,
+      "fact_id": "landlord_first_knowledge",
+      "native_operation_id": "op_14f9eb670b91d7289150ef3a51717af4",
+      "native_operation_sha256": "b3c6413a703b832572711f4184962e0b36d84bc5fbff00860179013025524633",
+      "native_source_pin": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 193,
+        "end_char": 494
+      },
+      "source_open_ancestor_seq": [
+        27
+      ],
+      "prior_document_fact_associations": [
+        {
+          "seq": 37,
+          "document_type": "landlord_knowledge_evidence",
+          "shared_source_open_seq": [
+            27
+          ],
+          "same_direct_cause": true
+        }
+      ]
+    },
+    {
+      "seq": 41,
+      "fact_id": "continuing_defect_without_remedy",
+      "native_operation_id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+      "native_operation_sha256": "15b5e6862670bb6b2d1d243fbf14d90c6343b09f2e5c59e49b1c7250874654b0",
+      "native_source_pin": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 496,
+        "end_char": 796
+      },
+      "source_open_ancestor_seq": [
+        27
+      ],
+      "prior_document_fact_associations": [
+        {
+          "seq": 37,
+          "document_type": "landlord_knowledge_evidence",
+          "shared_source_open_seq": [
+            27
+          ],
+          "same_direct_cause": false
+        }
+      ]
+    }
+  ],
+  "all_native_node_condition_fields": {
+    "investigate_packet": [
+      "{\"condition\": {\"const\": \"true\"}}"
+    ],
+    "dh_intake": [
+      "{\"condition\": {\"const\": \"true\"}}"
+    ],
+    "dh_scope": [
+      "{\"condition\": {\"const\": \"true\"}}"
+    ],
+    "dh_notice": [
+      "{\"condition\": {\"const\": \"true\"}}"
+    ],
+    "dh_cause": [
+      "{\"condition\": {\"const\": \"true\"}}"
+    ],
+    "dh_evidence": [
+      "{\"condition\": {\"const\": \"true\"}}"
+    ],
+    "dh_response": [
+      "{\"condition\": {\"const\": \"true\"}}"
+    ]
+  },
+  "unique_condition_evaluate_expressions": [
+    "{\"const\": \"true\"}"
+  ]
+}

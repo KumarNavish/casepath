@@ -1,0 +1,14 @@
+Working directory: /workspace/casepath-map-first-impl-20261015
+Candidate: 432ec02b28992f2adaf9d708ada8f134b4494532
+Working tree: clean
+HOME=/workspace/mfrh; TMPDIR=/workspace/mfrt; TMP=/workspace/mfrt; TEMP=/workspace/mfrt
+All four commands returned exit 0.
+
+HOME=/workspace/mfrh TMPDIR=/workspace/mfrt TMP=/workspace/mfrt TEMP=/workspace/mfrt CASEPATH_BROWSER_JS_ASSET=/workspace/casepath-map-first-impl-20261015/casepath/assets/autonomous-workspace-v1.js node /workspace/map-first-evidence-20261015/review/candidate-native-review.cjs > /workspace/map-first-evidence-20261015/review/candidate-native-review-432ec02.stdout.json 2> /workspace/map-first-evidence-20261015/review/candidate-native-review-432ec02.stderr.txt
+
+HOME=/workspace/mfrh TMPDIR=/workspace/mfrt TMP=/workspace/mfrt TEMP=/workspace/mfrt CASEPATH_BROWSER_JS_ASSET=/workspace/casepath-map-first-impl-20261015/casepath/assets/autonomous-workspace-v1.js node /workspace/map-first-evidence-20261015/review/candidate-causal-negatives.cjs > /workspace/map-first-evidence-20261015/review/candidate-causal-negatives-432ec02.stdout.json 2> /workspace/map-first-evidence-20261015/review/candidate-causal-negatives-432ec02.stderr.txt
+
+HOME=/workspace/mfrh TMPDIR=/workspace/mfrt TMP=/workspace/mfrt TEMP=/workspace/mfrt node /workspace/map-first-evidence-20261015/review/candidate-recorded-session-race.cjs > /workspace/map-first-evidence-20261015/review/candidate-recorded-session-race-432ec02.stdout.json 2> /workspace/map-first-evidence-20261015/review/candidate-recorded-session-race-432ec02.stderr.txt
+
+HOME=/workspace/mfrh TMPDIR=/workspace/mfrt TMP=/workspace/mfrt TEMP=/workspace/mfrt node /workspace/map-first-evidence-20261015/review/candidate-dedupe-review.cjs > /workspace/map-first-evidence-20261015/review/candidate-dedupe-review-432ec02.stdout.json 2> /workspace/map-first-evidence-20261015/review/candidate-dedupe-review-432ec02.stderr.txt
+

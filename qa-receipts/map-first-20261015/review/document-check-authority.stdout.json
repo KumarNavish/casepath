@@ -1,0 +1,205 @@
+{
+  "scope": "Exact sequential native1.1 checkpoint reconstruction. All three sufficient document checks follow the corresponding accepted action.completed checkpoint. Reading only the delta checkpoint frame.state cannot establish document state.",
+  "source_sha256": "b1178e50f8461ea6a0c0ca1d8bb30ecfde85fe016175532cf8ba53bf85928f19",
+  "native_fixture_sha256": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce",
+  "native_sidecar_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+  "rows": [
+    {
+      "operation_seq": 168,
+      "operation_id": "op_239fff8e940e09cd50d910cbaff753b7",
+      "operation_sha256": "b95e399e6d7690e7e35bb0e7a9520f5785b4b3c4e2ce2d90ac6419e0f1491bc2",
+      "operation_input": {
+        "independently_verified": true,
+        "required_fields": [
+          "contracting_parties",
+          "property",
+          "tenancy_terms"
+        ],
+        "route_activation": "true"
+      },
+      "operation_result": {
+        "action_id": "review:tenancy_terms_evidence:src_106168f9c33152b3d88f02469ad57782",
+        "assessment": "sufficient",
+        "review_scope": "supplied_file_assessment",
+        "status": "accepted_historical_command"
+      },
+      "accepted_prefix_revision": 39,
+      "accepted_prefix_state_sha256": "b38be34be9a5d7a4ae5acfed0ba24414c71354d909fc935136670e3a97dfd9b7",
+      "accepted_event_sha256": "d0bde1e5fabbeb075baabf9052aa5287569093a7153ea5ccc69ca390e1881e07",
+      "accepted_event_kind": "action.completed",
+      "accepted_event_result": {
+        "action_id": "review:tenancy_terms_evidence:src_106168f9c33152b3d88f02469ad57782",
+        "assessment": "sufficient",
+        "capability_id": "local_evidence.assess",
+        "citations": [
+          {
+            "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+            "end_char": 434,
+            "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+            "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+            "start_char": 95,
+            "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+          }
+        ],
+        "document_type": "tenancy_terms_evidence",
+        "node_ids": [
+          "dh_scope"
+        ],
+        "review_scope": "supplied_file_assessment",
+        "route_activation_at_review": "true",
+        "status": "completed",
+        "summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+        "type": "document_review"
+      },
+      "accepted_document": {
+        "document_type": "tenancy_terms_evidence",
+        "review_state": "sufficient",
+        "route_state": "established",
+        "activation": "true",
+        "active_node_ids": [
+          "dh_scope"
+        ],
+        "held_files": [
+          {
+            "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+            "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+            "review": "sufficient",
+            "reviewed_by": "independent_machine_verification"
+          }
+        ]
+      }
+    },
+    {
+      "operation_seq": 221,
+      "operation_id": "op_1b4045f495bd7c43aee1c82408feaba3",
+      "operation_sha256": "c426645f44cd62fc08be58334d3ea480a8957841643479b3735d4443bb0a5436",
+      "operation_input": {
+        "independently_verified": true,
+        "required_fields": [
+          "location",
+          "observation_date",
+          "observed_fault",
+          "causal_limits"
+        ],
+        "route_activation": "true"
+      },
+      "operation_result": {
+        "action_id": "review:objective_defect_observation:src_000ccf161644df9e82d29a8595b7b727",
+        "assessment": "sufficient",
+        "review_scope": "supplied_file_assessment",
+        "status": "accepted_historical_command"
+      },
+      "accepted_prefix_revision": 40,
+      "accepted_prefix_state_sha256": "5b920f1b2c8dd33007541cf2f49e5b43f379f439a9655418fe7cb38afb6cd2e4",
+      "accepted_event_sha256": "eea975533058793e60c15a74bf174282c83fbd9f76d9ddb1eba25361952a9287",
+      "accepted_event_kind": "action.completed",
+      "accepted_event_result": {
+        "action_id": "review:objective_defect_observation:src_000ccf161644df9e82d29a8595b7b727",
+        "assessment": "sufficient",
+        "capability_id": "local_evidence.assess",
+        "citations": [
+          {
+            "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+            "end_char": 764,
+            "quote": "On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+            "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+            "start_char": 199,
+            "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+          }
+        ],
+        "document_type": "objective_defect_observation",
+        "node_ids": [
+          "dh_evidence"
+        ],
+        "review_scope": "supplied_file_assessment",
+        "route_activation_at_review": "true",
+        "status": "completed",
+        "summary": "The dated calibrated observation identifies the fixed-pump fault and its causal limits.",
+        "type": "document_review"
+      },
+      "accepted_document": {
+        "document_type": "objective_defect_observation",
+        "review_state": "sufficient",
+        "route_state": "established",
+        "activation": "true",
+        "active_node_ids": [
+          "dh_evidence"
+        ],
+        "held_files": [
+          {
+            "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+            "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+            "review": "sufficient",
+            "reviewed_by": "independent_machine_verification"
+          }
+        ]
+      }
+    },
+    {
+      "operation_seq": 274,
+      "operation_id": "op_96acd4eb60e2706174feaa5552f164f8",
+      "operation_sha256": "13e4b3bec2ece8102163dc48cd7dba4e9b439cd11a6fc9b269800dc6a084d53c",
+      "operation_input": {
+        "independently_verified": true,
+        "required_fields": [
+          "recipient",
+          "reported_defect",
+          "first_knowledge_date",
+          "repair_status"
+        ],
+        "route_activation": "true"
+      },
+      "operation_result": {
+        "action_id": "review:landlord_knowledge_evidence:src_c57d943a64c85cf37369ccbf747b6e3f",
+        "assessment": "sufficient",
+        "review_scope": "supplied_file_assessment",
+        "status": "accepted_historical_command"
+      },
+      "accepted_prefix_revision": 41,
+      "accepted_prefix_state_sha256": "f3091864c78fd679bf950c025d03d1bee1dfd83a7b71b57425c9fe1affee8072",
+      "accepted_event_sha256": "98aa95699c1d6c0fb881ec0f7e00ed99ea81b23c38d3d77bc8cc0da397ea86f7",
+      "accepted_event_kind": "action.completed",
+      "accepted_event_result": {
+        "action_id": "review:landlord_knowledge_evidence:src_c57d943a64c85cf37369ccbf747b6e3f",
+        "assessment": "sufficient",
+        "capability_id": "local_evidence.assess",
+        "citations": [
+          {
+            "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+            "end_char": 494,
+            "quote": "Our call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.",
+            "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+            "start_char": 193,
+            "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569"
+          }
+        ],
+        "document_type": "landlord_knowledge_evidence",
+        "node_ids": [
+          "dh_notice"
+        ],
+        "review_scope": "supplied_file_assessment",
+        "route_activation_at_review": "true",
+        "status": "completed",
+        "summary": "The landlord acknowledgment records first knowledge of the reported continuing defect.",
+        "type": "document_review"
+      },
+      "accepted_document": {
+        "document_type": "landlord_knowledge_evidence",
+        "review_state": "sufficient",
+        "route_state": "established",
+        "activation": "true",
+        "active_node_ids": [
+          "dh_notice"
+        ],
+        "held_files": [
+          {
+            "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+            "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+            "review": "sufficient",
+            "reviewed_by": "independent_machine_verification"
+          }
+        ]
+      }
+    }
+  ]
+}

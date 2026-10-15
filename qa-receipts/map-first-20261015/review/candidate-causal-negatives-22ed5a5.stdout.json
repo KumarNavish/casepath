@@ -1,0 +1,47 @@
+{
+  "scope": "Presentation relation helper only: three real prefix positives and narrowly mutated same-trace negative cases. Mutated rows are not accepted operation-chain fixtures and claim no backend validation. No API/provider or product/test writes.",
+  "asset": "/workspace/casepath-map-first-impl-20261015/casepath/assets/autonomous-workspace-v1.js",
+  "source_sha256": "fc98b14227ccfe600ecf875e9a6d66b9acb195fe57eb11cdb54b7d5061cf4180",
+  "results": [
+    {
+      "name": "real native prefix maps 13",
+      "status": "passed"
+    },
+    {
+      "name": "real native prefix maps 38",
+      "status": "passed"
+    },
+    {
+      "name": "real native prefix maps 41",
+      "status": "passed"
+    },
+    {
+      "name": "a future document fact cannot supply an anchor",
+      "status": "passed"
+    },
+    {
+      "name": "same bytes in a separate source.open cannot supply an anchor",
+      "status": "passed"
+    },
+    {
+      "name": "different source artifact fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "different original source hash fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "different text hash fails closed",
+      "status": "passed"
+    },
+    {
+      "name": "multiple document fact destinations from the same cause fail closed",
+      "status": "passed"
+    },
+    {
+      "name": "one document with two actual graph consumers is ambiguous",
+      "status": "passed"
+    }
+  ]
+}

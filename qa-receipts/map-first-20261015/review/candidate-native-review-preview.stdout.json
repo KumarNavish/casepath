@@ -1,0 +1,1007 @@
+{
+  "scope": "Independent sequential native1.1 operation/source/checkpoint replay and exact selected display-subspan review. Head supplies verified planned topology and final equality oracle only. Source-context destinations derive solely from accepted prior operations, never head facts. No API/provider/credential use, no product or test writes. No timing or visual claim.",
+  "asset": "/workspace/casepath-map-first-impl-20261015/casepath/assets/autonomous-workspace-v1.js",
+  "source_sha256": "dfeee0939d09e7685e3381525f9d52bf8847f2d7333e01d4c53cec8f5a8480ae",
+  "native_fixture_sha256": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce",
+  "operations": 4653,
+  "checkpoints": 162,
+  "validated_display_subspans": 261,
+  "rows": [
+    {
+      "id": "clm_314f2d309fea25e6",
+      "sidecar_file_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+      "operations": 824,
+      "first_fact_destinations": [
+        {
+          "seq": 12,
+          "id": "fact:tenancy_terms_evidence",
+          "node": "dh_scope",
+          "operation_id": "op_1715b98c5f009b94cad03526c1c661be"
+        },
+        {
+          "seq": 13,
+          "id": "residential_tenancy_scope",
+          "node": "dh_scope",
+          "operation_id": "op_71551c6b86a6ffc9d77423b4ef842dea"
+        },
+        {
+          "seq": 36,
+          "id": "fact:objective_defect_observation",
+          "node": "dh_evidence",
+          "operation_id": "op_12368bafbf1e6c58a43a2a13af446bcb"
+        },
+        {
+          "seq": 37,
+          "id": "fact:landlord_knowledge_evidence",
+          "node": "dh_notice",
+          "operation_id": "op_31bcd3404de1cb6592883fb7509d9cfc"
+        },
+        {
+          "seq": 38,
+          "id": "objective_use_impairment",
+          "node": "dh_evidence",
+          "operation_id": "op_4f935af1785d232600fc72be1eebcab3"
+        },
+        {
+          "seq": 39,
+          "id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+          "node": "dh_evidence",
+          "operation_id": "op_a677aec77b40589e0d0580e3dc6d5677"
+        },
+        {
+          "seq": 40,
+          "id": "landlord_first_knowledge",
+          "node": "dh_notice",
+          "operation_id": "op_14f9eb670b91d7289150ef3a51717af4"
+        },
+        {
+          "seq": 41,
+          "id": "continuing_defect_without_remedy",
+          "node": "dh_notice",
+          "operation_id": "op_4077bd06a9be4f0b500bdf0f5388fc32"
+        }
+      ],
+      "visible_distinct_facts": [
+        [
+          "fact:tenancy_terms_evidence",
+          12
+        ],
+        [
+          "residential_tenancy_scope",
+          13
+        ],
+        [
+          "fact:objective_defect_observation",
+          36
+        ],
+        [
+          "fact:landlord_knowledge_evidence",
+          37
+        ],
+        [
+          "objective_use_impairment",
+          38
+        ],
+        [
+          "outside_small_tenant_maintenance_and_no_tenant_cause",
+          39
+        ],
+        [
+          "landlord_first_knowledge",
+          40
+        ],
+        [
+          "continuing_defect_without_remedy",
+          41
+        ]
+      ],
+      "document_checks": [
+        {
+          "seq": 168,
+          "id": "tenancy_terms_evidence",
+          "node": "dh_scope",
+          "accepted_revision": 39,
+          "accepted_state_sha256": "b38be34be9a5d7a4ae5acfed0ba24414c71354d909fc935136670e3a97dfd9b7"
+        },
+        {
+          "seq": 221,
+          "id": "objective_defect_observation",
+          "node": "dh_evidence",
+          "accepted_revision": 40,
+          "accepted_state_sha256": "5b920f1b2c8dd33007541cf2f49e5b43f379f439a9655418fe7cb38afb6cd2e4"
+        },
+        {
+          "seq": 274,
+          "id": "landlord_knowledge_evidence",
+          "node": "dh_notice",
+          "accepted_revision": 41,
+          "accepted_state_sha256": "f3091864c78fd679bf950c025d03d1bee1dfd83a7b71b57425c9fe1affee8072"
+        }
+      ],
+      "validated_display_subspans": 30,
+      "head_state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d"
+    },
+    {
+      "id": "clm_4a07dbbbd859a3ce",
+      "sidecar_file_sha256": "a662a31277efb72a100e2f8f74097d8fbd76512a62623199f13306a2e8f0e2b2",
+      "operations": 824,
+      "first_fact_destinations": [
+        {
+          "seq": 12,
+          "id": "fact:tenancy_terms_evidence",
+          "node": "dh_scope",
+          "operation_id": "op_5846d9183aaf7f4f51ccd5f147660dc1"
+        },
+        {
+          "seq": 13,
+          "id": "residential_tenancy_scope",
+          "node": "dh_scope",
+          "operation_id": "op_a33751e35229db2cf34d9dfa0d61f714"
+        },
+        {
+          "seq": 36,
+          "id": "fact:objective_defect_observation",
+          "node": "dh_evidence",
+          "operation_id": "op_5c078da8e21de24f2c57085fd55e343c"
+        },
+        {
+          "seq": 37,
+          "id": "fact:landlord_knowledge_evidence",
+          "node": "dh_notice",
+          "operation_id": "op_ebbf461f5b8213267fe0a83675a92a8b"
+        },
+        {
+          "seq": 38,
+          "id": "objective_use_impairment",
+          "node": "dh_evidence",
+          "operation_id": "op_41badf6ef46f9276f48502bb35ba5c24"
+        },
+        {
+          "seq": 39,
+          "id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+          "node": "dh_evidence",
+          "operation_id": "op_6ac21d032eaeb977895cbc6e1187c158"
+        },
+        {
+          "seq": 40,
+          "id": "landlord_first_knowledge",
+          "node": "dh_notice",
+          "operation_id": "op_ff59a76cd8d8cdb2333e7008a421b749"
+        },
+        {
+          "seq": 41,
+          "id": "continuing_defect_without_remedy",
+          "node": "dh_notice",
+          "operation_id": "op_164997463c509cdf4040464891743af5"
+        }
+      ],
+      "visible_distinct_facts": [
+        [
+          "fact:tenancy_terms_evidence",
+          12
+        ],
+        [
+          "residential_tenancy_scope",
+          13
+        ],
+        [
+          "fact:objective_defect_observation",
+          36
+        ],
+        [
+          "fact:landlord_knowledge_evidence",
+          37
+        ],
+        [
+          "objective_use_impairment",
+          38
+        ],
+        [
+          "outside_small_tenant_maintenance_and_no_tenant_cause",
+          39
+        ],
+        [
+          "landlord_first_knowledge",
+          40
+        ],
+        [
+          "continuing_defect_without_remedy",
+          41
+        ]
+      ],
+      "document_checks": [
+        {
+          "seq": 168,
+          "id": "tenancy_terms_evidence",
+          "node": "dh_scope",
+          "accepted_revision": 39,
+          "accepted_state_sha256": "8a3ba73da47fce6b067220c7a2b403b240c5789ed3585a71252b6c54de12710e"
+        },
+        {
+          "seq": 221,
+          "id": "objective_defect_observation",
+          "node": "dh_evidence",
+          "accepted_revision": 40,
+          "accepted_state_sha256": "79b6d37d9af9f02dc7c4378e2dee34c16120c3fd8261b6fe0fe54901b8d1a91e"
+        },
+        {
+          "seq": 274,
+          "id": "landlord_knowledge_evidence",
+          "node": "dh_notice",
+          "accepted_revision": 41,
+          "accepted_state_sha256": "e7403a1f4329a436a99cd17133c15e4ee1c9d1be2868825e34b7a1c4b582be9d"
+        }
+      ],
+      "validated_display_subspans": 30,
+      "head_state_sha256": "eff31299580845d4eba45c8be9f52beaf0a4264d8cedf0b66418a1076e37d2a2"
+    },
+    {
+      "id": "clm_95d08975bc575592",
+      "sidecar_file_sha256": "bc81515a65477b6189948a50e59113cbad54c2dff9e1f77cc45e27c8dccc3b39",
+      "operations": 824,
+      "first_fact_destinations": [
+        {
+          "seq": 12,
+          "id": "fact:tenancy_terms_evidence",
+          "node": "dh_scope",
+          "operation_id": "op_3d30f9e13eb94e18f1ee1bca99922a9a"
+        },
+        {
+          "seq": 13,
+          "id": "residential_tenancy_scope",
+          "node": "dh_scope",
+          "operation_id": "op_1fdc2353d4e83427d20db456459c37f6"
+        },
+        {
+          "seq": 36,
+          "id": "fact:objective_defect_observation",
+          "node": "dh_evidence",
+          "operation_id": "op_789d0d0d9ae59832a068a0ee6963943f"
+        },
+        {
+          "seq": 37,
+          "id": "fact:landlord_knowledge_evidence",
+          "node": "dh_notice",
+          "operation_id": "op_bb59e8c5e177592228a013151e875827"
+        },
+        {
+          "seq": 38,
+          "id": "objective_use_impairment",
+          "node": "dh_evidence",
+          "operation_id": "op_5c271eea235c11a2e725530fa4bed660"
+        },
+        {
+          "seq": 39,
+          "id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+          "node": "dh_evidence",
+          "operation_id": "op_4dc6c54c774965a557f9ad0fa2cab5e2"
+        },
+        {
+          "seq": 40,
+          "id": "landlord_first_knowledge",
+          "node": "dh_notice",
+          "operation_id": "op_3c344ec19376fff41f2c90baee362599"
+        },
+        {
+          "seq": 41,
+          "id": "continuing_defect_without_remedy",
+          "node": "dh_notice",
+          "operation_id": "op_6b5d25bb0135b770348ba4b2a02f8e5e"
+        }
+      ],
+      "visible_distinct_facts": [
+        [
+          "fact:tenancy_terms_evidence",
+          12
+        ],
+        [
+          "residential_tenancy_scope",
+          13
+        ],
+        [
+          "fact:objective_defect_observation",
+          36
+        ],
+        [
+          "fact:landlord_knowledge_evidence",
+          37
+        ],
+        [
+          "objective_use_impairment",
+          38
+        ],
+        [
+          "outside_small_tenant_maintenance_and_no_tenant_cause",
+          39
+        ],
+        [
+          "landlord_first_knowledge",
+          40
+        ],
+        [
+          "continuing_defect_without_remedy",
+          41
+        ]
+      ],
+      "document_checks": [
+        {
+          "seq": 168,
+          "id": "tenancy_terms_evidence",
+          "node": "dh_scope",
+          "accepted_revision": 39,
+          "accepted_state_sha256": "08fbaa0b67a3547db200ac04386c639998b531f860ef6e8154e559fd76de3fc2"
+        },
+        {
+          "seq": 221,
+          "id": "objective_defect_observation",
+          "node": "dh_evidence",
+          "accepted_revision": 40,
+          "accepted_state_sha256": "ab0f5d7900f433ce0bb2fa8223eedec1af4149841644ccfef827f55fa30de807"
+        },
+        {
+          "seq": 274,
+          "id": "landlord_knowledge_evidence",
+          "node": "dh_notice",
+          "accepted_revision": 41,
+          "accepted_state_sha256": "cede07d7bc669c5e38982d334e2599fbdbce91d88c74f31110afdf3de839bf4b"
+        }
+      ],
+      "validated_display_subspans": 30,
+      "head_state_sha256": "35f3f3d9160f5797d14d5db70f62159eebe11811f77f21510a7c94a541e0c773"
+    },
+    {
+      "id": "clm_0f4f13b1e3e1328c",
+      "sidecar_file_sha256": "acf2c23ba0c179e4e550cae971f00513742cb789b6cb19e59eaac05d5398e8f1",
+      "operations": 299,
+      "first_fact_destinations": [
+        {
+          "seq": 24,
+          "id": "fact:tenancy_terms_evidence",
+          "node": "lt_form",
+          "operation_id": "op_9e9742927fbe93326e40ca91fca44697"
+        },
+        {
+          "seq": 25,
+          "id": "residential_tenancy_scope",
+          "node": "lt_form",
+          "operation_id": "op_738c6edbf49f1185ff6208ba1d753719"
+        },
+        {
+          "seq": 46,
+          "id": "fact:received_termination_packet",
+          "node": "lt_form",
+          "operation_id": "op_81ffbeab590e657a64331b7b8b607339"
+        },
+        {
+          "seq": 47,
+          "id": "fact:original_notification_context",
+          "node": "lt_form",
+          "operation_id": "op_09b3b4aa2cc9461efac0e42127a42e2b"
+        },
+        {
+          "seq": 48,
+          "id": "issuer_authority_and_received_packet",
+          "node": "lt_form",
+          "operation_id": "op_36e3af600fd2086cfd880bc8e232e14c"
+        },
+        {
+          "seq": 49,
+          "id": "complete_channel_archive",
+          "node": "lt_form",
+          "operation_id": "op_503dce30c43d20b8e0e6a5eb50a3c0ed"
+        },
+        {
+          "seq": 50,
+          "id": "canton_approved_form",
+          "node": "lt_form",
+          "operation_id": "op_37584ffd7dc0c57f38ccb3af7d1cebec"
+        }
+      ],
+      "visible_distinct_facts": [
+        [
+          "fact:tenancy_terms_evidence",
+          24
+        ],
+        [
+          "residential_tenancy_scope",
+          25
+        ],
+        [
+          "fact:received_termination_packet",
+          46
+        ],
+        [
+          "fact:original_notification_context",
+          47
+        ],
+        [
+          "issuer_authority_and_received_packet",
+          48
+        ],
+        [
+          "complete_channel_archive",
+          49
+        ],
+        [
+          "canton_approved_form",
+          50
+        ]
+      ],
+      "document_checks": [
+        {
+          "seq": 134,
+          "id": "tenancy_terms_evidence",
+          "node": "lt_form",
+          "accepted_revision": 34,
+          "accepted_state_sha256": "43123ed11d918af2be498dd5a275b3c2e27f931258294a237f1cdc1d08b28488"
+        },
+        {
+          "seq": 155,
+          "id": "received_termination_packet",
+          "node": "lt_form",
+          "accepted_revision": 35,
+          "accepted_state_sha256": "9cb657086716103e3b917e81528e98e771b29fe0470cb799e7ceac528a9b89a5"
+        },
+        {
+          "seq": 176,
+          "id": "original_notification_context",
+          "node": "lt_form",
+          "accepted_revision": 36,
+          "accepted_state_sha256": "ad460e83d6c21124527de6e1b968c6491fba1d6e06e14db9af16a8e3706f4cfa"
+        }
+      ],
+      "validated_display_subspans": 27,
+      "head_state_sha256": "6d3f6e70336e298d5c2fb58b74f86dc4e3f62750e866b7eef5086dd2721dc341"
+    },
+    {
+      "id": "clm_393285577dcb12c4",
+      "sidecar_file_sha256": "843997a854d85ba5754f8260f7dc72bc5fbd5b99ccef00a22a10922ba8b0bf34",
+      "operations": 299,
+      "first_fact_destinations": [
+        {
+          "seq": 24,
+          "id": "fact:tenancy_terms_evidence",
+          "node": "lt_form",
+          "operation_id": "op_ce19d2515ba2eb4ee58b947c0f05c6b6"
+        },
+        {
+          "seq": 25,
+          "id": "residential_tenancy_scope",
+          "node": "lt_form",
+          "operation_id": "op_bdfbf403dcc3f636fbf62068f877b142"
+        },
+        {
+          "seq": 46,
+          "id": "fact:received_termination_packet",
+          "node": "lt_form",
+          "operation_id": "op_f94a58a86deee2d5591d69273c987c19"
+        },
+        {
+          "seq": 47,
+          "id": "fact:original_notification_context",
+          "node": "lt_form",
+          "operation_id": "op_09f96c26143b14ef732f10e9d79538e4"
+        },
+        {
+          "seq": 48,
+          "id": "issuer_authority_and_received_packet",
+          "node": "lt_form",
+          "operation_id": "op_ecf55e9b1ba9348cd39e03791ca0abd2"
+        },
+        {
+          "seq": 49,
+          "id": "complete_channel_archive",
+          "node": "lt_form",
+          "operation_id": "op_925411b4a56d19af24620a8d5e6889b2"
+        },
+        {
+          "seq": 50,
+          "id": "canton_approved_form",
+          "node": "lt_form",
+          "operation_id": "op_e603ab1b3d9dc67a7be586857a215f82"
+        }
+      ],
+      "visible_distinct_facts": [
+        [
+          "fact:tenancy_terms_evidence",
+          24
+        ],
+        [
+          "residential_tenancy_scope",
+          25
+        ],
+        [
+          "fact:received_termination_packet",
+          46
+        ],
+        [
+          "fact:original_notification_context",
+          47
+        ],
+        [
+          "issuer_authority_and_received_packet",
+          48
+        ],
+        [
+          "complete_channel_archive",
+          49
+        ],
+        [
+          "canton_approved_form",
+          50
+        ]
+      ],
+      "document_checks": [
+        {
+          "seq": 134,
+          "id": "tenancy_terms_evidence",
+          "node": "lt_form",
+          "accepted_revision": 34,
+          "accepted_state_sha256": "772fb2bc5760bd54ac68567ffcdddd391b8057cc9d95aac1d2f2958bd972f10a"
+        },
+        {
+          "seq": 155,
+          "id": "received_termination_packet",
+          "node": "lt_form",
+          "accepted_revision": 35,
+          "accepted_state_sha256": "be356e66ce660895327c2a1d7e16545783ef382c997568deb28e2f99a8049201"
+        },
+        {
+          "seq": 176,
+          "id": "original_notification_context",
+          "node": "lt_form",
+          "accepted_revision": 36,
+          "accepted_state_sha256": "5e9114db8b966ef632906a9fa2b7416c703228a1d32042a366b26821d5ed9094"
+        }
+      ],
+      "validated_display_subspans": 27,
+      "head_state_sha256": "b47bac740be8259d59d0cca2c26090f9e3ddf1e3750a63ec93580f7e02a108f9"
+    },
+    {
+      "id": "clm_4a53299cfe619303",
+      "sidecar_file_sha256": "df8af707afe3f1ac002e8ea543583b123c4ec21723b9dda3359f39d70bef4833",
+      "operations": 299,
+      "first_fact_destinations": [
+        {
+          "seq": 24,
+          "id": "fact:tenancy_terms_evidence",
+          "node": "lt_form",
+          "operation_id": "op_1bf277da5cd81137ff2dd5d5a5f1485e"
+        },
+        {
+          "seq": 25,
+          "id": "residential_tenancy_scope",
+          "node": "lt_form",
+          "operation_id": "op_4e4ff4f0b60fc3c469eb066638efbae2"
+        },
+        {
+          "seq": 46,
+          "id": "fact:received_termination_packet",
+          "node": "lt_form",
+          "operation_id": "op_d6728e5dc31d333efea476c3e5b59d00"
+        },
+        {
+          "seq": 47,
+          "id": "fact:original_notification_context",
+          "node": "lt_form",
+          "operation_id": "op_0833cf7a3b93ac1412f0f59a9f2902be"
+        },
+        {
+          "seq": 48,
+          "id": "issuer_authority_and_received_packet",
+          "node": "lt_form",
+          "operation_id": "op_ed9a62d9f534fd360b92556eca3deda0"
+        },
+        {
+          "seq": 49,
+          "id": "complete_channel_archive",
+          "node": "lt_form",
+          "operation_id": "op_120bbb3b96fa044d7ecd31ff23e04232"
+        },
+        {
+          "seq": 50,
+          "id": "canton_approved_form",
+          "node": "lt_form",
+          "operation_id": "op_70c60da4725ba06795abcee59e5eb16a"
+        }
+      ],
+      "visible_distinct_facts": [
+        [
+          "fact:tenancy_terms_evidence",
+          24
+        ],
+        [
+          "residential_tenancy_scope",
+          25
+        ],
+        [
+          "fact:received_termination_packet",
+          46
+        ],
+        [
+          "fact:original_notification_context",
+          47
+        ],
+        [
+          "issuer_authority_and_received_packet",
+          48
+        ],
+        [
+          "complete_channel_archive",
+          49
+        ],
+        [
+          "canton_approved_form",
+          50
+        ]
+      ],
+      "document_checks": [
+        {
+          "seq": 134,
+          "id": "tenancy_terms_evidence",
+          "node": "lt_form",
+          "accepted_revision": 34,
+          "accepted_state_sha256": "b1d6255e5f6bc6d47e66c03db58fa73ec8e7e3ab43303debb5914286e8e20896"
+        },
+        {
+          "seq": 155,
+          "id": "received_termination_packet",
+          "node": "lt_form",
+          "accepted_revision": 35,
+          "accepted_state_sha256": "2d58774005826c20fdbbb749a2299af20c6bb958bbe752b39d05d59e49fec60b"
+        },
+        {
+          "seq": 176,
+          "id": "original_notification_context",
+          "node": "lt_form",
+          "accepted_revision": 36,
+          "accepted_state_sha256": "e3b68d981b664f9fd1614735b942ba3fa83e1080888965231f9db707351c61a1"
+        }
+      ],
+      "validated_display_subspans": 27,
+      "head_state_sha256": "ee76c765353f769bc7cd3a9ee379dde144261abda26da095b0f57dd3b1ee35e3"
+    },
+    {
+      "id": "clm_2c55cdd816b1d0e8",
+      "sidecar_file_sha256": "5556f3224c0e814cd54acd9ae6a7ea8708853aa6808da36de911194fce6026b3",
+      "operations": 428,
+      "first_fact_destinations": [
+        {
+          "seq": 30,
+          "id": "fact:tenancy_terms_evidence",
+          "node": "ri_form",
+          "operation_id": "op_b3dfef33455eb07e3f004119783363bb"
+        },
+        {
+          "seq": 31,
+          "id": "residential_tenancy_scope",
+          "node": "ri_form",
+          "operation_id": "op_85fffff5513bc34016bfbcc3f8b3fb11"
+        },
+        {
+          "seq": 54,
+          "id": "fact:received_rent_increase_packet",
+          "node": "ri_form",
+          "operation_id": "op_5b5a4efd0ecef54b9b6290a99c58b97f"
+        },
+        {
+          "seq": 55,
+          "id": "fact:original_notification_context",
+          "node": "ri_reason",
+          "operation_id": "op_661db1521cec1f71eb3985644abd1496"
+        },
+        {
+          "seq": 56,
+          "id": "ordinary_non269c_tenancy",
+          "node": "ri_form",
+          "operation_id": "op_73eb77b635d1b5f51abc3d68a3d95edc"
+        },
+        {
+          "seq": 57,
+          "id": "issuer_authority_and_complete_packet",
+          "node": "ri_reason",
+          "operation_id": "op_bc9e545a79d21177a860ad929db4713e"
+        },
+        {
+          "seq": 58,
+          "id": "contemporaneous_substantive_reasons",
+          "node": "ri_form",
+          "operation_id": "op_818f8620be003d6f3fc0288b9c90e4fd"
+        },
+        {
+          "seq": 59,
+          "id": "later_email_is_not_original_reasons",
+          "node": "ri_reason",
+          "operation_id": "op_73111da96359c0f9643a9cd2fedf5431"
+        }
+      ],
+      "visible_distinct_facts": [
+        [
+          "fact:tenancy_terms_evidence",
+          30
+        ],
+        [
+          "residential_tenancy_scope",
+          31
+        ],
+        [
+          "fact:received_rent_increase_packet",
+          54
+        ],
+        [
+          "fact:original_notification_context",
+          55
+        ],
+        [
+          "ordinary_non269c_tenancy",
+          56
+        ],
+        [
+          "issuer_authority_and_complete_packet",
+          57
+        ],
+        [
+          "contemporaneous_substantive_reasons",
+          58
+        ],
+        [
+          "later_email_is_not_original_reasons",
+          59
+        ]
+      ],
+      "document_checks": [
+        {
+          "seq": 165,
+          "id": "tenancy_terms_evidence",
+          "node": "ri_form",
+          "accepted_revision": 35,
+          "accepted_state_sha256": "4f01b073ac29c35eacc94a07e5e2457c328e845b932b29557978a6502072f89f"
+        },
+        {
+          "seq": 194,
+          "id": "received_rent_increase_packet",
+          "node": "ri_form",
+          "accepted_revision": 36,
+          "accepted_state_sha256": "4f2afa207dce85e0d14563f0f2863b605b21e1b4769f7cb3fb217a0cd9751d62"
+        },
+        {
+          "seq": 223,
+          "id": "original_notification_context",
+          "node": "ri_reason",
+          "accepted_revision": 37,
+          "accepted_state_sha256": "2554bef21234627e18633ed4cb1539817e6d4fa7dd4de5404dcc958eec63a152"
+        }
+      ],
+      "validated_display_subspans": 30,
+      "head_state_sha256": "baa0f5411c59a2a5236a51a8f2c1d171a1fcb0c39ce569cd7911cfe43e7fd264"
+    },
+    {
+      "id": "clm_543f08f2415b2a33",
+      "sidecar_file_sha256": "dc0bf763e2c58ecc47a12dc650c5697aa6cdccbefa88f81e50e7fef966fac6ec",
+      "operations": 428,
+      "first_fact_destinations": [
+        {
+          "seq": 30,
+          "id": "fact:tenancy_terms_evidence",
+          "node": "ri_form",
+          "operation_id": "op_6746b263c89eb93156a176abf440a869"
+        },
+        {
+          "seq": 31,
+          "id": "residential_tenancy_scope",
+          "node": "ri_form",
+          "operation_id": "op_c297e6ac874e92f464e929e6dfbd45fa"
+        },
+        {
+          "seq": 54,
+          "id": "fact:received_rent_increase_packet",
+          "node": "ri_form",
+          "operation_id": "op_a639a8909328097221a6eb3d0e993027"
+        },
+        {
+          "seq": 55,
+          "id": "fact:original_notification_context",
+          "node": "ri_reason",
+          "operation_id": "op_5792ef30a9b729ba9590fdad8a0f4fff"
+        },
+        {
+          "seq": 56,
+          "id": "ordinary_non269c_tenancy",
+          "node": "ri_form",
+          "operation_id": "op_5c5f2cfbe1b11b7b502d0dca5d38f54a"
+        },
+        {
+          "seq": 57,
+          "id": "issuer_authority_and_complete_packet",
+          "node": "ri_reason",
+          "operation_id": "op_c908ae3ec4b345fe50a2dd54fffae5ce"
+        },
+        {
+          "seq": 58,
+          "id": "contemporaneous_substantive_reasons",
+          "node": "ri_form",
+          "operation_id": "op_e76561e88226b4db51361885e53d6672"
+        },
+        {
+          "seq": 59,
+          "id": "later_email_is_not_original_reasons",
+          "node": "ri_reason",
+          "operation_id": "op_598473fd59b9b181b3b1b926bb1a9d5c"
+        }
+      ],
+      "visible_distinct_facts": [
+        [
+          "fact:tenancy_terms_evidence",
+          30
+        ],
+        [
+          "residential_tenancy_scope",
+          31
+        ],
+        [
+          "fact:received_rent_increase_packet",
+          54
+        ],
+        [
+          "fact:original_notification_context",
+          55
+        ],
+        [
+          "ordinary_non269c_tenancy",
+          56
+        ],
+        [
+          "issuer_authority_and_complete_packet",
+          57
+        ],
+        [
+          "contemporaneous_substantive_reasons",
+          58
+        ],
+        [
+          "later_email_is_not_original_reasons",
+          59
+        ]
+      ],
+      "document_checks": [
+        {
+          "seq": 165,
+          "id": "tenancy_terms_evidence",
+          "node": "ri_form",
+          "accepted_revision": 35,
+          "accepted_state_sha256": "ac28dc9339a747670bf3234b0ea212e574bef09a0793d3d2ac2dc1015d4877eb"
+        },
+        {
+          "seq": 194,
+          "id": "received_rent_increase_packet",
+          "node": "ri_form",
+          "accepted_revision": 36,
+          "accepted_state_sha256": "b396d9cb91c8785d9d75fd2ef04e0b49d5549362888ed283004eea5c32ba2b4a"
+        },
+        {
+          "seq": 223,
+          "id": "original_notification_context",
+          "node": "ri_reason",
+          "accepted_revision": 37,
+          "accepted_state_sha256": "1e666006a822723c2dd813e8798359c5921ad325fa8bda56061382375ae52da8"
+        }
+      ],
+      "validated_display_subspans": 30,
+      "head_state_sha256": "7ede99e3c0e05d97269b7bd7b3af68360d3834691322b56a7f0145da1c2416f9"
+    },
+    {
+      "id": "clm_7dbd7c7d1c4ddf90",
+      "sidecar_file_sha256": "44d7b0d5413959d59718fb2a16a6fbb98919633c6075efa6e5b0b12dfd9420bb",
+      "operations": 428,
+      "first_fact_destinations": [
+        {
+          "seq": 30,
+          "id": "fact:tenancy_terms_evidence",
+          "node": "ri_form",
+          "operation_id": "op_5b1812743e3f12634d66102f463b1384"
+        },
+        {
+          "seq": 31,
+          "id": "residential_tenancy_scope",
+          "node": "ri_form",
+          "operation_id": "op_7dea15301766c27f927f51426425b3ce"
+        },
+        {
+          "seq": 54,
+          "id": "fact:received_rent_increase_packet",
+          "node": "ri_form",
+          "operation_id": "op_f6c437f63526a86a587569e5b992191f"
+        },
+        {
+          "seq": 55,
+          "id": "fact:original_notification_context",
+          "node": "ri_reason",
+          "operation_id": "op_641b17dbe46c2e0f0039a1c2cdb3015a"
+        },
+        {
+          "seq": 56,
+          "id": "ordinary_non269c_tenancy",
+          "node": "ri_form",
+          "operation_id": "op_22d168fa341e20c459f21f69b13a9a00"
+        },
+        {
+          "seq": 57,
+          "id": "issuer_authority_and_complete_packet",
+          "node": "ri_reason",
+          "operation_id": "op_028a319a12ebfa8310f42b1bcb81df96"
+        },
+        {
+          "seq": 58,
+          "id": "contemporaneous_substantive_reasons",
+          "node": "ri_form",
+          "operation_id": "op_ec201c4ee194584a8954d8946a4d2dc7"
+        },
+        {
+          "seq": 59,
+          "id": "later_email_is_not_original_reasons",
+          "node": "ri_reason",
+          "operation_id": "op_8325a6ec138fe1ddf44d56d019184db4"
+        }
+      ],
+      "visible_distinct_facts": [
+        [
+          "fact:tenancy_terms_evidence",
+          30
+        ],
+        [
+          "residential_tenancy_scope",
+          31
+        ],
+        [
+          "fact:received_rent_increase_packet",
+          54
+        ],
+        [
+          "fact:original_notification_context",
+          55
+        ],
+        [
+          "ordinary_non269c_tenancy",
+          56
+        ],
+        [
+          "issuer_authority_and_complete_packet",
+          57
+        ],
+        [
+          "contemporaneous_substantive_reasons",
+          58
+        ],
+        [
+          "later_email_is_not_original_reasons",
+          59
+        ]
+      ],
+      "document_checks": [
+        {
+          "seq": 165,
+          "id": "tenancy_terms_evidence",
+          "node": "ri_form",
+          "accepted_revision": 35,
+          "accepted_state_sha256": "dbfa59556a6154c897bed83b72281f6bb38cbc1045730b4221bfd131b16a9362"
+        },
+        {
+          "seq": 194,
+          "id": "received_rent_increase_packet",
+          "node": "ri_form",
+          "accepted_revision": 36,
+          "accepted_state_sha256": "7f4cf960280758e7e55161744e73726cad2256095afc1cbc7b9cd60434f5e8a3"
+        },
+        {
+          "seq": 223,
+          "id": "original_notification_context",
+          "node": "ri_reason",
+          "accepted_revision": 37,
+          "accepted_state_sha256": "94ad9b2af59a4db2618de2563cd6a399ab9b7563f6105d43a281a52455782c52"
+        }
+      ],
+      "validated_display_subspans": 30,
+      "head_state_sha256": "d038830491e99a6b3ec35d04957bf95db861f3b074b5f312b13b6e49dbfd1a9b"
+    }
+  ]
+}

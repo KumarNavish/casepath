@@ -1,0 +1,58 @@
+{
+  "scope": "Production mount lifecycle over existing in-memory synthetic native replay GETs, reusing the existing minimal DOM fixture. No repository test suite is registered or run. The old transport deliberately resolves after abort and after a second recorded case has opened. No network, API, provider, browser-layout or production2.0 claim.",
+  "candidate_commit": "432ec02b28992f2adaf9d708ada8f134b4494532",
+  "source_sha256": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+  "existing_dom_fixture_file_sha256": "4b6c5d226c409b2ee5b1ca289dc4037f26ef2b86b7a1f12838984fe27095eafa",
+  "first_two_operation_requests": [
+    {
+      "id": "clm_314f2d309fea25e6",
+      "mode": "recorded"
+    },
+    {
+      "id": "clm_4a07dbbbd859a3ce",
+      "mode": "recorded"
+    }
+  ],
+  "old_signal_aborted": true,
+  "new_signal_aborted_before_cleanup": false,
+  "old_body_reader_open_count": 0,
+  "second_case_prefix_stayed_visible": true,
+  "requests": [
+    {
+      "path": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "method": "GET"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=recorded",
+      "method": "GET"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=48",
+      "method": "GET"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/operations?mode=recorded",
+      "method": "GET"
+    }
+  ]
+}
