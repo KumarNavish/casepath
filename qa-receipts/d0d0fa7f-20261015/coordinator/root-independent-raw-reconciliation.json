@@ -1,0 +1,76 @@
+{
+  "candidate": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "root_independent_raw_reconciliation": "PASS",
+  "full_inventory": 2571,
+  "cloud_executed": 2444,
+  "cloud_passed": 2434,
+  "known_skipped": 10,
+  "cloud_phase_rows": 7323,
+  "mac_passed_attested_by_integration_owner": 127,
+  "mac_raw_files_not_in_cloud": true,
+  "combined_passed_using_current_mac_attestation": 2561,
+  "no_gaps_overlaps_deselections_new_skips_or_retries": true,
+  "source_manifest_sha256": "cf3bfbe377fb6bd2a3dd4f44f3c3ec1c3fce8864ba19840b822abf30fa1bdd8f",
+  "shards": [
+    {
+      "shard": 1,
+      "ids": 9,
+      "passed": 9,
+      "skipped": 0,
+      "phase_rows": 27,
+      "junit_sha256": "c0e107ecad25ac8661a7f47bbe48d1ab0bd783083c23a617cde6612c1611d03f",
+      "first_attempt_only": true,
+      "source_capsule_unchanged": true
+    },
+    {
+      "shard": 2,
+      "ids": 558,
+      "passed": 558,
+      "skipped": 0,
+      "phase_rows": 1674,
+      "junit_sha256": "b6f4d5086bae08ffce8da7ad5c50f8ff5ac26c6dc557fac15537a6f37a6b0897",
+      "first_attempt_only": true,
+      "source_capsule_unchanged": true
+    },
+    {
+      "shard": 3,
+      "ids": 486,
+      "passed": 485,
+      "skipped": 1,
+      "phase_rows": 1458,
+      "junit_sha256": "c7a666ce6dfb63016bc2389afefd4954953ad572bc987a27f017e835ce1c8b58",
+      "first_attempt_only": true,
+      "source_capsule_unchanged": true
+    },
+    {
+      "shard": 4,
+      "ids": 379,
+      "passed": 379,
+      "skipped": 0,
+      "phase_rows": 1137,
+      "junit_sha256": "a70b4b4372a3f86d8589e0677f2f6cb9e75cff97193d89acdc14446f3c307515",
+      "first_attempt_only": true,
+      "source_capsule_unchanged": true
+    },
+    {
+      "shard": 5,
+      "ids": 349,
+      "passed": 349,
+      "skipped": 0,
+      "phase_rows": 1047,
+      "junit_sha256": "91060e64c2c0d737e7959995fcb159341ee98b9063bd42c567cfebd8a397a5e6",
+      "first_attempt_only": true,
+      "source_capsule_unchanged": true
+    },
+    {
+      "shard": 6,
+      "ids": 663,
+      "passed": 654,
+      "skipped": 9,
+      "phase_rows": 1980,
+      "junit_sha256": "638824acc3ecae88a9d96b0ef4bf4148e9fcacdc66d5e45f04d9bfc053175ed6",
+      "first_attempt_only": true,
+      "source_capsule_unchanged": true
+    }
+  ]
+}

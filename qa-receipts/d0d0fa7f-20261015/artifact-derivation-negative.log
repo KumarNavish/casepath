@@ -1,0 +1,4 @@
+  File "<stdin>", line 7
+    matches=[i for i in assigned if c.attrib['name']==i.split('::')[-1] and (not c.attrib['classname'] or c.attrib['classname']==Path(i.split('::')[0]).stem+('.'+'.'.join(i.split('::')[1:-1]) if len(i.split('::'))>2 else '') or c.attrib['classname'].endswith('.'+Path(i.split('::')[0]).stem+('.'+'.'.join(i.split('::')[1:-1]) if len(i.split('::'))>2 else ''))]
+                                                                                                                                                                                                                                                                                                                                                                       ^
+SyntaxError: closing parenthesis ']' does not match opening parenthesis '('

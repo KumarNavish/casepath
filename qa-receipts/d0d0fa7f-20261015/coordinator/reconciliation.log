@@ -1,0 +1,74 @@
+{
+  "candidate": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "full_inventory": 2571,
+  "cloud_assigned": 2444,
+  "cloud_passed": 2434,
+  "cloud_known_skipped": 10,
+  "cloud_failed": 0,
+  "mac_attested_passed": 127,
+  "combined_passed_with_mac_attestation": 2561,
+  "mac_raw_receipts_not_local": true,
+  "no_overlap_or_gaps": true,
+  "selected_attempts_per_shard": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "authorized_full_shard_rechecks": 0,
+  "initial_setup_failures_preserved": false,
+  "source_capsule_unchanged": true,
+  "known_skips_exact_phase_file_line_reason": true,
+  "shards": [
+    {
+      "shard": 1,
+      "tests": 9,
+      "passed": 9,
+      "skipped": 0,
+      "runner_seconds": 648.0036144256592,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 2,
+      "tests": 558,
+      "passed": 558,
+      "skipped": 0,
+      "runner_seconds": 489.2577455043793,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 3,
+      "tests": 486,
+      "passed": 485,
+      "skipped": 1,
+      "runner_seconds": 503.5181827545166,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 4,
+      "tests": 379,
+      "passed": 379,
+      "skipped": 0,
+      "runner_seconds": 504.1279811859131,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 5,
+      "tests": 349,
+      "passed": 349,
+      "skipped": 0,
+      "runner_seconds": 508.2245602607727,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 6,
+      "tests": 663,
+      "passed": 654,
+      "skipped": 9,
+      "runner_seconds": 485.52040553092957,
+      "all_raw_phases_and_junit_ids_exact": true
+    }
+  ]
+}

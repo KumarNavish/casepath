@@ -1,0 +1,70 @@
+{
+  "candidate": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b",
+  "prior_interrupted_2a_bundle_untouched": "b674a924304139c4d569367753ddec1c9f49f759",
+  "state": [
+    {
+      "name": "inventory",
+      "repo": "/workspace/casepath-release-ae0-inventory",
+      "output_root": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/inventory",
+      "capsule": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/source-capsules/cf3bfbe377fb6bd2a3dd4f44f3c3ec1c3fce8864ba19840b822abf30fa1bdd8f",
+      "capsule_retained": true,
+      "pytest_tmp_retained_if_present": false,
+      "no_cleanup_or_capsule_permission_changes": true
+    },
+    {
+      "name": "shard1",
+      "repo": "/workspace/casepath-release-ae0-shard1",
+      "output_root": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/shard1",
+      "capsule": "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/source-capsules/cf3bfbe377fb6bd2a3dd4f44f3c3ec1c3fce8864ba19840b822abf30fa1bdd8f",
+      "capsule_retained": true,
+      "pytest_tmp_retained_if_present": true,
+      "no_cleanup_or_capsule_permission_changes": true
+    },
+    {
+      "name": "shard2",
+      "repo": "/workspace/casepath-release-ae0-shard2",
+      "output_root": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/shard2",
+      "capsule": "/workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/source-capsules/cf3bfbe377fb6bd2a3dd4f44f3c3ec1c3fce8864ba19840b822abf30fa1bdd8f",
+      "capsule_retained": true,
+      "pytest_tmp_retained_if_present": true,
+      "no_cleanup_or_capsule_permission_changes": true
+    },
+    {
+      "name": "shard3",
+      "repo": "/workspace/casepath-release-ae0-shard3",
+      "output_root": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/shard3",
+      "capsule": "/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/source-capsules/cf3bfbe377fb6bd2a3dd4f44f3c3ec1c3fce8864ba19840b822abf30fa1bdd8f",
+      "capsule_retained": true,
+      "pytest_tmp_retained_if_present": true,
+      "no_cleanup_or_capsule_permission_changes": true
+    },
+    {
+      "name": "shard4",
+      "repo": "/workspace/casepath-release-ae0-shard4",
+      "output_root": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/shard4",
+      "capsule": "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/source-capsules/cf3bfbe377fb6bd2a3dd4f44f3c3ec1c3fce8864ba19840b822abf30fa1bdd8f",
+      "capsule_retained": true,
+      "pytest_tmp_retained_if_present": true,
+      "no_cleanup_or_capsule_permission_changes": true
+    },
+    {
+      "name": "shard5",
+      "repo": "/workspace/casepath-release-ae0-shard5",
+      "output_root": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/shard5",
+      "capsule": "/workspace/casepath-release-ae0-shard5/.runtime/casepath-dev-v2/source-capsules/cf3bfbe377fb6bd2a3dd4f44f3c3ec1c3fce8864ba19840b822abf30fa1bdd8f",
+      "capsule_retained": true,
+      "pytest_tmp_retained_if_present": true,
+      "no_cleanup_or_capsule_permission_changes": true
+    },
+    {
+      "name": "shard6",
+      "repo": "/workspace/casepath-release-ae0-shard6",
+      "output_root": "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/shard6",
+      "capsule": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/source-capsules/cf3bfbe377fb6bd2a3dd4f44f3c3ec1c3fce8864ba19840b822abf30fa1bdd8f",
+      "capsule_retained": true,
+      "pytest_tmp_retained_if_present": true,
+      "no_cleanup_or_capsule_permission_changes": true
+    }
+  ],
+  "recorded_epoch": 1792068718.2282782
+}

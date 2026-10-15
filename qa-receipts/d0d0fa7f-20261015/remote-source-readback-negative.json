@@ -15,5 +15,8 @@
   "diagnosis": "Existing reusable normal clone origin is local /workspace/casepath-unified-ui, not GitHub. Its old integration ref is not canonical remote authority. Exact frozen SHA fetches used explicit normal root source and remain valid.",
   "correction": "Read explicit canonical GitHub repository URL via managed proxy; exact integration branch readback is d0d0fa7f.",
   "canonical_remote_readback": "d0d0fa7f9041f7405f1d8393bacd47d4332ee79b\trefs/heads/codex/casepath-causal-experience-integration-20261009\n",
-  "test_attempts_affected": 0
+  "test_attempts_affected": 0,
+  "initial_raw_stderr": "Traceback (most recent call last):\n  File \"<stdin>\", line 3, in <module>\nAssertionError\n",
+  "initial_raw_stdout": "",
+  "preflight_only_not_test_failure": true
 }
