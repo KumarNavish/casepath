@@ -1,0 +1,11 @@
+{
+  "candidate": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "phase": "read-only preflight after successful clean normal clone fetches, before prepare or full test attempts",
+  "negative_exit_code": 1,
+  "negative_raw_tail": "shard6 2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae clean\nTraceback (most recent call last):\n  File \"<stdin>\", line 16, in <module>\nAssertionError",
+  "diagnosis": "Initial preflight read source manifest from root normal clone working tree, whose clean committed HEAD was cc1550f14d6f9b4dae377d925f78f9150feef642 and intentionally still had prior manifest. Root had fetched 2a9aa89f without checking it out. No uncommitted edits.",
+  "correction": "Use normal inventory clone checked out clean at exact 2a9aa89f to read candidate manifest and assets. Candidate manifest verified 7d0ff8316b243d2d0b5eacd64909c94fe94f64613c65857b44e315844127bea2 with 1706 files before prepare.",
+  "test_attempts_affected": 0,
+  "retry_of_suite": false,
+  "recorded_epoch": 1792061741.5042722
+}

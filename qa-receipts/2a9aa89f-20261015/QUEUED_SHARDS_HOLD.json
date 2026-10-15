@@ -1,0 +1,17 @@
+{
+  "candidate": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "scheduler_pid": 872185,
+  "signal": "SIGSTOP scheduler parent only; running child shards 1-3 continue unchanged",
+  "root_instruction": "Hold queued 4-6 pending quick profile diagnosis. Preserve running 1-3 unchanged.",
+  "queued_shards": [
+    4,
+    5,
+    6
+  ],
+  "running_shards": [
+    1,
+    2,
+    3
+  ],
+  "held_epoch": 1792061840.1271727
+}
