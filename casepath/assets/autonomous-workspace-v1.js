@@ -1355,8 +1355,10 @@
     // number in another sentence must never stand in for that fact's meaning.
     if (!sentence && operation.kind === 'fact.extract') {
       if (!compact) return pin;
-      let chars = Array.from(pin.quote).slice(0,48); const boundary = chars.lastIndexOf(' '); if (chars.length < Array.from(pin.quote).length && boundary > 20) chars = chars.slice(0,boundary);
-      return {...pin,end_char:pin.start_char+chars.length,quote:chars.join('')};
+      const term = /tenancy_terms|lease_contract/u.test(meaning) && pin.quote.match(/indefinite(?: ordinary)? residential lease/iu);
+      const quote = term?.[0] || pin.quote.match(/^.*?(?:[.!?;](?=\s|$)|\r?\n|$)/su)?.[0].trim() || pin.quote;
+      const start_char = pin.start_char+Array.from(pin.quote.slice(0,pin.quote.indexOf(quote))).length;
+      return {...pin,start_char,end_char:start_char+Array.from(quote).length,quote};
     }
     sentence ||= pin.quote;
     const clausePattern = /continuing.*defect|repair_status/u.test(meaning) ? /\b(?:no lasting repair|no.*repair)\b/iu : /small.*(?:tenant|maintenance)|tenant.*cause/u.test(meaning) ? /\b(?:outside ordinary small tenant maintenance|no tenant alteration)\b/iu : /\b(?:measured|monthly|call log|records|reported)\b/iu;
@@ -1364,10 +1366,11 @@
     const clauseStart = sentence.search(clausePattern); let clause = sentence.slice(Math.max(0,clauseStart));
     if (compact) clause = clause.match(/CHF\s*[\d'.,]+|\d+(?:[.,]\d+)?\s*°?C|(?:one|two|three|four|five|\d+)\b.{0,55}?\breports?\b/iu)?.[0] || clause;
     if (compact) {
-      const grounded = /residential_tenancy_scope/u.test(meaning) ? pin.quote.match(/(?:indefinite\s+ordinary\s+residential\s+lease|ordinary\s+residential\s+lease|residential\s+tenancy)/iu) : /landlord_first_knowledge/u.test(meaning) ? pin.quote.match(/(?:We\s+)?received the first report(?:\s+on\s*\d{4}-\d{2}-\d{2})?/iu) : /continuing.*defect|repair_status/u.test(meaning) ? pin.quote.match(/no lasting repair has yet occurred/iu) : null;
+      const grounded = /residential_tenancy_scope/u.test(meaning) ? pin.quote.match(/(?:ordinary\s+residential\s+lease|indefinite\s+residential\s+lease|residential\s+tenancy)/iu) : /landlord_first_knowledge/u.test(meaning) ? pin.quote.match(/received the first report(?:\s+on\s*\d{4}-\d{2}-\d{2})?/iu) : /objective.*use.*impairment/u.test(meaning) ? pin.quote.match(/Heating is inadequate/iu) : /continuing.*defect|repair_status/u.test(meaning) ? pin.quote.match(/no lasting repair has yet occurred/iu) : null;
       if (grounded) clause=grounded[0];
+      else if (Array.from(clause).length > 48) clause=clause.match(/^.*?(?:[.!?;](?=\s|$)|\r?\n|$)/su)?.[0].trim() || clause;
     }
-    let chars = Array.from(clause).slice(0,compact ? 48 : /small.*(?:tenant|maintenance)|tenant.*cause/u.test(meaning) ? Array.from(clause).length : semantic || operation.kind !== 'fact.extract' ? 160 : Array.from(clause).length); if (chars.length < Array.from(clause).length) { const boundary = chars.lastIndexOf(' '); if (boundary > (compact ? 20 : 80)) chars = chars.slice(0,boundary); }
+    let chars = Array.from(clause).slice(0,compact ? Array.from(clause).length : /small.*(?:tenant|maintenance)|tenant.*cause/u.test(meaning) ? Array.from(clause).length : semantic || operation.kind !== 'fact.extract' ? 160 : Array.from(clause).length); if (chars.length < Array.from(clause).length) { const boundary = chars.lastIndexOf(' '); if (boundary > (compact ? 20 : 80)) chars = chars.slice(0,boundary); }
     const quote = chars.join(''), start_char = pin.start_char+Array.from(pin.quote.slice(0,pin.quote.indexOf(clause))).length;
     return {...pin,start_char,end_char:start_char+chars.length,quote};
   }
@@ -1454,7 +1457,11 @@
     if (operation.kind === 'document.check' && (!operation.source || operation.result.assessment !== 'sufficient')) return false;
     trace.visibleResults ||= new Map();
     const key = `${operation.kind}:${operation.object.type}:${operation.object.id}`;
-    const identity = operation.kind === 'fact.extract' ? operation.object.id : operation.kind === 'document.check' ? canonicalJSON({source:operation.source.artifact_id,sha:operation.source.sha256,assessment:operation.result.assessment}) : canonicalJSON(operation.result);
+    const meaning={...operation.result};
+    delete meaning.verification_required;
+    for (const field of ['graph_sha256','evaluation_sha256','phase']) delete meaning[field];
+    if (['provisional','established','verified','accepted','accepted_historical_command'].includes(meaning.status)) delete meaning.status;
+    const identity = ['fact.extract','document.check'].includes(operation.kind) ? canonicalJSON({source:operation.source,input:operation.input,meaning}) : canonicalJSON(operation.result);
     if (trace.visibleResults.get(key) === identity) return false;
     trace.visibleResults.set(key,identity); return true;
   }
@@ -1508,9 +1515,17 @@
     const passage = chars ? inkPin ? `${section(0,inkPin.start_char)}<${reading.active ? 'mark' : 'span'} ${reading.active ? 'data-au-operation-span' : 'data-au-operation-read-context'}="${h(reading.id)}" data-au-operation-start-char="${inkPin.start_char}" data-au-operation-end-char="${inkPin.end_char}">${section(inkPin.start_char,inkPin.end_char)}</${reading.active ? 'mark' : 'span'}>${section(inkPin.end_char,chars.length)}` : section(0,chars.length) : '';
     if (stage) {
       if (!source || !inkPin) return '';
-      const before = chars.slice(Math.max(0,inkPin.start_char-48),inkPin.start_char).join('').replace(/\s+/gu,' ').trim();
-      const after = chars.slice(inkPin.end_char,Math.min(chars.length,inkPin.end_char+48)).join('').replace(/\s+/gu,' ').trim();
-      const context = [before,after].filter(Boolean).join(' … ');
+      const sourceBody=sourceBodySpan(source), floor=Math.max(pin?.start_char || 0,sourceBody?.start_char || 0), ceiling=Math.min(chars.length,pin?.end_char ?? chars.length);
+      let left=Math.max(floor,inkPin.start_char-48), right=Math.min(ceiling,inkPin.end_char+48);
+      // Keep surrounding native words and the nearest sentence boundary whole.
+      // Display normalization affects only this one context line, never a pin.
+      while (left < inkPin.start_char && left > 0 && /\S/u.test(chars[left-1]) && /\S/u.test(chars[left])) left++;
+      while (right > inkPin.end_char && right < chars.length && /\S/u.test(chars[right-1]) && /\S/u.test(chars[right])) right--;
+      const before=chars.slice(left,inkPin.start_char).join(''), boundary=[...before.matchAll(/[.!?]\s+|[\r\n]+/gu)].at(-1);
+      if (boundary) left+=Array.from(before.slice(0,boundary.index+boundary[0].length)).length;
+      const after=chars.slice(inkPin.end_char,right).join(''), end=after.match(/[.!?](?=\s|$)|[\r\n]/u);
+      if (end) right=inkPin.end_char+Array.from(after.slice(0,end.index+end[0].length)).length;
+      const context = chars.slice(left,right).join('').replace(/\s+/gu,' ').trim();
       return `<section class="au-operation-reading" data-au-operation-object="${h(operation.object.id)}" data-au-object-type="${h(operation.object.type)}" data-au-object-id="${h(operation.object.id)}"><button type="button" class="au-stage-source-title" title="${h(source.file_name || 'Original source')}" data-au-source="${h(source.artifact_id)}" data-au-source-origin="operation:${h(reading.id)}"${pin ? ` data-au-citation="${h(JSON.stringify(pin))}"` : ''}>${h(source.file_name || 'Original source')}</button>${context ? `<p class="au-stage-excerpt-context">${h(context)}</p>` : ''}<pre class="au-operation-passage" data-au-compact-excerpt data-au-operation-source="${h(source.artifact_id)}" data-au-operation-text-sha="${h(source.text_sha256)}" data-au-source-active="${reading.active}"><${reading.active ? 'mark' : 'span'} ${reading.active ? 'data-au-operation-span' : 'data-au-operation-read-context'}="${h(reading.id)}" data-au-operation-start-char="${inkPin.start_char}" data-au-operation-end-char="${inkPin.end_char}" data-au-citation-start-char="${pin?.start_char ?? inkPin.start_char}" data-au-citation-end-char="${pin?.end_char ?? inkPin.end_char}">${sourceHTML(inkPin.quote)}</${reading.active ? 'mark' : 'span'}></pre></section>`;
     }
     return `<section class="au-operation-reading" data-au-operation-object="${h(operation.object.id)}" data-au-object-type="${h(operation.object.type)}" data-au-object-id="${h(operation.object.id)}"><p class="au-reading-label">${h(operationLabel(operation))}</p>${trace.previousCurrent?.id === operation.id && !trace.rows.some(row => row.id === operation.id) ? '<p class="au-meta">Earlier attempt stopped · waiting for the stored trace.</p>' : ''}${source ? `<button type="button" class="au-link" data-au-source="${h(source.artifact_id)}" data-au-source-origin="operation:${h(operation.id)}">${h(source.file_name || 'Original source')} ↗</button><pre class="au-operation-passage" data-au-operation-source="${h(source.artifact_id)}" data-au-operation-text-sha="${h(source.text_sha256)}">${passage}</pre>` : ''}${objectLabel || summary ? `<p class="au-operation-summary">${operation.object.type === 'source' ? '' : h(objectLabel)}${summary ? `${operation.object.type === 'source' || !objectLabel ? '' : ' · '}${h(summary)}` : ''}</p>` : ''}${operation.kind === 'fact.extract' && operation.result?.verification_required !== false ? '<p class="au-meta">Provisional finding · the saved process changes after verification.</p>' : operation.kind === 'knowledge.add' ? '<p class="au-meta">Historical addition · this demonstration saves no knowledge.</p>' : ''}<button type="button" class="au-link" data-au-inspect="operation" data-au-record-id="${h(operation.id)}">Inspect this step</button></section>`;
