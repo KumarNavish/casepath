@@ -1,26 +1,27 @@
 {
-  "source_commit": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
-  "capture_sha256": "73ab7b172a56b3c1c100005f940021cd928a6b889490fcfcdd5692bfc92a4393",
-  "archive_sha256": "4da8ab534cf560818e0d707083c2cb65a02d7c257de67e8dc438d4f88f3eaeea",
-  "archive_bytes": 30007711,
+  "source_commit": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "capture_sha256": "a1d7133452f361cd0ca459cc1c3315809b9b9724edf3328234857c5575021793",
+  "archive_sha256": "c2b8c023529a92f60afe774931398edfa472c09b18911127a91a5be5d528c27c",
+  "archive_bytes": 30972983,
   "parts": [
     {
       "name": "capture.part-00",
-      "bytes": 30007711,
-      "sha256": "4da8ab534cf560818e0d707083c2cb65a02d7c257de67e8dc438d4f88f3eaeea"
+      "bytes": 30972983,
+      "sha256": "c2b8c023529a92f60afe774931398edfa472c09b18911127a91a5be5d528c27c"
     }
   ],
-  "frame_count": 418,
-  "files": 420,
+  "frame_count": 419,
+  "files": 422,
   "public_ui_only": true,
   "encoding_requested": {
-    "duration_seconds": 50,
+    "duration_seconds": 45,
     "max_seconds": 60,
     "resolution": [
       1920,
       1080
     ],
     "captions_px": 42,
-    "active_zoom_min": 1.4
+    "active_zoom_min": 1.4,
+    "active_zoom_target": 2
   }
 }
