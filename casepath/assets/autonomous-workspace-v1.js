@@ -1401,8 +1401,7 @@
       const check = !requirement.planned && observed?.checks.get(type);
       const obligation = list(state.obligations).find(row => row.document_type === type);
       const citation = check?.source || (!trace && !requirement.planned ? list(obligation?.required_fact_ids).flatMap(id => citationRows(list(state.facts).find(row => row.fact_id === id)))[0] : null);
-      const acceptedCheck = check?.result.status === 'accepted_historical_command' && check.input?.independently_verified === true && check.input.route_activation === 'true';
-      const checked = !requirement.planned && (trace ? Boolean(check) && (acceptedCheck || doc?.review_state === 'sufficient') : doc?.review_state === 'sufficient');
+      const checked = !requirement.planned && doc?.review_state === 'sufficient' && (!trace || Boolean(check));
       const source = checked && citation && (trace?.sources.get(citation.artifact_id) || list(state.acquired_sources).find(row => row.artifact_id === citation.artifact_id));
       const preview = citation && stageFactSpan(check || {source:citation,object:{id:type}},true);
       return `<div class="au-stage-slot" data-au-document="${h(type)}" data-au-stage-document="${h(type)}" data-au-document-active="${!requirement.planned}" data-au-document-planned="${Boolean(requirement.planned)}" data-au-document-checked="${Boolean(source)}" data-au-document-focused="${trace?.current?.object.id === type || trace?.current?.object.id === `fact:${type}`}"${requirement.id ? ` data-au-working-document="${h(type)}" data-au-operation-id="${h(requirement.id)}" data-au-working-graph-sha="${h(requirement.result.graph_sha256)}" data-au-working-evaluation-sha="${h(requirement.result.evaluation_sha256)}"` : ''}><span>${h(label)}</span><div class="au-stage-landing">${source ? `<button type="button" class="au-stage-thumbnail" data-au-source="${h(source.artifact_id)}" data-au-source-origin="${check ? `operation:${h(check.id)}` : `requirement:${h(requirementIdentity(obligation))}`}" data-au-citation="${h(JSON.stringify(citation))}"${check ? ` data-au-check-operation="${h(check.id)}"` : ''} aria-label="${h(source.file_name || sourceLabel(state,source.artifact_id))} · Source checked" title="${h(source.file_name || sourceLabel(state,source.artifact_id))}"><span class="au-stage-source-name">${h(operationSourceTitle(source))}</span><span class="au-stage-paper" aria-hidden="true">${h(preview.quote)}</span><span class="au-stage-source-check" aria-label="Source checked">✓</span></button>` : ''}</div></div>`;
@@ -2639,7 +2638,7 @@
       const origin = local(rect.left,clip ? Math.max(clip.top+6,Math.min(rect.top,clip.bottom-24)) : rect.top);
       const canDock = reading?.active && dock && dockRect && node && factTokenOperation !== operation.id && (
         operation.kind === 'fact.extract' ||
-        operation.kind === 'document.check' && operation.result.assessment === 'sufficient');
+        operation.kind === 'document.check' && operation.result.assessment === 'sufficient' && list(current.evaluation?.documents).some(row => row.document_type === operation.object.id && row.review_state === 'sufficient'));
       const transfer = () => {
         if (!canDock || operationTrace?.current !== operation || doc.hidden || inspectionHold || reduced?.matches || !dock.isConnected) { complete(); return; }
         factTokenOperation = operation.id;
