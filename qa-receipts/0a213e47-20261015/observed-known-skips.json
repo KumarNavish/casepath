@@ -1,0 +1,82 @@
+[
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows",
+    "when": "call",
+    "outcome": "skipped",
+    "duration": 0.000156151014380157,
+    "utc_epoch": 1792086724.7834685,
+    "skip_reason": "('/workspace/casepath-release-ae0-shard3/casepath-api/tests/test_document_lifecycle_shadow_v1.py', 605, 'Skipped: frozen independent-transition packet is not available')"
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality",
+    "when": "setup",
+    "outcome": "skipped",
+    "duration": 0.00020139699336141348,
+    "utc_epoch": 1792087427.1148806,
+    "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 457, 'Skipped: saved native source-binding run is unavailable')"
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected",
+    "when": "setup",
+    "outcome": "skipped",
+    "duration": 8.04889714345336e-05,
+    "utc_epoch": 1792087427.115497,
+    "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 548, 'Skipped: saved native source-binding run is unavailable')"
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected",
+    "when": "setup",
+    "outcome": "skipped",
+    "duration": 6.897095590829849e-05,
+    "utc_epoch": 1792087427.1159978,
+    "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 559, 'Skipped: saved native source-binding run is unavailable')"
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text",
+    "when": "setup",
+    "outcome": "skipped",
+    "duration": 6.651796866208315e-05,
+    "utc_epoch": 1792087427.1165173,
+    "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 579, 'Skipped: saved native source-binding run is unavailable')"
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected",
+    "when": "setup",
+    "outcome": "skipped",
+    "duration": 0.0001349290832877159,
+    "utc_epoch": 1792087427.1171992,
+    "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 592, 'Skipped: saved native source-binding run is unavailable')"
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected",
+    "when": "setup",
+    "outcome": "skipped",
+    "duration": 6.978306919336319e-05,
+    "utc_epoch": 1792087427.117706,
+    "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 610, 'Skipped: saved native source-binding run is unavailable')"
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected",
+    "when": "setup",
+    "outcome": "skipped",
+    "duration": 7.266702596098185e-05,
+    "utc_epoch": 1792087427.118232,
+    "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 636, 'Skipped: saved native source-binding run is unavailable')"
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete",
+    "when": "setup",
+    "outcome": "skipped",
+    "duration": 6.27830158919096e-05,
+    "utc_epoch": 1792087427.118692,
+    "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 646, 'Skipped: saved native source-binding run is unavailable')"
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request",
+    "when": "setup",
+    "outcome": "skipped",
+    "duration": 9.006308391690254e-05,
+    "utc_epoch": 1792087427.1191692,
+    "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 696, 'Skipped: saved native source-binding run is unavailable')"
+  }
+]

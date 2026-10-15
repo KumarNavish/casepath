@@ -1,0 +1,141 @@
+{
+  "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "manifest_sha256": "8261e891c9403d486bdb60d1abe485ae56a6b6e556bb9b3125a3702d76e72331",
+  "reviewed_at_utc": "2026-10-15T18:06:07.879409+00:00",
+  "verdict": "PASS: raw Cloud execution reconciles exactly; exact-candidate Mac execution is owner-attested with raw reconciliation external.",
+  "full_inventory": 2613,
+  "cloud_assigned": 2486,
+  "mac_assigned": 127,
+  "assigned_collected_executed_junit_cloud_sets_identical": true,
+  "no_overlaps_gaps_removed_ids_or_unexpected_deselection": true,
+  "new_transport_ids": 42,
+  "cloud_passed": 2476,
+  "cloud_known_skipped": 10,
+  "cloud_failed": 0,
+  "known_skips_exact_ids_phases_files_lines_reasons_and_source_hashes": true,
+  "raw_phase_rows": 7449,
+  "raw_id_phase_pairs_unique": true,
+  "selected_attempts_per_shard": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "automatic_retries_or_rechecks": 0,
+  "max_heavy_active": 3,
+  "shards": [
+    {
+      "shard": 1,
+      "assigned": 9,
+      "raw_phase_rows": 27,
+      "passed": 9,
+      "skipped": 0,
+      "runner_exit": 0,
+      "attempts": 1,
+      "runner_seconds": 738.05526471138
+    },
+    {
+      "shard": 2,
+      "assigned": 421,
+      "raw_phase_rows": 1263,
+      "passed": 421,
+      "skipped": 0,
+      "runner_exit": 0,
+      "attempts": 1,
+      "runner_seconds": 597.005882024765
+    },
+    {
+      "shard": 3,
+      "assigned": 643,
+      "raw_phase_rows": 1929,
+      "passed": 642,
+      "skipped": 1,
+      "runner_exit": 0,
+      "attempts": 1,
+      "runner_seconds": 574.8207266330719
+    },
+    {
+      "shard": 4,
+      "assigned": 391,
+      "raw_phase_rows": 1173,
+      "passed": 391,
+      "skipped": 0,
+      "runner_exit": 0,
+      "attempts": 1,
+      "runner_seconds": 549.005738735199
+    },
+    {
+      "shard": 5,
+      "assigned": 346,
+      "raw_phase_rows": 1038,
+      "passed": 346,
+      "skipped": 0,
+      "runner_exit": 0,
+      "attempts": 1,
+      "runner_seconds": 555.0994162559509
+    },
+    {
+      "shard": 6,
+      "assigned": 676,
+      "raw_phase_rows": 2019,
+      "passed": 667,
+      "skipped": 9,
+      "runner_exit": 0,
+      "attempts": 1,
+      "runner_seconds": 537.6459970474243
+    }
+  ],
+  "all_7_source_capsule_pairs_unchanged": true,
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "source_capsule_receipt_sha256": "5f84d938915129d116943bf402ad966deee447064c70597983013ea71e918041",
+  "full_sorted_ids_sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+  "cloud_sorted_ids_sha256": "577259f948c49fca012b47352c9d18718f8b94244026b0f8481b498a05cccbf3",
+  "mac_sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "mac_execution": {
+    "status": "OWNER_ATTESTED",
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "raw_ids_phases_or_junit_inspected_in_cloud": false,
+    "raw_id_reconciliation": "Mac owner will independently reconcile after Cloud evidence handoff"
+  },
+  "combined_passed_with_mac_attestation": 2603,
+  "full_raw_id_audit_complete_in_cloud": false,
+  "metadata_classification": {
+    "postflight_finalizer": "Exactly one authorized metadata-only save call added; reconstructed prior hash matches snapshot, execution helper hashes unchanged, finalizer executed once with unchanged recorded hash and exit0.",
+    "finalizer_sha256": "301d937bada069c323ab3ae529bf4f55cfb4e9906926c17ab1ac28d548bbe462",
+    "observer_clock": "40 setup/call timestamps across20 existing tests use fixture clocks1002.0/1000.5. Exact same ID/phase/clock signatures occur in prior gate; these timestamps are not wall-clock chronology. Raw rows remain unchanged.",
+    "evidence": [
+      "review/metadata-diagnosis.json",
+      "review/shard4-wall-clock-outliers.json",
+      "review/postflight-qa-delta.patch",
+      "coordinator/finalization-command.json"
+    ],
+    "negative_audit_outputs_retained": [
+      "inventory-initial-harness-schema.json",
+      "inventory-initial-harness-schema.log",
+      "shard3-initial-junit-schema.json",
+      "shard3-initial-junit-schema.log",
+      "shard4-initial-metadata-findings.json",
+      "shard4-initial-metadata-findings.log",
+      "shard5-initial-metadata-findings.json",
+      "shard5-initial-metadata-findings.log"
+    ],
+    "archive_exact_diff_copy": "review/postflight-qa-delta.txt",
+    "archive_diff_sha256": "64decc1a55e5483361f243c93e8fe4ce7dffb9dc429c493fec94e882c081218e"
+  },
+  "audit_evidence": [
+    "review/terminal-audit.json",
+    "review/terminal-audit.log",
+    "review/audit_gate.py",
+    "review/audit-command-record.json"
+  ],
+  "reviewer_tests_dispatched": false,
+  "reviewer_source_or_runtime_mutations": false
+}

@@ -1,0 +1,30 @@
+{
+  "postflight_qa_delta": {
+    "before_sha256": "9b02c6925a828c503ea71443cf22ac46117a159fe815d0fbe9a3cd6d6735f61b",
+    "current_sha256": "301d937bada069c323ab3ae529bf4f55cfb4e9906926c17ab1ac28d548bbe462",
+    "exact_change": "one appended save call writes hashes of QA harness/coordinator scripts to harness-provenance-final.json; no dispatcher/observer/source/runtime/test command change",
+    "reconstructed_before_hash_matches_original_snapshot": true,
+    "patch": "review/postflight-qa-delta.patch"
+  },
+  "observer_timestamp_limitation": {
+    "rows": 40,
+    "test_ids": 20,
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py",
+    "fixture_line": 33,
+    "fixture_clock_advanced_line": 49,
+    "fixture_active_lease_clock_line": 87,
+    "fixture_clock_source_sha256": "872ed6bb420a50f7f7be0d0b5336866315644951bc5853f778cbdf5a024e6d9f",
+    "fixture_source_matches_prior_gate": true,
+    "observer_line": 19,
+    "observer_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "observer_identical_to_prior": true,
+    "actual_clock_values": {
+      "1002.0": 38,
+      "1000.5": 2
+    },
+    "same_exact_id_phase_clock_outliers_in_prior_gate": true,
+    "prior_shard": "5",
+    "raw_outlier_evidence": "review/shard4-wall-clock-outliers.json",
+    "interpretation": "Existing test fixture patches shared time.time used by observer; these 40 row timestamps are fixture-clock values, not wall-clock evidence. Raw durations, phase uniqueness, ID/JUnit/outcome reconciliation and runner process/source-proof timestamps remain separately available."
+  }
+}

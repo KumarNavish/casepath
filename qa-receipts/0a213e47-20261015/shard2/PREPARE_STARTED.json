@@ -1,0 +1,46 @@
+{
+  "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "cwd": "/workspace/casepath-release-ae0-shard2",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/oh2",
+    "TMPDIR": "/workspace/ot2",
+    "TMP": "/workspace/ot2",
+    "TEMP": "/workspace/ot2",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-transport-gate-0a213e47-20261015/shard2/pycache",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-transport-gate-0a213e47-20261015/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "UV_PYTHON_INSTALL_DIR": "/workspace/.local/share/uv/python"
+  },
+  "started_epoch": 1792086041.8497221,
+  "before_head": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "before_status": "",
+  "manifest_sha256": "8261e891c9403d486bdb60d1abe485ae56a6b6e556bb9b3125a3702d76e72331",
+  "canonical_fetched_head": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "canonical_fetch_source": "/workspace/casepath-stream-transport-20261015",
+  "canonical_local_fetch_log": "/workspace/casepath-transport-gate-0a213e47-20261015/shard2/fetch.log",
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "internal_launcher_env_contract": "Exact source preserved: stdlib env-i probes omit temp aliases; locked/product env-i uses controlled runtime TMPDIR only."
+}

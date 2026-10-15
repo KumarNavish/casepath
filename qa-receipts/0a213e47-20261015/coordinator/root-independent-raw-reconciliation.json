@@ -1,0 +1,74 @@
+{
+  "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "full_inventory": 2613,
+  "cloud_assigned": 2486,
+  "cloud_passed": 2476,
+  "cloud_known_skipped": 10,
+  "cloud_failed": 0,
+  "raw_phase_rows": 7449,
+  "peak_active_test_processes": 3,
+  "no_gaps_overlap_or_deselection": true,
+  "selected_attempts": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "shards": [
+    {
+      "shard": 1,
+      "assigned": 9,
+      "passed": 9,
+      "known_skipped": 0,
+      "raw_phases": 27,
+      "seconds": 738.05526471138
+    },
+    {
+      "shard": 2,
+      "assigned": 421,
+      "passed": 421,
+      "known_skipped": 0,
+      "raw_phases": 1263,
+      "seconds": 597.005882024765
+    },
+    {
+      "shard": 3,
+      "assigned": 643,
+      "passed": 642,
+      "known_skipped": 1,
+      "raw_phases": 1929,
+      "seconds": 574.8207266330719
+    },
+    {
+      "shard": 4,
+      "assigned": 391,
+      "passed": 391,
+      "known_skipped": 0,
+      "raw_phases": 1173,
+      "seconds": 549.005738735199
+    },
+    {
+      "shard": 5,
+      "assigned": 346,
+      "passed": 346,
+      "known_skipped": 0,
+      "raw_phases": 1038,
+      "seconds": 555.0994162559509
+    },
+    {
+      "shard": 6,
+      "assigned": 676,
+      "passed": 667,
+      "known_skipped": 9,
+      "raw_phases": 2019,
+      "seconds": 537.6459970474243
+    }
+  ],
+  "source_capsule_before_after_unchanged": true,
+  "mac_owner_attested_passed": 127,
+  "combined_passed_with_mac_attestation": 2603,
+  "raw_mac_receipts_not_inspected_in_cloud": true,
+  "clock_and_qa_metadata_exceptions": "See review/metadata-diagnosis.json; original raw records preserved."
+}

@@ -1,0 +1,287 @@
+{
+  "start": 1792086727.9646063,
+  "finish": 1792087276.970345,
+  "outside_count": 40,
+  "rows": [
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_commits_exact_saved_proposal_without_dispatch_or_claim_change",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.09026075899600983,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_commits_exact_saved_proposal_without_dispatch_or_claim_change",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.00957884092349559,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[active_lease]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07361865101847798,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[active_lease]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0014903700212016702,
+      "utc_epoch": 1000.5
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_node]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07358952902723104,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_node]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0024121709866449237,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_event]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.08566573506686836,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_event]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0023418980417773128,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_state]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07213774404954165,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_state]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.002478718990460038,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[source_changed]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07027919101528823,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[source_changed]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0023757669841870666,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[claim_changed]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07223302498459816,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[claim_changed]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0023306809598580003,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[cross_claim]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07768442295491695,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[cross_claim]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0018297909991815686,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_recovery_projects_only_a_unique_hash_bound_local_node",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07835763704497367,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_recovery_projects_only_a_unique_hash_bound_local_node",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.000809825025498867,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_replay_does_not_accept_changed_handler_command",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.06811478501185775,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_replay_does_not_accept_changed_handler_command",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0070495279505848885,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[provider_event]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07719211699441075,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[provider_event]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.010614239959977567,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[pending_authority]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.09022148104850203,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[pending_authority]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0035570909967646003,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[pending_unknown]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07338741899002343,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[pending_unknown]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0036849089665338397,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[multiple_pending]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.075386339914985,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[multiple_pending]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.003510653041303158,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[cancelled]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07178138406015933,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[cancelled]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0031927729723975062,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[scheduled_here]",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07859405095223337,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[scheduled_here]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.0029311280231922865,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rechecks_lease_at_commit",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07641068298835307,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rechecks_lease_at_commit",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.004102285951375961,
+      "utc_epoch": 1000.5
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rechecks_authority_at_commit",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07736956793814898,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rechecks_authority_at_commit",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.004646589979529381,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_two_service_instances_reconcile_one_call_only_once",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07551218697335571,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_two_service_instances_reconcile_one_call_only_once",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.015744242002256215,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_can_read_back_its_receipt_after_store_restart",
+      "when": "setup",
+      "outcome": "passed",
+      "duration": 0.07876964600291103,
+      "utc_epoch": 1002.0
+    },
+    {
+      "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_can_read_back_its_receipt_after_store_restart",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.011411326006054878,
+      "utc_epoch": 1002.0
+    }
+  ]
+}

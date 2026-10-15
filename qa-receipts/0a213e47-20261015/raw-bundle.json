@@ -1,0 +1,12 @@
+{
+  "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "archive": "/workspace/casepath-transport-gate-0a213e47-20261015-raw-evidence.tar.gz",
+  "archive_sha256": "3e99fc5b6eeab5aa02fda1b254c47861182f27464b012512100a1885399086b8",
+  "archive_size_bytes": 1435979,
+  "file_count_excluding_checksum_manifest": 256,
+  "checksum_manifest": "/workspace/casepath-transport-gate-0a213e47-20261015/raw-evidence-files-SHA256SUMS.txt",
+  "checksum_manifest_sha256": "80a3d41fab4c9003f3a3347288fa7db7ba07e0fba58adc83a39d002862740f3b",
+  "created_epoch": 1792087639.954649,
+  "includes": "every raw collection/attempt/phase/JUnit/result/prepare/source proof, exact assignment IDs, source and artifact manifests, authorization, resource and cleanup receipts, QA scripts, coordinator and independent review evidence available at bundle creation",
+  "excludes": "dependency caches, pycache, temporary passing fixtures and runtime DBs; original evidence and failed fixtures remain preserved on host; Mac raw phase/JUnit receipts absent in Cloud"
+}

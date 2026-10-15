@@ -1,0 +1,8 @@
+--- finalize.py@audit-snapshot
++++ finalize.py@current
+@@ -77,4 +77,5 @@
+ save(R/'proof-disjoint-union-after.json',proof)
+ aggregate={**reconciled,'manifest_sha256':MANIFEST,'full_inventory_ids_sha256':proof['full_ids_sha256'],'cloud_ids_sha256':proof['cloud_ids_sha256'],'mac_ids_sha256':proof['mac_ids_sha256'],'source_artifact_static_counts':[1706,25,37],'all_seven_capsules_verified_before_after':True,'capsule_receipt_file_sha256':after[0]['capsule_receipt_file_sha256'],'headroom_gib_after':resource['free_bytes']/1024**3,'max_heavy_active_observed':proof['max_heavy_active_observed'],'raw_phase_rows':len(phases),'artifact_manifest_sha256':digest(R/'artifact-manifest.json'),'no_product_edits':True,'no_seal_deploy_provider_or_product_requests':True}
+ save(R/'aggregate.json',aggregate)
++save(R/'harness-provenance-final.json',[{'path':p.relative_to(R).as_posix(),'sha256':digest(p)} for p in sorted([*R.joinpath('harness').glob('*.py'),R/'coordinator/coordinator-reconcile.py'])])
+ print(json.dumps({k:v for k,v in aggregate.items() if k not in ['known_skips','shards']}),flush=True)

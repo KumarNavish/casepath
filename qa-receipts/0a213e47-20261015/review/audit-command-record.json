@@ -1,0 +1,118 @@
+{
+  "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "interpreter": "/usr/bin/python3 -I",
+  "sterile_environment": {
+    "HOME": "/workspace/ot-review",
+    "PATH": "/usr/bin:/bin",
+    "TMPDIR": "/workspace/ot-review",
+    "TMP": "/workspace/ot-review",
+    "TEMP": "/workspace/ot-review",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "commands": [
+    {
+      "purpose": "inventory/map and unchanged known-skip audit",
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "/workspace/casepath-transport-gate-0a213e47-20261015/review/audit_gate.py"
+      ],
+      "log": "review/inventory-audit.log",
+      "exit_status": 0
+    },
+    {
+      "purpose": "all six terminal raw IDs, phases, JUnit, skips, attempts, environment isolation and seven capsule pairs",
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "/workspace/casepath-transport-gate-0a213e47-20261015/review/audit_gate.py",
+        "--terminal"
+      ],
+      "log": "review/terminal-audit.log",
+      "exit_status": 0
+    },
+    {
+      "purpose": "exported ID lists, actual finalizer hash/invocation, owner aggregate and compact independent receipt",
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "/workspace/casepath-transport-gate-0a213e47-20261015/review/finalize_review_receipt.py"
+      ],
+      "log": "review/finalize-review-receipt.log",
+      "exit_status": 0
+    }
+  ],
+  "initial_auditor_schema_adaptation": "Initial QA-only audit assumed every new ID started test_operation_transport_ and inventory/source-after was already present. Actual additions include two test_real_operation_transport_ IDs and owner generates inventory/source-after at terminal. Original negative QA outputs retained as inventory-initial-harness-schema.*; no test or product failure involved.",
+  "tests_dispatched_by_reviewer": false,
+  "source_or_runtime_changes_by_reviewer": false,
+  "final_terminal_auditor_sha256": "6314331f6bfc1e9dd16da437b81f3e37590705964b0d83557535f9ffbaa7d71a",
+  "staged_audit_commands": [
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "/workspace/casepath-transport-gate-0a213e47-20261015/review/audit_gate.py",
+        "--shard",
+        "3"
+      ],
+      "exit_status": 0,
+      "note": "Final staged pass"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "/workspace/casepath-transport-gate-0a213e47-20261015/review/audit_gate.py",
+        "--shard",
+        "2"
+      ],
+      "exit_status": 0,
+      "note": "Final staged pass"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "/workspace/casepath-transport-gate-0a213e47-20261015/review/audit_gate.py",
+        "--shard",
+        "1"
+      ],
+      "exit_status": 0,
+      "note": "Final staged pass"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "/workspace/casepath-transport-gate-0a213e47-20261015/review/audit_gate.py",
+        "--shard",
+        "4"
+      ],
+      "exit_status": 1,
+      "note": "Preserved metadata finding; explained by exact source-backed diagnosis and closed in global audit"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "/workspace/casepath-transport-gate-0a213e47-20261015/review/audit_gate.py",
+        "--shard",
+        "5"
+      ],
+      "exit_status": 1,
+      "note": "Preserved metadata finding; explained by exact source-backed diagnosis and closed in global audit"
+    }
+  ],
+  "preserved_negatives": [
+    "inventory-initial-harness-schema.json",
+    "inventory-initial-harness-schema.log",
+    "shard3-initial-junit-schema.json",
+    "shard3-initial-junit-schema.log",
+    "shard4-initial-metadata-findings.json",
+    "shard4-initial-metadata-findings.log",
+    "shard5-initial-metadata-findings.json",
+    "shard5-initial-metadata-findings.log"
+  ],
+  "metadata_diagnosis": "review/metadata-diagnosis.json",
+  "stage_schema_notes": "Initial staged auditor rejected blank JUnit classnames; unique exact names map those valid cases. Initial shard4/5 metadata findings are retained and explicitly classified in the final proof; raw test outputs were not edited."
+}

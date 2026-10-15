@@ -1,0 +1,22 @@
+{
+  "recorded_epoch": 1792087420.4926007,
+  "owner": "gate_0a213e47_owner",
+  "path": "harness/finalize.py",
+  "snapshot_sha256": "9b02c6925a828c503ea71443cf22ac46117a159fe815d0fbe9a3cd6d6735f61b",
+  "current_sha256": "301d937bada069c323ab3ae529bf4f55cfb4e9906926c17ab1ac28d548bbe462",
+  "exact_change": "Added one final save that computes final QA helper SHA256s into harness-provenance-final.json after aggregate; no other byte delta",
+  "purpose": "Earlier harness-provenance-final record predated status.py/bundle.py/finalize.py creation and would otherwise be stale",
+  "invocation_status": "Not executed yet; all-shard-terminal.json absent, prerequisite guards refuse finalization before all tests terminal",
+  "execution_harness_unchanged": [
+    "prepare_clones.py",
+    "run_shard.py",
+    "casepath_shard_observer.py",
+    "verify_prepared_capsules.py",
+    "dispatch.py",
+    "preflight_inventory.py"
+  ],
+  "affects_test_invocations_or_raw_outcomes": false,
+  "original_copy": "coordinator/finalize-original-before-provenance-save.py",
+  "exact_diff": "coordinator/finalizer-authorized-change.diff",
+  "preserve_original_audit_negatives": true
+}

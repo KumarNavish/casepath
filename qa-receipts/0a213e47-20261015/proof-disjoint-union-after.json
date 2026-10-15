@@ -1,0 +1,30 @@
+{
+  "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+  "full_inventory": 2613,
+  "cloud_assigned": 2486,
+  "cloud_raw_passed": 2476,
+  "cloud_known_skipped": 10,
+  "cloud_failed": 0,
+  "mac_partition": 127,
+  "mac_owner_attested_passed": 127,
+  "mac_raw_inspected_in_cloud": false,
+  "no_overlap_or_gaps": true,
+  "selected_collected_executed_junit_cloud_ids_identical": true,
+  "cloud_ids_sha256": "577259f948c49fca012b47352c9d18718f8b94244026b0f8481b498a05cccbf3",
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "full_ids_sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+  "all_7_source_capsules_unchanged": true,
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "all_attempts_first_only": true,
+  "max_heavy_active_observed": 3,
+  "resource_after": {
+    "epoch": 1792087469.9671776,
+    "free_bytes": 4200030208,
+    "tmp_free_bytes": 218374144,
+    "protected_server": "    PID    PPID COMMAND\n 595190  595187 python\n"
+  }
+}

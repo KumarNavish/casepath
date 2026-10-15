@@ -1,7 +1,33 @@
 {
   "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
-  "scope": "inventory and before-run source proofs only",
-  "full_suite_complete": false,
-  "cloud_status": "running; first three shards active, three queued",
-  "mac_status": "owner-attested127passed; raw Mac receipts remain on Mac"
+  "full_suite_complete": true,
+  "cloud": {
+    "assigned": 2486,
+    "passed": 2476,
+    "known_skips": 10,
+    "failed": 0,
+    "raw_phases": 7449,
+    "attempts": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "peak_active": 3
+  },
+  "full_inventory": 2613,
+  "source_capsule_pairs_unchanged": 7,
+  "mac_owner_attested": {
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "raw_receipts_remain_on_mac": true
+  },
+  "combined_with_mac_attestation": {
+    "passed": 2603,
+    "known_skips": 10
+  },
+  "negative_audits_and_metadata_diagnosis_retained": true
 }

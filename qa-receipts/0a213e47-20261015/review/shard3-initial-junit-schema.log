@@ -1,0 +1,1909 @@
+{
+  "stage": "shard3",
+  "audit_utc": "2026-10-15T17:52:56.133293+00:00",
+  "read_only_audit": true,
+  "tests_dispatched": false,
+  "source_or_runtime_mutated": false,
+  "inventory": {
+    "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+    "manifest_sha256": "8261e891c9403d486bdb60d1abe485ae56a6b6e556bb9b3125a3702d76e72331",
+    "full_inventory": 2613,
+    "full_sorted_ids_sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+    "cloud_assigned": 2486,
+    "cloud_sorted_ids_sha256": "577259f948c49fca012b47352c9d18718f8b94244026b0f8481b498a05cccbf3",
+    "mac_assigned": 127,
+    "mac_sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "mac_per_file": {
+      "casepath-api/tests/test_cli_v1.py": 69,
+      "casepath-api/tests/test_local_data_root.py": 52,
+      "casepath-api/tests/test_journal_corpus_restart.py": 6
+    },
+    "added_ids": [
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[deadline-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[deadline-identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[disconnect-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[disconnect-identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[error-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[error-identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_flushes_binding_then_batches_available_frames[gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_flushes_binding_then_batches_available_frames[identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_keeps_lookahead_charged_under_backpressure[gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_keeps_lookahead_charged_under_backpressure[identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[*;q=0, gzip;q=0.5-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[*;q=0-reject]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[*;q=1-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[GZip;Q=1-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[None-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[br, gzip;q=0.7, identity;q=0.3-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[br, identity;q=0-reject]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[encoding25-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[encoding26-reject]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[encoding27-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=.5-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0, *;q=1-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.0000-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.5, identity;q=0.2-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.5, identity;q=1-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.5-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1, gzip;q=0-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1, identity;q=1-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1.001-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1;other=x-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=2-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=wat-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=0-reject]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=0.1-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=invalid-reject]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_rejects_oversized_frame_without_emitting_its_bytes[gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_rejects_oversized_frame_without_emitting_its_bytes[identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_real_operation_transport_preserves_exact_ndjson_and_hashes_in_both_encodings[live]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_real_operation_transport_preserves_exact_ndjson_and_hashes_in_both_encodings[recorded]"
+    ],
+    "removed_ids": [],
+    "counts": {
+      "1": 9,
+      "2": 421,
+      "3": 643,
+      "4": 391,
+      "5": 346,
+      "6": 676
+    },
+    "predicted_phase_seconds": {
+      "1": 644.7654078457854,
+      "2": 489.1658810915542,
+      "3": 489.16573583887657,
+      "4": 489.1658745651948,
+      "5": 489.16557894781,
+      "6": 489.1659211528604
+    },
+    "known_skip_signatures": [
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows",
+        "when": "call",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v1.py",
+        "line": 605,
+        "reason": "Skipped: frozen independent-transition packet is not available"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 579,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 559,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 636,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 696,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 646,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 548,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 592,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 610,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 457,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      }
+    ],
+    "inventory_capsule_receipt_sha256": "5f84d938915129d116943bf402ad966deee447064c70597983013ea71e918041",
+    "mac_execution_status": "pending unless an exact current-candidate receipt is separately supplied"
+  },
+  "terminal_shard": {
+    "scope": "selected terminal shard raw evidence only",
+    "global_gate_closed": false,
+    "shards": [
+      {
+        "shard": 3,
+        "assigned": 643,
+        "raw_phase_rows": 1929,
+        "passed": 642,
+        "skipped": 1,
+        "runner_exit": 0,
+        "attempts": 1,
+        "runner_seconds": 574.8207266330719
+      }
+    ],
+    "source_capsule_receipt_sha256": "5f84d938915129d116943bf402ad966deee447064c70597983013ea71e918041"
+  },
+  "passed": false,
+  "errors": [
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_required_leakage_markers_are_detected[generated attachment-generated]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_required_leakage_markers_are_detected[fictional document-fictional]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_required_leakage_markers_are_detected[sample record-sample]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_required_leakage_markers_are_detected[dummy value-dummy]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_required_leakage_markers_are_detected[benchmark answer-benchmark]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_required_leakage_markers_are_detected[hidden labels-hidden_label]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_required_leakage_markers_are_detected[service@company.example-example_domain]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_required_leakage_markers_are_detected[CasePath demo-demo]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_release_contract_and_manifests_are_current",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_source_manifest_requires_exact_known_commit_static_identity",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_root_knowledge_transfer_is_inventoried_as_release_source",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_source_manifest_keeps_runtime_commit_outside_self_excluded_bytes",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_prepare_artifacts_keeps_sealed_source_manifest_immutable",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_browser_gate_pins_complete_runtime_acceptance_criteria",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_local_preflight_is_loopback_deterministic_and_zero_provider",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_candidate_source_identity_supports_manifest_closed_archives",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_all_local_browser_gates_bind_the_installed_runtime_identity",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_local_real_nemotron_acceptance_is_explicit_fresh_and_single_pass",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_sites_delivery_is_same_origin_and_streaming_proxy_safe",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_flagship_timing_gate_keeps_readable_holds_without_capping_provider_latency",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_every_observable_claim_artifact_is_model_visible_and_scanned",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_every_observable_claim_package_string_is_leakage_scanned",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_generated_artifact_timeline_and_metadata_are_temporally_coherent",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_archive_release_record_keeps_external_limits_explicit",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_later_scenario_precedes_release_and_has_no_stale_active_markers",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_model_truth_is_scoped_and_failed_attempt_history_is_not_accepted",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_passes_without_source_promotion",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_release_assertion_id_matches_backend_versioned_algorithm",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_forged_assertion_selection_receipt[forged_id-canonicalization\\\\.assertion_selections]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_forged_assertion_selection_receipt[missing_receipt-assertion_selections\\\\.fact_membership]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_forged_assertion_selection_receipt[duplicate_receipt-assertion_selections]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_forged_assertion_selection_receipt[controlling_fields-canonicalization\\\\.assertion_selections]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_forged_assertion_selection_receipt[noncontrolling_fields-canonicalization\\\\.assertion_selections]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_forged_assertion_selection_receipt[materialized_fields-canonicalization\\\\.assertion_selections]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_forged_assertion_selection_receipt[attribution-canonicalization\\\\.assertion_selections]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_forged_assertion_selection_receipt[fallback-canonicalization\\\\.assertion_selections]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_forged_assertion_selection_receipt[diagnostics-canonicalization\\\\.diagnostics\\\\.fact_membership]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_process_verifier_accepts_key_specific_conservative_route",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_process_verifier_rejects_contradictory_bounded_route",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_evidence_verifier_accepts_alternate_bounded_status",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_allows_alternate_bounded_evidence_end_to_end",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_evidence_verifier_rejects_contradictory_bounded_fields[artifact]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_evidence_verifier_rejects_contradictory_bounded_fields[status]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_evidence_verifier_rejects_contradictory_bounded_fields[branch]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_evidence_verifier_rejects_contradictory_bounded_fields[derived]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_whole_playbook_gate_keeps_four_exact_distinct_hash_domains",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_stale_top_level_accepted_siblings[understanding-run\\\\.understanding]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_stale_top_level_accepted_siblings[precedents-run\\\\.precedents]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_stale_top_level_accepted_siblings[precedent_ranking-run\\\\.precedent_ranking]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[bundle-whole_playbook_gate\\\\.output_artifact_hash]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[brief-whole_playbook_gate\\\\.final_brief_artifact_hash]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[report-whole_playbook_gate\\\\.verification_report_hash]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[gate_whole-whole_playbook_gate\\\\.verification_whole_playbook_hash]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[whole-result\\\\.verification\\\\.whole_playbook_hash]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[projection-whole_playbook_gate\\\\.output_projection_contract]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_requires_six_clean_model_calls[agent_outcome]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_requires_six_clean_model_calls[agent_rejection]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_requires_six_clean_model_calls[agent_fallback]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_requires_six_clean_model_calls[source_projection]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_requires_six_clean_model_calls[ledger_outcome]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_requires_visible_returned_action_replay_checks",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_enforces_claim_specific_checklist_order[flagship-run.json-DEF-027-E0-DEMO-result\\\\.checklist\\\\.items]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_enforces_claim_specific_checklist_order[later-baseline-run.json-DEMO-MOULD-002-learning\\\\.baseline\\\\.checklist\\\\.items]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_learning_snapshot[missing_field]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_learning_snapshot[current_node]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_learning_snapshot[edge_pair]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_self_consistent_semantic_fact_rebind",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_self_consistent_evidence_forgery[same_fact_source_swap]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_self_consistent_evidence_forgery[fact_unbound_capability]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_self_consistent_evidence_forgery[artifact_append]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_self_consistent_evidence_forgery[status_promotion]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_reciprocal_evidence_path[node_ids]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_reciprocal_evidence_path[current_path]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_self_consistent_law_registry_forgery[passage_hashes]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_self_consistent_law_registry_forgery[snapshot_scope]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_self_consistent_law_registry_forgery[node_join]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_visual_annotation[producer]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_visual_annotation[image_sha256]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_rehashed_precedent_ranking_forgery",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_learning_proof[replay_exact]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_learning_proof[check_status]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_learning_proof[check_order]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_learning_proof[before_hash]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_learning_proof[canonical_baseline]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_hash_binds_json_normalized_facts[label-FORGED LABEL]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_hash_binds_json_normalized_facts[explanation-FORGED EXPLANATION]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_hash_binds_json_normalized_facts[confidence-0.123456]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_runtime_canonical_facts_hash_restores_only_declared_float_fields",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_allows_integral_fact_float_round_trip",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_rehashed_memory_boundary_forgery[target]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_rehashed_memory_boundary_forgery[source_memory]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_rehashed_memory_boundary_forgery[before]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_result_and_boundary_forgery_not_in_event",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_duplicate_memory_application_event",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_required_now_reusable_authority_forgery",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_rehashed_non_replay_learning_change",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_self_consistent_learned_evidence_topology",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_specialist_hash",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_specialist_artifact",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_canonical_fact",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_orchestrator_unit",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unbound_plan_source_handoff",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_process_gate_input",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_inherited_process_field",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_evidence_fact_binding",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_evidence_source_ref",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_final_field[current_node_id-scope]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_final_field[next_action_node_id-scope]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_final_field[supporting_fact_ids-forged_value2]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_final_field[upstream_contribution_ids-forged_value3]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_final_field[audit_check_ids-forged_value4]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_field_unit",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forged_projection_lineage",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unbound_final_next_action",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_relabelled_runtime_roles[agent-Dynamic flagship agent orchestrator_plan role]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_relabelled_runtime_roles[gate-Dynamic flagship gate deterministic_process_gate\\\\.role]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_public_ledger_accepts_warm_shape_but_cold_artifact_rejects_it",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_forbidden_retained_run_field",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_allowlisted_ledger_field",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_nonexact_origin_usage_schema",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_successful_provider_provenance_accepts_exact_bounded_values[response_id-rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_successful_provider_provenance_accepts_exact_bounded_values[response_model-nvidia/nemotron-3-ultra-550b-a55b]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_successful_provider_provenance_accepts_exact_bounded_values[response_model-nvidia/nemotron-3-ultra-550b-a55b-20260604]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_successful_provider_provenance_accepts_exact_bounded_values[upstream_provider-PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_successful_provider_provenance_accepts_exact_bounded_values[finish_reason-tool_calls]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[response_id-sk-or-unit-test-placeholder]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[response_id-api_key_unit_test_placeholder]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[response_id-tenant-moisture-claim-42]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[response_id-rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[upstream_provider-landlord-claim]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[upstream_provider-PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[finish_reason-tenant stopped payment]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[response_model-nvidia/another-model]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_unsafe_ledger_only_provenance",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_valid_but_unpinned_upstream",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_public_ledger_accepts_bounded_unknown_cost_upstream_rejection",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_public_ledger_rejects_every_forged_summary_field",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_verify_the_atomic_artifact_pair",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_causal_evidence_paths_verify_exact_preflight_inventory",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_causal_evidence_paths_reject_invalid_file_records[duplicate]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_causal_evidence_paths_reject_invalid_file_records[zero_bytes]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_successful_dynamic_evidence_fixture_matches_production_bundle_shape",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_extra_manifest_file",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[deployment-identity.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[release-contract.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[readiness-receipt.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-run.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-model-ledger.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[flagship-run.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[flagship-cold-model-ledger.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[demo-review.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[post-review-run.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[later-baseline-run.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[later-after-memory-run.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[learning-proof.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[model-ledger.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[runtime-versions.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[flagship-cache-lineage.json]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_malformed_required_json",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_wrong_media_magic[01-start-desktop.png-is not PNG]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_evidence_paths_reject_wrong_media_magic[uninterrupted-focused-demo.webm-video is not WebM]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_extra_flagship_cold_row",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_allows_parallel_warm_completion_order_swap[permuted_surfaces0]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_allows_parallel_warm_completion_order_swap[permuted_surfaces1]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_allows_parallel_warm_completion_order_swap[permuted_surfaces2]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[cold_audit]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[warm_audit]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[cold_ledger]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[warm_ledger]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[cache_lineage]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[duplicate-warm_audit]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[duplicate-warm_ledger]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[duplicate-cache_lineage]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[missing-warm_audit]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[missing-warm_ledger]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[missing-cache_lineage]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[foreign-warm_audit]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[foreign-warm_ledger]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[foreign-cache_lineage]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_cold_warm_pair_rejects_cross_agent_lineage_bindings[audit_origin]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_cold_warm_pair_rejects_cross_agent_lineage_bindings[ledger_origin]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_cold_warm_pair_rejects_cross_agent_lineage_bindings[ledger_call]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_cold_warm_pair_rejects_changed_cached_artifact[input_artifact_hash-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_cold_warm_pair_rejects_changed_cached_artifact[output_artifact_hash-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_cold_warm_pair_rejects_changed_cached_artifact[accepted_ids-forged_value2]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_cache_lineage_tamper",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_thirteenth_final_ledger_row",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_later_model_activity[model_mode]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_later_model_activity[canonicalizer]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_later_model_activity[executed_dag]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_later_model_activity[model_event]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_requires_exact_retained_media_inventory",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_dynamic_runtime_acceptance_rejects_weak_or_unbound_proof",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_accepted_artifact_hash_matches_backend_and_rejects_floats",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_static_contract_rejects_an_embedded_runtime_verdict",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_agentic_runtime_contract_is_exact_and_tracing_is_disabled",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_provider_single_flight_release_contract_rejects_tampering[None]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_provider_single_flight_release_contract_rejects_tampering[0]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_provider_single_flight_release_contract_rejects_tampering[2]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_provider_single_flight_acceptance_criterion_rejects_tampering[None]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_provider_single_flight_acceptance_criterion_rejects_tampering[0]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_provider_single_flight_acceptance_criterion_rejects_tampering[2]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_flagship_only_model_acceptance_contract_rejects_tampering[model_acceptance_scope-all_journey_runs]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_flagship_only_model_acceptance_contract_rejects_tampering[learning_comparison_authority-model_dag]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_flagship_only_model_acceptance_contract_rejects_tampering[requires_learning_comparison_zero_model_activity-False]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_flagship_only_model_acceptance_contract_rejects_tampering[required_final_model_ledger_records-24]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_flagship_only_model_acceptance_contract_rejects_tampering[required_final_model_network_calls-12]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_flagship_only_model_acceptance_contract_rejects_tampering[required_final_cache_hits-12]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_render_uses_curated_frontend_and_model_aware_readiness_probe",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_definitive_qa_runs_zero_provider_browser_preflight_before_production",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_render_definitive_qa_contract_rejects_tampering[buildCommand-node paid-first.mjs-deterministic browser preflight]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_render_definitive_qa_contract_rejects_tampering[startCommand-python3 -m http.server-hash-bound evidence]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_render_definitive_qa_contract_rejects_tampering[autoDeployTrigger-commit-manual release gate]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_render_definitive_qa_contract_rejects_tampering[envVars-value3-environment must exactly pin]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_render_curated_frontend_contract_rejects_tampering[buildCommand-echo unsafe-curated static builder]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit unique node ID mapping",
+      "detail": {
+        "name": "test_render_curated_frontend_contract_rejects_tampering[staticPublishPath-casepath-curated static output]",
+        "classname": "",
+        "matches": []
+      }
+    },
+    {
+      "check": "JUnit exact ID set",
+      "detail": 3
+    }
+  ]
+}

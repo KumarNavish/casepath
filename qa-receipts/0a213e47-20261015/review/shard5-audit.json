@@ -1,0 +1,220 @@
+{
+  "stage": "shard5",
+  "audit_utc": "2026-10-15T18:02:20.308576+00:00",
+  "read_only_audit": true,
+  "tests_dispatched": false,
+  "source_or_runtime_mutated": false,
+  "inventory": {
+    "candidate": "0a213e471d70dbc63df2e0fcb3a62049ec5183aa",
+    "manifest_sha256": "8261e891c9403d486bdb60d1abe485ae56a6b6e556bb9b3125a3702d76e72331",
+    "full_inventory": 2613,
+    "full_sorted_ids_sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+    "cloud_assigned": 2486,
+    "cloud_sorted_ids_sha256": "577259f948c49fca012b47352c9d18718f8b94244026b0f8481b498a05cccbf3",
+    "mac_assigned": 127,
+    "mac_sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "mac_per_file": {
+      "casepath-api/tests/test_cli_v1.py": 69,
+      "casepath-api/tests/test_local_data_root.py": 52,
+      "casepath-api/tests/test_journal_corpus_restart.py": 6
+    },
+    "added_ids": [
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[deadline-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[deadline-identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[disconnect-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[disconnect-identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[error-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_closes_bounded_worker_and_encoded_errors[error-identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_flushes_binding_then_batches_available_frames[gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_flushes_binding_then_batches_available_frames[identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_keeps_lookahead_charged_under_backpressure[gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_keeps_lookahead_charged_under_backpressure[identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[*;q=0, gzip;q=0.5-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[*;q=0-reject]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[*;q=1-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[GZip;Q=1-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[None-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[br, gzip;q=0.7, identity;q=0.3-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[br, identity;q=0-reject]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[encoding25-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[encoding26-reject]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[encoding27-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=.5-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0, *;q=1-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.0000-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.5, identity;q=0.2-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.5, identity;q=1-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=0.5-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1, gzip;q=0-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1, identity;q=1-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1.001-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=1;other=x-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=2-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[gzip;q=wat-None]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=0-reject]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=0.1-gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_negotiates_encoding_before_admission[identity;q=0, gzip;q=invalid-reject]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_rejects_oversized_frame_without_emitting_its_bytes[gzip]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_operation_transport_rejects_oversized_frame_without_emitting_its_bytes[identity]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_real_operation_transport_preserves_exact_ndjson_and_hashes_in_both_encodings[live]",
+      "casepath-api/tests/test_autonomous_operations_v1.py::test_real_operation_transport_preserves_exact_ndjson_and_hashes_in_both_encodings[recorded]"
+    ],
+    "removed_ids": [],
+    "counts": {
+      "1": 9,
+      "2": 421,
+      "3": 643,
+      "4": 391,
+      "5": 346,
+      "6": 676
+    },
+    "predicted_phase_seconds": {
+      "1": 644.7654078457854,
+      "2": 489.1658810915542,
+      "3": 489.16573583887657,
+      "4": 489.1658745651948,
+      "5": 489.16557894781,
+      "6": 489.1659211528604
+    },
+    "known_skip_signatures": [
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows",
+        "when": "call",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v1.py",
+        "line": 605,
+        "reason": "Skipped: frozen independent-transition packet is not available"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 579,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 559,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 636,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 696,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 646,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 548,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 592,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 610,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality",
+        "when": "setup",
+        "file": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "line": 457,
+        "reason": "Skipped: saved native source-binding run is unavailable"
+      }
+    ],
+    "inventory_capsule_receipt_sha256": "5f84d938915129d116943bf402ad966deee447064c70597983013ea71e918041",
+    "mac_execution_status": "pending unless an exact current-candidate receipt is separately supplied"
+  },
+  "terminal_shard": {
+    "scope": "selected terminal shard raw evidence only",
+    "global_gate_closed": false,
+    "shards": [
+      {
+        "shard": 5,
+        "assigned": 346,
+        "raw_phase_rows": 1038,
+        "passed": 346,
+        "skipped": 0,
+        "runner_exit": 0,
+        "attempts": 1,
+        "runner_seconds": 555.0994162559509
+      }
+    ],
+    "source_capsule_receipt_sha256": "5f84d938915129d116943bf402ad966deee447064c70597983013ea71e918041"
+  },
+  "passed": false,
+  "errors": [
+    {
+      "check": "frozen gate execution harness unchanged during audit",
+      "detail": "harness/finalize.py"
+    }
+  ],
+  "input_file_sha256": {
+    "EXECUTION_AUTHORIZATION.json": "c532f94af14f1630d9999f2c7c4267ab73b79df5d16aadac1841043c0c55d932",
+    "review/canonical-source-binding.json": "c0ff30bb2add5027ca8c3683299143f00de5617ff1053fdb17533d63f8ffab9f",
+    "inventory/collected.json": "4749fc3511033524396c06c600450e00ec01db27f75e5a854684298d2cea7af3",
+    "collection-order-ids.txt": "7ef82f48c1b42932336793a70ea829787aa32201263741d6b66f52f1cb8efc78",
+    "collected-ids.txt": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+    "shard-map.json": "96f55dbe1541660064a46f560fa07090dbf1d76e42ea6b7630bd4ecd287c54b5",
+    "cloud-assigned-ids.txt": "577259f948c49fca012b47352c9d18718f8b94244026b0f8481b498a05cccbf3",
+    "mac-ids.txt": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/collected-ids.txt": "4ab5398dd5969ac3267ca0c5146d9f2bc5b3bb90125236161db59467abcb6761",
+    "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/known-skips.json": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7",
+    "known-skips.json": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7",
+    "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/source-manifest.json": "cf3bfbe377fb6bd2a3dd4f44f3c3ec1c3fce8864ba19840b822abf30fa1bdd8f",
+    "source-manifest.json": "8261e891c9403d486bdb60d1abe485ae56a6b6e556bb9b3125a3702d76e72331",
+    "inventory/result.json": "9545f5e9d8eaa739d3dc2690d8175b6a7f678e13d75f1ead3e3400d3165d9f51",
+    "/workspace/casepath-map-first-gate-d0d0fa7f-20261015/per-file-durations.json": "ff9d8cc1d2bf9acd2af8e9014c2767286b7c2687f956038f94405565658ee17d",
+    "inventory/source-before/capsule-verification.json": "ed693f9bba7367bfc8e61cf193727c7ae0077d281685540de8045234d13608d5",
+    "inventory/source-before/CAPSULE_RECEIPT.json": "5f84d938915129d116943bf402ad966deee447064c70597983013ea71e918041",
+    "review/audit-harness-snapshot.json": "436f50566ac3e414dd8c663798a93c2c655fb6c530865d6d800d8ab5de26cf42",
+    "review/additional-harness-snapshot.json": "036a53cad11ae7113e29506f5fb441563f24bfaba2052a3730003d1ffd838090",
+    "harness/run_shard.py": "b35578fe7fb03ef62780326d6e69f593800f654dc8fa4bc2eb8de4c3ba8e538e",
+    "harness/casepath_shard_observer.py": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "harness/prepare_clones.py": "7a0b9f7111746df4248ee15cd8e1b85716c74b1f52402d46d9b33d68d757ce2c",
+    "harness/verify_prepared_capsules.py": "7210b9e8d1cd4d0db348abfb3da4ce108e82a75d41730a3743e00a43ae479af5",
+    "harness/dispatch.py": "7e8714975c1fa6f8ebfcbf4740876152670ca8216f5e80aeb1cfc5777d25dff3",
+    "harness/preflight_inventory.py": "3ace60a20e89d1c24293044953062e92edff13cde1748a09ff63bfcf66a06f47",
+    "harness/finalize.py": "301d937bada069c323ab3ae529bf4f55cfb4e9906926c17ab1ac28d548bbe462",
+    "shard5/pytest-arguments.txt": "d66d092d0aa194bc3dee0176f04f386684c8021f49554f6ab0d38bfb6a621666",
+    "shard5/collected.json": "4e13366a3ef28cbffd8b68cc79727cf07868777846b498c0a4dc7c881980f08d",
+    "shard5/reports.jsonl": "b715aba3e94f63442d836eb857ef097a25493928a144eb42522bc7899fc46fff",
+    "shard5/junit.xml": "0ee25ab7fef89714a66b3f46a3775a10f4779919632532b4b298688cdcbab8ec",
+    "shard5/ATTEMPT_STARTED.json": "74bc579093d8736377f66bab1ac446a49f84fa5255ef582f94b9e1556c6c0174",
+    "shard5/result.json": "907674fb4aea72fba15fc0be82c325e4c324ccc8d80901c99585ba2f488c04a0",
+    "shard5/command.json": "0762c50f02f3c05d83bfe089b8f4385b0d1d5af8f734466d596275a4e140dbd5",
+    "shard5/source-before/capsule-verification.json": "6b9349106ad01902a0f0eea11d09e1c75a350c86bef2e4b5833f40ec77580f4b",
+    "shard5/source-before/CAPSULE_RECEIPT.json": "5f84d938915129d116943bf402ad966deee447064c70597983013ea71e918041",
+    "shard5/source-after/capsule-verification.json": "f6b544dfc041185618395e451b7516be346e21f95bff3fe111daf497997ec659",
+    "shard5/source-after/CAPSULE_RECEIPT.json": "5f84d938915129d116943bf402ad966deee447064c70597983013ea71e918041"
+  }
+}
