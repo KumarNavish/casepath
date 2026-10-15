@@ -2072,3 +2072,25 @@ test('an uncited knowledge consequence cannot bring retained source context abov
  const history=ui.operationReadingMarkup(trace);assert.match(history,/data-au-operation-read-context="actual-cited-fact"/);assert.match(history,/>Before<\/span> 😀&#13;\nA tenant reports a cold home\. Zürich\./);assert.equal(ui.operationRecord(trace,'operation',fact.id).source,pin);
  const inspection={...trace,current:fact,inspection:true};assert.match(ui.operationStageMarkup(f.baseline,{},'branch',inspection),/data-au-operation-span="actual-cited-fact"/,'an intentionally inspected actual citation keeps its exact stage excerpt');assert.equal(ui.operationReading(inspection).pin,pin);
 });
+
+test('verified operation batches yield to a browser task at the time budget without changing native checks or order',async()=>{
+ const f=operationFixture(),before=JSON.stringify(f.baseline),budget={started:0};let clock=0,yields=0,gates=0;
+ const runtime={performance:{now:()=>clock},scheduler:{async yield(){yields++;assert.equal(f.trace.rows.length,3,'the third native operation has already passed its hash and chain checks');}},setTimeout(){assert.fail('native scheduler takes precedence');}};
+ for(let index=0;index<5;index++){const operation=f.seal('condition.evaluate',{type:'node',id:'branch'},{verdict:'unresolved'});await ui.checkedOperation(operation,f.trace,f.baseline);clock+=4;assert.equal(await ui.operationFrameYield(budget,runtime,()=>true,async()=>{gates++;return true;}),true);}
+ assert.equal(yields,1);assert.equal(gates,1);assert.deepEqual(f.trace.rows.map(row=>row.seq),[1,2,3,4,5]);assert.equal(JSON.stringify(f.baseline),before);
+ const invalid=f.seal('condition.evaluate',{type:'node',id:'branch'},{verdict:'unresolved'});invalid.result.verdict='false';clock+=4;
+ await assert.rejects(async()=>{await ui.checkedOperation(invalid,f.trace,f.baseline);await ui.operationFrameYield(budget,runtime,()=>true,async()=>true);},/identity check/);assert.equal(yields,1,'a rejected frame never reaches the between-frame yield');assert.equal(f.trace.rows.length,5);
+});
+
+test('the browser-task fallback waits for pause inspection and visibility gates before resuming verified frames',async()=>{
+ let releaseTask,releaseGate,paused=true,hidden=true,settled=false,tasks=0;const budget={started:0},runtime={performance:{now:()=>12},setTimeout(resolve,delay){tasks++;assert.equal(delay,0);releaseTask=resolve;}};
+ const pending=ui.operationFrameYield(budget,runtime,()=>true,async()=>{while(paused||hidden)await new Promise(resolve=>{releaseGate=resolve;});return true;}).then(value=>{settled=true;return value;});
+ assert.equal(tasks,1);assert.equal(settled,false);releaseTask();await settle();assert.equal(settled,false,'input can hold the continuation while its browser task is yielded');assert.equal(typeof releaseGate,'function');paused=false;hidden=false;releaseGate();assert.equal(await pending,true);assert.equal(budget.started,12);
+});
+
+test('a yielded operation batch cannot continue after abort stale route or inspection-gate cancellation',async()=>{
+ for(const cancelAt of ['before-task','during-task','during-gate']){
+  let active=cancelAt!=='before-task',tasks=0,gates=0;const budget={started:0},runtime={performance:{now:()=>12},scheduler:{async yield(){tasks++;if(cancelAt==='during-task')active=false;}}};
+  assert.equal(await ui.operationFrameYield(budget,runtime,()=>active,async()=>{gates++;if(cancelAt==='during-gate')active=false;return active;}),false,cancelAt);assert.equal(tasks,cancelAt==='before-task'?0:1);assert.equal(gates,cancelAt==='during-gate'?1:0);
+ }
+});

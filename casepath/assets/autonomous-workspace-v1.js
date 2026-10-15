@@ -1135,6 +1135,19 @@
       return {done:false,value:row.frame};
     }});
   }
+  async function operationFrameYield(budget, runtime, active, gate) {
+    if (!active()) return false;
+    const now = () => runtime.performance?.now?.() ?? Date.now();
+    if (now()-budget.started < 10) return true;
+    // Hash promises and a buffered iterator need not leave a paint opportunity.
+    // Yield only between completely verified frames, then recheck the session
+    // and its pause/inspection/visibility gate before consuming another frame.
+    if (typeof runtime.scheduler?.yield === 'function') await runtime.scheduler.yield();
+    else await new Promise(resolve => runtime.setTimeout(resolve,0));
+    if (!active() || !await gate()) return false;
+    budget.started = now();
+    return active();
+  }
   function checkedOperationBinding(frame, head, start) {
     if (frame?.contract !== OPERATIONS_CONTRACT || frame.type !== 'binding' || frame.instrumentation_id !== OPERATION_INSTRUMENTATION || !start ||
         frame.claim_id !== head.claimId || frame.run_id !== start.run_id || frame.from_seq !== start.from_seq ||
@@ -2760,6 +2773,7 @@
         trace.buffer = bufferedOperations(response,operationController.signal, result => {
           if (operationActive(session,token) && operationTrace === trace && !doc.hidden && result.contract === OPERATIONS_CONTRACT && result.exact_output_verified === true && result.state_sha256 === session.replayHead.state_sha256 && result.current_event_sha256 === session.replayHead.event_sha256) { host.setAttribute?.('data-au-operation-result-available','true'); const total = bufferedOperationCount(trace), slider = host.querySelector('[data-au-operation-scrub]'), counter = host.querySelector('[data-au-scrub-position]'); if (total && slider) { slider.max=total-1; slider.setAttribute('aria-valuetext',`Operation ${Number(slider.value)+1} of ${total}`); slider.closest('.au-stage-scrubber')?.style.setProperty('--au-operation-ticks',total); if (counter) counter.textContent=`${Number(slider.value)+1} / ${total}`; } }
         });
+        const frameBudget = {started:root.performance?.now?.() ?? Date.now()};
         for await (const frame of trace.buffer) {
           if (!await operationGate(session,token)) return;
           if (frame.contract !== OPERATIONS_CONTRACT) throw new Error('The operation stream contract is unavailable.');
@@ -2811,6 +2825,7 @@
             stopPresentation(); renderClaim(); notice(''); return;
           } else if (frame.type === 'error') throw new Error(frame.message || frame.reason || frame.detail || 'The rules-based assessment stopped.');
           else throw new Error('The operation stream contains an unknown frame.');
+          if (!await operationFrameYield(frameBudget,root,() => operationActive(session,token) && operationTrace === trace,() => operationGate(session,token))) return;
         }
         throw new Error('The operation stream ended without a verified result.');
       } catch (error) {
@@ -3495,5 +3510,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });
