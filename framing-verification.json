@@ -1,6 +1,13 @@
 {
   "frames_checked": 1725,
-  "actual_source_and_rail_crop_violations": [],
+  "source_rail_brand_nav_title_crop_violations": [],
+  "header_title_native_pixel_safety_envelope": [
+    24,
+    12,
+    1872,
+    220
+  ],
+  "header_bounds_basis": "Conservative visual envelope over actual fixed1920x1080 capture, including complete logo/navigation/title letters.",
   "native_click_full_frame": [
     {
       "t": 1792055566.082,
@@ -24,5 +31,6 @@
   ],
   "caption_center_y": 1027,
   "ui_bottom_at_most": 998,
-  "policy": "All crops constrained to actual visible source and rail. Inspection/native clicks full UI. No UI pixels fabricated."
+  "timeline_and_realtime_windows_unchanged_from_first_encode": true,
+  "correction": "Only camera framing/contact-sheet endcard selection changed; actual UI and time mapping preserved."
 }

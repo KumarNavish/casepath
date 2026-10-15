@@ -467,10 +467,10 @@
     "+faststart",
     "rendered/CasePath-demo-agentic-v4.mp4"
   ],
-  "encoding_seconds": 95.47651934623718,
-  "output_sha256": "cf2641336a10a791634b4cdab6c7e744be2ab04ac58bdd946059f71726009b75",
-  "output_bytes": 25771023,
-  "contact_sheet_sha256": "1054b182da34f45df4c59379c1a125c3055cbb82f398cc950a6fab3f14037988",
+  "encoding_seconds": 98.42114782333374,
+  "output_sha256": "333778e82e575291a75178f5dcf358b074c97231b65ccee204a22e7588dbba05",
+  "output_bytes": 7039590,
+  "contact_sheet_sha256": "3b65c99a72917fb8a1b1562cb9f37de78ffb106d5c7828b820c7bb2b04525f16",
   "ffprobe": {
     "streams": [
       {
@@ -505,7 +505,7 @@
         "start_time": "0.000000",
         "duration_ts": 998400,
         "duration": "65.000000",
-        "bit_rate": "3168920",
+        "bit_rate": "863430",
         "bits_per_raw_sample": "8",
         "nb_frames": "1950",
         "extradata_size": 50,
@@ -547,8 +547,8 @@
       "format_long_name": "QuickTime / MOV",
       "start_time": "0.000000",
       "duration": "65.000000",
-      "size": "25771023",
-      "bit_rate": "3171818",
+      "size": "7039590",
+      "bit_rate": "866411",
       "probe_score": 100,
       "tags": {
         "major_brand": "isom",
@@ -559,5 +559,6 @@
     }
   },
   "status": "ENCODED_FROM_ACTUAL_CAPTURE",
-  "contact_sheet_basis": "Nine semantic moments extracted from final encoded MP4; exact times in contact-moments.json"
+  "contact_sheet_basis": "Eight semantic actualUI moments plus exact endcard extracted from final encoded MP4; exact times in contact-moments.json",
+  "correction": "Header/navigation/title kept fully visible in native pixel safety envelope; timeline/realtime windows unchanged. First encode retained in Git7abe3ec."
 }

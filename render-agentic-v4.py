@@ -121,6 +121,9 @@ class Movie:
   # Real source/rail bounds constrain the editorial crop; never erase a landing slot.
   if s.get('dialog') or s.get('state')=='paused' or any(abs(stamp(e['t'])-t)<.9 for e in self.events if e.get('type')=='click'):return self.iw/2,self.ih/2,1.
   rr=[rect(s.get(k)) for k in ['sourceRect','railRect']];rr=[r for r in rr if r]
+  # Measured native header/title safety envelope: keep complete lettering in frame.
+  # The supplied capture has fixed1920x1080 pixels; no product pixels are recreated.
+  rr.append((24/self.sx,12/self.sy,(self.iw-48)/self.sx,220/self.sy))
   if rr:
    pad=12;left=max(0,min(r[0] for r in rr)-pad)*self.sx;right=min(self.cw,max(r[0]+r[2] for r in rr)+pad)*self.sx;top=max(0,min(r[1] for r in rr)-pad)*self.sy;bottom=min(self.ch,max(r[1]+r[3] for r in rr)+pad)*self.sy
    z=min(z,self.iw/(right-left),self.ih/(bottom-top));cw,ch=self.iw/z,self.ih/z
@@ -154,10 +157,10 @@ class Movie:
   return im
  def contact(self,path):
   # Genuine semantic moments, selected from captured geometry, not uniform guesses.
-  picks=[];read=set();flight=set();prior=0;firstcheck=None;inspect=None
+  picks=[];read=set();flight=set();prior=0;firstcheck=None;inspect=None;read_times=[]
   for t,s in zip(self.st,self.samples):
    title=s.get('sourceTitle')
-   if title and title not in read and rect(s.get('readheadRect')):read.add(title);picks.append(t+.25)
+   if title and title not in read and rect(s.get('readheadRect')):read.add(title);picks.append(t+.25);read_times.append(t+.25)
    if title and title not in flight and rect(s.get('factRect')):flight.add(title);picks.append(t+.18)
    checked=s.get('checkedSlots',0);checked=len(checked) if isinstance(checked,list) else int(checked or 0)
    if checked>prior and firstcheck is None:firstcheck=t+.35
@@ -165,11 +168,16 @@ class Movie:
    if s.get('dialog') and inspect is None:inspect=t+.75
   if inspect is not None:picks.append(inspect)
   if firstcheck is not None:picks.append(firstcheck)
-  picks.append(self.end-.2);picks=sorted(picks)[:8]+[self.end-.1] if len(picks)>9 else sorted(picks)
-  while len(picks)<9:picks.append(self.start+(self.end-self.start)*(len(picks)+.5)/9);picks.sort()
+  picks.append(self.end-.2);picks=sorted(picks)
+  # Eight actualUI moments plus the exact requested endcard, no redundant ninth read.
+  while len(picks)>8 and read_times:
+   redundant=read_times.pop();picks.remove(redundant)
+  picks=picks[:7]+[self.end-.1] if len(picks)>8 else picks
+  while len(picks)<8:picks.append(self.start+(self.end-self.start)*(len(picks)+.5)/8);picks.sort()
   sheet=Image.new('RGB',(1920,1080),BG);moments=[]
-  for i,t in enumerate(picks[:9]):
+  for i,t in enumerate(picks[:8]):
    k=max(0,min(len(self.grid)-2,bisect.bisect_right(self.grid,t)-1));a,b=self.grid[k:k+2];q=0 if b==a else (t-a)/(b-a);ot=self.out_times[k]+q*(self.out_times[k+1]-self.out_times[k]);ot=max(0,min(self.ui_duration-.05,ot));sheet.paste(self.render_frame(ot).resize((640,360),Image.Resampling.LANCZOS),((i%3)*640,(i//3)*360));moments.append({'tile':i+1,'source_t':t,'film_t':ot})
+  end_t=self.ui_duration+self.final_freeze+2.5;sheet.paste(self.render_frame(end_t).resize((640,360),Image.Resampling.LANCZOS),(1280,720));moments.append({'tile':9,'source_t':None,'film_t':end_t,'kind':'editorial_endcard'})
   sheet.save(path);(path.parent/'contact-moments.json').write_text(json.dumps(moments,indent=2)+'\n')
  def receipt(self):
   return {'source_commit':self.source_commit,'claim_id':CLAIM,'source_basis':'Mac-owned capture of actual public UI; Cloud network denial prevents independent Cloud live fetch. Source identity is bound to supplied capture receipt.','input_index_sha256':sha(self.args.input),'input_frames':len(self.frames),'input_manifest_sha256':hashlib.sha256(json.dumps(self.frame_manifest,sort_keys=True,separators=(',',':')).encode()).hexdigest(),'native_image_size':[self.iw,self.ih],'css_viewport':[self.cw,self.ch],'output_size':[W,H],'output_fps':FPS,'source_range':[self.start,self.end],'duration_seconds':self.duration,'ui_duration_seconds':self.ui_duration,'endcard_seconds':5,'editorial_final_image_hold_seconds':self.final_freeze,'final_native_frame_t':self.ft[-1],'actual_capture_end_t':self.end,'routine_speed':self.routine_speed,'realtime_windows':self.windows,'captions':self.labels,'camera':'Small eased camera motion from actual recorded head/fact rectangles; the complete actual source/rail bounds constrain every crop. Full UI during native clicks/inspection. No actor reconstruction or frame interpolation.','cursor':'Neutral editorial pointer from actual logged x/y events only; no invented inputs.','audio':False,'endcard':['CasePath · Evidence into action','Synthetic claims · recorded replay'],'limits':['Timeline protection derives from supplied samples/events; inspect contact sheet and EDL before final encoding.','CDP frames are variable-rate;30fps output uses actual preceding captured frames, never invented intermediate UI motion.','The final2.5s is an editorial hold of the actual last decision image, not added engine work.']}
