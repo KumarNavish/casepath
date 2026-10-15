@@ -1,0 +1,139 @@
+{
+  "candidate": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "gate_status": "INTERRUPTED_SUPERSEDED",
+  "full_gate_green": false,
+  "combined_green": false,
+  "full_inventory": 2571,
+  "planned_cloud_ids": 2444,
+  "planned_mac_ids": 127,
+  "fresh_inventory_partition_proof_only": true,
+  "planned_cloud_mac_disjoint_union": true,
+  "full_assigned_collected_executed_equality": false,
+  "started_partitions": [
+    1,
+    2,
+    3
+  ],
+  "unexecuted_partitions": [
+    4,
+    5,
+    6
+  ],
+  "started_partition_assigned_ids": 1053,
+  "observed_phase_ids": 71,
+  "completed_three_pass_phase_ids": 68,
+  "inflight_interrupted_ids": 3,
+  "cloud_ids_without_all_three_passing_phases": 2376,
+  "mac_attestation_used": false,
+  "mac_ids_executed_here": 0,
+  "raw_failed_phase_rows": 0,
+  "known_skips_observed": 0,
+  "all_ten_known_skips_verified_at_runtime": false,
+  "test_retries": 0,
+  "scheduler_exit_code": 137,
+  "source_capsules_all_seven_unchanged": true,
+  "full_or_partial_success_reconciler_executed": false,
+  "new_candidate_requires_fresh_inventory_and_all_six": true,
+  "shards": [
+    {
+      "shard": 1,
+      "status": "INTERRUPTED",
+      "assigned_ids": 9,
+      "collected_ids": 9,
+      "observed_phase_ids": 2,
+      "completed_three_pass_phase_ids": 1,
+      "incomplete_phase_ids": [
+        "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix"
+      ],
+      "assigned_ids_without_phase_rows": 7,
+      "raw_phase_outcomes": {
+        "setup:passed": 2,
+        "call:passed": 1,
+        "teardown:passed": 1
+      },
+      "junit_testcase_rows": 2,
+      "junit_header_tests": 1,
+      "junit_is_incomplete": true,
+      "exit_code": 2,
+      "duration_seconds": 244.73406887054443,
+      "source_after_clean_exact_candidate": true,
+      "attempts": 1,
+      "retries": 0
+    },
+    {
+      "shard": 2,
+      "status": "INTERRUPTED",
+      "assigned_ids": 558,
+      "collected_ids": 558,
+      "observed_phase_ids": 24,
+      "completed_three_pass_phase_ids": 23,
+      "incomplete_phase_ids": [
+        "casepath-api/tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[process]"
+      ],
+      "assigned_ids_without_phase_rows": 534,
+      "raw_phase_outcomes": {
+        "setup:passed": 24,
+        "call:passed": 23,
+        "teardown:passed": 23
+      },
+      "junit_testcase_rows": 24,
+      "junit_header_tests": 23,
+      "junit_is_incomplete": true,
+      "exit_code": 2,
+      "duration_seconds": 254.9998059272766,
+      "source_after_clean_exact_candidate": true,
+      "attempts": 1,
+      "retries": 0
+    },
+    {
+      "shard": 3,
+      "status": "INTERRUPTED",
+      "assigned_ids": 486,
+      "collected_ids": 486,
+      "observed_phase_ids": 45,
+      "completed_three_pass_phase_ids": 44,
+      "incomplete_phase_ids": [
+        "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-startup_reconciler]"
+      ],
+      "assigned_ids_without_phase_rows": 441,
+      "raw_phase_outcomes": {
+        "setup:passed": 45,
+        "call:passed": 44,
+        "teardown:passed": 44
+      },
+      "junit_testcase_rows": 45,
+      "junit_header_tests": 44,
+      "junit_is_incomplete": true,
+      "exit_code": -15,
+      "duration_seconds": 262.5245792865753,
+      "source_after_clean_exact_candidate": true,
+      "attempts": 1,
+      "retries": 0
+    },
+    {
+      "shard": 4,
+      "status": "UNEXECUTED",
+      "assigned_ids": 379,
+      "attempts": 0,
+      "retries": 0,
+      "root_cancelled_before_attempt": true
+    },
+    {
+      "shard": 5,
+      "status": "UNEXECUTED",
+      "assigned_ids": 349,
+      "attempts": 0,
+      "retries": 0,
+      "root_cancelled_before_attempt": true
+    },
+    {
+      "shard": 6,
+      "status": "UNEXECUTED",
+      "assigned_ids": 663,
+      "attempts": 0,
+      "retries": 0,
+      "root_cancelled_before_attempt": true
+    }
+  ],
+  "recorded_epoch": 1792062161.4516165
+}

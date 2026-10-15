@@ -1,0 +1,11 @@
+{
+  "candidate": "2a9aa89f1a5ae843527fcc0a2afcccb5e5e6cfae",
+  "all_owned_test_and_scheduler_processes_stopped": true,
+  "pytest_pids_absent": true,
+  "scheduler_pid_absent": true,
+  "runner_zombies_have_no_execution_or_cpu": true,
+  "ps_after": " 872189       1  872181  872181 Z    [python] <defunct>\n 872190       1  872181  872181 Z    [python] <defunct>\n 872191       1  872181  872181 Z    [python] <defunct>\n",
+  "quiet_window_released": true,
+  "no_attempts_4_5_6": true,
+  "recorded_epoch": 1792062161.487965
+}

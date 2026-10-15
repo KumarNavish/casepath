@@ -1,0 +1,9 @@
+{
+  "status": "INTERRUPTED",
+  "exit_code": 137,
+  "signal": "SIGKILL",
+  "pid": 872185,
+  "purpose": "Terminate only stopped orchestration after pytest and wrappers terminal; queued partitions never started",
+  "raw_shell_terminal_line": "/bin/bash: line 27: 872185 Killed                  HOME=/workspace/m2h0 TMPDIR=/workspace/m2t0 TMP=/workspace/m2t0 TEMP=/workspace/m2t0 PYTHONDONTWRITEBYTECODE=1 python -",
+  "all_shard_terminal_summary_intentionally_absent": true
+}
