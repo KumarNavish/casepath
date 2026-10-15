@@ -991,6 +991,24 @@ for(const [width,height]of [[1280,800],[1428,771],[1360,900],[390,844]])test(`vi
  assert.ok(geometry.leaves.every(leaf=>leaf.font>=18),'meaningful visible text is at least 18px; aria-hidden decoration cannot satisfy the check');
  assert.equal(geometry.overflow,false);
  assertAcceptedPaint(await acceptedPaint(page),head);
+ // The same accepted outcome map must flow naturally while the controller is
+ // playing or paused at its decision, as well as after the result stops.
+ for(const phase of ['playing','paused','completed']){
+  await page.locator('[data-au-view]').evaluate((host,phase)=>{host.dataset.auOperationPresentation=phase;},phase);
+  const map=await page.locator('.au-operation-stage').evaluate(stage=>{
+   const outcome=stage.querySelector('.au-stage-outcome'),style=getComputedStyle(stage),clipped=[];
+   for(const target of [outcome,...outcome.children])for(let parent=target.parentElement;parent&&parent!==document.body;parent=parent.parentElement){
+    const bounds=parent.getBoundingClientRect(),rect=target.getBoundingClientRect(),css=getComputedStyle(parent),cuts=value=>/^(auto|scroll|hidden|clip)$/.test(value);
+    if(cuts(css.overflowX)&&(rect.left<bounds.left-1||rect.right>bounds.right+1)||cuts(css.overflowY)&&(rect.top<bounds.top-1||rect.bottom>bounds.bottom+1))clipped.push({target:target.className||target.tagName,ancestor:parent.className,overflowX:css.overflowX,overflowY:css.overflowY,rect:rect.toJSON(),bounds:bounds.toJSON()});
+   }
+   return {maxHeight:style.maxHeight,overflowX:style.overflowX,overflowY:style.overflowY,summary:outcome.querySelector(':scope > p:first-child').textContent,articles:[...outcome.querySelectorAll('[data-au-law-article]')].map(element=>element.dataset.auLawArticle),reuse:[...outcome.querySelectorAll('[data-au-knowledge]')].map(element=>({id:element.dataset.auKnowledge,version:element.dataset.auVersion})),clipped};
+  });
+  await focusedReceipt(page,`visible-stage-map-${phase}-${width}x${height}`,{claim_id:id,phase,map});
+  assert.equal(map.maxHeight,'none','the decision and completed map have no internal height cap');assert.equal(map.overflowX,'visible');assert.equal(map.overflowY,'visible');
+  assert.equal(map.summary,head.state.outcome.summary);assert.deepEqual(sorted(map.articles),['259','259a','259d']);
+  assert.deepEqual(map.reuse,head.state.knowledge_uses.slice(-1).map(use=>({id:use.knowledge_id||use.version_id,version:String(use.version||use.version_id)})),'first use makes no reuse claim; a recorded reuse keeps its actual version');
+  assert.deepEqual(map.clipped,[],'the complete native outcome, legal basis and any real reused version remain outside clipping ancestors; natural page scrolling is allowed');
+ }
  const control=page.locator('.au-stage-transport input');await control.scrollIntoViewIfNeeded();
  assert.equal(await control.evaluate(element=>{const bounds=element.getBoundingClientRect(),hit=document.elementFromPoint(bounds.left+bounds.width/2,bounds.top+bounds.height/2);return hit===element||element.contains(hit);}),true,'the actual transport control remains reachable after natural scrolling');
 });
