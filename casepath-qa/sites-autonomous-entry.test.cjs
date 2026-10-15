@@ -69,18 +69,27 @@ test('the hosted opening preloads exact recorded bytes without waiting or enabli
   assert.equal(bytes.length,descriptor.bytes);
   assert.equal(createHash('sha256').update(bytes).digest('hex'),descriptor.sha256);
   assert.equal(JSON.parse(bytes).deployment_commit,descriptor.deployment_commit);
+  const saved=JSON.parse(index.match(/<meta name="casepath-saved-history" content='([^']+)'/)[1]);
+  const savedBytes=readFileSync(resolve(__dirname,'../casepath/assets/autonomous-saved-history-v1.json'));
+  const snapshot=JSON.parse(savedBytes);
+  assert.equal(savedBytes.length,saved.bytes);
+  assert.equal(createHash('sha256').update(savedBytes).digest('hex'),saved.sha256);
+  assert.equal(snapshot.state.claim_id,saved.claim_id);assert.equal(snapshot.state.revision,saved.revision);
+  assert.equal(snapshot.state.state_sha256,saved.state_sha256);assert.equal(snapshot.state.last_event_sha256,saved.event_sha256);
   for(const publicReadOnly of [true,false]) {
     const location=new URL('https://casepath.invalid/'),links=[],calls=[],mounted=[];
     const window={location,CASEPATH_PUBLIC_READ_ONLY:publicReadOnly,CasePathAutonomous:{mount:(_container,options)=>mounted.push(options)},addEventListener(){}};
-    const document={documentElement:{dataset:{}},createElement:()=>({}),querySelector:selector=>({content:selector.includes('casepath-recorded-opening')?JSON.stringify(descriptor):'workspace.js'}),head:{append:link=>links.push(link)},body:{append:script=>script.onload()},getElementById:()=>({})};
+    const document={documentElement:{dataset:{}},createElement:()=>({}),querySelector:selector=>({content:selector.includes('casepath-recorded-opening')?JSON.stringify(descriptor):selector.includes('casepath-saved-history')?JSON.stringify(saved):'workspace.js'}),head:{append:link=>links.push(link)},body:{append:script=>script.onload()},getElementById:()=>({})};
     const context={location,URLSearchParams,window,document,sessionStorage:{getItem:()=>null,setItem(){}},crypto:{randomUUID:()=> 'fixture-uuid'},fetch:async(...args)=>{calls.push(args);throw Error('Boot must not fetch the API');}};
     const boot=index.match(/<script>\n([\s\S]*?)<\/script>/)[1];
     runInNewContext(boot,context);
-    assert.equal(links.length,publicReadOnly?1:0);
+    assert.equal(links.length,publicReadOnly?2:0);
     if(publicReadOnly) { assert.equal(links[0].rel,'preload');assert.equal(links[0].as,'fetch');assert.equal(links[0].href,descriptor.url);assert.equal(links[0].fetchPriority,'high'); }
+    if(publicReadOnly) { assert.equal(links[1].href,saved.url);assert.equal(links[1].fetchPriority,'low'); }
     await runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-entry-v1.js'),'utf8'),context);
     assert.equal(mounted.length,1,'mount must not await preload completion');
     assert.equal(JSON.stringify(mounted[0].recordedPacket),publicReadOnly?JSON.stringify(descriptor):undefined);
+    assert.equal(JSON.stringify(mounted[0].savedSnapshot),publicReadOnly?JSON.stringify(saved):undefined);
     assert.deepEqual(calls,[],'opening assets never grant API write or inference authority');
   }
 });

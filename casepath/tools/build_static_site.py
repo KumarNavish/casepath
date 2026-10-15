@@ -33,6 +33,7 @@ PUBLIC_ROOT_FILES = (
 PUBLIC_ASSETS = (
     "assets/autonomous-demo-packets.json",
     "assets/autonomous-recorded-heating-v1.json",
+    "assets/autonomous-saved-history-v1.json",
     "assets/autonomous-workspace-v1.js",
     "assets/autonomous-workspace-v1.css",
     "assets/autonomous-entry-v1.js",
@@ -67,6 +68,7 @@ PUBLIC_DIRECTORIES = frozenset({"assets", "assets/fonts"})
 CONTENT_BOUND_ASSETS = (
     "assets/autonomous-demo-packets.json",
     "assets/autonomous-recorded-heating-v1.json",
+    "assets/autonomous-saved-history-v1.json",
     "assets/autonomous-workspace-v1.js",
     "assets/autonomous-workspace-v1.css",
     "assets/autonomous-entry-v1.js",

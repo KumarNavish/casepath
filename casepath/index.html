@@ -16,7 +16,8 @@
   <meta name="casepath-review-desk-script" content="assets/agent-desk-v2.js?sha256=3db6bccb56c066bb22a61d8ebe902c804c056387a79d7dec76be050e85154621">
   <meta name="casepath-autonomous-demo-packets" content="assets/autonomous-demo-packets.json?sha256=0570e94ab2d32005c858359ea345a9dafd8c941733193da0d3575525cb81ce8a">
   <meta name="casepath-recorded-opening" content='{"url":"assets/autonomous-recorded-heating-v1.json?sha256=1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383","bytes":523167,"sha256":"1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383","deployment_commit":"0a213e471d70dbc63df2e0fcb3a62049ec5183aa","history_kind":"published_public_synthetic"}'>
-  <meta name="casepath-autonomous-script" content="assets/autonomous-workspace-v1.js?sha256=364bc44c4a10a8a57afcaad28b765f476ba31ee2478d190b552fe9f7c74c74bb">
+  <meta name="casepath-saved-history" content='{"url":"assets/autonomous-saved-history-v1.json?sha256=a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0","bytes":565908,"sha256":"a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0","deployment_commit":"0a213e471d70dbc63df2e0fcb3a62049ec5183aa","history_kind":"published_public_synthetic","claim_id":"clm_2a9c260c26afaa34","revision":15,"state_sha256":"63c7f9663040ad966daf87266b72dc31b0369de67b16c35a7b13fdd68fdcfe17","event_sha256":"efe81d202e86e3b7e58f252feef236a2caabe4e27e38af427e404e3da719f203"}'>
+  <meta name="casepath-autonomous-script" content="assets/autonomous-workspace-v1.js?sha256=6dd825738a0cdd498f9e9da84ac439751a6285aed95435ceebca35df7c2ad45a">
   <link rel="icon" href="data:,">
   <link rel="license" href="assets/fonts/Merriweather-OFL.txt">
   <link rel="license" href="assets/fonts/Open_Sans-OFL.txt">
@@ -36,15 +37,17 @@
         window.CASEPATH_API = location.origin;
         const publicReadOnly = window.CASEPATH_PUBLIC_READ_ONLY === true;
         if (publicReadOnly) {
-          // Fetch the immutable first recording alongside application assets.
-          // Navigation never waits for it; playback still verifies every byte.
-          try {
-            const packet = JSON.parse(document.querySelector('meta[name="casepath-recorded-opening"]').content);
-            const preload = document.createElement('link');
-            preload.rel = 'preload'; preload.as = 'fetch'; preload.crossOrigin = 'anonymous';
-            preload.href = packet.url; preload.fetchPriority = 'high';
-            document.head.append(preload);
-          } catch (_) { /* The verified API remains available without a packet. */ }
+          // Start immutable public history reads alongside application assets.
+          // Navigation never waits for them; admission verifies each exact copy.
+          for (const [name, priority] of [['casepath-recorded-opening','high'],['casepath-saved-history','low']]) {
+            try {
+              const packet = JSON.parse(document.querySelector(`meta[name="${name}"]`).content);
+              const preload = document.createElement('link');
+              preload.rel = 'preload'; preload.as = 'fetch'; preload.crossOrigin = 'anonymous';
+              preload.href = packet.url; preload.fetchPriority = priority;
+              document.head.append(preload);
+            } catch (_) { /* The verified API remains available without an asset. */ }
+          }
         }
         const foundationMode = !publicReadOnly && bootParams.get('foundation') === 'live-v1';
         const legacyJourney = !publicReadOnly && ['legacy-v20', 'insurance-v1'].includes(bootParams.get('journey'));
@@ -325,6 +328,6 @@ Alex Morgan</div>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/autonomous-entry-v1.js?sha256=e1dfcdefb7fc094db37a7bb03bd788a1ebd1405531f3548ed610c758d9246d7d"></script>
+  <script src="assets/autonomous-entry-v1.js?sha256=ba4a04fea4c90e62db9e0d465084bf801912707a26c722922a0f86ad75d8ba89"></script>
 </body>
 </html>
