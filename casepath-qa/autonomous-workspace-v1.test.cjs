@@ -1875,20 +1875,20 @@ function delayedPacketHash(t,bytes) {
  let restored=false;const restore=()=>{if(!restored){restored=true;subtle.digest=original;release.resolve();}};t.after(restore);return{started:started.promise,release:()=>release.resolve(),restore};
 }
 
-test('complete acquired packet may finish local SHA inside the original500ms immediate-click choice',async t=>{
+test('complete acquired packet may finish local SHA inside the original300ms immediate-click choice',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead(),snapshot=deferredRead(),timers=[];let assetSignal,liveSignal;
- const originalTimeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===500)timers.push(Date.now());return originalTimeout(fn,ms,...args);};t.after(()=>{globalThis.setTimeout=originalTimeout;});
+ const originalTimeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===300)timers.push(Date.now());return originalTimeout(fn,ms,...args);};t.after(()=>{globalThis.setTimeout=originalTimeout;});
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,new Response(packet.bytes)):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?(liveSignal=init.signal,pendingOperationResponse(packet.native.binding)):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});await hash.started;assert.match(f.host.innerHTML,/Cases|No .*claims|All cases/i,'Cases renders while acquired bytes await local verification');
  const started=Date.now(),selecting=controller.showDemonstration();await settle();assert.equal(assetSignal.aborted,false,'exact acquired bytes remain eligible; no network is being awaited');assert.equal(timers.length,1,'the choice deadline starts before the pending asset SHA finishes');assert.ok(api.calls.some(row=>row.path.includes('/operations?mode=live')),'Live reads run concurrently with local packet verification');
  const pause=f.host.querySelector('[data-au-demo-stop]');f.listeners.get('click')({target:pause});const focus={};f.container.ownerDocument.activeElement=focus;
- await new Promise(resolve=>originalTimeout(resolve,300));hash.release();await selecting;assert.equal(timers.length,1,'verification cannot restart another500ms window');assert.ok(Date.now()-started<700);assert.equal(await controller.recordedPacketReady,true);assert.equal(liveSignal.aborted,true);assert.ok(f.host.querySelector('[data-au-demo-resume]'));assert.equal(f.container.ownerDocument.activeElement,focus);assert.doesNotMatch(f.host.innerHTML,/data-au-revision=|data-au-stage-fact=|Live rules-based check/);
+ await new Promise(resolve=>originalTimeout(resolve,150));hash.release();await selecting;assert.equal(timers.length,1,'verification cannot restart another300ms window');assert.ok(Date.now()-started<700);assert.equal(await controller.recordedPacketReady,true);assert.equal(liveSignal.aborted,true);assert.ok(f.host.querySelector('[data-au-demo-resume]'));assert.equal(f.container.ownerDocument.activeElement,focus);assert.doesNotMatch(f.host.innerHTML,/data-au-revision=|data-au-stage-fact=|Live rules-based check/);
 });
 
-test('complete acquired packet missing the500ms choice cannot paint or splice into later verified Live',async t=>{
+test('complete acquired packet missing the300ms choice cannot paint or splice into later verified Live',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead();
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
- const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));});await hash.started;const selecting=controller.showDemonstration();await new Promise(resolve=>setTimeout(resolve,550));opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));});await hash.started;const selecting=controller.showDemonstration();await new Promise(resolve=>setTimeout(resolve,350));opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;
  hash.release();await controller.recordedPacketReady;await settle();await settle();assert.equal(f.host.innerHTML,before,'late local verification cannot join the completed choice');assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?`)).length,1);
 });
 
@@ -1903,7 +1903,7 @@ test('navigation and hidden ownership cancel acquired packet verification withou
   const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead(),listeners=new Map();let assetSignal;f.container.ownerDocument.addEventListener=(name,fn)=>listeners.set(name,fn);
   const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,new Response(packet.bytes)):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
   const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});await hash.started;const selecting=controller.showDemonstration();
-  if(hide){f.container.ownerDocument.hidden=true;listeners.get('visibilitychange')();}else await controller.showKnowledge();const before=f.host.innerHTML;assert.equal(assetSignal.aborted,true);hash.release();assert.equal(await controller.recordedPacketReady,false);if(hide)await new Promise(resolve=>setTimeout(resolve,550));else{opening.resolve(response(packet.native.zero));await selecting;}await settle();assert.equal(f.host.innerHTML,before,'packet verification cannot repaint while cancelled; unrelated Live opening remains held');assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);controller.destroy();opening.resolve(response(packet.native.zero));await selecting;hash.restore();
+  if(hide){f.container.ownerDocument.hidden=true;listeners.get('visibilitychange')();}else await controller.showKnowledge();const before=f.host.innerHTML;assert.equal(assetSignal.aborted,true);hash.release();assert.equal(await controller.recordedPacketReady,false);if(hide)await new Promise(resolve=>setTimeout(resolve,350));else{opening.resolve(response(packet.native.zero));await selecting;}await settle();assert.equal(f.host.innerHTML,before,'packet verification cannot repaint while cancelled; unrelated Live opening remains held');assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);controller.destroy();opening.resolve(response(packet.native.zero));await selecting;hash.restore();
  }
 });
 
@@ -1933,17 +1933,17 @@ test('ready recorded packet wins the bounded opening choice and late live replie
  await waitFor(()=>api.calls.some(row=>row.path.endsWith('/replay?through_seq=4')));const before=f.host.innerHTML;opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before,'late live responses cannot take over an admitted Recorded session');assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?`)).length,1,'recorded body uses packet bytes without another API trace');
 });
 
-test('independently verified live opening wins before500ms and never consumes available recorded packet frames',async t=>{
+test('independently verified live opening wins before300ms and never consumes available recorded packet frames',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture();
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
- const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());assert.equal(await controller.recordedPacketReady,true);const started=Date.now();await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.ok(Date.now()-started<500);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());assert.equal(await controller.recordedPacketReady,true);const started=Date.now();await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.ok(Date.now()-started<300);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
 });
 
 test('unfinished recorded asset never delays Cases or selected live work and cannot join a later opening',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead();let assetSignal;
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));});await settle();await new Promise(resolve=>setTimeout(resolve,5));assert.match(f.host.innerHTML,/Cases|No .*claims|All cases/i);const selecting=controller.showDemonstration();await settle();assert.equal(assetSignal.aborted,false);assert.match(f.host.innerHTML,/Opening investigation/);
- await new Promise(resolve=>setTimeout(resolve,550));asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
+ await new Promise(resolve=>setTimeout(resolve,350));asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
 });
 
 test('unusable recorded packet retains the existing live503 to recorded endpoint fallback',async t=>{
@@ -2476,7 +2476,7 @@ test('release procedure embedded data regenerates exactly from policy profile an
 
 
 // These exercise the selected route and the production ownership handoff.
-test('direct autonomous routes acquire a same-origin packet behind the immediate map and retain the original500ms choice',async t=>{
+test('direct autonomous routes acquire a same-origin packet behind the immediate map and retain the original300ms choice',async t=>{
  for(const fragment of ['#autonomous/demonstration']) {
   routingFixture(t,fragment);const f=operationOpeningDOM(),packet=recordedPacketFixture(),opening=deferredRead(),snapshot=deferredRead();
   const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
@@ -2501,7 +2501,7 @@ test('current verified binding prefetches exactly one next opening snapshot and 
 });
 
 
-test('a valid observed newer live opening prevents the500ms packet fallback from rolling the selected head back',async t=>{
+test('a valid observed newer live opening prevents the300ms packet fallback from rolling the selected head back',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),head=deferredRead(),zero=structuredClone(packet.native.zero);
  zero.current_revision=5;zero.current_state_sha256=sha('newer-observed-head');zero.current_event_sha256=sha('newer-observed-event');
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(zero):path.includes('/snapshot?')||path.endsWith('/replay?through_seq=5')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
@@ -2561,7 +2561,7 @@ test('pause and hide after the8000ms outcome hold preserve the finished case and
  }
 });
 
-test('Cases cold click can finish packet acquisition inside its original500ms choice',async t=>{
+test('Cases cold click can finish packet acquisition inside its original300ms choice',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),head=deferredRead();let assetSignal;
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')||path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));});await settle();await new Promise(resolve=>setTimeout(resolve,5));const selecting=controller.showDemonstration();assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.equal(assetSignal.aborted,false);asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Recorded replay/);
@@ -2576,5 +2576,26 @@ test('late binding and result hashes cannot mutate a newly selected operation se
   const controller=ui.mount(f.container,{fetch:api.fetch});
   try {await settle();await controller.showDemonstration();await hash.started;await controller.showDemonstration(true,'reference','recorded');await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');const before=f.host.innerHTML;hash.release();await settle();await settle();assert.equal(f.host.innerHTML,before,`${phase} completion keeps the replacement session unchanged`);assert.equal(f.attributes.get('data-au-operation-result-verified'),'false');assert.doesNotMatch(f.status.textContent,/stopped|differs/);}
   finally {controller.destroy();future.resolve(response({}));hash.restore();await settle();}
+ }
+});
+
+
+test('next-case prefetch retains the live503 to recorded trace fallback and cancels its bounded owner on exit',async t=>{
+ const f=operationOpeningDOM(),first=operationOpeningFixture(),next=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[1].claim_id);let recordedSignal,cancelled=0;
+ const api=fakeApi({handle:async(path,init)=>{const native=path.includes(next.id)?next:first;if(path.endsWith('/replay?through_seq=0'))return response(native.zero);if(path.includes('/snapshot?'))return response(native.snapshot);if(path.includes(next.id)&&path.includes('/operations?mode=live'))return response({detail:'Live unavailable'},503);if(path.includes(next.id)&&path.includes('/operations?mode=recorded')){recordedSignal=init.signal;return {ok:true,status:200,body:new ReadableStream({start(controller){controller.enqueue(new TextEncoder().encode(JSON.stringify({...next.binding,mode:'recorded_operations'})+'\n'));},cancel(){cancelled++;}})};}if(path.includes('/operations?'))return pendingOperationResponse(first.binding);}});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.showDemonstration();await waitFor(()=>Boolean(recordedSignal));assert.equal(api.calls.filter(row=>row.path.includes(next.id)&&row.path.includes('/operations?')).length,2);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=/);await controller.showWork();await settle();assert.equal(recordedSignal.aborted,true);assert.equal(cancelled,1);
+});
+
+
+test('the300ms choice accepts verified Live before the cutoff and commits Recorded at the cutoff without a late splice',async t=>{
+ for(const liveFirst of [true,false]) {
+  const f=operationOpeningDOM(),packet=recordedPacketFixture(),opening=deferredRead(),head=deferredRead(),fallback=deferredRead(),deadlines=[];
+  const timeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===300){const handle=timeout(()=>{},60000);deadlines.push({fn,handle});return handle;}return timeout(fn,ms,...args);};
+  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')?head.promise:path.endsWith('/replay?through_seq=4')?fallback.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
+  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});
+  try {assert.equal(await controller.recordedPacketReady,true);const selecting=controller.showDemonstration();await settle();assert.equal(deadlines.length,1,'one300ms timer owns the entire choice');
+   if(liveFirst){opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);}
+   else {await new Promise(resolve=>timeout(resolve,50));clearTimeout(deadlines[0].handle);deadlines[0].fn();await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');await waitFor(()=>api.calls.some(row=>row.path.includes(packet.native.id)&&row.path.endsWith('/replay?through_seq=4')));const before=f.host.innerHTML;opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before);assert.match(f.host.innerHTML,/Recorded replay/);}
+  } finally {controller.destroy();opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));fallback.resolve(response(packet.native.replay));for(const timer of deadlines)clearTimeout(timer.handle);globalThis.setTimeout=timeout;await settle();}
  }
 });
