@@ -163,6 +163,37 @@ function savedReadTuple() {
   {claim_id:saved.claim_id,seq:3,revision:3,state_sha256:saved.state_sha256,event_sha256:hash('3'),previous_event_sha256:hash('2'),kind:'action.completed',payload:saved.actions[0]}];
  return {state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256,node_capabilities:{branch:{authorized:true,id:'local_assessment.record'}}},cursor:saved.revision,history};
 }
+// Authored cryptographic/control-flow fixture, not a native reducer or timing receipt.
+function savedSnapshotAssetFixture(change=()=>{}) {
+ const tuple=savedReadTuple(),body={mode:'saved',state:tuple.state,projection:tuple.projection,events:[]};let previous=null,previousState=null;
+ for(let index=0;index<tuple.history.length;index++){
+  const command={kind:tuple.history[index].kind,payload:tuple.history[index].payload||{},expected_revision:index,expected_state_sha256:previousState};
+  const material={contract:'casepath.autonomous-event/1.0.0',session_id:'saved-asset-test',claim_id:tuple.state.claim_id,...command,sequence:index+1,previous_event_sha256:previous,created_at:`2026-10-15T00:00:0${index}+00:00`,idempotency_key:`saved-test-${index}`,command_sha256:sha(ui.canonicalJSON(command))};
+  const event_sha256=sha(ui.canonicalJSON(material)),resulting_state_sha256=sha(`saved-result-${index}`);
+  body.events.push({...material,event_sha256,resulting_state_sha256,seq:index+1,revision:index+1,timestamp:material.created_at,state_sha256:resulting_state_sha256});previous=event_sha256;previousState=resulting_state_sha256;
+ }
+ body.state.last_event_sha256=previous;change(body);
+ const material={...body.state};delete material.state_sha256;body.state.state_sha256=sha(ui.canonicalJSON(material));body.projection.state_sha256=body.state.state_sha256;
+ const last=body.events.at(-1);last.state_sha256=last.resulting_state_sha256=body.state.state_sha256;
+ body.current_revision=body.state.revision;body.current_state_sha256=body.state.state_sha256;body.current_event_sha256=body.cursor_sha256=body.state.last_event_sha256;
+ const bytes=Buffer.from(JSON.stringify(body)),descriptor={url:'/saved-history-test.json',bytes:bytes.length,sha256:sha(bytes),claim_id:body.state.claim_id,revision:body.state.revision,state_sha256:body.state.state_sha256,event_sha256:body.state.last_event_sha256,deployment_commit:null,history_kind:'native_fixture'};
+ return {body,bytes,descriptor};
+}
+
+test('saved snapshot assets pin exact bytes publication identity native commands full history and state',async()=>{
+ const asset=savedSnapshotAssetFixture(),before=JSON.stringify(asset.body),checked=await ui.checkedSavedSnapshotAsset(asset.bytes,asset.descriptor,true);
+ assert.deepEqual(checked,{state:asset.body.state,projection:asset.body.projection,cursor:3,history:asset.body.events});assert.equal(JSON.stringify(asset.body),before);
+ await assert.rejects(ui.checkedSavedSnapshotAsset(asset.bytes,asset.descriptor),/identity/,'native inputs require explicit opt-in');
+ const published={...asset.descriptor,history_kind:'published_public_synthetic',deployment_commit:'f'.repeat(40)};await ui.checkedSavedSnapshotAsset(asset.bytes,published);
+ for(const patch of [{bytes:asset.bytes.length-1},{sha256:hash('0')},{claim_id:'another-claim'},{revision:2},{state_sha256:hash('0')},{event_sha256:hash('0')},{deployment_commit:'not-a-commit'},{history_kind:'native_fixture'}])await assert.rejects(ui.checkedSavedSnapshotAsset(asset.bytes,{...published,...patch}),undefined,JSON.stringify(patch));
+ const changed=Buffer.from(asset.bytes);changed[changed.length-2]^=1;await assert.rejects(ui.checkedSavedSnapshotAsset(changed,asset.descriptor,true),/identity/);
+});
+
+test('saved snapshot assets reject resealed partial forked aliased commands source text and citation bodies',async()=>{
+ const changes=[body=>body.events.shift(),body=>body.events.reverse(),body=>delete body.events[1].previous_event_sha256,body=>body.events[1].previous_event_sha256=hash('0'),body=>body.events[1].expected_state_sha256=hash('0'),body=>body.events[1].payload.changed=true,body=>body.events[1].seq=7,body=>body.events[1].timestamp='changed',body=>body.events[1].state_sha256=hash('0'),body=>body.events[1].event_sha256=hash('0'),body=>body.state.acquired_sources[0].text+=' changed',body=>body.state.facts[0].citations[0].quote='changed',body=>body.mode='replay',body=>body.provenance={}];
+ for(const change of changes){const asset=savedSnapshotAssetFixture(change);await assert.rejects(ui.checkedSavedSnapshotAsset(asset.bytes,asset.descriptor,true));}
+ const asset=savedSnapshotAssetFixture();asset.body.state.title='changed without state hash';const bytes=Buffer.from(JSON.stringify(asset.body));await assert.rejects(ui.checkedSavedSnapshotAsset(bytes,{...asset.descriptor,bytes:bytes.length,sha256:sha(bytes)},true),/state hash/);
+});
 
 test('saved read copies retain exact accepted source spans receipts and rejected historical provider quotes without admitting them as facts',async()=>{
  const tuple=savedReadTuple(),before=JSON.stringify(tuple),checked=await ui.checkedSavedSnapshot(tuple,tuple.state.claim_id);assert.equal(checked,tuple);assert.equal(JSON.stringify(tuple),before);
@@ -1050,6 +1081,50 @@ function routingFixture(t,fragment='') {
 function navClick(f,value) {
  const target={dataset:{auNav:value},closest(){return this;},hasAttribute:attr=>attr==='data-au-nav'};f.listeners.get('click')({target});
 }
+
+test('ready saved snapshot assets paint derivative work immediately while fresh GET stays independent',async t=>{
+ routingFixture(t);const f=operationOpeningDOM(),asset=savedSnapshotAssetFixture(),fresh=deferredRead();
+ const api=fakeApi({handle:async path=>path.endsWith('/saved-history-test.json')?new Response(asset.bytes):path.endsWith('/claims/claim-a/snapshot?after=0')?fresh.promise:null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,savedSnapshot:asset.descriptor,allowNativeSavedSnapshot:true});t.after(()=>controller.destroy());assert.equal(await controller.savedSnapshotReady,true);
+ const opening=controller.openClaim('claim-a');assert.match(f.host.innerHTML,new RegExp(`data-au-revision="3" data-au-state-sha="${asset.body.state.state_sha256}"`));assert.equal(f.attributes.get('data-au-read-state'),'refreshing');assert.doesNotMatch(f.host.innerHTML,/data-au-operation-stage|data-au-current-operation/);
+ assert.equal(api.calls.filter(row=>row.path.endsWith('/snapshot?after=0')).length,1);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')||row.init.method==='POST').length,0);
+ const live=structuredClone(asset.body);live.projection.node_capabilities.branch.authorized=false;fresh.resolve(response(live));await opening;
+ f.listeners.get('click')({target:control(f,'data-au-detail','activity')});f.listeners.get('click')({target:control(f,'data-au-inspect','claim')});assert.equal(JSON.parse(f.recordPre.textContent).projection.node_capabilities.branch.authorized,false);
+});
+
+test('an immediate saved selection retains pending asset admission without waiting or moving focus',async t=>{
+ routingFixture(t);const f=dom(),asset=savedSnapshotAssetFixture(),pending=deferredRead(),fresh=deferredRead();let assetSignal;
+ const api=fakeApi({handle:async(path,init)=>path.endsWith('/saved-history-test.json')?(assetSignal=init.signal,pending.promise):path.endsWith('/claims/claim-a/snapshot?after=0')?fresh.promise:null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,savedSnapshot:asset.descriptor,allowNativeSavedSnapshot:true});t.after(()=>{controller.destroy();fresh.resolve(response(asset.body));});await waitFor(()=>Boolean(assetSignal));controller.openClaim('claim-a');const focus={};f.container.ownerDocument.activeElement=focus;
+ assert.equal(assetSignal.aborted,false);assert.equal(api.calls.filter(row=>row.path.endsWith('/snapshot?after=0')).length,1);assert.doesNotMatch(f.host.innerHTML,/data-au-state-sha=/);
+ pending.resolve(new Response(asset.bytes));assert.equal(await controller.savedSnapshotReady,true);await settle();assert.match(f.host.innerHTML,new RegExp(asset.body.state.state_sha256));assert.equal(f.container.ownerDocument.activeElement,focus);
+});
+
+test('saved snapshot preload is public-only and an unavailable asset leaves ordinary GET opening intact',async t=>{
+ routingFixture(t);const f=dom(),asset=savedSnapshotAssetFixture(),api=fakeApi({handle:async path=>path.endsWith('/saved-history-test.json')?new Response(asset.bytes):null});
+ const descriptor={...asset.descriptor,history_kind:'published_public_synthetic',deployment_commit:'f'.repeat(40)},controller=ui.mount(f.container,{fetch:api.fetch,savedSnapshot:descriptor});t.after(()=>controller.destroy());assert.equal(await controller.savedSnapshotReady,false);assert.equal(api.calls.filter(row=>row.path.endsWith('/saved-history-test.json')).length,0);
+ await controller.openClaim('claim-a');assert.match(f.host.innerHTML,/data-au-revision="3"/);assert.equal(api.calls.filter(row=>row.path.endsWith('/claims/claim-a')).length,1);
+});
+
+test('saved snapshot acquisition stops a stalled body after its owned fifteen second deadline',async t=>{
+ t.mock.timers.enable({apis:['setTimeout']});routingFixture(t);const f=dom(),asset=savedSnapshotAssetFixture();let signal,cancelled=false;
+ const api=fakeApi({handle:async(path,init)=>path.endsWith('/saved-history-test.json')?(signal=init.signal,new Response(new ReadableStream({cancel(){cancelled=true;}}))):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,savedSnapshot:asset.descriptor,allowNativeSavedSnapshot:true});t.after(()=>controller.destroy());await settle();assert.ok(signal);t.mock.timers.tick(14999);assert.equal(signal.aborted,false);t.mock.timers.tick(1);assert.equal(await controller.savedSnapshotReady,false);assert.equal(signal.aborted,true);assert.equal(cancelled,true);
+});
+
+for(const scenario of ['navigation','replay','inspection','hidden','fresh-first'])test(`late saved snapshot admission cannot replace ${scenario} work`,async t=>{
+ routingFixture(t);const f=dom(),asset=savedSnapshotAssetFixture(),pending=deferredRead(),fresh=deferredRead();let assetSignal;
+ const api=fakeApi({handle:async(path,init)=>path.endsWith('/saved-history-test.json')?(assetSignal=init.signal,pending.promise):path.endsWith('/claims/claim-a/snapshot?after=0')?fresh.promise:path.includes('/replay?')?new Promise(()=>{}):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,savedSnapshot:asset.descriptor,allowNativeSavedSnapshot:true});t.after(()=>{controller.destroy();fresh.resolve(response(asset.body));});await waitFor(()=>Boolean(assetSignal));const opening=controller.openClaim('claim-a');
+ if(scenario==='navigation')await controller.showKnowledge();
+ if(scenario==='replay')controller.openClaim('claim-a',true,{mode:'replay',through:1});
+ if(scenario==='inspection')f.listeners.get('click')({target:control(f,'data-au-detail','activity')});
+ if(scenario==='hidden')f.container.ownerDocument.hidden=true;
+ if(scenario==='fresh-first'){const live=structuredClone(asset.body);live.state.title='Fresh current wins';live.projection.node_capabilities.branch.authorized=false;fresh.resolve(response(live));await opening;}
+ const before=f.host.innerHTML,focus={};f.container.ownerDocument.activeElement=focus;pending.resolve(new Response(asset.bytes));await controller.savedSnapshotReady;await settle();assert.equal(f.host.innerHTML,before);assert.equal(f.container.ownerDocument.activeElement,focus);
+ if(['navigation','replay'].includes(scenario))assert.equal(assetSignal.aborted,true);
+ assert.equal(api.calls.filter(row=>row.path.includes('/operations?')||row.init.method==='POST').length,0);
+});
 
 test('Cases page, domain and search navigation retains URL state and Back while resetting changed refinements',async t=>{
  const routing=routingFixture(t,'#autonomous/cases?page=4'),f=dom(),rows=Array.from({length:150},(_,index)=>({claim_id:`original-${index}`,origin:'canonical_original',title:`Original case ${index}`,source_preview:{text:index===149?'Rare original intake passage':'Original intake'},status:'not_started',browse_metadata:{domain:index<50?'defect_mold_heating':index<100?'lease_termination_dispute':'rent_increase_dispute'}})),before=JSON.stringify(rows);
