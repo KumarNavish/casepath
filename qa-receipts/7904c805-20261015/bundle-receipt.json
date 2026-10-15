@@ -1,0 +1,28 @@
+{
+  "candidate": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "manifest_sha256": "a0a63dedc5c22a1618bc4f179f8428c3391d21e098588cfb25bb2ed4d661d25e",
+  "selected_layout": "selected/shard1..shard6, same standard raw collection/phase/JUnit/source layout",
+  "selected_attempts": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "test_reruns": 0,
+  "known_skip_count": 10,
+  "full_inventory": 2571,
+  "cloud_ids_sha256": "b3852753031b295c88a0059048233f8600d3e45dc0ace5f9a83b3127dc5a0467",
+  "mac_attestation_path": "coordinator/mac-attestation.json",
+  "mac_raw_receipts_status": "Explicit owner attestation; actual127phase/JUnit receipts remain Mac-local for independent combined reconciliation",
+  "targeted_evidence_commit": "8f2a99c33764fd1165942363c4ffbea3d9102090",
+  "targeted_evidence_path": "qa-receipts/visible-agent-stage-20261015/final-targeted",
+  "corrected_frames_commit": "f0e8a9ed93b3df6b3fc4b291bb80e0653bd51a69",
+  "corrected_frames_path": "qa-receipts/visible-agent-stage-20261015/final-c841",
+  "packaging_only_failure_preserved": "coordinator/packaging-map-attempt1.log (empty JUnit classname; metadata mapper corrected to existing strict unique-name branch; no test rerun or raw data change)",
+  "actual_peak_heavy_processes": 3,
+  "provider_or_production_access_or_deployment": false,
+  "source_edits": false,
+  "finished_epoch": 1792054062.762657
+}

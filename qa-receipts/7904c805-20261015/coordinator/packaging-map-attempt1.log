@@ -1,0 +1,6 @@
+Artifact mapping only; no pytest rerun.
+Traceback (most recent call last):
+  File "<stdin>", line 11, in <module>
+AssertionError: ({'classname': '', 'name': 'test_required_leakage_markers_are_detected[generated attachment-generated]', 'time': '0.001'}, [])
+
+Diagnosis: XML classname may be empty. Existing gate reconciliation already handles this by requiring a unique exact testcase-name match among assigned IDs. Artifact mapper omitted that existing branch; corrected to match the established verifier. Raw JUnit/test results unchanged.

@@ -1,0 +1,51 @@
+{
+  "candidate": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "cwd": "/workspace/casepath-release-ae0-shard5",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/v5h5",
+    "TMPDIR": "/workspace/v5t5",
+    "TMP": "/workspace/v5t5",
+    "TEMP": "/workspace/v5t5",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-visible-agent-gate-7904c805-20261015/shard5/pycache",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-visible-agent-gate-7904c805-20261015/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "UV_PYTHON_INSTALL_DIR": "/workspace/.local/share/uv/python"
+  },
+  "started_epoch": 1792052734.53806,
+  "before_head": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "before_status": "",
+  "manifest_sha256": "a0a63dedc5c22a1618bc4f179f8428c3391d21e098588cfb25bb2ed4d661d25e",
+  "canonical_fetched_head": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "canonical_fetch_source": "/workspace/casepath-operations-review-20261013",
+  "canonical_local_fetch_log": "/workspace/casepath-visible-agent-gate-7904c805-20261015/shard5/fetch.log",
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "internal_launcher_env_contract": "Exact source preserved: stdlib env-i probes omit temp aliases; locked/product env-i uses controlled runtime TMPDIR only.",
+  "exit_code": 0,
+  "finished_epoch": 1792052742.6728435,
+  "after_head": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "after_status": "",
+  "duration_seconds": 8.134783506393433
+}

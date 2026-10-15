@@ -1,0 +1,142 @@
+{
+  "candidate": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "full_inventory": 2571,
+  "cloud_assigned": 2444,
+  "cloud_passed": 2434,
+  "cloud_known_skipped": 10,
+  "cloud_failed": 0,
+  "mac_attested_passed": 127,
+  "combined_passed_with_mac_attestation": 2561,
+  "mac_raw_receipts_not_local": true,
+  "no_overlap_or_gaps": true,
+  "selected_attempts_per_shard": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "authorized_full_shard_rechecks": 0,
+  "initial_setup_failures_preserved": false,
+  "source_capsule_unchanged": true,
+  "known_skips_exact_phase_file_line_reason": true,
+  "shards": [
+    {
+      "shard": 1,
+      "tests": 9,
+      "passed": 9,
+      "skipped": 0,
+      "runner_seconds": 604.2464764118195,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 2,
+      "tests": 458,
+      "passed": 458,
+      "skipped": 0,
+      "runner_seconds": 532.5158700942993,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 3,
+      "tests": 325,
+      "passed": 316,
+      "skipped": 9,
+      "runner_seconds": 517.3732061386108,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 4,
+      "tests": 441,
+      "passed": 441,
+      "skipped": 0,
+      "runner_seconds": 513.0506207942963,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 5,
+      "tests": 682,
+      "passed": 682,
+      "skipped": 0,
+      "runner_seconds": 372.54799151420593,
+      "all_raw_phases_and_junit_ids_exact": true
+    },
+    {
+      "shard": 6,
+      "tests": 529,
+      "passed": 528,
+      "skipped": 1,
+      "runner_seconds": 368.5286543369293,
+      "all_raw_phases_and_junit_ids_exact": true
+    }
+  ],
+  "known_skips": {
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 457,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 548,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 559,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 579,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 592,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 610,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 636,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 646,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 696,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows": {
+      "when": "call",
+      "file": "test_document_lifecycle_shadow_v1.py",
+      "line": 605,
+      "reason": "Skipped: frozen independent-transition packet is not available"
+    }
+  },
+  "actual_peak_heavy_processes": 3,
+  "wall_seconds": 1030.6146976947784,
+  "selected_cloud_ids_sha256": "b3852753031b295c88a0059048233f8600d3e45dc0ace5f9a83b3127dc5a0467",
+  "raw_phase_rows": 7323,
+  "all_six_first_attempts": true,
+  "source_manifest_sha256": "a0a63dedc5c22a1618bc4f179f8428c3391d21e098588cfb25bb2ed4d661d25e"
+}
