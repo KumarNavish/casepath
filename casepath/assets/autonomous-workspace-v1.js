@@ -1091,6 +1091,7 @@
     return JSON.stringify(value);
   }
   const OPERATIONS_CONTRACT = 'casepath.operations-stream/1.0.0';
+  const OPERATION_CHOICE_GRACE_MS = 300;
   const OPERATION_INSTRUMENTATION = 'casepath.reference-operations/1.1.0';
   const OPERATION_FRAME_BYTES = 2 * 1024 * 1024, OPERATION_HISTORY_BYTES = 8 * 1024 * 1024;
   async function* operationFrames(response, signal = null) {
@@ -2973,7 +2974,17 @@
           opening = {claimId:id,generation,response,head,referenceReady:true,...verification};
         }
         if (!active()) throw new Error('The next operation opening was cancelled.');
-        const prepared = owner.operationPreparation, delivery = await prepared.delivery, first = await delivery?.buffer?.first;
+        const prepared = owner.operationPreparation; let delivery = await prepared.delivery;
+        if (!active()) throw new Error('The next operation opening was cancelled.');
+        if (delivery && !delivery.response.ok && !prepared.recorded) {
+          await delivery.response.body?.cancel?.();
+          const response = await fetcher(base+`/claims/${key(id)}/operations?mode=recorded`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:prepared.controller.signal});
+          if (!active()) { await response.body?.cancel?.(); throw new Error('The next operation opening was cancelled.'); }
+          delivery = {response,buffer:response.ok ? bufferedOperations(response,prepared.controller.signal) : null};
+          prepared.recorded = true; owner.useRecorded = true; prepared.delivery = Promise.resolve(delivery);
+        }
+        if (!delivery?.response.ok) throw new Error('The next operation trace is unavailable.');
+        const first = await delivery.buffer.first;
         if (!active()) throw new Error('The next operation opening was cancelled.');
         const openingBinding = checkedOperationBinding(first,{...opening.head,...opening.operationBinding},opening.verifiedReplayStart);
         return {...opening,generation,openingBinding,operationBuffer:delivery.buffer,operationPreparation:prepared};
@@ -3077,6 +3088,7 @@
             if (next && !session.skip && !reduced?.matches) {
               presentationOpening(session,next.claim_id);
               if (!await operationOutcomeHold(session,token)) return;
+              if (session.skip || reduced?.matches) { stopPresentation(); renderClaim(); primeClaimReads(token); return; }
               session.operationStarted = false; session.operationOpeningAnchor = null; session.previousAttempts = []; session.useRecorded = session.operations === 'recorded'; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null; session.verifiedHeadState = null; session.verifiedJournal = null; session.operationBinding = null; session.plannedProcess = null;
               await openPresentationCase(session,true,session.index+1); return;
             }
@@ -3193,7 +3205,10 @@
         session.preparing = token;
         try {
           const opening = await presentationOpening(session,id);
-          if (session.mode === 'operations' && token === epoch && generation === readGeneration && (demoSession === session || pausedPresentation === session) && !await operationGate(session,token)) return;
+          if (session.mode === 'operations' && token === epoch && generation === readGeneration && (demoSession === session || pausedPresentation === session)) {
+            if (!await operationGate(session,token)) return;
+            if (session.skip || reduced?.matches) { stopPresentation(); renderClaim(); return; }
+          }
           if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
           if (session.collection !== 'legacy' && !opening.referenceReady) {
             const verification = {replayHead:opening.head,replayStart:opening.response.replay_start};
@@ -3324,7 +3339,7 @@
       })(); packetCandidate.catch(() => {});
       if (!prepared) {
         let timer;
-        await Promise.race([packetCandidate.catch(() => {}),new Promise(resolve => { timer=root.setTimeout(resolve,500); })]); root.clearTimeout(timer);
+        await Promise.race([packetCandidate.catch(() => {}),new Promise(resolve => { timer=root.setTimeout(resolve,OPERATION_CHOICE_GRACE_MS); })]); root.clearTimeout(timer);
         if (!active()) throw new Error('The selected opening changed.');
         if (!packetOpening) { choice.abort(); return null; }
         return selectRecorded();
@@ -3342,7 +3357,7 @@
         return openingResult(response,head,verification);
       })(); liveCandidate.catch(() => {});
       let timer;
-      const winner = await Promise.race([liveCandidate.catch(() => new Promise(() => {})),new Promise(resolve => { timer=root.setTimeout(() => resolve(null),500); })]);
+      const winner = await Promise.race([liveCandidate.catch(() => new Promise(() => {})),new Promise(resolve => { timer=root.setTimeout(() => resolve(null),OPERATION_CHOICE_GRACE_MS); })]);
       root.clearTimeout(timer);
       if (!active()) throw new Error('The selected opening changed.');
       if (winner) { choice.abort(); return winner; }
