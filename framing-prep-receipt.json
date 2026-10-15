@@ -1,0 +1,28 @@
+{
+  "status": "MEDIA_RENDERER_PREP_ONLY_AWAITING_REPLACEMENT_CAPTURE",
+  "preserved_film_commit": "dd78719406f21d9be1b4958788edb6a63df07a35",
+  "renderer_sha256": "bb5cd70ab5f8f616c35bb3614721c9fb3273174b3a7c3401f594a61d0b6b3ead",
+  "scope": "Media renderer only; no product changes, browser/product calls, frame rendering or encoding.",
+  "target_seconds": 45,
+  "active_framing": "Fit actual source+destination+token with28CSSpx margin, up to2.2x and >=1.4 when union permits; center region vertically; omit transport. FullUI on inspection/Resume/result or native pan exceptions.",
+  "unchanged": "42px captions/64px separate gutter, actual protected work1x, exact endcard, source commit binding and separate-final-still provenance",
+  "metadata_only_check": {
+    "input": "Prior0a213e4 capture metadata only; not corrected-release media acceptance",
+    "capture_error": null,
+    "input_json_sha256": "73ab7b172a56b3c1c100005f940021cd928a6b889490fcfcdd5692bfc92a4393",
+    "active_samples_checked": 77,
+    "crop_inside_actual_viewport": true,
+    "full_source_destination_preserved": true,
+    "transport_omitted": true,
+    "vertical_region_centered": true,
+    "zoom_range": [
+      2.162527453961818,
+      2.2
+    ],
+    "native_pan_fullUI_exceptions": 5,
+    "planned_seconds": 45.0,
+    "native_pixels_read": false,
+    "encoded": false
+  },
+  "next": "Use replacement real capture only after corrected product gate/publish; run actual pixel/branding/caption/framing review before encode."
+}
