@@ -726,7 +726,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace [data-au-stage-view] .au-work-head { display:block; }
   .au-workspace [data-au-stage-view] .au-work-controls { justify-content:flex-start; padding-top:10px; }
   .au-workspace .au-stage-layout { display:grid; grid-template-columns:minmax(0,1fr); gap:20px; }
-  .au-workspace .au-stage-source .au-operation-passage { padding:20px 18px; font-size:18px; max-height:420px; min-height:280px; }
+  .au-workspace .au-stage-source .au-operation-passage { padding:20px 18px; font-size:18px; max-height:min(340px,38dvh); min-height:220px; }
   .au-workspace .au-stage-process { grid-column:1; grid-row:2; margin-top:0; }
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-process .au-graph { flex-direction:row; gap:16px; padding:12px 4px; }
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-graph-rank { width:260px; flex:0 0 260px; }
