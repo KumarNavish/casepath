@@ -1363,6 +1363,10 @@
     if (/small.*(?:tenant|maintenance)|tenant.*cause/u.test(meaning)) { const first = sentences.findIndex(value => /outside.*small.*maintenance/iu.test(value)), last = sentences.findIndex(value => /no tenant.*misuse/iu.test(value)); if (first >= 0 && last >= first) { const begin = pin.quote.indexOf(sentences[first]); sentence = pin.quote.slice(begin,pin.quote.indexOf(sentences[last],begin)+sentences[last].length); } }
     const clauseStart = sentence.search(clausePattern); let clause = sentence.slice(Math.max(0,clauseStart));
     if (compact) clause = clause.match(/CHF\s*[\d'.,]+|\d+(?:[.,]\d+)?\s*°?C|(?:one|two|three|four|five|\d+)\b.{0,55}?\breports?\b/iu)?.[0] || clause;
+    if (compact) {
+      const grounded = /residential_tenancy_scope/u.test(meaning) ? pin.quote.match(/(?:indefinite\s+ordinary\s+residential\s+lease|ordinary\s+residential\s+lease|residential\s+tenancy)/iu) : /landlord_first_knowledge/u.test(meaning) ? pin.quote.match(/(?:We\s+)?received the first report(?:\s+on\s*\d{4}-\d{2}-\d{2})?/iu) : /continuing.*defect|repair_status/u.test(meaning) ? pin.quote.match(/no lasting repair has yet occurred/iu) : null;
+      if (grounded) clause=grounded[0];
+    }
     let chars = Array.from(clause).slice(0,compact ? 48 : /small.*(?:tenant|maintenance)|tenant.*cause/u.test(meaning) ? Array.from(clause).length : semantic || operation.kind !== 'fact.extract' ? 160 : Array.from(clause).length); if (chars.length < Array.from(clause).length) { const boundary = chars.lastIndexOf(' '); if (boundary > (compact ? 20 : 80)) chars = chars.slice(0,boundary); }
     const quote = chars.join(''), start_char = pin.start_char+Array.from(pin.quote.slice(0,pin.quote.indexOf(clause))).length;
     return {...pin,start_char,end_char:start_char+chars.length,quote};
@@ -2583,7 +2587,8 @@
     function positionOperationSource() {
       const pane = host.querySelector('.au-operation-passage');
       if (!pane) return;
-      if (doc.hidden || pane.hasAttribute('data-au-compact-excerpt')) return;
+      if (doc.hidden) return;
+      if (pane.hasAttribute('data-au-compact-excerpt')) { const source=pane.closest('.au-stage-source'), step=pane.closest('.au-stage-step'); if (source && step) step.style.setProperty('--au-stage-excerpt-height',`${source.offsetHeight}px`); return; }
       const operation = (operationPeek?.trace || operationTrace)?.current, mark = pane.querySelector('[data-au-operation-span]');
       if (mark && mark.dataset.auOperationSpan === operation?.id) {
         const frame = pane.getBoundingClientRect(), bounds = mark.getBoundingClientRect(), body = pane.querySelector('[data-au-source-body-anchor]'), floor = body ? pane.scrollTop+body.getBoundingClientRect().top-frame.top-28 : 0, top = pane.scrollTop + bounds.top-frame.top-Math.max(28,(frame.height-bounds.height)/2);
@@ -2616,7 +2621,7 @@
     }
     function positionOperationAttention(animate = true, sourceReady = false, pending = null) {
       if (!sourceReady) cancelStageRead();
-      const operation = operationTrace?.current, canvas = host.querySelector('[data-au-canvas]');
+      const ownerTrace=operationTrace, operation = ownerTrace?.current, canvas = host.querySelector('[data-au-canvas]');
       if (!operation || !canvas || detail !== 'step' || doc.hidden || reduced?.matches || operationTrace.finished || inspectionHold || host.querySelector('.au-operation-stage[data-au-stage-phase=map]')) { attentionMarker?.remove?.(); return; }
       const reading = operationReading(operationTrace), mark = host.querySelector('[data-au-operation-span]');
       if (sourceReady && (stageChoreography !== pending || pending?.cancelled)) return;
@@ -2644,8 +2649,8 @@
         operation.kind === 'fact.extract' ||
         operation.kind === 'document.check' && operation.result.assessment === 'sufficient' && list(current.evaluation?.documents).some(row => row.document_type === operation.object.id && row.review_state === 'sufficient'));
       const transfer = () => {
-        if (!canDock || operationTrace?.current !== operation || doc.hidden || inspectionHold || reduced?.matches || !dock.isConnected) { complete(); return; }
-        factTokenOperation = operation.id; operationTrace.dockPhases ||= new Map(); operationTrace.dockPhases.set(operation.id,'transfer'); dock.dataset.auDockPhase='transfer';
+        if (!canDock || operationTrace !== ownerTrace || ownerTrace.current !== operation || doc.hidden || inspectionHold || reduced?.matches || !dock.isConnected) { complete(); return; }
+        factTokenOperation = operation.id; ownerTrace.dockPhases ||= new Map(); ownerTrace.dockPhases.set(operation.id,'transfer'); dock.dataset.auDockPhase='transfer';
         const next = local(dockRect.left,dockRect.top), span = stageFactSpan(operation,true);
         factToken = doc.createElement('span'); factToken.className = 'au-operation-fact-token'; factToken.dataset.auOperationId = operation.id; factToken.dataset.auObjectType = documentDock ? 'document' : 'fact'; factToken.dataset.auObjectId = operation.object.id; factToken.setAttribute('aria-hidden','true');
         if (documentDock) { const title=doc.createElement('strong'), quote=doc.createElement('span'); title.textContent=reading.source.file_name || 'Original source'; quote.textContent=span.quote; factToken.append(title,quote); } else factToken.textContent = span.quote;
@@ -2659,7 +2664,7 @@
         const bend = Math.max(32,Math.min(100,Math.abs(next.x-origin.x)*.25));
         for (let step=1; step<=8; step++) { const t=step/8, u=1-t; const point={x:u*u*u*origin.x+3*u*u*t*(origin.x+bend)+3*u*t*t*(next.x-bend)+t*t*t*next.x,y:u*u*u*origin.y+3*u*u*t*(origin.y-24)+3*u*t*t*(next.y-24)+t*t*t*next.y}; flight.push({transform:transform(point),opacity:1,offset:.18+.82*t}); }
         factTokenAnimation = factToken.animate(flight,{duration:600,easing:'cubic-bezier(.18,.7,.25,1)',fill:'none'});
-        const token = factToken; factTokenAnimation.onfinish = () => { token.remove(); operationTrace.dockPhases.set(operation.id,'landed'); if (dock.isConnected) { dock.dataset.auDockPhase='landed'; dock.style.opacity=''; dock.removeAttribute('data-au-fact-docking'); const slot=dock.closest('[data-au-stage-document]'); if (slot) slot.dataset.auDocumentChecked='true'; } complete(); };
+        const token = factToken; factTokenAnimation.onfinish = () => { token.remove(); if (operationTrace !== ownerTrace || ownerTrace.current !== operation) { complete(); return; } ownerTrace.dockPhases.set(operation.id,'landed'); if (dock.isConnected) { dock.dataset.auDockPhase='landed'; dock.style.opacity=''; dock.removeAttribute('data-au-fact-docking'); const slot=dock.closest('[data-au-stage-document]'); if (slot) slot.dataset.auDocumentChecked='true'; } complete(); };
         node.dataset.auOperationId = operation.id; attentionPosition = next;
       };
       if (factTokenAnimation?.playState === 'running') return;

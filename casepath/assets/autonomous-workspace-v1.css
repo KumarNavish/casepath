@@ -724,3 +724,23 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 }
 .au-workspace .au-stage-unbound-source { max-width:380px; margin:0 auto 14px; }
 .au-workspace :is(.au-stage-fact,.au-stage-thumbnail):is([data-au-dock-phase=read],[data-au-dock-phase=transfer]) { visibility:hidden; }
+/* The active source sits beside its one real destination inside the map. */
+@media (min-width:901px) {
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-graph-rank:has(.au-stage-source) { width:640px; flex-basis:640px; }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) { display:grid; grid-template-columns:300px minmax(0,1fr); column-gap:22px; align-items:start; }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) > :is(.au-node,.au-stage-fact,.au-stage-slot) { grid-column:2; }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step > .au-stage-source { grid-column:1; grid-row:1 / span 20; margin-top:0; }
+}
+.au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport { height:calc(100dvh - 365px); min-height:260px; max-height:none; }
+.au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-stage-process .au-graph { padding-top:20px; }
+.au-workspace [data-au-stage-view] .au-stage-transport { margin-top:12px; }
+@media (min-width:901px) {
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) { min-height:var(--au-stage-excerpt-height,180px); }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step > .au-stage-source { position:absolute; left:0; top:0; width:300px; }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) > .au-stage-slot { grid-column:1; grid-row:1 / span 20; margin:calc(var(--au-stage-excerpt-height,180px) + 12px) 0 12px; }
+}
+@media (max-width:700px) {
+  .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport { height:calc(100dvh - 340px); }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] [data-au-stage-active=true] .au-stage-fact:not([data-au-current-fact=true]) { display:none; }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-thumbnail .au-stage-paper { display:none; }
+}
