@@ -1,0 +1,42 @@
+{
+  "status": "PASS_WITH_DISCLOSED_CAPTURE_LIMITS",
+  "source_commit": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "media_input_commit": "3cc0e31d23c0e05a2ae948771c39aaaf49bf426f",
+  "decoded_review_times_seconds": [
+    1.5,
+    4,
+    11,
+    15,
+    20,
+    24,
+    26,
+    34,
+    42
+  ],
+  "contact_sheet_source": "nine decoded MP4 frames, not preview renders",
+  "visual_findings": [
+    "Source excerpts and exact highlighted words remain readable beside their actual destination in active closeups.",
+    "Actual source dialog wraps the tenancy passage; full UI is preserved through source inspection and Resume.",
+    "Final full map shows six completed steps, three checked source cards, two-sentence outcome, CO articles and Defects and repairs Version 2.",
+    "Exact endcard is present at 42 seconds.",
+    "42px captions occupy a separate 64px gutter without covering evidence or controls."
+  ],
+  "camera_mode_counts": {
+    "full-ui": 15,
+    "active": 81,
+    "native-pan-transition-full-ui": 5,
+    "context": 5
+  },
+  "active_zoom_target": 2.0,
+  "native_capture_limitations": [
+    "Variable native frame cadence; 30fps output repeats actual captured pixels and is not a claim of native 30fps capture.",
+    "Five native pan-transition samples use full UI because part of the target is outside the original viewport.",
+    "Active crops may clip peripheral neighboring text; required active excerpt and destination are retained.",
+    "Final actual frame is CSS-resolution 1600x900, resampled at the same aspect ratio; its Pause control is preserved as captured."
+  ],
+  "all_captured_motion_speed": 1.0,
+  "editorial_final_hold_seconds": 10.36559510231018,
+  "encode_threads": 2,
+  "product_files_changed": false,
+  "new_api_browser_inference_or_tests": false
+}

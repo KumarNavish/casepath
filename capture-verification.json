@@ -1,0 +1,119 @@
+{
+  "status": "VERIFIED",
+  "source_commit": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+  "capture_json_sha256": "a1d7133452f361cd0ca459cc1c3315809b9b9724edf3328234857c5575021793",
+  "archive_sha256": "c2b8c023529a92f60afe774931398edfa472c09b18911127a91a5be5d528c27c",
+  "archive_bytes": 30972983,
+  "frame_count": 419,
+  "frame_dimensions": {
+    "1920x1080": 418,
+    "1600x900_final_frame": 1
+  },
+  "capture_error": null,
+  "capture_inputs_modified": false,
+  "public_ui_only": true,
+  "samples": 107,
+  "paused_samples": 2,
+  "paused_operations": [
+    167
+  ],
+  "events": [
+    {
+      "t": 1792102570.181,
+      "type": "click",
+      "x": 562.53125,
+      "y": 353,
+      "role": "choose-first-case"
+    },
+    {
+      "t": 1792102570.993,
+      "type": "film-start"
+    },
+    {
+      "t": 1792102587.747,
+      "type": "inspection-start"
+    },
+    {
+      "t": 1792102587.944,
+      "type": "click",
+      "x": 566,
+      "y": 499.53515625,
+      "role": "inspect-source"
+    },
+    {
+      "t": 1792102590.139,
+      "type": "inspection-held",
+      "op": 167
+    },
+    {
+      "t": 1792102593.917,
+      "type": "click",
+      "x": 1168.4453125,
+      "y": 206.921875,
+      "role": "close-source"
+    },
+    {
+      "t": 1792102594.962,
+      "type": "click",
+      "x": 524.70703125,
+      "y": 811.4453125,
+      "role": "resume"
+    },
+    {
+      "t": 1792102595.137,
+      "type": "resumed"
+    },
+    {
+      "t": 1792102600.38,
+      "type": "film-result",
+      "op": 823,
+      "checkedSlots": 3,
+      "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 2"
+    },
+    {
+      "t": 1792102602.05,
+      "type": "film-end"
+    }
+  ],
+  "final_sample": {
+    "op": 823,
+    "state": "completed",
+    "checkedSlots": 3,
+    "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 2",
+    "mode": "Recorded replay · Synthetic sources · No external action · as of 2025-02-21"
+  },
+  "initial_plan_failures": [
+    {
+      "error": "Final still capture interval mismatch",
+      "cause": "Optional declaration film-result time precedes last native JPEG by 247.405ms; native frames already contain completed outcome.",
+      "resolution": "Omitted optional result.png; preserved declaration and native timestamps."
+    },
+    {
+      "error": "Final JPEG dimensions differ from viewport/deviceScale expectation",
+      "cause": "418 native JPEGs are 1920x1080; final native JPEG is same-aspect 1600x900.",
+      "resolution": "Media renderer accepts only a final CSS-resolution frame; existing per-image resampling preserves its actual pixels/time."
+    }
+  ],
+  "renderer_sha256_executed": "c3a149117557da64a5c677943581846d1c05ce9008fca5aa135c4c02a0dd9573",
+  "renderer_sha256_packaged": "5d66744219c36daffbb7981437bd90a08821785bcf60903e4da5f02145db4d77",
+  "postencode_metadata_only_change": "Accurate native-versus-declared final hold wording; no video pixels changed.",
+  "command": [
+    "python3",
+    "render-agentic-v5.py",
+    "input/capture.json",
+    "--source-commit",
+    "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+    "--duration",
+    "45",
+    "--output",
+    "output",
+    "--encode"
+  ],
+  "subprocess_environment": {
+    "HOME": "/workspace/casepath-agentic-v5-render-5086624c-20261016/h",
+    "TMPDIR": "/workspace/casepath-agentic-v5-render-5086624c-20261016/t",
+    "TMP": "/workspace/casepath-agentic-v5-render-5086624c-20261016/t",
+    "TEMP": "/workspace/casepath-agentic-v5-render-5086624c-20261016/t"
+  },
+  "ffmpeg_encode_threads": 2
+}

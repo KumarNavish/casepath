@@ -377,7 +377,7 @@ class Movie:
             "source_range": [self.start, self.end], "target_seconds": self.args.duration,
             "planned_seconds": self.duration, "target_feasible_preserving_1x": self.feasible,
             "ui_seconds": self.ui_duration, "routine_speed": self.speed,
-            "editorial_final_image_hold_seconds": self.hold, "final_hold_rule": "Declared actual completed UI still held to requested target; native timeline unchanged",
+            "editorial_final_image_hold_seconds": self.hold, "final_hold_rule": ("Declared actual completed UI still held to requested target; native timeline unchanged" if self.final_still else "Last actual timestamped native frame repeated as an editorial hold; native timeline unchanged; no motion synthesized"),
             "final_visible_in_native_frames": self.native_final_visible,
             "separately_declared_actual_final_still": self.final_declaration,
             "endcard_seconds": ENDCARD, "endcard": END_TEXT,
@@ -398,7 +398,11 @@ class Movie:
         if index not in self.cache:
             with Image.open(self.paths[index]) as image:
                 expected = (round(self.cw * self.dpr), round(self.ch * self.dpr))
-                require(image.size == expected, f"Frame {index} size {image.size} differs from viewport/deviceScale {expected}")
+                # The supplied final native screenshot can use CSS resolution.
+                # Keep its actual pixels/time; only same-viewport resampling is allowed.
+                final_css = index == len(self.frames) - 1 and image.size == (round(self.cw), round(self.ch))
+                require(image.size == expected or final_css,
+                        f"Frame {index} size {image.size} differs from viewport/deviceScale {expected}")
                 self.cache[index] = image.convert("RGB")
             while len(self.cache) > 4:
                 self.cache.popitem(last=False)
