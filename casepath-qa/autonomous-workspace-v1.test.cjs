@@ -1038,11 +1038,13 @@ test('explicit fictional selection fills native files without submitting and can
 
 function routingFixture(t,fragment='') {
  const old=Object.fromEntries(['location','history','addEventListener','removeEventListener'].map(key=>[key,globalThis[key]])),listeners=new Map(),entries=['http://localhost:8123/?journey=autonomous'+fragment];let index=0,pushes=0;
+ const oldStorage=Object.getOwnPropertyDescriptor(globalThis,'sessionStorage'),storage=new Map();
+ Object.defineProperty(globalThis,'sessionStorage',{configurable:true,value:{getItem:key=>storage.get(String(key))??null,setItem(key,value){storage.set(String(key),String(value));},removeItem(key){storage.delete(String(key));}}});
  globalThis.location=new URL(entries[0]);
  globalThis.addEventListener=(type,fn)=>listeners.set(type,fn);globalThis.removeEventListener=(type,fn)=>{if(listeners.get(type)===fn)listeners.delete(type);};
  globalThis.history={pushState(_state,_unused,url){entries.splice(++index);entries.push(new URL(url,globalThis.location).href);globalThis.location=new URL(entries[index]);pushes++;},replaceState(_state,_unused,url){entries[index]=new URL(url,globalThis.location).href;globalThis.location=new URL(entries[index]);}};
  const fire=()=>{listeners.get('popstate')?.();listeners.get('hashchange')?.();};
- t.after(()=>Object.assign(globalThis,old));
+ t.after(()=>{Object.assign(globalThis,old);if(oldStorage)Object.defineProperty(globalThis,'sessionStorage',oldStorage);else delete globalThis.sessionStorage;});
  return {listeners,get pushes(){return pushes;},get hash(){return globalThis.location.hash;},external(fragment){globalThis.location.hash=fragment;fire();},back(){if(index>0){globalThis.location=new URL(entries[--index]);fire();}},forward(){if(index+1<entries.length){globalThis.location=new URL(entries[++index]);fire();}}};
 }
 function navClick(f,value) {
