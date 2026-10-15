@@ -1,0 +1,15 @@
+{
+  "classification": "Mac failure attested by parent coordination message; original Mac raw log has not been imported to Cloud. This is not the Cloud reproduction.",
+  "reported_runtime": "Node26.8.2",
+  "reported_priority": "nice15",
+  "reported_check": "Combined workspace module and Mac-owned entry QA,229passed/230total",
+  "reported_failure": {
+    "test": "selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends",
+    "line": 2020,
+    "assertion": "ordinary idle Knowledge warming resumes after leaving the selected run",
+    "expected": 1,
+    "actual": 0
+  },
+  "source_identity": "Mac integration tree not separately supplied to Cloud; coordinated workspace source was699119e.",
+  "cloud_reproduction": "Unchanged699119e under pinned Node24.19 with --experimental-webstorage reproduces223/224, same sole failure; see module-ambient-session-storage-699-negative.log."
+}

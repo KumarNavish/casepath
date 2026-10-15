@@ -1,0 +1,66 @@
+{
+  "source_commit": "bfc624ab148ccbdb1b279c39ba71df326ab2fb6d",
+  "branch": "codex/casepath-recorded-opening-prototype-20261015",
+  "scope": "QA-only routingFixture sessionStorage isolation,3added/1removedlines; product source byte-identical to699119e.",
+  "javascript_sha256": "364bc44c4a10a8a57afcaad28b765f476ba31ee2478d190b552fe9f7c74c74bb",
+  "module_sha256": "e50c5be19eb1ae8228158af944ae04175a5bb4dd9fa50360d1c417b8cdb9d283",
+  "cause": "All routed tests used the same localhost API identity. Ambient builtin sessionStorage retained a valid checked Knowledge cache from prior routed showKnowledge. restoreReadCache restored it; warmKnowledge directly called after loadClaims correctly skipped a duplicateGET. This was cross-test storage contamination, not setImmediate/idle callback ordering.",
+  "fix": "Each routingFixture owns fresh in-memory sessionStorage for that test, retained across same-test remount/navigation; original global property descriptor restored or removed at teardown. Every test assertion/bound remains unchanged.",
+  "runtime": {
+    "node": "v24.19.0",
+    "node26_installed": false,
+    "with_experimental_webstorage": {
+      "sessionStorage": "object",
+      "requestIdleCallback": "undefined"
+    }
+  },
+  "cwd": "/workspace/casepath-recorded-opening-prototype-20261015",
+  "environment": {
+    "TMPDIR": "/workspace/cp-cold-tmp",
+    "TMP": "/workspace/cp-cold-tmp",
+    "TEMP": "/workspace/cp-cold-tmp",
+    "CASEPATH_PYTHON": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python"
+  },
+  "commands": [
+    {
+      "source": "699119eaf808d94b7881f8b0ca44302cf5b96d56",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--experimental-webstorage",
+        "--test",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "passed": 223,
+      "failed": 1,
+      "exit": 1,
+      "log": "module-ambient-session-storage-699-negative.log",
+      "classification": "Exact same sole Knowledge0!==1 failure under builtin WebStorage; no mock idle scheduler."
+    },
+    {
+      "source": "bfc624ab148ccbdb1b279c39ba71df326ab2fb6d",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--experimental-webstorage",
+        "--test",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "passed": 224,
+      "failed": 0,
+      "exit": 0,
+      "log": "module-isolated-session-storage-final.log"
+    },
+    {
+      "source": "bfc624ab148ccbdb1b279c39ba71df326ab2fb6d",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "passed": 224,
+      "failed": 0,
+      "exit": 0,
+      "log": "module-isolated-storage-default-final.log"
+    }
+  ],
+  "limitations": "Cloud did not run Mac Node26.8.2 or Mac-owned combined entry QA. Mac original failure attestation remains separate. No product, browser, fullgate, entry/index/staticbuilder or asset changes."
+}
