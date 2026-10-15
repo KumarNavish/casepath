@@ -1,0 +1,133 @@
+commit 699119eaf808d94b7881f8b0ca44302cf5b96d56
+Author:     Navish <navish.kumar@unibas.ch>
+AuthorDate: Thu Oct 15 20:30:53 2026 +0000
+Commit:     Navish <navish.kumar@unibas.ch>
+CommitDate: Thu Oct 15 20:30:53 2026 +0000
+
+    fix(workspace): retain acquired packet verification at selection
+
+diff --git a/casepath-qa/autonomous-workspace-v1.test.cjs b/casepath-qa/autonomous-workspace-v1.test.cjs
+index 514d540..64f86db 100644
+--- a/casepath-qa/autonomous-workspace-v1.test.cjs
++++ b/casepath-qa/autonomous-workspace-v1.test.cjs
+@@ -1792,6 +1792,44 @@ function recordedPacketFixture(native=operationOpeningFixture(),bodies=null) {
+  return{native,packet,raw,seal,...seal(packet)};
+ }
+ 
++function delayedPacketHash(t,bytes) {
++ const subtle=globalThis.crypto.subtle,original=subtle.digest,started=deferredRead(),release=deferredRead();
++ subtle.digest=function(algorithm,input){if(Buffer.from(input).equals(bytes)){started.resolve();return release.promise.then(()=>original.call(subtle,algorithm,input));}return original.call(subtle,algorithm,input);};
++ let restored=false;const restore=()=>{if(!restored){restored=true;subtle.digest=original;release.resolve();}};t.after(restore);return{started:started.promise,release:()=>release.resolve(),restore};
++}
++
++test('complete acquired packet may finish local SHA inside the original500ms immediate-click choice',async t=>{
++ const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead(),snapshot=deferredRead(),timers=[];let assetSignal,liveSignal;
++ const originalTimeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===500)timers.push(Date.now());return originalTimeout(fn,ms,...args);};t.after(()=>{globalThis.setTimeout=originalTimeout;});
++ const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,new Response(packet.bytes)):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?(liveSignal=init.signal,pendingOperationResponse(packet.native.binding)):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});await hash.started;assert.match(f.host.innerHTML,/Cases|No .*claims|All cases/i,'Cases renders while acquired bytes await local verification');
++ const started=Date.now(),selecting=controller.showDemonstration();await settle();assert.equal(assetSignal.aborted,false,'exact acquired bytes remain eligible; no network is being awaited');assert.equal(timers.length,1,'the choice deadline starts before the pending asset SHA finishes');assert.ok(api.calls.some(row=>row.path.includes('/operations?mode=live')),'Live reads run concurrently with local packet verification');
++ const pause=f.host.querySelector('[data-au-demo-stop]');f.listeners.get('click')({target:pause});const focus={};f.container.ownerDocument.activeElement=focus;
++ await new Promise(resolve=>originalTimeout(resolve,300));hash.release();await selecting;assert.equal(timers.length,1,'verification cannot restart another500ms window');assert.ok(Date.now()-started<700);assert.equal(await controller.recordedPacketReady,true);assert.equal(liveSignal.aborted,true);assert.ok(f.host.querySelector('[data-au-demo-resume]'));assert.equal(f.container.ownerDocument.activeElement,focus);assert.doesNotMatch(f.host.innerHTML,/data-au-revision=|data-au-stage-fact=|Live rules-based check/);
++});
++
++test('complete acquired packet missing the500ms choice cannot paint or splice into later verified Live',async t=>{
++ const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead();
++ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));});await hash.started;const selecting=controller.showDemonstration();await new Promise(resolve=>setTimeout(resolve,550));opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;
++ hash.release();await controller.recordedPacketReady;await settle();await settle();assert.equal(f.host.innerHTML,before,'late local verification cannot join the completed choice');assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1);
++});
++
++test('ready verified Live wins while a completely acquired packet still awaits local SHA',async t=>{
++ const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes);
++ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());await hash.started;await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;hash.release();await controller.recordedPacketReady;await settle();assert.equal(f.host.innerHTML,before);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
++});
++
++test('navigation and hidden ownership cancel acquired packet verification without late Recorded paint',async t=>{
++ for(const hide of [false,true]){
++  const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead(),listeners=new Map();let assetSignal;f.container.ownerDocument.addEventListener=(name,fn)=>listeners.set(name,fn);
++  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,new Response(packet.bytes)):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
++  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});await hash.started;const selecting=controller.showDemonstration();
++  if(hide){f.container.ownerDocument.hidden=true;listeners.get('visibilitychange')();}else await controller.showKnowledge();const before=f.host.innerHTML;assert.equal(assetSignal.aborted,true);hash.release();assert.equal(await controller.recordedPacketReady,false);if(hide)await new Promise(resolve=>setTimeout(resolve,550));else{opening.resolve(response(packet.native.zero));await selecting;}await settle();assert.equal(f.host.innerHTML,before,'packet verification cannot repaint while cancelled; unrelated Live opening remains held');assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);controller.destroy();opening.resolve(response(packet.native.zero));await selecting;hash.restore();
++ }
++});
++
+ test('recorded packet selected codec preserves exact UTF8 numeric spellings escapes and CRLF without expanding other claims',async()=>{
+  const fixture=recordedPacketFixture(undefined,['{"value":-0,"other":0.0,"name":"\\u00e9"} \r\n','{"x":1.00e+3,"n":0e0}','{"v":"😀"}\r\n{"q":"\\\\u00e9"}\n']);
+  let root=fixture.packet.fragments.push('x')-1;for(let i=0;i<40;i++)root=fixture.packet.fragments.push([root,root])-1;
+diff --git a/casepath/assets/autonomous-workspace-v1.js b/casepath/assets/autonomous-workspace-v1.js
+index ffeb4ac..743dcdb 100644
+--- a/casepath/assets/autonomous-workspace-v1.js
++++ b/casepath/assets/autonomous-workspace-v1.js
+@@ -1856,7 +1856,7 @@
+     let storage = null, apiIdentity = null;
+     try { if (root.location?.href) { apiIdentity = new URL(base,root.location.href).href; storage = root.sessionStorage; } } catch (_) { /* Session storage is optional. */ }
+     const controllers = new Set();
+-    let recordedPacket = null, packetLoadController = null;
++    let recordedPacket = null, packetVerification = null, packetLoadController = null;
+     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
+     let motion = null, keyboard = false, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0, claimRenderComplete = false, renderedClaimId = null;
+     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map(), starts = new Map();
+@@ -2212,8 +2212,8 @@
+       if (pendingArrival) arrivals.set(current.claim_id,pendingArrival); else arrivals.delete(current.claim_id);
+       if (pendingControl) controls.set(current.claim_id,pendingControl); else controls.delete(current.claim_id);
+     }
+-    function leaveView() {
+-      if (!recordedPacket) packetLoadController?.abort();
++    function leaveView(keepAcquiredPacket = false) {
++      if (!recordedPacket && !(keepAcquiredPacket && packetVerification)) packetLoadController?.abort();
+       cancelWarmReads();
+       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); tetherGeometry = null;
+       if (view === 'intake') { intakeForm = host.querySelector('[data-au-intake]') || intakeForm; intakeForm?.remove?.(); }
+@@ -2472,14 +2472,14 @@
+       if (preferences.mode === 'replay') preferences = {...preferences,collection:replayCollection(id,preferences.collection)};
+       if (!preferences.demo) stopPresentation();
+       else { if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; if (demoSession) demoSession.preparing = null; }
+-      leaveView(); route(claimFragment(id,preferences),writeHistory);
++      leaveView(Boolean(preferences.demo && demoSession?.mode === 'operations' && !doc.hidden)); route(claimFragment(id,preferences),writeHistory);
+       operationPeek = null; host.removeAttribute?.('data-au-inspection-operation'); cancelStageMotion(); epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); operationTrace = null; factTokenOperation = null; factTokenAnimation?.cancel(); factToken?.remove?.(); attentionMarker?.remove?.(); attentionPosition = null; current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo || presentationMode === 'replay' ? 'demonstration' : 'work'); notice('');
+       claimRenderComplete = false; detail = preferences.detail || 'step';
+       for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute);
+       if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
+       let opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
+       const session = preferences.demo ? demoSession : null;
+-      const packetAtSelection = session?.mode === 'operations' ? recordedPacket : null;
++      const packetAtSelection = session?.mode === 'operations' ? recordedPacket || packetVerification : null;
+       if (session?.mode === 'operations' && !packetAtSelection) packetLoadController?.abort();
+       if (session?.mode === 'operations') { session.releasePlan = releaseOperationProcess(id); if (session.releasePlan) operationTrace = {releasePlan:session.releasePlan,rows:[],sources:new Map()}; }
+       if (demoSession) demoSession.verifiedOpening = null;
+@@ -3140,6 +3140,7 @@
+     async function loadRecordedPacket() {
+       const descriptor = options.recordedPacket;
+       if (!descriptor || disposed || doc.hidden || view !== 'work') return false;
++      let verification;
+       try {
+         await new Promise(resolve => root.setTimeout(resolve,0));
+         if (disposed || doc.hidden || view !== 'work') return false;
+@@ -3154,10 +3155,13 @@
+         finally { packetLoadController.signal.removeEventListener('abort',cancel); await reader.cancel().catch(() => {}); reader.releaseLock?.(); }
+         if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work') return false;
+         const bytes = new Uint8Array(length); let offset = 0; for (const chunk of chunks) { bytes.set(chunk,offset); offset+=chunk.byteLength; }
+-        const packet = await checkedRecordedPacket(bytes,descriptor,options.allowNativeRecordedPacket === true);
+-        if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work') return false;
++        if (length !== descriptor.bytes) throw new Error('Recorded packet acquisition is incomplete.');
++        verification = {controller:packetLoadController,promise:checkedRecordedPacket(bytes,descriptor,options.allowNativeRecordedPacket === true)}; packetVerification=verification;
++        const packet = await verification.promise;
++        if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work' && !(view === 'claim' && (demoSession || pausedPresentation)?.mode === 'operations')) return false;
+         recordedPacket = packet; return true;
+       } catch (_) { return false; }
++      finally { if (packetVerification === verification) packetVerification=null; }
+     }
+     function operationRequest(prepared, path) {
+       const identity = `${readGeneration}:${path}`, prior = readOwners.get(identity), promise = request(path), owner = readOwners.get(identity);
+@@ -3173,7 +3177,9 @@
+       const openingResult = (response, head, verification) => ({claimId:id,generation:readGeneration,response,head,referenceReady:true,verifiedHeadState:verification.verifiedHeadState,verifiedReplayStart:verification.verifiedReplayStart,verifiedJournal:verification.verifiedJournal,referenceAsOf:verification.referenceAsOf,operationBinding:verification.operationBinding,plannedProcess:verification.plannedProcess});
+       let packetOpening = null;
+       const packetCandidate = (async () => {
+-        const decoded = await decodeRecordedSession(packet,id,choice.signal), incoming = readReplay(decoded.opening,id,0), head = decoded.head;
++        const verified = packet.promise ? await packet.promise : packet;
++        if (!active() || packet.controller?.signal.aborted) return;
++        const decoded = await decodeRecordedSession(verified,id,choice.signal), incoming = readReplay(decoded.opening,id,0), head = decoded.head;
+         checkedReplayHead(incoming,{replayHead:head});
+         const full = await checkedAtomicOperationHead(decoded.head_snapshot,head,incoming.replay.replay_start,incoming.state), plannedProcess = await plannedOperationProcess(full.state), start = checkedReferenceReplayStart(incoming.replay.replay_start,full);
+         const operationBinding = {source_roster_sha256:full.state.source_roster_sha256,rule_set_sha256:referenceExecution(full.state)?.rule_set_sha256};

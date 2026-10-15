@@ -1,0 +1,64 @@
+{
+  "source_commit": "699119eaf808d94b7881f8b0ca44302cf5b96d56",
+  "source_branch": "codex/casepath-recorded-opening-prototype-20261015",
+  "push": "Succeeded exit0; remotea83ab05..699119e update output observed.",
+  "javascript_sha256": "364bc44c4a10a8a57afcaad28b765f476ba31ee2478d190b552fe9f7c74c74bb",
+  "module_sha256": "b3bb23bb54b9abb093e286c1dd98af3c5c0c09bba56496d7cf04b4efb88c7762",
+  "scope": "Complete-acquired packet localverification eligibility only; JS+existingmodule. No entry/index/staticbuilder/asset/CSS/storage/backend changes.",
+  "contract": "Only exactbytes+EOF produce a local verification holder. Selected operations preserve it through leaveView; unfinished network still aborts. LocalSHA/table verification and selected decode/head/binding admission run in the existing packet candidate concurrently with Live, under the original single500ms decision timer. Missing deadline or ready Live aborts this choice, so late verification cannot splice/paint; ordinary navigation/hidden cancellation remains.",
+  "validation": {
+    "focused": {
+      "passed": 6,
+      "failed": 0,
+      "log": "module-recorded-acquired-corrected.log"
+    },
+    "affected_module": {
+      "passed": 224,
+      "failed": 0,
+      "log": "module-recorded-acquired-affected-final.log"
+    },
+    "negative_before_fix": {
+      "source": "a83ab05bcf55ac390768e318cb829cd9d432a026",
+      "exit": 1,
+      "log": "module-recorded-acquired-a83-negative.log",
+      "assertion": "Complete-acquired pending localSHA was incorrectly aborted on immediate selection."
+    },
+    "preserved_attempt": {
+      "log": "module-recorded-acquired-first.log",
+      "passed": 5,
+      "failed": 1,
+      "classification": "Hidden cancellation assertion also released independent mismatched Livezero, which correctly retired release preview. Corrected QA holds unrelated Live response until cancellation assertion. No product change for this test failure."
+    }
+  },
+  "commands": {
+    "cwd": "/workspace/casepath-recorded-opening-prototype-20261015",
+    "environment": {
+      "TMPDIR": "/workspace/cp-cold-tmp",
+      "TMP": "/workspace/cp-cold-tmp",
+      "TEMP": "/workspace/cp-cold-tmp",
+      "CASEPATH_PYTHON": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python"
+    },
+    "focused_argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "--test",
+      "--test-name-pattern=complete acquired|completely acquired|acquired packet verification|unfinished recorded asset|idle recorded packet",
+      "casepath-qa/autonomous-workspace-v1.test.cjs"
+    ],
+    "affected_module_argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "--test",
+      "casepath-qa/autonomous-workspace-v1.test.cjs"
+    ],
+    "base_negative_argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "--test",
+      "--test-name-pattern=complete acquired packet may finish",
+      "/workspace/cp-cold-tmp/recorded-acquired-base.cjs"
+    ]
+  },
+  "native_proof_binding": {
+    "prior_product_commit": "7aa6c9a329ceb3c3e1e16cdeda9daacbf66cc575",
+    "prior_javascript_sha256": "8b690c8065ed09100d75c575396ec3a137648161fb693296b4ea2c5fd65173e3",
+    "status": "Prior raw native timing/control/all-nine receipts remain unchanged and accurately bound to their earlier bytes. This availability-only amendment has focused/current224module validation; no new native timing or public-host claim."
+  }
+}

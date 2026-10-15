@@ -1,0 +1,11 @@
+# Early-click amendment review
+
+No blocking finding at699119eaf808d94b7881f8b0ca44302cf5b96d56. JavaScript SHA256:364bc44c4a10a8a57afcaad28b765f476ba31ee2478d190b552fe9f7c74c74bb. Working tree was clean. Scope is22 changed JS lines and38 added QA lines; no entry, index, builder, asset, CSS, storage or backend change. Earlier d44/a83 review artifacts remain unchanged.
+
+The new verification holder becomes selectable only after body EOF and exact expected byte length. Visible operation selection preserves that already acquired local verification; unfinished network acquisition still aborts. Other navigation, hiding and destruction retain cancellation. The selected candidate awaits the existing verification promise internally, while Live zero/head/binding reads and the original500ms decision timer start normally. Verification does not start another500ms window. Ready verified Live wins; unresolved or cancelled verification cannot join after the decision or repaint a later route. Existing source/head/operation validators, Recorded identity and full-session ownership are unchanged.
+
+Reviewed focused delayed-hash proof:6/6 pass, covering completion after300ms with exactly one500ms timer, concurrent Live reads and retained Pause/focus; verification missing the deadline; ready Live winning while verification is pending; hide/Knowledge cancellation; and unfinished-network ownership. The new regression against a83 fails on the real early-click defect: selection aborts its fully acquired asset. Reviewed affected module:224/224 pass, zero failures/skips.
+
+Logs are in /workspace/casepath-recorded-packet-prototype-evidence-20261015: module-recorded-acquired-corrected.log, module-recorded-acquired-a83-negative.log and module-recorded-acquired-affected-final.log. The initial5/6 run remains in module-recorded-acquired-first.log; the hidden observation now holds an unrelated Live zero reply so its legitimate original-binding mismatch retirement cannot be mistaken for packet repainting. Exact cancellation/DOM assertions remain.
+
+This is source/QA review, not new browser timing acceptance. No reviewer tests, profiles, browser, engine, network requests or product edits were performed. Prior native evidence stays distinct from Mac's actual published packet.
