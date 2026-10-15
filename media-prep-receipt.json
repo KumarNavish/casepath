@@ -2,7 +2,7 @@
   "status": "V5_MEDIA_PREP_ONLY_AWAITING_ACTUAL_PUBLISHED_V5_CAPTURE",
   "workspace": "/workspace/cp-v5-media/repo",
   "branch": "codex/agentic-v5-media-prep-20261015",
-  "renderer_sha256": "3599a80385970cb09ebf5a3d527e7fa1e0524680f33c6ba2af22b4478172e7bb",
+  "renderer_sha256": "d0a91f75056512bed6c240e351a293c1206e893774a9bade2772758f5eb00869",
   "adapted_from": {
     "renderer": "/workspace/casepath-agentic-film-v4-20261015/render-agentic-v4.py",
     "media_commit": "88e401328bd9c6121fd3abede62d63ec1c6016d4"
@@ -64,19 +64,33 @@
       "geometry_use": "Fact/document rects excluded from work-change detection; unchanged camera geometry paths",
       "identity": "Order-independent id, operation, explicit source_id/sourceId; facts also compare text"
     },
-    "dynamic_source_binding_after_fix": "missing/malformed/mismatched explicit SHA rejected with exit 2"
+    "dynamic_source_binding_after_fix": "missing/malformed/mismatched explicit SHA rejected with exit 2",
+    "caption_layout_metadata_only": {
+      "status": "passed",
+      "font_pixels": 42,
+      "gutter_pixels": 64,
+      "captions_checked": 6,
+      "caption_y_bounds": [
+        1031.0,
+        1072.0
+      ],
+      "ui_bottom_max": 1016,
+      "layout_checks": 6,
+      "basis": "Existing font metrics and layout math only; no actual UI pixels read or rendered"
+    }
   },
   "v5_contract": {
     "capture_source_commit": "Required capture.source_commit must exactly match required explicit --source-commit ACTUAL40HEX; no default",
     "capture_geometry": "CSS viewport and deviceScale; frame file/t; samples activeStepRect/excerptRect/exactSpanRect/factRect/readheadRect/railRect/transportRect/facts/documents/state/operation; true pointer/click/hold/resume/final events",
     "output": "45\u201360s silent 1920x1080 h264, encoded 30fps; duplicate preceding actual native frames; never claim native 30fps",
     "camera": "Active >=1.4x when full excerpt plus actual destination fits; otherwise report measured bound and preserve union; full UI on inspection, native clicks/travel, decision/final",
-    "captions": "42px reserved external gutter; 2\u20134 word active verbs; no product overlap",
+    "captions": "42px font in a 64px reserved external gutter; 2\u20134 word active verbs; no product overlap",
     "endcard": [
       "CasePath \u00b7 Evidence into action",
       "Synthetic claims \u00b7 recorded replay"
     ],
-    "final_hold": "Actual final frame only, just enough to reach 45s; no invented progress"
+    "final_hold": "Actual final frame only, just enough to reach 45s; no invented progress",
+    "active_framing_acceptance": "Actual 1.4x active framing requires visual inspection after receiving the future published capture; metadata math does not establish visual acceptance"
   },
   "plan_cli": "python3 /workspace/cp-v5-media/repo/render-agentic-v5.py /path/to/actual-published-v5/capture.json --source-commit ACTUAL40HEX --output /workspace/cp-v5-media/v5-plan --plan-only",
   "future_encode_cli": "python3 /workspace/cp-v5-media/repo/render-agentic-v5.py /path/to/actual-published-v5/capture.json --source-commit ACTUAL40HEX --output /workspace/cp-v5-media/v5-film --encode",

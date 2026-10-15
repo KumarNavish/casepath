@@ -20,7 +20,8 @@ import subprocess
 import sys
 import time
 
-W, H, FPS, GUTTER = 1920, 1080, 30, 42
+W, H, FPS, GUTTER = 1920, 1080, 30, 64
+CAPTION_SIZE = 42
 MIN_ZOOM, MAX_SPEED, ENDCARD = 1.4, 6.0, 5.0
 END_TEXT = ["CasePath · Evidence into action", "Synthetic claims · recorded replay"]
 BG, INK = (239, 242, 236), (24, 61, 51)
@@ -350,6 +351,7 @@ class Movie:
             "protected_source_windows_1x": self.protected, "full_ui_source_windows": self.full,
             "logged_inspection_through_resume_windows": self.inspections,
             "segments": self.segments, "caption_gutter_pixels": GUTTER,
+            "caption_font_pixels": CAPTION_SIZE,
             "captions": self.labels, "camera_samples": camera_rows,
             "camera_rule": "Complete excerpt plus actual destination and moving fact; no whole header/map lock during active work. Full UI on inspection, native pointer travel/clicks, decision and final.",
             "cursor_rule": "Only supplied actual logged x/y positions; no generated travel or click glow",
@@ -418,7 +420,7 @@ class Movie:
                 caption = labels[-1]
                 require(2 <= len(caption.split()) <= 4, "Caption must contain 2–4 words")
                 draw.text((W / 2, H - GUTTER / 2), caption, fill=INK,
-                          font=font(23), anchor="mm")
+                          font=font(CAPTION_SIZE), anchor="mm")
         return image, camera
 
     def encode(self, plan):
