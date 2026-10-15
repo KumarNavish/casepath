@@ -1,0 +1,178 @@
+▶ causal formation native: settled stage dependency strokes stay inside the clipping viewport at short desktop and mobile sizes
+  ✔ 1280x800 (13171.566011ms)
+  ✔ 1428x771 (12642.914766ms)
+  ✔ 1360x900 (12754.585139ms)
+  ✖ 390x844 (12198.938562ms)
+✖ causal formation native: settled stage dependency strokes stay inside the clipping viewport at short desktop and mobile sizes (51198.503786ms)
+✔ visible operation stage: transport follows the exact accepted content at 1280x800 (13012.043054ms)
+✔ visible operation stage: transport follows the exact accepted content at 1428x771 (12832.459654ms)
+✔ visible operation stage: transport follows the exact accepted content at 1360x900 (13217.540416ms)
+✔ visible operation stage: transport follows the exact accepted content at 390x844 (13497.389126ms)
+✖ map first layout: a verified native outline has no checked source or accepted progress at 1280x800 (13091.19801ms)
+✖ map first layout: a verified native outline has no checked source or accepted progress at 1428x771 (13599.693445ms)
+✖ map first layout: a verified native outline has no checked source or accepted progress at 1360x900 (12957.711871ms)
+✖ map first layout: a verified native outline has no checked source or accepted progress at 390x844 (13133.246264ms)
+✔ map first layout: the actual incomplete eleven-step legacy branch graph remains reachable at 1280x800 (8084.608556ms)
+✔ map first layout: the actual incomplete eleven-step legacy branch graph remains reachable at 390x844 (7866.579661ms)
+✖ map first navigation: default live operations preference selects its bounded GET transport (28164.897338ms)
+✖ map first navigation: recorded operations preference selects its bounded GET transport (28131.161614ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 9
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 229537.242275
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:913:82
+✖ 390x844 (12198.938562ms)
+  AssertionError [ERR_ASSERTION]: reference_defect_mold_heating_0 has a substantial horizontal dependency line
+      at TestContext.<anonymous> (/workspace/casepath-map-first-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:934:33)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async TestContext.<anonymous> (/workspace/casepath-map-first-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:913:74)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3801:80
+✖ map first layout: a verified native outline has no checked source or accepted progress at 1280x800 (13091.19801ms)
+  AssertionError [ERR_ASSERTION]: production controller browser errors
+  + actual - expected
+  
+  + [
+  +   "Cannot read properties of null (reading 'plannedProcess')",
+  +   "Cannot read properties of null (reading 'plannedProcess')",
+  +   "Cannot read properties of null (reading 'plannedProcess')"
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/workspace/casepath-map-first-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:547:12)
+      at async TestHook.run (node:internal/test_runner/test:1389:7)
+      at async Test.runHook (node:internal/test_runner/test:1269:9)
+      at async after (node:internal/test_runner/test:1322:9)
+      at async Test.run (node:internal/test_runner/test:1408:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ "Cannot read properties of null (reading 'plannedProcess')", "Cannot read properties of null (reading 'plannedProcess')", "Cannot read properties of null (reading 'plannedProcess')" ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3801:80
+✖ map first layout: a verified native outline has no checked source or accepted progress at 1428x771 (13599.693445ms)
+  AssertionError [ERR_ASSERTION]: production controller browser errors
+  + actual - expected
+  
+  + [
+  +   "Cannot read properties of null (reading 'plannedProcess')",
+  +   "Cannot read properties of null (reading 'plannedProcess')",
+  +   "Cannot read properties of null (reading 'plannedProcess')"
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/workspace/casepath-map-first-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:547:12)
+      at async TestHook.run (node:internal/test_runner/test:1389:7)
+      at async Test.runHook (node:internal/test_runner/test:1269:9)
+      at async after (node:internal/test_runner/test:1322:9)
+      at async Test.run (node:internal/test_runner/test:1408:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ "Cannot read properties of null (reading 'plannedProcess')", "Cannot read properties of null (reading 'plannedProcess')", "Cannot read properties of null (reading 'plannedProcess')" ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3801:80
+✖ map first layout: a verified native outline has no checked source or accepted progress at 1360x900 (12957.711871ms)
+  AssertionError [ERR_ASSERTION]: production controller browser errors
+  + actual - expected
+  
+  + [
+  +   "Cannot read properties of null (reading 'plannedProcess')",
+  +   "Cannot read properties of null (reading 'plannedProcess')",
+  +   "Cannot read properties of null (reading 'plannedProcess')"
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/workspace/casepath-map-first-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:547:12)
+      at async TestHook.run (node:internal/test_runner/test:1389:7)
+      at async Test.runHook (node:internal/test_runner/test:1269:9)
+      at async after (node:internal/test_runner/test:1322:9)
+      at async Test.run (node:internal/test_runner/test:1408:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ "Cannot read properties of null (reading 'plannedProcess')", "Cannot read properties of null (reading 'plannedProcess')", "Cannot read properties of null (reading 'plannedProcess')" ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3801:80
+✖ map first layout: a verified native outline has no checked source or accepted progress at 390x844 (13133.246264ms)
+  AssertionError [ERR_ASSERTION]: production controller browser errors
+  + actual - expected
+  
+  + [
+  +   "Cannot read properties of null (reading 'plannedProcess')",
+  +   "Cannot read properties of null (reading 'plannedProcess')",
+  +   "Cannot read properties of null (reading 'plannedProcess')"
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/workspace/casepath-map-first-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:547:12)
+      at async TestHook.run (node:internal/test_runner/test:1389:7)
+      at async Test.runHook (node:internal/test_runner/test:1269:9)
+      at async after (node:internal/test_runner/test:1322:9)
+      at async Test.run (node:internal/test_runner/test:1408:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ "Cannot read properties of null (reading 'plannedProcess')", "Cannot read properties of null (reading 'plannedProcess')", "Cannot read properties of null (reading 'plannedProcess')" ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3843:44
+✖ map first navigation: default live operations preference selects its bounded GET transport (28164.897338ms)
+  AssertionError [ERR_ASSERTION]: the actual operation entry did not request its transport
+      at eventually (/workspace/casepath-map-first-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:520:10)
+      at async TestContext.<anonymous> (/workspace/casepath-map-first-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:3846:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3843:44
+✖ map first navigation: recorded operations preference selects its bounded GET transport (28131.161614ms)
+  AssertionError [ERR_ASSERTION]: the actual operation entry did not request its transport
+      at eventually (/workspace/casepath-map-first-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:520:10)
+      at async TestContext.<anonymous> (/workspace/casepath-map-first-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs:3846:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }

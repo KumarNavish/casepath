@@ -1,0 +1,55 @@
+{
+  "candidate": "7677fe8f86b61bab3ad73204af5d886afe1e4e11",
+  "assets": {
+    "css": "404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87",
+    "js": "d741a1af6bf769f243cd0d961f724222544046e6bb959cf9c0ffdc59b5c35440"
+  },
+  "workload": {
+    "operations": 824,
+    "checkpoints": 21,
+    "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+    "operation_chain_sha256": "ba61ea3ea1ff03faa1002af2b1e85671448e31a3922b11024f5603151b784561",
+    "trace_sha256": "2839da7e334a4f2086fd91cf18b525cdc64c9dbc98d60ac6ac71df62840b850e"
+  },
+  "same_workload": true,
+  "baseline": {
+    "wall_ms": 83742,
+    "frame": {
+      "count": 4679,
+      "p50": 16.69999999999709,
+      "p95": 16.799999999999272,
+      "p99": 33.399999999999636
+    },
+    "longtask": {
+      "count": 36,
+      "max": 517,
+      "total": 5092
+    },
+    "layout_count": 368,
+    "style_count": 3917,
+    "layout_ms": 943.238,
+    "style_ms": 3409.214,
+    "task_ms": 17819.027000000002
+  },
+  "candidate_metrics": {
+    "wall_ms": 26447,
+    "frame": {
+      "count": 1291,
+      "p50": 16.699999999999818,
+      "p95": 16.799999999999272,
+      "p99": 66.69999999999999
+    },
+    "longtask": {
+      "count": 21,
+      "max": 1583,
+      "total": 4270
+    },
+    "layout_count": 180,
+    "style_count": 1108,
+    "layout_ms": 545.781,
+    "style_ms": 1245.181,
+    "task_ms": 8489.098
+  },
+  "errors": [],
+  "scope": "One matched existing local native workload,4xCPU,coldLinuxChromium; not universal FPS or production timing."
+}

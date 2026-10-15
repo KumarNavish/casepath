@@ -1,0 +1,145 @@
+{
+  "classification": "Constructed renderer-only phrase record over an unchanged actual native prefix and exact native source citation; no operation-stream verification or result availability claim.",
+  "claim_id": "clm_314f2d309fea25e6",
+  "source_pin": {
+    "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+    "end_char": 434,
+    "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+    "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+    "start_char": 95,
+    "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+  },
+  "running": {
+    "revision": 15,
+    "state_sha256": "4a6a2f97a72dbafeba07e4fa2d245ed5d720687be64fa51762b59095616c59ca",
+    "source": {
+      "x": 26,
+      "y": 355.375,
+      "width": 338,
+      "height": 247.78125,
+      "top": 355.375,
+      "right": 364,
+      "bottom": 603.15625,
+      "left": 26
+    },
+    "rail": {
+      "x": 26,
+      "y": 617.15625,
+      "width": 338,
+      "height": 520,
+      "top": 617.15625,
+      "right": 364,
+      "bottom": 1137.15625,
+      "left": 26
+    },
+    "transport": {
+      "x": 26,
+      "y": 1149.15625,
+      "width": 338,
+      "height": 73,
+      "top": 1149.15625,
+      "right": 364,
+      "bottom": 1222.15625,
+      "left": 26
+    },
+    "position": "static",
+    "controls": [
+      {
+        "text": "Pause",
+        "rect": {
+          "x": 34,
+          "y": 1164.15625,
+          "width": 76.46875,
+          "height": 44,
+          "top": 1164.15625,
+          "right": 110.46875,
+          "bottom": 1208.15625,
+          "left": 34
+        }
+      },
+      {
+        "text": "",
+        "rect": {
+          "x": 120.46875,
+          "y": 1178.15625,
+          "width": 233.53125,
+          "height": 16,
+          "top": 1178.15625,
+          "right": 354,
+          "bottom": 1194.15625,
+          "left": 120.46875
+        }
+      }
+    ],
+    "mark": {
+      "text": "monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.",
+      "start": 278,
+      "end": 377
+    },
+    "overflow": false
+  },
+  "checkoutCommit": "432ec02b28992f2adaf9d708ada8f134b4494532",
+  "testSha256": "e2921d49da8b34db4e806e7d22d4c7de8a28825a2f042632f0c79c3ce164524b",
+  "requests": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "prefixTransfers": [],
+  "browserRequests": [
+    {
+      "url": "http://localhost:41999/",
+      "method": "GET"
+    }
+  ],
+  "javascriptErrors": [],
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "injectedAssets": {
+    "javascript": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+    "css": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5"
+  },
+  "assets": {
+    "javascript": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+    "css": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5"
+  }
+}

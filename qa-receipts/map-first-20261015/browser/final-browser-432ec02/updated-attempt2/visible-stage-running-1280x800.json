@@ -1,0 +1,151 @@
+{
+  "classification": "Constructed renderer-only fact record over an unchanged actual native prefix, fact identity and exact native source citation; no operation-stream verification or result availability claim.",
+  "claim_id": "clm_314f2d309fea25e6",
+  "source_pin": {
+    "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+    "end_char": 434,
+    "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+    "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+    "start_char": 95,
+    "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+  },
+  "running": {
+    "revision": 15,
+    "state_sha256": "4a6a2f97a72dbafeba07e4fa2d245ed5d720687be64fa51762b59095616c59ca",
+    "source": {
+      "x": 344,
+      "y": 247.4375,
+      "width": 300,
+      "height": 151.78125,
+      "top": 247.4375,
+      "right": 644,
+      "bottom": 399.21875,
+      "left": 344
+    },
+    "rail": {
+      "x": 44,
+      "y": 219.4375,
+      "width": 1192,
+      "height": 451,
+      "top": 219.4375,
+      "right": 1236,
+      "bottom": 670.4375,
+      "left": 44
+    },
+    "transport": {
+      "x": 310,
+      "y": 682.4375,
+      "width": 660,
+      "height": 73,
+      "top": 682.4375,
+      "right": 970,
+      "bottom": 755.4375,
+      "left": 310
+    },
+    "position": "static",
+    "controls": [
+      {
+        "text": "Pause",
+        "rect": {
+          "x": 318,
+          "y": 697.4375,
+          "width": 76.46875,
+          "height": 44,
+          "top": 697.4375,
+          "right": 394.46875,
+          "bottom": 741.4375,
+          "left": 318
+        }
+      },
+      {
+        "text": "",
+        "rect": {
+          "x": 416.46875,
+          "y": 711.4375,
+          "width": 543.53125,
+          "height": 16,
+          "top": 711.4375,
+          "right": 960,
+          "bottom": 727.4375,
+          "left": 416.46875
+        }
+      }
+    ],
+    "mark": {
+      "text": "CHF1800",
+      "start": 298,
+      "end": 305,
+      "font": 20
+    },
+    "excerpt": {
+      "scrollTop": 0,
+      "scrollHeight": 32,
+      "clientHeight": 32
+    },
+    "overflow": false
+  },
+  "checkoutCommit": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "testSha256": "fd8cb382108712aa1accc91fa995cfe806b8972e0f869ce27b7f53d842731883",
+  "requests": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "prefixTransfers": [],
+  "browserRequests": [
+    {
+      "url": "http://localhost:41999/",
+      "method": "GET"
+    }
+  ],
+  "javascriptErrors": [],
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "injectedAssets": {
+    "javascript": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+    "css": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5"
+  },
+  "assets": {
+    "javascript": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+    "css": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5"
+  }
+}

@@ -1,0 +1,3556 @@
+{
+  "sidecar_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+  "rows": [
+    {
+      "width": 1280,
+      "height": 800,
+      "running": {
+        "at": 877.7999999523163,
+        "bound": 561.2999999523163,
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "verified": "false",
+        "revision": 35,
+        "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "stage_phase": "source",
+        "stage": {
+          "x": 36,
+          "y": 203.4375,
+          "width": 1208,
+          "height": 507,
+          "top": 203.4375,
+          "right": 1244,
+          "bottom": 710.4375,
+          "left": 36
+        },
+        "rail": {
+          "x": 36,
+          "y": 211.4375,
+          "width": 1208,
+          "height": 499,
+          "top": 211.4375,
+          "right": 1244,
+          "bottom": 710.4375,
+          "left": 36
+        },
+        "planned": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "planned_authority": "none",
+        "graph": {
+          "rect": {
+            "x": 36,
+            "y": 267.4375,
+            "width": 1208,
+            "height": 435,
+            "top": 267.4375,
+            "right": 1244,
+            "bottom": 702.4375,
+            "left": 36
+          },
+          "clientWidth": 1208,
+          "scrollWidth": 2086,
+          "scrollLeft": 16,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "planned",
+            "rect": {
+              "x": 38,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 290,
+              "bottom": 357.8125,
+              "left": 38
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_scope",
+            "status": "planned",
+            "rect": {
+              "x": 642,
+              "y": 287.4375,
+              "width": 318,
+              "height": 58,
+              "top": 287.4375,
+              "right": 960,
+              "bottom": 345.4375,
+              "left": 642
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_notice",
+            "status": "planned",
+            "rect": {
+              "x": 990,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1242,
+              "bottom": 357.8125,
+              "left": 990
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_cause",
+            "status": "planned",
+            "rect": {
+              "x": 1272,
+              "y": 287.4375,
+              "width": 252,
+              "height": 58,
+              "top": 287.4375,
+              "right": 1524,
+              "bottom": 345.4375,
+              "left": 1272
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_evidence",
+            "status": "planned",
+            "rect": {
+              "x": 1554,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1806,
+              "bottom": 357.8125,
+              "left": 1554
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_response",
+            "status": "planned",
+            "rect": {
+              "x": 1836,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 2088,
+              "bottom": 357.8125,
+              "left": 1836
+            },
+            "font": 18
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [
+          {
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "source": "src_106168f9c33152b3d88f02469ad57782",
+            "start": 298,
+            "end": 305,
+            "quote": "CHF1800",
+            "font": 20
+          }
+        ],
+        "pane": {
+          "rect": {
+            "x": 337,
+            "y": 392.21875,
+            "width": 266,
+            "height": 32,
+            "top": 392.21875,
+            "right": 603,
+            "bottom": 424.21875,
+            "left": 337
+          },
+          "scrollTop": 0,
+          "scrollHeight": 32,
+          "clientHeight": 32,
+          "text": "CHF1800"
+        },
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "false"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 310,
+            "y": 722.4375,
+            "width": 660,
+            "height": 73,
+            "top": 722.4375,
+            "right": 970,
+            "bottom": 795.4375,
+            "left": 310
+          },
+          "controls": [
+            {
+              "text": "Pause",
+              "rect": {
+                "x": 318,
+                "y": 737.4375,
+                "width": 76.46875,
+                "height": 44,
+                "top": 737.4375,
+                "right": 394.46875,
+                "bottom": 781.4375,
+                "left": 318
+              }
+            },
+            {
+              "text": "",
+              "rect": {
+                "x": 416.46875,
+                "y": 751.4375,
+                "width": 543.53125,
+                "height": 16,
+                "top": 751.4375,
+                "right": 960,
+                "bottom": 767.4375,
+                "left": 416.46875
+              }
+            }
+          ]
+        },
+        "articles": [],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        }
+      },
+      "held": {
+        "at": 1062.8999999761581,
+        "bound": 561.2999999523163,
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "verified": "false",
+        "revision": 35,
+        "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "stage_phase": "source",
+        "stage": {
+          "x": 36,
+          "y": 203.4375,
+          "width": 1208,
+          "height": 507,
+          "top": 203.4375,
+          "right": 1244,
+          "bottom": 710.4375,
+          "left": 36
+        },
+        "rail": {
+          "x": 36,
+          "y": 211.4375,
+          "width": 1208,
+          "height": 499,
+          "top": 211.4375,
+          "right": 1244,
+          "bottom": 710.4375,
+          "left": 36
+        },
+        "planned": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "planned_authority": "none",
+        "graph": {
+          "rect": {
+            "x": 36,
+            "y": 267.4375,
+            "width": 1208,
+            "height": 435,
+            "top": 267.4375,
+            "right": 1244,
+            "bottom": 702.4375,
+            "left": 36
+          },
+          "clientWidth": 1208,
+          "scrollWidth": 2086,
+          "scrollLeft": 16,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "planned",
+            "rect": {
+              "x": 38,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 290,
+              "bottom": 357.8125,
+              "left": 38
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_scope",
+            "status": "planned",
+            "rect": {
+              "x": 642,
+              "y": 287.4375,
+              "width": 318,
+              "height": 58,
+              "top": 287.4375,
+              "right": 960,
+              "bottom": 345.4375,
+              "left": 642
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_notice",
+            "status": "planned",
+            "rect": {
+              "x": 990,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1242,
+              "bottom": 357.8125,
+              "left": 990
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_cause",
+            "status": "planned",
+            "rect": {
+              "x": 1272,
+              "y": 287.4375,
+              "width": 252,
+              "height": 58,
+              "top": 287.4375,
+              "right": 1524,
+              "bottom": 345.4375,
+              "left": 1272
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_evidence",
+            "status": "planned",
+            "rect": {
+              "x": 1554,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1806,
+              "bottom": 357.8125,
+              "left": 1554
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_response",
+            "status": "planned",
+            "rect": {
+              "x": 1836,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 2088,
+              "bottom": 357.8125,
+              "left": 1836
+            },
+            "font": 18
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [
+          {
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "source": "src_106168f9c33152b3d88f02469ad57782",
+            "start": 298,
+            "end": 305,
+            "quote": "CHF1800",
+            "font": 20
+          }
+        ],
+        "pane": {
+          "rect": {
+            "x": 337,
+            "y": 392.21875,
+            "width": 266,
+            "height": 32,
+            "top": 392.21875,
+            "right": 603,
+            "bottom": 424.21875,
+            "left": 337
+          },
+          "scrollTop": 0,
+          "scrollHeight": 32,
+          "clientHeight": 32,
+          "text": "CHF1800"
+        },
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "false"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 310,
+            "y": 722.4375,
+            "width": 660,
+            "height": 73,
+            "top": 722.4375,
+            "right": 970,
+            "bottom": 795.4375,
+            "left": 310
+          },
+          "controls": [
+            {
+              "text": "Resume",
+              "rect": {
+                "x": 318,
+                "y": 737.4375,
+                "width": 93.421875,
+                "height": 44,
+                "top": 737.4375,
+                "right": 411.421875,
+                "bottom": 781.4375,
+                "left": 318
+              }
+            },
+            {
+              "text": "",
+              "rect": {
+                "x": 433.421875,
+                "y": 751.4375,
+                "width": 526.578125,
+                "height": 16,
+                "top": 751.4375,
+                "right": 960,
+                "bottom": 767.4375,
+                "left": 433.421875
+              }
+            }
+          ]
+        },
+        "articles": [],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        }
+      },
+      "result": {
+        "at": 5079.699999988079,
+        "bound": 561.2999999523163,
+        "operation": "",
+        "verified": "true",
+        "revision": 48,
+        "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "stage_phase": "map",
+        "stage": {
+          "x": 36,
+          "y": 203.4375,
+          "width": 1208,
+          "height": 544.953125,
+          "top": 203.4375,
+          "right": 1244,
+          "bottom": 748.390625,
+          "left": 36
+        },
+        "rail": {
+          "x": 36,
+          "y": 211.4375,
+          "width": 1208,
+          "height": 386.5625,
+          "top": 211.4375,
+          "right": 1244,
+          "bottom": 598,
+          "left": 36
+        },
+        "graph": {
+          "rect": {
+            "x": 36,
+            "y": 219.4375,
+            "width": 1208,
+            "height": 370.5625,
+            "top": 219.4375,
+            "right": 1244,
+            "bottom": 590,
+            "left": 36
+          },
+          "clientWidth": 1208,
+          "scrollWidth": 1208,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "completed",
+            "rect": {
+              "x": 40,
+              "y": 231.4375,
+              "width": 190,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 230,
+              "bottom": 285.03125,
+              "left": 40
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_scope",
+            "status": "completed",
+            "rect": {
+              "x": 242,
+              "y": 231.4375,
+              "width": 190,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 432,
+              "bottom": 285.03125,
+              "left": 242
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_notice",
+            "status": "completed",
+            "rect": {
+              "x": 444,
+              "y": 231.4375,
+              "width": 190,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 634,
+              "bottom": 285.03125,
+              "left": 444
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_cause",
+            "status": "completed",
+            "rect": {
+              "x": 646,
+              "y": 231.4375,
+              "width": 190,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 836,
+              "bottom": 285.03125,
+              "left": 646
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_evidence",
+            "status": "completed",
+            "rect": {
+              "x": 848,
+              "y": 231.4375,
+              "width": 190,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 1038,
+              "bottom": 285.03125,
+              "left": 848
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_response",
+            "status": "completed",
+            "rect": {
+              "x": 1050,
+              "y": 231.4375,
+              "width": 190,
+              "height": 74.390625,
+              "top": 231.4375,
+              "right": 1240,
+              "bottom": 305.828125,
+              "left": 1050
+            },
+            "font": 16
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [],
+        "pane": null,
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1016690703de933a0b04832bac53f789",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          },
+          {
+            "id": "residential_tenancy_scope",
+            "operation": "op_7eae3c56c396adc63cf5e86d936b128e",
+            "start": 146,
+            "end": 172,
+            "text": "ordinary residential lease",
+            "state": "observed"
+          },
+          {
+            "id": "fact:landlord_knowledge_evidence",
+            "operation": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+            "start": 229,
+            "end": 258,
+            "text": "three heating-failure reports",
+            "state": "observed"
+          },
+          {
+            "id": "landlord_first_knowledge",
+            "operation": "op_71a216c1d5ed10f5a5dfc7a8f55a5590",
+            "start": 390,
+            "end": 428,
+            "text": "received the first report on2025-02-01",
+            "state": "observed"
+          },
+          {
+            "id": "continuing_defect_without_remedy",
+            "operation": "op_096fbf71b6d1343003dbcedf78cd4ef3",
+            "start": 735,
+            "end": 769,
+            "text": "no lasting repair has yet occurred",
+            "state": "observed"
+          },
+          {
+            "id": "fact:objective_defect_observation",
+            "operation": "op_03eef83c6c3a9802747b15ceafb63226",
+            "start": 329,
+            "end": 334,
+            "text": "15.8C",
+            "state": "observed"
+          },
+          {
+            "id": "objective_use_impairment",
+            "operation": "op_f1a94f17ba11f910360d21ec27bdd64f",
+            "start": 873,
+            "end": 894,
+            "text": "Heating is inadequate",
+            "state": "observed"
+          },
+          {
+            "id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+            "operation": "op_e2fc076a2f9acc2da80bc5938c212e37",
+            "start": 608,
+            "end": 650,
+            "text": "outside ordinary small tenant maintenance.",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "true",
+            "check": "op_239fff8e940e09cd50d910cbaff753b7",
+            "citation": "{\"artifact_id\":\"src_106168f9c33152b3d88f02469ad57782\",\"end_char\":434,\"offset_unit\":\"unicode_code_point\",\"quote\":\"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\",\"sha256\":\"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9\",\"start_char\":95,\"text_sha256\":\"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9\"}"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "true",
+            "check": "op_96acd4eb60e2706174feaa5552f164f8",
+            "citation": "{\"artifact_id\":\"src_c57d943a64c85cf37369ccbf747b6e3f\",\"end_char\":494,\"offset_unit\":\"unicode_code_point\",\"quote\":\"Our call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.\",\"sha256\":\"1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569\",\"start_char\":193,\"text_sha256\":\"1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569\"}"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "true",
+            "check": "op_1b4045f495bd7c43aee1c82408feaba3",
+            "citation": "{\"artifact_id\":\"src_000ccf161644df9e82d29a8595b7b727\",\"end_char\":764,\"offset_unit\":\"unicode_code_point\",\"quote\":\"On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.\",\"sha256\":\"a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c\",\"start_char\":199,\"text_sha256\":\"a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c\"}"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 310,
+            "y": 760.390625,
+            "width": 660,
+            "height": 49,
+            "top": 760.390625,
+            "right": 970,
+            "bottom": 809.390625,
+            "left": 310
+          },
+          "controls": [
+            {
+              "text": "",
+              "rect": {
+                "x": 320,
+                "y": 777.390625,
+                "width": 640,
+                "height": 16,
+                "top": 777.390625,
+                "right": 960,
+                "bottom": 793.390625,
+                "left": 320
+              }
+            }
+          ]
+        },
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.",
+        "outcome_rect": {
+          "x": 80,
+          "y": 610,
+          "width": 1120,
+          "height": 58,
+          "top": 610,
+          "right": 1200,
+          "bottom": 668,
+          "left": 80
+        },
+        "procedure_rect": {
+          "x": 80,
+          "y": 706.390625,
+          "width": 1120,
+          "height": 42,
+          "top": 706.390625,
+          "right": 1200,
+          "bottom": 748.390625,
+          "left": 80
+        },
+        "articles": [
+          "259",
+          "259a",
+          "259d"
+        ],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        }
+      },
+      "skip_ms": 641
+    },
+    {
+      "width": 1428,
+      "height": 771,
+      "running": {
+        "at": 712,
+        "bound": 398.60000002384186,
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "verified": "false",
+        "revision": 35,
+        "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "stage_phase": "source",
+        "stage": {
+          "x": 36,
+          "y": 203.4375,
+          "width": 1356,
+          "height": 478,
+          "top": 203.4375,
+          "right": 1392,
+          "bottom": 681.4375,
+          "left": 36
+        },
+        "rail": {
+          "x": 36,
+          "y": 211.4375,
+          "width": 1356,
+          "height": 470,
+          "top": 211.4375,
+          "right": 1392,
+          "bottom": 681.4375,
+          "left": 36
+        },
+        "planned": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "planned_authority": "none",
+        "graph": {
+          "rect": {
+            "x": 36,
+            "y": 267.4375,
+            "width": 1356,
+            "height": 406,
+            "top": 267.4375,
+            "right": 1392,
+            "bottom": 673.4375,
+            "left": 36
+          },
+          "clientWidth": 1356,
+          "scrollWidth": 2086,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "planned",
+            "rect": {
+              "x": 54,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 306,
+              "bottom": 357.8125,
+              "left": 54
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_scope",
+            "status": "planned",
+            "rect": {
+              "x": 658,
+              "y": 287.4375,
+              "width": 318,
+              "height": 58,
+              "top": 287.4375,
+              "right": 976,
+              "bottom": 345.4375,
+              "left": 658
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_notice",
+            "status": "planned",
+            "rect": {
+              "x": 1006,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1258,
+              "bottom": 357.8125,
+              "left": 1006
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_cause",
+            "status": "planned",
+            "rect": {
+              "x": 1288,
+              "y": 287.4375,
+              "width": 252,
+              "height": 58,
+              "top": 287.4375,
+              "right": 1540,
+              "bottom": 345.4375,
+              "left": 1288
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_evidence",
+            "status": "planned",
+            "rect": {
+              "x": 1570,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1822,
+              "bottom": 357.8125,
+              "left": 1570
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_response",
+            "status": "planned",
+            "rect": {
+              "x": 1852,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 2104,
+              "bottom": 357.8125,
+              "left": 1852
+            },
+            "font": 18
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [
+          {
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "source": "src_106168f9c33152b3d88f02469ad57782",
+            "start": 298,
+            "end": 305,
+            "quote": "CHF1800",
+            "font": 20
+          }
+        ],
+        "pane": {
+          "rect": {
+            "x": 353,
+            "y": 392.21875,
+            "width": 266,
+            "height": 32,
+            "top": 392.21875,
+            "right": 619,
+            "bottom": 424.21875,
+            "left": 353
+          },
+          "scrollTop": 0,
+          "scrollHeight": 32,
+          "clientHeight": 32,
+          "text": "CHF1800"
+        },
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "false"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 384,
+            "y": 693.4375,
+            "width": 660,
+            "height": 73,
+            "top": 693.4375,
+            "right": 1044,
+            "bottom": 766.4375,
+            "left": 384
+          },
+          "controls": [
+            {
+              "text": "Pause",
+              "rect": {
+                "x": 392,
+                "y": 708.4375,
+                "width": 76.46875,
+                "height": 44,
+                "top": 708.4375,
+                "right": 468.46875,
+                "bottom": 752.4375,
+                "left": 392
+              }
+            },
+            {
+              "text": "",
+              "rect": {
+                "x": 490.46875,
+                "y": 722.4375,
+                "width": 543.53125,
+                "height": 16,
+                "top": 722.4375,
+                "right": 1034,
+                "bottom": 738.4375,
+                "left": 490.46875
+              }
+            }
+          ]
+        },
+        "articles": [],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 1428,
+          "height": 771
+        }
+      },
+      "held": {
+        "at": 853.3000000119209,
+        "bound": 398.60000002384186,
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "verified": "false",
+        "revision": 35,
+        "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "stage_phase": "source",
+        "stage": {
+          "x": 36,
+          "y": 203.4375,
+          "width": 1356,
+          "height": 478,
+          "top": 203.4375,
+          "right": 1392,
+          "bottom": 681.4375,
+          "left": 36
+        },
+        "rail": {
+          "x": 36,
+          "y": 211.4375,
+          "width": 1356,
+          "height": 470,
+          "top": 211.4375,
+          "right": 1392,
+          "bottom": 681.4375,
+          "left": 36
+        },
+        "planned": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "planned_authority": "none",
+        "graph": {
+          "rect": {
+            "x": 36,
+            "y": 267.4375,
+            "width": 1356,
+            "height": 406,
+            "top": 267.4375,
+            "right": 1392,
+            "bottom": 673.4375,
+            "left": 36
+          },
+          "clientWidth": 1356,
+          "scrollWidth": 2086,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "planned",
+            "rect": {
+              "x": 54,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 306,
+              "bottom": 357.8125,
+              "left": 54
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_scope",
+            "status": "planned",
+            "rect": {
+              "x": 658,
+              "y": 287.4375,
+              "width": 318,
+              "height": 58,
+              "top": 287.4375,
+              "right": 976,
+              "bottom": 345.4375,
+              "left": 658
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_notice",
+            "status": "planned",
+            "rect": {
+              "x": 1006,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1258,
+              "bottom": 357.8125,
+              "left": 1006
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_cause",
+            "status": "planned",
+            "rect": {
+              "x": 1288,
+              "y": 287.4375,
+              "width": 252,
+              "height": 58,
+              "top": 287.4375,
+              "right": 1540,
+              "bottom": 345.4375,
+              "left": 1288
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_evidence",
+            "status": "planned",
+            "rect": {
+              "x": 1570,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1822,
+              "bottom": 357.8125,
+              "left": 1570
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_response",
+            "status": "planned",
+            "rect": {
+              "x": 1852,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 2104,
+              "bottom": 357.8125,
+              "left": 1852
+            },
+            "font": 18
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [
+          {
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "source": "src_106168f9c33152b3d88f02469ad57782",
+            "start": 298,
+            "end": 305,
+            "quote": "CHF1800",
+            "font": 20
+          }
+        ],
+        "pane": {
+          "rect": {
+            "x": 353,
+            "y": 392.21875,
+            "width": 266,
+            "height": 32,
+            "top": 392.21875,
+            "right": 619,
+            "bottom": 424.21875,
+            "left": 353
+          },
+          "scrollTop": 0,
+          "scrollHeight": 32,
+          "clientHeight": 32,
+          "text": "CHF1800"
+        },
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "false"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 384,
+            "y": 693.4375,
+            "width": 660,
+            "height": 73,
+            "top": 693.4375,
+            "right": 1044,
+            "bottom": 766.4375,
+            "left": 384
+          },
+          "controls": [
+            {
+              "text": "Resume",
+              "rect": {
+                "x": 392,
+                "y": 708.4375,
+                "width": 93.421875,
+                "height": 44,
+                "top": 708.4375,
+                "right": 485.421875,
+                "bottom": 752.4375,
+                "left": 392
+              }
+            },
+            {
+              "text": "",
+              "rect": {
+                "x": 507.421875,
+                "y": 722.4375,
+                "width": 526.578125,
+                "height": 16,
+                "top": 722.4375,
+                "right": 1034,
+                "bottom": 738.4375,
+                "left": 507.421875
+              }
+            }
+          ]
+        },
+        "articles": [],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 1428,
+          "height": 771
+        }
+      },
+      "result": {
+        "at": 4839,
+        "bound": 398.60000002384186,
+        "operation": "",
+        "verified": "true",
+        "revision": 48,
+        "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "stage_phase": "map",
+        "stage": {
+          "x": 36,
+          "y": 203.4375,
+          "width": 1356,
+          "height": 503.359375,
+          "top": 203.4375,
+          "right": 1392,
+          "bottom": 706.796875,
+          "left": 36
+        },
+        "rail": {
+          "x": 36,
+          "y": 211.4375,
+          "width": 1356,
+          "height": 344.96875,
+          "top": 211.4375,
+          "right": 1392,
+          "bottom": 556.40625,
+          "left": 36
+        },
+        "graph": {
+          "rect": {
+            "x": 36,
+            "y": 219.4375,
+            "width": 1356,
+            "height": 328.96875,
+            "top": 219.4375,
+            "right": 1392,
+            "bottom": 548.40625,
+            "left": 36
+          },
+          "clientWidth": 1356,
+          "scrollWidth": 1356,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "completed",
+            "rect": {
+              "x": 40,
+              "y": 231.4375,
+              "width": 214.65625,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 254.65625,
+              "bottom": 285.03125,
+              "left": 40
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_scope",
+            "status": "completed",
+            "rect": {
+              "x": 266.65625,
+              "y": 231.4375,
+              "width": 214.671875,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 481.328125,
+              "bottom": 285.03125,
+              "left": 266.65625
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_notice",
+            "status": "completed",
+            "rect": {
+              "x": 493.328125,
+              "y": 231.4375,
+              "width": 214.65625,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 707.984375,
+              "bottom": 285.03125,
+              "left": 493.328125
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_cause",
+            "status": "completed",
+            "rect": {
+              "x": 719.984375,
+              "y": 231.4375,
+              "width": 214.671875,
+              "height": 48,
+              "top": 231.4375,
+              "right": 934.65625,
+              "bottom": 279.4375,
+              "left": 719.984375
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_evidence",
+            "status": "completed",
+            "rect": {
+              "x": 946.65625,
+              "y": 231.4375,
+              "width": 214.671875,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 1161.328125,
+              "bottom": 285.03125,
+              "left": 946.65625
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_response",
+            "status": "completed",
+            "rect": {
+              "x": 1173.328125,
+              "y": 231.4375,
+              "width": 214.671875,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 1388,
+              "bottom": 285.03125,
+              "left": 1173.328125
+            },
+            "font": 16
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [],
+        "pane": null,
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1016690703de933a0b04832bac53f789",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          },
+          {
+            "id": "residential_tenancy_scope",
+            "operation": "op_7eae3c56c396adc63cf5e86d936b128e",
+            "start": 146,
+            "end": 172,
+            "text": "ordinary residential lease",
+            "state": "observed"
+          },
+          {
+            "id": "fact:landlord_knowledge_evidence",
+            "operation": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+            "start": 229,
+            "end": 258,
+            "text": "three heating-failure reports",
+            "state": "observed"
+          },
+          {
+            "id": "landlord_first_knowledge",
+            "operation": "op_71a216c1d5ed10f5a5dfc7a8f55a5590",
+            "start": 390,
+            "end": 428,
+            "text": "received the first report on2025-02-01",
+            "state": "observed"
+          },
+          {
+            "id": "continuing_defect_without_remedy",
+            "operation": "op_096fbf71b6d1343003dbcedf78cd4ef3",
+            "start": 735,
+            "end": 769,
+            "text": "no lasting repair has yet occurred",
+            "state": "observed"
+          },
+          {
+            "id": "fact:objective_defect_observation",
+            "operation": "op_03eef83c6c3a9802747b15ceafb63226",
+            "start": 329,
+            "end": 334,
+            "text": "15.8C",
+            "state": "observed"
+          },
+          {
+            "id": "objective_use_impairment",
+            "operation": "op_f1a94f17ba11f910360d21ec27bdd64f",
+            "start": 873,
+            "end": 894,
+            "text": "Heating is inadequate",
+            "state": "observed"
+          },
+          {
+            "id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+            "operation": "op_e2fc076a2f9acc2da80bc5938c212e37",
+            "start": 608,
+            "end": 650,
+            "text": "outside ordinary small tenant maintenance.",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "true",
+            "check": "op_239fff8e940e09cd50d910cbaff753b7",
+            "citation": "{\"artifact_id\":\"src_106168f9c33152b3d88f02469ad57782\",\"end_char\":434,\"offset_unit\":\"unicode_code_point\",\"quote\":\"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\",\"sha256\":\"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9\",\"start_char\":95,\"text_sha256\":\"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9\"}"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "true",
+            "check": "op_96acd4eb60e2706174feaa5552f164f8",
+            "citation": "{\"artifact_id\":\"src_c57d943a64c85cf37369ccbf747b6e3f\",\"end_char\":494,\"offset_unit\":\"unicode_code_point\",\"quote\":\"Our call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.\",\"sha256\":\"1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569\",\"start_char\":193,\"text_sha256\":\"1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569\"}"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "true",
+            "check": "op_1b4045f495bd7c43aee1c82408feaba3",
+            "citation": "{\"artifact_id\":\"src_000ccf161644df9e82d29a8595b7b727\",\"end_char\":764,\"offset_unit\":\"unicode_code_point\",\"quote\":\"On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.\",\"sha256\":\"a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c\",\"start_char\":199,\"text_sha256\":\"a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c\"}"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 384,
+            "y": 718.796875,
+            "width": 660,
+            "height": 49,
+            "top": 718.796875,
+            "right": 1044,
+            "bottom": 767.796875,
+            "left": 384
+          },
+          "controls": [
+            {
+              "text": "",
+              "rect": {
+                "x": 394,
+                "y": 735.796875,
+                "width": 640,
+                "height": 16,
+                "top": 735.796875,
+                "right": 1034,
+                "bottom": 751.796875,
+                "left": 394
+              }
+            }
+          ]
+        },
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.",
+        "outcome_rect": {
+          "x": 154,
+          "y": 568.40625,
+          "width": 1120,
+          "height": 58,
+          "top": 568.40625,
+          "right": 1274,
+          "bottom": 626.40625,
+          "left": 154
+        },
+        "procedure_rect": {
+          "x": 154,
+          "y": 664.796875,
+          "width": 1120,
+          "height": 42,
+          "top": 664.796875,
+          "right": 1274,
+          "bottom": 706.796875,
+          "left": 154
+        },
+        "articles": [
+          "259",
+          "259a",
+          "259d"
+        ],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 1428,
+          "height": 771
+        }
+      },
+      "skip_ms": 626
+    },
+    {
+      "width": 1360,
+      "height": 900,
+      "running": {
+        "at": 711.5999999642372,
+        "bound": 442.19999998807907,
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "verified": "false",
+        "revision": 35,
+        "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "stage_phase": "source",
+        "stage": {
+          "x": 36,
+          "y": 203.4375,
+          "width": 1288,
+          "height": 607,
+          "top": 203.4375,
+          "right": 1324,
+          "bottom": 810.4375,
+          "left": 36
+        },
+        "rail": {
+          "x": 36,
+          "y": 211.4375,
+          "width": 1288,
+          "height": 599,
+          "top": 211.4375,
+          "right": 1324,
+          "bottom": 810.4375,
+          "left": 36
+        },
+        "planned": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "planned_authority": "none",
+        "graph": {
+          "rect": {
+            "x": 36,
+            "y": 267.4375,
+            "width": 1288,
+            "height": 535,
+            "top": 267.4375,
+            "right": 1324,
+            "bottom": 802.4375,
+            "left": 36
+          },
+          "clientWidth": 1288,
+          "scrollWidth": 2086,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "planned",
+            "rect": {
+              "x": 54,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 306,
+              "bottom": 357.8125,
+              "left": 54
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_scope",
+            "status": "planned",
+            "rect": {
+              "x": 658,
+              "y": 287.4375,
+              "width": 318,
+              "height": 58,
+              "top": 287.4375,
+              "right": 976,
+              "bottom": 345.4375,
+              "left": 658
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_notice",
+            "status": "planned",
+            "rect": {
+              "x": 1006,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1258,
+              "bottom": 357.8125,
+              "left": 1006
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_cause",
+            "status": "planned",
+            "rect": {
+              "x": 1288,
+              "y": 287.4375,
+              "width": 252,
+              "height": 58,
+              "top": 287.4375,
+              "right": 1540,
+              "bottom": 345.4375,
+              "left": 1288
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_evidence",
+            "status": "planned",
+            "rect": {
+              "x": 1570,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1822,
+              "bottom": 357.8125,
+              "left": 1570
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_response",
+            "status": "planned",
+            "rect": {
+              "x": 1852,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 2104,
+              "bottom": 357.8125,
+              "left": 1852
+            },
+            "font": 18
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [
+          {
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "source": "src_106168f9c33152b3d88f02469ad57782",
+            "start": 298,
+            "end": 305,
+            "quote": "CHF1800",
+            "font": 20
+          }
+        ],
+        "pane": {
+          "rect": {
+            "x": 353,
+            "y": 392.21875,
+            "width": 266,
+            "height": 32,
+            "top": 392.21875,
+            "right": 619,
+            "bottom": 424.21875,
+            "left": 353
+          },
+          "scrollTop": 0,
+          "scrollHeight": 32,
+          "clientHeight": 32,
+          "text": "CHF1800"
+        },
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "false"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 350,
+            "y": 822.4375,
+            "width": 660,
+            "height": 73,
+            "top": 822.4375,
+            "right": 1010,
+            "bottom": 895.4375,
+            "left": 350
+          },
+          "controls": [
+            {
+              "text": "Pause",
+              "rect": {
+                "x": 358,
+                "y": 837.4375,
+                "width": 76.46875,
+                "height": 44,
+                "top": 837.4375,
+                "right": 434.46875,
+                "bottom": 881.4375,
+                "left": 358
+              }
+            },
+            {
+              "text": "",
+              "rect": {
+                "x": 456.46875,
+                "y": 851.4375,
+                "width": 543.53125,
+                "height": 16,
+                "top": 851.4375,
+                "right": 1000,
+                "bottom": 867.4375,
+                "left": 456.46875
+              }
+            }
+          ]
+        },
+        "articles": [],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 1360,
+          "height": 900
+        }
+      },
+      "held": {
+        "at": 870.3999999761581,
+        "bound": 442.19999998807907,
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "verified": "false",
+        "revision": 35,
+        "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "stage_phase": "source",
+        "stage": {
+          "x": 36,
+          "y": 203.4375,
+          "width": 1288,
+          "height": 607,
+          "top": 203.4375,
+          "right": 1324,
+          "bottom": 810.4375,
+          "left": 36
+        },
+        "rail": {
+          "x": 36,
+          "y": 211.4375,
+          "width": 1288,
+          "height": 599,
+          "top": 211.4375,
+          "right": 1324,
+          "bottom": 810.4375,
+          "left": 36
+        },
+        "planned": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "planned_authority": "none",
+        "graph": {
+          "rect": {
+            "x": 36,
+            "y": 267.4375,
+            "width": 1288,
+            "height": 535,
+            "top": 267.4375,
+            "right": 1324,
+            "bottom": 802.4375,
+            "left": 36
+          },
+          "clientWidth": 1288,
+          "scrollWidth": 2086,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "planned",
+            "rect": {
+              "x": 54,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 306,
+              "bottom": 357.8125,
+              "left": 54
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_scope",
+            "status": "planned",
+            "rect": {
+              "x": 658,
+              "y": 287.4375,
+              "width": 318,
+              "height": 58,
+              "top": 287.4375,
+              "right": 976,
+              "bottom": 345.4375,
+              "left": 658
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_notice",
+            "status": "planned",
+            "rect": {
+              "x": 1006,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1258,
+              "bottom": 357.8125,
+              "left": 1006
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_cause",
+            "status": "planned",
+            "rect": {
+              "x": 1288,
+              "y": 287.4375,
+              "width": 252,
+              "height": 58,
+              "top": 287.4375,
+              "right": 1540,
+              "bottom": 345.4375,
+              "left": 1288
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_evidence",
+            "status": "planned",
+            "rect": {
+              "x": 1570,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 1822,
+              "bottom": 357.8125,
+              "left": 1570
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_response",
+            "status": "planned",
+            "rect": {
+              "x": 1852,
+              "y": 287.4375,
+              "width": 252,
+              "height": 70.375,
+              "top": 287.4375,
+              "right": 2104,
+              "bottom": 357.8125,
+              "left": 1852
+            },
+            "font": 18
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [
+          {
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "source": "src_106168f9c33152b3d88f02469ad57782",
+            "start": 298,
+            "end": 305,
+            "quote": "CHF1800",
+            "font": 20
+          }
+        ],
+        "pane": {
+          "rect": {
+            "x": 353,
+            "y": 392.21875,
+            "width": 266,
+            "height": 32,
+            "top": 392.21875,
+            "right": 619,
+            "bottom": 424.21875,
+            "left": 353
+          },
+          "scrollTop": 0,
+          "scrollHeight": 32,
+          "clientHeight": 32,
+          "text": "CHF1800"
+        },
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "false"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 350,
+            "y": 822.4375,
+            "width": 660,
+            "height": 73,
+            "top": 822.4375,
+            "right": 1010,
+            "bottom": 895.4375,
+            "left": 350
+          },
+          "controls": [
+            {
+              "text": "Resume",
+              "rect": {
+                "x": 358,
+                "y": 837.4375,
+                "width": 93.421875,
+                "height": 44,
+                "top": 837.4375,
+                "right": 451.421875,
+                "bottom": 881.4375,
+                "left": 358
+              }
+            },
+            {
+              "text": "",
+              "rect": {
+                "x": 473.421875,
+                "y": 851.4375,
+                "width": 526.578125,
+                "height": 16,
+                "top": 851.4375,
+                "right": 1000,
+                "bottom": 867.4375,
+                "left": 473.421875
+              }
+            }
+          ]
+        },
+        "articles": [],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 1360,
+          "height": 900
+        }
+      },
+      "result": {
+        "at": 4828.5,
+        "bound": 442.19999998807907,
+        "operation": "",
+        "verified": "true",
+        "revision": 48,
+        "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "stage_phase": "map",
+        "stage": {
+          "x": 36,
+          "y": 203.4375,
+          "width": 1288,
+          "height": 524.15625,
+          "top": 203.4375,
+          "right": 1324,
+          "bottom": 727.59375,
+          "left": 36
+        },
+        "rail": {
+          "x": 36,
+          "y": 211.4375,
+          "width": 1288,
+          "height": 365.765625,
+          "top": 211.4375,
+          "right": 1324,
+          "bottom": 577.203125,
+          "left": 36
+        },
+        "graph": {
+          "rect": {
+            "x": 36,
+            "y": 219.4375,
+            "width": 1288,
+            "height": 349.765625,
+            "top": 219.4375,
+            "right": 1324,
+            "bottom": 569.203125,
+            "left": 36
+          },
+          "clientWidth": 1288,
+          "scrollWidth": 1288,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "completed",
+            "rect": {
+              "x": 40,
+              "y": 231.4375,
+              "width": 203.328125,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 243.328125,
+              "bottom": 285.03125,
+              "left": 40
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_scope",
+            "status": "completed",
+            "rect": {
+              "x": 255.328125,
+              "y": 231.4375,
+              "width": 203.34375,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 458.671875,
+              "bottom": 285.03125,
+              "left": 255.328125
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_notice",
+            "status": "completed",
+            "rect": {
+              "x": 470.671875,
+              "y": 231.4375,
+              "width": 203.328125,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 674,
+              "bottom": 285.03125,
+              "left": 470.671875
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_cause",
+            "status": "completed",
+            "rect": {
+              "x": 686,
+              "y": 231.4375,
+              "width": 203.34375,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 889.34375,
+              "bottom": 285.03125,
+              "left": 686
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_evidence",
+            "status": "completed",
+            "rect": {
+              "x": 901.34375,
+              "y": 231.4375,
+              "width": 203.328125,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 1104.671875,
+              "bottom": 285.03125,
+              "left": 901.34375
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_response",
+            "status": "completed",
+            "rect": {
+              "x": 1116.671875,
+              "y": 231.4375,
+              "width": 203.328125,
+              "height": 53.59375,
+              "top": 231.4375,
+              "right": 1320,
+              "bottom": 285.03125,
+              "left": 1116.671875
+            },
+            "font": 16
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [],
+        "pane": null,
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1016690703de933a0b04832bac53f789",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          },
+          {
+            "id": "residential_tenancy_scope",
+            "operation": "op_7eae3c56c396adc63cf5e86d936b128e",
+            "start": 146,
+            "end": 172,
+            "text": "ordinary residential lease",
+            "state": "observed"
+          },
+          {
+            "id": "fact:landlord_knowledge_evidence",
+            "operation": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+            "start": 229,
+            "end": 258,
+            "text": "three heating-failure reports",
+            "state": "observed"
+          },
+          {
+            "id": "landlord_first_knowledge",
+            "operation": "op_71a216c1d5ed10f5a5dfc7a8f55a5590",
+            "start": 390,
+            "end": 428,
+            "text": "received the first report on2025-02-01",
+            "state": "observed"
+          },
+          {
+            "id": "continuing_defect_without_remedy",
+            "operation": "op_096fbf71b6d1343003dbcedf78cd4ef3",
+            "start": 735,
+            "end": 769,
+            "text": "no lasting repair has yet occurred",
+            "state": "observed"
+          },
+          {
+            "id": "fact:objective_defect_observation",
+            "operation": "op_03eef83c6c3a9802747b15ceafb63226",
+            "start": 329,
+            "end": 334,
+            "text": "15.8C",
+            "state": "observed"
+          },
+          {
+            "id": "objective_use_impairment",
+            "operation": "op_f1a94f17ba11f910360d21ec27bdd64f",
+            "start": 873,
+            "end": 894,
+            "text": "Heating is inadequate",
+            "state": "observed"
+          },
+          {
+            "id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+            "operation": "op_e2fc076a2f9acc2da80bc5938c212e37",
+            "start": 608,
+            "end": 650,
+            "text": "outside ordinary small tenant maintenance.",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "true",
+            "check": "op_239fff8e940e09cd50d910cbaff753b7",
+            "citation": "{\"artifact_id\":\"src_106168f9c33152b3d88f02469ad57782\",\"end_char\":434,\"offset_unit\":\"unicode_code_point\",\"quote\":\"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\",\"sha256\":\"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9\",\"start_char\":95,\"text_sha256\":\"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9\"}"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "true",
+            "check": "op_96acd4eb60e2706174feaa5552f164f8",
+            "citation": "{\"artifact_id\":\"src_c57d943a64c85cf37369ccbf747b6e3f\",\"end_char\":494,\"offset_unit\":\"unicode_code_point\",\"quote\":\"Our call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.\",\"sha256\":\"1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569\",\"start_char\":193,\"text_sha256\":\"1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569\"}"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "true",
+            "check": "op_1b4045f495bd7c43aee1c82408feaba3",
+            "citation": "{\"artifact_id\":\"src_000ccf161644df9e82d29a8595b7b727\",\"end_char\":764,\"offset_unit\":\"unicode_code_point\",\"quote\":\"On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.\",\"sha256\":\"a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c\",\"start_char\":199,\"text_sha256\":\"a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c\"}"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 350,
+            "y": 739.59375,
+            "width": 660,
+            "height": 49,
+            "top": 739.59375,
+            "right": 1010,
+            "bottom": 788.59375,
+            "left": 350
+          },
+          "controls": [
+            {
+              "text": "",
+              "rect": {
+                "x": 360,
+                "y": 756.59375,
+                "width": 640,
+                "height": 16,
+                "top": 756.59375,
+                "right": 1000,
+                "bottom": 772.59375,
+                "left": 360
+              }
+            }
+          ]
+        },
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.",
+        "outcome_rect": {
+          "x": 120,
+          "y": 589.203125,
+          "width": 1120,
+          "height": 58,
+          "top": 589.203125,
+          "right": 1240,
+          "bottom": 647.203125,
+          "left": 120
+        },
+        "procedure_rect": {
+          "x": 120,
+          "y": 685.59375,
+          "width": 1120,
+          "height": 42,
+          "top": 685.59375,
+          "right": 1240,
+          "bottom": 727.59375,
+          "left": 120
+        },
+        "articles": [
+          "259",
+          "259a",
+          "259d"
+        ],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 1360,
+          "height": 900
+        }
+      },
+      "skip_ms": 623
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "running": {
+        "at": 812.4000000357628,
+        "bound": 500.5,
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "verified": "false",
+        "revision": 35,
+        "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "stage_phase": "source",
+        "stage": {
+          "x": 18,
+          "y": 339.375,
+          "width": 354,
+          "height": 576,
+          "top": 339.375,
+          "right": 372,
+          "bottom": 915.375,
+          "left": 18
+        },
+        "rail": {
+          "x": 18,
+          "y": 347.375,
+          "width": 354,
+          "height": 568,
+          "top": 347.375,
+          "right": 372,
+          "bottom": 915.375,
+          "left": 18
+        },
+        "planned": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "planned_authority": "none",
+        "graph": {
+          "rect": {
+            "x": 18,
+            "y": 403.375,
+            "width": 354,
+            "height": 504,
+            "top": 403.375,
+            "right": 372,
+            "bottom": 907.375,
+            "left": 18
+          },
+          "clientWidth": 354,
+          "scrollWidth": 1686,
+          "scrollLeft": 264,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "planned",
+            "rect": {
+              "x": -238,
+              "y": 423.375,
+              "width": 248,
+              "height": 70.375,
+              "top": 423.375,
+              "right": 10,
+              "bottom": 493.75,
+              "left": -238
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_scope",
+            "status": "planned",
+            "rect": {
+              "x": 30,
+              "y": 423.375,
+              "width": 330,
+              "height": 58,
+              "top": 423.375,
+              "right": 360,
+              "bottom": 481.375,
+              "left": 30
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_notice",
+            "status": "planned",
+            "rect": {
+              "x": 380,
+              "y": 423.375,
+              "width": 248,
+              "height": 70.375,
+              "top": 423.375,
+              "right": 628,
+              "bottom": 493.75,
+              "left": 380
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_cause",
+            "status": "planned",
+            "rect": {
+              "x": 648,
+              "y": 423.375,
+              "width": 248,
+              "height": 58,
+              "top": 423.375,
+              "right": 896,
+              "bottom": 481.375,
+              "left": 648
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_evidence",
+            "status": "planned",
+            "rect": {
+              "x": 916,
+              "y": 423.375,
+              "width": 248,
+              "height": 70.375,
+              "top": 423.375,
+              "right": 1164,
+              "bottom": 493.75,
+              "left": 916
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_response",
+            "status": "planned",
+            "rect": {
+              "x": 1184,
+              "y": 423.375,
+              "width": 248,
+              "height": 70.375,
+              "top": 423.375,
+              "right": 1432,
+              "bottom": 493.75,
+              "left": 1184
+            },
+            "font": 18
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [
+          {
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "source": "src_106168f9c33152b3d88f02469ad57782",
+            "start": 298,
+            "end": 305,
+            "quote": "CHF1800",
+            "font": 20
+          }
+        ],
+        "pane": {
+          "rect": {
+            "x": 47,
+            "y": 596.15625,
+            "width": 296,
+            "height": 32,
+            "top": 596.15625,
+            "right": 343,
+            "bottom": 628.15625,
+            "left": 47
+          },
+          "scrollTop": 0,
+          "scrollHeight": 32,
+          "clientHeight": 32,
+          "text": "CHF1800"
+        },
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "false"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 18,
+            "y": 927.375,
+            "width": 354,
+            "height": 73,
+            "top": 927.375,
+            "right": 372,
+            "bottom": 1000.375,
+            "left": 18
+          },
+          "controls": [
+            {
+              "text": "Pause",
+              "rect": {
+                "x": 26,
+                "y": 942.375,
+                "width": 76.46875,
+                "height": 44,
+                "top": 942.375,
+                "right": 102.46875,
+                "bottom": 986.375,
+                "left": 26
+              }
+            },
+            {
+              "text": "",
+              "rect": {
+                "x": 112.46875,
+                "y": 956.375,
+                "width": 249.53125,
+                "height": 16,
+                "top": 956.375,
+                "right": 362,
+                "bottom": 972.375,
+                "left": 112.46875
+              }
+            }
+          ]
+        },
+        "articles": [],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "held": {
+        "at": 971.6999999880791,
+        "bound": 500.5,
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "verified": "false",
+        "revision": 35,
+        "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "stage_phase": "source",
+        "stage": {
+          "x": 18,
+          "y": 339.375,
+          "width": 354,
+          "height": 576,
+          "top": 339.375,
+          "right": 372,
+          "bottom": 915.375,
+          "left": 18
+        },
+        "rail": {
+          "x": 18,
+          "y": 347.375,
+          "width": 354,
+          "height": 568,
+          "top": 347.375,
+          "right": 372,
+          "bottom": 915.375,
+          "left": 18
+        },
+        "planned": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "planned_authority": "none",
+        "graph": {
+          "rect": {
+            "x": 18,
+            "y": 403.375,
+            "width": 354,
+            "height": 504,
+            "top": 403.375,
+            "right": 372,
+            "bottom": 907.375,
+            "left": 18
+          },
+          "clientWidth": 354,
+          "scrollWidth": 1686,
+          "scrollLeft": 264,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "planned",
+            "rect": {
+              "x": -238,
+              "y": 423.375,
+              "width": 248,
+              "height": 70.375,
+              "top": 423.375,
+              "right": 10,
+              "bottom": 493.75,
+              "left": -238
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_scope",
+            "status": "planned",
+            "rect": {
+              "x": 30,
+              "y": 423.375,
+              "width": 330,
+              "height": 58,
+              "top": 423.375,
+              "right": 360,
+              "bottom": 481.375,
+              "left": 30
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_notice",
+            "status": "planned",
+            "rect": {
+              "x": 380,
+              "y": 423.375,
+              "width": 248,
+              "height": 70.375,
+              "top": 423.375,
+              "right": 628,
+              "bottom": 493.75,
+              "left": 380
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_cause",
+            "status": "planned",
+            "rect": {
+              "x": 648,
+              "y": 423.375,
+              "width": 248,
+              "height": 58,
+              "top": 423.375,
+              "right": 896,
+              "bottom": 481.375,
+              "left": 648
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_evidence",
+            "status": "planned",
+            "rect": {
+              "x": 916,
+              "y": 423.375,
+              "width": 248,
+              "height": 70.375,
+              "top": 423.375,
+              "right": 1164,
+              "bottom": 493.75,
+              "left": 916
+            },
+            "font": 18
+          },
+          {
+            "id": "dh_response",
+            "status": "planned",
+            "rect": {
+              "x": 1184,
+              "y": 423.375,
+              "width": 248,
+              "height": 70.375,
+              "top": 423.375,
+              "right": 1432,
+              "bottom": 493.75,
+              "left": 1184
+            },
+            "font": 18
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [
+          {
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "source": "src_106168f9c33152b3d88f02469ad57782",
+            "start": 298,
+            "end": 305,
+            "quote": "CHF1800",
+            "font": 20
+          }
+        ],
+        "pane": {
+          "rect": {
+            "x": 47,
+            "y": 596.15625,
+            "width": 296,
+            "height": 32,
+            "top": 596.15625,
+            "right": 343,
+            "bottom": 628.15625,
+            "left": 47
+          },
+          "scrollTop": 0,
+          "scrollHeight": 32,
+          "clientHeight": 32,
+          "text": "CHF1800"
+        },
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1715b98c5f009b94cad03526c1c661be",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "false"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "false"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 18,
+            "y": 927.375,
+            "width": 354,
+            "height": 73,
+            "top": 927.375,
+            "right": 372,
+            "bottom": 1000.375,
+            "left": 18
+          },
+          "controls": [
+            {
+              "text": "Resume",
+              "rect": {
+                "x": 26,
+                "y": 942.375,
+                "width": 93.421875,
+                "height": 44,
+                "top": 942.375,
+                "right": 119.421875,
+                "bottom": 986.375,
+                "left": 26
+              }
+            },
+            {
+              "text": "",
+              "rect": {
+                "x": 129.421875,
+                "y": 956.375,
+                "width": 232.578125,
+                "height": 16,
+                "top": 956.375,
+                "right": 362,
+                "bottom": 972.375,
+                "left": 129.421875
+              }
+            }
+          ]
+        },
+        "articles": [],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "result": {
+        "at": 4933.600000023842,
+        "bound": 500.5,
+        "operation": "",
+        "verified": "true",
+        "revision": 48,
+        "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "stage_phase": "map",
+        "stage": {
+          "x": 18,
+          "y": 255.375,
+          "width": 354,
+          "height": 1202.15625,
+          "top": 255.375,
+          "right": 372,
+          "bottom": 1457.53125,
+          "left": 18
+        },
+        "rail": {
+          "x": 18,
+          "y": 263.375,
+          "width": 354,
+          "height": 882.984375,
+          "top": 263.375,
+          "right": 372,
+          "bottom": 1146.359375,
+          "left": 18
+        },
+        "graph": {
+          "rect": {
+            "x": 18,
+            "y": 271.375,
+            "width": 354,
+            "height": 866.984375,
+            "top": 271.375,
+            "right": 372,
+            "bottom": 1138.359375,
+            "left": 18
+          },
+          "clientWidth": 354,
+          "scrollWidth": 354,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "nodes": [
+          {
+            "id": "dh_intake",
+            "status": "completed",
+            "rect": {
+              "x": 22,
+              "y": 283.375,
+              "width": 346,
+              "height": 48,
+              "top": 283.375,
+              "right": 368,
+              "bottom": 331.375,
+              "left": 22
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_scope",
+            "status": "completed",
+            "rect": {
+              "x": 22,
+              "y": 343.375,
+              "width": 346,
+              "height": 48,
+              "top": 343.375,
+              "right": 368,
+              "bottom": 391.375,
+              "left": 22
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_notice",
+            "status": "completed",
+            "rect": {
+              "x": 22,
+              "y": 535.171875,
+              "width": 346,
+              "height": 48,
+              "top": 535.171875,
+              "right": 368,
+              "bottom": 583.171875,
+              "left": 22
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_cause",
+            "status": "completed",
+            "rect": {
+              "x": 22,
+              "y": 766.96875,
+              "width": 346,
+              "height": 48,
+              "top": 766.96875,
+              "right": 368,
+              "bottom": 814.96875,
+              "left": 22
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_evidence",
+            "status": "completed",
+            "rect": {
+              "x": 22,
+              "y": 826.96875,
+              "width": 346,
+              "height": 48,
+              "top": 826.96875,
+              "right": 368,
+              "bottom": 874.96875,
+              "left": 22
+            },
+            "font": 16
+          },
+          {
+            "id": "dh_response",
+            "status": "completed",
+            "rect": {
+              "x": 22,
+              "y": 1078.359375,
+              "width": 346,
+              "height": 48,
+              "top": 1078.359375,
+              "right": 368,
+              "bottom": 1126.359375,
+              "left": 22
+            },
+            "font": 16
+          }
+        ],
+        "edges": [
+          {
+            "id": "reference_defect_mold_heating_0",
+            "source": "dh_intake",
+            "target": "dh_scope"
+          },
+          {
+            "id": "reference_defect_mold_heating_1",
+            "source": "dh_scope",
+            "target": "dh_notice"
+          },
+          {
+            "id": "reference_defect_mold_heating_2",
+            "source": "dh_notice",
+            "target": "dh_cause"
+          },
+          {
+            "id": "reference_defect_mold_heating_3",
+            "source": "dh_cause",
+            "target": "dh_evidence"
+          },
+          {
+            "id": "reference_defect_mold_heating_4",
+            "source": "dh_evidence",
+            "target": "dh_response"
+          }
+        ],
+        "marks": [],
+        "pane": null,
+        "facts": [
+          {
+            "id": "fact:tenancy_terms_evidence",
+            "operation": "op_1016690703de933a0b04832bac53f789",
+            "start": 298,
+            "end": 305,
+            "text": "CHF1800",
+            "state": "observed"
+          },
+          {
+            "id": "residential_tenancy_scope",
+            "operation": "op_7eae3c56c396adc63cf5e86d936b128e",
+            "start": 146,
+            "end": 172,
+            "text": "ordinary residential lease",
+            "state": "observed"
+          },
+          {
+            "id": "fact:landlord_knowledge_evidence",
+            "operation": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+            "start": 229,
+            "end": 258,
+            "text": "three heating-failure reports",
+            "state": "observed"
+          },
+          {
+            "id": "landlord_first_knowledge",
+            "operation": "op_71a216c1d5ed10f5a5dfc7a8f55a5590",
+            "start": 390,
+            "end": 428,
+            "text": "received the first report on2025-02-01",
+            "state": "observed"
+          },
+          {
+            "id": "continuing_defect_without_remedy",
+            "operation": "op_096fbf71b6d1343003dbcedf78cd4ef3",
+            "start": 735,
+            "end": 769,
+            "text": "no lasting repair has yet occurred",
+            "state": "observed"
+          },
+          {
+            "id": "fact:objective_defect_observation",
+            "operation": "op_03eef83c6c3a9802747b15ceafb63226",
+            "start": 329,
+            "end": 334,
+            "text": "15.8C",
+            "state": "observed"
+          },
+          {
+            "id": "objective_use_impairment",
+            "operation": "op_f1a94f17ba11f910360d21ec27bdd64f",
+            "start": 873,
+            "end": 894,
+            "text": "Heating is inadequate",
+            "state": "observed"
+          },
+          {
+            "id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+            "operation": "op_e2fc076a2f9acc2da80bc5938c212e37",
+            "start": 608,
+            "end": 650,
+            "text": "outside ordinary small tenant maintenance.",
+            "state": "observed"
+          }
+        ],
+        "documents": [
+          {
+            "id": "tenancy_terms_evidence",
+            "checked": "true",
+            "check": "op_239fff8e940e09cd50d910cbaff753b7",
+            "citation": "{\"artifact_id\":\"src_106168f9c33152b3d88f02469ad57782\",\"end_char\":434,\"offset_unit\":\"unicode_code_point\",\"quote\":\"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\",\"sha256\":\"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9\",\"start_char\":95,\"text_sha256\":\"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9\"}"
+          },
+          {
+            "id": "landlord_knowledge_evidence",
+            "checked": "true",
+            "check": "op_96acd4eb60e2706174feaa5552f164f8",
+            "citation": "{\"artifact_id\":\"src_c57d943a64c85cf37369ccbf747b6e3f\",\"end_char\":494,\"offset_unit\":\"unicode_code_point\",\"quote\":\"Our call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.\",\"sha256\":\"1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569\",\"start_char\":193,\"text_sha256\":\"1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569\"}"
+          },
+          {
+            "id": "objective_defect_observation",
+            "checked": "true",
+            "check": "op_1b4045f495bd7c43aee1c82408feaba3",
+            "citation": "{\"artifact_id\":\"src_000ccf161644df9e82d29a8595b7b727\",\"end_char\":764,\"offset_unit\":\"unicode_code_point\",\"quote\":\"On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.\",\"sha256\":\"a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c\",\"start_char\":199,\"text_sha256\":\"a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c\"}"
+          }
+        ],
+        "transport": {
+          "rect": {
+            "x": 18,
+            "y": 1469.53125,
+            "width": 354,
+            "height": 49,
+            "top": 1469.53125,
+            "right": 372,
+            "bottom": 1518.53125,
+            "left": 18
+          },
+          "controls": [
+            {
+              "text": "",
+              "rect": {
+                "x": 28,
+                "y": 1486.53125,
+                "width": 334,
+                "height": 16,
+                "top": 1486.53125,
+                "right": 362,
+                "bottom": 1502.53125,
+                "left": 28
+              }
+            }
+          ]
+        },
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.",
+        "outcome_rect": {
+          "x": 18,
+          "y": 1158.359375,
+          "width": 354,
+          "height": 174,
+          "top": 1158.359375,
+          "right": 372,
+          "bottom": 1332.359375,
+          "left": 18
+        },
+        "procedure_rect": {
+          "x": 18,
+          "y": 1393.140625,
+          "width": 354,
+          "height": 64.390625,
+          "top": 1393.140625,
+          "right": 372,
+          "bottom": 1457.53125,
+          "left": 18
+        },
+        "articles": [
+          "259",
+          "259a",
+          "259d"
+        ],
+        "reuse": [
+          {
+            "id": "procedure.defect_mold_heating",
+            "version": "1"
+          }
+        ],
+        "overflow": false,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "skip_ms": 607
+    }
+  ],
+  "disclosure": "Existing local native fictional fixture and operation sidecars; actual Chromium time; no provider, production request or write.",
+  "checkout_commit": "27e7419dcf7d47fac15da4fe43176b01c33e8ea4",
+  "candidate_commit": "143711e685ecc35285bb3bebdbeb2c0fa0f19d32",
+  "test_sha256": "8f74948ed2d7418aad859e4a1172c9b1a4f059252842f932fc3ce17f1500c97c",
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/?journey=autonomous"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/fonts/Merriweather-Light.ttf"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.css?sha256=a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=recorded"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/knowledge"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/sources/clm_314f2d309fea25e6/src_106168f9c33152b3d88f02469ad57782/text"
+    }
+  ],
+  "served": {
+    "css": "2acd53960f4e432989498ee75e3db53ff8d21308423664f9b60336b0dc077f22",
+    "javascript": "9f1dc91cdf4caf9b2111254c27661f726aa1eb15043914113705cb216c0c8023"
+  },
+  "assets": {
+    "javascript": "9f1dc91cdf4caf9b2111254c27661f726aa1eb15043914113705cb216c0c8023",
+    "css": "2acd53960f4e432989498ee75e3db53ff8d21308423664f9b60336b0dc077f22"
+  }
+}

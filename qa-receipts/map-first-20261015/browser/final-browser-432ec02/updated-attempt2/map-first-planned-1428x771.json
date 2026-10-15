@@ -1,0 +1,383 @@
+{
+  "classification": "Renderer-only verified native outline over its exact unprocessed native state; no operation stream, accepted progress or timing claim.",
+  "claim_id": "clm_314f2d309fea25e6",
+  "geometry": {
+    "before": {
+      "rect": {
+        "x": 44,
+        "y": 219.4375,
+        "width": 1340,
+        "height": 347.1875,
+        "top": 219.4375,
+        "right": 1384,
+        "bottom": 566.625,
+        "left": 44
+      },
+      "authority": "none",
+      "head": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+      "pan": {
+        "rect": {
+          "x": 44,
+          "y": 258.625,
+          "width": 1340,
+          "height": 300,
+          "top": 258.625,
+          "right": 1384,
+          "bottom": 558.625,
+          "left": 44
+        },
+        "width": 1340,
+        "scrollWidth": 1698,
+        "scrollLeft": 0
+      },
+      "nodes": [
+        {
+          "id": "dh_intake",
+          "status": "planned",
+          "rect": {
+            "x": 62,
+            "y": 286.625,
+            "width": 252,
+            "height": 70.375,
+            "top": 286.625,
+            "right": 314,
+            "bottom": 357,
+            "left": 62
+          },
+          "font": 18
+        },
+        {
+          "id": "dh_scope",
+          "status": "planned",
+          "rect": {
+            "x": 344,
+            "y": 286.625,
+            "width": 252,
+            "height": 70.375,
+            "top": 286.625,
+            "right": 596,
+            "bottom": 357,
+            "left": 344
+          },
+          "font": 18
+        },
+        {
+          "id": "dh_notice",
+          "status": "planned",
+          "rect": {
+            "x": 626,
+            "y": 286.625,
+            "width": 252,
+            "height": 70.375,
+            "top": 286.625,
+            "right": 878,
+            "bottom": 357,
+            "left": 626
+          },
+          "font": 18
+        },
+        {
+          "id": "dh_cause",
+          "status": "planned",
+          "rect": {
+            "x": 908,
+            "y": 286.625,
+            "width": 252,
+            "height": 58,
+            "top": 286.625,
+            "right": 1160,
+            "bottom": 344.625,
+            "left": 908
+          },
+          "font": 18
+        },
+        {
+          "id": "dh_evidence",
+          "status": "planned",
+          "rect": {
+            "x": 1190,
+            "y": 286.625,
+            "width": 252,
+            "height": 70.375,
+            "top": 286.625,
+            "right": 1442,
+            "bottom": 357,
+            "left": 1190
+          },
+          "font": 18
+        },
+        {
+          "id": "dh_response",
+          "status": "planned",
+          "rect": {
+            "x": 1472,
+            "y": 286.625,
+            "width": 252,
+            "height": 70.375,
+            "top": 286.625,
+            "right": 1724,
+            "bottom": 357,
+            "left": 1472
+          },
+          "font": 18
+        }
+      ],
+      "edges": [
+        {
+          "id": "reference_defect_mold_heating_0",
+          "source": "dh_intake",
+          "target": "dh_scope"
+        },
+        {
+          "id": "reference_defect_mold_heating_1",
+          "source": "dh_scope",
+          "target": "dh_notice"
+        },
+        {
+          "id": "reference_defect_mold_heating_2",
+          "source": "dh_notice",
+          "target": "dh_cause"
+        },
+        {
+          "id": "reference_defect_mold_heating_3",
+          "source": "dh_cause",
+          "target": "dh_evidence"
+        },
+        {
+          "id": "reference_defect_mold_heating_4",
+          "source": "dh_evidence",
+          "target": "dh_response"
+        }
+      ],
+      "checked": 0,
+      "checks": 0,
+      "overflow": false
+    },
+    "after": {
+      "rect": {
+        "x": 44,
+        "y": 219.4375,
+        "width": 1340,
+        "height": 347.1875,
+        "top": 219.4375,
+        "right": 1384,
+        "bottom": 566.625,
+        "left": 44
+      },
+      "authority": "none",
+      "head": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+      "pan": {
+        "rect": {
+          "x": 44,
+          "y": 258.625,
+          "width": 1340,
+          "height": 300,
+          "top": 258.625,
+          "right": 1384,
+          "bottom": 558.625,
+          "left": 44
+        },
+        "width": 1340,
+        "scrollWidth": 1698,
+        "scrollLeft": 358
+      },
+      "nodes": [
+        {
+          "id": "dh_intake",
+          "status": "planned",
+          "rect": {
+            "x": -296,
+            "y": 286.625,
+            "width": 252,
+            "height": 70.375,
+            "top": 286.625,
+            "right": -44,
+            "bottom": 357,
+            "left": -296
+          },
+          "font": 18
+        },
+        {
+          "id": "dh_scope",
+          "status": "planned",
+          "rect": {
+            "x": -14,
+            "y": 286.625,
+            "width": 252,
+            "height": 70.375,
+            "top": 286.625,
+            "right": 238,
+            "bottom": 357,
+            "left": -14
+          },
+          "font": 18
+        },
+        {
+          "id": "dh_notice",
+          "status": "planned",
+          "rect": {
+            "x": 268,
+            "y": 286.625,
+            "width": 252,
+            "height": 70.375,
+            "top": 286.625,
+            "right": 520,
+            "bottom": 357,
+            "left": 268
+          },
+          "font": 18
+        },
+        {
+          "id": "dh_cause",
+          "status": "planned",
+          "rect": {
+            "x": 550,
+            "y": 286.625,
+            "width": 252,
+            "height": 58,
+            "top": 286.625,
+            "right": 802,
+            "bottom": 344.625,
+            "left": 550
+          },
+          "font": 18
+        },
+        {
+          "id": "dh_evidence",
+          "status": "planned",
+          "rect": {
+            "x": 832,
+            "y": 286.625,
+            "width": 252,
+            "height": 70.375,
+            "top": 286.625,
+            "right": 1084,
+            "bottom": 357,
+            "left": 832
+          },
+          "font": 18
+        },
+        {
+          "id": "dh_response",
+          "status": "planned",
+          "rect": {
+            "x": 1114,
+            "y": 286.625,
+            "width": 252,
+            "height": 70.375,
+            "top": 286.625,
+            "right": 1366,
+            "bottom": 357,
+            "left": 1114
+          },
+          "font": 18
+        }
+      ],
+      "edges": [
+        {
+          "id": "reference_defect_mold_heating_0",
+          "source": "dh_intake",
+          "target": "dh_scope"
+        },
+        {
+          "id": "reference_defect_mold_heating_1",
+          "source": "dh_scope",
+          "target": "dh_notice"
+        },
+        {
+          "id": "reference_defect_mold_heating_2",
+          "source": "dh_notice",
+          "target": "dh_cause"
+        },
+        {
+          "id": "reference_defect_mold_heating_3",
+          "source": "dh_cause",
+          "target": "dh_evidence"
+        },
+        {
+          "id": "reference_defect_mold_heating_4",
+          "source": "dh_evidence",
+          "target": "dh_response"
+        }
+      ],
+      "checked": 0,
+      "checks": 0,
+      "overflow": false
+    }
+  },
+  "checkoutCommit": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "testSha256": "fd8cb382108712aa1accc91fa995cfe806b8972e0f869ce27b7f53d842731883",
+  "requests": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "prefixTransfers": [],
+  "browserRequests": [
+    {
+      "url": "http://localhost:41999/",
+      "method": "GET"
+    }
+  ],
+  "javascriptErrors": [
+    "Cannot read properties of null (reading 'plannedProcess')",
+    "Cannot read properties of null (reading 'plannedProcess')"
+  ],
+  "viewport": {
+    "width": 1428,
+    "height": 771
+  },
+  "injectedAssets": {
+    "javascript": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+    "css": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5"
+  },
+  "assets": {
+    "javascript": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+    "css": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5"
+  }
+}

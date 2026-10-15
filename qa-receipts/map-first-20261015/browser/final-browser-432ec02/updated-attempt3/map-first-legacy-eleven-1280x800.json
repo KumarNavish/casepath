@@ -1,0 +1,857 @@
+{
+  "classification": "Renderer-only panning over actual incomplete legacy prefix9 from the existing prior-assessment fixture; distinct from the nine completed reference heads.",
+  "claim_id": "auto_a489b283495e7b03b5aab860",
+  "revision": 9,
+  "state_sha256": "1b27ee563e2b863857e66191d5655d99f342345ff80754ea0a85ae4d3c4655f1",
+  "branches": [
+    {
+      "condition": {
+        "flag": "termination_received"
+      },
+      "edge_id": "lt_e01",
+      "label": "termination received",
+      "provenance": {
+        "assertion": "After 'Capture issuer, receipt and end date', proceed to 'Preserve challenge or extension deadline' when 'termination received'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "branches_to",
+      "source_node_id": "lt_intake",
+      "target_node_id": "lt_deadline",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "const": "true"
+      },
+      "edge_id": "lt_e02",
+      "label": "deadline position recorded",
+      "provenance": {
+        "assertion": "After 'Preserve challenge or extension deadline', proceed to 'Check form and service' when 'deadline position recorded'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "enables",
+      "source_node_id": "lt_deadline",
+      "target_node_id": "lt_form",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "const": "true"
+      },
+      "edge_id": "lt_e03",
+      "label": "formal review complete",
+      "provenance": {
+        "assertion": "After 'Check form and service', proceed to 'Classify termination type' when 'formal review complete'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "enables",
+      "source_node_id": "lt_form",
+      "target_node_id": "lt_type",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "flag": "arrears"
+      },
+      "edge_id": "lt_e04",
+      "label": "arrears termination",
+      "provenance": {
+        "assertion": "After 'Classify termination type', proceed to 'Check arrears cure preconditions' when 'arrears termination'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "branches_to",
+      "source_node_id": "lt_type",
+      "target_node_id": "lt_arrears",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "flag": "family_home"
+      },
+      "edge_id": "lt_e05",
+      "label": "family-home ordinary termination",
+      "provenance": {
+        "assertion": "After 'Classify termination type', proceed to 'Check separate family-home service' when 'family-home ordinary termination'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "branches_to",
+      "source_node_id": "lt_type",
+      "target_node_id": "lt_family",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "all": [
+          {
+            "not": {
+              "flag": "arrears"
+            }
+          },
+          {
+            "not": {
+              "flag": "family_home"
+            }
+          }
+        ]
+      },
+      "edge_id": "lt_e06",
+      "label": "no special precondition branch",
+      "provenance": {
+        "assertion": "After 'Classify termination type', proceed to 'Screen stated reason and good-faith concerns' when 'no special precondition branch'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "branches_to",
+      "source_node_id": "lt_type",
+      "target_node_id": "lt_abuse",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "const": "true"
+      },
+      "edge_id": "lt_e07",
+      "label": "arrears preconditions assessed",
+      "provenance": {
+        "assertion": "After 'Check arrears cure preconditions', proceed to 'Screen stated reason and good-faith concerns' when 'arrears preconditions assessed'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "enables",
+      "source_node_id": "lt_arrears",
+      "target_node_id": "lt_abuse",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "const": "true"
+      },
+      "edge_id": "lt_e08",
+      "label": "family service assessed",
+      "provenance": {
+        "assertion": "After 'Check separate family-home service', proceed to 'Screen stated reason and good-faith concerns' when 'family service assessed'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "enables",
+      "source_node_id": "lt_family",
+      "target_node_id": "lt_abuse",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "flag": "extension_relevant"
+      },
+      "edge_id": "lt_e09",
+      "label": "extension relevant",
+      "provenance": {
+        "assertion": "After 'Screen stated reason and good-faith concerns', proceed to 'Assess extension evidence' when 'extension relevant'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "branches_to",
+      "source_node_id": "lt_abuse",
+      "target_node_id": "lt_extension",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "not": {
+          "flag": "extension_relevant"
+        }
+      },
+      "edge_id": "lt_e10",
+      "label": "no extension branch",
+      "provenance": {
+        "assertion": "After 'Screen stated reason and good-faith concerns', proceed to 'Collect type-specific evidence' when 'no extension branch'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "branches_to",
+      "source_node_id": "lt_abuse",
+      "target_node_id": "lt_evidence",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "const": "true"
+      },
+      "edge_id": "lt_e11",
+      "label": "hardship factors recorded",
+      "provenance": {
+        "assertion": "After 'Assess extension evidence', proceed to 'Collect type-specific evidence' when 'hardship factors recorded'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "enables",
+      "source_node_id": "lt_extension",
+      "target_node_id": "lt_evidence",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "const": "true"
+      },
+      "edge_id": "lt_e12",
+      "label": "evidence collection closed",
+      "provenance": {
+        "assertion": "After 'Collect type-specific evidence', proceed to 'Prepare challenge, extension or settlement' when 'evidence collection closed'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "enables",
+      "source_node_id": "lt_evidence",
+      "target_node_id": "lt_resolution",
+      "validation": {
+        "status": "unvalidated"
+      }
+    },
+    {
+      "condition": {
+        "const": "true"
+      },
+      "edge_id": "lt_e13",
+      "label": "outcome recorded",
+      "provenance": {
+        "assertion": "After 'Prepare challenge, extension or settlement', proceed to 'Record termination outcome' when 'outcome recorded'.",
+        "kind": "inferred",
+        "source": "static_policy"
+      },
+      "relation": "enables",
+      "source_node_id": "lt_resolution",
+      "target_node_id": "lt_close",
+      "validation": {
+        "status": "unvalidated"
+      }
+    }
+  ],
+  "geometry": {
+    "before": {
+      "rect": {
+        "x": 44,
+        "y": 219.4375,
+        "width": 1192,
+        "height": 467.9375,
+        "top": 219.4375,
+        "right": 1236,
+        "bottom": 687.375,
+        "left": 44
+      },
+      "pan": {
+        "rect": {
+          "x": 44,
+          "y": 227.4375,
+          "width": 1192,
+          "height": 451.9375,
+          "top": 227.4375,
+          "right": 1236,
+          "bottom": 679.375,
+          "left": 44
+        },
+        "width": 1192,
+        "scrollWidth": 2914,
+        "scrollLeft": 0
+      },
+      "nodes": [
+        {
+          "id": "lt_intake",
+          "status": "ready",
+          "rect": {
+            "x": 62,
+            "y": 255.4375,
+            "width": 340,
+            "height": 58,
+            "top": 255.4375,
+            "right": 402,
+            "bottom": 313.4375,
+            "left": 62
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_deadline",
+          "status": "blocked",
+          "rect": {
+            "x": 432,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 684,
+            "bottom": 325.8125,
+            "left": 432
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_form",
+          "status": "blocked",
+          "rect": {
+            "x": 714,
+            "y": 255.4375,
+            "width": 252,
+            "height": 58,
+            "top": 255.4375,
+            "right": 966,
+            "bottom": 313.4375,
+            "left": 714
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_type",
+          "status": "blocked",
+          "rect": {
+            "x": 996,
+            "y": 255.4375,
+            "width": 252,
+            "height": 58,
+            "top": 255.4375,
+            "right": 1248,
+            "bottom": 313.4375,
+            "left": 996
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_arrears",
+          "status": "inactive",
+          "rect": {
+            "x": 1278,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 1530,
+            "bottom": 325.8125,
+            "left": 1278
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_family",
+          "status": "blocked",
+          "rect": {
+            "x": 1278,
+            "y": 517,
+            "width": 252,
+            "height": 70.375,
+            "top": 517,
+            "right": 1530,
+            "bottom": 587.375,
+            "left": 1278
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_abuse",
+          "status": "blocked",
+          "rect": {
+            "x": 1560,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 1812,
+            "bottom": 325.8125,
+            "left": 1560
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_extension",
+          "status": "inactive",
+          "rect": {
+            "x": 1842,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 2094,
+            "bottom": 325.8125,
+            "left": 1842
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_evidence",
+          "status": "blocked",
+          "rect": {
+            "x": 2124,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 2376,
+            "bottom": 325.8125,
+            "left": 2124
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_resolution",
+          "status": "blocked",
+          "rect": {
+            "x": 2406,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 2658,
+            "bottom": 325.8125,
+            "left": 2406
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_close",
+          "status": "blocked",
+          "rect": {
+            "x": 2688,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 2940,
+            "bottom": 325.8125,
+            "left": 2688
+          },
+          "font": 18
+        }
+      ],
+      "edges": [
+        {
+          "id": "lt_e01",
+          "source": "lt_intake",
+          "target": "lt_deadline"
+        },
+        {
+          "id": "lt_e02",
+          "source": "lt_deadline",
+          "target": "lt_form"
+        },
+        {
+          "id": "lt_e03",
+          "source": "lt_form",
+          "target": "lt_type"
+        },
+        {
+          "id": "lt_e04",
+          "source": "lt_type",
+          "target": "lt_arrears"
+        },
+        {
+          "id": "lt_e05",
+          "source": "lt_type",
+          "target": "lt_family"
+        },
+        {
+          "id": "lt_e06",
+          "source": "lt_type",
+          "target": "lt_abuse"
+        },
+        {
+          "id": "lt_e07",
+          "source": "lt_arrears",
+          "target": "lt_abuse"
+        },
+        {
+          "id": "lt_e08",
+          "source": "lt_family",
+          "target": "lt_abuse"
+        },
+        {
+          "id": "lt_e09",
+          "source": "lt_abuse",
+          "target": "lt_extension"
+        },
+        {
+          "id": "lt_e10",
+          "source": "lt_abuse",
+          "target": "lt_evidence"
+        },
+        {
+          "id": "lt_e11",
+          "source": "lt_extension",
+          "target": "lt_evidence"
+        },
+        {
+          "id": "lt_e12",
+          "source": "lt_evidence",
+          "target": "lt_resolution"
+        },
+        {
+          "id": "lt_e13",
+          "source": "lt_resolution",
+          "target": "lt_close"
+        }
+      ],
+      "checked": 0,
+      "checks": 0,
+      "overflow": false
+    },
+    "after": {
+      "rect": {
+        "x": 44,
+        "y": 219.4375,
+        "width": 1192,
+        "height": 467.9375,
+        "top": 219.4375,
+        "right": 1236,
+        "bottom": 687.375,
+        "left": 44
+      },
+      "pan": {
+        "rect": {
+          "x": 44,
+          "y": 227.4375,
+          "width": 1192,
+          "height": 451.9375,
+          "top": 227.4375,
+          "right": 1236,
+          "bottom": 679.375,
+          "left": 44
+        },
+        "width": 1192,
+        "scrollWidth": 2914,
+        "scrollLeft": 1722
+      },
+      "nodes": [
+        {
+          "id": "lt_intake",
+          "status": "ready",
+          "rect": {
+            "x": -1660,
+            "y": 255.4375,
+            "width": 340,
+            "height": 58,
+            "top": 255.4375,
+            "right": -1320,
+            "bottom": 313.4375,
+            "left": -1660
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_deadline",
+          "status": "blocked",
+          "rect": {
+            "x": -1290,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": -1038,
+            "bottom": 325.8125,
+            "left": -1290
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_form",
+          "status": "blocked",
+          "rect": {
+            "x": -1008,
+            "y": 255.4375,
+            "width": 252,
+            "height": 58,
+            "top": 255.4375,
+            "right": -756,
+            "bottom": 313.4375,
+            "left": -1008
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_type",
+          "status": "blocked",
+          "rect": {
+            "x": -726,
+            "y": 255.4375,
+            "width": 252,
+            "height": 58,
+            "top": 255.4375,
+            "right": -474,
+            "bottom": 313.4375,
+            "left": -726
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_arrears",
+          "status": "inactive",
+          "rect": {
+            "x": -444,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": -192,
+            "bottom": 325.8125,
+            "left": -444
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_family",
+          "status": "blocked",
+          "rect": {
+            "x": -444,
+            "y": 517,
+            "width": 252,
+            "height": 70.375,
+            "top": 517,
+            "right": -192,
+            "bottom": 587.375,
+            "left": -444
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_abuse",
+          "status": "blocked",
+          "rect": {
+            "x": -162,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 90,
+            "bottom": 325.8125,
+            "left": -162
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_extension",
+          "status": "inactive",
+          "rect": {
+            "x": 120,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 372,
+            "bottom": 325.8125,
+            "left": 120
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_evidence",
+          "status": "blocked",
+          "rect": {
+            "x": 402,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 654,
+            "bottom": 325.8125,
+            "left": 402
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_resolution",
+          "status": "blocked",
+          "rect": {
+            "x": 684,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 936,
+            "bottom": 325.8125,
+            "left": 684
+          },
+          "font": 18
+        },
+        {
+          "id": "lt_close",
+          "status": "blocked",
+          "rect": {
+            "x": 966,
+            "y": 255.4375,
+            "width": 252,
+            "height": 70.375,
+            "top": 255.4375,
+            "right": 1218,
+            "bottom": 325.8125,
+            "left": 966
+          },
+          "font": 18
+        }
+      ],
+      "edges": [
+        {
+          "id": "lt_e01",
+          "source": "lt_intake",
+          "target": "lt_deadline"
+        },
+        {
+          "id": "lt_e02",
+          "source": "lt_deadline",
+          "target": "lt_form"
+        },
+        {
+          "id": "lt_e03",
+          "source": "lt_form",
+          "target": "lt_type"
+        },
+        {
+          "id": "lt_e04",
+          "source": "lt_type",
+          "target": "lt_arrears"
+        },
+        {
+          "id": "lt_e05",
+          "source": "lt_type",
+          "target": "lt_family"
+        },
+        {
+          "id": "lt_e06",
+          "source": "lt_type",
+          "target": "lt_abuse"
+        },
+        {
+          "id": "lt_e07",
+          "source": "lt_arrears",
+          "target": "lt_abuse"
+        },
+        {
+          "id": "lt_e08",
+          "source": "lt_family",
+          "target": "lt_abuse"
+        },
+        {
+          "id": "lt_e09",
+          "source": "lt_abuse",
+          "target": "lt_extension"
+        },
+        {
+          "id": "lt_e10",
+          "source": "lt_abuse",
+          "target": "lt_evidence"
+        },
+        {
+          "id": "lt_e11",
+          "source": "lt_extension",
+          "target": "lt_evidence"
+        },
+        {
+          "id": "lt_e12",
+          "source": "lt_evidence",
+          "target": "lt_resolution"
+        },
+        {
+          "id": "lt_e13",
+          "source": "lt_resolution",
+          "target": "lt_close"
+        }
+      ],
+      "checked": 0,
+      "checks": 0,
+      "overflow": false
+    }
+  },
+  "checkoutCommit": "7904c8050a10568d4168c92b77ee55ec1d7b2b13",
+  "testSha256": "77a8c533ba0dfa6c0643081162dd011dd13610481ad64a40092c3dd67eea7855",
+  "requests": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/snapshot?after=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "prefixTransfers": [],
+  "browserRequests": [
+    {
+      "url": "http://localhost:41999/",
+      "method": "GET"
+    }
+  ],
+  "javascriptErrors": [],
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "injectedAssets": {
+    "javascript": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+    "css": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5"
+  },
+  "assets": {
+    "javascript": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+    "css": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5"
+  }
+}

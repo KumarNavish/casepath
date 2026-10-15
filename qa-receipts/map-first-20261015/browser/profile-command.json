@@ -1,0 +1,28 @@
+{
+  "host": "656813ef2295",
+  "cwd": "/workspace",
+  "argv": [
+    "node",
+    "/workspace/casepath-map-first-qa-evidence-20261015/profile.cjs",
+    "map-first-final",
+    "4"
+  ],
+  "environment": {
+    "HOME": "/workspace/mqh",
+    "TMPDIR": "/workspace/mqt",
+    "TMP": "/workspace/mqt",
+    "TEMP": "/workspace/mqt",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "CASEPATH_BROWSER_JS_ASSET": "/workspace/casepath-map-first-qa-evidence-20261015/assets/7677fe8.js",
+    "CASEPATH_BROWSER_CSS_ASSET": "/workspace/casepath-map-first-qa-evidence-20261015/assets/7677fe8.css",
+    "CASEPATH_CANDIDATE_COMMIT": "7677fe8f86b61bab3ad73204af5d886afe1e4e11",
+    "CASEPATH_QA_COMMIT": "27e7419dcf7d47fac15da4fe43176b01c33e8ea4"
+  },
+  "runner_sha256": "94a0cb3c683e08cda6429da0ebcb7e68bdf02caa4d25904eada9aa110ef39727",
+  "javascript_sha256": "d741a1af6bf769f243cd0d961f724222544046e6bb959cf9c0ffdc59b5c35440",
+  "css_sha256": "404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87",
+  "baseline": "/workspace/casepath-visible-agent-20261015-evidence/qa/final-4x-cold.json",
+  "baseline_sha256": "3583a77619d013509ecee3784b4fb994b9ec4fc6b18d6d645a996d6162de78f8",
+  "fixture": "/workspace/operation-runtime-evidence/native-sidecars/clm_314f2d309fea25e6.json",
+  "scope": "One serial4x cold native Chromium workload; exact824operations21checkpoints, same existing native sidecar/head as7904 baseline; loopback GET/HEAD only."
+}

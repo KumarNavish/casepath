@@ -1,0 +1,37 @@
+▶ map first native: requested viewports keep controls usable and real inspection holds until Resume
+  ✔ 1280x800 (5518.395168ms)
+  ✔ 1428x771 (5297.986555ms)
+  ✔ 1360x900 (5316.455497ms)
+  ✔ 390x844 (5364.721174ms)
+✔ map first native: requested viewports keep controls usable and real inspection holds until Resume (22822.440078ms)
+▶ map first native: reduced motion reaches the exact checked result without pending flights or hidden landings
+  ✔ reduced at entry (2469.921428ms)
+  ✔ reduced during actual reading (2541.964048ms)
+✔ map first native: reduced motion reaches the exact checked result without pending flights or hidden landings (5042.300933ms)
+✔ map first native: a late valid old operation response cannot replace a newly inspected recorded case (3903.568946ms)
+✔ map first native: default live transport remains the first bounded GET (2867.413852ms)
+✖ map first native: a fully landed real map keeps the complete decision and procedure inside900px desktop (22922.92436ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 10
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 57994.484988
+
+✖ failing tests:
+
+test at ../casepath-map-first-qa-evidence-20261015/map-first-native.test.cjs:336:1
+✖ map first native: a fully landed real map keeps the complete decision and procedure inside900px desktop (22922.92436ms)
+  AssertionError [ERR_ASSERTION]: knowledge-only reuse keeps the existing map and controls in the desktop viewport without stale unbound source
+      at TestContext.<anonymous> (/workspace/casepath-map-first-qa-evidence-20261015/map-first-native.test.cjs:358:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

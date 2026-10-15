@@ -1,0 +1,269 @@
+{
+  "status": "All nine unchanged heads completed; baseline raw test failed on CO regex typo and first-paint geometry probes. Settled geometry superseded by writer fix; not final acceptance.",
+  "candidate": "432ec02b28992f2adaf9d708ada8f134b4494532",
+  "wall_ms": 206640,
+  "heads": [
+    {
+      "at": 22197.399999976158,
+      "claim_id": "clm_314f2d309fea25e6",
+      "revision": 48,
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "exact_native_head": true,
+      "exact_outcome": true,
+      "actual_CO": [
+        "259",
+        "259a",
+        "259d"
+      ],
+      "expected_CO": [
+        "259",
+        "259a",
+        "259d"
+      ],
+      "actual_reused_procedure": [
+        {
+          "id": "procedure.defect_mold_heating",
+          "version": "1"
+        }
+      ],
+      "final_populated_map_height": 752.21875,
+      "final_transport_top": 1204.015625
+    },
+    {
+      "at": 45046.19999998808,
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "revision": 48,
+      "state_sha256": "eff31299580845d4eba45c8be9f52beaf0a4264d8cedf0b66418a1076e37d2a2",
+      "exact_native_head": true,
+      "exact_outcome": true,
+      "actual_CO": [
+        "259",
+        "259a",
+        "259d"
+      ],
+      "expected_CO": [
+        "259",
+        "259a",
+        "259d"
+      ],
+      "actual_reused_procedure": [
+        {
+          "id": "procedure.defect_mold_heating",
+          "version": "1"
+        }
+      ],
+      "final_populated_map_height": 752.21875,
+      "final_transport_top": 1204.015625
+    },
+    {
+      "at": 67925.80000001192,
+      "claim_id": "clm_95d08975bc575592",
+      "revision": 48,
+      "state_sha256": "35f3f3d9160f5797d14d5db70f62159eebe11811f77f21510a7c94a541e0c773",
+      "exact_native_head": true,
+      "exact_outcome": true,
+      "actual_CO": [
+        "259",
+        "259a",
+        "259d"
+      ],
+      "expected_CO": [
+        "259",
+        "259a",
+        "259d"
+      ],
+      "actual_reused_procedure": [
+        {
+          "id": "procedure.defect_mold_heating",
+          "version": "1"
+        }
+      ],
+      "final_populated_map_height": 752.21875,
+      "final_transport_top": 1204.015625
+    },
+    {
+      "at": 89903.19999998808,
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "revision": 39,
+      "state_sha256": "6d3f6e70336e298d5c2fb58b74f86dc4e3f62750e866b7eef5086dd2721dc341",
+      "exact_native_head": true,
+      "exact_outcome": true,
+      "actual_CO": [
+        "266l",
+        "266o"
+      ],
+      "expected_CO": [
+        "266l",
+        "266o"
+      ],
+      "actual_reused_procedure": [
+        {
+          "id": "procedure.lease_termination_dispute",
+          "version": "1"
+        }
+      ],
+      "final_populated_map_height": 1059.078125,
+      "final_transport_top": 1510.875
+    },
+    {
+      "at": 111942.19999998808,
+      "claim_id": "clm_393285577dcb12c4",
+      "revision": 39,
+      "state_sha256": "b47bac740be8259d59d0cca2c26090f9e3ddf1e3750a63ec93580f7e02a108f9",
+      "exact_native_head": true,
+      "exact_outcome": true,
+      "actual_CO": [
+        "266l",
+        "266o"
+      ],
+      "expected_CO": [
+        "266l",
+        "266o"
+      ],
+      "actual_reused_procedure": [
+        {
+          "id": "procedure.lease_termination_dispute",
+          "version": "1"
+        }
+      ],
+      "final_populated_map_height": 1059.078125,
+      "final_transport_top": 1510.875
+    },
+    {
+      "at": 134036.19999998808,
+      "claim_id": "clm_4a53299cfe619303",
+      "revision": 39,
+      "state_sha256": "ee76c765353f769bc7cd3a9ee379dde144261abda26da095b0f57dd3b1ee35e3",
+      "exact_native_head": true,
+      "exact_outcome": true,
+      "actual_CO": [
+        "266l",
+        "266o"
+      ],
+      "expected_CO": [
+        "266l",
+        "266o"
+      ],
+      "actual_reused_procedure": [
+        {
+          "id": "procedure.lease_termination_dispute",
+          "version": "1"
+        }
+      ],
+      "final_populated_map_height": 1059.078125,
+      "final_transport_top": 1510.875
+    },
+    {
+      "at": 157803,
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "revision": 41,
+      "state_sha256": "baa0f5411c59a2a5236a51a8f2c1d171a1fcb0c39ce569cd7911cfe43e7fd264",
+      "exact_native_head": true,
+      "exact_outcome": true,
+      "actual_CO": [
+        "269d"
+      ],
+      "expected_CO": [
+        "269d"
+      ],
+      "actual_reused_procedure": [
+        {
+          "id": "procedure.rent_increase_dispute",
+          "version": "1"
+        }
+      ],
+      "final_populated_map_height": 808.40625,
+      "final_transport_top": 1295.390625
+    },
+    {
+      "at": 181573.89999997616,
+      "claim_id": "clm_543f08f2415b2a33",
+      "revision": 41,
+      "state_sha256": "7ede99e3c0e05d97269b7bd7b3af68360d3834691322b56a7f0145da1c2416f9",
+      "exact_native_head": true,
+      "exact_outcome": true,
+      "actual_CO": [
+        "269d"
+      ],
+      "expected_CO": [
+        "269d"
+      ],
+      "actual_reused_procedure": [
+        {
+          "id": "procedure.rent_increase_dispute",
+          "version": "1"
+        }
+      ],
+      "final_populated_map_height": 808.40625,
+      "final_transport_top": 1295.390625
+    },
+    {
+      "at": 205537.60000002384,
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "revision": 41,
+      "state_sha256": "d038830491e99a6b3ec35d04957bf95db861f3b074b5f312b13b6e49dbfd1a9b",
+      "exact_native_head": true,
+      "exact_outcome": true,
+      "actual_CO": [
+        "269d"
+      ],
+      "expected_CO": [
+        "269d"
+      ],
+      "actual_reused_procedure": [
+        {
+          "id": "procedure.rent_increase_dispute",
+          "version": "1"
+        }
+      ],
+      "final_populated_map_height": 808.40625,
+      "final_transport_top": 1295.390625
+    }
+  ],
+  "recorded_GETs": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=recorded"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/operations?mode=recorded"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592/operations?mode=recorded"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c/operations?mode=recorded"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4/operations?mode=recorded"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303/operations?mode=recorded"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/operations?mode=recorded"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/operations?mode=recorded"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/operations?mode=recorded"
+    }
+  ],
+  "heating": {
+    "distinct_visible_completed": 11,
+    "first_ms": 1542.5,
+    "eighth_ms": 14326.600000023842,
+    "mean_gap_ms": 1849.9300000011922
+  },
+  "first_paint_positioning_flags": 46,
+  "first_paint_nonreading": 9
+}

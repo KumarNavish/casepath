@@ -1,0 +1,541 @@
+{
+  "status": "Early candidate, visual defects and first oracle failure retained; not final acceptance",
+  "candidate": "22e8f6ef21556b86164681d5efb68461ae117a1c",
+  "assets": {
+    "javascript": "692661f48f8e89e21be0c1dea33fb0a30d89c8d788414c7329569bc23607ae38",
+    "css": "95d37c4a504b1e8b39339c249f5d17fca8f08a056c19d5c7d51606ea74b18aaf"
+  },
+  "served": {
+    "css": "95d37c4a504b1e8b39339c249f5d17fca8f08a056c19d5c7d51606ea74b18aaf",
+    "javascript": "692661f48f8e89e21be0c1dea33fb0a30d89c8d788414c7329569bc23607ae38"
+  },
+  "frames": 21,
+  "completed_native_head": {
+    "at": 23138,
+    "revision": 48,
+    "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d"
+  },
+  "rows": [
+    {
+      "operation": "op_1715b98c5f009b94cad03526c1c661be",
+      "kind": "fact.extract",
+      "object": "fact:tenancy_terms_evidence",
+      "flight_started_after_binding_ms": 938.2999999523163,
+      "finished_after_binding_ms": 1557,
+      "visible_landing": true,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 76.29999995231628
+    },
+    {
+      "operation": "op_71551c6b86a6ffc9d77423b4ef842dea",
+      "kind": "fact.extract",
+      "object": "residential_tenancy_scope",
+      "flight_started_after_binding_ms": 2920.7999999523163,
+      "finished_after_binding_ms": 3519.599999964237,
+      "visible_landing": true,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 1866.7999999523163
+    },
+    {
+      "operation": "op_12368bafbf1e6c58a43a2a13af446bcb",
+      "kind": "fact.extract",
+      "object": "fact:objective_defect_observation",
+      "flight_started_after_binding_ms": 4657.199999988079,
+      "finished_after_binding_ms": 5286.299999952316,
+      "visible_landing": true,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 3841.899999976158
+    },
+    {
+      "operation": "op_31bcd3404de1cb6592883fb7509d9cfc",
+      "kind": "fact.extract",
+      "object": "fact:landlord_knowledge_evidence",
+      "flight_started_after_binding_ms": 6421.5,
+      "finished_after_binding_ms": 7019.699999988079,
+      "visible_landing": true,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 5595.5
+    },
+    {
+      "operation": "op_4f935af1785d232600fc72be1eebcab3",
+      "kind": "fact.extract",
+      "object": "objective_use_impairment",
+      "flight_started_after_binding_ms": 8453.899999976158,
+      "finished_after_binding_ms": 9069.5,
+      "visible_landing": true,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 7328.699999988079
+    },
+    {
+      "operation": "op_a677aec77b40589e0d0580e3dc6d5677",
+      "kind": "fact.extract",
+      "object": "outside_small_tenant_maintenance_and_no_tenant_cause",
+      "flight_started_after_binding_ms": 10486.799999952316,
+      "finished_after_binding_ms": 11086,
+      "visible_landing": true,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 9379.599999964237
+    },
+    {
+      "operation": "op_14f9eb670b91d7289150ef3a51717af4",
+      "kind": "fact.extract",
+      "object": "landlord_first_knowledge",
+      "flight_started_after_binding_ms": 12520.5,
+      "finished_after_binding_ms": 13135.899999976158,
+      "visible_landing": true,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 11395.299999952316
+    },
+    {
+      "operation": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+      "kind": "fact.extract",
+      "object": "continuing_defect_without_remedy",
+      "flight_started_after_binding_ms": 14570.299999952316,
+      "finished_after_binding_ms": 15185.799999952316,
+      "visible_landing": true,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 13444.799999952316
+    },
+    {
+      "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+      "kind": "document.check",
+      "object": "tenancy_terms_evidence",
+      "flight_started_after_binding_ms": 16803.299999952316,
+      "finished_after_binding_ms": 17402.399999976158,
+      "visible_landing": true,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 15992.799999952316
+    },
+    {
+      "operation": "op_1b4045f495bd7c43aee1c82408feaba3",
+      "kind": "document.check",
+      "object": "objective_defect_observation",
+      "flight_started_after_binding_ms": 18553.299999952316,
+      "finished_after_binding_ms": 19169,
+      "visible_landing": false,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 17732.099999964237
+    },
+    {
+      "operation": "op_96acd4eb60e2706174feaa5552f164f8",
+      "kind": "document.check",
+      "object": "landlord_knowledge_evidence",
+      "flight_started_after_binding_ms": 20303.299999952316,
+      "finished_after_binding_ms": 20902.399999976158,
+      "visible_landing": false,
+      "destination_hidden_during_flight": true,
+      "first_rendered_visible_after_binding_ms": 19501
+    }
+  ],
+  "first_visible_fact_ms": 1557,
+  "eighth_visible_fact_ms": 15185.799999952316,
+  "mean_distinct_fact_gap_ms": 1946.9714285646166,
+  "active_controls_outside_viewport": [
+    {
+      "at_ms": 2004.5,
+      "operation": "op_71551c6b86a6ffc9d77423b4ef842dea",
+      "controls": [
+        {
+          "text": "Pause",
+          "rect": {
+            "x": 318,
+            "y": 822.5,
+            "width": 76.46875,
+            "height": 44,
+            "top": 822.5,
+            "right": 394.46875,
+            "bottom": 866.5,
+            "left": 318
+          }
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 416.46875,
+            "y": 836.5,
+            "width": 390.59375,
+            "height": 16,
+            "top": 836.5,
+            "right": 807.0625,
+            "bottom": 852.5,
+            "left": 416.46875
+          }
+        },
+        {
+          "text": "Skip to result",
+          "rect": {
+            "x": 829.0625,
+            "y": 822.5,
+            "width": 132.9375,
+            "height": 44,
+            "top": 822.5,
+            "right": 962,
+            "bottom": 866.5,
+            "left": 829.0625
+          }
+        }
+      ]
+    },
+    {
+      "at_ms": 8004.199999988079,
+      "operation": "op_4f935af1785d232600fc72be1eebcab3",
+      "controls": [
+        {
+          "text": "Pause",
+          "rect": {
+            "x": 318,
+            "y": 828.5,
+            "width": 76.46875,
+            "height": 44,
+            "top": 828.5,
+            "right": 394.46875,
+            "bottom": 872.5,
+            "left": 318
+          }
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 416.46875,
+            "y": 842.5,
+            "width": 390.59375,
+            "height": 16,
+            "top": 842.5,
+            "right": 807.0625,
+            "bottom": 858.5,
+            "left": 416.46875
+          }
+        },
+        {
+          "text": "Skip to result",
+          "rect": {
+            "x": 829.0625,
+            "y": 828.5,
+            "width": 132.9375,
+            "height": 44,
+            "top": 828.5,
+            "right": 962,
+            "bottom": 872.5,
+            "left": 829.0625
+          }
+        }
+      ]
+    },
+    {
+      "at_ms": 10003.799999952316,
+      "operation": "op_a677aec77b40589e0d0580e3dc6d5677",
+      "controls": [
+        {
+          "text": "Pause",
+          "rect": {
+            "x": 318,
+            "y": 908.6875,
+            "width": 76.46875,
+            "height": 44,
+            "top": 908.6875,
+            "right": 394.46875,
+            "bottom": 952.6875,
+            "left": 318
+          }
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 416.46875,
+            "y": 922.6875,
+            "width": 390.59375,
+            "height": 16,
+            "top": 922.6875,
+            "right": 807.0625,
+            "bottom": 938.6875,
+            "left": 416.46875
+          }
+        },
+        {
+          "text": "Skip to result",
+          "rect": {
+            "x": 829.0625,
+            "y": 908.6875,
+            "width": 132.9375,
+            "height": 44,
+            "top": 908.6875,
+            "right": 962,
+            "bottom": 952.6875,
+            "left": 829.0625
+          }
+        }
+      ]
+    },
+    {
+      "at_ms": 12003.399999976158,
+      "operation": "op_14f9eb670b91d7289150ef3a51717af4",
+      "controls": [
+        {
+          "text": "Pause",
+          "rect": {
+            "x": 318,
+            "y": 841.09375,
+            "width": 76.46875,
+            "height": 44,
+            "top": 841.09375,
+            "right": 394.46875,
+            "bottom": 885.09375,
+            "left": 318
+          }
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 416.46875,
+            "y": 855.09375,
+            "width": 390.59375,
+            "height": 16,
+            "top": 855.09375,
+            "right": 807.0625,
+            "bottom": 871.09375,
+            "left": 416.46875
+          }
+        },
+        {
+          "text": "Skip to result",
+          "rect": {
+            "x": 829.0625,
+            "y": 841.09375,
+            "width": 132.9375,
+            "height": 44,
+            "top": 841.09375,
+            "right": 962,
+            "bottom": 885.09375,
+            "left": 829.0625
+          }
+        }
+      ]
+    },
+    {
+      "at_ms": 14002.5,
+      "operation": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+      "controls": [
+        {
+          "text": "Pause",
+          "rect": {
+            "x": 318,
+            "y": 921.28125,
+            "width": 76.46875,
+            "height": 44,
+            "top": 921.28125,
+            "right": 394.46875,
+            "bottom": 965.28125,
+            "left": 318
+          }
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 416.46875,
+            "y": 935.28125,
+            "width": 390.59375,
+            "height": 16,
+            "top": 935.28125,
+            "right": 807.0625,
+            "bottom": 951.28125,
+            "left": 416.46875
+          }
+        },
+        {
+          "text": "Skip to result",
+          "rect": {
+            "x": 829.0625,
+            "y": 921.28125,
+            "width": 132.9375,
+            "height": 44,
+            "top": 921.28125,
+            "right": 962,
+            "bottom": 965.28125,
+            "left": 829.0625
+          }
+        }
+      ]
+    },
+    {
+      "at_ms": 16007.799999952316,
+      "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+      "controls": [
+        {
+          "text": "Pause",
+          "rect": {
+            "x": 318,
+            "y": 850.359375,
+            "width": 76.46875,
+            "height": 44,
+            "top": 850.359375,
+            "right": 394.46875,
+            "bottom": 894.359375,
+            "left": 318
+          }
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 416.46875,
+            "y": 864.359375,
+            "width": 390.59375,
+            "height": 16,
+            "top": 864.359375,
+            "right": 807.0625,
+            "bottom": 880.359375,
+            "left": 416.46875
+          }
+        },
+        {
+          "text": "Skip to result",
+          "rect": {
+            "x": 829.0625,
+            "y": 850.359375,
+            "width": 132.9375,
+            "height": 44,
+            "top": 850.359375,
+            "right": 962,
+            "bottom": 894.359375,
+            "left": 829.0625
+          }
+        }
+      ]
+    },
+    {
+      "at_ms": 18004.69999998808,
+      "operation": "op_1b4045f495bd7c43aee1c82408feaba3",
+      "controls": [
+        {
+          "text": "Pause",
+          "rect": {
+            "x": 318,
+            "y": 917.0625,
+            "width": 76.46875,
+            "height": 44,
+            "top": 917.0625,
+            "right": 394.46875,
+            "bottom": 961.0625,
+            "left": 318
+          }
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 416.46875,
+            "y": 931.0625,
+            "width": 390.59375,
+            "height": 16,
+            "top": 931.0625,
+            "right": 807.0625,
+            "bottom": 947.0625,
+            "left": 416.46875
+          }
+        },
+        {
+          "text": "Skip to result",
+          "rect": {
+            "x": 829.0625,
+            "y": 917.0625,
+            "width": 132.9375,
+            "height": 44,
+            "top": 917.0625,
+            "right": 962,
+            "bottom": 961.0625,
+            "left": 829.0625
+          }
+        }
+      ]
+    },
+    {
+      "at_ms": 20004.599999964237,
+      "operation": "op_96acd4eb60e2706174feaa5552f164f8",
+      "controls": [
+        {
+          "text": "Pause",
+          "rect": {
+            "x": 318,
+            "y": 954.84375,
+            "width": 76.46875,
+            "height": 44,
+            "top": 954.84375,
+            "right": 394.46875,
+            "bottom": 998.84375,
+            "left": 318
+          }
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 416.46875,
+            "y": 968.84375,
+            "width": 390.59375,
+            "height": 16,
+            "top": 968.84375,
+            "right": 807.0625,
+            "bottom": 984.84375,
+            "left": 416.46875
+          }
+        },
+        {
+          "text": "Skip to result",
+          "rect": {
+            "x": 829.0625,
+            "y": 954.84375,
+            "width": 132.9375,
+            "height": 44,
+            "top": 954.84375,
+            "right": 962,
+            "bottom": 998.84375,
+            "left": 829.0625
+          }
+        }
+      ]
+    },
+    {
+      "at_ms": 22004.799999952316,
+      "operation": "op_568943696026415fa063d190086424ee",
+      "controls": [
+        {
+          "text": "Pause",
+          "rect": {
+            "x": 318,
+            "y": 1250.203125,
+            "width": 76.46875,
+            "height": 44,
+            "top": 1250.203125,
+            "right": 394.46875,
+            "bottom": 1294.203125,
+            "left": 318
+          }
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 416.46875,
+            "y": 1264.203125,
+            "width": 390.59375,
+            "height": 16,
+            "top": 1264.203125,
+            "right": 807.0625,
+            "bottom": 1280.203125,
+            "left": 416.46875
+          }
+        },
+        {
+          "text": "Skip to result",
+          "rect": {
+            "x": 829.0625,
+            "y": 1250.203125,
+            "width": 132.9375,
+            "height": 44,
+            "top": 1250.203125,
+            "right": 962,
+            "bottom": 1294.203125,
+            "left": 829.0625
+          }
+        }
+      ]
+    }
+  ],
+  "oracle_failure": "First script compared document token combined filename+quote against its literal quote; correct subsequent assertion to inspect the quoted child. Raw run exit1 is retained."
+}

@@ -1,0 +1,125 @@
+{
+  "scope": "Read-only immutable commit delta. Actual native1.1 settled cards and active document-check prefixes; no browser, network, provider, product/test writes or full-suite run.",
+  "before": "432ec02b28992f2adaf9d708ada8f134b4494532",
+  "after": "143711e685ecc35285bb3bebdbeb2c0fa0f19d32",
+  "javascript_sha256": "9f1dc91cdf4caf9b2111254c27661f726aa1eb15043914113705cb216c0c8023",
+  "css_sha256": "2acd53960f4e432989498ee75e3db53ff8d21308423664f9b60336b0dc077f22",
+  "native_fixture_sha256": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce",
+  "unchanged_authority_and_execution_functions": [
+    "checkedOperationBinding",
+    "checkedOperation",
+    "checkedOperationCheckpoint",
+    "workingOperationScope",
+    "applyWorkingOperation",
+    "plannedOperationProcess",
+    "operationNodeId",
+    "operationAttention",
+    "operationInspection",
+    "operationStageMarkup"
+  ],
+  "settled_source_cards": 27,
+  "active_phase_byte_comparisons": 81,
+  "rows": [
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "settled_source_cards": 3,
+      "exact_source_citation_attributes_preserved": true,
+      "active_phase_byte_comparisons": 9
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "settled_source_cards": 3,
+      "exact_source_citation_attributes_preserved": true,
+      "active_phase_byte_comparisons": 9
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "settled_source_cards": 3,
+      "exact_source_citation_attributes_preserved": true,
+      "active_phase_byte_comparisons": 9
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "settled_source_cards": 3,
+      "exact_source_citation_attributes_preserved": true,
+      "active_phase_byte_comparisons": 9
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "settled_source_cards": 3,
+      "exact_source_citation_attributes_preserved": true,
+      "active_phase_byte_comparisons": 9
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "settled_source_cards": 3,
+      "exact_source_citation_attributes_preserved": true,
+      "active_phase_byte_comparisons": 9
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "settled_source_cards": 3,
+      "exact_source_citation_attributes_preserved": true,
+      "active_phase_byte_comparisons": 9
+    },
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "settled_source_cards": 3,
+      "exact_source_citation_attributes_preserved": true,
+      "active_phase_byte_comparisons": 9
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "settled_source_cards": 3,
+      "exact_source_citation_attributes_preserved": true,
+      "active_phase_byte_comparisons": 9
+    }
+  ],
+  "planned_placeholder_after_drop": {
+    "status": "No reachable failure reproduced in the retained local execution paths",
+    "native_prefixes_inspected": 393,
+    "native_excluded_document_nodes": 0,
+    "legacy_fixture_sha256": "dec21315ea1d485e5012f959157eab8580320ee1a3b5633e64586012de4df23b",
+    "legacy_saved_paths": [
+      {
+        "claim_id": "auto_509e01a3949cd1a2bcc29c40",
+        "revision": 14,
+        "excluded_nodes": [
+          "lt_arrears",
+          "lt_family"
+        ],
+        "operation_stage": false,
+        "new_stage_slots": false
+      },
+      {
+        "claim_id": "auto_571f85327c290a71cde37df8",
+        "revision": 17,
+        "excluded_nodes": [
+          "lt_arrears"
+        ],
+        "operation_stage": false,
+        "new_stage_slots": false
+      },
+      {
+        "claim_id": "auto_764f712d3833988ce6ff6cfd",
+        "revision": 17,
+        "excluded_nodes": [
+          "lt_arrears"
+        ],
+        "operation_stage": false,
+        "new_stage_slots": false
+      },
+      {
+        "claim_id": "auto_80bf8f54f289f5e4a966e645",
+        "revision": 15,
+        "excluded_nodes": [
+          "lt_arrears",
+          "lt_family"
+        ],
+        "operation_stage": false,
+        "new_stage_slots": false
+      }
+    ],
+    "limit": "This does not validate a future stage-capable conditional trace or production2.0. The delta leaves unfilled placeholder rendering unchanged."
+  }
+}

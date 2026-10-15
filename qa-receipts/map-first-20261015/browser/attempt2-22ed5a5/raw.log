@@ -1,0 +1,42 @@
+✖ map first native: distinct real consequences dock promptly and the horizontal map persists in every two second frame (42048.963978ms)
+▶ map first native: requested viewports keep controls usable and real inspection holds until Resume
+  ✔ 1280x800 (5186.087768ms)
+  ✔ 1428x771 (5186.007982ms)
+  ✔ 1360x900 (5414.677656ms)
+  ✔ 390x844 (5119.920544ms)
+✔ map first native: requested viewports keep controls usable and real inspection holds until Resume (20935.449069ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63386.532978
+
+✖ failing tests:
+
+test at ../casepath-map-first-qa-evidence-20261015/map-first-native.test.cjs:177:1
+✖ map first native: distinct real consequences dock promptly and the horizontal map persists in every two second frame (42048.963978ms)
+  AssertionError [ERR_ASSERTION]: every two-second frame satisfies the map, excerpt and running-control requirements
+  + actual - expected
+  
+  + [
+  +   {
+  +     index: 11,
+  +     message: 'all running desktop controls remain inside the viewport',
+  +     operation: 'op_568943696026415fa063d190086424ee'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/workspace/casepath-map-first-qa-evidence-20261015/map-first-native.test.cjs:215:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { index: 11, operation: 'op_568943696026415fa063d190086424ee', message: 'all running desktop controls remain inside the viewport' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

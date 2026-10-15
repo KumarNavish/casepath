@@ -1,0 +1,479 @@
+{
+  "operation": {
+    "cause_ids": [],
+    "contract": "casepath.operations-stream/1.0.0",
+    "id": "op_f6b46b23e3dc17f0d7f6792b48713b2f",
+    "input": {
+      "definition_sha256": "cf4829a27d8fcf110b72f0cf2f56a011ff8380deda4d4bdd45de9b2bbb77b0a5",
+      "knowledge_sha256": "094b5f4f5ef9b625678a5725a875c53f1e0526a951180d8574d95ffaa7b7871d",
+      "receiving_claim_id": "clm_314f2d309fea25e6",
+      "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+      "version": 1
+    },
+    "input_sha256": "1aabd65525a04e767cdcd6b125ddd3f0682e673cd1011be854eec62adc123800",
+    "journal_seq": 36,
+    "kind": "knowledge.reuse",
+    "object": {
+      "id": "procedure.defect_mold_heating",
+      "type": "knowledge"
+    },
+    "operation_sha256": "a782f1a430a644567c99040111bf329282aaeddd9aa0225ed11fd27c3d2424b1",
+    "previous_operation_sha256": "361b9e7294466159306e096fc4a11894807fcee7c808b8380f86a836059926cc",
+    "result": {
+      "case_facts_reassessed": true,
+      "graph_sha256": "8dba3ca59f460bbe432a325dd904754ec90bfff8ceb9e208ea4edda4a665882b",
+      "reused_evidence_recipes": 3
+    },
+    "result_sha256": "65f83817e241f3371b84dae657db96733936ac7ee348dea19aef97b3fa482e87",
+    "seq": 90,
+    "stage": "native_execution",
+    "type": "operation"
+  },
+  "sample": {
+    "at": 15059.699999988079,
+    "bound": 400.69999998807907,
+    "operation": "op_f6b46b23e3dc17f0d7f6792b48713b2f",
+    "verified": "false",
+    "revision": 35,
+    "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+    "stage_phase": "source",
+    "stage": {
+      "x": 116,
+      "y": 203.4375,
+      "width": 1368,
+      "height": 1028.78125,
+      "top": 203.4375,
+      "right": 1484,
+      "bottom": 1232.21875,
+      "left": 116
+    },
+    "rail": {
+      "x": 116,
+      "y": 633.21875,
+      "width": 1368,
+      "height": 599,
+      "top": 633.21875,
+      "right": 1484,
+      "bottom": 1232.21875,
+      "left": 116
+    },
+    "planned": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+    "planned_authority": "none",
+    "graph": {
+      "rect": {
+        "x": 116,
+        "y": 689.21875,
+        "width": 1368,
+        "height": 535,
+        "top": 689.21875,
+        "right": 1484,
+        "bottom": 1224.21875,
+        "left": 116
+      },
+      "clientWidth": 1368,
+      "scrollWidth": 1786,
+      "scrollLeft": 218,
+      "scrollTop": 0
+    },
+    "nodes": [
+      {
+        "id": "dh_intake",
+        "status": "planned",
+        "rect": {
+          "x": -84,
+          "y": 709.21875,
+          "width": 252,
+          "height": 70.375,
+          "top": 709.21875,
+          "right": 168,
+          "bottom": 779.59375,
+          "left": -84
+        },
+        "font": 18
+      },
+      {
+        "id": "dh_scope",
+        "status": "planned",
+        "rect": {
+          "x": 198,
+          "y": 709.21875,
+          "width": 252,
+          "height": 70.375,
+          "top": 709.21875,
+          "right": 450,
+          "bottom": 779.59375,
+          "left": 198
+        },
+        "font": 18
+      },
+      {
+        "id": "dh_notice",
+        "status": "planned",
+        "rect": {
+          "x": 480,
+          "y": 709.21875,
+          "width": 340,
+          "height": 58,
+          "top": 709.21875,
+          "right": 820,
+          "bottom": 767.21875,
+          "left": 480
+        },
+        "font": 18
+      },
+      {
+        "id": "dh_cause",
+        "status": "planned",
+        "rect": {
+          "x": 850,
+          "y": 709.21875,
+          "width": 252,
+          "height": 58,
+          "top": 709.21875,
+          "right": 1102,
+          "bottom": 767.21875,
+          "left": 850
+        },
+        "font": 18
+      },
+      {
+        "id": "dh_evidence",
+        "status": "planned",
+        "rect": {
+          "x": 1132,
+          "y": 709.21875,
+          "width": 252,
+          "height": 70.375,
+          "top": 709.21875,
+          "right": 1384,
+          "bottom": 779.59375,
+          "left": 1132
+        },
+        "font": 18
+      },
+      {
+        "id": "dh_response",
+        "status": "planned",
+        "rect": {
+          "x": 1414,
+          "y": 709.21875,
+          "width": 252,
+          "height": 70.375,
+          "top": 709.21875,
+          "right": 1666,
+          "bottom": 779.59375,
+          "left": 1414
+        },
+        "font": 18
+      }
+    ],
+    "edges": [
+      {
+        "id": "reference_defect_mold_heating_0",
+        "source": "dh_intake",
+        "target": "dh_scope"
+      },
+      {
+        "id": "reference_defect_mold_heating_1",
+        "source": "dh_scope",
+        "target": "dh_notice"
+      },
+      {
+        "id": "reference_defect_mold_heating_2",
+        "source": "dh_notice",
+        "target": "dh_cause"
+      },
+      {
+        "id": "reference_defect_mold_heating_3",
+        "source": "dh_cause",
+        "target": "dh_evidence"
+      },
+      {
+        "id": "reference_defect_mold_heating_4",
+        "source": "dh_evidence",
+        "target": "dh_response"
+      }
+    ],
+    "marks": [],
+    "pane": {
+      "rect": {
+        "x": 627,
+        "y": 316.21875,
+        "width": 346,
+        "height": 288,
+        "top": 316.21875,
+        "right": 973,
+        "bottom": 604.21875,
+        "left": 627
+      },
+      "scrollTop": 0,
+      "scrollHeight": 288,
+      "clientHeight": 288,
+      "text": "We confirm the tenant was using the heating normally and did not cause this pump failure. Repeated resets did not remove the continuing defect. We acknowledge the dated service observation and remain responsible for arranging pump repair; no lasting repair has yet occurred as of this acknowledgment."
+    },
+    "facts": [
+      {
+        "id": "fact:tenancy_terms_evidence",
+        "operation": "op_94a25603227acacba75c8e22c1c505f6",
+        "start": 298,
+        "end": 305,
+        "text": "CHF1800",
+        "state": "observed"
+      },
+      {
+        "id": "residential_tenancy_scope",
+        "operation": "op_e0c2b39b2cc10c2e5bf25d1eebf0aa61",
+        "start": 146,
+        "end": 172,
+        "text": "ordinary residential lease",
+        "state": "observed"
+      },
+      {
+        "id": "fact:landlord_knowledge_evidence",
+        "operation": "op_8d3953215b73736dfdd1d852cb1e6cb0",
+        "start": 229,
+        "end": 258,
+        "text": "three heating-failure reports",
+        "state": "observed"
+      },
+      {
+        "id": "landlord_first_knowledge",
+        "operation": "op_67b5925324f7f6dc775293c210c301d7",
+        "start": 390,
+        "end": 428,
+        "text": "received the first report on2025-02-01",
+        "state": "observed"
+      },
+      {
+        "id": "continuing_defect_without_remedy",
+        "operation": "op_a5085de144e9790b07c2a370cd6b5e5d",
+        "start": 735,
+        "end": 769,
+        "text": "no lasting repair has yet occurred",
+        "state": "observed"
+      },
+      {
+        "id": "fact:objective_defect_observation",
+        "operation": "op_2349bb7aa13de009b9cd255e554064e8",
+        "start": 329,
+        "end": 334,
+        "text": "15.8C",
+        "state": "observed"
+      },
+      {
+        "id": "objective_use_impairment",
+        "operation": "op_d22c2fffdf4913bd24989bdbf46afad1",
+        "start": 873,
+        "end": 894,
+        "text": "Heating is inadequate",
+        "state": "observed"
+      },
+      {
+        "id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+        "operation": "op_75f89e342fcc893670e3e06211fdb690",
+        "start": 608,
+        "end": 650,
+        "text": "outside ordinary small tenant maintenance.",
+        "state": "observed"
+      }
+    ],
+    "documents": [
+      {
+        "id": "tenancy_terms_evidence",
+        "checked": "false"
+      },
+      {
+        "id": "landlord_knowledge_evidence",
+        "checked": "false"
+      },
+      {
+        "id": "objective_defect_observation",
+        "checked": "false"
+      }
+    ],
+    "transport": {
+      "rect": {
+        "x": 470,
+        "y": 1244.21875,
+        "width": 660,
+        "height": 73,
+        "top": 1244.21875,
+        "right": 1130,
+        "bottom": 1317.21875,
+        "left": 470
+      },
+      "controls": [
+        {
+          "text": "Pause",
+          "rect": {
+            "x": 478,
+            "y": 1259.21875,
+            "width": 76.46875,
+            "height": 44,
+            "top": 1259.21875,
+            "right": 554.46875,
+            "bottom": 1303.21875,
+            "left": 478
+          }
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 576.46875,
+            "y": 1273.21875,
+            "width": 390.59375,
+            "height": 16,
+            "top": 1273.21875,
+            "right": 967.0625,
+            "bottom": 1289.21875,
+            "left": 576.46875
+          }
+        },
+        {
+          "text": "Skip to result",
+          "rect": {
+            "x": 989.0625,
+            "y": 1259.21875,
+            "width": 132.9375,
+            "height": 44,
+            "top": 1259.21875,
+            "right": 1122,
+            "bottom": 1303.21875,
+            "left": 989.0625
+          }
+        }
+      ]
+    },
+    "articles": [],
+    "reuse": [
+      {
+        "id": "procedure.defect_mold_heating",
+        "version": "1"
+      }
+    ],
+    "overflow": false,
+    "viewport": {
+      "width": 1600,
+      "height": 900
+    }
+  },
+  "disclosure": "Existing local native fictional fixture and operation sidecars; actual Chromium time; no provider, production request or write.",
+  "checkout_commit": "27e7419dcf7d47fac15da4fe43176b01c33e8ea4",
+  "candidate_commit": "143711e685ecc35285bb3bebdbeb2c0fa0f19d32",
+  "test_sha256": "8f74948ed2d7418aad859e4a1172c9b1a4f059252842f932fc3ce17f1500c97c",
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/?journey=autonomous"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/fonts/Merriweather-Light.ttf"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.css?sha256=a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=recorded"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/knowledge"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/snapshot?after=0"
+    }
+  ],
+  "served": {
+    "css": "2acd53960f4e432989498ee75e3db53ff8d21308423664f9b60336b0dc077f22",
+    "javascript": "9f1dc91cdf4caf9b2111254c27661f726aa1eb15043914113705cb216c0c8023"
+  },
+  "assets": {
+    "javascript": "9f1dc91cdf4caf9b2111254c27661f726aa1eb15043914113705cb216c0c8023",
+    "css": "2acd53960f4e432989498ee75e3db53ff8d21308423664f9b60336b0dc077f22"
+  }
+}

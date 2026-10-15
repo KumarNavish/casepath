@@ -1,0 +1,194 @@
+{
+  "claim_id": "clm_314f2d309fea25e6",
+  "revision": 25,
+  "state_sha256": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+  "geometry": {
+    "stage": {
+      "x": 44,
+      "y": 211.4375,
+      "width": 1272,
+      "height": 496.03125,
+      "top": 211.4375,
+      "right": 1316,
+      "bottom": 707.46875,
+      "left": 44
+    },
+    "transport": {
+      "x": 350,
+      "y": 719.46875,
+      "width": 660,
+      "height": 49,
+      "top": 719.46875,
+      "right": 1010,
+      "bottom": 768.46875,
+      "left": 350
+    },
+    "position": "static",
+    "controls": 1,
+    "leaves": [
+      {
+        "text": "Capture the reported defect",
+        "font": 16,
+        "rect": {
+          "x": 88,
+          "y": 259.4375,
+          "width": 190,
+          "height": 44.78125,
+          "top": 259.4375,
+          "right": 278,
+          "bottom": 304.21875,
+          "left": 88
+        }
+      },
+      {
+        "text": "Establish relevant tenancy terms",
+        "font": 16,
+        "rect": {
+          "x": 344,
+          "y": 259.4375,
+          "width": 190,
+          "height": 44.78125,
+          "top": 259.4375,
+          "right": 534,
+          "bottom": 304.21875,
+          "left": 344
+        }
+      },
+      {
+        "text": "Establish landlord knowledge",
+        "font": 16,
+        "rect": {
+          "x": 600,
+          "y": 259.4375,
+          "width": 190,
+          "height": 44.78125,
+          "top": 259.4375,
+          "right": 790,
+          "bottom": 304.21875,
+          "left": 600
+        }
+      },
+      {
+        "text": "Assess supported cause",
+        "font": 16,
+        "rect": {
+          "x": 856,
+          "y": 259.4375,
+          "width": 190,
+          "height": 22.390625,
+          "top": 259.4375,
+          "right": 1046,
+          "bottom": 281.828125,
+          "left": 856
+        }
+      },
+      {
+        "text": "Assess objective defect evidence",
+        "font": 16,
+        "rect": {
+          "x": 1112,
+          "y": 259.4375,
+          "width": 190,
+          "height": 44.78125,
+          "top": 259.4375,
+          "right": 1302,
+          "bottom": 304.21875,
+          "left": 1112
+        }
+      },
+      {
+        "text": "Record repair and rent reduction eligibility",
+        "font": 16,
+        "rect": {
+          "x": 88,
+          "y": 463.109375,
+          "width": 1214,
+          "height": 22.390625,
+          "top": 463.109375,
+          "right": 1302,
+          "bottom": 485.5,
+          "left": 88
+        }
+      },
+      {
+        "text": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.",
+        "font": 22,
+        "rect": {
+          "x": 240,
+          "y": 561.109375,
+          "width": 880,
+          "height": 105.5625,
+          "top": 561.109375,
+          "right": 1120,
+          "bottom": 666.671875,
+          "left": 240
+        }
+      }
+    ],
+    "overflow": false
+  },
+  "checkoutCommit": "432ec02b28992f2adaf9d708ada8f134b4494532",
+  "testSha256": "e2921d49da8b34db4e806e7d22d4c7de8a28825a2f042632f0c79c3ce164524b",
+  "requests": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "prefixTransfers": [],
+  "browserRequests": [
+    {
+      "url": "http://localhost:41999/",
+      "method": "GET"
+    }
+  ],
+  "javascriptErrors": [],
+  "viewport": {
+    "width": 1360,
+    "height": 900
+  },
+  "injectedAssets": {
+    "javascript": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+    "css": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5"
+  },
+  "assets": {
+    "javascript": "59d03ed22e2a99c12222c88595a03f9f0bff3887e9438435b299eed9021f3cfc",
+    "css": "caa8585dc9d0a5902345bd7324dcae7826eddeaad87d63fee63f9e10da9313d5"
+  }
+}

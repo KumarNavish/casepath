@@ -1,0 +1,369 @@
+✖ map first native itinerary: nine actual normal streams keep every consequence visible and all exact heads across eight unattended handoffs (208674.459927ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 209212.817965
+
+✖ failing tests:
+
+test at ../casepath-map-first-qa-evidence-20261015/native-itinerary.test.cjs:185:1
+✖ map first native itinerary: nine actual normal streams keep every consequence visible and all exact heads across eight unattended handoffs (208674.459927ms)
+  AssertionError [ERR_ASSERTION]: every normal visible consequence preserves exact sources, map geometry and native outcome
+  + actual - expected
+  
+  + [
+  +   {
+  +     claim_id: 'clm_314f2d309fea25e6',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_f6b46b23e3dc17f0d7f6792b48713b2f'
+  +   },
+  +   {
+  +     claim_id: 'clm_314f2d309fea25e6',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_1b4045f495bd7c43aee1c82408feaba3'
+  +   },
+  +   {
+  +     claim_id: 'clm_314f2d309fea25e6',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_96acd4eb60e2706174feaa5552f164f8'
+  +   },
+  +   {
+  +     claim_id: 'clm_314f2d309fea25e6',
+  +     message: 'Expected values to be strictly deep-equal:\n' +
+  +       '+ actual - expected\n' +
+  +       '\n' +
+  +       '+ [\n' +
+  +       "+   '259',\n" +
+  +       "+   '259a',\n" +
+  +       "+   '259d'\n" +
+  +       '+ ]\n' +
+  +       '- []\n',
+  +     operation: ''
+  +   },
+  +   {
+  +     claim_id: 'clm_4a07dbbbd859a3ce',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_5c078da8e21de24f2c57085fd55e343c'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a07dbbbd859a3ce',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_ebbf461f5b8213267fe0a83675a92a8b'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a07dbbbd859a3ce',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_25cbe8b5c1f25b381cf76f7c60d77ed7'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a07dbbbd859a3ce',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_2fd976bf891146bcd100390596a24373'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a07dbbbd859a3ce',
+  +     message: 'Expected values to be strictly deep-equal:\n' +
+  +       '+ actual - expected\n' +
+  +       '\n' +
+  +       '+ [\n' +
+  +       "+   '259',\n" +
+  +       "+   '259a',\n" +
+  +       "+   '259d'\n" +
+  +       '+ ]\n' +
+  +       '- []\n',
+  +     operation: ''
+  +   },
+  +   {
+  +     claim_id: 'clm_95d08975bc575592',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_bb59e8c5e177592228a013151e875827'
+  +   },
+  +   {
+  +     claim_id: 'clm_95d08975bc575592',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_3c344ec19376fff41f2c90baee362599'
+  +   },
+  +   {
+  +     claim_id: 'clm_95d08975bc575592',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_bb05c5b999e349269ea7fb3e89e96b3a'
+  +   },
+  +   {
+  +     claim_id: 'clm_95d08975bc575592',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_fc856f0ddfbd6abdc34c567768bf1456'
+  +   },
+  +   {
+  +     claim_id: 'clm_95d08975bc575592',
+  +     message: 'Expected values to be strictly deep-equal:\n' +
+  +       '+ actual - expected\n' +
+  +       '\n' +
+  +       '+ [\n' +
+  +       "+   '259',\n" +
+  +       "+   '259a',\n" +
+  +       "+   '259d'\n" +
+  +       '+ ]\n' +
+  +       '- []\n',
+  +     operation: ''
+  +   },
+  +   {
+  +     claim_id: 'clm_0f4f13b1e3e1328c',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_37584ffd7dc0c57f38ccb3af7d1cebec'
+  +   },
+  +   {
+  +     claim_id: 'clm_0f4f13b1e3e1328c',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_4a05bbdc46e293874eed3123f8629676'
+  +   },
+  +   {
+  +     claim_id: 'clm_0f4f13b1e3e1328c',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_77ce0cdebce3c1f23bdf1acc3dd84334'
+  +   },
+  +   {
+  +     claim_id: 'clm_0f4f13b1e3e1328c',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_145efb11a61a42cfee2cd587737f1202'
+  +   },
+  +   {
+  +     claim_id: 'clm_0f4f13b1e3e1328c',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_42d17dd2b7be46d6ff6498c971005e51'
+  +   },
+  +   {
+  +     claim_id: 'clm_0f4f13b1e3e1328c',
+  +     message: 'Expected values to be strictly deep-equal:\n' +
+  +       '+ actual - expected\n' +
+  +       '\n' +
+  +       '+ [\n' +
+  +       "+   '266l',\n" +
+  +       "+   '266o'\n" +
+  +       '+ ]\n' +
+  +       '- []\n',
+  +     operation: ''
+  +   },
+  +   {
+  +     claim_id: 'clm_393285577dcb12c4',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_ecf55e9b1ba9348cd39e03791ca0abd2'
+  +   },
+  +   {
+  +     claim_id: 'clm_393285577dcb12c4',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_925411b4a56d19af24620a8d5e6889b2'
+  +   },
+  +   {
+  +     claim_id: 'clm_393285577dcb12c4',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_e603ab1b3d9dc67a7be586857a215f82'
+  +   },
+  +   {
+  +     claim_id: 'clm_393285577dcb12c4',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_6b5b234d11dc88655885b1bd7e9482cd'
+  +   },
+  +   {
+  +     claim_id: 'clm_393285577dcb12c4',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_a504254aaeadbf2adbe28142d8b737a0'
+  +   },
+  +   {
+  +     claim_id: 'clm_393285577dcb12c4',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_9ec03fd58af224e00e3ceb00fb5bf25e'
+  +   },
+  +   {
+  +     claim_id: 'clm_393285577dcb12c4',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_68f648e7cb0d44b18443302e3764ec34'
+  +   },
+  +   {
+  +     claim_id: 'clm_393285577dcb12c4',
+  +     message: 'Expected values to be strictly deep-equal:\n' +
+  +       '+ actual - expected\n' +
+  +       '\n' +
+  +       '+ [\n' +
+  +       "+   '266l',\n" +
+  +       "+   '266o'\n" +
+  +       '+ ]\n' +
+  +       '- []\n',
+  +     operation: ''
+  +   },
+  +   {
+  +     claim_id: 'clm_4a53299cfe619303',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_ed9a62d9f534fd360b92556eca3deda0'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a53299cfe619303',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_120bbb3b96fa044d7ecd31ff23e04232'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a53299cfe619303',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_70c60da4725ba06795abcee59e5eb16a'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a53299cfe619303',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_929e209fba7fe698a63a856a01eb99a5'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a53299cfe619303',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_b3b793571eb5ebe50cf7adb3f2ff7e81'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a53299cfe619303',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_e8ac12e37b2867d35b5383490ea4a402'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a53299cfe619303',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_5f1105a15467d87ccf86a80ac616f02a'
+  +   },
+  +   {
+  +     claim_id: 'clm_4a53299cfe619303',
+  +     message: 'Expected values to be strictly deep-equal:\n' +
+  +       '+ actual - expected\n' +
+  +       '\n' +
+  +       '+ [\n' +
+  +       "+   '266l',\n" +
+  +       "+   '266o'\n" +
+  +       '+ ]\n' +
+  +       '- []\n',
+  +     operation: ''
+  +   },
+  +   {
+  +     claim_id: 'clm_2c55cdd816b1d0e8',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_661db1521cec1f71eb3985644abd1496'
+  +   },
+  +   {
+  +     claim_id: 'clm_2c55cdd816b1d0e8',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_73eb77b635d1b5f51abc3d68a3d95edc'
+  +   },
+  +   {
+  +     claim_id: 'clm_2c55cdd816b1d0e8',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_bc9e545a79d21177a860ad929db4713e'
+  +   },
+  +   {
+  +     claim_id: 'clm_2c55cdd816b1d0e8',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_679d4d80d1785925468657c59c41f699'
+  +   },
+  +   {
+  +     claim_id: 'clm_2c55cdd816b1d0e8',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_eebf546e6bbc270305ac100d523124e4'
+  +   },
+  +   {
+  +     claim_id: 'clm_2c55cdd816b1d0e8',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_ea732b3fc8f7ba7593e00a8eb801d991'
+  +   },
+  +   {
+  +     claim_id: 'clm_2c55cdd816b1d0e8',
+  +     message: 'Expected values to be strictly deep-equal:\n' +
+  +       '+ actual - expected\n' +
+  +       '\n' +
+  +       '+ [\n' +
+  +       "+   '269d'\n" +
+  +       '+ ]\n' +
+  +       '- []\n',
+  +     operation: ''
+  +   },
+  +   {
+  +     claim_id: 'clm_543f08f2415b2a33',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_5792ef30a9b729ba9590fdad8a0f4fff'
+  +   },
+  +   {
+  +     claim_id: 'clm_543f08f2415b2a33',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_5c5f2cfbe1b11b7b502d0dca5d38f54a'
+  +   },
+  +   {
+  +     claim_id: 'clm_543f08f2415b2a33',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_c908ae3ec4b345fe50a2dd54fffae5ce'
+  +   },
+  +   {
+  +     claim_id: 'clm_543f08f2415b2a33',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_598473fd59b9b181b3b1b926bb1a9d5c'
+  +   },
+  +   {
+  +     claim_id: 'clm_543f08f2415b2a33',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_99be532c2ec6c31a5820752960ee0cef'
+  +   },
+  +   {
+  +     claim_id: 'clm_543f08f2415b2a33',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_3f4cd22dce7cdaaa1c3c12cc0cd3779e'
+  +   },
+  +   {
+  +     claim_id: 'clm_543f08f2415b2a33',
+  +     message: 'Expected values to be strictly deep-equal:\n' +
+  +       '+ actual - expected\n' +
+  +       '\n' +
+  +       '+ [\n' +
+  +       "+   '269d'\n" +
+  +       '+ ]\n' +
+  +       '- []\n',
+  +     operation: ''
+  +   },
+  +   {
+  +     claim_id: 'clm_7dbd7c7d1c4ddf90',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_641b17dbe46c2e0f0039a1c2cdb3015a'
+  +   },
+  +   {
+  +     claim_id: 'clm_7dbd7c7d1c4ddf90',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_028a319a12ebfa8310f42b1bcb81df96'
+  +   },
+  +   {
+  +     claim_id: 'clm_7dbd7c7d1c4ddf90',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_740f01006330c854081822ac73572a30'
+  +   },
+  +   {
+  +     claim_id: 'clm_7dbd7c7d1c4ddf90',
+  +     message: 'the complete exact excerpt fits the actual map viewport',
+  +     operation: 'op_40727aaa70446c66b9227cad9b504692'
+  +   },
+  +   {
+  +     claim_id: 'clm_7dbd7c7d1c4ddf90',
+  +     message: 'Expected values to be strictly deep-equal:\n' +
+  +       '+ actual - expected\n' +
+  +       '\n' +
+  +       '+ [\n' +
+  +       "+   '269d'\n" +
+  +       '+ ]\n' +
+  +       '- []\n',
+  +     operation: ''
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/workspace/casepath-map-first-qa-evidence-20261015/native-itinerary.test.cjs:204:164)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { claim_id: 'clm_314f2d309fea25e6', operation: 'op_f6b46b23e3dc17f0d7f6792b48713b2f', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_314f2d309fea25e6', operation: 'op_1b4045f495bd7c43aee1c82408feaba3', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_314f2d309fea25e6', operation: 'op_96acd4eb60e2706174feaa5552f164f8', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_314f2d309fea25e6', operation: '', message: "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '259',\n+   '259a',\n+   '259d'\n+ ]\n- []\n" }, { claim_id: 'clm_4a07dbbbd859a3ce', operation: 'op_5c078da8e21de24f2c57085fd55e343c', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a07dbbbd859a3ce', operation: 'op_ebbf461f5b8213267fe0a83675a92a8b', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a07dbbbd859a3ce', operation: 'op_25cbe8b5c1f25b381cf76f7c60d77ed7', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a07dbbbd859a3ce', operation: 'op_2fd976bf891146bcd100390596a24373', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a07dbbbd859a3ce', operation: '', message: "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '259',\n+   '259a',\n+   '259d'\n+ ]\n- []\n" }, { claim_id: 'clm_95d08975bc575592', operation: 'op_bb59e8c5e177592228a013151e875827', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_95d08975bc575592', operation: 'op_3c344ec19376fff41f2c90baee362599', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_95d08975bc575592', operation: 'op_bb05c5b999e349269ea7fb3e89e96b3a', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_95d08975bc575592', operation: 'op_fc856f0ddfbd6abdc34c567768bf1456', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_95d08975bc575592', operation: '', message: "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '259',\n+   '259a',\n+   '259d'\n+ ]\n- []\n" }, { claim_id: 'clm_0f4f13b1e3e1328c', operation: 'op_37584ffd7dc0c57f38ccb3af7d1cebec', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_0f4f13b1e3e1328c', operation: 'op_4a05bbdc46e293874eed3123f8629676', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_0f4f13b1e3e1328c', operation: 'op_77ce0cdebce3c1f23bdf1acc3dd84334', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_0f4f13b1e3e1328c', operation: 'op_145efb11a61a42cfee2cd587737f1202', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_0f4f13b1e3e1328c', operation: 'op_42d17dd2b7be46d6ff6498c971005e51', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_0f4f13b1e3e1328c', operation: '', message: "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '266l',\n+   '266o'\n+ ]\n- []\n" }, { claim_id: 'clm_393285577dcb12c4', operation: 'op_ecf55e9b1ba9348cd39e03791ca0abd2', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_393285577dcb12c4', operation: 'op_925411b4a56d19af24620a8d5e6889b2', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_393285577dcb12c4', operation: 'op_e603ab1b3d9dc67a7be586857a215f82', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_393285577dcb12c4', operation: 'op_6b5b234d11dc88655885b1bd7e9482cd', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_393285577dcb12c4', operation: 'op_a504254aaeadbf2adbe28142d8b737a0', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_393285577dcb12c4', operation: 'op_9ec03fd58af224e00e3ceb00fb5bf25e', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_393285577dcb12c4', operation: 'op_68f648e7cb0d44b18443302e3764ec34', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_393285577dcb12c4', operation: '', message: "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '266l',\n+   '266o'\n+ ]\n- []\n" }, { claim_id: 'clm_4a53299cfe619303', operation: 'op_ed9a62d9f534fd360b92556eca3deda0', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a53299cfe619303', operation: 'op_120bbb3b96fa044d7ecd31ff23e04232', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a53299cfe619303', operation: 'op_70c60da4725ba06795abcee59e5eb16a', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a53299cfe619303', operation: 'op_929e209fba7fe698a63a856a01eb99a5', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a53299cfe619303', operation: 'op_b3b793571eb5ebe50cf7adb3f2ff7e81', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a53299cfe619303', operation: 'op_e8ac12e37b2867d35b5383490ea4a402', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a53299cfe619303', operation: 'op_5f1105a15467d87ccf86a80ac616f02a', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_4a53299cfe619303', operation: '', message: "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '266l',\n+   '266o'\n+ ]\n- []\n" }, { claim_id: 'clm_2c55cdd816b1d0e8', operation: 'op_661db1521cec1f71eb3985644abd1496', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_2c55cdd816b1d0e8', operation: 'op_73eb77b635d1b5f51abc3d68a3d95edc', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_2c55cdd816b1d0e8', operation: 'op_bc9e545a79d21177a860ad929db4713e', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_2c55cdd816b1d0e8', operation: 'op_679d4d80d1785925468657c59c41f699', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_2c55cdd816b1d0e8', operation: 'op_eebf546e6bbc270305ac100d523124e4', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_2c55cdd816b1d0e8', operation: 'op_ea732b3fc8f7ba7593e00a8eb801d991', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_2c55cdd816b1d0e8', operation: '', message: "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '269d'\n+ ]\n- []\n" }, { claim_id: 'clm_543f08f2415b2a33', operation: 'op_5792ef30a9b729ba9590fdad8a0f4fff', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_543f08f2415b2a33', operation: 'op_5c5f2cfbe1b11b7b502d0dca5d38f54a', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_543f08f2415b2a33', operation: 'op_c908ae3ec4b345fe50a2dd54fffae5ce', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_543f08f2415b2a33', operation: 'op_598473fd59b9b181b3b1b926bb1a9d5c', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_543f08f2415b2a33', operation: 'op_99be532c2ec6c31a5820752960ee0cef', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_543f08f2415b2a33', operation: 'op_3f4cd22dce7cdaaa1c3c12cc0cd3779e', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_543f08f2415b2a33', operation: '', message: "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '269d'\n+ ]\n- []\n" }, { claim_id: 'clm_7dbd7c7d1c4ddf90', operation: 'op_641b17dbe46c2e0f0039a1c2cdb3015a', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_7dbd7c7d1c4ddf90', operation: 'op_028a319a12ebfa8310f42b1bcb81df96', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_7dbd7c7d1c4ddf90', operation: 'op_740f01006330c854081822ac73572a30', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_7dbd7c7d1c4ddf90', operation: 'op_40727aaa70446c66b9227cad9b504692', message: 'the complete exact excerpt fits the actual map viewport' }, { claim_id: 'clm_7dbd7c7d1c4ddf90', operation: '', message: "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '269d'\n+ ]\n- []\n" } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

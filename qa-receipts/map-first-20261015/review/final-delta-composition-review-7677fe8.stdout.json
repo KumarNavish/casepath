@@ -1,0 +1,81 @@
+{
+  "findings_status": "PASS: no introduced blocking correctness or authority finding in the bounded final deltas.",
+  "review_base": "432ec02b28992f2adaf9d708ada8f134b4494532",
+  "final_writer_commit": "7677fe8f86b61bab3ad73204af5d886afe1e4e11",
+  "combined_root_commit": "cc1550f14d6f9b4dae377d925f78f9150feef642",
+  "javascript_sha256": "d741a1af6bf769f243cd0d961f724222544046e6bb959cf9c0ffdc59b5c35440",
+  "css_sha256": "404b05220ed333e14ba9af9ce3f8033d58973fba8fedadf9a058d8fcc75f0e87",
+  "authority_and_source_functions_unchanged": [
+    "checkedOperationBinding",
+    "checkedOperation",
+    "checkedOperationCheckpoint",
+    "workingOperationScope",
+    "applyWorkingOperation",
+    "plannedOperationProcess",
+    "operationNodeId",
+    "operationAttention",
+    "operationInspection",
+    "operationReading",
+    "operationReadingMarkup"
+  ],
+  "settled_card_function_identical_to_checked143": true,
+  "stage_gate_function_identical_to_checked29": true,
+  "combined_assets_identical": true,
+  "settled_cards_with_exact_source_citation_attributes": 27,
+  "active_document_delivery_byte_comparisons": 81,
+  "actual_native_uncited_reuse_cases_without_retired_excerpt": 9,
+  "intentional_active_citation_inspection_and_nonstage_history_unchanged": true,
+  "settled_legal_basis_and_reuse_fonts_restored_to_18px": true,
+  "planned_after_drop_status": {
+    "status": "No reachable failure reproduced in the retained local execution paths",
+    "native_prefixes_inspected": 393,
+    "native_excluded_document_nodes": 0,
+    "legacy_fixture_sha256": "dec21315ea1d485e5012f959157eab8580320ee1a3b5633e64586012de4df23b",
+    "legacy_saved_paths": [
+      {
+        "claim_id": "auto_509e01a3949cd1a2bcc29c40",
+        "revision": 14,
+        "excluded_nodes": [
+          "lt_arrears",
+          "lt_family"
+        ],
+        "operation_stage": false,
+        "new_stage_slots": false
+      },
+      {
+        "claim_id": "auto_571f85327c290a71cde37df8",
+        "revision": 17,
+        "excluded_nodes": [
+          "lt_arrears"
+        ],
+        "operation_stage": false,
+        "new_stage_slots": false
+      },
+      {
+        "claim_id": "auto_764f712d3833988ce6ff6cfd",
+        "revision": 17,
+        "excluded_nodes": [
+          "lt_arrears"
+        ],
+        "operation_stage": false,
+        "new_stage_slots": false
+      },
+      {
+        "claim_id": "auto_80bf8f54f289f5e4a966e645",
+        "revision": 15,
+        "excluded_nodes": [
+          "lt_arrears",
+          "lt_family"
+        ],
+        "operation_stage": false,
+        "new_stage_slots": false
+      }
+    ],
+    "limit": "This does not validate a future stage-capable conditional trace or production2.0. The delta leaves unfilled placeholder rendering unchanged."
+  },
+  "limits": [
+    "Immutable local source and native1.1/captured-fictional fixture review only; no product/test writes, network, providers, browser/performance measurements or broad suites.",
+    "No production2.0 or new conditional-stage acceptance claim. Planned-placeholder-after-drop is bounded no-repro, not a claimed fix.",
+    "Final fit, timing and visual acceptance belong to the separate browser/Mac QA receipts."
+  ]
+}

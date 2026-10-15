@@ -1,0 +1,140 @@
+▶ causal formation native: settled stage dependency strokes stay inside the clipping viewport at short desktop and mobile sizes
+  ✖ 1280x800 (15314.965258ms)
+  ✖ 1428x771 (13988.445802ms)
+  ✖ 1360x900 (13434.849367ms)
+  ✖ 390x844 (13560.635776ms)
+✖ causal formation native: settled stage dependency strokes stay inside the clipping viewport at short desktop and mobile sizes (56742.432152ms)
+✖ visible operation stage: transport follows the exact accepted content at 1280x800 (14146.255288ms)
+✖ visible operation stage: transport follows the exact accepted content at 1428x771 (12692.762911ms)
+✖ visible operation stage: transport follows the exact accepted content at 1360x900 (13408.448503ms)
+✖ visible operation stage: transport follows the exact accepted content at 390x844 (12715.934097ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 0
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 110295.497282
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:913:82
+✖ 1280x800 (15314.965258ms)
+  AssertionError [ERR_ASSERTION]: stage nodes retain their existing target and text sizes
+      at TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:939:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:913:74)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:913:82
+✖ 1428x771 (13988.445802ms)
+  AssertionError [ERR_ASSERTION]: stage nodes retain their existing target and text sizes
+      at TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:939:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:913:74)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:913:82
+✖ 1360x900 (13434.849367ms)
+  AssertionError [ERR_ASSERTION]: stage nodes retain their existing target and text sizes
+      at TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:939:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:913:74)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:913:82
+✖ 390x844 (13560.635776ms)
+  AssertionError [ERR_ASSERTION]: stage nodes retain their existing target and text sizes
+      at TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:939:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:913:74)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:944:73
+✖ visible operation stage: transport follows the exact accepted content at 1280x800 (14146.255288ms)
+  AssertionError [ERR_ASSERTION]: every active transport control fits inside the short desktop viewport before scrolling
+      at TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:972:39)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:944:73
+✖ visible operation stage: transport follows the exact accepted content at 1428x771 (12692.762911ms)
+  AssertionError [ERR_ASSERTION]: every active transport control fits inside the short desktop viewport before scrolling
+      at TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:972:39)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:944:73
+✖ visible operation stage: transport follows the exact accepted content at 1360x900 (13408.448503ms)
+  AssertionError [ERR_ASSERTION]: meaningful visible text is at least 18px; aria-hidden decoration cannot satisfy the check
+      at TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:991:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:944:73
+✖ visible operation stage: transport follows the exact accepted content at 390x844 (12715.934097ms)
+  AssertionError [ERR_ASSERTION]: meaningful visible text is at least 18px; aria-hidden decoration cannot satisfy the check
+      at TestContext.<anonymous> (/workspace/casepath-map-first-impl-20261015/casepath-qa/unified-product-browser-v1.test.cjs:991:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
