@@ -2,7 +2,7 @@
   "status": "V5_MEDIA_PREP_ONLY_AWAITING_ACTUAL_PUBLISHED_V5_CAPTURE",
   "workspace": "/workspace/cp-v5-media/repo",
   "branch": "codex/agentic-v5-media-prep-20261015",
-  "renderer_sha256": "e134dfc077f61a5bcee33a4b3eafa85b706d2196ec3fb1c0e26aba78a6527f19",
+  "renderer_sha256": "3599a80385970cb09ebf5a3d527e7fa1e0524680f33c6ba2af22b4478172e7bb",
   "adapted_from": {
     "renderer": "/workspace/casepath-agentic-film-v4-20261015/render-agentic-v4.py",
     "media_commit": "88e401328bd9c6121fd3abede62d63ec1c6016d4"
@@ -43,7 +43,28 @@
       "minimum_seconds_with_1x_protection_and_endcard": 93.07411944866178,
       "final_state_visible_by_last_frame": false,
       "correctly_fails_v5_acceptance": true
-    }
+    },
+    "stable_work_identity_metadata_only": {
+      "status": "passed",
+      "checks": [
+        "rect-only motion: no new caption or protected segment",
+        "array reorder: no new caption or protected segment",
+        "fact id change: one actual work event",
+        "fact operation change: one actual work event",
+        "fact text change: one actual work event",
+        "fact source_id change: one actual work event",
+        "fact sourceId change: one actual work event",
+        "document id change: one actual work event",
+        "document operation change: one actual work event",
+        "document source_id change: one actual work event",
+        "document sourceId change: one actual work event",
+        "empty collections and legacy checked-slot counts retained"
+      ],
+      "integration": "Movie.build_plan labels and protected windows compared on tiny in-memory metadata; no frame files opened",
+      "geometry_use": "Fact/document rects excluded from work-change detection; unchanged camera geometry paths",
+      "identity": "Order-independent id, operation, explicit source_id/sourceId; facts also compare text"
+    },
+    "dynamic_source_binding_after_fix": "missing/malformed/mismatched explicit SHA rejected with exit 2"
   },
   "v5_contract": {
     "capture_source_commit": "Required capture.source_commit must exactly match required explicit --source-commit ACTUAL40HEX; no default",

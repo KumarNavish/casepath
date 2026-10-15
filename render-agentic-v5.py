@@ -88,6 +88,17 @@ def contains(window, t):
     return window[0] <= t <= window[1]
 
 
+def work_identity(items, fact=False):
+    """Order-independent work identity; captured rectangles never define work."""
+    if items is None:
+        return ()
+    keys = ("id", "operation", "source_id", "sourceId") + (("text",) if fact else ())
+    values = items if isinstance(items, list) else [items]
+    stable = [{key: item.get(key) for key in keys} if isinstance(item, dict) else item
+              for item in values]
+    return tuple(sorted(json.dumps(item, sort_keys=True, separators=(",", ":")) for item in stable))
+
+
 def fit_camera(cw, ch, bounds, desired=MIN_ZOOM, preferred=None):
     """CSS-coordinate crop; never discard the complete required pixel union.
 
@@ -179,12 +190,12 @@ class Movie:
                 protected.append((t - .15, next_t + .15))
                 label = "Connect the fact" if rect(sample.get("factRect")) else "Read the evidence"
                 self.labels.append((t, next_t, label))
-            documents = json.dumps(sample.get("documents", sample.get("checkedSlots")), sort_keys=True)
+            documents = work_identity(sample.get("documents", sample.get("checkedSlots")))
             if prior_documents is not None and documents != prior_documents:
                 protected.append((t - .8, next_t + .8))
                 self.labels.append((t - .2, t + 1, "Check the document"))
             prior_documents = documents
-            facts = json.dumps(sample.get("facts"), sort_keys=True)
+            facts = work_identity(sample.get("facts"), fact=True)
             if prior_facts is not None and facts != prior_facts:
                 protected.append((t - .8, next_t + .8))
                 self.labels.append((t - .2, t + 1, "Connect the fact"))
