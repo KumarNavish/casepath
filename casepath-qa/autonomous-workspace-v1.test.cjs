@@ -1756,6 +1756,86 @@ function operationFixture() {
  const seal=(kind,object,result,source)=>{const input={source_artifact_id:descriptor.artifact_id},frame={contract:operationContract,type:'operation',seq:trace.rows.length+1,id:`real-${trace.rows.length+1}`,kind,object,input,result,cause_ids:trace.rows.length?[trace.rows.at(-1).id]:[],previous_operation_sha256:trace.rows.at(-1)?.operation_sha256||null,input_sha256:sha(ui.canonicalJSON(input)),result_sha256:sha(ui.canonicalJSON(result)),...source?{source}:{}};const material={...frame};delete material.contract;delete material.type;return {...frame,operation_sha256:sha(ui.canonicalJSON(material))};};
  return {sourceText,descriptor,baseline,head,start,binding,journal,trace,seal};
 }
+function operationOpeningFixture() {
+ const id=ui.REFERENCE_DEMO_CASES[0].claim_id,run='opening-reference-run',profile=sha('opening-profile'),roster=sha('opening-roster');
+ const catalog={nodes:[{node_id:'start',label:'Read the received message'},{node_id:'branch',label:'Assess the received notice'}],transitions:[{edge_id:'next',source_node_id:'start',target_node_id:'branch'}],documents:[{document_type:'notice',label:'Received notice',required_at_node_ids:['branch']}]};
+ const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',profile_id:'synthetic-nine-v2',profile_sha256:profile,rule_set_sha256:sha('opening-rules')};
+ const opening=state({claim_id:id,title:'Actual original opening',revision:0,state_sha256:sha('opening-state'),last_event_sha256:null,mode:'unprocessed',phase:'not_run',graph:null,evaluation:null,facts:[],obligations:[],actions:[],status:'not_started'});
+ const head=state({claim_id:id,title:opening.title,revision:4,state_sha256:sha('opening-head'),last_event_sha256:sha('opening-event-4'),run_id:run,source_roster_sha256:roster,policy_id:'casepath.bounded-reference-assessment/1.0.0',status:'deferred',outcome:{assessment_status:'complete',summary:'The later accepted outcome must stay hidden.',reference_provenance:provenance},graph:{claim_id:id,family:'opening_family',graph_sha256:sha('opening-graph'),nodes:catalog.nodes.map(node=>({...node,document_types:node.node_id==='branch'?['notice']:[]})),edges:catalog.transitions,document_catalog:catalog.documents},semantic_contexts:{[run]:{claim_id:id,execution_mode:'deterministic_reference',reference_provenance:provenance,sources:[{artifact_id:'original'}],rule_packs:[{family:'opening_family',template_sha256:sha('opening-pack'),process_catalog:catalog}],compatible_knowledge:[]}},knowledge_uses:[]});
+ const journal=Array.from({length:4},(_,index)=>({claim_id:id,seq:index+1,revision:index+1,kind:index===2?'process.prepared':'work.phase',event_sha256:sha(`opening-event-${index+1}`),previous_event_sha256:index?sha(`opening-event-${index}`):null,state_sha256:index===3?head.state_sha256:sha(`opening-state-${index+1}`)}));
+ const start={contract:'casepath.reference-replay-start/1.0.0',claim_id:id,from_seq:3,state_sha256:journal[2].state_sha256,event_sha256:journal[2].event_sha256,run_id:run,profile_id:'synthetic-nine-v2',profile_sha256:profile,source_artifact_ids:['original']};
+ const envelope=(saved,through)=>({state:saved,projection:{claim_id:id,revision:through,state_sha256:saved.state_sha256},events:journal.slice(0,through),cursor_sha256:saved.last_event_sha256,mode:'replay',replay_only:true,through_seq:through,current_revision:4,current_state_sha256:head.state_sha256,current_event_sha256:head.last_event_sha256,replay_start:start,provenance:{source_roster_sha256:saved.source_roster_sha256,policy_id:saved.policy_id,run_id:saved.run_id,event_sha256:saved.last_event_sha256}});
+ const zero=envelope(opening,0),replay=envelope(head,4),snapshot={...replay,mode:'saved'};
+ const binding={...start,contract:operationContract,type:'binding',instrumentation_id:'casepath.reference-operations/1.1.0',mode:'historical_recomputed',newly_recomputed:true,source_roster_sha256:roster,rule_set_sha256:provenance.rule_set_sha256,input_sha256:sha('opening-input'),current_revision:4,current_state_sha256:head.state_sha256,current_event_sha256:head.last_event_sha256};
+ return {id,head,zero,replay,snapshot,binding};
+}
+const deferredRead=()=>{let resolve;const promise=new Promise(done=>{resolve=done;});return {promise,resolve};};
+function operationOpeningDOM() {
+ const f=dom(),attributes=new Map();f.host.setAttribute=(key,value)=>attributes.set(key,String(value));f.host.getAttribute=key=>attributes.get(key);f.host.removeAttribute=key=>attributes.delete(key);return {...f,attributes};
+}
+function pendingOperationResponse(binding) {
+ return {ok:true,status:200,body:new ReadableStream({start(controller){controller.enqueue(new TextEncoder().encode(JSON.stringify(binding)+'\n'));},cancel(){}})};
+}
+
+test('cold operation selection starts the pinned head hint and live transport before its opening read finishes',async t=>{
+ const f=operationOpeningDOM(),native=operationOpeningFixture(),opening=deferredRead(),head=deferredRead();
+ const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:[{...native.head}]}):path.includes('/snapshot?')?response(native.snapshot):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();opening.resolve(response(native.zero));head.resolve(response(native.replay));});await settle();
+ const selecting=controller.showDemonstration();await settle();
+ assert.ok(api.calls.some(row=>row.path.endsWith('/replay?through_seq=4')),'the catalog revision starts an independent verified replay read');
+ assert.ok(api.calls.some(row=>row.path.endsWith('/operations?mode=live')),'default selection starts the live read without waiting for replay');
+ head.resolve(response(native.replay));await settle();assert.doesNotMatch(f.host.innerHTML,/data-au-planned-process=/,'a hinted head alone cannot bind an earlier opening');
+ opening.resolve(response(native.zero));await selecting;await waitFor(()=>f.host.innerHTML.includes('data-au-planned-process='));
+ assert.match(f.host.innerHTML,new RegExp(`data-au-planned-process="${native.head.state_sha256}"`));assert.match(f.host.innerHTML,/data-au-planned-authority="none"/);assert.match(f.host.innerHTML,/data-au-revision="0"/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=|data-status="completed"/);
+ assert.equal(api.calls.filter(row=>row.path.endsWith('/replay?through_seq=4')).length,1,'the verified hint reuses the normal head validation without another payload');assert.equal(api.calls.filter(row=>row.init.method==='POST').length,0);
+});
+
+test('cold operation selection can show an exactly bound snapshot outline while full replay provenance remains gated',async t=>{
+ const f=operationOpeningDOM(),native=operationOpeningFixture(),opening=deferredRead(),snapshot=deferredRead(),head=deferredRead();
+ const api=fakeApi({handle:async path=>path.includes('/snapshot?')?snapshot.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();opening.resolve(response(native.zero));snapshot.resolve(response(native.snapshot));head.resolve(response(native.replay));});await settle();const selecting=controller.showDemonstration();await settle();
+ assert.ok(api.calls.some(row=>row.path.endsWith('/snapshot?after=0')),'an empty catalog starts the existing atomic head read independently');assert.ok(api.calls.some(row=>row.path.endsWith('/operations?mode=live')));
+ snapshot.resolve(response(native.snapshot));await settle();assert.doesNotMatch(f.host.innerHTML,/data-au-planned-process=/);opening.resolve(response(native.zero));await selecting;
+ await waitFor(()=>f.host.innerHTML.includes('data-au-planned-process='));assert.match(f.host.innerHTML,/data-au-revision="0"/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=/);assert.equal(f.attributes.get('data-au-operation-run-mode'),'opening','unverified buffered binding cannot be consumed before full replay provenance');assert.equal(f.attributes.get('data-au-current-operation'),'');
+ head.resolve(response(native.replay));await settle();
+});
+
+test('cold operation selection rejects mismatched, unbound and pruned speculative outlines',async t=>{
+ for(const failure of ['head','profile','missing-start','catalog'])await t.test(failure,async child=>{
+  const f=operationOpeningDOM(),native=operationOpeningFixture(),head=deferredRead(),snapshot=structuredClone(native.snapshot),zero=structuredClone(native.zero);
+  if(failure==='head'){snapshot.state.state_sha256=sha('different snapshot');snapshot.current_state_sha256=snapshot.state.state_sha256;snapshot.projection.state_sha256=snapshot.state.state_sha256;snapshot.events.at(-1).state_sha256=snapshot.state.state_sha256;}
+  if(failure==='profile')snapshot.state.semantic_contexts[snapshot.state.run_id].reference_provenance.profile_sha256=sha('another profile');
+  if(failure==='missing-start')zero.replay_start=null;
+  if(failure==='catalog')snapshot.state.graph.nodes.pop();
+  const api=fakeApi({handle:async path=>path.includes('/snapshot?')?response(snapshot):path.endsWith('/replay?through_seq=0')?response(zero):path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+  const controller=ui.mount(f.container,{fetch:api.fetch});child.after(()=>{controller.destroy();head.resolve(response(native.replay));});await settle();await controller.showDemonstration();await settle();await settle();
+  assert.doesNotMatch(f.host.innerHTML,/data-au-planned-process=|data-au-stage-fact=|The later accepted outcome/);assert.ok([undefined,'opening'].includes(f.attributes.get('data-au-operation-run-mode')),'no speculative binding is admitted');
+ });
+});
+
+test('cold operation selection refetches a stale catalog revision without consuming its hinted state',async t=>{
+ const f=operationOpeningDOM(),native=operationOpeningFixture(),head=deferredRead();
+ const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:[{...native.head,revision:3}]}):path.endsWith('/replay?through_seq=0')?response(native.zero):path.endsWith('/replay?through_seq=3')?response({detail:'Old hint unavailable'},409):path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();head.resolve(response(native.replay));});await settle();await controller.showDemonstration();await settle();
+ assert.ok(api.calls.some(row=>row.path.endsWith('/replay?through_seq=3')));assert.ok(api.calls.some(row=>row.path.endsWith('/replay?through_seq=4')));assert.doesNotMatch(f.host.innerHTML,/data-au-planned-process=/);
+ head.resolve(response(native.replay));await waitFor(()=>f.host.innerHTML.includes('data-au-planned-process='));assert.match(f.host.innerHTML,/data-au-revision="0"/);assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=recorded')).length,0,'a stale speculative hint does not force a recorded fallback');
+});
+
+test('cold operation selection aborts its early reader and ignores late opening and outline responses after navigation',async t=>{
+ const f=operationOpeningDOM(),native=operationOpeningFixture(),opening=deferredRead(),snapshot=deferredRead();let cancelled=0,signal;
+ const api=fakeApi({handle:async(path,init)=>path.includes('/snapshot?')?snapshot.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/operations?')?(signal=init.signal,{ok:true,status:200,body:new ReadableStream({cancel(){cancelled++;}})}):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();opening.resolve(response(native.zero));snapshot.resolve(response(native.snapshot));});await settle();const selecting=controller.showDemonstration();await settle();assert.equal(signal.aborted,false);
+ await controller.showWork();const after=f.host.innerHTML;assert.equal(signal.aborted,true);await settle();assert.equal(cancelled,1,'even a transport that ignores AbortSignal releases its owned body reader');
+ snapshot.resolve(response(native.snapshot));opening.resolve(response(native.zero));await selecting;await settle();assert.equal(f.host.innerHTML,after);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,1,'stale work cannot trigger a fallback trace');
+});
+
+test('cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback',async t=>{
+ const f=operationOpeningDOM(),native=operationOpeningFixture();
+ const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:[native.head]}):path.endsWith('/replay?through_seq=0')?response(native.zero):path.endsWith('/replay?through_seq=4')?response(native.replay):path.includes('/operations?')?pendingOperationResponse(native.binding):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.showDemonstration(true,'reference','recorded');await settle();
+ assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=recorded')).length,1);assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,0);
+ const count=api.calls.filter(row=>row.path.includes('/operations?')).length;await controller.showDemonstration(true,'legacy');await settle();assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,count,'only the selected allowed reference operation session can start a stream');
+});
 test('operation source spans preserve Python codepoints, exact original/text hashes and provisional authority',async()=>{
  const f=operationFixture(),prior=JSON.stringify(f.baseline);f.sourceText += '\n' + 'Deep original line.\n'.repeat(200);
  const open=f.seal('source.open',{type:'source',id:'source'},{...f.descriptor,text:f.sourceText,text_sha256:sha(f.sourceText)});

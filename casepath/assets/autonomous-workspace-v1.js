@@ -1090,12 +1090,14 @@
   const OPERATIONS_CONTRACT = 'casepath.operations-stream/1.0.0';
   const OPERATION_INSTRUMENTATION = 'casepath.reference-operations/1.1.0';
   const OPERATION_FRAME_BYTES = 2 * 1024 * 1024, OPERATION_HISTORY_BYTES = 8 * 1024 * 1024;
-  async function* operationFrames(response) {
+  async function* operationFrames(response, signal = null) {
     if (!response?.body?.getReader) throw new Error('Operation streaming is unavailable.');
     const reader = response.body.getReader(), decoder = new TextDecoder('utf-8',{fatal:true});
+    const cancel = () => { reader.cancel().catch(() => {}); };
+    signal?.addEventListener('abort',cancel,{once:true});
     let pending = '';
     try {
-      while (true) {
+      while (!signal?.aborted) {
         const chunk = await reader.read();
         pending += decoder.decode(chunk.value || new Uint8Array(),{stream:!chunk.done});
         let newline;
@@ -1107,7 +1109,7 @@
         if (pending.length * 2 > OPERATION_FRAME_BYTES) throw new Error('An operation frame exceeds its bound.');
         if (chunk.done) { if (pending.trim()) yield JSON.parse(pending); break; }
       }
-    } finally { try { await reader.cancel(); } catch (_) {} reader.releaseLock?.(); }
+    } finally { signal?.removeEventListener('abort',cancel); try { await reader.cancel(); } catch (_) {} reader.releaseLock?.(); }
   }
   function bufferedOperations(response, signal, resultAvailable = null) {
     // Drain the HTTP response at compute speed. Only application consumption
@@ -1118,7 +1120,7 @@
     signal.addEventListener('abort',release,{once:true});
     const producer = (async () => {
       try {
-        for await (const frame of operationFrames(response)) {
+        for await (const frame of operationFrames(response,signal)) {
           if (signal.aborted) break;
           const size = new TextEncoder().encode(canonicalJSON(frame)).byteLength;
           if (bytes + size > 24 * 1024 * 1024 || queue.length >= 10002) throw new Error('The buffered operation stream exceeds its bound.');
@@ -2375,6 +2377,7 @@
       }
       const session = preferences.demo ? demoSession : null;
       if (session) session.preparing = token;
+      if (session?.mode === 'operations' && !opening?.referenceReady && !doc.hidden && !inspectionHold) prepareOperationReads(session,id,token);
       try {
         const through = preferences.through ?? 0;
         const incoming = readReplay(opening?.response || await request(`/claims/${key(id)}/replay?through_seq=${through}`),id,through);
@@ -2746,20 +2749,59 @@
       if (operationTrace) { operationTrace.finished = true; operationTrace.current = null; operationTrace.savedFallback = true; }
       stopPresentation(); renderClaim(); notice(`Live rules-based assessment unavailable: ${reason} Showing the verified saved result; its history remains available.`,true);
     }
+    function prepareOperationReads(session, id, token) {
+      if (!REFERENCE_DEMO_CASES.some(row => row.claim_id === id)) return null;
+      const controller = new AbortController(); controllers.add(controller); session.operationController = controller;
+      controller.signal.addEventListener('abort',() => controllers.delete(controller),{once:true});
+      const prepared = {claimId:id,controller,recorded:Boolean(session.useRecorded)};
+      session.operationPreparation = prepared;
+      const hint = claims.find(row => row.claim_id === id)?.revision;
+      // A catalog revision chooses a speculative GET, never a replay authority.
+      // Without that hint, the atomic head supplies only a sanitized outline;
+      // the complete replay/provenance checks still precede every operation.
+      if (Number.isSafeInteger(hint) && hint > 0) { prepared.revision = hint; prepared.head = request(`/claims/${key(id)}/replay?through_seq=${hint}`); prepared.head.catch(() => {}); }
+      else { prepared.snapshot = request(`/claims/${key(id)}/snapshot?after=0`); prepared.snapshot.catch(() => {}); }
+      prepared.delivery = (async () => {
+        const response = await fetcher(base+`/claims/${key(id)}/operations?mode=${prepared.recorded ? 'recorded' : 'live'}`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:controller.signal});
+        if (controller.signal.aborted || disposed || token !== epoch || pendingRoute()) { await response.body?.cancel?.(); return null; }
+        // The existing bounded wire buffer is untrusted until head admission.
+        // No early result callback can paint or advertise an accepted result.
+        return {response,buffer:response.ok ? bufferedOperations(response,controller.signal,result => prepared.resultAvailable?.(result)) : null};
+      })();
+      prepared.delivery.catch(() => {});
+      return prepared;
+    }
+    async function earlyOperationOutline(prepared, session, token, trace) {
+      if (!prepared?.snapshot) return;
+      try {
+        const incoming = readSnapshot(await prepared.snapshot,session.claimId,null,true), state = incoming.state, head = session.replayHead;
+        if (state.claim_id !== head.claimId || state.revision !== head.revision || state.state_sha256 !== head.state_sha256 || state.last_event_sha256 !== head.event_sha256) return;
+        if (!checkedReferenceReplayStart(session.replayStart,incoming)) return;
+        if (!referenceExecution(state) || state.outcome?.assessment_status !== 'complete' || !replayCanAdvance(state)) return;
+        const plan = await plannedOperationProcess(state);
+        if (!plan || !operationActive(session,token) || operationTrace !== trace || trace.binding || session.referenceReady) return;
+        trace.plannedProcess = plan;
+        if (demoSession === session && !doc.hidden && !inspectionHold && !dialog.open && !recordDialog.open) renderClaim();
+      } catch (_) { /* A speculative outline failure cannot admit or fail playback. */ }
+    }
     async function startOperations(session, token) {
       if (!operationActive(session,token) || session.operationStarted) return;
-      session.operationStarted = true; session.operationController = new AbortController(); controllers.add(session.operationController);
+      const prepared = session.operationPreparation?.claimId === session.claimId && !session.operationPreparation.controller.signal.aborted && session.operationPreparation.recorded === Boolean(session.useRecorded) ? session.operationPreparation : null;
+      session.operationPreparation = null;
+      session.operationStarted = true; session.operationController = prepared?.controller || new AbortController(); controllers.add(session.operationController);
       const operationController = session.operationController;
       if (!session.operationOpeningAnchor || session.operationOpeningAnchor.state.claim_id !== session.claimId) session.operationOpeningAnchor = {after_operation:0,state:current,projection,events:history,revision:current.revision,state_sha256:current.state_sha256,event_sha256:current.last_event_sha256,anchor:'verified_opening'};
       const previousAttempts = session.previousAttempts || [], previousCurrent = operationTrace?.current, previousSources = operationTrace?.sources, previousDisplaySource = operationTrace?.displaySource;
       operationTrace = {binding:null,rows:[],bytes:previousAttempts.reduce((sum,attempt) => sum+attempt.bytes,0),sources:new Map(previousSources || []),current:previousCurrent || null,previousCurrent,displaySource:previousDisplaySource,journal:[],pinnedJournal:session.verifiedJournal || [],transportState:null,finished:false,frameHashes:[],visibleResults:new Map(),checkpoints:[session.operationOpeningAnchor],previousAttempts};
       const trace = operationTrace;
+      earlyOperationOutline(prepared,session,token,trace);
       try {
-        if ((!session.referenceReady && !await verifyReferenceHead(session)) || !session.verifiedReplayStart) throw new Error('No current completed reference assessment is available.');
+        if ((!session.referenceReady && !await verifyReferenceHead(session,prepared)) || !session.verifiedReplayStart) throw new Error('No current completed reference assessment is available.');
         if (!operationActive(session,token) || operationTrace !== trace) return;
         operationTrace.pinnedJournal = session.verifiedJournal || []; operationTrace.asOf = session.referenceAsOf; operationTrace.plannedProcess = session.plannedProcess; renderClaim();
         if (!await operationGate(session,token)) return;
-        let response = await fetcher(base+`/claims/${key(session.claimId)}/operations?mode=${session.useRecorded ? 'recorded' : 'live'}`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:session.operationController.signal});
+        const delivery = prepared ? await prepared.delivery : null;
+        let response = delivery?.response || await fetcher(base+`/claims/${key(session.claimId)}/operations?mode=${session.useRecorded ? 'recorded' : 'live'}`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:session.operationController.signal});
         if (!operationActive(session,token) || operationTrace !== trace) return;
         if (!response.ok && !session.useRecorded) {
           response = await fetcher(base+`/claims/${key(session.claimId)}/operations?mode=recorded`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:session.operationController.signal});
@@ -2770,9 +2812,11 @@
         if (!response.ok) throw new Error(`Stored operation trace unavailable (HTTP ${response.status}).`);
         if (session.useRecorded) { session.recorded = true; operationTrace.recorded = true; }
         if (!operationActive(session,token) || operationTrace !== trace) return;
-        trace.buffer = bufferedOperations(response,operationController.signal, result => {
+        const resultAvailable = result => {
           if (operationActive(session,token) && operationTrace === trace && !doc.hidden && result.contract === OPERATIONS_CONTRACT && result.exact_output_verified === true && result.state_sha256 === session.replayHead.state_sha256 && result.current_event_sha256 === session.replayHead.event_sha256) { host.setAttribute?.('data-au-operation-result-available','true'); const total = bufferedOperationCount(trace), slider = host.querySelector('[data-au-operation-scrub]'), counter = host.querySelector('[data-au-scrub-position]'); if (total && slider) { slider.max=total-1; slider.setAttribute('aria-valuetext',`Operation ${Number(slider.value)+1} of ${total}`); slider.closest('.au-stage-scrubber')?.style.setProperty('--au-operation-ticks',total); if (counter) counter.textContent=`${Number(slider.value)+1} / ${total}`; } }
-        });
+        };
+        if (delivery?.buffer) { prepared.resultAvailable = resultAvailable; trace.buffer = delivery.buffer; if (trace.buffer.result) resultAvailable(trace.buffer.result); }
+        else trace.buffer = bufferedOperations(response,operationController.signal,resultAvailable);
         const frameBudget = {started:root.performance?.now?.() ?? Date.now()};
         for await (const frame of trace.buffer) {
           if (!await operationGate(session,token)) return;
@@ -2836,7 +2880,7 @@
           try { await fallbackOperations(session,token,error.message); }
           catch (fallback) { if (operationActive(session,token)) { stopPresentation(); renderClaim(); notice(`Assessment stopped: ${error.message} Saved result unavailable: ${fallback.message}`,true); } }
         }
-      } finally { controllers.delete(operationController); }
+      } finally { operationController.abort(); controllers.delete(operationController); }
     }
     function presentationFailed(session, message) {
       if (demoSession !== session) return;
@@ -2971,10 +3015,12 @@
       const head = session.replayHead, record = incoming.replay;
       if (!head || incoming.state.claim_id !== head.claimId || record.current_revision !== head.revision || record.current_state_sha256 !== head.state_sha256 || record.current_event_sha256 !== head.event_sha256) throw new Error('The recorded replay head changed. Reopen to verify its newest history.');
     }
-    async function verifyReferenceHead(session) {
+    async function verifyReferenceHead(session, prepared = null) {
       const head = session.replayHead;
       if (!head?.revision) return false;
-      const incoming = readReplay(await request(`/claims/${key(head.claimId)}/replay?through_seq=${head.revision}`),head.claimId,head.revision);
+      let incoming;
+      if (prepared?.revision === head.revision) { try { incoming = readReplay(await prepared.head,head.claimId,head.revision); checkedReplayHead(incoming,session); } catch (_) { incoming = null; } }
+      if (!incoming) incoming = readReplay(await request(`/claims/${key(head.claimId)}/replay?through_seq=${head.revision}`),head.claimId,head.revision);
       checkedReplayHead(incoming,session);
       // Admission of playback does not paint the head or borrow its context
       // for an earlier prefix. The displayed prefix keeps its own identity.
