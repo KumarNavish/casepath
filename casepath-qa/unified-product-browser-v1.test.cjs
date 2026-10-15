@@ -941,6 +941,34 @@ test('causal formation native: settled stage dependency strokes stay inside the 
  });
 });
 
+for(const [width,height]of [[1280,800],[1428,771],[1360,900],[390,844]])test(`visible operation stage: transport follows the exact accepted content at ${width}x${height}`,async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0],head=fixture.snapshots[id],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,width,height});
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.state.revision});await title(page,id);
+ assertAcceptedPaint(await acceptedPaint(page),head);
+ // Exercise the real transport renderer over an exact accepted head. An empty
+ // finished trace supplies no operation, fact, requirement or future result.
+ await page.evaluate(({state,projection})=>{
+  const trace={finished:true,rows:[],sources:new Map(),checkpoints:[]};
+  document.querySelector('.au-quiet-claim').outerHTML=window.CasePathAutonomous.workMarkup(state,projection,state.graph.nodes[0].node_id,[],'step',{}, {mode:'replay',operations:trace});
+ },{state:head.state,projection:head.projection});
+ const geometry=await page.locator('.au-quiet-claim').evaluate(claim=>{
+  const rect=element=>element.getBoundingClientRect().toJSON(),stage=claim.querySelector('.au-operation-stage'),transport=claim.querySelector('.au-stage-transport');
+  const leaves=[...stage.querySelectorAll('.au-node-title,.au-stage-outcome > p:first-child,.au-stage-reuse button')].filter(element=>!element.closest('[aria-hidden="true"],.au-visually-hidden')&&element.textContent.trim()&&element.getClientRects().length);
+  return {stage:rect(stage),transport:rect(transport),position:getComputedStyle(transport).position,controls:transport.querySelectorAll('button,input,select').length,leaves:leaves.map(element=>({text:element.textContent,font:parseFloat(getComputedStyle(element).fontSize),rect:rect(element)})),overflow:document.documentElement.scrollWidth>innerWidth+1};
+ });
+ await focusedReceipt(page,`visible-stage-transport-${width}x${height}`,{claim_id:id,revision:head.state.revision,state_sha256:head.state.state_sha256,geometry});
+ assert.ok(['static','relative'].includes(geometry.position),'transport participates in the document flow');
+ assert.ok(geometry.transport.top>=geometry.stage.bottom-.5,'transport starts below the complete process and outcome rather than covering content');
+ assert.ok(geometry.controls>0&&geometry.controls<=3,'transport retains at most three actual controls');
+ assert.ok(geometry.leaves.length>=head.state.graph.nodes.length+1+(head.state.knowledge_uses?.length?1:0),'actual graph labels, outcome and any recorded reused procedure are measured');
+ assert.ok(geometry.leaves.every(leaf=>leaf.font>=18),'meaningful visible text is at least 18px; aria-hidden decoration cannot satisfy the check');
+ assert.equal(geometry.overflow,false);
+ assertAcceptedPaint(await acceptedPaint(page),head);
+ const control=page.locator('.au-stage-transport input');await control.scrollIntoViewIfNeeded();
+ assert.equal(await control.evaluate(element=>{const bounds=element.getBoundingClientRect(),hit=document.elementFromPoint(bounds.left+bounds.width/2,bounds.top+bounds.height/2);return hit===element||element.contains(hit);}),true,'the actual transport control remains reachable after natural scrolling');
+});
+
 for(const [width,height,reduced]of [[1440,900,false],[1280,800,true],[390,844,false]])test(`causal formation native: heating requirements enter at their actual steps and final content stays visible at ${width}x${height}`,async t=>{
  const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,width,height});
  if(reduced)await page.emulateMedia({reducedMotion:'reduce'});
