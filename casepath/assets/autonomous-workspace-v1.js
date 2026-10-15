@@ -3323,10 +3323,12 @@
       prepared.controller.abort(); for (const controller of prepared.readControllers) controller.abort();
     }
     async function chooseRecordedOpening(packet, session, id, token, ownership = null) {
-      const prepared = session.operationPreparation, choice = new AbortController(); session.operationChoiceController = choice;
+      let prepared = session.operationPreparation; const choice = new AbortController(); session.operationChoiceController = choice;
       const active = () => !choice.signal.aborted && (ownership ? ownership.active() : !disposed && token === epoch && !pendingRoute() && openingId === id);
       const openingResult = (response, head, verification) => ({claimId:id,generation:readGeneration,response,head,referenceReady:true,verifiedHeadState:verification.verifiedHeadState,verifiedReplayStart:verification.verifiedReplayStart,verifiedJournal:verification.verifiedJournal,referenceAsOf:verification.referenceAsOf,operationBinding:verification.operationBinding,plannedProcess:verification.plannedProcess});
-      let packetOpening = null, observedLiveHead = null;
+      let packetOpening = null, observedLiveHead = null, packetSettled = false, preferenceElapsed = false;
+      const cancelled = new Promise((_resolve,reject) => choice.signal.addEventListener('abort',() => reject(new Error('The selected opening changed.')),{once:true}));
+      cancelled.catch(() => {});
       const packetCandidate = (async () => {
         const verified = packet.promise ? await packet.promise : packet;
         if (!active() || packet.controller?.signal.aborted) return;
@@ -3337,13 +3339,17 @@
         const newline = decoded.operations.indexOf(10); if (newline < 0 || newline > OPERATION_FRAME_BYTES) throw new Error('The recorded packet has no bounded operation binding.');
         checkedOperationBinding(JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(decoded.operations.subarray(0,newline))),{...head,...operationBinding},start);
         if (active()) packetOpening = {opening:openingResult(decoded.opening,head,{verifiedHeadState:full.state,verifiedReplayStart:start,verifiedJournal:full.accepted.events,referenceAsOf:referenceExecution(full.state)?.as_of,operationBinding,plannedProcess}),bytes:decoded.operations};
-      })(); packetCandidate.catch(() => {});
+      })(); packetCandidate.then(() => { packetSettled = true; },() => { packetSettled = true; });
       if (!prepared) {
         let timer;
-        await Promise.race([packetCandidate.catch(() => {}),new Promise(resolve => { timer=root.setTimeout(resolve,OPERATION_CHOICE_GRACE_MS); })]); root.clearTimeout(timer);
+        try { await Promise.race([cancelled,packetCandidate.catch(() => {}),new Promise(resolve => { timer=root.setTimeout(resolve,OPERATION_CHOICE_GRACE_MS); })]); }
+        finally { root.clearTimeout(timer); }
         if (!active()) throw new Error('The selected opening changed.');
-        if (!packetOpening) { choice.abort(); return null; }
-        return selectRecorded();
+        if (packetOpening) return selectRecorded();
+        if (packetSettled) { choice.abort(); return null; }
+        // Explicit Recorded keeps the pending packet eligible while its existing
+        // owned recorded endpoint reads become the other candidate.
+        prepared = prepareOperationReads(session,id,token); preferenceElapsed = true;
       }
       const liveOpening = operationRequest(prepared,`/claims/${key(id)}/replay?through_seq=0`);
       const liveCandidate = (async () => {
@@ -3357,11 +3363,11 @@
         if (!active() || prepared.controller.signal.aborted) throw new Error('The selected opening changed.');
         return openingResult(response,head,verification);
       })(); liveCandidate.catch(() => {});
-      let timer;
-      const cancelled = new Promise((_resolve,reject) => choice.signal.addEventListener('abort',() => reject(new Error('The selected opening changed.')),{once:true}));
-      cancelled.catch(() => {});
-      const winner = await Promise.race([cancelled,liveCandidate.catch(() => new Promise(() => {})),new Promise(resolve => { timer=root.setTimeout(() => resolve(null),OPERATION_CHOICE_GRACE_MS); })]);
-      root.clearTimeout(timer);
+      let timer, winner = null;
+      if (!preferenceElapsed) {
+        try { winner = await Promise.race([cancelled,liveCandidate.catch(() => new Promise(() => {})),new Promise(resolve => { timer=root.setTimeout(() => resolve(null),OPERATION_CHOICE_GRACE_MS); })]); }
+        finally { root.clearTimeout(timer); }
+      }
       if (!active()) throw new Error('The selected opening changed.');
       if (winner) { choice.abort(); return winner; }
       if (packetOpening && observedLiveHead && canonicalJSON(packetOpening.opening.head) !== canonicalJSON(observedLiveHead)) packetOpening = null;
@@ -3378,6 +3384,13 @@
           ])]);
           if (!active()) throw new Error('The selected opening changed.');
           if (ready.opening) { choice.abort(); return ready.opening; }
+          // Live metadata may arrive while the readiness promises settle.
+          // Recheck immediately before committing the recorded presentation.
+          if (observedLiveHead && canonicalJSON(packetOpening.opening.head) !== canonicalJSON(observedLiveHead)) {
+            const opening = await Promise.race([cancelled,liveCandidate]);
+            if (!active()) throw new Error('The selected opening changed.');
+            choice.abort(); return opening;
+          }
           return selectRecorded();
         } catch (error) {
           if (!active()) throw error;
