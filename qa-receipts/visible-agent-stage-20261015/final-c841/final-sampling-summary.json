@@ -1,0 +1,212 @@
+{
+  "status": "PASS final corrected first-case native sequence",
+  "combined_candidate": "7e4fcb1526da7f6c20f9f78f0efe572f1a204fa9",
+  "source_candidate": "c84143dd318c0dab91feacd7781e89393fd44670",
+  "qa_commit": "9c55d52ae8e717c502087903af0db0e933555227",
+  "raw_receipt_qa_label": "4d5e4e1637e8fa6290f2b57061cd8bafbc6f8573",
+  "metadata_note": "The raw runner retained the previous QA phase label; the actual QA checkout at launch was9c55d52. UI source bytes are bound independently by exact responseSHA256 and final-asset-bindings.json.",
+  "assets": {
+    "javascript": "b1178e50f8461ea6a0c0ca1d8bb30ecfde85fe016175532cf8ba53bf85928f19",
+    "css": "a8feaa886853f1ab2f6798adf61f9fa6d9b4cc53197e2395ed6d642a18fabb7c"
+  },
+  "served": {
+    "css": "a8feaa886853f1ab2f6798adf61f9fa6d9b4cc53197e2395ed6d642a18fabb7c",
+    "javascript": "b1178e50f8461ea6a0c0ca1d8bb30ecfde85fe016175532cf8ba53bf85928f19"
+  },
+  "runner_sha256": "76d63b420f575b04455866052c9c58d6a03e96b3ce4fdbfa3589b6bdfdea1460",
+  "raw_receipt_sha256": "a688933ffc68fd9c89133b927ce7d2ee00cd07248aa6529daf7955bdee1fa00a",
+  "frames": 40,
+  "active_frames": 39,
+  "cited_frames": 36,
+  "cited_with_visible_actor": 33,
+  "cited_with_handoff_without_actor": 0,
+  "cited_sampled_during_positioning": [
+    {
+      "at": 33628.69999998808,
+      "operation": "op_14f9eb670b91d7289150ef3a51717af4",
+      "operation_age_ms": 156.60000002384186,
+      "probes": [
+        {
+          "operation": "op_14f9eb670b91d7289150ef3a51717af4",
+          "age": 373.19999998807907,
+          "visible_actor": true
+        },
+        {
+          "operation": "op_14f9eb670b91d7289150ef3a51717af4",
+          "age": 1365.5,
+          "visible_actor": true
+        }
+      ],
+      "comparability": "same operation"
+    },
+    {
+      "at": 43638.10000002384,
+      "operation": "op_1b4045f495bd7c43aee1c82408feaba3",
+      "operation_age_ms": 97.70000004768372,
+      "probes": [
+        {
+          "operation": "op_1b4045f495bd7c43aee1c82408feaba3",
+          "age": 332.5,
+          "visible_actor": true
+        },
+        {
+          "operation": "op_1b4045f495bd7c43aee1c82408feaba3",
+          "age": 1383.1000000238419,
+          "visible_actor": true
+        }
+      ],
+      "comparability": "same operation"
+    },
+    {
+      "at": 67664.89999997616,
+      "operation": "op_193bef006745abf6a81e5adde872cadc",
+      "operation_age_ms": 33.19999998807907,
+      "probes": [
+        {
+          "operation": "op_193bef006745abf6a81e5adde872cadc",
+          "age": 249.5,
+          "visible_actor": true
+        },
+        {
+          "operation": "op_193bef006745abf6a81e5adde872cadc",
+          "age": 1367.300000011921,
+          "visible_actor": true
+        }
+      ],
+      "comparability": "same operation"
+    }
+  ],
+  "uncited_intervals": [
+    {
+      "at": 17607.5,
+      "operation": "op_2049d0a24629fa4a659b417200b67353",
+      "phase": "source",
+      "classification": "uncited source or process interval"
+    },
+    {
+      "at": 37633,
+      "operation": "op_414de1779028325a5495983616033cc2",
+      "phase": "source",
+      "classification": "uncited source or process interval"
+    },
+    {
+      "at": 77676.10000002384,
+      "operation": "op_568943696026415fa063d190086424ee",
+      "phase": "map",
+      "classification": "actual recorded decision/map interval"
+    }
+  ],
+  "rail_frames": 40,
+  "initial_nodes": 6,
+  "initial_exact_reused_pin": {
+    "text": "Defects and repairs · Version 1",
+    "id": "procedure.defect_mold_heating",
+    "version": "1",
+    "definition_sha256": "cf4829a27d8fcf110b72f0cf2f56a011ff8380deda4d4bdd45de9b2bbb77b0a5",
+    "knowledge_sha256": "",
+    "font": 18,
+    "rect": {
+      "x": 752.1875,
+      "y": 219.4375,
+      "width": 241.796875,
+      "height": 42,
+      "top": 219.4375,
+      "right": 993.984375,
+      "bottom": 261.4375,
+      "left": 752.1875
+    }
+  },
+  "cold_verified_opening_wait_ms": 578,
+  "flight_count": 12,
+  "all_recorded_motion_ids_are_native": true,
+  "decision_maps": [
+    {
+      "at": 77676.10000002384,
+      "verified": "false",
+      "map": {
+        "maxHeight": "none",
+        "overflowX": "visible",
+        "overflowY": "visible",
+        "outcome": {
+          "x": 200,
+          "y": 603,
+          "width": 880,
+          "height": 208.359375,
+          "top": 603,
+          "right": 1080,
+          "bottom": 811.359375,
+          "left": 200
+        },
+        "summary": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined."
+      },
+      "transport": {
+        "rect": {
+          "x": 310,
+          "y": 835.359375,
+          "width": 660,
+          "height": 73,
+          "top": 835.359375,
+          "right": 970,
+          "bottom": 908.359375,
+          "left": 310
+        },
+        "position": "static",
+        "controls": 3
+      }
+    },
+    {
+      "at": 79676.10000002384,
+      "verified": "true",
+      "map": {
+        "maxHeight": "none",
+        "overflowX": "visible",
+        "overflowY": "visible",
+        "outcome": {
+          "x": 200,
+          "y": 603,
+          "width": 880,
+          "height": 208.359375,
+          "top": 603,
+          "right": 1080,
+          "bottom": 811.359375,
+          "left": 200
+        },
+        "summary": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined."
+      },
+      "transport": {
+        "rect": {
+          "x": 310,
+          "y": 835.359375,
+          "width": 660,
+          "height": 73,
+          "top": 835.359375,
+          "right": 970,
+          "bottom": 908.359375,
+          "left": 310
+        },
+        "position": "static",
+        "controls": 2
+      }
+    }
+  ],
+  "result": {
+    "at": 78649.39999997616,
+    "revision": 48,
+    "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+    "operation_count": 824,
+    "classification": "Automated test boundary: Pause only after the actual verified result; no trusted input or state mutation."
+  },
+  "commands": [
+    {
+      "cwd": "/workspace",
+      "command": "env HOME=/workspace/qh TMPDIR=/workspace/qt TMP=/workspace/qt TEMP=/workspace/qt node /workspace/casepath-visible-agent-20261015-evidence/qa/native-frames.cjs > /workspace/casepath-visible-agent-20261015-evidence/qa/native-frames-c841-final.log 2>&1",
+      "exit_code": 0
+    }
+  ],
+  "limits": [
+    "Local native GET-only fixture; no production requests or acceptance claim.",
+    "First-second outline timing starts after verified operation entry; cold verification wait is separately reported.",
+    "Raw two-second frames include source-positioning and uncited/map intervals; no filler motion supplied.",
+    "Automated Pause occurs only at the actual verified first result to prevent next-case handoff from escaping this bounded capture."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "combined_candidate": "7e4fcb1526da7f6c20f9f78f0efe572f1a204fa9",
+  "source_commit": "c84143dd318c0dab91feacd7781e89393fd44670",
+  "qa_commit": "9c55d52ae8e717c502087903af0db0e933555227",
+  "candidate_git_bytes_equal_actual": true,
+  "files": {
+    "javascript": {
+      "sha256": "b1178e50f8461ea6a0c0ca1d8bb30ecfde85fe016175532cf8ba53bf85928f19",
+      "candidate_file": "casepath/assets/autonomous-workspace-v1.js",
+      "actual_path": "/workspace/casepath-visible-agent-20261015-evidence/assets/final.js"
+    },
+    "css": {
+      "sha256": "a8feaa886853f1ab2f6798adf61f9fa6d9b4cc53197e2395ed6d642a18fabb7c",
+      "candidate_file": "casepath/assets/autonomous-workspace-v1.css",
+      "actual_path": "/workspace/casepath-visible-agent-20261015-evidence/assets/final.css"
+    },
+    "qa": {
+      "sha256": "e2921d49da8b34db4e806e7d22d4c7de8a28825a2f042632f0c79c3ce164524b",
+      "candidate_file": "casepath-qa/unified-product-browser-v1.test.cjs",
+      "actual_path": "/workspace/casepath-visible-agent-qa-20261015/casepath-qa/unified-product-browser-v1.test.cjs"
+    }
+  }
+}
