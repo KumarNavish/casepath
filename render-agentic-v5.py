@@ -22,7 +22,7 @@ import time
 
 W, H, FPS, GUTTER = 1920, 1080, 30, 64
 CAPTION_SIZE = 42
-MIN_ZOOM, MAX_SPEED, ENDCARD = 1.4, 6.0, 5.0
+MIN_ZOOM, ACTIVE_ZOOM, MAX_SPEED, ENDCARD = 1.4, 2.0, 6.0, 5.0
 END_TEXT = ["CasePath · Evidence into action", "Synthetic claims · recorded replay"]
 BG, INK = (239, 242, 236), (24, 61, 51)
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
@@ -341,14 +341,10 @@ class Movie:
             goal = (bounds[0] + bounds[2] / 2, bounds[1] + bounds[3] / 2)
             q = 1 - math.exp(-6 / FPS)
             preferred = prior[0] + q * (goal[0] - prior[0]), prior[1] + q * (goal[1] - prior[1])
-        fitted, bound = fit_camera(self.cw, self.ch, bounds, preferred=preferred)
-        # Start the close-up just above the genuine working card. The viewport's
-        # title/reused-version header stays entirely outside this body close-up.
-        # A lower crop may be shorter than the viewport; render without stretching.
-        cx, cy, zoom = fitted
-        crop_h = self.ch / zoom
-        cy = max(cy, bounds[1] - 14 + crop_h / 2)
-        fitted = cx, cy, zoom
+        # Centre the actual passage and destination together. The earlier
+        # top-aligned crop left most of the frame empty below the work.
+        fitted, bound = fit_camera(self.cw, self.ch, bounds,
+                                   desired=ACTIVE_ZOOM, preferred=preferred)
         return fitted, bound, mode
 
     def plan(self):
