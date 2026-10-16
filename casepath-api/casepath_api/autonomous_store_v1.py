@@ -930,6 +930,12 @@ class AutonomousStore:
     def _knowledge_source_page_chunks(self):
         return None
 
+    def _validated_knowledge_states(self, rows):
+        return self._validated_states(rows, source_page_chunks=self._knowledge_source_page_chunks())
+
+    def _after_validated_knowledge_states(self, rows, states):
+        pass
+
     def knowledge_snapshot(self):
         """Copy only Knowledge inputs after the complete authority validation.
 
@@ -940,7 +946,8 @@ class AutonomousStore:
         """
         with getattr(self, "_summary_lock", self._extraction_lock):
             rows = self._knowledge_rows()
-            states = self._validated_states(rows, source_page_chunks=self._knowledge_source_page_chunks())
+            states = self._validated_knowledge_states(rows)
+            self._after_validated_knowledge_states(rows, states)
             commands = {(row["loop_id"], row["sequence"]): row for row in rows}
             values = []
             for state in states:
@@ -979,7 +986,7 @@ class AutonomousStore:
                      "corpus_id")}) for state in self._validated_states(rows)
                 if statuses is None or state["status"] in statuses]
 
-    def _validated_states(self, rows, *, source_page_chunks=None):
+    def _validated_states(self, rows, *, source_page_chunks=None, source_verifier=None):
         source_options = {} if source_page_chunks is None else {'page_chunks': source_page_chunks}
         if self._source_store is not None and hasattr(self._source_store, "prefetch_journal_sources"):
             self._source_store.prefetch_journal_sources(rows, **source_options)
@@ -1014,7 +1021,7 @@ class AutonomousStore:
                 source_digests.update(source["sha256"] for source in state["source_descriptors"])
                 values.append(state)
             if self._source_store is not None and hasattr(self._source_store, "verify_many"):
-                self._source_store.verify_many(source_digests, **source_options)
+                (source_verifier or self._source_store.verify_many)(source_digests, **source_options)
         return values
 
     def _append_command(self, claim_id, kind, payload, expected_revision, expected_state_sha256, idempotency_key):

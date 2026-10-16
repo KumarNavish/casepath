@@ -1,4 +1,5 @@
 import json
+from hashlib import sha256
 import httpx
 from casepath_api.hosted_sql_v1 import LibsqlConnection, _https_origin, _encode, _decode
 
@@ -113,6 +114,8 @@ class MockHrana:
             if incoming is None:
                 connection = self._sqlite3.connect(self.path, isolation_level=None, check_same_thread=False, timeout=0.05)
                 connection.execute('PRAGMA foreign_keys=ON')
+                connection.create_function('crypto_sha256', 1, lambda value: None if value is None else
+                                           sha256(value.encode('utf-8') if isinstance(value, str) else value).digest())
             else:
                 connection = self._streams.pop(incoming, None)
                 if connection is None:

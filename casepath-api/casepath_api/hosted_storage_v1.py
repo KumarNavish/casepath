@@ -37,6 +37,104 @@ CREATE TRIGGER IF NOT EXISTS autonomous_source_chunks_no_replace BEFORE INSERT O
 """
 
 
+# Proofs are derived from validated raw SQL values, never journal heads or JSON.
+# Fixed-width typed cells and row digests make the ordered aggregate injective
+# up to SHA-256; the count/length checks reject missing or malformed digests.
+_PROOF_ROWS = 16384
+_JOURNAL_COLUMNS = ('session_id', 'loop_id', 'sequence', 'idempotency_key',
+                    'command_sha256', 'event_sha256', 'event_json', 'created_at')
+_SOURCE_COLUMNS = ('sha256', 'chunk_index', 'content')
+
+
+def _schema_query(table):
+    return ("SELECT 'column' AS kind,name,type AS detail,\"notnull\" AS required,dflt_value AS default_value,pk,hidden "
+            "FROM pragma_table_xinfo('" + table + "') UNION ALL "
+            "SELECT type,name,sql,NULL,NULL,NULL,NULL FROM sqlite_schema WHERE tbl_name='" + table + "' "
+            "ORDER BY kind,name")
+
+
+def _schema_identity(rows):
+    return tuple(tuple(row[key] for key in row.keys()) for row in rows)
+
+
+def _standard_schema(rows, columns):
+    names = {row['name']: row for row in rows if row['kind'] == 'column'}
+    if set(names) != set(columns):
+        return False
+    integer = 'sequence' if columns == _JOURNAL_COLUMNS else 'chunk_index'
+    keys = ('session_id', 'loop_id', 'sequence') if columns == _JOURNAL_COLUMNS else ('sha256', 'chunk_index')
+    for name in columns:
+        row = names[name]
+        expected = 'INTEGER' if name == integer else 'BLOB' if name == 'content' else 'TEXT'
+        if (row['detail'].upper() != expected or type(row['required']) is not int or row['required'] != 1
+                or row['default_value'] is not None or type(row['pk']) is not int
+                or row['pk'] != (keys.index(name) + 1 if name in keys else 0)
+                or type(row['hidden']) is not int or row['hidden'] != 0):
+            return False
+    tables = [row for row in rows if row['kind'] in {'table', 'view'}]
+    return (len(tables) == 1 and tables[0]['kind'] == 'table' and isinstance(tables[0]['detail'], str)
+            and tables[0]['detail'].lstrip().upper().startswith('CREATE TABLE '))
+
+
+def _cell_frame(value):
+    if type(value) is str:
+        kind, raw = 't', value.encode('utf-8')
+    elif type(value) is int and -(2 ** 63) <= value < 2 ** 63:
+        kind, raw = 'i', str(value).encode('ascii')
+    elif type(value) is bytes:
+        kind, raw = 'b', value
+    else:
+        raise ValueError('Value is not eligible for an exact SQL byte proof.')
+    return kind + format(len(raw), '016x') + sha256(raw).hexdigest()
+
+
+def _proof_expected(rows, columns, domain):
+    if len(rows) > _PROOF_ROWS:
+        raise ValueError('Proof roster exceeds its bound.')
+    integer = 'sequence' if columns == _JOURNAL_COLUMNS else 'chunk_index'
+    hashes = []
+    for row in rows:
+        if set(row.keys()) != set(columns):
+            raise ValueError('Proof cannot omit an unknown SQL column.')
+        for name in columns:
+            expected = int if name == integer else bytes if name == 'content' else str
+            if type(row[name]) is not expected:
+                raise ValueError('Proof requires exact native SQL storage types.')
+        hashes.append(sha256((domain + ':row:' + ''.join(_cell_frame(row[name]) for name in columns)).encode('ascii')).hexdigest())
+    return (len(rows), len(rows), len(rows) * 64,
+            sha256((domain + ':set:' + ''.join(hashes)).encode('ascii')).hexdigest())
+
+
+def _proof_query(table, columns, domain, where, order):
+    frames = []
+    for name in columns:
+        raw = 'COALESCE(CAST(' + name + " AS BLOB),X'')"
+        frames.append("(CASE typeof(" + name + ") WHEN 'text' THEN 't' WHEN 'integer' THEN 'i' "
+                      "WHEN 'blob' THEN 'b' WHEN 'real' THEN 'r' WHEN 'null' THEN 'n' ELSE '?' END)"
+                      "||printf('%016x',length(" + raw + "))||lower(hex(crypto_sha256(" + raw + ')))')
+    # ORDER BY + LIMIT is a non-flattening barrier: aggregation consumes the
+    # canonical complete-PK order, bounded to the cached roster plus one row.
+    return ("SELECT count(*) AS n,COALESCE(sum(CASE WHEN length(row_sha)=64 AND row_sha NOT GLOB '*[^0-9a-f]*' "
+            "THEN 1 ELSE 0 END),0) AS valid_n,length(CAST(COALESCE(group_concat(row_sha,''),'') AS BLOB)) AS concat_bytes,"
+            "lower(hex(crypto_sha256(CAST('" + domain + ":set:'||COALESCE(group_concat(row_sha,''),'') AS BLOB)))) AS root "
+            "FROM (SELECT lower(hex(crypto_sha256(CAST('" + domain + ":row:'||" + '||'.join(frames) +
+            ' AS BLOB)))) AS row_sha FROM ' + table + ' WHERE ' + where + ' ORDER BY ' + order + ' LIMIT ?)')
+
+
+def _proof_matches(cursor, expected):
+    rows = cursor.fetchall()
+    if len(rows) != 1:
+        raise AutonomousStoreError('Fresh SQL byte proof has an invalid result roster.')
+    row = rows[0]
+    values = tuple(row[key] for key in ('n', 'valid_n', 'concat_bytes', 'root'))
+    if (any(type(value) is not int for value in values[:3]) or not 0 <= values[0] <= _PROOF_ROWS + 1
+            or values[1] != values[0] or values[2] != values[0] * 64
+            or type(values[3]) is not str or len(values[3]) != 64
+            or any(char not in '0123456789abcdef' for char in values[3])):
+        raise AutonomousStoreError('Fresh SQL byte proof is malformed or truncated.')
+    return values == expected
+
+
 class HostedJournal:
     def __init__(self, path, connection_factory):
         self.path = Path(path)
@@ -251,6 +349,51 @@ class HostedSources:
                 self._fetch_many(values, check=check, page_chunks=page_chunks)
 
 
+    def verify_knowledge_many(self, digests):
+        """New post-reducer snapshot proves every cached original chunk byte.
+
+        Cache bytes already passed the native full-file SHA and chunk validators.
+        Missing/evicted bytes are reread through the original eight-chunk path;
+        the fresh aggregate then certifies that complete roster in one snapshot.
+        """
+        values = self._digests(digests)
+        if not values:
+            return
+        with self._lock:
+            missing = [digest for digest in values if digest not in self._cache]
+            if missing:
+                self._fetch_many(missing)
+            queries, expected = [(_schema_query('autonomous_source_chunks'), ())], []
+            for start in range(0, len(values), self.BATCH_DIGESTS):
+                batch = values[start:start + self.BATCH_DIGESTS]
+                rows = []
+                for digest in batch:
+                    raw = self._cache.get(digest)
+                    if raw is None:
+                        raise AutonomousStoreError('Original byte proof cache was evicted before verification.')
+                    rows.extend({'sha256': digest, 'chunk_index': index, 'content': raw[offset:offset + self.CHUNK_BYTES]}
+                                for index, offset in enumerate(range(0, max(1, len(raw)), self.CHUNK_BYTES)))
+                if len(rows) > _PROOF_ROWS or len(queries) >= 128:
+                    raise AutonomousStoreError('Original byte proof roster exceeds its bound.')
+                expected.append(_proof_expected(rows, _SOURCE_COLUMNS, 'casepath-source-bytes-v1'))
+                query = _proof_query('autonomous_source_chunks', _SOURCE_COLUMNS, 'casepath-source-bytes-v1',
+                                     'sha256 IN (' + ','.join('?' for _ in batch) + ')', 'sha256,chunk_index')
+                queries.append((query, (*batch, len(rows) + 1)))
+            with self.connect() as db:
+                if not hasattr(db, 'read_snapshot'):
+                    self.verify_many(values)
+                    return
+                cursors = db.read_snapshot(queries)
+            schema = cursors[0].fetchall()
+            if not _standard_schema(schema, _SOURCE_COLUMNS):
+                raise AutonomousStoreError('Original byte proof requires the complete native source schema.')
+            if not all(_proof_matches(cursor, proof) for cursor, proof in zip(cursors[1:], expected)):
+                # A mismatch is never a stale hit. Exercise the original raw
+                # validators for a changed source; they retain precise failures.
+                self.verify_many(values)
+                raise AutonomousStoreError('Persistent source bytes changed during fresh verification.')
+
+
 class HostedAutonomousStore(AutonomousStore):
     JOURNAL_PAGE_ROWS = 128
     KNOWLEDGE_PAGE_ROWS = 2048
@@ -268,14 +411,96 @@ class HostedAutonomousStore(AutonomousStore):
         return self._paged_state_rows(self.JOURNAL_PAGE_ROWS)
 
     def _knowledge_rows(self):
-        # Knowledge needs every authority column, but many small events need
-        # not each consume a 128-row remote page. Retain the same byte budget,
-        # snapshot and validation, and leave other collection readers alone.
-        return self._paged_state_rows(self.KNOWLEDGE_PAGE_ROWS, count_candidates=True)
+        cached = getattr(self, '_knowledge_byte_cache', None)
+        with self.journal.connect() as db:
+            if not hasattr(db, 'read_snapshot'):
+                return self._state_rows()
+            if cached is not None:
+                rows, schema, proof = cached
+                query = _proof_query('claim_loop_events', _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1',
+                                     'session_id=?', 'loop_id,sequence')
+                schema_cursor, proof_cursor = db.read_snapshot([
+                    (_schema_query('claim_loop_events'), ()), (query, (SESSION_ID, len(rows) + 1))])
+                current_schema = schema_cursor.fetchall()
+                if _schema_identity(current_schema) == schema and _proof_matches(proof_cursor, proof):
+                    self._knowledge_pending = cached
+                    return rows
+        self._knowledge_byte_cache = None
+        return self._collect_knowledge_rows()
 
-    def _knowledge_source_page_chunks(self):
-        # Explicit per-read options never change the shared source store's mode.
-        return 128 if isinstance(self._source_store, HostedSources) else None
+    def _collect_knowledge_rows(self):
+        # Each bounded raw page is independently CLOSED by the server. Never
+        # hold Turso's five-second transaction across raw body transfers.
+        # A final fresh complete-roster certificate supplies snapshot authority.
+        rows, after_loop, after_sequence = [], '', -1
+        schema = None
+        while True:
+            query, parameters = self._journal_page_query(self.JOURNAL_PAGE_ROWS, rows, after_loop, after_sequence)
+            with self.journal.connect() as db:
+                queries = [(query, parameters)]
+                if schema is None:
+                    queries.insert(0, (_schema_query('claim_loop_events'), ()))
+                cursors = db.read_snapshot(queries)
+            if schema is None:
+                schema = cursors[0].fetchall()
+                if not _standard_schema(schema, _JOURNAL_COLUMNS):
+                    # Unknown columns cannot be certified by the eight-column
+                    # root. A single acknowledged snapshot retains j.* instead.
+                    with self.journal.connect() as db:
+                        schema_cursor, raw_cursor = db.read_snapshot([
+                            (_schema_query('claim_loop_events'), ()),
+                            ('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence', (SESSION_ID,))])
+                    self._knowledge_pending = None
+                    return raw_cursor.fetchall()
+            page = cursors[-1].fetchall()
+            if not page:
+                break
+            if len(page) > self.JOURNAL_PAGE_ROWS:
+                raise AutonomousStoreError('Journal read page exceeds its bound.')
+            for row in page:
+                loop, sequence, size = (row[key] for key in ('loop_id', 'sequence', '__read_size'))
+                if (type(loop) is not str or not loop.startswith('autonomous.') or type(sequence) is not int
+                        or sequence < 1 or type(size) is not int or not 0 < size <= self.JOURNAL_ROW_BYTES
+                        or (loop, sequence) <= (after_loop, after_sequence)):
+                    raise AutonomousStoreError('Journal read page identity or size differs.')
+                rows.append({key: row[key] for key in row.keys()
+                             if key not in {'__read_size', '__read_total', '__read_position'}})
+                after_loop, after_sequence = loop, sequence
+            if len(rows) > _PROOF_ROWS:
+                raise AutonomousStoreError('Journal byte proof roster exceeds its bound.')
+        try:
+            proof = _proof_expected(rows, _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1')
+        except (ValueError, UnicodeError) as exc:
+            raise AutonomousStoreError('Journal raw values cannot establish an exact byte proof.') from exc
+        query = _proof_query('claim_loop_events', _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1',
+                             'session_id=?', 'loop_id,sequence')
+        with self.journal.connect() as db:
+            schema_cursor, proof_cursor = db.read_snapshot([
+                (_schema_query('claim_loop_events'), ()), (query, (SESSION_ID, len(rows) + 1))])
+        if _schema_identity(schema_cursor.fetchall()) != _schema_identity(schema) or not _proof_matches(proof_cursor, proof):
+            raise AutonomousStoreError('Journal changed while collecting independently closed raw pages.')
+        self._knowledge_pending = (rows, _schema_identity(schema), proof)
+        return rows
+
+    def _validated_knowledge_states(self, rows):
+        verifier = (self._source_store.verify_knowledge_many if isinstance(self._source_store, HostedSources) else None)
+        return self._validated_states(rows, source_verifier=verifier)
+
+    def _after_validated_knowledge_states(self, rows, states):
+        # _summary_cache alone is insufficient: it is populated before final
+        # source verification. Only this successful post-validation hook admits.
+        self._knowledge_byte_cache = getattr(self, '_knowledge_pending', None)
+
+    @classmethod
+    def _journal_page_query(cls, page_rows, rows, after_loop, after_sequence):
+        size = '+'.join('COALESCE(length(CAST(' + key + ' AS BLOB)),0)' for key in _JOURNAL_COLUMNS) + '+1024'
+        query = ('SELECT * FROM (SELECT *,sum(__read_size) OVER (ORDER BY loop_id,sequence) AS __read_total,'
+                 'row_number() OVER (ORDER BY loop_id,sequence) AS __read_position FROM '
+                 '(SELECT *,(' + size + ') AS __read_size FROM claim_loop_events WHERE session_id=? '
+                 'AND (? OR loop_id>? OR (loop_id=? AND sequence>?)) '
+                 'ORDER BY loop_id,sequence LIMIT ?)) '
+                 'WHERE __read_total<=? OR __read_position=1 ORDER BY loop_id,sequence')
+        return query, (SESSION_ID, not rows, after_loop, after_loop, after_sequence, page_rows, cls.JOURNAL_PAGE_BYTES)
 
     def _paged_state_rows(self, page_rows, *, count_candidates=False):
         """Bounded journal pages from one read snapshot, before source work.
