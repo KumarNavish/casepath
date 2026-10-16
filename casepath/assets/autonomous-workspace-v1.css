@@ -759,3 +759,100 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-operation-stage[data-au-stage-phase=source] [data-au-stage-active=true] .au-stage-fact:not([data-au-current-fact=true]) { display:none; }
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-thumbnail .au-stage-paper { display:none; }
 }
+
+/* Recorded learning: one timeline and a single inspectable focus. */
+.au-workspace .au-learning { max-width:1240px; --au-learning-muted:#565f59; --au-learning-green:#24563c; --au-learning-paper:#fafbf8; }
+.au-workspace .au-learning .au-work-head { align-items:start; }
+.au-workspace .au-learning .au-work-head > div:first-child { display:block; }
+.au-workspace .au-learning .au-work-head h1 { margin:8px 0 12px; font-size:clamp(30px,4vw,46px); letter-spacing:-1.3px; }
+.au-workspace .au-learning :is(p,button,label,li,span,code) { font-size:16px; line-height:1.55; }
+.au-workspace .au-learning :is(p,.au-meta,.au-learning-kind,.au-learning-label) { color:var(--au-learning-muted); }
+.au-workspace .au-learning .au-learning-label { color:var(--au-learning-green); }
+.au-workspace .au-learning .au-learning-totals { margin:14px 0 24px; }
+.au-workspace .au-learning button { min-height:44px; }
+.au-workspace .au-learning button:focus-visible,.au-workspace .au-learning input:focus-visible { outline:3px solid #24563c; outline-offset:4px; }
+.au-workspace .au-learning-timeline { --au-learning-days:5; padding:0 0 12px; border-top:1px solid var(--au-line); border-bottom:1px solid var(--au-line); }
+.au-workspace .au-learning-dates { display:grid; grid-template-columns:180px repeat(var(--au-learning-days),minmax(0,1fr)); gap:12px; padding:16px 0; color:var(--au-learning-muted); }
+.au-workspace .au-learning-lane { display:grid; grid-template-columns:180px minmax(0,1fr); gap:12px; min-height:72px; align-items:start; }
+.au-workspace .au-learning-lane > h2 { margin:12px 0; font-size:17px; line-height:1.45; font-weight:500; letter-spacing:0; }
+.au-workspace .au-learning-track { position:relative; display:grid; grid-template-columns:repeat(var(--au-learning-days),minmax(0,1fr)); gap:12px; padding:6px 0 14px; }
+.au-workspace .au-learning-track::before { content:''; position:absolute; top:30px; left:0; right:0; height:1px; background:#c6d0c6; }
+.au-workspace .au-learning-day { position:relative; display:flex; align-content:start; align-items:start; flex-wrap:wrap; gap:6px; min-width:0; }
+.au-workspace .au-learning-node { position:relative; display:flex; align-items:center; flex-wrap:wrap; gap:4px 8px; border:1px solid #c6d0c6; border-radius:5px; background:#fff; padding:6px 9px; text-align:left; color:#3f5045; }
+.au-workspace .au-learning-node[aria-current=step] { border-color:#24563c; background:#e6efe5; color:#1e4a32; box-shadow:0 0 0 1px #24563c; }
+.au-workspace .au-learning-node-text { font-size:16px; }
+.au-workspace .au-learning-lane[data-au-learning-lane=refused] .au-learning-node { color:#70412e; border-color:#c3aa9c; }
+.au-workspace .au-learning-mobile-date { display:none; }
+.au-workspace .au-learning-no-events { position:relative; grid-column:1/-1; margin:10px 0; background:#fff; }
+.au-workspace .au-learning-transport { display:flex; align-items:center; flex-wrap:wrap; gap:12px 20px; margin:24px 0 12px; }
+.au-workspace .au-learning-transport > button { padding:9px 18px; border:1px solid #78917c; background:#fff; border-radius:4px; }
+.au-workspace .au-learning-transport > button:first-child { color:#fff; background:#24563c; border-color:#24563c; }
+.au-workspace .au-learning-transport > label { display:flex; flex:1; min-width:min(270px,100%); align-items:center; gap:12px; }
+.au-workspace .au-learning-transport input { flex:1; min-width:90px; accent-color:#24563c; height:44px; }
+.au-workspace .au-learning-transport p { min-width:170px; }
+.au-workspace .au-learning-disclosure { margin:0 0 24px; }
+.au-workspace .au-learning-focus { min-height:460px; padding:28px 32px 32px; background:var(--au-learning-paper); border:1px solid #d0d8ce; border-radius:8px; }
+.au-workspace .au-learning-focus .au-procedure-reading { max-width:none; }
+.au-workspace .au-learning-record-head { display:flex; justify-content:space-between; align-items:start; flex-wrap:wrap; gap:16px; }
+.au-workspace .au-learning-record-head h2,.au-workspace .au-learning-focus > article > h2 { font-size:30px; margin:6px 0 10px; letter-spacing:-.5px; }
+.au-workspace .au-learning-focus button { background:transparent; padding:4px 0; border:0; text-decoration:underline; text-underline-offset:4px; text-align:left; }
+.au-workspace .au-learning-source { margin:24px 0 16px; padding-left:18px; border-left:3px solid #76967b; }
+.au-workspace .au-learning-source p { max-width:85ch; margin:4px 0; }
+.au-workspace .au-learning-focus .au-procedure-facets { margin-top:24px; gap:8px 26px; }
+.au-workspace .au-learning-focus .au-procedure-facets button { color:#565f59; text-decoration:none; }
+.au-workspace .au-learning-focus .au-procedure-facets button[aria-pressed=true] { color:#1e4a32; border-bottom-color:#24563c; }
+.au-workspace .au-learning-focus :is(h3,h4) { font-size:18px; line-height:1.5; font-weight:500; letter-spacing:0; }
+.au-workspace .au-learning-focus .au-procedure-stage { border-color:#a8b9a8; background:#f1f5ee; padding:12px 16px; max-width:none; }
+.au-workspace .au-learning-focus .au-procedure-stage h3 { font-size:17px; }
+.au-workspace .au-learning-focus .au-procedure-stage p { font-size:16px; }
+.au-workspace .au-learning-documents,.au-workspace .au-learning-qualification,.au-workspace .au-learning-seal { margin-top:28px; padding-top:22px; border-top:1px solid #d0d8ce; }
+.au-workspace .au-learning-checklist { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px 28px; list-style:none; padding:16px 0 0; }
+.au-workspace .au-learning-checklist li { display:flex; gap:12px; }
+.au-workspace .au-learning-checklist li > span { color:#46604b; }
+.au-workspace .au-learning-checklist strong { font-weight:500; }
+.au-workspace .au-learning-checklist p { margin:5px 0 0; }
+.au-workspace .au-learning-checklist [data-au-recipe-reused=true] { border-left:3px solid #76967b; padding-left:12px; }
+.au-workspace .au-learning-qualification ul { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 28px; padding:14px 0; list-style:none; }
+.au-workspace .au-learning-qualification li { display:flex; gap:12px; }
+.au-workspace .au-learning-check-symbol { color:#24563c; }
+.au-workspace .au-learning-qualification [data-au-check-shown=false] .au-learning-check-symbol { visibility:hidden; }
+.au-workspace .au-learning [data-au-learning-waiting=true] { visibility:hidden; }
+.au-workspace .au-learning-reuse-arc { display:flex; align-items:center; gap:18px; padding:16px 0; }
+.au-workspace .au-learning-reuse-arc > span:nth-child(2) { font-size:32px; color:#3e7050; }
+.au-workspace .au-learning-receipts { margin:20px 0; border-top:1px solid #d0d8ce; padding-top:16px; }
+.au-workspace .au-learning-receipts ul { padding-left:20px; }
+.au-workspace .au-learning-receipts li { margin:8px 0; }
+.au-workspace .au-learning-refusal-reason { max-width:80ch; margin:24px 0; color:#70412e; }
+.au-workspace .au-learning-refusal > button { display:block; }
+.au-workspace .au-learning-compare { display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:18px; }
+.au-workspace .au-learning-compare ol { padding-left:22px; }
+.au-workspace .au-learning-compare li { margin:8px 0; }
+.au-workspace .au-learning-compare [data-au-diff=removed] { color:#70412e; }
+.au-workspace .au-learning-compare [data-au-diff=added] { color:#24563c; }
+.au-workspace .au-learning-announcement { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.au-workspace .au-stage-knowledge-moment { margin:14px 0; padding:18px 22px; border:1px solid #a8b9a8; border-radius:6px; background:#f1f5ee; }
+.au-workspace .au-stage-knowledge-moment :is(p,button,li,span) { font-size:18px; }
+.au-workspace .au-stage-knowledge-moment ol { display:flex; flex-wrap:wrap; gap:8px 28px; padding:12px 0 12px 22px; }
+.au-workspace .au-stage-knowledge-moment [data-au-recipe-slot] { display:inline-block; margin:6px 12px 0 0; padding:6px 10px; border:1px solid #a8b9a8; border-radius:4px; font-size:18px; }
+@media(max-width:700px) {
+  .au-workspace .au-learning .au-work-head { gap:12px; }
+  .au-workspace .au-learning-dates { display:none; }
+  .au-workspace .au-learning-lane { display:block; padding:10px 0 16px; border-bottom:1px solid #e0e5dc; }
+  .au-workspace .au-learning-lane:last-child { border-bottom:0; }
+  .au-workspace .au-learning-track { display:flex; flex-wrap:wrap; gap:12px; padding:4px 0; }
+  .au-workspace .au-learning-track::before { display:none; }
+  .au-workspace .au-learning-day { flex:1 1 140px; gap:8px; }
+  .au-workspace .au-learning-day:has(.au-learning-node) .au-learning-mobile-date { display:block; width:100%; color:#565f59; }
+  .au-workspace .au-learning-day:not(:has(.au-learning-node)) { display:none; }
+  .au-workspace .au-learning-focus { padding:22px 18px; }
+  .au-workspace .au-learning-checklist,.au-workspace .au-learning-qualification ul,.au-workspace .au-learning-compare { grid-template-columns:1fr; }
+  .au-workspace .au-learning .au-learning-transport { gap:12px; }
+  .au-workspace .au-learning-transport > label { flex-basis:100%; }
+  .au-workspace .au-learning-reuse-arc { align-items:start; gap:12px; }
+}
+@media(prefers-reduced-motion:no-preference) {
+  .au-workspace .au-learning [data-au-learning-waiting=false] { animation:au-learning-reveal .18s ease-out both; }
+  .au-workspace .au-learning [data-au-learning-stage="1"] .au-procedure-rank { animation:au-learning-reveal .18s ease-out both; animation-delay:calc(var(--au-learning-rank,0)*70ms); }
+  .au-workspace .au-stage-knowledge-moment { animation:au-learning-reveal .35s ease-out both; }
+}
+@keyframes au-learning-reveal { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
