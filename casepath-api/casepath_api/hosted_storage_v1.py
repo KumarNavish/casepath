@@ -431,6 +431,14 @@ class HostedAutonomousStore(AutonomousStore):
     def _state_rows(self):
         return self._paged_state_rows(self.JOURNAL_PAGE_ROWS)
 
+    def _validated_summary_states(self):
+        # Collection and Knowledge share one certified raw-row authority path,
+        # under the existing ordered summary lock and final source verification.
+        rows = self._knowledge_rows()
+        states = self._validated_knowledge_states(rows)
+        self._after_validated_knowledge_states(rows, states)
+        return states
+
     def _knowledge_rows(self):
         self._knowledge_pending = None
         cached = getattr(self, '_knowledge_byte_cache', None)
@@ -522,10 +530,19 @@ class HostedAutonomousStore(AutonomousStore):
     def _after_validated_knowledge_states(self, rows, states):
         # _summary_cache alone is insufficient: it is populated before final
         # source verification. Only this successful post-validation hook admits.
-        self._knowledge_byte_cache = getattr(self, '_knowledge_pending', None)
+        pending = getattr(self, '_knowledge_pending', None)
+        if pending is not None:
+            try:
+                same = (tuple(tuple(row.items()) for row in rows) == pending[0]
+                        and _proof_expected(rows, _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1') == pending[2])
+            except (ValueError, UnicodeError):
+                same = False
+            if not same:
+                self._knowledge_byte_cache = self._knowledge_pending = None
+                raise AutonomousStoreError('Certified journal bytes differ from the fully validated rows.')
+        self._knowledge_byte_cache = pending
 
-    @classmethod
-    def _journal_page_query(cls, page_rows, rows, after_loop, after_sequence):
+    def _journal_page_query(self, page_rows, rows, after_loop, after_sequence):
         size = '+'.join('COALESCE(length(CAST(' + key + ' AS BLOB)),0)' for key in _JOURNAL_COLUMNS) + '+1024'
         query = ('SELECT j.*,p.__read_size,p.__read_total,p.__read_position FROM '
                  '(SELECT *,sum(__read_size) OVER (ORDER BY loop_id,sequence) AS __read_total,'
@@ -536,7 +553,8 @@ class HostedAutonomousStore(AutonomousStore):
                  'WHERE (p.__read_total<=? OR p.__read_position=1) '
                  'AND j.session_id=p.session_id AND j.loop_id=p.loop_id AND j.sequence=p.sequence '
                  'ORDER BY p.loop_id,p.sequence')
-        return query, (SESSION_ID, not rows, after_loop, after_loop, after_sequence, page_rows, cls.KNOWLEDGE_RAW_PAGE_BYTES)
+        return query, (SESSION_ID, not rows, after_loop, after_loop, after_sequence, page_rows,
+                       min(self.JOURNAL_PAGE_BYTES, self.KNOWLEDGE_RAW_PAGE_BYTES))
 
     def _paged_state_rows(self, page_rows, *, count_candidates=False):
         """Bounded journal pages from one read snapshot, before source work.

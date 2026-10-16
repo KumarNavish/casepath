@@ -976,14 +976,17 @@ class AutonomousStore:
         with getattr(self, "_summary_lock", self._extraction_lock):
             return self._read_summaries(statuses=statuses)
 
-    def _read_summaries(self, *, statuses=None):
+    def _validated_summary_states(self):
         with self.journal.connect() as connection:
             rows = connection.execute("SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence",
                                       (SESSION_ID,)).fetchall()
+        return self._validated_states(rows)
+
+    def _read_summaries(self, *, statuses=None):
         return [deepcopy({key: state.get(key) for key in
                     ("claim_id", "title", "status", "phase", "phase_summary", "revision", "state_sha256",
                      "updated_at", "outcome", "run_id", "policy_id", "source_roster_sha256", "last_event_sha256",
-                     "corpus_id")}) for state in self._validated_states(rows)
+                     "corpus_id")}) for state in self._validated_summary_states()
                 if statuses is None or state["status"] in statuses]
 
     def _validated_states(self, rows, *, source_page_chunks=None, source_verifier=None):

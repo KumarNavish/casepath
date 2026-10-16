@@ -79,7 +79,7 @@ def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authori
         with sqlite3.connect(server.path) as target:
             target.execute("UPDATE fixture_accepted_events SET fixture_note='changed' WHERE session_id=? AND loop_id=?",
                            (SESSION_ID, actual[0]['loop_id']))
-        after = store._journal_snapshot(store._knowledge_rows())
+        after = store._journal_snapshot(store._paged_state_rows(candidate_limit, count_candidates=True))
         assert before != after  # Unknown SQL columns cannot disappear from the cache key.
         assert server.open_streams == 0
     finally:

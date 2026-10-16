@@ -363,3 +363,108 @@ def test_cold_journal_byte_budget_is_256k_before_full_payload_materialization(na
         assert 'CROSS JOIN claim_loop_events AS j' in statement['sql']
         assert 'SELECT session_id,loop_id,sequence,' in statement['sql']
         assert count <= 128
+
+
+def test_certified_row_cache_is_immutable_and_returned_rows_cannot_replace_persisted_head(native_proof_store):
+    server, store, knowledge = native_proof_store
+    original = knowledge.learning_view()
+    rows = store._knowledge_rows()
+    # A wholly valid, separately persisted native replacement must not become
+    # authority merely by replacing an object returned from the certified cache.
+    replacement = AutonomousStore(store.path.parent / 'replacement-native.sqlite3')
+    replacement.intake({'title': 'Different fully valid fixture', 'message': 'Original different evidence.'}, 'replacement.intake')
+    with sqlite3.connect(replacement.path) as db:
+        db.row_factory = sqlite3.Row
+        other = [dict(row) for row in db.execute('SELECT * FROM claim_loop_events ORDER BY loop_id,sequence')]
+    rows[:] = other
+    frozen = store._knowledge_byte_cache[0]
+    assert type(frozen) is tuple and all(type(row) is tuple for row in frozen)
+    assert rows[0]['loop_id'] != dict(frozen[0])['loop_id']
+    assert knowledge.learning_view() == original
+
+
+def test_failed_validation_then_legacy_reader_cannot_promote_old_pending_certificate(native_proof_store, monkeypatch):
+    server, store, knowledge = native_proof_store
+    verify = store._source_store.verify_knowledge_many
+    monkeypatch.setattr(store._source_store, 'verify_knowledge_many',
+                        lambda *a: (_ for _ in ()).throw(AutonomousStoreError('Isolated pending refusal.')))
+    with pytest.raises(AutonomousStoreError, match='pending refusal'):
+        knowledge.learning_view()
+    assert store._knowledge_pending is not None and store._knowledge_byte_cache is None
+    monkeypatch.setattr(store._source_store, 'verify_knowledge_many', verify)
+
+    def sqlite_connection():
+        db = sqlite3.connect(server.path)
+        db.row_factory = sqlite3.Row
+        return db
+
+    monkeypatch.setattr(store.journal, 'connect', sqlite_connection)
+    knowledge.learning_view()
+    assert store._knowledge_pending is None and store._knowledge_byte_cache is None
+
+
+def test_post_validation_admission_rejects_different_fully_valid_native_rows(native_proof_store, monkeypatch):
+    server, store, knowledge = native_proof_store
+    replacement = AutonomousStore(store.path.parent / 'alternative-native.sqlite3')
+    expected_state = replacement.intake({'title': 'Alternative fully valid native claim',
+        'message': 'Distinct original source bytes for the alternate valid journal.'}, 'alternate.intake')
+    with sqlite3.connect(replacement.path) as db:
+        db.row_factory = sqlite3.Row
+        other = [dict(row) for row in db.execute('SELECT * FROM claim_loop_events ORDER BY loop_id,sequence')]
+    with sqlite3.connect(server.path) as db:
+        for digest in {source['sha256'] for source in expected_state['source_descriptors']}:
+            raw = (replacement.source_root / digest).read_bytes()
+            db.execute('INSERT INTO autonomous_source_chunks SELECT ?,?,? WHERE NOT EXISTS '
+                       '(SELECT 1 FROM autonomous_source_chunks WHERE sha256=? AND chunk_index=0)',
+                       (digest, 0, raw, digest))
+    collect = store._knowledge_rows
+
+    def substitute_after_certificate():
+        collect()  # Certifies actual persisted DB rows, not the alternative.
+        return deepcopy(other)
+
+    monkeypatch.setattr(store, '_knowledge_rows', substitute_after_certificate)
+    with pytest.raises(AutonomousStoreError, match='Certified journal bytes differ'):
+        knowledge.learning_view()
+    # The replacement was valid and completely reduced; only exact certificate
+    # binding prevents its unpersisted head from becoming the projected result.
+    assert store._summary_cache[expected_state['claim_id']][1] == expected_state
+    assert store._knowledge_byte_cache is None and store._knowledge_pending is None
+
+
+@pytest.mark.parametrize('first', ['summaries', 'knowledge'])
+def test_claim_summaries_and_knowledge_share_only_fully_certified_states(native_proof_store, first):
+    server, store, knowledge = native_proof_store
+    native = AutonomousStore.open_read_only(store.path.parent / 'native.sqlite3')
+    expected = native.list_summaries()
+    initial = store.list_summaries() if first == 'summaries' else knowledge.learning_view()
+    assert initial == expected if first == 'summaries' else initial['learning_replay']['journal_heads']
+    server.reset()
+    if first == 'summaries':
+        assert len(knowledge.learning_view()['learning_replay']['journal_heads']) == len(expected)
+    else:
+        assert store.list_summaries() == expected
+    assert len(server.requests) == 2 and not server.raw_journal and not server.raw_sources
+    returned = store.list_summaries(statuses={expected[0]['status']})
+    assert returned == [state for state in expected if state['status'] == expected[0]['status']]
+    returned[0]['title'] = 'Caller-only mutation'
+    assert store.list_summaries() == expected
+
+
+def test_concurrent_claim_and_knowledge_reads_keep_ordered_certification_and_reject_mutation(native_proof_store):
+    from concurrent.futures import ThreadPoolExecutor
+    server, store, knowledge = native_proof_store
+    original = knowledge.learning_view()
+    server.reset()
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        a, b = executor.submit(store.list_summaries), executor.submit(knowledge.learning_view)
+        assert len(a.result()) == 2 and b.result() == original
+    assert len(server.requests) == 4 and not server.raw_journal and not server.raw_sources
+    # SummaryLock orders each complete journal/source proof pair together.
+    proofs = [request['requests'][2]['stmt']['sql'] for request in server.requests]
+    assert ['casepath-journal-bytes-v1:set:' in sql for sql in proofs] == [True, False, True, False]
+    with sqlite3.connect(server.path) as db:
+        db.execute("UPDATE claim_loop_events SET created_at='unaccepted metadata change'")
+    for read in (store.list_summaries, knowledge.learning_view):
+        with pytest.raises(AutonomousStoreError, match='journal event identity or hash differs'):
+            read()
