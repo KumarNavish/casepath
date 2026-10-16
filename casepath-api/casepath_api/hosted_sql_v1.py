@@ -346,9 +346,11 @@ class LibsqlConnection:
         # Parse transaction acknowledgements as strictly as SELECT results.
         parsed = tuple(self._result(response.get('result')) for response in responses[:-1])
         for result in (parsed[0], parsed[-1]):
-            if result.names or result.rows or result.rowcount != 0 or result.lastrowid not in (None, 0):
+            if result.names or result.rows or result.rowcount != 0:
                 self._uncertain()
-        if any(result.rowcount != 0 or result.lastrowid not in (None, 0) for result in parsed[1:-1]):
+        # last_insert_rowid is connection metadata and can survive server-side
+        # connection reuse; _result already validates its signed integer shape.
+        if any(result.rowcount != 0 for result in parsed[1:-1]):
             self._uncertain()
         self._in_transaction = False
         self._cache.clear()

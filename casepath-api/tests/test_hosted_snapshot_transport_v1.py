@@ -37,6 +37,19 @@ def test_snapshot_returns_all_results_from_one_closed_transaction(server):
         'BEGIN', 'SELECT ? AS exact, ? AS raw', 'SELECT ? AS text', 'COMMIT']
 
 
+def test_snapshot_accepts_valid_retained_last_insert_metadata_on_readonly_results(server):
+    def handler(request):
+        body = server.handle(request).json()
+        for entry in body['results'][:-1]:
+            entry['response']['result']['last_insert_rowid'] = str(2**53 + 1)
+        return httpx.Response(200, json=body)
+    with connection(handler) as db:
+        cursor, = db.read_snapshot([('SELECT 7 AS value', ())])
+        assert cursor.fetchone()['value'] == 7 and cursor.lastrowid == 2**53 + 1
+        assert not db.in_transaction and db._baton is None
+    assert server.open_streams == 0 and len(server.requests) == 1
+
+
 @pytest.mark.parametrize('queries', [[], [('SELECT 1', ())] * 129, [('DELETE FROM proof', ())],
     [('WITH value AS (SELECT 1) SELECT * FROM value', ())], [('SELECT 1; DELETE FROM proof', ())],
     [('SELECT 1; SELECT 2', ())], [('SELECT 1', (object(),))], [('SELECT 1',)], None,
