@@ -11,6 +11,8 @@ from casepath_api.agent_work.store import WorkStore
 from casepath_api.autonomous_corpus_v1 import CanonicalCorpus
 from casepath_api.autonomous_store_v1 import AutonomousStoreError
 from casepath_api.hosted_sql_v1 import TursoDatabase
+from casepath_api.autonomous_knowledge_v1 import AutonomousKnowledge
+from casepath_api.hosted_sql_v1 import HostedStorageError
 from casepath_api.hosted_storage_v1 import HostedAutonomousStore, HostedJournal, HostedSources
 from casepath_api.workspace_corpus import PublicCorpus, default_workspace_corpus_root
 from hosted_hrana_fixture import MockHrana
@@ -161,3 +163,110 @@ def test_public_restarts_reads_commands_and_callback_races_preserve_all_saved_ro
             assert rows(server.path) == before
         assert rows(server.path) == before
     assert resumes == [] and provider_calls == 2 and len(controllers) == 2
+
+
+def test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readiness(saved_runtime, tmp_path, monkeypatch):
+    server, database, store, corpus, pending, completed, original, provider_calls = saved_runtime
+    controllers, warmed = [], []
+    construct = hosted_app_v1.HostedAutonomousController
+    learning_view = AutonomousKnowledge.learning_view
+    def controller(*args, **kwargs):
+        value = construct(*args, **kwargs)
+        controllers.append(value)
+        return value
+    def warm(knowledge):
+        value = controllers[-1]
+        assert knowledge is value.knowledge
+        assert value._closed and value.model is None and value.store._read_only
+        before = rows(server.path)
+        baseline = len(server.requests)
+        result = learning_view(knowledge)
+        calls = server.requests[baseline:]
+        assert calls and rows(server.path) == before
+        assert all(item['type'] in ('execute', 'close', 'batch')
+                   for call in calls for item in call['requests'])
+        assert all(re.match(r'\s*(SELECT|BEGIN|COMMIT)\b', command, re.I)
+                   for command in statements(calls))
+        warmed.append(result)
+        return result
+    def forbidden_model(*args, **kwargs):
+        pytest.fail('read-only warmup constructed a provider model')
+    monkeypatch.setattr(hosted_app_v1, 'HostedAutonomousController', controller)
+    monkeypatch.setattr(AutonomousKnowledge, 'learning_view', warm)
+    monkeypatch.setattr(hosted_model_v1, 'HostedModel', forbidden_model)
+    env = {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
+           'CASEPATH_SOURCE_COMMIT': 'a' * 40}
+    app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'warm')
+    before = rows(server.path)
+    with TestClient(app) as client:
+        assert len(warmed) == 1
+        assert client.get('/healthz').status_code == 200
+        assert rows(server.path) == before
+    assert rows(server.path) == before
+
+
+def test_public_readiness_is_closed_before_startup_and_after_failed_warmup(saved_runtime, tmp_path, monkeypatch):
+    server, database, *_ = saved_runtime
+    attempted, closed = [], []
+    construct = hosted_app_v1.HostedAutonomousController
+    def controller(*args, **kwargs):
+        value = construct(*args, **kwargs)
+        close = value.shutdown
+        def shutdown():
+            closed.append(value)
+            close()
+        value.shutdown = shutdown
+        return value
+    def failed_warm(knowledge):
+        attempted.append(True)
+        raise HostedStorageError('synthetic saved knowledge verification failure')
+    monkeypatch.setattr(hosted_app_v1, 'HostedAutonomousController', controller)
+    monkeypatch.setattr(AutonomousKnowledge, 'learning_view', failed_warm)
+    env = {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
+           'CASEPATH_SOURCE_COMMIT': 'a' * 40}
+    app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'failed-warm')
+    before = len(server.requests)
+    client = TestClient(app)
+    try:
+        assert client.get('/healthz').status_code == 503
+        assert len(server.requests) == before
+        with pytest.raises(HostedStorageError, match='verification failure'):
+            with client:
+                pytest.fail('startup exposed a partially warmed service')
+        after = len(server.requests)
+        assert client.get('/healthz').status_code == 503
+        assert len(server.requests) == after and attempted == [True]
+        assert closed and all(value._closed for value in closed)
+    finally:
+        client.close()
+
+
+def test_public_app_closes_only_its_owned_shared_database(saved_runtime, tmp_path, monkeypatch):
+    server, injected, *_ = saved_runtime
+    created, closed = [], []
+    def database(url, token, *, reuse_http):
+        assert reuse_http is True
+        value = TursoDatabase(url, token, reuse_http=True, client_factory=server.client)
+        original = value.close
+        def close():
+            closed.append(value)
+            original()
+        value.close = close
+        created.append(value)
+        return value
+    monkeypatch.setattr(hosted_app_v1, 'TursoDatabase', database)
+    env = {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
+           'CASEPATH_SOURCE_COMMIT': 'a' * 40, 'CASEPATH_TURSO_URL': 'libsql://fixture.turso.io',
+           'TURSO_AUTH_TOKEN': 'fixture-token-' * 4}
+    owned = hosted_app_v1.create_hosted_app(environment=env, runtime_directory=tmp_path / 'owned')
+    with TestClient(owned) as client:
+        assert client.get('/healthz').status_code == 200 and closed == []
+    assert closed == created and len(created) == 1
+    with pytest.raises(HostedStorageError):
+        created[0].connect()
+    external = hosted_app_v1.create_hosted_app(database=injected, environment=env,
+                                              runtime_directory=tmp_path / 'injected')
+    with TestClient(external):
+        pass
+    with injected.connect() as db:
+        assert db.execute('SELECT 1').fetchone()[0] == 1
