@@ -2269,6 +2269,52 @@ if [[ "${CASEPATH_ENV_READY:-}" != "1" ]]; then
   export CASEPATH_ENV_READY=1
 fi
 
+runtime_closure_after_sync_path=""
+runtime_closure_before_child_path=""
+runtime_closure_after_ready_path=""
+cleanup_runtime_closures() {
+  local scratch_path=""
+  # Own only this invocation's mktemp files; never sweep shared runtime data.
+  for scratch_path in "$runtime_closure_after_sync_path" \
+    "$runtime_closure_before_child_path" "$runtime_closure_after_ready_path"; do
+    if [[ -n "$scratch_path" ]]; then
+      /bin/rm -f -- "$scratch_path" || true
+    fi
+  done
+  runtime_closure_after_sync_path=""
+  runtime_closure_before_child_path=""
+  runtime_closure_after_ready_path=""
+}
+
+shutdown() {
+  local signal="${1:-TERM}"
+  if [[ -n "$child_pid" ]] && kill -0 "$child_pid" 2>/dev/null; then
+    kill "-$signal" "$child_pid" 2>/dev/null || kill -"$signal" "$child_pid" 2>/dev/null || true
+    wait "$child_pid" 2>/dev/null || true
+  fi
+}
+shutdown_after_interrupt() {
+  if [[ -z "$child_pid" ]]; then
+    return
+  fi
+  # An interactive Ctrl-C is delivered to the full foreground process group,
+  # so give Uvicorn the signal it already received instead of immediately
+  # sending a duplicate interrupt through the launcher. A parent-only INT is
+  # still bounded: after one second the launcher terminates its child.
+  for _ in {1..10}; do
+    if ! kill -0 "$child_pid" 2>/dev/null; then
+      wait "$child_pid" 2>/dev/null || true
+      return
+    fi
+    sleep 0.1
+  done
+  shutdown TERM
+}
+trap 'shutdown TERM; cleanup_runtime_closures' EXIT
+trap 'shutdown_after_interrupt; exit 130' INT
+trap 'shutdown TERM; exit 143' TERM
+trap 'shutdown TERM; exit 129' HUP
+
 runtime_closure_after_sync_path="$(
   /usr/bin/mktemp "$runtime_root/tmp/runtime-closure-after-sync.XXXXXX"
 )"
@@ -2591,34 +2637,6 @@ try:
 finally:
     os.close(descriptor)
 PY
-
-shutdown() {
-  local signal="${1:-TERM}"
-  if [[ -n "$child_pid" ]] && kill -0 "$child_pid" 2>/dev/null; then
-    kill "-$signal" "$child_pid" 2>/dev/null || kill -"$signal" "$child_pid" 2>/dev/null || true
-    wait "$child_pid" 2>/dev/null || true
-  fi
-}
-shutdown_after_interrupt() {
-  if [[ -z "$child_pid" ]]; then
-    return
-  fi
-  # An interactive Ctrl-C is delivered to the full foreground process group,
-  # so give Uvicorn the signal it already received instead of immediately
-  # sending a duplicate interrupt through the launcher. A parent-only INT is
-  # still bounded: after one second the launcher terminates its child.
-  for _ in {1..10}; do
-    if ! kill -0 "$child_pid" 2>/dev/null; then
-      wait "$child_pid" 2>/dev/null || true
-      return
-    fi
-    sleep 0.1
-  done
-  shutdown TERM
-}
-trap 'shutdown TERM' EXIT
-trap 'shutdown_after_interrupt; exit 130' INT
-trap 'shutdown TERM; exit 143' TERM
 
 capture_runtime_closure "$execution_root" "$runtime_closure_before_child_path"
 
@@ -3335,8 +3353,7 @@ if fault_point == "after_current_replace":
     raise SystemExit("CasePath injected crash after current receipt replacement")
 PY
 
-/bin/rm -f -- "$runtime_closure_after_sync_path" \
-  "$runtime_closure_before_child_path" "$runtime_closure_after_ready_path"
+cleanup_runtime_closures
 
 printf '\nCasePath is ready: %s\n' "$url"
 printf 'Deterministic local mode · one origin · zero provider credentials\n'
