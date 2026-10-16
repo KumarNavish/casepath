@@ -1,0 +1,26 @@
+{
+  "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "query_sha256": "6d4ce3cd95f0d02a553b132fe0f35f05b45cbfc1d4f3c869ad400fbf3e4ae03e",
+  "parameters": [
+    "casepath-autonomous-local-v1",
+    true,
+    "",
+    "",
+    -1,
+    2048,
+    4194304
+  ],
+  "query_capture": "Pure local connection stub; no SQL engine or network operation performed.",
+  "coordinator_safe_diagnostic": {
+    "failed_stage": "first _knowledge_rows SELECT",
+    "exception": "ReadTimeout",
+    "select_seconds": 8.0065,
+    "preceding_begin_http_status": 200,
+    "preceding_begin_seconds": 1.2167,
+    "total_seconds": 9.2735,
+    "sql_error_observed": false,
+    "byte_cap_response_observed": false
+  },
+  "interpretation": "Observed failure is the existing8-second SELECT read timeout; the independently reviewed repeated full-row evaluation is relevant query work. Actual candidate hosted success still requires Mac validation.",
+  "timeout_increase": false
+}

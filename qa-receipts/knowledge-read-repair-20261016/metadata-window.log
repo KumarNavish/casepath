@@ -1,0 +1,87 @@
+{
+  "source_commit": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "purpose": "temporary SQL probe; no authored source changes or hosted calls",
+  "same_snapshot_and_all_column_identity": true,
+  "measurements": [
+    {
+      "variant": "original",
+      "candidate_limit": 128,
+      "returned_rows": 240,
+      "sqlite_seconds": 1.489399,
+      "wall_seconds": 1.839338,
+      "http_requests": 19,
+      "response_bytes": 63302010,
+      "largest_response_bytes": 4163656,
+      "full_payload_evaluations": 1508,
+      "evaluated_event_bytes": 396867618,
+      "first_page": {
+        "returned_rows": 16,
+        "candidate_rows": 128,
+        "returned_event_bytes": 4103586,
+        "full_payload_evaluations": 128,
+        "evaluated_event_bytes": 33559159,
+        "sqlite_seconds": 0.16884
+      }
+    },
+    {
+      "variant": "original",
+      "candidate_limit": 2048,
+      "returned_rows": 240,
+      "sqlite_seconds": 1.541899,
+      "wall_seconds": 1.84856,
+      "http_requests": 19,
+      "response_bytes": 63302019,
+      "largest_response_bytes": 4163656,
+      "full_payload_evaluations": 1965,
+      "evaluated_event_bytes": 517717904,
+      "first_page": {
+        "returned_rows": 16,
+        "candidate_rows": 240,
+        "returned_event_bytes": 4103586,
+        "full_payload_evaluations": 240,
+        "evaluated_event_bytes": 63014714,
+        "sqlite_seconds": 0.177639
+      }
+    },
+    {
+      "variant": "metadata_join",
+      "candidate_limit": 128,
+      "returned_rows": 240,
+      "sqlite_seconds": 0.200309,
+      "wall_seconds": 0.496653,
+      "http_requests": 19,
+      "response_bytes": 63302019,
+      "largest_response_bytes": 4163656,
+      "full_payload_evaluations": 240,
+      "evaluated_event_bytes": 63014714,
+      "first_page": {
+        "returned_rows": 16,
+        "candidate_rows": 128,
+        "returned_event_bytes": 4103586,
+        "full_payload_evaluations": 16,
+        "evaluated_event_bytes": 4103586,
+        "sqlite_seconds": 0.016031
+      }
+    },
+    {
+      "variant": "metadata_join",
+      "candidate_limit": 2048,
+      "returned_rows": 240,
+      "sqlite_seconds": 0.22912,
+      "wall_seconds": 0.506653,
+      "http_requests": 19,
+      "response_bytes": 63302019,
+      "largest_response_bytes": 4163656,
+      "full_payload_evaluations": 240,
+      "evaluated_event_bytes": 63014714,
+      "first_page": {
+        "returned_rows": 16,
+        "candidate_rows": 240,
+        "returned_event_bytes": 4103586,
+        "full_payload_evaluations": 16,
+        "evaluated_event_bytes": 4103586,
+        "sqlite_seconds": 0.02239
+      }
+    }
+  ]
+}

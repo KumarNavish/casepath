@@ -1,0 +1,53 @@
+{
+  "name": "metadata-window",
+  "sql_sha256": "78dba83ee36c3e808bbec29c287755faa8129feaf6635e8cd78ec614dccb5b2d",
+  "sql_bytes": 1017,
+  "parameters": [
+    "casepath-autonomous-local-v1",
+    1,
+    "",
+    "",
+    -1,
+    2048,
+    4194304
+  ],
+  "parameter_schema": [
+    {
+      "position": 1,
+      "name": "session_id",
+      "type": "text"
+    },
+    {
+      "position": 2,
+      "name": "first_page",
+      "type": "integer",
+      "description": "1 on first page; 0 thereafter"
+    },
+    {
+      "position": 3,
+      "name": "after_loop",
+      "type": "text"
+    },
+    {
+      "position": 4,
+      "name": "after_loop_repeat",
+      "type": "text"
+    },
+    {
+      "position": 5,
+      "name": "after_sequence",
+      "type": "integer"
+    },
+    {
+      "position": 6,
+      "name": "candidate_row_limit",
+      "type": "integer"
+    },
+    {
+      "position": 7,
+      "name": "page_bytes",
+      "type": "integer"
+    }
+  ],
+  "notes": "Read-only SELECT; use existing native BEGIN/page validation/COMMIT. All journal SQL columns retained. No UDF/probe or credentials."
+}
