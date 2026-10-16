@@ -553,9 +553,9 @@ def main():
     require(bool(re.fullmatch("[0-9a-f]{40}", args.source_commit)), "--source-commit must be actual 40 lowercase hex")
     require(math.isfinite(args.duration) and 45 <= args.duration <= 60, "Target must be 45–60s")
     require(not (args.compatibility_v4 and args.encode), "Compatibility metadata cannot encode")
-    # Constrain every encoder subprocess HOME/TMP before starting it. No /tmp raw copies.
+    # Preserve the process HOME; constrain encoder temporary files to owned scratch.
     runtime = Path(__file__).resolve().parent.parent
-    for variable, directory in (("HOME", runtime / "h"), ("TMPDIR", runtime / "t"),
+    for variable, directory in (("TMPDIR", runtime / "t"),
                                 ("TMP", runtime / "t"), ("TEMP", runtime / "t")):
         directory.mkdir(parents=True, exist_ok=True)
         os.environ[variable] = str(directory)
