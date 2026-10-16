@@ -2656,7 +2656,7 @@ test('learning timeline uses persisted event identities, UTC chronology and late
  const data=learningFixtureData(),before=JSON.stringify(data),model=ui.knowledgeLearningModel(data);
  assert.equal(model,ui.knowledgeLearningModel(data),'the same response reuses its index');assert.deepEqual(model.events.map(e=>e.id),[hash('a'),hash('c'),hash('b')]);
  const html=ui.knowledgeMarkup(data,[],null,'process',{index:2,stage:10});assert.match(html,/13 Oct/);assert.match(html,/10 Oct/);assert.match(html,/Recorded · synthetic claims/);assert.match(html,/Persisted receiver title/);assert.match(html,/data-au-learning-position-label/);assert.ok(html.indexOf('data-au-learning-focus')<html.indexOf('class="au-learning-timeline"'),'focus precedes the timeline in reading and tab order');assert.doesNotMatch(html,/<p data-au-learning-position>/);
- assert.equal(JSON.stringify(data),before);assert.equal(Math.round(model.frames.reduce((n,f)=>n+f.duration,0)),36000);
+ assert.equal(JSON.stringify(data),before);assert.equal(model.frames.reduce((n,f)=>n+f.duration,0),8000,'two complete publications and one grouped reuse keep their deliberate reading holds');
  const offset=learningFixtureData();offset.learning_replay.events[0].at='2026-10-08T23:30:00-02:00';offset.learning_replay.events[2].at='2026-10-09T00:57:33Z';assert.equal(ui.knowledgeLearningModel(offset).events[0].id,hash('a'),'sort instants, not lexical offsets');assert.match(ui.knowledgeMarkup(offset),/9 Oct/);
 });
 
@@ -2695,8 +2695,46 @@ test('cold demo knowledge moment needs the accepted knowledge.used prefix and ex
 });
 
 test('an unavailable exact learning pin cannot be overridden by replay position or a delayed warm-cache refresh',async t=>{
- const data=learningFixtureData(),invalid={knowledge_id:data.versions[0].knowledge_id,version:1,knowledge_sha256:hash('9')},html=ui.knowledgeMarkup(data,[],invalid,'process',{index:1,stage:10});assert.doesNotMatch(html,/data-au-knowledge-identity|au-procedure-stage/);assert.match(html,/exact reused knowledge version is not available/);
+ const data=learningFixtureData(),invalid={knowledge_id:data.versions[0].knowledge_id,version:1,knowledge_sha256:hash('9')},html=ui.knowledgeMarkup(data,[],invalid,'process',{index:1,stage:10});assert.doesNotMatch(html,/data-au-knowledge-identity|au-procedure-stage/);assert.match(html,/This exact procedure pin is unavailable/);
  const routing=routingFixture(t),f=knowledgeFixture(),shell={dataset:{}},originalQuery=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:originalQuery(selector);
  let count=0,finish;const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?++count===1?response(data):new Promise(resolve=>{finish=resolve;}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finish?.(response(data));controller.destroy();});await waitFor(()=>count===1);await settle();
  routing.external(`#autonomous/knowledge?knowledge=${invalid.knowledge_id}&version=1&sha256=${invalid.knowledge_sha256}`);await waitFor(()=>Boolean(finish));assert.equal(f.versions.length,0);finish(response(structuredClone(data)));await settle();await settle();assert.equal(f.versions.length,0);assert.doesNotMatch(f.host.innerHTML,/data-au-knowledge-identity|au-procedure-stage/);assert.match(f.status.textContent,/exact reused knowledge version is not available/);assert.equal(shell.dataset.auLearningPosition,'-1');
+});
+
+
+test('recorded learning gives sources process and documents deliberate holds and presents reuse receipts coherently',()=>{
+ const data=learningFixtureData(),model=ui.knowledgeLearningModel(data),publication=model.events.findIndex(event=>event.id===hash('a')),frames=model.frames.filter(frame=>frame.index===publication);
+ for(const [stage,duration] of [[0,700],[1,900],[2,700],[10,500]])assert.equal(frames.find(frame=>frame.stage===stage).duration,duration);
+ assert.equal(frames.filter(frame=>frame.stage>=3&&frame.stage<10).length,7);assert.ok(frames.filter(frame=>frame.stage>=3&&frame.stage<10).every(frame=>frame.duration===100));
+ const reuse=model.events.findIndex(event=>event.kind==='knowledge.used');assert.deepEqual(model.frames.filter(frame=>frame.index===reuse),[{index:reuse,stage:10,duration:1000}]);assert.equal(model.events[reuse].at,'2026-10-13T05:25:12+00:00','a presentation hold cannot change recorded chronology');
+});
+
+
+test('playing an individual grouped receipt preserves that actual event instead of restarting at the first mint',()=>{
+ const data=learningFixtureData(),use=data.learning_replay.events.find(event=>event.kind==='knowledge.used');data.learning_replay.events.push({...use,event_id:hash('d'),claim_id:'second-receiver',claim_title:'Second persisted recipient',at:'2026-10-13T06:00:00Z'});
+ const model=ui.knowledgeLearningModel(data),index=model.events.findIndex(event=>event.id===hash('d')),start=ui.learningFrameStart(model,index,10);
+ assert.ok(start.frame>0);assert.deepEqual(start.alias,{representative:model.events[index].reuseGroup[0],index});assert.equal(model.frames[start.frame].stage,10);assert.equal(model.events[index].claim_id,'second-receiver');assert.deepEqual(ui.learningFrameStart(model,index,10,true),{frame:0,alias:null},'only a completed replay explicitly restarts');
+});
+
+
+test('learning summaries use ordinary recorded document labels while Changes retains the exact stored reason',()=>{
+ const data=learningFixtureData(),first=data.versions[0],next=data.versions[1];first.change_reason='Initial qualification with 0 observed evidence recipes.';const before=JSON.stringify(data);
+ assert.equal(ui.learningChangeSummary(first),'First published procedure.');assert.equal(ui.learningChangeSummary(next),'Proof of receipt evidence recipe added.');assert.ok(ui.knowledgeFacetMarkup(next,'changes',data.versions).includes(next.change_reason));
+ const model=ui.knowledgeLearningModel(data),event=model.events.find(row=>row.versionRecord===next),html=ui.knowledgeLearningFocus(model,event),source=html.match(/<section class="au-learning-source"[\s\S]*?<\/section>/)[0];assert.match(source,/Proof of receipt evidence recipe added/);assert.doesNotMatch(source,/Added 1 verified evidence recipes/);assert.equal(JSON.stringify(data),before);
+});
+
+
+test('final learning view retains restart intent when a fresh response replaces its warm copy',async t=>{
+ const routing=routingFixture(t),f=knowledgeFixture(),shell={dataset:{}},original=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:original(selector);
+ const data=learningFixtureData();let count=0,finish;const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?++count===1?response(data):new Promise(resolve=>{finish=resolve;}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finish?.(response(data));controller.destroy();});await waitFor(()=>count===1);await settle();
+ routing.external('#autonomous/knowledge');await waitFor(()=>Boolean(finish));f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.match(routing.hash,/complete=1/);finish(response(structuredClone(data)));await settle();await settle();
+ f.listeners.get('click')({target:control(f,'data-au-learning-play')});assert.equal(shell.dataset.auLearningPosition,'0','the completed final view restarts at the first real event after refresh');
+});
+
+
+test('leaving an unavailable learning pin clears only that obsolete notice and keeps a genuine refresh error',async t=>{
+ const routing=routingFixture(t,'#autonomous/knowledge?knowledge=procedure.lease_termination_dispute&version=999&sha256='+hash('0')),f=knowledgeFixture(),shell={dataset:{}},pane={firstElementChild:{},innerHTML:'',dataset:{},querySelectorAll:()=>[]},original=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:selector==='[data-au-learning-focus]'?pane:original(selector);
+ const data=learningFixtureData();let reads=0;const api=fakeApi({handle:async path=>{if(path.endsWith('/knowledge')){if(++reads===1)return response(data);throw new Error('Native refresh unavailable');}return null;}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await waitFor(()=>f.status.textContent.includes('exact reused'));
+ assert.match(f.host.innerHTML,/Return to recorded learning/);assert.doesNotMatch(f.host.innerHTML.match(/<div class="au-learning-focus"[\s\S]*?<\/div>/)[0],/No recorded events/);f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.equal(f.status.textContent,'');assert.match(pane.innerHTML,/data-au-knowledge-identity="procedure.lease_termination_dispute:1"/);assert.doesNotMatch(routing.hash,/version=999/);
+ routing.external('#autonomous/knowledge?knowledge=procedure.lease_termination_dispute&version=999&sha256='+hash('9'));await waitFor(()=>f.status.textContent.includes('Refresh failed'));const actualError=f.status.textContent;f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.equal(f.status.textContent,actualError,'returning to recorded learning cannot erase a genuine refresh failure');
 });
