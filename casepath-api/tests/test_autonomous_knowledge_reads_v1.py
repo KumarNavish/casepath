@@ -9,6 +9,7 @@ from hashlib import sha256
 import json
 import shutil
 import sqlite3
+from time import perf_counter
 
 import httpx
 import pytest
@@ -30,7 +31,7 @@ CLAIM_COUNT = 18
 class CountedStore(AutonomousStore):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.calls = {'get': 0, 'list': 0, 'validated_states': 0, 'replay': 0}
+        self.calls = {'get': 0, 'list': 0, 'validated_states': 0, 'knowledge_snapshot': 0, 'replay': 0}
 
     def get(self, *args, **kwargs):
         self.calls['get'] += 1
@@ -43,6 +44,10 @@ class CountedStore(AutonomousStore):
     def validated_states(self):
         self.calls['validated_states'] += 1
         return super().validated_states()
+
+    def knowledge_snapshot(self):
+        self.calls['knowledge_snapshot'] += 1
+        return super().knowledge_snapshot()
 
     def _replay(self, *args, **kwargs):
         self.calls['replay'] += 1
@@ -121,9 +126,9 @@ def test_authoritative_view_matches_summary_adapter_and_reduces_each_claim_only_
         if value['qualification']['status'] == 'quarantined']
     knowledge = AutonomousKnowledge(store, policy)
     assert knowledge.view() == expected
-    assert store.calls == {'get': 0, 'list': 0, 'validated_states': 1, 'replay': CLAIM_COUNT}
+    assert store.calls == {'get': 0, 'list': 0, 'validated_states': 0, 'knowledge_snapshot': 1, 'replay': CLAIM_COUNT}
     assert knowledge.view() == expected
-    assert store.calls == {'get': 0, 'list': 0, 'validated_states': 2, 'replay': CLAIM_COUNT}
+    assert store.calls == {'get': 0, 'list': 0, 'validated_states': 0, 'knowledge_snapshot': 2, 'replay': CLAIM_COUNT}
     assert len(store.list_summaries()) == CLAIM_COUNT
     assert knowledge.view() == expected
     assert store.calls['replay'] == CLAIM_COUNT  # Queue and knowledge share validated reducer state.
@@ -139,6 +144,157 @@ def test_compatible_selects_from_the_supplied_validated_view_without_another_rea
     assert expected['lease_termination_dispute']['version'] == 2
     empty = {'versions': [], 'uses': [], 'quarantined': []}
     assert all(knowledge.compatible(family, view=empty) is None for family in FAMILY_FLAGS)
+
+
+def test_learning_replay_joins_exact_events_titles_and_frozen_version_pins(processed_roster, tmp_path):
+    store, policy, states = copied_store(processed_roster, tmp_path)
+    knowledge = AutonomousKnowledge(store, policy)
+    original = knowledge.view()
+    result = knowledge.learning_view()
+    assert {key: result[key] for key in original} == original
+    replay = result['learning_replay']
+    assert replay['contract'] == 'casepath.knowledge-learning-replay/1.0.0'
+    actual = []
+    for state in states:
+        events = store.events(state['claim_id'])
+        for event in events:
+            if event['kind'] in {'knowledge.used', 'knowledge.published'}:
+                actual.append((state, event))
+    assert len(replay['events']) == len(actual)
+    projected = {event['event_id']: event for event in replay['events']}
+    for state, recorded in actual:
+        event = projected[recorded['event_sha256']]
+        receipt = recorded['payload']['knowledge']
+        assert event['at'] == recorded['created_at']
+        assert event['sequence'] == recorded['sequence']
+        assert event['command_sha256'] == recorded['command_sha256']
+        assert event['idempotency_key'] == recorded['idempotency_key']
+        assert event['claim_id'] == state['claim_id'] and event['claim_title'] == state['title']
+        assert event['knowledge_id'] == receipt['knowledge_id'] and event['version'] == receipt['version']
+        assert 'graph' not in event and 'facts' not in event and 'source_evidence' not in event
+        if recorded['kind'] == 'knowledge.used':
+            pin = next(pin for pin in state['semantic_contexts'][receipt['workflow_id']]['compatible_knowledge']
+                       if pin['knowledge_id'] == receipt['knowledge_id'] and pin['version'] == receipt['version'])
+            assert event['pin_status'] == 'exact' and event['knowledge_sha256'] == pin['knowledge_sha256']
+            assert event['definition_sha256'] == receipt['definition_sha256']
+        elif receipt['qualification']['status'] == 'qualified':
+            assert event['source_claim_title'] == next(row['title'] for row in states if row['claim_id'] == receipt['source_claim_id'])
+            assert event['qualification'] == receipt['qualification']
+            assert len(event['qualification']['checks']) == 7
+            assert event['qualification']['regression_cases'] == 243
+        else:
+            assert result['quarantined'][event['quarantine_index']] == receipt
+            assert event['projection_status'] == 'quarantined'
+    uses = [event['payload']['knowledge'] for _, event in actual if event['kind'] == 'knowledge.used']
+    assert replay['totals'] == {'recorded_uses': len(uses), 'receiving_claims': CLAIM_COUNT - 1,
+                                'avoided_rule_compilations': sum(use['avoided_rule_compilations'] for use in uses),
+                                'avoided_rule_compilations_unknown': 0}
+    assert replay['journal_heads'] == [{'claim_id': state['claim_id'], 'revision': state['revision'],
+                                        'event_sha256': state['last_event_sha256'], 'state_sha256': state['state_sha256']}
+                                       for state in states]
+    child = next(event for event in replay['events'] if event['kind'] == 'knowledge.published' and event['version'] == 2)
+    assert child['added_document_types'] == ['proof_of_receipt']
+    assert child['definition_diff']['changed_definition_fields'] == ['evidence_recipes']
+    assert child['definition_diff']['nodes']['before_count'] == child['definition_diff']['nodes']['after_count']
+    assert child['definition_diff']['nodes']['added'] == child['definition_diff']['nodes']['removed'] == []
+
+
+@pytest.mark.parametrize('mutation', ['missing_events', 'missing_pin', 'different_pin', 'different_definition'])
+def test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback(processed_roster, mutation):
+    _, _, policy, original = processed_roster
+    states = deepcopy(original)
+    selected = next(state for state in states if state['knowledge_uses'])
+    selected_id = selected['claim_id']
+    if mutation == 'missing_events':
+        selected.pop('events')
+    elif mutation == 'missing_pin':
+        selected.pop('semantic_contexts')
+    elif mutation == 'different_pin':
+        for context in selected['semantic_contexts'].values():
+            for pin in context['compatible_knowledge']:
+                pin['knowledge_sha256'] = '0' * 64
+    else:
+        selected['knowledge_uses'][0]['definition_sha256'] = '0' * 64
+
+    class States:
+        def validated_states(self):
+            return deepcopy(states)
+
+    result = AutonomousKnowledge(States(), policy).learning_view()
+    event = next(row for row in result['learning_replay']['events'] if row['kind'] == 'knowledge.used' and row['claim_id'] == selected_id)
+    if mutation == 'missing_events':
+        assert event['at'] is None and event['event_id'] is None and event['sequence'] is None
+        assert result['learning_replay']['events'][-1] == event
+    else:
+        assert event['pin_status'] == 'unavailable' and event['knowledge_sha256'] is None
+    assert result['uses'] == [{**value, 'claim_id': state['claim_id']} for state in states for value in state['knowledge_uses']]
+
+
+def test_compact_knowledge_snapshot_copies_less_and_derived_cache_still_validates_every_read(processed_roster, tmp_path, monkeypatch):
+    store, policy, _ = copied_store(processed_roster, tmp_path, CountedStore)
+    full = store.validated_states()
+    snapshot = store.knowledge_snapshot()
+    assert len(json.dumps(snapshot)) < len(json.dumps(full)) / 4
+    assert all('graph' not in state and 'acquired_sources' not in state and 'message' not in state for state in snapshot)
+    snapshot[0]['events'].clear()
+    snapshot[0]['knowledge_uses'].clear()
+    assert store.validated_states() == full
+    knowledge = AutonomousKnowledge(store, policy)
+    expected = knowledge.learning_view()
+    # A warm cache may skip derived work, but never the fresh authority read.
+    monkeypatch.setattr(knowledge, '_project', lambda *args: pytest.fail('Repeated unchanged projection work'))
+    before = store.calls['knowledge_snapshot']
+    returned = knowledge.learning_view()
+    assert store.calls['knowledge_snapshot'] == before + 1
+    returned['learning_replay']['events'].clear()
+    assert knowledge.learning_view() == expected
+    source = store.source_root / full[0]['source_descriptors'][0]['sha256']
+    source.write_bytes(b'A changed isolated original message.')
+    with pytest.raises(AutonomousStoreError, match='source bytes differ'):
+        knowledge.learning_view()
+
+
+def test_learning_replay_keeps_unusual_recorded_use_identities_unresolved():
+    uses = [{'knowledge_id': ['recorded-as-list'], 'version': 1, 'workflow_id': {}},
+            {'knowledge_id': 'recorded.unknown', 'version': {'recorded': 1}, 'avoided_rule_compilations': True}]
+
+    class States:
+        def validated_states(self):
+            return [{'claim_id': 'isolated.unknown', 'knowledge_published': [], 'knowledge_uses': deepcopy(uses)}]
+
+    knowledge = AutonomousKnowledge(States(), {})
+    original = {'versions': [], 'uses': [{**use, 'claim_id': 'isolated.unknown'} for use in uses], 'quarantined': []}
+    assert knowledge.view() == original
+    replay = knowledge.learning_view()['learning_replay']
+    assert all(row['pin_status'] == 'unavailable' and row['knowledge_sha256'] is None and row['at'] is None for row in replay['events'])
+    assert replay['totals'] == {'recorded_uses': 2, 'receiving_claims': 1,
+                                'avoided_rule_compilations': 0, 'avoided_rule_compilations_unknown': 2}
+
+
+def test_learning_endpoint_is_additive_read_only_and_preserves_native_pin_fields(processed_roster, tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from casepath_api.autonomous_api_v1 import create_autonomous_router
+
+    store, policy, _ = copied_store(processed_roster, tmp_path)
+    knowledge = AutonomousKnowledge(store, policy)
+    original = knowledge.view()
+    app = FastAPI()
+    app.include_router(create_autonomous_router(lambda: SimpleNamespace(knowledge=knowledge)))
+    before = store.path.read_bytes()
+    monkeypatch.setattr(store, 'append', lambda *a, **k: pytest.fail('Knowledge endpoint attempted an event write'))
+    monkeypatch.setattr(store, '_publish', lambda *a, **k: pytest.fail('Knowledge endpoint attempted a source write'))
+    with TestClient(app) as client:
+        response = client.get('/api/claim-loops/v1/autonomous/knowledge')
+        assert response.status_code == 200, response.text
+        result = response.json()
+        assert {key: result[key] for key in original} == original
+        assert result['learning_replay']['totals']['recorded_uses'] == len(original['uses'])
+        for expected, version in zip(original['versions'], result['versions']):
+            assert {key: version[key] for key in ('knowledge_id', 'version', 'knowledge_sha256', 'qualification')} == {
+                key: expected[key] for key in ('knowledge_id', 'version', 'knowledge_sha256', 'qualification')}
+    assert store.path.read_bytes() == before
 
 
 @pytest.mark.parametrize('mutation', ['conflicting_definition', 'parent_identity'])
@@ -397,7 +553,9 @@ def test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages(process
         for temperature in ('cold', 'warm'):
             server.reset_counts()
             replay_before = len(replays)
+            started = perf_counter()
             assert knowledge.view() == expected
+            elapsed = perf_counter() - started
             assert len(replays) == CLAIM_COUNT
             replay_count = len(replays) - replay_before
             assert replay_count == (CLAIM_COUNT if temperature == 'cold' else 0)
@@ -408,14 +566,17 @@ def test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages(process
             assert all('IMMEDIATE' not in statement.upper() for statement in sql)
             assert len(server.journal_pages) > 1  # This roster actually exercises journal pagination.
             assert sum(count for count, _ in server.journal_pages) == sum(state['revision'] for state in states)
-            assert max(count for count, _ in server.journal_pages) <= 128
+            assert max(count for count, _ in server.journal_pages) <= store.KNOWLEDGE_PAGE_ROWS
             assert max(size for _, size in server.journal_pages) <= 4 * 1024 * 1024
             assert max(server.response_bytes) <= 9 * 1024 * 1024
             assert len(server.requests) <= 48
             assert server.open_streams == 0
             measurements.append({'temperature': temperature, 'http_requests': len(server.requests),
                                  'journal_pages': len(server.journal_pages),
-                                 'largest_response_bytes': max(server.response_bytes), 'replayed_claims': replay_count})
+                                 'largest_response_bytes': max(server.response_bytes),
+                                 'total_response_bytes': sum(server.response_bytes),
+                                 'source_pages': sum('FROM autonomous_source_chunks' in statement for statement in sql),
+                                 'mock_elapsed_seconds': round(elapsed, 6), 'replayed_claims': replay_count})
         assert measurements[1]['http_requests'] < measurements[0]['http_requests']
         # Preserve the actual old full-list-then-get path for a measured baseline.
         legacy_store = HostedAutonomousStore(store.path, journal=store.journal,
@@ -517,6 +678,7 @@ def test_hosted_paging_does_not_hide_a_later_sequence_gap(tmp_path, monkeypatch)
     state = append(seed, state, 'work.phase', {'phase': 'later', 'summary': 'Later recorded phase.'}, 'gap.later')
     server, store, _, _ = hosted_copy((seed.path, seed.source_root, policy, [state]), tmp_path)
     monkeypatch.setattr(store, 'JOURNAL_PAGE_ROWS', 1)
+    monkeypatch.setattr(store, 'KNOWLEDGE_PAGE_ROWS', 1)
     with sqlite3.connect(server.path) as db:
         db.execute('DELETE FROM claim_loop_events WHERE sequence=2')
     try:
@@ -527,6 +689,28 @@ def test_hosted_paging_does_not_hide_a_later_sequence_gap(tmp_path, monkeypatch)
         assert server.open_streams == 0
     finally:
         server.close()
+
+
+def test_warm_learning_cache_rejects_a_new_hash_consistent_unknown_event(tmp_path):
+    store = AutonomousStore(tmp_path / 'unknown-event.sqlite3')
+    state = store.intake({'title': 'Isolated unknown event fixture', 'message': 'Original evidence.', 'files': []}, 'unknown.intake')
+    knowledge = AutonomousKnowledge(store, {})
+    assert knowledge.learning_view()['learning_replay']['events'] == []
+    advanced = append(store, state, 'work.phase', {'phase': 'testing', 'summary': 'A bounded fixture phase.'}, 'unknown.phase')
+    with sqlite3.connect(store.path) as db:
+        encoded = db.execute('SELECT event_json FROM claim_loop_events WHERE loop_id=? AND sequence=?',
+                             ('autonomous.' + state['claim_id'], advanced['revision'])).fetchone()[0]
+        event = json.loads(encoded)
+        event['kind'] = 'knowledge.unknown'
+        event['command_sha256'] = digest_value({key: event[key] for key in
+                                               ('kind', 'payload', 'expected_revision', 'expected_state_sha256')})
+        event['event_sha256'] = digest_value({key: value for key, value in event.items()
+                                             if key not in {'event_sha256', 'resulting_state_sha256'}})
+        db.execute('UPDATE claim_loop_events SET event_json=?,command_sha256=?,event_sha256=? WHERE loop_id=? AND sequence=?',
+                   (json.dumps(event), event['command_sha256'], event['event_sha256'],
+                    'autonomous.' + state['claim_id'], advanced['revision']))
+    with pytest.raises(AutonomousStoreError, match='unsupported autonomous event kind'):
+        knowledge.learning_view()
 
 
 @pytest.mark.parametrize('mutation', ['changed', 'missing'])

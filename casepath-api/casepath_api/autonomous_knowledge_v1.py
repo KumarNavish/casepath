@@ -1,6 +1,8 @@
 """Immutable procedural knowledge qualified against the admitted rule pack."""
 from copy import deepcopy
+from datetime import datetime
 from itertools import product
+from threading import RLock
 
 from .autonomous_policy_v1 import POLICY_ID, REQUIRED_FIELDS, compile_process
 from .causal_process_v1 import evaluate, seal_graph
@@ -9,6 +11,118 @@ from .autonomous_operations_v1 import observe, suspend_observations
 
 
 DEFINITION_KEYS = ('family', 'rule_pack_sha256', 'graph', 'facts', 'obligations', 'policy_id', 'evidence_recipes')
+LEARNING_CONTRACT = 'casepath.knowledge-learning-replay/1.0.0'
+
+
+def _definition_diff(parent, current):
+    """Describe immutable structure differences without assigning them value."""
+    before, after = (parent or {}).get('graph', {}), current.get('graph', {})
+    result = {'parent_available': parent is not None}
+    for field, identity, display in (('nodes', 'node_id', ('node_id', 'label')),
+                                      ('edges', 'edge_id', ('edge_id', 'source_node_id', 'target_node_id', 'relation')),
+                                      ('document_catalog', 'document_type', ('document_type', 'label'))):
+        old = {row[identity]: row for row in before.get(field, [])}
+        new = {row[identity]: row for row in after.get(field, [])}
+        compact = lambda row: {key: row[key] for key in display if key in row}
+        result[field] = {'before_count': len(old) if parent is not None else None, 'after_count': len(new),
+                         'added': [compact(new[key]) for key in sorted(new.keys() - old.keys())],
+                         'removed': [compact(old[key]) for key in sorted(old.keys() - new.keys())],
+                         'changed': [{**compact(new[key]),
+                                      'fields': sorted(name for name in old[key].keys() | new[key].keys()
+                                                       if old[key].get(name) != new[key].get(name))}
+                                     for key in sorted(old.keys() & new.keys()) if old[key] != new[key]]}
+    result['changed_definition_fields'] = ([key for key in DEFINITION_KEYS if parent.get(key) != current.get(key)]
+                                           if parent is not None else [])
+    return result
+
+
+def _recorded_time(metadata):
+    value = metadata.get('created_at')
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace('Z', '+00:00'))
+        return value if parsed.tzinfo is not None else None
+    except ValueError:
+        return None
+
+
+def _learning_replay(states, projection):
+    titles = {state['claim_id']: state.get('title') for state in states}
+    admitted = {(row['knowledge_id'], row['version']): row for row in projection['versions']}
+    events, heads = [], []
+    avoided, unknown_avoided = 0, 0
+    for state in states:
+        if all(key in state for key in ('revision', 'last_event_sha256', 'state_sha256')):
+            heads.append({'claim_id': state['claim_id'], 'revision': state['revision'],
+                          'event_sha256': state['last_event_sha256'], 'state_sha256': state['state_sha256']})
+        for kind, field in (('knowledge.published', 'knowledge_published'), ('knowledge.used', 'knowledge_uses')):
+            metadata = [row for row in state.get('events', []) if row.get('kind') == kind]
+            for index, receipt in enumerate(state.get(field, [])):
+                recorded = metadata[index] if index < len(metadata) else {}
+                identity = (receipt.get('knowledge_id'), receipt.get('version'))
+                version = admitted.get(identity) if isinstance(identity[0], str) and type(identity[1]) is int else None
+                event = {'event_id': recorded.get('event_sha256'), 'kind': kind,
+                         'at': _recorded_time(recorded), 'sequence': recorded.get('sequence'),
+                         'command_sha256': recorded.get('command_sha256'), 'idempotency_key': recorded.get('idempotency_key'),
+                         'claim_id': state['claim_id'], 'claim_title': state.get('title'),
+                         'knowledge_id': receipt.get('knowledge_id'), 'version': receipt.get('version'),
+                         'knowledge_sha256': None, 'definition_sha256': receipt.get('definition_sha256'),
+                         'family': receipt.get('family'), 'pin_status': 'unavailable'}
+                if kind == 'knowledge.published':
+                    qualified = version is not None and receipt == version
+                    event.update(projection_status='qualified' if qualified else 'quarantined',
+                                 knowledge_sha256=receipt.get('knowledge_sha256'),
+                                 definition_sha256=receipt.get('qualification', {}).get('definition_sha256'),
+                                 pin_status='exact' if qualified and receipt.get('knowledge_sha256') else 'unavailable',
+                                 source_claim_id=receipt.get('source_claim_id'),
+                                 source_claim_title=titles.get(receipt.get('source_claim_id')),
+                                 qualification=receipt.get('qualification', {}))
+                    for key in ('change_reason', 'added_document_types', 'parent_knowledge_sha256', 'parent_definition_sha256'):
+                        event[key] = receipt.get(key)
+                    event['quarantine_index'] = next((offset for offset, row in enumerate(projection['quarantined'])
+                                                     if row == receipt or (not qualified and row.get('knowledge_id') == receipt.get('knowledge_id')
+                                                        and row.get('version') == receipt.get('version')
+                                                        and row.get('source_claim_id') == state['claim_id'])), None)
+                    if qualified:
+                        parent = admitted.get((version['knowledge_id'], version['version'] - 1))
+                        event['definition_diff'] = _definition_diff(parent, version)
+                else:
+                    # The reuse payload predates publication SHA recording. Only
+                    # the exact frozen workflow pin can supply that missing SHA;
+                    # a current/latest family version is never a substitute.
+                    workflow = receipt.get('workflow_id')
+                    pins = state.get('knowledge_pins', {}).get(workflow, []) if isinstance(workflow, str) else []
+                    if not pins:
+                        context = state.get('semantic_contexts', {}).get(workflow, {}) if isinstance(workflow, str) else {}
+                        pins = context.get('compatible_knowledge', []) if isinstance(context, dict) else []
+                    matching = [pin for pin in (pins if isinstance(pins, list) else []) if isinstance(pin, dict) and version is not None
+                                and pin.get('knowledge_id') == receipt.get('knowledge_id')
+                                and pin.get('version') == receipt.get('version')
+                                and pin.get('knowledge_sha256') == version.get('knowledge_sha256')
+                                and pin.get('rule_pack_sha256') == receipt.get('rule_pack_sha256') == version.get('rule_pack_sha256')
+                                and receipt.get('definition_sha256') == version['qualification']['definition_sha256']
+                                and receipt.get('knowledge_sha256', pin.get('knowledge_sha256')) == pin.get('knowledge_sha256')]
+                    if len(matching) == 1 and matching[0].get('knowledge_sha256'):
+                        event.update(knowledge_sha256=matching[0]['knowledge_sha256'], family=version['family'], pin_status='exact')
+                    event['projection_status'] = 'recorded'
+                    for key in ('workflow_id', 'rule_pack_sha256', 'applicability', 'reused_evidence_recipes', 'avoided_rule_compilations'):
+                        event[key] = receipt.get(key)
+                    count = receipt.get('avoided_rule_compilations')
+                    if type(count) is int and count >= 0:
+                        avoided += count
+                    else:
+                        unknown_avoided += 1
+                events.append(event)
+    # Global ordering uses actual instants; missing/unparseable times stay
+    # explicitly unordered at the end, with per-claim sequence still exposed.
+    events.sort(key=lambda row: (row['at'] is None,
+                datetime.fromisoformat(row['at'].replace('Z', '+00:00')).timestamp() if row['at'] else 0,
+                row['claim_id'], row['sequence'] or 0))
+    uses = [row for row in events if row['kind'] == 'knowledge.used']
+    return {'contract': LEARNING_CONTRACT, 'events': events, 'journal_heads': heads,
+            'totals': {'recorded_uses': len(uses), 'receiving_claims': len({row['claim_id'] for row in uses}),
+                       'avoided_rule_compilations': avoided, 'avoided_rule_compilations_unknown': unknown_avoided}}
 
 
 def _procedure_id(family):
@@ -209,14 +323,40 @@ def qualify(policy, state, *, candidates=None, previous=None):
 class AutonomousKnowledge:
     def __init__(self, store, policy):
         self.store, self.policy = store, policy
+        self._projection_lock = RLock()
+        self._projection_cache = None
 
     def view(self):
+        return self._read(False)
+
+    def learning_view(self):
+        """Add an inspectable replay without changing the native Knowledge rows."""
+        return self._read(True)
+
+    def _read(self, include_learning):
+        with self._projection_lock:
+            snapshot = getattr(self.store, 'knowledge_snapshot', None)
+            validated = getattr(self.store, 'validated_states', None)
+            # Cache observation is ordered after *fresh* complete row/source
+            # validation. Heads identify derived work, never journal authority.
+            states = (snapshot() if snapshot is not None else validated() if validated is not None else
+                      [self.store.get(row['claim_id']) for row in self.store.list()])
+            identity = (tuple((state['claim_id'], state['revision'], state['last_event_sha256'], state['state_sha256'])
+                              for state in states),
+                        tuple(value.get('knowledge_sha256') for state in states
+                              for value in state.get('knowledge_published', []))) if snapshot is not None else None
+            if identity is not None and self._projection_cache is not None and self._projection_cache[0] == identity:
+                result = self._projection_cache[1]
+            else:
+                result = self._project(states)
+                if identity is not None:
+                    self._projection_cache = (identity, result)
+            if include_learning and 'learning_replay' not in result:
+                result['learning_replay'] = _learning_replay(states, result)
+            return deepcopy(result if include_learning else {key: result[key] for key in ('versions', 'uses', 'quarantined')})
+
+    def _project(self, states):
         versions, uses, quarantined, conflicts = {}, [], [], set()
-        validated = getattr(self.store, 'validated_states', None)
-        # Explicit full-state reads already validate the accepted journals and
-        # original bytes. Keep the summary-only adapter contract as a fallback.
-        states = validated() if validated is not None else (
-            self.store.get(row['claim_id']) for row in self.store.list())
         for state in states:
             for value in state.get('knowledge_published', []):
                 if value.get('qualification', {}).get('status') == 'qualified':

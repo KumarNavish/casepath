@@ -125,6 +125,91 @@ def test_chunk_page_boundaries_and_maximum_source_complete_verification(remote, 
     assert server.open_streams == 0
 
 
+def test_knowledge_source_pages_reduce_tiny_file_requests_without_changing_default_reads(remote):
+    server, _ = remote
+    sources = HostedSources(server.connection)
+    originals = {sources.publish(('Isolated tiny original ' + str(index)).encode()):
+                 ('Isolated tiny original ' + str(index)).encode() for index in range(40)}
+    server.requests.clear()
+    sources.verify_many(originals, page_chunks=128)
+    assert receipt(server) == {'http': 1, 'execute': 1, 'close': 1, 'batch': 0}
+    assert sources.PAGE_CHUNKS == 8 and server.open_streams == 0
+    assert all(sources.read(digest) == raw for digest, raw in originals.items())
+    server.requests.clear()
+    sources.verify_many(originals)
+    assert receipt(server) == {'http': 6, 'execute': 6, 'close': 6, 'batch': 0}
+    assert_source_pages_closed(server)
+
+
+def test_knowledge_byte_limited_short_pages_continue_until_all_chunks_are_verified(remote, monkeypatch):
+    server, _ = remote
+    sources = HostedSources(server.connection)
+    original = b'P' * (8 * sources.CHUNK_BYTES) + b'An actual final partial chunk.'
+    digest = sources.publish(original)
+    pages = []
+    statement = server._statement
+
+    def count_page(connection, command):
+        result = statement(connection, command)
+        if command['sql'].startswith('SELECT sha256,chunk_index'):
+            content_index = next(index for index, col in enumerate(result['cols']) if col['name'] == 'content')
+            from casepath_api.hosted_sql_v1 import _decode
+            pages.append([_decode(row[content_index]) for row in result['rows']])
+        return result
+
+    monkeypatch.setattr(server, '_statement', count_page)
+    sources.verify_many([digest], page_chunks=128)
+    assert [len(page) for page in pages] == [8, 1]
+    assert all(sum(len(chunk) for chunk in page) <= 2 * 1024 * 1024 for page in pages)
+    assert sources.read(digest) == original and server.open_streams == 0
+
+
+@pytest.mark.parametrize('fault', ['changed_later_chunk', 'missing_later_chunk', 'gap_later_page', 'oversize_chunk', 'wrong_type'])
+def test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks(remote, fault):
+    server, _ = remote
+    sources = HostedSources(server.connection)
+    raw = b'P' * (8 * sources.CHUNK_BYTES) + b'An original final page.'
+    digest = sources.publish(raw)
+    with server.connection() as db:
+        if fault == 'missing_later_chunk':
+            db.execute('DROP TRIGGER autonomous_source_chunks_no_delete')
+            db.execute('DELETE FROM autonomous_source_chunks WHERE sha256=? AND chunk_index=8', (digest,))
+        elif fault in {'changed_later_chunk', 'wrong_type'}:
+            db.execute('DROP TRIGGER autonomous_source_chunks_no_update')
+            db.execute('UPDATE autonomous_source_chunks SET content=? WHERE sha256=? AND chunk_index=8',
+                       ('Invalid text instead of original bytes.' if fault == 'wrong_type' else b'Changed final bytes.', digest))
+        else:
+            db.execute('INSERT INTO autonomous_source_chunks VALUES (?,?,?)',
+                       (digest, 10 if fault == 'gap_later_page' else 9,
+                        b'gap' if fault == 'gap_later_page' else b'X' * (sources.CHUNK_BYTES + 1)))
+    with pytest.raises(AutonomousStoreError, match='source|hash|bytes|chunk'):
+        sources.verify_many([digest], page_chunks=128)
+    assert server.open_streams == 0
+
+
+def test_knowledge_final_source_verification_still_detects_mutation_after_prefetch(remote, monkeypatch):
+    store = new_store(remote)
+    store.intake({'title': 'Knowledge final boundary fixture', 'message': 'Original customer evidence.'}, 'knowledge.final')
+    server, _ = remote
+    store = new_store(remote)
+    reduce, changed = store._reduce, []
+
+    def mutate_after_prefetch(state, event):
+        result = reduce(state, event)
+        if not changed:
+            changed.append(True)
+            digest = result['source_descriptors'][0]['sha256']
+            with server.connection() as db:
+                db.execute('DROP TRIGGER autonomous_source_chunks_no_update')
+                db.execute('UPDATE autonomous_source_chunks SET content=? WHERE sha256=? AND chunk_index=0',
+                           (b'Changed during replay.', digest))
+        return result
+
+    monkeypatch.setattr(store, '_reduce', mutate_after_prefetch)
+    with pytest.raises(AutonomousStoreError, match='source|hash|bytes'):
+        store.knowledge_snapshot()
+
+
 @pytest.mark.parametrize("fault", ["changed_later_chunk", "missing_later_chunk", "extra_empty_chunk", "gap_later_page", "oversize_chunk"])
 def test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory(remote, fault):
     server, _ = remote

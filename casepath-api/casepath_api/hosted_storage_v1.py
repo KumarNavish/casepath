@@ -76,7 +76,7 @@ class HostedSources:
             values.add(digest)
         return sorted(values)
 
-    def _fetch_many(self, digests, *, return_digest=None, check=lambda: None):
+    def _fetch_many(self, digests, *, return_digest=None, check=lambda: None, page_chunks=None):
         """Read all requested chunks with bounded pages on one connection.
 
         Eight 256-KiB blobs cap a page at two MiB before wire encoding. Oversize
@@ -85,6 +85,10 @@ class HostedSources:
         gap. Keep one file buffer at a time and retain the existing bounded cache.
         """
         max_chunks = (MAX_FILE_BYTES + self.CHUNK_BYTES - 1) // self.CHUNK_BYTES
+        compact_pages = page_chunks is not None
+        if compact_pages and (type(page_chunks) is not int or not self.PAGE_CHUNKS <= page_chunks <= 128):
+            raise AutonomousStoreError('Persistent source page row bound is invalid.')
+        page_chunks = self.PAGE_CHUNKS if page_chunks is None else page_chunks
         result = None
         check()
         with self.connect() as db:
@@ -114,12 +118,35 @@ class HostedSources:
                          'FROM autonomous_source_chunks WHERE sha256 IN (' + placeholders + ') '
                          'AND (sha256>? OR (sha256=? AND chunk_index>?)) '
                          'ORDER BY sha256,chunk_index LIMIT 8')
+                if compact_pages:
+                    # Knowledge can collect many small originals in one page,
+                    # while retaining the existing two-MiB raw blob budget.
+                    # Invalid blobs return metadata and NULL, just as above.
+                    query = ('SELECT sha256,chunk_index,size_bytes,content,__candidate_count FROM '
+                             '(SELECT *,sum(__page_bytes) OVER (ORDER BY sha256,chunk_index) AS __total,'
+                             'row_number() OVER (ORDER BY sha256,chunk_index) AS __position,count(*) OVER () AS __candidate_count FROM '
+                             '(SELECT sha256,chunk_index,length(content) AS size_bytes,'
+                             "CASE WHEN typeof(content)='blob' AND length(content)<=? THEN content ELSE NULL END AS content,"
+                             "CASE WHEN typeof(content)='blob' AND length(content)<=? THEN length(content) ELSE 0 END AS __page_bytes "
+                             'FROM autonomous_source_chunks WHERE sha256 IN (' + placeholders + ') '
+                             'AND (sha256>? OR (sha256=? AND chunk_index>?)) '
+                             'ORDER BY sha256,chunk_index LIMIT ?)) '
+                             'WHERE __total<=? OR __position=1 ORDER BY sha256,chunk_index')
                 max_pages = (len(batch) * max_chunks + self.PAGE_CHUNKS - 1) // self.PAGE_CHUNKS + 1
                 for _ in range(max_pages):
                     check()
-                    page = execute(query, (self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index)).fetchall()
-                    if len(page) > self.PAGE_CHUNKS:
+                    parameters = ((self.CHUNK_BYTES, self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index,
+                                   page_chunks, 2 * 1024 * 1024) if compact_pages else
+                                  (self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index))
+                    page = execute(query, parameters).fetchall()
+                    if len(page) > page_chunks:
                         raise AutonomousStoreError('Persistent source page exceeds its bound.')
+                    if compact_pages and sum(len(row['content']) for row in page if isinstance(row['content'], bytes)) > 2 * 1024 * 1024:
+                        raise AutonomousStoreError('Persistent source page exceeds its byte bound.')
+                    if compact_pages and page and any(type(row['__candidate_count']) is not int
+                            or not len(page) <= row['__candidate_count'] <= page_chunks
+                            or row['__candidate_count'] != page[0]['__candidate_count'] for row in page):
+                        raise AutonomousStoreError('Persistent source page count is invalid.')
                     for row in page:
                         digest, index, size, chunk = (row[key] for key in ('sha256', 'chunk_index', 'size_bytes', 'content'))
                         if (digest not in wanted or type(index) is not int or type(size) is not int
@@ -136,7 +163,10 @@ class HostedSources:
                         raw.extend(chunk)
                         count, previous_size = count + 1, size
                         after_digest, after_index = digest, index
-                    if len(page) < self.PAGE_CHUNKS:
+                    # A short page establishes EOF only if its SQL candidate
+                    # count also proves the byte cap did not truncate it.
+                    if (not page or not compact_pages and len(page) < self.PAGE_CHUNKS
+                            or compact_pages and len(page) < page_chunks and page[0]['__candidate_count'] == len(page)):
                         break
                 else:
                     raise AutonomousStoreError('Persistent source chunk roster exceeds its bound.')
@@ -154,15 +184,15 @@ class HostedSources:
                 return cached
             return self._fetch_many([digest], return_digest=digest)
 
-    def read_many(self, digests):
+    def read_many(self, digests, *, page_chunks=None):
         """Populate only missing byte-cache entries; this admits no evidence."""
         values = self._digests(digests)
         with self._lock:
             missing = [digest for digest in values if digest not in self._cache]
             if missing:
-                self._fetch_many(missing)
+                self._fetch_many(missing, page_chunks=page_chunks)
 
-    def prefetch_journal_sources(self, rows):
+    def prefetch_journal_sources(self, rows, *, page_chunks=None):
         """Bounded byte lookups from the same rows the existing engine will replay.
 
         Source descriptors are checked before a lookup, but no event or state is
@@ -183,7 +213,7 @@ class HostedSources:
                     digests.add(descriptor['sha256'])
             except (KeyError, TypeError, AttributeError, json.JSONDecodeError) as exc:
                 raise AutonomousStoreError('Journal source lookup is malformed.') from exc
-        self.read_many(digests)
+        self.read_many(digests, page_chunks=page_chunks)
 
     def publish(self, raw):
         if not isinstance(raw, bytes) or len(raw) > MAX_FILE_BYTES:
@@ -203,7 +233,7 @@ class HostedSources:
             raise AutonomousStoreError('Persistent source publication differs.')
         return digest
 
-    def verify_many(self, digests, *, check=lambda: None):
+    def verify_many(self, digests, *, check=lambda: None, page_chunks=None):
         """Freshly hash-check persisted bytes once per result source roster.
 
         A cached blob accelerates repeated reducer reads but cannot establish
@@ -218,11 +248,12 @@ class HostedSources:
                 if cached is not None:
                     self._size -= len(cached)
             if values:
-                self._fetch_many(values, check=check)
+                self._fetch_many(values, check=check, page_chunks=page_chunks)
 
 
 class HostedAutonomousStore(AutonomousStore):
     JOURNAL_PAGE_ROWS = 128
+    KNOWLEDGE_PAGE_ROWS = 2048
     JOURNAL_PAGE_BYTES = 4 * 1024 * 1024
     JOURNAL_ROW_BYTES = JOURNAL_PAGE_BYTES + 64 * 1024
 
@@ -234,6 +265,19 @@ class HostedAutonomousStore(AutonomousStore):
                 if statuses is None or state['status'] in statuses]
 
     def _state_rows(self):
+        return self._paged_state_rows(self.JOURNAL_PAGE_ROWS)
+
+    def _knowledge_rows(self):
+        # Knowledge needs every authority column, but many small events need
+        # not each consume a 128-row remote page. Retain the same byte budget,
+        # snapshot and validation, and leave other collection readers alone.
+        return self._paged_state_rows(self.KNOWLEDGE_PAGE_ROWS, count_candidates=True)
+
+    def _knowledge_source_page_chunks(self):
+        # Explicit per-read options never change the shared source store's mode.
+        return 128 if isinstance(self._source_store, HostedSources) else None
+
+    def _paged_state_rows(self, page_rows, *, count_candidates=False):
         """Bounded journal pages from one read snapshot, before source work.
 
         The raw byte budget leaves room for Hrana's JSON escaping within its
@@ -245,8 +289,9 @@ class HostedAutonomousStore(AutonomousStore):
         size = '+'.join('COALESCE(length(CAST(' + key + ' AS BLOB)),0)' for key in columns) + '+1024'
         # Keep SELECT as the outer verb so owned workflow connections recognize
         # this as a read without weakening their fenced-write guard.
+        count = ',count(*) OVER () AS __read_candidates' if count_candidates else ''
         query = ('SELECT * FROM (SELECT *,sum(__read_size) OVER (ORDER BY loop_id,sequence) AS __read_total,'
-                 'row_number() OVER (ORDER BY loop_id,sequence) AS __read_position FROM '
+                 'row_number() OVER (ORDER BY loop_id,sequence) AS __read_position' + count + ' FROM '
                  '(SELECT *,(' + size + ') AS __read_size FROM claim_loop_events WHERE session_id=? '
                  'AND (? OR loop_id>? OR (loop_id=? AND sequence>?)) '
                  'ORDER BY loop_id,sequence LIMIT ?)) '
@@ -259,11 +304,15 @@ class HostedAutonomousStore(AutonomousStore):
             connection.execute('BEGIN')
             while True:
                 page = connection.execute(query, (SESSION_ID, not rows, after_loop, after_loop, after_sequence,
-                                                  self.JOURNAL_PAGE_ROWS, self.JOURNAL_PAGE_BYTES)).fetchall()
+                                                  page_rows, self.JOURNAL_PAGE_BYTES)).fetchall()
                 if not page:
                     break
-                if len(page) > self.JOURNAL_PAGE_ROWS:
+                if len(page) > page_rows:
                     raise AutonomousStoreError('Journal read page exceeds its bound.')
+                if count_candidates and any(type(row['__read_candidates']) is not int
+                        or not len(page) <= row['__read_candidates'] <= page_rows
+                        or row['__read_candidates'] != page[0]['__read_candidates'] for row in page):
+                    raise AutonomousStoreError('Journal read page count is invalid.')
                 for row in page:
                     loop, sequence, byte_size = (row[key] for key in ('loop_id', 'sequence', '__read_size'))
                     if (not isinstance(loop, str) or not loop.startswith('autonomous.')
@@ -272,8 +321,10 @@ class HostedAutonomousStore(AutonomousStore):
                             or (loop, sequence) <= (after_loop, after_sequence)):
                         raise AutonomousStoreError('Journal read page identity or size differs.')
                     rows.append({key: row[key] for key in row.keys()
-                                 if key not in {'__read_size', '__read_total', '__read_position'}})
+                                 if key not in {'__read_size', '__read_total', '__read_position', '__read_candidates'}})
                     after_loop, after_sequence = loop, sequence
+                if count_candidates and len(page) < page_rows and page[0]['__read_candidates'] == len(page):
+                    break
             connection.commit()
         return rows
 
