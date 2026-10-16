@@ -3826,12 +3826,18 @@
       route(fragment,writeHistory);
       epoch++; const token = epoch, read = ++knowledgeRead, generation = readGeneration;
       let awaitingFresh = true, freshReadFailed = false;
+      // A read may finish after inspection changes the pin or replay position.
+      // Only the first paint consumes the originally requested preference.
+      const reconcileKnowledge = data => {
+        const initial = !host.querySelector('[data-au-learning]');
+        return renderKnowledge(data,initial ? pin : knowledgePin,initial,initial ? preference : null);
+      };
       cancelPoll(); setView('knowledge'); nav('knowledge'); current = null;
       if (knowledgeCache) { renderKnowledge(knowledgeCache.value,pin,true,preference); synchronizeKnowledgeRead('refreshing'); notice(''); }
       else { host.innerHTML = readSkeletonMarkup('knowledge') + button('Retry','data-au-knowledge-retry hidden'); interact(host); focusTitle(); notice(''); }
       sessionRestore?.then(() => {
         if (!disposed && (awaitingFresh || freshReadFailed) && token === epoch && read === knowledgeRead && generation === readGeneration && !pendingRoute() && view === 'knowledge' && knowledgeCache && !host.querySelector('[data-au-knowledge-identity]')) {
-          renderKnowledge(knowledgeCache.value,pin,true,preference); synchronizeKnowledgeRead(freshReadFailed ? 'failed' : 'refreshing');
+          reconcileKnowledge(knowledgeCache.value); synchronizeKnowledgeRead(freshReadFailed ? 'failed' : 'refreshing');
         }
       });
       // Source/receiving titles come from the persisted projection. A catalog
@@ -3844,7 +3850,7 @@
         savedKnowledge = {at:Date.now(),value:data}; persistReadCache();
         awaitingFresh = false;
         synchronizeKnowledgeRead('verified');
-        notice(''); renderKnowledge(data,pin,!host.querySelector('[data-au-learning]'),preference);
+        notice(''); reconcileKnowledge(data);
       } catch (error) { awaitingFresh = false; freshReadFailed = true; if (!disposed && token === epoch && read === knowledgeRead) { synchronizeKnowledgeRead('failed'); notice(knowledgeCache ? `Refresh failed: ${error.message} Recorded knowledge remains visible.` : error.message,true); } }
     }
     function idleIntakeSubmit(form) {
