@@ -19,6 +19,7 @@ class ProofHrana(MockHrana):
     def __init__(self, path):
         super().__init__(path)
         self.wire_bytes, self.raw_journal, self.raw_sources = [], [], []
+        self.raw_http_policy = []
 
     def _statement(self, connection, statement):
         result = super()._statement(connection, statement)
@@ -30,6 +31,10 @@ class ProofHrana(MockHrana):
         return result
 
     def handle(self, request):
+        commands = [item.get('stmt', {}).get('sql', '') for item in json.loads(request.content)['requests']]
+        raw = any('CROSS JOIN claim_loop_events AS j' in sql or sql.startswith('SELECT sha256,chunk_index')
+                  for sql in commands)
+        self.raw_http_policy.append((raw, request.headers.get('connection')))
         response = super().handle(request)
         self.wire_bytes.append(len(response.content))
         return response
@@ -39,6 +44,7 @@ class ProofHrana(MockHrana):
         self.wire_bytes.clear()
         self.raw_journal.clear()
         self.raw_sources.clear()
+        self.raw_http_policy.clear()
 
 
 @pytest.fixture
@@ -468,3 +474,38 @@ def test_concurrent_claim_and_knowledge_reads_keep_ordered_certification_and_rej
     for read in (store.list_summaries, knowledge.learning_view):
         with pytest.raises(AutonomousStoreError, match='journal event identity or hash differs'):
             read()
+
+
+def test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool(native_proof_store):
+    server, _, knowledge = native_proof_store
+    original = knowledge.learning_view()
+    raw = [header for payload, header in server.raw_http_policy if payload]
+    compact = [header for payload, header in server.raw_http_policy if not payload]
+    assert raw and all(header == 'close' for header in raw)
+    assert compact and all(header != 'close' for header in compact)
+    server.reset()
+    assert knowledge.learning_view() == original
+    assert len(server.raw_http_policy) == 2
+    assert all(not payload and header != 'close' for payload, header in server.raw_http_policy)
+
+
+def test_raw_source_sqlite_fallback_receives_no_http_keyword(native_proof_store):
+    from contextlib import contextmanager
+    server, _, _ = native_proof_store
+
+    @contextmanager
+    def connect():
+        db = sqlite3.connect(server.path)
+        db.row_factory = sqlite3.Row
+        try:
+            yield db
+        finally:
+            db.close()
+
+    with connect() as db:
+        digest = db.execute('SELECT sha256 FROM autonomous_source_chunks ORDER BY sha256 LIMIT 1').fetchone()[0]
+    sources = HostedSources(connect)
+    raw = sources.read(digest)
+    assert sha256(raw).hexdigest() == digest
+    sources.verify_knowledge_many([digest])
+    assert sources.read(digest) == raw

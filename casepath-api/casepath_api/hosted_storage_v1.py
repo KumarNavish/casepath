@@ -194,7 +194,7 @@ class HostedSources:
         result = None
         check()
         with self.connect() as db:
-            execute = getattr(db, 'execute_read_once', db.execute)
+            read_once = getattr(db, 'execute_read_once', None)
             for start in range(0, len(digests), self.BATCH_DIGESTS):
                 batch = digests[start:start + self.BATCH_DIGESTS]
                 wanted, seen = set(batch), set()
@@ -240,7 +240,11 @@ class HostedSources:
                     parameters = ((self.CHUNK_BYTES, self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index,
                                    page_chunks, 2 * 1024 * 1024) if compact_pages else
                                   (self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index))
-                    page = execute(query, parameters).fetchall()
+                    # Bulk raw bodies explicitly retire their HTTP socket;
+                    # compact proofs keep the shared pool. Local SQLite keeps
+                    # its ordinary execute API and receives no transport flag.
+                    page = (read_once(query, parameters, close_http=True) if read_once is not None
+                            else db.execute(query, parameters)).fetchall()
                     if len(page) > page_chunks:
                         raise AutonomousStoreError('Persistent source page exceeds its bound.')
                     if compact_pages and sum(len(row['content']) for row in page if isinstance(row['content'], bytes)) > 2 * 1024 * 1024:
@@ -471,7 +475,7 @@ class HostedAutonomousStore(AutonomousStore):
                 queries = [(query, parameters)]
                 if schema is None:
                     queries.insert(0, (_schema_query('claim_loop_events'), ()))
-                cursors = db.read_snapshot(queries)
+                cursors = db.read_snapshot(queries, close_http=True)
             if schema is None:
                 schema = cursors[0].fetchall()
                 if not _standard_schema(schema, _JOURNAL_COLUMNS):
