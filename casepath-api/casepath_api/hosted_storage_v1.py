@@ -54,10 +54,13 @@ def _schema_query(table):
 
 
 def _schema_identity(rows):
-    return tuple(tuple(row[key] for key in row.keys()) for row in rows)
+    return tuple(tuple((key, type(row[key]), row[key]) for key in row.keys()) for row in rows)
 
 
 def _standard_schema(rows, columns):
+    expected_keys = ('kind', 'name', 'detail', 'required', 'default_value', 'pk', 'hidden')
+    if any(tuple(row.keys()) != expected_keys for row in rows):
+        return False
     names = {row['name']: row for row in rows if row['kind'] == 'column'}
     if set(names) != set(columns):
         return False
@@ -66,7 +69,8 @@ def _standard_schema(rows, columns):
     for name in columns:
         row = names[name]
         expected = 'INTEGER' if name == integer else 'BLOB' if name == 'content' else 'TEXT'
-        if (row['detail'].upper() != expected or type(row['required']) is not int or row['required'] != 1
+        if (type(row['detail']) is not str or row['detail'].upper() != expected
+                or type(row['required']) is not int or row['required'] != 1
                 or row['default_value'] is not None or type(row['pk']) is not int
                 or row['pk'] != (keys.index(name) + 1 if name in keys else 0)
                 or type(row['hidden']) is not int or row['hidden'] != 0):
@@ -349,49 +353,65 @@ class HostedSources:
                 self._fetch_many(values, check=check, page_chunks=page_chunks)
 
 
+    def _knowledge_source_proof(self, values):
+        queries, expected = [(_schema_query('autonomous_source_chunks'), ())], []
+        for start in range(0, len(values), self.BATCH_DIGESTS):
+            batch = values[start:start + self.BATCH_DIGESTS]
+            rows = []
+            for digest in batch:
+                raw = self._cache.get(digest)
+                if raw is None:
+                    raise AutonomousStoreError('Original byte proof cache was evicted before verification.')
+                rows.extend({'sha256': digest, 'chunk_index': index, 'content': raw[offset:offset + self.CHUNK_BYTES]}
+                            for index, offset in enumerate(range(0, max(1, len(raw)), self.CHUNK_BYTES)))
+            if len(rows) > _PROOF_ROWS or len(queries) >= 128:
+                raise AutonomousStoreError('Original byte proof roster exceeds its bound.')
+            expected.append(_proof_expected(rows, _SOURCE_COLUMNS, 'casepath-source-bytes-v1'))
+            query = _proof_query('autonomous_source_chunks', _SOURCE_COLUMNS, 'casepath-source-bytes-v1',
+                                 'sha256 IN (' + ','.join('?' for _ in batch) + ')', 'sha256,chunk_index')
+            queries.append((query, (*batch, len(rows) + 1)))
+        with self.connect() as db:
+            if not hasattr(db, 'read_snapshot'):
+                return None
+            cursors = db.read_snapshot(queries)
+        schema = cursors[0].fetchall()
+        if not _standard_schema(schema, _SOURCE_COLUMNS):
+            raise AutonomousStoreError('Original byte proof requires the complete native source schema.')
+        return _schema_identity(schema), cursors[1:], expected
+
     def verify_knowledge_many(self, digests):
         """New post-reducer snapshot proves every cached original chunk byte.
 
         Cache bytes already passed the native full-file SHA and chunk validators.
-        Missing/evicted bytes are reread through the original eight-chunk path;
-        the fresh aggregate then certifies that complete roster in one snapshot.
+        Missing/evicted bytes and schema changes use the original eight-chunk
+        reader, followed by a new coherent certificate. Exact schema identity is
+        admitted only by the successful journal post-validation hook.
         """
         values = self._digests(digests)
-        if not values:
-            return
         with self._lock:
+            if not values:
+                return
             missing = [digest for digest in values if digest not in self._cache]
             if missing:
                 self._fetch_many(missing)
-            queries, expected = [(_schema_query('autonomous_source_chunks'), ())], []
-            for start in range(0, len(values), self.BATCH_DIGESTS):
-                batch = values[start:start + self.BATCH_DIGESTS]
-                rows = []
-                for digest in batch:
-                    raw = self._cache.get(digest)
-                    if raw is None:
-                        raise AutonomousStoreError('Original byte proof cache was evicted before verification.')
-                    rows.extend({'sha256': digest, 'chunk_index': index, 'content': raw[offset:offset + self.CHUNK_BYTES]}
-                                for index, offset in enumerate(range(0, max(1, len(raw)), self.CHUNK_BYTES)))
-                if len(rows) > _PROOF_ROWS or len(queries) >= 128:
-                    raise AutonomousStoreError('Original byte proof roster exceeds its bound.')
-                expected.append(_proof_expected(rows, _SOURCE_COLUMNS, 'casepath-source-bytes-v1'))
-                query = _proof_query('autonomous_source_chunks', _SOURCE_COLUMNS, 'casepath-source-bytes-v1',
-                                     'sha256 IN (' + ','.join('?' for _ in batch) + ')', 'sha256,chunk_index')
-                queries.append((query, (*batch, len(rows) + 1)))
-            with self.connect() as db:
-                if not hasattr(db, 'read_snapshot'):
-                    self.verify_many(values)
-                    return
-                cursors = db.read_snapshot(queries)
-            schema = cursors[0].fetchall()
-            if not _standard_schema(schema, _SOURCE_COLUMNS):
-                raise AutonomousStoreError('Original byte proof requires the complete native source schema.')
-            if not all(_proof_matches(cursor, proof) for cursor, proof in zip(cursors[1:], expected)):
-                # A mismatch is never a stale hit. Exercise the original raw
-                # validators for a changed source; they retain precise failures.
+            result = self._knowledge_source_proof(values)
+            if result is None:
+                self.verify_many(values)
+                return
+            schema, cursors, expected = result
+            previous = getattr(self, '_knowledge_schema', None)
+            if previous is not None and previous != schema:
+                # A confirmed schema miss is not a transport retry. Revalidate
+                # all raw bytes and then certify them in a NEW final snapshot.
+                self.verify_many(values)
+                fresh = self._knowledge_source_proof(values)
+                if fresh is None or fresh[0] != schema:
+                    raise AutonomousStoreError('Original byte schema changed during fresh verification.')
+                schema, cursors, expected = fresh
+            if not all(_proof_matches(cursor, proof) for cursor, proof in zip(cursors, expected)):
                 self.verify_many(values)
                 raise AutonomousStoreError('Persistent source bytes changed during fresh verification.')
+            return schema
 
 
 class HostedAutonomousStore(AutonomousStore):
@@ -412,17 +432,16 @@ class HostedAutonomousStore(AutonomousStore):
 
     def _knowledge_rows(self):
         cached = getattr(self, '_knowledge_byte_cache', None)
-        with self.journal.connect() as db:
-            if not hasattr(db, 'read_snapshot'):
-                return self._state_rows()
-            if cached is not None:
+        if cached is not None:
+            with self.journal.connect() as db:
                 rows, schema, proof = cached
                 query = _proof_query('claim_loop_events', _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1',
                                      'session_id=?', 'loop_id,sequence')
                 schema_cursor, proof_cursor = db.read_snapshot([
                     (_schema_query('claim_loop_events'), ()), (query, (SESSION_ID, len(rows) + 1))])
                 current_schema = schema_cursor.fetchall()
-                if _schema_identity(current_schema) == schema and _proof_matches(proof_cursor, proof):
+                if (_standard_schema(current_schema, _JOURNAL_COLUMNS)
+                        and _schema_identity(current_schema) == schema and _proof_matches(proof_cursor, proof)):
                     self._knowledge_pending = cached
                     return rows
         self._knowledge_byte_cache = None
@@ -437,6 +456,8 @@ class HostedAutonomousStore(AutonomousStore):
         while True:
             query, parameters = self._journal_page_query(self.JOURNAL_PAGE_ROWS, rows, after_loop, after_sequence)
             with self.journal.connect() as db:
+                if not hasattr(db, 'read_snapshot'):
+                    return self._state_rows()
                 queries = [(query, parameters)]
                 if schema is None:
                     queries.insert(0, (_schema_query('claim_loop_events'), ()))
@@ -444,14 +465,11 @@ class HostedAutonomousStore(AutonomousStore):
             if schema is None:
                 schema = cursors[0].fetchall()
                 if not _standard_schema(schema, _JOURNAL_COLUMNS):
-                    # Unknown columns cannot be certified by the eight-column
-                    # root. A single acknowledged snapshot retains j.* instead.
-                    with self.journal.connect() as db:
-                        schema_cursor, raw_cursor = db.read_snapshot([
-                            (_schema_query('claim_loop_events'), ()),
-                            ('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence', (SESSION_ID,))])
+                    # An eight-column root cannot certify unknown authority.
+                    # Do not replace a bounded cold read with an unbounded raw
+                    # body or an interactive transaction spanning transfers.
                     self._knowledge_pending = None
-                    return raw_cursor.fetchall()
+                    raise AutonomousStoreError('Knowledge byte proof requires the complete native journal schema.')
             page = cursors[-1].fetchall()
             if not page:
                 break
@@ -483,8 +501,19 @@ class HostedAutonomousStore(AutonomousStore):
         return rows
 
     def _validated_knowledge_states(self, rows):
-        verifier = (self._source_store.verify_knowledge_many if isinstance(self._source_store, HostedSources) else None)
-        return self._validated_states(rows, source_verifier=verifier)
+        if not isinstance(self._source_store, HostedSources):
+            return self._validated_states(rows)
+        schemas = []
+
+        def verify(digests):
+            schemas.append(self._source_store.verify_knowledge_many(digests))
+
+        states = self._validated_states(rows, source_verifier=verify)
+        # Admit only after _validated_states returned, using the certificate
+        # returned by this call rather than a shared temporary source mode.
+        with self._source_store._lock:
+            self._source_store._knowledge_schema = schemas[0]
+        return states
 
     def _after_validated_knowledge_states(self, rows, states):
         # _summary_cache alone is insufficient: it is populated before final

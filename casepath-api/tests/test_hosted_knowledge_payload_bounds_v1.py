@@ -66,7 +66,7 @@ def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authori
                                   source_store=HostedSources(server.connection))
     store.KNOWLEDGE_PAGE_ROWS = candidate_limit
     try:
-        actual = store._knowledge_rows()
+        actual = store._paged_state_rows(candidate_limit, count_candidates=True)
         assert len(server.pages) >= 2  # The byte budget, rather than row count, limits this fixture.
         assert len(actual) == len(rows)
         names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',

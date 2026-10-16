@@ -564,10 +564,15 @@ def test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages(process
                        for statement in sql)
             assert any(statement.strip().upper() == 'BEGIN' for statement in sql)
             assert all('IMMEDIATE' not in statement.upper() for statement in sql)
-            assert len(server.journal_pages) > 1  # This roster actually exercises journal pagination.
-            assert sum(count for count, _ in server.journal_pages) == sum(state['revision'] for state in states)
-            assert max(count for count, _ in server.journal_pages) <= store.KNOWLEDGE_PAGE_ROWS
-            assert max(size for _, size in server.journal_pages) <= 4 * 1024 * 1024
+            if temperature == 'cold':
+                assert len(server.journal_pages) > 1  # Exercise closed raw pagination.
+                assert sum(count for count, _ in server.journal_pages) == sum(state['revision'] for state in states)
+                assert max(count for count, _ in server.journal_pages) <= store.JOURNAL_PAGE_ROWS
+                assert max(size for _, size in server.journal_pages) <= 4 * 1024 * 1024
+            else:
+                assert server.journal_pages == []
+                assert len(server.requests) == 2
+                assert sum(server.response_bytes) < 16 * 1024
             assert max(server.response_bytes) <= 9 * 1024 * 1024
             assert len(server.requests) <= 48
             assert server.open_streams == 0
@@ -640,10 +645,10 @@ def test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends(tmp_path, m
     knowledge = AutonomousKnowledge(store, policy)
     try:
         server.reset_counts()
-        assert knowledge.view() == {'versions': [], 'uses': [], 'quarantined': []}
+        assert knowledge.view() == {'versions': [], 'uses': [{**use, 'claim_id': states[-1]['claim_id']}], 'quarantined': []}
         assert advanced and advanced[0]['revision'] == states[-1]['revision'] + 1
         assert len(server.journal_pages) > 2
-        assert sum(count for count, _ in server.journal_pages) == len(states)
+        assert sum(count for count, _ in server.journal_pages) == len(states) + 1
         assert max(size for _, size in server.journal_pages) <= store.JOURNAL_PAGE_BYTES
         assert knowledge.view()['uses'] == [{**use, 'claim_id': states[-1]['claim_id']}]
         assert next(state for state in store.validated_states() if state['claim_id'] == states[-1]['claim_id']) == advanced[0]
@@ -757,7 +762,7 @@ def test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection(process
             AutonomousKnowledge(store, policy).view()
         assert len(connections) == 1 and connections[0]._closed
         sql = list(statements(server.requests))
-        assert sum(statement.strip().upper().startswith(phase) for statement in sql) == 1
+        assert sum(statement.strip().upper().startswith(phase) for statement in sql) == (2 if phase == 'SELECT' else 1)
         assert not any(statement.strip().split()[0].upper() in {'INSERT', 'UPDATE', 'DELETE'} for statement in sql)
     finally:
         # A lost response can retain an unknown rotated server baton; the mock
