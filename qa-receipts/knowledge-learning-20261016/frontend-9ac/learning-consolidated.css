@@ -1,0 +1,157 @@
+
+/* Recorded learning: one bounded focus and one quiet timeline. */
+.au-workspace .au-main:has(.au-learning) { padding-top:14px; padding-bottom:24px; }
+.au-workspace .au-learning { display:flex; flex-direction:column; max-width:1240px; margin:0 auto; --au-learning-muted:#565f59; --au-learning-green:#24563c; --au-learning-paper:#fafbf8; }
+.au-workspace .au-learning :is(p,button,label,li,span,code) { font-size:16px; line-height:1.55; }
+.au-workspace .au-learning :is(p,.au-meta,.au-learning-kind,.au-learning-label) { color:var(--au-learning-muted); }
+.au-workspace .au-learning .au-learning-label { color:var(--au-learning-green); }
+.au-workspace .au-learning button { min-height:40px; }
+.au-workspace .au-learning :is(button,input):focus-visible { outline:3px solid #24563c; outline-offset:4px; }
+.au-workspace .au-learning .au-work-head { align-items:start; margin:0; padding:0 0 6px; }
+.au-workspace .au-learning .au-work-head > div:first-child { display:block; }
+.au-workspace .au-learning .au-work-head > div:first-child > p:last-child { display:none; }
+.au-workspace .au-learning .au-work-head h1 { margin:2px 0 4px; font-size:30px; letter-spacing:-1px; }
+.au-workspace .au-learning .au-work-head > div:last-child { display:flex; align-items:center; flex-wrap:wrap; gap:8px 20px; }
+.au-workspace .au-learning-transport { display:flex; align-items:center; flex-wrap:wrap; gap:10px 20px; margin:8px 0 4px; }
+.au-workspace .au-learning-transport > button { padding:7px 16px; border:1px solid #78917c; border-radius:4px; background:#fff; }
+.au-workspace .au-learning-transport > button:first-child { color:#fff; background:#24563c; border-color:#24563c; }
+.au-workspace .au-learning-transport > label { display:flex; flex:1; min-width:270px; align-items:center; gap:12px; }
+.au-workspace .au-learning-transport input { flex:1; min-width:90px; height:40px; accent-color:#24563c; }
+.au-workspace .au-learning-transport > p { min-width:170px; }
+.au-workspace .au-learning-focus { height:340px; min-height:0; overflow:auto; overscroll-behavior:contain; padding:16px 20px; background:var(--au-learning-paper); border:1px solid #d0d8ce; border-radius:8px; }
+.au-workspace .au-learning-focus .au-procedure-reading { max-width:none; }
+.au-workspace .au-learning-record-head { display:flex; justify-content:space-between; align-items:start; flex-wrap:wrap; gap:8px 16px; margin-bottom:12px; }
+.au-workspace .au-learning-record-head > div { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 16px; }
+.au-workspace .au-learning-record-head h2 { font-size:24px; margin:0; letter-spacing:-.4px; }
+.au-workspace .au-learning-record-head p { margin:0; }
+.au-workspace .au-learning-focus > article > h2 { font-size:26px; margin:6px 0 10px; }
+.au-workspace .au-learning-focus button { border:0; padding:4px 0; background:transparent; text-decoration:underline; text-underline-offset:4px; text-align:left; }
+.au-workspace .au-learning-focus :is(h3,h4) { font-size:18px; line-height:1.5; font-weight:500; letter-spacing:0; }
+.au-workspace .au-learning-source { margin:10px 0; padding-left:16px; border-left:3px solid #76967b; }
+.au-workspace .au-learning-source p { max-width:85ch; margin:4px 0; }
+.au-workspace .au-learning-focus .au-procedure-facets { margin:12px 0; padding:0 0 6px; gap:8px 26px; }
+.au-workspace .au-learning-focus .au-procedure-facets button { color:#565f59; text-decoration:none; }
+.au-workspace .au-learning-focus .au-procedure-facets button[aria-pressed=true] { color:#1e4a32; border-bottom-color:#24563c; }
+.au-workspace .au-learning-record > .au-learning-documents { display:none; }
+.au-workspace .au-learning-process-map > p { margin:0 0 8px; }
+.au-workspace .au-learning-process-map ol { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; list-style:none; padding:0; }
+.au-workspace .au-learning-process-map li { min-width:0; padding:6px 10px; background:#f1f5ee; border-left:2px solid #8da88f; }
+.au-workspace .au-learning-process-map h3 { font-size:16px; line-height:1.15; font-weight:500; margin:0; }
+.au-workspace .au-learning-process-map h3 span { line-height:1.15; }
+.au-workspace .au-learning-process-map li p { margin:2px 0 0; font-size:16px; line-height:1.15; }
+.au-workspace .au-learning-checklist { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 24px; list-style:none; padding:12px 0 0; }
+.au-workspace .au-learning-checklist li { display:flex; gap:10px; }
+.au-workspace .au-learning-checklist li > span { color:#46604b; }
+.au-workspace .au-learning-checklist strong { font-weight:500; }
+.au-workspace .au-learning-checklist p { margin:5px 0 0; }
+.au-workspace .au-learning-checklist [data-au-recipe-reused=true] { border-left:3px solid #76967b; padding-left:12px; }
+.au-workspace .au-learning-proof,.au-workspace .au-learning-provenance { margin-top:16px; padding-top:12px; border-top:1px solid #d0d8ce; }
+.au-workspace .au-learning-proof summary,.au-workspace .au-learning-provenance summary { font-size:16px; cursor:pointer; }
+.au-workspace .au-learning-qualification { margin:12px 0 0; }
+.au-workspace .au-learning-qualification ul { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 24px; padding:10px 0; list-style:none; }
+.au-workspace .au-learning-qualification li { display:flex; gap:12px; }
+.au-workspace .au-learning-check-symbol { color:#24563c; }
+.au-workspace .au-learning-qualification [data-au-check-shown=false] .au-learning-check-symbol { visibility:hidden; }
+.au-workspace .au-learning-seal { margin:12px 0 0; padding-top:12px; border-top:1px solid #d0d8ce; }
+.au-workspace .au-learning-provenance .au-procedure-provenance { margin:12px 0 0; }
+.au-workspace .au-learning [data-au-learning-waiting=true] { visibility:hidden; }
+.au-workspace .au-learning-reuse-arc { display:flex; align-items:center; gap:18px; padding:8px 0; }
+.au-workspace .au-learning-reuse-arc > span:nth-child(2) { font-size:32px; color:#3e7050; }
+.au-workspace .au-learning-receipts { margin:14px 0; padding-top:12px; border-top:1px solid #d0d8ce; }
+.au-workspace .au-learning-receipts ul { padding-left:20px; }
+.au-workspace .au-learning-receipts li { margin:6px 0; }
+.au-workspace .au-learning-refusal-reason { max-width:80ch; margin:18px 0; color:#70412e; }
+.au-workspace .au-learning-refusal > button { display:block; }
+.au-workspace .au-learning-compare { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:16px; }
+.au-workspace .au-learning-compare :is(ol,ul) { padding-left:22px; }
+.au-workspace .au-learning-compare li { margin:6px 0; }
+.au-workspace .au-learning-compare [data-au-diff=removed] { color:#70412e; }
+.au-workspace .au-learning-compare [data-au-diff=added] { color:#24563c; }
+.au-workspace .au-learning-timeline { --au-learning-days:5; margin-top:10px; padding-bottom:6px; border-top:1px solid var(--au-line); border-bottom:1px solid var(--au-line); }
+.au-workspace .au-learning-dates { display:grid; grid-template-columns:168px repeat(var(--au-learning-days),minmax(0,1fr)); gap:12px; padding:3px 0; color:var(--au-learning-muted); }
+.au-workspace .au-learning-lane { display:grid; grid-template-columns:168px minmax(0,1fr); gap:12px; min-height:44px; align-items:start; }
+.au-workspace .au-learning-lane > h2 { margin:0; padding:10px 0; font-size:16px; line-height:1.4; font-weight:500; letter-spacing:0; }
+.au-workspace .au-learning-track { position:relative; display:grid; grid-template-columns:repeat(var(--au-learning-days),minmax(0,1fr)); gap:12px; padding:2px 0; min-height:44px; }
+.au-workspace .au-learning-track::before { content:''; position:absolute; top:22px; left:0; right:0; height:1px; background:#c6d0c6; }
+.au-workspace .au-learning-day { position:relative; display:flex; flex-wrap:nowrap; align-items:start; gap:4px; min-width:0; }
+.au-workspace .au-learning-node { position:relative; flex:none; min-width:40px; padding:4px; border:1px solid #c6d0c6; border-radius:4px; background:#fff; color:#3f5045; }
+.au-workspace .au-learning-node[aria-current=step] { border-color:#24563c; background:#e6efe5; color:#1e4a32; box-shadow:0 0 0 1px #24563c; }
+.au-workspace .au-learning-node-text,.au-workspace .au-learning-mobile-date { display:none; }
+.au-workspace .au-learning-lane[data-au-learning-lane=refused] .au-learning-node { color:#70412e; border-color:#c3aa9c; }
+.au-workspace .au-learning-no-events { position:absolute; top:10px; left:0; background:#fff; }
+.au-workspace .au-learning-disclosure,.au-workspace .au-learning-totals { margin:8px 0 0; }
+.au-workspace .au-learning-announcement { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+/* Autoplay uses the same pane for each phase; inspection restores its disclosures. */
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-focus { overflow:hidden; }
+.au-workspace .au-learning[data-au-learning-playing=true] :is(.au-procedure-facets,.au-learning-provenance,.au-learning-diff) { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-proof { margin:0; padding:0; border:0; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-proof > summary { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-source { margin-top:0; }
+.au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-focus]:not([data-au-learning-stage="0"]) :is(.au-learning-source,.au-learning-requalification) { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-focus]:not([data-au-learning-stage="1"]) > .au-learning-record > .au-procedure-facet { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-focus]:not([data-au-learning-stage="2"]) .au-learning-documents { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-stage="2"] .au-learning-documents { display:block; margin:0; padding:0; border:0; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-documents .au-learning-checklist { grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-checklist p { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-checklist [data-au-learning-added=true] strong::after { content:' · Added'; color:#24563c; }
+.au-workspace .au-learning[data-au-learning-playing=true] :is([data-au-learning-stage="0"],[data-au-learning-stage="1"],[data-au-learning-stage="2"]) .au-learning-proof { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-focus]:not([data-au-learning-stage="10"]) .au-learning-seal { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-stage="10"] .au-learning-qualification { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-reuse p { margin:3px 0; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-receipts { margin:6px 0; padding-top:6px; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-receipts ul { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-reuse-arc > span:last-child { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-requalification ul { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; list-style:none; padding:0; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-requalification p { margin:4px 0; }
+/* Demo reuse is an in-place cue; evidence checks retain their existing authority. */
+.au-workspace .au-stage-knowledge-moment { margin:0 0 10px; padding:6px 10px; border:0; border-left:2px solid #76967b; border-radius:0; background:#f1f5ee; }
+.au-workspace .au-stage-knowledge-moment p { margin:0; }
+.au-workspace .au-stage-knowledge-moment :is(p,button,li,span) { font-size:18px; }
+.au-workspace .au-stage-slot[data-au-recipe-known=true] > span::after { content:' · Known requirement'; color:#24563c; }
+@media(max-width:700px) {
+  .au-workspace .au-learning .au-work-head { position:relative; }
+  .au-workspace .au-learning .au-work-head h1 { font-size:28px; }
+  .au-workspace .au-learning .au-work-head > div:last-child { position:absolute; right:0; top:-8px; }
+  .au-workspace .au-learning .au-learning-transport { gap:6px 12px; }
+  .au-workspace .au-learning-transport > button { min-height:44px; padding:7px 12px; }
+  .au-workspace .au-learning-transport > label { flex:1; flex-basis:90px; min-width:80px; gap:8px; }
+  .au-workspace .au-learning-transport > label > span { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  .au-workspace .au-learning-transport > p { display:none; }
+  .au-workspace .au-learning-focus { height:min(560px,calc(100svh - 282px)); padding:16px; }
+  .au-workspace .au-learning-record-head { gap:8px; }
+  .au-workspace .au-learning-record-head > div { display:block; }
+  .au-workspace .au-learning-record-head h2 { font-size:24px; margin:2px 0 4px; }
+  .au-workspace .au-learning-process-map ol { grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+  .au-workspace .au-learning-process-map li { padding:4px 6px; }
+  .au-workspace .au-learning-process-map :is(h3,h3 span),.au-workspace .au-learning-process-map li p { line-height:1.05; }
+  .au-workspace .au-learning-checklist,.au-workspace .au-learning-qualification ul,.au-workspace .au-learning-compare { grid-template-columns:1fr; }
+  .au-workspace .au-learning-reuse-arc { align-items:start; gap:12px; }
+  .au-workspace .au-learning-dates { display:none; }
+  .au-workspace .au-learning-lane { display:block; padding:8px 0 12px; border-bottom:1px solid #e0e5dc; }
+  .au-workspace .au-learning-lane:last-child { border-bottom:0; }
+  .au-workspace .au-learning-lane > h2 { padding:0 0 8px; }
+  .au-workspace .au-learning-track { display:flex; flex-wrap:wrap; gap:12px; padding:0; }
+  .au-workspace .au-learning-track::before { display:none; }
+  .au-workspace .au-learning-day { flex:1 1 140px; flex-wrap:wrap; gap:6px; }
+  .au-workspace .au-learning-day:has(.au-learning-node) .au-learning-mobile-date { display:block; width:100%; color:#565f59; }
+  .au-workspace .au-learning-day:not(:has(.au-learning-node)) { display:none; }
+  .au-workspace .au-learning-node { display:flex; gap:6px; min-height:44px; padding:6px 8px; }
+  .au-workspace .au-learning-node-text { display:block; }
+  .au-workspace .au-learning-no-events { position:relative; top:0; }
+  .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-record-head > button { display:none; }
+  .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-process-map > p { display:none; }
+  .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-process-map h3 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-documents .au-learning-checklist { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 8px; }
+  .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-checklist li { gap:6px; }
+  .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-checklist strong { display:block; font-size:16px; line-height:1.2; }
+  .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-qualification ul { grid-template-columns:1fr; gap:6px; }
+  .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-record:has(.au-learning-requalification) .au-learning-source { display:none; }
+  .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-requalification ul { grid-template-columns:1fr; gap:4px; }
+}
+@media(prefers-reduced-motion:no-preference) {
+  .au-workspace .au-learning [data-au-learning-waiting=false],.au-workspace .au-stage-knowledge-moment { animation:au-learning-reveal .18s ease-out both; }
+  .au-workspace .au-stage-knowledge-moment { animation-duration:.35s; }
+  .au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-stage="1"] .au-learning-process-map li { animation:au-learning-emphasis .3s ease-out both; animation-delay:calc(var(--au-learning-rank,0)*50ms); }
+}
+@keyframes au-learning-reveal { from { transform:translateY(5px); } to { transform:translateY(0); } }
+@keyframes au-learning-emphasis { from { background:#e1eddf; border-color:#24563c; } to { background:#f1f5ee; border-color:#8da88f; } }

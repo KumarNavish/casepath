@@ -1,0 +1,467 @@
+{
+  "source_commit": "9ac961b42aeaf1eae11262cc58001ab1547940aa",
+  "source_branch": "codex/knowledge-learning-frontend-20261016",
+  "worktree_clean": true,
+  "changed_paths": [
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "assets": {
+    "js_sha256": "c7d5f4cd468b6805eaa01bc4abe870b895a62c9e06535e3c8cb48f4f36cb6294",
+    "css_sha256": "b79a05a594aa9c0ae9937696b2a0f164b2631a425344f4cc89ddb69f8031bbb7",
+    "projection_sha256": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8"
+  },
+  "checks": [
+    {
+      "name": "focused Knowledge/learning/grouped/reuse/cold-demo module selection",
+      "passed": 35,
+      "failed": 0,
+      "raw": "module-pacing-compact-final.tap"
+    },
+    {
+      "name": "existing complete workspace JS module file",
+      "passed": 261,
+      "failed": 0,
+      "duration_ms": 15319.062278,
+      "raw": [
+        "module-pacing-final.spec",
+        "module-pacing-final.xml"
+      ]
+    },
+    {
+      "name": "native Chromium committed-asset phase geometry and motion",
+      "passed": true,
+      "raw": [
+        "browser-desktop-timeline-pacing-final4.json",
+        "browser-desktop-timeline-pacing-final4.log"
+      ],
+      "viewports": [
+        {
+          "width": 1428,
+          "height": 801
+        },
+        {
+          "width": 390,
+          "height": 844
+        }
+      ]
+    }
+  ],
+  "timing": {
+    "total": 36000,
+    "publications": [
+      {
+        "event": "8629b8c34eea0eb5719d1360de7f1ce0bf67b07d3db7012648e63457cbfcdcfa",
+        "frames": [
+          {
+            "index": 0,
+            "stage": 0,
+            "duration": 700
+          },
+          {
+            "index": 0,
+            "stage": 1,
+            "duration": 900
+          },
+          {
+            "index": 0,
+            "stage": 2,
+            "duration": 700
+          },
+          {
+            "index": 0,
+            "stage": 3,
+            "duration": 100
+          },
+          {
+            "index": 0,
+            "stage": 4,
+            "duration": 100
+          },
+          {
+            "index": 0,
+            "stage": 5,
+            "duration": 100
+          },
+          {
+            "index": 0,
+            "stage": 6,
+            "duration": 100
+          },
+          {
+            "index": 0,
+            "stage": 7,
+            "duration": 100
+          },
+          {
+            "index": 0,
+            "stage": 8,
+            "duration": 100
+          },
+          {
+            "index": 0,
+            "stage": 9,
+            "duration": 100
+          },
+          {
+            "index": 0,
+            "stage": 10,
+            "duration": 500
+          }
+        ]
+      },
+      {
+        "event": "7726ef748ead0654e3e781e723d303e3455fd2b88098284d5b96230efdce91b1",
+        "frames": [
+          {
+            "index": 5,
+            "stage": 0,
+            "duration": 700
+          },
+          {
+            "index": 5,
+            "stage": 1,
+            "duration": 900
+          },
+          {
+            "index": 5,
+            "stage": 2,
+            "duration": 700
+          },
+          {
+            "index": 5,
+            "stage": 3,
+            "duration": 100
+          },
+          {
+            "index": 5,
+            "stage": 4,
+            "duration": 100
+          },
+          {
+            "index": 5,
+            "stage": 5,
+            "duration": 100
+          },
+          {
+            "index": 5,
+            "stage": 6,
+            "duration": 100
+          },
+          {
+            "index": 5,
+            "stage": 7,
+            "duration": 100
+          },
+          {
+            "index": 5,
+            "stage": 8,
+            "duration": 100
+          },
+          {
+            "index": 5,
+            "stage": 9,
+            "duration": 100
+          },
+          {
+            "index": 5,
+            "stage": 10,
+            "duration": 500
+          }
+        ]
+      },
+      {
+        "event": "22831ceb7e33c48981966eb7a94af4817996cf57ec3fcf486e49461bc1928d3a",
+        "frames": [
+          {
+            "index": 9,
+            "stage": 0,
+            "duration": 700
+          },
+          {
+            "index": 9,
+            "stage": 1,
+            "duration": 900
+          },
+          {
+            "index": 9,
+            "stage": 2,
+            "duration": 700
+          },
+          {
+            "index": 9,
+            "stage": 3,
+            "duration": 100
+          },
+          {
+            "index": 9,
+            "stage": 4,
+            "duration": 100
+          },
+          {
+            "index": 9,
+            "stage": 5,
+            "duration": 100
+          },
+          {
+            "index": 9,
+            "stage": 6,
+            "duration": 100
+          },
+          {
+            "index": 9,
+            "stage": 7,
+            "duration": 100
+          },
+          {
+            "index": 9,
+            "stage": 8,
+            "duration": 100
+          },
+          {
+            "index": 9,
+            "stage": 9,
+            "duration": 100
+          },
+          {
+            "index": 9,
+            "stage": 10,
+            "duration": 500
+          }
+        ]
+      },
+      {
+        "event": "efe81d202e86e3b7e58f252feef236a2caabe4e27e38af427e404e3da719f203",
+        "frames": [
+          {
+            "index": 14,
+            "stage": 0,
+            "duration": 700
+          },
+          {
+            "index": 14,
+            "stage": 1,
+            "duration": 900
+          },
+          {
+            "index": 14,
+            "stage": 2,
+            "duration": 700
+          },
+          {
+            "index": 14,
+            "stage": 3,
+            "duration": 100
+          },
+          {
+            "index": 14,
+            "stage": 4,
+            "duration": 100
+          },
+          {
+            "index": 14,
+            "stage": 5,
+            "duration": 100
+          },
+          {
+            "index": 14,
+            "stage": 6,
+            "duration": 100
+          },
+          {
+            "index": 14,
+            "stage": 7,
+            "duration": 100
+          },
+          {
+            "index": 14,
+            "stage": 8,
+            "duration": 100
+          },
+          {
+            "index": 14,
+            "stage": 9,
+            "duration": 100
+          },
+          {
+            "index": 14,
+            "stage": 10,
+            "duration": 500
+          }
+        ]
+      },
+      {
+        "event": "c1cb21db4844a6aad1061c464a2338c63d56496350ac2b3b1fbb23391751b090",
+        "frames": [
+          {
+            "index": 15,
+            "stage": 0,
+            "duration": 700
+          },
+          {
+            "index": 15,
+            "stage": 1,
+            "duration": 900
+          },
+          {
+            "index": 15,
+            "stage": 2,
+            "duration": 700
+          },
+          {
+            "index": 15,
+            "stage": 3,
+            "duration": 100
+          },
+          {
+            "index": 15,
+            "stage": 4,
+            "duration": 100
+          },
+          {
+            "index": 15,
+            "stage": 5,
+            "duration": 100
+          },
+          {
+            "index": 15,
+            "stage": 6,
+            "duration": 100
+          },
+          {
+            "index": 15,
+            "stage": 7,
+            "duration": 100
+          },
+          {
+            "index": 15,
+            "stage": 8,
+            "duration": 100
+          },
+          {
+            "index": 15,
+            "stage": 9,
+            "duration": 100
+          },
+          {
+            "index": 15,
+            "stage": 10,
+            "duration": 500
+          }
+        ]
+      },
+      {
+        "event": "c2d9cf21077939180ed237a5d8ee70aa348c76d46780517bdd56b7a80aee7cf0",
+        "frames": [
+          {
+            "index": 20,
+            "stage": 0,
+            "duration": 700
+          },
+          {
+            "index": 20,
+            "stage": 1,
+            "duration": 900
+          },
+          {
+            "index": 20,
+            "stage": 2,
+            "duration": 700
+          },
+          {
+            "index": 20,
+            "stage": 3,
+            "duration": 100
+          },
+          {
+            "index": 20,
+            "stage": 4,
+            "duration": 100
+          },
+          {
+            "index": 20,
+            "stage": 5,
+            "duration": 100
+          },
+          {
+            "index": 20,
+            "stage": 6,
+            "duration": 100
+          },
+          {
+            "index": 20,
+            "stage": 7,
+            "duration": 100
+          },
+          {
+            "index": 20,
+            "stage": 8,
+            "duration": 100
+          },
+          {
+            "index": 20,
+            "stage": 9,
+            "duration": 100
+          },
+          {
+            "index": 20,
+            "stage": 10,
+            "duration": 500
+          }
+        ]
+      }
+    ],
+    "reuseGroups": 12,
+    "refusalGroups": 3
+  },
+  "desktop_geometry": {
+    "focus_top": 206.796875,
+    "focus_bottom": 556.796875,
+    "timeline_top": 566.796875,
+    "timeline_bottom": 781.59375
+  },
+  "neutral_images": [
+    "pacing-final4-1428-mint-0-viewport.png",
+    "pacing-final4-1428-mint-1-viewport.png",
+    "pacing-final4-1428-mint-10-viewport.png",
+    "pacing-final4-1428-mint-2-viewport.png",
+    "pacing-final4-1428-mint-3-viewport.png",
+    "pacing-final4-1428-refinement-documents-viewport.png",
+    "pacing-final4-1428-refinement-viewport.png",
+    "pacing-final4-1428-refusal-viewport.png",
+    "pacing-final4-1428-requalification-autoplay-viewport.png",
+    "pacing-final4-1428-requalification-viewport.png",
+    "pacing-final4-1428-reuse-viewport.png",
+    "pacing-final4-390-mint-0-viewport.png",
+    "pacing-final4-390-mint-1-viewport.png",
+    "pacing-final4-390-mint-10-viewport.png",
+    "pacing-final4-390-mint-2-viewport.png",
+    "pacing-final4-390-mint-3-viewport.png",
+    "pacing-final4-390-refinement-documents-viewport.png",
+    "pacing-final4-390-refinement-viewport.png",
+    "pacing-final4-390-refusal-viewport.png",
+    "pacing-final4-390-requalification-autoplay-viewport.png",
+    "pacing-final4-390-requalification-viewport.png",
+    "pacing-final4-390-reuse-viewport.png"
+  ],
+  "commands": {
+    "focused": "HOME=/workspace/klf/h TMPDIR=/workspace/klf/t TMP=/workspace/klf/t TEMP=/workspace/klf/t /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test --test-name-pattern='knowledge|Knowledge|lineage|learning|grouped|known recipe|planned rail|cold demo' casepath-qa/autonomous-workspace-v1.test.cjs",
+    "module": "HOME=/workspace/klf/h TMPDIR=/workspace/klf/t TMP=/workspace/klf/t TEMP=/workspace/klf/t CASEPATH_PYTHON=/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test --test-reporter=spec --test-reporter-destination=/workspace/klf/e/module-pacing-final.spec --test-reporter=junit --test-reporter-destination=/workspace/klf/e/module-pacing-final.xml casepath-qa/autonomous-workspace-v1.test.cjs",
+    "browser": "HOME=/workspace/klf/h TMPDIR=/workspace/klf/t TMP=/workspace/klf/t TEMP=/workspace/klf/t /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /workspace/klf/e/browser-desktop-timeline-pacing-final4.cjs"
+  },
+  "limits": [
+    "Browser routes load a supplied actual-public filtered backend helper projection in-process; this does not measure actual backend or public network latency.",
+    "Phase geometry uses a controlled JavaScript clock; final4 adds real wall holds for native CSS opacity/transform completion.",
+    "261 tests are one existing JavaScript module file, not the full repository gate.",
+    "No Cloud all-nine demo film or replay performed; Mac owns that acceptance. Accepted2a demo behavior is frozen.",
+    "Earlier failed/raw WIP captures and logs are preserved under their original attempt names; the very first overwritten failure is honestly labeled recovered transcript, not original-file preservation."
+  ],
+  "evidence_sha256": {
+    "module-pacing-compact-final.tap": "a391be86e6ce251403ee7c748a9a81a7718cead58105b7bca1edc672ee37c83d",
+    "module-pacing-final.spec": "f505017f46e919c45c426f2a2e0dacbaf20744ecf7aa591b75daf074f8723dd3",
+    "module-pacing-final.xml": "81b244b4e72669e2b5ba267e7d799cc445f024fde97f38ad4a45154081108b3a",
+    "browser-desktop-timeline-pacing-final4.json": "80623007ebce26f964d7e46e862c9464d0f691063fad61a266d623cb8ec04ff5",
+    "browser-desktop-timeline-pacing-final4.cjs": "e1db2120fa1593f1869ab59e5e7a29b579265546b5b8e71c88ec72ea0197e770"
+  }
+}

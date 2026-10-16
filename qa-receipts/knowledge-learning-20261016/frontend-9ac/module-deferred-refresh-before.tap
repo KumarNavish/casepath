@@ -1,0 +1,50 @@
+✖ a deferred successful Knowledge refresh keeps a valid return from an unavailable pin and its final-view intent (30.053792ms)
+✖ a deferred successful Knowledge refresh respects a newer manual event stage and facet over its original explicit preference (7.664023ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 126.580135
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:2743:1
+✖ a deferred successful Knowledge refresh keeps a valid return from an unavailable pin and its final-view intent (30.053792ms)
+  AssertionError [ERR_ASSERTION]: the successful read keeps the actual newly selected receipt
+  + actual - expected
+  
+  + ''
+  - 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+  
+      at TestContext.<anonymous> (/workspace/casepath-release-ae0-shard5/casepath-qa/autonomous-workspace-v1.test.cjs:2748:66)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:2753:1
+✖ a deferred successful Knowledge refresh respects a newer manual event stage and facet over its original explicit preference (7.664023ms)
+  AssertionError [ERR_ASSERTION]: a stale requested event cannot replace the manual selection
+  + actual - expected
+  
+  + 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+  - 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc'
+  
+      at TestContext.<anonymous> (/workspace/casepath-release-ae0-shard5/casepath-qa/autonomous-workspace-v1.test.cjs:2758:66)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    expected: 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,93 @@
+{
+  "source_commit": "9ac961b42aeaf1eae11262cc58001ab1547940aa",
+  "branch": "codex/knowledge-learning-frontend-20261016",
+  "clean_head": true,
+  "source_base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "changed_paths": [
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "sha256": {
+    "js_sha256": "c7d5f4cd468b6805eaa01bc4abe870b895a62c9e06535e3c8cb48f4f36cb6294",
+    "css_sha256": "b79a05a594aa9c0ae9937696b2a0f164b2631a425344f4cc89ddb69f8031bbb7",
+    "projection_sha256": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8"
+  },
+  "executed_commands": [
+    {
+      "name": "focused",
+      "cwd": "/workspace/casepath-release-ae0-shard5",
+      "command": "HOME=/workspace/klf/h TMPDIR=/workspace/klf/t TMP=/workspace/klf/t TEMP=/workspace/klf/t /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test --test-name-pattern='knowledge|Knowledge|lineage|learning|grouped|known recipe|planned rail|cold demo' casepath-qa/autonomous-workspace-v1.test.cjs > /workspace/klf/e/module-pacing-compact-final.tap 2>&1",
+      "exit_code": 0,
+      "passed": 35,
+      "failed": 0,
+      "output": "/workspace/klf/e/module-pacing-compact-final.tap"
+    },
+    {
+      "name": "complete existing JS module file",
+      "cwd": "/workspace/casepath-release-ae0-shard5",
+      "command": "HOME=/workspace/klf/h TMPDIR=/workspace/klf/t TMP=/workspace/klf/t TEMP=/workspace/klf/t CASEPATH_PYTHON=/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test --test-reporter=spec --test-reporter-destination=/workspace/klf/e/module-pacing-final.spec --test-reporter=junit --test-reporter-destination=/workspace/klf/e/module-pacing-final.xml casepath-qa/autonomous-workspace-v1.test.cjs",
+      "exit_code": 0,
+      "passed": 261,
+      "failed": 0,
+      "duration_ms": 15319.062278,
+      "output": [
+        "/workspace/klf/e/module-pacing-final.spec",
+        "/workspace/klf/e/module-pacing-final.xml"
+      ]
+    },
+    {
+      "name": "native final4",
+      "cwd": "/workspace",
+      "command": "HOME=/workspace/klf/h TMPDIR=/workspace/klf/t TMP=/workspace/klf/t TEMP=/workspace/klf/t /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /workspace/klf/e/browser-desktop-timeline-pacing-final4.cjs > /workspace/klf/e/browser-desktop-timeline-pacing-final4.log 2>&1",
+      "exit_code": 0,
+      "passed": true,
+      "output": [
+        "/workspace/klf/e/browser-desktop-timeline-pacing-final4.json",
+        "/workspace/klf/e/browser-desktop-timeline-pacing-final4.log"
+      ]
+    }
+  ],
+  "viewport_geometry": {
+    "desktop": {
+      "width": 1428,
+      "height": 801,
+      "focus_top": 206.796875,
+      "focus_bottom": 556.796875,
+      "timeline_top": 566.796875,
+      "timeline_bottom": 781.59375
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "focus_top": 242.890625,
+      "focus_bottom": 802.890625,
+      "all_autoplay_phase_content_fits": true
+    }
+  },
+  "replay_total_ms": 36000,
+  "publication_holds_ms": {
+    "source": 700,
+    "graph": 900,
+    "documents": 700,
+    "each_of_seven_checks": 100,
+    "seal": 500
+  },
+  "motion": {
+    "actual_graph_li_sequence_step_ms": 50,
+    "last_graph_transform_finishes_ms": 800,
+    "actual_document_li_sequence_step_ms": 35,
+    "last_document_transform_finishes_ms": 530,
+    "native_before_opacity": 0,
+    "native_after_opacity": 1,
+    "motion_evidence": "/workspace/klf/e/browser-desktop-timeline-pacing-final4.json"
+  },
+  "images_prefix": "/workspace/klf/e/pacing-final4-",
+  "limits": [
+    "Browser routes load a supplied actual-public filtered backend helper projection in-process; this does not measure actual backend or public network latency.",
+    "Phase geometry uses a controlled JavaScript clock; final4 adds real wall holds for native CSS opacity/transform completion.",
+    "261 tests are one existing JavaScript module file, not the full repository gate.",
+    "No Cloud all-nine demo film or replay performed; Mac owns that acceptance. Accepted2a demo behavior is frozen.",
+    "Earlier failed/raw WIP captures and logs are preserved under their original attempt names; the very first overwritten failure is honestly labeled recovered transcript, not original-file preservation."
+  ]
+}

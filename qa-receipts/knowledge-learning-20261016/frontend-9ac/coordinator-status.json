@@ -1,0 +1,22 @@
+{
+  "candidate": "9ac961b42aeaf1eae11262cc58001ab1547940aa",
+  "status": "VISUAL_PACING_ACCEPTED_BY_MAC_PENDING_NARROW_ASYNC_RACE_FIX",
+  "focused_tests": 35,
+  "full_workspace_tests": 261,
+  "independent_review_status": "One pending deferred-refresh race: captured original pin/preference can replace newer user selection after await. Author repairing; do not freeze9ac.",
+  "native_proof": "browser-desktop-timeline-pacing-final4.json",
+  "source_sha256": {
+    "js": "c7d5f4cd468b6805eaa01bc4abe870b895a62c9e06535e3c8cb48f4f36cb6294",
+    "css": "b79a05a594aa9c0ae9937696b2a0f164b2631a425344f4cc89ddb69f8031bbb7"
+  },
+  "mac_reported_metrics_not_raw_cloud_measurement": {
+    "autoplay_seconds": 38.13,
+    "content_after_dcl_ms": 584,
+    "maximum_longtask_ms": 132,
+    "announcements": 21,
+    "errors": 0,
+    "overflow": false
+  },
+  "no_full_gate": true,
+  "no_cloud_nine_case_run": true
+}
