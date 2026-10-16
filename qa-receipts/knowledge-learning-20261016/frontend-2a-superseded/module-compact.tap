@@ -1,0 +1,83 @@
+✔ forming work keeps the whole accepted graph obligations and pinned knowledge together without an intermediate process (14.231838ms)
+✔ all displayed untrusted title, fact, source, outcome and knowledge text is escaped (3.478214ms)
+✔ knowledge qualification and quarantine render recorded proofs rather than inferred learning quality (0.678221ms)
+✔ knowledge inspection connects reusable steps, required facts, obligations and recipe rules to immutable lineage (8.22445ms)
+✔ work progress uses persisted phases, admitted interpretation and actual action/knowledge counts (1.105582ms)
+✔ action and knowledge motion uses exact accepted event objects, settles after consumption, and retains qualification distinctions (8.497023ms)
+✔ knowledge reuse and quarantine cannot be presented as newly learned qualified knowledge (0.724971ms)
+✔ recorded knowledge reuse has a readable marker without implying new qualification (0.505306ms)
+✔ internal Work, Knowledge and claim navigation adds only changed fragments and supports Back/Forward (25.771741ms)
+▶ direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance
+  ✔ sources (3.629407ms)
+  ✔ documents (2.648549ms)
+  ✔ knowledge (2.443587ms)
+  ✔ activity (2.463507ms)
+✔ direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance (12.148413ms)
+✔ an editable New claim draft retains the native form, FileList and typed values through Work and Knowledge (5.152986ms)
+✔ knowledge reuse retains the exact historical version, originating claim and applicability without proving current facts (1.501256ms)
+✔ Inspect reused knowledge navigates to and reveals the exact historical version and hash (3.947447ms)
+✔ an unavailable pinned knowledge version or hash never selects the latest version as its replacement (4.093362ms)
+✔ global Knowledge History opens the full exact DTO including versions uses quarantine and public extensions (2.651834ms)
+✖ selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends (4.814767ms)
+✔ operation delivery names existing procedure reuse and its recorded origin without changing saved knowledge (2.986048ms)
+✖ an early planned rail comes only from the complete current-run pinned catalog and carries no accepted prefix state (1.590668ms)
+✖ an uncited knowledge consequence cannot bring retained source context above the map while exact History and cited inspection remain available (1.072373ms)
+✔ learning timeline uses persisted event identities, UTC chronology and later reuse without mutating records (12.755558ms)
+✔ unavailable learning pins retain exact receipts and cannot borrow the latest process or fabricate timestamps (0.904745ms)
+✔ known recipe slots are marked from an exact pinned count without claiming checked receiving-case evidence (1.149777ms)
+✔ grouped uses retain every actual receipt and requalification keeps faithful default before/after definitions (1.676445ms)
+✔ recorded learning refusals keep all exact reasons, source links and escaped candidate text (0.634546ms)
+✔ cold demo knowledge moment needs the accepted knowledge.used prefix and exact frozen procedure pin (0.659433ms)
+✔ an unavailable exact learning pin cannot be overridden by replay position or a delayed warm-cache refresh (12.961802ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 27
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 261.015418
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:2092:1
+✖ selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends (4.814767ms)
+  ReferenceError: stage is not defined
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:678:444
+      at Array.map (<anonymous>)
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:667:2537
+      at Array.map (<anonymous>)
+      at graphMarkup (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:667:2390)
+      at operationStageMarkup (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1600:673)
+      at releaseProcedurePreview (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1432:694)
+      at openClaim (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:2632:89)
+      at openPresentationCase (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:3347:13)
+      at showDemonstration (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:2874:13)
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:2310:1
+✖ an early planned rail comes only from the complete current-run pinned catalog and carries no accepted prefix state (1.590668ms)
+  ReferenceError: stage is not defined
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:678:444
+      at Array.map (<anonymous>)
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:667:2537
+      at Array.map (<anonymous>)
+      at graphMarkup (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:667:2390)
+      at Object.operationStageMarkup (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1600:673)
+      at TestContext.<anonymous> (/workspace/casepath-release-ae0-shard5/casepath-qa/autonomous-workspace-v1.test.cjs:2316:16)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:2442:1
+✖ an uncited knowledge consequence cannot bring retained source context above the map while exact History and cited inspection remain available (1.072373ms)
+  ReferenceError: stage is not defined
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:678:444
+      at Array.map (<anonymous>)
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:667:2537
+      at Array.map (<anonymous>)
+      at graphMarkup (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:667:2390)
+      at Object.operationStageMarkup (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1600:673)
+      at TestContext.<anonymous> (/workspace/casepath-release-ae0-shard5/casepath-qa/autonomous-workspace-v1.test.cjs:2444:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)

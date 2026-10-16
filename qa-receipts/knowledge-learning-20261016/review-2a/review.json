@@ -1,0 +1,94 @@
+{
+  "review": "Independent bounded read-only Knowledge learning review",
+  "result": "No unresolved actionable source-backed findings in the assigned backend and frontend scopes.",
+  "base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "backend_commit": "6064e7ad1519cfc6d272254e78e4b522a144088b",
+  "frontend_commit": "2a12998731fb8fc065138195400863976cea11c5",
+  "frontend_preceding_commits": [
+    "d3ca90c9c0e178f9c12cc26a456932881ddae019",
+    "bbd608867afd588eb75115ee1ba27d451dfbc65c"
+  ],
+  "source_scopes": "Non-overlapping backend/frontend authored paths; review did not merge or seal them.",
+  "frontend_file_sha256": {
+    "casepath/assets/autonomous-workspace-v1.js": "e0e937412c7a5c681542ee2516c1c96b3c745b414f525d4d2323b8441ab23e3a",
+    "casepath/assets/autonomous-workspace-v1.css": "9b3ce40b6e2bc8918ea15962b63fe6dcf1f33c89f8d810c95b584a53a0395999",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "270140dc0e7e9fee5c2a2b1c032124704f047a560170915767a2c5c04307bb93"
+  },
+  "backend_file_sha256": {
+    "casepath-api/casepath_api/autonomous_api_v1.py": "0b500f347aa1dd26b886ab60b94d815a29f089196503dbf37523d8e9cf65a270",
+    "casepath-api/casepath_api/autonomous_knowledge_v1.py": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464",
+    "casepath-api/casepath_api/autonomous_store_v1.py": "bb1a681e5c910732b5f0d4191e07e2bf4255c37e73dfdc0b196e5b5d4f802b62",
+    "casepath-api/casepath_api/hosted_storage_v1.py": "f2c817cec2e04174de8e5c2b9cd60077d0be2b265d9a445128cf5c5e9b556e47"
+  },
+  "independent_checks": {
+    "frontend": {
+      "command": "node --test --test-name-pattern=\"knowledge|Knowledge|lineage|learning|known recipe|grouped uses\" casepath-qa/autonomous-workspace-v1.test.cjs",
+      "pass": 29,
+      "fail": 0,
+      "exit_code": 0,
+      "files_unchanged_during_check": true,
+      "log": "/workspace/klr/e/frontend-final-scoped-tests.log"
+    },
+    "public_projection": {
+      "event_and_command_hashes_verified": 38,
+      "workflow_heads_verified": 20,
+      "exact_reuse_pins": 27,
+      "totals": {
+        "recorded_uses": 27,
+        "receiving_claims": 20,
+        "avoided_rule_compilations": 27,
+        "avoided_rule_compilations_unknown": 0
+      },
+      "event_days": {
+        "2026-10-09": 11,
+        "2026-10-11": 9,
+        "2026-10-12": 9,
+        "2026-10-13": 9
+      },
+      "evidence": "/workspace/klr/e/public-projection-proof.json"
+    },
+    "repository": "Review clone remains clean at exact requested base; writer clones clean at reviewed commits; source diff --check passed."
+  },
+  "reviewed_contracts": [
+    "Native versions/uses/quarantined rows and immutable lineage retained; additive learning derives actual event time/identity and frozen exact pins.",
+    "Full fresh journal row/column and source-byte validation precede all derived cache hits; copies remain isolated.",
+    "Knowledge-only journal/source page options remain explicit per call, with original default callers, byte caps, gap/hash/type validation and correct byte-truncated EOF handling.",
+    "Unknown times/pins remain unknown; exact receipt sums and all refusal reasons are preserved.",
+    "Refresh preserves the event/stage/facet; invalid exact pins cannot select an unrelated fallback during a delayed warm refresh.",
+    "Ordinary buttons retain native Space behavior, Tab pauses inspection, route position and exact version links remain available.",
+    "Focus precedes timeline in DOM and visual order; final plain-copy follow-up has no functional change.",
+    "Demo chip renders inside the existing map at the exact accepted knowledge.used prefix; frozen context/op/version pins and exact receipt equality are required.",
+    "Known recipe slots never mark receiving-case evidence supported or checked.",
+    "1200ms reuse presentation hold uses operationGate only after the actual knowledge.used checkpoint; Skip/reduced motion bypass duration, pause/inspection/hidden/stop clear and wake, and epoch/route/view/claim/abort checks reject stale continuation. No extra opening Knowledge GET or state/result computation added."
+  ],
+  "resolved_findings": [
+    "Native view crash for accepted unhashable reuse identity.",
+    "Timeline rendering ReferenceError during early grouping edits.",
+    "Integer recipe-count handling and UTC chronology.",
+    "Warm refresh replay reset and duplicate same-event announcement.",
+    "Global Space handler intercepting ordinary button activation and Tab inspection pause.",
+    "Missing publication SHA in the cold demo planned-procedure fallback.",
+    "Warm invalid exact pin selecting a fallback procedure after refresh.",
+    "CSS visual order differing from DOM focus order.",
+    "Compact demo helper temporarily lacking a production render call while moved into the map."
+  ],
+  "author_or_coordinator_reported_checks": {
+    "backend": "78 focused tests and one separate unknown-hash consistency check passed; mock cold requests21\u21927/warm14\u21926, unchanged journal event bytes4520448.",
+    "frontend": "256/256 full JS tests passed at bbd6088;30 focused copy checks passed at2a1299.",
+    "layout": "Final loaded-source hash and two-phase bounds at1428px and390px were reported passed by integration/writer."
+  },
+  "limits": [
+    "No independent browser, accessibility screen-reader, hosted TTFB/long-task or first-visitor acceptance run by this reviewer.",
+    "Mac integration owner owns actual hosted, cold-reader, visual and performance acceptance.",
+    "No full gate, source sealing, source edits, media edits, merge, publication or deployment performed by this reviewer.",
+    "Public synthetic exports only; no production database, full journal, credentials or provider calls.",
+    "Final integration/sealing changes beyond the reviewed non-overlapping patches remain outside this receipt."
+  ],
+  "evidence_files": [
+    "/workspace/klr/e/backend-review.json",
+    "/workspace/klr/e/public-projection-proof.json",
+    "/workspace/klr/e/frontend-final-scoped-tests.log",
+    "/workspace/klr/e/frontend-tested-before.sha256",
+    "/workspace/klr/e/frontend-tested-after.sha256"
+  ]
+}

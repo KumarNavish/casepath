@@ -1,0 +1,291 @@
+{
+  "input_sha256": {
+    "knowledge.json": "f622c302e922303d2b97d35302637d8fa9ee917274b4e5c0ffd23ef3d650a374",
+    "knowledge-events.json": "33ebc1c11018c0676ce759f7454b058752772c6d09bbb2401acb41d1a9a51ae7",
+    "knowledge-pins.json": "4e089376fd499a9ed047d255cf4e399299e1ff1268f588f0f4a4b90e452cf097"
+  },
+  "events": 38,
+  "unique_event_hashes": 38,
+  "hashes_verified": 38,
+  "workflow_heads_verified": 20,
+  "totals": {
+    "recorded_uses": 27,
+    "receiving_claims": 20,
+    "avoided_rule_compilations": 27,
+    "avoided_rule_compilations_unknown": 0
+  },
+  "event_days": {
+    "2026-10-09": 11,
+    "2026-10-11": 9,
+    "2026-10-12": 9,
+    "2026-10-13": 9
+  },
+  "use_pin_status": {
+    "exact": 27
+  },
+  "requalification_events": [
+    {
+      "version": 4,
+      "family": "lease_termination_dispute",
+      "at": "2026-10-12T21:18:42.416059+00:00",
+      "event_sha256": "c2d9cf21077939180ed237a5d8ee70aa348c76d46780517bdd56b7a80aee7cf0",
+      "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+      "definition_sha256": "ddac1b2007e67c0e903b6394e085ef90d5e5183b06ccb0329c6baf0560a3c431",
+      "nodes": {
+        "before_count": 11,
+        "after_count": 2,
+        "added": [],
+        "removed": [
+          {
+            "node_id": "lt_abuse",
+            "label": "Screen stated reason and good-faith concerns"
+          },
+          {
+            "node_id": "lt_arrears",
+            "label": "Check arrears cure preconditions"
+          },
+          {
+            "node_id": "lt_close",
+            "label": "Record termination outcome"
+          },
+          {
+            "node_id": "lt_deadline",
+            "label": "Preserve challenge or extension deadline"
+          },
+          {
+            "node_id": "lt_evidence",
+            "label": "Collect type-specific evidence"
+          },
+          {
+            "node_id": "lt_extension",
+            "label": "Assess extension evidence"
+          },
+          {
+            "node_id": "lt_family",
+            "label": "Check separate family-home service"
+          },
+          {
+            "node_id": "lt_resolution",
+            "label": "Prepare challenge, extension or settlement"
+          },
+          {
+            "node_id": "lt_type",
+            "label": "Classify termination type"
+          }
+        ],
+        "changed": [
+          {
+            "node_id": "lt_form",
+            "label": "Assess whether the termination notice is valid",
+            "fields": [
+              "authority",
+              "document_types",
+              "kind",
+              "label",
+              "meaning",
+              "provenance",
+              "terminal"
+            ]
+          },
+          {
+            "node_id": "lt_intake",
+            "label": "Capture the received termination packet",
+            "fields": [
+              "authority",
+              "label",
+              "meaning",
+              "provenance"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "version": 2,
+      "family": "rent_increase_dispute",
+      "at": "2026-10-12T21:18:45.805860+00:00",
+      "event_sha256": "6ab7345b9a583ced4b32f5452b28866e7dd475b9277aa2e3a967e3e73f19899f",
+      "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+      "definition_sha256": "53c708285ee8d8accd5ea416ea1536614e20169c4e386c25de55c1a1d26771ba",
+      "nodes": {
+        "before_count": 10,
+        "after_count": 3,
+        "added": [],
+        "removed": [
+          {
+            "node_id": "ri_assessment",
+            "label": "Separate supported facts from open issues"
+          },
+          {
+            "node_id": "ri_close",
+            "label": "Record outcome"
+          },
+          {
+            "node_id": "ri_deadline",
+            "label": "Preserve the challenge deadline"
+          },
+          {
+            "node_id": "ri_evidence",
+            "label": "Collect missing calculation evidence"
+          },
+          {
+            "node_id": "ri_reference",
+            "label": "Reconstruct reference-rate calculation"
+          },
+          {
+            "node_id": "ri_renovation",
+            "label": "Assess renovation-cost evidence"
+          },
+          {
+            "node_id": "ri_resolution",
+            "label": "Prepare challenge or negotiated resolution"
+          }
+        ],
+        "changed": [
+          {
+            "node_id": "ri_form",
+            "label": "Assess notification context",
+            "fields": [
+              "authority",
+              "document_types",
+              "label",
+              "meaning",
+              "provenance"
+            ]
+          },
+          {
+            "node_id": "ri_intake",
+            "label": "Capture the original increase packet",
+            "fields": [
+              "authority",
+              "label",
+              "meaning",
+              "provenance"
+            ]
+          },
+          {
+            "node_id": "ri_reason",
+            "label": "Assess whether the increase notice is valid",
+            "fields": [
+              "authority",
+              "document_types",
+              "kind",
+              "label",
+              "meaning",
+              "provenance",
+              "terminal"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "version": 2,
+      "family": "defect_mold_heating",
+      "at": "2026-10-12T21:18:50.832292+00:00",
+      "event_sha256": "27b311c59d960d70d02e9709bee66205b6224610564affe4f94a73162e382bd7",
+      "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+      "definition_sha256": "cf4829a27d8fcf110b72f0cf2f56a011ff8380deda4d4bdd45de9b2bbb77b0a5",
+      "nodes": {
+        "before_count": 11,
+        "after_count": 6,
+        "added": [],
+        "removed": [
+          {
+            "node_id": "dh_close",
+            "label": "Close or hand off the file"
+          },
+          {
+            "node_id": "dh_deposit",
+            "label": "Check safeguards for official rent deposit"
+          },
+          {
+            "node_id": "dh_resolution",
+            "label": "Record repair or referral outcome"
+          },
+          {
+            "node_id": "dh_safety",
+            "label": "Escalate immediate health or safety risk"
+          },
+          {
+            "node_id": "dh_specialist",
+            "label": "Obtain technical inspection"
+          }
+        ],
+        "changed": [
+          {
+            "node_id": "dh_cause",
+            "label": "Assess supported cause",
+            "fields": [
+              "authority",
+              "document_types",
+              "label",
+              "meaning",
+              "provenance"
+            ]
+          },
+          {
+            "node_id": "dh_evidence",
+            "label": "Assess objective defect evidence",
+            "fields": [
+              "authority",
+              "document_types",
+              "label",
+              "meaning",
+              "provenance"
+            ]
+          },
+          {
+            "node_id": "dh_intake",
+            "label": "Capture the reported defect",
+            "fields": [
+              "authority",
+              "label",
+              "meaning",
+              "provenance"
+            ]
+          },
+          {
+            "node_id": "dh_notice",
+            "label": "Establish landlord knowledge",
+            "fields": [
+              "authority",
+              "document_types",
+              "label",
+              "meaning",
+              "provenance"
+            ]
+          },
+          {
+            "node_id": "dh_response",
+            "label": "Record repair and rent reduction eligibility",
+            "fields": [
+              "authority",
+              "document_types",
+              "kind",
+              "label",
+              "meaning",
+              "provenance",
+              "terminal"
+            ]
+          },
+          {
+            "node_id": "dh_scope",
+            "label": "Establish relevant tenancy terms",
+            "fields": [
+              "authority",
+              "document_types",
+              "label",
+              "meaning",
+              "provenance"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "limits": [
+    "Read-only derivation over immutable public synthetic exports; no full journal replay or production DB access.",
+    "Native source WIP imported from clone6 at review time; exact implementation commits recorded separately on final review."
+  ]
+}

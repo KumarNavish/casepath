@@ -1,0 +1,61 @@
+✔ forming work keeps the whole accepted graph obligations and pinned knowledge together without an intermediate process (11.172631ms)
+✔ all displayed untrusted title, fact, source, outcome and knowledge text is escaped (2.111667ms)
+✔ knowledge qualification and quarantine render recorded proofs rather than inferred learning quality (0.679673ms)
+✔ knowledge inspection connects reusable steps, required facts, obligations and recipe rules to immutable lineage (7.069336ms)
+✔ work progress uses persisted phases, admitted interpretation and actual action/knowledge counts (0.724279ms)
+✔ action and knowledge motion uses exact accepted event objects, settles after consumption, and retains qualification distinctions (7.424168ms)
+✔ knowledge reuse and quarantine cannot be presented as newly learned qualified knowledge (0.416775ms)
+✔ recorded knowledge reuse has a readable marker without implying new qualification (0.587668ms)
+✔ internal Work, Knowledge and claim navigation adds only changed fragments and supports Back/Forward (21.733581ms)
+▶ direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance
+  ✔ sources (2.819291ms)
+  ✔ documents (1.816882ms)
+  ✔ knowledge (1.827297ms)
+  ✔ activity (1.819726ms)
+✔ direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance (9.006394ms)
+✔ an editable New claim draft retains the native form, FileList and typed values through Work and Knowledge (2.534902ms)
+✖ knowledge reuse retains the exact historical version, originating claim and applicability without proving current facts (0.639704ms)
+✔ Inspect reused knowledge navigates to and reveals the exact historical version and hash (7.297822ms)
+✔ an unavailable pinned knowledge version or hash never selects the latest version as its replacement (2.853242ms)
+✖ global Knowledge History opens the full exact DTO including versions uses quarantine and public extensions (1.654492ms)
+✔ selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends (12.670704ms)
+✔ operation delivery names existing procedure reuse and its recorded origin without changing saved knowledge (0.498045ms)
+✔ an uncited knowledge consequence cannot bring retained source context above the map while exact History and cited inspection remain available (2.064537ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 20
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 180.571672
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:1535:1
+✖ knowledge reuse retains the exact historical version, originating claim and applicability without proving current facts (0.639704ms)
+  ReferenceError: index is not defined
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1080:1622
+      at Array.filter (<anonymous>)
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1080:1460
+      at Array.map (<anonymous>)
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1080:1244
+      at Array.map (<anonymous>)
+      at Object.knowledgeMarkup (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1080:1098)
+      at TestContext.<anonymous> (/workspace/casepath-release-ae0-shard5/casepath-qa/autonomous-workspace-v1.test.cjs:1539:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:1743:1
+✖ global Knowledge History opens the full exact DTO including versions uses quarantine and public extensions (1.654492ms)
+  ReferenceError: index is not defined
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1080:1622
+      at Array.filter (<anonymous>)
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1080:1460
+      at Array.map (<anonymous>)
+      at /workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1080:1244
+      at Array.map (<anonymous>)
+      at knowledgeMarkup (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:1080:1098)
+      at renderKnowledge (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:3758:41)
+      at showKnowledge (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:3783:29)
+      at click (/workspace/casepath-release-ae0-shard5/casepath/assets/autonomous-workspace-v1.js:3967:111)

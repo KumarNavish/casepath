@@ -1,0 +1,56 @@
+FIRST {
+  afterDcl: 156.10000002384186,
+  tasks: [
+    { start: 89.20000004768372, duration: 61 },
+    { start: 187.40000009536743, duration: 77 }
+  ],
+  playing: 'true'
+} 1 http://casepath.test/#autonomous/knowledge?knowledge=procedure.lease_termination_dispute&version=1&sha256=a7d891cf6393fcbabbd70c3d79f1989893751e9dcc880710143aec0d2df227d9&definition=16e667d898fd35aad08fc5f50a79ec04150024a98094c61c81117aa9767d8dc5&event=8629b8c34eea0eb5719d1360de7f1ce0bf67b07d3db7012648e63457cbfcdcfa&stage=0&facet=process
+{
+  "fixture": "/workspace/klp/e/public-learning-projection.json",
+  "tests": [
+    "first content, first-arrival autoplay and pause",
+    "actual lease-v2 proof-of-receipt refinement",
+    "Back restores exact event/facet/route",
+    "arrows scrub and Space toggles on replay surface",
+    "native Space activates History and opens exact DTO",
+    "390px stacks lanes, all meaningful types >=16px, reduced-motion settled",
+    "430px no horizontal overflow",
+    "all3 actual refusal reasons"
+  ],
+  "errors": [],
+  "first": {
+    "afterDcl": 156.10000002384186,
+    "tasks": [
+      {
+        "start": 89.20000004768372,
+        "duration": 61
+      },
+      {
+        "start": 187.40000009536743,
+        "duration": 77
+      }
+    ],
+    "playing": "true"
+  },
+  "desktopTasks": [
+    {
+      "start": 89.20000004768372,
+      "duration": 61
+    },
+    {
+      "start": 187.40000009536743,
+      "duration": 77
+    },
+    {
+      "start": 2236.3000000715256,
+      "duration": 125
+    }
+  ],
+  "mobile390": {
+    "width": 390,
+    "scroll": 390,
+    "min": 16
+  },
+  "ok": true
+}

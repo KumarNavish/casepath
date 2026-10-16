@@ -1,0 +1,10 @@
+{
+  "provenance": "Recovered verbatim JSON from functions.exec tool transcript; original browser-learning.json/log were overwritten by the final passing rerun. This is not an original raw file.",
+  "fixture": "/workspace/klp/e/public-learning-projection.json",
+  "tests": [],
+  "errors": [],
+  "first": {"afterDcl":174.5,"tasks":[{"start":209.79999995231628,"duration":86}],"playing":"true"},
+  "failure": {"message":"locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-au-learning-play]')\u001b[22m\n","stack":"locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-au-learning-play]')\u001b[22m\n\n    at /workspace/klf/e/browser-learning.cjs:8:323"},
+  "ok":false,
+  "diagnosis":"synchronizeLearning assigned outer data-au-learning-position, then broad selector matched outer section and textContent erased controls. Fixed by data-au-learning-position-label. initial-debug.png is the subsequent diagnostic capture showing erased content; it is not the first-attempt capture."
+}
