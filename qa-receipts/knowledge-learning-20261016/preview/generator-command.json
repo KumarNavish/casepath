@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+    "/workspace/casepath-release-ae0-shard1/qa-receipts/knowledge-learning-20261016/preview/derive_public_replay.py",
+    "/workspace/knowledge-learning-coordinator-20261016/public",
+    "/workspace/casepath-release-ae0-shard1/qa-receipts/knowledge-learning-20261016/preview/public-learning-projection.json"
+  ],
+  "source_import_path": "/workspace/casepath-release-ae0-shard6/casepath-api",
+  "exit_code": 0,
+  "source_base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "frontend_preview_commit": "d3ca90c9c0e178f9c12cc26a456932881ddae019",
+  "purpose": "Reproducible read-only presentation fixture from pinned filtered public synthetic exports; not complete native journal admission",
+  "portable_invocation": "PYTHONPATH=<projection-repository>/casepath-api python3 derive_public_replay.py <public-export-directory> <output-json>"
+}
