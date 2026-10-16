@@ -28,8 +28,17 @@ class HostedSQLFailure(HostedStorageError):
 
 MAX_BYTES = 32 * 1024 * 1024
 REQUEST_SECONDS = 12.0
+SNAPSHOT_QUERIES = 128
 INT64_MIN, INT64_MAX = -(2**63), 2**63 - 1
 _LOG = logging.getLogger(__name__)
+
+
+def _http_client():
+    limits = httpx.Limits(max_connections=8, max_keepalive_connections=4, keepalive_expiry=30)
+    return httpx.Client(follow_redirects=False, trust_env=False, limits=limits,
+        transport=httpx.HTTPTransport(retries=0, limits=limits),
+        # Retain the independent total request deadline and SDK timeouts.
+        timeout=httpx.Timeout(connect=3, read=8, write=4, pool=2))
 
 
 def _https_origin(url):
@@ -146,18 +155,17 @@ class _Cursor:
 
 class LibsqlConnection:
     """Small DB-API-compatible surface backed by bounded Hrana HTTP requests."""
-    def __init__(self, url, token, *, client=None):
+    def __init__(self, url, token, *, client=None, close_client=True):
         self._origin = _https_origin(url)
         self._base = self._origin
         self._token = token
-        self._client = client if client is not None else httpx.Client(
-            follow_redirects=False, trust_env=False,
-            transport=httpx.HTTPTransport(retries=0),
-            # A real cold budget read took 5.9 seconds. Allow that response
-            # while retaining the independent 12-second request deadline.
-            timeout=httpx.Timeout(connect=3, read=8, write=4, pool=2))
+        self._client = client if client is not None else _http_client()
+        # Injected clients retain their existing ownership unless explicitly
+        # borrowed from a database-owned HTTP pool.
+        self._close_client = close_client or client is None
         self._baton = None
         self._poisoned = self._closed = self._in_transaction = False
+        self._started = False
         self._cache = {}
 
     def __repr__(self):
@@ -188,6 +196,7 @@ class LibsqlConnection:
         if operation == 'execute':
             verb = requests[0]['stmt']['sql'].strip().split(None, 1)[0].upper()
             operation = verb if verb in {'SELECT', 'BEGIN', 'COMMIT', 'ROLLBACK', 'INSERT', 'UPDATE', 'DELETE'} else 'execute'
+        self._started = True
         try:
             with self._client.stream('POST', self._base + '/v2/pipeline',
                     headers={'Authorization': 'Bearer ' + self._token,
@@ -300,6 +309,51 @@ class LibsqlConnection:
             self._uncertain()
         return _Cursor(self._result(response[0].get('result')))
 
+    def read_snapshot(self, queries):
+        """Return bounded SELECT results from one fully closed read transaction.
+
+        Only a fresh connection can perform this operation. Every acknowledgement
+        and decoded result is checked before any cursor escapes; an uncertain or
+        failed pipeline is poisoned rather than retried or partially admitted.
+        """
+        self._usable()
+        if self._started or self._in_transaction or self._baton is not None:
+            raise HostedStorageError('A read snapshot requires a fresh connection.')
+        if not isinstance(queries, (tuple, list)) or not 1 <= len(queries) <= SNAPSHOT_QUERIES:
+            raise HostedStorageError('A read snapshot exceeds its SELECT statement bound.')
+        statements = []
+        for query in queries:
+            if not isinstance(query, (tuple, list)) or len(query) != 2:
+                raise HostedStorageError('Invalid read snapshot statement.')
+            statement, _, kind = self._statement(*query)
+            # Strip SQL literals, quoted identifiers and comments before checking
+            # for additional statements. A single trailing semicolon is allowed.
+            unquoted = re.sub(r"'(?:''|[^'])*'|\"(?:\"\"|[^\"])*\"|`(?:``|[^`])*`|\[[^\]]*\]|"
+                              r"--[^\n]*(?:\n|$)|/\*[\s\S]*?\*/", ' ', query[0])
+            if kind != 'SELECT' or ';' in unquoted.rstrip().removesuffix(';'):
+                raise HostedStorageError('A read snapshot accepts SELECT statements only.')
+            statements.append(statement)
+        begin, _, _ = self._statement('BEGIN')
+        commit, _, _ = self._statement('COMMIT')
+        requests = [{'type': 'execute', 'stmt': statement} for statement in (begin, *statements, commit)]
+        requests.append({'type': 'close'})
+        try:
+            responses = self._send(requests, ending=True)
+        except HostedSQLFailure:
+            self._uncertain()
+        if self._baton is not None or responses[-1] != {'type': 'close'}:
+            self._uncertain()
+        # Parse transaction acknowledgements as strictly as SELECT results.
+        parsed = tuple(self._result(response.get('result')) for response in responses[:-1])
+        for result in (parsed[0], parsed[-1]):
+            if result.names or result.rows or result.rowcount != 0 or result.lastrowid not in (None, 0):
+                self._uncertain()
+        if any(result.rowcount != 0 or result.lastrowid not in (None, 0) for result in parsed[1:-1]):
+            self._uncertain()
+        self._in_transaction = False
+        self._cache.clear()
+        return tuple(_Cursor(result) for result in parsed[1:-1])
+
     def prefetch(self, queries):
         """Cache (SELECT SQL, positional parameters) pairs within this transaction."""
         self._usable()
@@ -377,7 +431,8 @@ class LibsqlConnection:
         finally:
             self._closed = True
             self._cache.clear()
-            self._client.close()
+            if self._close_client:
+                self._client.close()
 
     def __enter__(self):
         self._usable()
@@ -398,7 +453,7 @@ class LibsqlConnection:
 
 
 class TursoDatabase:
-    def __init__(self, url, token, *, client_factory=None):
+    def __init__(self, url, token, *, client_factory=None, reuse_http=False):
         if not isinstance(url, str) or not url.startswith('libsql://'):
             raise ValueError('A remote libSQL database URL is required.')
         try:
@@ -408,10 +463,22 @@ class TursoDatabase:
         if not isinstance(token, str) or len(token) < 32:
             raise ValueError('A server database credential is required.')
         self._token, self._client_factory = token, client_factory
+        self._closed = False
+        self._shared_client = (client_factory() if client_factory is not None else _http_client()) if reuse_http else None
 
     def __repr__(self):
         return 'TursoDatabase(credential=<redacted>)'
 
     def connect(self):
+        if self._closed:
+            raise HostedStorageError('The persistent database transport is closed.')
+        if self._shared_client is not None:
+            return LibsqlConnection(self._url, self._token, client=self._shared_client, close_client=False)
         client = self._client_factory() if self._client_factory is not None else None
         return LibsqlConnection(self._url, self._token, client=client)
+
+    def close(self):
+        if not self._closed:
+            self._closed = True
+            if self._shared_client is not None:
+                self._shared_client.close()
