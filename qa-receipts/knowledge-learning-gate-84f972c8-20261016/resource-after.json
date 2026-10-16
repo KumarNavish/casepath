@@ -1,0 +1,36 @@
+{
+  "free_bytes": 4699951104,
+  "tmp_free_bytes": 218341376,
+  "minimum_observed_workspace_free_bytes": 3138469888,
+  "floor_bytes": 3221225472,
+  "minimum_actual_attempt_start_free_bytes": 3341672448,
+  "all_attempt_start_headroom_checks_passed": true,
+  "maximum_prepare_plus_test_interval_concurrency": 3,
+  "ceiling": 3,
+  "floor_continuously_satisfied": false,
+  "below_floor_observations": [
+    {
+      "epoch": 1792177092.0525973,
+      "shard": 6,
+      "free_bytes": 3141554176,
+      "tmp_free_bytes": 218341376,
+      "active": {
+        "6": "test",
+        "1": "test",
+        "2": "prepare"
+      }
+    },
+    {
+      "epoch": 1792177094.6025202,
+      "shard": 1,
+      "free_bytes": 3138469888,
+      "tmp_free_bytes": 218341376,
+      "active": {
+        "6": "test",
+        "1": "test",
+        "2": "prepare"
+      }
+    }
+  ],
+  "qualification": "Transient normalprepare2 uv-cache allocation exceeded the 300MiB estimate; no test attempt started below floor; raw violation retained; completed owned cache was retired after successful prepare; extra completed reproducible checkout retired before subsequent prepares."
+}

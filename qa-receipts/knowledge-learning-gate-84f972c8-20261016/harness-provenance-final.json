@@ -1,0 +1,62 @@
+[
+  {
+    "path": "coordinator/bootstrap.py",
+    "sha256": "5069d6731c38aff2a4b0bea1b368c1ba7f2f18ca8718822714a5f240ca786698"
+  },
+  {
+    "path": "coordinator/dispatch.py",
+    "sha256": "9b1b18c3317e40242227a79e7ca97c4d7a86c72ccaf737293fb16f34bd5cf340"
+  },
+  {
+    "path": "coordinator/inventory.py",
+    "sha256": "94bd5754fa95ed4ceca405df7f3181066144c6eadb35ec88161cfd97118fa56d"
+  },
+  {
+    "path": "coordinator/reconcile.py",
+    "sha256": "3f917e03d1b056c95f64ce4174b3c20f223b1c859e2b4897a490a702068dc10e"
+  },
+  {
+    "path": "coordinator/report.py",
+    "sha256": "1923ce6a65ade90cbd0b84cdf0b6f1e3ef9c2745f89b357a860697357447fb5b"
+  },
+  {
+    "path": "coordinator/retire_completed_evidence_checkout.py",
+    "sha256": "2fedb0410d859ffbf18d769211c325182c6ae25efd1d01c557c737e44e2af2cc"
+  },
+  {
+    "path": "coordinator/retire_completed_inventory.py",
+    "sha256": "6e47bba2b1f570bd9884a4062b8445e42b9aa3371450ab14f2dc9c3b5f185927"
+  },
+  {
+    "path": "coordinator/root-reconcile84.py",
+    "sha256": "b4776b17a574221606779849d31e605c4c55568f5f822cc788a471320f214497"
+  },
+  {
+    "path": "coordinator/wait_status.py",
+    "sha256": "7285413f52f88d1d7ef1ecbc122705c1bc08a67c212b9795f7b1424ecb203bc3"
+  },
+  {
+    "path": "harness/bundle.py",
+    "sha256": "f20a5a4123b1c772eb0889b369cd6e991d218a6e0a8b58e9a7e45f044493ed4c"
+  },
+  {
+    "path": "harness/casepath_shard_observer.py",
+    "sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+  },
+  {
+    "path": "harness/prepare_clones.py",
+    "sha256": "7b717d369d579de22bb10e2b811c67b88fab9ce9fda57c6ad3e959a8d9a76fbd"
+  },
+  {
+    "path": "harness/run_shard.py",
+    "sha256": "3d9b11d32f5cd09568a733699e1f3619bce5bc9bdd6c236d59453b2277add5da"
+  },
+  {
+    "path": "harness/status.py",
+    "sha256": "72da90339fa0891190507938626b9e051b69fe5318c2509080a13b9533f80687"
+  },
+  {
+    "path": "harness/verify_prepared_capsules.py",
+    "sha256": "e5143a4aee58e9e363eaf0b224e7d515d293e806a60c8eded4e97aaabd5cac61"
+  }
+]

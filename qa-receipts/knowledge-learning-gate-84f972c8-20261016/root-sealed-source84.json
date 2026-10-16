@@ -1,0 +1,68 @@
+{
+  "candidate": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "manifest_sha256": "83d09acf9bfae53fd19d5effbae68bf2db2d20d3844938f0c6734454fd0a8382",
+  "source_files": 1709,
+  "reviewed_worker_bytes": [
+    {
+      "scope": "backend",
+      "path": "casepath-api/casepath_api/autonomous_api_v1.py",
+      "sha256": "0b500f347aa1dd26b886ab60b94d815a29f089196503dbf37523d8e9cf65a270",
+      "matches_reviewed_worker_bytes": true
+    },
+    {
+      "scope": "backend",
+      "path": "casepath-api/casepath_api/autonomous_knowledge_v1.py",
+      "sha256": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464",
+      "matches_reviewed_worker_bytes": true
+    },
+    {
+      "scope": "backend",
+      "path": "casepath-api/casepath_api/autonomous_store_v1.py",
+      "sha256": "bb1a681e5c910732b5f0d4191e07e2bf4255c37e73dfdc0b196e5b5d4f802b62",
+      "matches_reviewed_worker_bytes": true
+    },
+    {
+      "scope": "backend",
+      "path": "casepath-api/casepath_api/hosted_storage_v1.py",
+      "sha256": "f2c817cec2e04174de8e5c2b9cd60077d0be2b265d9a445128cf5c5e9b556e47",
+      "matches_reviewed_worker_bytes": true
+    },
+    {
+      "scope": "backend",
+      "path": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py",
+      "sha256": "71ab8c15da8274814dfe35850f2a13e72d27163971f76b8e8e2f6057b97a9ef9",
+      "matches_reviewed_worker_bytes": true
+    },
+    {
+      "scope": "backend",
+      "path": "casepath-api/tests/test_hosted_source_batch_v1.py",
+      "sha256": "c0bfc24b47466983f2c2164e24b677aef6748c94ab18d67ed9ac1df107d23d3b",
+      "matches_reviewed_worker_bytes": true
+    },
+    {
+      "scope": "backend",
+      "path": "casepath-api/tests/test_public_hosted_read_only_v1.py",
+      "sha256": "80e27ba4d1f99672fa94584e0a920fac1ff13ad080d4d9132255c6d83fdea783",
+      "matches_reviewed_worker_bytes": true
+    },
+    {
+      "scope": "frontend",
+      "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
+      "sha256": "b9284fdefa5eb8034b60b960ed450a67b6cc426f4f396345b6b3af203fe3c27a",
+      "matches_reviewed_worker_bytes": true
+    },
+    {
+      "scope": "frontend",
+      "path": "casepath/assets/autonomous-workspace-v1.css",
+      "sha256": "b79a05a594aa9c0ae9937696b2a0f164b2631a425344f4cc89ddb69f8031bbb7",
+      "matches_reviewed_worker_bytes": true
+    },
+    {
+      "scope": "frontend",
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "sha256": "0532685678ea6c11a39c147ad18ae8a69da726d31e4849463494daebacea46c2",
+      "matches_reviewed_worker_bytes": true
+    }
+  ],
+  "verified_by": "root immutable git object read; no checkout/source mutation"
+}

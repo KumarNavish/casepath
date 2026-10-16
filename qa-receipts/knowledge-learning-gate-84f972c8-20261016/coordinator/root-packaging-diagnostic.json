@@ -1,0 +1,10 @@
+{
+  "scope": "Packaging only; no test rerun or receipt-byte changes",
+  "initial_verification": "Failed assertion because root verifier expected flat archive member paths",
+  "original_error": "Traceback (most recent call last): File <stdin>, line20, in <module>; AssertionError",
+  "diagnosis": "Archive uses one declared top directory named casepath-knowledge-learning-gate-84f972c8-20261016",
+  "corrected_verification": "Exact prefix required; absolute/traversal paths, links and duplicates rejected; every regular member byte hash checked against original manifest",
+  "input_archive_unchanged": true,
+  "subsequent_scan_of_old_partial_export": "Ran on the original partial tree because the shell continued after the verifier exception; did not scan final export until corrected verification completed",
+  "verified_epoch": 1792178405.1172047
+}

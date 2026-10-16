@@ -1,0 +1,38 @@
+[
+  {
+    "command": [
+      "python3",
+      "/workspace/casepath-knowledge-learning-gate-84f972c8-20261016/coordinator/reconcile.py"
+    ],
+    "cwd": "/workspace",
+    "environment_overrides": {
+      "HOME": "/workspace/kh0",
+      "TMPDIR": "/workspace/kt0",
+      "TMP": "/workspace/kt0",
+      "TEMP": "/workspace/kt0"
+    },
+    "exit_code": 0,
+    "script_sha256": "3f917e03d1b056c95f64ce4174b3c20f223b1c859e2b4897a490a702068dc10e",
+    "stdout_file": "/workspace/casepath-knowledge-learning-gate-84f972c8-20261016/coordinator/reconciliation.log",
+    "observed_success": true,
+    "metadata_recorded_epoch": 1792178310.3547306
+  },
+  {
+    "command": [
+      "python3",
+      "/workspace/casepath-knowledge-learning-gate-84f972c8-20261016/coordinator/report.py"
+    ],
+    "cwd": "/workspace",
+    "environment_overrides": {
+      "HOME": "/workspace/kh0",
+      "TMPDIR": "/workspace/kt0",
+      "TMP": "/workspace/kt0",
+      "TEMP": "/workspace/kt0"
+    },
+    "exit_code": 0,
+    "script_sha256": "1923ce6a65ade90cbd0b84cdf0b6f1e3ef9c2745f89b357a860697357447fb5b",
+    "stdout_file": null,
+    "observed_success": true,
+    "metadata_recorded_epoch": 1792178310.3547587
+  }
+]

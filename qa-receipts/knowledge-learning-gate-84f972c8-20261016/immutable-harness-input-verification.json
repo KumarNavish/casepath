@@ -1,0 +1,80 @@
+[
+  {
+    "prior_harness": "bundle.py",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "b5eefc54d87ac04b8d8d7705fc11f20ca245da973fcee6aae46eab7b299dd488",
+    "matches_recorded_copied_source": true
+  },
+  {
+    "prior_harness": "casepath_shard_observer.py",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "matches_recorded_copied_source": true
+  },
+  {
+    "prior_harness": "finalize.py",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "8dca270815b4b6f6487d72f483900ebf26790cc248c0227b148cb2d703a92c00",
+    "matches_recorded_copied_source": true
+  },
+  {
+    "prior_harness": "preflight_inventory.py",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "d83a30e0ad0ffbec84369555eb26a5452c287008a055595a0d5dc91f65f7c2c4",
+    "matches_recorded_copied_source": true
+  },
+  {
+    "prior_harness": "prepare_clones.py",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "254b482e706a235b597beeaee9a4ea021c54cf8a4adc61c85b862a27dab5587c",
+    "matches_recorded_copied_source": true
+  },
+  {
+    "prior_harness": "run_shard.py",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "b6ea2da41e02e8ea430f1d00ca8734b3e4c3eddec5312f56ecf451e8648f5387",
+    "matches_recorded_copied_source": true
+  },
+  {
+    "prior_harness": "status.py",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "f9a86b58398665894ab4d3af177df30724845000a4f2886206b59dfc635403c1",
+    "matches_recorded_copied_source": true
+  },
+  {
+    "prior_harness": "verify_prepared_capsules.py",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "07ef97999d1d5e7b6463594f2f2bd9b606bc7da326f866dcaf513e1a5f0a5c12",
+    "matches_recorded_copied_source": true
+  },
+  {
+    "input": "mac-ids.txt",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "byte_equal": true
+  },
+  {
+    "input": "known-skips.json",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7",
+    "byte_equal": true
+  },
+  {
+    "input": "coordinator/prior-shard-map.json",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "88e0de7035e3b7251e141784615154f512a31ebe03effc99301db3f7ac109156",
+    "byte_equal": true
+  },
+  {
+    "input": "coordinator/prior-collected-ids.txt",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+    "byte_equal": true
+  },
+  {
+    "input": "coordinator/prior-per-file-durations.json",
+    "immutable_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+    "sha256": "db310b0e2e587029dcd6b2e647f878d0601c4deb51b31301aa9598ceea02c4b8",
+    "byte_equal": true
+  }
+]

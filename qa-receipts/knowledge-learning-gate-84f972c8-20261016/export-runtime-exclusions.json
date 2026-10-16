@@ -1,0 +1,13 @@
+{
+  "epoch": 1792177706.1523962,
+  "published_raw_archive_excludes": [
+    "*.db",
+    "*.sqlite3",
+    "runtime directories",
+    "local per-shard retirement snapshot *.tar.gz containing local runtime DBs"
+  ],
+  "local_original_databases_and_snapshot_archives_preserved": true,
+  "standard_uncompressed_command_prepare_result_observer_JUnit_source_proofs_included": true,
+  "snapshot_hash_receipts_included": true,
+  "reason": "Raw observer/JUnit/source receipts establish the gate; synthetic runtime databases and duplicate local snapshots are not required in export"
+}

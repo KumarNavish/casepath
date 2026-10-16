@@ -1,0 +1,38 @@
+{
+  "candidate": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "full_inventory": 2630,
+  "baseline_inventory": 2613,
+  "inventory_delta": 17,
+  "new_ids": 17,
+  "removed_ids": 0,
+  "cloud_assigned": 2503,
+  "mac_explicit_partition": 127,
+  "mac_attested_passed": 127,
+  "mac_raw_inspected_in_cloud": false,
+  "known_skips": 10,
+  "counts": {
+    "1": 9,
+    "2": 421,
+    "3": 651,
+    "4": 391,
+    "5": 346,
+    "6": 685
+  },
+  "estimated_phase_seconds": {
+    "1": 578.6547044608742,
+    "2": 438.1693808188429,
+    "3": 433.4810646554688,
+    "4": 411.1071720237378,
+    "5": 419.43551881751046,
+    "6": 404.1732947980054
+  },
+  "no_overlap_or_gaps": true,
+  "whole_file_partition": true,
+  "collection_physical_clone": "shard6",
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "cloud_ids_sha256": "ddd3c574e4adc47ac7ae146e42cd781e761510ee02cd2dc20cfccb16713bd819",
+  "full_ids_sha256": "6b8e6b1fb11fe1b47b7da727ee0adfc3c3bc90a69c74646b5b3e4391d85c847c",
+  "free_bytes": 3825618944,
+  "minimum_headroom_bytes": 3221225472,
+  "test_run_authorization": "FINAL_GATE_AUTHORIZED"
+}

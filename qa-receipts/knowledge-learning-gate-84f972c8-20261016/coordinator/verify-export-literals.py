@@ -4,7 +4,7 @@ R=Path('/workspace/casepath-transport-gate-evidence-git-20261015/qa-receipts/kno
 pattern=re.compile(r'(?i)Bearer\s+[A-Za-z0-9._~+/=-]{16,}|\b(?:sk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16})\b|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')
 allowed={'ded144673eb432bbf8016c59507b47046a77932cffe21508eed4fcd60cfa9126':('casepath-api/tests/test_multi_agent_v15.py','test_response_bridge_classifies_sdk_429_once_without_raw_provider_material',2718),'1dbe343edf6cc7e5cf913289c6d6f679ccba13f3aa60476d7c76d1970f40f126':('casepath-api/tests/test_multi_agent_v15.py','test_response_bridge_classifies_top_level_upstream_rejection_without_raw',2663),'f75950e910c3440ad709f67cfdbec066352808f62e8111d13e7e2957f9915c8a':('casepath/tools/test_casepath_release.py','test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance',6599)}
 manifest=json.loads((REPO/'casepath/source-manifest.json').read_text());sealed={x['path']:x for x in manifest['files']};collected=json.loads((R/'inventory/collected.json').read_text());occurrences={};values={}
-files=[R/line.split('  ',1)[1] for line in (R/'raw-evidence-files-SHA256SUMS.txt').read_text().splitlines()]
+files=[R/line.split('  ',1)[1] for line in (R/'coordinator/export-scan-files-SHA256SUMS.txt').read_text().splitlines()]
 for p in files:
  try:text=p.read_text()
  except UnicodeDecodeError:continue

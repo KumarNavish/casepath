@@ -1,0 +1,27 @@
+{
+  "epoch": 1792177668.1403794,
+  "port4173_free": true,
+  "unrelated4189_and4190_listeners_preserved": true,
+  "read_only_checks": [
+    {
+      "command": [
+        "ss",
+        "-ltnp",
+        "sport = :4173"
+      ],
+      "exit_code": 0,
+      "stdout": "State Recv-Q Send-Q Local Address:Port Peer Address:PortProcess\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ss",
+        "-ltnp",
+        "sport = :4189 or sport = :4190"
+      ],
+      "exit_code": 0,
+      "stdout": "State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess\nLISTEN 0      0          127.0.0.1:4190      0.0.0.0:*          \nLISTEN 0      0          127.0.0.1:4189      0.0.0.0:*          \n",
+      "stderr": ""
+    }
+  ]
+}
