@@ -296,6 +296,18 @@ class HostedAutonomousStore(AutonomousStore):
                  'AND (? OR loop_id>? OR (loop_id=? AND sequence>?)) '
                  'ORDER BY loop_id,sequence LIMIT ?)) '
                  'WHERE __read_total<=? OR __read_position=1 ORDER BY loop_id,sequence')
+        if count_candidates:
+            # Knowledge windows only keys and sizes. Carrying every payload
+            # through the window materializes the entire candidate roster
+            # before the byte cut. Fetch complete rows after that cut in this
+            # same snapshot; j.* retains every authority column for the cache.
+            query = ('SELECT j.*,p.__read_size,p.__read_total,p.__read_position,p.__read_candidates FROM '
+                     '(SELECT *,sum(__read_size) OVER (ORDER BY loop_id,sequence) AS __read_total,'
+                     'row_number() OVER (ORDER BY loop_id,sequence) AS __read_position' + count + ' FROM '
+                     '(SELECT session_id,loop_id,sequence,(' + size + ') AS __read_size FROM claim_loop_events WHERE session_id=? '
+                     'AND (? OR loop_id>? OR (loop_id=? AND sequence>?)) ORDER BY loop_id,sequence LIMIT ?)) AS p '
+                     'CROSS JOIN claim_loop_events AS j WHERE (p.__read_total<=? OR p.__read_position=1) '
+                     'AND j.session_id=p.session_id AND j.loop_id=p.loop_id AND j.sequence=p.sequence ORDER BY p.loop_id,p.sequence')
         rows, after_loop, after_sequence = [], '', -1
         with self.journal.connect() as connection:
             # A read transaction fixes the accepted head across all pages. It
