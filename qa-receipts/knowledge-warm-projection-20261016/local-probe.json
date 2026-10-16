@@ -1,0 +1,294 @@
+{
+  "contract": "casepath.native-knowledge-proof-probe/1",
+  "schema_initialization": false,
+  "remote_writes": false,
+  "shared_http_client": true,
+  "closed_page_gap_seconds": 0,
+  "rounds": [
+    {
+      "index": 0,
+      "kind": "cold",
+      "ok": true,
+      "projection_sha256": "de7006c81d9b91b54fe6e6f49343345c27b0b9016a5ce4b14e5b779cfd85ea57",
+      "projection_bytes": 708,
+      "versions": 0,
+      "uses": 0,
+      "quarantined": 0,
+      "seconds": 0.01831195002887398,
+      "http_indices": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "response_bytes": 493441
+    },
+    {
+      "index": 1,
+      "kind": "warm",
+      "ok": true,
+      "projection_sha256": "de7006c81d9b91b54fe6e6f49343345c27b0b9016a5ce4b14e5b779cfd85ea57",
+      "projection_bytes": 708,
+      "versions": 0,
+      "uses": 0,
+      "quarantined": 0,
+      "seconds": 0.004646738991141319,
+      "http_indices": [
+        5,
+        6
+      ],
+      "response_bytes": 7593
+    }
+  ],
+  "http": [
+    {
+      "index": 0,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "SELECT",
+        "COMMIT"
+      ],
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "058bfd57db3b208cc90f33698bf72a7db199838356d2cc2d9611564d4b993421",
+        "57729fe4db4a20fe210cfbf30b13e855f7c07bf71ccf2dca1fe82cce3a2f6204",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": true,
+      "request_bytes": 1581,
+      "response_bytes": 54533,
+      "headers_seconds": 0.0022680279798805714,
+      "body_end_seconds": 0.002309278934262693,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.002315046964213252,
+      "body_seconds": 4.125095438212156e-05
+    },
+    {
+      "index": 1,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "COMMIT"
+      ],
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "57729fe4db4a20fe210cfbf30b13e855f7c07bf71ccf2dca1fe82cce3a2f6204",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": true,
+      "request_bytes": 1322,
+      "response_bytes": 881,
+      "headers_seconds": 0.001234252005815506,
+      "body_end_seconds": 0.0012557930313050747,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.001260681077837944,
+      "body_seconds": 2.154102548956871e-05
+    },
+    {
+      "index": 2,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "SELECT",
+        "COMMIT"
+      ],
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "058bfd57db3b208cc90f33698bf72a7db199838356d2cc2d9611564d4b993421",
+        "f9d306583df468b1bda0fd3ff9e8b3b9b02c4657c26f6b62535e2ef20f99d808",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": false,
+      "request_bytes": 3422,
+      "response_bytes": 4181,
+      "headers_seconds": 0.0015582609921693802,
+      "body_end_seconds": 0.0015740239759907126,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.0015777390217408538,
+      "body_seconds": 1.5762983821332455e-05
+    },
+    {
+      "index": 3,
+      "kinds": [
+        "SELECT"
+      ],
+      "sql_sha256": [
+        "ec64eaea53bdc56d0cabfb8fe508f6eceb3532ece54fc1dd228a1aeecf291456"
+      ],
+      "raw_journal_page": false,
+      "request_bytes": 788,
+      "response_bytes": 430434,
+      "headers_seconds": 0.0032879640348255634,
+      "body_end_seconds": 0.003327321959659457,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.003331777988933027,
+      "body_seconds": 3.9357924833893776e-05
+    },
+    {
+      "index": 4,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "SELECT",
+        "COMMIT"
+      ],
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "91282400255cf23eea9de335df1508d7a881f5f93f27d15fd85cadcbf1c95f09",
+        "b12a21957de887f091005cd595854f3437d21ce5a13ca8ca75c08733930b618b",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": false,
+      "request_bytes": 2235,
+      "response_bytes": 3412,
+      "headers_seconds": 0.001595454989001155,
+      "body_end_seconds": 0.0016087749972939491,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.0016124299727380276,
+      "body_seconds": 1.3320008292794228e-05
+    },
+    {
+      "index": 5,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "SELECT",
+        "COMMIT"
+      ],
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "058bfd57db3b208cc90f33698bf72a7db199838356d2cc2d9611564d4b993421",
+        "f9d306583df468b1bda0fd3ff9e8b3b9b02c4657c26f6b62535e2ef20f99d808",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": false,
+      "request_bytes": 3422,
+      "response_bytes": 4181,
+      "headers_seconds": 0.0013034440344199538,
+      "body_end_seconds": 0.0013166440185159445,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.001320239040069282,
+      "body_seconds": 1.3199984095990658e-05
+    },
+    {
+      "index": 6,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "SELECT",
+        "COMMIT"
+      ],
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "91282400255cf23eea9de335df1508d7a881f5f93f27d15fd85cadcbf1c95f09",
+        "b12a21957de887f091005cd595854f3437d21ce5a13ca8ca75c08733930b618b",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": false,
+      "request_bytes": 2235,
+      "response_bytes": 3412,
+      "headers_seconds": 0.0013764719478785992,
+      "body_end_seconds": 0.0014254149282351136,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.0014281689655035734,
+      "body_seconds": 4.8942980356514454e-05
+    }
+  ],
+  "acknowledgements": [
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    }
+  ],
+  "closed_page_gap_exercised": false,
+  "all_ok": true
+}

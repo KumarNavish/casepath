@@ -1,0 +1,307 @@
+{
+  "contract": "casepath.native-knowledge-proof-probe/1",
+  "source_sha256": {
+    "casepath_api.autonomous_knowledge_v1": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464",
+    "casepath_api.autonomous_store_v1": "431c7e0f70b5fcbcf038dd2a7d7bc7dd717efe055c2593618bc748d55619c38d",
+    "casepath_api.hosted_storage_v1": "e3b2b080e9ddbb2e7469e59a9c51b6d98a9095af5bf62749548d8cf312a76b27",
+    "casepath_api.hosted_sql_v1": "e38ce33e138f85a1d5abdab8ca8e03ce0a6f9d2fd800558d13be2f129764ce17"
+  },
+  "schema_initialization": false,
+  "remote_writes": false,
+  "shared_http_client": true,
+  "closed_page_gap_seconds": 5.2,
+  "rounds": [
+    {
+      "index": 0,
+      "kind": "cold",
+      "ok": true,
+      "projection_sha256": "b5c7659ae6f18e54615b5975b7a5f109d4ab58e10154633de1950cbd9878607e",
+      "projection_bytes": 708,
+      "versions": 0,
+      "uses": 0,
+      "quarantined": 0,
+      "seconds": 5.21395643602591,
+      "http_indices": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "response_bytes": 493441
+    },
+    {
+      "index": 1,
+      "kind": "warm",
+      "ok": true,
+      "projection_sha256": "b5c7659ae6f18e54615b5975b7a5f109d4ab58e10154633de1950cbd9878607e",
+      "projection_bytes": 708,
+      "versions": 0,
+      "uses": 0,
+      "quarantined": 0,
+      "seconds": 0.003946846001781523,
+      "http_indices": [
+        5,
+        6
+      ],
+      "response_bytes": 7593
+    }
+  ],
+  "http": [
+    {
+      "index": 0,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "SELECT",
+        "COMMIT"
+      ],
+      "close_requested": true,
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "058bfd57db3b208cc90f33698bf72a7db199838356d2cc2d9611564d4b993421",
+        "57729fe4db4a20fe210cfbf30b13e855f7c07bf71ccf2dca1fe82cce3a2f6204",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": true,
+      "request_bytes": 1581,
+      "response_bytes": 54533,
+      "headers_seconds": 0.0013357610441744328,
+      "body_end_seconds": 0.0013524750247597694,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.0013551999581977725,
+      "body_seconds": 1.6713980585336685e-05
+    },
+    {
+      "index": 1,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "COMMIT"
+      ],
+      "close_requested": true,
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "57729fe4db4a20fe210cfbf30b13e855f7c07bf71ccf2dca1fe82cce3a2f6204",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": true,
+      "request_bytes": 1322,
+      "response_bytes": 881,
+      "headers_seconds": 0.00121591507922858,
+      "body_end_seconds": 0.0012585381045937538,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.001262434059754014,
+      "body_seconds": 4.262302536517382e-05
+    },
+    {
+      "index": 2,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "SELECT",
+        "COMMIT"
+      ],
+      "close_requested": true,
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "058bfd57db3b208cc90f33698bf72a7db199838356d2cc2d9611564d4b993421",
+        "f9d306583df468b1bda0fd3ff9e8b3b9b02c4657c26f6b62535e2ef20f99d808",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": false,
+      "request_bytes": 3422,
+      "response_bytes": 4181,
+      "headers_seconds": 0.001327098929323256,
+      "body_end_seconds": 0.001338756992481649,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.0013413599226623774,
+      "body_seconds": 1.1658063158392906e-05
+    },
+    {
+      "index": 3,
+      "kinds": [
+        "SELECT"
+      ],
+      "close_requested": true,
+      "sql_sha256": [
+        "ec64eaea53bdc56d0cabfb8fe508f6eceb3532ece54fc1dd228a1aeecf291456"
+      ],
+      "raw_journal_page": false,
+      "request_bytes": 788,
+      "response_bytes": 430434,
+      "headers_seconds": 0.0020865899277850986,
+      "body_end_seconds": 0.0021144410129636526,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.0021178160095587373,
+      "body_seconds": 2.7851085178554058e-05
+    },
+    {
+      "index": 4,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "SELECT",
+        "COMMIT"
+      ],
+      "close_requested": true,
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "91282400255cf23eea9de335df1508d7a881f5f93f27d15fd85cadcbf1c95f09",
+        "b12a21957de887f091005cd595854f3437d21ce5a13ca8ca75c08733930b618b",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": false,
+      "request_bytes": 2235,
+      "response_bytes": 3412,
+      "headers_seconds": 0.0011993099469691515,
+      "body_end_seconds": 0.0012087139766663313,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.0012116379803046584,
+      "body_seconds": 9.404029697179794e-06
+    },
+    {
+      "index": 5,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "SELECT",
+        "COMMIT"
+      ],
+      "close_requested": true,
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "058bfd57db3b208cc90f33698bf72a7db199838356d2cc2d9611564d4b993421",
+        "f9d306583df468b1bda0fd3ff9e8b3b9b02c4657c26f6b62535e2ef20f99d808",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": false,
+      "request_bytes": 3422,
+      "response_bytes": 4181,
+      "headers_seconds": 0.0009545889915898442,
+      "body_end_seconds": 0.000964062986895442,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.0009666370460763574,
+      "body_seconds": 9.473995305597782e-06
+    },
+    {
+      "index": 6,
+      "kinds": [
+        "BEGIN",
+        "SELECT",
+        "SELECT",
+        "COMMIT"
+      ],
+      "close_requested": true,
+      "sql_sha256": [
+        "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+        "91282400255cf23eea9de335df1508d7a881f5f93f27d15fd85cadcbf1c95f09",
+        "b12a21957de887f091005cd595854f3437d21ce5a13ca8ca75c08733930b618b",
+        "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f"
+      ],
+      "raw_journal_page": false,
+      "request_bytes": 2235,
+      "response_bytes": 3412,
+      "headers_seconds": 0.0013505329843610525,
+      "body_end_seconds": 0.0013585250126197934,
+      "error_category": null,
+      "http_status": 200,
+      "total_seconds": 0.0013608790468424559,
+      "body_seconds": 7.992028258740902e-06
+    }
+  ],
+  "acknowledgements": [
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "BEGIN",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    },
+    {
+      "kind": "COMMIT",
+      "columns": 0,
+      "rows": 0,
+      "affected_row_count": 0,
+      "last_insert_rowid": "0"
+    }
+  ],
+  "closed_page_gap_exercised": true,
+  "all_ok": true
+}

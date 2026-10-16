@@ -1,0 +1,21 @@
+{
+  "candidate": "c7247f73cc49afce2677c2fa64f2bc075dc85174",
+  "host": "656813ef2295",
+  "native_execution": "Mac owner only, not yet executed by Cloud",
+  "entrypoint": "native_probe.run_probe(database, existing_directory, rounds=2, closed_page_gap_seconds=0)",
+  "database": "existing owner-created TursoDatabase(reuse_http=True); caller supplies credentials locally and closes it",
+  "constructor_bypass": "HostedAutonomousStore.__new__, SimpleNamespace journal, HostedSources(read-only guarded connection); no HostedJournal, WorkStore, lease or app initialization",
+  "directory": "existing scoped local regular directory; no database/source files required or written",
+  "bounds": {
+    "rounds_max": 3,
+    "optional_closed_page_gap_seconds_max": 6,
+    "transport_seconds": 12,
+    "transport_max_bytes": 33554432,
+    "raw_journal_rows": 128,
+    "raw_source_chunks": 8,
+    "proof_rows_max": 16384
+  },
+  "output": "module hashes, projection SHA/counts only, HTTP header/body timings+byte counts+SQL hashes, transaction acknowledgement metadata; no credentials, parameters, raw rows or source bytes",
+  "local_probe_scope": "small native-intake SQLite/Hrana fixture only; no hosted latency acceptance",
+  "original_attempts_retained": true
+}
