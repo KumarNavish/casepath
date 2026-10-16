@@ -1,0 +1,8 @@
+..........................Knowledge read measurements: [{"http_requests": 7, "journal_pages": 2, "largest_response_bytes": 4300099, "mock_elapsed_seconds": 1.048406, "replayed_claims": 18, "source_pages": 2, "temperature": "cold", "total_response_bytes": 5109295}, {"http_requests": 6, "journal_pages": 2, "largest_response_bytes": 4300100, "mock_elapsed_seconds": 0.107527, "replayed_claims": 0, "source_pages": 1, "temperature": "warm", "total_response_bytes": 5091280}, {"http_requests": 110, "journal_pages": 36, "largest_response_bytes": 332987, "replayed_claims": 36, "temperature": "legacy_cold"}, {"http_requests": 92, "journal_pages": 36, "largest_response_bytes": 332987, "replayed_claims": 36, "temperature": "legacy_warm"}]
+.........................31-source warm collection receipt: {'http': 7, 'execute': 6, 'close': 6, 'batch': 0}
+.31-source cold collection receipt: {'http': 12, 'execute': 11, 'close': 11, 'batch': 0}
+.3-source warm snapshot receipt: {'http': 3, 'execute': 2, 'close': 2, 'batch': 0}
+.3-source cold snapshot receipt: {'http': 4, 'execute': 3, 'close': 3, 'batch': 0}
+........................
+------------ generated xml file: /workspace/klp/e/final-focused.xml ------------
+78 passed in 100.38s (0:01:40)

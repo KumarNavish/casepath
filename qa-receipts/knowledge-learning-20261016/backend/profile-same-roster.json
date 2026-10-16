@@ -1,0 +1,55 @@
+{
+  "fixture": "isolated native deterministic 18-claim roster",
+  "network": "MockHrana only; timings are not hosted TTFB",
+  "exact_base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "measurements": [
+    {
+      "variant": "exact_base",
+      "temperature": "cold",
+      "http_requests": 21,
+      "response_bytes": 5101489,
+      "largest_response_bytes": 2228227,
+      "journal_pages": 4,
+      "journal_event_bytes": 4520448,
+      "source_pages": 14,
+      "mock_elapsed_seconds": 1.197527,
+      "projection_bytes": 108131
+    },
+    {
+      "variant": "exact_base",
+      "temperature": "warm",
+      "http_requests": 14,
+      "response_bytes": 5083116,
+      "largest_response_bytes": 2228228,
+      "journal_pages": 4,
+      "journal_event_bytes": 4520448,
+      "source_pages": 7,
+      "mock_elapsed_seconds": 0.174185,
+      "projection_bytes": 108131
+    },
+    {
+      "variant": "authored",
+      "temperature": "cold",
+      "http_requests": 7,
+      "response_bytes": 5109295,
+      "largest_response_bytes": 4300099,
+      "journal_pages": 2,
+      "journal_event_bytes": 4520448,
+      "source_pages": 2,
+      "mock_elapsed_seconds": 1.07506,
+      "projection_bytes": 136307
+    },
+    {
+      "variant": "authored",
+      "temperature": "warm",
+      "http_requests": 6,
+      "response_bytes": 5091280,
+      "largest_response_bytes": 4300100,
+      "journal_pages": 2,
+      "journal_event_bytes": 4520448,
+      "source_pages": 1,
+      "mock_elapsed_seconds": 0.107065,
+      "projection_bytes": 136307
+    }
+  ]
+}

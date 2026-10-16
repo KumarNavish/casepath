@@ -1,0 +1,50 @@
+{
+  "base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "candidate": "6064e7ad1519cfc6d272254e78e4b522a144088b",
+  "host": "656813ef2295",
+  "branch": "codex/knowledge-learning-projection-20261016",
+  "clean": true,
+  "changed_source_sha256": {
+    "casepath-api/casepath_api/autonomous_api_v1.py": "0b500f347aa1dd26b886ab60b94d815a29f089196503dbf37523d8e9cf65a270",
+    "casepath-api/casepath_api/autonomous_knowledge_v1.py": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464",
+    "casepath-api/casepath_api/autonomous_store_v1.py": "bb1a681e5c910732b5f0d4191e07e2bf4255c37e73dfdc0b196e5b5d4f802b62",
+    "casepath-api/casepath_api/hosted_storage_v1.py": "f2c817cec2e04174de8e5c2b9cd60077d0be2b265d9a445128cf5c5e9b556e47",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py": "71ab8c15da8274814dfe35850f2a13e72d27163971f76b8e8e2f6057b97a9ef9",
+    "casepath-api/tests/test_hosted_source_batch_v1.py": "c0bfc24b47466983f2c2164e24b677aef6748c94ab18d67ed9ac1df107d23d3b",
+    "casepath-api/tests/test_public_hosted_read_only_v1.py": "80e27ba4d1f99672fa94584e0a920fac1ff13ad080d4d9132255c6d83fdea783"
+  },
+  "results": {
+    "baseline.xml": {
+      "cases": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "focused.xml": {
+      "cases": 49,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "final-focused.xml": {
+      "cases": 78,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "unknown-event.xml": {
+      "cases": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "scope": "read-only backend projection and bounded validated paging; targeted tests only",
+  "measurement_limit": "MockHrana request counts and CPU only; no hosted TTFB acceptance",
+  "review": {
+    "agent": "/root/knowledge_learning_review",
+    "immutable_commit": "6064e7ad1519cfc6d272254e78e4b522a144088b",
+    "result": "accepted; no unresolved bounded backend findings",
+    "basis": "independent source review plus targeted evidence; no extra hosted measurement"
+  }
+}
