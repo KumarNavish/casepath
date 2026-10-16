@@ -1,0 +1,3016 @@
+{
+  "source": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous",
+  "synthetic": true,
+  "filtered_to_workflow_pins": true,
+  "claims": {
+    "auto_265cf377bb7485dce74573c8": {
+      "claim_id": "auto_265cf377bb7485dce74573c8",
+      "state_sha256": "f827bc544cf4b20f3120cfc86a9aeb8b4786fa042624449848f20269b308285f",
+      "revision": 16,
+      "semantic_contexts": {
+        "autonomy.a097d1a3d7c2aae57096c0e3": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "a7d891cf6393fcbabbd70c3d79f1989893751e9dcc880710143aec0d2df227d9",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 1
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "auto_571f85327c290a71cde37df8": {
+      "claim_id": "auto_571f85327c290a71cde37df8",
+      "state_sha256": "5dc15349bebcbfbbdebedf6a9359cb7f2ff60c03ea37650a1bfea5433f4a1f5d",
+      "revision": 17,
+      "semantic_contexts": {
+        "autonomy.9d1fdb2a2f8f86038af3320e": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "a7d891cf6393fcbabbd70c3d79f1989893751e9dcc880710143aec0d2df227d9",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 1
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "auto_7373bbf206ab25bacf71b82e": {
+      "claim_id": "auto_7373bbf206ab25bacf71b82e",
+      "state_sha256": "d4148ca2f39c40a0fd449dc50d58020064ebf39603f11bcf12c1aa487aba5dc5",
+      "revision": 15,
+      "semantic_contexts": {
+        "autonomy.dfe0b519b7c2b89befb4050f": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "a7d891cf6393fcbabbd70c3d79f1989893751e9dcc880710143aec0d2df227d9",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 1
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "auto_764f712d3833988ce6ff6cfd": {
+      "claim_id": "auto_764f712d3833988ce6ff6cfd",
+      "state_sha256": "8c5a7f1adc7dd84a6b801654f25919aa22e09b8c6bef4a48e69310ea1dabf1ff",
+      "revision": 17,
+      "semantic_contexts": {
+        "autonomy.441edba38fd8f1ffa26fb3b6": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                },
+                {
+                  "document_type": "proof_of_receipt",
+                  "required_fields": [
+                    "recipient",
+                    "delivery_evidence",
+                    "delivery_date"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Proof of receipt' is a mandatory evidence item for process step(s) lt_deadline."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "169563884da149125f50e7a575e46f578835296bd50be4f41351befca0dda852",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "auto_80bf8f54f289f5e4a966e645": {
+      "claim_id": "auto_80bf8f54f289f5e4a966e645",
+      "state_sha256": "4c947b336d7f6afff2303f5b397527ce4ccf78ea785705ecb3a6a9f64e1e3668",
+      "revision": 15,
+      "semantic_contexts": {
+        "autonomy.8129ab4071a5bf7b27b6b789": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                },
+                {
+                  "document_type": "proof_of_receipt",
+                  "required_fields": [
+                    "recipient",
+                    "delivery_evidence",
+                    "delivery_date"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Proof of receipt' is a mandatory evidence item for process step(s) lt_deadline."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "169563884da149125f50e7a575e46f578835296bd50be4f41351befca0dda852",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_0c5e7c7723a3c694": {
+      "claim_id": "clm_0c5e7c7723a3c694",
+      "state_sha256": "3e29780b799b02962bf346bf3c837d2485b83f43756e910e84e666ca36ced80e",
+      "revision": 19,
+      "semantic_contexts": {
+        "autonomy.86061008d180f70727c4f23c": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "4d2d5c1d2f5f3a785ad7246fa67ed5f10bf92cc288775f3ba7b2e6c38c95d002",
+              "rule_pack_sha256": "30f463aee3788ba09784a5cee42bdb91f557a265f007870782980a1e681ebbc1",
+              "version": 1
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                },
+                {
+                  "document_type": "proof_of_receipt",
+                  "required_fields": [
+                    "recipient",
+                    "delivery_evidence",
+                    "delivery_date"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Proof of receipt' is a mandatory evidence item for process step(s) lt_deadline."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "169563884da149125f50e7a575e46f578835296bd50be4f41351befca0dda852",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_0f4f13b1e3e1328c": {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "state_sha256": "e46dc84c04f0ede959dd7244fa3512f7faa6b60c6556777168a52a7c56877af2",
+      "revision": 39,
+      "semantic_contexts": {
+        "autonomy.9b41770a4bbf1d84386ac52a": {
+          "compatible_knowledge": [],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        },
+        "autonomy.e0f71b3c35797485212eee91": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_2a9c260c26afaa34": {
+      "claim_id": "clm_2a9c260c26afaa34",
+      "state_sha256": "63c7f9663040ad966daf87266b72dc31b0369de67b16c35a7b13fdd68fdcfe17",
+      "revision": 15,
+      "semantic_contexts": {
+        "autonomy.2de798f221d3ecaf5bbc7916": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "4d2d5c1d2f5f3a785ad7246fa67ed5f10bf92cc288775f3ba7b2e6c38c95d002",
+              "rule_pack_sha256": "30f463aee3788ba09784a5cee42bdb91f557a265f007870782980a1e681ebbc1",
+              "version": 1
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                },
+                {
+                  "document_type": "proof_of_receipt",
+                  "required_fields": [
+                    "recipient",
+                    "delivery_evidence",
+                    "delivery_date"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Proof of receipt' is a mandatory evidence item for process step(s) lt_deadline."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "169563884da149125f50e7a575e46f578835296bd50be4f41351befca0dda852",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_2c55cdd816b1d0e8": {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "state_sha256": "fb76e06529882c1d6eab57810a7f7c91a167cbe2d14fde8333067823397ce366",
+      "revision": 41,
+      "semantic_contexts": {
+        "autonomy.89de1939910c705c09ba0bab": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        },
+        "autonomy.1963b223cefe57dd7932932c": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_314f2d309fea25e6": {
+      "claim_id": "clm_314f2d309fea25e6",
+      "state_sha256": "df5f95e988c60ec91b36f7435375549ffc3c532103d51dfddd4a929ca8b3dcf4",
+      "revision": 48,
+      "semantic_contexts": {
+        "autonomy.edaf7784232097715c29a351": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        },
+        "autonomy.afefba81a4e2f2fca03d8ded": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_393285577dcb12c4": {
+      "claim_id": "clm_393285577dcb12c4",
+      "state_sha256": "3517b616c11d48965d5615304ac786a0380890b60756d98c0de51dac3f7f44e7",
+      "revision": 39,
+      "semantic_contexts": {
+        "autonomy.6aeeda2905f238d316b58d73": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        },
+        "autonomy.3d33fec962434b85cd68a6e2": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_4a07dbbbd859a3ce": {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "state_sha256": "ef77d4d427f72291d1efb18851a64a7adc390b7b5a0e7ac62d274be5af970670",
+      "revision": 48,
+      "semantic_contexts": {
+        "autonomy.57b3c8f398bc871016fc2905": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        },
+        "autonomy.466f71c10b58346c50aea687": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_4a53299cfe619303": {
+      "claim_id": "clm_4a53299cfe619303",
+      "state_sha256": "259b2a73a923c956d8adb4c60c52a826bb77e28134e3862fdd90abe2c737fd82",
+      "revision": 39,
+      "semantic_contexts": {
+        "autonomy.1538a6e164de1e9467c96eff": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        },
+        "autonomy.ee864e4ef4300fb9ad42c0d3": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_521c20913f4e0f9b": {
+      "claim_id": "clm_521c20913f4e0f9b",
+      "state_sha256": "6b93d23a7b1d5a9fcc7cd0ca306e569752046a8d31515eb6e5782425ebe5d0d8",
+      "revision": 13,
+      "semantic_contexts": {
+        "autonomy.5c02a7df9e603ad36ef048f6": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "4d2d5c1d2f5f3a785ad7246fa67ed5f10bf92cc288775f3ba7b2e6c38c95d002",
+              "rule_pack_sha256": "30f463aee3788ba09784a5cee42bdb91f557a265f007870782980a1e681ebbc1",
+              "version": 1
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                },
+                {
+                  "document_type": "proof_of_receipt",
+                  "required_fields": [
+                    "recipient",
+                    "delivery_evidence",
+                    "delivery_date"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Proof of receipt' is a mandatory evidence item for process step(s) lt_deadline."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "169563884da149125f50e7a575e46f578835296bd50be4f41351befca0dda852",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_543f08f2415b2a33": {
+      "claim_id": "clm_543f08f2415b2a33",
+      "state_sha256": "77cb8dbb46914420234c73ddc53e3ff229b80553444c89ed2c0b3f63b528bfec",
+      "revision": 41,
+      "semantic_contexts": {
+        "autonomy.236f15a81d3f0b34cde32080": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        },
+        "autonomy.365b766d5250acf5c91df589": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_7dbd7c7d1c4ddf90": {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "state_sha256": "f02392106065c7c6d78f100cc2cfd135620ca0fccb096b7d7395dfe7d69a52f1",
+      "revision": 51,
+      "semantic_contexts": {
+        "autonomy.02621d905b30706c1fb4f7d2": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "4d2d5c1d2f5f3a785ad7246fa67ed5f10bf92cc288775f3ba7b2e6c38c95d002",
+              "rule_pack_sha256": "30f463aee3788ba09784a5cee42bdb91f557a265f007870782980a1e681ebbc1",
+              "version": 1
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                },
+                {
+                  "document_type": "payment_deadline_letter",
+                  "required_fields": [
+                    "cure_period",
+                    "claimed_arrears",
+                    "termination_warning"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Cure notice with termination warning' is a conditional evidence item when scenario flag 'arrears' is active for process step(s) lt_arrears."
+                },
+                {
+                  "document_type": "proof_of_receipt",
+                  "required_fields": [
+                    "recipient",
+                    "delivery_evidence",
+                    "delivery_date"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Proof of receipt' is a mandatory evidence item for process step(s) lt_deadline."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "ee769909c75dd1d87c8e6f37887345c602e599029feded15f408866146cc88ca",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 3
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "rent_increase_notice",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1"
+                  ],
+                  "summary": "'Rent increase notice' is a mandatory evidence item for process step(s) ri_form."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "41cae2080dae35fab7b81ac9827b865733c227aa4b9a461a5d14d2028b5ba160",
+              "rule_pack_sha256": "4351ae9a95af7ae129c3080c0904019fa7a0b3043bc79b1a6aa244a29cd01d75",
+              "version": 1
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        },
+        "autonomy.e2e1e277b3749c10cee67397": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        },
+        "autonomy.b3aff25ac4178535879292e2": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_95d08975bc575592": {
+      "claim_id": "clm_95d08975bc575592",
+      "state_sha256": "77a261c714da465ddace4ea599ee31169262cfe83796ebd15e2b01abb9952a8a",
+      "revision": 48,
+      "semantic_contexts": {
+        "autonomy.fdd67064d861b90d1618b6af": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        },
+        "autonomy.36d06e6a7cc1eaf79e7b004f": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "landlord_knowledge_evidence",
+                  "required_fields": [
+                    "recipient",
+                    "reported_defect",
+                    "first_knowledge_date",
+                    "repair_status"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "objective_defect_observation",
+                  "required_fields": [
+                    "location",
+                    "observation_date",
+                    "observed_fault",
+                    "causal_limits"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-defect_mold_heating-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+                }
+              ],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "8f92f5b6b12c524320c2ed143aa3c1bd33e2f64000b52a1e85bba1f7de5abf60",
+              "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+              "version": 2
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "received_termination_packet",
+                  "required_fields": [
+                    "issuer",
+                    "addressee",
+                    "received_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "f4bc23de5453504f94730aa7187ff84e11d11770f1309cff0dc4c1c0af2fa75b",
+              "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+              "version": 4
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "original_notification_context",
+                  "required_fields": [
+                    "issuer_authority",
+                    "packet_completeness",
+                    "contemporaneous_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "received_rent_increase_packet",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                },
+                {
+                  "document_type": "tenancy_terms_evidence",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                  ],
+                  "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+              "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_9a179a4481767d43": {
+      "claim_id": "clm_9a179a4481767d43",
+      "state_sha256": "68e31aed17eeec7931258bbd136cd476e36966644f10c6d8fd8cbe5c82edfd92",
+      "revision": 13,
+      "semantic_contexts": {
+        "autonomy.caf321179cc7b4cc4f7bf27e": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "4d2d5c1d2f5f3a785ad7246fa67ed5f10bf92cc288775f3ba7b2e6c38c95d002",
+              "rule_pack_sha256": "30f463aee3788ba09784a5cee42bdb91f557a265f007870782980a1e681ebbc1",
+              "version": 1
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                },
+                {
+                  "document_type": "payment_deadline_letter",
+                  "required_fields": [
+                    "cure_period",
+                    "claimed_arrears",
+                    "termination_warning"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Cure notice with termination warning' is a conditional evidence item when scenario flag 'arrears' is active for process step(s) lt_arrears."
+                },
+                {
+                  "document_type": "proof_of_receipt",
+                  "required_fields": [
+                    "recipient",
+                    "delivery_evidence",
+                    "delivery_date"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Proof of receipt' is a mandatory evidence item for process step(s) lt_deadline."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "ee769909c75dd1d87c8e6f37887345c602e599029feded15f408866146cc88ca",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 3
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "rent_increase_notice",
+                  "required_fields": [
+                    "notified_amount",
+                    "effective_date",
+                    "addressee",
+                    "form_contents"
+                  ],
+                  "rule_refs": [
+                    "policy-rent_increase_dispute-v1"
+                  ],
+                  "summary": "'Rent increase notice' is a mandatory evidence item for process step(s) ri_form."
+                }
+              ],
+              "family": "rent_increase_dispute",
+              "knowledge_id": "procedure.rent_increase_dispute",
+              "knowledge_sha256": "41cae2080dae35fab7b81ac9827b865733c227aa4b9a461a5d14d2028b5ba160",
+              "rule_pack_sha256": "4351ae9a95af7ae129c3080c0904019fa7a0b3043bc79b1a6aa244a29cd01d75",
+              "version": 1
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_ee29ac770b1bf7b9": {
+      "claim_id": "clm_ee29ac770b1bf7b9",
+      "state_sha256": "6b2c8c1aa8c3895375fd5b307d40b335f5ffd7ca7137d4a612ce7fff92953278",
+      "revision": 13,
+      "semantic_contexts": {
+        "autonomy.edfa74ca44fb9f65c5701b4c": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "4d2d5c1d2f5f3a785ad7246fa67ed5f10bf92cc288775f3ba7b2e6c38c95d002",
+              "rule_pack_sha256": "30f463aee3788ba09784a5cee42bdb91f557a265f007870782980a1e681ebbc1",
+              "version": 1
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                },
+                {
+                  "document_type": "proof_of_receipt",
+                  "required_fields": [
+                    "recipient",
+                    "delivery_evidence",
+                    "delivery_date"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Proof of receipt' is a mandatory evidence item for process step(s) lt_deadline."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "169563884da149125f50e7a575e46f578835296bd50be4f41351befca0dda852",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    },
+    "clm_f69b1747447bc221": {
+      "claim_id": "clm_f69b1747447bc221",
+      "state_sha256": "cdef844fd6bf5957460ea0c49952d6bd51444437e5bd4d4bb404068d7908d7b9",
+      "revision": 16,
+      "semantic_contexts": {
+        "autonomy.82b74a59b4b0261007edb9c4": {
+          "compatible_knowledge": [
+            {
+              "evidence_recipes": [],
+              "family": "defect_mold_heating",
+              "knowledge_id": "procedure.defect_mold_heating",
+              "knowledge_sha256": "4d2d5c1d2f5f3a785ad7246fa67ed5f10bf92cc288775f3ba7b2e6c38c95d002",
+              "rule_pack_sha256": "30f463aee3788ba09784a5cee42bdb91f557a265f007870782980a1e681ebbc1",
+              "version": 1
+            },
+            {
+              "evidence_recipes": [
+                {
+                  "document_type": "lease_contract",
+                  "required_fields": [
+                    "contracting_parties",
+                    "property",
+                    "tenancy_terms"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+                },
+                {
+                  "document_type": "proof_of_receipt",
+                  "required_fields": [
+                    "recipient",
+                    "delivery_evidence",
+                    "delivery_date"
+                  ],
+                  "rule_refs": [
+                    "policy-lease_termination_dispute-v1"
+                  ],
+                  "summary": "'Proof of receipt' is a mandatory evidence item for process step(s) lt_deadline."
+                }
+              ],
+              "family": "lease_termination_dispute",
+              "knowledge_id": "procedure.lease_termination_dispute",
+              "knowledge_sha256": "169563884da149125f50e7a575e46f578835296bd50be4f41351befca0dda852",
+              "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+              "version": 2
+            }
+          ],
+          "source_roster_sha256": null,
+          "rule_set_sha256": null
+        }
+      }
+    }
+  }
+}
