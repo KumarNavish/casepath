@@ -1,0 +1,33 @@
+{
+  "commit": "82afc52156b160135047db65daf4418ac1c8352c",
+  "comparison_base": "2a12998731fb8fc065138195400863976cea11c5",
+  "js_sha256": "0532685678ea6c11a39c147ad18ae8a69da726d31e4849463494daebacea46c2",
+  "css_sha256": "b79a05a594aa9c0ae9937696b2a0f164b2631a425344f4cc89ddb69f8031bbb7",
+  "public_projection_sha256": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8",
+  "actual_events": 38,
+  "qualified_representatives": 6,
+  "reuse_groups": 12,
+  "refusals": 3,
+  "total_presentation_ms": 36000,
+  "qualified_phase_ms": {
+    "source": 700,
+    "process": 900,
+    "documents": 700,
+    "checks": 700,
+    "seal": 500
+  },
+  "reuse_and_refusal_ms": 1000,
+  "actual_times_and_pins_unchanged": true,
+  "group_member_aliases_verified": 17,
+  "dependency_order_verified": true,
+  "actual_graph_and_document_selectors": true,
+  "max_graph_nodes": 11,
+  "max_document_slots": 11,
+  "max_graph_reveal_finish_ms": 800,
+  "max_document_reveal_finish_ms": 530,
+  "limitations": [
+    "Source/model proof only; no independent browser, cold-reader, accessibility or hosted-performance acceptance."
+  ],
+  "preceding_phase_commit": "9ac961b42aeaf1eae11262cc58001ab1547940aa",
+  "model_identical_to_phase_commit": true
+}

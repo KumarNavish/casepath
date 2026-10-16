@@ -1,0 +1,69 @@
+{
+  "base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "source": {
+    "backend": {
+      "commit": "6064e7ad1519cfc6d272254e78e4b522a144088b",
+      "base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+      "clean": true,
+      "paths": {
+        "casepath-api/casepath_api/autonomous_api_v1.py": "0b500f347aa1dd26b886ab60b94d815a29f089196503dbf37523d8e9cf65a270",
+        "casepath-api/casepath_api/autonomous_knowledge_v1.py": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464",
+        "casepath-api/casepath_api/autonomous_store_v1.py": "bb1a681e5c910732b5f0d4191e07e2bf4255c37e73dfdc0b196e5b5d4f802b62",
+        "casepath-api/casepath_api/hosted_storage_v1.py": "f2c817cec2e04174de8e5c2b9cd60077d0be2b265d9a445128cf5c5e9b556e47",
+        "casepath-api/tests/test_autonomous_knowledge_reads_v1.py": "71ab8c15da8274814dfe35850f2a13e72d27163971f76b8e8e2f6057b97a9ef9",
+        "casepath-api/tests/test_hosted_source_batch_v1.py": "c0bfc24b47466983f2c2164e24b677aef6748c94ab18d67ed9ac1df107d23d3b",
+        "casepath-api/tests/test_public_hosted_read_only_v1.py": "80e27ba4d1f99672fa94584e0a920fac1ff13ad080d4d9132255c6d83fdea783"
+      }
+    },
+    "frontend": {
+      "commit": "82afc52156b160135047db65daf4418ac1c8352c",
+      "base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+      "clean": true,
+      "paths": {
+        "casepath-qa/autonomous-workspace-v1.test.cjs": "b9284fdefa5eb8034b60b960ed450a67b6cc426f4f396345b6b3af203fe3c27a",
+        "casepath/assets/autonomous-workspace-v1.css": "b79a05a594aa9c0ae9937696b2a0f164b2631a425344f4cc89ddb69f8031bbb7",
+        "casepath/assets/autonomous-workspace-v1.js": "0532685678ea6c11a39c147ad18ae8a69da726d31e4849463494daebacea46c2"
+      }
+    }
+  },
+  "targeted_tests": {
+    "backend_focused": 78,
+    "backend_extra_distinct_unknown_event": 1,
+    "frontend_full_existing_module": 264,
+    "frontend_junit_leaf_cases": 261,
+    "frontend_junit_parent_test_suites": 3,
+    "frontend_focused_subset": 39,
+    "independent_frontend_subset": 39,
+    "all_final_results": "pass; no skips"
+  },
+  "independent_review": "review-final/REVIEW-final.json",
+  "public_projection": {
+    "bytes": 405258,
+    "sha256": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8",
+    "generator_and_exact_inputs": "preview/",
+    "reverified_at_backend_commit": "6064e7ad1519cfc6d272254e78e4b522a144088b"
+  },
+  "cold_read": {
+    "source_commit": "9ac961b42aeaf1eae11262cc58001ab1547940aa",
+    "verbatim": "cold-read/response-verbatim.md",
+    "input_paths_and_hashes": "cold-read/image-bindings.json",
+    "prompt": "cold-read/prompt.txt",
+    "later_changes": "No second reader; async state repairs and three user-authorized copy clarifications followed."
+  },
+  "native_visual_motion": "frontend-9ac/browser-desktop-timeline-pacing-final4.json; later delta disclosed in frontend-final/authorreceipt.json",
+  "preserved_negatives": [
+    "frontend-2a-superseded/",
+    "frontend-9ac/",
+    "frontend-final/module-deferred-refresh-before.tap",
+    "frontend-final/module-deferred-final.spec",
+    "frontend-final/module-deferred-final.xml",
+    "frontend-final/module-demo-signal-ownership-audit4.tap"
+  ],
+  "performance_limits": [
+    "Mock backend HTTP requests21to7 cold/14to6 warm; NOT hosted TTFB. Method time includes multiple stages, not CPU-only breakdown.",
+    "Hosted <=1s Knowledge TTFB remains for actual Mac-owned readback; no Cloud public endpoint requests.",
+    "Browser phase captures use exact generated filtered public projection; not full native journal admission.",
+    "No Cloud nine-demo run/film; Mac owns actual all-nine acceptance."
+  ],
+  "full_gate": "NOT_STARTED; awaiting Mac sealed SHA and explicit GO. Prior127Mac IDs and10known skips retained; collect all other/new IDs fresh, sixCloud shards,max3heavy,>=3GiB workspace floor."
+}

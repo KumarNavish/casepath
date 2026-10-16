@@ -1,0 +1,31 @@
+{
+  "status": "PREPARED_NOT_AUTHORIZED",
+  "base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "prior_evidence_commit": "474c63348f40355c555886faaf5fb1d612aecc9a",
+  "prior_receipt_directory": "/workspace/casepath-transport-gate-evidence-git-20261015/qa-receipts/b8616d4c-20261016",
+  "mac_partition_ids": 127,
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "mac_files": [
+    "casepath-api/tests/test_cli_v1.py",
+    "casepath-api/tests/test_local_data_root.py",
+    "casepath-api/tests/test_journal_corpus_restart.py"
+  ],
+  "known_skips": 10,
+  "fresh_inventory": "Required after exact sealed commit supplied; all non-Mac IDs and new tests included",
+  "shards": 6,
+  "max_heavy_concurrent": 3,
+  "workspace_free_bytes": 3635388416,
+  "workspace_floor_bytes": 3221225472,
+  "temp_root": "isolated short /workspace paths before child startup; never /tmp",
+  "harness_sources": {
+    "harness/bundle.py": "b5eefc54d87ac04b8d8d7705fc11f20ca245da973fcee6aae46eab7b299dd488",
+    "harness/casepath_shard_observer.py": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "harness/finalize.py": "8dca270815b4b6f6487d72f483900ebf26790cc248c0227b148cb2d703a92c00",
+    "harness/preflight_inventory.py": "d83a30e0ad0ffbec84369555eb26a5452c287008a055595a0d5dc91f65f7c2c4",
+    "harness/prepare_clones.py": "254b482e706a235b597beeaee9a4ea021c54cf8a4adc61c85b862a27dab5587c",
+    "harness/run_shard.py": "b6ea2da41e02e8ea430f1d00ca8734b3e4c3eddec5312f56ecf451e8648f5387",
+    "harness/status.py": "f9a86b58398665894ab4d3af177df30724845000a4f2886206b59dfc635403c1",
+    "harness/verify_prepared_capsules.py": "07ef97999d1d5e7b6463594f2f2bd9b606bc7da326f866dcaf513e1a5f0a5c12"
+  },
+  "gate_execution_started": false
+}

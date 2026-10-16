@@ -1,0 +1,128 @@
+{
+  "source_commit": "82afc52156b160135047db65daf4418ac1c8352c",
+  "branch": "codex/knowledge-learning-frontend-20261016",
+  "clean_head": true,
+  "source_base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "late_commits": {
+    "desktop_pacing_and_motion": "9ac961b42aeaf1eae11262cc58001ab1547940aa",
+    "deferred_refresh_fix": "65975ad6dc4cffbd68390b5d1e701f5eb84d9bee",
+    "copy_retry_and_test_ownership": "82afc52156b160135047db65daf4418ac1c8352c"
+  },
+  "changed_paths": [
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "sha256": {
+    "js_sha256": "0532685678ea6c11a39c147ad18ae8a69da726d31e4849463494daebacea46c2",
+    "css_sha256": "b79a05a594aa9c0ae9937696b2a0f164b2631a425344f4cc89ddb69f8031bbb7",
+    "projection_sha256": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8"
+  },
+  "executed_final_commands": [
+    {
+      "name": "focused Knowledge and selected operation-signal ownership",
+      "cwd": "/workspace/casepath-release-ae0-shard5",
+      "command": "HOME=/workspace/klf/h TMPDIR=/workspace/klf/t TMP=/workspace/klf/t TEMP=/workspace/klf/t /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test --test-name-pattern='knowledge|Knowledge|lineage|learning|grouped|known recipe|planned rail|cold demo|after the300ms Live preference an uncommitted opening accepts a fully verified packet' casepath-qa/autonomous-workspace-v1.test.cjs > /workspace/klf/e/module-copy-retry-owned-final.tap 2>&1",
+      "exit_code": 0,
+      "passed": 39,
+      "failed": 0
+    },
+    {
+      "name": "complete existing JS module file",
+      "cwd": "/workspace/casepath-release-ae0-shard5",
+      "command": "HOME=/workspace/klf/h TMPDIR=/workspace/klf/t TMP=/workspace/klf/t TEMP=/workspace/klf/t CASEPATH_PYTHON=/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test --test-reporter=spec --test-reporter-destination=/workspace/klf/e/module-final-82af.spec --test-reporter=junit --test-reporter-destination=/workspace/klf/e/module-final-82af.xml casepath-qa/autonomous-workspace-v1.test.cjs",
+      "exit_code": 0,
+      "passed": 264,
+      "failed": 0,
+      "duration_ms": 15352.334072
+    }
+  ],
+  "preserved_native_proof": {
+    "source_commit": "9ac961b42aeaf1eae11262cc58001ab1547940aa",
+    "command": "HOME=/workspace/klf/h TMPDIR=/workspace/klf/t TMP=/workspace/klf/t TEMP=/workspace/klf/t /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /workspace/klf/e/browser-desktop-timeline-pacing-final4.cjs > /workspace/klf/e/browser-desktop-timeline-pacing-final4.log 2>&1",
+    "cwd": "/workspace",
+    "exit_code": 0,
+    "js_sha256": "c7d5f4cd468b6805eaa01bc4abe870b895a62c9e06535e3c8cb48f4f36cb6294",
+    "css_sha256": "b79a05a594aa9c0ae9937696b2a0f164b2631a425344f4cc89ddb69f8031bbb7",
+    "report": "/workspace/klf/e/browser-desktop-timeline-pacing-final4.json",
+    "images_prefix": "/workspace/klf/e/pacing-final4-",
+    "viewports": {
+      "desktop": {
+        "width": 1428,
+        "height": 801,
+        "focus_top": 206.796875,
+        "focus_bottom": 556.796875,
+        "timeline_top": 566.796875,
+        "timeline_bottom": 781.59375
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "focus_top": 242.890625,
+        "focus_bottom": 802.890625,
+        "all_autoplay_phase_content_fits": true
+      }
+    },
+    "replay_total_ms": 36000,
+    "publication_holds_ms": {
+      "source": 700,
+      "graph": 900,
+      "documents": 700,
+      "each_of_seven_checks": 100,
+      "seal": 500
+    },
+    "motion": {
+      "actual_graph_li_sequence_step_ms": 50,
+      "last_graph_transform_finishes_ms": 800,
+      "actual_document_li_sequence_step_ms": 35,
+      "last_document_transform_finishes_ms": 530,
+      "native_before_opacity": 0,
+      "native_after_opacity": 1,
+      "motion_evidence": "/workspace/klf/e/browser-desktop-timeline-pacing-final4.json"
+    },
+    "later_changes": "65975/82af change async reconciliation, requested plain copy, Retry preference and focused tests only; CSS/model/timing/Demo B unchanged. Native/cold-reader captures were not repeated or relabeled as final82af loaded assets."
+  },
+  "preserved_negatives": [
+    {
+      "source_commit": "9ac961b42aeaf1eae11262cc58001ab1547940aa",
+      "raw": "module-deferred-refresh-before.tap",
+      "exit_code": 1,
+      "passed": 0,
+      "failed": 2,
+      "finding": "Deferred successful refresh reapplied stale invalid pin or stale explicit event preference. Fixed65975."
+    },
+    {
+      "source_commit": "65975ad6dc4cffbd68390b5d1e701f5eb84d9bee",
+      "raw": [
+        "module-deferred-final.spec",
+        "module-deferred-final.xml"
+      ],
+      "exit_code": 1,
+      "passed": 262,
+      "failed": 1,
+      "finding": "Existing operation test captured signal from every claims operations path. A next-case prefetch signal could overwrite the selected-claim signal."
+    },
+    {
+      "raw": "module-deferred-demo-failure-isolated.tap",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "finding": "Isolated original test passed before ownership correction; prior full-module failure remains preserved."
+    },
+    {
+      "raw": "module-demo-signal-ownership-audit4.tap",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "finding": "Diagnostic recorded selected clm_314f2d309fea25e6 live signal aborted=true and next clm_4a07dbbbd859a3ce recorded signal aborted=false. Permanent QA-only correction captures exact selected-claim path; immediate cancellation and late Live no-splice assertions retained."
+    }
+  ],
+  "limits": [
+    "Native browser uses an in-process route to the actual-public filtered backend helper projection; it does not measure hosted API or network latency.",
+    "No Cloud all-nine demo run/film was performed; Mac owns that acceptance.",
+    "264 tests are one existing JavaScript module file, not the full repository gate.",
+    "9ac native phase proof uses a controlled JavaScript clock plus real wall holds for native CSS opacity/transform completion.",
+    "Prior native failures and superseded captures remain preserved under their original attempt names.",
+    "The original earliest overwritten browser failure is labeled recovered transcript; original-file preservation is not claimed."
+  ]
+}

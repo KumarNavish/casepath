@@ -1,0 +1,60 @@
+{
+  "commit": "82afc52156b160135047db65daf4418ac1c8352c",
+  "comparison_base": "2a12998731fb8fc065138195400863976cea11c5",
+  "functions": {
+    "recordedReuseMoment": {
+      "prior": "410a823eb92d54f53146b729fa18f2e67b221441509de7a701b09e061dce4333",
+      "current": "410a823eb92d54f53146b729fa18f2e67b221441509de7a701b09e061dce4333",
+      "same": true
+    },
+    "recordedReuseMomentMarkup": {
+      "prior": "5e61d500b6cf14a123d2eaa90f24622ce0be2a51b70da6df7d360dfc4091a49d",
+      "current": "5e61d500b6cf14a123d2eaa90f24622ce0be2a51b70da6df7d360dfc4091a49d",
+      "same": true
+    },
+    "operationStageMarkup": {
+      "prior": "42f3053e88112a4c94b3113c2d0b54f60c104c3bb9a673c57e410fef00973ccf",
+      "current": "42f3053e88112a4c94b3113c2d0b54f60c104c3bb9a673c57e410fef00973ccf",
+      "same": true
+    },
+    "stageNodeContents": {
+      "prior": "3b5ced88dba12327a710a6319033eae4c25b94f449fa416af97ec61cfaebaeca",
+      "current": "3b5ced88dba12327a710a6319033eae4c25b94f449fa416af97ec61cfaebaeca",
+      "same": true
+    },
+    "graphMarkup": {
+      "prior": "56bd20cc4c053a04da0bd3fc731d3544c9d2085bafef3f613276336a376e08f0",
+      "current": "56bd20cc4c053a04da0bd3fc731d3544c9d2085bafef3f613276336a376e08f0",
+      "same": true
+    },
+    "plannedOperationProcess": {
+      "prior": "7e5d59086048a336842af2c542b624a117fd3e292792681db8205a16a9494e88",
+      "current": "7e5d59086048a336842af2c542b624a117fd3e292792681db8205a16a9494e88",
+      "same": true
+    },
+    "checkedOperationCheckpoint": {
+      "prior": "67fcb359ef9f93347e599040a8260942cdbf4578b48d11368dcce917c68e77a1",
+      "current": "67fcb359ef9f93347e599040a8260942cdbf4578b48d11368dcce917c68e77a1",
+      "same": true
+    }
+  },
+  "operation_gate_same": true,
+  "operation_gate_sha256": "645a6eb18c9a9a36777e20483784ae96a60ed2ab14009b13fb7f977e29e22cd1",
+  "knowledge_used_hold_call_same": true,
+  "knowledge_used_hold_call": "if(frame.events?.[0]?.kind==='knowledge.used' && recordedReuseMoment(current,operationTrace,knowledgeCache?.value || {}) && !await operationGate(session,token,1200))return;",
+  "css_same_as_phase_commit": true,
+  "css_unrelated_prefix_same": true,
+  "css_unrelated_prefix_sha256": "b254bed2a5076f9dc9660442c6d2e0cce26cc81bb939f8afdf44daebf5777800",
+  "demo_cue_declarations_retained": true,
+  "demo_reveal_keyframe_same": true,
+  "demo_reveal_keyframe": "@keyframes au-learning-reveal { from { transform:translateY(5px); } to { transform:translateY(0); } }",
+  "interaction_guard_sections_unchanged": {
+    "keyboard": true,
+    "pointer": true,
+    "motion": true,
+    "visibility": true
+  },
+  "limits": [
+    "Source comparison only; effective browser appearance and accessibility acceptance remain with the integration owner."
+  ]
+}
