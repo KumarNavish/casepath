@@ -2668,7 +2668,7 @@ test('unavailable learning pins retain exact receipts and cannot borrow the late
 
 test('known recipe slots are marked from an exact pinned count without claiming checked receiving-case evidence',()=>{
  const data=learningFixtureData(),model=ui.knowledgeLearningModel(data),event=model.events.find(e=>e.kind==='knowledge.used'),html=ui.knowledgeLearningFocus(model,event);
- assert.match(html,/data-au-recipe-reused="true"/);assert.match(html,/source support still required in this case/);assert.match(html,/1 rule compilation avoided/);assert.match(html,/Recorded knowledge.used/);assert.doesNotMatch(html,/data-au-document-checked="true"|data-au-document-supported="true"|Source checked/);
+ assert.match(html,/data-au-recipe-reused="true"/);assert.match(html,/source support still required in this case/);assert.match(html,/1 rule compilation avoided/);assert.match(html,/Recorded reuse/);assert.doesNotMatch(html,/data-au-document-checked="true"|data-au-document-supported="true"|Source checked/);
  const mismatch=structuredClone(data);mismatch.learning_replay.events.find(e=>e.kind==='knowledge.used').reused_evidence_recipes=99;const other=ui.knowledgeLearningModel(mismatch);assert.doesNotMatch(ui.knowledgeLearningFocus(other,other.events.find(e=>e.kind==='knowledge.used')),/data-au-recipe-reused="true"/);
 });
 
