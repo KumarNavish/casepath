@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1709,
+  "file_count": 1710,
   "files": [
     {
       "executable": false,
@@ -155,8 +155,8 @@
     {
       "executable": true,
       "path": "bin/casepath",
-      "sha256": "791f012084d06dcfae16e8de1e42bb1236df695d2fbcc001a35669d8226d4295",
-      "size_bytes": 127182
+      "sha256": "fb12e2eb4dfe01c358c63b9db4ff968e33d266933baf2191a2c480c89b4c2e85",
+      "size_bytes": 127734
     },
     {
       "executable": false,
@@ -8509,6 +8509,12 @@
       "path": "casepath-api/tests/test_journal_corpus_restart.py",
       "sha256": "93cd1df865e62917968d974ecd45bc737f082211692f22a9802f25962c83ec40",
       "size_bytes": 3186
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_launcher_temp_cleanup.py",
+      "sha256": "3b81c9f06a0852c3377a6a596f2658b5e80d9d858edf3587af0cb3efc1920e89",
+      "size_bytes": 4447
     },
     {
       "executable": false,
