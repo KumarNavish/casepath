@@ -419,6 +419,7 @@ class HostedAutonomousStore(AutonomousStore):
     KNOWLEDGE_PAGE_ROWS = 2048
     JOURNAL_PAGE_BYTES = 4 * 1024 * 1024
     JOURNAL_ROW_BYTES = JOURNAL_PAGE_BYTES + 64 * 1024
+    KNOWLEDGE_RAW_PAGE_BYTES = 256 * 1024
 
     def list(self, *, statuses=None):
         # Startup discovery needs the same full accepted states as knowledge,
@@ -431,19 +432,20 @@ class HostedAutonomousStore(AutonomousStore):
         return self._paged_state_rows(self.JOURNAL_PAGE_ROWS)
 
     def _knowledge_rows(self):
+        self._knowledge_pending = None
         cached = getattr(self, '_knowledge_byte_cache', None)
         if cached is not None:
             with self.journal.connect() as db:
-                rows, schema, proof = cached
+                frozen_rows, schema, proof = cached
                 query = _proof_query('claim_loop_events', _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1',
                                      'session_id=?', 'loop_id,sequence')
                 schema_cursor, proof_cursor = db.read_snapshot([
-                    (_schema_query('claim_loop_events'), ()), (query, (SESSION_ID, len(rows) + 1))])
+                    (_schema_query('claim_loop_events'), ()), (query, (SESSION_ID, len(frozen_rows) + 1))])
                 current_schema = schema_cursor.fetchall()
                 if (_standard_schema(current_schema, _JOURNAL_COLUMNS)
                         and _schema_identity(current_schema) == schema and _proof_matches(proof_cursor, proof)):
                     self._knowledge_pending = cached
-                    return rows
+                    return [dict(row) for row in frozen_rows]
         self._knowledge_byte_cache = None
         return self._collect_knowledge_rows()
 
@@ -497,7 +499,9 @@ class HostedAutonomousStore(AutonomousStore):
                 (_schema_query('claim_loop_events'), ()), (query, (SESSION_ID, len(rows) + 1))])
         if _schema_identity(schema_cursor.fetchall()) != _schema_identity(schema) or not _proof_matches(proof_cursor, proof):
             raise AutonomousStoreError('Journal changed while collecting independently closed raw pages.')
-        self._knowledge_pending = (rows, _schema_identity(schema), proof)
+        # Every eligible value is immutable str/int. Keep private tuple rows;
+        # callers and validators receive separate dictionaries, never aliases.
+        self._knowledge_pending = (tuple(tuple(row.items()) for row in rows), _schema_identity(schema), proof)
         return rows
 
     def _validated_knowledge_states(self, rows):
@@ -523,13 +527,16 @@ class HostedAutonomousStore(AutonomousStore):
     @classmethod
     def _journal_page_query(cls, page_rows, rows, after_loop, after_sequence):
         size = '+'.join('COALESCE(length(CAST(' + key + ' AS BLOB)),0)' for key in _JOURNAL_COLUMNS) + '+1024'
-        query = ('SELECT * FROM (SELECT *,sum(__read_size) OVER (ORDER BY loop_id,sequence) AS __read_total,'
+        query = ('SELECT j.*,p.__read_size,p.__read_total,p.__read_position FROM '
+                 '(SELECT *,sum(__read_size) OVER (ORDER BY loop_id,sequence) AS __read_total,'
                  'row_number() OVER (ORDER BY loop_id,sequence) AS __read_position FROM '
-                 '(SELECT *,(' + size + ') AS __read_size FROM claim_loop_events WHERE session_id=? '
+                 '(SELECT session_id,loop_id,sequence,(' + size + ') AS __read_size FROM claim_loop_events WHERE session_id=? '
                  'AND (? OR loop_id>? OR (loop_id=? AND sequence>?)) '
-                 'ORDER BY loop_id,sequence LIMIT ?)) '
-                 'WHERE __read_total<=? OR __read_position=1 ORDER BY loop_id,sequence')
-        return query, (SESSION_ID, not rows, after_loop, after_loop, after_sequence, page_rows, cls.JOURNAL_PAGE_BYTES)
+                 'ORDER BY loop_id,sequence LIMIT ?)) AS p CROSS JOIN claim_loop_events AS j '
+                 'WHERE (p.__read_total<=? OR p.__read_position=1) '
+                 'AND j.session_id=p.session_id AND j.loop_id=p.loop_id AND j.sequence=p.sequence '
+                 'ORDER BY p.loop_id,p.sequence')
+        return query, (SESSION_ID, not rows, after_loop, after_loop, after_sequence, page_rows, cls.KNOWLEDGE_RAW_PAGE_BYTES)
 
     def _paged_state_rows(self, page_rows, *, count_candidates=False):
         """Bounded journal pages from one read snapshot, before source work.

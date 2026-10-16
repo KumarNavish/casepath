@@ -347,3 +347,19 @@ def test_fresh_schema_result_types_and_column_names_cannot_alias_cached_schema(n
     server.reset()
     knowledge.learning_view()  # Confirmed schema miss may take the full raw path.
     assert changed and server.raw_journal
+
+
+def test_cold_journal_byte_budget_is_256k_before_full_payload_materialization(native_proof_store):
+    server, _, knowledge = native_proof_store
+    # Whitespace preserves exact parsed native events and their sealed hashes,
+    # while exercising actual persisted UTF-8 payload size rather than tiny rows.
+    with sqlite3.connect(server.path) as db:
+        db.execute('UPDATE claim_loop_events SET event_json=event_json||?', (' ' * 150000,))
+    knowledge.learning_view()
+    assert len(server.raw_journal) >= 3
+    for statement, count in server.raw_journal:
+        arguments = [_decode(value) for value in statement.get('args', [])]
+        assert arguments[-1] == 256 * 1024
+        assert 'CROSS JOIN claim_loop_events AS j' in statement['sql']
+        assert 'SELECT session_id,loop_id,sequence,' in statement['sql']
+        assert count <= 128
