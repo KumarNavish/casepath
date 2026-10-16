@@ -1,4 +1,8 @@
 """Snapshot and HTTP ownership invariants using only local synthetic Hrana."""
+from concurrent.futures import ThreadPoolExecutor
+import json
+from threading import Barrier, Event, Lock, get_ident
+
 import httpx
 import pytest
 
@@ -214,6 +218,113 @@ def test_default_injected_http_client_still_closes_unless_explicitly_borrowed(se
     sql.LibsqlConnection(server.origin, 'fixture-token-' * 4, client=borrowed, close_client=False).close()
     assert not borrowed.is_closed
     borrowed.close()
+
+
+def test_concurrent_shared_http_sessions_isolate_batons_caches_and_poisoned_close():
+    begin_barrier, read_barrier = Barrier(2), Barrier(2)
+    failed_closed, lock = Event(), Lock()
+    sessions, generations, observed, failed_requests = {}, {}, [], []
+
+    def result(value=None):
+        return {'cols': [] if value is None else [{'name': 'value'}],
+                'rows': [] if value is None else [[sql._encode(value)]],
+                'affected_row_count': 0, 'last_insert_rowid': None}
+
+    def handler(request):
+        payload = json.loads(request.content)
+        operation, = payload['requests']
+        kind, incoming = operation['type'], payload['baton']
+        statement = operation.get('stmt', {}).get('sql', '')
+        with lock:
+            if incoming is None:
+                assert statement in ('BEGIN /* healthy */', 'BEGIN /* failed */')
+                label = 'healthy' if 'healthy' in statement else 'failed'
+                assert label not in generations
+                generations[label] = 0
+            else:
+                label = sessions.pop(incoming)
+                assert incoming.startswith(label + '-')
+            generations[label] += 1
+            baton = None if kind == 'close' else label + '-' + str(generations[label])
+            if baton is not None:
+                sessions[baton] = label
+            observed.append((label, incoming, kind, statement, get_ident()))
+        if statement.startswith('BEGIN'):
+            # Both real worker threads must be inside the same client's handler.
+            begin_barrier.wait(timeout=5)
+            response = {'type': 'execute', 'result': result()}
+        elif kind == 'batch':
+            step, = operation['batch']['steps']
+            assert sql._decode(step['stmt']['args'][0]) == label
+            response = {'type': 'batch', 'result': {'step_results': [result(label)], 'step_errors': []}}
+        elif statement.startswith('SELECT'):
+            assert sql._decode(operation['stmt']['args'][0]) == label
+            read_barrier.wait(timeout=5)
+            if label == 'failed':
+                failed_requests.append(True)
+                raise httpx.ReadTimeout('synthetic lost session response', request=request)
+            response = {'type': 'execute', 'result': result(label)}
+        elif statement == 'COMMIT':
+            assert label == 'healthy' and failed_closed.is_set()
+            response = {'type': 'execute', 'result': result()}
+        else:
+            assert kind == 'close' and label == 'healthy' and failed_closed.is_set()
+            response = {'type': 'close'}
+        return httpx.Response(200, json={'baton': baton, 'base_url': None,
+                                       'results': [{'type': 'ok', 'response': response}]})
+
+    client = httpx.Client(transport=httpx.MockTransport(handler), trust_env=False, follow_redirects=False)
+    database = sql.TursoDatabase('libsql://fixture.turso.io', 'fixture-token-' * 4,
+                                client_factory=lambda: client, reuse_http=True)
+    def worker(label):
+        db = database.connect()
+        try:
+            assert db._baton is None and not db.in_transaction and db._cache == {}
+            db.execute('BEGIN /* ' + label + ' */')
+            db.prefetch([('SELECT ? AS value', (label,))])
+            assert db.execute('SELECT ? AS value', (label,)).fetchone()[0] == label
+            cache_identity = id(db._cache)
+            if label == 'failed':
+                with pytest.raises(sql.HostedStorageError):
+                    db.execute('SELECT ? AS fresh', (label,))
+                assert db._poisoned and db._cache == {}
+                with pytest.raises(sql.HostedStorageError):
+                    db.execute('SELECT ? AS value', (label,))
+                db.close()
+                assert not client.is_closed
+                failed_closed.set()
+            else:
+                assert db.execute('SELECT ? AS fresh', (label,)).fetchone()[0] == label
+                assert failed_closed.wait(timeout=5)
+                assert not client.is_closed and not db._poisoned and db.in_transaction
+                # Poisoning/closing the peer must not erase this transaction's cache.
+                assert db.execute('SELECT ? AS value', (label,)).fetchone()[0] == label
+                db.commit()
+                assert not db.in_transaction
+            return db, cache_identity
+        finally:
+            db.close()
+            if label == 'failed':
+                failed_closed.set()
+
+    try:
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            healthy = executor.submit(worker, 'healthy')
+            failed = executor.submit(worker, 'failed')
+            healthy_db, healthy_cache = healthy.result(timeout=10)
+            failed_db, failed_cache = failed.result(timeout=10)
+        assert healthy_db._client is failed_db._client is client
+        assert healthy_cache != failed_cache and failed_requests == [True]
+        assert not client.is_closed and healthy_db._closed and failed_db._closed
+        assert len({item[4] for item in observed}) == 2
+        assert [(item[2], item[3].split()[0] if item[3] else '') for item in observed if item[0] == 'failed'] == [
+            ('execute', 'BEGIN'), ('batch', ''), ('execute', 'SELECT')]
+        assert [(item[2], item[3].split()[0] if item[3] else '') for item in observed if item[0] == 'healthy'] == [
+            ('execute', 'BEGIN'), ('batch', ''), ('execute', 'SELECT'), ('execute', 'COMMIT'), ('close', '')]
+        assert list(sessions.values()) == ['failed']  # No retry/hidden rollback after response loss.
+    finally:
+        database.close()
+    assert client.is_closed
 
 
 def test_reused_default_http_transport_has_bounded_pool_and_original_timeouts(monkeypatch):
