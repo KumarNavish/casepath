@@ -184,8 +184,10 @@ class LibsqlConnection:
         self._cache.clear()
         raise HostedStorageError('The persistent database operation is unconfirmed.') from None
 
-    def _send(self, requests, *, ending=False):
+    def _send(self, requests, *, ending=False, close_http=False):
         self._usable()
+        if type(close_http) is not bool:
+            raise HostedStorageError('The read transport close option must be a boolean.')
         payload = json.dumps({'baton': self._baton, 'requests': requests},
                              allow_nan=False, separators=(',', ':')).encode()
         if len(payload) > MAX_BYTES:
@@ -196,11 +198,14 @@ class LibsqlConnection:
         if operation == 'execute':
             verb = requests[0]['stmt']['sql'].strip().split(None, 1)[0].upper()
             operation = verb if verb in {'SELECT', 'BEGIN', 'COMMIT', 'ROLLBACK', 'INSERT', 'UPDATE', 'DELETE'} else 'execute'
+        headers = {'Authorization': 'Bearer ' + self._token,
+                   'Content-Type': 'application/json', 'Accept-Encoding': 'identity'}
+        if close_http:
+            headers['Connection'] = 'close'
         self._started = True
         try:
             with self._client.stream('POST', self._base + '/v2/pipeline',
-                    headers={'Authorization': 'Bearer ' + self._token,
-                             'Content-Type': 'application/json', 'Accept-Encoding': 'identity'}, content=payload) as response:
+                    headers=headers, content=payload) as response:
                 phase = 'http_status_and_encoding'
                 if response.status_code != 200 or response.headers.get('content-encoding', 'identity') != 'identity':
                     raise ValueError('HTTP failure')
@@ -298,25 +303,36 @@ class LibsqlConnection:
             self._in_transaction = False
         return _Cursor(result)
 
-    def execute_read_once(self, sql, parameters=()):
-        """Complete one SELECT and close its Hrana stream in one request."""
+    def execute_read_once(self, sql, parameters=(), *, close_http=False):
+        """Close one SELECT's Hrana stream; optionally retire its HTTP socket.
+
+        close_http retires this request's HTTP/1.1 connection after the body,
+        without closing the shared client or promising a fresh initial socket.
+        """
         self._usable()
+        if type(close_http) is not bool:
+            raise HostedStorageError('The read transport close option must be a boolean.')
         statement, _, kind = self._statement(sql, parameters)
         if kind != 'SELECT' or self._in_transaction or self._baton is not None:
             raise HostedStorageError('A one-shot read requires one SELECT on a fresh connection.')
-        response = self._send([{'type': 'execute', 'stmt': statement}, {'type': 'close'}], ending=True)
+        response = self._send([{'type': 'execute', 'stmt': statement}, {'type': 'close'}],
+                              ending=True, close_http=close_http)
         if self._baton is not None:
             self._uncertain()
         return _Cursor(self._result(response[0].get('result')))
 
-    def read_snapshot(self, queries):
+    def read_snapshot(self, queries, *, close_http=False):
         """Return bounded SELECT results from one fully closed read transaction.
 
         Only a fresh connection can perform this operation. Every acknowledgement
         and decoded result is checked before any cursor escapes; an uncertain or
         failed pipeline is poisoned rather than retried or partially admitted.
+        close_http retires this request's HTTP/1.1 connection after its body;
+        it neither closes the shared client nor guarantees a fresh initial socket.
         """
         self._usable()
+        if type(close_http) is not bool:
+            raise HostedStorageError('The read transport close option must be a boolean.')
         if self._started or self._in_transaction or self._baton is not None:
             raise HostedStorageError('A read snapshot requires a fresh connection.')
         if not isinstance(queries, (tuple, list)) or not 1 <= len(queries) <= SNAPSHOT_QUERIES:
@@ -338,7 +354,7 @@ class LibsqlConnection:
         requests = [{'type': 'execute', 'stmt': statement} for statement in (begin, *statements, commit)]
         requests.append({'type': 'close'})
         try:
-            responses = self._send(requests, ending=True)
+            responses = self._send(requests, ending=True, close_http=close_http)
         except HostedSQLFailure:
             self._uncertain()
         if self._baton is not None or responses[-1] != {'type': 'close'}:

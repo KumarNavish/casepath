@@ -353,3 +353,121 @@ def test_reused_default_http_transport_has_bounded_pool_and_original_timeouts(mo
         assert sql.MAX_BYTES == 32 * 1024 * 1024 and sql.REQUEST_SECONDS == 12
     finally:
         database.close()
+
+
+@pytest.mark.parametrize('helper', ['snapshot', 'once'])
+def test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers(server, helper):
+    observed = []
+    def handler(request):
+        observed.append(request.headers.get('connection'))
+        return server.handle(request)
+    client = httpx.Client(transport=httpx.MockTransport(handler), trust_env=False)
+    database = sql.TursoDatabase('libsql://fixture.turso.io', 'fixture-token-' * 4,
+                                client_factory=lambda: client, reuse_http=True)
+    def read(db, **kwargs):
+        return (db.read_snapshot([('SELECT 7', ())], **kwargs)[0] if helper == 'snapshot'
+                else db.execute_read_once('SELECT 7', **kwargs))
+    try:
+        with database.connect() as db:
+            assert read(db, close_http=True).fetchone()[0] == 7
+        assert observed == ['close'] and not client.is_closed
+        assert client.headers.get('connection') != 'close'
+        with database.connect() as db:
+            assert read(db).fetchone()[0] == 7
+        with database.connect() as db:
+            assert read(db, close_http=False).fetchone()[0] == 7
+        with database.connect() as db:
+            db.execute('CREATE TABLE transport_proof(value TEXT)')
+            db.execute("INSERT INTO transport_proof VALUES ('saved')")
+        assert observed[1:] and all(value != 'close' for value in observed[1:])
+        assert not client.is_closed and server.open_streams == 0
+    finally:
+        database.close()
+
+
+@pytest.mark.parametrize('helper', ['snapshot', 'once'])
+@pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+    with server.connection() as db:
+        with pytest.raises(sql.HostedStorageError, match='boolean'):
+            if helper == 'snapshot':
+                db.read_snapshot([('SELECT 1', ())], close_http=flag)
+            else:
+                db.execute_read_once('SELECT 1', close_http=flag)
+        assert server.requests == [] and not db._poisoned
+        assert db.execute('SELECT 1').fetchone()[0] == 1
+
+
+def test_concurrent_raw_close_header_does_not_leak_into_compact_snapshot():
+    barrier, lock = Barrier(2), Lock()
+    observed = []
+    def handler(request):
+        payload = json.loads(request.content)
+        statement = payload['requests'][1]['stmt']
+        label = sql._decode(statement['args'][0])
+        with lock:
+            observed.append((label, request.headers.get('connection'), get_ident()))
+        barrier.wait(timeout=5)
+        empty = {'cols': [], 'rows': [], 'affected_row_count': 0, 'last_insert_rowid': None}
+        row = {'cols': [{'name': 'value'}], 'rows': [[sql._encode(label)]],
+               'affected_row_count': 0, 'last_insert_rowid': None}
+        return httpx.Response(200, json={'baton': None, 'base_url': None, 'results': [
+            {'type': 'ok', 'response': {'type': 'execute', 'result': value}} for value in (empty, row, empty)
+        ] + [{'type': 'ok', 'response': {'type': 'close'}}]})
+    client = httpx.Client(transport=httpx.MockTransport(handler), trust_env=False)
+    database = sql.TursoDatabase('libsql://fixture.turso.io', 'fixture-token-' * 4,
+                                client_factory=lambda: client, reuse_http=True)
+    def read(label, close_http):
+        with database.connect() as db:
+            cursor, = db.read_snapshot([('SELECT ? AS value', (label,))], close_http=close_http)
+            return cursor.fetchone()[0]
+    try:
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            raw = executor.submit(read, 'raw', True)
+            compact = executor.submit(read, 'compact', False)
+            assert raw.result(timeout=10) == 'raw' and compact.result(timeout=10) == 'compact'
+        assert len({item[2] for item in observed}) == 2
+        headers = {label: value for label, value, _ in observed}
+        assert headers['raw'] == 'close' and headers['compact'] != 'close'
+        assert client.headers.get('connection') != 'close' and not client.is_closed
+    finally:
+        database.close()
+
+
+@pytest.mark.parametrize('helper', ['snapshot', 'once'])
+@pytest.mark.parametrize('fault', ['bytes', 'deadline', 'cancel'])
+def test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry(monkeypatch, helper, fault):
+    clock, seen = [0.0], []
+    monkeypatch.setattr(sql, 'time', type('Clock', (), {'monotonic': staticmethod(lambda: clock[0])}))
+    if fault == 'bytes':
+        monkeypatch.setattr(sql, 'MAX_BYTES', 1024)
+    class CancelledRead(Exception):
+        pass
+    class FailingStream(httpx.SyncByteStream):
+        closed = False
+        def __iter__(self):
+            if fault == 'cancel':
+                raise CancelledRead('synthetic cancelled response')
+            if fault == 'deadline':
+                clock[0] = sql.REQUEST_SECONDS + 1
+                yield b'{}'
+            else:
+                yield b'x' * (sql.MAX_BYTES + 1)
+        def close(self):
+            self.closed = True
+    stream = FailingStream()
+    def handler(request):
+        seen.append(request)
+        assert request.headers['connection'] == 'close'
+        return httpx.Response(200, stream=stream)
+    db = connection(handler)
+    with pytest.raises(sql.HostedStorageError):
+        if helper == 'snapshot':
+            db.read_snapshot([('SELECT 1', ())], close_http=True)
+        else:
+            db.execute_read_once('SELECT 1', close_http=True)
+    assert db._poisoned and db._cache == {} and stream.closed
+    with pytest.raises(sql.HostedStorageError):
+        db.execute('SELECT 2')
+    db.close()
+    assert len(seen) == 1
