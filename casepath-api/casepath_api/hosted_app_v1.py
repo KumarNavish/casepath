@@ -59,12 +59,13 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
                 controller.knowledge.learning_view()
                 state.update(controller=controller, work=work, corpus=CanonicalCorpus(corpus))
             except BaseException:
-                if controller is not None:
-                    controller.shutdown()
-                if work is not None:
-                    work.close()
-                if owns_database:
-                    database.close()
+                for resource, method in ((controller, 'shutdown'), (work, 'close'),
+                                         (database if owns_database else None, 'close')):
+                    if resource is not None:
+                        try:
+                            getattr(resource, method)()
+                        except Exception:
+                            pass  # Preserve startup failure and close remaining resources.
                 raise
 
     def shutdown():

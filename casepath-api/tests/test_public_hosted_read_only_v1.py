@@ -191,9 +191,14 @@ def test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readin
         return result
     def forbidden_model(*args, **kwargs):
         pytest.fail('read-only warmup constructed a provider model')
+    def forbidden_discovery(*args, **kwargs):
+        pytest.fail('read-only startup entered claim discovery or summary reads')
     monkeypatch.setattr(hosted_app_v1, 'HostedAutonomousController', controller)
     monkeypatch.setattr(AutonomousKnowledge, 'learning_view', warm)
     monkeypatch.setattr(hosted_model_v1, 'HostedModel', forbidden_model)
+    for target, name in ((HostedAutonomousStore, 'list'), (HostedAutonomousStore, '_read_summaries'),
+                         (construct, 'resume'), (construct, 'wake_pending')):
+        monkeypatch.setattr(target, name, forbidden_discovery)
     env = {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
            'CASEPATH_SOURCE_COMMIT': 'a' * 40}
     app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'warm')
@@ -270,3 +275,46 @@ def test_public_app_closes_only_its_owned_shared_database(saved_runtime, tmp_pat
         pass
     with injected.connect() as db:
         assert db.execute('SELECT 1').fetchone()[0] == 1
+
+
+def test_failed_warmup_closes_owned_resources_even_if_controller_cleanup_fails(saved_runtime, tmp_path, monkeypatch):
+    server, *_ = saved_runtime
+    databases, work_closed = [], []
+    def database(url, token, *, reuse_http):
+        value = TursoDatabase(url, token, reuse_http=reuse_http, client_factory=server.client)
+        databases.append(value)
+        return value
+    construct = hosted_app_v1.HostedAutonomousController
+    def controller(*args, **kwargs):
+        value = construct(*args, **kwargs)
+        original = value.shutdown
+        calls = []
+        def shutdown():
+            original()
+            calls.append(True)
+            if len(calls) > 1:
+                raise RuntimeError('synthetic controller cleanup failure')
+        value.shutdown = shutdown
+        return value
+    close_work = hosted_app_v1.WorkStore.close
+    def close(value):
+        work_closed.append(value)
+        close_work(value)
+    def failed_warm(knowledge):
+        raise HostedStorageError('original warmup validation failure')
+    monkeypatch.setattr(hosted_app_v1, 'TursoDatabase', database)
+    monkeypatch.setattr(hosted_app_v1, 'HostedAutonomousController', controller)
+    monkeypatch.setattr(hosted_app_v1.WorkStore, 'close', close)
+    monkeypatch.setattr(AutonomousKnowledge, 'learning_view', failed_warm)
+    env = {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
+           'CASEPATH_SOURCE_COMMIT': 'a' * 40, 'CASEPATH_TURSO_URL': 'libsql://fixture.turso.io',
+           'TURSO_AUTH_TOKEN': 'fixture-token-' * 4}
+    app = hosted_app_v1.create_hosted_app(environment=env, runtime_directory=tmp_path / 'cleanup-failure')
+    try:
+        with pytest.raises(HostedStorageError, match='original warmup validation failure'):
+            with TestClient(app):
+                pytest.fail('failed startup became ready')
+        assert len(work_closed) == 1 and databases[0]._shared_client.is_closed
+    finally:
+        for value in databases:
+            value.close()
