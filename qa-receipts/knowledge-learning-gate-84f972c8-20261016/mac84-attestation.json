@@ -1,0 +1,27 @@
+{
+  "candidate": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "source_manifest_sha256": "83d09acf9bfae53fd19d5effbae68bf2db2d20d3844938f0c6734454fd0a8382",
+  "source_files": 1709,
+  "owner": "Mac integration owner; raw receipts remain on Mac",
+  "evidence_type": "User-supplied actual execution attestation; not Cloud-generated raw phases or JUnit",
+  "collected_ids": 127,
+  "passed": 127,
+  "skipped": 0,
+  "failed": 0,
+  "raw_phase_rows": 381,
+  "junit_cases": 127,
+  "duration_seconds": 126.0978,
+  "nice": 15,
+  "exit_code": 0,
+  "source_before_after_verified": true,
+  "checkout_clean": true,
+  "partition": [
+    "casepath-api/tests/test_cli_v1.py",
+    "casepath-api/tests/test_local_data_root.py",
+    "casepath-api/tests/test_journal_corpus_restart.py"
+  ],
+  "partition_sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "independent_final_raw_union_reconciliation_owner": "Mac",
+  "received_source_thread": "01a115f5-6dce-7700-9751-e1dc804e9a1b",
+  "recorded_epoch": 1792177213.3051226
+}

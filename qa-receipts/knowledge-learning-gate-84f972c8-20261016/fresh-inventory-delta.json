@@ -1,0 +1,28 @@
+{
+  "candidate": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "prior_candidate": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "fresh_count": 2630,
+  "baseline_count": 2613,
+  "count_delta": 17,
+  "added_ids": [
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_compact_knowledge_snapshot_copies_less_and_derived_cache_still_validates_every_read",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_learning_endpoint_is_additive_read_only_and_preserves_native_pin_fields",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_learning_replay_joins_exact_events_titles_and_frozen_version_pins",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_learning_replay_keeps_unusual_recorded_use_identities_unresolved",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[different_definition]",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[different_pin]",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[missing_events]",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[missing_pin]",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_warm_learning_cache_rejects_a_new_hash_consistent_unknown_event",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_byte_limited_short_pages_continue_until_all_chunks_are_verified",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_final_source_verification_still_detects_mutation_after_prefetch",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[changed_later_chunk]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[gap_later_page]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[missing_later_chunk]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[oversize_chunk]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[wrong_type]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_reduce_tiny_file_requests_without_changing_default_reads"
+  ],
+  "removed_ids": [],
+  "prior_shard_map_sha256": "88e0de7035e3b7251e141784615154f512a31ebe03effc99301db3f7ac109156"
+}

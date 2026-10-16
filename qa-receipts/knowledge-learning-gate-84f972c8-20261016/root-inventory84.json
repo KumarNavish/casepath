@@ -1,0 +1,30 @@
+{
+  "candidate": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "manifest_sha256": "83d09acf9bfae53fd19d5effbae68bf2db2d20d3844938f0c6734454fd0a8382",
+  "independent_root_check": true,
+  "inventory_count": 2630,
+  "cloud_count": 2503,
+  "mac_count": 127,
+  "shard_counts": {
+    "1": 9,
+    "2": 421,
+    "3": 651,
+    "4": 391,
+    "5": 346,
+    "6": 685
+  },
+  "duplicates": 0,
+  "gaps": 0,
+  "overlaps": 0,
+  "expected_known_skip_count": 10,
+  "mac_sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "bindings": {
+    "inventory/collected.json": "685f8996ce4aa06d1f3cc7287bfdead1616bdb820aac634b2c21d8936e782651",
+    "shard-map.json": "ca8861d2b6e4200ccd505e8fecb0f5edf0db87ab78c5960f526abbebe70368c9",
+    "mac-ids.txt": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "known-skips.json": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7",
+    "fresh-inventory-delta.json": "459063280a50199f90b395b2614363d17fa53dedac9a4b875f6d774f9c150a44"
+  },
+  "scope": "Collection and assignments only; executed results pending; actual Mac127 attestation is separate",
+  "verified_epoch": 1792177179.021136
+}
