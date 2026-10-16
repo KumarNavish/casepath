@@ -1,0 +1,45 @@
+{
+  "review": "bounded independent read-only Knowledge backend review",
+  "base": "b8616d4cfd5bf5667587dd1a0bf4ed58e9436d2b",
+  "reviewed_commit": "6064e7ad1519cfc6d272254e78e4b522a144088b",
+  "result": "No unresolved source-backed findings in assigned backend scope.",
+  "file_sha256": {
+    "casepath-api/casepath_api/autonomous_api_v1.py": "0b500f347aa1dd26b886ab60b94d815a29f089196503dbf37523d8e9cf65a270",
+    "casepath-api/casepath_api/autonomous_knowledge_v1.py": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464",
+    "casepath-api/casepath_api/autonomous_store_v1.py": "bb1a681e5c910732b5f0d4191e07e2bf4255c37e73dfdc0b196e5b5d4f802b62",
+    "casepath-api/casepath_api/hosted_storage_v1.py": "f2c817cec2e04174de8e5c2b9cd60077d0be2b265d9a445128cf5c5e9b556e47"
+  },
+  "checked": [
+    "All original versions/uses/quarantined rows preserved by native view; learning is additive and lazily derived.",
+    "Every cache observation follows complete current journal row/column and fresh source-byte validation.",
+    "Unknown/missing use identity, frozen pin, and timestamp remain unavailable/null; no latest-version substitution.",
+    "Knowledge event identity/time/sequence/command references derive from same validated snapshot.",
+    "Savings sum only nonnegative exact integer receipt counts; receiving claims count actual use claim IDs.",
+    "Knowledge-only journal/source batching retains byte caps, gap/type/hash checks and one journal snapshot.",
+    "Per-call batching parameters do not mutate shared source-store modes; default callers retain original 8-row source pages.",
+    "Candidate-count EOF optimization distinguishes byte truncation and strips SQL metadata before exact cache identity."
+  ],
+  "resolved_finding": "Native view initially derived learning unconditionally and failed on accepted unhashable reuse identity; author added lazy derivation and guarded unknown identities. Original repro independently retested PASS.",
+  "independent_proof": "/workspace/klr/e/public-projection-proof.json",
+  "author_reported_validation": {
+    "focused_tests": "78 passed across five focused modules; one unknown-hash consistent-event check passed separately.",
+    "profile": "/workspace/klp/e/profile-same-roster.json",
+    "mock_http_requests": {
+      "cold": {
+        "base": 21,
+        "candidate": 7
+      },
+      "warm": {
+        "base": 14,
+        "candidate": 6
+      }
+    },
+    "journal_event_bytes_unchanged": 4520448
+  },
+  "limits": [
+    "No independent full suite or hosted/browser run by this reviewer.",
+    "Author test results are identified as reported, not independently rerun.",
+    "Mock request counts do not establish hosted TTFB; Mac integration owner owns hosted timing and visual acceptance.",
+    "No app edits, seals, publication, production credentials, production DB or journal access performed."
+  ]
+}
