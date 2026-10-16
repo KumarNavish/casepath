@@ -568,7 +568,7 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
 
     @router.get('/knowledge')
     def knowledge():
-        return invoke(lambda s: s.knowledge.view())
+        return invoke(lambda s: s.knowledge.learning_view())
 
     return router
 

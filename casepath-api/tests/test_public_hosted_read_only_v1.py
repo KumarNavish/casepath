@@ -153,7 +153,9 @@ def test_public_restarts_reads_commands_and_callback_races_preserve_all_saved_ro
                     assert client.get(path + '/preview', headers=HEADERS).status_code == 200
                     if any(source['artifact_id'] == descriptor['artifact_id'] for source in saved['acquired_sources']):
                         assert client.get(path + '/text', headers=HEADERS).status_code == 200
-            assert client.get(PREFIX + '/knowledge', headers=HEADERS).json() == passive.knowledge.view()
+            knowledge = client.get(PREFIX + '/knowledge', headers=HEADERS).json()
+            assert knowledge == passive.knowledge.learning_view()
+            assert {key: knowledge[key] for key in ('versions', 'uses', 'quarantined')} == passive.knowledge.view()
             sql = list(statements(server.requests[baseline:]))
             assert not [command for command in sql if re.match(r'\s*(INSERT|UPDATE|DELETE|REPLACE|CREATE|ALTER|DROP)\b', command, re.I)]
             assert rows(server.path) == before

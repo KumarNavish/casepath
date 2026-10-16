@@ -924,6 +924,38 @@ class AutonomousStore:
         with getattr(self, "_summary_lock", self._extraction_lock):
             return deepcopy(self._validated_states(self._state_rows()))
 
+    def _knowledge_rows(self):
+        return self._state_rows()
+
+    def _knowledge_source_page_chunks(self):
+        return None
+
+    def knowledge_snapshot(self):
+        """Copy only Knowledge inputs after the complete authority validation.
+
+        Every read still observes every journal column and freshly verifies the
+        original source bytes. Never expose reducer cache objects, nor use a
+        head-only lookup to skip those checks. Event command identities come
+        from the same validated rows as the compact reducer event metadata.
+        """
+        with getattr(self, "_summary_lock", self._extraction_lock):
+            rows = self._knowledge_rows()
+            states = self._validated_states(rows, source_page_chunks=self._knowledge_source_page_chunks())
+            commands = {(row["loop_id"], row["sequence"]): row for row in rows}
+            values = []
+            for state in states:
+                value = {key: state.get(key) for key in
+                         ("claim_id", "title", "revision", "last_event_sha256", "state_sha256",
+                          "knowledge_published", "knowledge_uses")}
+                value["events"] = [
+                    {**event, **{key: commands[("autonomous." + state["claim_id"], event["sequence"])][key]
+                                for key in ("command_sha256", "idempotency_key")}}
+                    for event in state["events"] if event["kind"] in {"knowledge.published", "knowledge.used"}]
+                value["knowledge_pins"] = {workflow: context.get("compatible_knowledge", [])
+                                           for workflow, context in state.get("semantic_contexts", {}).items()}
+                values.append(value)
+            return deepcopy(values)
+
     def list_summaries(self, *, statuses=None):
         """Compact derived rows cached only while every authority byte matches.
 
@@ -947,9 +979,10 @@ class AutonomousStore:
                      "corpus_id")}) for state in self._validated_states(rows)
                 if statuses is None or state["status"] in statuses]
 
-    def _validated_states(self, rows):
+    def _validated_states(self, rows, *, source_page_chunks=None):
+        source_options = {} if source_page_chunks is None else {'page_chunks': source_page_chunks}
         if self._source_store is not None and hasattr(self._source_store, "prefetch_journal_sources"):
-            self._source_store.prefetch_journal_sources(rows)
+            self._source_store.prefetch_journal_sources(rows, **source_options)
         streams = {}
         for row in rows:
             loop = row["loop_id"]
@@ -981,7 +1014,7 @@ class AutonomousStore:
                 source_digests.update(source["sha256"] for source in state["source_descriptors"])
                 values.append(state)
             if self._source_store is not None and hasattr(self._source_store, "verify_many"):
-                self._source_store.verify_many(source_digests)
+                self._source_store.verify_many(source_digests, **source_options)
         return values
 
     def _append_command(self, claim_id, kind, payload, expected_revision, expected_state_sha256, idempotency_key):
