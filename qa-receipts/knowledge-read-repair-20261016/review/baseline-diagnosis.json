@@ -1,0 +1,44 @@
+{
+  "scope": "Independent read-only diagnosis of hosted Knowledge503",
+  "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "host": {
+    "provider": "cloud",
+    "phase": "running",
+    "configuration_current": true,
+    "configured_secrets": 0,
+    "outbound_identities": 0,
+    "production_network_calls": 0
+  },
+  "source_sha256": {
+    "casepath-api/casepath_api/hosted_sql_v1.py": "aa9fc61fad8e5186642502fda8517469ba1f298acff84cb9d50e5111f38a5126",
+    "casepath-api/casepath_api/hosted_storage_v1.py": "f2c817cec2e04174de8e5c2b9cd60077d0be2b265d9a445128cf5c5e9b556e47",
+    "casepath-api/casepath_api/autonomous_store_v1.py": "bb1a681e5c910732b5f0d4191e07e2bf4255c37e73dfdc0b196e5b5d4f802b62"
+  },
+  "observed_report_from_coordinator": {
+    "knowledge_status": 503,
+    "direct_seconds": 9.6228,
+    "sites_seconds": 14.7508,
+    "healthz_status": 200,
+    "status_status": 200,
+    "exception_category": "pending safe Mac details"
+  },
+  "established_source_facts": [
+    "HostedStorageError produces503; source/journal domain validation errors use other status paths.",
+    "Knowledge journal uses candidate row limit2048, aggregate raw row budget4MiB, one read transaction over separate BEGIN/page SELECT/COMMIT/close requests.",
+    "Knowledge source pages use candidate row limit128 with2MiB raw blob cap and one-shot SELECT+close per response.",
+    "Client request/response size cap32MiB, per-request deadline12s and configured HTTP read timeout8s.",
+    "MockHrana models baton rotation/SQLite snapshots but no upstream byte cap or transaction wall-time expiry.",
+    "Earlier same-roster MockHrana largest journal response increased from2228228 to4300100 bytes; this is fixture data, not a hosted measurement.",
+    "No compact query placeholder/argument count mismatch identified; fresh row/column/source validation remains fail closed before derived cache return."
+  ],
+  "unconfirmed_candidates": [
+    "Server-side response/resource constraint on larger journal page.",
+    "Read transaction expiry while journal pages transfer across separate HTTP requests.",
+    "Transport read timeout or response protocol error."
+  ],
+  "limits": [
+    "No production DB/journal/credentials or network calls.",
+    "No actual hosted exception available yet; candidates are not validated root causes.",
+    "No source edits, full suite, browser, frontend/media, deploy or docs changes."
+  ]
+}

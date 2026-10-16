@@ -1,0 +1,19 @@
+{
+  "source_base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "source_commit": "39be4a080926f659d70d429db81410b74e4bd279",
+  "source_checkout_clean": true,
+  "changed_paths": [
+    "casepath-api/casepath_api/hosted_storage_v1.py",
+    "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py"
+  ],
+  "author_and_review_file_hashes_match_git_and_current_files": true,
+  "focused_unique_passed": 83,
+  "focused_failed": 0,
+  "focused_skipped": 0,
+  "pre_fix_expected_failed_invariants": 2,
+  "independent_review_same_invariants_passed": 2,
+  "new_collected_cases": 4,
+  "full_suite_not_run": true,
+  "native_success_and_hosted_latency": "Pending Mac owner; not asserted from mock timings",
+  "evidence_scope": "Offline synthetic/native fixtures; no production/Turso/provider access; no source data or runtime DBs exported"
+}

@@ -1,0 +1,88 @@
+{
+  "repository": "https://github.com/tursodatabase/libsql",
+  "resolved_ref": "refs/heads/main",
+  "revision": "d8bc862d20bedc72945a1da27c8b7045414c0261",
+  "remote_actions": {
+    "git_ls_remote": 1,
+    "small_raw_source_reads": 6,
+    "product_or_production_requests": 0
+  },
+  "files": {
+    "hrana-mod.rs": {
+      "upstream_path": "libsql-server/src/hrana/mod.rs",
+      "url": "https://raw.githubusercontent.com/tursodatabase/libsql/d8bc862d20bedc72945a1da27c8b7045414c0261/libsql-server/src/hrana/mod.rs",
+      "bytes": 3016,
+      "sha256": "ba3351710a1f394d6c84c1dd28e694780ce981876030fad1f1e892ba78015d39"
+    },
+    "hrana-http-mod.rs": {
+      "upstream_path": "libsql-server/src/hrana/http/mod.rs",
+      "url": "https://raw.githubusercontent.com/tursodatabase/libsql/d8bc862d20bedc72945a1da27c8b7045414c0261/libsql-server/src/hrana/http/mod.rs",
+      "bytes": 9077,
+      "sha256": "d64b909511dd70a71dcadc159e374a952bf330083783ee131b31d421038e6cd3"
+    },
+    "hrana-result-builder.rs": {
+      "upstream_path": "libsql-server/src/hrana/result_builder.rs",
+      "url": "https://raw.githubusercontent.com/tursodatabase/libsql/d8bc862d20bedc72945a1da27c8b7045414c0261/libsql-server/src/hrana/result_builder.rs",
+      "bytes": 11976,
+      "sha256": "a5347dbe13f9bed5dcf6d4ce0def58696055fcc29f2e71bc7dfc8e1280b51f9e"
+    },
+    "hrana-http-stream.rs": {
+      "upstream_path": "libsql-server/src/hrana/http/stream.rs",
+      "url": "https://raw.githubusercontent.com/tursodatabase/libsql/d8bc862d20bedc72945a1da27c8b7045414c0261/libsql-server/src/hrana/http/stream.rs",
+      "bytes": 16423,
+      "sha256": "a6e1c10265496f50714052b49a24b72482caaf10f0b7d5cf0ae2a117d3931fcb"
+    },
+    "libsql-config.rs": {
+      "upstream_path": "libsql-server/src/config.rs",
+      "url": "https://raw.githubusercontent.com/tursodatabase/libsql/d8bc862d20bedc72945a1da27c8b7045414c0261/libsql-server/src/config.rs",
+      "bytes": 6653,
+      "sha256": "1e380a2d44bbd49170b4389cb35893ac973ad7e6abe9b3813020587c1ff5af6f"
+    },
+    "query-result-builder.rs": {
+      "upstream_path": "libsql-server/src/query_result_builder.rs",
+      "url": "https://raw.githubusercontent.com/tursodatabase/libsql/d8bc862d20bedc72945a1da27c8b7045414c0261/libsql-server/src/query_result_builder.rs",
+      "bytes": 33033,
+      "sha256": "f39f4b7fe0b6574a86bef23632b1b64ee23ce1d6c969118eae48dbe025457b9c"
+    }
+  },
+  "findings": [
+    {
+      "source": "libsql-server/src/config.rs",
+      "lines": [
+        97,
+        98,
+        117,
+        118
+      ],
+      "fact": "Open-source default max_response_size and max_total_response_size are bytesize::mb(10u64), exposed as configurable fields."
+    },
+    {
+      "source": "libsql-server/src/hrana/result_builder.rs",
+      "lines": [
+        62,
+        76,
+        102,
+        117,
+        129,
+        130
+      ],
+      "fact": "Builder enforces configured per-response/global size; text value size is estimated before JSON escaping and blob values by raw byte length."
+    },
+    {
+      "source": "libsql-server/src/query_result_builder.rs",
+      "lines": [
+        20,
+        28,
+        89,
+        90
+      ],
+      "fact": "ResponseTooLarge is a configurable query-result-builder error, not an evidenced fixed4MiB HTTP wire limit."
+    }
+  ],
+  "conclusion": "No primary-source evidence found for a fixed4MiB Turso/Hrana upstream response cap;4,300,100 wire bytes does not itself establish a breach.",
+  "limits": [
+    "Pinned open-source implementation is not evidence of deployed Turso Cloud version or configuration.",
+    "No Turso Cloud production endpoint, credentials or journal inspected.",
+    "Actual hosted SQL/transport failure category remains pending; no root cause claimed."
+  ]
+}

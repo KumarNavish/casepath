@@ -1,0 +1,113 @@
+{
+  "review": "Independent bounded read-only backend Knowledge query repair",
+  "result": "No unresolved actionable source-backed findings in the thin repair candidate.",
+  "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "commit": "39be4a080926f659d70d429db81410b74e4bd279",
+  "commit_parent": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "changed_paths": [
+    "casepath-api/casepath_api/hosted_storage_v1.py",
+    "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py"
+  ],
+  "file_sha256": {
+    "casepath-api/casepath_api/hosted_storage_v1.py": "b933a2942c8eb9341fe0a2b309e70e911304544577702b308e2cd4fbc8f8b521",
+    "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py": "5f405d498b4ff0e328658eeaf9735feb917804f25d00c91ecf57a0d0718a6a20"
+  },
+  "unchanged_authority_and_transport_files": {
+    "casepath-api/casepath_api/hosted_sql_v1.py": "aa9fc61fad8e5186642502fda8517469ba1f298acff84cb9d50e5111f38a5126",
+    "casepath-api/casepath_api/autonomous_store_v1.py": "bb1a681e5c910732b5f0d4191e07e2bf4255c37e73dfdc0b196e5b5d4f802b62",
+    "casepath-api/casepath_api/autonomous_knowledge_v1.py": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464"
+  },
+  "scope": "12 added product-source lines in Knowledge-only metadata-window construction plus one new4-case test module.",
+  "confirmed_failure_path": {
+    "source": "Coordinator safe Mac diagnostic; exact SQL hash independently reproduced",
+    "operation": "First84 _knowledge_rows SELECT",
+    "sql_sha256": "6d4ce3cd95f0d02a553b132fe0f35f05b45cbfc1d4f3c869ad400fbf3e4ae03e",
+    "exception": "ReadTimeout",
+    "select_seconds": 8.0065,
+    "preceding_begin_status": 200,
+    "preceding_begin_seconds": 1.2167,
+    "total_seconds": 9.2735,
+    "evidence": "/workspace/knowledge-read-repair-20261016/review/e/confirmed-failure-path.json"
+  },
+  "reviewed_invariants": [
+    "Knowledge-only(count_candidates=True) metadata window; default SQL and parameters byte-identical84.",
+    "Window carries exact keys/sizes; CROSS JOIN retrieves complete rows after byte cutoff using full PK(session_id,loop_id,sequence).",
+    "j.* retains every actual SQL authority column, including unknown extra columns, for exact-row cache identity.",
+    "Same2048 candidate rows,4MiB byte bound, first-row oversize rejection, keyset ordering, candidate-count EOF and malformed/gap checks.",
+    "Same BEGIN/page*/COMMIT snapshot and fresh full journal/source validation before cache return.",
+    "HostedSources128 and every chunk roster/type/size/hash/post-prefetch verification unchanged.",
+    "No timeout, transport, baton, rollback, retry, source-copy or cache-authority change."
+  ],
+  "independent_validation": {
+    "native_regressions": {
+      "passed": 2,
+      "failed": 0,
+      "seconds": 2.21,
+      "command": "env HOME=/workspace/knowledge-read-repair-20261016/review/h TMPDIR=/workspace/knowledge-read-repair-20261016/review/t TMP=/workspace/knowledge-read-repair-20261016/review/t TEMP=/workspace/knowledge-read-repair-20261016/review/t PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/casepath-release-ae0-shard6/casepath-api:/workspace/casepath-release-ae0-shard6/casepath-api/tests /workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/workspace/knowledge-read-repair-20261016/review/t/pytest-payload --junitxml=/workspace/knowledge-read-repair-20261016/review/e/new-payload-invariant.xml casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py",
+      "log": "/workspace/knowledge-read-repair-20261016/review/e/new-payload-invariant.log",
+      "junit": "/workspace/knowledge-read-repair-20261016/review/e/new-payload-invariant.xml",
+      "binding": {
+        "commit": "39be4a080926f659d70d429db81410b74e4bd279",
+        "file_sha256": {
+          "casepath-api/casepath_api/hosted_storage_v1.py": "b933a2942c8eb9341fe0a2b309e70e911304544577702b308e2cd4fbc8f8b521",
+          "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py": "5f405d498b4ff0e328658eeaf9735feb917804f25d00c91ecf57a0d0718a6a20"
+        },
+        "product_source_identical_to_independent_test": true,
+        "independently_tested_two_case_module_sha256": "33e5eca46f51e9e61869920e6f36db6411fbb22c901109e8aa77627c009408d5",
+        "test_module_binding_limit": "Independent2-case run preceded final test-module augmentation. Final4-case module is covered by author/coordinator83-case validation; final product-source bytes exactly match the independently tested bytes."
+      }
+    },
+    "query_identity": {
+      "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+      "default_SQL_and_parameters_byte_identical": true,
+      "default_query_sha256": "57729fe4db4a20fe210cfbf30b13e855f7c07bf71ccf2dca1fe82cce3a2f6204",
+      "old_knowledge_query_sha256": "6d4ce3cd95f0d02a553b132fe0f35f05b45cbfc1d4f3c869ad400fbf3e4ae03e",
+      "new_knowledge_query_sha256": "78dba83ee36c3e808bbec29c287755faa8129feaf6635e8cd78ec614dccb5b2d",
+      "knowledge_parameters_identical": true,
+      "captured_with": "Pure local connection stub; no SQL engine/network operation.",
+      "evidence": "/workspace/knowledge-read-repair-20261016/review/e/scoped-query-identity.json"
+    },
+    "repository": "Exact parent/commit/source hashes and two-path scope verified; writer/reviewer clones clean; diff --check passed."
+  },
+  "author_and_coordinator_validation": {
+    "focused_unique_passes": 83,
+    "failures": 0,
+    "skips": 0,
+    "main_passes": 81,
+    "main_seconds": 103.42,
+    "boundary_passes": 2,
+    "boundary_seconds": 1.55,
+    "new_module_cases": 4,
+    "before_fix_failures": 2,
+    "author_receipt": "/workspace/knowledge-read-repair-20261016/projection/e/authorreceipt.json",
+    "author_receipt_sha256_coordinator_verified": "145772c633b6b48ef203430ae78985459483d4888404332573b5b5b3c23c7c22",
+    "junit": [
+      "/workspace/knowledge-read-repair-20261016/projection/e/focused.xml",
+      "/workspace/knowledge-read-repair-20261016/projection/e/boundaries.xml"
+    ],
+    "before_fix_junit": "/workspace/knowledge-read-repair-20261016/projection/e/failing-invariant.xml",
+    "temporary_probe": {
+      "full_payload_evaluations_before": 1965,
+      "after": 0.22912,
+      "evaluated_event_bytes_before": 517717904,
+      "sqlite_seconds_before": 1.541899,
+      "all_column_identity_equal": true,
+      "http_requests_unchanged": 19,
+      "evidence": "/workspace/knowledge-read-repair-20261016/projection/e/metadata-window.log",
+      "qualification": "Author local native probe inspected; not hosted timing or direct heap measurement."
+    }
+  },
+  "upstream_contract": {
+    "evidence": "/workspace/knowledge-read-repair-20261016/review/e/upstream-size-contract.json",
+    "official_revision": "d8bc862d20bedc72945a1da27c8b7045414c0261",
+    "conclusion": "No primary evidence of a fixed4MiB upstream cap; OSS configurable10MB defaults do not establish deployed Cloud settings. Observed failure is a read timeout."
+  },
+  "limits": [
+    "Mac native SQL check and deployed /knowledge503 resolution are pending at review close; no success claim.",
+    "Independent2-case test run used identical final product-source bytes before test-module augmentation; final83-case results are author/coordinator validation.",
+    "No production credentials/database/full journal, product API or provider calls by reviewer.",
+    "Only authorized official pinned GitHub source reads(6 small files,80178bytes) outside local inspection.",
+    "No additional tests beyond2 native regressions; no source/frontend/media/docs/seal edits, full gate, merge, deployment, new service or hash-cache expansion.",
+    "Prior /workspace/klr evidence preserved."
+  ]
+}

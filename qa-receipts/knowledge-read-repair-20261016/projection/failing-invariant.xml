@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="1.754" timestamp="2026-10-16T19:37:04.626598+00:00" hostname="656813ef2295"><testcase classname="tests.test_hosted_knowledge_payload_bounds_v1" name="test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[128]" time="1.567"><failure message="AssertionError: [{'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 27}, {'evaluated_event_bytes': 1199962, 'payload_evaluations': 8, 'returned_rows': 8}]&#10;assert False&#10; +  where False = all(&lt;generator object test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f3bd0d07c60&gt;)">large_native_journal = (PosixPath('/workspace/knowledge-read-repair-20261016/projection/t/failing-invariant/native-large-journal0/claims.sqli.../workspace/knowledge-read-repair-20261016/projection/t/failing-invariant/native-large-journal0/autonomous-sources-v1'))
+tmp_path = PosixPath('/workspace/knowledge-read-repair-20261016/projection/t/failing-invariant/test_byte_cutoff_precedes_full0')
+candidate_limit = 128
+
+    @pytest.mark.parametrize('candidate_limit', [128, 2048])
+    def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column(
+            large_native_journal, tmp_path, candidate_limit):
+        original, sources = large_native_journal
+        server = ObservedRows(tmp_path / 'hosted.sqlite3')
+        journal = HostedJournal(tmp_path / 'unused', server.connection)
+        with sqlite3.connect(original) as source, sqlite3.connect(server.path) as target:
+            rows = source.execute('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence',
+                                  (SESSION_ID,)).fetchall()
+            target.executemany('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', rows)
+            # A same-loop/sequence row in another namespace detects an incomplete
+            # join key. Extra SQL columns remain part of exact cache identity.
+            target.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', ('fixture.other-session', *rows[0][1:]))
+            target.execute('ALTER TABLE claim_loop_events RENAME TO fixture_accepted_events')
+            target.execute("ALTER TABLE fixture_accepted_events ADD COLUMN fixture_note TEXT NOT NULL DEFAULT 'original'")
+            target.execute('UPDATE fixture_accepted_events SET fixture_note=loop_id')
+            target.execute('CREATE VIEW claim_loop_events AS SELECT *, fixture_full_payload(event_json) AS fixture_probe '
+                           'FROM fixture_accepted_events')
+        store = HostedAutonomousStore(journal.path, source_root=sources, journal=journal,
+                                      source_store=HostedSources(server.connection))
+        store.KNOWLEDGE_PAGE_ROWS = candidate_limit
+        try:
+            actual = store._knowledge_rows()
+            assert len(server.pages) &gt;= 2  # The byte budget, rather than row count, limits this fixture.
+            assert len(actual) == len(rows)
+            names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
+                     'event_sha256', 'event_json', 'created_at')
+            assert [tuple(row[name] for name in names) for row in actual] == rows
+            assert all(row['fixture_note'] == row['loop_id'] and row['fixture_probe'] == 1 for row in actual)
+&gt;           assert all(page['payload_evaluations'] == page['returned_rows'] for page in server.pages), server.pages
+E           AssertionError: [{'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 27}, {'evaluated_event_bytes': 1199962, 'payload_evaluations': 8, 'returned_rows': 8}]
+E           assert False
+E            +  where False = all(&lt;generator object test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f3bd0d07c60&gt;)
+
+casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py:76: AssertionError</failure></testcase><testcase classname="tests.test_hosted_knowledge_payload_bounds_v1" name="test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[2048]" time="0.068"><failure message="AssertionError: [{'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 27}, {'evaluated_event_bytes': 1199962, 'payload_evaluations': 8, 'returned_rows': 8}]&#10;assert False&#10; +  where False = all(&lt;generator object test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f3bd0d05560&gt;)">large_native_journal = (PosixPath('/workspace/knowledge-read-repair-20261016/projection/t/failing-invariant/native-large-journal0/claims.sqli.../workspace/knowledge-read-repair-20261016/projection/t/failing-invariant/native-large-journal0/autonomous-sources-v1'))
+tmp_path = PosixPath('/workspace/knowledge-read-repair-20261016/projection/t/failing-invariant/test_byte_cutoff_precedes_full1')
+candidate_limit = 2048
+
+    @pytest.mark.parametrize('candidate_limit', [128, 2048])
+    def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column(
+            large_native_journal, tmp_path, candidate_limit):
+        original, sources = large_native_journal
+        server = ObservedRows(tmp_path / 'hosted.sqlite3')
+        journal = HostedJournal(tmp_path / 'unused', server.connection)
+        with sqlite3.connect(original) as source, sqlite3.connect(server.path) as target:
+            rows = source.execute('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence',
+                                  (SESSION_ID,)).fetchall()
+            target.executemany('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', rows)
+            # A same-loop/sequence row in another namespace detects an incomplete
+            # join key. Extra SQL columns remain part of exact cache identity.
+            target.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', ('fixture.other-session', *rows[0][1:]))
+            target.execute('ALTER TABLE claim_loop_events RENAME TO fixture_accepted_events')
+            target.execute("ALTER TABLE fixture_accepted_events ADD COLUMN fixture_note TEXT NOT NULL DEFAULT 'original'")
+            target.execute('UPDATE fixture_accepted_events SET fixture_note=loop_id')
+            target.execute('CREATE VIEW claim_loop_events AS SELECT *, fixture_full_payload(event_json) AS fixture_probe '
+                           'FROM fixture_accepted_events')
+        store = HostedAutonomousStore(journal.path, source_root=sources, journal=journal,
+                                      source_store=HostedSources(server.connection))
+        store.KNOWLEDGE_PAGE_ROWS = candidate_limit
+        try:
+            actual = store._knowledge_rows()
+            assert len(server.pages) &gt;= 2  # The byte budget, rather than row count, limits this fixture.
+            assert len(actual) == len(rows)
+            names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
+                     'event_sha256', 'event_json', 'created_at')
+            assert [tuple(row[name] for name in names) for row in actual] == rows
+            assert all(row['fixture_note'] == row['loop_id'] and row['fixture_probe'] == 1 for row in actual)
+&gt;           assert all(page['payload_evaluations'] == page['returned_rows'] for page in server.pages), server.pages
+E           AssertionError: [{'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 27}, {'evaluated_event_bytes': 1199962, 'payload_evaluations': 8, 'returned_rows': 8}]
+E           assert False
+E            +  where False = all(&lt;generator object test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f3bd0d05560&gt;)
+
+casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py:76: AssertionError</failure></testcase></testsuite></testsuites>

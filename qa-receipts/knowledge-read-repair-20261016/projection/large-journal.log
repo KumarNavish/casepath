@@ -1,0 +1,239 @@
+native_fixture_ready 9.772026
+{
+  "source_commit": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "fixture": "24 native intakes with six original supporting files and eight frozen contexts each",
+  "limitations": "MockHrana has no hosted transaction expiry or remote latency; these are offline size/SQL measurements, not a production cause determination",
+  "first_candidate_count_and_event_bytes": {
+    "128": [
+      128,
+      33559159
+    ],
+    "2048": [
+      240,
+      63014714
+    ]
+  },
+  "journal": [
+    {
+      "candidate_row_limit": 128,
+      "read_rows": 240,
+      "wall_seconds": 1.505873,
+      "http_requests": 19,
+      "response_bytes": 63293918,
+      "largest_response_bytes": 4163119,
+      "sqlite_seconds": 1.191821,
+      "pages": [
+        {
+          "rows": 16,
+          "candidate_rows": 128,
+          "event_bytes": 4103586,
+          "sqlite_seconds": 0.123527
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 128,
+          "event_bytes": 4103587,
+          "sqlite_seconds": 0.092414
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 128,
+          "event_bytes": 4060166,
+          "sqlite_seconds": 0.107124
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 128,
+          "event_bytes": 4103606,
+          "sqlite_seconds": 0.10206
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 128,
+          "event_bytes": 4060166,
+          "sqlite_seconds": 0.11125
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 128,
+          "event_bytes": 4103580,
+          "sqlite_seconds": 0.109312
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 128,
+          "event_bytes": 4060137,
+          "sqlite_seconds": 0.09495
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 128,
+          "event_bytes": 4103604,
+          "sqlite_seconds": 0.096909
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 115,
+          "event_bytes": 4144586,
+          "sqlite_seconds": 0.084705
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 99,
+          "event_bytes": 4019167,
+          "sqlite_seconds": 0.070384
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 84,
+          "event_bytes": 4103603,
+          "sqlite_seconds": 0.059122
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 68,
+          "event_bytes": 4060150,
+          "sqlite_seconds": 0.050551
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 53,
+          "event_bytes": 4103601,
+          "sqlite_seconds": 0.039028
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 37,
+          "event_bytes": 4060137,
+          "sqlite_seconds": 0.028097
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 22,
+          "event_bytes": 4103595,
+          "sqlite_seconds": 0.019343
+        },
+        {
+          "rows": 6,
+          "candidate_rows": 6,
+          "event_bytes": 1721443,
+          "sqlite_seconds": 0.003045
+        }
+      ]
+    },
+    {
+      "candidate_row_limit": 2048,
+      "read_rows": 240,
+      "wall_seconds": 1.846965,
+      "http_requests": 19,
+      "response_bytes": 63293923,
+      "largest_response_bytes": 4163119,
+      "sqlite_seconds": 1.537362,
+      "pages": [
+        {
+          "rows": 16,
+          "candidate_rows": 240,
+          "event_bytes": 4103586,
+          "sqlite_seconds": 0.221388
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 224,
+          "event_bytes": 4103587,
+          "sqlite_seconds": 0.14638
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 208,
+          "event_bytes": 4060166,
+          "sqlite_seconds": 0.159594
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 193,
+          "event_bytes": 4103606,
+          "sqlite_seconds": 0.150793
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 177,
+          "event_bytes": 4060166,
+          "sqlite_seconds": 0.125566
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 162,
+          "event_bytes": 4103580,
+          "sqlite_seconds": 0.116795
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 146,
+          "event_bytes": 4060137,
+          "sqlite_seconds": 0.116636
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 131,
+          "event_bytes": 4103604,
+          "sqlite_seconds": 0.099654
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 115,
+          "event_bytes": 4144586,
+          "sqlite_seconds": 0.114414
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 99,
+          "event_bytes": 4019167,
+          "sqlite_seconds": 0.08381
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 84,
+          "event_bytes": 4103603,
+          "sqlite_seconds": 0.064905
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 68,
+          "event_bytes": 4060150,
+          "sqlite_seconds": 0.053972
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 53,
+          "event_bytes": 4103601,
+          "sqlite_seconds": 0.036785
+        },
+        {
+          "rows": 15,
+          "candidate_rows": 37,
+          "event_bytes": 4060137,
+          "sqlite_seconds": 0.02548
+        },
+        {
+          "rows": 16,
+          "candidate_rows": 22,
+          "event_bytes": 4103595,
+          "sqlite_seconds": 0.018039
+        },
+        {
+          "rows": 6,
+          "candidate_rows": 6,
+          "event_bytes": 1721443,
+          "sqlite_seconds": 0.003151
+        }
+      ]
+    }
+  ],
+  "fresh_source_verification": {
+    "digests": 168,
+    "wall_seconds": 0.118208,
+    "http_requests": 4,
+    "response_bytes": 8998536,
+    "largest_response_bytes": 2785203
+  }
+}

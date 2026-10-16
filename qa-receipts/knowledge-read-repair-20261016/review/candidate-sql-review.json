@@ -1,0 +1,25 @@
+{
+  "status": "authored WIP Knowledge SQL source independently captured; final immutable commit pending",
+  "sql_sha256": "78dba83ee36c3e808bbec29c287755faa8129feaf6635e8cd78ec614dccb5b2d",
+  "sql_bytes": 1017,
+  "export_matches_source": true,
+  "parameters": [
+    "casepath-autonomous-local-v1",
+    true,
+    "",
+    "",
+    -1,
+    2048,
+    4194304
+  ],
+  "integrity_source_review": {
+    "complete_primary_key_join": true,
+    "all_authority_columns_returned": "j.*",
+    "same_count_and_byte_predicates": true,
+    "same_keyset_order": true,
+    "snapshot_and_source_validation_tail_unchanged": true,
+    "timeout_unchanged": true
+  },
+  "regression_review": "35 genuine native intakes; exact all-column content and unknown-column identity, other-session same-loop/sequence collision, byte-capped multi-page payload evaluation all covered in2 candidate-limit cases.",
+  "network_calls": 0
+}
