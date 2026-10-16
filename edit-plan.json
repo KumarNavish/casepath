@@ -1656,6 +1656,14 @@
     }
   ],
   "camera_rule": "Complete excerpt plus actual destination and moving fact; no whole header/map lock during active work. Full UI on inspection, native pointer travel/clicks, decision and final.",
+  "cropped_map_edge_treatment": {
+    "active_only": true,
+    "maximum_css_pixels": 72,
+    "cosine_transition_css_pixels": 12,
+    "protected_work_union_guard_css_pixels": 10,
+    "background": "Predominant colour sampled from actual captured pixels",
+    "scope": "Horizontal crop margins inside captured rail bounds only; no excerpt, moving fact, destination, full UI or final scene treatment"
+  },
   "cursor_rule": "Only supplied actual logged x/y positions; no generated travel or click glow",
   "issues": [],
   "not_verified": [

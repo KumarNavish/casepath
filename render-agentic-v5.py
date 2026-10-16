@@ -23,6 +23,7 @@ import time
 W, H, FPS, GUTTER = 1920, 1080, 30, 64
 CAPTION_SIZE = 42
 MIN_ZOOM, ACTIVE_ZOOM, MAX_SPEED, ENDCARD = 1.4, 2.0, 6.0, 5.0
+MAP_EDGE_CSS, MAP_EDGE_TRANSITION_CSS, MAP_EDGE_GUARD_CSS = 72, 12, 10
 END_TEXT = ["CasePath · Evidence into action", "Synthetic claims · recorded replay"]
 BG, INK = (239, 242, 236), (24, 61, 51)
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
@@ -387,6 +388,11 @@ class Movie:
             "caption_font_pixels": CAPTION_SIZE,
             "captions": self.labels, "camera_samples": camera_rows,
             "camera_rule": "Complete excerpt plus actual destination and moving fact; no whole header/map lock during active work. Full UI on inspection, native pointer travel/clicks, decision and final.",
+            "cropped_map_edge_treatment": {"active_only": True, "maximum_css_pixels": MAP_EDGE_CSS,
+                "cosine_transition_css_pixels": MAP_EDGE_TRANSITION_CSS,
+                "protected_work_union_guard_css_pixels": MAP_EDGE_GUARD_CSS,
+                "background": "Predominant colour sampled from actual captured pixels",
+                "scope": "Horizontal crop margins inside captured rail bounds only; no excerpt, moving fact, destination, full UI or final scene treatment"},
             "cursor_rule": "Only supplied actual logged x/y positions; no generated travel or click glow",
             "issues": self.issues,
             "not_verified": ["publication/source identity beyond supplied receipt", "actual source pixels and complete final state", "encoded video and rendered framing"],
@@ -417,6 +423,40 @@ class Movie:
                 return x, y
         return None
 
+    def feather_map_edges(self, content, source, sample, bounds, x, y, scale):
+        """Treat only spare map-edge pixels, outside the complete work union."""
+        from PIL import Image
+        rail = rect(sample.get("railRect"))
+        if not rail or not bounds:
+            return
+        width, height = content.size
+        top = max(0, math.ceil((rail[1] - y) * scale))
+        bottom = min(height, math.floor((rail[1] + rail[3] - y) * scale))
+        if bottom <= top:
+            return
+        # Use the predominant actual captured stage colour, never painted UI.
+        colours = source.resize((64, 36), Image.Resampling.NEAREST).getcolors(64 * 36)
+        background = max(colours, key=lambda item: item[0])[1]
+        guard = MAP_EDGE_GUARD_CSS * scale
+        rooms = ((bounds[0] - x) * scale - guard,
+                 width - (bounds[0] + bounds[2] - x) * scale - guard)
+        for side, room in enumerate(rooms):
+            extent = math.floor(min(MAP_EDGE_CSS * scale, room))
+            if extent < 2:
+                continue
+            transition = min(extent, max(2, round(MAP_EDGE_TRANSITION_CSS * scale)))
+            row = [255 if i < extent - transition else
+                   round(255 * (1 + math.cos(math.pi * (i - extent + transition + 1) / transition)) / 2)
+                   for i in range(extent)]
+            if side:
+                row.reverse()
+            edge = 0 if not side else width - extent
+            mask = Image.frombytes("L", (extent, 1), bytes(row)).resize((extent, bottom - top))
+            box = (edge, top, edge + extent, bottom)
+            strip = Image.composite(Image.new("RGB", (extent, bottom - top), background),
+                                    content.crop(box), mask)
+            content.paste(strip, (edge, top))
+
     def render_frame(self, out_t, prior):
         from PIL import Image, ImageDraw, ImageFont
         def font(size):
@@ -432,7 +472,7 @@ class Movie:
         source_t = self.input_time(out_t)
         editorial_hold = out_t >= self.ui_duration and self.final_still is not None
         source = self.final_still if editorial_hold else self.read_frame(source_t)
-        camera, _, _ = ((self.cw / 2, self.ch / 2, 1), None, 'actual-final-still') if editorial_hold else self.camera(source_t, prior)
+        camera, _, mode = ((self.cw / 2, self.ch / 2, 1), None, 'actual-final-still') if editorial_hold else self.camera(source_t, prior)
         cx, cy, zoom = camera
         crop_w, crop_h = self.cw / zoom, self.ch / zoom
         x, y = max(0, cx - crop_w / 2), max(0, cy - crop_h / 2)
@@ -443,6 +483,9 @@ class Movie:
         sx, sy = source.width / self.cw, source.height / self.ch
         box = (x * sx, y * sy, min(self.cw, x + crop_w) * sx, min(self.ch, y + crop_h) * sy)
         content = source.resize((width, height), Image.Resampling.LANCZOS, box=box)
+        if mode == 'active':
+            bounds, _ = self.camera_geometry(source_t)
+            self.feather_map_edges(content, source, self.sample(source_t), bounds, x, y, scale)
         if not editorial_hold and self.args.cursor == "recorded" and not self.raw.get("cursor_in_frames", False):
             pointer = self.cursor(source_t)
             if pointer:

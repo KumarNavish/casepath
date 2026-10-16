@@ -1656,6 +1656,14 @@
     }
   ],
   "camera_rule": "Complete excerpt plus actual destination and moving fact; no whole header/map lock during active work. Full UI on inspection, native pointer travel/clicks, decision and final.",
+  "cropped_map_edge_treatment": {
+    "active_only": true,
+    "maximum_css_pixels": 72,
+    "cosine_transition_css_pixels": 12,
+    "protected_work_union_guard_css_pixels": 10,
+    "background": "Predominant colour sampled from actual captured pixels",
+    "scope": "Horizontal crop margins inside captured rail bounds only; no excerpt, moving fact, destination, full UI or final scene treatment"
+  },
   "cursor_rule": "Only supplied actual logged x/y positions; no generated travel or click glow",
   "issues": [],
   "not_verified": [
@@ -1664,8 +1672,8 @@
   ],
   "input_manifest_sha256": "a00d2d63b27a919148009ba3935a0f46d00334eac83eacbd64095a5285a8da00",
   "input_bytes": 38445103,
-  "output_sha256": "4d45df9fcb1e8e8f4c4023149fc68d750940b8a03152c0c5e86637fd09628f41",
-  "output_bytes": 3066385,
+  "output_sha256": "1e4498a3df9b149e42a6df5e4e7eda4f49c1757b487d8e43c9421377972d131b",
+  "output_bytes": 2926001,
   "ffprobe": {
     "streams": [
       {
@@ -1700,7 +1708,7 @@
         "start_time": "0.000000",
         "duration_ts": 691200,
         "duration": "45.000000",
-        "bit_rate": "542186",
+        "bit_rate": "517220",
         "bits_per_raw_sample": "8",
         "nb_frames": "1350",
         "extradata_size": 50,
@@ -1734,7 +1742,7 @@
       }
     ],
     "format": {
-      "filename": "/workspace/casepath-agentic-v5-render-b8616d4c-20261016/output/CasePath-demo-agentic-v5.partial.mp4",
+      "filename": "/workspace/casepath-agentic-v5-edge-media-b8616d4c-20261016/output/CasePath-demo-agentic-v5.partial.mp4",
       "nb_streams": 1,
       "nb_programs": 0,
       "nb_stream_groups": 0,
@@ -1742,8 +1750,8 @@
       "format_long_name": "QuickTime / MOV",
       "start_time": "0.000000",
       "duration": "45.000000",
-      "size": "3066385",
-      "bit_rate": "545135",
+      "size": "2926001",
+      "bit_rate": "520177",
       "probe_score": 100,
       "tags": {
         "major_brand": "isom",
@@ -1753,5 +1761,5 @@
       }
     }
   },
-  "encoding_seconds": 58.746264978079125
+  "encoding_seconds": 60.50613616895862
 }

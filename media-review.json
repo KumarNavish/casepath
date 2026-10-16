@@ -16,7 +16,7 @@
   "contact_sheet_source": "Nine decoded MP4 frames; includes completed map and exact endcard",
   "visual_findings": [
     "Active excerpts, highlighted spans, fact transfers and exact destination steps stay readable at2x.",
-    "Native edge fades are visible at the panned map edges; the media adds no masks or reconstructed UI.",
+    "Decoded1.5s/5s/13s crop edges no longer display hard-cut neighbouring-label fragments. Only spare horizontal map margins receive an explicit editorial feather into sampled actual stage background.",
     "Actual source inspection shows the wrapped exact tenancy passage and paused Resume control; real close/resume cursor positions are retained.",
     "Completed actual screenshot shows six checked steps, three checked source cards, full two-sentence outcome, CO259/259a/259d and Defects and repairs Version2.",
     "42px active-verb captions occupy a separate64px gutter; inspection and transport targets remain unobscured.",
@@ -31,7 +31,7 @@
   "active_zoom_target": 2,
   "native_capture_limitations": [
     "Variable native frame cadence;30fps delivery repeats actual preceding frames and does not imply native30fps capture.",
-    "Peripheral neighboring labels may be cropped during active closeups; the actual excerpt, moving fact and required destination remain inside.",
+    "Neighbouring non-active map pixels at editorial crop margins are feathered; complete cited excerpts, moving facts and destination steps remain protected. No UI content is reconstructed.",
     "The JPEG timeline ends before film-result; a separately declared actual1600x900 completed screenshot is resampled at the same16:9 aspect ratio for the editorial hold. No exact native timestamp is invented.",
     "The final Pause control is preserved exactly as captured."
   ],
@@ -41,7 +41,7 @@
   "endcard_seconds": 5,
   "encode_threads": 2,
   "existing_HOME_preserved": true,
-  "renderer_change": "Only omitted HOME reassignment; bounded TMP directories retained.",
+  "renderer_change": "Guarded active-map crop-edge treatment only; the accepted camera geometry, event/edit plan, native frame selection,1x motion, captions, real pointer and completed hold remain unchanged. Existing HOME remains preserved.",
   "product_files_changed": false,
   "new_api_browser_inference_or_tests": false,
   "full_decode": {
@@ -54,13 +54,71 @@
       "-threads",
       "2",
       "-i",
-      "/workspace/casepath-agentic-v5-render-b8616d4c-20261016/output/CasePath-demo-agentic-v5.mp4",
+      "/workspace/casepath-agentic-v5-edge-media-b8616d4c-20261016/output/CasePath-demo-agentic-v5.mp4",
       "-an",
       "-f",
       "null",
       "-"
     ],
     "exit_code": 0,
-    "seconds": 1.841919183731079
-  }
+    "seconds": 1.7491791248321533,
+    "same_timeline_and_input_bindings": true
+  },
+  "corrects_media_commit": "bb44c58db70b428dec66febfa56ba61bdf0d29d0",
+  "editorial_edge_treatment": {
+    "active_only": true,
+    "maximum_css_pixels": 72,
+    "cosine_transition_css_pixels": 12,
+    "protected_work_union_guard_css_pixels": 10,
+    "background": "Predominant colour sampled from actual captured pixels",
+    "scope": "Horizontal crop margins inside captured rail bounds only; no excerpt, moving fact, destination, full UI or final scene treatment"
+  },
+  "edge_pixel_protection": {
+    "same_timeline_segments": true,
+    "same_camera_geometry": true,
+    "active_protected_pixel_checks": [
+      {
+        "time": 1.5,
+        "protected_pixel_box": [
+          237,
+          235,
+          1683,
+          781
+        ],
+        "protected_union_identical": true,
+        "zoom": 2.0
+      },
+      {
+        "time": 5,
+        "protected_pixel_box": [
+          237,
+          229,
+          1683,
+          787
+        ],
+        "protected_union_identical": true,
+        "zoom": 2.0
+      },
+      {
+        "time": 13,
+        "protected_pixel_box": [
+          237,
+          129,
+          1683,
+          887
+        ],
+        "protected_union_identical": true,
+        "zoom": 2.0
+      }
+    ],
+    "full_ui_and_final_identical_times": [
+      18,
+      22.1,
+      33,
+      42
+    ]
+  },
+  "same_event_plan_and_input_manifest": true,
+  "same_review_frames_decoded": true,
+  "encoding_seconds": 60.50613616895862
 }
