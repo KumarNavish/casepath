@@ -1,0 +1,22 @@
+{
+  "previous_tip": "55a9b750132f2be8aa271f09214a44a1eb34ecef",
+  "head": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+  "status": "",
+  "command": "env HOME=/workspace/site-language-20261017/roles/e/home TMPDIR=/workspace/site-language-20261017/roles/e/tmp TMP=/workspace/site-language-20261017/roles/e/tmp TEMP=/workspace/site-language-20261017/roles/e/tmp CASEPATH_WORKSPACE=/workspace/site-language-20261017/roles/e/workspace node --test casepath-qa/autonomous-language-v1.test.cjs",
+  "exit": 0,
+  "passed": 17,
+  "failed": 0,
+  "log": "node-language-05.log",
+  "changed_paths": [
+    "casepath-qa/autonomous-language-v1.test.cjs",
+    "casepath/assets/autonomous-language-v1.js"
+  ],
+  "fix": "Require explicit source artifact binding for read/fact/check document labels; source-less Memory, decisions and paths cannot inherit selected documents. Document requirements name only recorded type.",
+  "not_run": [
+    "browser",
+    "prepare",
+    "seal",
+    "full suite"
+  ],
+  "other_owners": "Frontend owns Memory procedure/version wording, badges and index asset digest."
+}

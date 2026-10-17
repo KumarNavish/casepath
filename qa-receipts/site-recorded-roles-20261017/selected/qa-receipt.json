@@ -1,0 +1,268 @@
+{
+  "host": "656813ef2295",
+  "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "qaBranch": "codex/casepath-simple-site-qa-20261017",
+  "qaTip": "fff7c5bc302127bced0d9b806f1186995e0e787c",
+  "validatedProductTip": "17767385377a964fb66ac24874f1805aea677d23",
+  "validatedLanguageTip": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+  "validationCheckout": "d726b69bdd4eb17707481cf9fc97b49e142199f1",
+  "node": "v24.19.0",
+  "playwright": "1.62.1",
+  "sourceArtifacts": {
+    "heatingPacket": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+    "savedHistory": "a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0",
+    "knowledgeProjection": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8"
+  },
+  "negatives": [
+    {
+      "log": "baseline-node.tap",
+      "result": "269/270 passed; existing Python test missing local venv, exact retry passes with prepared shard6 Python."
+    },
+    {
+      "log": "preview-focused-full.tap",
+      "result": "230/288 passed; initial presentation assertions and absent result/focus mock, retained without masking failures."
+    },
+    {
+      "log": "frozen-node.tap",
+      "result": "293/295 passed; own obsolete AI prefix corrected; aggregate stream count included actual next-case bounded prefetch (exact selected count preserved)."
+    },
+    {
+      "log": "browser-initial.tap",
+      "result": "Invalid source selector and frozen clock stalled axe; own runner terminated. No active acceptance."
+    },
+    {
+      "log": "browser-corrected.tap",
+      "result": "503 outline only. No active acceptance."
+    },
+    {
+      "log": "browser-native.tap",
+      "result": "Insecure *.invalid origin prevented browser crypto.subtle. No active acceptance."
+    },
+    {
+      "log": "browser-eligible.tap",
+      "result": "Cases-first eligibility correctly attempted; insecure origin still prevented packet verification."
+    },
+    {
+      "log": "browser-secure.tap",
+      "result": "Actual recorded Reader source shown; zero axe violations in 4 views, serious incomplete transport role; landlord target not reached, recenter unverified. Product later changed."
+    },
+    {
+      "log": "browser-final.tap",
+      "result": "Pre-final source: late target was not reached by frozen virtual40s (actualseq13); invalid CSSzoom desktop media retained; no native200% acceptance."
+    },
+    {
+      "log": "browser-7c94.tap",
+      "result": "Pre-final: Skip wait happened before frozen acquisition timers progressed; actual640CSS/DPR2 reflow overflow, source geometry saved."
+    },
+    {
+      "log": "browser-7c94-controls.tap",
+      "result": "Pre-final: floating token overflow at640CSS x632.6..737.2;4 long authored aria labels; Knowledge actual projection reached. Writer later fixed; clock-related setup excluded."
+    },
+    {
+      "log": "browser-7c94-real.tap",
+      "result": "Real native Skip+keyboardseq37 worked. Frozen resize sampled stale viewport budget before resize/rAF settled; first desktop clipped. Correct real settled retry passed, raw failure retained."
+    },
+    {
+      "log": "browser-7c94-settled.tap",
+      "result": "Earlier source real-clock geometry1/1 passes with exact seq37; final source separately retested."
+    },
+    {
+      "log": "browser-075d.tap",
+      "result": "Actual real-clock geometry1/1 passes; remaining audit test failed only16px range control and3 generated refused IDs in accessible names. Actualaxe0violations plus manualcontrast receipts retained. Fixed in17767385 and final2/2pass."
+    },
+    {
+      "log": "node-7c94-7bd.tap",
+      "result": "Intermediate298tests295pass3fail: removed shard6 Python ENOENT,2 obsolete Knowledge refresh copy assertions. Source mutated only after workspace tests completed, so this is explicitly not used as final-source validation."
+    },
+    {
+      "log": "family-announcement.tap",
+      "result": "New test first expected obsolete family name Ending a tenancy; actual Lease termination corrected, exact identity/dedupe/context requirements retained."
+    }
+  ],
+  "browserAcceptance": {
+    "status": "PASS for two bounded actual-recorded browser tests on exact final source, not a full browser suite or blanket WCAG certification.",
+    "caseOperation": "op_31bcd3404de1cb6592883fb7509d9cfc",
+    "operation_seq": 37,
+    "revision": 35,
+    "state_sha256": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+    "selection": "Actual Skip to result drains verified recording; native keyboard Home/ArrowRight selects packet-derived source-backed seq37.",
+    "pausedResize": {
+      "sameOperationRevisionState": true,
+      "sizes": [
+        "1428x801",
+        "1280x800",
+        "390x844",
+        "430x844",
+        "320x844"
+      ],
+      "desktopTransportBottoms": [
+        784.28125,
+        783.28125
+      ],
+      "phone390ExcerptX": [
+        39,
+        351
+      ],
+      "phone390RailX": [
+        16,
+        374
+      ],
+      "focus": "native keyboard :focus-visible plus center point hit-test unobscured and viewport bounds",
+      "manualPanRetained": true,
+      "reducedMotionRetainsInformation": true
+    },
+    "audit": {
+      "engine": "axe-core 4.12.1",
+      "wcagTags": [
+        "wcag2a",
+        "wcag2aa",
+        "wcag21a",
+        "wcag21aa",
+        "wcag22aa"
+      ],
+      "views": [
+        "320 CSS px active source",
+        "430 CSS px active source",
+        "640x422 CSS px / DPR2 equivalent 1280x844 at 200% reflow",
+        "390 CSS px active source",
+        "390 CSS px exact completed Knowledge pin"
+      ],
+      "violations": 0,
+      "seriousCriticalViolations": 0,
+      "rawIncomplete": "Color-contrast incomplete in actual source:3 planned labels/view; Knowledge:22 timeline elements. Raw findings retained, manually measured rendered colors.",
+      "manualPlannedLabelContrast": 6.176074848353738,
+      "plannedFontPx": 18,
+      "plannedEffectiveOpacity": 1,
+      "minimumTimelineTextContrast": 8.452340381567032,
+      "minimumTimelineBorderTrackContrast": 3.4414658176431283,
+      "noPageHorizontalOverflow": true,
+      "visibleControlMinimumPx": 24,
+      "touchControlMinimumPx": 44,
+      "singleAccessiblePoliteRegion": true,
+      "authoredCopyAndAccessibleNames": "Whole-word ban, visible shortened IDs and 20-word sentence checks pass; only exact recorded source subspans/Details exempt."
+    },
+    "knowledge": {
+      "fixture_sha256": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8",
+      "event": "06512d347c0967e3de9644e50484b0a5652a1b41c1c805481111451a3b75b83d",
+      "representative_index": 31,
+      "actualEvents": 38,
+      "completedTransportPosition": 37,
+      "facets": [
+        "process",
+        "facts",
+        "documents",
+        "exceptions",
+        "changes"
+      ],
+      "allFacetsKeyboardFocus": true,
+      "oneRecordedMemoryNow": true,
+      "reducedMotionRetainsEvent": true
+    }
+  },
+  "constraints": [
+    "No provider calls, production requests, source corpus/journal/Knowledge writes, server listeners, browser downloads, broad suite, sealing, publication or media work.",
+    "Locked existing axe-core4.12.1 package independently SHA512 verified before safe regular-file extraction.",
+    "All installed package manifests and lockfiles unchanged."
+  ],
+  "earlierChecks": [
+    {
+      "command": "node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/sites-autonomous-entry.test.cjs casepath-qa/autonomous-language-v1.test.cjs",
+      "environment": {
+        "CASEPATH_PYTHON": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp"
+      },
+      "exit": 0,
+      "tests": 296,
+      "passed": 296,
+      "failed": 0,
+      "skipped": 0,
+      "log": "qa-53f-node.tap"
+    },
+    {
+      "command": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/workspace/site-language-20261017/qa/tmp/inventory-final casepath/tools/test_build_deployment_identity.py::test_curated_static_build_has_exact_runtime_inventory",
+      "exit": 0,
+      "tests": 1,
+      "passed": 1,
+      "log": "curated-inventory-final.log"
+    }
+  ],
+  "qaCommitsAfter53f": [
+    "50c2638e9218bd5d8e97f07a6c95d33129c75feb",
+    "0a0fd1bf7fd4efe7faeee68502372d6bb138c0cf",
+    "fff7c5bc302127bced0d9b806f1186995e0e787c"
+  ],
+  "testedCode": "Validation checkout plus identical QA test working tree subsequently committed on QA-only branch.",
+  "validatedAssets": {
+    "autonomous-workspace-v1.js": "8e279a1577bfe3a8ac4401adfecc156be344db0c4ebb30b50474b0818f53a806",
+    "autonomous-workspace-v1.css": "d6e33952eb34a3088ed1926994fd08acec70cc10482a377266ee60476e35493d",
+    "autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
+  },
+  "testSourceSha256": {
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "5213e5dca28f43019173318ea89b9c8ae6b58cffb51c284d9b589068f4a44821",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "82af3d76eab4cd5f14b02a55719cfda64d26b20f60c8ec1529383823308de9c4",
+    "casepath/tools/test_build_deployment_identity.py": "afc469b1dfabb1e13dfd0e77851030e372691f4d3dbef06a6e1868737fb5980e"
+  },
+  "checks": [
+    {
+      "command": "node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/sites-autonomous-entry.test.cjs casepath-qa/autonomous-language-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python"
+      },
+      "exit": 0,
+      "tests": 298,
+      "passed": 298,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 15444.28863,
+      "log": "node-1776-7bd.tap"
+    },
+    {
+      "command": "node --test --test-reporter=tap --test-timeout=60000 --test-name-pattern='^recorded language accessibility:' casepath-qa/unified-product-browser-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_AXE_BUNDLE": "/workspace/site-language-20261017/qa/deps/axe-core/package/axe.min.js",
+        "CASEPATH_FOCUSED_RECEIPTS": "/workspace/site-language-20261017/qa/e/browser-1776",
+        "CASEPATH_KNOWLEDGE_FIXTURE": "/workspace/knowledge-learning-coordinator-20261016/projection-6064.json"
+      },
+      "exit": 0,
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 11000.537969,
+      "log": "browser-1776.tap",
+      "evidenceDirectory": "browser-1776",
+      "clock": "Native real clock only; no page.clock installation or private controller-state mutation."
+    }
+  ],
+  "standaloneRetryChecks": [
+    {
+      "log": "release-dto-system-python.tap",
+      "tests": 1,
+      "passed": 1,
+      "exit": 0,
+      "reason": "Existing runtime Python sufficient for stdlib-only release DTO regeneration."
+    },
+    {
+      "log": "knowledge-plain-retry.tap",
+      "tests": 3,
+      "passed": 3,
+      "exit": 0
+    }
+  ]
+}

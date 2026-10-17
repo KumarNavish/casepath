@@ -1,0 +1,241 @@
+{
+  "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "branch": "codex/casepath-simple-site-20261017",
+  "tip": "17767385377a964fb66ac24874f1805aea677d23",
+  "commits": [
+    "17767385377a964fb66ac24874f1805aea677d23 fix(a11y): keep replay sliders and timeline names accessible",
+    "075d2c66dafe9353c2dc8021370d38ed8b779eda fix(ui): keep replay roles tied to the current recorded work",
+    "7c94cebb91e63796c176a54cd48cad66598191e0 fix(a11y): include recorded case context in knowledge announcements",
+    "3f8b0e22389e58b27c4ee00e50382b2e70879ed8 fix(ui): keep mobile replay controls and load errors clear",
+    "a13348deeb19c5e8a771c81b8091e0dd0c32223d fix(ui): compact the existing knowledge replay header",
+    "3f6360d0c99ffab8124276cf70d7bc5a19f60b5d fix(ui): keep learning proof plain during recorded playback",
+    "1ed92e5a4b95dee6810d5635ae99a21da38fe24d fix(ui): keep replay facts compact and controls within view",
+    "ac7ad96c89313e8f6795f32bd5aa77758068c6fc fix(ui): use the selected knowledge header for recorded now",
+    "28eeb6e073068ab9e954797ba5a916aca3ce8462 fix(ui): keep recorded now visible across knowledge and replay",
+    "f3aa68b36749a1d2f8c374a2018bc746526f742a fix(a11y): give named replay controls appropriate group roles",
+    "32e1f18824caadc2e1ed7333bef348c1100779b9 fix(ui): announce recorded roles and results with safe error details",
+    "d7162d54638e879e217633d924b3630c6c85d187 fix(ui): show recorded legal findings and preserve raw plan checks",
+    "ae9babb9f52e81bb283e3279d6798f552c7d11e8 fix(ui): finish grouped replay and keep knowledge tabs reachable",
+    "77b528eb936cfc32d8c409963a2d90153f501521 fix(site): include the recorded language module in public assets",
+    "2ebef0e76f17bfd55e3998b848b76b15c07933b0 fix(ui): expose stopped-work details and readable document labels",
+    "448e4dcf3d01fe775c96b05d9f2e464973ff105d fix(ui): keep recorded results and live announcements clear",
+    "5b207bbba8da174b4dd5d7a01a2269907e710c6b feat(ui): show simple recorded roles and replay language"
+  ],
+  "scope": [
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-entry-v1.js",
+    "casepath/index.html",
+    "casepath/tools/build_static_site.py"
+  ],
+  "sha256": {
+    "casepath/assets/autonomous-workspace-v1.js": "8e279a1577bfe3a8ac4401adfecc156be344db0c4ebb30b50474b0818f53a806",
+    "casepath/assets/autonomous-workspace-v1.css": "d6e33952eb34a3088ed1926994fd08acec70cc10482a377266ee60476e35493d",
+    "casepath/assets/autonomous-entry-v1.js": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+    "casepath/index.html": "e799a90d3e16b5d0a955722c2fb4b9a04785fd84f695c1773776205f6229ded6",
+    "casepath/tools/build_static_site.py": "576654935aace0a9361e42daed4b11f52ea531b203e299d34a4c6ef2fb731318"
+  },
+  "module_dependency_chain": [
+    "cb09a54b7b0215ae2669389f0503334caee9b11f",
+    "930b5576b6dd28fff58b548a297f1dc0bc9eb321",
+    "55a9b750132f2be8aa271f09214a44a1eb34ecef",
+    "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5"
+  ],
+  "module_sha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+  "verified": {
+    "entry": "6/6 on7c94 (sites-autonomous-entry.test.cjs)",
+    "focused_native_and_knowledge": "8/8",
+    "bound_provenance": "actual positive +9 binding and4 ownership negative cases passed on7c94",
+    "curated_assets": "exact final JS/CSS/module source URL digests and once-only module registration passed on17767385",
+    "copy": "824actual operation renders+2real cases\u00d75views+5Knowledge facets external scanner zero authored issues on17767385; QA actual38-eventKnowledge +allfacets accessible-name scan also passes",
+    "declared_color_contrast": "12 effective text/control/pseudo color pairs passed AA thresholds",
+    "now_quotes": "27actual fact operations including4currency spans match native compact quote and Unicode source offsets; state unchanged on075d",
+    "QA_focused_Node": "298/298 workspace+entry+language tests passed exit0 on17767385+7bd; qa/e/node-1776-7bd.tap",
+    "active_role_followup": "075d focused7/7 including immutable release regeneration; receipt-bound family/version+singular reuse+5nonsource kind guards+onecurrent step badge+nosettled badges+unchangedstate audit pass",
+    "native_geometry_QA_7c94": {
+      "desktop_transport_bottom": {
+        "1428x801": 784.28,
+        "1280x800": 783.28
+      },
+      "paused_source_bounds": {
+        "390": "39..351 inside16..374",
+        "320": "39..281 inside16..304",
+        "430": "58..372 inside16..414"
+      },
+      "same_actual_operation_and_revision": true,
+      "keyboard_unobscured_focus_pan_reduced": "pass1/1 reported byQA"
+    },
+    "QA_native_browser": "2/2 real-clock native Chromium tests passed exit0 on17767385+7bd; qa/e/browser-1776.tap",
+    "QA_accessibility": "axe4.12.1:4actual source views+Knowledge zero violations; no pageoverflow320/390/430/true200%640CSS/DPR2;44px sliders;5facets keyboard/visibleunobscuredfocus and reducedmotion pass",
+    "QA_computed_contrast": "planned meaningful18px text opacity1=6.176:1; actual timeline text>=8.452:1,border/pseudotrack>=3.441:1",
+    "native_geometry_final": {
+      "1428x801": {
+        "transport": {
+          "x": 36,
+          "y": 707.28125,
+          "width": 1356,
+          "height": 77,
+          "top": 707.28125,
+          "right": 1392,
+          "bottom": 784.28125,
+          "left": 36
+        },
+        "excerpt": {
+          "x": 681,
+          "y": 585.71875,
+          "width": 266,
+          "height": 32,
+          "top": 585.71875,
+          "right": 947,
+          "bottom": 617.71875,
+          "left": 681
+        },
+        "overflow": false,
+        "now": "<div class=\"au-now\" data-au-now-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\"><span class=\"au-now-label\">Now</span> <span class=\"au-role-badge\" data-au-role=\"reader\"><span class=\"au-role-shape\" aria-hidden=\"true\"></span>Reader</span> <span data-au-now-copy=\"\">found a possible fact: <q data-au-recorded-quote=\"\" data-au-now-fact=\"op_31bcd3404de1cb6592883fb7509d9cfc\" data-au-source-artifact=\"src_c57d943a64c85cf37369ccbf747b6e3f\" data-au-source-start-char=\"229\" data-au-source-end-char=\"258\">three heating-failure reports</q> in \u201cLandlord knowledge and repair status\u201d using fixed rules.</span> <span data-au-now-result=\"\">Needs a document check.</span> <button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"operation\" data-au-record-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\">Details</button></div>",
+        "revision": "35",
+        "stateSha": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+        "paused": true
+      },
+      "1280x800": {
+        "transport": {
+          "x": 36,
+          "y": 706.28125,
+          "width": 1208,
+          "height": 77,
+          "top": 706.28125,
+          "right": 1244,
+          "bottom": 783.28125,
+          "left": 36
+        },
+        "excerpt": {
+          "x": 507,
+          "y": 585.71875,
+          "width": 266,
+          "height": 32,
+          "top": 585.71875,
+          "right": 773,
+          "bottom": 617.71875,
+          "left": 507
+        },
+        "overflow": false,
+        "now": "<div class=\"au-now\" data-au-now-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\"><span class=\"au-now-label\">Now</span> <span class=\"au-role-badge\" data-au-role=\"reader\"><span class=\"au-role-shape\" aria-hidden=\"true\"></span>Reader</span> <span data-au-now-copy=\"\">found a possible fact: <q data-au-recorded-quote=\"\" data-au-now-fact=\"op_31bcd3404de1cb6592883fb7509d9cfc\" data-au-source-artifact=\"src_c57d943a64c85cf37369ccbf747b6e3f\" data-au-source-start-char=\"229\" data-au-source-end-char=\"258\">three heating-failure reports</q> in \u201cLandlord knowledge and repair status\u201d using fixed rules.</span> <span data-au-now-result=\"\">Needs a document check.</span> <button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"operation\" data-au-record-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\">Details</button></div>",
+        "revision": "35",
+        "stateSha": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+        "paused": true
+      },
+      "390x844": {
+        "transport": {
+          "x": 16,
+          "y": 1189.078125,
+          "width": 358,
+          "height": 77,
+          "top": 1189.078125,
+          "right": 374,
+          "bottom": 1266.078125,
+          "left": 16
+        },
+        "excerpt": {
+          "x": 39,
+          "y": 935.90625,
+          "width": 312,
+          "height": 32,
+          "top": 935.90625,
+          "right": 351,
+          "bottom": 967.90625,
+          "left": 39
+        },
+        "overflow": false,
+        "now": "<div class=\"au-now\" data-au-now-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\"><span class=\"au-now-label\">Now</span> <span class=\"au-role-badge\" data-au-role=\"reader\"><span class=\"au-role-shape\" aria-hidden=\"true\"></span>Reader</span> <span data-au-now-copy=\"\">found a possible fact: <q data-au-recorded-quote=\"\" data-au-now-fact=\"op_31bcd3404de1cb6592883fb7509d9cfc\" data-au-source-artifact=\"src_c57d943a64c85cf37369ccbf747b6e3f\" data-au-source-start-char=\"229\" data-au-source-end-char=\"258\">three heating-failure reports</q> in \u201cLandlord knowledge and repair status\u201d using fixed rules.</span> <span data-au-now-result=\"\">Needs a document check.</span> <button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"operation\" data-au-record-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\">Details</button></div>",
+        "revision": "35",
+        "stateSha": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+        "paused": true
+      },
+      "320x844": {
+        "transport": {
+          "x": 16,
+          "y": 1213.875,
+          "width": 288,
+          "height": 77,
+          "top": 1213.875,
+          "right": 304,
+          "bottom": 1290.875,
+          "left": 16
+        },
+        "excerpt": {
+          "x": 39,
+          "y": 985.890625,
+          "width": 242,
+          "height": 64,
+          "top": 985.890625,
+          "right": 281,
+          "bottom": 1049.890625,
+          "left": 39
+        },
+        "overflow": false,
+        "now": "<div class=\"au-now\" data-au-now-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\"><span class=\"au-now-label\">Now</span> <span class=\"au-role-badge\" data-au-role=\"reader\"><span class=\"au-role-shape\" aria-hidden=\"true\"></span>Reader</span> <span data-au-now-copy=\"\">found a possible fact: <q data-au-recorded-quote=\"\" data-au-now-fact=\"op_31bcd3404de1cb6592883fb7509d9cfc\" data-au-source-artifact=\"src_c57d943a64c85cf37369ccbf747b6e3f\" data-au-source-start-char=\"229\" data-au-source-end-char=\"258\">three heating-failure reports</q> in \u201cLandlord knowledge and repair status\u201d using fixed rules.</span> <span data-au-now-result=\"\">Needs a document check.</span> <button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"operation\" data-au-record-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\">Details</button></div>",
+        "revision": "35",
+        "stateSha": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+        "paused": true
+      },
+      "430x844": {
+        "transport": {
+          "x": 16,
+          "y": 1189.078125,
+          "width": 398,
+          "height": 77,
+          "top": 1189.078125,
+          "right": 414,
+          "bottom": 1266.078125,
+          "left": 16
+        },
+        "excerpt": {
+          "x": 58,
+          "y": 935.90625,
+          "width": 314,
+          "height": 32,
+          "top": 935.90625,
+          "right": 372,
+          "bottom": 967.90625,
+          "left": 58
+        },
+        "overflow": false,
+        "now": "<div class=\"au-now\" data-au-now-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\"><span class=\"au-now-label\">Now</span> <span class=\"au-role-badge\" data-au-role=\"reader\"><span class=\"au-role-shape\" aria-hidden=\"true\"></span>Reader</span> <span data-au-now-copy=\"\">found a possible fact: <q data-au-recorded-quote=\"\" data-au-now-fact=\"op_31bcd3404de1cb6592883fb7509d9cfc\" data-au-source-artifact=\"src_c57d943a64c85cf37369ccbf747b6e3f\" data-au-source-start-char=\"229\" data-au-source-end-char=\"258\">three heating-failure reports</q> in \u201cLandlord knowledge and repair status\u201d using fixed rules.</span> <span data-au-now-result=\"\">Needs a document check.</span> <button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"operation\" data-au-record-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\">Details</button></div>",
+        "revision": "35",
+        "stateSha": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+        "paused": true
+      }
+    }
+  },
+  "limitations": [
+    "Mac remains sole integrator,fullgate,sealer and publisher; no source-seal or deployment run by frontend",
+    "No prepare/heavybuild/seed,provider call,production API/browser request or case/Knowledge write performed",
+    "Only untracked local language module copy remains for dependency testing; integrate role-owner four-commit chain separately"
+  ],
+  "unchanged": [
+    "backend",
+    "source corpus/profile files",
+    "recorded packet",
+    "saved-history JSON",
+    "media",
+    "source seal",
+    "case/Knowledge journal/ledger"
+  ],
+  "evidence": "/workspace/site-language-20261017/frontend/e",
+  "errors": [
+    "Initial final entry command used nonexistent autonomous-entry-v1.test.cjs filename; corrected existing sites-autonomous-entry.test.cjs passed6/6.",
+    "Initial075d focused command referenced a removed shard6 Python venv and failed regeneration with ENOENT; reran all7 with existing dependency Python and all7 passed. Initial command tailed log after failing subprocess; both logs retained, corrected direct-run exit0 recorded."
+  ],
+  "QA_evidence": "/workspace/site-language-20261017/qa/e/browser-1776",
+  "completed": true,
+  "commands": {
+    "copy_audit": "node /workspace/site-language-20261017/frontend/audit_markup.cjs",
+    "exact_quotes": "node /workspace/site-language-20261017/frontend/check_now_quotes.cjs",
+    "bound_provenance": "node /workspace/site-language-20261017/frontend/check_bound_provenance.cjs",
+    "active_role_delta": "node /workspace/site-language-20261017/frontend/check_active_roles.cjs",
+    "focused_native": "CASEPATH_PYTHON=/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python node --test --test-name-pattern=\"release procedure reconciliation|release procedure embedded|stage transport|early planned rail|stage clauses|NDJSON operations|uncited knowledge consequence\" casepath-qa/autonomous-workspace-v1.test.cjs",
+    "entry": "node --test casepath-qa/sites-autonomous-entry.test.cjs",
+    "curated_assets": "python -c import build_static_site; build_static_site._validate_authored_sources() (casepath/tools on sys.path)",
+    "QA_broad": "QA-owned node --test on workspace,entry,language suites; raw node-1776-7bd.tap",
+    "QA_browser": "QA-owned native Chromium tests selected recorded language accessibility in unified-product-browser-v1.test.cjs; secure localhost intercepted fixture; raw browser-1776.tap"
+  }
+}
