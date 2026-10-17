@@ -1,0 +1,552 @@
+{
+  "commit": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "execution": "managed Cloud Linux; no network/production/credentials",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "dependency_versions": {
+    "httpx": "0.28.1",
+    "fastapi": "0.141.1",
+    "starlette": "1.6.0"
+  },
+  "public_dto": {
+    "input_claims": 159,
+    "learning_head_states": 23,
+    "learning_events": 38,
+    "versions": 8,
+    "uses": 27,
+    "exact_projection_6064_comparison": {
+      "versions": true,
+      "uses": true,
+      "quarantined": true,
+      "learning_replay": true
+    },
+    "serialized_bytes_each_run": [
+      405257,
+      405257,
+      405257,
+      405257,
+      405257,
+      405257
+    ],
+    "poststartup_project_learning_calls": {},
+    "inputs_sha256": {
+      "knowledge.json": "f622c302e922303d2b97d35302637d8fa9ee917274b4e5c0ffd23ef3d650a374",
+      "claims.json": "4ef846e1ff77749861b847edf98c0097055e69b13bd9e96338f6d1c771c4ce5c",
+      "knowledge-events.json": "33ebc1c11018c0676ce759f7454b058752772c6d09bbb2401acb41d1a9a51ae7",
+      "knowledge-pins.json": "4e089376fd499a9ed047d255cf4e399299e1ff1268f588f0f4a4b90e452cf097"
+    }
+  },
+  "tiny_native_fixture": {
+    "claim_states": 2,
+    "versions": 0,
+    "uses": 0,
+    "journal_rows": 2,
+    "source_bytes": 322000
+  },
+  "measurements": [
+    {
+      "label": "public_dto_startup_learning_view",
+      "wall_ms": 15.933246002532542,
+      "cpu_ms": 15.934800000000028
+    },
+    {
+      "label": "public_first_after_startup_view",
+      "wall_ms": 30.144157935865223,
+      "cpu_ms": 30.148591000000003
+    },
+    {
+      "label": "public_first_fastapi_jsonable_encoder",
+      "wall_ms": 9.932636050507426,
+      "cpu_ms": 9.935478999999969
+    },
+    {
+      "label": "public_first_starlette_json_render",
+      "wall_ms": 2.7032720390707254,
+      "cpu_ms": 2.704634000000039
+    },
+    {
+      "label": "public_repeat_1_view",
+      "wall_ms": 11.142961913719773,
+      "cpu_ms": 11.145308999999992
+    },
+    {
+      "label": "public_repeat_1_fastapi_jsonable_encoder",
+      "wall_ms": 9.896863019093871,
+      "cpu_ms": 9.899143999999971
+    },
+    {
+      "label": "public_repeat_1_starlette_json_render",
+      "wall_ms": 2.5176170747727156,
+      "cpu_ms": 2.5189090000000136
+    },
+    {
+      "label": "public_repeat_2_view",
+      "wall_ms": 10.26733999606222,
+      "cpu_ms": 10.269843000000002
+    },
+    {
+      "label": "public_repeat_2_fastapi_jsonable_encoder",
+      "wall_ms": 9.698180016130209,
+      "cpu_ms": 9.43266399999998
+    },
+    {
+      "label": "public_repeat_2_starlette_json_render",
+      "wall_ms": 2.6620909338817,
+      "cpu_ms": 2.6637840000000024
+    },
+    {
+      "label": "public_repeat_3_view",
+      "wall_ms": 10.960552957840264,
+      "cpu_ms": 10.963661000000013
+    },
+    {
+      "label": "public_repeat_3_fastapi_jsonable_encoder",
+      "wall_ms": 9.71060898154974,
+      "cpu_ms": 9.71234799999998
+    },
+    {
+      "label": "public_repeat_3_starlette_json_render",
+      "wall_ms": 2.312303986400366,
+      "cpu_ms": 2.3137649999999677
+    },
+    {
+      "label": "public_repeat_4_view",
+      "wall_ms": 10.266617988236248,
+      "cpu_ms": 10.26928199999999
+    },
+    {
+      "label": "public_repeat_4_fastapi_jsonable_encoder",
+      "wall_ms": 10.001166956499219,
+      "cpu_ms": 10.005040999999991
+    },
+    {
+      "label": "public_repeat_4_starlette_json_render",
+      "wall_ms": 2.047052956186235,
+      "cpu_ms": 2.0477019999999846
+    },
+    {
+      "label": "public_repeat_5_view",
+      "wall_ms": 10.889758006669581,
+      "cpu_ms": 10.892985999999993
+    },
+    {
+      "label": "public_repeat_5_fastapi_jsonable_encoder",
+      "wall_ms": 9.752730024047196,
+      "cpu_ms": 9.754931000000022
+    },
+    {
+      "label": "public_repeat_5_starlette_json_render",
+      "wall_ms": 2.09168903529644,
+      "cpu_ms": 2.0922869999999705
+    },
+    {
+      "label": "tiny_native_startup",
+      "wall_ms": 11.912349029444158,
+      "cpu_ms": 11.888188999999993
+    },
+    {
+      "label": "tiny_native_first_after_startup",
+      "wall_ms": 3.5945380805060267,
+      "cpu_ms": 3.594741999999984
+    },
+    {
+      "label": "tiny_native_repeat_1",
+      "wall_ms": 3.4038861049339175,
+      "cpu_ms": 3.396748000000005
+    },
+    {
+      "label": "tiny_native_repeat_2",
+      "wall_ms": 3.5531260073184967,
+      "cpu_ms": 3.553159999999944
+    },
+    {
+      "label": "tiny_native_repeat_3",
+      "wall_ms": 3.3658690517768264,
+      "cpu_ms": 3.3659629999999163
+    },
+    {
+      "label": "tiny_native_repeat_4",
+      "wall_ms": 3.2185630407184362,
+      "cpu_ms": 3.2186349999999697
+    },
+    {
+      "label": "tiny_native_repeat_5",
+      "wall_ms": 3.157051047310233,
+      "cpu_ms": 3.15716399999999
+    }
+  ],
+  "native_reads": [
+    {
+      "phase": "startup",
+      "request_count": 5,
+      "wire_bytes": 493441,
+      "raw_journal_select_count": 2,
+      "raw_source_select_count": 1,
+      "methods": {
+        "knowledge_snapshot": {
+          "calls": 1,
+          "wall_ms": 11.83385297190398,
+          "cpu_ms": 11.833568000000017
+        },
+        "_knowledge_rows": {
+          "calls": 1,
+          "wall_ms": 4.278057022020221,
+          "cpu_ms": 4.280496999999994
+        },
+        "_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 7.456530001945794,
+          "cpu_ms": 7.456578999999963
+        },
+        "prefetch_journal_sources": {
+          "calls": 3,
+          "wall_ms": 4.054036922752857,
+          "cpu_ms": 4.056625000000036
+        },
+        "_replay": {
+          "calls": 2,
+          "wall_ms": 2.0452700555324554,
+          "cpu_ms": 2.0452279999999545
+        },
+        "_validate_descriptor": {
+          "calls": 10,
+          "wall_ms": 0.8941919077187777,
+          "cpu_ms": 0.8966959999999746
+        },
+        "verify_knowledge_many": {
+          "calls": 1,
+          "wall_ms": 1.475338009186089,
+          "cpu_ms": 1.4755150000000938
+        },
+        "_knowledge_source_proof": {
+          "calls": 1,
+          "wall_ms": 1.449250034056604,
+          "cpu_ms": 1.450496999999995
+        },
+        "_after_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 0.0622820807620883,
+          "cpu_ms": 0.06250299999999154
+        },
+        "_project": {
+          "calls": 1,
+          "wall_ms": 0.012789038009941578,
+          "cpu_ms": 0.012878999999910157
+        },
+        "_learning_replay": {
+          "calls": 1,
+          "wall_ms": 0.010394956916570663,
+          "cpu_ms": 0.010495000000054766
+        }
+      }
+    },
+    {
+      "phase": "first_after_startup",
+      "request_count": 2,
+      "wire_bytes": 7593,
+      "raw_journal_select_count": 0,
+      "raw_source_select_count": 0,
+      "methods": {
+        "knowledge_snapshot": {
+          "calls": 1,
+          "wall_ms": 3.572324989363551,
+          "cpu_ms": 3.5727090000000628
+        },
+        "_knowledge_rows": {
+          "calls": 1,
+          "wall_ms": 1.3124980032444,
+          "cpu_ms": 1.3142749999999204
+        },
+        "_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 2.1657280158251524,
+          "cpu_ms": 2.1657860000000584
+        },
+        "prefetch_journal_sources": {
+          "calls": 1,
+          "wall_ms": 0.17480796668678522,
+          "cpu_ms": 0.17514900000004108
+        },
+        "_validate_descriptor": {
+          "calls": 4,
+          "wall_ms": 0.41773810517042875,
+          "cpu_ms": 0.41901099999996916
+        },
+        "verify_knowledge_many": {
+          "calls": 1,
+          "wall_ms": 1.5425779856741428,
+          "cpu_ms": 1.5427230000000236
+        },
+        "_knowledge_source_proof": {
+          "calls": 1,
+          "wall_ms": 1.5172200510278344,
+          "cpu_ms": 1.5187990000000706
+        },
+        "_after_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 0.06164098158478737,
+          "cpu_ms": 0.061821000000072956
+        }
+      }
+    },
+    {
+      "phase": "repeat_1",
+      "request_count": 2,
+      "wire_bytes": 7593,
+      "raw_journal_select_count": 0,
+      "raw_source_select_count": 0,
+      "methods": {
+        "knowledge_snapshot": {
+          "calls": 1,
+          "wall_ms": 3.383394912816584,
+          "cpu_ms": 3.376237999999976
+        },
+        "_knowledge_rows": {
+          "calls": 1,
+          "wall_ms": 1.2038269778713584,
+          "cpu_ms": 1.1980830000000164
+        },
+        "_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 2.089153975248337,
+          "cpu_ms": 2.089212000000007
+        },
+        "prefetch_journal_sources": {
+          "calls": 1,
+          "wall_ms": 0.16564398538321257,
+          "cpu_ms": 0.1659760000000121
+        },
+        "_validate_descriptor": {
+          "calls": 4,
+          "wall_ms": 0.5373748717829585,
+          "cpu_ms": 0.539318999999927
+        },
+        "verify_knowledge_many": {
+          "calls": 1,
+          "wall_ms": 1.3564529363065958,
+          "cpu_ms": 1.3565580000000077
+        },
+        "_knowledge_source_proof": {
+          "calls": 1,
+          "wall_ms": 1.3326879125088453,
+          "cpu_ms": 1.3341150000000246
+        },
+        "_after_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 0.05876703653484583,
+          "cpu_ms": 0.058937000000036655
+        }
+      }
+    },
+    {
+      "phase": "repeat_2",
+      "request_count": 2,
+      "wire_bytes": 7593,
+      "raw_journal_select_count": 0,
+      "raw_source_select_count": 0,
+      "methods": {
+        "knowledge_snapshot": {
+          "calls": 1,
+          "wall_ms": 3.532916074618697,
+          "cpu_ms": 3.5331509999999566
+        },
+        "_knowledge_rows": {
+          "calls": 1,
+          "wall_ms": 1.377513981424272,
+          "cpu_ms": 1.3791720000000396
+        },
+        "_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 2.0653189858421683,
+          "cpu_ms": 2.065436999999948
+        },
+        "prefetch_journal_sources": {
+          "calls": 1,
+          "wall_ms": 0.1667960314080119,
+          "cpu_ms": 0.1671169999999389
+        },
+        "_validate_descriptor": {
+          "calls": 4,
+          "wall_ms": 0.4482429940253496,
+          "cpu_ms": 0.4497069999999104
+        },
+        "verify_knowledge_many": {
+          "calls": 1,
+          "wall_ms": 1.4221200253814459,
+          "cpu_ms": 1.422134999999991
+        },
+        "_knowledge_source_proof": {
+          "calls": 1,
+          "wall_ms": 1.3422119664028287,
+          "cpu_ms": 1.3435889999999784
+        },
+        "_after_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 0.05884701386094093,
+          "cpu_ms": 0.059047000000034267
+        }
+      }
+    },
+    {
+      "phase": "repeat_3",
+      "request_count": 2,
+      "wire_bytes": 7593,
+      "raw_journal_select_count": 0,
+      "raw_source_select_count": 0,
+      "methods": {
+        "knowledge_snapshot": {
+          "calls": 1,
+          "wall_ms": 3.345058998093009,
+          "cpu_ms": 3.345311999999989
+        },
+        "_knowledge_rows": {
+          "calls": 1,
+          "wall_ms": 1.170107047073543,
+          "cpu_ms": 1.1715549999999908
+        },
+        "_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 2.0862799137830734,
+          "cpu_ms": 2.086439000000051
+        },
+        "prefetch_journal_sources": {
+          "calls": 1,
+          "wall_ms": 0.1664259470999241,
+          "cpu_ms": 0.16686700000001498
+        },
+        "_validate_descriptor": {
+          "calls": 4,
+          "wall_ms": 0.45168702490627766,
+          "cpu_ms": 0.4534110000000702
+        },
+        "verify_knowledge_many": {
+          "calls": 1,
+          "wall_ms": 1.4409669674932957,
+          "cpu_ms": 1.4411330000000389
+        },
+        "_knowledge_source_proof": {
+          "calls": 1,
+          "wall_ms": 1.4170119538903236,
+          "cpu_ms": 1.4182890000000725
+        },
+        "_after_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 0.058255973272025585,
+          "cpu_ms": 0.05843599999999505
+        }
+      }
+    },
+    {
+      "phase": "repeat_4",
+      "request_count": 2,
+      "wire_bytes": 7593,
+      "raw_journal_select_count": 0,
+      "raw_source_select_count": 0,
+      "methods": {
+        "knowledge_snapshot": {
+          "calls": 1,
+          "wall_ms": 3.199353930540383,
+          "cpu_ms": 3.199505999999963
+        },
+        "_knowledge_rows": {
+          "calls": 1,
+          "wall_ms": 1.0503099765628576,
+          "cpu_ms": 1.0518469999999391
+        },
+        "_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 2.061233972199261,
+          "cpu_ms": 2.061512000000043
+        },
+        "prefetch_journal_sources": {
+          "calls": 1,
+          "wall_ms": 0.1648829784244299,
+          "cpu_ms": 0.1652049999999461
+        },
+        "_validate_descriptor": {
+          "calls": 4,
+          "wall_ms": 0.5127160111442208,
+          "cpu_ms": 0.5145309999999848
+        },
+        "verify_knowledge_many": {
+          "calls": 1,
+          "wall_ms": 1.3557819183915854,
+          "cpu_ms": 1.3559180000000115
+        },
+        "_knowledge_source_proof": {
+          "calls": 1,
+          "wall_ms": 1.3299640268087387,
+          "cpu_ms": 1.3322029999999208
+        },
+        "_after_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 0.05808589048683643,
+          "cpu_ms": 0.05828600000001849
+        }
+      }
+    },
+    {
+      "phase": "repeat_5",
+      "request_count": 2,
+      "wire_bytes": 7593,
+      "raw_journal_select_count": 0,
+      "raw_source_select_count": 0,
+      "methods": {
+        "knowledge_snapshot": {
+          "calls": 1,
+          "wall_ms": 3.135790000669658,
+          "cpu_ms": 3.1359020000000237
+        },
+        "_knowledge_rows": {
+          "calls": 1,
+          "wall_ms": 1.0442009661346674,
+          "cpu_ms": 1.0456380000000154
+        },
+        "_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 2.003047033213079,
+          "cpu_ms": 2.003116000000027
+        },
+        "prefetch_journal_sources": {
+          "calls": 1,
+          "wall_ms": 0.17233495600521564,
+          "cpu_ms": 0.17270500000010625
+        },
+        "_validate_descriptor": {
+          "calls": 4,
+          "wall_ms": 0.4181578988209367,
+          "cpu_ms": 0.4193200000000008
+        },
+        "verify_knowledge_many": {
+          "calls": 1,
+          "wall_ms": 1.3875489821657538,
+          "cpu_ms": 1.3877840000000585
+        },
+        "_knowledge_source_proof": {
+          "calls": 1,
+          "wall_ms": 1.3641039840877056,
+          "cpu_ms": 1.36567200000004
+        },
+        "_after_validated_knowledge_states": {
+          "calls": 1,
+          "wall_ms": 0.058025005273520947,
+          "cpu_ms": 0.05819600000001035
+        }
+      }
+    }
+  ],
+  "source_clean_and_pre_post_hashes_equal": true,
+  "source_sha256": {
+    "casepath-api/casepath_api/autonomous_knowledge_v1.py": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464",
+    "casepath-api/casepath_api/autonomous_store_v1.py": "111e93b616abca7942d81fb38de91bf2cfd3e6b30794ab682178696b1eda8483",
+    "casepath-api/casepath_api/hosted_storage_v1.py": "cd72f4bde5627754caeb11e1dc537d62bd8d2c865b36acc99e061de9e96ae4f0",
+    "casepath-api/casepath_api/hosted_app_v1.py": "ef58f913f35002e00aad77350d1bd5258ecbe5d4f434f2a4a3ddd6fcff625e2d",
+    "casepath-api/casepath_api/hosted_sql_v1.py": "bc04fdabbb4dbe793668177c27e46080784113503c4c064cd231aba69df45fd9",
+    "casepath-api/casepath_api/autonomous_api_v1.py": "0b500f347aa1dd26b886ab60b94d815a29f089196503dbf37523d8e9cf65a270"
+  },
+  "limits": [
+    "Public DTO profile excludes native journal/source validation; filtered 23-head snapshot cannot establish complete26-head/633-row current authority.",
+    "Native proof profile uses only2intake journal rows with no knowledge publications/uses; it proves request/function behavior, not current production CPU/performance.",
+    "Prepared gate venv retired; reused existing /opt Python3.12 and installed deps, not pinned app runtime. All timing is local Linux CPU/SQLite/MockTransport, not native Mac/cloud API latency.",
+    "No real sockets/TLS/proxy/network timings; profile overhead for the separate cProfile run is not mixed into unprofiled timings."
+  ]
+}

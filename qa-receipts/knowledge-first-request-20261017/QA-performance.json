@@ -1,0 +1,90 @@
+{
+  "scope": "Read-only diagnosis of first Knowledge request after validated startup; no backend changes authorized or made",
+  "commit": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "result": "Derived projection/replay rebuild is not present on an unchanged first post-startup read. Public-payload copying/HTTP serialization is tens of milliseconds locally. Two sequential fresh remote proof requests and cold connection/proxy overhead remain the concrete latency candidates; current production phase costs are not measured here.",
+  "source_findings": [
+    "hosted_app_v1.startup calls controller.knowledge.learning_view before readiness. AutonomousKnowledge._read retains its projection, including learning_replay, in _projection_cache; discarding the returned deepcopy does not discard that internal cache.",
+    "Every current read still executes knowledge_snapshot, journal/schema proof, full cached-row/descriptor validation, source/schema proof, and admission checks before consulting the derived projection identity. Warm cache authority is not head-only.",
+    "For identical fully validated inputs, first and repeated post-startup calls reuse _project and _learning_replay output. Each still copies compact inputs/output and FastAPI serializes the response.",
+    "The present warm path sends the full journal/schema proof and final source/schema proof in two sequential read_snapshot requests. The source proof is intentionally after local source validation. There is no duplicate learning-view/projection build on that path."
+  ],
+  "local_measurements": {
+    "command": "bash /workspace/knowledge-read-warm-20261016/review/e/first-request65/command.sh",
+    "exit": 0,
+    "public_dto": {
+      "heads": 23,
+      "learning_events": 38,
+      "versions": 8,
+      "uses": 27,
+      "serialized_bytes": 405257,
+      "exact_existing_projection_6064_equality": "versions, uses, quarantined and learning_replay all equal",
+      "startup_view_cpu_ms": 15.935,
+      "first_poststartup_view_cpu_ms": 30.149,
+      "repeat_view_cpu_ms_range": [10.269, 11.145],
+      "first_fastapi_encoder_cpu_ms": 9.935,
+      "first_json_render_cpu_ms": 2.705,
+      "poststartup_project_calls": 0,
+      "poststartup_learning_replay_calls": 0,
+      "native_validation_included": false
+    },
+    "tiny_native_fixture": {
+      "heads": 2,
+      "journal_rows": 2,
+      "source_bytes": 322000,
+      "versions": 0,
+      "uses": 0,
+      "startup_requests": 5,
+      "first_poststartup_requests": 2,
+      "every_repeat_requests": 2,
+      "warm_wire_bytes": 7593,
+      "first_poststartup_cpu_ms": 3.595,
+      "repeat_cpu_ms_range": [3.157, 3.553],
+      "first_journal_proof_path_cpu_ms": 1.314,
+      "first_source_proof_path_cpu_ms": 1.519,
+      "first_local_descriptor_validation_cpu_ms": 0.419,
+      "every_warm_raw_journal_or_source_selects": 0,
+      "every_warm_replay_project_learning_calls": 0,
+      "fixture": "Existing MockHrana plus the existing two-intake native-proof fixture pattern. Supported journal injection uses the existing hosted JOURNAL_SCHEMA; native reducer, validators, all-column typed proofs and transport code run unchanged."
+    }
+  },
+  "recommendation": {
+    "priority": "Assess one final combined atomic proof request for an exact fully validated cache hit; retain existing cold and mutation paths",
+    "soundness": "Sound in principle if local cached-row/state/source-byte validation completes first and both complete typed journal and source/schema/roster proofs then match in one fresh final read_snapshot before any cached payload is released. This preserves every-read authority checks and gives one coherent remote certificate after local validation while removing one sequential HTTP request. It is not implemented or validated by this diagnosis.",
+    "reuse_available": "read_snapshot already supports multiple bounded SELECTs in one BEGIN/COMMIT/close request; _schema_query, _proof_query, _proof_expected and _proof_matches already encode the needed exact checks. The new work is coordinating proof construction, validation and cache admission, not changing transport limits or adding a service.",
+    "mandatory_conditions": [
+      "Capture the existing admitted immutable complete journal cache and exact source roster; validate local cached originals/descriptors/state under existing ordered locks before constructing the final certificate. No cache admission or caller exposure may precede the certificate.",
+      "Include complete native journal and source schemas, every authority column and explicit storage type, full ordered rosters, N+1/count/length/root checks for all source batches, not just heads or source descriptors.",
+      "Compare against the exact originally certified local bytes/state and return only an exact matching derived payload. An unchanged head alone is never sufficient.",
+      "Missing or evicted bytes, absent admitted caches, schema changes, journal changes and source mismatches must discard the candidate and preserve existing full bounded collection/reducer/raw-source/final-proof behavior. Preserve the existing fail-closed corruption behavior rather than silently replacing a failed source proof with a success from a fallback.",
+      "Respect the unchanged 128-SELECT snapshot bound, existing source batch bounds, byte limit/deadline and no-retry behavior. Combined schemas/journal consume extra SELECT slots; use the unchanged existing path when the combined request cannot fit.",
+      "Hold appropriate existing ordered summary/source locks through captured expected-byte identity, final proof checks and cache admission. Mutation after prefetch or before final certification must still fail; no partial cursor/payload can escape an uncertain transaction.",
+      "Focused adversarial verification remains necessary: same-head earlier-row changes, all source byte/roster/schema mutations, post-prefetch/final-boundary changes, cache eviction, accepted-stream disappearance/regression, concurrent claims/Knowledge ordering, protocol failure, and returned-object alias isolation."
+    ],
+    "serialization_option": "No further precomputation is warranted by this profile: derived projection/replay already warms at startup. A JSON-byte cache would save about 12ms of measured encoding/render work on this older public payload while adding invalidation complexity; it does not target the observed second-scale variation.",
+    "expected_limit": "One fewer proof round trip may materially improve latency. Neither this profile nor that change can guarantee universal <=1s across fresh client TLS, proxy/worker cold starts and variable database latency."
+  },
+  "mac_measurement_that_distinguishes_causes": [
+    "Use matched read-only direct-backend and Sites-proxy requests for the same deployment and unchanged head set, with fresh-client and reused-client variants. Retain DNS, connect, TLS, TTFB and total times; alternate order so one route does not always pay the cold start.",
+    "Retain route-entry, journal-proof, local-validation, source-proof and response-serialization durations with fixed phase labels only. These reveal whether a slow request is in database proofs, Python processing or before backend entry. No tokens, SQL parameters, headers or bodies belong in such logs.",
+    "Direct and proxy both slow with proof durations high implicates backend/database connections. Proxy slow while matched direct/backend phase timings remain stable implicates the Sites hop. A measured TLS/connect component distinguishes client cold connection time; subtracting it alone still leaves proxy/backend/proof time unresolved."
+  ],
+  "negative_acceptance_preserved": {
+    "source": "Coordinator/Mac reports, not this worker's network measurements",
+    "first_cold_instance_sites_knowledge_ttfb_s": 3.623,
+    "first_cold_instance_sites_knowledge_total_s": 3.729,
+    "latest_fresh_httpx_knowledge_total_s": 2.234,
+    "latest_repeat_httpx_knowledge_total_s": 0.678,
+    "fresh_curl_http2_knowledge_ttfb_s": 1.576,
+    "fresh_curl_tls_connect_s": 0.503,
+    "fresh_curl_after_connect_to_first_byte_s": 1.072,
+    "strict_cold_le_1s": "unmet/variable; no universal pass claimed"
+  },
+  "limits": [
+    "Read-only current source at exact65a remained clean with identical pre/post file hashes. Only evidence/profile files and disposable synthetic data were written outside the checkout.",
+    "No production DB, journal, secret, API, real socket, service, install, full gate, source seal, frontend or backend source change.",
+    "Public export is an older filtered23-head DTO, not current26-head/633-row authority. Tiny native fixture has only2intakes; neither establishes current complete-production CPU cost.",
+    "Reused existing /opt Python3.12 and available dependencies because prepared gate venvs were retired; dependency versions are recorded in profile.json and differ from pinned app runtime.",
+    "Initial harness attempt failed because profile.py shadowed the stdlib profile module and default native store construction required unavailable langchain_core. Preserved initial log/exit; renamed the evidence script and used supported journal injection. No dependency installed or product code changed."
+  ],
+  "artifacts": ["profile.json", "profile.log", "command.sh", "perf_diagnose.py", "tiny-native-warm-cprofile.txt", "exit.txt", "initial-attempt.log", "initial-attempt-exit.txt"]
+}
