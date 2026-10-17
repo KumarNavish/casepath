@@ -1,8 +1,35 @@
 """Authenticate public read access through Sites; never admit work commands."""
 from hmac import compare_digest
+from math import isfinite
+from time import monotonic
 from urllib.parse import urlsplit
 
 from starlette.responses import JSONResponse
+
+
+class HostedReadTiming:
+    """Measure selected public reads through response headers, without reading bodies."""
+    PATHS = frozenset(('/api/claim-loops/v1/autonomous/knowledge',
+                       '/api/claim-loops/v1/autonomous/claims'))
+
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        if scope['type'] != 'http' or scope['method'] != 'GET' or scope['path'] not in self.PATHS:
+            return await self.app(scope, receive, send)
+        started = monotonic()
+
+        async def timed_send(message):
+            if message['type'] == 'http.response.start':
+                elapsed = (monotonic() - started) * 1000
+                duration = min(999999999.999, max(0.0, elapsed)) if isfinite(elapsed) else 0.0
+                headers = list(message.get('headers', ()))
+                headers.append((b'server-timing', f'casepath_api;dur={duration:.3f}'.encode('ascii')))
+                message = {**message, 'headers': headers}
+            await send(message)
+
+        await self.app(scope, receive, timed_send)
 
 
 class SitesProxyBoundary:

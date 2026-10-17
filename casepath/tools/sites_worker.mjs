@@ -3,6 +3,10 @@ const API_ROOT_PATHS = new Set([
   "/healthz",
   "/readyz",
 ]);
+const TIMED_READ_PATHS = new Set([
+  "/api/claim-loops/v1/autonomous/knowledge",
+  "/api/claim-loops/v1/autonomous/claims",
+]);
 
 function isApiRequest(pathname) {
   return pathname.startsWith("/api/") || API_ROOT_PATHS.has(pathname);
@@ -44,12 +48,19 @@ async function proxyApi(request, env, url) {
   headers.set("X-CasePath-Proxy-Token", env.CASEPATH_PROXY_TOKEN);
   headers.set("X-CasePath-Site-Origin", url.origin);
   try {
-    const response = await fetch(new Request(new URL(`${url.pathname}${url.search}`, upstream), {
+    const upstreamRequest = new Request(new URL(`${url.pathname}${url.search}`, upstream), {
       method: request.method, headers,
       duplex: "half", redirect: "manual",
       signal: AbortSignal.any([request.signal, AbortSignal.timeout(14000)]),
-    }));
+    });
+    const started = request.method === "GET" && TIMED_READ_PATHS.has(url.pathname) ? performance.now() : null;
+    const response = await fetch(upstreamRequest);
+    const elapsed = started === null ? null : performance.now() - started;
     const responseHeaders = new Headers(response.headers);
+    if (elapsed !== null) {
+      const duration = Number.isFinite(elapsed) ? Math.min(999999999.999, Math.max(0, elapsed)) : 0;
+      responseHeaders.append("Server-Timing", `casepath_upstream;dur=${duration.toFixed(3)}`);
+    }
     responseHeaders.set("Cache-Control", "no-store");
     responseHeaders.delete("set-cookie");
     // Workers Fetch preserves compressed origin bytes when the body is unread
