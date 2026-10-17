@@ -31,7 +31,7 @@ test('reference intake stays a source inspection and completed assessment retain
  const view=ui.workMarkup(early,{intake:gate},null,[],'step',{}, {availability:{ready:true}});
  assert.match(view,/data-au-start disabled/);assert.match(view,/Notice record/);assert.doesNotMatch(view,/data-au-node=/);
  const completed=ui.workMarkup(s,{},'branch',[]);
- assert.equal((completed.match(/Historical synthetic recording · as of 2025-02-21 · rules-based/g)||[]).length,1);assert.match(completed,/Assessment only; no external action taken/);
+ assert.equal((completed.match(/Replay · Fictional case · No real-world action/g)||[]).length,1);assert.equal(ui.contextualRecord(s,{},[],'outcome').outcome.reference_provenance.as_of,'2025-02-21');assert.match(completed,/Assessment only; no external action taken/);
 });
 
 test('reference demonstration has the exact new nine and legacy history remains separate',()=>{
@@ -45,7 +45,7 @@ test('reference demonstration has the exact new nine and legacy history remains 
 test('reference policy identifies the accepted execution before context supplies its historical date',()=>{
  const before=state(),started=state({policy_id:'casepath.bounded-reference-assessment/1.0.0'});
  assert.equal(ui.referenceExecution(before),null);assert.deepEqual(ui.referenceExecution(started),{mode:'deterministic_reference',synthetic:true});
- const html=ui.workMarkup(started,{},'branch',[]);assert.match(html,/data-au-reference-mode>Historical synthetic recording · rules-based<\/p>/);assert.doesNotMatch(html,/as of/);
+ const html=ui.workMarkup(started,{},'branch',[]);assert.match(html,/data-au-operation-mode>Replay · Fictional case · No real-world action<\/p>/);assert.doesNotMatch(html,/as of/);
  const legacy=state({policy_id:'casepath.autonomous/1',run_id:'old-model',semantic_contexts:{'old-model':{execution_mode:'provider'}},outcome:{reference_provenance:{mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21'}}});
  assert.equal(ui.referenceExecution(legacy),null,'the current accepted model context wins over a retained reference outcome');
 });
@@ -54,14 +54,14 @@ test('reference source labels require the exact recorded pin and later uploads r
  const supplement={artifact_id:'synthetic-source',sha256:hash('5'),file_name:'01-clarification.txt',role:'supporting_document'},original={artifact_id:'original',sha256:hash('d'),role:'customer_message'};
  const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',source_roster_sha256:hash('6')};
  const s=state({run_id:'reference-run',source_roster_sha256:hash('6'),source_descriptors:[original,supplement],original_binding:{source_map:[original]},semantic_contexts:{'reference-run':{claim_id:'claim-a',execution_mode:'deterministic_reference',reference_provenance:provenance,sources:[original,supplement]}},receipts:[{kind:'interpretation.accepted',receipt:{workflow_id:'reference-run',receipt_sha256:hash('7'),reference_execution:{provenance}}}]});
- assert.equal(ui.sourceKind(s,original),'Original source');assert.equal(ui.sourceKind(s,supplement),'Synthetic demonstration document');
+ assert.equal(ui.sourceKind(s,original),'Original source');assert.equal(ui.sourceKind(s,supplement),'Fictional case document');
  const arrived=structuredClone(s),late={artifact_id:'unrelated-later-jpeg',sha256:hash('8'),file_name:supplement.file_name,media_type:'image/jpeg',role:'supporting_document'};
  arrived.source_descriptors.push(late);arrived.source_roster_sha256=hash('9');
  assert.equal(ui.sourceKind(arrived,late),'Supporting source');assert.equal(ui.sourceKind(arrived,{...late,media_type:'text/csv'}),'Supporting source');assert.equal(ui.sourceKind(arrived,{...supplement,sha256:hash('8')}),'Supporting source','filename and an old artifact ID cannot classify changed bytes');
  const projection={intake:{contract:'casepath.source-backed-intake/1.0.0',gate_sha256:hash('3'),status:'complete',eligible:true,provenance}};
  assert.equal(ui.sourceKind(arrived,late,projection),'Supporting source','a prior preflight roster cannot classify a later upload');
  assert.equal(ui.referenceExecution(arrived).as_of,'2025-02-21');assert.equal(ui.assessmentFreshness(arrived).status,'prior');assert.deepEqual(ui.assessmentFreshness(arrived).sources,[late]);
- const html=ui.workMarkup(arrived,{},'branch',[],'sources');assert.match(html,/Synthetic demonstration document/);assert.doesNotMatch(html,/unrelated-later-jpeg[^<]*Synthetic demonstration/);
+ const html=ui.workMarkup(arrived,{},'branch',[],'sources');assert.match(html,/Fictional case document/);assert.doesNotMatch(html,/unrelated-later-jpeg[^<]*Fictional case document/);
  assert.equal(JSON.stringify(s.source_descriptors),JSON.stringify([original,supplement]));
 });
 
@@ -297,7 +297,7 @@ test('selected decision joins its own facts and exact contextual authority and a
  assert.deepEqual(ui.contextualRecord(s,{},[],'step','branch').node,s.graph.nodes[1]);
  assert.deepEqual(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).obligations,[s.obligations[0]]);
  assert.deepEqual(ui.contextualRecord(s,{},[],'action','0'),ui.actionRows(s)[0]);
- assert.doesNotMatch(html,/data-au-inspect="(?:fact|step|requirement)"/);
+ assert.doesNotMatch(html,/data-au-inspect="(?:fact|requirement)"/);assert.match(html,/data-au-inspect="step"[^>]*data-au-record-id="branch"[^>]*>Details/);
  assert.ok(!ui.inspectorMarkup(s,'start').includes('Separate notice'));assert.equal(JSON.stringify(s),before);
 });
 
@@ -439,7 +439,7 @@ test('forming publication remains central for a deferred live accepted publicati
  const published={claim_id:head.claim_id,seq:15,revision:15,state_sha256:settled.state_sha256,event_sha256:settled.last_event_sha256,previous_event_sha256:prior.last_event_sha256,kind:'knowledge.published',payload:{knowledge:publication}},phase={claim_id:head.claim_id,seq:16,revision:16,state_sha256:head.state_sha256,event_sha256:head.last_event_sha256,previous_event_sha256:published.event_sha256,kind:'work.phase'},history=[published,phase],accepted=ui.acceptEvents(14,{current_revision:16,current_state_sha256:head.state_sha256,events:history},head),changes=ui.transitionPlan(prior,head,accepted,history),attention={previousRevision:14,revision:16,acceptedEvents:accepted.events,knowledgePublications:changes.knowledgePublications},before=JSON.stringify({prior,head,history,attention});
  assert.deepEqual(attention.knowledgePublications.map(row=>row.id),[publication.knowledge_sha256]);assert.equal(ui.formingWork(head,{mode:'saved'}),false);
  const focused=ui.formingPublication(head,history,attention);assert.equal(focused.seq,15);assert.equal(focused.id,published.event_sha256);assert.deepEqual(focused.knowledge,publication);
- const live=ui.workMarkup(head,{},'question-4',history,'step',{}, {mode:'saved',attention});assert.match(live,/data-au-forming-revision="16"/);assert.doesNotMatch(live,/data-au-forming-revision="15"/);assert.match(live,/data-au-publication-focus="e{64}"/);assert.match(live,/data-au-knowledge-publication="8{64}"/);assert.match(live,/Added for reuse · Version 3/);assert.match(live,/data-au-version="3"[^>]*data-au-knowledge-sha="8{64}"[^>]*data-au-definition-sha="9{64}"/);assert.match(live,/recorded sender, recorded date/);
+ const live=ui.workMarkup(head,{},'question-4',history,'step',{}, {mode:'saved',attention});assert.match(live,/data-au-forming-revision="16"/);assert.doesNotMatch(live,/data-au-forming-revision="15"/);assert.match(live,/data-au-publication-focus="e{64}"/);assert.match(live,/data-au-knowledge-publication="8{64}"/);assert.match(live,/Saved for reuse · Version 3/);assert.match(live,/data-au-version="3"[^>]*data-au-knowledge-sha="8{64}"[^>]*data-au-definition-sha="9{64}"/);assert.match(live,/recorded sender, recorded date/);
  const compact=live.match(/<div class="au-forming-publication-focus"[^>]*>([\s\S]*?)<\/div>/)[1];assert.match(compact,/class="au-forming-used-version" data-au-knowledge-use="procedure\.unit"/);assert.match(compact,/data-au-knowledge="procedure\.unit" data-au-version="2" data-au-knowledge-sha="" data-au-definition-sha="2{64}"[^>]*>Used version 2<\/button>/);assert.equal((live.match(/data-au-knowledge="procedure\.unit" data-au-version="2"/g)||[]).length,1,'compact publication focus keeps one exact link to the actually used version');assert.doesNotMatch(live,/data-au-inspector-heading="question-4"|class="au-knowledge-use"/,'the selected question and reused procedure are not repeated as extra headings during accepted publication focus');assert.match(live,/data-au-node="question-4"[^>]*aria-pressed="true"/);
  assert.deepEqual([...live.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1]),head.graph.nodes.map(node=>node.node_id));assert.deepEqual([...live.matchAll(/data-au-edge="([^"]+)"/g)].map(match=>match[1]),head.graph.edges.map(edge=>edge.edge_id));assert.deepEqual(new Set([...live.matchAll(/data-au-obligation="([^"]+)"/g)].map(match=>match[1])),new Set(['unit-requirement-0']));assert.deepEqual(ui.contextualRecord(head,{},history,'claim'),{state:head,projection:{}});assert.deepEqual(ui.contextualRecord(head,{},history,'use','0'),head.knowledge_uses[0]);
  assert.match(ui.workMarkup(reviewed,{},'question-4',[],'step',{}, {mode:'saved'}),/data-au-inspector-heading="question-4"/,'ordinary prepublication prefixes retain the selected-question heading');
@@ -521,8 +521,8 @@ test('prior assessment labels survive new source acquisition and failed rereadin
   const s=structuredClone(accepted);s.source_descriptors.push(fresh);s.source_roster_sha256=hash('5');s.run_id='retry-run';s.status='deferred';s.deferral={code,reason:'The new evidence has no accepted reassessment.'};
   if(acquired)s.acquired_sources.push({artifact_id:fresh.artifact_id,complete:true,extraction:'utf8'});
   const before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[],'sources');
-  assert.equal(ui.assessmentFreshness(s).status,'prior');assert.deepEqual(ui.assessmentFreshness(s).sources,[fresh]);assert.match(html,/Earlier findings · new sources await review\./);assert.match(html,/Awaiting assessment/);
-  assert.match(html,/data-au-source-freshness="unassessed"/);assert.ok(html.includes(fresh.file_name));
+  assert.equal(ui.assessmentFreshness(s).status,'prior');assert.deepEqual(ui.assessmentFreshness(s).sources,[fresh]);assert.match(html,/New documents await checking\./);assert.match(html,/Awaiting assessment/);
+  assert.match(html,/data-au-source-freshness="unassessed"/);assert.equal(ui.contextualRecord(s,{},[],'claim').state.source_descriptors.find(row=>row.artifact_id===fresh.artifact_id).file_name,fresh.file_name);
   assert.deepEqual(ui.contextualRecord(s,{},[],'fact','condition:family_home'),accepted.facts[0]);assert.deepEqual(ui.contextualRecord(s,{},[],'action','0').receipt,s.actions[0].receipt);
   assert.doesNotMatch(html,/New evidence contradicts|Contradiction established|Earlier assessment invalid/);
   assert.equal(JSON.stringify(s),before,'presentation must preserve the complete accepted state byte for byte');
@@ -553,7 +553,7 @@ test('deferral and prepared request retain missing evidence and external authori
  const before=JSON.stringify(s),record=ui.contextualRecord(s,{},[],'outcome');assert.deepEqual(record.outcome,s.outcome);
  assert.equal(record.outcome.request_draft.status,'prepared_not_sent');assert.deepEqual(record.outcome.missing_evidence,[{label:'Separate notice'}]);assert.deepEqual(record.outcome.authority_limits,['External filing is not configured.']);
  assert.doesNotMatch(ui.workMarkup(s,{},'branch',[]),/>Approve|>Apply|>Send request/);
- assert.match(ui.workMarkup(state({status:'deferred',deferral:{code:'unsupported_format',reason:'The image has no supported extraction.'}}),{},'start',[]),/The image has no supported extraction/);assert.equal(JSON.stringify(s),before);
+ const stopped=state({status:'deferred',deferral:{code:'unsupported_format',reason:'The image has no supported extraction.'}});assert.match(ui.workMarkup(stopped,{},'start',[]),/data-au-inspect="outcome"[^>]*>Details/);assert.equal(ui.contextualRecord(stopped,{},[],'outcome').deferral.reason,'The image has no supported extraction.');assert.equal(JSON.stringify(s),before);
 });
 
 test('missing reviews do not hide received unassigned originals or infer their document type',()=>{
@@ -566,7 +566,7 @@ test('missing reviews do not hide received unassigned originals or infer their d
  const docs=html.match(/<section class="au-supporting"><h3>Files awaiting a document assignment<\/h3>([\s\S]*?)<\/section>/)[1];
  for(const id of ['photo','partial','complete','received'])assert.ok(docs.includes(`data-au-source="${id}"`),id);
  assert.doesNotMatch(docs,/data-au-source="(?:original|assigned)"|data-au-document=/);
- for(const phrase of ['notice.jpg','Interpretation unsupported','Only part of the source is readable'])assert.ok(docs.includes(phrase),phrase);
+ assert.match(docs,/data-au-source="photo"[^>]*>Notice/);for(const phrase of ['Text could not be read','Only part of the source is readable'])assert.ok(docs.includes(phrase),phrase);
  assert.doesNotMatch(docs,/Original file received|Text available for assessment/);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.source_descriptors,s.source_descriptors);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.acquired_sources,s.acquired_sources);
  assert.match(ui.obligationMarkup(s,'branch'),/Needed now/);assert.doesNotMatch(ui.obligationMarkup(s,'branch'),/No reviewed source matched|Insufficient|Not yet supported/);
  assert.doesNotMatch(ui.evidencePathMarkup(s,'branch'),/Not yet supported/);assert.equal(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).evaluation[0].review_state,'missing');
@@ -637,7 +637,7 @@ test('reconciliation and item rejection history preserve rejected provenance wit
   assert.equal(ui.replayCanAdvance(saved),status==='completed');assert.equal(JSON.stringify(saved),before);
  }
  const saved=state({status:'deferred',deferral:{code:'execution_deferred',reason:'Current execution stopped.'},outcome:{status:'deferred',summary:'Older accepted assessment.'}}),html=ui.workMarkup(saved,{},'branch',[]);
- assert.match(html,/data-au-claim-status>Execution failed\.<\/span> Current execution stopped\./);
+ assert.match(html,/data-au-claim-status>Execution failed\.<\/span> Work stopped\./);
  assert.deepEqual(ui.contextualRecord(saved,{},[],'outcome'),{outcome:saved.outcome,deferral:saved.deferral});
 });
 
@@ -698,7 +698,7 @@ test('public read-only capability blocks forged forms and removes work controls 
   assert.match(html,/Sources|History/);assert.equal(JSON.stringify(saved),before);
  }
  assert.equal(ui.liveAvailability({enabled:true,provider_ready:true,read_only:true,writable:false}).ready,false);
- assert.match(ui.liveAvailability({enabled:true,provider_ready:true,read_only:true,writable:false}).reason,/read-only/i);
+ assert.match(ui.liveAvailability({enabled:true,provider_ready:true,read_only:true,writable:false}).reason,/view only/i);
  assert.doesNotMatch(ui.demonstrationMarkup([],{enabled:true,provider_ready:true,read_only:true,writable:false}),/data-au-demo-mode="live"/);
 });
 
@@ -706,7 +706,7 @@ test('public entry capability prevents work before a status response arrives',as
  const before=globalThis.CASEPATH_PUBLIC_READ_ONLY;globalThis.CASEPATH_PUBLIC_READ_ONLY=true;
  const f=dom(),held=[],api=fakeApi({handle:async path=>path.endsWith('/status')?new Promise(resolve=>held.push(resolve)):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{for(const resolve of held)resolve(response({enabled:true,provider_ready:true,writable:true}));controller.destroy();if(before===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=before;});
- assert.doesNotMatch(f.container.innerHTML,/data-au-nav="intake"/);assert.match(f.container.innerHTML,/data-au-public-access>Read-only/);await settle();await newClaim(f);
+ assert.doesNotMatch(f.container.innerHTML,/data-au-nav="intake"/);assert.match(f.container.innerHTML,/data-au-public-access>View only/);await settle();await newClaim(f);
  assert.doesNotMatch(f.host.innerHTML,/data-au-intake|data-au-arrival/);
  await f.listeners.get('submit')({target:f.form,preventDefault(){}});
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
@@ -720,7 +720,7 @@ test('a read-only status arriving during file preparation is denied centrally wi
  const submission=f.listeners.get('submit')({target:form,preventDefault(){}});await waitFor(()=>Boolean(finishBytes));
  finishStatus(response(publicStatus));await settle();finishBytes(bytes);await submission;
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
- assert.match(form.querySelector('.au-form-status').textContent,/public workspace is read-only/i);
+ assert.match(form.querySelector('.au-form-status').textContent,/View only/i);
  assert.doesNotMatch(form.querySelector('.au-form-status').textContent,/unconfirmed|Retry/i);
  assert.equal(form.querySelector('button[type="submit"]').disabled,true);
 });
@@ -850,7 +850,7 @@ test('readable MIME previews use the body of the same bound original while prese
 test('published procedure changes and an exact reused version remain distinct with stable ordinary names',()=>{
  for(const [family,label]of [['lease_termination_dispute','Lease termination'],['defect_mold_heating','Defects and repairs'],['rent_increase_dispute','Rent increases']])assert.equal(ui.procedureLabel({family,knowledge_id:`procedure.${family}`,title:`Generic ${family} workflow`}),label);
  const published={knowledge_id:'procedure.lease_termination_dispute',family:'lease_termination_dispute',title:'Generic workflow',version:3,knowledge_sha256:hash('1'),qualification:{status:'qualified',definition_sha256:hash('2')},added_document_types:['proof_of_receipt'],evidence_recipes:[{document_type:'proof_of_receipt',required_fields:['recipient','delivery_evidence','delivery_date']}],obligations:[{document_type:'proof_of_receipt',label:'Proof of receipt'}]},use={knowledge_id:published.knowledge_id,version:2,knowledge_sha256:hash('3'),definition_sha256:hash('4'),applicability:'same_verified_family_and_rule_version'},saved=state({knowledge_published:[published],knowledge_uses:[use]}),before=JSON.stringify(saved),html=ui.claimKnowledgeMarkup(saved);
- assert.match(html,/<h3>Lease termination<\/h3>/);assert.match(html,/>Added for reuse · Version 3<\/p>/);assert.match(html,/Added proof of receipt requirements: recipient, delivery evidence, delivery date\./);
+ assert.match(html,/<h3>Lease termination<\/h3>/);assert.match(html,/>Saved for reuse · Version 3<\/p>/);assert.match(html,/Added proof of delivery requirements: recipient, delivery evidence, delivery date\./);
  const publicationLink=html.match(/<button[^>]*data-au-knowledge="procedure\.lease_termination_dispute"[^>]*data-au-version="3"[^>]*>Open procedure<\/button>/)?.[0],reuseLink=html.match(/<button[^>]*data-au-knowledge="procedure\.lease_termination_dispute"[^>]*data-au-version="2"[^>]*>Open procedure<\/button>/)?.[0];assert.ok(publicationLink);assert.ok(reuseLink);assert.match(html,/Used for this case · Lease termination · Version 2/);
  assert.ok(publicationLink.includes(`data-au-knowledge-sha="${hash('1')}"`));assert.ok(publicationLink.includes(`data-au-definition-sha="${hash('2')}"`));assert.ok(reuseLink.includes(`data-au-knowledge-sha="${hash('3')}"`));assert.ok(reuseLink.includes(`data-au-definition-sha="${hash('4')}"`));
  assert.deepEqual(ui.contextualRecord(saved,{},[],'publication','0'),published);assert.deepEqual(ui.contextualRecord(saved,{},[],'use','0'),use);assert.doesNotMatch(html,/facts? (?:proved|established) by (?:reuse|knowledge)|improved accuracy/i);
@@ -868,14 +868,14 @@ test('the claim envelope renders capability projection separately from the prese
 
 test('a claim renders one selected real process and keeps exact outcome authority in one contextual record',()=>{
  const s=state({status:'deferred',outcome:{title:'Deferred',summary:'A termination dispute.',authority_limits:['Filing capability is not configured.'],missing_evidence:[{label:'Notice'},{label:'Receipt'}]}}),before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[]);
- assert.match(html,/data-au-canvas/);assert.match(html,/data-au-selected-step="branch"/);assert.match(html,/data-au-detail="activity"[^>]*>History/);assert.doesNotMatch(html,/data-au-inspect="claim"|<details/);assert.match(ui.workMarkup(s,{},'branch',[],'activity'),/data-au-inspect="claim"[^>]*>Case details/);
+ assert.match(html,/data-au-canvas/);assert.match(html,/data-au-selected-step="branch"/);assert.match(html,/data-au-detail="activity"[^>]*>History/);assert.doesNotMatch(html,/data-au-inspect="claim"/);assert.match(ui.workMarkup(s,{},'branch',[],'activity'),/data-au-inspect="claim"[^>]*>Case details/);
  assert.equal([...html.matchAll(/data-au-panel="/g)].length,1);assert.deepEqual(ui.contextualRecord(s,{},[],'outcome').outcome,s.outcome);assert.equal(JSON.stringify(s),before);
 });
 
 test('complete graph labels and operational rule text remain inspectable',()=>{
  const s=state();s.graph.nodes[1].label='Preserve challenge or extension deadline';s.graph.nodes[1].meaning='The process includes a step owned by claim_handler.';s.graph.nodes[1].authority={title:'Admitted tenancy workflow',quote:'Exact recorded operational rule.'};
  assert.match(ui.graphMarkup(s,'branch'),/Preserve challenge or extension deadline/);
- const record=ui.contextualRecord(s,{},[],'step','branch');assert.deepEqual(record.node,s.graph.nodes[1]);assert.equal(record.node.authority.quote,'Exact recorded operational rule.');assert.doesNotMatch(ui.inspectorMarkup(s,'branch'),/data-au-inspect="step"/);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.graph.nodes[1],record.node);
+ const record=ui.contextualRecord(s,{},[],'step','branch');assert.deepEqual(record.node,s.graph.nodes[1]);assert.equal(record.node.authority.quote,'Exact recorded operational rule.');assert.match(ui.inspectorMarkup(s,'branch'),/data-au-inspect="step"[^>]*data-au-record-id="branch"[^>]*>Details/);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.graph.nodes[1],record.node);
 });
 
 test('only an explicitly paused deferral offers guarded resume with one retained request identity',async t=>{
@@ -1023,7 +1023,7 @@ test('knowledge reuse and quarantine cannot be presented as newly learned qualif
  const rejected={kind:'knowledge.published',payload:{knowledge:{qualification:{status:'quarantined'}}}};
  assert.equal(ui.progressModel(s,[start,reuse]).stages.at(-1).state,'recorded');
  const quarantine=ui.progressModel(s,[start,reuse,rejected]).stages.at(-1);assert.equal(quarantine.state,'blocked');assert.equal(quarantine.complete,false);assert.match(quarantine.detail,/0 published · 1 reused · 1 quarantined/);
- const html=ui.workMarkup(s,{},'branch',[rejected],'knowledge');assert.match(html,/Withheld from reuse/);assert.doesNotMatch(html,/Qualified knowledge version published/);
+ const html=ui.workMarkup(s,{},'branch',[rejected],'knowledge');assert.match(html,/Not saved/);assert.doesNotMatch(html,/Qualified knowledge version published/);
  assert.equal(ui.progressModel(s,[{kind:'interpretation.accepted',payload:{}}]).stages.find(stage=>stage.id==='verification').state,'pending');
 });
 
@@ -1173,7 +1173,7 @@ for(const scenario of ['failed-only','partial-outcome-with-failure','failed-reco
  assert.equal(nextReads.length,blocked?0:1);
  if(blocked){
   assert.match(f.status.textContent,/no settled operational outcome.*stopped at its saved head/i);
-  assert.ok(f.host.innerHTML.includes(stopped.reason));assert.doesNotMatch(f.host.innerHTML,/data-au-demo-stop/);
+  assert.match(f.host.innerHTML,/data-au-inspect="outcome"/);f.listeners.get('click')({target:control(f,'data-au-inspect','outcome')});assert.equal(JSON.parse(f.recordPre.textContent).deferral.reason,stopped.reason);f.recordDialog.close();assert.doesNotMatch(f.host.innerHTML,/data-au-demo-stop/);
   t.mock.timers.tick(20000);await settle();assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${next}/replay?`)).length,0);
  }
  for(let seq=1;seq<=head;seq++){
@@ -1334,13 +1334,13 @@ test('initial revision mismatch bounds immediate reads and retains automatic rec
 });
 
 test('a mismatched refresh projection and a stale saved revision retain the last verified claim',async t=>{
- const f=dom();let saved=state(),projection={claim_id:'claim-a',revision:3,state_sha256:hash('a')};
+ const f=dom();f.status.insertAdjacentHTML=(_position,html)=>{f.status.innerHTML=(f.status.innerHTML||'')+html;};let saved=state(),projection={claim_id:'claim-a',revision:3,state_sha256:hash('a')};
  const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response({state:saved,projection}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  await controller.openClaim('claim-a');
  const verified=f.host.innerHTML;
  saved=state({revision:4,state_sha256:hash('f'),title:'Unverified capability snapshot'});projection={claim_id:'claim-a',revision:3,state_sha256:hash('a')};await controller.refresh();
- assert.equal(f.host.innerHTML,verified);assert.match(f.status.textContent,/Updates paused/);assert.doesNotMatch(f.host.innerHTML,/Unverified capability snapshot/);
+ assert.equal(f.host.innerHTML,verified);assert.match(f.status.textContent,/The record could not open\. Retry\./);assert.match(f.status.innerHTML,/data-au-inspect="notice"/);f.listeners.get('click')({target:control(f,'data-au-inspect','notice')});assert.match(JSON.parse(f.recordPre.textContent).message,/Updates paused/);f.recordDialog.close();assert.doesNotMatch(f.host.innerHTML,/Unverified capability snapshot/);
  saved=state({revision:2,state_sha256:hash('2'),title:'Stale claim title'});projection={claim_id:'claim-a',revision:2,state_sha256:hash('2')};await controller.refresh();
  assert.equal(f.host.innerHTML,verified);assert.doesNotMatch(f.host.innerHTML,/Stale claim title/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
@@ -1364,7 +1364,7 @@ test('source inspection verifies exact identity, preserves claim context and ret
  const api=fakeApi({handle:async path=>path.endsWith('/sources/claim-a/original/text')?response(source):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
  const trigger=control(f,'data-au-source','original');trigger.dataset.auCitation=JSON.stringify(citation);trigger.focus();const verified=f.host.innerHTML;
  f.listeners.get('click')({target:trigger});await waitFor(()=>f.body.innerHTML.includes('<mark'));
- assert.equal(f.sourceTitle.textContent,'message.txt');assert.match(f.body.innerHTML,/<mark tabindex="-1">Exact source passage\.<\/mark>/);assert.match(f.body.innerHTML,/Download original/);assert.ok(f.body.innerHTML.includes(source.text_sha256));
+ assert.equal(f.sourceTitle.textContent,'Message');assert.ok(f.body.innerHTML.includes('download="message.txt"'));assert.match(f.body.innerHTML,/<mark tabindex="-1">Exact source passage\.<\/mark>/);assert.match(f.body.innerHTML,/Download original/);assert.ok(f.body.innerHTML.includes(source.text_sha256));
  assert.equal(f.host.innerHTML,verified);assert.equal(f.dialog.open,true);assert.equal(f.container.ownerDocument.activeElement,f.close);
  f.listeners.get('click')({target:f.close});assert.equal(f.dialog.open,false);assert.equal(f.container.ownerDocument.activeElement,trigger);assert.deepEqual(trigger.focusOptions,{preventScroll:true});
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
@@ -1406,7 +1406,7 @@ test('the default Work collection uses saved statuses and explicit New claim nav
  const f=dom(),api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  assert.match(f.container.innerHTML,/<header class="au-identity-header"/);assert.doesNotMatch(f.container.innerHTML,/class="au-rail"/);assert.match(f.container.innerHTML,/data-au-nav="work"/);assert.match(f.container.innerHTML,/data-au-nav="intake"[^>]*>New claim/);
  assert.match(f.host.innerHTML,/class="au-collection(?:\s[^"]*)?"/);assert.doesNotMatch(f.host.innerHTML,/<form[^>]*data-au-intake/);
- const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Execution stopped/);assert.match(html,/Working/);assert.match(html,/Investigation complete/);assert.match(html,/Execution failed/);assert.match(html,/Queued/);
+ const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Execution stopped/);assert.match(html,/Working/);assert.match(html,/Checks complete/);assert.match(html,/Execution stopped/);assert.match(html,/Queued/);
  await newClaim(f);assert.match(f.host.innerHTML,/<form[^>]*data-au-intake/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
@@ -1431,7 +1431,7 @@ test('each local view renders only its current purpose while retaining the same 
  const s=state(),before=JSON.stringify(s);
  for(const detail of ['step','documents','knowledge','sources','activity']) {
   const html=ui.workMarkup(s,{},'branch',events(s).events,detail),panels=[...html.matchAll(/<section[^>]*data-au-panel="([^"]+)"[^>]*>/g)];
-  assert.deepEqual(panels.map(match=>match[1]),[detail]);assert.doesNotMatch(html,/<details|data-au-panel="[^"]+"[^>]* hidden/);
+  assert.deepEqual(panels.map(match=>match[1]),[detail]);assert.doesNotMatch(html,/data-au-panel="[^"]+"[^>]* hidden/);
   assert.match(html,new RegExp(`data-au-detail="${detail}" aria-pressed="true"`));
   if(detail==='step'){assert.match(html,/data-au-node="branch"[^>]*aria-pressed="true"/);assert.match(html,/data-au-selected-step="branch"/);}
   if(detail==='sources')assert.match(html,/<form data-au-arrival/);
@@ -1525,7 +1525,7 @@ test('a branch inspector joins its own condition, evidence need, document and ca
  const projection={node_capabilities:{branch:{authorized:false,id:null,reason:'External dispatch is not configured.'}}},before=JSON.stringify(saved),html=ui.inspectorMarkup(saved,'branch',projection);
  assert.match(ui.workMarkup(saved,projection,'branch',[]),/class="au-process-question au-reading-question"[^>]*data-au-inspector-heading="branch"[^>]*>Check separate service/);
  assert.match(html,/data-au-selected-step="branch"/);assert.deepEqual(ui.contextualRecord(saved,projection,[],'step','branch').node,saved.graph.nodes[1]);
- for(const phrase of ['Family home',saved.facts[0].summary,'Separate notice','Required now in the recorded process.','External dispatch is not configured.'])assert.ok(html.includes(phrase),phrase);
+ for(const phrase of ['Family home',saved.facts[0].summary,'Separate notice','Listed as needed now.','External dispatch is not configured.'])assert.ok(html.includes(phrase),phrase);
  assert.match(html,/data-au-source="original"[^>]*data-au-citation=/);assert.doesNotMatch(html,/Commercial-only condition|Commercial condition does not apply/);
  assert.equal(ui.contextualRecord(saved,projection,[],'fact','fact:notice').summary,'A separate notice is required.');
  assert.deepEqual(ui.contextualRecord(saved,projection,[],'requirement',saved.obligations[0].obligation_id).obligations,[saved.obligations[0]]);assert.deepEqual(ui.contextualRecord(saved,projection,[],'step','branch').capability,projection.node_capabilities.branch);
@@ -1758,7 +1758,7 @@ test('delayed claim collections preserve verified revisions without rejecting ge
   let saved=state(),projection={},finishList;const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?new Promise(resolve=>{finishList=resolve;}):path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256,...projection}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});child.after(()=>controller.destroy());await waitFor(()=>f.host.innerHTML.includes('data-au-revision="3"')&&Boolean(finishList));
   saved=state({revision:4,state_sha256:hash('f'),status:'deferred',outcome:{status:'deferred',reason:'Recorded evidence needed.',missing_evidence:[{document_type:'notice',label:'Notice receipt'}]}});await controller.refresh();assert.match(queue.innerHTML,/More evidence needed/);assert.match(f.host.innerHTML,/data-au-revision="4"/);
   finishList(response({claims:[other,...(example.row?[example.row]:[])]}));await waitFor(()=>queue.innerHTML.includes('Other saved claim'));
-  const row=queue.innerHTML.match(/<button[^>]*data-au-claim="claim-a"[\s\S]*?<\/button>/)?.[0];assert.ok(row,'the current verified claim remains reachable');assert.ok(row.includes(example.expectedStatus),row);assert.match(row,/data-au-claim="claim-a"/);assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.match(f.host.innerHTML,/Recorded evidence needed/);assert.doesNotMatch(queue.innerHTML,/Old collection title|Conflicting collection title/);
+  const row=queue.innerHTML.match(/<button[^>]*data-au-claim="claim-a"[\s\S]*?<\/button>/)?.[0];assert.ok(row,'the current verified claim remains reachable');assert.ok(row.includes(example.expectedStatus),row);assert.match(row,/data-au-claim="claim-a"/);assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.match(f.host.innerHTML,/data-au-inspect="outcome"/);assert.equal(ui.contextualRecord(saved,{},[],'outcome').outcome.reason,'Recorded evidence needed.');assert.doesNotMatch(queue.innerHTML,/Old collection title|Conflicting collection title/);
   if(example.row)assert.ok(queue.innerHTML.indexOf('Other saved claim')<queue.innerHTML.indexOf('data-au-claim="claim-a"'),'the API collection order is retained');
   if(example.row?.revision===5)projection={node_capabilities:{branch:{authorized:false,id:null,reason:'Projection changed after newer collection row.'}}};
   await controller.refresh();assert.ok(queue.innerHTML.includes(example.expectedStatus));
@@ -1774,11 +1774,11 @@ test('idle intake labels distinguish saving a claim from available or unknown au
   [{enabled:true,provider_ready:false,limits:{}},/^Save claim$/,false],
   [{enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'provider_outcome_pending'}},/^Save claim$/,false],
   [{enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'unknown_future_condition'}},/^Save claim$/,false],
-  [{enabled:true,provider_ready:true,limits:{autonomous_can_start:true}},/^Start autonomous work/,false],
-  [{enabled:true,provider_ready:true},/^Start autonomous work/,false],
-  [{enabled:true,provider_ready:true,limits:{autonomous_reason:'call_limit_reached'}},/^Start autonomous work/,false],
-  [{enabled:true,limits:{}},/^Start autonomous work/,false],
-  [{enabled:false,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached'}},/^Start autonomous work/,true]
+  [{enabled:true,provider_ready:true,limits:{autonomous_can_start:true}},/^Start checking/,false],
+  [{enabled:true,provider_ready:true},/^Start checking/,false],
+  [{enabled:true,provider_ready:true,limits:{autonomous_reason:'call_limit_reached'}},/^Start checking/,false],
+  [{enabled:true,limits:{}},/^Start checking/,false],
+  [{enabled:false,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached'}},/^Start checking/,true]
  ]) {
   const f=nativeFixture(),api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});
   try { await settle();await newClaim(f);const submit=f.intake.querySelector('button[type="submit"]');assert.match(submit.textContent,label,JSON.stringify(savedStatus));assert.equal(submit.disabled,disabled);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0); }
@@ -1788,8 +1788,8 @@ test('idle intake labels distinguish saving a claim from available or unknown au
 
 test('an unresolved service status keeps intake disabled until authoritative readiness arrives',async t=>{
  const f=nativeFixture(),held=[];const api=fakeApi({handle:async path=>path.endsWith('/status')?new Promise(resolve=>held.push(resolve)):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{for(const resolve of held)resolve(response({enabled:true,provider_ready:true,limits:{}}));controller.destroy();});await settle();await newClaim(f);
- assert.equal(held.length,1,'navigation shares the exact unresolved status GET');assert.equal(api.calls.filter(call=>call.path.endsWith('/status')).length,1);assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start autonomous work/);assert.equal(f.intake.querySelector('button[type="submit"]').disabled,true);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
- for(const resolve of held)resolve(response({enabled:true,provider_ready:true,limits:{}}));await settle();assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start autonomous work/);
+ assert.equal(held.length,1,'navigation shares the exact unresolved status GET');assert.equal(api.calls.filter(call=>call.path.endsWith('/status')).length,1);assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start checking/);assert.equal(f.intake.querySelector('button[type="submit"]').disabled,true);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ for(const resolve of held)resolve(response({enabled:true,provider_ready:true,limits:{}}));await settle();assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start checking/);
 });
 
 test('late status reads preserve Saving and exact Retry labels while retaining the same intake files and draft',async t=>{
@@ -1816,10 +1816,10 @@ test('returning to intake updates its idle label and local validation restores t
  const f=nativeFixture();let savedStatus={enabled:true,provider_ready:true,limits:{}},finishStatus,statusReads=0,holdNext=false;
  const api=fakeApi({handle:async path=>{if(!path.endsWith('/status'))return null;statusReads++;if(holdNext){holdNext=false;return new Promise(resolve=>{finishStatus=resolve;});}return response(savedStatus);}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finishStatus?.(response(savedStatus));controller.destroy();});await settle();await newClaim(f);
  const form=f.intake,list=Array.from({length:21},()=>fileFixture()),submit=form.querySelector('button[type="submit"]');form.elements.title.value='Typed original draft';form.elements.message.value='Retained original message';form.elements.files.files=list;
- await f.listeners.get('submit')({target:form,preventDefault(){}});assert.match(form.querySelector('.au-form-status').textContent,/at most 20/);assert.match(submit.textContent,/^Start autonomous work/);assert.equal(form.elements.title.disabled,false);
+ await f.listeners.get('submit')({target:form,preventDefault(){}});assert.match(form.querySelector('.au-form-status').textContent,/at most 20/);assert.match(submit.textContent,/^Start checking/);assert.equal(form.elements.title.disabled,false);
  savedStatus={enabled:true,provider_ready:false,limits:{}};now+=10001;navClick(f,'work');await settle();holdNext=true;await newClaim(f);assert.equal(f.intake,form);assert.equal(submit.textContent,'Save claim','the cached unavailable status applies before the fresh status response');assert.equal(form.elements.files.files,list);assert.equal(form.elements.title.value,'Typed original draft');assert.equal(form.elements.message.value,'Retained original message');
  finishStatus(response(savedStatus));await settle();await f.listeners.get('submit')({target:form,preventDefault(){}});assert.equal(submit.textContent,'Save claim');assert.equal(submit.disabled,false);assert.equal(form.elements.title.disabled,false);assert.equal(form.elements.files.files,list);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
- savedStatus={enabled:true,provider_ready:true,limits:{}};now+=10001;navClick(f,'work');await settle();await newClaim(f);assert.equal(f.intake,form);assert.match(submit.textContent,/^Start autonomous work/);assert.equal(form.elements.files.files,list);assert.equal(statusReads,6);
+ savedStatus={enabled:true,provider_ready:true,limits:{}};now+=10001;navClick(f,'work');await settle();await newClaim(f);assert.equal(f.intake,form);assert.match(submit.textContent,/^Start checking/);assert.equal(form.elements.files.files,list);assert.equal(statusReads,6);
 });
 
 const operationContract='casepath.operations-stream/1.0.0';
@@ -1889,13 +1889,13 @@ test('complete acquired packet missing the300ms choice cannot paint or splice in
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes),opening=deferredRead();
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));});await hash.started;const selecting=controller.showDemonstration();await new Promise(resolve=>setTimeout(resolve,350));opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;
- hash.release();await controller.recordedPacketReady;await settle();await settle();assert.equal(f.host.innerHTML,before,'late local verification cannot join the completed choice');assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?`)).length,1);
+ hash.release();await controller.recordedPacketReady;await settle();await settle();assert.equal(f.host.innerHTML,before,'late local verification cannot join the completed choice');assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?`)).length,1);
 });
 
 test('ready verified Live wins while a completely acquired packet still awaits local SHA',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),hash=delayedPacketHash(t,packet.bytes);
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
- const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());await hash.started;await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;hash.release();await controller.recordedPacketReady;await settle();assert.equal(f.host.innerHTML,before);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());await hash.started;await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const before=f.host.innerHTML;hash.release();await controller.recordedPacketReady;await settle();assert.equal(f.host.innerHTML,before);assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
 });
 
 test('navigation and hidden ownership cancel acquired packet verification without late Recorded paint',async t=>{
@@ -1928,21 +1928,21 @@ test('ready recorded packet wins the bounded opening choice and late live replie
  const routing=routingFixture(t),f=operationOpeningDOM(),packet=recordedPacketFixture(),opening=deferredRead(),snapshot=deferredRead(),incompleteFallback=deferredRead();let liveSignal;
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.endsWith('/replay?through_seq=4')?incompleteFallback.promise:path.includes('/operations?')?(liveSignal=init.signal,pendingOperationResponse(packet.native.binding)):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();incompleteFallback.resolve(response(packet.native.replay));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});assert.equal(await controller.recordedPacketReady,true);const writes=[];let markup=f.host.innerHTML;Object.defineProperty(f.host,'innerHTML',{get:()=>markup,set:value=>{markup=value;writes.push(value);},configurable:true});const selecting=controller.showDemonstration();
- assert.match(f.host.innerHTML,/Opening investigation/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|data-au-revision=/);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');
- assert.ok(writes.every(html=>!html.includes('Live rules-based check')),'every opening/playback render retains whole-session Recorded identity');assert.match(f.host.innerHTML,/Recorded replay/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|The later accepted outcome|data-au-stage-fact=/);assert.match(routing.hash,/operations=recorded/);assert.equal(liveSignal.aborted,true);
+ assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|data-au-revision=/);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');
+ assert.ok(writes.every(html=>!html.includes('Live rules-based check')),'every opening/playback render retains whole-session Recorded identity');assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|The later accepted outcome|data-au-stage-fact=/);assert.match(routing.hash,/operations=recorded/);assert.equal(liveSignal.aborted,true);
  await waitFor(()=>api.calls.some(row=>row.path.endsWith('/replay?through_seq=4')));const before=f.host.innerHTML;opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before,'late live responses cannot take over an admitted Recorded session');assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?`)).length,1,'recorded body uses packet bytes without another API trace');
 });
 
 test('independently verified live opening wins before300ms and never consumes available recorded packet frames',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture();
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
- const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());assert.equal(await controller.recordedPacketReady,true);const started=Date.now();await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.ok(Date.now()-started<300);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());assert.equal(await controller.recordedPacketReady,true);const started=Date.now();await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.ok(Date.now()-started<300);assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
 });
 
 test('unfinished recorded asset never delays Cases or selected live work and cannot join a later opening',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead();let assetSignal;
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
- const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));});await settle();await new Promise(resolve=>setTimeout(resolve,5));assert.match(f.host.innerHTML,/Cases|No .*claims|All cases/i);const selecting=controller.showDemonstration();await settle();assert.equal(assetSignal.aborted,false);assert.match(f.host.innerHTML,/Opening investigation/);
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));});await settle();await new Promise(resolve=>setTimeout(resolve,5));assert.match(f.host.innerHTML,/Cases|No .*claims|All cases/i);const selecting=controller.showDemonstration();await settle();assert.equal(assetSignal.aborted,false);assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);
  await new Promise(resolve=>setTimeout(resolve,350));opening.resolve(response(packet.native.zero));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');const committed=f.host.innerHTML;asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await settle();assert.equal(f.host.innerHTML,committed);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);
 });
 
@@ -1950,14 +1950,14 @@ test('unusable recorded packet retains the existing live503 to recorded endpoint
  const f=operationOpeningDOM(),packet=recordedPacketFixture();packet.packet.claims[0].head.state_sha256=sha('different recorded head');const asset=packet.seal(packet.packet);
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(asset.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?mode=live')?response({detail:'Live not available'},503):path.includes('/operations?mode=recorded')?pendingOperationResponse(packet.native.binding):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:asset.descriptor,allowNativeRecordedPacket:true});t.after(()=>controller.destroy());assert.equal(await controller.recordedPacketReady,true);await controller.showDemonstration();await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');
- assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?mode=live`)).length,1);assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?mode=recorded`)).length,1);assert.match(f.host.innerHTML,/Recorded replay/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=/);
+ assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?mode=live`)).length,1);assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?mode=recorded`)).length,1);assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=/);
 });
 
 test('explicit Recorded route uses whole packet identity and retires release provenance before accepted opening paint',async t=>{
  const routing=routingFixture(t),f=operationOpeningDOM(),packet=recordedPacketFixture(),opening=deferredRead(),snapshot=deferredRead();
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});assert.equal(await controller.recordedPacketReady,true);const before=api.calls.length;await controller.showDemonstration(true,'reference','recorded');
- assert.equal(api.calls.slice(before).length,0,'explicit Recorded admission uses no selected API reads; this authored binding-only fixture later takes its expected incomplete-stream fallback');await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,0);assert.match(routing.hash,/operations=recorded/);assert.match(f.host.innerHTML,/Recorded replay/);assert.doesNotMatch(f.host.innerHTML,/data-au-release-plan=/);assert.match(f.host.innerHTML,/data-au-planned-process=/);
+ assert.equal(api.calls.slice(before).length,0,'explicit Recorded admission uses no selected API reads; this authored binding-only fixture later takes its expected incomplete-stream fallback');await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,0);assert.match(routing.hash,/operations=recorded/);assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(f.host.innerHTML,/data-au-release-plan=/);assert.match(f.host.innerHTML,/data-au-planned-process=/);
 });
 
 test('idle recorded packet owner cancels on hidden or leaving Cases while an available asset remains reusable',async t=>{
@@ -2061,8 +2061,12 @@ test('cold operation selection retains explicit recorded delivery and never star
  const f=operationOpeningDOM(),native=operationOpeningFixture();
  const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:[native.head]}):path.endsWith('/replay?through_seq=0')?response(native.zero):path.endsWith('/replay?through_seq=4')?response(native.replay):path.includes('/operations?')?pendingOperationResponse(native.binding):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.showDemonstration(true,'reference','recorded');await settle();
- assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=recorded')).length,1);assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,0);
- const count=api.calls.filter(row=>row.path.includes('/operations?')).length;await controller.showDemonstration(true,'legacy');await settle();assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,count,'only the selected allowed reference operation session can start a stream');
+ // The exact current head may also warm its one real next recording. Let that
+ // already-owned prefetch settle before comparing navigation cancellation.
+ await new Promise(resolve=>setTimeout(resolve,25));
+ const recorded=api.calls.filter(row=>row.path.includes('/operations?mode=recorded')),selected=recorded.filter(row=>row.path.includes(`/claims/${native.id}/operations?`)),next=ui.REFERENCE_DEMO_CASES[ui.REFERENCE_DEMO_CASES.findIndex(row=>row.claim_id===native.id)+1].claim_id,other=recorded.filter(row=>!selected.includes(row));
+ assert.equal(selected.length,1,'the selected case owns exactly one recorded stream');assert.ok(other.length<=1,'only one next recording may be prefetched');assert.ok(other.every(row=>row.path.endsWith(`/claims/${next}/operations?mode=recorded`)),'every additional stream belongs to the one actual next case');assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,0);
+ const count=api.calls.filter(row=>row.path.includes('/operations?')).length;await controller.showDemonstration(true,'legacy');await settle();assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,count,'legacy playback cannot open another operation stream');assert.ok(recorded.every(row=>row.init.signal.aborted),'legacy navigation cancels both selected and next-case recording owners');
 });
 
 test('selected operation priority cancels only idle reads and suppresses new warming until foreground navigation',async t=>{
@@ -2098,7 +2102,7 @@ test('selected operation priority defers the direct-route idle catalog and Knowl
 });
 
 test('release procedure outlines carry only the exact nine release catalogs and no accepted state identity',()=>{
- for(const row of ui.REFERENCE_DEMO_CASES){const plan=ui.releaseOperationProcess(row.claim_id),html=ui.releaseProcedurePreview(plan,'recorded');assert.ok(plan);assert.equal(plan.release.profile_id,'synthetic-nine-v2');assert.ok(plan.release.request_source_pin.quote);assert.match(html,/Recorded replay/);assert.match(html,/data-au-release-authority="none"/);assert.match(html,/>Procedure outline</);assert.equal((html.match(/data-au-planned-node disabled/g)||[]).length,plan.graph.nodes.length);assert.doesNotMatch(html,/data-au-(?:revision|state-sha|forming-revision|forming-sha|planned-process|planned-head-revision|planned-graph-sha)=|data-au-stage-fact=|data-au-document-checked="true"|data-status="completed"|Procedure reused|Version [0-9]|undefined/);assert.equal(plan.head_revision,undefined);assert.equal(plan.graph.graph_sha256,undefined);}
+ for(const row of ui.REFERENCE_DEMO_CASES){const plan=ui.releaseOperationProcess(row.claim_id),html=ui.releaseProcedurePreview(plan,'recorded');assert.ok(plan);assert.equal(plan.release.profile_id,'synthetic-nine-v2');assert.ok(plan.release.request_source_pin.quote);assert.match(html,/Replay · Fictional case · No real-world action/);assert.match(html,/data-au-release-authority="none"/);assert.match(html,/>Procedure outline</);assert.equal((html.match(/data-au-planned-node disabled/g)||[]).length,plan.graph.nodes.length);assert.doesNotMatch(html,/data-au-(?:revision|state-sha|forming-revision|forming-sha|planned-process|planned-head-revision|planned-graph-sha)=|data-au-stage-fact=|data-au-document-checked="true"|data-status="completed"|Procedure reused|Version [0-9]|undefined/);assert.equal(plan.head_revision,undefined);assert.equal(plan.graph.graph_sha256,undefined);}
  for(const id of ['clm_2a9c260c26afaa34','auto_a489b283495e7b03b5aab860','unknown'])assert.equal(ui.releaseOperationProcess(id),null,'historical and unknown cases have no release outline or operation permission');
 });
 
@@ -2171,17 +2175,17 @@ test('wire draining completes before paused application consumption and abort pr
 test('recorded delivery retains the captured binding while each visible mode keeps its historical as-of qualifier',()=>{
  const f=operationFixture(),bindingBefore=JSON.stringify(f.binding),replay={state:f.baseline,mode:'replay',replay_only:true,through_seq:3,current_revision:4,current_state_sha256:f.head.state_sha256,current_event_sha256:f.head.last_event_sha256};
  const render=delivery=>ui.workMarkup(f.baseline,{},'branch',f.journal.slice(0,3),'step',{}, {mode:'replay',replay,operations:{binding:f.binding,rows:[],sources:new Map(),asOf:'2025-02-21',...delivery}});
- const recorded=render({recorded:true});assert.match(recorded,/Recorded replay · Synthetic sources · No external action · as of 2025-02-21/);assert.doesNotMatch(recorded,/Live check from saved sources/);
- const live=render({});assert.match(live,/Live rules-based check · Synthetic sources · No external action · as of 2025-02-21/);assert.equal((live.match(/as of 2025-02-21/g)||[]).length,1);assert.doesNotMatch(live,/Recorded investigation/);assert.doesNotMatch(live,/data-au-operation-skip/);assert.match(render({buffer:{result:{exact_output_verified:true,state_sha256:f.binding.current_state_sha256,current_event_sha256:f.binding.current_event_sha256}}}),/data-au-operation-skip/);assert.doesNotMatch(render({finished:true}),/data-au-operation-skip/);
- const saved=render({savedFallback:true});assert.match(saved,/Saved result · Synthetic sources · No external action/);assert.doesNotMatch(saved,/Live check from saved sources/);assert.equal(JSON.stringify(f.binding),bindingBefore);
- assert.equal(ui.operationLabel({kind:'node.evaluate'}),'Evaluate step');assert.equal(ui.operationLabel({kind:'dependency.evaluate'}),'Check dependency');assert.equal(ui.operationLabel({kind:'branch.activate',result:{activation:'unresolved'}}),'Evaluate unresolved branch');assert.equal(ui.operationLabel({kind:'fact.extract',result:{verification_required:false,status:'established'}}),'Inspect verified finding');
+ const recorded=render({recorded:true});assert.match(recorded,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(recorded,/Live check from saved sources/);
+ const live=render({});assert.match(live,/Replay · Fictional case · No real-world action/);assert.equal((live.match(/Replay · Fictional case · No real-world action/g)||[]).length,1);assert.doesNotMatch(live,/Recorded investigation/);assert.doesNotMatch(live,/data-au-operation-skip/);assert.match(render({buffer:{result:{exact_output_verified:true,state_sha256:f.binding.current_state_sha256,current_event_sha256:f.binding.current_event_sha256}}}),/data-au-operation-skip/);assert.doesNotMatch(render({finished:true}),/data-au-operation-skip/);
+ const saved=render({savedFallback:true});assert.match(saved,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(saved,/Live check from saved sources/);assert.equal(JSON.stringify(f.binding),bindingBefore);assert.equal(ui.contextualRecord(f.baseline,{},[],'replay','',{},replay),replay,'the delivery qualifier retains its exact playback record in Details');
+ assert.equal(ui.operationLabel({kind:'node.evaluate'}),'Checked a step');assert.equal(ui.operationLabel({kind:'dependency.evaluate'}),'Checked what a step needs');assert.equal(ui.operationLabel({kind:'branch.activate',result:{activation:'unresolved'}}),'Kept this path open');assert.equal(ui.operationLabel({kind:'fact.extract',result:{verification_required:false,status:'established'}}),'Checked it in the document');
 });
 
 test('operation delivery names existing procedure reuse and its recorded origin without changing saved knowledge',()=>{
  const use={knowledge_id:'procedure.defect_mold_heating',version:2,knowledge_sha256:sha('recorded procedure'),source_claim_id:'claim-a'},saved=state({knowledge_uses:[use]}),before=JSON.stringify(saved);
  const ordinary=ui.formingKnowledgeMarkup(saved),delivered=ui.formingKnowledgeMarkup(saved,{},false,false,null,[],true);
  assert.match(ordinary,/Procedure used for this case · Version 2/);assert.match(ordinary,/From this case’s source evidence/);
- assert.match(delivered,/Procedure reused · Version 2/);assert.match(delivered,/Recorded origin: this case’s source evidence/);assert.match(delivered,/data-au-knowledge="procedure.defect_mold_heating"/);assert.equal(ui.operationLabel({kind:'knowledge.reuse'}),'Procedure reused');assert.equal(JSON.stringify(saved),before);
+ assert.match(delivered,/Procedure reused · Version 2/);assert.match(delivered,/Recorded origin: this case’s source evidence/);assert.match(delivered,/data-au-knowledge="procedure.defect_mold_heating"/);assert.equal(ui.operationLabel({kind:'knowledge.reuse'}),'Reused the exact version');assert.equal(JSON.stringify(saved),before);
  saved.knowledge_uses=[{...use,source_claim_id:'earlier-source-case'}];assert.match(ui.formingKnowledgeMarkup(saved,{},false,false,null,[],true),/Origin source case/);assert.match(ui.formingKnowledgeMarkup(saved,{},false,false,null,[],true),/data-au-claim="earlier-source-case"/);
 });
 
@@ -2195,9 +2199,9 @@ test('failed live operation records remain inspectable while recorded delivery o
 
 test('operation reading uses current case labels and source summaries without exposing raw routing or Boolean scalars',()=>{
  const f=operationFixture(),raw={contract:operationContract,type:'operation',id:'observed-node',kind:'node.evaluate',object:{type:'node',id:'branch'},result:{verdict:true,activation:'true',route_state:'needed_later'}},trace={state:f.baseline,current:raw,rows:[raw],sources:new Map()};
- const html=ui.operationReadingMarkup(trace);assert.match(html,/Check separate service/);assert.doesNotMatch(html,/needed_later|· true|· false|>true</);assert.deepEqual(ui.operationRecord(trace,'operation',raw.id),raw,'History retains exact machine fields');
- trace.current={...raw,kind:'document.require',object:{type:'document',id:'notice'},result:{route_state:'needed_now'}};assert.match(ui.operationReadingMarkup(trace),/Separate notice/);assert.doesNotMatch(ui.operationReadingMarkup(trace),/needed_now/);
- trace.current={...raw,result:{summary:'The actual source describes an uncertain service date.',verdict:'unresolved'}};assert.match(ui.operationReadingMarkup(trace),/The actual source describes an uncertain service date/);
+ const html=ui.operationReadingMarkup(trace);assert.match(html,/Checked a step/);assert.doesNotMatch(html,/needed_later|· true|· false|>true</);assert.deepEqual(ui.operationRecord(trace,'operation',raw.id),raw,'History retains exact machine fields');
+ trace.current={...raw,kind:'document.require',object:{type:'document',id:'notice'},result:{route_state:'needed_now'}};assert.match(ui.operationReadingMarkup(trace),/Listed a needed document/);assert.equal(trace.current.object.id,'notice');assert.equal(ui.operationRecord(trace,'operation',raw.id).object.id,'branch','History keeps the actual earlier row');assert.doesNotMatch(ui.operationReadingMarkup(trace),/needed_now/);
+ trace.current={...raw,result:{summary:'The actual source describes an uncertain service date.',verdict:'unresolved'}};assert.match(ui.operationReadingMarkup(trace),/data-au-inspect="operation"/);assert.equal(trace.current.result.summary,'The actual source describes an uncertain service date.');assert.equal(ui.operationRecord(trace,'operation',raw.id),raw);
 });
 
 test('restarting Demonstration opens its own first case after inspection of another case',async t=>{
@@ -2246,7 +2250,7 @@ test('source-to-working-step relationships use exact observed fact/document pins
 test('selected provisional readiness explains the actual blocker independently of applicability',async()=>{
  const f=workingFixture(),inspect=f.inspect({});await ui.checkedOperation(inspect,f.trace,f.baseline);ui.applyWorkingOperation(inspect,f.trace,f.baseline);
  const scope={graph_sha256:f.graph.graph_sha256,evaluation_sha256:inspect.result.evaluation_sha256},result={...scope,phase:'provisional',activation:'true',execution_state:'blocked',blocked_by:['start'],unresolved_dependencies:[],missing_document_types:['notice']},op=f.seal('node.evaluate',{type:'node',id:'branch'},scope,result,[inspect.id]);await ui.checkedOperation(op,f.trace,f.baseline);ui.applyWorkingOperation(op,f.trace,f.baseline);f.trace.current=op;
- const working=ui.workingProcessState(f.trace),html=ui.graphMarkup(working,'branch',{}, {overview:true,working:f.trace.working});assert.deepEqual(working.evaluation.nodes[0].blocked_by,['start']);assert.equal(working.evaluation.nodes[0].execution_state,'blocked');assert.match(html,/Applicability · Applies/);assert.match(html,/Execution · Waiting for Inspect message/);assert.doesNotMatch(html,/>✓<|data-status="completed"|>Ready to check</);assert.equal(f.baseline.evaluation.nodes[1].execution_state,'ready');
+ const working=ui.workingProcessState(f.trace),html=ui.graphMarkup(working,'branch',{}, {overview:true,working:f.trace.working});assert.deepEqual(working.evaluation.nodes[0].blocked_by,['start']);assert.equal(working.evaluation.nodes[0].execution_state,'blocked');assert.match(html,/When this applies: Applies/);assert.match(html,/Waiting for Inspect message/);assert.doesNotMatch(html,/>✓<|data-status="completed"|>Ready to check</);assert.equal(f.baseline.evaluation.nodes[1].execution_state,'ready');
  assert.match(ui.workingReadiness({...result,blocked_by:[],unresolved_dependencies:['start']},f.graph),/Unresolved prerequisite: Inspect message/);assert.match(ui.workingReadiness({...result,blocked_by:[]},f.graph),/Source support needed: Separate notice/);
 });
 
@@ -2290,7 +2294,7 @@ test('stage transport uses a bound total without granting access to future unver
 });
 test('stage excerpts stay compact while full source inspection retains every original Unicode character and exact document labels',async()=>{
  const f=operationFixture(),open=f.seal('source.open',{type:'source',id:'source'},{...f.descriptor,text:f.sourceText,text_sha256:sha(f.sourceText)});await ui.checkedOperation(open,f.trace,f.baseline);f.trace.current=open;const markup=ui.operationReadingMarkup(f.trace);assert.match(markup,/A tenant reports a cold home/);const compact=ui.operationReadingMarkup(f.trace,true);assert.match(compact,/data-au-compact-excerpt/);assert.doesNotMatch(compact,/data-au-source-body-anchor/);
- const state={...f.baseline,facts:[{fact_id:'relevant_tenancy_terms',label:'Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract'}],obligations:[{document_type:'tenancy_terms',required_fact_ids:['relevant_tenancy_terms']}],graph:{...f.baseline.graph,document_catalog:[{document_type:'tenancy_terms',label:'Relevant tenancy terms'}]}};f.trace.current={id:'actual-accepted-fact',kind:'fact.extract',object:{id:'relevant_tenancy_terms'},result:{verification_required:false},source:{artifact_id:'source',start_char:0,end_char:30,quote:'Monthly net rent is CHF1800.'}};f.trace.dockedFacts=new Map([[f.trace.current.object.id,{operation:f.trace.current,node:'branch',observed:true}]]);const html=ui.operationStageMarkup(state,{},'branch',f.trace);assert.match(html,/aria-label="Relevant tenancy terms:/);assert.doesNotMatch(html,/<strong>Relevant residential tenancy terms/);
+ const state={...f.baseline,facts:[{fact_id:'relevant_tenancy_terms',label:'Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract'}],obligations:[{document_type:'tenancy_terms',required_fact_ids:['relevant_tenancy_terms']}],graph:{...f.baseline.graph,document_catalog:[{document_type:'tenancy_terms',label:'Relevant tenancy terms'}]}};f.trace.current={id:'actual-accepted-fact',kind:'fact.extract',object:{id:'relevant_tenancy_terms'},result:{verification_required:false},source:{artifact_id:'source',start_char:0,end_char:30,quote:'Monthly net rent is CHF1800.'}};f.trace.dockedFacts=new Map([[f.trace.current.object.id,{operation:f.trace.current,node:'branch',observed:true}]]);const html=ui.operationStageMarkup(state,{},'branch',f.trace);assert.match(html,/data-au-stage-fact="relevant_tenancy_terms"/);assert.match(html,/<span>CHF1800\.<\/span>/);assert.doesNotMatch(html,/<strong>Relevant residential tenancy terms/);
 });
 
 test('compact unknown findings use a short literal Unicode subspan while inspection preserves the complete native pin',()=>{
@@ -2298,7 +2302,7 @@ test('compact unknown findings use a short literal Unicode subspan while inspect
 });
 test('an actually checked stage document receives a named source card inside its existing requirement landing',()=>{
  const f=operationFixture(),source={...f.descriptor,file_name:'01-delivery-attestation.txt',text:f.sourceText,text_sha256:sha(f.sourceText)},pin={artifact_id:source.artifact_id,start_char:0,end_char:20,quote:Array.from(source.text).slice(0,20).join('')},required={id:'actual-require',kind:'document.require',object:{id:'notice'},result:{activation:'true',active_node_ids:['branch']}},check={id:'actual-check',kind:'document.check',object:{id:'notice'},source:pin,result:{assessment:'sufficient'}};
- const state={...f.baseline,evaluation:{...f.baseline.evaluation,documents:[{document_type:'notice',review_state:'sufficient'}]},obligations:[{document_type:'notice',required_fact_ids:[]}]},node={node_id:'branch',document_types:['notice']},trace={rows:[required,check],current:check,sources:new Map([[source.artifact_id,source]])};const html=ui.stageNodeContents(node,state,trace,null,false);assert.match(html,/au-stage-landing/);assert.match(html,/au-stage-source-name">Delivery attestation/);assert.match(html,/data-au-check-operation="actual-check"/);assert.match(html,/data-au-document-checked="true"/);assert.match(html,/Source checked/);
+ const state={...f.baseline,evaluation:{...f.baseline.evaluation,documents:[{document_type:'notice',review_state:'sufficient'}]},obligations:[{document_type:'notice',required_fact_ids:[]}]},node={node_id:'branch',document_types:['notice']},trace={rows:[required,check],current:check,sources:new Map([[source.artifact_id,source]])};const html=ui.stageNodeContents(node,state,trace,null,false);assert.match(html,/au-stage-landing/);assert.match(html,/au-stage-source-name">Delivery attestation/);assert.match(html,/data-au-check-operation="actual-check"/);assert.match(html,/data-au-document-checked="true"/);assert.match(html,/Supported by documents/);
  assert.doesNotMatch(ui.stageNodeContents(node,state,{...trace,rows:[required]},null,false),/au-stage-source-name|data-au-check-operation/,'accepted sufficiency cannot replace an absent observed check in operation delivery');const planned=ui.stageNodeContents(node,state,{...trace,rows:[check]},null,false);assert.match(planned,/data-au-document-planned="true"/);assert.doesNotMatch(planned,/data-au-check-operation|data-au-document-checked="true"/,'a check cannot activate an unobserved requirement or fill its planned slot');
 });
 
@@ -2387,7 +2391,7 @@ test('only distinct actual consequences own visible dwell and every source opera
 
 test('compact stage excerpts preserve exact Unicode display bounds inside the unchanged full native citation',()=>{
  const text='Before 😀\r\nThe landlord records three reports. After unchanged original text.',chars=Array.from(text),start=chars.indexOf('T'),quote=chars.slice(start,start+42).join(''),source={artifact_id:'original',file_name:'03-original-notification.txt',text,text_sha256:sha(text)},pin={artifact_id:source.artifact_id,sha256:sha(text),text_sha256:sha(text),start_char:start,end_char:start+42,quote},operation={id:'native-bounded-fact',kind:'fact.extract',object:{type:'fact',id:'unknown-predicate'},source:pin,result:{verification_required:true},cause_ids:[]},trace={rows:[operation],current:operation,sources:new Map([[source.artifact_id,source]])};
- const html=ui.operationReadingMarkup(trace,true),display=ui.stageFactSpan(operation,true);assert.equal(chars.slice(display.start_char,display.end_char).join(''),display.quote);assert.ok(display.start_char>=pin.start_char&&display.end_char<=pin.end_char);assert.match(html,/03-original-notification\.txt/);assert.match(html,new RegExp(`data-au-citation-start-char="${pin.start_char}" data-au-citation-end-char="${pin.end_char}"`));assert.match(html,/data-au-compact-excerpt/);assert.doesNotMatch(html,/>Before 😀&#13;/);assert.equal(ui.operationReading(trace).pin,pin);assert.match(ui.operationReadingMarkup(trace),/Before 😀&#13;\n/);
+ const html=ui.operationReadingMarkup(trace,true),display=ui.stageFactSpan(operation,true);assert.equal(chars.slice(display.start_char,display.end_char).join(''),display.quote);assert.ok(display.start_char>=pin.start_char&&display.end_char<=pin.end_char);assert.match(html,/class="au-stage-source-title"[^>]*data-au-source="original"/);assert.equal(trace.sources.get('original').file_name,'03-original-notification.txt');assert.match(html,new RegExp(`data-au-citation-start-char="${pin.start_char}" data-au-citation-end-char="${pin.end_char}"`));assert.match(html,/data-au-compact-excerpt/);assert.doesNotMatch(html,/>Before 😀&#13;/);assert.equal(ui.operationReading(trace).pin,pin);assert.match(ui.operationReadingMarkup(trace),/Before 😀&#13;\n/);
 });
 
 test('recorded operation delivery is an explicit retained URL preference and legacy through links keep their revision',()=>{
@@ -2435,7 +2439,7 @@ test('an excerpt context remains inside the actual cited body and excludes sourc
 test('a settled filled document slot has one source card while active delivery keeps its source preview and complete native inspection pin',()=>{
  const f=operationFixture(),source={...f.descriptor,file_name:'01-delivery-attestation.txt',text:f.sourceText,text_sha256:sha(f.sourceText)},pin={artifact_id:source.artifact_id,sha256:source.sha256,text_sha256:source.text_sha256,start_char:0,end_char:20,quote:Array.from(source.text).slice(0,20).join('')},required={id:'actual-require',kind:'document.require',object:{id:'notice'},result:{activation:'true',active_node_ids:['branch']}},check={id:'actual-check',kind:'document.check',object:{id:'notice'},source:pin,result:{assessment:'sufficient'}},fact={id:'actual-fact',kind:'fact.extract',object:{type:'fact',id:'fact:notice'},source:pin,result:{verification_required:false}},node={node_id:'branch',document_types:['notice']},state={...f.baseline,graph:{...f.baseline.graph,document_catalog:[{document_type:'notice',label:'Separate notice'}]},evaluation:{...f.baseline.evaluation,documents:[{document_type:'notice',review_state:'sufficient'}]},obligations:[{document_type:'notice',required_fact_ids:[]}]},trace={rows:[required,check,fact],current:check,finished:true,sources:new Map([[source.artifact_id,source]]),dockedFacts:new Map([[fact.object.id,{operation:fact,node:node.node_id,observed:true}]])};
  const settled=ui.stageNodeContents(node,state,trace,null,true),active=ui.stageNodeContents(node,state,{...trace,finished:false},null,false),slot=settled.slice(settled.indexOf('<div class="au-stage-slot"'));
- assert.equal((slot.match(/class="au-stage-thumbnail"/g)||[]).length,1);assert.equal((slot.match(/class="au-stage-source-name"/g)||[]).length,1);assert.match(slot,/data-au-document-checked="true"/);assert.match(slot,/data-au-check-operation="actual-check"/);assert.ok(slot.includes('data-au-citation="'+JSON.stringify(pin).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;')+'"'));assert.match(slot,/Source checked/);assert.doesNotMatch(slot,/au-stage-paper|<span>Separate notice<\/span>/);assert.match(settled,/data-au-stage-fact="fact:notice"/);
+ assert.equal((slot.match(/class="au-stage-thumbnail"/g)||[]).length,1);assert.equal((slot.match(/class="au-stage-source-name"/g)||[]).length,1);assert.match(slot,/data-au-document-checked="true"/);assert.match(slot,/data-au-check-operation="actual-check"/);assert.ok(slot.includes('data-au-citation="'+JSON.stringify(pin).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;')+'"'));assert.match(slot,/Supported by documents/);assert.doesNotMatch(slot,/au-stage-paper|<span>Separate notice<\/span>/);assert.match(settled,/data-au-stage-fact="fact:notice"/);
  assert.match(active,/<span>Separate notice<\/span>/);assert.match(active,/au-stage-paper/);assert.equal(ui.operationRecord(trace,'operation',check.id).source,pin);
 });
 
@@ -2484,7 +2488,7 @@ test('direct autonomous routes acquire a same-origin packet behind the immediate
   try {
    assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.doesNotMatch(f.host.innerHTML,/data-au-stage-fact=|data-au-revision=/);
    assert.equal(await controller.recordedPacketReady,true,'direct selection must acquire the bounded asset');
-   await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Recorded replay/);assert.ok(api.calls.every(row=>!row.init.method||row.init.method==='GET'));
+   await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.ok(api.calls.every(row=>!row.init.method||row.init.method==='GET'));
   } finally { controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle(); }
  }
 });
@@ -2564,7 +2568,7 @@ test('pause and hide after the8000ms outcome hold preserve the finished case and
 test('Cases cold click can finish packet acquisition inside its original300ms choice',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),head=deferredRead();let assetSignal;
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')||path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
- const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));});await settle();await new Promise(resolve=>setTimeout(resolve,5));const selecting=controller.showDemonstration();assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.equal(assetSignal.aborted,false);asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Recorded replay/);
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));});await settle();await new Promise(resolve=>setTimeout(resolve,5));const selecting=controller.showDemonstration();assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.equal(assetSignal.aborted,false);asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);
 });
 
 
@@ -2583,7 +2587,7 @@ test('late binding and result hashes cannot mutate a newly selected operation se
 test('next-case prefetch retains the live503 to recorded trace fallback and cancels its bounded owner on exit',async t=>{
  const f=operationOpeningDOM(),first=operationOpeningFixture(),next=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[1].claim_id);let recordedSignal,cancelled=0;
  const api=fakeApi({handle:async(path,init)=>{const native=path.includes(next.id)?next:first;if(path.endsWith('/replay?through_seq=0'))return response(native.zero);if(path.includes('/snapshot?'))return response(native.snapshot);if(path.includes(next.id)&&path.includes('/operations?mode=live'))return response({detail:'Live unavailable'},503);if(path.includes(next.id)&&path.includes('/operations?mode=recorded')){recordedSignal=init.signal;return {ok:true,status:200,body:new ReadableStream({start(controller){controller.enqueue(new TextEncoder().encode(JSON.stringify({...next.binding,mode:'recorded_operations'})+'\n'));},cancel(){cancelled++;}})};}if(path.includes('/operations?'))return pendingOperationResponse(first.binding);}});
- const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.showDemonstration();await waitFor(()=>Boolean(recordedSignal));assert.equal(api.calls.filter(row=>row.path.includes(next.id)&&row.path.includes('/operations?')).length,2);assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=/);await controller.showWork();await settle();assert.equal(recordedSignal.aborted,true);assert.equal(cancelled,1);
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.showDemonstration();await waitFor(()=>Boolean(recordedSignal));assert.equal(api.calls.filter(row=>row.path.includes(next.id)&&row.path.includes('/operations?')).length,2);assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(f.host.innerHTML,/The later accepted outcome|data-au-stage-fact=/);await controller.showWork();await settle();assert.equal(recordedSignal.aborted,true);assert.equal(cancelled,1);
 });
 
 
@@ -2594,8 +2598,8 @@ test('the300ms choice accepts verified Live before the cutoff and commits Record
   const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')?head.promise:path.endsWith('/replay?through_seq=4')?fallback.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
   const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});
   try {assert.equal(await controller.recordedPacketReady,true);const selecting=controller.showDemonstration();await settle();assert.equal(deadlines.length,1,'one300ms timer owns the entire choice');
-   if(liveFirst){opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.match(f.host.innerHTML,/Live rules-based check/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);}
-   else {await new Promise(resolve=>timeout(resolve,50));clearTimeout(deadlines[0].handle);deadlines[0].fn();await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');await waitFor(()=>api.calls.some(row=>row.path.includes(packet.native.id)&&row.path.endsWith('/replay?through_seq=4')));const before=f.host.innerHTML;opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before);assert.match(f.host.innerHTML,/Recorded replay/);}
+   if(liveFirst){opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='historical_recomputed');assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(f.host.innerHTML,/Recorded replay/);}
+   else {await new Promise(resolve=>timeout(resolve,50));clearTimeout(deadlines[0].handle);deadlines[0].fn();await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');await waitFor(()=>api.calls.some(row=>row.path.includes(packet.native.id)&&row.path.endsWith('/replay?through_seq=4')));const before=f.host.innerHTML;opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before);assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);}
   } finally {controller.destroy();opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));fallback.resolve(response(packet.native.replay));for(const timer of deadlines)clearTimeout(timer.handle);globalThis.setTimeout=timeout;await settle();}
  }
 });
@@ -2609,10 +2613,10 @@ test('after the300ms Live preference an uncommitted opening accepts a fully veri
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?asset.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')?snapshot.promise:path.endsWith('/replay?through_seq=4')?fallback.promise:path.includes('/operations?')?(path.includes(`/claims/${packet.native.id}/operations?`)&&(liveSignal=init.signal),pendingOperationResponse(packet.native.binding)):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});let selected=false;
  t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));fallback.resolve(response(packet.native.replay));});await settle();const selecting=controller.showDemonstration().then(()=>{selected=true;});await deadline.promise;
- elapsed=300;clearTimeout(grace.handle);grace.fn();await settle();assert.equal(selected,false);assert.match(f.host.innerHTML,/Opening investigation/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|Recorded replay|data-au-stage-fact=|data-au-revision=/);
+ elapsed=300;clearTimeout(grace.handle);grace.fn();await settle();assert.equal(selected,false);assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|Recorded replay|data-au-stage-fact=|data-au-revision=/);
  // Controlled readiness: the preference interval has elapsed; packet acquisition
  // completes at the600ms scenario point while the5s Live responses remain held.
- elapsed=600;asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');await selecting;assert.equal(liveSignal.aborted,true);assert.match(routing.hash,/operations=recorded/);assert.match(f.host.innerHTML,/Recorded replay/);
+ elapsed=600;asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');await selecting;assert.equal(liveSignal.aborted,true);assert.match(routing.hash,/operations=recorded/);assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);
  await waitFor(()=>api.calls.some(row=>row.path.includes(packet.native.id)&&row.path.endsWith('/replay?through_seq=4')));const before=f.host.innerHTML;elapsed=5000;opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before,'late Live cannot take over the committed packet session');
 });
 
@@ -2620,7 +2624,7 @@ test('after the300ms Live preference an uncommitted opening accepts a fully veri
 test('navigation settles the post300ms uncommitted choice even when both fetch candidates ignore abort',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),snapshot=deferredRead();let selected=false;
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?asset.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')?snapshot.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
- const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});await settle();const selecting=controller.showDemonstration().then(()=>{selected=true;});await new Promise(resolve=>setTimeout(resolve,350));assert.equal(selected,false);assert.match(f.host.innerHTML,/Opening investigation/);
+ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});await settle();const selecting=controller.showDemonstration().then(()=>{selected=true;});await new Promise(resolve=>setTimeout(resolve,350));assert.equal(selected,false);assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);
  await controller.showWork();const before=f.host.innerHTML;await waitFor(()=>selected);await selecting;asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await settle();await settle();assert.equal(f.host.innerHTML,before);assert.doesNotMatch(f.host.innerHTML,/Recorded replay|Live rules-based check/);
 });
 
@@ -2641,7 +2645,7 @@ test('explicit Recorded keeps a600ms packet eligible after300ms while starting o
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?asset.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')?snapshot.promise:path.endsWith('/replay?through_seq=4')?fallback.promise:path.includes('/operations?')?pendingOperationResponse({...packet.native.binding,mode:'recorded_operations'}):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();asset.resolve(new Response(packet.bytes));opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));fallback.resolve(response(packet.native.replay));});await settle();const selecting=controller.showDemonstration(true,'reference','recorded');await deadline.promise;
  assert.equal(api.calls.filter(row=>/\/(operations|replay|snapshot)\?/.test(row.path)).length,0,'an immediately ready packet needs no speculative native reads');elapsed=300;clearTimeout(grace.handle);grace.fn();await waitFor(()=>api.calls.some(row=>row.path.includes('/operations?mode=recorded')));assert.equal(api.calls.filter(row=>row.path.includes('/operations?mode=live')).length,0);assert.equal(api.calls.filter(row=>row.path.includes(packet.native.id)&&/\/(operations|replay|snapshot)\?/.test(row.path)).length,3);assert.doesNotMatch(f.host.innerHTML,/Live rules-based check|data-au-revision=/);
- elapsed=600;asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Recorded replay/);assert.ok(api.calls.filter(row=>row.path.includes(packet.native.id)&&row.path.includes('/operations?')).every(row=>row.init.signal.aborted),'packet commitment cancels the competing recorded endpoint owner');
+ elapsed=600;asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,/Replay · Fictional case · No real-world action/);assert.ok(api.calls.filter(row=>row.path.includes(packet.native.id)&&row.path.includes('/operations?')).every(row=>row.init.signal.aborted),'packet commitment cancels the competing recorded endpoint owner');
 });
 
 function learningFixtureData() {
@@ -2656,20 +2660,20 @@ function learningFixtureData() {
 test('learning timeline uses persisted event identities, UTC chronology and later reuse without mutating records',()=>{
  const data=learningFixtureData(),before=JSON.stringify(data),model=ui.knowledgeLearningModel(data);
  assert.equal(model,ui.knowledgeLearningModel(data),'the same response reuses its index');assert.deepEqual(model.events.map(e=>e.id),[hash('a'),hash('c'),hash('b')]);
- const html=ui.knowledgeMarkup(data,[],null,'process',{index:2,stage:10});assert.match(html,/13 Oct/);assert.match(html,/10 Oct/);assert.match(html,/<span>Versions · ↪ Reuses<\/span>/);assert.match(html,/Recorded · synthetic claims/);assert.match(html,/Persisted receiver title/);assert.match(html,/data-au-learning-position-label/);assert.ok(html.indexOf('data-au-learning-focus')<html.indexOf('class="au-learning-timeline"'),'focus precedes the timeline in reading and tab order');assert.doesNotMatch(html,/<p data-au-learning-position>/);
+ const html=ui.knowledgeMarkup(data,[],null,'process',{index:2,stage:10});assert.match(html,/13 Oct/);assert.match(html,/10 Oct/);assert.match(html,/<span>Versions · ↪ Reuses<\/span>/);assert.match(html,/Replay · Fictional cases/);assert.match(html,/Persisted receiver title/);assert.match(html,/data-au-learning-position-label/);assert.ok(html.indexOf('data-au-learning-focus')<html.indexOf('class="au-learning-timeline"'),'focus precedes the timeline in reading and tab order');assert.doesNotMatch(html,/<p data-au-learning-position>/);
  assert.equal(JSON.stringify(data),before);assert.equal(model.frames.reduce((n,f)=>n+f.duration,0),8000,'two complete publications and one grouped reuse keep their deliberate reading holds');
  const offset=learningFixtureData();offset.learning_replay.events[0].at='2026-10-08T23:30:00-02:00';offset.learning_replay.events[2].at='2026-10-09T00:57:33Z';assert.equal(ui.knowledgeLearningModel(offset).events[0].id,hash('a'),'sort instants, not lexical offsets');assert.match(ui.knowledgeMarkup(offset),/9 Oct/);
 });
 
 test('unavailable learning pins retain exact receipts and cannot borrow the latest process or fabricate timestamps',()=>{
  const data=learningFixtureData();data.learning_replay.events.find(e=>e.kind==='knowledge.used').pin_status='unavailable';const model=ui.knowledgeLearningModel(data),event=model.events.find(e=>e.kind==='knowledge.used');assert.equal(event.versionRecord,null);
- const html=ui.knowledgeLearningFocus(model,event);assert.match(html,/exact pinned definition is unavailable/);assert.match(html,/same verified family and rule version/i);assert.match(html,/Inspect receipt/);assert.doesNotMatch(html,/au-procedure-stage|data-au-knowledge-identity/);
+ const html=ui.knowledgeLearningFocus(model,event);assert.match(html,/exact saved version is unavailable/);assert.match(html,/same verified family and rule version/i);assert.match(html,/Inspect receipt/);assert.doesNotMatch(html,/au-procedure-stage|data-au-knowledge-identity/);
  const legacy={versions:data.versions,uses:data.uses,quarantined:[]};assert.ok(ui.knowledgeLearningModel(legacy).events.every(row=>row.at===null&&!row.recorded));assert.match(ui.knowledgeMarkup(legacy),/Timestamp unavailable · unordered/);assert.doesNotMatch(ui.knowledgeMarkup(legacy),/2026|Oct/);
 });
 
 test('known recipe slots are marked from an exact pinned count without claiming checked receiving-case evidence',()=>{
  const data=learningFixtureData(),model=ui.knowledgeLearningModel(data),event=model.events.find(e=>e.kind==='knowledge.used'),html=ui.knowledgeLearningFocus(model,event);
- assert.match(html,/data-au-recipe-reused="true"/);assert.match(html,/source support still required in this case/);assert.match(html,/1 rule compilation avoided/);assert.match(html,/Recorded reuse/);assert.doesNotMatch(html,/data-au-document-checked="true"|data-au-document-supported="true"|Source checked/);
+ assert.match(html,/data-au-recipe-reused="true"/);assert.match(html,/This case still needs its own proof/);assert.match(html,/1 rebuild avoided/);assert.match(html,/Recorded reuse/);assert.doesNotMatch(html,/data-au-document-checked="true"|data-au-document-supported="true"|Source checked/);
  const mismatch=structuredClone(data);mismatch.learning_replay.events.find(e=>e.kind==='knowledge.used').reused_evidence_recipes=99;const other=ui.knowledgeLearningModel(mismatch);assert.doesNotMatch(ui.knowledgeLearningFocus(other,other.events.find(e=>e.kind==='knowledge.used')),/data-au-recipe-reused="true"/);
 });
 
@@ -2677,7 +2681,7 @@ test('grouped uses retain every actual receipt and requalification keeps faithfu
  const data=learningFixtureData(),second={...data.learning_replay.events.find(e=>e.kind==='knowledge.used'),event_id:hash('d'),claim_id:'another',claim_title:'Another persisted title',at:'2026-10-13T06:00:00Z'};data.learning_replay.events.push(second);const model=ui.knowledgeLearningModel(data),event=model.events.find(e=>e.kind==='knowledge.used');assert.equal(event.reuseGroup.length,2);assert.match(ui.knowledgeLearningFocus(model,event),/2 recorded reuse receipts/);assert.equal(model.frames.filter(f=>f.index===event.reuseGroup[1]).length,0,'the presentation groups receipts without making another journal event');
  const more=learningFixtureData(),reason='Requalified the procedure against the current admitted rule version.';more.versions[1].change_reason=reason;more.versions[1].graph={nodes:[{node_id:'short',label:'Inspect recorded packet'}],edges:[]};more.learning_replay.events[0].at='2026-10-12T21:18:41Z';
  const rent={...more.versions[1],knowledge_id:'procedure.rent_increase_dispute',family:'rent_increase_dispute',knowledge_sha256:hash('6'),source_claim_id:'rent-source'};more.versions.push(rent);more.learning_replay.events.push({...more.learning_replay.events[0],event_id:hash('e'),knowledge_id:rent.knowledge_id,knowledge_sha256:rent.knowledge_sha256,family:rent.family,at:'2026-10-12T21:18:45Z'});
- const grouped=ui.knowledgeLearningModel(more),pub=grouped.events.find(e=>e.versionRecord===more.versions[1]),html=ui.knowledgeLearningFocus(grouped,pub);assert.match(html,/Recorded rule requalification · 2 families/);assert.match(html,/2 → 1 process steps/);assert.match(html,/v2 · 2 → 1 steps<\/button>/);assert.match(html,/Before · Version 1/);assert.match(html,/After · Version 2/);assert.doesNotMatch(html,/growth|lost|batch_id|new computation/i);
+ const grouped=ui.knowledgeLearningModel(more),pub=grouped.events.find(e=>e.versionRecord===more.versions[1]),html=ui.knowledgeLearningFocus(grouped,pub);assert.match(html,/Rechecked rules · 2 families/);assert.match(html,/2 → 1 process steps/);assert.match(html,/v2 · 2 → 1 steps<\/button>/);assert.match(html,/Before · Version 1/);assert.match(html,/After · Version 2/);assert.doesNotMatch(html,/growth|lost|batch_id|new computation/i);
 });
 
 test('recorded learning refusals keep all exact reasons, source links and escaped candidate text',()=>{
@@ -2691,12 +2695,12 @@ test('cold demo knowledge moment needs the accepted knowledge.used prefix and ex
  const base=state({run_id:'workflow',knowledge_uses:[use],semantic_contexts:{workflow:{claim_id:'claim-a',compatible_knowledge:[{...data.uses[0],knowledge_sha256:version.knowledge_sha256,evidence_recipes:version.evidence_recipes}]}}});
  const op={id:'actual-reuse',kind:'knowledge.reuse',object:{id:use.knowledge_id,type:'knowledge'},input:{version:1,knowledge_sha256:version.knowledge_sha256,definition_sha256:use.definition_sha256},result:{},cause_ids:[]};
  const event={kind:'knowledge.used',claim_id:base.claim_id,seq:3,event_sha256:hash('f'),payload:{knowledge:use}},trace={current:op,journal:[event],rows:[op],sources:new Map(),plannedProcess:{claim_id:base.claim_id,procedure:{...use,knowledge_sha256:version.knowledge_sha256},graph:version.graph}};
- const before=JSON.stringify({base,trace});assert.ok(ui.recordedReuseMoment(base,trace,{}),'cold replay can use its already verified recorded plan and context recipes');const html=ui.recordedReuseMomentMarkup(ui.recordedReuseMoment(base,trace,{}));assert.doesNotMatch(html,/<ol|<li|Pinned procedure skeleton/);assert.match(html,/known evidence recipes/);assert.match(html,/data-au-knowledge-sha="1{64}"/);assert.match(html,/Reuse receipt/);assert.doesNotMatch(html,/Source checked|data-au-document-checked|Established/);const moment=ui.recordedReuseMoment(base,trace,{}),slot=ui.stageNodeContents({node_id:'branch',document_types:['notice']},base,{rows:[],sources:new Map()},null,false,trace.plannedProcess.graph,moment);assert.match(slot,/data-au-recipe-known="true"/);assert.match(slot,/data-au-document-checked="false"/);assert.doesNotMatch(slot,/data-au-document-supported="true"/);
+ const before=JSON.stringify({base,trace});assert.ok(ui.recordedReuseMoment(base,trace,{}),'cold replay can use its already verified recorded plan and context recipes');const html=ui.recordedReuseMomentMarkup(ui.recordedReuseMoment(base,trace,{}));assert.doesNotMatch(html,/<ol|<li|Pinned procedure skeleton/);assert.match(html,/known document checks/);assert.match(html,/data-au-knowledge-sha="1{64}"/);assert.match(html,/Reuse receipt/);assert.doesNotMatch(html,/Source checked|data-au-document-checked|Established/);const moment=ui.recordedReuseMoment(base,trace,{}),slot=ui.stageNodeContents({node_id:'branch',document_types:['notice']},base,{rows:[],sources:new Map()},null,false,trace.plannedProcess.graph,moment);assert.match(slot,/data-au-recipe-known="true"/);assert.match(slot,/data-au-document-checked="false"/);assert.doesNotMatch(slot,/data-au-document-supported="true"/);
  assert.equal(ui.recordedReuseMoment(base,{...trace,journal:[]},data),null,'observed knowledge.reuse cannot anticipate a future accepted event');assert.equal(ui.recordedReuseMoment(base,{...trace,finished:true},data),null);assert.equal(ui.recordedReuseMoment(base,{...trace,current:{...op,input:{...op.input,knowledge_sha256:hash('9')}}},data),null);const rendered=ui.operationStageMarkup(base,{},null,trace,false,{});assert.match(rendered,/au-stage-process[\s\S]*data-au-knowledge-moment="f{64}"/);assert.equal((rendered.match(/data-au-node=/g)||[]).length,base.graph.nodes.length,'reuse unfolds the existing process without a second skeleton');assert.doesNotMatch(rendered,/Pinned procedure skeleton|Recorded knowledge\.used receipt/);assert.equal(JSON.stringify({base,trace}),before);
 });
 
 test('an unavailable exact learning pin cannot be overridden by replay position or a delayed warm-cache refresh',async t=>{
- const data=learningFixtureData(),invalid={knowledge_id:data.versions[0].knowledge_id,version:1,knowledge_sha256:hash('9')},html=ui.knowledgeMarkup(data,[],invalid,'process',{index:1,stage:10});assert.doesNotMatch(html,/data-au-knowledge-identity|au-procedure-stage/);assert.match(html,/This exact procedure pin is unavailable/);
+ const data=learningFixtureData(),invalid={knowledge_id:data.versions[0].knowledge_id,version:1,knowledge_sha256:hash('9')},html=ui.knowledgeMarkup(data,[],invalid,'process',{index:1,stage:10});assert.doesNotMatch(html,/data-au-knowledge-identity|au-procedure-stage/);assert.match(html,/This exact saved version is unavailable/);
  const routing=routingFixture(t),f=knowledgeFixture(),shell={dataset:{}},originalQuery=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:originalQuery(selector);
  let count=0,finish;const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?++count===1?response(data):new Promise(resolve=>{finish=resolve;}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finish?.(response(data));controller.destroy();});await waitFor(()=>count===1);await settle();
  routing.external(`#autonomous/knowledge?knowledge=${invalid.knowledge_id}&version=1&sha256=${invalid.knowledge_sha256}`);await waitFor(()=>Boolean(finish));assert.equal(f.versions.length,0);finish(response(structuredClone(data)));await settle();await settle();assert.equal(f.versions.length,0);assert.doesNotMatch(f.host.innerHTML,/data-au-knowledge-identity|au-procedure-stage/);assert.match(f.status.textContent,/exact reused knowledge version is not available/);assert.equal(shell.dataset.auLearningPosition,'-1');
@@ -2720,8 +2724,8 @@ test('playing an individual grouped receipt preserves that actual event instead 
 
 test('learning summaries use ordinary recorded document labels while Changes retains the exact stored reason',()=>{
  const data=learningFixtureData(),first=data.versions[0],next=data.versions[1];first.change_reason='Initial qualification with 0 observed evidence recipes.';const before=JSON.stringify(data);
- assert.equal(ui.learningChangeSummary(first),'First published procedure.');assert.equal(ui.learningChangeSummary(next),'Proof of receipt evidence recipe added.');assert.ok(ui.knowledgeFacetMarkup(next,'changes',data.versions).includes(next.change_reason));
- const model=ui.knowledgeLearningModel(data),event=model.events.find(row=>row.versionRecord===next),html=ui.knowledgeLearningFocus(model,event),source=html.match(/<section class="au-learning-source"[\s\S]*?<\/section>/)[0];assert.match(source,/Proof of receipt evidence recipe added/);assert.doesNotMatch(source,/Added 1 verified evidence recipes/);assert.equal(JSON.stringify(data),before);
+ assert.equal(ui.learningChangeSummary(first),'First saved version.');assert.equal(ui.learningChangeSummary(next),'Proof of receipt document check added.');assert.ok(ui.knowledgeFacetMarkup(next,'changes',data.versions).includes(next.change_reason));
+ const model=ui.knowledgeLearningModel(data),event=model.events.find(row=>row.versionRecord===next),html=ui.knowledgeLearningFocus(model,event),source=html.match(/<section class="au-learning-source"[\s\S]*?<\/section>/)[0];assert.match(source,/Proof of receipt document check added/);assert.doesNotMatch(source,/Added 1 verified evidence recipes/);assert.equal(JSON.stringify(data),before);
 });
 
 
@@ -2746,7 +2750,7 @@ test('a deferred successful Knowledge refresh keeps a valid return from an unava
  const data=learningFixtureData();let reads=0,finish;const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?++reads===1?response(data):new Promise(resolve=>{finish=resolve;}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finish?.(response(data));controller.destroy();});await waitFor(()=>reads===1);await settle();
  const refreshing=controller.showKnowledge(false,{knowledge_id:data.versions[0].knowledge_id,version:999,knowledge_sha256:hash('0')});await waitFor(()=>Boolean(finish));assert.equal(shell.dataset.auLearningPosition,'-1');
  f.listeners.get('click')({target:control(f,'data-au-learning-end')});const selectedRoute=routing.hash;assert.equal(shell.dataset.auLearningEventId,hash('b'));assert.match(selectedRoute,/complete=1/);
- finish(response(structuredClone(data)));await refreshing;assert.equal(shell.dataset.auLearningEventId,hash('b'),'the successful read keeps the actual newly selected receipt');assert.equal(shell.dataset.auLearningPosition,'2');assert.equal(pane.dataset.auLearningStage,'10');assert.equal(routing.hash,selectedRoute);assert.equal(f.status.textContent,'');assert.doesNotMatch(f.host.innerHTML,/This exact procedure pin is unavailable/);
+ finish(response(structuredClone(data)));await refreshing;assert.equal(shell.dataset.auLearningEventId,hash('b'),'the successful read keeps the actual newly selected receipt');assert.equal(shell.dataset.auLearningPosition,'2');assert.equal(pane.dataset.auLearningStage,'10');assert.equal(routing.hash,selectedRoute);assert.equal(f.status.textContent,'');assert.doesNotMatch(f.host.innerHTML,/This exact saved version is unavailable/);
  f.listeners.get('click')({target:control(f,'data-au-learning-play')});assert.equal(shell.dataset.auLearningPosition,'0','the retained final-view intent restarts the recorded replay');
 });
 
@@ -2783,19 +2787,21 @@ function surfaceCopyProblems(html,originalQuotes=[]) {
   const node={tag:start[1].toLowerCase(),attrs,children:[]};stack.at(-1).children.push(node);if(!voids.has(node.tag)&&!token.endsWith('/>'))stack.push(node);
  }
  const raw=node=>typeof node==='string'?node:node.children.map(raw).join(''),problems=[];
+ const originalQuotation=node=>typeof node!=='string'&&(['q','blockquote'].includes(node.tag)||node.tag==='pre'&&/\bau-(?:operation-passage|source-body|original-message)\b/.test(node.attrs.class||''))&&raw(node)&&originalQuotes.some(original=>original.includes(raw(node)));
+ const copyText=node=>typeof node==='string'?node:['details','script','style'].includes(node.tag)||'hidden'in node.attrs||originalQuotation(node)?'':node.children.map(copyText).join('');
  const inspect=(text,where)=>{
   text=text.replace(/\s+/g,' ').trim();if(!text)return;
   if(simpleCopyBan.test(text))problems.push({where,reason:'word',text});
+  if(/\b[a-f\d]{12,64}\b/i.test(text))problems.push({where,reason:'identifier',text});
   for(const sentence of new Intl.Segmenter('en',{granularity:'sentence'}).segment(text))if((sentence.segment.match(/[\p{L}\p{N}]+(?:[’'-][\p{L}\p{N}]+)*/gu)||[]).length>20)problems.push({where,reason:'sentence',text:sentence.segment.trim()});
  };
  const runTags=new Set(['p','h1','h2','h3','h4','h5','h6','button','a','summary','label','pre','figcaption','dt','dd','th','td']);
  function visit(node,insideRun=false) {
   if(typeof node==='string'){if(!insideRun)inspect(node,'text');return;}
   if(['details','script','style'].includes(node.tag)||'hidden'in node.attrs)return;
-  const quote=['q','blockquote'].includes(node.tag)||node.tag==='pre'&&/\bau-(?:operation-passage|source-body)\b/.test(node.attrs.class||'');
-  if(quote&&raw(node)&&originalQuotes.some(original=>original.includes(raw(node))))return;
+  if(originalQuotation(node))return;
   for(const key of ['aria-label','title','alt','placeholder'])if(key in node.attrs)inspect(node.attrs[key],key);
-  const isRun=runTags.has(node.tag);if(isRun&&!insideRun)inspect(raw(node),node.tag);
+  const isRun=runTags.has(node.tag);if(isRun&&!insideRun)inspect(copyText(node),node.tag);
   for(const child of node.children)visit(child,insideRun||isRun);
  }
  visit(root);return problems;
@@ -2811,9 +2817,12 @@ function operationSurface(saved,operation,extra={}) {
 test('plain language audit checks names and whole words with exact Details and quotation exemptions',()=>{
  const literal='The synthetic verifier preserves the pinned hash and provisional recipe.';
  assert.deepEqual(surfaceCopyProblems(`<p>Steps and documents.</p><details><summary>Details</summary><p>${literal}</p><details>canonical projection</details></details><q>${literal}</q>`,[literal]),[]);
+ assert.deepEqual(surfaceCopyProblems(`<button>Read this passage <q>${literal}</q></button><pre class="au-original-message">${literal}</pre>`,[literal]),[],'literal original descendants do not contaminate authored surrounding labels');
+ assert.ok(surfaceCopyProblems(`<button>synthetic action <q>${literal}</q></button>`,[literal]).some(row=>row.reason==='word'),'source exemption never exempts authored text around the quotation');
  assert.equal(surfaceCopyProblems('<p>Hashing is useful. The branches are visible.</p>').length,0,'whole words do not ban longer unrelated forms');
  assert.ok(surfaceCopyProblems('<button aria-label="Open synthetic branch">Open case</button>').some(row=>row.where==='aria-label'));
  assert.ok(surfaceCopyProblems('<button title="Inspect canonical hash">Details</button>').some(row=>row.where==='title'));
+ assert.ok(surfaceCopyProblems('<p>Receipt abcdef123456</p>').some(row=>row.reason==='identifier'));
  assert.ok(surfaceCopyProblems(`<q>${literal} Changed.</q>`,[literal]).some(row=>row.reason==='word'),'unrecorded quotation text is not exempt');
  const long='One two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone.';
  assert.ok(surfaceCopyProblems(`<p>${long}</p>`).some(row=>row.reason==='sentence'));
@@ -2832,7 +2841,7 @@ test('AI model labels in the Reader and Checker surface require the exact record
  const saved=JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/autonomous-saved-history-v1.json'),'utf8')).state,before=JSON.stringify(saved);
  for(const verification_required of [true,false]){
   const operation={id:`provider-${verification_required}`,kind:'fact.extract',stage:verification_required?'interpretation':'verification',object:{type:'fact',id:saved.facts[0].fact_id},input:{},result:{verification_required},cause_ids:[]},positive=nowSurface(operationSurface(saved,operation)).html;
-  assert.match(positive,/AI\b/);assert.match(positive,/openai\/gpt-6-luna/);
+  assert.match(positive,/using openai\/gpt-6-luna/);
   for(const change of [copy=>{copy.receipts=[];},copy=>{for(const row of copy.receipts)if(row.receipt)row.receipt.workflow_id='another-workflow';},copy=>{for(const row of copy.receipts){const receipt=row.receipt?.[verification_required?'proposal_receipt':'verifier_receipt'];if(receipt)delete receipt.metadata.response_sha256;}}]){
    const copy=structuredClone(saved);change(copy);const negative=nowSurface(operationSurface(copy,operation)).html;assert.doesNotMatch(negative,/AI\b|openai\/gpt-6-luna/,'missing, foreign or incomplete provider proof cannot label a role AI');
   }
@@ -2859,6 +2868,41 @@ test('case tabs and recorded Knowledge copy stay short and plain including acces
 for(const input of ['keyboard','focus'])test(`trusted ${input} inspection pauses a pending recorded opening without stealing focus`,async t=>{
  const f=operationOpeningDOM(),callbacks=new Map(),packet=recordedPacketFixture(),opening=deferredRead(),snapshot=deferredRead();f.container.ownerDocument.addEventListener=(type,listener)=>callbacks.set(type,listener);f.container.ownerDocument.removeEventListener=type=>callbacks.delete(type);
  const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null}),controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});assert.equal(await controller.recordedPacketReady,true);const selecting=controller.showDemonstration();
- const target=control(f,'data-au-source','original');target.focus();if(input==='keyboard')callbacks.get('keydown')({key:'Tab',isTrusted:true,target});else f.listeners.get('focusin')({isTrusted:true,target});
+ const target=control(f,'data-au-source','original');target.closest=selector=>selector.includes('[data-au-source]')?target:null;target.focus();if(input==='keyboard')callbacks.get('keydown')({key:'Tab',isTrusted:true,target});else f.listeners.get('focusin')({isTrusted:true,target});
  assert.ok(f.host.querySelector('[data-au-demo-resume]'),'inspection pauses before any asynchronous opening may paint');assert.equal(f.container.ownerDocument.activeElement,target);opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await selecting;await settle();assert.ok(f.host.querySelector('[data-au-demo-resume]'),'late opening retains paused inspection even when an unrelated outline must retire');assert.doesNotMatch(f.host.innerHTML,/data-au-revision=/,'the late accepted opening remains held');assert.equal(f.container.ownerDocument.activeElement,target);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('one recorded Now announcement includes role method action document and result once per actual saved event',async t=>{
+ const f=dom(),writes=[],announcement={};Object.defineProperty(announcement,'textContent',{get:()=>writes.at(-1)||'',set:value=>writes.push(value)});
+ const query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-announcement]'?announcement:query(selector);
+ const hostQuery=f.host.querySelector;f.host.querySelector=selector=>{
+  if(selector!=='[data-au-now-id]')return hostQuery(selector);
+  const markup=nowSurface(f.host.innerHTML),text=selector=>{const match=markup.html.match(selector==='[data-au-role]'?/data-au-role="[^"]+"[^>]*>[\s\S]*?<\/span>([^<]*)<\/span>/:new RegExp(`<span[^>]*${selector.slice(1,-1)}(?:="[^"]*")?[^>]*>([\\s\\S]*?)<\\/span>`));return match?{textContent:decodedSurface(match[1].replace(/<[^>]*>/g,'')).trim()}:null;};
+  return {dataset:{auNowId:markup.id},querySelector:text,querySelectorAll:()=>['[data-au-role]','[data-au-now-copy]','[data-au-now-result]'].map(text).filter(Boolean)};
+ };
+ let saved=state();const journal=()=>Array.from({length:saved.revision},(_,index)=>({seq:index+1,revision:index+1,kind:index?'work.phase':'intake',state_sha256:index+1===saved.revision?saved.state_sha256:hash('e'),event_sha256:sha(`audible-event-${index+1}`),payload:{phase:index===3?'verifying':'interpreting'}}));
+ const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response({current_revision:saved.revision,events:journal().filter(event=>event.seq>Number(path.split('after=')[1]))}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ const first=nowSurface(f.host.innerHTML),copy=decodedSurface(first.html.match(/data-au-now-copy[^>]*>([^<]*)/)[1]),result=decodedSurface(first.html.match(/data-au-now-result[^>]*>([^<]*)/)[1]);
+ assert.match(announcement.textContent,/Reader/);for(const part of [...copy.split(' · '),result])assert.ok(announcement.textContent.includes(part),`audible Now retains ${part}`);const count=writes.length;
+ await controller.refresh();assert.equal(writes.length,count,'the same saved event never repeats on an ordinary refresh');
+ f.listeners.get('click')({target:control(f,'data-au-detail','activity')});f.listeners.get('click')({target:control(f,'data-au-detail','step')});assert.equal(writes.length,count,'view inspection cannot repeat a recorded announcement');
+ saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();assert.equal(writes.length,count+1);assert.match(announcement.textContent,/Checker/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('completed grouped Knowledge replay presents the finished transport without changing its representative recorded event',async t=>{
+ const data=learningFixtureData(),reuse=data.learning_replay.events.find(event=>event.kind==='knowledge.used');data.learning_replay.events.push({...reuse,event_id:hash('d'),claim_id:'second-receiver',at:'2026-10-13T06:00:00Z'});
+ const before=JSON.stringify(data),model=ui.knowledgeLearningModel(data),representative=model.events.findIndex(event=>event.kind==='knowledge.used'),event=model.events[representative];
+ const pin=event.versionRecord,fragment=`#autonomous/knowledge?knowledge=${pin.knowledge_id}&version=${pin.version}&sha256=${pin.knowledge_sha256}&definition=${pin.qualification.definition_sha256}&event=${event.id}&stage=10&complete=1`,route=routingFixture(t,fragment),f=knowledgeFixture(),shell={dataset:{}},range={value:'',attributes:{},setAttribute(key,value){this.attributes[key]=value;}},position={textContent:''},query=f.host.querySelector;f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:selector==='[data-au-learning-scrub]'?range:selector==='[data-au-learning-position-label]'?position:query(selector);
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await waitFor(()=>shell.dataset.auLearningComplete==='true');
+ assert.equal(event.reuseGroup.length,2);assert.ok(representative<model.events.length-1,'the real group representative precedes its last receipt');assert.match(position.textContent,/Replay finished/);assert.equal(shell.dataset.auLearningComplete,'true');
+ assert.equal(range.value,String(model.events.length-1),'the completed transport reaches its end');assert.match(range.attributes['aria-valuetext'],/Replay finished/);assert.equal(shell.dataset.auLearningEventId,event.id);assert.equal(shell.dataset.auLearningPosition,String(representative));assert.ok(route.hash.includes(`event=${event.id}`));assert.ok(route.hash.includes('complete=1'));assert.equal(JSON.stringify(data),before);
+});
+
+test('settled and exact Knowledge pins retain one recorded Memory Now with fixed rules and no visible shortened identifiers',()=>{
+ const data=learningFixtureData(),before=JSON.stringify(data),model=ui.knowledgeLearningModel(data);
+ for(const [index,event]of model.events.entries()){
+  const version=event.versionRecord||event.item,pin={knowledge_id:version.knowledge_id,version:version.version,knowledge_sha256:version.knowledge_sha256,definition_sha256:version.qualification?.definition_sha256};
+  for(const selectedPin of [null,pin]){const html=ui.knowledgeMarkup(data,[],selectedPin,'process',{index,stage:10,complete:true}),now=nowSurface(html);assert.equal(now.id,event.id);assert.equal((html.match(/\bdata-au-now-id=/g)||[]).length,1);assert.match(now.html,/data-au-role="memory"/);assert.match(now.html,/fixed rules/i);assert.match(now.html,/data-au-now-result/);assert.deepEqual(surfaceCopyProblems(html),[]);assert.ok(html.includes(`data-au-learning-event-id="${event.id}"`),'the exact event identifier remains a navigation binding');}
+ }
+ assert.equal(JSON.stringify(data),before);
 });
