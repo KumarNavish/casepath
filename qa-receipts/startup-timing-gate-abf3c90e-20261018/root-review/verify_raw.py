@@ -69,6 +69,11 @@ assert __import__('hashlib').sha256(b861_raw).hexdigest()=='9805b5fe6fc46cc5fa11
 resources=[json.loads(x) for x in (R/'resource-observations.jsonl').read_text().splitlines()]
 assert min(x['free_bytes'] for x in resources)>=3*2**30
 assert max(len(x.get('active',{})) for x in resources)<=3
+global_resources=[json.loads(x) for x in (R/'global-resource-observations.jsonl').read_text().splitlines()]
+assert global_resources and min(x['free_bytes'] for x in global_resources)>=3*2**30
+assert max(x['gate_heavy'] for x in global_resources)<=3
+assert all(x['gate_heavy']<=x['gate_heavy_limit']<=3 for x in global_resources)
+assert not (R/'STOP_ADMISSION_RESOURCE_VIOLATION.json').exists()
 mac_owner=read(R/'mac-owner-attestation.json')
 assert mac_owner['candidate']==SHA and mac_owner['manifest_sha256']==MAN
 assert mac_owner['source_file_count']==1714 and mac_owner['passed']==127 and mac_owner['failed']==mac_owner['skipped']==0
@@ -76,4 +81,7 @@ assert mac_owner['ids_sha256']==hashfile(R/'mac-ids.txt') and mac_owner['source_
 assert mac_owner['raw_receipts_inspected_in_cloud'] is False
 bindings['mac-owner-attestation.json']=hashfile(R/'mac-owner-attestation.json')
 out={'baseline_c925_ids':2764,'all_c925_ids_included_unchanged':True,'baseline_b861_ids':2613,'all_b861_ids_included_unchanged':True,'raw_removed_ids':[],'explicit_renamed_ids':[],'new_ids':sorted(added),'all_new_ids_passed':True,'sampled_min_free_bytes':min(x['free_bytes'] for x in resources),'candidate':SHA,'manifest_sha256':MAN,'independent_root_raw_reconciliation':True,'full_inventory':len(full),'cloud_selected':len(allcloud),'cloud_passed':totalpassed,'cloud_skipped':len(allskips),'cloud_failed':0,'cloud_raw_phase_rows':totalphases,'Mac':'Actual native127-pass execution reported by Mac owner; exact partition IDs verified here, raw Mac phase/JUnit remain local and are not claimed inspected in Cloud.','combined_passed_with_mac_actual_owner_attestation':totalpassed+127,'combined_known_skips':len(allskips),'no_gaps_duplicates_overlap':True,'all_six_first_only_attempts':True,'all_six_source_capsules_unchanged':True,'all_junit_ids_match_raw_phases_and_collected':True,'shards':summaries,'known_skips':allskips,'environment_isolation':environments,'bindings':bindings,'resource_qualification':'Resource samples independently checked >=3GiB; /tmp remains separate, all child temps isolated under /workspace.','verified_epoch':time.time()}
+out['global_resource_samples']=len(global_resources)
+out['global_sampled_min_free_bytes']=min(x['free_bytes'] for x in global_resources)
+out['max_global_heavy_observed']=max(x['gate_heavy'] for x in global_resources)
 p=R/'root-review/raw-reconciliation.json';p.write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({k:v for k,v in out.items() if k not in ['known_skips','bindings','environment_isolation','new_ids']},indent=2))

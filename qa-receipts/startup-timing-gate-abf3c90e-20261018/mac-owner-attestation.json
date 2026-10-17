@@ -1,8 +1,23 @@
 {
   "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "manifest_sha256": "46a2fc752a399545ea4c67049e0ef82f45a42eab4d0131d4adbad1d9596801aa",
   "ids": 127,
   "owner": "Mac coordination owner",
-  "status": "pending actual Mac execution",
+  "status": "actual native Mac owner result received through root",
+  "passed": 127,
+  "failed": 0,
+  "skipped": 0,
+  "attempts": 1,
+  "wrapper_duration_seconds": 212.249,
+  "pytest_duration_seconds": null,
+  "priority_nice": 15,
+  "source_file_count": 1714,
+  "source_clean_before_after_as_reported": true,
+  "source_unchanged_before_after_as_reported": true,
   "raw_receipts_inspected_in_cloud": false,
-  "mac_fallback_forbidden": true
+  "raw_phase_JUnit_location": "Mac-local; not copied to or inspected in Cloud",
+  "mac_fallback_forbidden": true,
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "attestation_received_epoch": 1792280839.9582121,
+  "qualification": "Actual abf127 outcome reported by Mac owner; Cloud independently checks partition/source bytes and does not claim raw Mac receipt inspection."
 }

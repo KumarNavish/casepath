@@ -1,0 +1,40 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "manifest_sha256": "46a2fc752a399545ea4c67049e0ef82f45a42eab4d0131d4adbad1d9596801aa",
+  "independent_root_inventory_check": true,
+  "full": 2777,
+  "cloud": 2650,
+  "Mac": 127,
+  "shard_counts": {
+    "1": 9,
+    "2": 598,
+    "3": 403,
+    "4": 473,
+    "5": 509,
+    "6": 658
+  },
+  "all_c925_2764_ids_unchanged": true,
+  "all_b861_2613_ids_unchanged": true,
+  "unchanged_exact_Mac127_ids": true,
+  "new_ids": [
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[-1.0-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[1e+20-999999999.999]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[inf-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[nan-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_is_request_local_and_copies_shared_start_headers",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims-True]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims/example-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge-True]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge/-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/healthz-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[HEAD-/api/claim-loops/v1/autonomous/knowledge-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[POST-/api/claim-loops/v1/autonomous/claims-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_wraps_denial_without_opening_stores"
+  ],
+  "removed_ids": [],
+  "renamed_ids": [],
+  "known10_skip_definitions_unchanged": true,
+  "whole_file_disjoint_partition": true,
+  "Mac_execution_pending_at_this_inventory_check": true,
+  "verified_epoch": 1792280796.0237322
+}

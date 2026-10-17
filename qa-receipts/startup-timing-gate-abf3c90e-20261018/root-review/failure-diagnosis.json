@@ -1,0 +1,27 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "classification": "Existing lexical test assertion incompatible with separately constructed but otherwise unchanged upstream Request; no semantic defect established by this failure.",
+  "failure_id": "casepath/tools/test_casepath_release.py::test_sites_delivery_is_same_origin_and_streaming_proxy_safe",
+  "phase": "call",
+  "assertion_file": "casepath/tools/test_casepath_release.py",
+  "assertion_line": 372,
+  "assertion": "assert \"await fetch(new Request\" in worker",
+  "worker_sha256": "915263dd14d7569f41e6c5bae28c6c392b957a7ac574786b064b70e2eb033b0e",
+  "assertion_file_sha256": "e76dfede57a8f0ec6557fc8dcb5c71a4d7a352db45cc4569e917edd8618e25fb",
+  "evidence": {
+    "new_request": "const upstreamRequest = new Request(new URL(...), same method/headers/duplex/redirect/abort signal);",
+    "fetch": "const response = await fetch(upstreamRequest);",
+    "unchanged_guards": [
+      "GET/HEAD restriction",
+      "14-second AbortSignal timeout",
+      "auth/origin headers",
+      "unread response.body pass-through",
+      "status/header preservation"
+    ]
+  },
+  "recommendation": "Correct this static QA expectation to require separately constructed Request and fetch of that same variable, keeping all existing guard/stream assertions; then focused check and new sealed full gate. No change or retry authorized/performed here.",
+  "actual_attempts_preserved": true,
+  "queued_shards_held": true,
+  "product_or_test_edits": false,
+  "diagnosed_epoch": 1792281124.763703
+}
