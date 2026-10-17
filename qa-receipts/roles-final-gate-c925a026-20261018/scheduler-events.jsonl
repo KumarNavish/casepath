@@ -23,3 +23,7 @@
 {"epoch": 1792278267.3370724, "type": "shard_finished", "shard": "3", "active": {}, "free_bytes": 3960909824}
 {"epoch": 1792278311.2856002, "type": "heavy_slot_reserved", "shard": "6", "active": {"6": "reserved"}}
 {"epoch": 1792278311.2857358, "type": "prepare_start", "shard": "6", "free_bytes": 3963183104}
+{"epoch": 1792278320.7361257, "type": "pytest_start", "shard": "6", "pid": 1228083, "command": ["/workspace/casepath-operations-review-20261013/.runtime/casepath-dev-v2/venv/bin/python", "-P", "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/run_shard.py", "run", "6"], "free_bytes": 3671969792}
+{"epoch": 1792278401.2384698, "type": "pytest_terminal", "shard": "4", "exit_code": 0}
+{"epoch": 1792278401.8809254, "type": "completed_runtime_retired", "shard": "4", "free_bytes": 3939643392}
+{"epoch": 1792278401.881127, "type": "shard_finished", "shard": "4", "active": {}, "free_bytes": 3939635200}
