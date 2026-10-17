@@ -202,3 +202,21 @@ test('all fixed display strings avoid restricted terms and stay within twenty wo
     for(const version of state.knowledge_published){const value=language.knowledgePresentation(version);for(const key of ['label','roleLabel','how','versionLabel'])shortCopy(value[key]);}
   }
 });
+
+test('every actual operation in the committed replay has short display copy and preserves its record',()=>{
+  const entry=packet.claims[0].operations,bytes=Buffer.from(expand(entry.root));
+  assert.equal(bytes.length,entry.bytes);
+  assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),entry.sha256);
+  const operations=bytes.toString('utf8').trim().split('\n').map(JSON.parse).filter(row=>row.type==='operation');
+  assert.ok(operations.length>100,'the test must exercise the recorded operation stream');
+  const state=recorded[0],before=crypto.createHash('sha256').update(JSON.stringify(operations)).digest('hex');
+  for(const operation of operations){
+    const view=language.operationPresentation(operation,{state});
+    for(const key of ['roleLabel','label','action','now','how','document'])shortCopy(view[key]);
+    assert.equal(view.details,operation);
+    assert.equal(view.recordedResult,operation.result?.summary || operation.result?.reason || '');
+    if(view.roleId==='reader'||view.roleId==='checker')assert.equal(view.how,'Fixed rules');
+    if(operation.kind==='fact.extract')assert.equal(view.roleId,operation.result.verification_required===false?'checker':'reader');
+  }
+  assert.equal(crypto.createHash('sha256').update(JSON.stringify(operations)).digest('hex'),before);
+});
