@@ -54,10 +54,13 @@ def _schema_query(table):
 
 
 def _schema_identity(rows):
-    return tuple(tuple(row[key] for key in row.keys()) for row in rows)
+    return tuple(tuple((key, type(row[key]), row[key]) for key in row.keys()) for row in rows)
 
 
 def _standard_schema(rows, columns):
+    expected_keys = ('kind', 'name', 'detail', 'required', 'default_value', 'pk', 'hidden')
+    if any(tuple(row.keys()) != expected_keys for row in rows):
+        return False
     names = {row['name']: row for row in rows if row['kind'] == 'column'}
     if set(names) != set(columns):
         return False
@@ -66,7 +69,8 @@ def _standard_schema(rows, columns):
     for name in columns:
         row = names[name]
         expected = 'INTEGER' if name == integer else 'BLOB' if name == 'content' else 'TEXT'
-        if (row['detail'].upper() != expected or type(row['required']) is not int or row['required'] != 1
+        if (type(row['detail']) is not str or row['detail'].upper() != expected
+                or type(row['required']) is not int or row['required'] != 1
                 or row['default_value'] is not None or type(row['pk']) is not int
                 or row['pk'] != (keys.index(name) + 1 if name in keys else 0)
                 or type(row['hidden']) is not int or row['hidden'] != 0):
@@ -190,7 +194,7 @@ class HostedSources:
         result = None
         check()
         with self.connect() as db:
-            execute = getattr(db, 'execute_read_once', db.execute)
+            read_once = getattr(db, 'execute_read_once', None)
             for start in range(0, len(digests), self.BATCH_DIGESTS):
                 batch = digests[start:start + self.BATCH_DIGESTS]
                 wanted, seen = set(batch), set()
@@ -236,7 +240,11 @@ class HostedSources:
                     parameters = ((self.CHUNK_BYTES, self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index,
                                    page_chunks, 2 * 1024 * 1024) if compact_pages else
                                   (self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index))
-                    page = execute(query, parameters).fetchall()
+                    # Bulk raw bodies explicitly retire their HTTP socket;
+                    # compact proofs keep the shared pool. Local SQLite keeps
+                    # its ordinary execute API and receives no transport flag.
+                    page = (read_once(query, parameters, close_http=True) if read_once is not None
+                            else db.execute(query, parameters)).fetchall()
                     if len(page) > page_chunks:
                         raise AutonomousStoreError('Persistent source page exceeds its bound.')
                     if compact_pages and sum(len(row['content']) for row in page if isinstance(row['content'], bytes)) > 2 * 1024 * 1024:
@@ -349,49 +357,65 @@ class HostedSources:
                 self._fetch_many(values, check=check, page_chunks=page_chunks)
 
 
+    def _knowledge_source_proof(self, values):
+        queries, expected = [(_schema_query('autonomous_source_chunks'), ())], []
+        for start in range(0, len(values), self.BATCH_DIGESTS):
+            batch = values[start:start + self.BATCH_DIGESTS]
+            rows = []
+            for digest in batch:
+                raw = self._cache.get(digest)
+                if raw is None:
+                    raise AutonomousStoreError('Original byte proof cache was evicted before verification.')
+                rows.extend({'sha256': digest, 'chunk_index': index, 'content': raw[offset:offset + self.CHUNK_BYTES]}
+                            for index, offset in enumerate(range(0, max(1, len(raw)), self.CHUNK_BYTES)))
+            if len(rows) > _PROOF_ROWS or len(queries) >= 128:
+                raise AutonomousStoreError('Original byte proof roster exceeds its bound.')
+            expected.append(_proof_expected(rows, _SOURCE_COLUMNS, 'casepath-source-bytes-v1'))
+            query = _proof_query('autonomous_source_chunks', _SOURCE_COLUMNS, 'casepath-source-bytes-v1',
+                                 'sha256 IN (' + ','.join('?' for _ in batch) + ')', 'sha256,chunk_index')
+            queries.append((query, (*batch, len(rows) + 1)))
+        with self.connect() as db:
+            if not hasattr(db, 'read_snapshot'):
+                return None
+            cursors = db.read_snapshot(queries)
+        schema = cursors[0].fetchall()
+        if not _standard_schema(schema, _SOURCE_COLUMNS):
+            raise AutonomousStoreError('Original byte proof requires the complete native source schema.')
+        return _schema_identity(schema), cursors[1:], expected
+
     def verify_knowledge_many(self, digests):
         """New post-reducer snapshot proves every cached original chunk byte.
 
         Cache bytes already passed the native full-file SHA and chunk validators.
-        Missing/evicted bytes are reread through the original eight-chunk path;
-        the fresh aggregate then certifies that complete roster in one snapshot.
+        Missing/evicted bytes and schema changes use the original eight-chunk
+        reader, followed by a new coherent certificate. Exact schema identity is
+        admitted only by the successful journal post-validation hook.
         """
         values = self._digests(digests)
-        if not values:
-            return
         with self._lock:
+            if not values:
+                return
             missing = [digest for digest in values if digest not in self._cache]
             if missing:
                 self._fetch_many(missing)
-            queries, expected = [(_schema_query('autonomous_source_chunks'), ())], []
-            for start in range(0, len(values), self.BATCH_DIGESTS):
-                batch = values[start:start + self.BATCH_DIGESTS]
-                rows = []
-                for digest in batch:
-                    raw = self._cache.get(digest)
-                    if raw is None:
-                        raise AutonomousStoreError('Original byte proof cache was evicted before verification.')
-                    rows.extend({'sha256': digest, 'chunk_index': index, 'content': raw[offset:offset + self.CHUNK_BYTES]}
-                                for index, offset in enumerate(range(0, max(1, len(raw)), self.CHUNK_BYTES)))
-                if len(rows) > _PROOF_ROWS or len(queries) >= 128:
-                    raise AutonomousStoreError('Original byte proof roster exceeds its bound.')
-                expected.append(_proof_expected(rows, _SOURCE_COLUMNS, 'casepath-source-bytes-v1'))
-                query = _proof_query('autonomous_source_chunks', _SOURCE_COLUMNS, 'casepath-source-bytes-v1',
-                                     'sha256 IN (' + ','.join('?' for _ in batch) + ')', 'sha256,chunk_index')
-                queries.append((query, (*batch, len(rows) + 1)))
-            with self.connect() as db:
-                if not hasattr(db, 'read_snapshot'):
-                    self.verify_many(values)
-                    return
-                cursors = db.read_snapshot(queries)
-            schema = cursors[0].fetchall()
-            if not _standard_schema(schema, _SOURCE_COLUMNS):
-                raise AutonomousStoreError('Original byte proof requires the complete native source schema.')
-            if not all(_proof_matches(cursor, proof) for cursor, proof in zip(cursors[1:], expected)):
-                # A mismatch is never a stale hit. Exercise the original raw
-                # validators for a changed source; they retain precise failures.
+            result = self._knowledge_source_proof(values)
+            if result is None:
+                self.verify_many(values)
+                return
+            schema, cursors, expected = result
+            previous = getattr(self, '_knowledge_schema', None)
+            if previous is not None and previous != schema:
+                # A confirmed schema miss is not a transport retry. Revalidate
+                # all raw bytes and then certify them in a NEW final snapshot.
+                self.verify_many(values)
+                fresh = self._knowledge_source_proof(values)
+                if fresh is None or fresh[0] != schema:
+                    raise AutonomousStoreError('Original byte schema changed during fresh verification.')
+                schema, cursors, expected = fresh
+            if not all(_proof_matches(cursor, proof) for cursor, proof in zip(cursors, expected)):
                 self.verify_many(values)
                 raise AutonomousStoreError('Persistent source bytes changed during fresh verification.')
+            return schema
 
 
 class HostedAutonomousStore(AutonomousStore):
@@ -399,6 +423,7 @@ class HostedAutonomousStore(AutonomousStore):
     KNOWLEDGE_PAGE_ROWS = 2048
     JOURNAL_PAGE_BYTES = 4 * 1024 * 1024
     JOURNAL_ROW_BYTES = JOURNAL_PAGE_BYTES + 64 * 1024
+    KNOWLEDGE_RAW_PAGE_BYTES = 256 * 1024
 
     def list(self, *, statuses=None):
         # Startup discovery needs the same full accepted states as knowledge,
@@ -410,21 +435,29 @@ class HostedAutonomousStore(AutonomousStore):
     def _state_rows(self):
         return self._paged_state_rows(self.JOURNAL_PAGE_ROWS)
 
+    def _validated_summary_states(self):
+        # Collection and Knowledge share one certified raw-row authority path,
+        # under the existing ordered summary lock and final source verification.
+        rows = self._knowledge_rows()
+        states = self._validated_knowledge_states(rows)
+        self._after_validated_knowledge_states(rows, states)
+        return states
+
     def _knowledge_rows(self):
+        self._knowledge_pending = None
         cached = getattr(self, '_knowledge_byte_cache', None)
-        with self.journal.connect() as db:
-            if not hasattr(db, 'read_snapshot'):
-                return self._state_rows()
-            if cached is not None:
-                rows, schema, proof = cached
+        if cached is not None:
+            with self.journal.connect() as db:
+                frozen_rows, schema, proof = cached
                 query = _proof_query('claim_loop_events', _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1',
                                      'session_id=?', 'loop_id,sequence')
                 schema_cursor, proof_cursor = db.read_snapshot([
-                    (_schema_query('claim_loop_events'), ()), (query, (SESSION_ID, len(rows) + 1))])
+                    (_schema_query('claim_loop_events'), ()), (query, (SESSION_ID, len(frozen_rows) + 1))])
                 current_schema = schema_cursor.fetchall()
-                if _schema_identity(current_schema) == schema and _proof_matches(proof_cursor, proof):
+                if (_standard_schema(current_schema, _JOURNAL_COLUMNS)
+                        and _schema_identity(current_schema) == schema and _proof_matches(proof_cursor, proof)):
                     self._knowledge_pending = cached
-                    return rows
+                    return [dict(row) for row in frozen_rows]
         self._knowledge_byte_cache = None
         return self._collect_knowledge_rows()
 
@@ -437,21 +470,20 @@ class HostedAutonomousStore(AutonomousStore):
         while True:
             query, parameters = self._journal_page_query(self.JOURNAL_PAGE_ROWS, rows, after_loop, after_sequence)
             with self.journal.connect() as db:
+                if not hasattr(db, 'read_snapshot'):
+                    return self._state_rows()
                 queries = [(query, parameters)]
                 if schema is None:
                     queries.insert(0, (_schema_query('claim_loop_events'), ()))
-                cursors = db.read_snapshot(queries)
+                cursors = db.read_snapshot(queries, close_http=True)
             if schema is None:
                 schema = cursors[0].fetchall()
                 if not _standard_schema(schema, _JOURNAL_COLUMNS):
-                    # Unknown columns cannot be certified by the eight-column
-                    # root. A single acknowledged snapshot retains j.* instead.
-                    with self.journal.connect() as db:
-                        schema_cursor, raw_cursor = db.read_snapshot([
-                            (_schema_query('claim_loop_events'), ()),
-                            ('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence', (SESSION_ID,))])
+                    # An eight-column root cannot certify unknown authority.
+                    # Do not replace a bounded cold read with an unbounded raw
+                    # body or an interactive transaction spanning transfers.
                     self._knowledge_pending = None
-                    return raw_cursor.fetchall()
+                    raise AutonomousStoreError('Knowledge byte proof requires the complete native journal schema.')
             page = cursors[-1].fetchall()
             if not page:
                 break
@@ -479,28 +511,54 @@ class HostedAutonomousStore(AutonomousStore):
                 (_schema_query('claim_loop_events'), ()), (query, (SESSION_ID, len(rows) + 1))])
         if _schema_identity(schema_cursor.fetchall()) != _schema_identity(schema) or not _proof_matches(proof_cursor, proof):
             raise AutonomousStoreError('Journal changed while collecting independently closed raw pages.')
-        self._knowledge_pending = (rows, _schema_identity(schema), proof)
+        # Every eligible value is immutable str/int. Keep private tuple rows;
+        # callers and validators receive separate dictionaries, never aliases.
+        self._knowledge_pending = (tuple(tuple(row.items()) for row in rows), _schema_identity(schema), proof)
         return rows
 
     def _validated_knowledge_states(self, rows):
-        verifier = (self._source_store.verify_knowledge_many if isinstance(self._source_store, HostedSources) else None)
-        return self._validated_states(rows, source_verifier=verifier)
+        if not isinstance(self._source_store, HostedSources):
+            return self._validated_states(rows)
+        schemas = []
+
+        def verify(digests):
+            schemas.append(self._source_store.verify_knowledge_many(digests))
+
+        states = self._validated_states(rows, source_verifier=verify)
+        # Admit only after _validated_states returned, using the certificate
+        # returned by this call rather than a shared temporary source mode.
+        with self._source_store._lock:
+            self._source_store._knowledge_schema = schemas[0]
+        return states
 
     def _after_validated_knowledge_states(self, rows, states):
         # _summary_cache alone is insufficient: it is populated before final
         # source verification. Only this successful post-validation hook admits.
-        self._knowledge_byte_cache = getattr(self, '_knowledge_pending', None)
+        pending = getattr(self, '_knowledge_pending', None)
+        if pending is not None:
+            try:
+                same = (tuple(tuple(row.items()) for row in rows) == pending[0]
+                        and _proof_expected(rows, _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1') == pending[2])
+            except (ValueError, UnicodeError):
+                same = False
+            if not same:
+                self._knowledge_byte_cache = self._knowledge_pending = None
+                raise AutonomousStoreError('Certified journal bytes differ from the fully validated rows.')
+        self._knowledge_byte_cache = pending
 
-    @classmethod
-    def _journal_page_query(cls, page_rows, rows, after_loop, after_sequence):
+    def _journal_page_query(self, page_rows, rows, after_loop, after_sequence):
         size = '+'.join('COALESCE(length(CAST(' + key + ' AS BLOB)),0)' for key in _JOURNAL_COLUMNS) + '+1024'
-        query = ('SELECT * FROM (SELECT *,sum(__read_size) OVER (ORDER BY loop_id,sequence) AS __read_total,'
+        query = ('SELECT j.*,p.__read_size,p.__read_total,p.__read_position FROM '
+                 '(SELECT *,sum(__read_size) OVER (ORDER BY loop_id,sequence) AS __read_total,'
                  'row_number() OVER (ORDER BY loop_id,sequence) AS __read_position FROM '
-                 '(SELECT *,(' + size + ') AS __read_size FROM claim_loop_events WHERE session_id=? '
+                 '(SELECT session_id,loop_id,sequence,(' + size + ') AS __read_size FROM claim_loop_events WHERE session_id=? '
                  'AND (? OR loop_id>? OR (loop_id=? AND sequence>?)) '
-                 'ORDER BY loop_id,sequence LIMIT ?)) '
-                 'WHERE __read_total<=? OR __read_position=1 ORDER BY loop_id,sequence')
-        return query, (SESSION_ID, not rows, after_loop, after_loop, after_sequence, page_rows, cls.JOURNAL_PAGE_BYTES)
+                 'ORDER BY loop_id,sequence LIMIT ?)) AS p CROSS JOIN claim_loop_events AS j '
+                 'WHERE (p.__read_total<=? OR p.__read_position=1) '
+                 'AND j.session_id=p.session_id AND j.loop_id=p.loop_id AND j.sequence=p.sequence '
+                 'ORDER BY p.loop_id,p.sequence')
+        return query, (SESSION_ID, not rows, after_loop, after_loop, after_sequence, page_rows,
+                       min(self.JOURNAL_PAGE_BYTES, self.KNOWLEDGE_RAW_PAGE_BYTES))
 
     def _paged_state_rows(self, page_rows, *, count_candidates=False):
         """Bounded journal pages from one read snapshot, before source work.

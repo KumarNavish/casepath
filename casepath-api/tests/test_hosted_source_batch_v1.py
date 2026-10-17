@@ -76,10 +76,15 @@ def test_real_31_source_collection_uses_bounded_batched_roundtrips(remote, cold)
     rows = store.list_summaries()
     measured = receipt(server)
     pages = ceil(chunks / 8) + (chunks % 8 == 0)
-    source_pages = pages * (2 if cold else 1)
-    # The journal still uses one execute RPC and a separate close RPC.
-    expected = {"http": source_pages + 2, "execute": source_pages + 1,
-                "close": source_pages + 1, "batch": 0}
+    source_pages = pages if cold else 0
+    raw_journal_pages = sum('CROSS JOIN claim_loop_events AS j' in operation.get('stmt', {}).get('sql', '')
+                            for request in server.requests for operation in request['requests'])
+    assert raw_journal_pages >= 2 if cold else raw_journal_pages == 0
+    # Cold raw pages close independently; both readers then certify the entire
+    # journal and source rosters. Warm summaries transfer only those two proofs.
+    expected = {"http": source_pages + raw_journal_pages + 2,
+                "execute": source_pages + 3 * raw_journal_pages + (9 if cold else 8),
+                "close": source_pages + raw_journal_pages + 2, "batch": 0}
     assert measured == expected, measured
     assert_source_pages_closed(server)
     assert len(rows) == 23 and len(digests) == 31 and server.open_streams == 0

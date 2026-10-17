@@ -66,7 +66,7 @@ def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authori
                                   source_store=HostedSources(server.connection))
     store.KNOWLEDGE_PAGE_ROWS = candidate_limit
     try:
-        actual = store._knowledge_rows()
+        actual = store._paged_state_rows(candidate_limit, count_candidates=True)
         assert len(server.pages) >= 2  # The byte budget, rather than row count, limits this fixture.
         assert len(actual) == len(rows)
         names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
@@ -79,7 +79,7 @@ def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authori
         with sqlite3.connect(server.path) as target:
             target.execute("UPDATE fixture_accepted_events SET fixture_note='changed' WHERE session_id=? AND loop_id=?",
                            (SESSION_ID, actual[0]['loop_id']))
-        after = store._journal_snapshot(store._knowledge_rows())
+        after = store._journal_snapshot(store._paged_state_rows(candidate_limit, count_candidates=True))
         assert before != after  # Unknown SQL columns cannot disappear from the cache key.
         assert server.open_streams == 0
     finally:
