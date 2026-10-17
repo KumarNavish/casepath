@@ -93,7 +93,11 @@ def verify_one(name):
               'prepare_exit_code':0, 'prepare_duration_seconds':prepare['duration_seconds'],
               'verified_epoch':time.time()}
     (out / 'capsule-verification.json').write_text(json.dumps(record, indent=2))
-    print(json.dumps({'name':name, 'capsule_receipt_file_sha256':record['capsule_receipt_file_sha256'], 'source_artifact_static':[1714, 25, 39]}), flush=True)
+    if sys.argv[2]=='after' and (prepared_out/'runtime-before.json').exists():
+        sys.path.insert(0,str(ROOT/'harness'))
+        from runtime_inventory import capture_runtime
+        capture_runtime(repo,prepared_out,'after')
+    print(json.dumps({'name':name, 'capsule_receipt_file_sha256':record['capsule_receipt_file_sha256'], 'source_artifact_static':[1714, 25, 40]}), flush=True)
 
 if __name__ == '__main__':
     assert len(sys.argv) == 3

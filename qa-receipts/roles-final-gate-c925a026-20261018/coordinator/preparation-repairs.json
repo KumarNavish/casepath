@@ -1,0 +1,30 @@
+{
+  "test_retries": 0,
+  "source_edits": false,
+  "repairs": [
+    {
+      "stage": "bootstrap audit",
+      "attempt": 1,
+      "exit_code": 1,
+      "evidence": "coordinator/bootstrap-attempt1-failure.json",
+      "repair": "Previous clean independent commit had inherited old seal; record actual Git-verified previous bytes before canonical checkout."
+    },
+    {
+      "stage": "capsule verifier source-before",
+      "attempt": 1,
+      "exit_code": 1,
+      "raw_log": "shard1/verify-before-attempt1-static39-failure.log",
+      "command": "shard1/verify-before-attempt1-static39-failure-command.json",
+      "repair": "Frozen candidate adds language static asset. Verify exact40 static items using unchanged public inventory helper; old39 expected updated in external QA verifier only."
+    },
+    {
+      "stage": "inventory map before collection existed",
+      "attempt": 1,
+      "exit_code": 1,
+      "error_type": "FileNotFoundError",
+      "path": "/workspace/casepath-roles-final-gate-c925a026-20261018/inventory/collected.json",
+      "repair": "Ran after successful source-before verification and actual fresh collection; no tests attempted by mapping command."
+    }
+  ],
+  "epoch": 1792277581.7808342
+}

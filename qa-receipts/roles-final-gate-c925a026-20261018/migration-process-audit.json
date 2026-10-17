@@ -1,5 +1,11 @@
 {
-  "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
-  "cloud_proc1_maps": "not bypassed; unsupported audit tests remain assigned unchanged to Mac127",
-  "Mac_raw_inspected_in_Cloud": false
+  "path": "/proc/1/maps",
+  "epoch": 1792277663.6992755,
+  "readable": false,
+  "error_type": "PermissionError",
+  "errno": 13,
+  "fail_closed_source_unchanged": true,
+  "cloud_proc_maps_bypass_used": false,
+  "assigned_mac_ids": 127,
+  "mac_owner_reported_passed": 127
 }

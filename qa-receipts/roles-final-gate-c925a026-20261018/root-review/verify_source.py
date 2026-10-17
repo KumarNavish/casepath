@@ -25,7 +25,7 @@ assert not stream.read()
 pins={
  '401f0a707f01dc502e3e4d2b86271426b8372c97':[
   'casepath/assets/autonomous-workspace-v1.js','casepath/assets/autonomous-workspace-v1.css',
-  'casepath/assets/autonomous-entry-v1.js','casepath/tools/build_static_site.py'],
+  'casepath/assets/autonomous-entry-v1.js','casepath/tools/build_static_site.py','casepath/index.html'],
  '7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5':[
   'casepath/assets/autonomous-language-v1.js','casepath-qa/autonomous-language-v1.test.cjs'],
  '5975246c74ce14bc48763d9c6cc8a98a8fa3bfee':[

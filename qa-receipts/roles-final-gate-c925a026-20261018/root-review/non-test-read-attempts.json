@@ -1,0 +1,24 @@
+{
+  "operation": "Read-only index comparison; no tests or source edits",
+  "first": {
+    "cwd": "/workspace/casepath-release-ae0-shard1",
+    "command": [
+      "git",
+      "diff",
+      "--stat",
+      "401f0a707f01dc502e3e4d2b86271426b8372c97",
+      "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+      "--",
+      "casepath/index.html"
+    ],
+    "exit_code": 128,
+    "diagnostic": "fatal: bad object c925a0267971edb52fea5f2bd9653a2495b7ac15",
+    "cause": "Frozen frontend clone1 was deliberately not fetched/advanced; canonical object lives in clone6."
+  },
+  "corrected": {
+    "cwd": "/workspace/casepath-release-ae0-shard6",
+    "exit_code": 0,
+    "stdout": "",
+    "result": "Canonical index bytes are identical to reviewed UI401."
+  }
+}

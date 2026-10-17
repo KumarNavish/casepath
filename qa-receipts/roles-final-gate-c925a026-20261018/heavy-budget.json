@@ -1,5 +1,7 @@
 {
-  "max_gate_heavy": 2,
+  "max_gate_heavy": 3,
   "global_max_heavy": 3,
-  "source": "Disk-safe staggered preparation and execution"
+  "source": "Parent boundedcheck: shard3 has existing177MiB pinnedvenv with identical requirements.lock; expectedonly~100MiB capsule growth. Actualfree3.745GB exceeds3GiBfloor+300MiBprepare+150MiBreserve",
+  "epoch": 1792277813.6749678,
+  "free_bytes": 3761901568
 }

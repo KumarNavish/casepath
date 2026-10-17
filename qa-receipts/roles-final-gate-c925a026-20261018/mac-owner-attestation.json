@@ -1,8 +1,24 @@
 {
   "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "manifest_sha256": "1d4da0d965b790395b2d45979f04cc5e8f391b8a8accbeee7a6b1253d472c758",
+  "source_file_count": 1714,
   "ids": 127,
-  "owner": "Mac coordination owner",
-  "status": "pending actual native Mac execution/results",
+  "ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "owner": "Mac coordination owner via root",
+  "status": "actual native execution PASS reported by owner",
+  "passed": 127,
+  "failed": 0,
+  "skipped": 0,
+  "pytest_duration_seconds": 187.31,
+  "wrapper_duration_seconds": 199.267,
+  "nice": 15,
+  "normal_prepare_passed": true,
+  "source_before_after_verified_clean_by_owner": true,
+  "raw_phase_junit_collection_retained_on_mac": true,
+  "mac_raw_path_owner_report": ".../casepath-simple-site-release-20261018/gate",
   "raw_receipts_inspected_in_cloud": false,
-  "mac_fallback_forbidden": true
+  "mac_fallback_used": false,
+  "rerun_requested": false,
+  "source": "Root message at1792277640+; actual result report, no Cloud raw Mac verification claimed",
+  "recorded_epoch": 1792277647.7664013
 }
