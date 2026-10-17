@@ -252,3 +252,25 @@ test('Sites duration formatting is finite and bounded without changing upstream 
     upstream.mock.restore();
   }
 });
+
+test('Sites keeps overlapping read timings local when upstream headers arrive in reverse order', {timeout:1000}, async t => {
+  const worker = await load(), pending = new Map(), prefix = '/api/claim-loops/v1/autonomous';
+  let now = 10;
+  t.mock.method(globalThis.performance,'now',()=>now);
+  t.mock.method(globalThis,'fetch',request=>new Promise(resolve=>pending.set(new URL(request.url).pathname,resolve)));
+  const first = worker.fetch(new Request(origin+prefix+'/knowledge'),env);
+  now = 100;
+  const second = worker.fetch(new Request(origin+prefix+'/claims'),env);
+  assert.equal(pending.size,2);
+  const response = () => new Response('unchanged saved read',{status:206,headers:{'Server-Timing':'casepath_api;dur=7.500'}});
+  now = 130; pending.get(prefix+'/claims')(response());
+  const secondResult = await second;
+  now = 150; pending.get(prefix+'/knowledge')(response());
+  const firstResult = await first;
+  for (const [result,duration] of [[firstResult,'140.000'],[secondResult,'30.000']]) {
+    assert.equal(result.status,206);
+    assert.equal(await result.text(),'unchanged saved read');
+    assert.equal(result.headers.get('server-timing'),'casepath_api;dur=7.500, casepath_upstream;dur='+duration);
+    assert.equal(result.headers.get('cache-control'),'no-store');
+  }
+});
