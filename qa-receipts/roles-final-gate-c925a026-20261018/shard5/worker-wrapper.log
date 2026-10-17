@@ -1,3 +1,6 @@
 {"epoch": 1792278099.9289122, "type": "heavy_slot_reserved", "shard": "5", "active": {"5": "reserved"}}
 {"epoch": 1792278099.9290876, "type": "prepare_start", "shard": "5", "free_bytes": 3967610880}
 {"epoch": 1792278109.7606742, "type": "pytest_start", "shard": "5", "pid": 1225819, "command": ["/workspace/casepath-polish-gate-inventory-20261013/.runtime/casepath-dev-v2/venv/bin/python", "-P", "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/run_shard.py", "run", "5"], "free_bytes": 3679666176}
+{"epoch": 1792278506.67762, "type": "pytest_terminal", "shard": "5", "exit_code": 0}
+{"epoch": 1792278507.2435277, "type": "completed_runtime_retired", "shard": "5", "free_bytes": 4231344128}
+{"epoch": 1792278507.2438838, "type": "shard_finished", "shard": "5", "active": {}, "free_bytes": 4231335936}
