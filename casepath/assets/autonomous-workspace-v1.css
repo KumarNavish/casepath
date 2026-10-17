@@ -998,3 +998,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 @media (min-width:900px) {
   .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport { height:auto; min-height:min(300px,var(--au-stage-available-height,300px)); max-height:var(--au-stage-available-height,none); }
 }
+
+/* Knowledge keeps its role sentence and exact version link in the existing header. */
+.au-workspace .au-learning-record-head .au-now { display:block; margin:0; padding:0; line-height:1.45; }
+.au-workspace .au-learning-record-head .au-now :is([data-au-now-copy],[data-au-now-result]) { display:inline; margin:0; }
+.au-workspace .au-learning-record-head .au-now .au-record-link { min-height:24px; padding:0 0 0 5px; vertical-align:baseline; }
+.au-workspace .au-learning-record-head h2 button { margin-left:4px; min-height:24px; padding:0; vertical-align:baseline; }
