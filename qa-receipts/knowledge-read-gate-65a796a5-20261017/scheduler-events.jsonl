@@ -24,3 +24,6 @@
 {"epoch": 1792274361.5740547, "type": "heavy_slot_reserved", "shard": "5", "active": {"6": "pytest", "3": "pytest", "5": "reserved"}}
 {"epoch": 1792274361.5742166, "type": "prepare_start", "shard": "5", "free_bytes": 4658245632}
 {"epoch": 1792274371.7324388, "type": "pytest_start", "shard": "5", "pid": 1203371, "command": ["/workspace/casepath-polish-gate-inventory-20261013/.runtime/casepath-dev-v2/venv/bin/python", "-P", "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/harness/run_shard.py", "run", "5"], "free_bytes": 4368650240}
+{"epoch": 1792274504.7768276, "type": "pytest_terminal", "shard": "6", "exit_code": 0}
+{"epoch": 1792274505.3616426, "type": "completed_runtime_retired", "shard": "6", "free_bytes": 4478939136}
+{"epoch": 1792274505.3621154, "type": "shard_finished", "shard": "6", "active": {"3": "pytest", "5": "pytest"}, "free_bytes": 4478935040}
