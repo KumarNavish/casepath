@@ -178,6 +178,31 @@ test('document titles are separate from original filenames and exact recorded wo
   assert.equal(language.plainLabel('  Exact  wording  '),'  Exact  wording  ');
 });
 
+test('source-less Memory, decisions and paths never inherit a selected document title',()=>{
+  const documents=[{file_name:'01-customer-tenancy.txt'},{artifact_id:'real-source',file_name:'02-heating-service-report.txt'}];
+  const context={documents,state:{source_descriptors:documents}},before=JSON.stringify(context);
+  for(const kind of ['knowledge.used','knowledge.reuse','knowledge.add','knowledge.published','decision','branch.activate','branch.drop','branch.evaluate']){
+    for(const source of [undefined,{}, {artifact_id:''}, {artifact_id:'real-source'}]){
+      const operation={kind,source,input:{document_type:'heating_service_report'},object:{type:'document',id:'heating_service_report'}};
+      assert.equal(language.operationPresentation(operation,context).document,'',`${kind} cannot inherit a document`);
+    }
+  }
+  for(const kind of ['source.open','span.read','phrase.match','fact.extract','verification.check','document.check']){
+    const source={artifact_id:'real-source',quote:'The  exact\nsource wording. '};
+    const operation={kind,source},view=language.operationPresentation(operation,context);
+    assert.equal(view.document,'Heating service report');assert.equal(view.details.source,source);
+    assert.equal(view.details.source.quote,'The  exact\nsource wording. ');
+    assert.equal(language.operationPresentation({...operation,source:undefined,input:{document_type:'heating_service_report'}},context).document,'');
+    assert.equal(language.operationPresentation({...operation,source:{artifact_id:'missing-source'}},context).document,'');
+    assert.equal(language.operationPresentation(operation,{documents:[],state:context.state}).document,'Heating service report');
+  }
+  const requireDocument={kind:'document.require',input:{document_type:'heating_service_report'},source:{artifact_id:'retired-source'}};
+  assert.equal(language.operationPresentation(requireDocument,context).document,'Heating service report');
+  assert.equal(language.operationPresentation({kind:'document.require',object:{type:'document',id:'lease_contract'}},context).document,'Lease contract');
+  assert.equal(language.operationPresentation({kind:'document.require'},context).document,'');
+  assert.equal(JSON.stringify(context),before);
+});
+
 test('outcome summaries follow only recorded checks, open facts, gaps and authority limits',()=>{
   const reference=recorded[0],before=JSON.stringify(reference),view=language.outcomePresentation(reference);
   assert.equal(view.summary,'The checks support repair and rent reduction eligibility.');assert.equal(view.recordedSummary,reference.outcome.summary);

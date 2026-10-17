@@ -208,9 +208,14 @@
       ? provenancePresentation(context,roleId === 'checker' ? 'verify' : 'interpret')
       : {kind:roleId === 'rulebook' || roleId === 'memory' ? 'rules' : 'unknown',label:roleId === 'rulebook' || roleId === 'memory' ? 'Fixed rules' : 'CasePath',model:null};
     const documents = Array.isArray(context.documents) ? context.documents : Object.values(context.documents || {});
-    const document = documents.find(row => row.artifact_id === operation.source?.artifact_id)
-      || list(context.state?.source_descriptors).find(row => row.artifact_id === operation.source?.artifact_id)
-      || (operation.input?.document_type ? {document_type:operation.input.document_type} : operation.object?.type === 'document' ? {document_type:operation.object.id} : null);
+    const sourceId = text(operation.source?.artifact_id);
+    const sourceBearing = ['source.open','span.read','phrase.match','fact.extract','verification.check','document.check'].includes(operation.kind);
+    const requiredType = operation.kind === 'document.require'
+      ? text(operation.input?.document_type) || (operation.object?.type === 'document' ? text(operation.object.id) : '') : '';
+    const document = sourceBearing && sourceId
+      ? documents.find(row => row?.artifact_id === sourceId)
+        || list(context.state?.source_descriptors).find(row => row?.artifact_id === sourceId)
+      : requiredType ? {document_type:requiredType} : null;
     return {roleId,roleLabel:role.label,label,action,now:context.history ? `${role.label}: ${label.charAt(0).toLowerCase()+label.slice(1)}.` : `${role.label} ${action}.`,
       how:provenance.label,document:document ? documentTitle(document) : '',
       recordedResult:text(operation.result?.summary) || text(operation.result?.reason),details:operation};
