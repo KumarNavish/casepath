@@ -1,0 +1,13 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "shard": 3,
+  "repo": "/workspace/casepath-release-ae0-shard6",
+  "head_at_handoff": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "status_at_handoff": "",
+  "prepare_started": false,
+  "test_attempt_started": false,
+  "gate_disposition": "NOT_EXECUTED; held after frozen shard2 failure",
+  "handoff": "Root exclusively reserves clone3 to original timingworker for minimal authorized source correction on separatebranch; gate makes no subsequent checkout/source mutations",
+  "post_handoff_source_cleanliness_not_claimed_by_old_gate": true,
+  "epoch": 1792281184.8952928
+}

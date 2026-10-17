@@ -1,2 +1,5 @@
 {"epoch": 1792280737.8957975, "type": "heavy_slot_reserved", "shard": "1", "active": {"1": "reserved"}}
 {"epoch": 1792280738.331718, "type": "pytest_start", "shard": "1", "pid": 1249957, "command": ["/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv/bin/python", "-P", "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/harness/run_shard.py", "run", "1"], "free_bytes": 3706204160}
+{"epoch": 1792281243.3904476, "type": "pytest_terminal", "shard": "1", "exit_code": 0}
+{"epoch": 1792281244.0123966, "type": "completed_runtime_retired", "shard": "1", "free_bytes": 3980308480}
+{"epoch": 1792281244.0126011, "type": "shard_finished", "shard": "1", "active": {}, "free_bytes": 3980300288}
