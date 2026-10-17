@@ -1,0 +1,152 @@
+{
+  "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "genuinely_new_count": 15,
+  "raw_added_count": 16,
+  "all_passed": true,
+  "results": [
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[chunk_index-1.5]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[chunk_index-7]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[sha256-ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[sha256-wrong storage type]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_cancelled_final_atomic_request_propagates_without_fallback_or_admission",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_combined_select_budget_keeps_every_source_batch_and_bounded_fallback[125]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_combined_select_budget_keeps_every_source_batch_and_bounded_fallback[126]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_aggregate_malformation_never_retries[journal]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_aggregate_malformation_never_retries[source]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_proof_follows_all_local_validation[journal]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_proof_follows_all_local_validation[source]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_missing_admitted_candidate_keeps_existing_bounded_validation[rows]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_missing_admitted_candidate_keeps_existing_bounded_validation[state]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_separate_source_primary_cannot_borrow_journal_database_proof",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unproven_factory_wrapper_retains_separate_authority_proofs",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      },
+      "renamed_replacement": true
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "manifest_sha256": "1d4da0d965b790395b2d45979f04cc5e8f391b8a8accbeee7a6b1253d472c758",
+  "archive": "/workspace/casepath-roles-final-gate-c925a026-20261018/raw-evidence.tar.gz",
+  "archive_sha256": "b169ee3c864ef10618937e18e0fc61dceb51fa04ca3411bf2194f9ca6f61ad9f",
+  "archive_size_bytes": 6517495,
+  "raw_file_count": 287,
+  "checksum_manifest_sha256": "b46dac99252a006dacf3aca686c36b701bda66053576aa86a235fd61c958bb52",
+  "all_archive_members_byte_verified": true,
+  "contains_runtime_databases": false,
+  "includes": "Every selected QA receipt, source/artifact manifest, raw collect/order, all six assignment arguments/commands/controlled test environments/prepare transport-variable names/phase reports/JUnit/durations/latches, capsule before-after source/static/artifact proofs, exact rename and old baseline coverage, Mac owner attestation, root independent reviews, resource/process observations and retirement proofs, preserved preparation failures",
+  "explicit_exclusions": [
+    "venv and capsule byte copies (exact hashed source/capsule/artifact/static receipt proofs retained)",
+    "dependency caches and pycache",
+    "mutable HOME/TMP/DB/artifact registry",
+    "passing fixture bytes; any failed fixture bytes remain preserved on host (no failed test in this gate)",
+    "isolated Git index binary and transport records created after final commit",
+    "Mac raw files remain on Mac; actual owner attestation included; no Cloud raw Mac inspection claimed"
+  ],
+  "created_epoch": 1792278779.4676216
+}

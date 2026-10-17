@@ -3,7 +3,7 @@
   "scope": "Release gate setup/test/export operations only",
   "test_environments": [
     {
-      "shard": 1,
+      "shard": "1",
       "controlled_env_names": [
         "CASEPATH_ARTIFACT_REGISTRY_PATH",
         "CASEPATH_DB_PATH",
@@ -38,7 +38,7 @@
       "command_sha256": "09ceb91c25aab54e4199947804b956494099c608f7d95b76772d08fe8c7a2e39"
     },
     {
-      "shard": 2,
+      "shard": "2",
       "controlled_env_names": [
         "CASEPATH_ARTIFACT_REGISTRY_PATH",
         "CASEPATH_DB_PATH",
@@ -73,7 +73,7 @@
       "command_sha256": "e129f80c483b5f9698c2bc545e81de3067b5d5f321748d22b33396ae52898528"
     },
     {
-      "shard": 3,
+      "shard": "3",
       "controlled_env_names": [
         "CASEPATH_ARTIFACT_REGISTRY_PATH",
         "CASEPATH_DB_PATH",
@@ -106,6 +106,111 @@
       "paid_or_product_secret_names": [],
       "mode": "deterministic_reference",
       "command_sha256": "4e851d134d35ff6de21cffeb77a1c977679fc8612322affda578d7fb374801cd"
+    },
+    {
+      "shard": "4",
+      "controlled_env_names": [
+        "CASEPATH_ARTIFACT_REGISTRY_PATH",
+        "CASEPATH_DB_PATH",
+        "CASEPATH_ENV_LOCK_HELD",
+        "CASEPATH_ENV_READY",
+        "CASEPATH_MODEL_MODE",
+        "CASEPATH_QA_ARTIFACTS",
+        "CASEPATH_QA_REPOSITORY",
+        "CASEPATH_SOURCE_COMMIT",
+        "CASEPATH_UV",
+        "HOME",
+        "LANG",
+        "LC_ALL",
+        "NODE_PATH",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "PYTHONHASHSEED",
+        "PYTHONNOUSERSITE",
+        "PYTHONPATH",
+        "PYTHONPYCACHEPREFIX",
+        "PYTHONSAFEPATH",
+        "SOURCE_DATE_EPOCH",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "TZ",
+        "UV_CACHE_DIR",
+        "UV_LINK_MODE"
+      ],
+      "paid_or_product_secret_names": [],
+      "mode": "deterministic_reference",
+      "command_sha256": "2b31e01a7d71fedbc48aab64cc05b6a166b5c0d8ef624a416489b3ed01f12744"
+    },
+    {
+      "shard": "5",
+      "controlled_env_names": [
+        "CASEPATH_ARTIFACT_REGISTRY_PATH",
+        "CASEPATH_DB_PATH",
+        "CASEPATH_ENV_LOCK_HELD",
+        "CASEPATH_ENV_READY",
+        "CASEPATH_MODEL_MODE",
+        "CASEPATH_QA_ARTIFACTS",
+        "CASEPATH_QA_REPOSITORY",
+        "CASEPATH_SOURCE_COMMIT",
+        "CASEPATH_UV",
+        "HOME",
+        "LANG",
+        "LC_ALL",
+        "NODE_PATH",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "PYTHONHASHSEED",
+        "PYTHONNOUSERSITE",
+        "PYTHONPATH",
+        "PYTHONPYCACHEPREFIX",
+        "PYTHONSAFEPATH",
+        "SOURCE_DATE_EPOCH",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "TZ",
+        "UV_CACHE_DIR",
+        "UV_LINK_MODE"
+      ],
+      "paid_or_product_secret_names": [],
+      "mode": "deterministic_reference",
+      "command_sha256": "8f8447a045abe6a3dad02e58b6d40f0cd6802e90603a7d80e4c49ab70ba75b12"
+    },
+    {
+      "shard": "6",
+      "controlled_env_names": [
+        "CASEPATH_ARTIFACT_REGISTRY_PATH",
+        "CASEPATH_DB_PATH",
+        "CASEPATH_ENV_LOCK_HELD",
+        "CASEPATH_ENV_READY",
+        "CASEPATH_MODEL_MODE",
+        "CASEPATH_QA_ARTIFACTS",
+        "CASEPATH_QA_REPOSITORY",
+        "CASEPATH_SOURCE_COMMIT",
+        "CASEPATH_UV",
+        "HOME",
+        "LANG",
+        "LC_ALL",
+        "NODE_PATH",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "PYTHONHASHSEED",
+        "PYTHONNOUSERSITE",
+        "PYTHONPATH",
+        "PYTHONPYCACHEPREFIX",
+        "PYTHONSAFEPATH",
+        "SOURCE_DATE_EPOCH",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "TZ",
+        "UV_CACHE_DIR",
+        "UV_LINK_MODE"
+      ],
+      "paid_or_product_secret_names": [],
+      "mode": "deterministic_reference",
+      "command_sha256": "1fa9293440be80f1ffa1cdb73c7eddb981a22cac598f64cc37ff4ae9ff28aa6b"
     }
   ],
   "outbound_setup": "Actual origin Git fetch/push and ordinary normalprepare dependency transport only; inherited proxy/CA kept and values never dumped",
@@ -118,7 +223,7 @@
   "credentials_or_process_environments_dumped": false,
   "cloud_proc_maps_bypass_used": false,
   "audit_receipt": "migration-process-audit.json",
-  "observations_current_through_shards": 3,
+  "all_six_test_environments_observed": true,
   "qualification": "Controlled test environments and frozen source/owned temporary paths are recorded. This is an execution-scope attestation, not a network packet trace.",
-  "epoch": 1792277891.002836
+  "epoch": 1792278752.2237024
 }

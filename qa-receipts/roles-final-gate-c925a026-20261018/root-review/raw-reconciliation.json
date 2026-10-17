@@ -1,0 +1,263 @@
+{
+  "baseline_ids": 2749,
+  "all_baseline_ids_included_after_explicit_rename": true,
+  "explicit_renamed_ids": [
+    {
+      "old_id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes",
+      "new_id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes"
+    }
+  ],
+  "raw_removed_ids": [
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes"
+  ],
+  "new_nonrename_ids": [
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[chunk_index-1.5]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[chunk_index-7]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[sha256-ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[sha256-wrong storage type]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_cancelled_final_atomic_request_propagates_without_fallback_or_admission",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_combined_select_budget_keeps_every_source_batch_and_bounded_fallback[125]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_combined_select_budget_keeps_every_source_batch_and_bounded_fallback[126]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_aggregate_malformation_never_retries[journal]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_aggregate_malformation_never_retries[source]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_proof_follows_all_local_validation[journal]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_proof_follows_all_local_validation[source]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_missing_admitted_candidate_keeps_existing_bounded_validation[rows]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_missing_admitted_candidate_keeps_existing_bounded_validation[state]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_separate_source_primary_cannot_borrow_journal_database_proof",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unproven_factory_wrapper_retains_separate_authority_proofs"
+  ],
+  "all_new_and_renamed_ids_passed": true,
+  "sampled_min_free_bytes": 3468804096,
+  "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "manifest_sha256": "1d4da0d965b790395b2d45979f04cc5e8f391b8a8accbeee7a6b1253d472c758",
+  "independent_root_raw_reconciliation": true,
+  "full_inventory": 2764,
+  "cloud_selected": 2637,
+  "cloud_passed": 2627,
+  "cloud_skipped": 10,
+  "cloud_failed": 0,
+  "cloud_raw_phase_rows": 7902,
+  "Mac": "Actual native127-pass execution reported by Mac owner; exact partition IDs verified here, raw Mac phase/JUnit remain local and are not claimed inspected in Cloud.",
+  "combined_passed_with_mac_actual_owner_attestation": 2754,
+  "combined_known_skips": 10,
+  "no_gaps_duplicates_overlap": true,
+  "all_six_first_only_attempts": true,
+  "all_six_source_capsules_unchanged": true,
+  "all_junit_ids_match_raw_phases_and_collected": true,
+  "shards": [
+    {
+      "shard": 1,
+      "collected": 9,
+      "passed": 9,
+      "skipped": 0,
+      "raw_phase_rows": 27,
+      "junit_cases": 9,
+      "exit_code": 0,
+      "duration_seconds": 522.8231635093689,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 2,
+      "collected": 598,
+      "passed": 597,
+      "skipped": 1,
+      "raw_phase_rows": 1794,
+      "junit_cases": 598,
+      "exit_code": 0,
+      "duration_seconds": 400.87457394599915,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 3,
+      "collected": 403,
+      "passed": 394,
+      "skipped": 9,
+      "raw_phase_rows": 1200,
+      "junit_cases": 403,
+      "exit_code": 0,
+      "duration_seconds": 394.6894726753235,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 4,
+      "collected": 473,
+      "passed": 473,
+      "skipped": 0,
+      "raw_phase_rows": 1419,
+      "junit_cases": 473,
+      "exit_code": 0,
+      "duration_seconds": 395.70362854003906,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 5,
+      "collected": 496,
+      "passed": 496,
+      "skipped": 0,
+      "raw_phase_rows": 1488,
+      "junit_cases": 496,
+      "exit_code": 0,
+      "duration_seconds": 396.65589356422424,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 6,
+      "collected": 658,
+      "passed": 658,
+      "skipped": 0,
+      "raw_phase_rows": 1974,
+      "junit_cases": 658,
+      "exit_code": 0,
+      "duration_seconds": 395.20941185951233,
+      "source_capsule_before_after_equal": true
+    }
+  ],
+  "known_skips": {
+    "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows": {
+      "when": "call",
+      "file": "test_document_lifecycle_shadow_v1.py",
+      "line": 605,
+      "reason": "Skipped: frozen independent-transition packet is not available"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 457,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 548,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 559,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 579,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 592,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 610,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 636,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 646,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 696,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    }
+  },
+  "environment_isolation": [
+    {
+      "shard": 1,
+      "HOME": "/workspace/c9h1",
+      "TMPDIR": "/workspace/c9t1",
+      "CASEPATH_DB_PATH": "/workspace/casepath-roles-final-gate-c925a026-20261018/shard1/casepath.db"
+    },
+    {
+      "shard": 2,
+      "HOME": "/workspace/c9h2",
+      "TMPDIR": "/workspace/c9t2",
+      "CASEPATH_DB_PATH": "/workspace/casepath-roles-final-gate-c925a026-20261018/shard2/casepath.db"
+    },
+    {
+      "shard": 3,
+      "HOME": "/workspace/c9h3",
+      "TMPDIR": "/workspace/c9t3",
+      "CASEPATH_DB_PATH": "/workspace/casepath-roles-final-gate-c925a026-20261018/shard3/casepath.db"
+    },
+    {
+      "shard": 4,
+      "HOME": "/workspace/c9h4",
+      "TMPDIR": "/workspace/c9t4",
+      "CASEPATH_DB_PATH": "/workspace/casepath-roles-final-gate-c925a026-20261018/shard4/casepath.db"
+    },
+    {
+      "shard": 5,
+      "HOME": "/workspace/c9h5",
+      "TMPDIR": "/workspace/c9t5",
+      "CASEPATH_DB_PATH": "/workspace/casepath-roles-final-gate-c925a026-20261018/shard5/casepath.db"
+    },
+    {
+      "shard": 6,
+      "HOME": "/workspace/c9h6",
+      "TMPDIR": "/workspace/c9t6",
+      "CASEPATH_DB_PATH": "/workspace/casepath-roles-final-gate-c925a026-20261018/shard6/casepath.db"
+    }
+  ],
+  "bindings": {
+    "shard1/collected.json": "9ee9bad3fd0db79188b6dccde1bfbdc32429fb0d522a35aef3e4954f2487c9e1",
+    "shard1/reports.jsonl": "9a2df79abec673f9310a720523a0610e8e4b45a5f4832bf3c7086047bea123dc",
+    "shard1/junit.xml": "89bed33285b71697d56a6305206df794274d2f69be2fff4170666774318900ad",
+    "shard1/command.json": "09ceb91c25aab54e4199947804b956494099c608f7d95b76772d08fe8c7a2e39",
+    "shard1/result.json": "3f2c60738acdc28a2d617f668aa97af63dc1d2a2b0bcda69f7b2e3bf881fd4fa",
+    "shard1/source-before/capsule-verification.json": "1ebe2d50bc015b1e5469bd6aeee1dd0888e2e06f6e64041b4f4c226365648ae6",
+    "shard1/source-after/capsule-verification.json": "2bba9a220c29159d8920c2f51a05bf48aa500206699690c62c61279335488f40",
+    "shard2/collected.json": "e87fe3a232657fffdbd32fc9ddcf9c7d5bca703ea3a32736cbc1973a1ede7818",
+    "shard2/reports.jsonl": "cbb3bff2fc552d8bfbf51750fe6f3e07be7be56db18032e36d5547d46320a394",
+    "shard2/junit.xml": "db7da35f9fc3b041a29781413fdc5acced45dd830cac448574661beb65ed5ddb",
+    "shard2/command.json": "e129f80c483b5f9698c2bc545e81de3067b5d5f321748d22b33396ae52898528",
+    "shard2/result.json": "83aa62223c2faeacca9c5b3ca385f93223b8cee71e9417b1a4f8db2f2e5664d5",
+    "shard2/source-before/capsule-verification.json": "de878495609a66075391e32a3199884d84e8f5d7820ca64bd7bba176800203c1",
+    "shard2/source-after/capsule-verification.json": "e5c04382509f5f944ec3db877b2c141e3b02538c217643a8b50e89eba138f3fa",
+    "shard3/collected.json": "33377b414dca2d0f007046e937c2ecb5b80ccc7daf8ccf5df2512a9a22e0a8cc",
+    "shard3/reports.jsonl": "8206372892826df43453fb07930df2ff1e6dbffc6086baa72c5ea3b560cadc34",
+    "shard3/junit.xml": "ed9cf66287d28c20af64e2e047bb8758bde62a0f406cdd857feb914efffdd14d",
+    "shard3/command.json": "4e851d134d35ff6de21cffeb77a1c977679fc8612322affda578d7fb374801cd",
+    "shard3/result.json": "d9d5cf5c20cdcc6fe56199db8604be459c2f1260f78b8cc69f4eba8efc6d149e",
+    "shard3/source-before/capsule-verification.json": "eb9200af38e82f97cabd0921438b8d93544510f39c897d365942791966e1ef82",
+    "shard3/source-after/capsule-verification.json": "a5de43b95d272a0433a6a225892dc02a25f35fc4432fc7d005899e9b34f2eb76",
+    "shard4/collected.json": "6c82b722a987e5d734df7d7f0e6f96196e3c13eb6abd820579988696bfbba2de",
+    "shard4/reports.jsonl": "bfb52e96c252d0c5838e532952985a91a21cb2335d92a9a982ba58d24a4d28bd",
+    "shard4/junit.xml": "1dc29e5205c102e3309cfd4ba3618ff281b20d9205af2b0f53ccaee1cb5a1ead",
+    "shard4/command.json": "2b31e01a7d71fedbc48aab64cc05b6a166b5c0d8ef624a416489b3ed01f12744",
+    "shard4/result.json": "3bf6bde497143a0b9936e89f0dddfa97b386d7b4577ddbf0d87522d5850c5ab0",
+    "shard4/source-before/capsule-verification.json": "7dc062b7ae9608ad9f71a2bf32025f3ecb8c3db79b99b87c0883b9c83d90ae0c",
+    "shard4/source-after/capsule-verification.json": "3d4f1c771cd957aec4581401f41005724afc0d7b9f1356e6903d63a38afd08fd",
+    "shard5/collected.json": "02af7dfd120495bc0fb68dbb27c4bda67df01c31bebc014d6189de53ea1de93f",
+    "shard5/reports.jsonl": "4fecc409e41ff7bb019ff979a5c96f304fbd503b0772061fa566a61e948652d5",
+    "shard5/junit.xml": "78403c1f0f7c7055ab4d3e5c5d515cd4d3381e3cbb6c2c9e1ff822ef4466de20",
+    "shard5/command.json": "8f8447a045abe6a3dad02e58b6d40f0cd6802e90603a7d80e4c49ab70ba75b12",
+    "shard5/result.json": "0abbbd0ec4b0a6571331b30e9d0886c2226cb0371de4f0f851bba3b96969df55",
+    "shard5/source-before/capsule-verification.json": "e958f3149df50887f759e7ba6d96b55029e49db5d9a2c93276154f4906aa695a",
+    "shard5/source-after/capsule-verification.json": "3c3214411d595049b9592c7eef325582b71118ade03c01d7958bba9e3484e2d3",
+    "shard6/collected.json": "e7b881220ef26ee94534b28d1c3f71bba4c4bea02d1eea76414b4f7099bfdac1",
+    "shard6/reports.jsonl": "be918164c18f7727a9f6a4d48dfbf2ceb62393802c3e50cb977c52a699790ed3",
+    "shard6/junit.xml": "d2b204d3dc606853da2fb0a21ccf62f4b369042ab6b563f128bdbc1039f52f1c",
+    "shard6/command.json": "1fa9293440be80f1ffa1cdb73c7eddb981a22cac598f64cc37ff4ae9ff28aa6b",
+    "shard6/result.json": "d96ce8288a39995bfc44adefb449d0f848ef5cc175d36d5395bce3a7185ddbeb",
+    "shard6/source-before/capsule-verification.json": "6130a7e8f18c43122c25784a551e6ab6fb0a78f23b880bb6d75b507255a8dc7e",
+    "shard6/source-after/capsule-verification.json": "0adf032c4722ff4a6dcdef8b7844d2a96f9134786a09581626e4f71d0395e2bc",
+    "mac-owner-attestation.json": "c0c770b079db1cf53e864c0bf5dbf29eb98a6206b4fa57d5ad8005654b8854d5"
+  },
+  "resource_qualification": "Resource samples independently checked >=3GiB; /tmp remains separate, all child temps isolated under /workspace.",
+  "verified_epoch": 1792278756.0971875
+}
