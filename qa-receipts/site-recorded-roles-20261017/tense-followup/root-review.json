@@ -1,0 +1,10 @@
+{
+  "base_ui": "17767385377a964fb66ac24874f1805aea677d23",
+  "ui": "bb11b6b18d811b493073050c148df86216443548",
+  "module": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+  "reviewer": "root separate from writer",
+  "scope": "Only JS/index copy/action tense; CSS unchanged",
+  "source_observation": "Now uses existing present action field/history:false; receipt-bound reuse now uses present action. Knowledge Now saves/reuses/rechecks/does not save. Existing Replay/paused transport context remains. History labels and recorded-result facts stay past. No operation/state/source/role validation/pin/timing changes.",
+  "verification": "QA300/300 and5/5; new2regressions both fail before fix; screenshot/native2test evidence remains bound to177 with unchanged CSS.",
+  "epoch": 1792275785.445956
+}

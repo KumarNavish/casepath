@@ -2,10 +2,10 @@
   "host": "656813ef2295",
   "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
   "qaBranch": "codex/casepath-simple-site-qa-20261017",
-  "qaTip": "fff7c5bc302127bced0d9b806f1186995e0e787c",
-  "validatedProductTip": "17767385377a964fb66ac24874f1805aea677d23",
+  "qaTip": "ae889bd3f834b82e37125440e0e1001b535483d5",
+  "validatedProductTip": "bb11b6b18d811b493073050c148df86216443548",
   "validatedLanguageTip": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
-  "validationCheckout": "d726b69bdd4eb17707481cf9fc97b49e142199f1",
+  "validationCheckout": "9c3818b98ba1e39a98d879c41a9439fbdf3ddbdc",
   "node": "v24.19.0",
   "playwright": "1.62.1",
   "sourceArtifacts": {
@@ -77,6 +77,10 @@
     {
       "log": "family-announcement.tap",
       "result": "New test first expected obsolete family name Ending a tenancy; actual Lease termination corrected, exact identity/dedupe/context requirements retained."
+    },
+    {
+      "log": "tense-1776-negative.tap",
+      "result": "Both new tense regressions fail on17767385: replay Now used Found and Knowledge Now used saved. Same tests pass onbb11b6b1. Existing History/pin/state assertions retained."
     }
   ],
   "browserAcceptance": {
@@ -157,7 +161,9 @@
       "allFacetsKeyboardFocus": true,
       "oneRecordedMemoryNow": true,
       "reducedMotionRetainsEvent": true
-    }
+    },
+    "productTip": "17767385377a964fb66ac24874f1805aea677d23",
+    "postFreezeCopyOnlyDelta": "bb11b6b1 changes Now action tense only in JS/index; parent authorized focused Node plus broad combined Node, no native replay rerun. Browser evidence is explicitly bound to17767385."
   },
   "constraints": [
     "No provider calls, production requests, source corpus/journal/Knowledge writes, server listeners, browser downloads, broad suite, sealing, publication or media work.",
@@ -197,12 +203,12 @@
   ],
   "testedCode": "Validation checkout plus identical QA test working tree subsequently committed on QA-only branch.",
   "validatedAssets": {
-    "autonomous-workspace-v1.js": "8e279a1577bfe3a8ac4401adfecc156be344db0c4ebb30b50474b0818f53a806",
+    "autonomous-workspace-v1.js": "34b4ddd17f8c5bc5dae67c4f30326f2d7f04b8e3373eaa5d02d6e8d9b8c957a2",
     "autonomous-workspace-v1.css": "d6e33952eb34a3088ed1926994fd08acec70cc10482a377266ee60476e35493d",
     "autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
   },
   "testSourceSha256": {
-    "casepath-qa/autonomous-workspace-v1.test.cjs": "5213e5dca28f43019173318ea89b9c8ae6b58cffb51c284d9b589068f4a44821",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "e1449f92d3fab9d2a4b7bd624da39bbda528eff357a9d904ffd8ee0766c26f86",
     "casepath-qa/unified-product-browser-v1.test.cjs": "82af3d76eab4cd5f14b02a55719cfda64d26b20f60c8ec1529383823308de9c4",
     "casepath/tools/test_build_deployment_identity.py": "afc469b1dfabb1e13dfd0e77851030e372691f4d3dbef06a6e1868737fb5980e"
   },
@@ -224,7 +230,8 @@
       "failed": 0,
       "skipped": 0,
       "duration_ms": 15444.28863,
-      "log": "node-1776-7bd.tap"
+      "log": "node-1776-7bd.tap",
+      "productTip": "17767385377a964fb66ac24874f1805aea677d23"
     },
     {
       "command": "node --test --test-reporter=tap --test-timeout=60000 --test-name-pattern='^recorded language accessibility:' casepath-qa/unified-product-browser-v1.test.cjs",
@@ -247,7 +254,49 @@
       "duration_ms": 11000.537969,
       "log": "browser-1776.tap",
       "evidenceDirectory": "browser-1776",
-      "clock": "Native real clock only; no page.clock installation or private controller-state mutation."
+      "clock": "Native real clock only; no page.clock installation or private controller-state mutation.",
+      "productTip": "17767385377a964fb66ac24874f1805aea677d23"
+    },
+    {
+      "command": "node --test --test-reporter=tap --test-name-pattern='^(replay Now uses present actions|Knowledge Now uses present saves|recorded roles render|one recorded Now announcement|Knowledge announcements distinguish)' casepath-qa/autonomous-workspace-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python"
+      },
+      "productTip": "bb11b6b18d811b493073050c148df86216443548",
+      "languageTip": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+      "exit": 0,
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "log": "tense-bb11-focused.tap"
+    },
+    {
+      "command": "node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/sites-autonomous-entry.test.cjs casepath-qa/autonomous-language-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python"
+      },
+      "productTip": "bb11b6b18d811b493073050c148df86216443548",
+      "languageTip": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+      "exit": 0,
+      "tests": 300,
+      "passed": 300,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 15344.856579,
+      "log": "node-bb11-7bd.tap"
     }
   ],
   "standaloneRetryChecks": [
@@ -264,5 +313,6 @@
       "passed": 3,
       "exit": 0
     }
-  ]
+  ],
+  "qaTenseCommit": "ae889bd3f834b82e37125440e0e1001b535483d5"
 }

@@ -1,18 +1,20 @@
 {
   "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
-  "frontend": "17767385377a964fb66ac24874f1805aea677d23",
+  "frontend": "bb11b6b18d811b493073050c148df86216443548",
   "language": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
-  "qa": "fff7c5bc302127bced0d9b806f1186995e0e787c",
+  "qa": "ae889bd3f834b82e37125440e0e1001b535483d5",
   "backend_gate": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
   "product_sealed": false,
   "node": {
-    "passed": 298,
+    "passed": 300,
     "failed": 0,
     "skipped": 0
   },
   "native_browser": {
     "passed": 2,
-    "failed": 0
+    "failed": 0,
+    "source": "17767385377a964fb66ac24874f1805aea677d23",
+    "afterwards": "Tense-only JS/index delta. CSS/module/geometry unchanged; no native rerun claimed."
   },
   "limits": "Views actually audited only; VoiceOver/public-host acceptance and UI sealing/full gate belong to Mac."
 }

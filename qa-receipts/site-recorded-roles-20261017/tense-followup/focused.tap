@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: recorded roles render one stable Now line from the actual operation rather than view state or observations as accepted facts
+ok 1 - recorded roles render one stable Now line from the actual operation rather than view state or observations as accepted facts
+  ---
+  duration_ms: 15.33222
+  type: 'test'
+  ...
+# Subtest: one recorded Now announcement includes role method action document and result once per actual saved event
+ok 2 - one recorded Now announcement includes role method action document and result once per actual saved event
+  ---
+  duration_ms: 18.058632
+  type: 'test'
+  ...
+# Subtest: Knowledge announcements distinguish the recorded family and source case for the same version and action
+ok 3 - Knowledge announcements distinguish the recorded family and source case for the same version and action
+  ---
+  duration_ms: 19.937713
+  type: 'test'
+  ...
+# Subtest: replay Now uses present actions while History keeps past actions and a pause preserves the exact recorded context
+ok 4 - replay Now uses present actions while History keeps past actions and a pause preserves the exact recorded context
+  ---
+  duration_ms: 2.210341
+  type: 'test'
+  ...
+# Subtest: Knowledge Now uses present saves rechecks and reuses while its timeline keeps recorded past labels
+ok 5 - Knowledge Now uses present saves rechecks and reuses while its timeline keeps recorded past labels
+  ---
+  duration_ms: 7.992932
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 151.35089
