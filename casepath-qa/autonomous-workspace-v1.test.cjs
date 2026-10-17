@@ -2766,3 +2766,99 @@ test('Knowledge Retry retains the completed final-view restart intent after a ge
  await controller.showKnowledge(false,{knowledge_id:version.knowledge_id,version:version.version,knowledge_sha256:version.knowledge_sha256,definition_sha256:version.qualification.definition_sha256},{event:hash('b'),stage:10,facet:'process',complete:true});assert.match(f.status.textContent,/Refresh failed/);assert.equal(shell.dataset.auLearningEventId,hash('b'));
  f.listeners.get('click')({target:control(f,'data-au-knowledge-retry')});await waitFor(()=>Boolean(finish));finish(response(structuredClone(data)));await settle();await settle();assert.equal(shell.dataset.auLearningEventId,hash('b'));f.listeners.get('click')({target:control(f,'data-au-learning-play')});assert.equal(shell.dataset.auLearningPosition,'0','Retry preserves final-view semantics so Play restarts the replay');
 });
+
+// This checks authored surface copy and names, not browser accessibility or layout.
+// Only Details bodies and literal subspans of supplied original quotations are exempt.
+const simpleCopyBan=/\b(?:provisional|derive|requalified|quarantined|compilation|recipe|applicability|regression|sha|hash|canonical|projection|branch|pinned|deterministic|verifier|synthetic)\b/i;
+function decodedSurface(value) {
+ return value.replace(/&(?:#(x[\da-f]+|\d+)|amp|lt|gt|quot|apos|nbsp);/gi,(whole,code)=>code?String.fromCodePoint(parseInt(code.replace(/^x/i,''),/^x/i.test(code)?16:10)):({'&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"','&apos;':"'",'&nbsp;':' '})[whole.toLowerCase()]||whole);
+}
+function surfaceCopyProblems(html,originalQuotes=[]) {
+ const root={tag:'root',attrs:{},children:[]},stack=[root],voids=new Set(['area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr']);
+ for(const token of html.match(/<(?:[^>"']|"[^"]*"|'[^']*')*>|[^<]+/g)||[]) {
+  if(!token.startsWith('<')){stack.at(-1).children.push(decodedSurface(token));continue;}
+  const close=token.match(/^<\/([\w-]+)/);if(close){const index=stack.findLastIndex(node=>node.tag===close[1].toLowerCase());if(index>0)stack.length=index;continue;}
+  const start=token.match(/^<([\w-]+)/);if(!start)continue;
+  const attrs={};for(const match of token.slice(start[0].length).matchAll(/([\w:-]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g))attrs[match[1].toLowerCase()]=decodedSurface(match[2]??match[3]??match[4]??'');
+  const node={tag:start[1].toLowerCase(),attrs,children:[]};stack.at(-1).children.push(node);if(!voids.has(node.tag)&&!token.endsWith('/>'))stack.push(node);
+ }
+ const raw=node=>typeof node==='string'?node:node.children.map(raw).join(''),problems=[];
+ const inspect=(text,where)=>{
+  text=text.replace(/\s+/g,' ').trim();if(!text)return;
+  if(simpleCopyBan.test(text))problems.push({where,reason:'word',text});
+  for(const sentence of new Intl.Segmenter('en',{granularity:'sentence'}).segment(text))if((sentence.segment.match(/[\p{L}\p{N}]+(?:[’'-][\p{L}\p{N}]+)*/gu)||[]).length>20)problems.push({where,reason:'sentence',text:sentence.segment.trim()});
+ };
+ const runTags=new Set(['p','h1','h2','h3','h4','h5','h6','button','a','summary','label','pre','figcaption','dt','dd','th','td']);
+ function visit(node,insideRun=false) {
+  if(typeof node==='string'){if(!insideRun)inspect(node,'text');return;}
+  if(['details','script','style'].includes(node.tag)||'hidden'in node.attrs)return;
+  const quote=['q','blockquote'].includes(node.tag)||node.tag==='pre'&&/\bau-(?:operation-passage|source-body)\b/.test(node.attrs.class||'');
+  if(quote&&raw(node)&&originalQuotes.some(original=>original.includes(raw(node))))return;
+  for(const key of ['aria-label','title','alt','placeholder'])if(key in node.attrs)inspect(node.attrs[key],key);
+  const isRun=runTags.has(node.tag);if(isRun&&!insideRun)inspect(raw(node),node.tag);
+  for(const child of node.children)visit(child,insideRun||isRun);
+ }
+ visit(root);return problems;
+}
+function nowSurface(html) {
+ const match=html.match(/<p\b[^>]*\bdata-au-now-id="([^"]*)"[^>]*>[\s\S]*?<\/p>/);assert.ok(match,'one Now line identifies the actual recorded operation or event');return {id:decodedSurface(match[1]),html:match[0]};
+}
+function operationSurface(saved,operation,extra={}) {
+ const trace={rows:[operation],current:operation,sources:new Map(),state:saved,...extra};
+ return ui.workMarkup(saved,{},'branch',[],'step',{}, {mode:'replay',readOnly:true,paused:true,operations:trace});
+}
+
+test('plain language audit checks names and whole words with exact Details and quotation exemptions',()=>{
+ const literal='The synthetic verifier preserves the pinned hash and provisional recipe.';
+ assert.deepEqual(surfaceCopyProblems(`<p>Steps and documents.</p><details><summary>Details</summary><p>${literal}</p><details>canonical projection</details></details><q>${literal}</q>`,[literal]),[]);
+ assert.equal(surfaceCopyProblems('<p>Hashing is useful. The branches are visible.</p>').length,0,'whole words do not ban longer unrelated forms');
+ assert.ok(surfaceCopyProblems('<button aria-label="Open synthetic branch">Open case</button>').some(row=>row.where==='aria-label'));
+ assert.ok(surfaceCopyProblems('<button title="Inspect canonical hash">Details</button>').some(row=>row.where==='title'));
+ assert.ok(surfaceCopyProblems(`<q>${literal} Changed.</q>`,[literal]).some(row=>row.reason==='word'),'unrecorded quotation text is not exempt');
+ const long='One two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone.';
+ assert.ok(surfaceCopyProblems(`<p>${long}</p>`).some(row=>row.reason==='sentence'));
+ assert.ok(surfaceCopyProblems(`<button aria-label="${long}">Open</button>`).some(row=>row.reason==='sentence'));
+});
+
+test('recorded roles render one stable Now line from the actual operation rather than view state or observations as accepted facts',()=>{
+ const saved=state(),before=JSON.stringify(saved),roles=[['fact.extract',{verification_required:true},'reader','Reader'],['fact.extract',{verification_required:false},'checker','Checker'],['document.check',{},'checker','Checker'],['step.complete',{},'rulebook','Rulebook'],['decision',{},'rulebook','Rulebook'],['knowledge.used',{},'memory','Memory'],['knowledge.add',{},'memory','Memory'],['unknown.recorded.operation',{},'casepath','CasePath']];
+ for(const [kind,result,role,label]of roles){const operation={id:`recorded-${kind}-${role}`,kind,object:{type:'fact',id:'fact:notice'},input:{},result,cause_ids:[]},html=operationSurface(saved,operation),now=nowSurface(html);assert.equal(now.id,operation.id);assert.equal((html.match(/\bdata-au-now-id=/g)||[]).length,1);assert.match(now.html,new RegExp(`data-au-role="${role}"[^>]*>[\\s\\S]*?${label}`));assert.match(now.html,/data-au-now-copy/);assert.match(now.html,/data-au-now-result/);assert.doesNotMatch(now.html,/AI\b/,'a role or model configuration is not a model-call receipt');
+  const changed=ui.workMarkup(saved,{current_action:'UNRECORDED_NARRATION'},'start',[],'step',{}, {mode:'replay',readOnly:true,playing:true,operations:{rows:[operation],current:operation,sources:new Map(),state:saved,displayedAt:Date.now()+9000}});assert.deepEqual(nowSurface(changed),now,'playback time, selected step and read-only presentation cannot rewrite Now');
+ }
+ assert.equal(JSON.stringify(saved),before,'role presentation cannot accept an observed fact or rewrite the case');assert.equal(saved.facts[1].status,'unresolved');
+});
+
+test('AI model labels in the Reader and Checker surface require the exact recorded provider receipt',()=>{
+ const saved=JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/autonomous-saved-history-v1.json'),'utf8')).state,before=JSON.stringify(saved);
+ for(const verification_required of [true,false]){
+  const operation={id:`provider-${verification_required}`,kind:'fact.extract',stage:verification_required?'interpretation':'verification',object:{type:'fact',id:saved.facts[0].fact_id},input:{},result:{verification_required},cause_ids:[]},positive=nowSurface(operationSurface(saved,operation)).html;
+  assert.match(positive,/AI\b/);assert.match(positive,/openai\/gpt-6-luna/);
+  for(const change of [copy=>{copy.receipts=[];},copy=>{for(const row of copy.receipts)if(row.receipt)row.receipt.workflow_id='another-workflow';},copy=>{for(const row of copy.receipts){const receipt=row.receipt?.[verification_required?'proposal_receipt':'verifier_receipt'];if(receipt)delete receipt.metadata.response_sha256;}}]){
+   const copy=structuredClone(saved);change(copy);const negative=nowSurface(operationSurface(copy,operation)).html;assert.doesNotMatch(negative,/AI\b|openai\/gpt-6-luna/,'missing, foreign or incomplete provider proof cannot label a role AI');
+  }
+ }
+ assert.equal(JSON.stringify(saved),before,'the real saved receipt remains byte-for-byte unchanged as parsed');
+});
+
+test('the case and Knowledge surfaces share one polite live region and preserve read-only source records',async t=>{
+ const f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch,publicReadOnly:true});t.after(()=>controller.destroy());await settle();
+ const saved=state(),before=JSON.stringify(saved),surfaces=[ui.knowledgeMarkup(learningFixtureData()),operationSurface(saved,{id:'only-recorded',kind:'fact.extract',object:{type:'fact',id:'fact:notice'},input:{},result:{verification_required:true},cause_ids:[]})];
+ for(const surface of surfaces){const rendered=f.container.innerHTML+surface;assert.equal((rendered.match(/\baria-live="polite"/g)||[]).length,1,'only the global status announces work');assert.equal((rendered.match(/\brole="status"/g)||[]).length,1);assert.doesNotMatch(surface,/aria-live="assertive"/);}
+ assert.equal(JSON.stringify(saved),before);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('case tabs and recorded Knowledge copy stay short and plain including accessible names',()=>{
+ const saved=state(),operation={id:'copy-reader',kind:'fact.extract',object:{type:'fact',id:'fact:notice'},input:{},result:{verification_required:true},cause_ids:[]},cases=operationSurface(saved,operation),knowledge=ui.knowledgeMarkup(learningFixtureData());
+ for(const label of ['Steps','Facts it needs','Documents','Special cases','What changed'])assert.ok((cases+knowledge).includes(`>${label}<`),label);
+ assert.match(cases,/Replay · Fictional case · No real-world action/);
+ assert.deepEqual(surfaceCopyProblems(cases),[]);assert.deepEqual(surfaceCopyProblems(knowledge),[]);
+ assert.equal(learningFixtureData().versions[0].qualification.regression_cases,243,'rule-check counts remain recorded data');
+ assert.doesNotMatch(knowledge,/243 (?:claims|cases)(?! checked)/i,'rule checks cannot become a count of reused claims');
+});
+
+for(const input of ['keyboard','focus'])test(`trusted ${input} inspection pauses a pending recorded opening without stealing focus`,async t=>{
+ const f=operationOpeningDOM(),callbacks=new Map(),packet=recordedPacketFixture(),opening=deferredRead(),snapshot=deferredRead();f.container.ownerDocument.addEventListener=(type,listener)=>callbacks.set(type,listener);f.container.ownerDocument.removeEventListener=type=>callbacks.delete(type);
+ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?opening.promise:path.endsWith('/snapshot?after=0')?snapshot.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null}),controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));});assert.equal(await controller.recordedPacketReady,true);const selecting=controller.showDemonstration();
+ const target=control(f,'data-au-source','original');target.focus();if(input==='keyboard')callbacks.get('keydown')({key:'Tab',isTrusted:true,target});else f.listeners.get('focusin')({isTrusted:true,target});
+ assert.ok(f.host.querySelector('[data-au-demo-resume]'),'inspection pauses before any asynchronous opening may paint');assert.equal(f.container.ownerDocument.activeElement,target);opening.resolve(response(packet.native.zero));snapshot.resolve(response(packet.native.snapshot));await selecting;await settle();assert.ok(f.host.querySelector('[data-au-demo-resume]'),'late opening retains paused inspection even when an unrelated outline must retire');assert.doesNotMatch(f.host.innerHTML,/data-au-revision=/,'the late accepted opening remains held');assert.equal(f.container.ownerDocument.activeElement,target);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
