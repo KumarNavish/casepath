@@ -81,10 +81,11 @@ def test_real_31_source_collection_uses_bounded_batched_roundtrips(remote, cold)
                             for request in server.requests for operation in request['requests'])
     assert raw_journal_pages >= 2 if cold else raw_journal_pages == 0
     # Cold raw pages close independently; both readers then certify the entire
-    # journal and source rosters. Warm summaries transfer only those two proofs.
-    expected = {"http": source_pages + raw_journal_pages + 2,
-                "execute": source_pages + 3 * raw_journal_pages + (9 if cold else 8),
-                "close": source_pages + raw_journal_pages + 2, "batch": 0}
+    # journal and source rosters. Warm summaries combine both final proofs.
+    certificates = 2 if cold else 1
+    expected = {"http": source_pages + raw_journal_pages + certificates,
+                "execute": source_pages + 3 * raw_journal_pages + (9 if cold else 6),
+                "close": source_pages + raw_journal_pages + certificates, "batch": 0}
     assert measured == expected, measured
     assert_source_pages_closed(server)
     assert len(rows) == 23 and len(digests) == 31 and server.open_streams == 0

@@ -936,6 +936,12 @@ class AutonomousStore:
     def _after_validated_knowledge_states(self, rows, states):
         pass
 
+    def _validated_knowledge_snapshot(self):
+        rows = self._knowledge_rows()
+        states = self._validated_knowledge_states(rows)
+        self._after_validated_knowledge_states(rows, states)
+        return rows, states
+
     def knowledge_snapshot(self):
         """Copy only Knowledge inputs after the complete authority validation.
 
@@ -945,9 +951,7 @@ class AutonomousStore:
         from the same validated rows as the compact reducer event metadata.
         """
         with getattr(self, "_summary_lock", self._extraction_lock):
-            rows = self._knowledge_rows()
-            states = self._validated_knowledge_states(rows)
-            self._after_validated_knowledge_states(rows, states)
+            rows, states = self._validated_knowledge_snapshot()
             commands = {(row["loop_id"], row["sequence"]): row for row in rows}
             values = []
             for state in states:
