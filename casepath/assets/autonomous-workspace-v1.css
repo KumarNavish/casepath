@@ -857,7 +857,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-checklist [data-au-learning-added=true] strong::after { content:' · Document check added'; color:#24563c; }
 .au-workspace .au-learning[data-au-learning-playing=true] :is([data-au-learning-stage="0"],[data-au-learning-stage="1"],[data-au-learning-stage="2"]) .au-learning-proof { display:none; }
 .au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-focus]:not([data-au-learning-stage="10"]) .au-learning-seal { display:none; }
-.au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-stage="10"] .au-learning-qualification,.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-seal .au-lineage-summary { display:none; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-seal .au-lineage-summary { display:none; }
 .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-reuse p { margin:3px 0; }
 .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-receipts { margin:6px 0; padding-top:6px; }
 .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-receipts ul { display:none; }
@@ -994,3 +994,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-operation-stage .au-graph-viewport { min-height:min(300px,var(--au-stage-available-height,300px)); max-height:var(--au-stage-available-height,none); }
 }
 .au-workspace [data-au-now-fact] { white-space:pre-wrap; }
+
+@media (min-width:900px) {
+  .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport { height:auto; min-height:min(300px,var(--au-stage-available-height,300px)); max-height:var(--au-stage-available-height,none); }
+}
