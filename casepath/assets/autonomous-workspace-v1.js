@@ -957,8 +957,10 @@
     const operation = trace?.current || [...events].reverse().find(event=>event.seq<=state.revision);
     const shown = language.operationPresentation(operation,{...operationDisplayContext(state,trace,operation),history:presentation.mode === 'replay' || Boolean(trace?.inspection) || !active(state.status),documents:[...list(state.source_descriptors),...list(state.graph?.document_catalog)]});
     const id = operation?.id || operation?.event_sha256 || '';
-    const recorded = operation ? nowSentence(shown) : 'has no recorded action yet.';
-    return `<div class="au-now" data-au-now-id="${h(id)}"><span class="au-now-label">Now</span>${roleBadge(shown.roleId)}<span data-au-now-copy>${h(recorded)}</span><span data-au-now-result>${h(recordedResultLabel(operation,state))}</span>${operation ? recordButton('Details',trace?.current ? 'operation' : 'event',trace?.current ? operation.id : operation.seq) : ''}</div>`;
+    const literal = operation?.kind==='fact.extract' && operation.source && list(trace?.rows).includes(operation) ? stageFactSpan(operation,true) : null;
+    const action=shown.label.charAt(0).toLocaleLowerCase()+shown.label.slice(1);
+    const recorded = literal ? `${h(action)}: <q data-au-recorded-quote data-au-now-fact="${h(operation.id)}" data-au-source-artifact="${h(literal.artifact_id)}" data-au-source-start-char="${literal.start_char}" data-au-source-end-char="${literal.end_char}">${h(literal.quote)}</q>${h(nowSentence(shown).slice(action.length))}` : h(operation ? nowSentence(shown) : 'has no recorded action yet.');
+    return `<div class="au-now" data-au-now-id="${h(id)}"><span class="au-now-label">Now</span> ${roleBadge(shown.roleId)} <span data-au-now-copy>${recorded}</span> <span data-au-now-result>${h(recordedResultLabel(operation,state))}</span> ${operation ? recordButton('Details',trace?.current ? 'operation' : 'event',trace?.current ? operation.id : operation.seq) : ''}</div>`;
   }
   function stepRole(node, state, trace) {
     const operation = trace?.current?.object && operationNodeId(trace.current,trace.working?.graph || state.graph,state,trace) === node.node_id ? trace.current : [...list(trace?.rows)].reverse().find(row=>row?.object && operationNodeId(row,trace.working?.graph || state.graph,state,trace) === node.node_id);
@@ -2526,6 +2528,7 @@
       for (const disclosure of host.querySelectorAll('[data-au-disclosure]')) disclosure.open = open.has(disclosure.dataset.auDisclosure);
       focusTarget(focusKey)?.focus({preventScroll:true});
       if (navigation || !priorViewport && !host.querySelector('[data-au-forming="true"]')) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
+      fitActiveStage();
       positionOperationSource();
       drawEdges(navigation);
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open || recordDialog.open,reducedMotion:reduced?.matches,keyboard,inspecting:inspectionHold,activeElement:doc.activeElement,selected});
@@ -4237,9 +4240,18 @@
     container.addEventListener('wheel',sourceWheel,{passive:true});
     function geometryEvent(event) { if (event.target?.matches?.('.au-operation-passage')) { if (host.querySelector('.au-operation-stage')) return; if (!doc.hidden && !inspectionHold) { positionOperationAttention(false); drawEdges(); } return; } if (event.type === 'toggle') { drawEdges(); if (event.target?.open) interact(event.target.querySelector(':scope > :not(summary)')); } else if (event.target?.hasAttribute?.('data-au-graph-pan')) drawEdges(); }
     container.addEventListener('scroll',geometryEvent,true);container.addEventListener('toggle',geometryEvent,true);
-    doc.fonts?.ready?.then(() => { if (!disposed) drawEdges(); });
+    doc.fonts?.ready?.then(() => { if (!disposed) {fitActiveStage();drawEdges();} });
     container.addEventListener('click',click); container.addEventListener('pointerover',claimWarmIntent); container.addEventListener('focusin',focusInput); container.addEventListener('submit',submit); container.addEventListener('change',change); container.addEventListener('input',input); dialog.addEventListener('close',closed); recordDialog.addEventListener('close',closedRecord); doc.addEventListener('visibilitychange',visibility);
     root.addEventListener?.('hashchange',routeChanged); root.addEventListener?.('popstate',routeChanged);
+    function fitActiveStage() {
+      const viewport=host.querySelector('.au-operation-stage .au-graph-viewport'), transport=host.querySelector('.au-stage-transport');
+      if (!viewport?.getBoundingClientRect || !transport?.getBoundingClientRect || doc.hidden) return;
+      if ((root.innerWidth || 0)<900) { viewport.style.removeProperty('--au-stage-available-height');return; }
+      const bounds=viewport.getBoundingClientRect(), controls=transport.getBoundingClientRect();
+      if (!(bounds.width>0 && controls.height>0)) return;
+      const gap=Math.max(0,controls.top-bounds.bottom), available=Math.floor((root.innerHeight || 800)-bounds.top-controls.height-gap-16);
+      viewport.style.setProperty('--au-stage-available-height',`${Math.max(140,available)}px`);
+    }
     function centerActiveOperation(force = false) {
       const viewport = host.querySelector('.au-operation-stage .au-graph-viewport');
       if (!viewport || doc.hidden) return;
@@ -4247,13 +4259,14 @@
       if (!force && graphViewportWidth === width) return;
       graphViewportWidth = width;
       const trace = operationPeek?.trace || operationTrace, operation = trace?.current;
-      const id = operationNodeId(operation,trace?.working?.graph || current?.graph,current || {},trace);
-      const node = [...host.querySelectorAll('[data-au-stage-step]')].find(element=>element.dataset.auStageStep === id);
-      if (node) revealGraphNode(node,true);
+      const id = operationNodeId(operation,operationStageGraph(trace,current || {}),current || {},trace);
+      const mark=[...host.querySelectorAll('[data-au-operation-span]')].find(element=>element.dataset.auOperationSpan===operation?.id);
+      const sourceStep=mark?.closest('[data-au-stage-step]'), node=sourceStep || [...host.querySelectorAll('[data-au-stage-step]')].find(element=>element.dataset.auStageStep===id);
+      if (node) revealGraphNode(sourceStep?.querySelector('.au-stage-source') || node,true);
       positionOperationSource();
     }
     function resized() {
-      if (host.querySelector('.au-operation-stage')) { cancelStageMotion(); centerActiveOperation(); drawEdges(); return; }
+      if (host.querySelector('.au-operation-stage')) { if(!inspectionHold && demoSession)cancelStageMotion();fitActiveStage();centerActiveOperation();drawEdges();return; }
       const area=host.querySelector('.au-graph-viewport')?.getBoundingClientRect?.();
       if (!host.querySelector('[data-au-forming="true"]') && area && graphViewportWidth !== null && area.width !== graphViewportWidth) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
       drawEdges(); positionOperationAttention();
