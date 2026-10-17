@@ -2801,7 +2801,7 @@ function surfaceCopyProblems(html,originalQuotes=[]) {
  visit(root);return problems;
 }
 function nowSurface(html) {
- const match=html.match(/<p\b[^>]*\bdata-au-now-id="([^"]*)"[^>]*>[\s\S]*?<\/p>/);assert.ok(match,'one Now line identifies the actual recorded operation or event');return {id:decodedSurface(match[1]),html:match[0]};
+ const match=html.match(/<(p|div)\b[^>]*\bdata-au-now-id="([^"]*)"[^>]*>[\s\S]*?<\/\1>/);assert.ok(match,'one Now line identifies the actual recorded operation or event');return {id:decodedSurface(match[2]),html:match[0]};
 }
 function operationSurface(saved,operation,extra={}) {
  const trace={rows:[operation],current:operation,sources:new Map(),state:saved,...extra};
