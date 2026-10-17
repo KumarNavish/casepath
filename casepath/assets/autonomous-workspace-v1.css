@@ -752,6 +752,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) { min-height:var(--au-stage-excerpt-height,180px); }
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step > .au-stage-source { position:absolute; left:0; top:0; width:300px; }
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) > .au-stage-documents { display:flex; flex-direction:column; grid-column:2; grid-row:2; min-width:0; }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) > .au-stage-fact[data-au-current-fact=true] { grid-row:2; }
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source):has(> .au-stage-fact[data-au-current-fact=true]) > .au-stage-documents { grid-row:auto; }
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-documents > .au-stage-slot { margin:8px 0 12px; }
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-documents > .au-stage-slot[data-au-document-focused=true] { order:-1; }
