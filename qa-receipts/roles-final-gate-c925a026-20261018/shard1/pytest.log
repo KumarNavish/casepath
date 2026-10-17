@@ -1,1 +1,29 @@
-......
+.........                                                                [100%]
+=============================== warnings summary ===============================
+tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix
+tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix
+tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /workspace/casepath-roles-final-gate-c925a026-20261018/shard1/junit.xml -
+============================== slowest durations ===============================
+353.34s call     tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix
+163.28s call     tests/test_reference_admission_v1.py::test_mock_hrana_prepare_apply_all_nine_preserves_old_rows_budget_restart_and_exact_retry
+0.78s call     tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[partial_legacy]
+0.75s call     tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[foreign_policy]
+0.69s call     tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[adverse]
+0.67s call     tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[unknown]
+0.55s call     tests/test_reference_admission_v1.py::test_hosted_canonical_draft_submit_run_startup_recovery_never_calls_model_or_writes
+0.14s call     tests/test_reference_admission_v1.py::test_selected_rejected_provider_stage_and_global_unknown_outcome_refuse_read_only
+0.01s call     tests/test_reference_admission_v1.py::test_operator_pins_current_profile_and_both_immutable_source_histories
+
+(18 durations < 0.005s hidden.  Use -vv to show these durations.)
+9 passed, 5 warnings in 520.45s (0:08:40)
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
