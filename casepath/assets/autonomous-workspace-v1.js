@@ -944,7 +944,7 @@
   }
   function outcomeSummaryMarkup(state, outcome = state.outcome) {
     const shown = language.outcomePresentation({...state,outcome});
-    return `<p class="au-outcome-summary">${h(shown.label)}</p>${shown.summary && shown.summary !== shown.label ? `<p>${h(shown.summary)}</p>` : ''}${shown.nextAction ? `<p>${h(shown.nextAction)}</p>` : ''}${outcome?.summary ? `<details class="au-recorded-wording" data-au-disclosure="outcome-wording"><summary>Details</summary><p>${h(outcome.summary)}</p></details>` : ''}`;
+    return `<p class="au-outcome-summary">${h(shown.summary || shown.label)}</p>${shown.support ? `<p>${h(shown.support)}</p>` : ''}${shown.nextAction ? `<p>${h(shown.nextAction)}</p>` : ''}${outcome?.summary ? `<details class="au-recorded-wording" data-au-disclosure="outcome-wording"><summary>Details</summary><p>${h(outcome.summary)}</p></details>` : ''}`;
   }
   function workMarkup(state, projection, selected, events, detail = 'step', context = {}, presentation = {}) {
     if (!presentation.operations && presentation.operationOpening) presentation = {...presentation,operations:{opening:true,rows:[],sources:new Map()}};
@@ -1479,8 +1479,8 @@
     if (!isHash(rulePackHash)) return null;
     const use = list(state.knowledge_uses).findLast(row => row.workflow_id === state.run_id && row.knowledge_id === `procedure.${graph.family}`);
     if (use && (!isHash(use.definition_sha256) || use.rule_pack_sha256 !== rulePackHash || !list(context.compatible_knowledge).some(row => row.knowledge_id === use.knowledge_id && row.version === use.version && row.rule_pack_sha256 === rulePackHash && (!use.knowledge_sha256 || row.knowledge_sha256 === use.knowledge_sha256)))) return null;
-    const nodes = catalog.nodes.map(node => ({node_id:node.node_id,label:name(node),document_types:catalog.documents.filter(row => list(row.required_at_node_ids).includes(node.node_id)).map(row => row.document_type)}));
-    const topology = (nodes,edges) => ({nodes:nodes.map(node => ({id:node.node_id,label:name(node),documents:[...list(node.document_types)].sort()})),edges:edges.map(edge => ({id:edge.edge_id,from:edge.source_node_id,to:edge.target_node_id}))});
+    const nodes = catalog.nodes.map(node => ({node_id:node.node_id,label:recordedName(node),document_types:catalog.documents.filter(row => list(row.required_at_node_ids).includes(node.node_id)).map(row => row.document_type)}));
+    const topology = (nodes,edges) => ({nodes:nodes.map(node => ({id:node.node_id,label:recordedName(node),documents:[...list(node.document_types)].sort()})),edges:edges.map(edge => ({id:edge.edge_id,from:edge.source_node_id,to:edge.target_node_id}))});
     // Comparing the entire pinned catalog prevents a case-pruned head from
     // silently dropping a branch from the early, unresolved plan.
     if (canonicalJSON(topology(nodes,catalog.transitions)) !== canonicalJSON(topology(graph.nodes,graph.edges))) return null;
@@ -1490,7 +1490,7 @@
       procedure:use ? {knowledge_id:use.knowledge_id,version:use.version,definition_sha256:use.definition_sha256,knowledge_sha256:use.knowledge_sha256 || list(context.compatible_knowledge).find(row=>row.knowledge_id===use.knowledge_id && row.version===use.version && row.rule_pack_sha256===use.rule_pack_sha256)?.knowledge_sha256} : null,
       graph:{claim_id:state.claim_id,graph_sha256:graph.graph_sha256,family:graph.family,nodes,
         edges:catalog.transitions.map(edge => ({edge_id:edge.edge_id,source_node_id:edge.source_node_id,target_node_id:edge.target_node_id,label:edge.condition})),
-        document_catalog:catalog.documents.map(row => ({document_type:row.document_type,label:name(row)}))},evaluation:{nodes:[],edges:[],documents:[]},facts:[],obligations:[]};
+        document_catalog:catalog.documents.map(row => ({document_type:row.document_type,label:recordedName(row)}))},evaluation:{nodes:[],edges:[],documents:[]},facts:[],obligations:[]};
   }
   function operationStageGraph(trace, state) {
     const graph = workingProcessState(trace)?.graph || state.graph;
