@@ -3492,7 +3492,7 @@
     }
     async function loadRecordedPacket() {
       const descriptor = options.recordedPacket;
-      const eligible = () => !disposed && !doc.hidden && (view === 'work' || view === 'claim' && (demoSession || pausedPresentation)?.mode === 'operations');
+      const eligible = () => !disposed && !doc.hidden && (view === 'work' || view === 'claim' && ((demoSession || pausedPresentation)?.mode === 'operations' || publicReadOnly && presentationMode === 'replay' && openingPreferences.operations === 'recorded' && REFERENCE_DEMO_CASES.some(row => row.claim_id === openingId)));
       if (!descriptor || !eligible()) return false;
       let verification;
       try {
@@ -3512,7 +3512,7 @@
         if (length !== descriptor.bytes) throw new Error('Recorded packet acquisition is incomplete.');
         verification = {controller:packetLoadController,promise:checkedRecordedPacket(bytes,descriptor,options.allowNativeRecordedPacket === true)}; packetVerification=verification;
         const packet = await verification.promise;
-        if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work' && !(view === 'claim' && (demoSession || pausedPresentation)?.mode === 'operations')) return false;
+        if (!eligible() || packetLoadController.signal.aborted) return false;
         recordedPacket = packet; return true;
       } catch (_) { return false; }
       finally { if (packetVerification === verification) packetVerification=null; }
