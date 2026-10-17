@@ -947,7 +947,7 @@
       list(trace.rows).includes(operation) ? {state,receipt:display.receipt} : {state};
   }
   function nowSentence(shown) {
-    const action = shown.label.charAt(0).toLocaleLowerCase()+shown.label.slice(1);
+    const action = shown.action;
     const title = shown.document && (shown.document.split(/\s+/u).length<=7 ? `“${shown.document}”` : 'the selected document');
     const method = shown.how==='Fixed rules' ? 'using fixed rules' : shown.how.startsWith('AI model: ') ? `using ${shown.how.slice('AI model: '.length)}` : 'with no recorded method';
     return `${action}${title ? ` in ${title}` : ''} ${method}.`;
@@ -955,13 +955,13 @@
   function nowMarkup(state, events = [], presentation = {}) {
     const trace = presentation.operations;
     const operation = trace?.current || [...events].reverse().find(event=>event.seq<=state.revision);
-    const original = language.operationPresentation(operation,{...operationDisplayContext(state,trace,operation),history:presentation.mode === 'replay' || Boolean(trace?.inspection) || !active(state.status),documents:[...list(state.source_descriptors),...list(state.graph?.document_catalog)]});
+    const original = language.operationPresentation(operation,{...operationDisplayContext(state,trace,operation),history:false,documents:[...list(state.source_descriptors),...list(state.graph?.document_catalog)]});
     const cited = ['source.open','span.read','phrase.match','fact.extract','verification.check','document.check'].includes(operation?.kind) && typeof operation.source?.artifact_id === 'string' && operation.source.artifact_id;
     const reuse = operation?.kind==='knowledge.reuse' ? recordedReuseMoment(state,trace,presentation.knowledge || {}) : operation?.kind==='knowledge.used' && operation.payload?.knowledge && list(state.knowledge_uses).some(use=>canonicalJSON(use)===canonicalJSON(operation.payload.knowledge)) ? {use:operation.payload.knowledge} : null;
-    const shown = {...original,document:cited?original.document:'',...(reuse?{label:`Reused ${procedureLabel(reuse.use)} version ${reuse.use.version}`}:{})};
+    const shown = {...original,document:cited?original.document:'',...(reuse?{action:`reuses ${procedureLabel(reuse.use)} version ${reuse.use.version}`}:{})};
     const id = operation?.id || operation?.event_sha256 || '';
     const literal = operation?.kind==='fact.extract' && operation.source && list(trace?.rows).includes(operation) ? stageFactSpan(operation,true) : null;
-    const action=shown.label.charAt(0).toLocaleLowerCase()+shown.label.slice(1);
+    const action=shown.action;
     const recorded = literal ? `${h(action)}: <q data-au-recorded-quote data-au-now-fact="${h(operation.id)}" data-au-source-artifact="${h(literal.artifact_id)}" data-au-source-start-char="${literal.start_char}" data-au-source-end-char="${literal.end_char}">${h(literal.quote)}</q>${h(nowSentence(shown).slice(action.length))}` : h(operation ? nowSentence(shown) : 'has no recorded action yet.');
     return `<div class="au-now" data-au-now-id="${h(id)}"><span class="au-now-label">Now</span> ${roleBadge(shown.roleId)} <span data-au-now-copy>${recorded}</span> <span data-au-now-result>${h(recordedResultLabel(operation,state))}</span> ${operation ? recordButton('Details',trace?.current ? 'operation' : 'event',trace?.current ? operation.id : operation.seq) : ''}</div>`;
   }
@@ -1160,7 +1160,7 @@
     if (!event) return `<div class="au-now" data-au-now-id=""><span class="au-now-label">Now</span> ${roleBadge('casepath')} <span data-au-now-copy>has no selected recorded event.</span><span data-au-now-result>No result is available.</span></div>`;
     const version=event.versionRecord || event.item, shown=language.knowledgePresentation(version,event), used=event.kind==='knowledge.used';
     const known=['saved','reused','not_saved'].includes(shown.status), role=known?'memory':'casepath', number=version.version || event.item.version;
-    const action=!known?'shows this saved version. Its method was not recorded.':shown.status==='not_saved'?'did not save these steps after checking them with fixed rules.':used?`reused the known document checks from version ${number || 'unknown'} using fixed rules.`:shown.label==='Rechecked'?`rechecked version ${number || 'unknown'} and its known document checks using fixed rules.`:`saved version ${number || 'unknown'} and its known document checks using fixed rules.`;
+    const action=!known?'shows this saved version. Its method was not recorded.':shown.status==='not_saved'?'does not save these steps after checking them with fixed rules.':used?`reuses the known document checks from version ${number || 'unknown'} using fixed rules.`:shown.label==='Rechecked'?`rechecks version ${number || 'unknown'} and its known document checks using fixed rules.`:`saves version ${number || 'unknown'} and its known document checks using fixed rules.`;
     const result=shown.status==='not_saved'?'The recorded checks did not pass.':used?'This case still needed its own proof.':shown.status==='saved'?'The recorded checks passed.':'Read the original record in Details.';
     return `<div class="au-now" data-au-now-id="${h(event.id)}"><span class="au-now-label">Now</span> ${roleBadge(role)} <span data-au-now-copy>${h(action)}</span> <span data-au-now-result>${h(result)}</span> ${event.recorded?recordButton('Details','learning-event',event.id):''}</div>`;
   }
