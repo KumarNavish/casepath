@@ -208,8 +208,9 @@ let acceptedFixture;
 let sourceDrawerFixture;
 let nativeReferenceFixture;
 let nativeMigrationReferenceFixture;
-function referenceFixture(migrated = false) {
-  let fixture = migrated ? nativeMigrationReferenceFixture : nativeReferenceFixture;
+let nativeLayoutReferenceFixture;
+function referenceFixture(migrated = false, layoutOnly = false) {
+  let fixture = layoutOnly ? nativeLayoutReferenceFixture : migrated ? nativeMigrationReferenceFixture : nativeReferenceFixture;
   if (!fixture) {
     // Run the native reference controller and GET router in a disposable DB.
     // No authored assessment, model response, provider or public write is used.
@@ -264,6 +265,16 @@ with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temp
     state=service.run(cid)
     assert state['outcome']['assessment_status']=='complete'
     output['snapshots'][cid]=get('/claims/'+cid+'/snapshot')
+    if cid=='clm_0f4f13b1e3e1328c' and sys.argv[3]=='layout':
+     from casepath_api.autonomous_operations_v1 import capture_operation_inputs,build_operation_sidecar
+     from casepath_api.autonomous_operation_trace_store_v1 import admit_operation_trace,initialize_operation_trace_storage
+     initialize_operation_trace_storage(service.store.journal.connect)
+     layout_bundle=capture_operation_inputs(service.store,cid,service.policy)
+     admit_operation_trace(service.store.journal.connect,layout_bundle,build_operation_sidecar(layout_bundle))
+     output['recorded_layout']={}
+     for kind,suffix in [('opening','/replay?through_seq=0'),('head_snapshot','/snapshot'),('operations','/operations?mode=recorded')]:
+      captured_response=client.get(base+'/claims/'+cid+suffix);captured_response.raise_for_status()
+      output['recorded_layout'][kind]=base64.b64encode(captured_response.content).decode()
     output['prefixes'][cid]={str(seq):get('/claims/'+cid+'/replay?through_seq='+str(seq)) for seq in range(state['revision']+1)}
     if migrated:
      output['unprocessed'][cid]=output['prefixes'][cid]['0']
@@ -275,14 +286,14 @@ with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temp
   print(json.dumps(output,sort_keys=True))
  finally:service.shutdown()
 `;
-    const input = migrated ? process.env.CASEPATH_REFERENCE_MIGRATION_FIXTURE : process.env.CASEPATH_REFERENCE_FIXTURE;
-    const output = migrated ? process.env.CASEPATH_REFERENCE_MIGRATION_FIXTURE_OUTPUT : process.env.CASEPATH_REFERENCE_FIXTURE_OUTPUT;
+    const input = layoutOnly ? process.env.CASEPATH_LAYOUT_REFERENCE_FIXTURE : migrated ? process.env.CASEPATH_REFERENCE_MIGRATION_FIXTURE : process.env.CASEPATH_REFERENCE_FIXTURE;
+    const output = layoutOnly ? process.env.CASEPATH_LAYOUT_REFERENCE_FIXTURE_OUTPUT : migrated ? process.env.CASEPATH_REFERENCE_MIGRATION_FIXTURE_OUTPUT : process.env.CASEPATH_REFERENCE_FIXTURE_OUTPUT;
     const encoded = input
       ? (input.endsWith('.gz') ? gunzipSync(fs.readFileSync(input)).toString('utf8') : fs.readFileSync(input,'utf8'))
-      : execFileSync(process.env.CASEPATH_PYTHON || '/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python', ['-c',script,JSON.stringify(referenceIds),migrated?'migration':'fresh'],
+      : execFileSync(process.env.CASEPATH_PYTHON || '/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python', ['-c',script,JSON.stringify(layoutOnly?['clm_0f4f13b1e3e1328c']:referenceIds),migrated?'migration':'fresh',layoutOnly?'layout':'standard'],
         {cwd:root,encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'},maxBuffer:(migrated?256:128)*1024*1024});
     fixture = JSON.parse(encoded);
-    if (migrated) nativeMigrationReferenceFixture = fixture; else nativeReferenceFixture = fixture;
+    if (layoutOnly) nativeLayoutReferenceFixture = fixture; else if (migrated) nativeMigrationReferenceFixture = fixture; else nativeReferenceFixture = fixture;
     if (output) fs.writeFileSync(output,encoded);
   }
   return fixture;
@@ -1303,6 +1314,7 @@ test('replay lifecycle: actual index restores native back-forward autoplay and k
     if(!body)return route.fulfill({status:404,body:'Unavailable'});
     served[file]=sha(body);
     if(file==='casepath/index.html')body=Buffer.from(body.toString().replace('<head>','<head><script>window.CASEPATH_PUBLIC_READ_ONLY=true;window.CASEPATH_HOSTED_AUTONOMOUS=true;</script>'));
+    if(['.js','.css'].includes(path.extname(file)))servedAssets.push({url:request.url(),path:url.pathname,querySha256:url.searchParams.get('sha256'),bodySha256:sha(body),bytes:body.length});
     return route.fulfill({status:200,contentType:{'.html':'text/html','.js':'application/javascript','.css':'text/css','.ttf':'font/ttf','.json':'application/json'}[path.extname(file)]||'application/octet-stream',body});
    });
    await page.goto('http://native-entry.invalid/'+fragment);await page.locator('[data-au-revision]').waitFor();
@@ -3848,20 +3860,24 @@ for (const [width, height] of [[1280,800], [390,844]]) test(`map first layout: t
   await focusedReceipt(page, `map-first-legacy-eleven-${width}x${height}`, {classification: 'Renderer-only panning over actual incomplete legacy prefix9 from the existing prior-assessment fixture; distinct from the nine completed reference heads.', claim_id: id, revision: prefix.state.revision, state_sha256: prefix.state.state_sha256, branches: actualBranches, geometry});
 });
 
-// Uses only the checked-in public recording. It never builds a native fixture,
+// Uses checked-in public recordings or an explicitly supplied retained native packet.
+// It never builds a native fixture,
 // starts a server, contacts a provider, or writes a case/Knowledge database.
-async function recordedLanguagePage(t, width = 390) {
-  const context=await browser.newContext({viewport:{width,height:844},hasTouch:width<600,serviceWorkers:'block'}),page=await context.newPage(),requests=[],errors=[];
-  const index=fs.readFileSync(path.join(root,'casepath/index.html'),'utf8'),descriptor=JSON.parse(index.match(/<meta name="casepath-recorded-opening" content='([^']+)'/)[1]),bytes=fs.readFileSync(path.join(root,'casepath/assets/autonomous-recorded-heating-v1.json'));
+async function recordedLanguagePage(t, width = 390, options = {}) {
+  const context=await browser.newContext({viewport:{width,height:844},hasTouch:width<600,serviceWorkers:'block'}),page=await context.newPage(),requests=[],errors=[],servedAssets=[];
+  const index=fs.readFileSync(path.join(root,'casepath/index.html'),'utf8'),bytes=options.packetBytes||fs.readFileSync(options.packetPath||path.join(root,'casepath/assets/autonomous-recorded-heating-v1.json')),packetHeader=options.packetPath||options.packetBytes?JSON.parse(bytes):null,descriptor=packetHeader?{url:'/qa-retained-native-packet.json',bytes:bytes.length,sha256:sha(bytes),history_kind:packetHeader.history_kind,deployment_commit:packetHeader.deployment_commit}:JSON.parse(index.match(/<meta name="casepath-recorded-opening" content='([^']+)'/)[1]);
   assert.equal(bytes.length,descriptor.bytes);assert.equal(sha(bytes),descriptor.sha256);
-  const ui=require('../casepath/assets/autonomous-workspace-v1.js'),packet=await ui.checkedRecordedPacket(bytes,descriptor),native=await ui.decodeRecordedSession(packet,packet.claims[0].claim_id);
+  const assetHashesBefore=Object.fromEntries(['autonomous-workspace-v1.js','autonomous-workspace-v1.css','autonomous-language-v1.js'].map(name=>[name,sha(fs.readFileSync(path.join(root,'casepath/assets',name)))])),assetBinding={indexSha256:sha(Buffer.from(index)),sourceHashesBefore:assetHashesBefore,served:servedAssets};
+  const ui=require('../casepath/assets/autonomous-workspace-v1.js'),packet=await ui.checkedRecordedPacket(bytes,descriptor,Boolean(options.packetPath||options.packetBytes)),native=await ui.decodeRecordedSession(packet,options.caseId||packet.claims[0].claim_id);
   const knowledge=process.env.CASEPATH_KNOWLEDGE_FIXTURE?JSON.parse(fs.readFileSync(process.env.CASEPATH_KNOWLEDGE_FIXTURE,'utf8')):null;
   page.setDefaultTimeout(5000);page.on('pageerror',error=>errors.push(error.message));
-  t.after(async()=>{if(focusedReceiptRoot&&!page.isClosed()){fs.mkdirSync(focusedReceiptRoot,{recursive:true});const name=`${t.name.includes('paused active')?'resize':'audit'}-${width}`;await page.screenshot({path:path.join(focusedReceiptRoot,`recorded-language-${name}-final.png`),fullPage:true,animations:'disabled'});fs.writeFileSync(path.join(focusedReceiptRoot,`recorded-language-${name}-final.json`),JSON.stringify({sourceSha:sha(bytes),requests,errors,geometry:await recordedLanguageGeometry(page),text:await page.locator('body').innerText()},null,2));}await context.close();assert.deepEqual(errors,[]);assert.ok(requests.every(row=>row.method==='GET'&&row.origin==='http://localhost:41999'),'the browser remains inside the intercepted read-only recording');});
+  t.after(async()=>{if(focusedReceiptRoot&&!page.isClosed()){fs.mkdirSync(focusedReceiptRoot,{recursive:true});const name=`${t.name.includes('termination')?'termination':t.name.includes('eleven')?'legacy':t.name.includes('paused active')?'resize':'audit'}-${width}`;await page.screenshot({path:path.join(focusedReceiptRoot,`recorded-language-${name}-final.png`),fullPage:true,animations:'disabled'});fs.writeFileSync(path.join(focusedReceiptRoot,`recorded-language-${name}-final.json`),JSON.stringify({sourceSha:sha(bytes),assetBinding,requests,errors,geometry:await recordedLanguageGeometry(page),text:await page.locator('body').innerText()},null,2));}await context.close();assert.deepEqual(Object.fromEntries(Object.keys(assetHashesBefore).map(name=>[name,sha(fs.readFileSync(path.join(root,'casepath/assets',name)))])),assetHashesBefore,'authored asset bytes remain identical before and after the native run');assert.equal(sha(fs.readFileSync(path.join(root,'casepath/index.html'))),assetBinding.indexSha256);for(const [name,digest]of Object.entries(assetHashesBefore)){const delivered=servedAssets.filter(row=>row.path.endsWith('/'+name));assert.ok(delivered.length,`${name} was actually requested in the fresh context`);assert.ok(delivered.every(row=>row.bodySha256===digest&&row.querySha256===digest),'requested query and delivered response bytes bind the current source');}assert.deepEqual(errors,[]);assert.ok(requests.every(row=>row.method==='GET'&&row.origin==='http://localhost:41999'),'the browser remains inside the intercepted read-only recording');});
   await page.route('**/*',async route=>{
     const request=route.request(),url=new URL(request.url());requests.push({origin:url.origin,path:url.pathname+url.search,method:request.method()});
     if(url.origin!=='http://localhost:41999'||request.method()!=='GET')return route.abort('blockedbyclient');
+    if(url.pathname===descriptor.url)return route.fulfill({status:200,contentType:'application/json',body:bytes});
     if(url.pathname.startsWith('/api/')){
+      if(url.pathname.includes('/claims/clm_2a9c260c26afaa34/snapshot'))return route.fulfill({status:200,contentType:'application/json',body:fs.readFileSync(path.join(root,'casepath/assets/autonomous-saved-history-v1.json'))});
       const exact=url.pathname.includes(`/claims/${native.head.claimId}/`)?url.pathname.endsWith('/snapshot')?native.raw.head_snapshot:url.pathname.endsWith('/replay')&&url.searchParams.get('through_seq')==='0'?native.raw.opening:url.pathname.endsWith('/operations')&&url.searchParams.get('mode')==='recorded'?native.raw.operations:null:null;
       if(exact)return route.fulfill({status:200,contentType:url.pathname.endsWith('/operations')?'application/x-ndjson':'application/json',body:Buffer.from(exact)});
       const data=url.pathname.endsWith('/status')?{enabled:true,provider_ready:false,read_only:true,writable:false,limits:{}}:url.pathname.endsWith('/claims')?{claims:[],total:0}:url.pathname.endsWith('/knowledge')?knowledge||{versions:[],uses:[],quarantined:[]}:null;
@@ -3870,18 +3886,21 @@ async function recordedLanguagePage(t, width = 390) {
     const relative=url.pathname==='/'?'index.html':decodeURIComponent(url.pathname.slice(1)),file=path.resolve(root,'casepath',relative);
     if(!file.startsWith(path.join(root,'casepath')+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile())return route.fulfill({status:404,body:'Unavailable'});
     let body=fs.readFileSync(file);if(relative==='index.html')body=Buffer.from(body.toString().replace('<head>','<head><script>window.CASEPATH_PUBLIC_READ_ONLY=true;window.CASEPATH_HOSTED_AUTONOMOUS=true;</script>'));
+    if(['.js','.css'].includes(path.extname(file)))servedAssets.push({url:request.url(),path:url.pathname,querySha256:url.searchParams.get('sha256'),bodySha256:sha(body),bytes:body.length});
     return route.fulfill({status:200,contentType:{'.html':'text/html','.js':'application/javascript','.css':'text/css','.json':'application/json','.woff2':'font/woff2','.ttf':'font/ttf'}[path.extname(file)]||'application/octet-stream',body});
   });
   await page.goto('http://localhost:41999/#autonomous/cases');
   await page.waitForFunction(()=>Boolean(window.CasePathAutonomous));
-  await page.evaluate(descriptor=>{window.CasePathAutonomous.destroy();window.__recordedLanguageController=window.CasePathAutonomous.mount(document.querySelector('#autonomousWorkspace'),{recordedPacket:descriptor});window.__recordedLanguageReady=null;window.__recordedLanguageController.recordedPacketReady.then(ready=>window.__recordedLanguageReady=ready);},descriptor);
+  await page.evaluate(({descriptor,allowNative})=>{window.CasePathAutonomous.destroy();window.__recordedLanguageController=window.CasePathAutonomous.mount(document.querySelector('#autonomousWorkspace'),{recordedPacket:descriptor,allowNativeRecordedPacket:allowNative});window.__recordedLanguageReady=null;window.__recordedLanguageController.recordedPacketReady.then(ready=>window.__recordedLanguageReady=ready);},{descriptor,allowNative:Boolean(options.packetPath||options.packetBytes)});
   for(let tick=0;tick<50&&await page.evaluate(()=>window.__recordedLanguageReady===null);tick++){await delay(20);}
-  assert.equal(await page.evaluate(()=>window.__recordedLanguageReady),true,'the actual published packet must pass its exact descriptor checks while Cases owns acquisition');
-  await page.evaluate(()=>{location.hash='#autonomous/demonstration?mode=replay&operations=recorded';});
+  assert.equal(await page.evaluate(()=>window.__recordedLanguageReady),true,'the supplied recorded packet must pass its exact descriptor checks while Cases owns acquisition');
+  if(options.savedOnly){await page.evaluate(()=>window.__recordedLanguageController.openClaim('clm_2a9c260c26afaa34',true,{mode:'saved'}));return {page,requests,assetBinding,sourceSha:sha(bytes)};}
+  if(options.caseId){await page.evaluate(id=>window.__recordedLanguageController.openClaim(id,true,{mode:'replay',through:0,collection:'reference',operations:'recorded'}),options.caseId);await page.locator('[data-au-inspect=demo]').click();await page.locator(`button[data-au-demo-case="${options.caseId}"]:not([data-au-demo-saved])`).click();}
+  else await page.evaluate(()=>{location.hash='#autonomous/demonstration?mode=replay&operations=recorded';});
   for(let tick=0;tick<30&&!await page.locator('[data-au-graph-pan]').count();tick++)await delay(100);
   await page.locator('[data-au-graph-pan]').waitFor();
-  const target=Buffer.from(native.raw.operations).toString().trim().split('\n').map(JSON.parse).find(row=>row.type==='operation'&&row.kind==='fact.extract'&&row.input?.document_type==='landlord_knowledge_evidence');assert.ok(target?.source);
-  return {page,requests,descriptor,target,sourceSha:sha(bytes),originalTexts:(native.head_snapshot.state.acquired_sources||[]).map(row=>row.text).filter(value=>typeof value==='string')};
+  const operationRows=Buffer.from(native.raw.operations).toString().trim().split('\n').map(JSON.parse).filter(row=>row.type==='operation'),target=operationRows.find(row=>row.type==='operation'&&(options.operationId?row.id===options.operationId:options.documentCheck?row.kind==='document.check'&&row.object.id===options.documentCheck:row.kind==='fact.extract'&&row.input?.document_type==='landlord_knowledge_evidence'));assert.ok(target?.source);
+  return {page,requests,assetBinding,descriptor,target,operationRows,nativeHead:native.head,sourceSha:sha(bytes),originalTexts:(native.head_snapshot.state.acquired_sources||[]).map(row=>row.text).filter(value=>typeof value==='string')};
 }
 async function recordedLanguageGeometry(page) {
   return page.evaluate(()=>{
@@ -3977,4 +3996,35 @@ test('recorded language accessibility: actual axe WCAG AA audit and responsive c
   assert.deepEqual(audit.violations.filter(row=>['serious','critical'].includes(row.impact)).map(row=>({id:row.id,nodes:row.nodes.map(node=>node.target)})),[]);
   assert.deepEqual(problems,[],'every audited viewport retains copy, reflow and control target requirements');
   assert.ok(contrast.length>0);assert.ok(contrast.every(row=>row.text>=4.5&&row.border>=3&&row.track>=3),'computed timeline text, border and pseudo-track colors satisfy their AA contrast targets');
+});
+
+test('recorded language layout: actual termination document slots stay separate and the paused source stays visible after resize',async t=>{
+  let packetBytes;
+  if(!process.env.CASEPATH_LAYOUT_NATIVE_PACKET){
+    const fixture=referenceFixture(true,true),raw=fixture.recorded_layout;assert.ok(raw,'the native helper must capture the actual selected recorded GET stream');const bodies=['opening','head_snapshot','operations'].map(kind=>Buffer.from(raw[kind],'base64')),saved=JSON.parse(bodies[1]),encoded=require('../casepath/tools/pack_recorded_session.cjs').encodeBodies(bodies),claim={claim_id:saved.state.claim_id,head:{revision:saved.current_revision,state_sha256:saved.current_state_sha256,event_sha256:saved.current_event_sha256}};
+    for(const [index,kind]of ['opening','head_snapshot','operations'].entries())claim[kind]={bytes:bodies[index].length,sha256:sha(bodies[index]),root:encoded.roots[index]};packetBytes=Buffer.from(JSON.stringify({contract:'casepath.recorded-session-packet/1.0.0',history_kind:'native_fixture',deployment_commit:null,claims:[claim],fragments:encoded.fragments}));
+  }
+  const {page,target,operationRows,nativeHead,sourceSha,assetBinding}=await recordedLanguagePage(t,1428,{packetPath:process.env.CASEPATH_LAYOUT_NATIVE_PACKET,packetBytes,caseId:'clm_0f4f13b1e3e1328c',...(process.env.CASEPATH_LAYOUT_NATIVE_PACKET?{operationId:'op_77ce0cdebce3c1f23bdf1acc3dd84334'}:{documentCheck:'tenancy_terms_evidence'})});
+  await page.locator('[data-au-operation-skip]').waitFor();await page.locator('[data-au-operation-skip]').click();await page.locator('[data-au-operation-result-verified=true]').waitFor();const scrub=page.locator('[data-au-operation-scrub]');await scrub.focus();await page.keyboard.press('Home');for(let index=0;index<target.seq-1;index++)await page.keyboard.press('ArrowRight');
+  const measures=[];for(const [width,height]of [[1428,801],[390,844]]){
+    await page.setViewportSize({width,height});await page.evaluate(()=>scrollTo(0,0));await delay(100);
+    const geometry=await recordedLanguageGeometry(page),detail=await page.evaluate(()=>{const rect=element=>element?.getBoundingClientRect().toJSON(),active=document.querySelector('[data-au-stage-active=true]'),card=active?.querySelector('.au-stage-source');return {operation:document.querySelector('[data-au-current-operation]')?.dataset.auCurrentOperation,source:rect(card),header:rect(card?.querySelector('.au-stage-source-title')),span:rect(card?.querySelector('[data-au-operation-span]')),slots:[...active.querySelectorAll('.au-stage-slot')].map(element=>({text:element.innerText,rect:rect(element)})),stepHeader:rect(active.querySelector('.au-node'))};});measures.push({geometry,detail});
+    if(focusedReceiptRoot){fs.mkdirSync(focusedReceiptRoot,{recursive:true});fs.writeFileSync(path.join(focusedReceiptRoot,`termination-slots-${width}.json`),JSON.stringify({classification:process.env.CASEPATH_LAYOUT_NATIVE_PACKET?'Actual retained native fixture; frozen head is distinct from production.':'Actual isolated selected v1-to-v2 native test fixture; no production history claim.',nativeHead,sourceSha,assetBinding,target:{id:target.id,seq:target.seq,kind:target.kind},geometry,detail},null,2));await page.screenshot({path:path.join(focusedReceiptRoot,`termination-slots-${width}.png`),fullPage:true,animations:'disabled'});}
+    assert.equal(detail.operation,target.id);assert.equal(geometry.paused,true);assert.equal(geometry.overflow,false);assert.equal(detail.slots.length,3,'the real reference step requires three separate document cards');
+    for(let index=0;index<detail.slots.length;index++)for(const other of detail.slots.slice(index+1)){const a=detail.slots[index].rect,b=other.rect;assert.ok(a.right<=b.left+1||b.right<=a.left+1||a.bottom<=b.top+1||b.bottom<=a.top+1,'actual document card rectangles never overlap');}
+    for(const [label,bounds]of [['source header',detail.header],['cited span',detail.span]])assert.ok(bounds&&bounds.top>=geometry.pan.rect.top-1&&bounds.bottom<=geometry.pan.rect.bottom+1&&bounds.left>=geometry.pan.rect.left-1&&bounds.right<=geometry.pan.rect.right+1,`${label} remains visible within the actual graph scroll frame`);
+    assert.equal(geometry.revision,measures[0].geometry.revision);assert.equal(geometry.stateSha,measures[0].geometry.stateSha);assert.equal(geometry.now,measures[0].geometry.now,'paused resize retains the same recorded operation and role');
+  }
+  await page.setViewportSize({width:1428,height:650});await page.evaluate(()=>scrollTo(0,0));await delay(100);const oversized=await page.evaluate(()=>{const rect=element=>element?.getBoundingClientRect().toJSON(),rail=document.querySelector('[data-au-graph-pan]'),card=document.querySelector('[data-au-stage-active=true] .au-stage-source');return {rail:rect(rail),card:rect(card),header:rect(card.querySelector('.au-stage-source-title')),operation:document.querySelector('[data-au-current-operation]').dataset.auCurrentOperation};});
+  if(focusedReceiptRoot){fs.writeFileSync(path.join(focusedReceiptRoot,'termination-oversize.json'),JSON.stringify({assetBinding,...oversized},null,2));await page.screenshot({path:path.join(focusedReceiptRoot,'termination-oversize.png'),fullPage:true,animations:'disabled'});}assert.ok(oversized.card.height>oversized.rail.height,'the actual source exercises the oversized-card rule');assert.ok(oversized.header.top>=oversized.rail.top-1&&oversized.header.bottom<=oversized.rail.bottom+1,'an oversized source keeps its heading inside the graph frame');assert.equal(oversized.operation,target.id);
+  const factRows=operationRows.filter(row=>row.kind==='fact.extract'&&row.source);assert.ok(factRows.length);for(const [position,fact]of [['first',factRows[0]],['last',factRows.at(-1)]]){await page.setViewportSize({width:1428,height:801});await page.locator('[data-au-operation-scrub]').focus();await page.keyboard.press('Home');for(let index=0;index<fact.seq-1;index++)await page.keyboard.press('ArrowRight');await page.evaluate(()=>scrollTo(0,0));await delay(100);
+  const firstFact=await page.evaluate(id=>{const rect=element=>element?.getBoundingClientRect().toJSON(),rail=document.querySelector('[data-au-graph-pan]'),chip=document.querySelector(`[data-au-fact-operation="${id}"]`),source=document.querySelector('[data-au-stage-active=true] .au-stage-source [data-au-operation-span]');return {operation:document.querySelector('[data-au-current-operation]').dataset.auCurrentOperation,node:document.querySelector('[data-au-stage-active=true]').dataset.auStageStep,rail:rect(rail),chip:rect(chip),span:rect(source),phase:chip?.dataset.auDockPhase,visibility:chip?getComputedStyle(chip).visibility:null};},fact.id);
+  if(focusedReceiptRoot){fs.writeFileSync(path.join(focusedReceiptRoot,`termination-${position}-fact.json`),JSON.stringify({assetBinding,fact:{id:fact.id,seq:fact.seq,kind:fact.kind},...firstFact},null,2));await page.screenshot({path:path.join(focusedReceiptRoot,`termination-${position}-fact.png`),fullPage:true,animations:'disabled'});}assert.equal(firstFact.operation,fact.id);assert.equal(firstFact.node,'lt_form');for(const [label,bounds]of [[`${position} fact destination`,firstFact.chip],[`${position} fact excerpt`,firstFact.span]])assert.ok(bounds&&bounds.top>=firstFact.rail.top-1&&bounds.bottom<=firstFact.rail.bottom+1,`${label} remains inside the actual graph scroll frame`);
+  }
+});
+
+test('recorded language layout: the actual saved eleven-step legacy graph stays reachable without invented operations',async t=>{
+ const saved=JSON.parse(fs.readFileSync(path.join(root,'casepath/assets/autonomous-saved-history-v1.json'))),{page,requests,assetBinding}=await recordedLanguagePage(t,1428,{savedOnly:true});assert.equal(saved.state.graph.nodes.length,11);
+ for(const [width,height]of [[1428,801],[390,844]]){await page.setViewportSize({width,height});await delay(100);const pan=page.locator('[data-au-graph-pan]');await pan.waitFor();const before=await pan.evaluate(element=>({left:element.scrollLeft,width:element.clientWidth,scrollWidth:element.scrollWidth}));await pan.evaluate(element=>element.scrollLeft=element.scrollWidth);await delay(50);const after=await pan.evaluate(element=>({left:element.scrollLeft,width:element.clientWidth,scrollWidth:element.scrollWidth}));assert.ok(before.width<=width);if(after.scrollWidth>after.width)assert.ok(after.left>0,'the real legacy graph remains horizontally pannable');assert.equal(await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha'),saved.state.state_sha256);assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(saved.state.revision));assert.equal(await page.locator('[data-au-node]').count(),11);assert.equal(await page.locator('[data-au-current-operation]').count(),0);if(focusedReceiptRoot){fs.writeFileSync(path.join(focusedReceiptRoot,`legacy-eleven-${width}.json`),JSON.stringify({classification:'Actual checked-in saved legacy snapshot only; no operation trace manufactured.',assetBinding,claim:saved.state.claim_id,revision:saved.state.revision,stateSha:saved.state.state_sha256,before,after},null,2));await page.screenshot({path:path.join(focusedReceiptRoot,`legacy-eleven-${width}.png`),fullPage:true,animations:'disabled'});}}
+ assert.equal(requests.filter(row=>row.path.includes('/operations?')).length,0);
 });
