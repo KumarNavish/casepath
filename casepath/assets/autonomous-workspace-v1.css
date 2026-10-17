@@ -980,3 +980,5 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 @media (max-width:700px) {
   .au-workspace .au-learning .au-work-head > div:last-child { position:static; margin-top:8px; }
 }
+/* A heading focused on load stays quiet; keyboard navigation retains its ring. */
+.au-workspace:not([data-au-keyboard=true]) :is(h1,h2,[data-au-inspector-heading],[data-au-claim-title]):focus-visible { outline:none!important; }
