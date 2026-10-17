@@ -1,0 +1,56 @@
+{
+  "receipt_type": "casepath_inline_proxy_request_correction",
+  "base_commit": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "commit": "105ef1abf9cfd872f1898dab2d155c3de36e5f28",
+  "branch": "origin/codex/knowledge-timing-inline-request-20261018",
+  "push_exit_code": 0,
+  "source_checkout": "/workspace/casepath-release-ae0-shard6",
+  "host": "656813ef2295",
+  "source_status_short_after_commit": "",
+  "changed_files": ["casepath/tools/sites_worker.mjs"],
+  "change": "Restore const response = await fetch(new Request(new URL(...), {...same properties...}));. Move the existing exact-GET-scoped monotonic start immediately before that expression, retaining elapsed calculation after upstream headers. Timing now includes Request construction, as explicitly accepted in the handoff.",
+  "unchanged_contracts": "Same upstream identity, method, headers, duplex, redirect, abort signal, 14-second timeout, duration formatting, existing timing preservation, no-store policy, compressed unread body passthrough and status.",
+  "patch": "correction.patch",
+  "patch_sha256": "9e832214b27df975a1d13b9c1ada7b4aef66a5822572b0246ad7c1ab931ccbd1",
+  "tested_worker_sha256": "d5930a5937cd73321f25feef114db7600b9d5070111f5c859ec838ad5428a085",
+  "source_hash_file": "source-sha256.txt",
+  "node_check": {
+    "command": "TMPDIR=/workspace/knowledge-first-read-20261018/timing-inline/t TMP=/workspace/knowledge-first-read-20261018/timing-inline/t TEMP=/workspace/knowledge-first-read-20261018/timing-inline/t /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test casepath-qa/sites-proxy.test.cjs",
+    "working_directory": "/workspace/casepath-release-ae0-shard6",
+    "capture": "bash set -euo pipefail; output piped through tee, preserving test exit status.",
+    "attempts": 1,
+    "exit_code": 0,
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "runner_duration_ms": 106.404769,
+    "raw_output": "sites-proxy.log"
+  },
+  "python_checks": {
+    "status": "NOT RUN; pending Mac owner under latest steering to prioritize pushing the correction without preparation.",
+    "reason": "Assigned clone has no prepared pinned venv. No global pytest or replacement runtime was installed. Normal prepare was not started.",
+    "requested_release_regression": "casepath/tools/test_casepath_release.py::test_sites_delivery_is_same_origin_and_streaming_proxy_safe",
+    "requested_scoped_check": "casepath-api/tests/test_hosted_proxy_v1.py -k 'hosted_read_timing or public_method_denial or hosted_boundary_rejects_unsafe_configuration or hosted_entrypoint_rejects_unsafe_boundary'",
+    "qualification": "The earlier 19-pass scoped result belonged to the prior timing implementation and is not claimed as an execution against this correction. No Python pass, fail, skip or deselection count is reported for this correction."
+  },
+  "other_checks": {
+    "git_diff_check": "Passed.",
+    "source_scope": "One file only, three insertions and four deletions; tests unchanged.",
+    "preparation_attempted": false,
+    "new_dependencies_installed": false,
+    "last_measured_workspace_available_bytes_before_commit": 3979862016,
+    "push_raw_output": "push.log"
+  },
+  "limits": {
+    "original_gate_failure": "Preserved. This focused source correction does not establish that the old frozen gate passed.",
+    "full_gate_run": false,
+    "source_seal_run": false,
+    "publication_or_deployment": false,
+    "public_or_production_requests": false,
+    "provider_or_paid_calls": false,
+    "database_journal_or_ledger_writes": false,
+    "failed_gate_runtime_or_fixture_changes": false,
+    "seal_index_manifest_or_engine_edits": false
+  }
+}

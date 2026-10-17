@@ -1,0 +1,39 @@
+{
+  "review": "Independent read-only review of timing inline-request correction",
+  "host": "656813ef2295",
+  "branch": "codex/knowledge-timing-inline-request-20261018",
+  "base": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "sourcePath": "casepath/tools/sites_worker.mjs",
+  "sourceSHA256": "d5930a5937cd73321f25feef114db7600b9d5070111f5c859ec838ad5428a085",
+  "baseSourceSHA256": "915263dd14d7569f41e6c5bae28c6c392b957a7ac574786b064b70e2eb033b0e",
+  "patchSHA256": "9e832214b27df975a1d13b9c1ada7b4aef66a5822572b0246ad7c1ab931ccbd1",
+  "patchFileSHA256": "9e832214b27df975a1d13b9c1ada7b4aef66a5822572b0246ad7c1ab931ccbd1",
+  "conclusion": "No actionable findings in the reviewed patch.",
+  "findings": [],
+  "checks": {
+    "exactTransform": true,
+    "urlAndQuery": "Same new URL expression and upstream origin.",
+    "requestOptions": "Unchanged method, allowlisted headers, duplex half, redirect manual.",
+    "authentication": "Unchanged server-only proxy token/site origin; browser credential stripping unchanged.",
+    "timeoutAndCancellation": "Same AbortSignal.any(request.signal, AbortSignal.timeout(14000)); stream reader cancellation path unchanged.",
+    "response": "Body remains unread and streamed; compressed bytes, Content-Encoding, status and refusal behavior unchanged.",
+    "timing": "Same exact GET/path scope and elapsed/header append logic. Start now precedes URL/Request/signal construction, so measured duration includes only that trivial synchronous preparation in addition to waiting for upstream headers.",
+    "staticLiteral": "Restores existing await fetch(new Request assertion at casepath/tools/test_casepath_release.py:372 without test changes.",
+    "sourceScope": [
+      "casepath/tools/sites_worker.mjs"
+    ]
+  },
+  "validation": {
+    "nodeProxy": {
+      "kind": "Existing writer log inspected; reviewer did not rerun",
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "logPath": "/workspace/knowledge-first-read-20261018/timing-inline/e/sites-proxy.log",
+      "logSHA256": "85693fd1af88f27342164d95122442f6114d2e29eaa782655973525f3a04d096"
+    },
+    "python": "Exact prior failure and timing checks pending writer safe-runtime validation; not claimed passed."
+  },
+  "limits": "No product/test/source-branch writes, new tests, fullgate, public/product API calls, credentials, services, or push performed by reviewer."
+}
