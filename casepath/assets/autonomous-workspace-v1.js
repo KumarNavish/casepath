@@ -1636,7 +1636,7 @@
       const dockPhase = trace?.finished ? 'landed' : trace?.dockPhases?.get(check?.id) || 'landed';
       return `<div class="au-stage-slot" data-au-document="${h(type)}" data-au-stage-document="${h(type)}" data-au-document-active="${!requirement.planned}" data-au-document-planned="${Boolean(requirement.planned)}" data-au-recipe-known="${Boolean(reuse && list(reuse.recipes).some(recipe=>recipe.document_type===type))}" data-au-document-supported="${Boolean(source)}" data-au-document-checked="${Boolean(source) && dockPhase === 'landed'}" data-au-document-focused="${trace?.current?.object.id === type || trace?.current?.object.id === `fact:${type}`}"${requirement.id ? ` data-au-working-document="${h(type)}" data-au-operation-id="${h(requirement.id)}" data-au-working-graph-sha="${h(requirement.result.graph_sha256)}" data-au-working-evaluation-sha="${h(requirement.result.evaluation_sha256)}"` : ''}>${map && source ? '' : `<span>${h(label)}</span>`}<div class="au-stage-landing">${source ? `<button type="button" class="au-stage-thumbnail" data-au-dock-phase="${dockPhase}" data-au-source="${h(source.artifact_id)}" data-au-source-origin="${check ? `operation:${h(check.id)}` : `requirement:${h(requirementIdentity(obligation))}`}" data-au-citation="${h(JSON.stringify(citation))}"${check ? ` data-au-check-operation="${h(check.id)}"` : ''} aria-label="${h(operationSourceTitle(source))} · Supported by documents"><span class="au-stage-source-name">${h(operationSourceTitle(source))}</span>${map ? '' : `<span class="au-stage-paper" aria-hidden="true">${h(preview.quote)}</span>`}<span class="au-stage-source-check" aria-hidden="true">✓</span></button>` : ''}</div></div>`;
     }).join('');
-    return chips+slots;
+    return chips+(slots?`<div class="au-stage-documents">${slots}</div>`:'');
   }
   function recordedReuseMoment(state, trace, knowledge = {}) {
     if(!trace || trace.finished || trace.current?.kind!=='knowledge.reuse')return null;
@@ -2450,7 +2450,7 @@
       const area = viewport?.getBoundingClientRect?.(), bounds = node?.getBoundingClientRect?.();
       if (!area || !bounds) return;
       if (center || bounds.left < area.left+8 || bounds.right > area.right-8) viewport.scrollLeft += bounds.left-area.left-(area.width-bounds.width)/2;
-      if (center || bounds.top < area.top+8 || bounds.bottom > area.bottom-8) viewport.scrollTop += bounds.top-area.top-(area.height-bounds.height)/2;
+      if (center || bounds.top < area.top+8 || bounds.bottom > area.bottom-8) viewport.scrollTop += bounds.top-area.top-Math.max(0,(area.height-bounds.height)/2);
     }
     function sourceControls(surface) {
       const controls = new Map();
