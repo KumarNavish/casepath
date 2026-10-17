@@ -32,6 +32,12 @@
     }
   } catch (error) {
     const container = document.getElementById('autonomousWorkspace');
-    if (document.documentElement.dataset.autonomousWorkspace === 'true') container.textContent = `${error.message} Reload to try again.`;
+    if (document.documentElement.dataset.autonomousWorkspace === 'true') {
+      container.textContent = 'The workspace could not open. ';
+      const retry = document.createElement('button');
+      retry.type = 'button'; retry.textContent = 'Retry';
+      retry.addEventListener('click', () => location.reload());
+      container.append(retry);
+    }
   }
 })();
