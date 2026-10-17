@@ -1,0 +1,243 @@
+diff --git a/casepath-qa/autonomous-workspace-v1.test.cjs b/casepath-qa/autonomous-workspace-v1.test.cjs
+index 5eb51570..744dd5dc 100644
+--- a/casepath-qa/autonomous-workspace-v1.test.cjs
++++ b/casepath-qa/autonomous-workspace-v1.test.cjs
+@@ -2963,3 +2963,71 @@ test('late recorded HTTP429 or its saved fallback cannot repaint a different vie
+   finally{controller.destroy();held.resolve(phase==='operations'?response({detail:'Rate limit reached'},429):response(native.replay));await settle();}
+  }
+ });
++
++test('a selected Knowledge boot response uses normal validation once and Retry obtains a fresh GET',async t=>{
++ routingFixture(t,'#autonomous/knowledge');const f=knowledgeFixture(),opening=new AbortController(),data=learningFixtureData();
++ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,knowledgeOpening:{url:'/api/claim-loops/v1/autonomous/knowledge',fragment:globalThis.location.hash,controller:opening,timeout:setTimeout(()=>opening.abort(),15000),response:Promise.resolve(response({versions:'invalid'}))}});t.after(()=>controller.destroy());
++ await waitFor(()=>f.status.textContent==='Could not load Knowledge. Try again.');assert.equal(api.calls.filter(row=>row.path.endsWith('/knowledge')).length,0,'mount consumes the selected early GET instead of duplicating it');assert.equal(f.versions.length,0,'the early response cannot bypass recorded Knowledge validation');
++ await controller.showKnowledge();assert.equal(api.calls.filter(row=>row.path.endsWith('/knowledge')).length,1);assert.ok(f.versions.length);assert.equal(f.status.textContent,'');assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
++});
++
++test('a changed route discards the unused Knowledge boot response and a late selected response cannot repaint Cases',async t=>{
++ const routing=routingFixture(t,'#autonomous/cases'),f=knowledgeFixture(),unused=new AbortController(),data=learningFixtureData(),late=deferredRead();
++ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?late.promise:null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,knowledgeOpening:{url:'/api/claim-loops/v1/autonomous/knowledge',fragment:'#autonomous/knowledge',controller:unused,timeout:setTimeout(()=>unused.abort(),15000),response:Promise.resolve(response(data))}});t.after(()=>{late.resolve(response(data));controller.destroy();});assert.equal(unused.signal.aborted,true,'an opening GET belongs only to its original fragment');
++ await settle();routing.external('#autonomous/knowledge');await settle();routing.external('#autonomous/cases');const before=f.host.innerHTML;late.resolve(response(data));await settle();await settle();assert.equal(f.host.innerHTML,before);assert.equal(f.versions.length,0);assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
++});
++
++test('Knowledge renders before derivative cache serialization and the yielded copy retains its exact identity',async t=>{
++ routingFixture(t,'#autonomous/knowledge');const f=knowledgeFixture(),data=learningFixtureData(),frames=[],previous=globalThis.requestAnimationFrame;globalThis.requestAnimationFrame=callback=>frames.push(callback);
++ let serializations=0;Object.defineProperty(data,'toJSON',{value(){serializations++;return {...data};}});
++ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();if(previous===undefined)delete globalThis.requestAnimationFrame;else globalThis.requestAnimationFrame=previous;});
++ await waitFor(()=>f.versions.length);assert.equal(serializations,1,'only the bounded in-memory admission runs before the first render');assert.equal(globalThis.sessionStorage.getItem('casepath.read-cache/1'),null);assert.equal(frames.length,1);
++ frames.shift()();await waitFor(()=>globalThis.sessionStorage.getItem('casepath.read-cache/1'));const saved=await ui.checkedReadCache(globalThis.sessionStorage.getItem('casepath.read-cache/1'),'http://localhost:8123/api/claim-loops/v1/autonomous');assert.deepEqual(saved.knowledge.value,JSON.parse(JSON.stringify(data)));assert.ok(serializations>1);
++ globalThis.sessionStorage.removeItem('casepath.read-cache/1');await controller.showKnowledge(false);const before=serializations;assert.equal(frames.length,1);controller.destroy();frames.shift()();await new Promise(resolve=>setTimeout(resolve,5));assert.equal(globalThis.sessionStorage.getItem('casepath.read-cache/1'),null);assert.equal(serializations,before,'destroy cancels the yielded derivative before serialization or storage');
++});
++
++test('a Knowledge boot response from another API identity is aborted before a fresh scoped GET or persistence',async t=>{
++ routingFixture(t,'#autonomous/knowledge');const f=knowledgeFixture(),opening=new AbortController(),data=learningFixtureData();let parsed=0;
++ const apiBase='/other-autonomous',api=fakeApi({handle:async path=>path===apiBase+'/knowledge'?response(data):null});
++ const controller=ui.mount(f.container,{apiBase,fetch:api.fetch,knowledgeOpening:{url:'/api/claim-loops/v1/autonomous/knowledge',fragment:globalThis.location.hash,controller:opening,timeout:setTimeout(()=>opening.abort(),15000),response:Promise.resolve({ok:true,json:async()=>{parsed++;return {versions:'wrong API'};}})}});t.after(()=>controller.destroy());
++ assert.equal(opening.signal.aborted,true);await waitFor(()=>f.versions.length);assert.equal(parsed,0);assert.deepEqual(api.calls.map(row=>row.path),[apiBase+'/knowledge']);await waitFor(()=>globalThis.sessionStorage.getItem('casepath.read-cache/1'));
++ const saved=await ui.checkedReadCache(globalThis.sessionStorage.getItem('casepath.read-cache/1'),'http://localhost:8123'+apiBase);assert.deepEqual(saved.knowledge.value,data);
++});
++
++test('a public direct recorded reference route acquires immutable packet readiness before an explicit same-case picker choice',async t=>{
++ const packet=recordedPacketFixture(),routing=routingFixture(t,`#autonomous/claim/${packet.native.id}?mode=replay&operations=recorded&collection=reference`),f=operationOpeningDOM(),head=deferredRead(),previous=globalThis.CASEPATH_PUBLIC_READ_ONLY;globalThis.CASEPATH_PUBLIC_READ_ONLY=true;
++ const api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):path.endsWith('/replay?through_seq=4')?head.promise:path.endsWith('/snapshot?after=0')?response(packet.native.snapshot):path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();head.resolve(response(packet.native.replay));if(previous===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=previous;});
++ assert.equal(await controller.recordedPacketReady,true);await waitFor(()=>f.host.innerHTML.includes('Choose case'));assert.equal(f.attributes.get('data-au-operation-run-mode'),undefined);assert.doesNotMatch(f.host.innerHTML,/data-au-stage-fact=/);assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,0,'immutable readiness cannot autoplay a direct history route');
++ f.listeners.get('click')({target:control(f,'data-au-inspect','demo')});const choice=control(f,'data-au-demo-case',packet.native.id);choice.dataset.auDemoCollection='reference';f.listeners.get('click')({target:choice});await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.equal(api.calls.filter(row=>row.path.includes(`/claims/${packet.native.id}/operations?`)).length,0,'the explicit same-case choice can reuse exact checked packet bytes');assert.match(routing.hash,/operations=recorded/);assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
++});
++
++test('leaving a direct recorded opening cancels packet verification without late repaint',async t=>{
++ const packet=recordedPacketFixture(),routing=routingFixture(t,`#autonomous/claim/${packet.native.id}?mode=replay&operations=recorded&collection=reference`),f=operationOpeningDOM(),hash=delayedPacketHash(t,packet.bytes),previous=globalThis.CASEPATH_PUBLIC_READ_ONLY;globalThis.CASEPATH_PUBLIC_READ_ONLY=true;let signal;
++ const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(signal=init.signal,new Response(packet.bytes)):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):null});
++ const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{hash.release();controller.destroy();if(previous===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=previous;});await waitFor(()=>Boolean(signal));await hash.started;routing.external('#autonomous/knowledge');await settle();const before=f.host.innerHTML;assert.equal(signal.aborted,true);hash.release();assert.equal(await controller.recordedPacketReady,false);await settle();assert.equal(f.host.innerHTML,before);assert.doesNotMatch(f.host.innerHTML,/data-au-stage-fact=|Recorded replay/);
++});
++
++test('direct packet readiness excludes Knowledge private saved and unrelated routes',async t=>{
++ const packet=recordedPacketFixture(),routing=routingFixture(t,'#autonomous/knowledge'),previous=globalThis.CASEPATH_PUBLIC_READ_ONLY;t.after(()=>{if(previous===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=previous;});
++ for(const [publicReadOnly,fragment]of [[true,'#autonomous/knowledge'],[false,`#autonomous/claim/${packet.native.id}?mode=replay&operations=recorded&collection=reference`],[true,`#autonomous/claim/${packet.native.id}?mode=saved&operations=recorded&collection=reference`],[true,'#autonomous/claim/unrelated?mode=replay&operations=recorded&collection=reference']]){
++  routing.external(fragment);globalThis.CASEPATH_PUBLIC_READ_ONLY=publicReadOnly;const f=operationOpeningDOM(),api=fakeApi({handle:async path=>path.endsWith('/recorded-prototype.json')?new Response(packet.bytes):path.endsWith('/replay?through_seq=0')?response(packet.native.zero):null}),controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});
++  assert.equal(await controller.recordedPacketReady,false,fragment);assert.equal(api.calls.filter(row=>row.path.endsWith('/recorded-prototype.json')).length,0,fragment);controller.destroy();
++ }
++});
++
++test('reused Knowledge time formatting preserves exact UTC labels boundaries and unavailable timestamps',()=>{
++ const events=[...learningFixtureData().learning_replay.events,{at:'2024-02-29T23:59:59Z'},{at:'2026-12-31T23:59:00-05:00'},{at:'2026-03-29T01:30:00+02:00'},{at:null},{at:'unavailable'}],before=JSON.stringify(events);
++ for(let pass=0;pass<2;pass++)for(const event of events){const expected=!event.at||!Number.isFinite(Date.parse(event.at))?'Timestamp unavailable · unordered':new Date(event.at).toLocaleString('en-GB',{timeZone:'UTC',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false})+' UTC';assert.equal(ui.learningTime(event),expected);}
++ assert.equal(JSON.stringify(events),before);
++});
++
++test('Knowledge timestamp formatting creates no formatter at startup or for unavailable time and reuses one for valid history',()=>{
++ const {runInNewContext}=require('node:vm'),{readFileSync}=require('node:fs'),{resolve}=require('node:path');let constructed=0;
++ const context={module:{exports:{}},require:file=>require(resolve(__dirname,'../casepath/assets',file)),Intl:{DateTimeFormat:function(...args){constructed++;return new Intl.DateTimeFormat(...args);}}};
++ runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-workspace-v1.js'),'utf8'),context);const fresh=context.module.exports;assert.equal(constructed,0,'workspace initialization does not pay formatting setup');
++ assert.equal(fresh.learningTime({at:null}),'Timestamp unavailable · unordered');assert.equal(fresh.learningTime({at:'unknown'}),'Timestamp unavailable · unordered');assert.equal(constructed,0);
++ const first={at:'2026-10-13T05:25:12+00:00'},second={at:'2026-10-15T12:10:00Z'};assert.equal(fresh.learningTime(first),ui.learningTime(first));assert.equal(fresh.learningTime(second),ui.learningTime(second));assert.equal(constructed,1,'one formatter serves the valid recorded history');
++});
+diff --git a/casepath-qa/sites-autonomous-entry.test.cjs b/casepath-qa/sites-autonomous-entry.test.cjs
+index 86f91b0f..dfba1a40 100644
+--- a/casepath-qa/sites-autonomous-entry.test.cjs
++++ b/casepath-qa/sites-autonomous-entry.test.cjs
+@@ -93,3 +93,27 @@ test('the hosted opening preloads exact recorded bytes without waiting or enabli
+     assert.deepEqual(calls,[],'opening assets never grant API write or inference authority');
+   }
+ });
++
++test('public Knowledge opening starts one bounded GET before the workspace script is ready',async()=>{
++  const {runInNewContext}=require('node:vm'),calls=[],scripts=[],mounted=[],timers=new Map();let timerId=0;
++  const location=new URL('https://casepath.invalid/#autonomous/knowledge?event=recorded-event&stage=10');
++  const window={CASEPATH_PUBLIC_READ_ONLY:true,CasePathAutonomous:{mount:(_container,options)=>mounted.push(options)},addEventListener(){}};
++  const document={documentElement:{dataset:{}},createElement:()=>({}),querySelector:selector=>({content:selector.includes('casepath-recorded-opening')||selector.includes('casepath-saved-history')?'null':'workspace.js'}),getElementById:()=>({}),body:{append:script=>scripts.push(script)}};
++  const openingResponse=Promise.resolve({ok:true,json:async()=>({versions:[]})});
++  const pending=runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-entry-v1.js'),'utf8'),{window,document,location,AbortController,setTimeout:(callback,delay)=>{timers.set(++timerId,{callback,delay});return timerId;},clearTimeout:id=>timers.delete(id),fetch:(url,init)=>{calls.push({url,init});return openingResponse;}});
++  assert.equal(calls.length,1,'the selected GET overlaps the deferred workspace download');assert.equal(scripts.length,1);assert.equal(mounted.length,0);
++  assert.equal(calls[0].url,'/api/claim-loops/v1/autonomous/knowledge');assert.equal(calls[0].init.method,'GET');assert.equal(calls[0].init.cache,'no-store');assert.equal(calls[0].init.headers.Accept,'application/json');assert.equal(calls[0].init.signal.aborted,false);assert.equal([...timers.values()][0].delay,15000);
++  scripts[0].onload();await pending;
++  assert.equal(mounted.length,1);assert.equal(mounted[0].knowledgeOpening.url,calls[0].url);assert.equal(mounted[0].knowledgeOpening.fragment,location.hash);assert.equal(mounted[0].knowledgeOpening.response,openingResponse);assert.equal(mounted[0].knowledgeOpening.controller.signal,calls[0].init.signal);
++});
++
++test('Knowledge boot GET stays public and route-specific and aborts if workspace loading fails',async()=>{
++  const {runInNewContext}=require('node:vm');
++  for(const [publicReadOnly,hash]of [[false,'#autonomous/knowledge'],[true,'#autonomous/cases'],[true,'#autonomous/knowledge-other'],[true,'#autonomous/knowledge']]){
++    const calls=[],timers=new Map();let next=0;
++    const window={CASEPATH_PUBLIC_READ_ONLY:publicReadOnly},container={textContent:'',append(){}};
++    const document={documentElement:{dataset:{autonomousWorkspace:'true'}},createElement:()=>({addEventListener(){}}),querySelector:()=>({content:'workspace.js'}),getElementById:()=>container,body:{append:script=>script.onerror()}};
++    await runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-entry-v1.js'),'utf8'),{window,document,location:new URL('https://casepath.invalid/'+hash),AbortController,setTimeout:(callback,delay)=>{timers.set(++next,{callback,delay});return next;},clearTimeout:id=>timers.delete(id),fetch:(url,init)=>{calls.push({url,init});return Promise.resolve({ok:true});}});
++    assert.equal(calls.length,publicReadOnly&&hash==='#autonomous/knowledge'?1:0,hash);if(calls.length)assert.equal(calls[0].init.signal.aborted,true);assert.equal(timers.size,0);
++  }
++});
+diff --git a/casepath/assets/autonomous-entry-v1.js b/casepath/assets/autonomous-entry-v1.js
+index 8c692170..dd399692 100644
+--- a/casepath/assets/autonomous-entry-v1.js
++++ b/casepath/assets/autonomous-entry-v1.js
+@@ -14,8 +14,15 @@
+       document.body.append(script);
+     });
+   }
++  let knowledgeOpening;
+   try {
+     if (document.documentElement.dataset.autonomousWorkspace === 'true') {
++      if (window.CASEPATH_PUBLIC_READ_ONLY === true && (location.hash === '#autonomous/knowledge' || location.hash.startsWith('#autonomous/knowledge?'))) {
++        const url = '/api/claim-loops/v1/autonomous/knowledge', controller = new AbortController(), timeout = setTimeout(() => controller.abort(),15000);
++        const response = fetch(url,{method:'GET',headers:{Accept:'application/json'},signal:controller.signal,cache:'no-store'});
++        response.catch(() => {});
++        knowledgeOpening = {url,fragment:location.hash,controller,timeout,response};
++      }
+       await load('casepath-autonomous-script');
+       let recordedPacket, savedSnapshot;
+       if (window.CASEPATH_PUBLIC_READ_ONLY === true) {
+@@ -24,13 +31,15 @@
+         try { savedSnapshot = JSON.parse(document.querySelector('meta[name="casepath-saved-history"]')?.content || 'null'); }
+         catch (_) { /* Saved content can still arrive from the normal GET. */ }
+       }
+-      window.CasePathAutonomous.mount(document.getElementById('autonomousWorkspace'), {recordedPacket, savedSnapshot});
++      window.CasePathAutonomous.mount(document.getElementById('autonomousWorkspace'), {recordedPacket, savedSnapshot, knowledgeOpening});
++      knowledgeOpening = null;
+       window.addEventListener('pagehide', event => { if (!event.persisted) window.CasePathAutonomous.destroy(); });
+     } else {
+       await load('casepath-review-workspace-script');
+       await load('casepath-review-desk-script');
+     }
+   } catch (error) {
++    if (knowledgeOpening) { knowledgeOpening.controller.abort(); clearTimeout(knowledgeOpening.timeout); }
+     const container = document.getElementById('autonomousWorkspace');
+     if (document.documentElement.dataset.autonomousWorkspace === 'true') {
+       container.textContent = 'The workspace could not open. ';
+diff --git a/casepath/assets/autonomous-workspace-v1.js b/casepath/assets/autonomous-workspace-v1.js
+index 21fdc82c..e053739f 100644
+--- a/casepath/assets/autonomous-workspace-v1.js
++++ b/casepath/assets/autonomous-workspace-v1.js
+@@ -1108,9 +1108,10 @@
+     const item=event.versionRecord || event.item, id=item.knowledge_id || '', family=item.family || event.family || (id.startsWith('procedure.')?id.slice('procedure.'.length):'');
+     return DOMAINS.some(domain=>domain.id===family) ? procedureLabel({...item,family}) : 'Procedure not accepted';
+   }
++  let learningTimeFormat;
+   function learningTime(event) {
+     if (!event.at || !Number.isFinite(Date.parse(event.at))) return 'Timestamp unavailable · unordered';
+-    return new Date(event.at).toLocaleString('en-GB',{timeZone:'UTC',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false})+' UTC';
++    return (learningTimeFormat ||= new Intl.DateTimeFormat('en-GB',{timeZone:'UTC',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false})).format(new Date(event.at))+' UTC';
+   }
+   function learningPinAttributes(item) {
+     return item?.knowledge_id && item?.version ? ` data-au-knowledge="${h(item.knowledge_id)}" data-au-version="${h(item.version)}" data-au-knowledge-sha="${h(item.knowledge_sha256 || '')}" data-au-definition-sha="${h(item.definition_sha256 || item.qualification?.definition_sha256 || '')}"` : '';
+@@ -2069,6 +2070,15 @@
+     let storage = null, apiIdentity = null;
+     try { if (root.location?.href) { apiIdentity = new URL(base,root.location.href).href; storage = root.sessionStorage; } } catch (_) { /* Session storage is optional. */ }
+     const controllers = new Set();
++    let knowledgeOpening = options.knowledgeOpening || null;
++    function discardKnowledgeOpening() {
++      if (!knowledgeOpening) return;
++      knowledgeOpening.controller.abort(); root.clearTimeout(knowledgeOpening.timeout); knowledgeOpening = null;
++    }
++    if (knowledgeOpening) {
++      try { if (new URL(knowledgeOpening.url,root.location?.href).href !== new URL(base+'/knowledge',root.location?.href).href) discardKnowledgeOpening(); }
++      catch (_) { discardKnowledgeOpening(); }
++    }
+     let recordedPacket = null, packetVerification = null, packetLoadController = null, packetAcquisition = null;
+     let savedSnapshotLoad = null, savedSnapshotController = null;
+     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
+@@ -2097,6 +2107,7 @@
+     function routeChanged() {
+       if (disposed || busy || (!root.location && routedFragment !== null)) return;
+       const fragment = root.location?.hash || '';
++      if (knowledgeOpening && fragment !== knowledgeOpening.fragment) discardKnowledgeOpening();
+       if (fragment === routedFragment) return;
+       if (fragment === '#autonomous/knowledge') showKnowledge(false);
+       else if (fragment.startsWith('#autonomous/knowledge?')) { const params = new URLSearchParams(fragment.slice(fragment.indexOf('?')+1)); showKnowledge(false,params.get('knowledge')?{knowledge_id:params.get('knowledge'),version:params.get('version'),knowledge_sha256:params.get('sha256'),definition_sha256:params.get('definition')}:null,{event:params.get('event'),stage:Number(params.get('stage')??10),facet:params.get('facet'),complete:params.get('complete')==='1'}); }
+@@ -2159,7 +2170,11 @@
+     }
+     async function persistReadCache() {
+       if (!storage || !apiIdentity) return;
+-      const generation = readGeneration, write = ++storageWrite, now = Date.now();
++      const generation = readGeneration, write = ++storageWrite;
++      // The derivative must not extend the task that renders a fresh GET.
++      await new Promise(resolve => root.requestAnimationFrame ? root.requestAnimationFrame(() => root.setTimeout(resolve,0)) : root.setTimeout(resolve,0));
++      if (disposed || generation !== readGeneration || write !== storageWrite) return;
++      const now = Date.now();
+       for (const [id,row] of savedHeads) if (now - row.at > READ_CACHE_AGE) savedHeads.delete(id);
+       if (savedKnowledge && now - savedKnowledge.at > READ_CACHE_AGE) savedKnowledge = null;
+       while (savedHeads.size > 3) savedHeads.delete(savedHeads.keys().next().value);
+@@ -2247,12 +2262,14 @@
+       if (!readonly && (publicReadOnly || !status || !writable(status))) { const error = new Error(PUBLIC_READ_ONLY_MESSAGE); error.status = 403; return Promise.reject(error); }
+       const identity = `${readGeneration}:${path}`;
+       if (readonly && inflightReads.has(identity)) { if (!quiet && readOwners.has(identity)) readOwners.get(identity).foreground = true; return inflightReads.get(identity); }
+-      const controller = new AbortController(); controllers.add(controller);
++      const opening = readonly && path === '/knowledge' && knowledgeOpening && root.location?.hash === knowledgeOpening.fragment ? knowledgeOpening : null;
++      if (opening) knowledgeOpening = null;
++      const controller = opening?.controller || new AbortController(); controllers.add(controller);
+       const owner = {controller,foreground:!quiet}; if (readonly) readOwners.set(identity,owner);
+-      const timeout = root.setTimeout(() => controller.abort(),15000);
++      const timeout = opening?.timeout || root.setTimeout(() => controller.abort(),15000);
+       const operation = (async () => {
+         try {
+-          const response = await fetcher(base + path,{...init,signal:controller.signal,headers:{Accept:'application/json',...(init.body ? {'Content-Type':'application/json','X-CasePath-Agent-Work':'1'} : {}),...init.headers},cache:'no-store'});
++          const response = await (opening ? opening.response : fetcher(base + path,{...init,signal:controller.signal,headers:{Accept:'application/json',...(init.body ? {'Content-Type':'application/json','X-CasePath-Agent-Work':'1'} : {}),...init.headers},cache:'no-store'}));
+           const data = await response.json();
+           if (!response.ok) { const error = new Error(typeof data.detail === 'string' ? data.detail : data.detail?.message || data.message || `Request refused (${response.status}).`); error.status = response.status; throw error; }
+           return data;
+@@ -3476,7 +3493,7 @@
+     }
+     async function loadRecordedPacket() {
+       const descriptor = options.recordedPacket;
+-      const eligible = () => !disposed && !doc.hidden && (view === 'work' || view === 'claim' && (demoSession || pausedPresentation)?.mode === 'operations');
++      const eligible = () => !disposed && !doc.hidden && (view === 'work' || view === 'claim' && ((demoSession || pausedPresentation)?.mode === 'operations' || publicReadOnly && presentationMode === 'replay' && openingPreferences.operations === 'recorded' && REFERENCE_DEMO_CASES.some(row => row.claim_id === openingId)));
+       if (!descriptor || !eligible()) return false;
+       let verification;
+       try {
+@@ -3496,7 +3513,7 @@
+         if (length !== descriptor.bytes) throw new Error('Recorded packet acquisition is incomplete.');
+         verification = {controller:packetLoadController,promise:checkedRecordedPacket(bytes,descriptor,options.allowNativeRecordedPacket === true)}; packetVerification=verification;
+         const packet = await verification.promise;
+-        if (disposed || doc.hidden || packetLoadController.signal.aborted || view !== 'work' && !(view === 'claim' && (demoSession || pausedPresentation)?.mode === 'operations')) return false;
++        if (!eligible() || packetLoadController.signal.aborted) return false;
+         recordedPacket = packet; return true;
+       } catch (_) { return false; }
+       finally { if (packetVerification === verification) packetVerification=null; }
+@@ -4286,7 +4303,7 @@
+       drawEdges(); positionOperationAttention();
+     }
+     const resize = root.ResizeObserver ? new root.ResizeObserver(resized) : null; resize?.observe(host); root.addEventListener?.('resize',resized);
+-    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),savedSnapshotReady:savedSnapshotLoad=Promise.resolve().then(loadSavedSnapshot),refresh:poll,destroy() { if (disposed) return; disposed = true; cancelLearning(); packetLoadController?.abort(); savedSnapshotController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',focusInput); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
++    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),savedSnapshotReady:savedSnapshotLoad=Promise.resolve().then(loadSavedSnapshot),refresh:poll,destroy() { if (disposed) return; disposed = true; discardKnowledgeOpening(); cancelLearning(); packetLoadController?.abort(); savedSnapshotController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',focusInput); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
+     mounts.set(container,controller); activeMount = controller;
+     sessionRestore = restoreReadCache();
+     if (options.recordedPacket) packetAcquisition = {promise:controller.recordedPacketReady.then(ready => { if (!ready) throw new Error('The recorded packet asset is unavailable.'); return recordedPacket; })};

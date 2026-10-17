@@ -1,0 +1,16 @@
+
+==================================== ERRORS ====================================
+________________ ERROR collecting tests/test_hosted_proxy_v1.py ________________
+ImportError while importing test module '/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_hosted_proxy_v1.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../knowledge-first-read-20261018/home/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/tests/test_hosted_proxy_v1.py:10: in <module>
+    from casepath_api.hosted_proxy_v1 import HostedReadTiming, SitesProxyBoundary
+E   ImportError: cannot import name 'HostedReadTiming' from 'casepath_api.hosted_proxy_v1' (/workspace/casepath-release-ae0-shard6/casepath-api/casepath_api/hosted_proxy_v1.py)
+=========================== short test summary info ============================
+ERROR casepath-api/tests/test_hosted_proxy_v1.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.35s

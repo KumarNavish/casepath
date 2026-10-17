@@ -1,0 +1,295 @@
+diff --git a/casepath-api/casepath_api/hosted_app_v1.py b/casepath-api/casepath_api/hosted_app_v1.py
+index db6ea80e..a5487043 100644
+--- a/casepath-api/casepath_api/hosted_app_v1.py
++++ b/casepath-api/casepath_api/hosted_app_v1.py
+@@ -11,7 +11,7 @@ from .agent_work.store import WorkStore
+ from .autonomous_api_v1 import create_autonomous_router
+ from .autonomous_corpus_v1 import CanonicalCorpus
+ from .hosted_lease_v1 import HostedAutonomousController, HostedWorkflowLease
+-from .hosted_proxy_v1 import SitesProxyBoundary
++from .hosted_proxy_v1 import HostedReadTiming, SitesProxyBoundary
+ from .hosted_storage_v1 import HostedAutonomousStore, HostedJournal, HostedSources, HostedStorageError, TursoDatabase
+ from .workspace_corpus import PublicCorpus, default_workspace_corpus_root
+ 
+@@ -100,4 +100,5 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
+     api.add_event_handler('startup', startup)
+     api.add_event_handler('shutdown', shutdown)
+     api.add_middleware(SitesProxyBoundary, site_origin=origin, token=token)
++    api.add_middleware(HostedReadTiming)
+     return api
+diff --git a/casepath-api/casepath_api/hosted_proxy_v1.py b/casepath-api/casepath_api/hosted_proxy_v1.py
+index 6a0f5445..9543ef2e 100644
+--- a/casepath-api/casepath_api/hosted_proxy_v1.py
++++ b/casepath-api/casepath_api/hosted_proxy_v1.py
+@@ -1,10 +1,37 @@
+ """Authenticate public read access through Sites; never admit work commands."""
+ from hmac import compare_digest
++from math import isfinite
++from time import monotonic
+ from urllib.parse import urlsplit
+ 
+ from starlette.responses import JSONResponse
+ 
+ 
++class HostedReadTiming:
++    """Measure selected public reads through response headers, without reading bodies."""
++    PATHS = frozenset(('/api/claim-loops/v1/autonomous/knowledge',
++                       '/api/claim-loops/v1/autonomous/claims'))
++
++    def __init__(self, app):
++        self.app = app
++
++    async def __call__(self, scope, receive, send):
++        if scope['type'] != 'http' or scope['method'] != 'GET' or scope['path'] not in self.PATHS:
++            return await self.app(scope, receive, send)
++        started = monotonic()
++
++        async def timed_send(message):
++            if message['type'] == 'http.response.start':
++                elapsed = (monotonic() - started) * 1000
++                duration = min(999999999.999, max(0.0, elapsed)) if isfinite(elapsed) else 0.0
++                headers = list(message.get('headers', ()))
++                headers.append((b'server-timing', f'casepath_api;dur={duration:.3f}'.encode('ascii')))
++                message = {**message, 'headers': headers}
++            await send(message)
++
++        await self.app(scope, receive, timed_send)
++
++
+ class SitesProxyBoundary:
+     def __init__(self, app, *, site_origin, token):
+         site = urlsplit(site_origin)
+diff --git a/casepath-api/tests/test_hosted_proxy_v1.py b/casepath-api/tests/test_hosted_proxy_v1.py
+index c00255e8..2b02c02b 100644
+--- a/casepath-api/tests/test_hosted_proxy_v1.py
++++ b/casepath-api/tests/test_hosted_proxy_v1.py
+@@ -1,12 +1,13 @@
+ from fastapi import FastAPI
+ from fastapi.testclient import TestClient
+ import asyncio
++from contextvars import ContextVar
+ import pytest
+ 
+ from casepath_api.autonomous_api_v1 import create_autonomous_router
+ from casepath_api.autonomous_controller_v1 import AutonomousController
+ from casepath_api.autonomous_store_v1 import AutonomousStore
+-from casepath_api.hosted_proxy_v1 import SitesProxyBoundary
++from casepath_api.hosted_proxy_v1 import HostedReadTiming, SitesProxyBoundary
+ from casepath_api.workspace_corpus import PublicCorpus, default_workspace_corpus_root
+ 
+ 
+@@ -72,3 +73,118 @@ def test_hosted_entrypoint_rejects_unsafe_boundary_before_opening_database(monke
+            'TURSO_AUTH_TOKEN': 'fixture-token'}
+     with pytest.raises(ValueError, match='fixed HTTPS Site origin and server secret'):
+         hosted_app_v1.create_hosted_app(environment=env)
++
++
++@pytest.mark.parametrize('method,path,timed', [
++    ('GET', '/api/claim-loops/v1/autonomous/knowledge', True),
++    ('GET', '/api/claim-loops/v1/autonomous/claims', True),
++    ('HEAD', '/api/claim-loops/v1/autonomous/knowledge', False),
++    ('POST', '/api/claim-loops/v1/autonomous/claims', False),
++    ('GET', '/api/claim-loops/v1/autonomous/knowledge/', False),
++    ('GET', '/api/claim-loops/v1/autonomous/claims/example', False),
++    ('GET', '/healthz', False),
++])
++def test_hosted_read_timing_preserves_response_and_exact_get_scope(monkeypatch, method, path, timed):
++    from casepath_api import hosted_proxy_v1
++
++    ticks = iter((10.0, 10.012345))
++    monkeypatch.setattr(hosted_proxy_v1, 'monotonic', lambda: next(ticks))
++    headers = [(b'content-type', b'application/json'), (b'server-timing', b'existing;dur=2')]
++    start = {'type': 'http.response.start', 'status': 409, 'headers': headers}
++    body = {'type': 'http.response.body', 'body': b'{"detail":"unchanged saved-state refusal"}'}
++
++    async def application(scope, receive, send):
++        await send(start)
++        await send(body)
++
++    async def run():
++        messages = []
++        async def send(message):
++            messages.append(message)
++        await HostedReadTiming(application)({'type': 'http', 'method': method, 'path': path,
++                                             'query_string': b'limit=2'}, None, send)
++        return messages
++
++    sent = asyncio.run(run())
++    assert sent[0]['status'] == start['status'] and sent[1] == body
++    assert sent[0]['headers'] == headers + ([(b'server-timing', b'casepath_api;dur=12.345')] if timed else [])
++    assert start['headers'] is headers and len(headers) == 2
++
++
++def test_hosted_read_timing_is_request_local_and_copies_shared_start_headers(monkeypatch):
++    from casepath_api import hosted_proxy_v1
++
++    clock = ContextVar('isolated_test_clock')
++    monkeypatch.setattr(hosted_proxy_v1, 'monotonic', lambda: next(clock.get()))
++    headers = [(b'server-timing', b'existing;dur=1')]
++    start = {'type': 'http.response.start', 'status': 200, 'headers': headers}
++
++    async def run():
++        ready, entered = asyncio.Event(), []
++        async def application(scope, receive, send):
++            entered.append(True)
++            if len(entered) == 2:
++                ready.set()
++            await ready.wait()
++            await send(start)
++            await send({'type': 'http.response.body', 'body': b'unchanged'})
++        wrapped = HostedReadTiming(application)
++        async def request(ticks):
++            clock.set(iter(ticks))
++            messages = []
++            async def send(message):
++                messages.append(message)
++            await wrapped({'type': 'http', 'method': 'GET',
++                           'path': '/api/claim-loops/v1/autonomous/knowledge'}, None, send)
++            return messages
++        return await asyncio.gather(request((1.0, 1.125)), request((100.0, 100.25)))
++
++    first, second = asyncio.run(run())
++    assert first[0]['headers'] == headers + [(b'server-timing', b'casepath_api;dur=125.000')]
++    assert second[0]['headers'] == headers + [(b'server-timing', b'casepath_api;dur=250.000')]
++    assert first[1] == second[1] == {'type': 'http.response.body', 'body': b'unchanged'}
++    assert start == {'type': 'http.response.start', 'status': 200, 'headers': headers}
++    assert headers == [(b'server-timing', b'existing;dur=1')]
++
++
++@pytest.mark.parametrize('elapsed,formatted', [
++    (float('nan'), '0.000'), (float('inf'), '0.000'),
++    (-1.0, '0.000'), (1e20, '999999999.999'),
++])
++def test_hosted_read_timing_has_finite_bounded_duration(monkeypatch, elapsed, formatted):
++    from casepath_api import hosted_proxy_v1
++
++    ticks = iter((0.0, elapsed))
++    monkeypatch.setattr(hosted_proxy_v1, 'monotonic', lambda: next(ticks))
++    async def application(scope, receive, send):
++        await send({'type': 'http.response.start', 'status': 200, 'headers': []})
++    async def run():
++        messages = []
++        async def send(message):
++            messages.append(message)
++        await HostedReadTiming(application)({'type': 'http', 'method': 'GET',
++                                             'path': '/api/claim-loops/v1/autonomous/claims'}, None, send)
++        return messages
++    sent = asyncio.run(run())
++    assert sent[0]['headers'] == [(b'server-timing', ('casepath_api;dur=' + formatted).encode('ascii'))]
++
++
++def test_hosted_read_timing_wraps_denial_without_opening_stores():
++    from casepath_api.hosted_app_v1 import create_hosted_app
++
++    app = create_hosted_app(database=object(), environment={
++        'CASEPATH_SITE_ORIGIN': 'https://casepath.example', 'CASEPATH_PROXY_TOKEN': 't' * 48,
++        'CASEPATH_SOURCE_COMMIT': 'a' * 40})
++    client = TestClient(app)  # No lifespan: unauthenticated reads must not reach stores.
++    try:
++        prefix = '/api/claim-loops/v1/autonomous'
++        rejected = client.get(prefix + '/knowledge')
++        assert rejected.status_code == 403 and rejected.json() == {'detail': 'Authenticated Site access required.'}
++        assert rejected.headers['server-timing'].startswith('casepath_api;dur=')
++        assert client.get(prefix + '/knowledge/').status_code == 403
++        assert 'server-timing' not in client.get(prefix + '/knowledge/').headers
++        command = client.post(prefix + '/claims', content=b'unread command')
++        assert command.status_code == 403 and command.headers['cache-control'] == 'no-store'
++        assert 'server-timing' not in command.headers
++    finally:
++        client.close()
+diff --git a/casepath-qa/sites-proxy.test.cjs b/casepath-qa/sites-proxy.test.cjs
+index 7658e0e5..e1d60ffd 100644
+--- a/casepath-qa/sites-proxy.test.cjs
++++ b/casepath-qa/sites-proxy.test.cjs
+@@ -201,3 +201,54 @@ test('Sites preserves allowlisted Review read headers without requiring an agent
+   }),env);
+   assert.equal(response.status,200);
+ });
++
++test('Sites appends only scoped read timing at upstream headers and preserves the unread compressed body', {timeout:1000}, async t => {
++  const worker = await load(), clear = Buffer.from('{"versions":[],"claims":[]}'), encoded = gzipSync(clear);
++  let now = 10, source;
++  t.mock.method(globalThis.performance, 'now', () => now);
++  t.mock.method(globalThis, 'fetch', async request => {
++    now = 22.345;
++    return new Response(new ReadableStream({start(controller) {
++      source = controller;
++      controller.enqueue(encoded.subarray(0, 12));
++    }}), {status:206, headers:{'Content-Type':'application/json', 'Content-Encoding':'gzip',
++      'Vary':'Accept-Encoding', 'Server-Timing':'casepath_api;dur=3.210, existing;dur=1'}});
++  });
++  const prefix = '/api/claim-loops/v1/autonomous';
++  for (const [method,path,timed] of [['GET',prefix+'/knowledge',true], ['GET',prefix+'/claims?limit=2',true],
++    ['HEAD',prefix+'/knowledge',false], ['GET',prefix+'/knowledge/',false],
++    ['GET',prefix+'/claims/example',false]]) {
++    now = 10;
++    const result = await worker.fetch(new Request(origin+path, {method}), env);
++    assert.equal(result.status,206);
++    assert.equal(result.headers.get('server-timing'),'casepath_api;dur=3.210, existing;dur=1' +
++      (timed ? ', casepath_upstream;dur=12.345' : ''));
++    assert.equal(result.headers.get('content-encoding'),'gzip');
++    assert.equal(result.headers.get('vary'),'Accept-Encoding');
++    assert.equal(result.headers.get('cache-control'),'no-store');
++    const reader = result.body.getReader(), first = await reader.read();
++    assert.deepEqual(Buffer.from(first.value),encoded.subarray(0,12));
++    now = 9000; source.enqueue(encoded.subarray(12)); source.close();
++    const rest = await reader.read();
++    assert.equal((await reader.read()).done,true);
++    assert.deepEqual(Buffer.concat([first.value,rest.value]),encoded);
++    assert.deepEqual(gunzipSync(Buffer.concat([first.value,rest.value])),clear);
++    if (timed) assert.ok(result.headers.get('server-timing').endsWith('casepath_upstream;dur=12.345'));
++  }
++});
++
++test('Sites duration formatting is finite and bounded without changing upstream refusals', async t => {
++  const worker = await load(); let now = 0;
++  t.mock.method(globalThis.performance, 'now', () => now);
++  for (const [elapsed,formatted] of [[NaN,'0.000'],[Infinity,'0.000'],[-1,'0.000'],[1e20,'999999999.999']]) {
++    const upstream = t.mock.method(globalThis,'fetch',async()=>{
++      now = elapsed;
++      return Response.json({detail:'Saved read refused.'},{status:409});
++    });
++    now = 0;
++    const result = await worker.fetch(new Request(origin+'/api/claim-loops/v1/autonomous/knowledge'),env);
++    assert.equal(result.status,409); assert.deepEqual(await result.json(),{detail:'Saved read refused.'});
++    assert.equal(result.headers.get('server-timing'),'casepath_upstream;dur='+formatted);
++    upstream.mock.restore();
++  }
++});
+diff --git a/casepath/tools/sites_worker.mjs b/casepath/tools/sites_worker.mjs
+index ab4d94ed..94df8910 100644
+--- a/casepath/tools/sites_worker.mjs
++++ b/casepath/tools/sites_worker.mjs
+@@ -3,6 +3,10 @@ const API_ROOT_PATHS = new Set([
+   "/healthz",
+   "/readyz",
+ ]);
++const TIMED_READ_PATHS = new Set([
++  "/api/claim-loops/v1/autonomous/knowledge",
++  "/api/claim-loops/v1/autonomous/claims",
++]);
+ 
+ function isApiRequest(pathname) {
+   return pathname.startsWith("/api/") || API_ROOT_PATHS.has(pathname);
+@@ -44,12 +48,19 @@ async function proxyApi(request, env, url) {
+   headers.set("X-CasePath-Proxy-Token", env.CASEPATH_PROXY_TOKEN);
+   headers.set("X-CasePath-Site-Origin", url.origin);
+   try {
+-    const response = await fetch(new Request(new URL(`${url.pathname}${url.search}`, upstream), {
++    const upstreamRequest = new Request(new URL(`${url.pathname}${url.search}`, upstream), {
+       method: request.method, headers,
+       duplex: "half", redirect: "manual",
+       signal: AbortSignal.any([request.signal, AbortSignal.timeout(14000)]),
+-    }));
++    });
++    const started = request.method === "GET" && TIMED_READ_PATHS.has(url.pathname) ? performance.now() : null;
++    const response = await fetch(upstreamRequest);
++    const elapsed = started === null ? null : performance.now() - started;
+     const responseHeaders = new Headers(response.headers);
++    if (elapsed !== null) {
++      const duration = Number.isFinite(elapsed) ? Math.min(999999999.999, Math.max(0, elapsed)) : 0;
++      responseHeaders.append("Server-Timing", `casepath_upstream;dur=${duration.toFixed(3)}`);
++    }
+     responseHeaders.set("Cache-Control", "no-store");
+     responseHeaders.delete("set-cookie");
+     // Workers Fetch preserves compressed origin bytes when the body is unread

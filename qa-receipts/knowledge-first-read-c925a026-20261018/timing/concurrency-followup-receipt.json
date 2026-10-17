@@ -1,0 +1,39 @@
+{
+  "receipt_type": "casepath_scoped_read_timing_concurrency_followup",
+  "base_commit": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "implementation_commit": "f6cc31e360b22f0762b709e1586345c95e805179",
+  "qa_followup_commit": "0ff22cce40e6e29b481e698753eac4371e195c75",
+  "final_tip": "0ff22cce40e6e29b481e698753eac4371e195c75",
+  "branch": "origin/codex/knowledge-first-read-20261018",
+  "source_status_short_after_commit": "",
+  "push_exit_code": 0,
+  "push_raw_output": "push-concurrency-followup.log",
+  "independent_review": "Parent independently cleared implementation commit f6cc31; requested this one QA-only Worker concurrency regression.",
+  "followup_changed_files": ["casepath-qa/sites-proxy.test.cjs"],
+  "followup_patch": "concurrency-followup.patch",
+  "followup_patch_sha256": "1f13f8d45a28f35aee55ec02a785b3f21cd65b0fdc0177b068650ebd7f4badbb",
+  "combined_patch": "timing-final.patch",
+  "combined_patch_sha256": "e48eca4d923ad3b7a082ef295a83dfaf71e9d624c9dc2b5a0b667ff14c68dd86",
+  "new_regression": "Two mocked upstream reads start at monotonic values 10 and 100. Their response headers resolve in reverse order at 130 and 150. Metrics must be distinct request-local durations 30.000 and 140.000, preserving response status, body, existing API timing and no-store cache policy.",
+  "test_execution": {
+    "command": "TMPDIR=/workspace/knowledge-first-read-20261018/timing/t TMP=/workspace/knowledge-first-read-20261018/timing/t TEMP=/workspace/knowledge-first-read-20261018/timing/t /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test casepath-qa/sites-proxy.test.cjs",
+    "working_directory": "/workspace/casepath-release-ae0-shard6",
+    "HOME": "Inherited process HOME preserved.",
+    "attempts": 1,
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "runner_duration_ms": 122.118699,
+    "raw_output": "sites-concurrency-followup.log"
+  },
+  "diff_check": "Passed.",
+  "previous_evidence": "Original 14-test Worker green output, expected-red backend attempt, 19-test backend green output and implementation receipt are retained unchanged in this directory.",
+  "limits": {
+    "backend_tests_repeated": false,
+    "production_code_changed_in_followup": false,
+    "network_or_database_calls_in_tests": false,
+    "paid_calls_or_services": false,
+    "full_gate_or_seal_run": false
+  }
+}

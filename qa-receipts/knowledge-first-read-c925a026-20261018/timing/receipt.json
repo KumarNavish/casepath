@@ -1,0 +1,95 @@
+{
+  "receipt_type": "casepath_scoped_read_timing_implementation",
+  "base_commit": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "commit": "f6cc31e360b22f0762b709e1586345c95e805179",
+  "branch": "codex/knowledge-first-read-20261018",
+  "push_exit_code": 0,
+  "remote_branch": "origin/codex/knowledge-first-read-20261018",
+  "source_checkout": "/workspace/casepath-release-ae0-shard6",
+  "host": "656813ef2295",
+  "source_status_short_after_commit": "",
+  "patch": "timing.patch",
+  "patch_sha256": "011cf0dc165e169bdc788d8858a2fd8f0614c9c6b7c3e731605ca9a14b2c8f8b",
+  "changed_files": [
+    "casepath-api/casepath_api/hosted_app_v1.py",
+    "casepath-api/casepath_api/hosted_proxy_v1.py",
+    "casepath/tools/sites_worker.mjs",
+    "casepath-api/tests/test_hosted_proxy_v1.py",
+    "casepath-qa/sites-proxy.test.cjs"
+  ],
+  "timing_scope": {
+    "method": "GET",
+    "exact_paths": ["/api/claim-loops/v1/autonomous/knowledge", "/api/claim-loops/v1/autonomous/claims"],
+    "casepath_api": "Monotonic elapsed milliseconds from the outermost user ASGI middleware entry to the existing http.response.start message, including the public boundary, route and response serialization.",
+    "casepath_upstream": "Worker performance.now elapsed milliseconds immediately around await fetch(upstreamRequest), ending at upstream response headers; body remains unread.",
+    "format": "Fixed metric names and three decimal places; finite, nonnegative, capped at 999999999.999 milliseconds.",
+    "existing_server_timing": "Appended to existing values at both boundaries.",
+    "request_isolation": "Start time and send closure are request-local. API response-start messages and header lists are copied before adding timing."
+  },
+  "test_environment": {
+    "TMPDIR": "/workspace/knowledge-first-read-20261018/timing/t",
+    "TMP": "/workspace/knowledge-first-read-20261018/timing/t",
+    "TEMP": "/workspace/knowledge-first-read-20261018/timing/t",
+    "HOME": "Inherited process HOME preserved.",
+    "python": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+    "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "working_directory": "/workspace/casepath-release-ae0-shard6",
+    "log_capture": "Commands used bash pipefail with tee, preserving the underlying test exit status."
+  },
+  "attempts": [
+    {
+      "name": "backend expected red before middleware implementation",
+      "command": "TMPDIR=/workspace/knowledge-first-read-20261018/timing/t TMP=/workspace/knowledge-first-read-20261018/timing/t TEMP=/workspace/knowledge-first-read-20261018/timing/t PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/casepath-release-ae0-shard6/casepath-api /workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python -B -m pytest -q -p no:cacheprovider casepath-api/tests/test_hosted_proxy_v1.py -k hosted_read_timing",
+      "exit_code": 2,
+      "result": "Expected collection error: HostedReadTiming had not yet been implemented. No tests executed.",
+      "raw_output": "backend-red.log"
+    },
+    {
+      "name": "backend scoped timing and rejection checks",
+      "command": "TMPDIR=/workspace/knowledge-first-read-20261018/timing/t TMP=/workspace/knowledge-first-read-20261018/timing/t TEMP=/workspace/knowledge-first-read-20261018/timing/t PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/casepath-release-ae0-shard6/casepath-api /workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python -B -m pytest -q -p no:cacheprovider casepath-api/tests/test_hosted_proxy_v1.py -k 'hosted_read_timing or public_method_denial or hosted_boundary_rejects_unsafe_configuration or hosted_entrypoint_rejects_unsafe_boundary'",
+      "exit_code": 0,
+      "passed": 19,
+      "failed": 0,
+      "deselected": 1,
+      "deselection_reason": "The existing authenticated store fixture test writes a disposable database and was outside this no-database-write timing check.",
+      "runner_duration_seconds": 0.38,
+      "raw_output": "backend-focused.log"
+    },
+    {
+      "name": "mocked Sites proxy suite",
+      "command": "TMPDIR=/workspace/knowledge-first-read-20261018/timing/t TMP=/workspace/knowledge-first-read-20261018/timing/t TEMP=/workspace/knowledge-first-read-20261018/timing/t /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test casepath-qa/sites-proxy.test.cjs",
+      "exit_code": 0,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "runner_duration_ms": 137.480237,
+      "raw_output": "sites-focused.log"
+    }
+  ],
+  "validation_coverage": [
+    "Exact GET-only path scope, including query-string reads and exclusions for HEAD, POST, health, trailing slash and individual claims.",
+    "Unchanged body bytes/status, preserved existing Server-Timing values and public command/authentication rejection behavior.",
+    "Overlapping API requests with distinct clocks and a shared response-start message/header list remain isolated without mutating shared objects.",
+    "Finite bounded timing formatting at both boundaries.",
+    "Worker returns headers before compressed body completion and preserves the exact unread compressed stream, content encoding and Vary header."
+  ],
+  "other_checks": {
+    "git_diff_check": "Passed.",
+    "available_workspace_space_at_review": "3.5 GiB.",
+    "push_command": "git push -u origin codex/knowledge-first-read-20261018",
+    "push_raw_output": "push.log"
+  },
+  "limits": {
+    "production_requests": false,
+    "provider_calls": false,
+    "database_journal_or_ledger_writes": false,
+    "services_started": false,
+    "dependencies_added_or_installed": false,
+    "persistent_product_telemetry": false,
+    "frontend_files_modified": false,
+    "full_gate_run": false,
+    "source_seal_run": false,
+    "qualification": "Narrow diagnostic commit intentionally left unsealed under the explicit handoff; integration owner performs final source sealing. Tests use in-process ASGI applications or mocked fetch, not the hosted product."
+  }
+}

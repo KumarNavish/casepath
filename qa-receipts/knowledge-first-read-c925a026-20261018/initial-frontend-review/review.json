@@ -1,0 +1,70 @@
+{
+  "receipt_type": "casepath_independent_frontend_immutable_patch_review",
+  "base_commit": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "reviewed_commit": "1abbec801b0e8660ec3f0662fb8ff7ec57fddea0",
+  "object_repository": "/workspace/casepath-knowledge-startup-render-20261018",
+  "review_method": "git show, git diff and git grep against immutable commit objects; mutable working-tree files were not used as review source.",
+  "patch_file": "reviewed.patch",
+  "patch_sha256": "3142d985f3f38b7ff21bc572f3e90b6e9cc188c3568e2901e6a4880733805658",
+  "reviewed_blobs": {
+    "casepath/assets/autonomous-entry-v1.js": "14fb0ea2ce612f0c425cfdf9656b21475b3c2325",
+    "casepath/assets/autonomous-workspace-v1.js": "ea59746ad0cb950367b7a9c112ae37788cbede6e",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "0f84ac879b27571cbf523ab3d40b640900909c9b",
+    "casepath-qa/sites-autonomous-entry.test.cjs": "6790d6dc587b6537b30a349809d67262a78c0e52"
+  },
+  "actionable_findings": [
+    {
+      "id": "early_knowledge_api_identity",
+      "priority": "P2 conditional on a custom mount configuration",
+      "title": "Bind the adopted early Knowledge response to the mounted API URL",
+      "trigger": "A caller supplies both options.apiBase for a different endpoint and the early knowledgeOpening object while the fragment still matches.",
+      "behavior": "request('/knowledge') adopts opening.response without comparing endpoint identity. A valid representation from the early same-origin endpoint can render as the mounted endpoint's fresh Knowledge and persist under that alternate apiIdentity.",
+      "evidence": [
+        "casepath/assets/autonomous-entry-v1.js:20-24 fetches the fixed same-origin Knowledge path and records fragment/controller/timeout/response, without an API URL.",
+        "casepath/assets/autonomous-workspace-v1.js:2056 supports options.apiBase; :2070 derives cache apiIdentity from that base.",
+        "casepath/assets/autonomous-workspace-v1.js:2260-2267 adopts by readonly path and fragment only, bypassing fetcher(base + path).",
+        "casepath/assets/autonomous-workspace-v1.js:3950-3951 admits the validated response to Knowledge caches; :2176 labels persisted material with apiIdentity."
+      ],
+      "reachability_qualification": "The shipped entry calls mount without apiBase, so fixed early URL and default BASE match. No in-tree custom apiBase caller was found in the immutable scope search; this is an exported mount-option compatibility gap, not a demonstrated hosted-path failure. root.CASEPATH_API does not control this workspace: BASE is the fixed path at workspace line 10.",
+      "recommended_narrow_change": "Record the early request's absolute URL, compare it with the resolved mounted base + '/knowledge' before adoption, and discard the opening if the URL differs or cannot be resolved. Preserve the normal fetch path on mismatch.",
+      "recommended_regression": "Use a mismatched options.apiBase plus a valid early response; assert the early response is discarded/aborted and the configured API receives the Knowledge GET. Keep same-API adoption and normal validation coverage."
+    }
+  ],
+  "other_review_conclusions": [
+    {
+      "topic": "Route before mount",
+      "conclusion": "Initial routeChanged runs after mount registration; a fragment different from the early request's fragment discards and aborts the unused opening before selecting the current view.",
+      "evidence": ["casepath/assets/autonomous-workspace-v1.js:2102-2108", "casepath/assets/autonomous-workspace-v1.js:4302-4306"]
+    },
+    {
+      "topic": "Changed pin and late completion",
+      "conclusion": "Adopted data passes the existing HTTP status/JSON path and readKnowledge validation. showKnowledge retains epoch, read counter, generation and pending-route checks; no new stale completion repaint path was found. The response is the complete Knowledge projection rather than a pin-specific API request.",
+      "evidence": ["casepath/assets/autonomous-workspace-v1.js:2265-2273", "casepath/assets/autonomous-workspace-v1.js:3923-3955"]
+    },
+    {
+      "topic": "Deadline, load failure and destroy",
+      "conclusion": "The 15-second abort deadline starts at the early fetch, is reused rather than reset on adoption, and is cleared by normal request cleanup. Script-load failure aborts the unused opening. Destroy discards an unused opening and aborts adopted controllers through the existing controller set.",
+      "evidence": ["casepath/assets/autonomous-entry-v1.js:21-24", "casepath/assets/autonomous-entry-v1.js:41-42", "casepath/assets/autonomous-workspace-v1.js:2073-2075", "casepath/assets/autonomous-workspace-v1.js:2262-2271", "casepath/assets/autonomous-workspace-v1.js:4301"]
+    },
+    {
+      "topic": "Deferred derivative cache",
+      "conclusion": "Persistence yields through requestAnimationFrame then a timer before serialization. Disposed/generation/write checks run after the yield and after asynchronous hashing. In a hidden document, requestAnimationFrame may pause optional persistence; fresh read validation and rendering do not await this cache write. No correctness finding was identified in this change.",
+      "evidence": ["casepath/assets/autonomous-workspace-v1.js:2166-2184", "casepath/assets/autonomous-workspace-v1.js:2215-2219", "casepath/assets/autonomous-workspace-v1.js:3951-3954"]
+    }
+  ],
+  "validation": {
+    "execution": "Static immutable-patch review only.",
+    "tests_run": false,
+    "reproducer_run": false,
+    "new_tests_inspected": "The added tests cover early overlap, public/route specificity, load-failure cancellation, normal validation/retry, unused-route discard, late response ownership, paint-before-cache and destroy-before-cache. They do not cover API URL mismatch."
+  },
+  "limits": {
+    "product_edits": false,
+    "mutable_checkout_changes": false,
+    "production_requests": false,
+    "paid_calls": false,
+    "services_started": false,
+    "backend_edits": false,
+    "full_suite_run": false
+  }
+}

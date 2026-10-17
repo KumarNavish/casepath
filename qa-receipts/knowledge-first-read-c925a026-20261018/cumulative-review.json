@@ -1,0 +1,74 @@
+{
+  "base": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "review": "PASS with all conditional findings closed",
+  "frontend_tip": "a83ef2acd71d6cfc47dd61337e2dd0bb6eff7c33",
+  "frontend_branch": "codex/knowledge-startup-render-20261018",
+  "timing_tip": "0ff22cce40e6e29b481e698753eac4371e195c75",
+  "timing_branch": "codex/knowledge-first-read-20261018",
+  "disjoint_scopes": true,
+  "frontend_files": [
+    "casepath-qa/autonomous-workspace-v1.test.cjs",
+    "casepath-qa/sites-autonomous-entry.test.cjs",
+    "casepath/assets/autonomous-entry-v1.js",
+    "casepath/assets/autonomous-workspace-v1.js"
+  ],
+  "timing_files": [
+    "casepath-api/casepath_api/hosted_app_v1.py",
+    "casepath-api/casepath_api/hosted_proxy_v1.py",
+    "casepath-api/tests/test_hosted_proxy_v1.py",
+    "casepath-qa/sites-proxy.test.cjs",
+    "casepath/tools/sites_worker.mjs"
+  ],
+  "closed_findings": [
+    {
+      "finding": "Early Knowledge Response could be adopted under alternate API base",
+      "closed_by": "ca1b459ee9b8702ffd63403abbe143fcaa82e329",
+      "proof": "URL normalization guard and red-to-green mismatch regression."
+    }
+  ],
+  "frontend_review": [
+    "Early GET is public/Knowledge-route only, same-origin and exact URL-bound; existing JSON/status/timeout ownership preserved.",
+    "Changed route, changed pin and destroy cannot admit a late response.",
+    "Derivative cache work yields after render, retains generation/write and integrity checks; no cache authority added.",
+    "Direct recorded reference route acquires immutable packet readiness only; no autoplay or facts admitted until the existing full packet/session/head checks.",
+    "Intl formatter is lazy and preserves exact en-GB/UTC options/unknown-time labels; record/event bytes unchanged."
+  ],
+  "timing_review": [
+    "ASGI timing is request-local, outermost relative to the public boundary and includes response serialization; copied headers avoid shared-response mutation.",
+    "Only canonical Knowledge/collection GETs are timed; rejected GETs remain rejected and other methods/paths retain behavior.",
+    "Worker adds one monotonic duration at upstream headers, preserves API timing/body/status/no-store and unread compressed stream.",
+    "Both API and Worker concurrency are covered, with Worker responses completed in reverse order."
+  ],
+  "actual_checks": {
+    "frontend_complete_module_entry_run": {
+      "passed": 296,
+      "failed": 0,
+      "skipped": 0
+    },
+    "frontend_later_formatter_subset": {
+      "passed": 2,
+      "failed": 0,
+      "overlap_with_prior_run": 1
+    },
+    "backend_timing_focused": {
+      "passed": 19,
+      "failed": 0,
+      "not_selected": 1,
+      "reason": "Existing local DB-writing fixture excluded from this strictly no-DB timing test selection; remains in future normal gate."
+    },
+    "proxy_final": {
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "limits": [
+    "Local controlled timings, not hosted acceptance. Strict hosted cold <=1s TTFB is still unproved; new Server-Timing separates API from upstream/network delay.",
+    "Intermediate207ms4x negative and setup/expected-red attempts retained.",
+    "No product source sealing/full gate/publish/production request or record write performed.",
+    "Historical browser source labels explicitly corrected by deterministic reconstruction; final formatter source SHA captured during run and checked against committed bytes."
+  ],
+  "frontend_archive_sha256": "cede0dc5b83de7db600dba199e2fd205dcb4a470d187a0eed749cef7715e8798",
+  "frontend_archive_regular_members": 41,
+  "epoch": 1792280425.8893263
+}

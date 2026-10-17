@@ -1,0 +1,441 @@
+{
+  "commits": {
+    "base": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+    "knowledge": "1abbec801b0e8660ec3f0662fb8ff7ec57fddea0",
+    "apiBinding": "ca1b459ee9b8702ffd63403abbe143fcaa82e329",
+    "replayReadiness": "854bb93f68ef0bca0c033c831887702d8b5a4d93",
+    "formatter": "a83ef2acd71d6cfc47dd61337e2dd0bb6eff7c33"
+  },
+  "sourceHashes": {
+    "base": {
+      "entry": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+      "workspace": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f"
+    },
+    "knowledge": {
+      "entry": "10c4c9c57715dd56f7ad0002e191bea366e9acde58169c172858ac9e05464a8d",
+      "workspace": "7aaec760ec870806439190a8547ad7f55655f50fd2b9f4f2afe265ebe6e62323"
+    },
+    "apiBinding": {
+      "entry": "6f5f95df90bba96306fd978107f965092837b3712b3d62b733ff8091723e20eb",
+      "workspace": "aecf3e383b62a899911345e1cef34d67d14124c33363e11eb688d799b741cae6"
+    },
+    "replayReadiness": {
+      "entry": "6f5f95df90bba96306fd978107f965092837b3712b3d62b733ff8091723e20eb",
+      "workspace": "a3cfce2a017d5efcce4e9653f163a69b2a2531a127455004b9336aa0ab6487f6"
+    },
+    "formatter": {
+      "entry": "6f5f95df90bba96306fd978107f965092837b3712b3d62b733ff8091723e20eb",
+      "workspace": "399c2fb7a3050a9c7eabb95e91c5956ae35d25d72129bc80f62ce5c95341a993"
+    }
+  },
+  "host": "656813ef2295",
+  "branch": "codex/knowledge-startup-render-20261018",
+  "scope": [
+    "casepath/assets/autonomous-entry-v1.js",
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath-qa/sites-autonomous-entry.test.cjs",
+    "casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "knowledge": {
+    "fixture": "/workspace/knowledge-learning-coordinator-20261016/projection-6064.json",
+    "bytes": 405258,
+    "sha256": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8",
+    "note": "Public synthetic projection derives from23heads, not production26. API delay1390ms and workspace delay400ms are controlled local diagnostics.",
+    "baseline": [
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 0,
+          "api": 0
+        },
+        "GETafterDCL": 95.40000009536743,
+        "firstContentAfterDCL": 171.20000004768372,
+        "nextFrameAfterDCL": 175.60000002384186,
+        "maxLongTask": 61,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 4,
+          "asset": 0,
+          "api": 0
+        },
+        "GETafterDCL": 146.19999992847443,
+        "firstContentAfterDCL": 429.39999997615814,
+        "nextFrameAfterDCL": 447.2999999523163,
+        "maxLongTask": 219,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 400,
+          "api": 0
+        },
+        "GETafterDCL": 453.2000000476837,
+        "firstContentAfterDCL": 549.5,
+        "nextFrameAfterDCL": 552.7999999523163,
+        "maxLongTask": 79,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 400,
+          "api": 1390
+        },
+        "GETafterDCL": 455.6999999284744,
+        "firstContentAfterDCL": 1912.0999999046326,
+        "nextFrameAfterDCL": 1915.5999999046326,
+        "maxLongTask": 55,
+        "errors": []
+      }
+    ],
+    "candidate": [
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 0,
+          "api": 0
+        },
+        "GETafterDCL": -1,
+        "firstContentAfterDCL": 136.89999997615814,
+        "nextFrameAfterDCL": 142,
+        "maxLongTask": 0,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 4,
+          "asset": 0,
+          "api": 0
+        },
+        "GETafterDCL": -6,
+        "firstContentAfterDCL": 403.10000002384186,
+        "nextFrameAfterDCL": 404.10000002384186,
+        "maxLongTask": 173,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 400,
+          "api": 0
+        },
+        "GETafterDCL": -0.6999999284744263,
+        "firstContentAfterDCL": 499,
+        "nextFrameAfterDCL": 499.2000000476837,
+        "maxLongTask": 0,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 400,
+          "api": 1390
+        },
+        "GETafterDCL": -0.8999999761581421,
+        "firstContentAfterDCL": 1448.2000000476837,
+        "nextFrameAfterDCL": 1448.2000000476837,
+        "maxLongTask": 0,
+        "errors": []
+      }
+    ],
+    "preFormatterSpotcheck": [
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 0,
+          "api": 0
+        },
+        "GETafterDCL": -1,
+        "firstContentAfterDCL": 164.5,
+        "nextFrameAfterDCL": 164.70000004768372,
+        "maxLongTask": 55,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 4,
+          "asset": 0,
+          "api": 0
+        },
+        "GETafterDCL": -4.5,
+        "firstContentAfterDCL": 496.59999990463257,
+        "nextFrameAfterDCL": 498,
+        "maxLongTask": 207,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 400,
+          "api": 0
+        },
+        "GETafterDCL": -0.6999999284744263,
+        "firstContentAfterDCL": 520.3999999761581,
+        "nextFrameAfterDCL": 520.6000000238419,
+        "maxLongTask": 0,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 400,
+          "api": 1390
+        },
+        "GETafterDCL": -2.3000000715255737,
+        "firstContentAfterDCL": 1454.6000000238419,
+        "nextFrameAfterDCL": 1454.7999999523163,
+        "maxLongTask": 51,
+        "errors": []
+      }
+    ],
+    "final": [
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 0,
+          "api": 0
+        },
+        "GETafterDCL": -0.7000000476837158,
+        "firstContentAfterDCL": 146.59999990463257,
+        "nextFrameAfterDCL": 146.69999992847443,
+        "maxLongTask": 0,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 4,
+          "asset": 0,
+          "api": 0
+        },
+        "GETafterDCL": -3.700000047683716,
+        "firstContentAfterDCL": 417.7999999523163,
+        "nextFrameAfterDCL": 424.5,
+        "maxLongTask": 172,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 400,
+          "api": 0
+        },
+        "GETafterDCL": -0.7000000476837158,
+        "firstContentAfterDCL": 497.5,
+        "nextFrameAfterDCL": 497.59999990463257,
+        "maxLongTask": 0,
+        "errors": []
+      },
+      {
+        "config": {
+          "cpu": 1,
+          "asset": 400,
+          "api": 1390
+        },
+        "GETafterDCL": -1.8000000715255737,
+        "firstContentAfterDCL": 1438.5,
+        "nextFrameAfterDCL": 1438.6000000238419,
+        "maxLongTask": 0,
+        "errors": []
+      }
+    ],
+    "finalSourceContentCommit": "a83ef2acd71d6cfc47dd61337e2dd0bb6eff7c33",
+    "formatterMicroprofile": {
+      "calls": 26,
+      "beforeMilliseconds": 43.5,
+      "experimentMilliseconds": 24.3,
+      "note": "One controlled4xCPU run per variant; experiment changed only formatter expression in memory before the product change. Final browser matrix uses actual committed formatter bytes."
+    },
+    "intermediateNegative": {
+      "source": "854bb93f68ef0bca0c033c831887702d8b5a4d93",
+      "fourTimesCpuMaxLongTask": 207,
+      "artifact": "final-browser.json",
+      "resolution": "Lazy identical UTC formatter, measured final max172ms; see formatter-final-browser.json."
+    }
+  },
+  "replay": {
+    "apiDelay": 1500,
+    "packetSHA256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+    "openingResponseSHA256": "7704ed58fdcbf2b5d19aebf66be86d8813cc839d4ec0f4f5d60403041db05308",
+    "headResponseSHA256": "9d77f68d23be9a4c0bd10c3eb991feefe35679fad326e16484c7d836859ef42e",
+    "operationsBytes": 5420814,
+    "operationsSHA256": "a551e747d948b1d62ce41490fac6f28b571ed267fdc57fc59207bef0f8faa6dd",
+    "head": {
+      "claimId": "clm_314f2d309fea25e6",
+      "revision": 48,
+      "state_sha256": "df5f95e988c60ec91b36f7435375549ffc3c532103d51dfddd4a929ca8b3dcf4",
+      "event_sha256": "f9812537ef8e14ebf19f09c6fc027b11afee26a35ab62bcf61c23fbbe6d35f41"
+    },
+    "before": [
+      {
+        "mode": "direct-picker",
+        "map": 51.699999928474426,
+        "firstText": 1825.7999999523163,
+        "firstLanded": 2519.0999999046326,
+        "eighthLanded": 14651.899999976158,
+        "firstToEighth": 12132.800000071526,
+        "landedOperationIDs": [
+          "op_1715b98c5f009b94cad03526c1c661be",
+          "op_71551c6b86a6ffc9d77423b4ef842dea",
+          "op_12368bafbf1e6c58a43a2a13af446bcb",
+          "op_31bcd3404de1cb6592883fb7509d9cfc",
+          "op_4f935af1785d232600fc72be1eebcab3",
+          "op_a677aec77b40589e0d0580e3dc6d5677",
+          "op_14f9eb670b91d7289150ef3a51717af4",
+          "op_4077bd06a9be4f0b500bdf0f5388fc32"
+        ],
+        "errors": [],
+        "status": ""
+      },
+      {
+        "mode": "direct-demonstration",
+        "map": 70.09999990463257,
+        "firstText": 425.39999997615814,
+        "firstLanded": 1119.1999999284744,
+        "eighthLanded": 13185,
+        "firstToEighth": 12065.800000071526,
+        "landedOperationIDs": [
+          "op_1715b98c5f009b94cad03526c1c661be",
+          "op_71551c6b86a6ffc9d77423b4ef842dea",
+          "op_12368bafbf1e6c58a43a2a13af446bcb",
+          "op_31bcd3404de1cb6592883fb7509d9cfc",
+          "op_4f935af1785d232600fc72be1eebcab3",
+          "op_a677aec77b40589e0d0580e3dc6d5677",
+          "op_14f9eb670b91d7289150ef3a51717af4",
+          "op_4077bd06a9be4f0b500bdf0f5388fc32"
+        ],
+        "errors": [],
+        "status": ""
+      },
+      {
+        "mode": "cases-demonstration",
+        "map": 40.60000002384186,
+        "firstText": 512.7000000476837,
+        "firstLanded": 1197.3000000715256,
+        "eighthLanded": 13313.399999976158,
+        "firstToEighth": 12116.099999904633,
+        "landedOperationIDs": [
+          "op_1715b98c5f009b94cad03526c1c661be",
+          "op_71551c6b86a6ffc9d77423b4ef842dea",
+          "op_12368bafbf1e6c58a43a2a13af446bcb",
+          "op_31bcd3404de1cb6592883fb7509d9cfc",
+          "op_4f935af1785d232600fc72be1eebcab3",
+          "op_a677aec77b40589e0d0580e3dc6d5677",
+          "op_14f9eb670b91d7289150ef3a51717af4",
+          "op_4077bd06a9be4f0b500bdf0f5388fc32"
+        ],
+        "errors": [],
+        "status": ""
+      }
+    ],
+    "after": [
+      {
+        "mode": "direct-picker",
+        "map": 60.800000071525574,
+        "firstText": 395.8000000715256,
+        "firstLanded": 1074.8000000715256,
+        "eighthLanded": 13241,
+        "firstToEighth": 12166.199999928474,
+        "landedOperationIDs": [
+          "op_1715b98c5f009b94cad03526c1c661be",
+          "op_71551c6b86a6ffc9d77423b4ef842dea",
+          "op_12368bafbf1e6c58a43a2a13af446bcb",
+          "op_31bcd3404de1cb6592883fb7509d9cfc",
+          "op_4f935af1785d232600fc72be1eebcab3",
+          "op_a677aec77b40589e0d0580e3dc6d5677",
+          "op_14f9eb670b91d7289150ef3a51717af4",
+          "op_4077bd06a9be4f0b500bdf0f5388fc32"
+        ],
+        "errors": [],
+        "status": ""
+      },
+      {
+        "mode": "direct-demonstration",
+        "map": 68.10000002384186,
+        "firstText": 413.39999997615814,
+        "firstLanded": 1116.7999999523163,
+        "eighthLanded": 13249.5,
+        "firstToEighth": 12132.700000047684,
+        "landedOperationIDs": [
+          "op_1715b98c5f009b94cad03526c1c661be",
+          "op_71551c6b86a6ffc9d77423b4ef842dea",
+          "op_12368bafbf1e6c58a43a2a13af446bcb",
+          "op_31bcd3404de1cb6592883fb7509d9cfc",
+          "op_4f935af1785d232600fc72be1eebcab3",
+          "op_a677aec77b40589e0d0580e3dc6d5677",
+          "op_14f9eb670b91d7289150ef3a51717af4",
+          "op_4077bd06a9be4f0b500bdf0f5388fc32"
+        ],
+        "errors": [],
+        "status": ""
+      },
+      {
+        "mode": "cases-demonstration",
+        "map": 36.300000071525574,
+        "firstText": 539.3999999761581,
+        "firstLanded": 1215,
+        "eighthLanded": 13347.600000023842,
+        "firstToEighth": 12132.600000023842,
+        "landedOperationIDs": [
+          "op_1715b98c5f009b94cad03526c1c661be",
+          "op_71551c6b86a6ffc9d77423b4ef842dea",
+          "op_12368bafbf1e6c58a43a2a13af446bcb",
+          "op_31bcd3404de1cb6592883fb7509d9cfc",
+          "op_4f935af1785d232600fc72be1eebcab3",
+          "op_a677aec77b40589e0d0580e3dc6d5677",
+          "op_14f9eb670b91d7289150ef3a51717af4",
+          "op_4077bd06a9be4f0b500bdf0f5388fc32"
+        ],
+        "errors": [],
+        "status": ""
+      }
+    ],
+    "note": "Only the first8facts of one genuine shipped heating packet, across3entrypaths. HTTP fixtures reencode JSON identically on both runs; NDJSON is exact decoded packet bytes. No database/provider/API product calls."
+  },
+  "validation": {
+    "focusedSuites": {
+      "tests": 296,
+      "pass": 296,
+      "fail": 0,
+      "skipped": 0,
+      "exit": 0,
+      "log": "date-format-suites.log"
+    },
+    "formatterFocused": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "exit": 0,
+      "log": "date-format-focused.log",
+      "note": "Includes the last-added isolated laziness test; equivalence overlaps the296-suite run."
+    },
+    "newRedTests": {
+      "apiBinding": {
+        "tests": 1,
+        "fail": 1,
+        "exit": 1,
+        "immutable": "1abbec801b0e8660ec3f0662fb8ff7ec57fddea0"
+      },
+      "replayReadiness": {
+        "tests": 2,
+        "fail": 2,
+        "exit": 1
+      }
+    },
+    "setupFailure": {
+      "log": "focused-suites.log",
+      "reason": "Clone-local pinned Python path absent; corrected via existing CASEPATH_PYTHON runtime, no installation.",
+      "logSHA256": "bc385d3c4b615075fc1c3b8a2d33a090b8ffdfb54bfeb4eeedda12040dbf0d83"
+    }
+  },
+  "limits": [
+    "Single local Chromium sample per controlled matrix cell; Mac owns hosted and visual acceptance.",
+    "No seal, fullgate, deployment, index/CSS/manifest edit, backend product change, dependency install, or installed service. Owned ephemeral local HTTP/browser fixtures were stopped.",
+    "Browser fixture served local HTTP GET only and rejected other origins.",
+    "Artifact historical source-label correction is explicit in replay JSON receipts."
+  ],
+  "sourceEvidenceNote": "Historical replay source-label corrections preserve original labels and measurements; servedSourceProof explicitly labels deterministic after-measurement reconstruction. Final formatter browser workspaceSHA256 was captured during that run and matches final committed source."
+}
