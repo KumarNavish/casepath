@@ -11,7 +11,7 @@ from .agent_work.store import WorkStore
 from .autonomous_api_v1 import create_autonomous_router
 from .autonomous_corpus_v1 import CanonicalCorpus
 from .hosted_lease_v1 import HostedAutonomousController, HostedWorkflowLease
-from .hosted_proxy_v1 import SitesProxyBoundary
+from .hosted_proxy_v1 import HostedReadTiming, SitesProxyBoundary
 from .hosted_storage_v1 import HostedAutonomousStore, HostedJournal, HostedSources, HostedStorageError, TursoDatabase
 from .workspace_corpus import PublicCorpus, default_workspace_corpus_root
 
@@ -100,4 +100,5 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
     api.add_event_handler('startup', startup)
     api.add_event_handler('shutdown', shutdown)
     api.add_middleware(SitesProxyBoundary, site_origin=origin, token=token)
+    api.add_middleware(HostedReadTiming)
     return api

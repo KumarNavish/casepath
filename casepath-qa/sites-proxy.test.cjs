@@ -201,3 +201,76 @@ test('Sites preserves allowlisted Review read headers without requiring an agent
   }),env);
   assert.equal(response.status,200);
 });
+
+test('Sites appends only scoped read timing at upstream headers and preserves the unread compressed body', {timeout:1000}, async t => {
+  const worker = await load(), clear = Buffer.from('{"versions":[],"claims":[]}'), encoded = gzipSync(clear);
+  let now = 10, source;
+  t.mock.method(globalThis.performance, 'now', () => now);
+  t.mock.method(globalThis, 'fetch', async request => {
+    now = 22.345;
+    return new Response(new ReadableStream({start(controller) {
+      source = controller;
+      controller.enqueue(encoded.subarray(0, 12));
+    }}), {status:206, headers:{'Content-Type':'application/json', 'Content-Encoding':'gzip',
+      'Vary':'Accept-Encoding', 'Server-Timing':'casepath_api;dur=3.210, existing;dur=1'}});
+  });
+  const prefix = '/api/claim-loops/v1/autonomous';
+  for (const [method,path,timed] of [['GET',prefix+'/knowledge',true], ['GET',prefix+'/claims?limit=2',true],
+    ['HEAD',prefix+'/knowledge',false], ['GET',prefix+'/knowledge/',false],
+    ['GET',prefix+'/claims/example',false]]) {
+    now = 10;
+    const result = await worker.fetch(new Request(origin+path, {method}), env);
+    assert.equal(result.status,206);
+    assert.equal(result.headers.get('server-timing'),'casepath_api;dur=3.210, existing;dur=1' +
+      (timed ? ', casepath_upstream;dur=12.345' : ''));
+    assert.equal(result.headers.get('content-encoding'),'gzip');
+    assert.equal(result.headers.get('vary'),'Accept-Encoding');
+    assert.equal(result.headers.get('cache-control'),'no-store');
+    const reader = result.body.getReader(), first = await reader.read();
+    assert.deepEqual(Buffer.from(first.value),encoded.subarray(0,12));
+    now = 9000; source.enqueue(encoded.subarray(12)); source.close();
+    const rest = await reader.read();
+    assert.equal((await reader.read()).done,true);
+    assert.deepEqual(Buffer.concat([first.value,rest.value]),encoded);
+    assert.deepEqual(gunzipSync(Buffer.concat([first.value,rest.value])),clear);
+    if (timed) assert.ok(result.headers.get('server-timing').endsWith('casepath_upstream;dur=12.345'));
+  }
+});
+
+test('Sites duration formatting is finite and bounded without changing upstream refusals', async t => {
+  const worker = await load(); let now = 0;
+  t.mock.method(globalThis.performance, 'now', () => now);
+  for (const [elapsed,formatted] of [[NaN,'0.000'],[Infinity,'0.000'],[-1,'0.000'],[1e20,'999999999.999']]) {
+    const upstream = t.mock.method(globalThis,'fetch',async()=>{
+      now = elapsed;
+      return Response.json({detail:'Saved read refused.'},{status:409});
+    });
+    now = 0;
+    const result = await worker.fetch(new Request(origin+'/api/claim-loops/v1/autonomous/knowledge'),env);
+    assert.equal(result.status,409); assert.deepEqual(await result.json(),{detail:'Saved read refused.'});
+    assert.equal(result.headers.get('server-timing'),'casepath_upstream;dur='+formatted);
+    upstream.mock.restore();
+  }
+});
+
+test('Sites keeps overlapping read timings local when upstream headers arrive in reverse order', {timeout:1000}, async t => {
+  const worker = await load(), pending = new Map(), prefix = '/api/claim-loops/v1/autonomous';
+  let now = 10;
+  t.mock.method(globalThis.performance,'now',()=>now);
+  t.mock.method(globalThis,'fetch',request=>new Promise(resolve=>pending.set(new URL(request.url).pathname,resolve)));
+  const first = worker.fetch(new Request(origin+prefix+'/knowledge'),env);
+  now = 100;
+  const second = worker.fetch(new Request(origin+prefix+'/claims'),env);
+  assert.equal(pending.size,2);
+  const response = () => new Response('unchanged saved read',{status:206,headers:{'Server-Timing':'casepath_api;dur=7.500'}});
+  now = 130; pending.get(prefix+'/claims')(response());
+  const secondResult = await second;
+  now = 150; pending.get(prefix+'/knowledge')(response());
+  const firstResult = await first;
+  for (const [result,duration] of [[firstResult,'140.000'],[secondResult,'30.000']]) {
+    assert.equal(result.status,206);
+    assert.equal(await result.text(),'unchanged saved read');
+    assert.equal(result.headers.get('server-timing'),'casepath_api;dur=7.500, casepath_upstream;dur='+duration);
+    assert.equal(result.headers.get('cache-control'),'no-store');
+  }
+});
