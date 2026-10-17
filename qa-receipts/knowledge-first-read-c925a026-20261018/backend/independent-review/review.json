@@ -1,0 +1,83 @@
+{
+  "receipt_type": "casepath_independent_first_knowledge_read_review",
+  "base_commit": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "execution_host": "656813ef2295",
+  "scope": "Read-only transport, lifecycle, proxy and cache review; existing mocked proxy tests only.",
+  "original_checkout": {
+    "path": "/workspace/casepath-knowledge-first-read-review-20261018",
+    "branch": "codex/knowledge-first-read-review-20261018",
+    "head_verified": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+    "git_status_short_at_completion": "",
+    "retained": false,
+    "qualification": "Parent reports the clean clone was retired after verifying exact c925 and zero tracked, untracked and ignored changes to recover browser headroom. Source links to the retired checkout must not be presented as retained evidence."
+  },
+  "retained_source_binding": {
+    "path": "/workspace/casepath-release-ae0-shard6",
+    "head_verified_when_recording": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+    "git_status_short_when_recording": "",
+    "sha256": {
+      "casepath-api/casepath_api/hosted_app_v1.py": "ef58f913f35002e00aad77350d1bd5258ecbe5d4f434f2a4a3ddd6fcff625e2d",
+      "casepath-api/casepath_api/autonomous_knowledge_v1.py": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464",
+      "casepath-api/casepath_api/autonomous_store_v1.py": "ae42896a74867342117dc407bcadd3ba3a01f494fecca489969b00943744a06f",
+      "casepath-api/casepath_api/hosted_storage_v1.py": "737820c41572e97841bde2ff7b87b91e668cb7dce1be93296576c53ff0a858dd",
+      "casepath-api/casepath_api/hosted_sql_v1.py": "bc04fdabbb4dbe793668177c27e46080784113503c4c064cd231aba69df45fd9",
+      "casepath/tools/sites_worker.mjs": "00314e6e02168e5ed80dfaa76f3ccb7f33c0b58d5c583212d44753595eb3f091",
+      "casepath-qa/sites-proxy.test.cjs": "26fbda2f23458e1687aa3d0dee07b0fff3fef3cb68e83b3493425dce884aed08"
+    }
+  },
+  "independent_source_findings": [
+    {
+      "finding": "Hosted startup shuts down dispatch, calls knowledge.learning_view(), then publishes service state. Knowledge projection and learning replay are warmed before readiness.",
+      "source": ["casepath-api/casepath_api/hosted_app_v1.py:53-60", "casepath-api/casepath_api/autonomous_knowledge_v1.py:336-356"],
+      "limit": "This does not remove startup latency from a request that wakes sleeping compute."
+    },
+    {
+      "finding": "Sites makes one upstream fetch and returns response.body directly. Knowledge has no route-specific body buffering or retry in this worker.",
+      "source": ["casepath/tools/sites_worker.mjs:47-58"]
+    },
+    {
+      "finding": "Warm Knowledge and collection reads retain complete journal/source validation and a fresh atomic database proof. They share the summary lock; Knowledge additionally holds its projection lock.",
+      "source": ["casepath-api/casepath_api/hosted_storage_v1.py:448-529", "casepath-api/casepath_api/autonomous_store_v1.py:945-981", "casepath-api/casepath_api/autonomous_knowledge_v1.py:336-343"],
+      "limit": "Lock contention and slow remote proofs are possible mechanisms, not measured causes of the Mac first-request spike."
+    },
+    {
+      "finding": "The warm path calls prefetch_journal_sources, which parses every persisted event_json while collecting intake and source-arrival descriptors. This work repeats on reads rather than representing route-specific first-use initialization.",
+      "source": ["casepath-api/casepath_api/autonomous_store_v1.py:996-999", "casepath-api/casepath_api/hosted_storage_v1.py:302-323"]
+    },
+    {
+      "finding": "Hosted composition reuses its database HTTP client. That client has 30-second keepalive expiry and no transport retries.",
+      "source": ["casepath-api/casepath_api/hosted_app_v1.py:26-28", "casepath-api/casepath_api/hosted_sql_v1.py:36-41", "casepath-api/casepath_api/hosted_sql_v1.py:473-496"],
+      "limit": "A new upstream connection is possible after idle; its duration was not measured here. Mac-to-Sites HTTP/2 connect/TLS timing does not measure Sites-to-API or API-to-database timing."
+    }
+  ],
+  "conclusion": "No transport or lifecycle defect was proven to explain the first-request spike. No product fix was implemented.",
+  "existing_proxy_test_execution": {
+    "command": "mkdir -p /workspace/casepath-knowledge-first-read-review-qa-20261018/tmp && TMPDIR=/workspace/casepath-knowledge-first-read-review-qa-20261018/tmp TMP=/workspace/casepath-knowledge-first-read-review-qa-20261018/tmp TEMP=/workspace/casepath-knowledge-first-read-review-qa-20261018/tmp /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test casepath-qa/sites-proxy.test.cjs",
+    "working_directory_at_execution": "/workspace/casepath-knowledge-first-read-review-20261018",
+    "exit_code": 0,
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "runner_duration_ms": 108.896233,
+    "stdout_file": "sites-proxy.prior-stdout.txt",
+    "stdout_provenance": "Verbatim command output retained in this agent turn from exec_command chunk 83feac; materialized after the original checkout was retired. Tests were not rerun to produce this receipt.",
+    "network": "All worker upstream fetches mocked; no public or production service contacted.",
+    "temporary_directory": "/workspace/casepath-knowledge-first-read-review-qa-20261018/tmp",
+    "home": "Inherited HOME preserved."
+  },
+  "parent_reported_followup_not_independently_verified": {
+    "local_query_coverage": "On the local 18-claim fixture, all four SELECT SQL statements plus typed parameters in the first warm read had already executed during the cold read; the combined envelope was first used by the visitor.",
+    "mac_native_priming": "Unproved."
+  },
+  "work_limits": {
+    "product_edits": false,
+    "public_or_production_access": false,
+    "database_journal_or_ledger_writes": false,
+    "paid_calls": false,
+    "new_services": false,
+    "backend_tests_run": false,
+    "broad_tests_run": false,
+    "tests_rerun_when_recording": false
+  }
+}

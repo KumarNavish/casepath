@@ -1,0 +1,226 @@
+{
+  "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "qualification": "Local CPU/ASGI timing only, mock Hrana; excludes real network/proxy/host wake and is not hosted acceptance.",
+  "fixture_claims": 18,
+  "measurements": [
+    {
+      "phase": "startup",
+      "wall_seconds": 0.9861845660489053,
+      "calls": {
+        "prefetch_journal_sources": {
+          "calls": 19,
+          "seconds": 0.044651620322838426
+        },
+        "_replay": {
+          "calls": 18,
+          "seconds": 0.8400734250899404
+        },
+        "_validated_states": {
+          "calls": 1,
+          "seconds": 0.8722778999945149
+        },
+        "knowledge_snapshot": {
+          "calls": 1,
+          "seconds": 0.9589989880332723
+        },
+        "_project": {
+          "calls": 1,
+          "seconds": 0.001416871091350913
+        },
+        "_learning_replay": {
+          "calls": 1,
+          "seconds": 0.0002557869302108884
+        },
+        "learning_view": {
+          "calls": 1,
+          "seconds": 0.962394280009903
+        }
+      },
+      "http_requests": 35,
+      "proof_response_bytes": 5110700,
+      "raw_journal_pages": 22
+    },
+    {
+      "phase": "first_poststartup",
+      "wall_seconds": 0.05128655303269625,
+      "calls": {
+        "prefetch_journal_sources": {
+          "calls": 1,
+          "seconds": 0.02138359402306378
+        },
+        "_replay": {
+          "calls": 0,
+          "seconds": 0.0
+        },
+        "_validated_states": {
+          "calls": 1,
+          "seconds": 0.033906628959812224
+        },
+        "knowledge_snapshot": {
+          "calls": 1,
+          "seconds": 0.0430666710017249
+        },
+        "_project": {
+          "calls": 0,
+          "seconds": 0.0
+        },
+        "_learning_replay": {
+          "calls": 0,
+          "seconds": 0.0
+        },
+        "learning_view": {
+          "calls": 1,
+          "seconds": 0.04483901592902839
+        },
+        "fastapi_serialize_response": {
+          "calls": 1,
+          "seconds": 0.0035429190611466765
+        },
+        "render": {
+          "calls": 1,
+          "seconds": 0.0007104079704731703
+        }
+      },
+      "http_requests": 1,
+      "proof_response_bytes": 7274,
+      "raw_journal_pages": 0,
+      "status": 200,
+      "response_bytes": 136307,
+      "response_sha256": "9ab8410fb2dd1a48974a0bc0da17e98ccbaeda86deb28ef14d3464891ceb3c6c"
+    },
+    {
+      "phase": "repeat_1",
+      "wall_seconds": 0.04623810201883316,
+      "calls": {
+        "prefetch_journal_sources": {
+          "calls": 1,
+          "seconds": 0.018086287076584995
+        },
+        "_replay": {
+          "calls": 0,
+          "seconds": 0.0
+        },
+        "_validated_states": {
+          "calls": 1,
+          "seconds": 0.029138450976461172
+        },
+        "knowledge_snapshot": {
+          "calls": 1,
+          "seconds": 0.038126037921756506
+        },
+        "_project": {
+          "calls": 0,
+          "seconds": 0.0
+        },
+        "_learning_replay": {
+          "calls": 0,
+          "seconds": 0.0
+        },
+        "learning_view": {
+          "calls": 1,
+          "seconds": 0.04025361791718751
+        },
+        "fastapi_serialize_response": {
+          "calls": 1,
+          "seconds": 0.0036385710118338466
+        },
+        "render": {
+          "calls": 1,
+          "seconds": 0.0006082979962229729
+        }
+      },
+      "http_requests": 1,
+      "proof_response_bytes": 7274,
+      "raw_journal_pages": 0,
+      "status": 200,
+      "response_bytes": 136307,
+      "response_sha256": "9ab8410fb2dd1a48974a0bc0da17e98ccbaeda86deb28ef14d3464891ceb3c6c"
+    },
+    {
+      "phase": "repeat_2",
+      "wall_seconds": 0.046421353006735444,
+      "calls": {
+        "prefetch_journal_sources": {
+          "calls": 1,
+          "seconds": 0.018694974947720766
+        },
+        "_replay": {
+          "calls": 0,
+          "seconds": 0.0
+        },
+        "_validated_states": {
+          "calls": 1,
+          "seconds": 0.02986762800719589
+        },
+        "knowledge_snapshot": {
+          "calls": 1,
+          "seconds": 0.03878837497904897
+        },
+        "_project": {
+          "calls": 0,
+          "seconds": 0.0
+        },
+        "_learning_replay": {
+          "calls": 0,
+          "seconds": 0.0
+        },
+        "learning_view": {
+          "calls": 1,
+          "seconds": 0.040654981043189764
+        },
+        "fastapi_serialize_response": {
+          "calls": 1,
+          "seconds": 0.0036043099826201797
+        },
+        "render": {
+          "calls": 1,
+          "seconds": 0.0006820469861850142
+        }
+      },
+      "http_requests": 1,
+      "proof_response_bytes": 7274,
+      "raw_journal_pages": 0,
+      "status": 200,
+      "response_bytes": 136307,
+      "response_sha256": "9ab8410fb2dd1a48974a0bc0da17e98ccbaeda86deb28ef14d3464891ceb3c6c"
+    }
+  ],
+  "public_export": {
+    "path": "/workspace/knowledge-learning-coordinator-20261016/projection-6064.json",
+    "sha256": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8",
+    "qualification": "Existing filtered public synthetic projection; serialization-only, no admission authority.",
+    "measurements": [
+      {
+        "phase": "public_first_encode",
+        "wall_seconds": 0.016118481988087296,
+        "fastapi_encoding_seconds": 0.011450200923718512,
+        "json_render_seconds": 0.003150601056404412,
+        "response_bytes": 405257,
+        "response_sha256": "24da02d87f5f9a5b1e6e6fc757034d8071cfc338e78d30e3a797d7cc6339001f"
+      },
+      {
+        "phase": "public_repeat_1",
+        "wall_seconds": 0.015114640002138913,
+        "fastapi_encoding_seconds": 0.011786588001996279,
+        "json_render_seconds": 0.0022132269805297256,
+        "response_bytes": 405257,
+        "response_sha256": "24da02d87f5f9a5b1e6e6fc757034d8071cfc338e78d30e3a797d7cc6339001f"
+      },
+      {
+        "phase": "public_repeat_2",
+        "wall_seconds": 0.014759847079403698,
+        "fastapi_encoding_seconds": 0.0113337590591982,
+        "json_render_seconds": 0.0022995140170678496,
+        "response_bytes": 405257,
+        "response_sha256": "24da02d87f5f9a5b1e6e6fc757034d8071cfc338e78d30e3a797d7cc6339001f"
+      }
+    ]
+  },
+  "python": "3.13.9 (main, Nov 19 2025, 22:47:49) [Clang 21.1.4 ]",
+  "source_sha256": {
+    "casepath-api/casepath_api/hosted_app_v1.py": "ef58f913f35002e00aad77350d1bd5258ecbe5d4f434f2a4a3ddd6fcff625e2d",
+    "casepath-api/casepath_api/hosted_storage_v1.py": "737820c41572e97841bde2ff7b87b91e668cb7dce1be93296576c53ff0a858dd",
+    "casepath-api/casepath_api/autonomous_knowledge_v1.py": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464",
+    "casepath-api/casepath_api/autonomous_api_v1.py": "0b500f347aa1dd26b886ab60b94d815a29f089196503dbf37523d8e9cf65a270"
+  }
+}

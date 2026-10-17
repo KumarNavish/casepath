@@ -1,0 +1,34 @@
+{
+  "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "qualification": "Local unchanged native fixture only; no remote query-plan-cache or native network timing claim.",
+  "cold_http_requests": 31,
+  "warm_http_requests": 1,
+  "warm_selects": [
+    {
+      "query_sha256": "058bfd57db3b208cc90f33698bf72a7db199838356d2cc2d9611564d4b993421",
+      "exact_sql_and_typed_parameters_used_during_cold": true,
+      "domain": "journal",
+      "schema_query": false
+    },
+    {
+      "query_sha256": "f9d306583df468b1bda0fd3ff9e8b3b9b02c4657c26f6b62535e2ef20f99d808",
+      "exact_sql_and_typed_parameters_used_during_cold": true,
+      "domain": "journal",
+      "schema_query": false
+    },
+    {
+      "query_sha256": "91282400255cf23eea9de335df1508d7a881f5f93f27d15fd85cadcbf1c95f09",
+      "exact_sql_and_typed_parameters_used_during_cold": true,
+      "domain": "source",
+      "schema_query": false
+    },
+    {
+      "query_sha256": "6aabbe8ca9ac65e4602d952cd0bff2908fee6504ac77027792cbea49a3ef6ead",
+      "exact_sql_and_typed_parameters_used_during_cold": true,
+      "domain": "source",
+      "schema_query": false
+    }
+  ],
+  "all_warm_selects_already_executed_exactly_during_cold": true,
+  "combined_atomic_envelope_used_during_cold": false
+}

@@ -1,0 +1,82 @@
+{
+  "base": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "host": "656813ef2295",
+  "branch": "codex/knowledge-first-read-20261018",
+  "backend_authored_changes": [],
+  "decision": "No backend performance change justified by the measured first-use review. Full typed journal/source/schema/roster proofs and deadlines remain unchanged.",
+  "measurements": "measurements.json",
+  "query_coverage": "query-coverage.json",
+  "independent_review": "independent-review/review.json",
+  "measurement_qualifications": [
+    "Mock Hrana/native18-claim fixture timings exclude hosted network, host wake, proxy and production load.",
+    "First timing startup transport count includes four disposable fixture-setup calls; query-coverage resets this counter and records31 cold read requests. Warm timings/counters reset for every request.",
+    "405258-byte filtered public23-head projection is used only for encoding measurement; it is not the current26-head/405923-byte production payload and has no admission authority.",
+    "schema_query in raw query-coverage is a literal substring observation, not proof classification; all four SQL and typed-parameter equality checks are authoritative for this local experiment."
+  ],
+  "served_read_seconds": [
+    0.05128655303269625,
+    0.04623810201883316,
+    0.046421353006735444
+  ],
+  "first_read_project_or_replay_calls": 0,
+  "fresh_atomic_proofs_per_warm_read": 1,
+  "public_encoding_first_total_seconds": 0.016118481988087296,
+  "startup_query_hypothesis": {
+    "all_four_warm_selects_and_typed_parameters_used_during_cold": true,
+    "combined_atomic_envelope_used_during_cold": false,
+    "native_envelope_priming_benefit": "Unmeasured; no redundant startup read added."
+  },
+  "mac_owner_negative_evidence": {
+    "first_sites_ttfb_seconds": 2.98249,
+    "client_connect_tls_seconds": 0.638125,
+    "after_client_connection_seconds": 2.344365,
+    "repeat_knowledge_seconds": 0.486055,
+    "browser_dcl_to_request_ms": 470.4,
+    "browser_request_to_headers_ms": 1390.1,
+    "browser_body_to_content_ms": 334.9,
+    "browser_max_longtask_ms": 216
+  },
+  "unresolved_latency_attribution": [
+    "Sites-to-API connection/queue/host wake",
+    "API-to-database connection/proof execution",
+    "summary-lock contention with collection",
+    "browser initial rendering/cache work (independent frontend scope)"
+  ],
+  "smallest_discriminating_telemetry": [
+    "Worker entry to upstream response headers",
+    "Same-instance API process age, startup-finished time and request entry to response.start including serialization",
+    "Summary/projection lock wait, atomic-proof/fallback path, proof request count and header/body duration"
+  ],
+  "boundaries": {
+    "production_requests": 0,
+    "credentials_used_or_exported": false,
+    "provider_calls": 0,
+    "product_record_writes": 0,
+    "database_calls": "Only isolated disposable SQLite/mock Hrana fixture setup and read validation. Existing fixture opened read-only.",
+    "full_gate_restarted": false,
+    "source_clean": true
+  },
+  "commands": [
+    {
+      "command": "pinned Python measure_first_read.py",
+      "exit_code": 0,
+      "stdout": "measure.stdout.log",
+      "stderr": "measure.stderr.log"
+    },
+    {
+      "command": "pinned Python measure_query_coverage.py",
+      "exit_code": 0,
+      "result": "query-coverage.json"
+    }
+  ],
+  "runtime": {
+    "python": "3.13.9",
+    "fastapi": "0.116.1",
+    "httpx": "0.28.1",
+    "pydantic": "2.11.7",
+    "TMPDIR": "/workspace/knowledge-first-read-20261018/t",
+    "TMP": "/workspace/knowledge-first-read-20261018/t",
+    "TEMP": "/workspace/knowledge-first-read-20261018/t"
+  },
+  "recorded_epoch": 1792279721.6238856
+}
