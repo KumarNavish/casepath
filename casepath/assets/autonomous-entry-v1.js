@@ -18,10 +18,10 @@
   try {
     if (document.documentElement.dataset.autonomousWorkspace === 'true') {
       if (window.CASEPATH_PUBLIC_READ_ONLY === true && (location.hash === '#autonomous/knowledge' || location.hash.startsWith('#autonomous/knowledge?'))) {
-        const controller = new AbortController(), timeout = setTimeout(() => controller.abort(),15000);
-        const response = fetch('/api/claim-loops/v1/autonomous/knowledge',{method:'GET',headers:{Accept:'application/json'},signal:controller.signal,cache:'no-store'});
+        const url = '/api/claim-loops/v1/autonomous/knowledge', controller = new AbortController(), timeout = setTimeout(() => controller.abort(),15000);
+        const response = fetch(url,{method:'GET',headers:{Accept:'application/json'},signal:controller.signal,cache:'no-store'});
         response.catch(() => {});
-        knowledgeOpening = {fragment:location.hash,controller,timeout,response};
+        knowledgeOpening = {url,fragment:location.hash,controller,timeout,response};
       }
       await load('casepath-autonomous-script');
       let recordedPacket, savedSnapshot;

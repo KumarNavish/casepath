@@ -104,7 +104,7 @@ test('public Knowledge opening starts one bounded GET before the workspace scrip
   assert.equal(calls.length,1,'the selected GET overlaps the deferred workspace download');assert.equal(scripts.length,1);assert.equal(mounted.length,0);
   assert.equal(calls[0].url,'/api/claim-loops/v1/autonomous/knowledge');assert.equal(calls[0].init.method,'GET');assert.equal(calls[0].init.cache,'no-store');assert.equal(calls[0].init.headers.Accept,'application/json');assert.equal(calls[0].init.signal.aborted,false);assert.equal([...timers.values()][0].delay,15000);
   scripts[0].onload();await pending;
-  assert.equal(mounted.length,1);assert.equal(mounted[0].knowledgeOpening.fragment,location.hash);assert.equal(mounted[0].knowledgeOpening.response,openingResponse);assert.equal(mounted[0].knowledgeOpening.controller.signal,calls[0].init.signal);
+  assert.equal(mounted.length,1);assert.equal(mounted[0].knowledgeOpening.url,calls[0].url);assert.equal(mounted[0].knowledgeOpening.fragment,location.hash);assert.equal(mounted[0].knowledgeOpening.response,openingResponse);assert.equal(mounted[0].knowledgeOpening.controller.signal,calls[0].init.signal);
 });
 
 test('Knowledge boot GET stays public and route-specific and aborts if workspace loading fails',async()=>{

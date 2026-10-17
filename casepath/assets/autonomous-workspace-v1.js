@@ -2074,6 +2074,10 @@
       if (!knowledgeOpening) return;
       knowledgeOpening.controller.abort(); root.clearTimeout(knowledgeOpening.timeout); knowledgeOpening = null;
     }
+    if (knowledgeOpening) {
+      try { if (new URL(knowledgeOpening.url,root.location?.href).href !== new URL(base+'/knowledge',root.location?.href).href) discardKnowledgeOpening(); }
+      catch (_) { discardKnowledgeOpening(); }
+    }
     let recordedPacket = null, packetVerification = null, packetLoadController = null, packetAcquisition = null;
     let savedSnapshotLoad = null, savedSnapshotController = null;
     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
