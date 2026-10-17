@@ -1,0 +1,32 @@
+[
+  {
+    "input": "/workspace/casepath-knowledge-learning-gate-84f972c8-20261016/mac-ids.txt",
+    "target": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/mac-ids.txt",
+    "sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "byte_equal": true
+  },
+  {
+    "input": "/workspace/casepath-knowledge-learning-gate-84f972c8-20261016/known-skips.json",
+    "target": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/known-skips.json",
+    "sha256": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7",
+    "byte_equal": true
+  },
+  {
+    "input": "/workspace/casepath-knowledge-learning-gate-84f972c8-20261016/collected-ids.txt",
+    "target": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/coordinator/prior-collected-ids.txt",
+    "sha256": "6b8e6b1fb11fe1b47b7da727ee0adfc3c3bc90a69c74646b5b3e4391d85c847c",
+    "byte_equal": true
+  },
+  {
+    "input": "/workspace/casepath-knowledge-learning-gate-84f972c8-20261016/shard-map.json",
+    "target": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/coordinator/prior-shard-map.json",
+    "sha256": "ca8861d2b6e4200ccd505e8fecb0f5edf0db87ab78c5960f526abbebe70368c9",
+    "byte_equal": true
+  },
+  {
+    "input": "/workspace/casepath-knowledge-learning-gate-84f972c8-20261016/per-file-durations.json",
+    "target": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/coordinator/prior-per-file-durations.json",
+    "sha256": "91ee6af3b37f84b3eaf8aa795b094a488e67c49c338deb9fdb17caf0968fa147",
+    "byte_equal": true
+  }
+]
