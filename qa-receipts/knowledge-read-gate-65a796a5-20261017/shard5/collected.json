@@ -1,0 +1,2617 @@
+[
+  {
+    "id": "casepath-api/tests/test_workspace_corpus_150.py::test_original_150_profile_is_distinct_and_not_a_padding_of_development",
+    "pytest_nodeid": "tests/test_workspace_corpus_150.py::test_original_150_profile_is_distinct_and_not_a_padding_of_development",
+    "file": "casepath-api/tests/test_workspace_corpus_150.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_corpus_150.py::test_invalid_profile_is_rejected_before_read",
+    "pytest_nodeid": "tests/test_workspace_corpus_150.py::test_invalid_profile_is_rejected_before_read",
+    "file": "casepath-api/tests/test_workspace_corpus_150.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_corpus_150.py::test_all_150_original_claims_enter_the_same_workflow_without_accepting_evidence",
+    "pytest_nodeid": "tests/test_workspace_corpus_150.py::test_all_150_original_claims_enter_the_same_workflow_without_accepting_evidence",
+    "file": "casepath-api/tests/test_workspace_corpus_150.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_what_if_is_read_only_across_workspace_and_loop_journals",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_what_if_is_read_only_across_workspace_and_loop_journals",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_handler_condition_note_is_recorded_withdrawn_and_replayed",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_handler_condition_note_is_recorded_withdrawn_and_replayed",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_selected_pdf_end_date_advances_without_accepting_unresolved_message",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_selected_pdf_end_date_advances_without_accepting_unresolved_message",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_operational_queue_and_workbench_share_the_live_claim_journal",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_operational_queue_and_workbench_share_the_live_claim_journal",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_operational_queue_waits_for_a_stable_read_beyond_three_commits",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_operational_queue_waits_for_a_stable_read_beyond_three_commits",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_normal_loop_append_invalidates_an_operational_queue_cursor",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_normal_loop_append_invalidates_an_operational_queue_cursor",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_operational_queue_cache_never_hides_historical_journal_tamper",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_operational_queue_cache_never_hides_historical_journal_tamper",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_queue_write_reuses_unchanged_claim_loop_replays",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_queue_write_reuses_unchanged_claim_loop_replays",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[in_place]",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[in_place]",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[replace]",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[replace]",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[extra]",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[extra]",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[symlink]",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[symlink]",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[remove]",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[remove]",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_operational_rebuild_discards_derived_cache_and_binds_both_journals",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_operational_rebuild_discards_derived_cache_and_binds_both_journals",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_operational_rebuild_rejects_incomplete_or_foreign_authority_rosters",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_operational_rebuild_rejects_incomplete_or_foreign_authority_rosters",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_claim_loop_replans_real_claim_and_replays_exactly",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_claim_loop_replans_real_claim_and_replays_exactly",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_scoped_correction_preview_apply_and_reload_are_exact",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_scoped_correction_preview_apply_and_reload_are_exact",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_correction_adapter_rejects_forged_authority",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_correction_adapter_rejects_forged_authority",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_store_reexecutes_configured_correction_authority",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_store_reexecutes_configured_correction_authority",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_invalid_correction_preview_is_stable_terminal_conflict",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_invalid_correction_preview_is_stable_terminal_conflict",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_source_election_is_unique_under_concurrency",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_source_election_is_unique_under_concurrency",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[session_id]",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[session_id]",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[loop_id]",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[loop_id]",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[parent_revision]",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[parent_revision]",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[action_sha256]",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[action_sha256]",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_dispatch_view_is_processing_and_not_interactive",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_dispatch_view_is_processing_and_not_interactive",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_sigkill_after_durable_artifact_recovers_without_redispatch",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_sigkill_after_durable_artifact_recovers_without_redispatch",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_facade_precheck_tail_race_terminalizes_stably",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_facade_precheck_tail_race_terminalizes_stably",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_observed_attempt_bound_is_strict_and_legacy_omission_is_unchanged",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_observed_attempt_bound_is_strict_and_legacy_omission_is_unchanged",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_http_ensure_replays_exact_original_response_after_tail_and_restart",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_http_ensure_replays_exact_original_response_after_tail_and_restart",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_ensure_crash_after_selection_cannot_migrate_to_later_action",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_ensure_crash_after_selection_cannot_migrate_to_later_action",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_http_stage_replay_and_restart_use_one_journal",
+    "pytest_nodeid": "tests/test_workspace_claim_loop_v1.py::test_workspace_http_stage_replay_and_restart_use_one_journal",
+    "file": "casepath-api/tests/test_workspace_claim_loop_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_returns_all_results_from_one_closed_transaction",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_returns_all_results_from_one_closed_transaction",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_accepts_valid_retained_last_insert_metadata_on_readonly_results",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_accepts_valid_retained_last_insert_metadata_on_readonly_results",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries0]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries0]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries1]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries1]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries2]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries2]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries3]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries3]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries4]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries4]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries5]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries5]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries6]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries6]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries7]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries7]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[None]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[None]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries9]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries9]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[SELECT 1]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[SELECT 1]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[BEGIN]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[BEGIN]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[read_once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[read_once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_error]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_error]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[select_error]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[select_error]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_error]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_error]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[close_error]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[close_error]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[baton]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[baton]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[count]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[count]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[entry]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[entry]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[type]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[type]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_result]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_result]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_result]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_result]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[close_result]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[close_result]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[row]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[row]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[cell]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[cell]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[affected]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[affected]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_rows]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_rows]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_rows]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_rows]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_affected]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_affected]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_affected]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_affected]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[origin]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[origin]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[timeout]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[timeout]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[non_json]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[non_json]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[encoding]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[encoding]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[http_error]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[http_error]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_request_size_limit_stays_local_and_preserves_connection",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_request_size_limit_stays_local_and_preserves_connection",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_response_retains_byte_and_total_deadline_guards[bytes]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_response_retains_byte_and_total_deadline_guards[bytes]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_response_retains_byte_and_total_deadline_guards[deadline]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_snapshot_response_retains_byte_and_total_deadline_guards[deadline]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_reused_http_client_never_reuses_connection_transaction_baton_or_cache",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_reused_http_client_never_reuses_connection_transaction_baton_or_cache",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_default_injected_http_client_still_closes_unless_explicitly_borrowed",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_default_injected_http_client_still_closes_unless_explicitly_borrowed",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_concurrent_shared_http_sessions_isolate_batons_caches_and_poisoned_close",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_concurrent_shared_http_sessions_isolate_batons_caches_and_poisoned_close",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_reused_default_http_transport_has_bounded_pool_and_original_timeouts",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_reused_default_http_transport_has_bounded_pool_and_original_timeouts",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers[snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers[snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers[once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers[once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[None-snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[None-snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[None-once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[None-once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[0-snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[0-snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[0-once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[0-once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[1-snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[1-snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[1-once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[1-once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[close-snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[close-snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[close-once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[close-once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag4-snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag4-snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag4-once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag4-once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag5-snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag5-snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag5-once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag5-once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_concurrent_raw_close_header_does_not_leak_into_compact_snapshot",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_concurrent_raw_close_header_does_not_leak_into_compact_snapshot",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[bytes-snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[bytes-snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[bytes-once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[bytes-once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[deadline-snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[deadline-snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[deadline-once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[deadline-once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[cancel-snapshot]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[cancel-snapshot]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[cancel-once]",
+    "pytest_nodeid": "tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[cancel-once]",
+    "file": "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_desk_reconciliation.py::test_control_plane_reconciliation_preserves_authority_and_resumes_exact_calls",
+    "pytest_nodeid": "tests/test_agent_desk_reconciliation.py::test_control_plane_reconciliation_preserves_authority_and_resumes_exact_calls",
+    "file": "casepath-api/tests/test_agent_desk_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_desk_reconciliation.py::test_recovery_request_survives_interruption_before_work_receipt",
+    "pytest_nodeid": "tests/test_agent_desk_reconciliation.py::test_recovery_request_survives_interruption_before_work_receipt",
+    "file": "casepath-api/tests/test_agent_desk_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_desk_reconciliation.py::test_superseded_recovery_request_cannot_reconstruct_after_new_handler_control",
+    "pytest_nodeid": "tests/test_agent_desk_reconciliation.py::test_superseded_recovery_request_cannot_reconstruct_after_new_handler_control",
+    "file": "casepath-api/tests/test_agent_desk_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_desk_reconciliation.py::test_verified_local_reconciliation_is_visible_and_preserves_a_paused_mandate",
+    "pytest_nodeid": "tests/test_agent_desk_reconciliation.py::test_verified_local_reconciliation_is_visible_and_preserves_a_paused_mandate",
+    "file": "casepath-api/tests/test_agent_desk_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[legacy]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[legacy]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[canonical]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[canonical]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[hosted]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[hosted]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_closed_controller_refuses_saved_reconciliation_without_writes[legacy]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_closed_controller_refuses_saved_reconciliation_without_writes[legacy]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_closed_controller_refuses_saved_reconciliation_without_writes[hosted]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_closed_controller_refuses_saved_reconciliation_without_writes[hosted]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[key]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[key]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[head]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[head]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[reason]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[reason]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[actor]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[actor]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[absent]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[absent]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[missing_verify]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[missing_verify]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[pending]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[pending]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[unknown]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[unknown]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[rejected]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[rejected]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[bad_terminal]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_uncompleted_saved_pair_never_admits_or_dispatches[bad_terminal]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[config]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[config]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[schema]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[schema]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[context]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[context]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[proposal]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[proposal]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[binding]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[binding]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[request]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_frozen_identity_changes_reject_before_journal_admission[request]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_oversized_child_event_keys_reject_before_admission[171]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_oversized_child_event_keys_reject_before_admission[171]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_oversized_child_event_keys_reject_before_admission[180]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_oversized_child_event_keys_reject_before_admission[180]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_failure_is_not_resumed_or_retried_by_normal_controller",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_failure_is_not_resumed_or_retried_by_normal_controller",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_busy_hosted_lease_denies_without_queue_or_event[hosted]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_busy_hosted_lease_denies_without_queue_or_event[hosted]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_pause_or_new_evidence_during_application_keeps_its_own_head[paused]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_pause_or_new_evidence_during_application_keeps_its_own_head[paused]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_pause_or_new_evidence_during_application_keeps_its_own_head[new_source]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_pause_or_new_evidence_during_application_keeps_its_own_head[new_source]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_failed_deterministic_application_preserves_failure_and_requires_new_command",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_failed_deterministic_application_preserves_failure_and_requires_new_command",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_rejected_document_is_preserved_but_never_reviewed_or_learned[bad_document]",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_rejected_document_is_preserved_but_never_reviewed_or_learned[bad_document]",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_control_plane_cache_only_route_keeps_existing_origin_guard_and_denials",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_control_plane_cache_only_route_keeps_existing_origin_guard_and_denials",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_saved_workflow_accessor_is_select_only_and_requires_complete_pair",
+    "pytest_nodeid": "tests/test_autonomous_reconciliation_v1.py::test_saved_workflow_accessor_is_select_only_and_requires_complete_pair",
+    "file": "casepath-api/tests/test_autonomous_reconciliation_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_all_150_previews_are_source_bound_and_never_investigated",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_all_150_previews_are_source_bound_and_never_investigated",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_all_original_artifact_bytes_media_and_relationships_survive",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_all_original_artifact_bytes_media_and_relationships_survive",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_packet_uses_original_native_sources_and_has_no_admission",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_packet_uses_original_native_sources_and_has_no_admission",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_native_email_headers_previewed_without_an_evidence_receipt",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_native_email_headers_previewed_without_an_evidence_receipt",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_text_charset_and_visual_limits_are_explicit",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_text_charset_and_visual_limits_are_explicit",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_collection_is_cached_metadata_without_extraction_or_registry",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_collection_is_cached_metadata_without_extraction_or_registry",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_browsing_never_constructs_a_journal_or_invokes_admission",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_browsing_never_constructs_a_journal_or_invokes_admission",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_nonobservable_top_level_fields_cannot_enter_the_operational_packet",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_nonobservable_top_level_fields_cannot_enter_the_operational_packet",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_unknown_and_cross_claim_ids_fail_closed",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_unknown_and_cross_claim_ids_fail_closed",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_returns_copies_and_identity_is_deterministic",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_returns_copies_and_identity_is_deterministic",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_cached_projection_rejects_changed_original_bytes[False]",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_cached_projection_rejects_changed_original_bytes[False]",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_cached_projection_rejects_changed_original_bytes[True]",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_cached_projection_rejects_changed_original_bytes[True]",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_legacy_60_profile_cannot_be_silently_used_as_complete",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_legacy_60_profile_cannot_be_silently_used_as_complete",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_taxonomy_is_exact_authorized_manifest_projection_and_immutable",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_taxonomy_is_exact_authorized_manifest_projection_and_immutable",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_browsing_taxonomy_and_short_source_preview_are_summary_only",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_browsing_taxonomy_and_short_source_preview_are_summary_only",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_corpus_v1.py::test_browsing_taxonomy_must_cover_exact_canonical_binding_ids",
+    "pytest_nodeid": "tests/test_autonomous_corpus_v1.py::test_browsing_taxonomy_must_cover_exact_canonical_binding_ids",
+    "file": "casepath-api/tests/test_autonomous_corpus_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_busy_accepted_work_resumes_after_release_without_http_or_resubmission[canonical]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_busy_accepted_work_resumes_after_release_without_http_or_resubmission[canonical]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_busy_accepted_work_resumes_after_release_without_http_or_resubmission[legacy]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_busy_accepted_work_resumes_after_release_without_http_or_resubmission[legacy]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_startup_busy_work_recovers_only_saved_claims[canonical]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_startup_busy_work_recovers_only_saved_claims[canonical]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_startup_busy_work_recovers_only_saved_claims[legacy]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_startup_busy_work_recovers_only_saved_claims[legacy]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_never_started_originals_have_no_timer_queue_or_journals",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_never_started_originals_have_no_timer_queue_or_journals",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_lost_ownership_after_saved_start_resumes_same_work[canonical]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_lost_ownership_after_saved_start_resumes_same_work[canonical]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_lost_ownership_after_saved_start_resumes_same_work[legacy]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_lost_ownership_after_saved_start_resumes_same_work[legacy]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_long_owned_loss_refreshes_window_once_and_busy_reacquisition_keeps_deadline[canonical]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_long_owned_loss_refreshes_window_once_and_busy_reacquisition_keeps_deadline[canonical]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_long_owned_loss_refreshes_window_once_and_busy_reacquisition_keeps_deadline[legacy]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_long_owned_loss_refreshes_window_once_and_busy_reacquisition_keeps_deadline[legacy]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_long_owned_loss_keeps_other_accepted_jobs_eligible_and_new_generation_fenced",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_long_owned_loss_keeps_other_accepted_jobs_eligible_and_new_generation_fenced",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_unconfirmed_reacquisition_never_refreshes_its_bounded_wait_window",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_unconfirmed_reacquisition_never_refreshes_its_bounded_wait_window",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[paused-canonical]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[paused-canonical]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[paused-legacy]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[paused-legacy]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[provider_deferred-canonical]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[provider_deferred-canonical]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[provider_deferred-legacy]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[provider_deferred-legacy]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[verification_deferred-canonical]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[verification_deferred-canonical]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[verification_deferred-legacy]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[verification_deferred-legacy]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[execution_deferred-canonical]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[execution_deferred-canonical]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[execution_deferred-legacy]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[execution_deferred-legacy]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[None-canonical]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[None-canonical]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[None-legacy]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[None-legacy]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[unknown-canonical]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[unknown-canonical]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[unknown-legacy]",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[unknown-legacy]",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_other_process_completion_replaces_stale_run_with_learning_only",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_other_process_completion_replaces_stale_run_with_learning_only",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_pending_queue_is_fair_and_one_worker_serial",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_pending_queue_is_fair_and_one_worker_serial",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_late_source_waits_for_completion_and_receives_fresh_retry_window",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_late_source_waits_for_completion_and_receives_fresh_retry_window",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_normal_lease_expiry_is_inside_bounded_recovery_window",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_normal_lease_expiry_is_inside_bounded_recovery_window",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_persistent_owner_parks_after_bound_and_explicit_wake_rearms",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_persistent_owner_parks_after_bound_and_explicit_wake_rearms",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_pending_recovery_v1.py::test_shutdown_cancels_timer_and_racing_callback_cannot_dispatch",
+    "pytest_nodeid": "tests/test_hosted_pending_recovery_v1.py::test_shutdown_cancels_timer_and_racing_callback_cannot_dispatch",
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[False]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[False]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[True]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[True]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097153]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097153]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[16777216]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[16777216]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_reduce_tiny_file_requests_without_changing_default_reads",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_reduce_tiny_file_requests_without_changing_default_reads",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_byte_limited_short_pages_continue_until_all_chunks_are_verified",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_knowledge_byte_limited_short_pages_continue_until_all_chunks_are_verified",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[changed_later_chunk]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[changed_later_chunk]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[missing_later_chunk]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[missing_later_chunk]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[gap_later_page]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[gap_later_page]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[oversize_chunk]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[oversize_chunk]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[wrong_type]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[wrong_type]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_knowledge_final_source_verification_still_detects_mutation_after_prefetch",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_knowledge_final_source_verification_still_detects_mutation_after_prefetch",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[changed_later_chunk]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[changed_later_chunk]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[missing_later_chunk]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[missing_later_chunk]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[extra_empty_chunk]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[extra_empty_chunk]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[gap_later_page]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[gap_later_page]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[oversize_chunk]",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[oversize_chunk]",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_empty_invalid_and_missing_batches_do_not_return_false_verification",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_empty_invalid_and_missing_batches_do_not_return_false_verification",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_digest_group_boundary_keeps_one_shared_connection",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_digest_group_boundary_keeps_one_shared_connection",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_transport_failure_on_later_chunk_page_never_acknowledges_verification",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_transport_failure_on_later_chunk_page_never_acknowledges_verification",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_final_boundary_rechecks_bytes_changed_after_cold_prefetch",
+    "pytest_nodeid": "tests/test_hosted_source_batch_v1.py::test_final_boundary_rechecks_bytes_changed_after_cold_prefetch",
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_flagship_request_traces_documents_to_quotes_and_articles",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_flagship_request_traces_documents_to_quotes_and_articles",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_german_health_handoff_keeps_customer_quote_and_german_copy",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_german_health_handoff_keeps_customer_quote_and_german_copy",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_german_customer_request_uses_known_name_without_guessing_a_title",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_german_customer_request_uses_known_name_without_guessing_a_title",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_ambiguous_tenant_names_keep_neutral_salutation",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_ambiguous_tenant_names_keep_neutral_salutation",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_rent_request_asks_for_basis_without_renovation_breakdown",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_rent_request_asks_for_basis_without_renovation_breakdown",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_draft_and_handler_edit_replay_from_workspace_journal",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_draft_and_handler_edit_replay_from_workspace_journal",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_previous_sealed_head_draft_journal_boots_without_rewriting_it[7440d6a]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_previous_sealed_head_draft_journal_boots_without_rewriting_it[7440d6a]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_previous_sealed_head_draft_journal_boots_without_rewriting_it[6678cd6]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_previous_sealed_head_draft_journal_boots_without_rewriting_it[6678cd6]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_previous_sealed_draft_compiler_replays_exact_bytes[clm_f69b1747447bc221-fb46fd3d9abbdf663df9f38d7233a0af8f88fd888b94b582620e3d339a751f20]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_previous_sealed_draft_compiler_replays_exact_bytes[clm_f69b1747447bc221-fb46fd3d9abbdf663df9f38d7233a0af8f88fd888b94b582620e3d339a751f20]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_previous_sealed_draft_compiler_replays_exact_bytes[clm_7ac806bd30792cfb-e9abf8fd05e675bc40e7ce90cfa171aefaa38ad335afee07b47ba0d456f463a4]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_previous_sealed_draft_compiler_replays_exact_bytes[clm_7ac806bd30792cfb-e9abf8fd05e675bc40e7ce90cfa171aefaa38ad335afee07b47ba0d456f463a4]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_previous_sealed_draft_compiler_replays_exact_bytes[clm_6f04d0907ecb96bb-32a73ee2d4633957f90dce7905bca79d09b3fc3379120736fe880a8a8977583a]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_previous_sealed_draft_compiler_replays_exact_bytes[clm_6f04d0907ecb96bb-32a73ee2d4633957f90dce7905bca79d09b3fc3379120736fe880a8a8977583a]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_prior_named_draft_compiler_replays_exact_bytes[clm_f69b1747447bc221-2250867d2c82f7ebe3f02c4965242c759fbc5fb4629ed23706cc4530643e04a1]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_prior_named_draft_compiler_replays_exact_bytes[clm_f69b1747447bc221-2250867d2c82f7ebe3f02c4965242c759fbc5fb4629ed23706cc4530643e04a1]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_prior_named_draft_compiler_replays_exact_bytes[clm_7ac806bd30792cfb-90a1b68b89475311603b969731ec443e903fbc97ded30ab650bfca32fcddcabb]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_prior_named_draft_compiler_replays_exact_bytes[clm_7ac806bd30792cfb-90a1b68b89475311603b969731ec443e903fbc97ded30ab650bfca32fcddcabb]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_prior_named_draft_compiler_replays_exact_bytes[clm_6f04d0907ecb96bb-9f0ccfdcab758bd4fb8bc68b107ccef13288c2e9741239b949eb538a2a88a0ae]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_prior_named_draft_compiler_replays_exact_bytes[clm_6f04d0907ecb96bb-9f0ccfdcab758bd4fb8bc68b107ccef13288c2e9741239b949eb538a2a88a0ae]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_corrected_family_route_draft_explains_actual_upstream_questions",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_corrected_family_route_draft_explains_actual_upstream_questions",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_current_legacy_assessment_keeps_exact_previous_compiler_output",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_current_legacy_assessment_keeps_exact_previous_compiler_output",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_saved_prior_graph_draft_replays_before_corrected_draft[sealed_1_2]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_saved_prior_graph_draft_replays_before_corrected_draft[sealed_1_2]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_saved_prior_graph_draft_replays_before_corrected_draft[causal_1_0]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_saved_prior_graph_draft_replays_before_corrected_draft[causal_1_0]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_saved_prior_graph_draft_replays_before_corrected_draft[causal_1_1]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_saved_prior_graph_draft_replays_before_corrected_draft[causal_1_1]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_graph_draft_omits_empty_document_sections_when_prerequisites_block[en]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_graph_draft_omits_empty_document_sections_when_prerequisites_block[en]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_graph_draft_omits_empty_document_sections_when_prerequisites_block[de-CH]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_graph_draft_omits_empty_document_sections_when_prerequisites_block[de-CH]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_german_causal_draft_localizes_known_questions_and_deferred_reasons_only",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_german_causal_draft_localizes_known_questions_and_deferred_reasons_only",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_german_causal_draft_localizes_remaining_builtin_questions[On what date was the increase notified?-An welchem Tag haben Sie die Mietzinserh\\xf6hungsanzeige erhalten?]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_german_causal_draft_localizes_remaining_builtin_questions[On what date was the increase notified?-An welchem Tag haben Sie die Mietzinserh\\xf6hungsanzeige erhalten?]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_german_causal_draft_localizes_remaining_builtin_questions[Does claim received apply?-Haben Sie die Mietzinserh\\xf6hungsanzeige erhalten?]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_german_causal_draft_localizes_remaining_builtin_questions[Does claim received apply?-Haben Sie die Mietzinserh\\xf6hungsanzeige erhalten?]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_german_causal_draft_localizes_remaining_builtin_questions[Does health effects apply?-Werden gesundheitliche Beschwerden geltend gemacht?]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_german_causal_draft_localizes_remaining_builtin_questions[Does health effects apply?-Werden gesundheitliche Beschwerden geltend gemacht?]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_german_causal_draft_localizes_remaining_builtin_questions[Does mold apply?-Liegt ein Schimmelbefall vor?]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_german_causal_draft_localizes_remaining_builtin_questions[Does mold apply?-Liegt ein Schimmelbefall vor?]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_german_causal_draft_localizes_remaining_builtin_questions[Does extension relevant apply?-Wird eine Erstreckung des Mietverh\\xe4ltnisses beantragt?]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_german_causal_draft_localizes_remaining_builtin_questions[Does extension relevant apply?-Wird eine Erstreckung des Mietverh\\xe4ltnisses beantragt?]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[causal_1_0-cd7b91522e8602e7861cfd487579079cf74e765b6ca29a7138bc3072f86a2f67]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[causal_1_0-cd7b91522e8602e7861cfd487579079cf74e765b6ca29a7138bc3072f86a2f67]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[causal_1_1-c20ab586b879788fd55375bfa6aac03f8f21ebdda59fb6fd9e03b38c7b7fc434]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[causal_1_1-c20ab586b879788fd55375bfa6aac03f8f21ebdda59fb6fd9e03b38c7b7fc434]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[sealed_1_2-8921696fa544508c25e353450b8fa23fa10615498368c6982588749e62b4755d]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[sealed_1_2-8921696fa544508c25e353450b8fa23fa10615498368c6982588749e62b4755d]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[sealed_1_1-819ebd6d9d0e49d84539d9ea239d3615f3897df9043c05de66cc485227b7cc29]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[sealed_1_1-819ebd6d9d0e49d84539d9ea239d3615f3897df9043c05de66cc485227b7cc29]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[unversioned_current-46100279b92c6199b1233d525a8567d502d540f8c17f4280ee1ca1af31f41e9b]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[unversioned_current-46100279b92c6199b1233d525a8567d502d540f8c17f4280ee1ca1af31f41e9b]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[legacy_7440-1d67ec21c2101f29ee35f3cfbf6550a75c3eb22c3667f7e5273361343e8e4855]",
+    "pytest_nodeid": "tests/test_draft_request_v1.py::test_localized_causal_compiler_preserves_every_previous_variant_identity[legacy_7440-1d67ec21c2101f29ee35f3cfbf6550a75c3eb22c3667f7e5273361343e8e4855]",
+    "file": "casepath-api/tests/test_draft_request_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_preserves_all_history_and_dollars_then_admits_exactly_three_pairs",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_grant_preserves_all_history_and_dollars_then_admits_exactly_three_pairs",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_early_rejections_consume_workflow_slots_without_inventing_calls_or_retries",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_early_rejections_consume_workflow_slots_without_inventing_calls_or_retries",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_seventeen_calls_after_one_stage_rejection_grants_exactly_three_pairs",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_seventeen_calls_after_one_stage_rejection_grants_exactly_three_pairs",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_sixteen_calls_still_allow_a_pair_and_cannot_receive_a_capacity_grant",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_sixteen_calls_still_allow_a_pair_and_cannot_receive_a_capacity_grant",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_is_cas_bound_and_concurrent_exact_replay_is_idempotent",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_grant_is_cas_bound_and_concurrent_exact_replay_is_idempotent",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[pending]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[pending]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[unknown]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[unknown]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[active_legacy]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[active_legacy]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[insufficient_dollars]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_grant_rejects_unsettled_work_and_insufficient_original_dollars[insufficient_dollars]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_grant_requires_existing_exact_policy_activation_and_exhausted_calls",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_grant_requires_existing_exact_policy_activation_and_exhausted_calls",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_workflow_ceiling_pending_slot_and_unknown_reservations_still_apply",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_workflow_ceiling_pending_slot_and_unknown_reservations_still_apply",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_both_stages_share_the_same_original_workflow_cost_ceiling",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_both_stages_share_the_same_original_workflow_cost_ceiling",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_three_full_cost_workflows_remain_inside_original_aggregate_dollar_limit",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_three_full_cost_workflows_remain_inside_original_aggregate_dollar_limit",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_provider_overrun_after_grant_freezes_new_work_and_retains_observed_cost",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_provider_overrun_after_grant_freezes_new_work_and_retains_observed_cost",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_capacity_grant_is_immutable_at_sql_boundary[UPDATE work_autonomous_capacity_grant SET record_sha256='changed']",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_capacity_grant_is_immutable_at_sql_boundary[UPDATE work_autonomous_capacity_grant SET record_sha256='changed']",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_capacity_grant_is_immutable_at_sql_boundary[DELETE FROM work_autonomous_capacity_grant]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_capacity_grant_is_immutable_at_sql_boundary[DELETE FROM work_autonomous_capacity_grant]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_capacity_grant_is_immutable_at_sql_boundary[INSERT OR REPLACE INTO work_autonomous_capacity_grant SELECT * FROM work_autonomous_capacity_grant]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_capacity_grant_is_immutable_at_sql_boundary[INSERT OR REPLACE INTO work_autonomous_capacity_grant SELECT * FROM work_autonomous_capacity_grant]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[unsealed]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[unsealed]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[workflows]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[workflows]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[calls]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[calls]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[base]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[base]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[activation]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[activation]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[roster]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[roster]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[prior_count]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[prior_count]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[prior_money]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_resealed_invalid_grant_cannot_expand_or_rebind_capacity[prior_money]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_missing_grant_or_ancestors_reject_replay[grant]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_missing_grant_or_ancestors_reject_replay[grant]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_missing_grant_or_ancestors_reject_replay[policy]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_missing_grant_or_ancestors_reject_replay[policy]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_grant_v1.py::test_missing_grant_or_ancestors_reject_replay[prior_workflow]",
+    "pytest_nodeid": "tests/test_autonomous_budget_grant_v1.py::test_missing_grant_or_ancestors_reject_replay[prior_workflow]",
+    "file": "casepath-api/tests/test_autonomous_budget_grant_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[128]",
+    "pytest_nodeid": "tests/test_hosted_knowledge_payload_bounds_v1.py::test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[128]",
+    "file": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[2048]",
+    "pytest_nodeid": "tests/test_hosted_knowledge_payload_bounds_v1.py::test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[2048]",
+    "file": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_single_native_event_above_page_budget_is_returned_without_truncation",
+    "pytest_nodeid": "tests/test_hosted_knowledge_payload_bounds_v1.py::test_single_native_event_above_page_budget_is_returned_without_truncation",
+    "file": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_row_above_absolute_bound_is_rejected_before_replay",
+    "pytest_nodeid": "tests/test_hosted_knowledge_payload_bounds_v1.py::test_row_above_absolute_bound_is_rejected_before_replay",
+    "file": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_reviewed_memory_v1.py::test_reviewed_memory_matches_only_same_family_statement_and_apply_is_journaled",
+    "pytest_nodeid": "tests/test_reviewed_memory_v1.py::test_reviewed_memory_matches_only_same_family_statement_and_apply_is_journaled",
+    "file": "casepath-api/tests/test_reviewed_memory_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_app_v1.py::test_public_hosted_intake_stays_readonly_with_legacy_writable_flag",
+    "pytest_nodeid": "tests/test_hosted_app_v1.py::test_public_hosted_intake_stays_readonly_with_legacy_writable_flag",
+    "file": "casepath-api/tests/test_hosted_app_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_app_v1.py::test_readonly_cloud_boot_health_and_intake_boundary",
+    "pytest_nodeid": "tests/test_hosted_app_v1.py::test_readonly_cloud_boot_health_and_intake_boundary",
+    "file": "casepath-api/tests/test_hosted_app_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_app_v1.py::test_legacy_writable_flag_never_wakes_or_starts_public_work",
+    "pytest_nodeid": "tests/test_hosted_app_v1.py::test_legacy_writable_flag_never_wakes_or_starts_public_work",
+    "file": "casepath-api/tests/test_hosted_app_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_app_v1.py::test_model_metadata_refresh_is_free_bounded_and_never_sends_inference",
+    "pytest_nodeid": "tests/test_hosted_app_v1.py::test_model_metadata_refresh_is_free_bounded_and_never_sends_inference",
+    "file": "casepath-api/tests/test_hosted_app_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_app_v1.py::test_cloud_import_does_not_require_generated_legacy_artifacts",
+    "pytest_nodeid": "tests/test_hosted_app_v1.py::test_cloud_import_does_not_require_generated_legacy_artifacts",
+    "file": "casepath-api/tests/test_hosted_app_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_commits_exact_saved_proposal_without_dispatch_or_claim_change",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_commits_exact_saved_proposal_without_dispatch_or_claim_change",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[active_lease]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[active_lease]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_node]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_node]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_event]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_event]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_state]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_state]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[source_changed]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[source_changed]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[claim_changed]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[claim_changed]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[cross_claim]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[cross_claim]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_recovery_projects_only_a_unique_hash_bound_local_node",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_recovery_projects_only_a_unique_hash_bound_local_node",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_replay_does_not_accept_changed_handler_command",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_replay_does_not_accept_changed_handler_command",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[provider_event]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[provider_event]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[pending_authority]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[pending_authority]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[pending_unknown]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[pending_unknown]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[multiple_pending]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[multiple_pending]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[cancelled]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[cancelled]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[scheduled_here]",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[scheduled_here]",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rechecks_lease_at_commit",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_rechecks_lease_at_commit",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_rechecks_authority_at_commit",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_rechecks_authority_at_commit",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_two_service_instances_reconcile_one_call_only_once",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_two_service_instances_reconcile_one_call_only_once",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_reconciliation.py::test_reconcile_can_read_back_its_receipt_after_store_restart",
+    "pytest_nodeid": "tests/test_agent_work_reconciliation.py::test_reconcile_can_read_back_its_receipt_after_store_restart",
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_model_call_summary_marks_only_network_rows_with_unknown_cost",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_model_call_summary_marks_only_network_rows_with_unknown_cost",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_openrouter_request_is_one_bounded_exact_model_structured_call",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_openrouter_request_is_one_bounded_exact_model_structured_call",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_source_ref_schema_ceiling_is_derived_from_required_artifact_groups",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_source_ref_schema_ceiling_is_derived_from_required_artifact_groups",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_flagship_wire_schema_binds_every_fact_and_artifact_slot",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_flagship_wire_schema_binds_every_fact_and_artifact_slot",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonical_cost_preflight_includes_serialized_provider_schema",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonical_cost_preflight_includes_serialized_provider_schema",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_valid_alternate_controlling_assertion_materializes_a_different_fact_state",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_valid_alternate_controlling_assertion_materializes_a_different_fact_state",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_cross_slot_assertion_identifier_fails_closed",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_cross_slot_assertion_identifier_fails_closed",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_prior_one_of_eighteen_state_collapse_cannot_override_deterministic_state",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_prior_one_of_eighteen_state_collapse_cannot_override_deterministic_state",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_provider_cannot_inject_deterministic_owned_fact_fields[label-Provider-authored label]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_provider_cannot_inject_deterministic_owned_fact_fields[label-Provider-authored label]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_provider_cannot_inject_deterministic_owned_fact_fields[state-conflicting]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_provider_cannot_inject_deterministic_owned_fact_fields[state-conflicting]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_provider_cannot_inject_deterministic_owned_fact_fields[normalized_value-urgent]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_provider_cannot_inject_deterministic_owned_fact_fields[normalized_value-urgent]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_fact_catalog_membership_is_exact_before_catalog_order_merge[missing]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_fact_catalog_membership_is_exact_before_catalog_order_merge[missing]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_fact_catalog_membership_is_exact_before_catalog_order_merge[duplicate]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_fact_catalog_membership_is_exact_before_catalog_order_merge[duplicate]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_fact_catalog_membership_is_exact_before_catalog_order_merge[unknown]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_fact_catalog_membership_is_exact_before_catalog_order_merge[unknown]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_all_canonicalizer_contract_versions_invalidate_success_cache",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_all_canonicalizer_contract_versions_invalidate_success_cache",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonical_cache_binds_exact_wire_policy",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonical_cache_binds_exact_wire_policy",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_missing_sync_usage_polls_generation_metadata_without_retrying_inference",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_missing_sync_usage_polls_generation_metadata_without_retrying_inference",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_generation_metadata_eventual_consistency_uses_bounded_backoff",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_generation_metadata_eventual_consistency_uses_bounded_backoff",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_identical_canonicalization_uses_cache_without_network",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_identical_canonicalization_uses_cache_without_network",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_any_rejected_fact_fails_without_fallback_or_cache",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_any_rejected_fact_fails_without_fallback_or_cache",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_incomplete_sync_usage_fails_when_generation_metadata_remains_missing[invalid_usage0]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_incomplete_sync_usage_fails_when_generation_metadata_remains_missing[invalid_usage0]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_incomplete_sync_usage_fails_when_generation_metadata_remains_missing[invalid_usage1]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_incomplete_sync_usage_fails_when_generation_metadata_remains_missing[invalid_usage1]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_incomplete_sync_usage_fails_when_generation_metadata_remains_missing[invalid_usage2]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_incomplete_sync_usage_fails_when_generation_metadata_remains_missing[invalid_usage2]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value0-generation_metadata_identity-1-None]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value0-generation_metadata_identity-1-None]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value1-invalid_provenance-1-0.0057]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value1-invalid_provenance-1-0.0057]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value2-generation_metadata_completeness-8-None]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value2-generation_metadata_completeness-8-None]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value3-generation_metadata_usage-1-None]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value3-generation_metadata_usage-1-None]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_generation_metadata_provenance_is_bounded_while_billing_is_retained",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_generation_metadata_provenance_is_bounded_while_billing_is_retained",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_concurrent_identical_cold_cache_calls_are_single_flight",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_concurrent_identical_cold_cache_calls_are_single_flight",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_missing_credential_is_fail_closed_and_never_calls_network",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_missing_credential_is_fail_closed_and_never_calls_network",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_preflight_cost_guard_uses_persistent_committed_cost",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_preflight_cost_guard_uses_persistent_committed_cost",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_actual_usage_cost_is_recorded_even_when_it_exceeds_cap",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_actual_usage_cost_is_recorded_even_when_it_exceeds_cap",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_provider_provenance_is_bounded_before_internal_storage[id-gen-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_provider_provenance_is_bounded_before_internal_storage[id-gen-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_provider_provenance_is_bounded_before_internal_storage[provider-SECRET_SENTINEL_PROVIDER]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_provider_provenance_is_bounded_before_internal_storage[provider-SECRET_SENTINEL_PROVIDER]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_provider_provenance_is_bounded_before_internal_storage[finish_reason-SECRET_SENTINEL_FINISH]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_provider_provenance_is_bounded_before_internal_storage[finish_reason-SECRET_SENTINEL_FINISH]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_foreign_response_model_is_hashed_and_rejected_as_invalid_provenance",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_foreign_response_model_is_hashed_and_rejected_as_invalid_provenance",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_nonstop_canonical_response_cannot_be_accepted_or_cached",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_nonstop_canonical_response_cannot_be_accepted_or_cached",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonicalizer_fails_closed_on_source_reference_id_outside_registry",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonicalizer_fails_closed_on_source_reference_id_outside_registry",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonicalizer_rejects_duplicate_source_reference_ids",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonicalizer_rejects_duplicate_source_reference_ids",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_alternate_eligible_passage_from_related_artifact_is_materialized",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_alternate_eligible_passage_from_related_artifact_is_materialized",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_more_than_one_eligible_passage_per_artifact_is_rejected",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_more_than_one_eligible_passage_per_artifact_is_rejected",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_registry_reference_from_unrelated_artifact_is_rejected",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_registry_reference_from_unrelated_artifact_is_rejected",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_missing_structurally_related_artifact_is_rejected",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_missing_structurally_related_artifact_is_rejected",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_conflicting_selection_spans_two_related_artifacts",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_conflicting_selection_spans_two_related_artifacts",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_semantic_rejection_retains_charged_provider_usage_and_identity",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_semantic_rejection_retains_charged_provider_usage_and_identity",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_dated_canonical_nemotron_response_identity_is_accepted",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_dated_canonical_nemotron_response_identity_is_accepted",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_conflicting_selection_must_span_two_artifacts",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_conflicting_selection_must_span_two_artifacts",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_nonempty_eligible_pool_rejects_empty_selection",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_nonempty_eligible_pool_rejects_empty_selection",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_empty_eligible_pool_requires_and_accepts_empty_selection",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_empty_eligible_pool_requires_and_accepts_empty_selection",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_exact_excerpt_grounding_normalizes_whitespace_and_rejects_hallucination",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_exact_excerpt_grounding_normalizes_whitespace_and_rejects_hallucination",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_exact_excerpt_grounding_rejects_text_quoted_from_wrong_pdf_page",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_exact_excerpt_grounding_rejects_text_quoted_from_wrong_pdf_page",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_exact_excerpt_grounding_rejects_binary_image_as_direct_text_evidence",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_exact_excerpt_grounding_rejects_binary_image_as_direct_text_evidence",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_model_cannot_override_deterministic_process_control_metadata",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_model_cannot_override_deterministic_process_control_metadata",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_noncontrolling_normalized_proposal_is_rejected_as_deterministic_owned",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_noncontrolling_normalized_proposal_is_rejected_as_deterministic_owned",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_model_cannot_invert_fixture_bound_decision_polarity",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_model_cannot_invert_fixture_bound_decision_polarity",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_provider_cannot_author_contradictory_display_prose",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_provider_cannot_author_contradictory_display_prose",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_process_owned_visual_enrichment_survives_model_merge",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_process_owned_visual_enrichment_survives_model_merge",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_model_budget_cap_defaults_to_25_and_only_configures_downward",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_model_budget_cap_defaults_to_25_and_only_configures_downward",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_no_key_default_remains_deterministic_reference",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_no_key_default_remains_deterministic_reference",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_missing_finish_reason_uses_metadata_and_warm_cache_retains_origin_finish",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_missing_finish_reason_uses_metadata_and_warm_cache_retains_origin_finish",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_missing_upstream_provider_uses_metadata_before_persisting_success",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_missing_upstream_provider_uses_metadata_before_persisting_success",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_default_langchain_invoker_maps_protocol_failure_to_bounded_invariant",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_default_langchain_invoker_maps_protocol_failure_to_bounded_invariant",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_provider_admission_timeout_is_zero_call_noncacheable_ledger_record",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_provider_admission_timeout_is_zero_call_noncacheable_ledger_record",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_default_langchain_invoker_maps_upstream_rejection_to_safe_context",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_default_langchain_invoker_maps_upstream_rejection_to_safe_context",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonical_upstream_rejection_retains_only_safe_unknown_cost_evidence",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonical_upstream_rejection_retains_only_safe_unknown_cost_evidence",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonical_success_rejects_nonpinned_upstream_after_retaining_billing",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonical_success_rejects_nonpinned_upstream_after_retaining_billing",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonicalizer_uses_synchronous_sdk_provider_without_generation_poll",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonicalizer_uses_synchronous_sdk_provider_without_generation_poll",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonicalizer_replays_sdk_schema_drift_through_real_langchain_once",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonicalizer_replays_sdk_schema_drift_through_real_langchain_once",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonical_sdk_drift_nonstop_retains_billing_before_rejection[length]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonical_sdk_drift_nonstop_retains_billing_before_rejection[length]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonical_sdk_drift_nonstop_retains_billing_before_rejection[nullable_choice_error]",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonical_sdk_drift_nonstop_retains_billing_before_rejection[nullable_choice_error]",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_missing_upstream_provider_fails_closed_when_metadata_is_incomplete",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_missing_upstream_provider_fails_closed_when_metadata_is_incomplete",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_missing_response_id_with_sync_usage_retains_charge_and_safe_context",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_missing_response_id_with_sync_usage_retains_charge_and_safe_context",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_canonicalizer_v15.py::test_canonical_equal_accept_reject_minority_fails_and_never_caches",
+    "pytest_nodeid": "tests/test_canonicalizer_v15.py::test_canonical_equal_accept_reject_minority_fails_and_never_caches",
+    "file": "casepath-api/tests/test_canonicalizer_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_alias_formula_keeps_custom_boolean_choices",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_alias_formula_keeps_custom_boolean_choices",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_all_arms_share_source_packet",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_all_arms_share_source_packet",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_bad_index_rejected",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_bad_index_rejected",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_cache_categories_not_added",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_cache_categories_not_added",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_cannot_drop_arm",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_cannot_drop_arm",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_cannot_drop_families",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_cannot_drop_families",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_capability_legend_is_common_to_every_arm_and_stage",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_capability_legend_is_common_to_every_arm_and_stage",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_case_source_rejected_in_preparation",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_case_source_rejected_in_preparation",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_compilation_never_reads_case",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_compilation_never_reads_case",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_confidence_roundtrip",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_confidence_roundtrip",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_config_no_purchase_or_send",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_config_no_purchase_or_send",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_context_bound_includes_worst_future_draft",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_context_bound_includes_worst_future_draft",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_context_capacity_not_used_as_token_count",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_context_capacity_not_used_as_token_count",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_decided_without_quote_rejected",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_decided_without_quote_rejected",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_display_expression_identities_only",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_display_expression_identities_only",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_document_mode_explicit",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_document_mode_explicit",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_document_state_change_roundtrip",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_document_state_change_roundtrip",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_duplicate_quote_exact_unicode_offsets",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_duplicate_quote_exact_unicode_offsets",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_empty_provenance_preserved",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_empty_provenance_preserved",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_envelopes_do_not_truncate",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_envelopes_do_not_truncate",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_fact_labels_are_not_capability_or_route_indices",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_fact_labels_are_not_capability_or_route_indices",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_full_native_representation_size",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_full_native_representation_size",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_guarded_runner_and_shared_product_no_network",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_guarded_runner_and_shared_product_no_network",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_incomplete_state_rejected",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_incomplete_state_rejected",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_literal_field_expressions_select_exact_original",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_literal_field_expressions_select_exact_original",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_minimal_quote_form_all_document_slots",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_minimal_quote_form_all_document_slots",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_native_all_objects_roundtrip",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_native_all_objects_roundtrip",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_native_expression_parser_unchanged",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_native_expression_parser_unchanged",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_no_auto_inclusion",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_no_auto_inclusion",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_no_fabricated_parent",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_no_fabricated_parent",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_no_preparation_requests",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_no_preparation_requests",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_nonstandard_literal_native_object_preserved",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_nonstandard_literal_native_object_preserved",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_parent_id_hash_uses_original_raw",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_parent_id_hash_uses_original_raw",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_preserves_model_route_sample_count",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_preserves_model_route_sample_count",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_public_compilation_zero_calls",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_public_compilation_zero_calls",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_quote_end_bound",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_quote_end_bound",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_reference_index_boolean_not_integer",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_reference_index_boolean_not_integer",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_same_complete_output_caps_all_arms",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_same_complete_output_caps_all_arms",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_shared_source_text_is_recoverable_exactly",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_shared_source_text_is_recoverable_exactly",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_source_formulas_are_available_in_prompt",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_source_formulas_are_available_in_prompt",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_source_symbols_not_claim_family",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_source_symbols_not_claim_family",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_source_views_preserve_material_text",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_source_views_preserve_material_text",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_state_roundtrip_all_truths",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_state_roundtrip_all_truths",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_temporal_edges_do_not_become_acquisition_guards",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_temporal_edges_do_not_become_acquisition_guards",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_terminal_alias",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_terminal_alias",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_three_templates_required",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_three_templates_required",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_unbound_literal_locator_preserved_for_original_scorer",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_unbound_literal_locator_preserved_for_original_scorer",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_whitespace_dedup_preserves_json",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_whitespace_dedup_preserves_json",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_wire_json_duplicate_key_rejected",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_wire_json_duplicate_key_rejected",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_wrong_alias_formula_index_rejected",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_wrong_alias_formula_index_rejected",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_wrong_edge_not_silently_corrected",
+    "pytest_nodeid": "tests/test_obligation_compact_v3.py::CompactTests::test_wrong_edge_not_silently_corrected",
+    "file": "casepath-api/tests/test_obligation_compact_v3.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_action_precedence_does_not_gate_evidence",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_action_precedence_does_not_gate_evidence",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_active_branch_requests_one_alternative_not_both",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_active_branch_requests_one_alternative_not_both",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_changing_applicability_parent_changes_requests",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_changing_applicability_parent_changes_requests",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_completed_route_does_not_erase_other_capability",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_completed_route_does_not_erase_other_capability",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_counterfactual_branch_predicate_not_constant",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_counterfactual_branch_predicate_not_constant",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_display_parent_does_not_change_requests",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_display_parent_does_not_change_requests",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_empty_routes_are_evidence_gap",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_empty_routes_are_evidence_gap",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_explicit_acquisition_condition_blocks_now",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_explicit_acquisition_condition_blocks_now",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_explicit_any_parent_semantics",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_explicit_any_parent_semantics",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_flattened_formulas_equal_dag_on_all_81_valuations",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_flattened_formulas_equal_dag_on_all_81_valuations",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_joint_adequacy_is_explicit",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_joint_adequacy_is_explicit",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_joint_failure_is_review_not_false_completion",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_joint_failure_is_review_not_false_completion",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_no_mutation",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_no_mutation",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_one_complete_route_discharges_alternative",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_one_complete_route_discharges_alternative",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_possession_without_adequacy_is_not_satisfaction",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_possession_without_adequacy_is_not_satisfaction",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_present_inadequate_document_remains_requestable",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_present_inadequate_document_remains_requestable",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_reordered_scopes_and_routes_do_not_change_output",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_reordered_scopes_and_routes_do_not_change_output",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_repeat_is_deterministic",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_repeat_is_deterministic",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_request_modes_equal_runtime_emissions",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_request_modes_equal_runtime_emissions",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_required_native_chain_signatures",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_required_native_chain_signatures",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_true_rule_under_inactive_scope_requests_nothing",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_true_rule_under_inactive_scope_requests_nothing",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_unknown_branch_is_conditional_not_now",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_unknown_branch_is_conditional_not_now",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Semantics::test_unrelated_unknown_does_not_suppress_other_obligation",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Semantics::test_unrelated_unknown_does_not_suppress_other_obligation",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_adequate_missing_document_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_adequate_missing_document_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_cycle_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_cycle_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_duplicate_assessment_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_duplicate_assessment_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_duplicate_id_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_duplicate_id_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_duplicate_json_key_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_duplicate_json_key_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_empty_any_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_empty_any_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_extra_case_fields_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_extra_case_fields_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_extra_control_semantics_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_extra_control_semantics_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_invalid_truth_not_coerced",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_invalid_truth_not_coerced",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_missing_document_mapping_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_missing_document_mapping_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_model_observation_without_receipt_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_model_observation_without_receipt_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_nan_json_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_nan_json_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_no_decision_relabelling",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_no_decision_relabelling",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_source_quote_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_source_quote_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_unknown_evidence_reference_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_unknown_evidence_reference_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_unknown_reference_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_unknown_reference_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_unknown_terminal_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_unknown_terminal_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_unknown_variable_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_unknown_variable_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Rejections::test_wrong_material_quote_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Rejections::test_wrong_material_quote_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Loader::test_extra_hidden_role_rejected_before_payload_open",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Loader::test_extra_hidden_role_rejected_before_payload_open",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Loader::test_hash_mismatch_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Loader::test_hash_mismatch_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Loader::test_path_escape_rejected_before_payload_open",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Loader::test_path_escape_rejected_before_payload_open",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Loader::test_symlink_payload_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Loader::test_symlink_payload_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Loader::test_unlisted_answer_file_is_never_read",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Loader::test_unlisted_answer_file_is_never_read",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::Loader::test_valid_source_only_pack_runs",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::Loader::test_valid_source_only_pack_runs",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::AdditionalSafety::test_capability_identity_collision_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::AdditionalSafety::test_capability_identity_collision_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::AdditionalSafety::test_compiled_control_matches_complete_outputs_on_81_assignments",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::AdditionalSafety::test_compiled_control_matches_complete_outputs_on_81_assignments",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::AdditionalSafety::test_empty_route_is_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::AdditionalSafety::test_empty_route_is_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::AdditionalSafety::test_evidence_gap_is_explicit_next_action",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::AdditionalSafety::test_evidence_gap_is_explicit_next_action",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::AdditionalSafety::test_exclusive_join_is_not_silently_invented",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::AdditionalSafety::test_exclusive_join_is_not_silently_invented",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::AdditionalSafety::test_invalid_execution_mode_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::AdditionalSafety::test_invalid_execution_mode_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::AdditionalSafety::test_pack_objects_snapshotted_before_caller_mutation",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::AdditionalSafety::test_pack_objects_snapshotted_before_caller_mutation",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::AdditionalSafety::test_reserved_variable_case_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::AdditionalSafety::test_reserved_variable_case_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::AdditionalSafety::test_strong_three_valued_truth_tables",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::AdditionalSafety::test_strong_three_valued_truth_tables",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::AdditionalSafety::test_unobserved_variable_stays_unknown",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::AdditionalSafety::test_unobserved_variable_stays_unknown",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::CostContract::test_configuration_cannot_authorize_dispatch",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::CostContract::test_configuration_cannot_authorize_dispatch",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::CostContract::test_insufficient_reservation_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::CostContract::test_insufficient_reservation_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::CostContract::test_long_context_not_silently_underpriced",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::CostContract::test_long_context_not_silently_underpriced",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::CostContract::test_nonzero_authority_rejected",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::CostContract::test_nonzero_authority_rejected",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::CostContract::test_price_drift_rejected_if_bound_exceeded",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::CostContract::test_price_drift_rejected_if_bound_exceeded",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::CostContract::test_whole_comparison_bound",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::CostContract::test_whole_comparison_bound",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_control_increment.py::NativeSchemaCompatibility::test_export_validates_with_supplied_native_schema",
+    "pytest_nodeid": "tests/test_obligation_control_increment.py::NativeSchemaCompatibility::test_export_validates_with_supplied_native_schema",
+    "file": "casepath-api/tests/test_obligation_control_increment.py"
+  },
+  {
+    "id": "casepath-api/tests/test_build_paper_method_pack_v5.py::test_builder_emits_v5_runtime_contract_and_current_pointer",
+    "pytest_nodeid": "tests/test_build_paper_method_pack_v5.py::test_builder_emits_v5_runtime_contract_and_current_pointer",
+    "file": "casepath-api/tests/test_build_paper_method_pack_v5.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_public_method_denial_precedes_asgi_body_headers_and_route",
+    "pytest_nodeid": "tests/test_hosted_proxy_v1.py::test_public_method_denial_precedes_asgi_body_headers_and_route",
+    "file": "casepath-api/tests/test_hosted_proxy_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_authenticated_public_sites_hop_refuses_all_intake_and_preserves_originals",
+    "pytest_nodeid": "tests/test_hosted_proxy_v1.py::test_authenticated_public_sites_hop_refuses_all_intake_and_preserves_originals",
+    "file": "casepath-api/tests/test_hosted_proxy_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_boundary_rejects_unsafe_configuration[http://insecure.example-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+    "pytest_nodeid": "tests/test_hosted_proxy_v1.py::test_hosted_boundary_rejects_unsafe_configuration[http://insecure.example-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+    "file": "casepath-api/tests/test_hosted_proxy_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_boundary_rejects_unsafe_configuration[https://user:password@example.com-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+    "pytest_nodeid": "tests/test_hosted_proxy_v1.py::test_hosted_boundary_rejects_unsafe_configuration[https://user:password@example.com-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+    "file": "casepath-api/tests/test_hosted_proxy_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_boundary_rejects_unsafe_configuration[https://example.com/path-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+    "pytest_nodeid": "tests/test_hosted_proxy_v1.py::test_hosted_boundary_rejects_unsafe_configuration[https://example.com/path-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+    "file": "casepath-api/tests/test_hosted_proxy_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_boundary_rejects_unsafe_configuration[https://example.com-short]",
+    "pytest_nodeid": "tests/test_hosted_proxy_v1.py::test_hosted_boundary_rejects_unsafe_configuration[https://example.com-short]",
+    "file": "casepath-api/tests/test_hosted_proxy_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_entrypoint_rejects_unsafe_boundary_before_opening_database",
+    "pytest_nodeid": "tests/test_hosted_proxy_v1.py::test_hosted_entrypoint_rejects_unsafe_boundary_before_opening_database",
+    "file": "casepath-api/tests/test_hosted_proxy_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_claim_queue_snapshot_evaluator_v1.py::test_snapshot_consistency_uses_canonical_corpus_identity",
+    "pytest_nodeid": "tests/test_claim_queue_snapshot_evaluator_v1.py::test_snapshot_consistency_uses_canonical_corpus_identity",
+    "file": "casepath-api/tests/test_claim_queue_snapshot_evaluator_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_casepath_process_router_v2.py::test_plan_accepts_only_case_material_and_held_documents",
+    "pytest_nodeid": "tests/test_casepath_process_router_v2.py::test_plan_accepts_only_case_material_and_held_documents",
+    "file": "casepath-api/tests/test_casepath_process_router_v2.py"
+  },
+  {
+    "id": "casepath-api/tests/test_casepath_process_router_v2.py::test_unknown_client_fields_are_rejected",
+    "pytest_nodeid": "tests/test_casepath_process_router_v2.py::test_unknown_client_fields_are_rejected",
+    "file": "casepath-api/tests/test_casepath_process_router_v2.py"
+  },
+  {
+    "id": "casepath-api/tests/test_casepath_process_router_v2.py::test_status_binds_runtime_freeze_identity",
+    "pytest_nodeid": "tests/test_casepath_process_router_v2.py::test_status_binds_runtime_freeze_identity",
+    "file": "casepath-api/tests/test_casepath_process_router_v2.py"
+  },
+  {
+    "id": "casepath-api/tests/test_casepath_process_router_v2.py::test_diff_runs_same_planner_on_both_states",
+    "pytest_nodeid": "tests/test_casepath_process_router_v2.py::test_diff_runs_same_planner_on_both_states",
+    "file": "casepath-api/tests/test_casepath_process_router_v2.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_migration_v1.py::test_frozen_manifest_survives_json_roundtrip_without_changing_sources",
+    "pytest_nodeid": "tests/test_hosted_migration_v1.py::test_frozen_manifest_survives_json_roundtrip_without_changing_sources",
+    "file": "casepath-api/tests/test_hosted_migration_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_migration_v1.py::test_migration_insert_skips_identical_immutable_rows_and_refuses_conflict",
+    "pytest_nodeid": "tests/test_hosted_migration_v1.py::test_migration_insert_skips_identical_immutable_rows_and_refuses_conflict",
+    "file": "casepath-api/tests/test_hosted_migration_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_casepath_process_service_v2.py::test_product_exposes_complete_chain",
+    "pytest_nodeid": "tests/test_casepath_process_service_v2.py::test_product_exposes_complete_chain",
+    "file": "casepath-api/tests/test_casepath_process_service_v2.py"
+  },
+  {
+    "id": "casepath-api/tests/test_casepath_process_service_v2.py::test_product_requests_state_resolver_when_guard_is_open",
+    "pytest_nodeid": "tests/test_casepath_process_service_v2.py::test_product_requests_state_resolver_when_guard_is_open",
+    "file": "casepath-api/tests/test_casepath_process_service_v2.py"
+  },
+  {
+    "id": "casepath-api/tests/test_casepath_process_service_v2.py::test_product_diff_attributes_change_to_guard",
+    "pytest_nodeid": "tests/test_casepath_process_service_v2.py::test_product_diff_attributes_change_to_guard",
+    "file": "casepath-api/tests/test_casepath_process_service_v2.py"
+  },
+  {
+    "id": "casepath-api/tests/test_casepath_process_service_v2.py::test_product_rejects_orphan_request",
+    "pytest_nodeid": "tests/test_casepath_process_service_v2.py::test_product_rejects_orphan_request",
+    "file": "casepath-api/tests/test_casepath_process_service_v2.py"
+  },
+  {
+    "id": "casepath-api/tests/test_precedent_ranking_v15.py::test_exact_three_are_ranked_from_real_process_evidence_and_fact_context",
+    "pytest_nodeid": "tests/test_precedent_ranking_v15.py::test_exact_three_are_ranked_from_real_process_evidence_and_fact_context",
+    "file": "casepath-api/tests/test_precedent_ranking_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_precedent_ranking_v15.py::test_ranking_changes_when_process_or_evidence_context_changes",
+    "pytest_nodeid": "tests/test_precedent_ranking_v15.py::test_ranking_changes_when_process_or_evidence_context_changes",
+    "file": "casepath-api/tests/test_precedent_ranking_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_precedent_ranking_v15.py::test_category_only_match_cannot_outrank_current_decision_relevance",
+    "pytest_nodeid": "tests/test_precedent_ranking_v15.py::test_category_only_match_cannot_outrank_current_decision_relevance",
+    "file": "casepath-api/tests/test_precedent_ranking_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_precedent_ranking_v15.py::test_memory_is_ranked_by_the_same_contract_and_keeps_unverified_status",
+    "pytest_nodeid": "tests/test_precedent_ranking_v15.py::test_memory_is_ranked_by_the_same_contract_and_keeps_unverified_status",
+    "file": "casepath-api/tests/test_precedent_ranking_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_precedent_ranking_v15.py::test_current_claim_is_excluded_and_small_corpus_fails_closed",
+    "pytest_nodeid": "tests/test_precedent_ranking_v15.py::test_current_claim_is_excluded_and_small_corpus_fails_closed",
+    "file": "casepath-api/tests/test_precedent_ranking_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_precedent_ranking_v15.py::test_non_exact_result_count_is_rejected",
+    "pytest_nodeid": "tests/test_precedent_ranking_v15.py::test_non_exact_result_count_is_rejected",
+    "file": "casepath-api/tests/test_precedent_ranking_v15.py"
+  },
+  {
+    "id": "casepath-api/tests/test_refinement_repairs_v1.py::test_bind_source_condition_requires_same_source_and_removes_non_evidentiary",
+    "pytest_nodeid": "tests/test_refinement_repairs_v1.py::test_bind_source_condition_requires_same_source_and_removes_non_evidentiary",
+    "file": "casepath-api/tests/test_refinement_repairs_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_refinement_repairs_v1.py::test_extract_fact_as_rule_preserves_other_outcome_fact",
+    "pytest_nodeid": "tests/test_refinement_repairs_v1.py::test_extract_fact_as_rule_preserves_other_outcome_fact",
+    "file": "casepath-api/tests/test_refinement_repairs_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_overlay_v1.py::test_active_rule_requests_requirement_without_macro_parent_gating",
+    "pytest_nodeid": "tests/test_evidence_overlay_v1.py::test_active_rule_requests_requirement_without_macro_parent_gating",
+    "file": "casepath-api/tests/test_evidence_overlay_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_overlay_v1.py::test_false_rule_requests_nothing",
+    "pytest_nodeid": "tests/test_evidence_overlay_v1.py::test_false_rule_requests_nothing",
+    "file": "casepath-api/tests/test_evidence_overlay_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_overlay_v1.py::test_unresolved_rule_requests_only_state_resolver",
+    "pytest_nodeid": "tests/test_evidence_overlay_v1.py::test_unresolved_rule_requests_only_state_resolver",
+    "file": "casepath-api/tests/test_evidence_overlay_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_overlay_v1.py::test_precomputed_guard_decision_requires_no_model_call",
+    "pytest_nodeid": "tests/test_evidence_overlay_v1.py::test_precomputed_guard_decision_requires_no_model_call",
+    "file": "casepath-api/tests/test_evidence_overlay_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py::test_best_realization_accepts_either_route_but_penalizes_both",
+    "pytest_nodeid": "tests/test_theft_confirmatory_analysis_v5.py::test_best_realization_accepts_either_route_but_penalizes_both",
+    "file": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py"
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py::test_route_aware_micro_score_and_exact_rate",
+    "pytest_nodeid": "tests/test_theft_confirmatory_analysis_v5.py::test_route_aware_micro_score_and_exact_rate",
+    "file": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py"
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py::test_chain_metrics_use_selected_acceptable_route",
+    "pytest_nodeid": "tests/test_theft_confirmatory_analysis_v5.py::test_chain_metrics_use_selected_acceptable_route",
+    "file": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py"
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py::test_exact_family_swap_uses_route_aware_pair_f1",
+    "pytest_nodeid": "tests/test_theft_confirmatory_analysis_v5.py::test_exact_family_swap_uses_route_aware_pair_f1",
+    "file": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py"
+  },
+  {
+    "id": "casepath-api/tests/test_state_refinement_v1.py::test_verify_requires_all_target_propositions",
+    "pytest_nodeid": "tests/test_state_refinement_v1.py::test_verify_requires_all_target_propositions",
+    "file": "casepath-api/tests/test_state_refinement_v1.py"
+  },
+  {
+    "id": "casepath-api/tests/test_state_refinement_v1.py::test_verified_state_rule_augments_graph_and_compiled_fact",
+    "pytest_nodeid": "tests/test_state_refinement_v1.py::test_verified_state_rule_augments_graph_and_compiled_fact",
+    "file": "casepath-api/tests/test_state_refinement_v1.py"
+  }
+]

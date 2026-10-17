@@ -20,8 +20,16 @@
     "sha256": "a8cabb471f1004b6f85df01b23b9a4838fdaa56ada2e42c36ecf9e5913419591"
   },
   {
+    "path": "coordinator/bundle.py",
+    "sha256": "faa5fe97367c251b71ff81372e74cdc3f5b853ef8521706221a9de4243749cd0"
+  },
+  {
     "path": "coordinator/dispatch.py",
     "sha256": "2ffb41583dd87a05364768516f0f9186a1e8b209c72ab96c46d1570573927c94"
+  },
+  {
+    "path": "coordinator/export_receipts.py",
+    "sha256": "71e5113e948e1756668297368eff71ef74e970b5c2cb1a903e1ed1b304cd3b1a"
   },
   {
     "path": "coordinator/inventory.py",
@@ -34,6 +42,10 @@
   {
     "path": "coordinator/start_inventory.py",
     "sha256": "cba9fa98160e8290a67049e1a379cab6b54307cb7e53f7a4b0762fda3fe88462"
+  },
+  {
+    "path": "coordinator/summarize.py",
+    "sha256": "9d44d8e3ca6f8dfbc71324739b19d178abba4e0e448205303baec94f10e1224b"
   },
   {
     "path": "coordinator/verify.py",

@@ -1,0 +1,22 @@
+{
+  "candidate": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "started_epoch": 1792274371.9505534,
+  "command": [
+    "/workspace/casepath-polish-gate-inventory-20261013/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "casepath_shard_observer",
+    "-o",
+    "tmp_path_retention_policy=failed",
+    "--junitxml=/workspace/casepath-knowledge-read-gate-65a796a5-20261017/shard5/junit.xml",
+    "--durations=0",
+    "--basetemp=/workspace/casepath-knowledge-read-gate-65a796a5-20261017/shard5/pytest-tmp",
+    "@/workspace/casepath-knowledge-read-gate-65a796a5-20261017/shard5/pytest-arguments.txt"
+  ],
+  "retry_allowed": false
+}

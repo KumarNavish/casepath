@@ -11,6 +11,12 @@ for n in range(1,7):
   row=json.loads(line);byid[row['id']].append(row)
  b=json.loads((out/'source-before/capsule-verification.json').read_text());a=json.loads((out/'source-after/capsule-verification.json').read_text());assert b['capsule_receipt']==a['capsule_receipt']
  capsules.append({'shard':n,'source_before_sha256':digest(out/'source-before/capsule-verification.json'),'source_after_sha256':digest(out/'source-after/capsule-verification.json'),'capsule_receipt_file_sha256':a['capsule_receipt_file_sha256'],'before_after_capsule_equal':True,'manifest_sha256':a['manifest_sha256'],'sealed_files_verified':a['sealed_files_verified'],'head':a['head'],'status':a['status']})
+delta=json.loads((R/'fresh-inventory-delta.json').read_text());added=delta['added_ids'];assert len(added)==119
+new_results=[]
+for ident in added:
+ rows=byid[ident];assert any(x['when']=='call' and x['outcome']=='passed' for x in rows) and all(x['outcome']=='passed' for x in rows)
+ new_results.append({'id':ident,'phase_outcomes':{x['when']:x['outcome'] for x in rows}})
+save(R/'new-test-results.json',{'candidate':recon['candidate'],'new_count':len(added),'all_passed':True,'results':new_results})
 pertest=[];perfile={}
 for ident,rows in sorted(byid.items()):
  phase=sum(x['duration'] for x in rows);call=sum(x['duration'] for x in rows if x['when']=='call');skipped=any(x['outcome']=='skipped' for x in rows)
@@ -25,7 +31,8 @@ save(R/'resource-after.json',{'candidate':recon['candidate'],'runtime_floor_byte
 assert len({x['capsule_receipt_file_sha256'] for x in capsules})==1
 save(R/'source-capsule-before-after.json',{'candidate':recon['candidate'],'manifest_sha256':recon['manifest_sha256'],'all_six_source_capsules_unchanged':True,'all_six_capsule_receipts_equal':True,'normal_prepare_clones':6,'sealed_file_count':1712,'checks':capsules})
 summary={k:recon[k] for k in ['candidate','manifest_sha256','full_inventory','all_2630_prior_ids_included','cloud_selected','cloud_passed','cloud_skipped','cloud_failed','cloud_raw_phase_rows','no_gaps_duplicates_overlap','all_six_first_only_attempts','all_six_source_capsules_unchanged','all_junit_ids_match_raw_phases_and_collected','shards']}
-summary.update(new_ids=119,removed_ids=0,mac_partition_count=127,mac_owner_attestation=str(R/'mac-owner-attestation.json'),mac_raw_receipts_inspected_in_cloud=False,parent_reported_mac_passed=127,combined_passed_using_parent_mac_attestation=recon['cloud_passed']+127,combined_known_skips=10,cloud_failed_phase_rows=0,resource_floor_breach_events=0,minimum_observed_workspace_free_bytes=minimum,source_or_frontend_changes_by_gate=False,pytest_retries=0,receipt_export_tool_errors_preserved=2)
+summary.update(new_ids=len(added),removed_ids=0,mac_partition_count=127,mac_owner_attestation=str(R/'mac-owner-attestation.json'),mac_raw_receipts_inspected_in_cloud=False,parent_reported_mac_passed=127,combined_passed_using_parent_mac_attestation=recon['cloud_passed']+127,combined_known_skips=10,cloud_failed_phase_rows=0,resource_floor_breach_events=0,minimum_observed_workspace_free_bytes=minimum,source_or_frontend_changes_by_gate=False,pytest_retries=0,receipt_export_tool_errors_preserved=2)
 save(R/'aggregate.json',summary)
+save(R/'proof-disjoint-union-after.json',{'candidate':recon['candidate'],'full_inventory':recon['full_inventory'],'all_prior_2630_ids_included':True,'new_ids':len(added),'all_new_ids_passed':True,'cloud_ids':recon['cloud_selected'],'mac_ids':127,'cloud_passed':recon['cloud_passed'],'known_skips':recon['cloud_skipped'],'gaps':0,'duplicates':0,'overlap':0,'raw_phase_rows':recon['cloud_raw_phase_rows'],'all_junit_ids_equal_collection_and_phase_ids':True})
 rows=[{'path':p.relative_to(R).as_posix(),'sha256':digest(p)} for name in ['harness','coordinator'] for p in sorted((R/name).glob('*.py'))];save(R/'harness-provenance-current.json',rows)
 print(json.dumps(summary),flush=True)

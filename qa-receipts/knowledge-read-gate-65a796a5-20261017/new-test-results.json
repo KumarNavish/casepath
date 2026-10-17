@@ -1,0 +1,959 @@
+{
+  "candidate": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "new_count": 119,
+  "all_passed": true,
+  "results": [
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[128]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[2048]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_row_above_absolute_bound_is_rejected_before_replay",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_single_native_event_above_page_budget_is_returned_without_truncation",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_certified_row_cache_is_immutable_and_returned_rows_cannot_replace_persisted_head",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_changed_source_schema_forces_raw_eight_chunk_refresh_and_new_final_certificate",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_claim_summaries_and_knowledge_share_only_fully_certified_states[knowledge]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_claim_summaries_and_knowledge_share_only_fully_certified_states[summaries]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_cold_collected_values_must_match_final_snapshot_before_replay",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_cold_journal_byte_budget_is_256k_before_full_payload_materialization",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_cold_population_keeps_prior_128_row_and_eight_chunk_raw_pages",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_cold_unconfirmed_closed_page_never_admits_or_replays",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_concurrent_claim_and_knowledge_reads_keep_ordered_certification_and_reject_mutation",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_empty_roster_has_a_distinct_certified_cache_and_no_source_read",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_every_typed_journal_column_and_full_roster_remain_authority[event_hash]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_every_typed_journal_column_and_full_roster_remain_authority[loop]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_every_typed_journal_column_and_full_roster_remain_authority[nul]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_every_typed_journal_column_and_full_roster_remain_authority[real_sequence]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_every_typed_journal_column_and_full_roster_remain_authority[sequence]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_every_typed_journal_column_and_full_roster_remain_authority[session]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_every_typed_journal_column_and_full_roster_remain_authority[text_blob]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_evicted_original_bytes_require_raw_read_before_fresh_source_proof",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_failed_final_source_validation_never_admits_journal_byte_cache",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_failed_validation_then_legacy_reader_cannot_promote_old_pending_certificate",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_fresh_schema_result_types_and_column_names_cannot_alias_cached_schema[name]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_fresh_schema_result_types_and_column_names_cannot_alias_cached_schema[type]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_fresh_source_proof_requires_exact_persisted_chunks[changed]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_fresh_source_proof_requires_exact_persisted_chunks[deleted]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_fresh_source_proof_requires_exact_persisted_chunks[extra_empty]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_fresh_source_proof_requires_exact_persisted_chunks[wrong_type]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_hidden_columns_and_views_never_enter_standard_column_proof_cache[generated]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_hidden_columns_and_views_never_enter_standard_column_proof_cache[view]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_malformed_or_truncated_aggregate_cannot_accept_cached_rows[null]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_malformed_or_truncated_aggregate_cannot_accept_cached_rows[short]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_malformed_or_truncated_aggregate_cannot_accept_cached_rows[truncated_concat]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_malformed_or_truncated_aggregate_cannot_accept_cached_rows[wrong_count]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_post_validation_admission_rejects_different_fully_valid_native_rows",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_raw_source_sqlite_fallback_receives_no_http_keyword",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_sql_aggregate_order_and_raw_byte_encoding_match_local_fixed_vectors",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unchanged_heads_cannot_hide_an_earlier_row_mutation[command_sha256]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unchanged_heads_cannot_hide_an_earlier_row_mutation[created_at]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unchanged_heads_cannot_hide_an_earlier_row_mutation[event_json]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unchanged_heads_cannot_hide_an_earlier_row_mutation[idempotency_key]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unconfirmed_warm_proof_never_returns_a_cached_projection[COMMIT]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unconfirmed_warm_proof_never_returns_a_cached_projection[SELECT]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unknown_journal_columns_fail_closed_without_partial_column_certificate",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers[once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers[snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[bytes-once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[bytes-snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[cancel-once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[cancel-snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[deadline-once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[deadline-snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[0-once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[0-snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[1-once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[1-snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[None-once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[None-snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[close-once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[close-snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag4-once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag4-snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag5-once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag5-snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_concurrent_raw_close_header_does_not_leak_into_compact_snapshot",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_concurrent_shared_http_sessions_isolate_batons_caches_and_poisoned_close",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_default_injected_http_client_still_closes_unless_explicitly_borrowed",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_reused_default_http_transport_has_bounded_pool_and_original_timeouts",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_reused_http_client_never_reuses_connection_transaction_baton_or_cache",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_accepts_valid_retained_last_insert_metadata_on_readonly_results",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[affected]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[baton]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_affected]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_error]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_result]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[begin_rows]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[cell]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[close_error]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[close_result]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_affected]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_error]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_result]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[commit_rows]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[count]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[encoding]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[entry]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[http_error]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[non_json]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[origin]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[row]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[select_error]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[timeout]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_every_unconfirmed_result_without_partial_cursors_or_retry[type]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[None]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries0]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries1]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries2]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries3]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries4]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries5]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries6]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries7]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_rejects_invalid_or_unbounded_input_before_transport[queries9]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_request_size_limit_stays_local_and_preserves_connection",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[BEGIN]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[SELECT 1]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[read_once]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_requires_a_fresh_connection[snapshot]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_response_retains_byte_and_total_deadline_guards[bytes]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_response_retains_byte_and_total_deadline_guards[deadline]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_returns_all_results_from_one_closed_transaction",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_public_hosted_read_only_v1.py::test_failed_warmup_closes_owned_resources_even_if_controller_cleanup_fails",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_public_hosted_read_only_v1.py::test_public_app_closes_only_its_owned_shared_database",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_public_hosted_read_only_v1.py::test_public_readiness_is_closed_before_startup_and_after_failed_warmup",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_public_hosted_read_only_v1.py::test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readiness",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    }
+  ]
+}
