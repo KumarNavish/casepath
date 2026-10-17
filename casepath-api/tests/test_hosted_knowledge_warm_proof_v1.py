@@ -128,6 +128,128 @@ def test_final_atomic_proof_follows_all_local_validation(native_proof_store, mon
     assert changed and server.open_streams == 0
 
 
+def test_separate_source_primary_cannot_borrow_journal_database_proof(native_proof_store, monkeypatch):
+    server, store, knowledge = native_proof_store
+    original = knowledge.learning_view()
+    other = ProofHrana(store.path.parent / 'separate-source-primary.sqlite3')
+    try:
+        with sqlite3.connect(server.path) as source, sqlite3.connect(other.path) as target:
+            source.backup(target)
+        sources = HostedSources(other.connection)
+        monkeypatch.setattr(store, '_source_store', sources)
+        assert knowledge.learning_view() == original
+        server.reset()
+        other.reset()
+        digest = next(iter(sources._cache))
+        with sqlite3.connect(other.path) as db:
+            db.execute('DROP TRIGGER autonomous_source_chunks_no_update')
+            db.execute('UPDATE autonomous_source_chunks SET content=? WHERE sha256=?', (b'Changed actual primary.', digest))
+        with pytest.raises(AutonomousStoreError, match='source|bytes|hash'):
+            knowledge.learning_view()
+        assert len(server.requests) == 1
+        assert all(not any('casepath-source-bytes-v1:set:' in operation.get('stmt', {}).get('sql', '')
+                           for operation in request['requests']) for request in server.requests)
+        assert other.requests and other.open_streams == server.open_streams == 0
+    finally:
+        other.close()
+
+
+def test_unproven_factory_wrapper_retains_separate_authority_proofs(native_proof_store, monkeypatch):
+    server, store, knowledge = native_proof_store
+    original = knowledge.learning_view()
+    monkeypatch.setattr(store._source_store, 'connect', lambda: server.connection())
+    server.reset()
+    assert knowledge.learning_view() == original
+    assert len(server.requests) == 2 and not server.raw_journal and not server.raw_sources
+
+
+@pytest.mark.parametrize('domain', ['journal', 'source'])
+def test_final_atomic_aggregate_malformation_never_retries(native_proof_store, monkeypatch, domain):
+    server, _, knowledge = native_proof_store
+    knowledge.learning_view()
+    statement = server._statement
+
+    def malformed(connection, command):
+        result = statement(connection, command)
+        if 'casepath-' + domain + '-bytes-v1:set:' in command['sql']:
+            names = [column['name'] for column in result['cols']]
+            result['rows'][0][names.index('concat_bytes')] = server._value(0)
+        return result
+
+    monkeypatch.setattr(server, '_statement', malformed)
+    server.reset()
+    with pytest.raises(AutonomousStoreError, match='malformed or truncated'):
+        knowledge.learning_view()
+    assert len(server.requests) == 1 and not server.raw_journal and not server.raw_sources
+    assert server.open_streams == 0
+
+
+def test_cancelled_final_atomic_request_propagates_without_fallback_or_admission(native_proof_store, monkeypatch):
+    from asyncio import CancelledError
+    server, store, knowledge = native_proof_store
+    knowledge.learning_view()
+    handle = server.handle
+
+    def cancel_after_closed_snapshot(request):
+        handle(request)
+        raise CancelledError('Isolated atomic proof cancellation.')
+
+    monkeypatch.setattr(server, 'handle', cancel_after_closed_snapshot)
+    server.reset()
+    with pytest.raises(CancelledError):
+        knowledge.learning_view()
+    assert len(server.requests) == 1 and server.open_streams == 0
+    assert store._knowledge_pending is None
+
+
+@pytest.mark.parametrize('missing', ['rows', 'state'])
+def test_missing_admitted_candidate_keeps_existing_bounded_validation(native_proof_store, missing):
+    server, store, knowledge = native_proof_store
+    original = knowledge.learning_view()
+    if missing == 'rows':
+        store._knowledge_byte_cache = None
+    else:
+        store._summary_cache.pop(next(iter(store._summary_cache)))
+    server.reset()
+    assert knowledge.learning_view() == original
+    assert bool(server.raw_journal) == (missing == 'rows')
+    assert len(server.requests) >= 2 and server.open_streams == 0
+
+
+@pytest.mark.parametrize('batches', [125, 126])
+def test_combined_select_budget_keeps_every_source_batch_and_bounded_fallback(native_proof_store, monkeypatch, batches):
+    server, store, knowledge = native_proof_store
+    native = AutonomousStore(store.path.parent / 'native.sqlite3')
+    remaining, claim = batches - 3, 0  # The base fixture has three unique originals.
+    while remaining:
+        count = min(remaining, 20)
+        native.intake({'title': 'Atomic source batch boundary ' + str(claim),
+                       'message': 'Unique boundary statement ' + str(claim),
+                       'files': [{'file_name': str(index) + '.txt', 'media_type': 'text/plain',
+                                  'content_base64': base64.b64encode(('Unique file ' + str(claim) + '.' + str(index)).encode()).decode()}
+                                 for index in range(count - 1)]}, 'atomic.budget.' + str(claim))
+        remaining -= count
+        claim += 1
+    with sqlite3.connect(native.path) as source, sqlite3.connect(server.path) as target:
+        target.executemany('INSERT OR IGNORE INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)',
+                           source.execute('SELECT * FROM claim_loop_events').fetchall())
+        existing = {row[0] for row in target.execute('SELECT DISTINCT sha256 FROM autonomous_source_chunks')}
+        for path in native.source_root.iterdir():
+            if path.name not in existing:
+                target.execute('INSERT INTO autonomous_source_chunks VALUES (?,?,?)', (path.name, 0, path.read_bytes()))
+    monkeypatch.setattr(store._source_store, 'BATCH_DIGESTS', 1)
+    original = knowledge.learning_view()
+    assert len(store._source_store._cache) == batches
+    server.reset()
+    assert knowledge.learning_view() == original
+    assert len(server.requests) == (1 if batches == 125 else 2)
+    selects = [[operation['stmt']['sql'] for operation in request['requests']
+                if operation.get('stmt', {}).get('sql', '').startswith('SELECT')] for request in server.requests]
+    assert max(map(len, selects)) <= 128
+    assert sum('casepath-source-bytes-v1:set:' in sql for query in selects for sql in query) == batches
+    assert not server.raw_journal and not server.raw_sources and server.open_streams == 0
+
+
 @pytest.mark.parametrize('column', ['event_json', 'created_at', 'command_sha256', 'idempotency_key'])
 def test_unchanged_heads_cannot_hide_an_earlier_row_mutation(native_proof_store, column):
     server, _, knowledge = native_proof_store
@@ -165,6 +287,24 @@ def test_fresh_source_proof_requires_exact_persisted_chunks(native_proof_store, 
     with pytest.raises(AutonomousStoreError, match='source|bytes|chunk|hash'):
         knowledge.learning_view()
     assert server.raw_sources
+
+
+@pytest.mark.parametrize('column,value', [('sha256', 'f' * 64), ('sha256', b'wrong storage type'),
+                                         ('chunk_index', 7), ('chunk_index', 1.5)])
+def test_atomic_proof_preserves_every_source_identity_column_and_type(native_proof_store, column, value):
+    server, store, knowledge = native_proof_store
+    knowledge.learning_view()
+    digest = next(digest for digest, raw in store._source_store._cache.items() if len(raw) > HostedSources.CHUNK_BYTES)
+    with sqlite3.connect(server.path) as db:
+        db.execute('DROP TRIGGER autonomous_source_chunks_no_update')
+        db.execute('UPDATE autonomous_source_chunks SET ' + column + '=? WHERE sha256=? AND chunk_index=1',
+                   (value, digest))
+        db.execute("CREATE TRIGGER autonomous_source_chunks_no_update BEFORE UPDATE ON autonomous_source_chunks "
+                   "BEGIN SELECT RAISE(ABORT,'source bytes are immutable'); END")
+    server.reset()
+    with pytest.raises(AutonomousStoreError, match='source|bytes|chunk|hash'):
+        knowledge.learning_view()
+    assert server.raw_sources and server.open_streams == 0
 
 
 def test_unknown_journal_columns_fail_closed_without_partial_column_certificate(native_proof_store):
