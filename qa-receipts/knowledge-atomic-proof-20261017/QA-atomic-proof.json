@@ -1,0 +1,344 @@
+{
+  "host": "656813ef2295",
+  "clone": "/workspace/casepath-release-ae0-shard6",
+  "base": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "head": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+  "branch": "codex/knowledge-atomic-proof-20261017",
+  "implementation_commit": "278868c64fcdf952360e821a9d6038027e353aec",
+  "test_only_commit": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+  "source_scope": [
+    "casepath-api/casepath_api/autonomous_store_v1.py",
+    "casepath-api/casepath_api/hosted_storage_v1.py",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py",
+    "casepath-api/tests/test_hosted_source_batch_v1.py"
+  ],
+  "checks": [
+    {
+      "command": "./bin/casepath prepare",
+      "exit": 2,
+      "log": "prepare-clean65.log",
+      "diagnosis": "Inherited HOME uv cache is read-only; no verification bypass used."
+    },
+    {
+      "command": "export TMPDIR=/workspace/atomic-proof-20261017/writer/t TMP=/workspace/atomic-proof-20261017/writer/t TEMP=/workspace/atomic-proof-20261017/writer/t UV_CACHE_DIR=/workspace/.cache/uv UV_PYTHON_INSTALL_DIR=/workspace/.local/share/uv/python UV_LINK_MODE=copy; ./bin/casepath prepare",
+      "exit": 0,
+      "log": "prepare-clean65-retry.log",
+      "capsule": "6fec138ef5f8eacff8cc4fc19f0084f61b81fde81c2a37c300708c24b5eb2a2c"
+    },
+    {
+      "command": "export TMPDIR=/workspace/atomic-proof-20261017/writer/t TMP=/workspace/atomic-proof-20261017/writer/t TEMP=/workspace/atomic-proof-20261017/writer/t; HOME=/workspace/atomic-proof-20261017/writer/home PYTHONPATH=casepath-api PYTHONDONTWRITEBYTECODE=1 .runtime/casepath-dev-v2/venv/bin/python -m pytest -q casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py -k \"one_final_atomic or final_atomic_proof_follows\" --basetemp=/workspace/atomic-proof-20261017/writer/t/red",
+      "exit": 1,
+      "expected_invariant_failures": 3,
+      "log": "red.log"
+    },
+    {
+      "command": "export TMPDIR=/workspace/atomic-proof-20261017/writer/t TMP=/workspace/atomic-proof-20261017/writer/t TEMP=/workspace/atomic-proof-20261017/writer/t; HOME=/workspace/atomic-proof-20261017/writer/home PYTHONPATH=casepath-api PYTHONDONTWRITEBYTECODE=1 .runtime/casepath-dev-v2/venv/bin/python -m pytest -q casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py --basetemp=/workspace/atomic-proof-20261017/writer/t/proof",
+      "exit": 1,
+      "passed": 44,
+      "failed": 2,
+      "log": "proof-initial.log",
+      "diagnosis": "Confirmed journal schema miss reused an old certificate before raw fallback; fixed by discarding its journal byte cache."
+    },
+    {
+      "command": "export TMPDIR=/workspace/atomic-proof-20261017/writer/t TMP=/workspace/atomic-proof-20261017/writer/t TEMP=/workspace/atomic-proof-20261017/writer/t; HOME=/workspace/atomic-proof-20261017/writer/home PYTHONPATH=casepath-api PYTHONDONTWRITEBYTECODE=1 .runtime/casepath-dev-v2/venv/bin/python -m pytest -q casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py --basetemp=/workspace/atomic-proof-20261017/writer/t/proof2",
+      "exit": 0,
+      "passed": 46,
+      "log": "proof-second.log"
+    },
+    {
+      "command": "export TMPDIR=/workspace/atomic-proof-20261017/writer/t TMP=/workspace/atomic-proof-20261017/writer/t TEMP=/workspace/atomic-proof-20261017/writer/t; HOME=/workspace/atomic-proof-20261017/writer/home PYTHONPATH=casepath-api PYTHONDONTWRITEBYTECODE=1 .runtime/casepath-dev-v2/venv/bin/python -m pytest -q -s casepath-api/tests/test_hosted_source_batch_v1.py casepath-api/tests/test_autonomous_knowledge_reads_v1.py --basetemp=/workspace/atomic-proof-20261017/writer/t/reads",
+      "exit": 0,
+      "passed": 61,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 65.21,
+      "log": "source-and-reads.log"
+    },
+    {
+      "command": "export TMPDIR=/workspace/atomic-proof-20261017/writer/t TMP=/workspace/atomic-proof-20261017/writer/t TEMP=/workspace/atomic-proof-20261017/writer/t; HOME=/workspace/atomic-proof-20261017/writer/home PYTHONPATH=casepath-api PYTHONDONTWRITEBYTECODE=1 .runtime/casepath-dev-v2/venv/bin/python -m pytest -q casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py --basetemp=/workspace/atomic-proof-20261017/writer/t/proof-final",
+      "exit": 0,
+      "passed": 59,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.93,
+      "log": "proof-expanded.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "final_focused_total": {
+    "passed": 120,
+    "failed": 0,
+    "skipped": 0
+  },
+  "measurement_method": "measure_atomic_proof.py runs baseline exact65a versions of only the two changed implementation modules against the same untouched current supporting code and same original deterministic18-claim SQLite fixture; candidate runs committed implementation. MockHrana supplies real SQLite transactions through httpx.MockTransport; real HTTPTransport dispatch is forbidden.",
+  "baseline": {
+    "mode": "baseline",
+    "base": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+    "candidate": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+    "fixture_claims": 18,
+    "fixture_only_no_real_socket_or_production_data": true,
+    "measurements": [
+      {
+        "phase": "startup",
+        "http_requests": 31,
+        "response_bytes": 5110171,
+        "raw_journal_pages": 22,
+        "raw_source_selects": 7,
+        "selects_per_request": [
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2
+        ],
+        "calls": {
+          "_replay": 18,
+          "_project": 1,
+          "_learning_replay": 1
+        },
+        "fixture_wall_seconds": 0.932909,
+        "decoded_and_utf8_identity": true,
+        "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+        "payload_bytes": 136307,
+        "open_streams": 0
+      },
+      {
+        "phase": "first_poststartup",
+        "http_requests": 2,
+        "response_bytes": 7602,
+        "raw_journal_pages": 0,
+        "raw_source_selects": 0,
+        "selects_per_request": [
+          2,
+          2
+        ],
+        "calls": {
+          "_replay": 0,
+          "_project": 0,
+          "_learning_replay": 0
+        },
+        "fixture_wall_seconds": 0.043287,
+        "decoded_and_utf8_identity": true,
+        "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+        "payload_bytes": 136307,
+        "open_streams": 0
+      },
+      {
+        "phase": "repeat_1",
+        "http_requests": 2,
+        "response_bytes": 7602,
+        "raw_journal_pages": 0,
+        "raw_source_selects": 0,
+        "selects_per_request": [
+          2,
+          2
+        ],
+        "calls": {
+          "_replay": 0,
+          "_project": 0,
+          "_learning_replay": 0
+        },
+        "fixture_wall_seconds": 0.056591,
+        "decoded_and_utf8_identity": true,
+        "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+        "payload_bytes": 136307,
+        "open_streams": 0
+      },
+      {
+        "phase": "repeat_2",
+        "http_requests": 2,
+        "response_bytes": 7602,
+        "raw_journal_pages": 0,
+        "raw_source_selects": 0,
+        "selects_per_request": [
+          2,
+          2
+        ],
+        "calls": {
+          "_replay": 0,
+          "_project": 0,
+          "_learning_replay": 0
+        },
+        "fixture_wall_seconds": 0.049184,
+        "decoded_and_utf8_identity": true,
+        "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+        "payload_bytes": 136307,
+        "open_streams": 0
+      }
+    ]
+  },
+  "candidate": {
+    "mode": "candidate",
+    "base": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+    "candidate": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+    "fixture_claims": 18,
+    "fixture_only_no_real_socket_or_production_data": true,
+    "measurements": [
+      {
+        "phase": "startup",
+        "http_requests": 31,
+        "response_bytes": 5110171,
+        "raw_journal_pages": 22,
+        "raw_source_selects": 7,
+        "selects_per_request": [
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2
+        ],
+        "calls": {
+          "_replay": 18,
+          "_project": 1,
+          "_learning_replay": 1
+        },
+        "fixture_wall_seconds": 0.907156,
+        "decoded_and_utf8_identity": true,
+        "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+        "payload_bytes": 136307,
+        "open_streams": 0
+      },
+      {
+        "phase": "first_poststartup",
+        "http_requests": 1,
+        "response_bytes": 7274,
+        "raw_journal_pages": 0,
+        "raw_source_selects": 0,
+        "selects_per_request": [
+          4
+        ],
+        "calls": {
+          "_replay": 0,
+          "_project": 0,
+          "_learning_replay": 0
+        },
+        "fixture_wall_seconds": 0.038508,
+        "decoded_and_utf8_identity": true,
+        "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+        "payload_bytes": 136307,
+        "open_streams": 0
+      },
+      {
+        "phase": "repeat_1",
+        "http_requests": 1,
+        "response_bytes": 7274,
+        "raw_journal_pages": 0,
+        "raw_source_selects": 0,
+        "selects_per_request": [
+          4
+        ],
+        "calls": {
+          "_replay": 0,
+          "_project": 0,
+          "_learning_replay": 0
+        },
+        "fixture_wall_seconds": 0.040965,
+        "decoded_and_utf8_identity": true,
+        "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+        "payload_bytes": 136307,
+        "open_streams": 0
+      },
+      {
+        "phase": "repeat_2",
+        "http_requests": 1,
+        "response_bytes": 7274,
+        "raw_journal_pages": 0,
+        "raw_source_selects": 0,
+        "selects_per_request": [
+          4
+        ],
+        "calls": {
+          "_replay": 0,
+          "_project": 0,
+          "_learning_replay": 0
+        },
+        "fixture_wall_seconds": 0.039815,
+        "decoded_and_utf8_identity": true,
+        "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+        "payload_bytes": 136307,
+        "open_streams": 0
+      }
+    ]
+  },
+  "measured_outcome": "Startup cold behavior unchanged31requests; first and repeat warm Knowledge reads2to1requests; exact136307-byte UTF8JSON and decoded payload equality; no warm replay/project/learning rebuild or raw journal/source reads.",
+  "matched_payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+  "measurement_initial_failure": {
+    "log": "measurement-baseline.log",
+    "exit": 1,
+    "diagnosis": "Evidence harness attempted to count module-level _learning_replay as an object method; corrected harness only before matched successful measurements."
+  },
+  "independent_review": "/workspace/atomic-proof-20261017/review/e/REVIEW-cb648a3e.json",
+  "authority_guards": [
+    "admitted immutable complete journal rows and exact existing reducer row identities",
+    "all original bytes present and locally hash/descriptor validated before final request",
+    "same callable or genuine bound-method owner/function for journal/source primary",
+    "fresh exact journal/source schemas, all8/3typed columns, fullrosters, N+1,count,length,SHAroots",
+    "ordered summary/source locks held through final certificate checks and admission",
+    "125sourcebatch combined edge128SELECT;126batches retain separate bounded certificates",
+    "uncertain COMMIT, transport, malformed aggregate and cancellation do not fallback/retry"
+  ],
+  "limits": [
+    "No public/production network request or production latency measurement.",
+    "No universal<=1s latency claim; coldclientTLS/proxy/worker/database variability remains.",
+    "No source seal, broad/full suite, release gate, integration branch advance or deployment, as instructed.",
+    "Prepared runtime capsule binds clean65a; focused tests intentionally execute the unsealed worker branch using that pinned interpreter.",
+    "Local evidence uses18processed deterministic claims; production633rows/26claims was not accessed.",
+    "No environment config changes required; existing setup instructions and proxy/CA bindings preserved."
+  ]
+}

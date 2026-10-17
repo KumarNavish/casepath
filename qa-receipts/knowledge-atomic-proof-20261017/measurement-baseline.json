@@ -1,0 +1,122 @@
+{
+  "mode": "baseline",
+  "base": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "candidate": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+  "fixture_claims": 18,
+  "fixture_only_no_real_socket_or_production_data": true,
+  "measurements": [
+    {
+      "phase": "startup",
+      "http_requests": 31,
+      "response_bytes": 5110171,
+      "raw_journal_pages": 22,
+      "raw_source_selects": 7,
+      "selects_per_request": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      "calls": {
+        "_replay": 18,
+        "_project": 1,
+        "_learning_replay": 1
+      },
+      "fixture_wall_seconds": 0.932909,
+      "decoded_and_utf8_identity": true,
+      "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+      "payload_bytes": 136307,
+      "open_streams": 0
+    },
+    {
+      "phase": "first_poststartup",
+      "http_requests": 2,
+      "response_bytes": 7602,
+      "raw_journal_pages": 0,
+      "raw_source_selects": 0,
+      "selects_per_request": [
+        2,
+        2
+      ],
+      "calls": {
+        "_replay": 0,
+        "_project": 0,
+        "_learning_replay": 0
+      },
+      "fixture_wall_seconds": 0.043287,
+      "decoded_and_utf8_identity": true,
+      "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+      "payload_bytes": 136307,
+      "open_streams": 0
+    },
+    {
+      "phase": "repeat_1",
+      "http_requests": 2,
+      "response_bytes": 7602,
+      "raw_journal_pages": 0,
+      "raw_source_selects": 0,
+      "selects_per_request": [
+        2,
+        2
+      ],
+      "calls": {
+        "_replay": 0,
+        "_project": 0,
+        "_learning_replay": 0
+      },
+      "fixture_wall_seconds": 0.056591,
+      "decoded_and_utf8_identity": true,
+      "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+      "payload_bytes": 136307,
+      "open_streams": 0
+    },
+    {
+      "phase": "repeat_2",
+      "http_requests": 2,
+      "response_bytes": 7602,
+      "raw_journal_pages": 0,
+      "raw_source_selects": 0,
+      "selects_per_request": [
+        2,
+        2
+      ],
+      "calls": {
+        "_replay": 0,
+        "_project": 0,
+        "_learning_replay": 0
+      },
+      "fixture_wall_seconds": 0.049184,
+      "decoded_and_utf8_identity": true,
+      "payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+      "payload_bytes": 136307,
+      "open_streams": 0
+    }
+  ]
+}

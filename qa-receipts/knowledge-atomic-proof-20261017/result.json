@@ -1,0 +1,29 @@
+{
+  "base": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "candidate": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+  "implementation_commit": "278868c64fcdf952360e821a9d6038027e353aec",
+  "implementation_branch": "codex/knowledge-atomic-proof-20261017",
+  "writer_focused_passes": 120,
+  "independent_distinct_passes": 72,
+  "independent_pass_executions": 73,
+  "matched_warm_requests_before_after": [
+    2,
+    1
+  ],
+  "matched_warm_wire_bytes_before_after": [
+    7602,
+    7274
+  ],
+  "matched_cold_requests_unchanged": 31,
+  "matched_payload_bytes": 136307,
+  "matched_payload_sha256": "30d626d41cb82c31e7a33c3c1dcb9572afd10104082295336f421270f543f18f",
+  "input_fixture_claims": 18,
+  "native_or_production_latency_measured": false,
+  "full_release_gate_run": false,
+  "same_primary_required": "Identical callable, or genuine bound method with identical owner and function. Other factories retain separate proofs.",
+  "archive_members": 44,
+  "archive_bytes": 47750,
+  "archive_sha256": "0acd949de6410d4bb5f9a1012ee02f8679e02f382f88a16ded259d27e6d9584d",
+  "negative_attempts_preserved": true,
+  "secret_scan": "High-specificity credential patterns checked; no matches."
+}

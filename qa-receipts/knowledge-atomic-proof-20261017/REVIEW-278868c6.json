@@ -1,0 +1,95 @@
+{
+  "review": "Independent read-only source and adversarial review of atomic final journal/source proof",
+  "commit": "278868c64fcdf952360e821a9d6038027e353aec",
+  "base": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "review_clone": "/workspace/casepath-release-ae0-shard4",
+  "result": "No unresolved actionable source-backed finding within the assigned bounded backend scope.",
+  "findings": [],
+  "source_clean_and_exact_git_objects": true,
+  "pre_post_source_receipts_equal": true,
+  "execution_host": {
+    "provider": "cloud",
+    "hostname": "656813ef2295",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "network_calls": 0
+  },
+  "files_sha256": {
+    "casepath-api/casepath_api/autonomous_store_v1.py": "ae42896a74867342117dc407bcadd3ba3a01f494fecca489969b00943744a06f",
+    "casepath-api/casepath_api/hosted_storage_v1.py": "737820c41572e97841bde2ff7b87b91e668cb7dce1be93296576c53ff0a858dd",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py": "785e43b4b6c6047f26eff5e920ed5f89ecdac9b41ba3d4698076771a50478890",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py": "37b587547abaa309f7d13e19f3e705f3064c1bb7ad994993dcbf4a3554642b5f",
+    "casepath-api/tests/test_hosted_source_batch_v1.py": "ba89c9df7f180313d8adc9b38529e3252d18879fca5d7b3254757faef6172fd8"
+  },
+  "initial_authority_argument": "/workspace/atomic-proof-20261017/review/e/authority-before-code.json",
+  "reviewed_contracts": [
+    "Same admitted immutable all-column row snapshot and existing native summary-state identities are required before attempting the candidate. Source bytes and prior source schema must all be present; missing, evicted, unprovable-factory or over-budget candidates preserve original separate proof paths.",
+    "Native local complete-row/descriptor/original-hash validation runs before the final certificate, under existing ordered summary->source locks. Combined BEGIN/journal schema+complete typed journal proof/source schema+all full typed source roster proofs/COMMIT/close validates everything before certificate admission.",
+    "Same authoritative primary is proven conservatively by identical callable object or genuine bound-method identical owner and function. Coincident schema/table/hash content in another DB is not treated as a source-primary binding.",
+    "Originally frozen pending rows remain byte-bound to validated rows and their freshly recomputed exact typed proof before admission. Returned Knowledge/summary objects remain independent copies, including concurrent claims and Knowledge reads.",
+    "Uncertain transport/COMMIT and malformed aggregate results propagate without retry/payload. Confirmed journal/schema misses use bounded existing fallback; failed source proof preserves full raw-byte validation and fail-closed source behavior.",
+    "Unchanged128SELECT, per-batch/roster/byte/deadline limits, Hrana bookends, source full-file/descriptor hashes, schema comparisons, regression/disappearance checks, origin/protocol and HTTP ownership contracts remain in force. No hosted SQL transport source changed."
+  ],
+  "independent_validation": {
+    "runs": [
+      {
+        "tests": 57,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 4.35,
+        "command": "bash /workspace/atomic-proof-20261017/review/e/run-independent-2788.sh",
+        "exit_code": 0,
+        "junit": "/workspace/atomic-proof-20261017/review/e/independent-2788.xml",
+        "log": "/workspace/atomic-proof-20261017/review/e/independent-2788.log"
+      },
+      {
+        "tests": 2,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 1.813,
+        "command": "bash /workspace/atomic-proof-20261017/review/e/run-final-boundary-2788.sh",
+        "exit_code": 0,
+        "junit": "/workspace/atomic-proof-20261017/review/e/final-boundary-2788.xml",
+        "log": "/workspace/atomic-proof-20261017/review/e/final-boundary-2788.log"
+      },
+      {
+        "tests": 1,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 1.288,
+        "command": "bash /workspace/atomic-proof-20261017/review/e/run-exact-bytes-2788.sh",
+        "exit_code": 0,
+        "junit": "/workspace/atomic-proof-20261017/review/e/exact-bytes-2788.xml",
+        "log": "/workspace/atomic-proof-20261017/review/e/exact-bytes-2788.log"
+      }
+    ],
+    "distinct_tests_passed": 59,
+    "total_passed_executions": 60,
+    "count_note": "57 initial cases =46 updated focused native proof cases +11 external adversarial cases;2 additional existing final-source-after-prefetch cases;1 targeted repeat strengthened the already-counted exact-hit test with serialized UTF-8 byte equality.",
+    "external_adversarial_cases": [
+      "Exact one-request closed atomic snapshot, identical complete Knowledge result and serialized UTF-8 bytes, caller output mutation isolation, original persisted journal/source bytes unchanged.",
+      "Remote journal metadata mutation after local validation immediately before final snapshot is rejected.",
+      "Remote source-byte mutation immediately before final snapshot with original identical trigger schema restored is rejected.",
+      "Malformed journal/source proof root or concatenation size: four cases reject without fallback retry.",
+      "Multiple source batches all certified in the one final snapshot.",
+      "Journal DB lookalike containing identical source bytes cannot certify a separately injected source DB; only actual source primary mutation causes rejection and both paths remain separate.",
+      "Distinct wrapper factories conservatively retain two proof requests.",
+      "Actual126referenced sources via six native intakes, BATCH_DIGESTS1: combined129SELECT candidate bypassed; original two requests have2 and127SELECTs, output exact, no raw reads, all streams closed."
+    ],
+    "external_test_source": "/workspace/atomic-proof-20261017/review/e/test_independent_atomic_proof.py",
+    "external_test_source_sha256": "9fe789127fc87034f12424377b0ec8da08f122e3b0050149cd79e8fa06d045e3",
+    "source_receipts": [
+      "/workspace/atomic-proof-20261017/review/e/source-before-2788.txt",
+      "/workspace/atomic-proof-20261017/review/e/source-after-2788.txt"
+    ]
+  },
+  "limits": [
+    "Reviewer made no product/backend/test/doc/seal edits, dependency installs, broad/full gate, frontend, real network, production DB/journal, secret, provider, hosting or deployment operations.",
+    "Tests use deterministic isolated public synthetic native fixtures/SQLite/MockTransport on actual Cloud Linux and the existing prepared pinned shard6 venv with own-source PYTHONPATH and isolated HOME/temp.",
+    "One-request hit and source authority behavior are proven in fixtures; native Mac/public-host latency and universal cold<=1s are not claimed.",
+    "Prior first-request65 diagnosis, previous receipts and negative native timing evidence remain unchanged.",
+    "Later source changes require review of the immutable follow-up diff; test-only follow-up can reuse source hashes when identical."
+  ]
+}

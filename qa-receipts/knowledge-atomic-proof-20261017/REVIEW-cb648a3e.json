@@ -1,0 +1,40 @@
+{
+  "review": "Bind final test-only follow-up to independently reviewed atomic proof implementation",
+  "commit": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+  "reviewed_implementation_commit": "278868c64fcdf952360e821a9d6038027e353aec",
+  "implementation_source_bytes_identical": true,
+  "source_clean": true,
+  "followup_only_changed_file": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py",
+  "followup_test_source_sha256": "97c7904ff8551e6d7f6e1901dd01d74427ee6839e3237b4cb27c228e65683e96",
+  "prior_review_receipt": "/workspace/atomic-proof-20261017/review/e/REVIEW-278868c6.json",
+  "result": "No unresolved actionable finding. Final head adds only reviewed adversarial tests; implementation is identical to the independently tested candidate.",
+  "followup_independent_tests": {
+    "passed": 13,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "deselected": 46,
+    "seconds": 2.248,
+    "command": "bash /workspace/atomic-proof-20261017/review/e/run-followup-cb64.sh",
+    "exit_code": 0,
+    "junit": "/workspace/atomic-proof-20261017/review/e/followup-cb64.xml",
+    "log": "/workspace/atomic-proof-20261017/review/e/followup-cb64.log"
+  },
+  "combined_independent_evidence": {
+    "distinct_passed": 72,
+    "total_passed_executions": 73,
+    "note": "59 distinct tests on2788 plus13 new test-only follow-up cases on identical implementation atcb64. One extra exact UTF8 byte-equality rerun included in execution count."
+  },
+  "followup_scope": [
+    "Different source primary and unprovable wrapper retain separate authority paths.",
+    "Malformed final aggregate in either domain rejects without retry.",
+    "asyncio cancellation propagates without fallback or pending admission.",
+    "Missing admitted rows/state cache retains original bounded fallback.",
+    "125 actual referenced sources/BATCH_DIGESTS1 use exact128SELECT atomic hit1;126 use separate bounded snapshots2.",
+    "Every source identity column and native storage type remains checked."
+  ],
+  "limits": [
+    "No product source edits, source sealing, installs, broad/full suite, real network, production/provider/secret/hosting operations.",
+    "Deterministic Linux/SQLite/MockTransport proof behavior only; native Mac/hosted latency acceptance remains separate."
+  ]
+}
