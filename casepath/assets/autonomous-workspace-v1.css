@@ -833,12 +833,12 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning-lane { display:grid; grid-template-columns:168px minmax(0,1fr); gap:12px; min-height:44px; align-items:start; }
 .au-workspace .au-learning-lane > h2 { margin:0; padding:10px 0; font-size:16px; line-height:1.4; font-weight:500; letter-spacing:0; }
 .au-workspace .au-learning-track { position:relative; display:grid; grid-template-columns:repeat(var(--au-learning-days),minmax(0,1fr)); gap:12px; padding:2px 0; min-height:44px; }
-.au-workspace .au-learning-track::before { content:''; position:absolute; top:22px; left:0; right:0; height:1px; background:#c6d0c6; }
+.au-workspace .au-learning-track::before { content:''; position:absolute; top:22px; left:0; right:0; height:1px; background:#73857a; }
 .au-workspace .au-learning-day { position:relative; display:flex; flex-wrap:nowrap; align-items:start; gap:4px; min-width:0; }
-.au-workspace .au-learning-node { position:relative; flex:none; min-width:40px; padding:4px; border:1px solid #c6d0c6; border-radius:4px; background:#fff; color:#3f5045; }
+.au-workspace .au-learning-node { position:relative; flex:none; min-width:40px; padding:4px; border:1px solid #73857a; border-radius:4px; background:#fff; color:#3f5045; }
 .au-workspace .au-learning-node[aria-current=step] { border-color:#24563c; background:#e6efe5; color:#1e4a32; box-shadow:0 0 0 1px #24563c; }
 .au-workspace .au-learning-node-text,.au-workspace .au-learning-mobile-date { display:none; }
-.au-workspace .au-learning-lane[data-au-learning-lane=refused] .au-learning-node { color:#70412e; border-color:#c3aa9c; }
+.au-workspace .au-learning-lane[data-au-learning-lane=refused] .au-learning-node { color:#70412e; border-color:#926b56; }
 .au-workspace .au-learning-no-events { position:absolute; top:10px; left:0; background:#fff; }
 .au-workspace .au-learning-disclosure,.au-workspace .au-learning-totals { margin:8px 0 0; }
 .au-workspace .au-learning-announcement { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
@@ -854,7 +854,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-stage="2"] .au-learning-documents { display:block; margin:0; padding:0; border:0; }
 .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-documents .au-learning-checklist { grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
 .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-checklist p { display:none; }
-.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-checklist [data-au-learning-added=true] strong::after { content:' · Recipe added'; color:#24563c; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-checklist [data-au-learning-added=true] strong::after { content:' · Document check added'; color:#24563c; }
 .au-workspace .au-learning[data-au-learning-playing=true] :is([data-au-learning-stage="0"],[data-au-learning-stage="1"],[data-au-learning-stage="2"]) .au-learning-proof { display:none; }
 .au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-focus]:not([data-au-learning-stage="10"]) .au-learning-seal { display:none; }
 .au-workspace .au-learning[data-au-learning-playing=true] [data-au-learning-stage="10"] .au-learning-qualification,.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-seal .au-lineage-summary { display:none; }
@@ -970,4 +970,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-learning-transport { flex-wrap:wrap; }
   .au-workspace .au-learning-transport label { min-width:0; flex:1 1 180px; }
   .au-workspace .au-learning-transport input { width:100%; }
+}
+
+/* Paused Knowledge uses the page scroll so every recorded tab stays reachable. */
+.au-workspace .au-learning[data-au-learning-playing=false] .au-learning-focus { height:auto; max-height:none; overflow:visible; }
+@media (max-width:700px) {
+  .au-workspace .au-learning-transport > p { display:block; flex-basis:100%; min-width:0; margin:4px 0; }
+}
+@media (max-width:700px) {
+  .au-workspace .au-learning .au-work-head > div:last-child { position:static; margin-top:8px; }
 }
