@@ -570,6 +570,11 @@ async function fixturePage(t, config = {}) {
 async function mountFixture(page, config = {}) {
   const cssBytes=fs.readFileSync(process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.css'));
   const javascriptBytes=fs.readFileSync(process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.js'));
+  const languageBytes=fs.readFileSync(process.env.CASEPATH_BROWSER_LANGUAGE_ASSET || path.join(root,'casepath/assets/autonomous-language-v1.js'));
+  const languageScript=await page.addScriptTag({content:languageBytes.toString('utf8')});
+  const languageSha=sha(await languageScript.evaluate(element=>element.textContent));
+  assert.equal(languageSha,sha(languageBytes),'the browser uses the exact selected recorded-language module');
+  await page.evaluate(value=>window.__injectedLanguageAsset=value,languageSha);
   const style=await page.addStyleTag({content:cssBytes.toString('utf8')}),script=await page.addScriptTag({content:javascriptBytes.toString('utf8')});
   const injectedAssets={javascript:sha(await script.evaluate(element=>element.textContent)),css:sha(await style.evaluate(element=>element.textContent))};
   assert.deepEqual(injectedAssets,{javascript:sha(javascriptBytes),css:sha(cssBytes)},'the actual native DOM contains exactly the selected working asset bytes');
@@ -3841,4 +3846,135 @@ for (const [width, height] of [[1280,800], [390,844]]) test(`map first layout: t
   const actualBranches = prefix.state.graph.edges.filter(row => row.condition);
   assert.ok(actualBranches.length >= 5, 'the real retained fixture exercises its existing conditional branches');
   await focusedReceipt(page, `map-first-legacy-eleven-${width}x${height}`, {classification: 'Renderer-only panning over actual incomplete legacy prefix9 from the existing prior-assessment fixture; distinct from the nine completed reference heads.', claim_id: id, revision: prefix.state.revision, state_sha256: prefix.state.state_sha256, branches: actualBranches, geometry});
+});
+
+// Uses only the checked-in public recording. It never builds a native fixture,
+// starts a server, contacts a provider, or writes a case/Knowledge database.
+async function recordedLanguagePage(t, width = 390) {
+  const context=await browser.newContext({viewport:{width,height:844},hasTouch:width<600,serviceWorkers:'block'}),page=await context.newPage(),requests=[],errors=[];
+  const index=fs.readFileSync(path.join(root,'casepath/index.html'),'utf8'),descriptor=JSON.parse(index.match(/<meta name="casepath-recorded-opening" content='([^']+)'/)[1]),bytes=fs.readFileSync(path.join(root,'casepath/assets/autonomous-recorded-heating-v1.json'));
+  assert.equal(bytes.length,descriptor.bytes);assert.equal(sha(bytes),descriptor.sha256);
+  const ui=require('../casepath/assets/autonomous-workspace-v1.js'),packet=await ui.checkedRecordedPacket(bytes,descriptor),native=await ui.decodeRecordedSession(packet,packet.claims[0].claim_id);
+  const knowledge=process.env.CASEPATH_KNOWLEDGE_FIXTURE?JSON.parse(fs.readFileSync(process.env.CASEPATH_KNOWLEDGE_FIXTURE,'utf8')):null;
+  page.setDefaultTimeout(5000);page.on('pageerror',error=>errors.push(error.message));
+  t.after(async()=>{if(focusedReceiptRoot&&!page.isClosed()){fs.mkdirSync(focusedReceiptRoot,{recursive:true});const name=`${t.name.includes('paused active')?'resize':'audit'}-${width}`;await page.screenshot({path:path.join(focusedReceiptRoot,`recorded-language-${name}-final.png`),fullPage:true,animations:'disabled'});fs.writeFileSync(path.join(focusedReceiptRoot,`recorded-language-${name}-final.json`),JSON.stringify({sourceSha:sha(bytes),requests,errors,geometry:await recordedLanguageGeometry(page),text:await page.locator('body').innerText()},null,2));}await context.close();assert.deepEqual(errors,[]);assert.ok(requests.every(row=>row.method==='GET'&&row.origin==='http://localhost:41999'),'the browser remains inside the intercepted read-only recording');});
+  await page.route('**/*',async route=>{
+    const request=route.request(),url=new URL(request.url());requests.push({origin:url.origin,path:url.pathname+url.search,method:request.method()});
+    if(url.origin!=='http://localhost:41999'||request.method()!=='GET')return route.abort('blockedbyclient');
+    if(url.pathname.startsWith('/api/')){
+      const exact=url.pathname.includes(`/claims/${native.head.claimId}/`)?url.pathname.endsWith('/snapshot')?native.raw.head_snapshot:url.pathname.endsWith('/replay')&&url.searchParams.get('through_seq')==='0'?native.raw.opening:url.pathname.endsWith('/operations')&&url.searchParams.get('mode')==='recorded'?native.raw.operations:null:null;
+      if(exact)return route.fulfill({status:200,contentType:url.pathname.endsWith('/operations')?'application/x-ndjson':'application/json',body:Buffer.from(exact)});
+      const data=url.pathname.endsWith('/status')?{enabled:true,provider_ready:false,read_only:true,writable:false,limits:{}}:url.pathname.endsWith('/claims')?{claims:[],total:0}:url.pathname.endsWith('/knowledge')?knowledge||{versions:[],uses:[],quarantined:[]}:null;
+      return route.fulfill({status:data?200:503,contentType:'application/json',body:JSON.stringify(data||{detail:'Only the saved recording is available.'})});
+    }
+    const relative=url.pathname==='/'?'index.html':decodeURIComponent(url.pathname.slice(1)),file=path.resolve(root,'casepath',relative);
+    if(!file.startsWith(path.join(root,'casepath')+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile())return route.fulfill({status:404,body:'Unavailable'});
+    let body=fs.readFileSync(file);if(relative==='index.html')body=Buffer.from(body.toString().replace('<head>','<head><script>window.CASEPATH_PUBLIC_READ_ONLY=true;window.CASEPATH_HOSTED_AUTONOMOUS=true;</script>'));
+    return route.fulfill({status:200,contentType:{'.html':'text/html','.js':'application/javascript','.css':'text/css','.json':'application/json','.woff2':'font/woff2','.ttf':'font/ttf'}[path.extname(file)]||'application/octet-stream',body});
+  });
+  await page.goto('http://localhost:41999/#autonomous/cases');
+  await page.waitForFunction(()=>Boolean(window.CasePathAutonomous));
+  await page.evaluate(descriptor=>{window.CasePathAutonomous.destroy();window.__recordedLanguageController=window.CasePathAutonomous.mount(document.querySelector('#autonomousWorkspace'),{recordedPacket:descriptor});window.__recordedLanguageReady=null;window.__recordedLanguageController.recordedPacketReady.then(ready=>window.__recordedLanguageReady=ready);},descriptor);
+  for(let tick=0;tick<50&&await page.evaluate(()=>window.__recordedLanguageReady===null);tick++){await delay(20);}
+  assert.equal(await page.evaluate(()=>window.__recordedLanguageReady),true,'the actual published packet must pass its exact descriptor checks while Cases owns acquisition');
+  await page.evaluate(()=>{location.hash='#autonomous/demonstration?mode=replay&operations=recorded';});
+  for(let tick=0;tick<30&&!await page.locator('[data-au-graph-pan]').count();tick++)await delay(100);
+  await page.locator('[data-au-graph-pan]').waitFor();
+  const target=Buffer.from(native.raw.operations).toString().trim().split('\n').map(JSON.parse).find(row=>row.type==='operation'&&row.kind==='fact.extract'&&row.input?.document_type==='landlord_knowledge_evidence');assert.ok(target?.source);
+  return {page,requests,descriptor,target,sourceSha:sha(bytes),originalTexts:(native.head_snapshot.state.acquired_sources||[]).map(row=>row.text).filter(value=>typeof value==='string')};
+}
+async function recordedLanguageGeometry(page) {
+  return page.evaluate(()=>{
+    const rect=element=>element?.getBoundingClientRect().toJSON(),pan=document.querySelector('[data-au-graph-pan]'),active=document.querySelector('[data-au-stage-step][data-au-stage-active="true"]'),transport=document.querySelector('.au-stage-transport'),excerpt=active?.querySelector('[data-au-compact-excerpt]');
+    const controls=[...document.querySelectorAll('button,input,summary')].filter(element=>element.getClientRects().length&&!element.closest('[hidden],details:not([open]) > :not(summary),dialog:not([open])')).map(element=>({text:element.textContent.trim().slice(0,80)||element.getAttribute('aria-label'),rect:rect(element)}));
+    return {width:innerWidth,height:innerHeight,bodyFont:parseFloat(getComputedStyle(document.body).fontSize),overflow:document.documentElement.scrollWidth>innerWidth+1,documentWidth:document.documentElement.scrollWidth,overflowCandidates:[...document.querySelectorAll('body *')].filter(element=>element.getClientRects().length&&!element.closest('[data-au-graph-pan],[hidden],dialog:not([open])')&&element.getBoundingClientRect().right>innerWidth+1).map(element=>({tag:element.tagName,class:element.className,rect:rect(element)})).slice(0,25),pan:{rect:rect(pan),left:pan?.scrollLeft,width:pan?.clientWidth,scrollWidth:pan?.scrollWidth},active:{id:active?.dataset.auStageStep,rect:rect(active)},excerpt:rect(excerpt),transport:rect(transport),revision:document.querySelector('[data-au-revision]')?.dataset.auRevision,stateSha:document.querySelector('[data-au-state-sha]')?.dataset.auStateSha,paused:Boolean(document.querySelector('[data-au-demo-resume],[data-au-inspection-operation]')),controls,now:document.querySelector('[data-au-now-id]')?.outerHTML,live:[...document.querySelectorAll('[aria-live="polite"]')].filter(element=>element.getClientRects().length&&!element.closest('[hidden]')).length};
+  });
+}
+async function recordedLanguageCopy(page,originals=[]) {
+  return page.evaluate(originals=>{
+    const ban=/\b(?:provisional|derive|requalified|quarantined|compilation|recipe|applicability|regression|sha|hash|canonical|projection|branch|pinned|deterministic|verifier|synthetic)\b/i,quoteSelector='q,blockquote,pre.au-operation-passage,pre.au-original-message,p.au-stage-excerpt-context,[data-au-stage-fact] > span:not(.au-role-badge)',problems=[],runs=new Set();
+    const literal=element=>element.matches(quoteSelector)&&element.textContent&&originals.some(original=>original.includes(element.textContent));
+    const check=(value,where)=>{value=value.replace(/\s+/g,' ').trim();if(!value)return;if(ban.test(value)||/\b[a-f\d]{12,64}\b/i.test(value))problems.push({where,value});for(const row of new Intl.Segmenter('en',{granularity:'sentence'}).segment(value))if((row.segment.match(/[\p{L}\p{N}]+(?:[’'-][\p{L}\p{N}]+)*/gu)||[]).length>20)problems.push({where,value:row.segment});};
+    for(const element of document.querySelectorAll('.au-shell *,dialog[open] *')){
+      if(!element.getClientRects().length||element.closest('details,[hidden],script,style')||literal(element)||element.closest(quoteSelector)&&literal(element.closest(quoteSelector)))continue;
+      for(const attr of ['aria-label','title','alt','placeholder'])if(element.hasAttribute(attr))check(element.getAttribute(attr),attr);
+      for(const child of element.childNodes)if(child.nodeType===Node.TEXT_NODE&&child.textContent.trim())runs.add(element.closest('p,button,a,h1,h2,h3,h4,h5,h6,label,summary')||element);
+    }
+    for(const element of runs){const clone=element.cloneNode(true),originalQuotes=[...element.querySelectorAll(quoteSelector)],copyQuotes=[...clone.querySelectorAll(quoteSelector)];originalQuotes.forEach((quote,index)=>{if(literal(quote))copyQuotes[index].remove();});for(const detail of clone.querySelectorAll('details'))detail.remove();check(clone.textContent,element.tagName);}
+    return problems;
+  },originals);
+}
+
+test('recorded language accessibility: paused active source recenters after resize while graph pan and keyboard controls remain usable',async t=>{
+  const {page,sourceSha,target}=await recordedLanguagePage(t,1428);
+  await page.locator('[data-au-now-id]:not([data-au-now-id=""])').waitFor({timeout:15000});
+  await page.locator('[data-au-operation-skip]').waitFor();await page.locator('[data-au-operation-skip]').click();
+  await page.locator('[data-au-operation-result-verified="true"]').waitFor({timeout:15000});
+  const scrub=page.locator('[data-au-operation-scrub]');await scrub.focus();await page.keyboard.press('Home');for(let index=0;index<target.seq-1;index++)await page.keyboard.press('ArrowRight');
+  assert.equal(await page.locator('[data-au-inspection-operation]').getAttribute('data-au-inspection-operation'),target.id,'native keyboard seek selects the exact source-backed operation from the packet');
+  assert.ok(await page.locator('[data-au-stage-step="dh_notice"][data-au-stage-active="true"] [data-au-compact-excerpt]').count(),'the active target comes from the actual recorded landlord-knowledge read');
+  const held=await recordedLanguageGeometry(page),measurements=[];
+  for(const [width,height] of [[1428,801],[1280,800],[390,844],[430,844],[320,844]]){
+    await page.evaluate(()=>scrollTo(0,0));
+    await page.setViewportSize({width,height});await delay(100);const geometry=await recordedLanguageGeometry(page);measurements.push(geometry);
+    if(focusedReceiptRoot){fs.mkdirSync(focusedReceiptRoot,{recursive:true});fs.writeFileSync(path.join(focusedReceiptRoot,`recorded-language-paused-${width}x${height}.json`),JSON.stringify(geometry,null,2));await page.screenshot({path:path.join(focusedReceiptRoot,`recorded-language-paused-${width}x${height}.png`),fullPage:true,animations:'disabled'});}
+    assert.equal(geometry.overflow,false);assert.ok(geometry.bodyFont>=16);assert.equal(geometry.now,held.now,'a paused resize cannot rewrite recorded work');assert.equal(geometry.revision,held.revision);assert.equal(geometry.stateSha,held.stateSha);assert.equal(geometry.paused,true);
+    assert.ok(geometry.active.rect,'the paused recorded target remains identified');assert.ok(geometry.active.rect.left>=geometry.pan.rect.left-1&&geometry.active.rect.right<=geometry.pan.rect.right+1,'resize reveals the actual active source/step inside the graph rail');
+    assert.ok(geometry.excerpt&&geometry.excerpt.left>=Math.max(0,geometry.pan.rect.left)-1&&geometry.excerpt.right<=Math.min(width,geometry.pan.rect.right)+1,'the actual paused source excerpt is fully inside the resized viewport');if(width>=1000)assert.ok(geometry.transport.bottom<=height,'the desktop Pause/Play transport fits in the initial viewport');
+    const pan=page.locator('[data-au-graph-pan]');await pan.evaluate(element=>{element.scrollLeft=0;element.dispatchEvent(new Event('scroll'));});await delay(100);assert.equal(await pan.evaluate(element=>element.scrollLeft),0,'manual panning stays available during paused inspection');
+    const play=page.locator('[data-au-demo-resume],[data-au-inspection-clear]');await play.scrollIntoViewIfNeeded();await play.focus();await page.keyboard.press('Tab');
+    const focus=await page.evaluate(()=>{const element=document.activeElement,bounds=element.getBoundingClientRect(),top=document.elementFromPoint(bounds.left+bounds.width/2,bounds.top+bounds.height/2);return {visible:element.matches(':focus-visible'),rect:bounds.toJSON(),unobscured:top===element||element.contains(top),outline:getComputedStyle(element).outlineStyle};});
+    assert.equal(focus.visible,true);assert.notEqual(focus.outline,'none');assert.equal(focus.unobscured,true,'keyboard focus is visible above overlapping content');assert.ok(focus.rect.top>=0&&focus.rect.bottom<=height,'keyboard focus stays in the viewport');
+  }
+  const beforeReduce=await recordedLanguageGeometry(page);await page.emulateMedia({reducedMotion:'reduce'});await delay(100);const reduced=await recordedLanguageGeometry(page);assert.equal(reduced.now,beforeReduce.now);assert.equal(reduced.stateSha,beforeReduce.stateSha);assert.equal(reduced.paused,true,'reduced motion retains the same inspected information and pause');
+  if(focusedReceiptRoot){fs.mkdirSync(focusedReceiptRoot,{recursive:true});fs.writeFileSync(path.join(focusedReceiptRoot,'recorded-language-paused-resize.json'),JSON.stringify({sourceSha,measurements},null,2));await page.screenshot({path:path.join(focusedReceiptRoot,'recorded-language-paused-resize.png'),fullPage:true,animations:'disabled'});}
+});
+
+test('recorded language accessibility: actual axe WCAG AA audit and responsive controls at mobile widths and 200 percent zoom',async t=>{
+  const bundle=process.env.CASEPATH_AXE_BUNDLE||require.resolve('axe-core/axe.min.js');
+  const measurements=[],problems=[];
+  let knowledgePage;
+  for(const [width,zoom]of [[320,1],[430,1],[1280,2],[390,1]]){
+    const {page,sourceSha,originalTexts}=await recordedLanguagePage(t,width);for(let tick=0;tick<20&&!await page.locator('[data-au-compact-excerpt]').count();tick++){await delay(100);}
+    assert.ok(await page.locator('[data-au-now-id]:not([data-au-now-id=""])').count(),'the audit requires an actual recorded operation rather than an unavailable outline');
+    if(await page.locator('[data-au-demo-stop]').count())await page.locator('[data-au-demo-stop]').click();if(zoom!==1){const session=await page.context().newCDPSession(page);await session.send('Emulation.setDeviceMetricsOverride',{width:Math.round(width/zoom),height:Math.round(844/zoom),deviceScaleFactor:zoom,mobile:false,screenWidth:width,screenHeight:844});}
+    await delay(100);
+    await page.addScriptTag({path:bundle});const audit=await page.evaluate(()=>window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']}}));
+    const plannedContrast=await page.evaluate(()=>{
+      const rgb=value=>(value.match(/[\d.]+/g)||[]).map(Number),lum=color=>color.slice(0,3).map(value=>value/255).map(value=>value<=.04045?value/12.92:((value+.055)/1.055)**2.4).reduce((sum,value,index)=>sum+value*[.2126,.7152,.0722][index],0),background=element=>{for(let current=element;current;current=current.parentElement){const color=rgb(getComputedStyle(current).backgroundColor);if(color.length>=3&&(color.length<4||color[3]===1))return color;}return[255,255,255];};
+      return [...document.querySelectorAll('[data-au-document-planned=true] > span,[data-au-planned-node] .au-node-label')].filter(element=>element.getClientRects().length&&element.textContent.trim()).map(element=>{const style=getComputedStyle(element),fill=background(element);let opacity=1;for(let current=element;current;current=current.parentElement)opacity*=Number(getComputedStyle(current).opacity);const color=rgb(style.color).slice(0,3).map((value,index)=>value*opacity+fill[index]*(1-opacity)),values=[lum(color),lum(fill)].sort((a,b)=>b-a);return {text:element.textContent.trim(),font:style.fontSize,opacity,foreground:style.color,background:fill,contrast:(values[0]+.05)/(values[1]+.05)};});
+    });
+    const geometry=await recordedLanguageGeometry(page),severe=audit.violations.filter(row=>['serious','critical'].includes(row.impact));measurements.push({width,zoom,sourceSha,engine:audit.testEngine,geometry,plannedContrast,violations:audit.violations,incomplete:audit.incomplete});
+    assert.ok(plannedContrast.length>0,'the real planned document labels are present for manual computed-color checking');for(const row of plannedContrast)if(row.contrast<4.5)problems.push({width,zoom,problem:'planned label text contrast below4.5',row});
+    if(focusedReceiptRoot){fs.mkdirSync(focusedReceiptRoot,{recursive:true});fs.writeFileSync(path.join(focusedReceiptRoot,`recorded-language-axe-${width}-zoom${zoom}.json`),JSON.stringify(measurements.at(-1),null,2));await page.screenshot({path:path.join(focusedReceiptRoot,`recorded-language-axe-${width}-zoom${zoom}.png`),fullPage:true,animations:'disabled'});}
+    assert.deepEqual(severe.map(row=>({id:row.id,impact:row.impact,nodes:row.nodes.map(node=>node.target)})),[],'the real axe engine found serious or critical WCAG violations');if(geometry.overflow)problems.push({width,zoom,problem:'page overflow',documentWidth:geometry.documentWidth});assert.ok(geometry.bodyFont>=16);assert.equal(geometry.live,1);
+    for(const control of geometry.controls)if(control.rect.width<24||control.rect.height<24)problems.push({width,zoom,problem:'control below24',control});if(width<600)for(const control of geometry.controls)if(control.rect.width<44||control.rect.height<44)problems.push({width,zoom,problem:'touch control below44',control});
+    for(const copy of await recordedLanguageCopy(page,originalTexts))problems.push({width,zoom,problem:'copy',copy});
+    if(width===390)knowledgePage=page;else await page.context().close();
+  }
+  assert.ok(process.env.CASEPATH_KNOWLEDGE_FIXTURE,'the actual frozen public Knowledge projection must be supplied for its acceptance audit');
+  const knowledge=JSON.parse(fs.readFileSync(process.env.CASEPATH_KNOWLEDGE_FIXTURE,'utf8')),ui=require('../casepath/assets/autonomous-workspace-v1.js'),model=ui.knowledgeLearningModel(knowledge),representative=model.frames.at(-1).index,event=model.events[representative],version=event.versionRecord||event.item,pin={knowledge_id:version.knowledge_id,version:version.version,knowledge_sha256:version.knowledge_sha256,definition_sha256:version.qualification?.definition_sha256||version.definition_sha256};
+  const parameters=new URLSearchParams({knowledge:pin.knowledge_id,version:String(pin.version),sha256:pin.knowledge_sha256,event:event.id,stage:'10',complete:'1'});if(pin.definition_sha256)parameters.set('definition',pin.definition_sha256);
+  await knowledgePage.evaluate(fragment=>{location.hash=fragment;},'#autonomous/knowledge?'+parameters);await knowledgePage.locator('[data-au-learning]').waitFor();
+  assert.equal(new URLSearchParams(new URL(knowledgePage.url()).hash.split('?')[1]).get('event'),event.id);
+  assert.equal(await knowledgePage.locator('[data-au-learning]').getAttribute('data-au-learning-event-id'),event.id);assert.equal(await knowledgePage.locator('[data-au-learning]').getAttribute('data-au-learning-complete'),'true');assert.equal(await knowledgePage.locator('[data-au-learning-scrub]').inputValue(),String(model.events.length-1));assert.match(await knowledgePage.locator('[data-au-learning-position-label]').innerText(),/Replay finished/);
+  const now=knowledgePage.locator('.au-now');assert.equal(await now.count(),1);assert.equal(await now.getAttribute('data-au-now-id'),event.id);assert.equal(await now.locator('[data-au-role]').getAttribute('data-au-role'),'memory');assert.match(await now.innerText(),/fixed rules/i);
+  const knownOriginals=(knowledge.quarantined||[]).map(row=>row.qualification?.reason||row.reason).filter(Boolean),focus=[];
+  for(const facet of ['process','facts','documents','exceptions','changes']){
+    const button=knowledgePage.locator(`[data-au-knowledge-facet="${facet}"]`);await button.click();await knowledgePage.keyboard.press('Tab');
+    assert.equal(await knowledgePage.locator('[data-au-knowledge-facet-panel]').getAttribute('data-au-knowledge-facet-panel'),facet);
+    const visible=await knowledgePage.evaluate(()=>{const element=document.activeElement,bounds=element.getBoundingClientRect(),top=document.elementFromPoint(bounds.left+bounds.width/2,bounds.top+bounds.height/2);return {visible:element.matches(':focus-visible'),rect:bounds.toJSON(),unobscured:top===element||element.contains(top),width:innerWidth,height:innerHeight};});focus.push({facet,...visible});assert.equal(visible.visible,true);assert.equal(visible.unobscured,true);assert.ok(visible.rect.top>=0&&visible.rect.bottom<=visible.height);
+    for(const copy of await recordedLanguageCopy(knowledgePage,knownOriginals))problems.push({facet,problem:'Knowledge copy',copy});
+  }
+  await knowledgePage.emulateMedia({reducedMotion:'reduce'});assert.equal(await now.getAttribute('data-au-now-id'),event.id);assert.equal(await knowledgePage.locator('[data-au-learning]').getAttribute('data-au-learning-event-id'),event.id);
+  const audit=await knowledgePage.evaluate(()=>window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']}}));
+  await knowledgePage.setViewportSize({width:1280,height:800});
+  const contrast=await knowledgePage.evaluate(()=>{
+    const rgb=value=>(value.match(/[\d.]+/g)||[]).map(Number),luminance=color=>color.slice(0,3).map(value=>value/255).map(value=>value<=.04045?value/12.92:((value+.055)/1.055)**2.4).reduce((sum,value,index)=>sum+value*[.2126,.7152,.0722][index],0),ratio=(a,b)=>{const values=[luminance(a),luminance(b)].sort((a,b)=>b-a);return (values[0]+.05)/(values[1]+.05);},background=element=>{for(let current=element;current;current=current.parentElement){const color=rgb(getComputedStyle(current).backgroundColor);if(color.length>=3&&(color.length<4||color[3]===1))return color;}return[255,255,255];};
+    return [...document.querySelectorAll('.au-learning-node')].map(element=>{const style=getComputedStyle(element),track=element.closest('.au-learning-track'),trackColor=rgb(getComputedStyle(track,'::before').backgroundColor),adjacent=background(element.parentElement),fill=background(element);return {event:element.dataset.auLearningEventId,text:ratio(rgb(style.color),fill),border:ratio(rgb(style.borderColor),adjacent),track:ratio(trackColor,background(track)),colors:{text:style.color,fill:style.backgroundColor,border:style.borderColor,adjacent,pseudo:getComputedStyle(track,'::before').backgroundColor}};});
+  });
+  if(focusedReceiptRoot){fs.writeFileSync(path.join(focusedReceiptRoot,'recorded-language-knowledge-final.json'),JSON.stringify({fixtureSha:sha(fs.readFileSync(process.env.CASEPATH_KNOWLEDGE_FIXTURE)),event:event.id,representative,total:model.events.length,focus,contrast,engine:audit.testEngine,violations:audit.violations,incomplete:audit.incomplete},null,2));await knowledgePage.screenshot({path:path.join(focusedReceiptRoot,'recorded-language-knowledge-final.png'),fullPage:true,animations:'disabled'});}
+  assert.deepEqual(audit.violations.filter(row=>['serious','critical'].includes(row.impact)).map(row=>({id:row.id,nodes:row.nodes.map(node=>node.target)})),[]);
+  assert.deepEqual(problems,[],'every audited viewport retains copy, reflow and control target requirements');
+  assert.ok(contrast.length>0);assert.ok(contrast.every(row=>row.text>=4.5&&row.border>=3&&row.track>=3),'computed timeline text, border and pseudo-track colors satisfy their AA contrast targets');
 });
