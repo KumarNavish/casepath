@@ -176,7 +176,11 @@ def run_probe(database, existing_directory, *, rounds=2, closed_page_gap_seconds
             if not row['ok']:
                 break  # No automatic retry of a failed cold/warm validation.
         report['closed_page_gap_exercised'] = gap_done
-        report['all_ok'] = len(report['rounds']) == rounds and all(row['ok'] for row in report['rounds'])
+        report['raw_pages_closed'] = all(item['close_requested'] for item in observer.records
+                                         if item['raw_journal_page'])
+        report['all_ok'] = (len(report['rounds']) == rounds and all(row['ok'] for row in report['rounds'])
+                            and report['raw_pages_closed']
+                            and (not closed_page_gap_seconds or gap_done))
         return report
     finally:
         database._shared_client = client

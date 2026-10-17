@@ -1,0 +1,33 @@
+{
+  "kind": "Constant-only native ordering/encoding vector; no persisted records read or admitted",
+  "source_candidate": "af7dd2ddb303fbf25a9215f6f59d593bfcdb736d",
+  "cases": [
+    {
+      "file": "native-order-forward.sql",
+      "sql_sha256": "f0c54536cca2c618426d83005a3deb2605f1df8f586445d4bf7e0c94e72aabf5",
+      "parameters": [
+        4
+      ]
+    },
+    {
+      "file": "native-order-reverse.sql",
+      "sql_sha256": "f1f18c785705f94ceb3254ab5be7370e074ab20fb4d28f3e3fcac79d17026f65",
+      "parameters": [
+        4
+      ]
+    }
+  ],
+  "expected_columns": [
+    "n",
+    "valid_n",
+    "concat_bytes",
+    "root"
+  ],
+  "expected": [
+    3,
+    3,
+    192,
+    "39139d18d4ea3535f4ccc810e3dc7b954e895bbc010386333c17f4699d358d54"
+  ],
+  "execute": "One fresh db.read_snapshot with both SELECTs; both complete rows must exactly equal expected. No PRAGMA or previous statements on that logical connection."
+}

@@ -1,0 +1,35 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_snapshot_accepts_valid_retained_last_insert_metadata_on_readonly_results _
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7efe0851ea50>
+
+    def test_snapshot_accepts_valid_retained_last_insert_metadata_on_readonly_results(server):
+        def handler(request):
+            body = server.handle(request).json()
+            for entry in body['results'][:-1]:
+                entry['response']['result']['last_insert_rowid'] = str(2**53 + 1)
+            return httpx.Response(200, json=body)
+        with connection(handler) as db:
+>           cursor, = db.read_snapshot([('SELECT 7 AS value', ())])
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/hosted_sql_v1.py:350: in read_snapshot
+    self._uncertain()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = LibsqlConnection(credential=<redacted>)
+
+    def _uncertain(self):
+        self._poisoned = True
+        self._cache.clear()
+>       raise HostedStorageError('The persistent database operation is unconfirmed.') from None
+E       casepath_api.hosted_sql_v1.HostedStorageError: The persistent database operation is unconfirmed.
+
+casepath-api/casepath_api/hosted_sql_v1.py:185: HostedStorageError
+- generated xml file: /workspace/knowledge-read-warm-20261016/transport/artifacts/metadata-red.xml -
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_snapshot_accepts_valid_retained_last_insert_metadata_on_readonly_results
+1 failed, 44 deselected in 0.13s

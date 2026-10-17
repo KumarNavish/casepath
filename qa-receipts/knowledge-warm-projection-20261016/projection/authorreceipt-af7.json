@@ -1,0 +1,395 @@
+{
+  "contract": "casepath.knowledge-warm-projection-author/1",
+  "host": "656813ef2295",
+  "base": "39be4a080926f659d70d429db81410b74e4bd279",
+  "checkpoint": "af7dd2ddb303fbf25a9215f6f59d593bfcdb736d",
+  "source_frozen": true,
+  "authored_scope_hashes": {
+    "casepath-api/casepath_api/autonomous_store_v1.py": {
+      "base_sha256": "bb1a681e5c910732b5f0d4191e07e2bf4255c37e73dfdc0b196e5b5d4f802b62",
+      "current_sha256": "111e93b616abca7942d81fb38de91bf2cfd3e6b30794ab682178696b1eda8483"
+    },
+    "casepath-api/casepath_api/hosted_storage_v1.py": {
+      "base_sha256": "b933a2942c8eb9341fe0a2b309e70e911304544577702b308e2cd4fbc8f8b521",
+      "current_sha256": "9c9195159afbf5f8723222e76fb5bf97770399f6c9ce12fea76d930a001dcdf3"
+    },
+    "casepath-api/tests/hosted_hrana_fixture.py": {
+      "base_sha256": "93a43aea06b60197c9be4c375a5dfadfebbbe240dfa6fc8a6f744bf66f4f7eab",
+      "current_sha256": "900cb980bdfd096d6992169d642b8391e50c0acdc1cfc924e9277b8a6321af79"
+    },
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py": {
+      "base_sha256": "71ab8c15da8274814dfe35850f2a13e72d27163971f76b8e8e2f6057b97a9ef9",
+      "current_sha256": "0b14f0d3ab9d6a10712342e5a064d52233fe1e35770a6396e2e0aa33e54bac0e"
+    },
+    "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py": {
+      "base_sha256": "5f405d498b4ff0e328658eeaf9735feb917804f25d00c91ecf57a0d0718a6a20",
+      "current_sha256": "2dd24b39cfa38087988dfe058e304716a912cc1d105f009704e78402ac1f3447"
+    },
+    "casepath-api/tests/test_hosted_source_batch_v1.py": {
+      "base_sha256": "c0bfc24b47466983f2c2164e24b677aef6748c94ab18d67ed9ac1df107d23d3b",
+      "current_sha256": "f53cd1bf44734ddc5b2d8a45b79d84e577be468f3756203063cc3fdf93b7c3f0"
+    },
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py": {
+      "base_sha256": null,
+      "current_sha256": "03edbae239fad833165413152b2a6984ecdda3e4065db148812b839072a0fb1c"
+    }
+  },
+  "dependency_cherry_picks": {
+    "8d7af06883548027f1fc837f66c0039d29e6d584": "ff21c8f2d430e08059ebc9c0d15a58232d7d907e",
+    "d826df1fd4278125ad254402bc1a178bd731d4a2": "39a1d8ba57d6708afe5586ed1923aee6dda97fb5",
+    "7c2f36c027a266c87d6b3f1a54bd24931a7f1a64": "7c884490880feebeec5056c1b51874c2adced75c"
+  },
+  "final_unique_tests": 107,
+  "final_command_file": "/workspace/knowledge-warm-projection-20261016/projection/e/final-commands-af7.json",
+  "test_phases": {
+    "failing-contract": {
+      "classification": "Original fail:2048 vs128 coldrows;5 vs2 warmRPC.",
+      "counts": {
+        "cases": 2,
+        "failed": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/failing-contract.log",
+          "sha256": "61cce019eba26f7a6ab4f6ec9a31157bab17c090b5e20a512d9685d43009ee8e"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/failing-contract.xml",
+          "sha256": "cf4141d9cf32e482c5a68479e92dfb39235cb5b63469d7ef28e3f74cbcd6f9e9"
+        }
+      }
+    },
+    "first-implementation": {
+      "classification": "Authoring syntax collection error; quoted notnull corrected before first successful implementation.",
+      "counts": {
+        "cases": 1,
+        "failed": 0,
+        "errors": 1,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/first-implementation.log",
+          "sha256": "e9de0811deec9705efa82fe109c09de07be079e51f8a9eb4a1a93ebb853a5b81"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/first-implementation.xml",
+          "sha256": "5adab211f11102eb9c36bc9cb83022e8620a2aec5feb1d0d34ff119e2ffdd884"
+        }
+      }
+    },
+    "second-implementation": {
+      "classification": "Intermediate13passed.",
+      "counts": {
+        "cases": 13,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/second-implementation.log",
+          "sha256": "1b0fa80d1eb47820f696eb9796e0a14df86cbdd025d636eba0db80306d1029ce"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/second-implementation.xml",
+          "sha256": "c378a715ac3c350ff87683b0091ca06ac8f692902ee85e14a826426ae4ea06f8"
+        }
+      }
+    },
+    "existing-focused": {
+      "classification": "6fail59pass:4oldprotocol observer expectations and2thinSQL tests accidentally exercising newcache.",
+      "counts": {
+        "cases": 65,
+        "failed": 6,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/existing-focused.log",
+          "sha256": "b88ca0f02d4745a1e7437a0f8b6e4d2d9fdcbf4d610e0b02d33a2e007f8346c1"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/existing-focused.xml",
+          "sha256": "d4e855c100033d8d18cb8cb8cd316bd4460b663da8bc07f67918e5d199ab17e4"
+        }
+      }
+    },
+    "adversarial-1": {
+      "classification": "Intermediate32passed.",
+      "counts": {
+        "cases": 32,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/adversarial-1.log",
+          "sha256": "4db3078711cef0e7674c74821262a346a7d988dcb7b44d587f3731b888352a5b"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/adversarial-1.xml",
+          "sha256": "057e869a4a0440bfcf95fb31718d771bec690fd46298d472cf730bb1b6df41ac"
+        }
+      }
+    },
+    "adversarial-2": {
+      "classification": "Intermediate35passed.",
+      "counts": {
+        "cases": 35,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/adversarial-2.log",
+          "sha256": "232d7057192506d804c85196b5cbef392d0f032fd42340262ef145f435839f8e"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/adversarial-2.xml",
+          "sha256": "293cf18009b824d0dceec2b3fb78238559490a92c1668741e35ec679f5b44c8a"
+        }
+      }
+    },
+    "combined-focused": {
+      "classification": "3fail97pass:instance16KiB paging option ignored by classmethod;second thin-helper read stillcalled cache.",
+      "counts": {
+        "cases": 100,
+        "failed": 3,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/combined-focused.log",
+          "sha256": "8953f89098b36c90e0ab58f78a9ffd5e6b108f3f670de880f9228ea6d2c5d381"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/combined-focused.xml",
+          "sha256": "e919dbab7c77f73fa193678f1a28065e8316b5e9de9c6818db05a8e2116ac54a"
+        }
+      }
+    },
+    "red-256k": {
+      "classification": "Original256KiB invariant failure before scopedbudget repair.",
+      "counts": {
+        "cases": 1,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/red-256k.log",
+          "sha256": "187997a4c4310b4398d90717ec510d23ae90d09bc0f5ee7f50e19dccf1c7517a"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/red-256k.xml",
+          "sha256": "c5a393d05c77b36661dc6eb11f9225c4b40b2c1eb9fa0711e32cc026dae03870"
+        }
+      }
+    },
+    "green-256k": {
+      "classification": "Intermediate36passed.",
+      "counts": {
+        "cases": 36,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/green-256k.log",
+          "sha256": "d347f30a57a2c65ae67b09812ba2aee123ec3c14ec3cdd08efb9533d306c0859"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/green-256k.xml",
+          "sha256": "7424ba31a3b1cda5b497baa9c9535010df95fca84a1307cb07e0f40d4b9b6f22"
+        }
+      }
+    },
+    "immutability-peer": {
+      "classification": "Intermediate39passed.",
+      "counts": {
+        "cases": 39,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/immutability-peer.log",
+          "sha256": "e4d8c787a2416f21a6dbaa150320b2a2c512ad3448c49765da83df17f15dccd0"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/immutability-peer.xml",
+          "sha256": "b8a107a62b63d013d12b60b63889b569768ff26869af3094daa905270fc94dbd"
+        }
+      }
+    },
+    "final-proof-small": {
+      "classification": "48pass1fail;fullyvalidalternate-native-row TEST fixture reinserted existing immutable source; fixedfixtureisolation.",
+      "counts": {
+        "cases": 49,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/final-proof-small.log",
+          "sha256": "f62850bbf38c6e14ef4a34ef8b4d35b7e4467c18f576661e73868cbf91cfa4f5"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/final-proof-small.xml",
+          "sha256": "083d7696821be43f1aa95fefe123e57637b4acf639d9a3f4a31abce1ae796059"
+        }
+      }
+    },
+    "final-substitution": {
+      "classification": "Corrected fixture and fullvalidrow substitution invariant1passed.",
+      "counts": {
+        "cases": 1,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/final-substitution.log",
+          "sha256": "9f157a6e5faca807cd301fd445ae754bb725e3f9066648b2e49867bb5feb747e"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/final-substitution.xml",
+          "sha256": "b65b3d9f377b25dd8d1306ae37b21a6c201795f0e2c6379a4562826d41f7766c"
+        }
+      }
+    },
+    "final-focused": {
+      "classification": "Immutableaf7 71passed.",
+      "counts": {
+        "cases": 71,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/final-focused.log",
+          "sha256": "25350b5aa6ae84c966911b6850a05f51e3276f1e017e28af47f828e576de1429"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/final-focused.xml",
+          "sha256": "23b9a131ed5b107caf1f1a53f2d1b3c8ccc78956ba7c4b642af10055aceb278c"
+        }
+      }
+    },
+    "final-autonomous-reads": {
+      "classification": "Immutableaf7 37passed.",
+      "counts": {
+        "cases": 37,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/final-autonomous-reads.log",
+          "sha256": "631cdfde4ef046fb99605a0e3e1bce0623b143a042358977cdae21c4545c4d56"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/final-autonomous-reads.xml",
+          "sha256": "00770edc03531dc1c8272b3ef00e3f7ac46cf8d9f5ce1b4ada41e71c42d391eb"
+        }
+      }
+    },
+    "red-raw-http": {
+      "classification": "Original scopedHTTP lifecycle invariant failure on af7; transport/storage followup pending.",
+      "counts": {
+        "cases": 1,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "files": {
+        ".log": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/red-raw-http.log",
+          "sha256": "8b0b95386ff75f77568cf01d3236b0aca180a2d4569ba331a0601e702f72c1e7"
+        },
+        ".xml": {
+          "path": "/workspace/knowledge-warm-projection-20261016/projection/e/red-raw-http.xml",
+          "sha256": "e54a3d874db7a52a6fd9d552289a11bfb14671cf955eb81fbf6e5ae35b2c1c45"
+        }
+      }
+    }
+  },
+  "mock_18claim_measurement": {
+    "cold": {
+      "http": 31,
+      "raw_journal_pages": 22,
+      "wire_bytes": 5110171,
+      "largest_wire_bytes": 274573,
+      "replays": 18,
+      "seconds": 1.10136
+    },
+    "warm": {
+      "http": 2,
+      "raw_journal_pages": 0,
+      "wire_bytes": 7602,
+      "largest_wire_bytes": 4187,
+      "replays": 0,
+      "seconds": 0.041461
+    },
+    "hosted_TTFB_claim": false,
+    "native_validation_copy_projection_cpu_not_individually_split": true
+  },
+  "query_bindings": {
+    "journal-schema": {
+      "sha256": "058bfd57db3b208cc90f33698bf72a7db199838356d2cc2d9611564d4b993421",
+      "bytes": 272,
+      "parameters": []
+    },
+    "journal-proof": {
+      "sha256": "f9d306583df468b1bda0fd3ff9e8b3b9b02c4657c26f6b62535e2ef20f99d808",
+      "bytes": 2752,
+      "parameters": [
+        "casepath-autonomous-local-v1",
+        634
+      ]
+    },
+    "source-schema": {
+      "sha256": "91282400255cf23eea9de335df1508d7a881f5f93f27d15fd85cadcbf1c95f09",
+      "bytes": 286,
+      "parameters": []
+    },
+    "source-proof-one": {
+      "sha256": "ae2887b57120de86a42487e867986696d62427c6deea46bdd134836b6a30ee7a",
+      "bytes": 1329,
+      "parameters": [
+        "<actual validated digest>",
+        "<validated chunk count + 1>"
+      ]
+    }
+  },
+  "cold_query": {
+    "sha256": "e2939a4b9807e7d7d064e9930742815022be505a80113e6acec340285be2e3ef",
+    "bytes": 959,
+    "parameters": [
+      "casepath-autonomous-local-v1",
+      true,
+      "",
+      "",
+      -1,
+      128,
+      262144
+    ]
+  },
+  "authority": "Cold independentlyclosed128rows/256KiB metadatafirst pages+freshtypedwholejournal certificate BEFORE unchanged replay/fullchain/source validators. Cacheadmission AFTER complete validation and exact immutable originalcertificate binding. Warmfreshschema+all8typedcolumnaggregate1RPC; NEW post-reducer all3typedsourcechunkaggregate/schema1RPC. Claims share identical cache/validators and compact originalfields. Unknownschema failclosed; no deadlines increased/retry/write/provider.",
+  "native_limits": "NoCloudproduction/API/credentials. Mac first128rawbody timedout12s,256pagespassedindividually then staleconnectionEOF. Mac laterexplicitrawConnectionclose diagnostic60requests/13,527,709B/136.93s/max6.09s succeeded; productexplicitflagfollowupnotyetapplied. Nohosted<=1s acceptance claim. No fullsuite/seal/deploy.",
+  "evidence_retention": "Alllogs/XML preserved.6oldfocused+3combined failedfixture rawdirectories losslesslyarchived/verified byroot; archive e/archived-failed-fixtures-20261016.tar.gz plusfullmanifest. Reproduciblepassfixtures retired onlyafterXMLpass+perfileSHA manifests in e/. Allotherfailedfixtures retained."
+}

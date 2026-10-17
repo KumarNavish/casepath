@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.693" timestamp="2026-10-16T20:09:05.894635+00:00" hostname="656813ef2295"><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_cold_journal_byte_budget_is_256k_before_full_payload_materialization" time="1.544"><failure message="AssertionError: assert 2 &gt;= 3&#10; +  where 2 = len([({'args': [{'type': 'text', 'value': 'casepath-autonomous-local-v1'}, {'type': 'integer', 'value': '1'}, {'type': 'te...op_id,sequence LIMIT ?)) WHERE __read_total&lt;=? OR __read_position=1 ORDER BY loop_id,sequence', 'want_rows': True}, 0)])&#10; +    where [({'args': [{'type': 'text', 'value': 'casepath-autonomous-local-v1'}, {'type': 'integer', 'value': '1'}, {'type': 'te...op_id,sequence LIMIT ?)) WHERE __read_total&lt;=? OR __read_position=1 ORDER BY loop_id,sequence', 'want_rows': True}, 0)] = &lt;test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7f29dc952660&gt;.raw_journal">native_proof_store = (&lt;test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7f29dc952660&gt;, &lt;casepath_api.hosted_storage_v1.HostedAuto...usStore object at 0x7f29dc953e00&gt;, &lt;casepath_api.autonomous_knowledge_v1.AutonomousKnowledge object at 0x7f29dc7b0ad0&gt;)
+
+    def test_cold_journal_byte_budget_is_256k_before_full_payload_materialization(native_proof_store):
+        server, _, knowledge = native_proof_store
+        # Whitespace preserves exact parsed native events and their sealed hashes,
+        # while exercising actual persisted UTF-8 payload size rather than tiny rows.
+        with sqlite3.connect(server.path) as db:
+            db.execute('UPDATE claim_loop_events SET event_json=event_json||?', (' ' * 150000,))
+        knowledge.learning_view()
+&gt;       assert len(server.raw_journal) &gt;= 3
+E       AssertionError: assert 2 &gt;= 3
+E        +  where 2 = len([({'args': [{'type': 'text', 'value': 'casepath-autonomous-local-v1'}, {'type': 'integer', 'value': '1'}, {'type': 'te...op_id,sequence LIMIT ?)) WHERE __read_total&lt;=? OR __read_position=1 ORDER BY loop_id,sequence', 'want_rows': True}, 0)])
+E        +    where [({'args': [{'type': 'text', 'value': 'casepath-autonomous-local-v1'}, {'type': 'integer', 'value': '1'}, {'type': 'te...op_id,sequence LIMIT ?)) WHERE __read_total&lt;=? OR __read_position=1 ORDER BY loop_id,sequence', 'want_rows': True}, 0)] = &lt;test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7f29dc952660&gt;.raw_journal
+
+casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py:359: AssertionError</failure></testcase></testsuite></testsuites>

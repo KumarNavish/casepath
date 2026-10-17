@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="65" time="73.849" timestamp="2026-10-16T20:03:06.203766+00:00" hostname="656813ef2295"><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_authoritative_view_matches_summary_adapter_and_reduces_each_claim_only_once" time="29.058" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_compatible_selects_from_the_supplied_validated_view_without_another_read" time="1.156" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_joins_exact_events_titles_and_frozen_version_pins" time="2.074" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[missing_events]" time="0.146" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[missing_pin]" time="0.306" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[different_pin]" time="0.159" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[different_definition]" time="0.162" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_compact_knowledge_snapshot_copies_less_and_derived_cache_still_validates_every_read" time="1.463" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_keeps_unusual_recorded_use_identities_unresolved" time="0.000" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_endpoint_is_additive_read_only_and_preserves_native_pin_fields" time="1.185" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_full_state_and_summary_adapters_preserve_immutable_quarantine_rules[conflicting_definition]" time="0.376" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_full_state_and_summary_adapters_preserve_immutable_quarantine_rules[parent_identity]" time="0.292" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_new_accepted_head_is_observed_by_a_warm_knowledge_read" time="2.935" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_earlier_row_tampering_is_rejected_with_an_unchanged_head[event_json]" time="1.315" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_earlier_row_tampering_is_rejected_with_an_unchanged_head[created_at]" time="1.102" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[knowledge-changed]" time="1.046" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[knowledge-missing]" time="1.178" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[states-changed]" time="1.097" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[states-missing]" time="1.089" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[summaries-changed]" time="1.226" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[summaries-missing]" time="1.033" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_returned_full_states_and_knowledge_cannot_mutate_shared_cached_authority" time="1.390" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_reads_reject_missing_accepted_claims_or_events[claim_deleted]" time="1.100" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_reads_reject_missing_accepted_claims_or_events[head_deleted]" time="0.964" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_reads_reject_missing_accepted_claims_or_events[later_sequence_deleted]" time="1.144" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_controller_reads_one_view_for_all_families_before_interpretation" time="2.180" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages" time="2.936"><failure message="assert 0 &gt; 1&#10; +  where 0 = len([])&#10; +    where [] = &lt;test_autonomous_knowledge_reads_v1.CountMockHrana object at 0x7f4e10a4b230&gt;.journal_pages">processed_roster = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/knowledge-processed-roster0/cl...ntake', ...}}], 'claim_id': 'auto_5e64d50dada368ffe8b2d713', 'contract': 'casepath.autonomous-claim/1.0.0', ...}, ...])
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_hosted_18_claim_cold_and_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f4e110cc7c0&gt;
+
+    def test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages(processed_roster, tmp_path, monkeypatch):
+        server, store, policy, states = hosted_copy(processed_roster, tmp_path)
+        knowledge = AutonomousKnowledge(store, policy)
+        expected = AutonomousKnowledge(SummaryOnlyAdapter(AutonomousStore(processed_roster[0])), policy).view()
+        replays = []
+        original_replay = store._replay
+    
+        def counted_replay(rows, **kwargs):
+            replays.append(len(rows))
+            return original_replay(rows, **kwargs)
+    
+        def forbidden_provider(*args, **kwargs):
+            pytest.fail('A knowledge projection attempted real provider/network dispatch')
+    
+        monkeypatch.setattr(store, '_replay', counted_replay)
+        monkeypatch.setattr(store, 'get', lambda *a, **k: pytest.fail('Knowledge performed per-claim get'))
+        monkeypatch.setattr(store, 'list', lambda *a, **k: pytest.fail('Knowledge requested reconstructed list'))
+        monkeypatch.setattr(httpx.HTTPTransport, 'handle_request', forbidden_provider)
+        measurements = []
+        try:
+            for temperature in ('cold', 'warm'):
+                server.reset_counts()
+                replay_before = len(replays)
+                started = perf_counter()
+                assert knowledge.view() == expected
+                elapsed = perf_counter() - started
+                assert len(replays) == CLAIM_COUNT
+                replay_count = len(replays) - replay_before
+                assert replay_count == (CLAIM_COUNT if temperature == 'cold' else 0)
+                sql = list(statements(server.requests))
+                assert all(statement.strip().split()[0].upper() in {'SELECT', 'BEGIN', 'COMMIT', 'ROLLBACK', 'PRAGMA'}
+                           for statement in sql)
+                assert any(statement.strip().upper() == 'BEGIN' for statement in sql)
+                assert all('IMMEDIATE' not in statement.upper() for statement in sql)
+&gt;               assert len(server.journal_pages) &gt; 1  # This roster actually exercises journal pagination.
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               assert 0 &gt; 1
+E                +  where 0 = len([])
+E                +    where [] = &lt;test_autonomous_knowledge_reads_v1.CountMockHrana object at 0x7f4e10a4b230&gt;.journal_pages
+
+casepath-api/tests/test_autonomous_knowledge_reads_v1.py:567: AssertionError</failure></testcase><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends" time="0.148"><failure message="AssertionError: assert {'quarantined...versions': []} == {'quarantined...versions': []}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'uses': [{'claim_id': 'auto_c575791c7e31fda2af5aa801', 'knowledge_id': 'knowledge_fixture_snapshot', 'version': 1}]} != {'uses': []}&#10;  Use -v to get more diff">tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_hosted_journal_pages_keep0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f4e0f8a8160&gt;
+
+    def test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends(tmp_path, monkeypatch):
+        seed_root = tmp_path / 'seed'
+        seed_root.mkdir()
+        seed = AutonomousStore(seed_root / 'claims.sqlite3')
+        policy = PublicCorpus(default_workspace_corpus_root()).static_policy()
+        states = sorted([seed.intake({'title': f'Paged fixture {index}', 'message': 'Original fixture. ' + 'a' * 4000,
+                                    'files': []}, f'knowledge.snapshot.{index}') for index in range(3)],
+                        key=lambda state: state['claim_id'])
+        server, store, _, _ = hosted_copy((seed.path, seed.source_root, policy, states), tmp_path)
+        with sqlite3.connect(server.path) as db:
+            assert db.execute('PRAGMA journal_mode=WAL').fetchone()[0] == 'wal'
+        peer = AutonomousStore(server.path, seed.source_root)
+        monkeypatch.setattr(store, 'JOURNAL_PAGE_BYTES', 16 * 1024)
+        original_statement = server._statement
+        advanced = []
+        use = {'knowledge_id': 'knowledge_fixture_snapshot', 'version': 1}
+    
+        def append_between_pages(connection, stmt):
+            result = original_statement(connection, stmt)
+            if not advanced and result['rows'] and 'event_json' in [column['name'] for column in result['cols']]:
+                advanced.append(append(peer, states[-1], 'knowledge.used', {'knowledge': use}, 'knowledge.snapshot.advance'))
+            return result
+    
+        monkeypatch.setattr(server, '_statement', append_between_pages)
+        knowledge = AutonomousKnowledge(store, policy)
+        try:
+            server.reset_counts()
+&gt;           assert knowledge.view() == {'versions': [], 'uses': [], 'quarantined': []}
+E           AssertionError: assert {'quarantined...versions': []} == {'quarantined...versions': []}
+E             
+E             Omitting 2 identical items, use -vv to show
+E             Differing items:
+E             {'uses': [{'claim_id': 'auto_c575791c7e31fda2af5aa801', 'knowledge_id': 'knowledge_fixture_snapshot', 'version': 1}]} != {'uses': []}
+E             Use -v to get more diff
+
+casepath-api/tests/test_autonomous_knowledge_reads_v1.py:643: AssertionError</failure></testcase><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_first_page_rejects_malformed_namespace_and_sequence[--1]" time="0.121" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_first_page_rejects_malformed_namespace_and_sequence[-1]" time="0.121" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_first_page_rejects_malformed_namespace_and_sequence[autonomous.fixture--1]" time="0.124" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_paging_does_not_hide_a_later_sequence_gap" time="0.143" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_learning_cache_rejects_a_new_hash_consistent_unknown_event" time="0.010" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_warm_knowledge_rechecks_cached_source_bytes[changed]" time="1.001" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_warm_knowledge_rechecks_cached_source_bytes[missing]" time="1.208" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[SELECT]" time="0.027"><failure message="assert (2 == 1)&#10; +  where 2 = len([LibsqlConnection(credential=&lt;redacted&gt;), LibsqlConnection(credential=&lt;redacted&gt;)])">processed_roster = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/knowledge-processed-roster0/cl...ntake', ...}}], 'claim_id': 'auto_5e64d50dada368ffe8b2d713', 'contract': 'casepath.autonomous-claim/1.0.0', ...}, ...])
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_hosted_unconfirmed_journa0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f4e0fceea50&gt;
+phase = 'SELECT'
+
+    @pytest.mark.parametrize('phase', ['SELECT', 'COMMIT'])
+    def test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection(processed_roster, tmp_path, monkeypatch, phase):
+        server, store, policy, _ = hosted_copy(processed_roster, tmp_path)
+        connections = []
+        original_connect = server.connection
+    
+        def tracked_connection():
+            connection = original_connect()
+            connections.append(connection)
+            return connection
+    
+        store.journal.connect = tracked_connection
+        monkeypatch.setattr(store, '_replay', lambda *a, **k: pytest.fail('Unconfirmed rows reached reducer admission'))
+        try:
+            server.reset_counts()
+            server.fail_next('timeout', sql_prefix=phase)
+            with pytest.raises(HostedStorageError, match='unconfirmed'):
+                AutonomousKnowledge(store, policy).view()
+&gt;           assert len(connections) == 1 and connections[0]._closed
+E           assert (2 == 1)
+E            +  where 2 = len([LibsqlConnection(credential=&lt;redacted&gt;), LibsqlConnection(credential=&lt;redacted&gt;)])
+
+casepath-api/tests/test_autonomous_knowledge_reads_v1.py:758: AssertionError</failure></testcase><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[COMMIT]" time="0.023"><failure message="assert (2 == 1)&#10; +  where 2 = len([LibsqlConnection(credential=&lt;redacted&gt;), LibsqlConnection(credential=&lt;redacted&gt;)])">processed_roster = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/knowledge-processed-roster0/cl...ntake', ...}}], 'claim_id': 'auto_5e64d50dada368ffe8b2d713', 'contract': 'casepath.autonomous-claim/1.0.0', ...}, ...])
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_hosted_unconfirmed_journa1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f4e0eaac4b0&gt;
+phase = 'COMMIT'
+
+    @pytest.mark.parametrize('phase', ['SELECT', 'COMMIT'])
+    def test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection(processed_roster, tmp_path, monkeypatch, phase):
+        server, store, policy, _ = hosted_copy(processed_roster, tmp_path)
+        connections = []
+        original_connect = server.connection
+    
+        def tracked_connection():
+            connection = original_connect()
+            connections.append(connection)
+            return connection
+    
+        store.journal.connect = tracked_connection
+        monkeypatch.setattr(store, '_replay', lambda *a, **k: pytest.fail('Unconfirmed rows reached reducer admission'))
+        try:
+            server.reset_counts()
+            server.fail_next('timeout', sql_prefix=phase)
+            with pytest.raises(HostedStorageError, match='unconfirmed'):
+                AutonomousKnowledge(store, policy).view()
+&gt;           assert len(connections) == 1 and connections[0]._closed
+E           assert (2 == 1)
+E            +  where 2 = len([LibsqlConnection(credential=&lt;redacted&gt;), LibsqlConnection(credential=&lt;redacted&gt;)])
+
+casepath-api/tests/test_autonomous_knowledge_reads_v1.py:758: AssertionError</failure></testcase><testcase classname="tests.test_hosted_source_batch_v1" name="test_real_31_source_collection_uses_bounded_batched_roundtrips[False]" time="1.771" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_real_31_source_collection_uses_bounded_batched_roundtrips[True]" time="1.648" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_real_three_source_snapshot_batches_fresh_verification[False]" time="1.893" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_real_three_source_snapshot_batches_fresh_verification[True]" time="2.091" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]" time="0.092" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_chunk_page_boundaries_and_maximum_source_complete_verification[2097153]" time="0.120" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_chunk_page_boundaries_and_maximum_source_complete_verification[16777216]" time="0.855" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_reduce_tiny_file_requests_without_changing_default_reads" time="0.097" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_byte_limited_short_pages_continue_until_all_chunks_are_verified" time="0.091" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[changed_later_chunk]" time="0.117" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[missing_later_chunk]" time="0.095" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[gap_later_page]" time="0.094" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[oversize_chunk]" time="0.118" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[wrong_type]" time="0.098" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_final_source_verification_still_detects_mutation_after_prefetch" time="0.022" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[changed_later_chunk]" time="0.099" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[missing_later_chunk]" time="0.091" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[extra_empty_chunk]" time="0.085" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[gap_later_page]" time="0.086" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[oversize_chunk]" time="0.086" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_empty_invalid_and_missing_batches_do_not_return_false_verification" time="0.004" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_digest_group_boundary_keeps_one_shared_connection" time="0.286" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_transport_failure_on_later_chunk_page_never_acknowledges_verification" time="0.084" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_final_boundary_rechecks_bytes_changed_after_cold_prefetch" time="1.739" /><testcase classname="tests.test_hosted_knowledge_payload_bounds_v1" name="test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[128]" time="0.315"><failure message="AssertionError: [{'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 27}, {'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 35}]&#10;assert False&#10; +  where False = all(&lt;generator object test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f4e0fc425a0&gt;)">large_native_journal = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/native-large-journal0/claims.s...rkspace/knowledge-warm-projection-20261016/projection/t/existing-focused/native-large-journal0/autonomous-sources-v1'))
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_byte_cutoff_precedes_full0')
+candidate_limit = 128
+
+    @pytest.mark.parametrize('candidate_limit', [128, 2048])
+    def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column(
+            large_native_journal, tmp_path, candidate_limit):
+        original, sources = large_native_journal
+        server = ObservedRows(tmp_path / 'hosted.sqlite3')
+        journal = HostedJournal(tmp_path / 'unused', server.connection)
+        with sqlite3.connect(original) as source, sqlite3.connect(server.path) as target:
+            rows = source.execute('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence',
+                                  (SESSION_ID,)).fetchall()
+            target.executemany('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', rows)
+            # A same-loop/sequence row in another namespace detects an incomplete
+            # join key. Extra SQL columns remain part of exact cache identity.
+            target.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', ('fixture.other-session', *rows[0][1:]))
+            target.execute('ALTER TABLE claim_loop_events RENAME TO fixture_accepted_events')
+            target.execute("ALTER TABLE fixture_accepted_events ADD COLUMN fixture_note TEXT NOT NULL DEFAULT 'original'")
+            target.execute('UPDATE fixture_accepted_events SET fixture_note=loop_id')
+            target.execute('CREATE VIEW claim_loop_events AS SELECT *, fixture_full_payload(event_json) AS fixture_probe '
+                           'FROM fixture_accepted_events')
+        store = HostedAutonomousStore(journal.path, source_root=sources, journal=journal,
+                                      source_store=HostedSources(server.connection))
+        store.KNOWLEDGE_PAGE_ROWS = candidate_limit
+        try:
+            actual = store._knowledge_rows()
+            assert len(server.pages) &gt;= 2  # The byte budget, rather than row count, limits this fixture.
+            assert len(actual) == len(rows)
+            names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
+                     'event_sha256', 'event_json', 'created_at')
+            assert [tuple(row[name] for name in names) for row in actual] == rows
+            assert all(row['fixture_note'] == row['loop_id'] and row['fixture_probe'] == 1 for row in actual)
+&gt;           assert all(page['payload_evaluations'] == page['returned_rows'] for page in server.pages), server.pages
+E           AssertionError: [{'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 27}, {'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 35}]
+E           assert False
+E            +  where False = all(&lt;generator object test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f4e0fc425a0&gt;)
+
+casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py:76: AssertionError</failure></testcase><testcase classname="tests.test_hosted_knowledge_payload_bounds_v1" name="test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[2048]" time="0.084"><failure message="AssertionError: [{'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 27}, {'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 35}]&#10;assert False&#10; +  where False = all(&lt;generator object test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f4e127de400&gt;)">large_native_journal = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/native-large-journal0/claims.s...rkspace/knowledge-warm-projection-20261016/projection/t/existing-focused/native-large-journal0/autonomous-sources-v1'))
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_byte_cutoff_precedes_full1')
+candidate_limit = 2048
+
+    @pytest.mark.parametrize('candidate_limit', [128, 2048])
+    def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column(
+            large_native_journal, tmp_path, candidate_limit):
+        original, sources = large_native_journal
+        server = ObservedRows(tmp_path / 'hosted.sqlite3')
+        journal = HostedJournal(tmp_path / 'unused', server.connection)
+        with sqlite3.connect(original) as source, sqlite3.connect(server.path) as target:
+            rows = source.execute('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence',
+                                  (SESSION_ID,)).fetchall()
+            target.executemany('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', rows)
+            # A same-loop/sequence row in another namespace detects an incomplete
+            # join key. Extra SQL columns remain part of exact cache identity.
+            target.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', ('fixture.other-session', *rows[0][1:]))
+            target.execute('ALTER TABLE claim_loop_events RENAME TO fixture_accepted_events')
+            target.execute("ALTER TABLE fixture_accepted_events ADD COLUMN fixture_note TEXT NOT NULL DEFAULT 'original'")
+            target.execute('UPDATE fixture_accepted_events SET fixture_note=loop_id')
+            target.execute('CREATE VIEW claim_loop_events AS SELECT *, fixture_full_payload(event_json) AS fixture_probe '
+                           'FROM fixture_accepted_events')
+        store = HostedAutonomousStore(journal.path, source_root=sources, journal=journal,
+                                      source_store=HostedSources(server.connection))
+        store.KNOWLEDGE_PAGE_ROWS = candidate_limit
+        try:
+            actual = store._knowledge_rows()
+            assert len(server.pages) &gt;= 2  # The byte budget, rather than row count, limits this fixture.
+            assert len(actual) == len(rows)
+            names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
+                     'event_sha256', 'event_json', 'created_at')
+            assert [tuple(row[name] for name in names) for row in actual] == rows
+            assert all(row['fixture_note'] == row['loop_id'] and row['fixture_probe'] == 1 for row in actual)
+&gt;           assert all(page['payload_evaluations'] == page['returned_rows'] for page in server.pages), server.pages
+E           AssertionError: [{'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 27}, {'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 35}]
+E           assert False
+E            +  where False = all(&lt;generator object test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f4e127de400&gt;)
+
+casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py:76: AssertionError</failure></testcase><testcase classname="tests.test_hosted_knowledge_payload_bounds_v1" name="test_single_native_event_above_page_budget_is_returned_without_truncation" time="0.223" /><testcase classname="tests.test_hosted_knowledge_payload_bounds_v1" name="test_row_above_absolute_bound_is_rejected_before_replay" time="0.054" /></testsuite></testsuites>

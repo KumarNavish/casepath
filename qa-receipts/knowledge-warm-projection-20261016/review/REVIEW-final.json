@@ -1,0 +1,82 @@
+{
+  "review": "Final bounded independent source review of combined warm cache, transport and summary reuse",
+  "commit": "af7dd2ddb303fbf25a9215f6f59d593bfcdb736d",
+  "base": "39be4a080926f659d70d429db81410b74e4bd279",
+  "review_clone": "/workspace/casepath-release-ae0-shard4",
+  "result": "No unresolved actionable source-backed finding within the assigned combined backend scope. Native hosted acceptance remains pending.",
+  "source_clean_and_exact_git_objects": true,
+  "files_sha256": {
+    "casepath-api/casepath_api/autonomous_store_v1.py": "111e93b616abca7942d81fb38de91bf2cfd3e6b30794ab682178696b1eda8483",
+    "casepath-api/casepath_api/hosted_storage_v1.py": "9c9195159afbf5f8723222e76fb5bf97770399f6c9ce12fea76d930a001dcdf3",
+    "casepath-api/casepath_api/hosted_sql_v1.py": "e38ce33e138f85a1d5abdab8ca8e03ce0a6f9d2fd800558d13be2f129764ce17",
+    "casepath-api/casepath_api/hosted_app_v1.py": "ef58f913f35002e00aad77350d1bd5258ecbe5d4f434f2a4a3ddd6fcff625e2d",
+    "casepath-api/tests/hosted_hrana_fixture.py": "900cb980bdfd096d6992169d642b8391e50c0acdc1cfc924e9277b8a6321af79",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py": "2ac4fefb0741cc28d512fdbf389d85d827acc08ea73ad43fc5185e09f2dcd92d",
+    "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py": "2dd24b39cfa38087988dfe058e304716a912cc1d105f009704e78402ac1f3447",
+    "casepath-api/tests/test_hosted_source_batch_v1.py": "f53cd1bf44734ddc5b2d8a45b79d84e577be468f3756203063cc3fdf93b7c3f0",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py": "0b14f0d3ab9d6a10712342e5a064d52233fe1e35770a6396e2e0aa33e54bac0e",
+    "casepath-api/tests/test_hosted_snapshot_transport_v1.py": "13fad77798af9ff38f06eb61b0b5d4b1f1f9c98a5cd2d91040aecf50a5d6747a",
+    "casepath-api/tests/test_public_hosted_read_only_v1.py": "710bc22ac117b58768de9a492351b1f6f58766eb3cb9e5895861295d7af519d4"
+  },
+  "independent_tests": {
+    "passed": 54,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 37.06,
+    "junit": "/workspace/knowledge-read-warm-20261016/review/e/combined-af7-independent.xml",
+    "log": "/workspace/knowledge-read-warm-20261016/review/e/combined-af7-independent.log",
+    "scope": [
+      "All42 current warm-proof cases",
+      "All4 original thin payload-bound cases",
+      "Cold/warm31-source and three-source summary collection counts (4)",
+      "Two distinct post-prefetch/final-boundary source mutation cases",
+      "Peer future-page append: coherent newer snapshot accepted only after final whole-roster proof",
+      "Returned full-state and Knowledge objects cannot mutate shared authority"
+    ]
+  },
+  "unchanged_transport_evidence": {
+    "commit": "7c2f36c027a266c87d6b3f1a54bd24931a7f1a64",
+    "passed": 50,
+    "deselected": 2,
+    "seconds": 8.01,
+    "source_hashes_identical_to_current": true,
+    "receipt": "/workspace/knowledge-read-warm-20261016/review/e/transport-review.json"
+  },
+  "resolved_findings": [
+    "Unknown or generated journal schema now fails closed after bounded collection; no unbounded all-column fallback.",
+    "Schema comparison includes result column names, exact Python/SQL types and complete index/trigger/table definitions.",
+    "Changed source schema forces original eight-chunk full-byte validation and a NEW final coherent proof before schema admission.",
+    "Certified journal rows are private immutable typed values, reconstructed as independent dictionaries; returned aliases cannot alter cached authority.",
+    "Pending certificate resets for each read; failed-source validation followed by legacy fallback cannot promote old pending rows.",
+    "Post-validation admission compares fully validated current rows and their strict typed proof to the ORIGINAL immutable fresh-certified rows/proof; a genuinely valid alternate claim with persisted source bytes but an unpersisted journal is rejected."
+  ],
+  "reviewed_contracts": [
+    "Cold Knowledge and summaries select bounded keys/sizes before a late full-primary-key j.* join; default256KiB raw-byte budget,128 candidate rows, original maximum-row check and all authority columns retained.",
+    "Every cold raw page is independently closed. Fresh atomic full schema and complete typed row-roster certificate must match collected bytes before native replay or cache admission.",
+    "Warm typed proofs include every standard column/value, explicit storage type, raw byte length and SHA256; canonical full-PK ordering, N+1 roster bound, row/set domains, exact count/valid-count/64N concatenation size and root checks.",
+    "Existing native full-row/column cache identity, accepted-stream disappearance/regression checks, full reducer and original descriptor/full-file hash validation remain in the path.",
+    "Fresh final source proof checks ordered chunk roster, indices, types, lengths and bytes; evictions or schema misses invoke original full-byte readers; post-prefetch mutation is rejected.",
+    "Claims summaries and Knowledge share the SAME certified raw-row and native validation path under existing ordered summary lock. Summary fields,deepcopy,status filtering remain unchanged.",
+    "Fresh single-HTTP BEGIN/SELECTs/COMMIT/close snapshots validate all responses before any cursor is exposed; uncertainty fails closed with no retry/partial result and unchanged transport deadlines/byte bounds.",
+    "Shared bounded HTTP pool preserves independent logical batons,caches,poison state including actual threaded overlap; valid retained int64 last-insert metadata accepted.",
+    "Startup readiness stays closed until read-only warmup succeeds; no discovery/resume/provider calls from warmup; failure cleans owned resources and preserves original exception."
+  ],
+  "coordinator_native_reports": {
+    "bookend_compatibility": "Two fresh native read_snapshot logical calls on one HTTP pool passed on the earlier identical transport implementation: first1.944s/895B,reused0.293s/892B. This is transport compatibility only.",
+    "negative_evidence_preserved": [
+      "Thin39 native233-row4.28MB body23.72s exceeded deadline.",
+      "c724 native cold first response headers3.3904s but2.396MB body exceeded12s."
+    ],
+    "pending": [
+      "Native full typed journal/source cold and warm timings for current256KiB candidate.",
+      "Native permutation/reverse_unordered_selects ordered-aggregate proof.",
+      "Final hosted API performance under concurrent claims/Knowledge; no\u22641s claim from local fixtures."
+    ]
+  },
+  "limits": [
+    "Reviewer made no app/test/frontend/media/seal/docs edits, production/provider calls, dependency installs or broad/full-suite runs.",
+    "Only coordinator/Mac may publish or claim actual hosted acceptance.",
+    "This receipt binds the current source candidate; later transport/connection changes require a followup review."
+  ]
+}

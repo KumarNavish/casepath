@@ -1,0 +1,1 @@
+SELECT 'column' AS kind,name,type AS detail,"notnull" AS required,dflt_value AS default_value,pk,hidden FROM pragma_table_xinfo('claim_loop_events') UNION ALL SELECT type,name,sql,NULL,NULL,NULL,NULL FROM sqlite_schema WHERE tbl_name='claim_loop_events' ORDER BY kind,name

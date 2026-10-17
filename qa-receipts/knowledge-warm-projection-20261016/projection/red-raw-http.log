@@ -1,0 +1,20 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__ test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool ___
+
+native_proof_store = (<test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7f0295af6660>, <casepath_api.hosted_storage_v1.HostedAuto...usStore object at 0x7f0295af7e00>, <casepath_api.autonomous_knowledge_v1.AutonomousKnowledge object at 0x7f0295628ad0>)
+
+    def test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool(native_proof_store):
+        server, _, knowledge = native_proof_store
+        original = knowledge.learning_view()
+        raw = [header for payload, header in server.raw_http_policy if payload]
+        compact = [header for payload, header in server.raw_http_policy if not payload]
+>       assert raw and all(header == 'close' for header in raw)
+E       AssertionError: assert (['keep-alive', 'keep-alive', 'keep-alive'] and False)
+E        +  where False = all(<generator object test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool.<locals>.<genexpr> at 0x7f02958e65a0>)
+
+casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py:484: AssertionError
+- generated xml file: /workspace/knowledge-warm-projection-20261016/projection/e/red-raw-http.xml -
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool
+1 failed in 1.64s

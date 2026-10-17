@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="100" time="78.969" timestamp="2026-10-16T20:07:57.690090+00:00" hostname="656813ef2295"><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_authoritative_view_matches_summary_adapter_and_reduces_each_claim_only_once" time="28.523" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_compatible_selects_from_the_supplied_validated_view_without_another_read" time="0.992" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_joins_exact_events_titles_and_frozen_version_pins" time="2.273" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[missing_events]" time="0.156" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[missing_pin]" time="0.299" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[different_pin]" time="0.144" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_preserves_unknown_time_or_pin_without_latest_fallback[different_definition]" time="0.137" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_compact_knowledge_snapshot_copies_less_and_derived_cache_still_validates_every_read" time="1.383" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_replay_keeps_unusual_recorded_use_identities_unresolved" time="0.000" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_learning_endpoint_is_additive_read_only_and_preserves_native_pin_fields" time="1.248" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_full_state_and_summary_adapters_preserve_immutable_quarantine_rules[conflicting_definition]" time="0.380" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_full_state_and_summary_adapters_preserve_immutable_quarantine_rules[parent_identity]" time="0.217" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_new_accepted_head_is_observed_by_a_warm_knowledge_read" time="2.417" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_earlier_row_tampering_is_rejected_with_an_unchanged_head[event_json]" time="1.263" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_earlier_row_tampering_is_rejected_with_an_unchanged_head[created_at]" time="1.160" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[knowledge-changed]" time="1.143" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[knowledge-missing]" time="1.140" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[states-changed]" time="1.120" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[states-missing]" time="1.187" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[summaries-changed]" time="1.209" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_projections_revalidate_original_source_bytes[summaries-missing]" time="1.085" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_returned_full_states_and_knowledge_cannot_mutate_shared_cached_authority" time="1.309" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_reads_reject_missing_accepted_claims_or_events[claim_deleted]" time="1.022" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_reads_reject_missing_accepted_claims_or_events[head_deleted]" time="0.881" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_reads_reject_missing_accepted_claims_or_events[later_sequence_deleted]" time="1.087" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_controller_reads_one_view_for_all_families_before_interpretation" time="2.057" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages" time="7.155" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends" time="0.144"><failure message="assert 29955 &lt;= 16384&#10; +  where 29955 = max(&lt;generator object test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f708d991630&gt;)&#10; +  and   16384 = &lt;casepath_api.hosted_storage_v1.HostedAutonomousStore object at 0x7f708d746d50&gt;.JOURNAL_PAGE_BYTES">tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/combined-focused/test_hosted_journal_pages_keep0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f708ee347c0&gt;
+
+    def test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends(tmp_path, monkeypatch):
+        seed_root = tmp_path / 'seed'
+        seed_root.mkdir()
+        seed = AutonomousStore(seed_root / 'claims.sqlite3')
+        policy = PublicCorpus(default_workspace_corpus_root()).static_policy()
+        states = sorted([seed.intake({'title': f'Paged fixture {index}', 'message': 'Original fixture. ' + 'a' * 4000,
+                                    'files': []}, f'knowledge.snapshot.{index}') for index in range(3)],
+                        key=lambda state: state['claim_id'])
+        server, store, _, _ = hosted_copy((seed.path, seed.source_root, policy, states), tmp_path)
+        with sqlite3.connect(server.path) as db:
+            assert db.execute('PRAGMA journal_mode=WAL').fetchone()[0] == 'wal'
+        peer = AutonomousStore(server.path, seed.source_root)
+        monkeypatch.setattr(store, 'JOURNAL_PAGE_BYTES', 16 * 1024)
+        original_statement = server._statement
+        advanced = []
+        use = {'knowledge_id': 'knowledge_fixture_snapshot', 'version': 1}
+    
+        def append_between_pages(connection, stmt):
+            result = original_statement(connection, stmt)
+            if not advanced and result['rows'] and 'event_json' in [column['name'] for column in result['cols']]:
+                advanced.append(append(peer, states[-1], 'knowledge.used', {'knowledge': use}, 'knowledge.snapshot.advance'))
+            return result
+    
+        monkeypatch.setattr(server, '_statement', append_between_pages)
+        knowledge = AutonomousKnowledge(store, policy)
+        try:
+            server.reset_counts()
+            assert knowledge.view() == {'versions': [], 'uses': [{**use, 'claim_id': states[-1]['claim_id']}], 'quarantined': []}
+            assert advanced and advanced[0]['revision'] == states[-1]['revision'] + 1
+            assert len(server.journal_pages) &gt; 2
+            assert sum(count for count, _ in server.journal_pages) == len(states) + 1
+&gt;           assert max(size for _, size in server.journal_pages) &lt;= store.JOURNAL_PAGE_BYTES
+E           assert 29955 &lt;= 16384
+E            +  where 29955 = max(&lt;generator object test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f708d991630&gt;)
+E            +  and   16384 = &lt;casepath_api.hosted_storage_v1.HostedAutonomousStore object at 0x7f708d746d50&gt;.JOURNAL_PAGE_BYTES
+
+casepath-api/tests/test_autonomous_knowledge_reads_v1.py:652: AssertionError</failure></testcase><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_first_page_rejects_malformed_namespace_and_sequence[--1]" time="0.118" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_first_page_rejects_malformed_namespace_and_sequence[-1]" time="0.115" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_first_page_rejects_malformed_namespace_and_sequence[autonomous.fixture--1]" time="0.115" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_paging_does_not_hide_a_later_sequence_gap" time="0.132" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_warm_learning_cache_rejects_a_new_hash_consistent_unknown_event" time="0.011" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_warm_knowledge_rechecks_cached_source_bytes[changed]" time="1.249" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_warm_knowledge_rechecks_cached_source_bytes[missing]" time="1.054" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[SELECT]" time="0.023" /><testcase classname="tests.test_autonomous_knowledge_reads_v1" name="test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[COMMIT]" time="0.025" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_real_31_source_collection_uses_bounded_batched_roundtrips[False]" time="1.800" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_real_31_source_collection_uses_bounded_batched_roundtrips[True]" time="1.867" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_real_three_source_snapshot_batches_fresh_verification[False]" time="1.831" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_real_three_source_snapshot_batches_fresh_verification[True]" time="1.842" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]" time="0.091" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_chunk_page_boundaries_and_maximum_source_complete_verification[2097153]" time="0.086" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_chunk_page_boundaries_and_maximum_source_complete_verification[16777216]" time="0.922" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_reduce_tiny_file_requests_without_changing_default_reads" time="0.098" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_byte_limited_short_pages_continue_until_all_chunks_are_verified" time="0.107" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[changed_later_chunk]" time="0.145" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[missing_later_chunk]" time="0.101" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[gap_later_page]" time="0.120" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[oversize_chunk]" time="0.104" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_source_pages_keep_exact_hash_chunk_inventory_and_type_checks[wrong_type]" time="0.098" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_knowledge_final_source_verification_still_detects_mutation_after_prefetch" time="0.020" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[changed_later_chunk]" time="0.091" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[missing_later_chunk]" time="0.089" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[extra_empty_chunk]" time="0.090" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[gap_later_page]" time="0.092" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[oversize_chunk]" time="0.106" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_empty_invalid_and_missing_batches_do_not_return_false_verification" time="0.005" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_digest_group_boundary_keeps_one_shared_connection" time="0.376" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_transport_failure_on_later_chunk_page_never_acknowledges_verification" time="0.092" /><testcase classname="tests.test_hosted_source_batch_v1" name="test_final_boundary_rechecks_bytes_changed_after_cold_prefetch" time="1.844" /><testcase classname="tests.test_hosted_knowledge_payload_bounds_v1" name="test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[128]" time="0.410"><failure message="casepath_api.autonomous_store_v1.AutonomousStoreError: Knowledge byte proof requires the complete native journal schema.">large_native_journal = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/combined-focused/native-large-journal0/claims.s...rkspace/knowledge-warm-projection-20261016/projection/t/combined-focused/native-large-journal0/autonomous-sources-v1'))
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/combined-focused/test_byte_cutoff_precedes_full0')
+candidate_limit = 128
+
+    @pytest.mark.parametrize('candidate_limit', [128, 2048])
+    def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column(
+            large_native_journal, tmp_path, candidate_limit):
+        original, sources = large_native_journal
+        server = ObservedRows(tmp_path / 'hosted.sqlite3')
+        journal = HostedJournal(tmp_path / 'unused', server.connection)
+        with sqlite3.connect(original) as source, sqlite3.connect(server.path) as target:
+            rows = source.execute('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence',
+                                  (SESSION_ID,)).fetchall()
+            target.executemany('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', rows)
+            # A same-loop/sequence row in another namespace detects an incomplete
+            # join key. Extra SQL columns remain part of exact cache identity.
+            target.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', ('fixture.other-session', *rows[0][1:]))
+            target.execute('ALTER TABLE claim_loop_events RENAME TO fixture_accepted_events')
+            target.execute("ALTER TABLE fixture_accepted_events ADD COLUMN fixture_note TEXT NOT NULL DEFAULT 'original'")
+            target.execute('UPDATE fixture_accepted_events SET fixture_note=loop_id')
+            target.execute('CREATE VIEW claim_loop_events AS SELECT *, fixture_full_payload(event_json) AS fixture_probe '
+                           'FROM fixture_accepted_events')
+        store = HostedAutonomousStore(journal.path, source_root=sources, journal=journal,
+                                      source_store=HostedSources(server.connection))
+        store.KNOWLEDGE_PAGE_ROWS = candidate_limit
+        try:
+            actual = store._paged_state_rows(candidate_limit, count_candidates=True)
+            assert len(server.pages) &gt;= 2  # The byte budget, rather than row count, limits this fixture.
+            assert len(actual) == len(rows)
+            names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
+                     'event_sha256', 'event_json', 'created_at')
+            assert [tuple(row[name] for name in names) for row in actual] == rows
+            assert all(row['fixture_note'] == row['loop_id'] and row['fixture_probe'] == 1 for row in actual)
+            assert all(page['payload_evaluations'] == page['returned_rows'] for page in server.pages), server.pages
+            assert sum(page['evaluated_event_bytes'] for page in server.pages) == sum(len(row[6].encode()) for row in rows)
+            before = store._journal_snapshot(actual)
+            with sqlite3.connect(server.path) as target:
+                target.execute("UPDATE fixture_accepted_events SET fixture_note='changed' WHERE session_id=? AND loop_id=?",
+                               (SESSION_ID, actual[0]['loop_id']))
+&gt;           after = store._journal_snapshot(store._knowledge_rows())
+                                            ^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/hosted_storage_v1.py:448: in _knowledge_rows
+    return self._collect_knowledge_rows()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;casepath_api.hosted_storage_v1.HostedAutonomousStore object at 0x7f708ce35c70&gt;
+
+    def _collect_knowledge_rows(self):
+        # Each bounded raw page is independently CLOSED by the server. Never
+        # hold Turso's five-second transaction across raw body transfers.
+        # A final fresh complete-roster certificate supplies snapshot authority.
+        rows, after_loop, after_sequence = [], '', -1
+        schema = None
+        while True:
+            query, parameters = self._journal_page_query(self.JOURNAL_PAGE_ROWS, rows, after_loop, after_sequence)
+            with self.journal.connect() as db:
+                if not hasattr(db, 'read_snapshot'):
+                    return self._state_rows()
+                queries = [(query, parameters)]
+                if schema is None:
+                    queries.insert(0, (_schema_query('claim_loop_events'), ()))
+                cursors = db.read_snapshot(queries)
+            if schema is None:
+                schema = cursors[0].fetchall()
+                if not _standard_schema(schema, _JOURNAL_COLUMNS):
+                    # An eight-column root cannot certify unknown authority.
+                    # Do not replace a bounded cold read with an unbounded raw
+                    # body or an interactive transaction spanning transfers.
+                    self._knowledge_pending = None
+&gt;                   raise AutonomousStoreError('Knowledge byte proof requires the complete native journal schema.')
+E                   casepath_api.autonomous_store_v1.AutonomousStoreError: Knowledge byte proof requires the complete native journal schema.
+
+casepath-api/casepath_api/hosted_storage_v1.py:472: AutonomousStoreError</failure></testcase><testcase classname="tests.test_hosted_knowledge_payload_bounds_v1" name="test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[2048]" time="0.096"><failure message="casepath_api.autonomous_store_v1.AutonomousStoreError: Knowledge byte proof requires the complete native journal schema.">large_native_journal = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/combined-focused/native-large-journal0/claims.s...rkspace/knowledge-warm-projection-20261016/projection/t/combined-focused/native-large-journal0/autonomous-sources-v1'))
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/combined-focused/test_byte_cutoff_precedes_full1')
+candidate_limit = 2048
+
+    @pytest.mark.parametrize('candidate_limit', [128, 2048])
+    def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column(
+            large_native_journal, tmp_path, candidate_limit):
+        original, sources = large_native_journal
+        server = ObservedRows(tmp_path / 'hosted.sqlite3')
+        journal = HostedJournal(tmp_path / 'unused', server.connection)
+        with sqlite3.connect(original) as source, sqlite3.connect(server.path) as target:
+            rows = source.execute('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence',
+                                  (SESSION_ID,)).fetchall()
+            target.executemany('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', rows)
+            # A same-loop/sequence row in another namespace detects an incomplete
+            # join key. Extra SQL columns remain part of exact cache identity.
+            target.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', ('fixture.other-session', *rows[0][1:]))
+            target.execute('ALTER TABLE claim_loop_events RENAME TO fixture_accepted_events')
+            target.execute("ALTER TABLE fixture_accepted_events ADD COLUMN fixture_note TEXT NOT NULL DEFAULT 'original'")
+            target.execute('UPDATE fixture_accepted_events SET fixture_note=loop_id')
+            target.execute('CREATE VIEW claim_loop_events AS SELECT *, fixture_full_payload(event_json) AS fixture_probe '
+                           'FROM fixture_accepted_events')
+        store = HostedAutonomousStore(journal.path, source_root=sources, journal=journal,
+                                      source_store=HostedSources(server.connection))
+        store.KNOWLEDGE_PAGE_ROWS = candidate_limit
+        try:
+            actual = store._paged_state_rows(candidate_limit, count_candidates=True)
+            assert len(server.pages) &gt;= 2  # The byte budget, rather than row count, limits this fixture.
+            assert len(actual) == len(rows)
+            names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
+                     'event_sha256', 'event_json', 'created_at')
+            assert [tuple(row[name] for name in names) for row in actual] == rows
+            assert all(row['fixture_note'] == row['loop_id'] and row['fixture_probe'] == 1 for row in actual)
+            assert all(page['payload_evaluations'] == page['returned_rows'] for page in server.pages), server.pages
+            assert sum(page['evaluated_event_bytes'] for page in server.pages) == sum(len(row[6].encode()) for row in rows)
+            before = store._journal_snapshot(actual)
+            with sqlite3.connect(server.path) as target:
+                target.execute("UPDATE fixture_accepted_events SET fixture_note='changed' WHERE session_id=? AND loop_id=?",
+                               (SESSION_ID, actual[0]['loop_id']))
+&gt;           after = store._journal_snapshot(store._knowledge_rows())
+                                            ^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/hosted_storage_v1.py:448: in _knowledge_rows
+    return self._collect_knowledge_rows()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;casepath_api.hosted_storage_v1.HostedAutonomousStore object at 0x7f708dba2d50&gt;
+
+    def _collect_knowledge_rows(self):
+        # Each bounded raw page is independently CLOSED by the server. Never
+        # hold Turso's five-second transaction across raw body transfers.
+        # A final fresh complete-roster certificate supplies snapshot authority.
+        rows, after_loop, after_sequence = [], '', -1
+        schema = None
+        while True:
+            query, parameters = self._journal_page_query(self.JOURNAL_PAGE_ROWS, rows, after_loop, after_sequence)
+            with self.journal.connect() as db:
+                if not hasattr(db, 'read_snapshot'):
+                    return self._state_rows()
+                queries = [(query, parameters)]
+                if schema is None:
+                    queries.insert(0, (_schema_query('claim_loop_events'), ()))
+                cursors = db.read_snapshot(queries)
+            if schema is None:
+                schema = cursors[0].fetchall()
+                if not _standard_schema(schema, _JOURNAL_COLUMNS):
+                    # An eight-column root cannot certify unknown authority.
+                    # Do not replace a bounded cold read with an unbounded raw
+                    # body or an interactive transaction spanning transfers.
+                    self._knowledge_pending = None
+&gt;                   raise AutonomousStoreError('Knowledge byte proof requires the complete native journal schema.')
+E                   casepath_api.autonomous_store_v1.AutonomousStoreError: Knowledge byte proof requires the complete native journal schema.
+
+casepath-api/casepath_api/hosted_storage_v1.py:472: AutonomousStoreError</failure></testcase><testcase classname="tests.test_hosted_knowledge_payload_bounds_v1" name="test_single_native_event_above_page_budget_is_returned_without_truncation" time="0.216" /><testcase classname="tests.test_hosted_knowledge_payload_bounds_v1" name="test_row_above_absolute_bound_is_rejected_before_replay" time="0.080" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_cold_population_keeps_prior_128_row_and_eight_chunk_raw_pages" time="0.045" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes" time="0.038" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_unchanged_heads_cannot_hide_an_earlier_row_mutation[event_json]" time="0.091" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_unchanged_heads_cannot_hide_an_earlier_row_mutation[created_at]" time="0.065" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_unchanged_heads_cannot_hide_an_earlier_row_mutation[command_sha256]" time="0.044" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_unchanged_heads_cannot_hide_an_earlier_row_mutation[idempotency_key]" time="0.046" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_fresh_source_proof_requires_exact_persisted_chunks[changed]" time="0.047" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_fresh_source_proof_requires_exact_persisted_chunks[deleted]" time="0.045" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_fresh_source_proof_requires_exact_persisted_chunks[extra_empty]" time="0.043" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_fresh_source_proof_requires_exact_persisted_chunks[wrong_type]" time="0.055" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_unknown_journal_columns_fail_closed_without_partial_column_certificate" time="0.055" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_unconfirmed_warm_proof_never_returns_a_cached_projection[SELECT]" time="0.047" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_unconfirmed_warm_proof_never_returns_a_cached_projection[COMMIT]" time="0.050" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_failed_final_source_validation_never_admits_journal_byte_cache" time="0.059" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_evicted_original_bytes_require_raw_read_before_fresh_source_proof" time="0.049" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_cold_collected_values_must_match_final_snapshot_before_replay" time="0.040" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_cold_unconfirmed_closed_page_never_admits_or_replays" time="0.036" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_every_typed_journal_column_and_full_roster_remain_authority[session]" time="0.067" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_every_typed_journal_column_and_full_roster_remain_authority[loop]" time="0.055" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_every_typed_journal_column_and_full_roster_remain_authority[sequence]" time="0.058" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_every_typed_journal_column_and_full_roster_remain_authority[event_hash]" time="0.063" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_every_typed_journal_column_and_full_roster_remain_authority[real_sequence]" time="0.055" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_every_typed_journal_column_and_full_roster_remain_authority[text_blob]" time="0.053" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_every_typed_journal_column_and_full_roster_remain_authority[nul]" time="0.047" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_hidden_columns_and_views_never_enter_standard_column_proof_cache[generated]" time="0.045" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_hidden_columns_and_views_never_enter_standard_column_proof_cache[view]" time="0.041" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_empty_roster_has_a_distinct_certified_cache_and_no_source_read" time="0.027" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_sql_aggregate_order_and_raw_byte_encoding_match_local_fixed_vectors" time="0.001" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_malformed_or_truncated_aggregate_cannot_accept_cached_rows[null]" time="0.053" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_malformed_or_truncated_aggregate_cannot_accept_cached_rows[short]" time="0.040" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_malformed_or_truncated_aggregate_cannot_accept_cached_rows[truncated_concat]" time="0.046" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_malformed_or_truncated_aggregate_cannot_accept_cached_rows[wrong_count]" time="0.044" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_changed_source_schema_forces_raw_eight_chunk_refresh_and_new_final_certificate" time="0.061" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_fresh_schema_result_types_and_column_names_cannot_alias_cached_schema[type]" time="0.051" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_fresh_schema_result_types_and_column_names_cannot_alias_cached_schema[name]" time="0.050" /></testsuite></testsuites>

@@ -1,0 +1,262 @@
+{
+  "source_commit": "6b3fb7d0476fb77c235ee01146d18394badfd08e",
+  "source_branch": "codex/knowledge-warm-projection-20261016",
+  "transport_commit": "e7d522c73b8b34ba928150cd061e00fab6f2d34c",
+  "transport_integration": "9e8e287e (same SQL/test bytes; source hash bound below)",
+  "host": "656813ef2295",
+  "source_clean": true,
+  "source_sha256": {
+    "casepath-api/casepath_api/autonomous_store_v1.py": "111e93b616abca7942d81fb38de91bf2cfd3e6b30794ab682178696b1eda8483",
+    "casepath-api/casepath_api/hosted_app_v1.py": "ef58f913f35002e00aad77350d1bd5258ecbe5d4f434f2a4a3ddd6fcff625e2d",
+    "casepath-api/casepath_api/hosted_sql_v1.py": "bc04fdabbb4dbe793668177c27e46080784113503c4c064cd231aba69df45fd9",
+    "casepath-api/casepath_api/hosted_storage_v1.py": "cd72f4bde5627754caeb11e1dc537d62bd8d2c865b36acc99e061de9e96ae4f0",
+    "casepath-api/tests/hosted_hrana_fixture.py": "900cb980bdfd096d6992169d642b8391e50c0acdc1cfc924e9277b8a6321af79",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py": "0b14f0d3ab9d6a10712342e5a064d52233fe1e35770a6396e2e0aa33e54bac0e",
+    "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py": "2dd24b39cfa38087988dfe058e304716a912cc1d105f009704e78402ac1f3447",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py": "2b4b0f9faa32da0bb27878e23433c83fe0c81e5d2d53177cc36f493865d2846a",
+    "casepath-api/tests/test_hosted_snapshot_transport_v1.py": "ee4454e1fae99d172feab5ed2bf1c1f8c988a0bf33626e29030e477e4c6ddba5",
+    "casepath-api/tests/test_hosted_source_batch_v1.py": "f53cd1bf44734ddc5b2d8a45b79d84e577be468f3756203063cc3fdf93b7c3f0",
+    "casepath-api/tests/test_public_hosted_read_only_v1.py": "710bc22ac117b58768de9a492351b1f6f58766eb3cb9e5895861295d7af519d4"
+  },
+  "completed_checks": {
+    "af7_author_unique_cases": 107,
+    "final_6b3_proof_module": 44,
+    "transport_sql": 98,
+    "independent_final_followup": 69
+  },
+  "counting": "Overlapping focused checks are separate receipts, not an additive full-suite count. No full gate executed. All older red/error receipts preserved.",
+  "final_raw_proof_command": "Original full-module 44-case log/JUnit retained; exact original shell argv was not captured before usage interruption. Independent 69-case run has fully recorded command/env/source proofs.",
+  "junit_inventory": [
+    {
+      "file": "projection/adversarial-1.xml",
+      "cases": 32,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/adversarial-2.xml",
+      "cases": 35,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/combined-focused.xml",
+      "cases": 100,
+      "failures": 3,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/existing-focused.xml",
+      "cases": 65,
+      "failures": 6,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/failing-contract.xml",
+      "cases": 2,
+      "failures": 2,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/final-autonomous-reads.xml",
+      "cases": 37,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/final-focused.xml",
+      "cases": 71,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/final-proof-small.xml",
+      "cases": 49,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/final-substitution.xml",
+      "cases": 1,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/first-implementation.xml",
+      "cases": 1,
+      "failures": 0,
+      "errors": 1,
+      "skips": 0
+    },
+    {
+      "file": "projection/green-256k.xml",
+      "cases": 36,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/immutability-peer.xml",
+      "cases": 39,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/raw-http-green.xml",
+      "cases": 44,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/red-256k.xml",
+      "cases": 1,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/red-raw-http.xml",
+      "cases": 1,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "projection/second-implementation.xml",
+      "cases": 13,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "review/combined-af7-independent.xml",
+      "cases": 54,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "review/retirement-6b3-independent.xml",
+      "cases": 69,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "review/storage-756-independent.xml",
+      "cases": 36,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "review/transport-independent.xml",
+      "cases": 50,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/cleanup-red.xml",
+      "cases": 1,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/close-http-green.xml",
+      "cases": 98,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/close-http-red.xml",
+      "cases": 21,
+      "failures": 21,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/concurrent.xml",
+      "cases": 1,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/focused.xml",
+      "cases": 99,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/followup-green.xml",
+      "cases": 51,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/green-initial.xml",
+      "cases": 49,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/metadata-green.xml",
+      "cases": 45,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/metadata-red.xml",
+      "cases": 1,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/red.xml",
+      "cases": 5,
+      "failures": 5,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "transport/startup-entry.xml",
+      "cases": 1,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    }
+  ],
+  "authority": "Full cold raw validation before private immutable cache admission; every hit fresh typed full-schema/full-row and final source-chunk proofs. Raw payload read socket retirement only, no retries or deadline changes.",
+  "readiness": "No service state/health readiness until warm learning_view succeeds. Warmup uses no discovery, provider calls or new writes. Per-request 12s limit unchanged; app defines no overall warmup deadline. External deployment readiness window must be confirmed by Mac.",
+  "preserved_failed_fixture_archive": {
+    "path": "/workspace/knowledge-warm-projection-20261016/projection/e/archived-failed-fixtures-20261016.tar.gz",
+    "sha256": "e96cad81c1d6b29f4de7040a93e3634328e1dbc20e2e303adc4393e157e04d8f",
+    "bytes": 53140733,
+    "full_manifest": "projection/archived-failed-fixtures-20261016.json",
+    "export": "Raw archive retained locally; compact receipts contain its binding and all original failure logs/JUnits."
+  },
+  "limits": [
+    "No full suite, seal, deployment, browser, provider or production access by Cloud.",
+    "Native Mac result is owner-reported and retained locally, not independently executed in Cloud.",
+    "Hosted API instance/proxy <=1s acceptance remains pending."
+  ]
+}

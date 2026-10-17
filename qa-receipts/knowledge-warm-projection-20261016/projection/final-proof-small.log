@@ -1,0 +1,27 @@
+......................................F........31-source warm collection receipt: {'http': 2, 'execute': 8, 'close': 2, 'batch': 0}
+.31-source cold collection receipt: {'http': 9, 'execute': 20, 'close': 9, 'batch': 0}
+.
+=================================== FAILURES ===================================
+___ test_post_validation_admission_rejects_different_fully_valid_native_rows ___
+
+native_proof_store = (<test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7f128c9299d0>, <casepath_api.hosted_storage_v1.HostedAuto...usStore object at 0x7f128c92b350>, <casepath_api.autonomous_knowledge_v1.AutonomousKnowledge object at 0x7f128c424c20>)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f128c426b30>
+
+    def test_post_validation_admission_rejects_different_fully_valid_native_rows(native_proof_store, monkeypatch):
+        server, store, knowledge = native_proof_store
+        replacement = AutonomousStore(store.path.parent / 'alternative-native.sqlite3')
+        expected_state = replacement.intake({'title': 'Alternative fully valid native claim',
+            'message': 'Distinct original source bytes for the alternate valid journal.'}, 'alternate.intake')
+        with sqlite3.connect(replacement.path) as db:
+            db.row_factory = sqlite3.Row
+            other = [dict(row) for row in db.execute('SELECT * FROM claim_loop_events ORDER BY loop_id,sequence')]
+        with sqlite3.connect(server.path) as db:
+            for path in replacement.source_root.iterdir():
+>               db.execute('INSERT INTO autonomous_source_chunks VALUES (?,?,?)', (path.name, 0, path.read_bytes()))
+E               sqlite3.IntegrityError: source bytes are immutable
+
+casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py:416: IntegrityError
+- generated xml file: /workspace/knowledge-warm-projection-20261016/projection/e/final-proof-small.xml -
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_post_validation_admission_rejects_different_fully_valid_native_rows
+1 failed, 48 passed in 8.88s

@@ -1,0 +1,213 @@
+..........................Knowledge read measurements: [{"http_requests": 13, "journal_pages": 4, "largest_response_bytes": 2229683, "mock_elapsed_seconds": 1.137907, "replayed_claims": 18, "source_pages": 8, "temperature": "cold", "total_response_bytes": 5094793}, {"http_requests": 2, "journal_pages": 0, "largest_response_bytes": 4187, "mock_elapsed_seconds": 0.04029, "replayed_claims": 0, "source_pages": 1, "temperature": "warm", "total_response_bytes": 7602}, {"http_requests": 110, "journal_pages": 36, "largest_response_bytes": 332987, "replayed_claims": 36, "temperature": "legacy_cold"}, {"http_requests": 92, "journal_pages": 36, "largest_response_bytes": 332987, "replayed_claims": 36, "temperature": "legacy_warm"}]
+.F.........31-source warm collection receipt: {'http': 7, 'execute': 6, 'close': 6, 'batch': 0}
+.31-source cold collection receipt: {'http': 12, 'execute': 11, 'close': 11, 'batch': 0}
+.3-source warm snapshot receipt: {'http': 3, 'execute': 2, 'close': 2, 'batch': 0}
+.3-source cold snapshot receipt: {'http': 4, 'execute': 3, 'close': 3, 'batch': 0}
+.....................FF.....................................
+=================================== FAILURES ===================================
+_______ test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends _______
+
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/combined-focused/test_hosted_journal_pages_keep0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f708ee347c0>
+
+    def test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends(tmp_path, monkeypatch):
+        seed_root = tmp_path / 'seed'
+        seed_root.mkdir()
+        seed = AutonomousStore(seed_root / 'claims.sqlite3')
+        policy = PublicCorpus(default_workspace_corpus_root()).static_policy()
+        states = sorted([seed.intake({'title': f'Paged fixture {index}', 'message': 'Original fixture. ' + 'a' * 4000,
+                                    'files': []}, f'knowledge.snapshot.{index}') for index in range(3)],
+                        key=lambda state: state['claim_id'])
+        server, store, _, _ = hosted_copy((seed.path, seed.source_root, policy, states), tmp_path)
+        with sqlite3.connect(server.path) as db:
+            assert db.execute('PRAGMA journal_mode=WAL').fetchone()[0] == 'wal'
+        peer = AutonomousStore(server.path, seed.source_root)
+        monkeypatch.setattr(store, 'JOURNAL_PAGE_BYTES', 16 * 1024)
+        original_statement = server._statement
+        advanced = []
+        use = {'knowledge_id': 'knowledge_fixture_snapshot', 'version': 1}
+    
+        def append_between_pages(connection, stmt):
+            result = original_statement(connection, stmt)
+            if not advanced and result['rows'] and 'event_json' in [column['name'] for column in result['cols']]:
+                advanced.append(append(peer, states[-1], 'knowledge.used', {'knowledge': use}, 'knowledge.snapshot.advance'))
+            return result
+    
+        monkeypatch.setattr(server, '_statement', append_between_pages)
+        knowledge = AutonomousKnowledge(store, policy)
+        try:
+            server.reset_counts()
+            assert knowledge.view() == {'versions': [], 'uses': [{**use, 'claim_id': states[-1]['claim_id']}], 'quarantined': []}
+            assert advanced and advanced[0]['revision'] == states[-1]['revision'] + 1
+            assert len(server.journal_pages) > 2
+            assert sum(count for count, _ in server.journal_pages) == len(states) + 1
+>           assert max(size for _, size in server.journal_pages) <= store.JOURNAL_PAGE_BYTES
+E           assert 29955 <= 16384
+E            +  where 29955 = max(<generator object test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends.<locals>.<genexpr> at 0x7f708d991630>)
+E            +  and   16384 = <casepath_api.hosted_storage_v1.HostedAutonomousStore object at 0x7f708d746d50>.JOURNAL_PAGE_BYTES
+
+casepath-api/tests/test_autonomous_knowledge_reads_v1.py:652: AssertionError
+_ test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[128] _
+
+large_native_journal = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/combined-focused/native-large-journal0/claims.s...rkspace/knowledge-warm-projection-20261016/projection/t/combined-focused/native-large-journal0/autonomous-sources-v1'))
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/combined-focused/test_byte_cutoff_precedes_full0')
+candidate_limit = 128
+
+    @pytest.mark.parametrize('candidate_limit', [128, 2048])
+    def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column(
+            large_native_journal, tmp_path, candidate_limit):
+        original, sources = large_native_journal
+        server = ObservedRows(tmp_path / 'hosted.sqlite3')
+        journal = HostedJournal(tmp_path / 'unused', server.connection)
+        with sqlite3.connect(original) as source, sqlite3.connect(server.path) as target:
+            rows = source.execute('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence',
+                                  (SESSION_ID,)).fetchall()
+            target.executemany('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', rows)
+            # A same-loop/sequence row in another namespace detects an incomplete
+            # join key. Extra SQL columns remain part of exact cache identity.
+            target.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', ('fixture.other-session', *rows[0][1:]))
+            target.execute('ALTER TABLE claim_loop_events RENAME TO fixture_accepted_events')
+            target.execute("ALTER TABLE fixture_accepted_events ADD COLUMN fixture_note TEXT NOT NULL DEFAULT 'original'")
+            target.execute('UPDATE fixture_accepted_events SET fixture_note=loop_id')
+            target.execute('CREATE VIEW claim_loop_events AS SELECT *, fixture_full_payload(event_json) AS fixture_probe '
+                           'FROM fixture_accepted_events')
+        store = HostedAutonomousStore(journal.path, source_root=sources, journal=journal,
+                                      source_store=HostedSources(server.connection))
+        store.KNOWLEDGE_PAGE_ROWS = candidate_limit
+        try:
+            actual = store._paged_state_rows(candidate_limit, count_candidates=True)
+            assert len(server.pages) >= 2  # The byte budget, rather than row count, limits this fixture.
+            assert len(actual) == len(rows)
+            names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
+                     'event_sha256', 'event_json', 'created_at')
+            assert [tuple(row[name] for name in names) for row in actual] == rows
+            assert all(row['fixture_note'] == row['loop_id'] and row['fixture_probe'] == 1 for row in actual)
+            assert all(page['payload_evaluations'] == page['returned_rows'] for page in server.pages), server.pages
+            assert sum(page['evaluated_event_bytes'] for page in server.pages) == sum(len(row[6].encode()) for row in rows)
+            before = store._journal_snapshot(actual)
+            with sqlite3.connect(server.path) as target:
+                target.execute("UPDATE fixture_accepted_events SET fixture_note='changed' WHERE session_id=? AND loop_id=?",
+                               (SESSION_ID, actual[0]['loop_id']))
+>           after = store._journal_snapshot(store._knowledge_rows())
+                                            ^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/hosted_storage_v1.py:448: in _knowledge_rows
+    return self._collect_knowledge_rows()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.hosted_storage_v1.HostedAutonomousStore object at 0x7f708ce35c70>
+
+    def _collect_knowledge_rows(self):
+        # Each bounded raw page is independently CLOSED by the server. Never
+        # hold Turso's five-second transaction across raw body transfers.
+        # A final fresh complete-roster certificate supplies snapshot authority.
+        rows, after_loop, after_sequence = [], '', -1
+        schema = None
+        while True:
+            query, parameters = self._journal_page_query(self.JOURNAL_PAGE_ROWS, rows, after_loop, after_sequence)
+            with self.journal.connect() as db:
+                if not hasattr(db, 'read_snapshot'):
+                    return self._state_rows()
+                queries = [(query, parameters)]
+                if schema is None:
+                    queries.insert(0, (_schema_query('claim_loop_events'), ()))
+                cursors = db.read_snapshot(queries)
+            if schema is None:
+                schema = cursors[0].fetchall()
+                if not _standard_schema(schema, _JOURNAL_COLUMNS):
+                    # An eight-column root cannot certify unknown authority.
+                    # Do not replace a bounded cold read with an unbounded raw
+                    # body or an interactive transaction spanning transfers.
+                    self._knowledge_pending = None
+>                   raise AutonomousStoreError('Knowledge byte proof requires the complete native journal schema.')
+E                   casepath_api.autonomous_store_v1.AutonomousStoreError: Knowledge byte proof requires the complete native journal schema.
+
+casepath-api/casepath_api/hosted_storage_v1.py:472: AutonomousStoreError
+_ test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[2048] _
+
+large_native_journal = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/combined-focused/native-large-journal0/claims.s...rkspace/knowledge-warm-projection-20261016/projection/t/combined-focused/native-large-journal0/autonomous-sources-v1'))
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/combined-focused/test_byte_cutoff_precedes_full1')
+candidate_limit = 2048
+
+    @pytest.mark.parametrize('candidate_limit', [128, 2048])
+    def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column(
+            large_native_journal, tmp_path, candidate_limit):
+        original, sources = large_native_journal
+        server = ObservedRows(tmp_path / 'hosted.sqlite3')
+        journal = HostedJournal(tmp_path / 'unused', server.connection)
+        with sqlite3.connect(original) as source, sqlite3.connect(server.path) as target:
+            rows = source.execute('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence',
+                                  (SESSION_ID,)).fetchall()
+            target.executemany('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', rows)
+            # A same-loop/sequence row in another namespace detects an incomplete
+            # join key. Extra SQL columns remain part of exact cache identity.
+            target.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', ('fixture.other-session', *rows[0][1:]))
+            target.execute('ALTER TABLE claim_loop_events RENAME TO fixture_accepted_events')
+            target.execute("ALTER TABLE fixture_accepted_events ADD COLUMN fixture_note TEXT NOT NULL DEFAULT 'original'")
+            target.execute('UPDATE fixture_accepted_events SET fixture_note=loop_id')
+            target.execute('CREATE VIEW claim_loop_events AS SELECT *, fixture_full_payload(event_json) AS fixture_probe '
+                           'FROM fixture_accepted_events')
+        store = HostedAutonomousStore(journal.path, source_root=sources, journal=journal,
+                                      source_store=HostedSources(server.connection))
+        store.KNOWLEDGE_PAGE_ROWS = candidate_limit
+        try:
+            actual = store._paged_state_rows(candidate_limit, count_candidates=True)
+            assert len(server.pages) >= 2  # The byte budget, rather than row count, limits this fixture.
+            assert len(actual) == len(rows)
+            names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
+                     'event_sha256', 'event_json', 'created_at')
+            assert [tuple(row[name] for name in names) for row in actual] == rows
+            assert all(row['fixture_note'] == row['loop_id'] and row['fixture_probe'] == 1 for row in actual)
+            assert all(page['payload_evaluations'] == page['returned_rows'] for page in server.pages), server.pages
+            assert sum(page['evaluated_event_bytes'] for page in server.pages) == sum(len(row[6].encode()) for row in rows)
+            before = store._journal_snapshot(actual)
+            with sqlite3.connect(server.path) as target:
+                target.execute("UPDATE fixture_accepted_events SET fixture_note='changed' WHERE session_id=? AND loop_id=?",
+                               (SESSION_ID, actual[0]['loop_id']))
+>           after = store._journal_snapshot(store._knowledge_rows())
+                                            ^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/hosted_storage_v1.py:448: in _knowledge_rows
+    return self._collect_knowledge_rows()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.hosted_storage_v1.HostedAutonomousStore object at 0x7f708dba2d50>
+
+    def _collect_knowledge_rows(self):
+        # Each bounded raw page is independently CLOSED by the server. Never
+        # hold Turso's five-second transaction across raw body transfers.
+        # A final fresh complete-roster certificate supplies snapshot authority.
+        rows, after_loop, after_sequence = [], '', -1
+        schema = None
+        while True:
+            query, parameters = self._journal_page_query(self.JOURNAL_PAGE_ROWS, rows, after_loop, after_sequence)
+            with self.journal.connect() as db:
+                if not hasattr(db, 'read_snapshot'):
+                    return self._state_rows()
+                queries = [(query, parameters)]
+                if schema is None:
+                    queries.insert(0, (_schema_query('claim_loop_events'), ()))
+                cursors = db.read_snapshot(queries)
+            if schema is None:
+                schema = cursors[0].fetchall()
+                if not _standard_schema(schema, _JOURNAL_COLUMNS):
+                    # An eight-column root cannot certify unknown authority.
+                    # Do not replace a bounded cold read with an unbounded raw
+                    # body or an interactive transaction spanning transfers.
+                    self._knowledge_pending = None
+>                   raise AutonomousStoreError('Knowledge byte proof requires the complete native journal schema.')
+E                   casepath_api.autonomous_store_v1.AutonomousStoreError: Knowledge byte proof requires the complete native journal schema.
+
+casepath-api/casepath_api/hosted_storage_v1.py:472: AutonomousStoreError
+- generated xml file: /workspace/knowledge-warm-projection-20261016/projection/e/combined-focused.xml -
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends
+FAILED casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[128]
+FAILED casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[2048]
+3 failed, 97 passed in 78.97s (0:01:18)

@@ -1,0 +1,37 @@
+{
+  "kind": "Mac owner report, not Cloud execution",
+  "source_commit": "6b3fb7d0476fb77c235ee01146d18394badfd08e",
+  "native_receipt": "F20/native-final-6b3fb7d0.json (Mac only)",
+  "cold": {
+    "seconds": 51.8158,
+    "requests": 60,
+    "response_bytes": 13527678
+  },
+  "warm": [
+    {
+      "seconds": 0.29518,
+      "requests": 2,
+      "response_bytes": 8277
+    },
+    {
+      "seconds": 0.30962,
+      "requests": 2,
+      "response_bytes": 8277
+    }
+  ],
+  "versions": 8,
+  "uses": 27,
+  "refusals": 3,
+  "original_fields_equal": true,
+  "learning_contract_events_totals_equal": true,
+  "public_23_heads_exact_subset": true,
+  "all_26_materialized_heads_match_saved_collection": true,
+  "public_result_sha256": "9e15059dc8616cfb6db6d0dd58feeaf02ed63daacdc328b1834f232425a0aea9",
+  "negative_attempts": [
+    "84 first SELECT timeout before headers8s",
+    "39 thin233row4.28MB body23.72s exceeded12s deadline",
+    "c724 cold128 first2.396MB response exceeded12s deadline",
+    "756 pooled raw EOF on requests12 and9 after preceding5.3s bodies"
+  ],
+  "diagnostic": "Raw-only Connection:close then completed60 requests; product6b3 native passed without override. No source changes to force23-vs26 head equality."
+}

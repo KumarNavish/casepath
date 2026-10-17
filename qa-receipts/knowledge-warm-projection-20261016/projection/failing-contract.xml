@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="1.691" timestamp="2026-10-16T19:57:02.523948+00:00" hostname="656813ef2295"><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_cold_population_keeps_prior_128_row_and_eight_chunk_raw_pages" time="1.510"><failure message="assert 2048 == 128">native_proof_store = (&lt;test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7fd3a619a3c0&gt;, &lt;casepath_api.hosted_storage_v1.HostedAuto...usStore object at 0x7fd3a619bcb0&gt;, &lt;casepath_api.autonomous_knowledge_v1.AutonomousKnowledge object at 0x7fd3a619a660&gt;)
+
+    def test_cold_population_keeps_prior_128_row_and_eight_chunk_raw_pages(native_proof_store):
+        server, _, knowledge = native_proof_store
+        knowledge.learning_view()
+        assert server.raw_journal and server.raw_sources
+        for statement, _ in server.raw_journal:
+            arguments = [_decode(value) for value in statement.get('args', [])]
+&gt;           assert arguments[-2] == 128
+E           assert 2048 == 128
+
+casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py:75: AssertionError</failure></testcase><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes" time="0.054"><failure message="AssertionError: assert 5 == 2&#10; +  where 5 = len([{'baton': None, 'requests': [{'stmt': {'args': [], 'sql': 'BEGIN', 'want_rows': True}, 'type': 'execute'}]}, {'baton'...E __total&lt;=? OR __position=1 ORDER BY sha256,chunk_index', 'want_rows': True}, 'type': 'execute'}, {'type': 'close'}]}])&#10; +    where [{'baton': None, 'requests': [{'stmt': {'args': [], 'sql': 'BEGIN', 'want_rows': True}, 'type': 'execute'}]}, {'baton'...E __total&lt;=? OR __position=1 ORDER BY sha256,chunk_index', 'want_rows': True}, 'type': 'execute'}, {'type': 'close'}]}] = &lt;test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7fd3a5e079d0&gt;.requests">native_proof_store = (&lt;test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7fd3a5e079d0&gt;, &lt;casepath_api.hosted_storage_v1.HostedAuto...usStore object at 0x7fd3a5cf8050&gt;, &lt;casepath_api.autonomous_knowledge_v1.AutonomousKnowledge object at 0x7fd3a5cf8190&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7fd3a6f41350&gt;
+
+    def test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes(native_proof_store, monkeypatch):
+        server, store, knowledge = native_proof_store
+        original = knowledge.learning_view()
+        server.reset()
+        monkeypatch.setattr(store, '_replay', lambda *a, **k: pytest.fail('Unchanged journal replayed'))
+        assert knowledge.learning_view() == original
+&gt;       assert len(server.requests) == 2
+E       AssertionError: assert 5 == 2
+E        +  where 5 = len([{'baton': None, 'requests': [{'stmt': {'args': [], 'sql': 'BEGIN', 'want_rows': True}, 'type': 'execute'}]}, {'baton'...E __total&lt;=? OR __position=1 ORDER BY sha256,chunk_index', 'want_rows': True}, 'type': 'execute'}, {'type': 'close'}]}])
+E        +    where [{'baton': None, 'requests': [{'stmt': {'args': [], 'sql': 'BEGIN', 'want_rows': True}, 'type': 'execute'}]}, {'baton'...E __total&lt;=? OR __position=1 ORDER BY sha256,chunk_index', 'want_rows': True}, 'type': 'execute'}, {'type': 'close'}]}] = &lt;test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7fd3a5e079d0&gt;.requests
+
+casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py:85: AssertionError</failure></testcase></testsuite></testsuites>

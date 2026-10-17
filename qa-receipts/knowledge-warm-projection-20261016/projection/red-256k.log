@@ -1,0 +1,23 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__ test_cold_journal_byte_budget_is_256k_before_full_payload_materialization ___
+
+native_proof_store = (<test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7f29dc952660>, <casepath_api.hosted_storage_v1.HostedAuto...usStore object at 0x7f29dc953e00>, <casepath_api.autonomous_knowledge_v1.AutonomousKnowledge object at 0x7f29dc7b0ad0>)
+
+    def test_cold_journal_byte_budget_is_256k_before_full_payload_materialization(native_proof_store):
+        server, _, knowledge = native_proof_store
+        # Whitespace preserves exact parsed native events and their sealed hashes,
+        # while exercising actual persisted UTF-8 payload size rather than tiny rows.
+        with sqlite3.connect(server.path) as db:
+            db.execute('UPDATE claim_loop_events SET event_json=event_json||?', (' ' * 150000,))
+        knowledge.learning_view()
+>       assert len(server.raw_journal) >= 3
+E       AssertionError: assert 2 >= 3
+E        +  where 2 = len([({'args': [{'type': 'text', 'value': 'casepath-autonomous-local-v1'}, {'type': 'integer', 'value': '1'}, {'type': 'te...op_id,sequence LIMIT ?)) WHERE __read_total<=? OR __read_position=1 ORDER BY loop_id,sequence', 'want_rows': True}, 0)])
+E        +    where [({'args': [{'type': 'text', 'value': 'casepath-autonomous-local-v1'}, {'type': 'integer', 'value': '1'}, {'type': 'te...op_id,sequence LIMIT ?)) WHERE __read_total<=? OR __read_position=1 ORDER BY loop_id,sequence', 'want_rows': True}, 0)] = <test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7f29dc952660>.raw_journal
+
+casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py:359: AssertionError
+- generated xml file: /workspace/knowledge-warm-projection-20261016/projection/e/red-256k.xml -
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_cold_journal_byte_budget_is_256k_before_full_payload_materialization
+1 failed in 1.69s

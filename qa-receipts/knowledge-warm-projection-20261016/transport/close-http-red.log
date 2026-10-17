@@ -1,0 +1,573 @@
+FFFFFFFFFFFFFFFFFFFFF                                                    [100%]
+=================================== FAILURES ===================================
+_ test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers[snapshot] _
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4a416a50>
+helper = 'snapshot'
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    def test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers(server, helper):
+        observed = []
+        def handler(request):
+            observed.append(request.headers.get('connection'))
+            return server.handle(request)
+        client = httpx.Client(transport=httpx.MockTransport(handler), trust_env=False)
+        database = sql.TursoDatabase('libsql://fixture.turso.io', 'fixture-token-' * 4,
+                                    client_factory=lambda: client, reuse_http=True)
+        def read(db, **kwargs):
+            return (db.read_snapshot([('SELECT 7', ())], **kwargs)[0] if helper == 'snapshot'
+                    else db.execute_read_once('SELECT 7', **kwargs))
+        try:
+            with database.connect() as db:
+>               assert read(db, close_http=True).fetchone()[0] == 7
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:372: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+db = LibsqlConnection(credential=<redacted>), kwargs = {'close_http': True}
+
+    def read(db, **kwargs):
+>       return (db.read_snapshot([('SELECT 7', ())], **kwargs)[0] if helper == 'snapshot'
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                else db.execute_read_once('SELECT 7', **kwargs))
+E       TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:368: TypeError
+_ test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers[once] _
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4a3ebed0>
+helper = 'once'
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    def test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers(server, helper):
+        observed = []
+        def handler(request):
+            observed.append(request.headers.get('connection'))
+            return server.handle(request)
+        client = httpx.Client(transport=httpx.MockTransport(handler), trust_env=False)
+        database = sql.TursoDatabase('libsql://fixture.turso.io', 'fixture-token-' * 4,
+                                    client_factory=lambda: client, reuse_http=True)
+        def read(db, **kwargs):
+            return (db.read_snapshot([('SELECT 7', ())], **kwargs)[0] if helper == 'snapshot'
+                    else db.execute_read_once('SELECT 7', **kwargs))
+        try:
+            with database.connect() as db:
+>               assert read(db, close_http=True).fetchone()[0] == 7
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:372: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+db = LibsqlConnection(credential=<redacted>), kwargs = {'close_http': True}
+
+    def read(db, **kwargs):
+        return (db.read_snapshot([('SELECT 7', ())], **kwargs)[0] if helper == 'snapshot'
+>               else db.execute_read_once('SELECT 7', **kwargs))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: LibsqlConnection.execute_read_once() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:369: TypeError
+__ test_close_http_requires_a_strict_boolean_before_transport[None-snapshot] ___
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4aaa4e10>
+helper = 'snapshot', flag = None
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+>                   db.read_snapshot([('SELECT 1', ())], close_http=flag)
+E                   TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:394: TypeError
+____ test_close_http_requires_a_strict_boolean_before_transport[None-once] _____
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4aa6c3e0>
+helper = 'once', flag = None
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+                    db.read_snapshot([('SELECT 1', ())], close_http=flag)
+                else:
+>                   db.execute_read_once('SELECT 1', close_http=flag)
+E                   TypeError: LibsqlConnection.execute_read_once() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:396: TypeError
+____ test_close_http_requires_a_strict_boolean_before_transport[0-snapshot] ____
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4aa6d0f0>
+helper = 'snapshot', flag = 0
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+>                   db.read_snapshot([('SELECT 1', ())], close_http=flag)
+E                   TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:394: TypeError
+______ test_close_http_requires_a_strict_boolean_before_transport[0-once] ______
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4aa47530>
+helper = 'once', flag = 0
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+                    db.read_snapshot([('SELECT 1', ())], close_http=flag)
+                else:
+>                   db.execute_read_once('SELECT 1', close_http=flag)
+E                   TypeError: LibsqlConnection.execute_read_once() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:396: TypeError
+____ test_close_http_requires_a_strict_boolean_before_transport[1-snapshot] ____
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4a6d7ac0>
+helper = 'snapshot', flag = 1
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+>                   db.read_snapshot([('SELECT 1', ())], close_http=flag)
+E                   TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:394: TypeError
+______ test_close_http_requires_a_strict_boolean_before_transport[1-once] ______
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4a6d7350>
+helper = 'once', flag = 1
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+                    db.read_snapshot([('SELECT 1', ())], close_http=flag)
+                else:
+>                   db.execute_read_once('SELECT 1', close_http=flag)
+E                   TypeError: LibsqlConnection.execute_read_once() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:396: TypeError
+__ test_close_http_requires_a_strict_boolean_before_transport[close-snapshot] __
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4aad0550>
+helper = 'snapshot', flag = 'close'
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+>                   db.read_snapshot([('SELECT 1', ())], close_http=flag)
+E                   TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:394: TypeError
+____ test_close_http_requires_a_strict_boolean_before_transport[close-once] ____
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4aad1e50>
+helper = 'once', flag = 'close'
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+                    db.read_snapshot([('SELECT 1', ())], close_http=flag)
+                else:
+>                   db.execute_read_once('SELECT 1', close_http=flag)
+E                   TypeError: LibsqlConnection.execute_read_once() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:396: TypeError
+__ test_close_http_requires_a_strict_boolean_before_transport[flag4-snapshot] __
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4aa84aa0>
+helper = 'snapshot', flag = []
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+>                   db.read_snapshot([('SELECT 1', ())], close_http=flag)
+E                   TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:394: TypeError
+____ test_close_http_requires_a_strict_boolean_before_transport[flag4-once] ____
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4aa86300>
+helper = 'once', flag = []
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+                    db.read_snapshot([('SELECT 1', ())], close_http=flag)
+                else:
+>                   db.execute_read_once('SELECT 1', close_http=flag)
+E                   TypeError: LibsqlConnection.execute_read_once() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:396: TypeError
+__ test_close_http_requires_a_strict_boolean_before_transport[flag5-snapshot] __
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4aad60b0>
+helper = 'snapshot', flag = {}
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+>                   db.read_snapshot([('SELECT 1', ())], close_http=flag)
+E                   TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:394: TypeError
+____ test_close_http_requires_a_strict_boolean_before_transport[flag5-once] ____
+
+server = <hosted_hrana_fixture.MockHrana object at 0x7f0b4a2bd2b0>
+helper = 'once', flag = {}
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('flag', [None, 0, 1, 'close', [], {}])
+    def test_close_http_requires_a_strict_boolean_before_transport(server, helper, flag):
+        with server.connection() as db:
+            with pytest.raises(sql.HostedStorageError, match='boolean'):
+                if helper == 'snapshot':
+                    db.read_snapshot([('SELECT 1', ())], close_http=flag)
+                else:
+>                   db.execute_read_once('SELECT 1', close_http=flag)
+E                   TypeError: LibsqlConnection.execute_read_once() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:396: TypeError
+_____ test_concurrent_raw_close_header_does_not_leak_into_compact_snapshot _____
+
+    def test_concurrent_raw_close_header_does_not_leak_into_compact_snapshot():
+        barrier, lock = Barrier(2), Lock()
+        observed = []
+        def handler(request):
+            payload = json.loads(request.content)
+            statement = payload['requests'][1]['stmt']
+            label = sql._decode(statement['args'][0])
+            with lock:
+                observed.append((label, request.headers.get('connection'), get_ident()))
+            barrier.wait(timeout=5)
+            empty = {'cols': [], 'rows': [], 'affected_row_count': 0, 'last_insert_rowid': None}
+            row = {'cols': [{'name': 'value'}], 'rows': [[sql._encode(label)]],
+                   'affected_row_count': 0, 'last_insert_rowid': None}
+            return httpx.Response(200, json={'baton': None, 'base_url': None, 'results': [
+                {'type': 'ok', 'response': {'type': 'execute', 'result': value}} for value in (empty, row, empty)
+            ] + [{'type': 'ok', 'response': {'type': 'close'}}]})
+        client = httpx.Client(transport=httpx.MockTransport(handler), trust_env=False)
+        database = sql.TursoDatabase('libsql://fixture.turso.io', 'fixture-token-' * 4,
+                                    client_factory=lambda: client, reuse_http=True)
+        def read(label, close_http):
+            with database.connect() as db:
+                cursor, = db.read_snapshot([('SELECT ? AS value', (label,))], close_http=close_http)
+                return cursor.fetchone()[0]
+        try:
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                raw = executor.submit(read, 'raw', True)
+                compact = executor.submit(read, 'compact', False)
+>               assert raw.result(timeout=10) == 'raw' and compact.result(timeout=10) == 'compact'
+                       ^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:428: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+label = 'raw', close_http = True
+
+    def read(label, close_http):
+        with database.connect() as db:
+>           cursor, = db.read_snapshot([('SELECT ? AS value', (label,))], close_http=close_http)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:422: TypeError
+_ test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[bytes-snapshot] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f0b4aa6d6e0>
+helper = 'snapshot', fault = 'bytes'
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('fault', ['bytes', 'deadline', 'cancel'])
+    def test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry(monkeypatch, helper, fault):
+        clock, seen = [0.0], []
+        monkeypatch.setattr(sql, 'time', type('Clock', (), {'monotonic': staticmethod(lambda: clock[0])}))
+        if fault == 'bytes':
+            monkeypatch.setattr(sql, 'MAX_BYTES', 1024)
+        class CancelledRead(Exception):
+            pass
+        class FailingStream(httpx.SyncByteStream):
+            closed = False
+            def __iter__(self):
+                if fault == 'cancel':
+                    raise CancelledRead('synthetic cancelled response')
+                if fault == 'deadline':
+                    clock[0] = sql.REQUEST_SECONDS + 1
+                    yield b'{}'
+                else:
+                    yield b'x' * (sql.MAX_BYTES + 1)
+            def close(self):
+                self.closed = True
+        stream = FailingStream()
+        def handler(request):
+            seen.append(request)
+            assert request.headers['connection'] == 'close'
+            return httpx.Response(200, stream=stream)
+        db = connection(handler)
+        with pytest.raises(sql.HostedStorageError):
+            if helper == 'snapshot':
+>               db.read_snapshot([('SELECT 1', ())], close_http=True)
+E               TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:466: TypeError
+_ test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[bytes-once] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f0b4aa6da70>
+helper = 'once', fault = 'bytes'
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('fault', ['bytes', 'deadline', 'cancel'])
+    def test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry(monkeypatch, helper, fault):
+        clock, seen = [0.0], []
+        monkeypatch.setattr(sql, 'time', type('Clock', (), {'monotonic': staticmethod(lambda: clock[0])}))
+        if fault == 'bytes':
+            monkeypatch.setattr(sql, 'MAX_BYTES', 1024)
+        class CancelledRead(Exception):
+            pass
+        class FailingStream(httpx.SyncByteStream):
+            closed = False
+            def __iter__(self):
+                if fault == 'cancel':
+                    raise CancelledRead('synthetic cancelled response')
+                if fault == 'deadline':
+                    clock[0] = sql.REQUEST_SECONDS + 1
+                    yield b'{}'
+                else:
+                    yield b'x' * (sql.MAX_BYTES + 1)
+            def close(self):
+                self.closed = True
+        stream = FailingStream()
+        def handler(request):
+            seen.append(request)
+            assert request.headers['connection'] == 'close'
+            return httpx.Response(200, stream=stream)
+        db = connection(handler)
+        with pytest.raises(sql.HostedStorageError):
+            if helper == 'snapshot':
+                db.read_snapshot([('SELECT 1', ())], close_http=True)
+            else:
+>               db.execute_read_once('SELECT 1', close_http=True)
+E               TypeError: LibsqlConnection.execute_read_once() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:468: TypeError
+_ test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[deadline-snapshot] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f0b4aa46e70>
+helper = 'snapshot', fault = 'deadline'
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('fault', ['bytes', 'deadline', 'cancel'])
+    def test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry(monkeypatch, helper, fault):
+        clock, seen = [0.0], []
+        monkeypatch.setattr(sql, 'time', type('Clock', (), {'monotonic': staticmethod(lambda: clock[0])}))
+        if fault == 'bytes':
+            monkeypatch.setattr(sql, 'MAX_BYTES', 1024)
+        class CancelledRead(Exception):
+            pass
+        class FailingStream(httpx.SyncByteStream):
+            closed = False
+            def __iter__(self):
+                if fault == 'cancel':
+                    raise CancelledRead('synthetic cancelled response')
+                if fault == 'deadline':
+                    clock[0] = sql.REQUEST_SECONDS + 1
+                    yield b'{}'
+                else:
+                    yield b'x' * (sql.MAX_BYTES + 1)
+            def close(self):
+                self.closed = True
+        stream = FailingStream()
+        def handler(request):
+            seen.append(request)
+            assert request.headers['connection'] == 'close'
+            return httpx.Response(200, stream=stream)
+        db = connection(handler)
+        with pytest.raises(sql.HostedStorageError):
+            if helper == 'snapshot':
+>               db.read_snapshot([('SELECT 1', ())], close_http=True)
+E               TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:466: TypeError
+_ test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[deadline-once] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f0b4a6d48d0>
+helper = 'once', fault = 'deadline'
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('fault', ['bytes', 'deadline', 'cancel'])
+    def test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry(monkeypatch, helper, fault):
+        clock, seen = [0.0], []
+        monkeypatch.setattr(sql, 'time', type('Clock', (), {'monotonic': staticmethod(lambda: clock[0])}))
+        if fault == 'bytes':
+            monkeypatch.setattr(sql, 'MAX_BYTES', 1024)
+        class CancelledRead(Exception):
+            pass
+        class FailingStream(httpx.SyncByteStream):
+            closed = False
+            def __iter__(self):
+                if fault == 'cancel':
+                    raise CancelledRead('synthetic cancelled response')
+                if fault == 'deadline':
+                    clock[0] = sql.REQUEST_SECONDS + 1
+                    yield b'{}'
+                else:
+                    yield b'x' * (sql.MAX_BYTES + 1)
+            def close(self):
+                self.closed = True
+        stream = FailingStream()
+        def handler(request):
+            seen.append(request)
+            assert request.headers['connection'] == 'close'
+            return httpx.Response(200, stream=stream)
+        db = connection(handler)
+        with pytest.raises(sql.HostedStorageError):
+            if helper == 'snapshot':
+                db.read_snapshot([('SELECT 1', ())], close_http=True)
+            else:
+>               db.execute_read_once('SELECT 1', close_http=True)
+E               TypeError: LibsqlConnection.execute_read_once() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:468: TypeError
+_ test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[cancel-snapshot] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f0b4a6d5bf0>
+helper = 'snapshot', fault = 'cancel'
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('fault', ['bytes', 'deadline', 'cancel'])
+    def test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry(monkeypatch, helper, fault):
+        clock, seen = [0.0], []
+        monkeypatch.setattr(sql, 'time', type('Clock', (), {'monotonic': staticmethod(lambda: clock[0])}))
+        if fault == 'bytes':
+            monkeypatch.setattr(sql, 'MAX_BYTES', 1024)
+        class CancelledRead(Exception):
+            pass
+        class FailingStream(httpx.SyncByteStream):
+            closed = False
+            def __iter__(self):
+                if fault == 'cancel':
+                    raise CancelledRead('synthetic cancelled response')
+                if fault == 'deadline':
+                    clock[0] = sql.REQUEST_SECONDS + 1
+                    yield b'{}'
+                else:
+                    yield b'x' * (sql.MAX_BYTES + 1)
+            def close(self):
+                self.closed = True
+        stream = FailingStream()
+        def handler(request):
+            seen.append(request)
+            assert request.headers['connection'] == 'close'
+            return httpx.Response(200, stream=stream)
+        db = connection(handler)
+        with pytest.raises(sql.HostedStorageError):
+            if helper == 'snapshot':
+>               db.read_snapshot([('SELECT 1', ())], close_http=True)
+E               TypeError: LibsqlConnection.read_snapshot() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:466: TypeError
+_ test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[cancel-once] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f0b4aad2a50>
+helper = 'once', fault = 'cancel'
+
+    @pytest.mark.parametrize('helper', ['snapshot', 'once'])
+    @pytest.mark.parametrize('fault', ['bytes', 'deadline', 'cancel'])
+    def test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry(monkeypatch, helper, fault):
+        clock, seen = [0.0], []
+        monkeypatch.setattr(sql, 'time', type('Clock', (), {'monotonic': staticmethod(lambda: clock[0])}))
+        if fault == 'bytes':
+            monkeypatch.setattr(sql, 'MAX_BYTES', 1024)
+        class CancelledRead(Exception):
+            pass
+        class FailingStream(httpx.SyncByteStream):
+            closed = False
+            def __iter__(self):
+                if fault == 'cancel':
+                    raise CancelledRead('synthetic cancelled response')
+                if fault == 'deadline':
+                    clock[0] = sql.REQUEST_SECONDS + 1
+                    yield b'{}'
+                else:
+                    yield b'x' * (sql.MAX_BYTES + 1)
+            def close(self):
+                self.closed = True
+        stream = FailingStream()
+        def handler(request):
+            seen.append(request)
+            assert request.headers['connection'] == 'close'
+            return httpx.Response(200, stream=stream)
+        db = connection(handler)
+        with pytest.raises(sql.HostedStorageError):
+            if helper == 'snapshot':
+                db.read_snapshot([('SELECT 1', ())], close_http=True)
+            else:
+>               db.execute_read_once('SELECT 1', close_http=True)
+E               TypeError: LibsqlConnection.execute_read_once() got an unexpected keyword argument 'close_http'
+
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:468: TypeError
+- generated xml file: /workspace/knowledge-read-warm-20261016/transport/artifacts/close-http-red.xml -
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers[snapshot]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_is_local_to_one_read_and_does_not_change_default_or_write_headers[once]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[None-snapshot]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[None-once]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[0-snapshot]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[0-once]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[1-snapshot]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[1-once]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[close-snapshot]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[close-once]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag4-snapshot]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag4-once]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag5-snapshot]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_requires_a_strict_boolean_before_transport[flag5-once]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_concurrent_raw_close_header_does_not_leak_into_compact_snapshot
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[bytes-snapshot]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[bytes-once]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[deadline-snapshot]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[deadline-once]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[cancel-snapshot]
+FAILED casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_close_http_reads_preserve_bounds_and_cancellation_failures_without_retry[cancel-once]
+21 failed, 46 deselected in 0.35s

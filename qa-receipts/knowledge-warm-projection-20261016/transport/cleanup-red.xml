@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.307" timestamp="2026-10-16T19:57:51.907419+00:00" hostname="656813ef2295"><testcase classname="tests.test_public_hosted_read_only_v1" name="test_failed_warmup_closes_owned_resources_even_if_controller_cleanup_fails" time="1.485"><failure message="RuntimeError: synthetic controller cleanup failure">knowledge = &lt;casepath_api.autonomous_knowledge_v1.AutonomousKnowledge object at 0x7fa02193a710&gt;
+
+    def failed_warm(knowledge):
+&gt;       raise HostedStorageError('original warmup validation failure')
+E       casepath_api.hosted_sql_v1.HostedStorageError: original warmup validation failure
+
+casepath-api/tests/test_public_hosted_read_only_v1.py:299: HostedStorageError
+
+During handling of the above exception, another exception occurred:
+
+saved_runtime = (&lt;hosted_hrana_fixture.MockHrana object at 0x7fa02238aa50&gt;, TursoDatabase(credential=&lt;redacted&gt;), &lt;casepath_api.hosted...intake', ...}}], 'claim_id': 'auto_e4f9bf31f47b4988aa829172', 'contract': 'casepath.autonomous-claim/1.0.0', ...}, ...)
+tmp_path = PosixPath('/workspace/knowledge-read-warm-20261016/transport/tmp/pytest-of-agent/pytest-5/test_failed_warmup_closes_owne0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7fa0226ebce0&gt;
+
+    def test_failed_warmup_closes_owned_resources_even_if_controller_cleanup_fails(saved_runtime, tmp_path, monkeypatch):
+        server, *_ = saved_runtime
+        databases, work_closed = [], []
+        def database(url, token, *, reuse_http):
+            value = TursoDatabase(url, token, reuse_http=reuse_http, client_factory=server.client)
+            databases.append(value)
+            return value
+        construct = hosted_app_v1.HostedAutonomousController
+        def controller(*args, **kwargs):
+            value = construct(*args, **kwargs)
+            original = value.shutdown
+            calls = []
+            def shutdown():
+                original()
+                calls.append(True)
+                if len(calls) &gt; 1:
+                    raise RuntimeError('synthetic controller cleanup failure')
+            value.shutdown = shutdown
+            return value
+        close_work = hosted_app_v1.WorkStore.close
+        def close(value):
+            work_closed.append(value)
+            close_work(value)
+        def failed_warm(knowledge):
+            raise HostedStorageError('original warmup validation failure')
+        monkeypatch.setattr(hosted_app_v1, 'TursoDatabase', database)
+        monkeypatch.setattr(hosted_app_v1, 'HostedAutonomousController', controller)
+        monkeypatch.setattr(hosted_app_v1.WorkStore, 'close', close)
+        monkeypatch.setattr(AutonomousKnowledge, 'learning_view', failed_warm)
+        env = {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
+               'CASEPATH_SOURCE_COMMIT': 'a' * 40, 'CASEPATH_TURSO_URL': 'libsql://fixture.turso.io',
+               'TURSO_AUTH_TOKEN': 'fixture-token-' * 4}
+        app = hosted_app_v1.create_hosted_app(environment=env, runtime_directory=tmp_path / 'cleanup-failure')
+        try:
+            with pytest.raises(HostedStorageError, match='original warmup validation failure'):
+&gt;               with TestClient(app):
+                     ^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_public_hosted_read_only_v1.py:310: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:694: in __enter__
+    portal.call(self.wait_startup)
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:729: in wait_startup
+    await receive()
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:720: in receive
+    self.task.result()
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:710: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:151: in __call__
+    await self.app(scope, receive, send)
+casepath-api/casepath_api/hosted_proxy_v1.py:21: in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py:49: in __call__
+    await self.app(scope, receive, send)
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:725: in app
+    await self.lifespan(scope, receive, send)
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:694: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/routing.py:134: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:571: in __aenter__
+    await self._router.startup()
+../casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:673: in startup
+    handler()
+casepath-api/casepath_api/hosted_app_v1.py:63: in startup
+    controller.shutdown()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def shutdown():
+        original()
+        calls.append(True)
+        if len(calls) &gt; 1:
+&gt;           raise RuntimeError('synthetic controller cleanup failure')
+E           RuntimeError: synthetic controller cleanup failure
+
+casepath-api/tests/test_public_hosted_read_only_v1.py:291: RuntimeError</failure></testcase></testsuite></testsuites>

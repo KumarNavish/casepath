@@ -1,0 +1,1 @@
+SELECT 'column' AS kind,name,type AS detail,"notnull" AS required,dflt_value AS default_value,pk,hidden FROM pragma_table_xinfo('autonomous_source_chunks') UNION ALL SELECT type,name,sql,NULL,NULL,NULL,NULL FROM sqlite_schema WHERE tbl_name='autonomous_source_chunks' ORDER BY kind,name

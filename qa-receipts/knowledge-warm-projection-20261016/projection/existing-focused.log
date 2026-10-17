@@ -1,0 +1,249 @@
+..........................FF.......FF31-source warm collection receipt: {'http': 7, 'execute': 6, 'close': 6, 'batch': 0}
+.31-source cold collection receipt: {'http': 12, 'execute': 11, 'close': 11, 'batch': 0}
+.3-source warm snapshot receipt: {'http': 3, 'execute': 2, 'close': 2, 'batch': 0}
+.3-source cold snapshot receipt: {'http': 4, 'execute': 3, 'close': 3, 'batch': 0}
+.....................FF..
+=================================== FAILURES ===================================
+_____ test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages _____
+
+processed_roster = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/knowledge-processed-roster0/cl...ntake', ...}}], 'claim_id': 'auto_5e64d50dada368ffe8b2d713', 'contract': 'casepath.autonomous-claim/1.0.0', ...}, ...])
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_hosted_18_claim_cold_and_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4e110cc7c0>
+
+    def test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages(processed_roster, tmp_path, monkeypatch):
+        server, store, policy, states = hosted_copy(processed_roster, tmp_path)
+        knowledge = AutonomousKnowledge(store, policy)
+        expected = AutonomousKnowledge(SummaryOnlyAdapter(AutonomousStore(processed_roster[0])), policy).view()
+        replays = []
+        original_replay = store._replay
+    
+        def counted_replay(rows, **kwargs):
+            replays.append(len(rows))
+            return original_replay(rows, **kwargs)
+    
+        def forbidden_provider(*args, **kwargs):
+            pytest.fail('A knowledge projection attempted real provider/network dispatch')
+    
+        monkeypatch.setattr(store, '_replay', counted_replay)
+        monkeypatch.setattr(store, 'get', lambda *a, **k: pytest.fail('Knowledge performed per-claim get'))
+        monkeypatch.setattr(store, 'list', lambda *a, **k: pytest.fail('Knowledge requested reconstructed list'))
+        monkeypatch.setattr(httpx.HTTPTransport, 'handle_request', forbidden_provider)
+        measurements = []
+        try:
+            for temperature in ('cold', 'warm'):
+                server.reset_counts()
+                replay_before = len(replays)
+                started = perf_counter()
+                assert knowledge.view() == expected
+                elapsed = perf_counter() - started
+                assert len(replays) == CLAIM_COUNT
+                replay_count = len(replays) - replay_before
+                assert replay_count == (CLAIM_COUNT if temperature == 'cold' else 0)
+                sql = list(statements(server.requests))
+                assert all(statement.strip().split()[0].upper() in {'SELECT', 'BEGIN', 'COMMIT', 'ROLLBACK', 'PRAGMA'}
+                           for statement in sql)
+                assert any(statement.strip().upper() == 'BEGIN' for statement in sql)
+                assert all('IMMEDIATE' not in statement.upper() for statement in sql)
+>               assert len(server.journal_pages) > 1  # This roster actually exercises journal pagination.
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               assert 0 > 1
+E                +  where 0 = len([])
+E                +    where [] = <test_autonomous_knowledge_reads_v1.CountMockHrana object at 0x7f4e10a4b230>.journal_pages
+
+casepath-api/tests/test_autonomous_knowledge_reads_v1.py:567: AssertionError
+_______ test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends _______
+
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_hosted_journal_pages_keep0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4e0f8a8160>
+
+    def test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends(tmp_path, monkeypatch):
+        seed_root = tmp_path / 'seed'
+        seed_root.mkdir()
+        seed = AutonomousStore(seed_root / 'claims.sqlite3')
+        policy = PublicCorpus(default_workspace_corpus_root()).static_policy()
+        states = sorted([seed.intake({'title': f'Paged fixture {index}', 'message': 'Original fixture. ' + 'a' * 4000,
+                                    'files': []}, f'knowledge.snapshot.{index}') for index in range(3)],
+                        key=lambda state: state['claim_id'])
+        server, store, _, _ = hosted_copy((seed.path, seed.source_root, policy, states), tmp_path)
+        with sqlite3.connect(server.path) as db:
+            assert db.execute('PRAGMA journal_mode=WAL').fetchone()[0] == 'wal'
+        peer = AutonomousStore(server.path, seed.source_root)
+        monkeypatch.setattr(store, 'JOURNAL_PAGE_BYTES', 16 * 1024)
+        original_statement = server._statement
+        advanced = []
+        use = {'knowledge_id': 'knowledge_fixture_snapshot', 'version': 1}
+    
+        def append_between_pages(connection, stmt):
+            result = original_statement(connection, stmt)
+            if not advanced and result['rows'] and 'event_json' in [column['name'] for column in result['cols']]:
+                advanced.append(append(peer, states[-1], 'knowledge.used', {'knowledge': use}, 'knowledge.snapshot.advance'))
+            return result
+    
+        monkeypatch.setattr(server, '_statement', append_between_pages)
+        knowledge = AutonomousKnowledge(store, policy)
+        try:
+            server.reset_counts()
+>           assert knowledge.view() == {'versions': [], 'uses': [], 'quarantined': []}
+E           AssertionError: assert {'quarantined...versions': []} == {'quarantined...versions': []}
+E             
+E             Omitting 2 identical items, use -vv to show
+E             Differing items:
+E             {'uses': [{'claim_id': 'auto_c575791c7e31fda2af5aa801', 'knowledge_id': 'knowledge_fixture_snapshot', 'version': 1}]} != {'uses': []}
+E             Use -v to get more diff
+
+casepath-api/tests/test_autonomous_knowledge_reads_v1.py:643: AssertionError
+_ test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[SELECT] _
+
+processed_roster = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/knowledge-processed-roster0/cl...ntake', ...}}], 'claim_id': 'auto_5e64d50dada368ffe8b2d713', 'contract': 'casepath.autonomous-claim/1.0.0', ...}, ...])
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_hosted_unconfirmed_journa0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4e0fceea50>
+phase = 'SELECT'
+
+    @pytest.mark.parametrize('phase', ['SELECT', 'COMMIT'])
+    def test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection(processed_roster, tmp_path, monkeypatch, phase):
+        server, store, policy, _ = hosted_copy(processed_roster, tmp_path)
+        connections = []
+        original_connect = server.connection
+    
+        def tracked_connection():
+            connection = original_connect()
+            connections.append(connection)
+            return connection
+    
+        store.journal.connect = tracked_connection
+        monkeypatch.setattr(store, '_replay', lambda *a, **k: pytest.fail('Unconfirmed rows reached reducer admission'))
+        try:
+            server.reset_counts()
+            server.fail_next('timeout', sql_prefix=phase)
+            with pytest.raises(HostedStorageError, match='unconfirmed'):
+                AutonomousKnowledge(store, policy).view()
+>           assert len(connections) == 1 and connections[0]._closed
+E           assert (2 == 1)
+E            +  where 2 = len([LibsqlConnection(credential=<redacted>), LibsqlConnection(credential=<redacted>)])
+
+casepath-api/tests/test_autonomous_knowledge_reads_v1.py:758: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  casepath_api.hosted_sql_v1:hosted_sql_v1.py:242 hosted_database_failure operation=BEGIN phase=request category=ReadTimeout
+_ test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[COMMIT] _
+
+processed_roster = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/knowledge-processed-roster0/cl...ntake', ...}}], 'claim_id': 'auto_5e64d50dada368ffe8b2d713', 'contract': 'casepath.autonomous-claim/1.0.0', ...}, ...])
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_hosted_unconfirmed_journa1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4e0eaac4b0>
+phase = 'COMMIT'
+
+    @pytest.mark.parametrize('phase', ['SELECT', 'COMMIT'])
+    def test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection(processed_roster, tmp_path, monkeypatch, phase):
+        server, store, policy, _ = hosted_copy(processed_roster, tmp_path)
+        connections = []
+        original_connect = server.connection
+    
+        def tracked_connection():
+            connection = original_connect()
+            connections.append(connection)
+            return connection
+    
+        store.journal.connect = tracked_connection
+        monkeypatch.setattr(store, '_replay', lambda *a, **k: pytest.fail('Unconfirmed rows reached reducer admission'))
+        try:
+            server.reset_counts()
+            server.fail_next('timeout', sql_prefix=phase)
+            with pytest.raises(HostedStorageError, match='unconfirmed'):
+                AutonomousKnowledge(store, policy).view()
+>           assert len(connections) == 1 and connections[0]._closed
+E           assert (2 == 1)
+E            +  where 2 = len([LibsqlConnection(credential=<redacted>), LibsqlConnection(credential=<redacted>)])
+
+casepath-api/tests/test_autonomous_knowledge_reads_v1.py:758: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  casepath_api.hosted_sql_v1:hosted_sql_v1.py:242 hosted_database_failure operation=BEGIN phase=request category=ReadTimeout
+_ test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[128] _
+
+large_native_journal = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/native-large-journal0/claims.s...rkspace/knowledge-warm-projection-20261016/projection/t/existing-focused/native-large-journal0/autonomous-sources-v1'))
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_byte_cutoff_precedes_full0')
+candidate_limit = 128
+
+    @pytest.mark.parametrize('candidate_limit', [128, 2048])
+    def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column(
+            large_native_journal, tmp_path, candidate_limit):
+        original, sources = large_native_journal
+        server = ObservedRows(tmp_path / 'hosted.sqlite3')
+        journal = HostedJournal(tmp_path / 'unused', server.connection)
+        with sqlite3.connect(original) as source, sqlite3.connect(server.path) as target:
+            rows = source.execute('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence',
+                                  (SESSION_ID,)).fetchall()
+            target.executemany('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', rows)
+            # A same-loop/sequence row in another namespace detects an incomplete
+            # join key. Extra SQL columns remain part of exact cache identity.
+            target.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', ('fixture.other-session', *rows[0][1:]))
+            target.execute('ALTER TABLE claim_loop_events RENAME TO fixture_accepted_events')
+            target.execute("ALTER TABLE fixture_accepted_events ADD COLUMN fixture_note TEXT NOT NULL DEFAULT 'original'")
+            target.execute('UPDATE fixture_accepted_events SET fixture_note=loop_id')
+            target.execute('CREATE VIEW claim_loop_events AS SELECT *, fixture_full_payload(event_json) AS fixture_probe '
+                           'FROM fixture_accepted_events')
+        store = HostedAutonomousStore(journal.path, source_root=sources, journal=journal,
+                                      source_store=HostedSources(server.connection))
+        store.KNOWLEDGE_PAGE_ROWS = candidate_limit
+        try:
+            actual = store._knowledge_rows()
+            assert len(server.pages) >= 2  # The byte budget, rather than row count, limits this fixture.
+            assert len(actual) == len(rows)
+            names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
+                     'event_sha256', 'event_json', 'created_at')
+            assert [tuple(row[name] for name in names) for row in actual] == rows
+            assert all(row['fixture_note'] == row['loop_id'] and row['fixture_probe'] == 1 for row in actual)
+>           assert all(page['payload_evaluations'] == page['returned_rows'] for page in server.pages), server.pages
+E           AssertionError: [{'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 27}, {'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 35}]
+E           assert False
+E            +  where False = all(<generator object test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column.<locals>.<genexpr> at 0x7f4e0fc425a0>)
+
+casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py:76: AssertionError
+_ test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[2048] _
+
+large_native_journal = (PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/native-large-journal0/claims.s...rkspace/knowledge-warm-projection-20261016/projection/t/existing-focused/native-large-journal0/autonomous-sources-v1'))
+tmp_path = PosixPath('/workspace/knowledge-warm-projection-20261016/projection/t/existing-focused/test_byte_cutoff_precedes_full1')
+candidate_limit = 2048
+
+    @pytest.mark.parametrize('candidate_limit', [128, 2048])
+    def test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column(
+            large_native_journal, tmp_path, candidate_limit):
+        original, sources = large_native_journal
+        server = ObservedRows(tmp_path / 'hosted.sqlite3')
+        journal = HostedJournal(tmp_path / 'unused', server.connection)
+        with sqlite3.connect(original) as source, sqlite3.connect(server.path) as target:
+            rows = source.execute('SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence',
+                                  (SESSION_ID,)).fetchall()
+            target.executemany('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', rows)
+            # A same-loop/sequence row in another namespace detects an incomplete
+            # join key. Extra SQL columns remain part of exact cache identity.
+            target.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', ('fixture.other-session', *rows[0][1:]))
+            target.execute('ALTER TABLE claim_loop_events RENAME TO fixture_accepted_events')
+            target.execute("ALTER TABLE fixture_accepted_events ADD COLUMN fixture_note TEXT NOT NULL DEFAULT 'original'")
+            target.execute('UPDATE fixture_accepted_events SET fixture_note=loop_id')
+            target.execute('CREATE VIEW claim_loop_events AS SELECT *, fixture_full_payload(event_json) AS fixture_probe '
+                           'FROM fixture_accepted_events')
+        store = HostedAutonomousStore(journal.path, source_root=sources, journal=journal,
+                                      source_store=HostedSources(server.connection))
+        store.KNOWLEDGE_PAGE_ROWS = candidate_limit
+        try:
+            actual = store._knowledge_rows()
+            assert len(server.pages) >= 2  # The byte budget, rather than row count, limits this fixture.
+            assert len(actual) == len(rows)
+            names = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256',
+                     'event_sha256', 'event_json', 'created_at')
+            assert [tuple(row[name] for name in names) for row in actual] == rows
+            assert all(row['fixture_note'] == row['loop_id'] and row['fixture_probe'] == 1 for row in actual)
+>           assert all(page['payload_evaluations'] == page['returned_rows'] for page in server.pages), server.pages
+E           AssertionError: [{'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 27}, {'evaluated_event_bytes': 5249840, 'payload_evaluations': 35, 'returned_rows': 35}]
+E           assert False
+E            +  where False = all(<generator object test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column.<locals>.<genexpr> at 0x7f4e127de400>)
+
+casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py:76: AssertionError
+- generated xml file: /workspace/knowledge-warm-projection-20261016/projection/e/existing-focused.xml -
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages
+FAILED casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends
+FAILED casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[SELECT]
+FAILED casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[COMMIT]
+FAILED casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[128]
+FAILED casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py::test_byte_cutoff_precedes_full_row_materialization_and_retains_every_authority_column[2048]
+6 failed, 59 passed in 73.85s (0:01:13)

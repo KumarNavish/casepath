@@ -1,0 +1,63 @@
+{
+  "final-focused": {
+    "cwd": "/workspace/casepath-release-ae0-shard6",
+    "env_i": {
+      "HOME": "/workspace/knowledge-warm-projection-20261016/projection/h",
+      "TMPDIR": "/workspace/knowledge-warm-projection-20261016/projection/t",
+      "TMP": "/workspace/knowledge-warm-projection-20261016/projection/t",
+      "TEMP": "/workspace/knowledge-warm-projection-20261016/projection/t",
+      "PATH": "/usr/bin:/bin",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONNOUSERSITE": "1",
+      "PYTHONPATH": "/workspace/casepath-release-ae0-shard6/casepath-api"
+    },
+    "argv": [
+      ".runtime/casepath-dev-v2/venv/bin/python",
+      "-m",
+      "pytest",
+      "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py",
+      "casepath-api/tests/test_hosted_source_batch_v1.py",
+      "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py",
+      "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends",
+      "-q",
+      "-s",
+      "--basetemp=/workspace/knowledge-warm-projection-20261016/projection/t/final-focused",
+      "--junitxml=/workspace/knowledge-warm-projection-20261016/projection/e/final-focused.xml"
+    ],
+    "stdout_stderr": "/workspace/knowledge-warm-projection-20261016/projection/e/final-focused.log",
+    "exit": 0,
+    "source_commit": "af7dd2ddb303fbf25a9215f6f59d593bfcdb736d"
+  },
+  "final-autonomous-reads": {
+    "cwd": "/workspace/casepath-release-ae0-shard6",
+    "env_i": {
+      "HOME": "/workspace/knowledge-warm-projection-20261016/projection/h",
+      "TMPDIR": "/workspace/knowledge-warm-projection-20261016/projection/t",
+      "TMP": "/workspace/knowledge-warm-projection-20261016/projection/t",
+      "TEMP": "/workspace/knowledge-warm-projection-20261016/projection/t",
+      "PATH": "/usr/bin:/bin",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONNOUSERSITE": "1",
+      "PYTHONPATH": "/workspace/casepath-release-ae0-shard6/casepath-api"
+    },
+    "argv": [
+      ".runtime/casepath-dev-v2/venv/bin/python",
+      "-m",
+      "pytest",
+      "casepath-api/tests/test_autonomous_knowledge_reads_v1.py",
+      "-q",
+      "-s",
+      "--basetemp=/workspace/knowledge-warm-projection-20261016/projection/t/final-autonomous-reads",
+      "--junitxml=/workspace/knowledge-warm-projection-20261016/projection/e/final-autonomous-reads.xml"
+    ],
+    "stdout_stderr": "/workspace/knowledge-warm-projection-20261016/projection/e/final-autonomous-reads.log",
+    "exit": 0,
+    "source_commit": "af7dd2ddb303fbf25a9215f6f59d593bfcdb736d"
+  }
+}

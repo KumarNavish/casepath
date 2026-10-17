@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.640" timestamp="2026-10-16T20:21:21.578543+00:00" hostname="656813ef2295"><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool" time="1.456"><failure message="AssertionError: assert (['keep-alive', 'keep-alive', 'keep-alive'] and False)&#10; +  where False = all(&lt;generator object test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f02958e65a0&gt;)">native_proof_store = (&lt;test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7f0295af6660&gt;, &lt;casepath_api.hosted_storage_v1.HostedAuto...usStore object at 0x7f0295af7e00&gt;, &lt;casepath_api.autonomous_knowledge_v1.AutonomousKnowledge object at 0x7f0295628ad0&gt;)
+
+    def test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool(native_proof_store):
+        server, _, knowledge = native_proof_store
+        original = knowledge.learning_view()
+        raw = [header for payload, header in server.raw_http_policy if payload]
+        compact = [header for payload, header in server.raw_http_policy if not payload]
+&gt;       assert raw and all(header == 'close' for header in raw)
+E       AssertionError: assert (['keep-alive', 'keep-alive', 'keep-alive'] and False)
+E        +  where False = all(&lt;generator object test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f02958e65a0&gt;)
+
+casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py:484: AssertionError</failure></testcase></testsuite></testsuites>
