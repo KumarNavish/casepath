@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/verify_prepared_capsules.py", line 100, in <module>
+    verify_one(sys.argv[1])
+    ~~~~~~~~~~^^^^^^^^^^^^^
+  File "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/verify_prepared_capsules.py", line 80, in verify_one
+    assert len(rows) == receipt['static_file_count'] == 39
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -1,0 +1,54 @@
+{
+  "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "prior_candidate": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "fresh_count": 2764,
+  "baseline_count": 2749,
+  "count_delta": 15,
+  "added_ids": [
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[chunk_index-1.5]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[chunk_index-7]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[sha256-ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[sha256-wrong storage type]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_cancelled_final_atomic_request_propagates_without_fallback_or_admission",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_combined_select_budget_keeps_every_source_batch_and_bounded_fallback[125]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_combined_select_budget_keeps_every_source_batch_and_bounded_fallback[126]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_aggregate_malformation_never_retries[journal]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_aggregate_malformation_never_retries[source]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_proof_follows_all_local_validation[journal]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_proof_follows_all_local_validation[source]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_missing_admitted_candidate_keeps_existing_bounded_validation[rows]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_missing_admitted_candidate_keeps_existing_bounded_validation[state]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_separate_source_primary_cannot_borrow_journal_database_proof",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unproven_factory_wrapper_retains_separate_authority_proofs",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes"
+  ],
+  "removed_ids": [
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes"
+  ],
+  "renamed_tests": [
+    {
+      "old_id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes",
+      "new_id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes",
+      "reason": "The same warm-read authority regression now requires one complete atomic proof instead of two sequential proofs. Raw-byte, write-refusal, exact-output and freshness assertions remain and are strengthened."
+    }
+  ],
+  "genuinely_new_ids": [
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[chunk_index-1.5]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[chunk_index-7]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[sha256-ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_atomic_proof_preserves_every_source_identity_column_and_type[sha256-wrong storage type]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_cancelled_final_atomic_request_propagates_without_fallback_or_admission",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_combined_select_budget_keeps_every_source_batch_and_bounded_fallback[125]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_combined_select_budget_keeps_every_source_batch_and_bounded_fallback[126]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_aggregate_malformation_never_retries[journal]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_aggregate_malformation_never_retries[source]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_proof_follows_all_local_validation[journal]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_final_atomic_proof_follows_all_local_validation[source]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_missing_admitted_candidate_keeps_existing_bounded_validation[rows]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_missing_admitted_candidate_keeps_existing_bounded_validation[state]",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_separate_source_primary_cannot_borrow_journal_database_proof",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_unproven_factory_wrapper_retains_separate_authority_proofs"
+  ],
+  "all_other_prior_ids_included": true,
+  "prior_ids_sha256": "2774ee7f663dd8ab44d1d069a9a43289596c51220cd6922d050807fa1907da58"
+}

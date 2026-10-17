@@ -1,0 +1,108 @@
+{
+  "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "manifest_sha256": "1d4da0d965b790395b2d45979f04cc5e8f391b8a8accbeee7a6b1253d472c758",
+  "sealed_files_verified": 1714,
+  "against": "immutable canonical Git blobs, independent of prepared working trees",
+  "source_paths_exact_worker_bytes": [
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "worker_commit": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+      "sha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f"
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.css",
+      "worker_commit": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+      "sha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119"
+    },
+    {
+      "path": "casepath/assets/autonomous-entry-v1.js",
+      "worker_commit": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+      "sha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17"
+    },
+    {
+      "path": "casepath/tools/build_static_site.py",
+      "worker_commit": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+      "sha256": "576654935aace0a9361e42daed4b11f52ea531b203e299d34a4c6ef2fb731318"
+    },
+    {
+      "path": "casepath/assets/autonomous-language-v1.js",
+      "worker_commit": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+      "sha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
+    },
+    {
+      "path": "casepath-qa/autonomous-language-v1.test.cjs",
+      "worker_commit": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+      "sha256": "3022e3f51c0bfaa4508b7db19d3fa51bfee0001cb21572d70cf376d7875789b6"
+    },
+    {
+      "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
+      "worker_commit": "5975246c74ce14bc48763d9c6cc8a98a8fa3bfee",
+      "sha256": "0a0c7a43e9b5a3074593b3b3eb0b2514a1b7b775cb3450b4a8fef56dafa5ae6f"
+    },
+    {
+      "path": "casepath-qa/unified-product-browser-v1.test.cjs",
+      "worker_commit": "5975246c74ce14bc48763d9c6cc8a98a8fa3bfee",
+      "sha256": "c77fa7e8245218543eb7220a6405c0c3b1ada186320e6bcf456bfa08f18bf2b4"
+    },
+    {
+      "path": "casepath/tools/test_build_deployment_identity.py",
+      "worker_commit": "5975246c74ce14bc48763d9c6cc8a98a8fa3bfee",
+      "sha256": "afc469b1dfabb1e13dfd0e77851030e372691f4d3dbef06a6e1868737fb5980e"
+    },
+    {
+      "path": "casepath-api/casepath_api/autonomous_store_v1.py",
+      "worker_commit": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+      "sha256": "ae42896a74867342117dc407bcadd3ba3a01f494fecca489969b00943744a06f"
+    },
+    {
+      "path": "casepath-api/casepath_api/hosted_storage_v1.py",
+      "worker_commit": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+      "sha256": "737820c41572e97841bde2ff7b87b91e668cb7dce1be93296576c53ff0a858dd"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py",
+      "worker_commit": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+      "sha256": "785e43b4b6c6047f26eff5e920ed5f89ecdac9b41ba3d4698076771a50478890"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py",
+      "worker_commit": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+      "sha256": "97c7904ff8551e6d7f6e1901dd01d74427ee6839e3237b4cb27c228e65683e96"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_source_batch_v1.py",
+      "worker_commit": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+      "sha256": "ba89c9df7f180313d8adc9b38529e3252d18879fca5d7b3254757faef6172fd8"
+    }
+  ],
+  "only_expected_changed_paths": [
+    "casepath-api/casepath_api/autonomous_store_v1.py",
+    "casepath-api/casepath_api/hosted_storage_v1.py",
+    "casepath-api/tests/test_autonomous_knowledge_reads_v1.py",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py",
+    "casepath-api/tests/test_hosted_source_batch_v1.py",
+    "casepath-qa/autonomous-language-v1.test.cjs",
+    "casepath-qa/autonomous-workspace-v1.test.cjs",
+    "casepath-qa/unified-product-browser-v1.test.cjs",
+    "casepath/assets/autonomous-entry-v1.js",
+    "casepath/assets/autonomous-language-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/index.html",
+    "casepath/source-manifest.json",
+    "casepath/tools/build_static_site.py",
+    "casepath/tools/test_build_deployment_identity.py"
+  ],
+  "instructions_unchanged_from65": true,
+  "baseline_inventory_ids": 2749,
+  "baseline_inventory_sha256": "2774ee7f663dd8ab44d1d069a9a43289596c51220cd6922d050807fa1907da58",
+  "explicit_renamed_ids": [
+    {
+      "old_id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes",
+      "new_id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes"
+    }
+  ],
+  "tests_executed_by_this_check": 0,
+  "source_modified": false,
+  "verified_epoch": 1792277341.0053542
+}

@@ -1,0 +1,50 @@
+{
+  "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "manifest_sha256": "1d4da0d965b790395b2d45979f04cc5e8f391b8a8accbeee7a6b1253d472c758",
+  "full_inventory": 2764,
+  "baseline_inventory": 2749,
+  "genuinely_new_ids": 15,
+  "raw_added_ids": 16,
+  "raw_removed_ids": 1,
+  "explicit_renames": [
+    {
+      "old_id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes",
+      "new_id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes",
+      "reason": "The same warm-read authority regression now requires one complete atomic proof instead of two sequential proofs. Raw-byte, write-refusal, exact-output and freshness assertions remain and are strengthened."
+    }
+  ],
+  "all_other_2749_baseline_ids_included": true,
+  "cloud_assigned": 2637,
+  "mac_explicit_partition": 127,
+  "mac_raw_inspected_in_cloud": false,
+  "known_skips": 10,
+  "counts": {
+    "1": 9,
+    "2": 598,
+    "3": 403,
+    "4": 473,
+    "5": 496,
+    "6": 658
+  },
+  "estimated_phase_seconds": {
+    "1": 533.3211972370045,
+    "2": 398.0159113109112,
+    "3": 398.01610587583855,
+    "4": 398.01594036305323,
+    "5": 398.0160196648212,
+    "6": 398.0159361107508
+  },
+  "no_overlap_or_gaps": true,
+  "whole_file_partition": true,
+  "serialized_launcher_port_group": [
+    "casepath-api/tests/test_agent_demo_launcher.py",
+    "casepath/tools/test_casepath_release.py",
+    "casepath/tools/test_build_deployment_identity.py"
+  ],
+  "collection_physical_clone": "/workspace/casepath-release-ae0-shard4",
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "cloud_ids_sha256": "40bb493f9ad6f87b7f4a84b57a6cc2f575c2b899d88c34ba2e896dba070852b5",
+  "full_ids_sha256": "bb880afa11de431c7c635364ddc486c00b07e564a08b9e9f910a565b19c1da2c",
+  "free_bytes": 4096008192,
+  "test_run_authorization": "FINAL_GATE_AUTHORIZED"
+}

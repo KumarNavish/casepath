@@ -1,0 +1,74 @@
+[
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/harness/casepath_shard_observer.py",
+    "source_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/casepath_shard_observer.py",
+    "target_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+  },
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/harness/prepare_clones.py",
+    "source_sha256": "c725fedf7b806c4274bd6e73c30fe335ecf707905e356eb7bdace46df6237bb8",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/prepare_clones.py",
+    "target_sha256": "d602ea41938dfd68bda4e23567e94752c8ceb0f85bf48d95459d1505b6d4b3aa"
+  },
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/harness/run_shard.py",
+    "source_sha256": "15418d4eb43f9f3ba359a38f99a3e7a222e1f900fb6203a1172bdc65a58995d8",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/run_shard.py",
+    "target_sha256": "195c079b623c5c4641fafef5b35ef27fb9ccc763bb9a726d3e36f6bd8f619be8"
+  },
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/harness/verify_prepared_capsules.py",
+    "source_sha256": "3c64c3041334e2ed5d46f2caed1b6d94930a70128c6e21824e2e7832bc014c32",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/verify_prepared_capsules.py",
+    "target_sha256": "8e931adadf189b41330ff4ddb58e57a2152a6354a9afe298c8bf721ae7ba36da"
+  },
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/coordinator/verify.py",
+    "source_sha256": "81a2a936c60f1a489ceb9c891a081e2885e540b643a4b9e1a2d337b2d317c037",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/verify.py",
+    "target_sha256": "adf941c8ac0291acf13abc8f879a7ec8e8d2c2c24c5976f42d1d34f259c84d94"
+  },
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/coordinator/reconcile.py",
+    "source_sha256": "11f385d4736b51be2e4952c1a14bfbd973c5da517e550a0d6468be4660d4ae2e",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/reconcile.py",
+    "target_sha256": "bd8c6ad1f62c08079c8a7f11ab575cbbbf3d929a927347f4127ea2afcb341c09"
+  },
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/mac-ids.txt",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/mac-ids.txt",
+    "sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/known-skips.json",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/known-skips.json",
+    "sha256": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/collected-ids.txt",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/prior-collected-ids.txt",
+    "sha256": "2774ee7f663dd8ab44d1d069a9a43289596c51220cd6922d050807fa1907da58",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/per-file-durations.json",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/prior-per-file-durations.json",
+    "sha256": "707906e8416520afaa56f7a3d7b59ef477383e44898a2c6e711f5647e32bd244",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/shard-map.json",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/prior-shard-map.json",
+    "sha256": "6c190317b83a9ff4f23da9a09c6bc2c3fec89a3a88bc6f30b67195fdb27c3275",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/atomic-proof-20261017/export/renamed-test-ids.json",
+    "target": "/workspace/casepath-roles-final-gate-c925a026-20261018/renamed-test-ids.json",
+    "sha256": "ebf00d59009d74a2394bf84060426d67ea0310f1d8ba9c3d2e7ccd9027dd95a5",
+    "byte_equal": true
+  }
+]

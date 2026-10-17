@@ -1,0 +1,39 @@
+{
+  "stage": "preparation bootstrap before source checkout/test",
+  "attempt": 1,
+  "exit_code": 1,
+  "diagnosis": "Prior independent cb648a source has intentionally inherited stale manifest; checkout is Git-clean and disk matches its commit. Validate canonical Git source bytes instead of assuming prior seal current. No test attempted.",
+  "mismatches": [
+    {
+      "path": "casepath-api/casepath_api/autonomous_store_v1.py",
+      "manifest_sha256": "111e93b616abca7942d81fb38de91bf2cfd3e6b30794ab682178696b1eda8483",
+      "disk_sha256": "ae42896a74867342117dc407bcadd3ba3a01f494fecca489969b00943744a06f",
+      "git_blob_equals_disk": true
+    },
+    {
+      "path": "casepath-api/casepath_api/hosted_storage_v1.py",
+      "manifest_sha256": "cd72f4bde5627754caeb11e1dc537d62bd8d2c865b36acc99e061de9e96ae4f0",
+      "disk_sha256": "737820c41572e97841bde2ff7b87b91e668cb7dce1be93296576c53ff0a858dd",
+      "git_blob_equals_disk": true
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py",
+      "manifest_sha256": "0b14f0d3ab9d6a10712342e5a064d52233fe1e35770a6396e2e0aa33e54bac0e",
+      "disk_sha256": "785e43b4b6c6047f26eff5e920ed5f89ecdac9b41ba3d4698076771a50478890",
+      "git_blob_equals_disk": true
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py",
+      "manifest_sha256": "2b4b0f9faa32da0bb27878e23433c83fe0c81e5d2d53177cc36f493865d2846a",
+      "disk_sha256": "97c7904ff8551e6d7f6e1901dd01d74427ee6839e3237b4cb27c228e65683e96",
+      "git_blob_equals_disk": true
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_source_batch_v1.py",
+      "manifest_sha256": "f53cd1bf44734ddc5b2d8a45b79d84e577be468f3756203063cc3fdf93b7c3f0",
+      "disk_sha256": "ba89c9df7f180313d8adc9b38529e3252d18879fca5d7b3254757faef6172fd8",
+      "git_blob_equals_disk": true
+    }
+  ],
+  "epoch": 1792277386.9838934
+}
