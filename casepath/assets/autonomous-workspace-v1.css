@@ -918,3 +918,56 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 @keyframes au-learning-reveal { from { transform:translateY(5px); } to { transform:translateY(0); } }
 @keyframes au-learning-node-reveal { from { transform:translateY(4px); } to { transform:translateY(0); } }
 @keyframes au-learning-node-appear { from { opacity:0; } to { opacity:1; } }
+
+/* Recorded roles remain readable without colour or motion. */
+.au-workspace { --au-muted:#465e54; --au-line:#73857a; }
+.au-workspace :is(button,a,input,select,textarea,summary,[tabindex]):focus-visible { outline:3px solid #164f88!important; outline-offset:3px; scroll-margin:20px; }
+.au-workspace :is(button,input,select,textarea,summary) { font-size:max(16px,1em); }
+.au-workspace :is(button,summary) { min-height:24px; }
+.au-workspace :is(.au-meta,.au-eyebrow,.au-reading-label,.au-record-context,.au-access-label,.au-node-condition,.au-node-state,.au-node-relation,.au-event-list time,.au-claim-state,.au-read-state,.au-source-list,.au-document-review,.au-chain,.au-reuse-record,.au-knowledge-change) { font-size:16px; }
+.au-workspace .au-role-badge { display:inline-flex!important; align-items:center; gap:6px; width:max-content; max-width:100%; margin:0 6px 0 0; padding:2px 7px; border:1px solid currentColor; border-radius:4px; background:#edf1ed; color:#254b3f; font-size:16px!important; line-height:1.4!important; font-weight:600; vertical-align:middle; white-space:nowrap; }
+.au-workspace .au-role-shape { display:inline-block!important; flex:none; width:9px; height:9px; margin:0!important; background:currentColor; }
+.au-workspace [data-au-role=reader] { background:#eaf2ff; color:#164f88; border-radius:14px; }
+.au-workspace [data-au-role=reader] .au-role-shape { border-radius:50%; }
+.au-workspace [data-au-role=checker] { background:#e5f3e9; color:#245c39; }
+.au-workspace [data-au-role=checker] .au-role-shape { transform:rotate(45deg); width:8px; height:8px; }
+.au-workspace [data-au-role=rulebook] { background:#f9edcf; color:#684300; border-radius:0; }
+.au-workspace [data-au-role=rulebook] .au-role-shape { height:10px; width:8px; border:1px solid currentColor; background:repeating-linear-gradient(to bottom,currentColor 0 1px,transparent 1px 3px); }
+.au-workspace [data-au-role=memory] { background:#f1eafa; color:#59357b; border-radius:4px 12px 4px 12px; }
+.au-workspace [data-au-role=memory] .au-role-shape { border-radius:50%; width:10px; height:10px; border:2px solid currentColor; background:transparent; }
+.au-workspace .au-now { display:flex; flex-wrap:wrap; align-items:baseline; gap:7px; margin:12px 0 18px; padding:10px 0; border-block:1px solid var(--au-line); font-size:16px; line-height:1.5; }
+.au-workspace .au-now-label { font-weight:600; }
+.au-workspace .au-now [data-au-now-copy] { flex:1 1 280px; }
+.au-workspace .au-now [data-au-now-result] { flex-basis:100%; margin:0; }
+.au-workspace .au-now [data-au-now-result]:empty { display:none; }
+.au-workspace .au-role-explanation { margin:0 0 16px; font-size:16px; }
+.au-workspace .au-role-explanation summary { width:max-content; max-width:100%; cursor:pointer; padding:8px 0; }
+.au-workspace .au-role-explanation p { margin:8px 0; max-width:65ch; }
+.au-workspace .au-role-explanation ul { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 22px; padding:0; list-style:none; max-width:900px; }
+.au-workspace .au-role-explanation li { display:flex; align-items:start; gap:7px; }
+.au-workspace .au-role-explanation li > span:last-child { flex:1; }
+.au-workspace .au-stage-source-title .au-role-badge { margin-bottom:5px; }
+.au-workspace .au-stage-fact > .au-role-badge { margin-bottom:5px; }
+.au-workspace .au-node-copy > .au-role-badge { margin-bottom:5px; }
+.au-workspace .au-stage-excerpt-context { white-space:pre-wrap; overflow:visible; }
+.au-workspace :is(.au-identity-header,.au-work-head,.au-work-controls,.au-context-nav,.au-collection-tools,.au-stage-transport,.au-learning-transport) { min-width:0; max-width:100%; }
+.au-workspace :is(.au-learning-track,.au-learning-timeline,.au-learning-dates,.au-learning-lane,.au-learning-day) { min-width:0; }
+.au-workspace .au-stage-transport { flex-wrap:wrap; scroll-margin:24px; }
+.au-workspace .au-stage-scrubber { flex:1 1 160px; }
+.au-workspace .au-recorded-wording { margin:8px 0; font-size:16px; }
+.au-workspace .au-operation-passage mark { color:var(--au-ink); background:#e3ebc9; }
+@media (pointer:coarse) { .au-workspace :is(button,a,summary,input[type=range],input[type=checkbox]) { min-height:44px; } }
+@media (max-width:700px) {
+  .au-workspace .au-role-explanation ul { grid-template-columns:1fr; }
+  .au-workspace .au-identity-header { flex-wrap:wrap; }
+  .au-workspace .au-main { padding-inline:16px; }
+  .au-workspace .au-nav { flex-wrap:wrap; gap:8px; }
+  .au-workspace .au-now [data-au-now-copy] { flex-basis:100%; }
+  .au-workspace .au-stage-process .au-graph-rank:has([data-au-stage-active=true]) { width:min(340px,calc(100vw - 52px)); flex-basis:min(340px,calc(100vw - 52px)); }
+  .au-workspace .au-stage-process .au-graph { padding-inline:4px; }
+  .au-workspace .au-stage-source .au-operation-reading { padding:12px; }
+  .au-workspace .au-stage-slot,.au-workspace .au-stage-fact { margin-left:8px; max-width:calc(100% - 8px); }
+  .au-workspace .au-learning-transport { flex-wrap:wrap; }
+  .au-workspace .au-learning-transport label { min-width:0; flex:1 1 180px; }
+  .au-workspace .au-learning-transport input { width:100%; }
+}
