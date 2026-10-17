@@ -143,11 +143,16 @@
     const reference = receipt?.reference_execution?.config;
     const call = providerCall(receipt,stage);
     if (call) return {kind:'model',label:`AI model: ${call.model}`,model:call.model};
-    if (reference?.mode === 'deterministic_reference' && reference.provider_calls === 0
+    const referenceCall = stage === 'verify' ? receipt?.verifier_receipt : receipt?.proposal_receipt;
+    if (reference?.contract === 'casepath.deterministic-reference/1.0.0'
+      && reference.mode === 'deterministic_reference' && reference.provider_calls === 0
+      && receipt.operation === 'accept_verified_interpretation' && Boolean(text(receipt.workflow_id))
+      && referenceCall?.contract === reference.contract && referenceCall.provider_calls === 0
+      && referenceCall.stage === (stage === 'verify' ? 'verify_reference' : 'interpret_reference')
+      && referenceCall.identity?.workflow_id === receipt.workflow_id && seal(referenceCall.receipt_sha256)
+      && (!state?.claim_id || referenceCall.identity.claim_id === state.claim_id)
       && (!current || current.execution_mode === 'deterministic_reference')) return {kind:'rules',label:'Fixed rules',model:null};
-    // Knowledge retains its source outcome, but does not inherit an absent model receipt.
-    if (context.source_outcome?.reference_provenance?.mode === 'deterministic_reference'
-      && context.policy_id === 'casepath.bounded-reference-assessment/1.0.0') return {kind:'rules',label:'Fixed rules',model:null};
+    // A retained source outcome alone does not record the calls behind a knowledge version.
     return {kind:'unknown',label:'CasePath',model:null};
   }
 
@@ -211,6 +216,70 @@
       recordedResult:text(operation.result?.summary) || text(operation.result?.reason),details:operation};
   }
 
+  const legalFindingLabels = Object.freeze({
+    residential_tenancy_scope:[
+      'The residential tenancy is supported.',
+      'Residential tenancy is not supported.',
+      'Whether this is a residential tenancy is still unknown.'
+    ],
+    objective_use_impairment:[
+      'The defect limits normal use of the home.',
+      'A loss of normal use is not supported.',
+      'Whether the defect limits normal use is still unknown.'
+    ],
+    outside_small_tenant_maintenance_and_no_tenant_cause:[
+      'The defect is outside small tenant repairs, and tenant fault is not supported.',
+      'The checks do not confirm both repair responsibility and absence of tenant fault.',
+      'Repair responsibility and possible tenant fault remain open.'
+    ],
+    landlord_first_knowledge:[
+      "The landlord's first knowledge of the defect is documented.",
+      "The landlord's first knowledge of the defect is not supported.",
+      'When the landlord first knew is still unknown.'
+    ],
+    continuing_defect_without_remedy:[
+      'The defect continues without a lasting repair.',
+      'A continuing unrepaired defect is not supported.',
+      'Whether the defect has been fixed is still unknown.'
+    ],
+    issuer_authority_and_received_packet:[
+      "The sender's authority and received notice are documented.",
+      "The sender's authority and received notice are not both supported.",
+      "The sender's authority or received notice remains unknown."
+    ],
+    complete_channel_archive:[
+      'The complete notice and delivery record are documented.',
+      'A complete notice and delivery record is not supported.',
+      'Whether the notice and delivery record is complete remains unknown.'
+    ],
+    canton_approved_form:[
+      'The termination notice has the required official form.',
+      'The termination notice is missing the required official form.',
+      'Whether the termination notice uses the required official form is still unknown.'
+    ],
+    ordinary_non269c_tenancy:[
+      'An ordinary tenancy without an agreed rent increase is documented.',
+      'The checks do not confirm an ordinary tenancy without an agreed rent increase.',
+      'Whether the tenancy has an agreed rent increase remains unknown.'
+    ],
+    issuer_authority_and_complete_packet:[
+      "The sender's authority and complete original notice are documented.",
+      "The sender's authority and complete original notice are not both supported.",
+      "The sender's authority or complete original notice remains unknown."
+    ],
+    contemporaneous_substantive_reasons:[
+      'The rent increase notice includes reasons supplied with the notice.',
+      'The rent increase notice is missing reasons supplied with the notice.',
+      'Whether reasons came with the rent increase notice is still unknown.'
+    ],
+    later_email_is_not_original_reasons:[
+      'The later email was not part of the original reasons.',
+      'The checks do not support separating the later email from the original reasons.',
+      'Whether the email came with the original reasons remains unknown.'
+    ]
+  });
+  const defectEligibilityChecks = Object.freeze(['residential_tenancy_scope','objective_use_impairment',
+    'outside_small_tenant_maintenance_and_no_tenant_cause','landlord_first_knowledge','continuing_defect_without_remedy']);
   function outcomePresentation(state = {}) {
     const outcome = state.outcome || state.deferral || {};
     const predicates = list(outcome.legal_predicates);
@@ -218,11 +287,29 @@
     const missing = list(outcome.missing_evidence).length, unresolved = list(outcome.unresolved_facts).length;
     const limits = list(outcome.authority_limits).length;
     const supported = predicates.length > 0 && !unknown && !missing && !unresolved && outcome.assessment_status === 'complete';
-    const summary = supported ? copy.supported : missing ? 'More documents are needed.'
+    const findings = [];
+    for (const id of Object.keys(legalFindingLabels)) {
+      const matches = predicates.filter(row => row.predicate_id === id);
+      if (!matches.length) continue;
+      const status = matches.length === 1 && ['supported','failed'].includes(matches[0].status) ? matches[0].status : 'unknown';
+      findings.push({id,status,summary:legalFindingLabels[id][status === 'supported' ? 0 : status === 'failed' ? 1 : 2]});
+    }
+    const finding = id => findings.find(row => row.id === id);
+    const notice = finding('canton_approved_form') || finding('contemporaneous_substantive_reasons');
+    const defect = defectEligibilityChecks.slice(1).some(id => finding(id));
+    const eligible = defectEligibilityChecks.every(id => finding(id)?.status === 'supported') && supported;
+    // A failed form/reason check is a recorded finding, never an award or real-world action.
+    const summary = notice ? notice.summary : defect ? eligible
+      ? 'The checks support repair and rent reduction eligibility.' : 'Repair and rent reduction eligibility remain open.'
+      : findings[0]?.summary || (missing ? 'More documents are needed.'
       : unresolved || unknown ? 'Some facts still need proof.' : state.deferral ? 'Work stopped for the recorded reason.'
-      : state.outcome ? 'A result is recorded.' : 'No result is recorded yet.';
+      : state.outcome ? 'A result is recorded.' : 'No result is recorded yet.');
+    const constraints = [missing ? 'More documents are needed.' : '',
+      unresolved || unknown ? 'Some facts still need proof.' : '',
+      limits ? 'Real-world action still needs its own authority.' : ''].filter(Boolean);
     return {label:supported ? 'Document checks complete' : state.outcome ? 'Recorded result' : state.deferral ? 'Work stopped' : 'Result pending',
       summary,nextAction:missing || unresolved || unknown || limits || outcome.status === 'deferred' ? copy.waiting : 'Read the recorded result and its sources.',
+      findings,support:supported ? copy.supported : '',constraints,
       recordedSummary:text(outcome.summary) || text(outcome.reason),details:outcome};
   }
 

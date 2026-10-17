@@ -96,6 +96,29 @@ test('the actual reference packet proves fixed rules and zero provider calls',()
   }
 });
 
+test('reference labels require numeric zero calls in the matching actual workflow receipts',()=>{
+  const reference=recorded[0];
+  for(const stage of ['interpret','verify']){
+    assert.equal(language.provenancePresentation({state:reference},stage).label,'Fixed rules');
+    const field=stage==='verify'?'verifier_receipt':'proposal_receipt';
+    for(const mutate of [
+      r=>{r.reference_execution.config.provider_calls=1;},r=>{delete r.reference_execution.config.provider_calls;},
+      r=>{r.reference_execution.config.provider_calls='0';},r=>{r[field].provider_calls=1;},
+      r=>{delete r[field].provider_calls;},r=>{r[field].provider_calls='0';},
+      r=>{r[field].identity.workflow_id='another-run';},r=>{r[field].identity.claim_id='another-claim';},
+      r=>{delete r[field];},r=>{r.reference_execution.config.contract='generic-mode';}
+    ]){const state=structuredClone(reference);mutate(currentReceipt(state));assert.equal(language.provenancePresentation({state},stage).label,'CasePath');}
+  }
+  for(const calls of [0,1,'0',undefined]){
+    const value={policy_id:'casepath.bounded-reference-assessment/1.0.0',
+      source_outcome:{reference_provenance:{mode:'deterministic_reference',provider_calls:calls}}};
+    assert.equal(language.provenancePresentation(value).label,'CasePath');
+    assert.equal(language.knowledgePresentation(value).how,'CasePath');
+    assert.equal(language.provenancePresentation({mode:'deterministic_reference',provider_calls:calls}).label,'CasePath');
+    assert.equal(language.provenancePresentation({receipt:{reference_execution:{config:{mode:'deterministic_reference',provider_calls:calls}}}}).label,'CasePath');
+  }
+});
+
 test('operation role mapping, unknown fallback and phase events preserve the recorded distinction',()=>{
   const cases=[
     ['fact.extract',{verification_required:true},'reader','Found a possible fact'],
@@ -157,7 +180,9 @@ test('document titles are separate from original filenames and exact recorded wo
 
 test('outcome summaries follow only recorded checks, open facts, gaps and authority limits',()=>{
   const reference=recorded[0],before=JSON.stringify(reference),view=language.outcomePresentation(reference);
-  assert.equal(view.summary,'Supported by the documents.');assert.equal(view.recordedSummary,reference.outcome.summary);
+  assert.equal(view.summary,'The checks support repair and rent reduction eligibility.');assert.equal(view.recordedSummary,reference.outcome.summary);
+  assert.equal(view.support,'Supported by the documents.');
+  assert.deepEqual(view.constraints,['Real-world action still needs its own authority.']);
   assert.equal(view.nextAction,"Waiting for the listed documents or a person's go-ahead.");
   assert.equal(JSON.stringify(reference),before);
   assert.equal(language.outcomePresentation(saved).summary,'Some facts still need proof.');
@@ -166,9 +191,9 @@ test('outcome summaries follow only recorded checks, open facts, gaps and author
   for(const change of [
     s=>{s.outcome.legal_predicates[0].status='unknown';},s=>{s.outcome.assessment_status='incomplete';},
     s=>{s.outcome.missing_evidence=[{document_type:'lease_contract'}];},s=>{s.outcome.unresolved_facts=[{fact_id:'open'}];}
-  ]){const s=structuredClone(reference);change(s);assert.notEqual(language.outcomePresentation(s).summary,'Supported by the documents.');}
+  ]){const s=structuredClone(reference);change(s);assert.equal(language.outcomePresentation(s).summary,'Repair and rent reduction eligibility remain open.');}
   const failed=structuredClone(reference);failed.outcome.legal_predicates[0].status='failed';
-  assert.equal(language.outcomePresentation(failed).summary,'Supported by the documents.','a recorded negative predicate is not a completed real-world action');
+  assert.equal(language.outcomePresentation(failed).summary,'Repair and rent reduction eligibility remain open.','failed tenancy scope cannot establish eligibility');
   assert.equal(language.outcomePresentation({}).summary,'No result is recorded yet.');
   for(const state of [reference,saved,{},sameSummary,{deferral:{reason:'An actual recorded reason.'}}]){
     const result=language.outcomePresentation(state);for(const key of ['label','summary','nextAction'])shortCopy(result[key]);
@@ -176,12 +201,72 @@ test('outcome summaries follow only recorded checks, open facts, gaps and author
   }
 });
 
+test('official form and original reasons findings preserve supported, failed and unknown meanings',()=>{
+  const cases=[
+    ['canton_approved_form','supported','The termination notice has the required official form.'],
+    ['canton_approved_form','failed','The termination notice is missing the required official form.'],
+    ['canton_approved_form','unknown','Whether the termination notice uses the required official form is still unknown.'],
+    ['contemporaneous_substantive_reasons','supported','The rent increase notice includes reasons supplied with the notice.'],
+    ['contemporaneous_substantive_reasons','failed','The rent increase notice is missing reasons supplied with the notice.'],
+    ['contemporaneous_substantive_reasons','unknown','Whether reasons came with the rent increase notice is still unknown.']
+  ];
+  for(const [predicate_id,status,summary]of cases){
+    const state={outcome:{assessment_status:'complete',status:'deferred',legal_predicates:[{predicate_id,status}],
+      summary:'The  exact\nrecorded summary. ',missing_evidence:[{document_type:'lease_contract'}],unresolved_facts:[{fact_id:'open'}],authority_limits:['Exact recorded limit.']}},before=JSON.stringify(state);
+    const view=language.outcomePresentation(state);
+    assert.equal(view.summary,summary);shortCopy(view.summary);
+    assert.deepEqual(view.findings,[{id:predicate_id,status,summary}]);
+    assert.equal(view.recordedSummary,state.outcome.summary);
+    assert.deepEqual(view.constraints,['More documents are needed.','Some facts still need proof.','Real-world action still needs its own authority.']);
+    assert.equal(view.nextAction,"Waiting for the listed documents or a person's go-ahead.");
+    assert.equal(JSON.stringify(state),before);
+    assert.doesNotMatch(view.summary,/\b(?:valid|invalid|awarded|paid|sent|filed|excessive)\b/iu,'a specific check cannot assert a legal outcome or completed action');
+  }
+});
+
+test('every declared legal predicate has distinct supported, failed and unknown display findings',()=>{
+  const definitions=fs.readFileSync(path.join(root,'casepath-api/casepath_api/autonomous_reference_v1.py'),'utf8');
+  const ids=[...definitions.matchAll(/\bpredicate\('([^']+)'/gu)].map(match=>match[1]);
+  assert.equal(new Set(ids).size,12);
+  for(const predicate_id of ids){
+    const summaries=[];
+    for(const status of ['supported','failed','unknown']){
+      const state={outcome:{legal_predicates:[{predicate_id,status}],assessment_status:'complete'}};
+      const view=language.outcomePresentation(state);
+      assert.equal(view.findings.length,1,predicate_id);assert.equal(view.findings[0].id,predicate_id);
+      assert.equal(view.findings[0].status,status);shortCopy(view.findings[0].summary);shortCopy(view.summary);
+      summaries.push(view.findings[0].summary);
+    }
+    assert.equal(new Set(summaries).size,3,`${predicate_id} must retain all three recorded meanings`);
+  }
+  for(const status of ['true','false',true,false,null,'unexpected']){
+    const view=language.outcomePresentation({outcome:{legal_predicates:[{predicate_id:'canton_approved_form',status}],assessment_status:'complete'}});
+    assert.equal(view.findings[0].status,'unknown');assert.match(view.summary,/unknown/);
+  }
+  const unknown=language.outcomePresentation({outcome:{legal_predicates:[{predicate_id:'new_future_predicate',status:'supported'}],assessment_status:'complete',summary:'The notice is invalid.'}});
+  assert.equal(unknown.summary,'A result is recorded.');assert.deepEqual(unknown.findings,[]);
+  const conflict=language.outcomePresentation({outcome:{legal_predicates:[{predicate_id:'canton_approved_form',status:'supported'},{predicate_id:'canton_approved_form',status:'failed'}]}});
+  assert.equal(conflict.findings[0].status,'unknown');assert.match(conflict.summary,/unknown/);
+});
+
+test('repair eligibility needs every recorded defect check and never implies work was performed',()=>{
+  for(const predicate of recorded[0].outcome.legal_predicates){
+    for(const status of ['failed','unknown']){
+      const state=structuredClone(recorded[0]);state.outcome.legal_predicates.find(row=>row.predicate_id===predicate.predicate_id).status=status;
+      assert.equal(language.outcomePresentation(state).summary,'Repair and rent reduction eligibility remain open.');
+    }
+    const state=structuredClone(recorded[0]);state.outcome.legal_predicates=state.outcome.legal_predicates.filter(row=>row.predicate_id!==predicate.predicate_id);
+    assert.equal(language.outcomePresentation(state).summary,'Repair and rent reduction eligibility remain open.');
+  }
+  for(const state of recorded){const view=language.outcomePresentation(state);assert.match(view.summary,/eligibility/);assert.doesNotMatch(view.summary,/\b(?:completed|repaired|awarded|paid|sent|filed)\b/iu);}
+});
+
 test('knowledge reports rule combinations separately from reuse and preserves actual rejection reasons',()=>{
   const version=saved.knowledge_published[0],before=JSON.stringify(version),view=language.knowledgePresentation(version);
   assert.equal(view.ruleChecks,243);assert.equal(view.reuseCount,null);assert.equal(view.avoidedBuilds,null);
   assert.equal(view.how,'CasePath','a source outcome without provider receipts cannot invent a model');
   assert.equal(view.label,'Saved for reuse');assert.equal(JSON.stringify(version),before);
-  for(const state of recorded)for(const version of state.knowledge_published){assert.equal(language.knowledgePresentation(version).how,'Fixed rules');}
+  for(const state of recorded)for(const version of state.knowledge_published){assert.equal(language.knowledgePresentation(version).how,'CasePath','a retained source outcome does not preserve an explicit zero-call receipt');}
   const changed=structuredClone(version);changed.change_reason='Requalified the procedure against the current admitted rule version.';
   assert.equal(language.knowledgePresentation(changed).label,'Rechecked');
   const rejected={knowledge_id:'quarantine.test',qualification:{status:'quarantined',reason:'The exact recorded  source check failed.\nNo source was saved.'}};
