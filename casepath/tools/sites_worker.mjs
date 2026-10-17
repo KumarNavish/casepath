@@ -48,13 +48,12 @@ async function proxyApi(request, env, url) {
   headers.set("X-CasePath-Proxy-Token", env.CASEPATH_PROXY_TOKEN);
   headers.set("X-CasePath-Site-Origin", url.origin);
   try {
-    const upstreamRequest = new Request(new URL(`${url.pathname}${url.search}`, upstream), {
+    const started = request.method === "GET" && TIMED_READ_PATHS.has(url.pathname) ? performance.now() : null;
+    const response = await fetch(new Request(new URL(`${url.pathname}${url.search}`, upstream), {
       method: request.method, headers,
       duplex: "half", redirect: "manual",
       signal: AbortSignal.any([request.signal, AbortSignal.timeout(14000)]),
-    });
-    const started = request.method === "GET" && TIMED_READ_PATHS.has(url.pathname) ? performance.now() : null;
-    const response = await fetch(upstreamRequest);
+    }));
     const elapsed = started === null ? null : performance.now() - started;
     const responseHeaders = new Headers(response.headers);
     if (elapsed !== null) {
