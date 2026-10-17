@@ -14,8 +14,15 @@
       document.body.append(script);
     });
   }
+  let knowledgeOpening;
   try {
     if (document.documentElement.dataset.autonomousWorkspace === 'true') {
+      if (window.CASEPATH_PUBLIC_READ_ONLY === true && (location.hash === '#autonomous/knowledge' || location.hash.startsWith('#autonomous/knowledge?'))) {
+        const controller = new AbortController(), timeout = setTimeout(() => controller.abort(),15000);
+        const response = fetch('/api/claim-loops/v1/autonomous/knowledge',{method:'GET',headers:{Accept:'application/json'},signal:controller.signal,cache:'no-store'});
+        response.catch(() => {});
+        knowledgeOpening = {fragment:location.hash,controller,timeout,response};
+      }
       await load('casepath-autonomous-script');
       let recordedPacket, savedSnapshot;
       if (window.CASEPATH_PUBLIC_READ_ONLY === true) {
@@ -24,13 +31,15 @@
         try { savedSnapshot = JSON.parse(document.querySelector('meta[name="casepath-saved-history"]')?.content || 'null'); }
         catch (_) { /* Saved content can still arrive from the normal GET. */ }
       }
-      window.CasePathAutonomous.mount(document.getElementById('autonomousWorkspace'), {recordedPacket, savedSnapshot});
+      window.CasePathAutonomous.mount(document.getElementById('autonomousWorkspace'), {recordedPacket, savedSnapshot, knowledgeOpening});
+      knowledgeOpening = null;
       window.addEventListener('pagehide', event => { if (!event.persisted) window.CasePathAutonomous.destroy(); });
     } else {
       await load('casepath-review-workspace-script');
       await load('casepath-review-desk-script');
     }
   } catch (error) {
+    if (knowledgeOpening) { knowledgeOpening.controller.abort(); clearTimeout(knowledgeOpening.timeout); }
     const container = document.getElementById('autonomousWorkspace');
     if (document.documentElement.dataset.autonomousWorkspace === 'true') {
       container.textContent = 'The workspace could not open. ';

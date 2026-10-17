@@ -2963,3 +2963,27 @@ test('late recorded HTTP429 or its saved fallback cannot repaint a different vie
   finally{controller.destroy();held.resolve(phase==='operations'?response({detail:'Rate limit reached'},429):response(native.replay));await settle();}
  }
 });
+
+test('a selected Knowledge boot response uses normal validation once and Retry obtains a fresh GET',async t=>{
+ routingFixture(t,'#autonomous/knowledge');const f=knowledgeFixture(),opening=new AbortController(),data=learningFixtureData();
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,knowledgeOpening:{fragment:globalThis.location.hash,controller:opening,timeout:setTimeout(()=>opening.abort(),15000),response:Promise.resolve(response({versions:'invalid'}))}});t.after(()=>controller.destroy());
+ await waitFor(()=>f.status.textContent==='Could not load Knowledge. Try again.');assert.equal(api.calls.filter(row=>row.path.endsWith('/knowledge')).length,0,'mount consumes the selected early GET instead of duplicating it');assert.equal(f.versions.length,0,'the early response cannot bypass recorded Knowledge validation');
+ await controller.showKnowledge();assert.equal(api.calls.filter(row=>row.path.endsWith('/knowledge')).length,1);assert.ok(f.versions.length);assert.equal(f.status.textContent,'');assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
+});
+
+test('a changed route discards the unused Knowledge boot response and a late selected response cannot repaint Cases',async t=>{
+ const routing=routingFixture(t,'#autonomous/cases'),f=knowledgeFixture(),unused=new AbortController(),data=learningFixtureData(),late=deferredRead();
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?late.promise:null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,knowledgeOpening:{fragment:'#autonomous/knowledge',controller:unused,timeout:setTimeout(()=>unused.abort(),15000),response:Promise.resolve(response(data))}});t.after(()=>{late.resolve(response(data));controller.destroy();});assert.equal(unused.signal.aborted,true,'an opening GET belongs only to its original fragment');
+ await settle();routing.external('#autonomous/knowledge');await settle();routing.external('#autonomous/cases');const before=f.host.innerHTML;late.resolve(response(data));await settle();await settle();assert.equal(f.host.innerHTML,before);assert.equal(f.versions.length,0);assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
+});
+
+test('Knowledge renders before derivative cache serialization and the yielded copy retains its exact identity',async t=>{
+ routingFixture(t,'#autonomous/knowledge');const f=knowledgeFixture(),data=learningFixtureData(),frames=[],previous=globalThis.requestAnimationFrame;globalThis.requestAnimationFrame=callback=>frames.push(callback);
+ let serializations=0;Object.defineProperty(data,'toJSON',{value(){serializations++;return {...data};}});
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();if(previous===undefined)delete globalThis.requestAnimationFrame;else globalThis.requestAnimationFrame=previous;});
+ await waitFor(()=>f.versions.length);assert.equal(serializations,1,'only the bounded in-memory admission runs before the first render');assert.equal(globalThis.sessionStorage.getItem('casepath.read-cache/1'),null);assert.equal(frames.length,1);
+ frames.shift()();await waitFor(()=>globalThis.sessionStorage.getItem('casepath.read-cache/1'));const saved=await ui.checkedReadCache(globalThis.sessionStorage.getItem('casepath.read-cache/1'),'http://localhost:8123/api/claim-loops/v1/autonomous');assert.deepEqual(saved.knowledge.value,JSON.parse(JSON.stringify(data)));assert.ok(serializations>1);
+ globalThis.sessionStorage.removeItem('casepath.read-cache/1');await controller.showKnowledge(false);const before=serializations;assert.equal(frames.length,1);controller.destroy();frames.shift()();await new Promise(resolve=>setTimeout(resolve,5));assert.equal(globalThis.sessionStorage.getItem('casepath.read-cache/1'),null);assert.equal(serializations,before,'destroy cancels the yielded derivative before serialization or storage');
+});

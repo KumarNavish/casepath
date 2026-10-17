@@ -93,3 +93,27 @@ test('the hosted opening preloads exact recorded bytes without waiting or enabli
     assert.deepEqual(calls,[],'opening assets never grant API write or inference authority');
   }
 });
+
+test('public Knowledge opening starts one bounded GET before the workspace script is ready',async()=>{
+  const {runInNewContext}=require('node:vm'),calls=[],scripts=[],mounted=[],timers=new Map();let timerId=0;
+  const location=new URL('https://casepath.invalid/#autonomous/knowledge?event=recorded-event&stage=10');
+  const window={CASEPATH_PUBLIC_READ_ONLY:true,CasePathAutonomous:{mount:(_container,options)=>mounted.push(options)},addEventListener(){}};
+  const document={documentElement:{dataset:{}},createElement:()=>({}),querySelector:selector=>({content:selector.includes('casepath-recorded-opening')||selector.includes('casepath-saved-history')?'null':'workspace.js'}),getElementById:()=>({}),body:{append:script=>scripts.push(script)}};
+  const openingResponse=Promise.resolve({ok:true,json:async()=>({versions:[]})});
+  const pending=runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-entry-v1.js'),'utf8'),{window,document,location,AbortController,setTimeout:(callback,delay)=>{timers.set(++timerId,{callback,delay});return timerId;},clearTimeout:id=>timers.delete(id),fetch:(url,init)=>{calls.push({url,init});return openingResponse;}});
+  assert.equal(calls.length,1,'the selected GET overlaps the deferred workspace download');assert.equal(scripts.length,1);assert.equal(mounted.length,0);
+  assert.equal(calls[0].url,'/api/claim-loops/v1/autonomous/knowledge');assert.equal(calls[0].init.method,'GET');assert.equal(calls[0].init.cache,'no-store');assert.equal(calls[0].init.headers.Accept,'application/json');assert.equal(calls[0].init.signal.aborted,false);assert.equal([...timers.values()][0].delay,15000);
+  scripts[0].onload();await pending;
+  assert.equal(mounted.length,1);assert.equal(mounted[0].knowledgeOpening.fragment,location.hash);assert.equal(mounted[0].knowledgeOpening.response,openingResponse);assert.equal(mounted[0].knowledgeOpening.controller.signal,calls[0].init.signal);
+});
+
+test('Knowledge boot GET stays public and route-specific and aborts if workspace loading fails',async()=>{
+  const {runInNewContext}=require('node:vm');
+  for(const [publicReadOnly,hash]of [[false,'#autonomous/knowledge'],[true,'#autonomous/cases'],[true,'#autonomous/knowledge-other'],[true,'#autonomous/knowledge']]){
+    const calls=[],timers=new Map();let next=0;
+    const window={CASEPATH_PUBLIC_READ_ONLY:publicReadOnly},container={textContent:'',append(){}};
+    const document={documentElement:{dataset:{autonomousWorkspace:'true'}},createElement:()=>({addEventListener(){}}),querySelector:()=>({content:'workspace.js'}),getElementById:()=>container,body:{append:script=>script.onerror()}};
+    await runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-entry-v1.js'),'utf8'),{window,document,location:new URL('https://casepath.invalid/'+hash),AbortController,setTimeout:(callback,delay)=>{timers.set(++next,{callback,delay});return next;},clearTimeout:id=>timers.delete(id),fetch:(url,init)=>{calls.push({url,init});return Promise.resolve({ok:true});}});
+    assert.equal(calls.length,publicReadOnly&&hash==='#autonomous/knowledge'?1:0,hash);if(calls.length)assert.equal(calls[0].init.signal.aborted,true);assert.equal(timers.size,0);
+  }
+});
