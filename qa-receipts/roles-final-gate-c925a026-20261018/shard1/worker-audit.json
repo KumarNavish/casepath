@@ -1,0 +1,51 @@
+{
+  "candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "host": "656813ef2295",
+  "shard": 1,
+  "attempt_count": 1,
+  "retry_performed": false,
+  "coordinator_pid": 1222125,
+  "wrapper_pid": 1222126,
+  "pytest_pid": 1222135,
+  "process_started_utc": "2026-10-17T22:51:57Z",
+  "test_started_epoch": 1792277518.9489868,
+  "test_finished_epoch": 1792278041.7721503,
+  "test_duration_seconds": 522.8231635093689,
+  "pytest_summary": "9 passed, 5 warnings in 520.45s (0:08:40)",
+  "passed": 9,
+  "failed_report_rows": [],
+  "skipped_report_rows": [],
+  "exit_code": 0,
+  "source_after_head": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "source_after_status": "",
+  "manifest_sha256": "1d4da0d965b790395b2d45979f04cc5e8f391b8a8accbeee7a6b1253d472c758",
+  "sealed_files_before": 1714,
+  "sealed_files_after": 1714,
+  "capsule_receipt_equal_before_after": true,
+  "capsule_receipt_file_sha256": "112632be362498febeac03a25b60513b8f07dde07f7f80ea98d48d91fff308b6",
+  "archive_sha256": "9ec59f489949ad39ff00557764a85bac21c6bd8b26cd3e6f2b05cde3a9c93742",
+  "archive_member_count_independently_verified_against_receipt": 31,
+  "archive_vs_final_append_only_logs": [
+    {
+      "path": "worker-wrapper.log",
+      "archived_sha256": "aa9f3c048f056531958cee0211cf70480ad6040e04217e998bee7151a46426a3",
+      "final_sha256": "1fa4f5ac97c349c5629f9e7c2323cde7a355f660dbc91f48703a9c48d784d328",
+      "archived_bytes": 491,
+      "final_bytes": 707,
+      "exact_archived_prefix_preserved": true,
+      "appended_utf8": "{\"epoch\": 1792278042.876895, \"type\": \"completed_runtime_retired\", \"shard\": \"1\", \"free_bytes\": 3968954368}\n{\"epoch\": 1792278042.8775063, \"type\": \"shard_finished\", \"shard\": \"1\", \"active\": {}, \"free_bytes\": 3968946176}\n"
+    }
+  ],
+  "stable_evidence_sha256": {
+    "ATTEMPT_STARTED.json": "788205fd4325598738d0822a63c2d4933adad7f682c23a8eb52012717a4f0cc6",
+    "result.json": "3f2c60738acdc28a2d617f668aa97af63dc1d2a2b0bcda69f7b2e3bf881fd4fa",
+    "reports.jsonl": "9a2df79abec673f9310a720523a0610e8e4b45a5f4832bf3c7086047bea123dc",
+    "junit.xml": "89bed33285b71697d56a6305206df794274d2f69be2fff4170666774318900ad",
+    "source-before/capsule-verification.json": "1ebe2d50bc015b1e5469bd6aeee1dd0888e2e06f6e64041b4f4c226365648ae6",
+    "source-after/capsule-verification.json": "2bba9a220c29159d8920c2f51a05bf48aa500206699690c62c61279335488f40"
+  },
+  "preserved_preparation_issue": "Existing prelaunch verifier had stale static_file_count==39 assertion; capsule has40; later before verification exit0. No source edits or test retries. Failure log and command preserved.",
+  "initial_readonly_audit_issue": "A current-file equality check encountered expected post-snapshot worker-wrapper.log growth. Archive members all match archived receipt hashes; final wrapper retains exact archived prefix.",
+  "runtime_retirement_receipt": "/workspace/casepath-roles-final-gate-c925a026-20261018/completed-shard1-runtime-retirement.json",
+  "audited_epoch": 1792278094.846391
+}
