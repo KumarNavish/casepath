@@ -3035,7 +3035,7 @@
       const factDock = [...host.querySelectorAll('[data-au-stage-fact]')].find(item => item.dataset.auStageFact === operation.object.id);
       const documentDock = operation.kind === 'document.check' ? [...host.querySelectorAll('[data-au-check-operation]')].find(item => item.dataset.auCheckOperation === operation.id && item.closest('[data-au-document-supported=true]')) : null;
       const dock = documentDock || factDock;
-      if (node) revealGraphNode(node.closest('.au-stage-step') || node,true);
+      if (node) revealGraphNode(reading?.active && mark?.closest?.('.au-stage-source') || node.closest('.au-stage-step') || node,true);
       const passage = mark?.closest('.au-operation-passage'), destination = reading?.active && mark ? mark : node;
       if (!destination) { attentionMarker?.remove?.(); complete(); return; }
       // Read geometry once after source centering. Every sweep, fade, growth and
