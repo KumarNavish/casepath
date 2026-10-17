@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1709,
+  "file_count": 1712,
   "files": [
     {
       "executable": false,
@@ -959,8 +959,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_store_v1.py",
-      "sha256": "bb1a681e5c910732b5f0d4191e07e2bf4255c37e73dfdc0b196e5b5d4f802b62",
-      "size_bytes": 67702
+      "sha256": "111e93b616abca7942d81fb38de91bf2cfd3e6b30794ab682178696b1eda8483",
+      "size_bytes": 68081
     },
     {
       "executable": false,
@@ -6929,8 +6929,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/hosted_app_v1.py",
-      "sha256": "bf64a94824b713be6fcfae538519bf0508e403b2e80ad7290f32dca6eb337515",
-      "size_bytes": 4013
+      "sha256": "ef58f913f35002e00aad77350d1bd5258ecbe5d4f434f2a4a3ddd6fcff625e2d",
+      "size_bytes": 5212
     },
     {
       "executable": false,
@@ -6953,14 +6953,14 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/hosted_sql_v1.py",
-      "sha256": "aa9fc61fad8e5186642502fda8517469ba1f298acff84cb9d50e5111f38a5126",
-      "size_bytes": 17260
+      "sha256": "bc04fdabbb4dbe793668177c27e46080784113503c4c064cd231aba69df45fd9",
+      "size_bytes": 21963
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/hosted_storage_v1.py",
-      "sha256": "f2c817cec2e04174de8e5c2b9cd60077d0be2b265d9a445128cf5c5e9b556e47",
-      "size_bytes": 20382
+      "sha256": "cd72f4bde5627754caeb11e1dc537d62bd8d2c865b36acc99e061de9e96ae4f0",
+      "size_bytes": 38028
     },
     {
       "executable": false,
@@ -7991,8 +7991,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/hosted_hrana_fixture.py",
-      "sha256": "93a43aea06b60197c9be4c375a5dfadfebbbe240dfa6fc8a6f744bf66f4f7eab",
-      "size_bytes": 7304
+      "sha256": "900cb980bdfd096d6992169d642b8391e50c0acdc1cfc924e9277b8a6321af79",
+      "size_bytes": 7555
     },
     {
       "executable": false,
@@ -8153,8 +8153,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py",
-      "sha256": "71ab8c15da8274814dfe35850f2a13e72d27163971f76b8e8e2f6057b97a9ef9",
-      "size_bytes": 41639
+      "sha256": "0b14f0d3ab9d6a10712342e5a064d52233fe1e35770a6396e2e0aa33e54bac0e",
+      "size_bytes": 41928
     },
     {
       "executable": false,
@@ -8446,6 +8446,18 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_hosted_knowledge_payload_bounds_v1.py",
+      "sha256": "2dd24b39cfa38087988dfe058e304716a912cc1d105f009704e78402ac1f3447",
+      "size_bytes": 7414
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py",
+      "sha256": "2b4b0f9faa32da0bb27878e23433c83fe0c81e5d2d53177cc36f493865d2846a",
+      "size_bytes": 26932
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_hosted_lease_v1.py",
       "sha256": "2173932871446077bd29f680a9da13cd367f0f7c88aee2651346ac4c1a1e9962",
       "size_bytes": 10276
@@ -8476,9 +8488,15 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_hosted_snapshot_transport_v1.py",
+      "sha256": "ee4454e1fae99d172feab5ed2bf1c1f8c988a0bf33626e29030e477e4c6ddba5",
+      "size_bytes": 22344
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_hosted_source_batch_v1.py",
-      "sha256": "c0bfc24b47466983f2c2164e24b677aef6748c94ab18d67ed9ac1df107d23d3b",
-      "size_bytes": 15006
+      "sha256": "f53cd1bf44734ddc5b2d8a45b79d84e577be468f3756203063cc3fdf93b7c3f0",
+      "size_bytes": 15461
     },
     {
       "executable": false,
@@ -8687,8 +8705,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_public_hosted_read_only_v1.py",
-      "sha256": "80e27ba4d1f99672fa94584e0a920fac1ff13ad080d4d9132255c6d83fdea783",
-      "size_bytes": 10027
+      "sha256": "710bc22ac117b58768de9a492351b1f6f58766eb3cb9e5895861295d7af519d4",
+      "size_bytes": 17648
     },
     {
       "executable": false,
