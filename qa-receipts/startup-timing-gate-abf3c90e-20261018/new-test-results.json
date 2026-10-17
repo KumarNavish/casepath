@@ -1,0 +1,85 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "genuinely_new_count": 13,
+  "all_passed": false,
+  "results": [
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[-1.0-0.000]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[1e+20-999999999.999]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[inf-0.000]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[nan-0.000]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_is_request_local_and_copies_shared_start_headers",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims-True]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims/example-False]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge-True]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge/-False]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/healthz-False]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[HEAD-/api/claim-loops/v1/autonomous/knowledge-False]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[POST-/api/claim-loops/v1/autonomous/claims-False]",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_wraps_denial_without_opening_stores",
+      "status": "NOT_EXECUTED",
+      "shard": 5,
+      "reason": "Queued shard held after actual frozen-source failure"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "gate_status": "NOT_PASSED_INCOMPLETE",
+  "manifest_sha256": "46a2fc752a399545ea4c67049e0ef82f45a42eab4d0131d4adbad1d9596801aa",
+  "archive": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/raw-evidence.tar.gz",
+  "archive_sha256": "6b247966944d06d86b87b948387cc2d9828c2c88957f47cb7a58a23f7cacfe36",
+  "archive_size_bytes": 2882382,
+  "raw_file_count": 171,
+  "checksum_manifest_sha256": "b7b2b9d5c1773466d1f40ca9415b94977d0bf25445f18ec654bd3566800262ce",
+  "all_archive_members_byte_verified": true,
+  "contains_runtime_databases": false,
+  "includes": "Every selected QA receipt, source/artifact manifest, raw collect/order, two executed shard assignment arguments/commands/controlled test environments/prepare transport-variable names/phase reports/JUnit/durations/latches, four held NOT_EXECUTED dispositions, capsule before-after source/static/artifact proofs, unchanged exact ID baseline coverage and historical rename proof, Mac owner attestation, root independent reviews, resource/process observations and retirement proofs, preserved preparation failures",
+  "explicit_exclusions": [
+    "venv and capsule byte copies (exact hashed source/capsule/artifact/static receipt proofs retained)",
+    "dependency caches and pycache",
+    "mutable HOME/TMP/DB/artifact registry",
+    "mutable passing and failed fixture bytes; failed shard2 fixtures/runtime remain preserved on host",
+    "isolated Git index binary and transport records created after final commit",
+    "Mac raw files remain on Mac; actual owner attestation included; no Cloud raw Mac inspection claimed"
+  ],
+  "created_epoch": 1792281336.49297
+}

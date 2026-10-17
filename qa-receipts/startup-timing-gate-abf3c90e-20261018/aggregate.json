@@ -1,0 +1,112 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "manifest_sha256": "46a2fc752a399545ea4c67049e0ef82f45a42eab4d0131d4adbad1d9596801aa",
+  "gate_status": "NOT_PASSED_INCOMPLETE",
+  "full_inventory": 2777,
+  "prior2764_ids_all_collected_unchanged": true,
+  "original2613_ids_all_collected_unchanged": true,
+  "genuinely_new_ids": 13,
+  "cloud_assigned": 2650,
+  "cloud_executed": 607,
+  "cloud_passed": 605,
+  "cloud_known_skipped": 1,
+  "cloud_failed": 1,
+  "cloud_not_executed": 2043,
+  "not_executed_shards": [
+    3,
+    4,
+    5,
+    6
+  ],
+  "known_skip_inventory": 10,
+  "unexecuted_known_skips": 9,
+  "failure_id": "casepath/tools/test_casepath_release.py::test_sites_delivery_is_same_origin_and_streaming_proxy_safe",
+  "failure_phase": "call",
+  "failure_line": 372,
+  "failure_diagnosis": "Existing lexical assertion expects await fetch(new Request; frozen source constructs upstreamRequest separately. Gate remains failed. Root readonly diagnosis in root-review/failure-diagnosis.json.",
+  "test_attempts": {
+    "1": 1,
+    "2": 1,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0
+  },
+  "test_retries": 0,
+  "executed_capsules_before_after_unchanged": true,
+  "prepared_clone_count": 2,
+  "source_counts": [
+    1714,
+    25,
+    40
+  ],
+  "Mac_actual_owner_passed": 127,
+  "Mac_actual_owner_skipped": 0,
+  "Mac_actual_owner_failed": 0,
+  "Mac_raw_inspected_in_Cloud": false,
+  "partial_combined_passed_using_actual_owner_attestation": 732,
+  "minimum_observed_workspace_free_bytes": 3502637056,
+  "max_observed_heavy": 2,
+  "resource_floor_breach_events": 0,
+  "source_or_test_edits_by_gate": false,
+  "failed_runtime_and_fixtures_preserved": true,
+  "queued_clone3_handed_to_correction_owner_after_clean_abf_noattempt_proof": true,
+  "root_independent_negative_reconciliation_sha256": "b2cd7a73a12d473a06d65731ecef7c513710140ec8070d4d4a036e6b6723342e",
+  "shards": [
+    {
+      "shard": 1,
+      "status": "PASSED",
+      "attempt_count": 1,
+      "exit_code": 0,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "selected": 9,
+      "duration_seconds": 504.80827045440674
+    },
+    {
+      "shard": 2,
+      "status": "FAILED",
+      "attempt_count": 1,
+      "exit_code": 1,
+      "passed": 596,
+      "failed": 1,
+      "skipped": 1,
+      "selected": 598,
+      "duration_seconds": 383.2250576019287
+    },
+    {
+      "shard": 3,
+      "status": "NOT_EXECUTED",
+      "attempt_count": 0,
+      "prepare_count": 0,
+      "selected": 403,
+      "reason": "Held after frozen-source original shard2 test failure"
+    },
+    {
+      "shard": 4,
+      "status": "NOT_EXECUTED",
+      "attempt_count": 0,
+      "prepare_count": 0,
+      "selected": 473,
+      "reason": "Held after frozen-source original shard2 test failure"
+    },
+    {
+      "shard": 5,
+      "status": "NOT_EXECUTED",
+      "attempt_count": 0,
+      "prepare_count": 0,
+      "selected": 509,
+      "reason": "Held after frozen-source original shard2 test failure"
+    },
+    {
+      "shard": 6,
+      "status": "NOT_EXECUTED",
+      "attempt_count": 0,
+      "prepare_count": 0,
+      "selected": 658,
+      "reason": "Held after frozen-source original shard2 test failure"
+    }
+  ],
+  "epoch": 1792281321.0298288
+}

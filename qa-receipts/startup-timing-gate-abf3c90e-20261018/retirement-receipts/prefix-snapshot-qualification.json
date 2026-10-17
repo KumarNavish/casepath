@@ -1,0 +1,32 @@
+[
+  {
+    "shard": 1,
+    "archive_sha256": "fa2fb11e26598c2ba98e1a7a0870f5bda8b257fd1b07bfc13bf8646891bb7799",
+    "snapshot_files_exact": 27,
+    "append_only_prefix_snapshots": [
+      {
+        "path": "worker-wrapper.log",
+        "archive_member_sha256": "38e83cf164cebb52b8a11fa8b5099a81c62da06b1da2dc4739820fc8c5f9107f",
+        "final_file_sha256": "276a512ff7fc24d9421fde67cd5d7259bf4204a928bf546e49c9017ca4b93138",
+        "archive_bytes": 496,
+        "final_bytes": 713
+      }
+    ],
+    "qualification": "Per-shard retirement archive is byte-verified snapshot taken before worker terminal event; final full wrapper bytes are preserved separately and included in final gate archive."
+  },
+  {
+    "shard": 2,
+    "archive_sha256": "4865c0b24ad47e91f9439df23c0eaa911229ad54dce8458e70a46e691864afb1",
+    "snapshot_files_exact": 29,
+    "append_only_prefix_snapshots": [
+      {
+        "path": "worker-wrapper.log",
+        "archive_member_sha256": "5f94093afcd2334dfd8e841f43cee99138c62c17b2ea19cc7d128bf7c7215f73",
+        "final_file_sha256": "73c1abc629906e3e61b615d91fe42fa0ab32b843763d8e580d3a4ddfebf6fc3b",
+        "archive_bytes": 800,
+        "final_bytes": 909
+      }
+    ],
+    "qualification": "Per-shard retirement archive is byte-verified snapshot taken before worker terminal event; final full wrapper bytes are preserved separately and included in final gate archive."
+  }
+]

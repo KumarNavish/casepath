@@ -90,7 +90,8 @@ assert not (R/'STOP_ADMISSION_RESOURCE_VIOLATION.json').exists()
 mac_owner=read(R/'mac-owner-attestation.json')
 assert mac_owner['candidate']==SHA and mac_owner['manifest_sha256']==MAN
 assert mac_owner['source_file_count']==1714 and mac_owner['passed']==127 and mac_owner['failed']==mac_owner['skipped']==0
-assert mac_owner['ids_sha256']==hashfile(R/'mac-ids.txt') and mac_owner['source_before_after_verified_clean_by_owner']
+assert mac_owner['mac_ids_sha256']==hashfile(R/'mac-ids.txt')
+assert mac_owner['source_clean_before_after_as_reported'] and mac_owner['source_unchanged_before_after_as_reported']
 assert mac_owner['raw_receipts_inspected_in_cloud'] is False
 bindings['mac-owner-attestation.json']=hashfile(R/'mac-owner-attestation.json')
 out={'candidate':SHA,'manifest_sha256':MAN,'independent_root_negative_attempt_reconciliation':True,'gate_status':'FAILED_INCOMPLETE','full_inventory':len(full),'Cloud_assigned':len(allcloud),'actual_Cloud_executed':len(allj),'Cloud_passed':totalpassed,'Cloud_failed':1,'Cloud_known_skipped':len(allskips),'Cloud_not_executed':len(allcloud)-len(allj),'not_executed_shards':[3,4,5,6],'failure_id':FAILURE,'baseline_c925_ids':2764,'all_c925_ids_collected_unchanged':True,'baseline_b861_ids':2613,'all_b861_ids_collected_unchanged':True,'added_ids':sorted(added),'removed_ids':[],'renamed_ids':[],'Mac_actual_owner_passed':127,'Mac_raw_receipts_inspected_in_Cloud':False,'shards':summaries,'exact_known_skip':allskips,'source_capsules_before_after_unchanged':True,'first_only_attempts':True,'test_retries':0,'source_or_test_edits_in_this_gate':False,'bindings':bindings,'global_resource_samples':len(global_resources),'global_sampled_min_free_bytes':min(x['free_bytes'] for x in global_resources),'max_global_gate_heavy_observed':max(x['gate_heavy'] for x in global_resources),'environment_isolation':environments,'verified_epoch':time.time()}

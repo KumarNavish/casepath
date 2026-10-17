@@ -1,0 +1,116 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "manifest_sha256": "46a2fc752a399545ea4c67049e0ef82f45a42eab4d0131d4adbad1d9596801aa",
+  "independent_root_negative_attempt_reconciliation": true,
+  "gate_status": "FAILED_INCOMPLETE",
+  "full_inventory": 2777,
+  "Cloud_assigned": 2650,
+  "actual_Cloud_executed": 607,
+  "Cloud_passed": 605,
+  "Cloud_failed": 1,
+  "Cloud_known_skipped": 1,
+  "Cloud_not_executed": 2043,
+  "not_executed_shards": [
+    3,
+    4,
+    5,
+    6
+  ],
+  "failure_id": "casepath/tools/test_casepath_release.py::test_sites_delivery_is_same_origin_and_streaming_proxy_safe",
+  "baseline_c925_ids": 2764,
+  "all_c925_ids_collected_unchanged": true,
+  "baseline_b861_ids": 2613,
+  "all_b861_ids_collected_unchanged": true,
+  "added_ids": [
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[-1.0-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[1e+20-999999999.999]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[inf-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[nan-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_is_request_local_and_copies_shared_start_headers",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims-True]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims/example-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge-True]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge/-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/healthz-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[HEAD-/api/claim-loops/v1/autonomous/knowledge-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[POST-/api/claim-loops/v1/autonomous/claims-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_wraps_denial_without_opening_stores"
+  ],
+  "removed_ids": [],
+  "renamed_ids": [],
+  "Mac_actual_owner_passed": 127,
+  "Mac_raw_receipts_inspected_in_Cloud": false,
+  "shards": [
+    {
+      "shard": 1,
+      "collected": 9,
+      "passed": 9,
+      "skipped": 0,
+      "raw_phase_rows": 27,
+      "junit_cases": 9,
+      "exit_code": 0,
+      "failed": 0,
+      "duration_seconds": 504.80827045440674,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 2,
+      "collected": 598,
+      "passed": 596,
+      "skipped": 1,
+      "raw_phase_rows": 1794,
+      "junit_cases": 598,
+      "exit_code": 1,
+      "failed": 1,
+      "duration_seconds": 383.2250576019287,
+      "source_capsule_before_after_equal": true
+    }
+  ],
+  "exact_known_skip": {
+    "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows": {
+      "when": "call",
+      "file": "test_document_lifecycle_shadow_v1.py",
+      "line": 605,
+      "reason": "Skipped: frozen independent-transition packet is not available"
+    }
+  },
+  "source_capsules_before_after_unchanged": true,
+  "first_only_attempts": true,
+  "test_retries": 0,
+  "source_or_test_edits_in_this_gate": false,
+  "bindings": {
+    "shard1/collected.json": "9ee9bad3fd0db79188b6dccde1bfbdc32429fb0d522a35aef3e4954f2487c9e1",
+    "shard1/reports.jsonl": "d9d49e4250e38af5cc9739cd2e690005f5e9ae083facba947ac3e5703f97f0e4",
+    "shard1/junit.xml": "78f1b01d737f0446559eded46b4c017a4f2ec08fedf7834dab5b860a982e02a8",
+    "shard1/command.json": "5b0674835c7f9faf9239f8de316af08d0e725f6a2997573103090afc48abba1d",
+    "shard1/result.json": "936b1a4202660031755771d5b20dc734a7a46241a52f77edb272d03608ef9773",
+    "shard1/source-before/capsule-verification.json": "3c573fc933410fd64805e1e6b310b0d9680d7a8b842a4e12773b81082e7ac9bd",
+    "shard1/source-after/capsule-verification.json": "8f6bb8e9caf1add0935dab5cb7ce205c3d587fe8116aa635ddc49f87f65db1dd",
+    "shard2/collected.json": "e87fe3a232657fffdbd32fc9ddcf9c7d5bca703ea3a32736cbc1973a1ede7818",
+    "shard2/reports.jsonl": "de1c30e35074b86910af62f68370ab893ebc980e3b0644f7c5133931029b636e",
+    "shard2/junit.xml": "7b6dbab9a6ecb3bf95431d34ec5c2de71bde5c79490818e091fbadf659a3855b",
+    "shard2/command.json": "6219f703edb1dadc7eb969d67cf7372d8ad68adb308c0abe372dd34a43fd4f8e",
+    "shard2/result.json": "90b1fd4eb96625d81c02f63aa562137fe4f20e41647cf93060d0b77d8e4c648b",
+    "shard2/source-before/capsule-verification.json": "3076e34940157e2023a7bb55bd7de4156c92b90690da387d9fcd9446fe63e8d3",
+    "shard2/source-after/capsule-verification.json": "f9cfe435ab33c51b8e719db53f4ebd17a0a6eb96153bcbfdc8e7f99b8c1345df",
+    "mac-owner-attestation.json": "bf33cf3b1144724a543ad817e375aa3e575ec3847fb12edf27ccc972c425a9fc"
+  },
+  "global_resource_samples": 197,
+  "global_sampled_min_free_bytes": 3502637056,
+  "max_global_gate_heavy_observed": 2,
+  "environment_isolation": [
+    {
+      "shard": 1,
+      "HOME": "/workspace/abth1",
+      "TMPDIR": "/workspace/abtt1",
+      "CASEPATH_DB_PATH": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/shard1/casepath.db"
+    },
+    {
+      "shard": 2,
+      "HOME": "/workspace/abth2",
+      "TMPDIR": "/workspace/abtt2",
+      "CASEPATH_DB_PATH": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/shard2/casepath.db"
+    }
+  ],
+  "verified_epoch": 1792281268.403792
+}
