@@ -2906,3 +2906,18 @@ test('settled and exact Knowledge pins retain one recorded Memory Now with fixed
  }
  assert.equal(JSON.stringify(data),before);
 });
+
+test('Knowledge announcements distinguish the recorded family and source case for the same version and action',async t=>{
+ const data=learningFixtureData(),first=data.versions[0],second={...first,knowledge_id:'procedure.defect_mold_heating',family:'defect_mold_heating',knowledge_sha256:hash('6'),source_claim_id:'source-two'},original=data.learning_replay.events.find(row=>row.event_id===hash('a'));
+ data.versions=[first,second];data.uses=[];data.learning_replay.events=[{...original,source_claim_title:'First recorded source',claim_title:'First recorded source'},{...original,event_id:hash('d'),at:'2026-10-10T00:00:00Z',knowledge_id:second.knowledge_id,knowledge_sha256:second.knowledge_sha256,family:second.family,claim_id:second.source_claim_id,source_claim_id:second.source_claim_id,source_claim_title:'Second recorded source',claim_title:'Second recorded source'}];
+ const before=JSON.stringify(data),model=ui.knowledgeLearningModel(data),route=routingFixture(t,'#autonomous/knowledge'),f=knowledgeFixture(),shell={dataset:{}},writes=[],announcement={};Object.defineProperty(announcement,'textContent',{get:()=>writes.at(-1)||'',set:value=>writes.push(value)});
+ const containerQuery=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-announcement]'?announcement:containerQuery(selector);
+ const hostQuery=f.host.querySelector;f.host.querySelector=selector=>{
+  if(selector==='[data-au-learning]')return shell;if(selector!=='.au-now')return hostQuery(selector);
+  const event=model.events.find(event=>event.id===shell.dataset.auLearningEventId),html=ui.knowledgeNowMarkup(model,event);
+  return {dataset:{auNowId:event?.id||''},querySelector:selector=>{const attribute=selector==='[data-au-role]'?'data-au-role="[^"]+"':selector.slice(1,-1),match=html.match(new RegExp(`<span[^>]*${attribute}[^>]*>([\\s\\S]*?)<\\/span>`));return match?{textContent:decodedSurface(match[1].replace(/<[^>]*>/g,''))}:null;}};
+ };
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await waitFor(()=>shell.dataset.auLearningEventId);
+ const select=index=>f.listeners.get('click')({target:control(f,'data-au-learning-event',String(index))});select(0);const firstText=announcement.textContent,count=writes.length;assert.match(firstText,/Lease termination/);assert.match(firstText,/Source case: First recorded source/);assert.equal(shell.dataset.auLearningEventId,model.events[0].id);
+ select(0);assert.equal(writes.length,count,'the same recorded event does not announce again');select(1);const secondText=announcement.textContent;assert.equal(writes.length,count+1);assert.match(secondText,/Defects and repairs/);assert.match(secondText,/Source case: Second recorded source/);assert.notEqual(firstText,secondText);assert.equal(shell.dataset.auLearningEventId,model.events[1].id);assert.ok(route.hash.includes(`event=${model.events[1].id}`));select(1);assert.equal(writes.length,count+1);assert.equal(JSON.stringify(data),before);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
