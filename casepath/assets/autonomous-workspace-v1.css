@@ -972,8 +972,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-learning-transport input { width:100%; }
 }
 
-/* Paused Knowledge uses the page scroll so every recorded tab stays reachable. */
-.au-workspace .au-learning[data-au-learning-playing=false] .au-learning-focus { height:auto; max-height:none; overflow:visible; }
 @media (max-width:700px) {
   .au-workspace .au-learning-transport > p { display:block; flex-basis:100%; min-width:0; margin:4px 0; }
 }
@@ -982,3 +980,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 }
 /* A heading focused on load stays quiet; keyboard navigation retains its ring. */
 .au-workspace:not([data-au-keyboard=true]) :is(h1,h2,[data-au-inspector-heading],[data-au-claim-title]):focus-visible { outline:none!important; }
+
+/* The selected record uses its existing header for the one recorded Now line. */
+.au-workspace .au-learning-record-head .au-now { flex-basis:100%; width:100%; margin:4px 0; padding:0; border:0; gap:4px 6px; }
+.au-workspace .au-learning-record-head .au-now [data-au-now-copy] { flex-basis:260px; }
+.au-workspace .au-learning-focus:focus-visible { outline:3px solid #164f88!important; outline-offset:3px; }
