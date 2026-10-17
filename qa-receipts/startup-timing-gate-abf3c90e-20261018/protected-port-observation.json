@@ -1,0 +1,17 @@
+{
+  "epoch": 1792280730.75019,
+  "ss_listen_observation": "State  Recv-Q Send-Q Local Address:Port Peer Address:Port\nLISTEN 0      0          127.0.0.1:4190      0.0.0.0:*   \nLISTEN 0      0          127.0.0.1:4189      0.0.0.0:*   \n",
+  "protected_processes": [
+    {
+      "pid": 595190,
+      "alive": true,
+      "comm": "python"
+    },
+    {
+      "pid": 595198,
+      "alive": true,
+      "comm": "python"
+    }
+  ],
+  "no_processes_signalled": true
+}

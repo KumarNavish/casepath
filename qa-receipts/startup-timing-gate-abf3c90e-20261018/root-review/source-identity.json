@@ -1,0 +1,72 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "manifest_sha256": "46a2fc752a399545ea4c67049e0ef82f45a42eab4d0131d4adbad1d9596801aa",
+  "sealed_files_verified": 1714,
+  "source_paths_exact_worker_bytes": [
+    {
+      "path": "casepath/assets/autonomous-entry-v1.js",
+      "worker_commit": "a83ef2acd71d6cfc47dd61337e2dd0bb6eff7c33",
+      "sha256": "6f5f95df90bba96306fd978107f965092837b3712b3d62b733ff8091723e20eb"
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "worker_commit": "a83ef2acd71d6cfc47dd61337e2dd0bb6eff7c33",
+      "sha256": "399c2fb7a3050a9c7eabb95e91c5956ae35d25d72129bc80f62ce5c95341a993"
+    },
+    {
+      "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
+      "worker_commit": "a83ef2acd71d6cfc47dd61337e2dd0bb6eff7c33",
+      "sha256": "5f5ff1df4f59556341550ec1813a8e00e566a5156ee1bd65b01db978c3de693c"
+    },
+    {
+      "path": "casepath-qa/sites-autonomous-entry.test.cjs",
+      "worker_commit": "a83ef2acd71d6cfc47dd61337e2dd0bb6eff7c33",
+      "sha256": "580369f9bf74fe1e97cfa1ede261fe909e3f9c3d551c0d92eef1d5e37fa381a3"
+    },
+    {
+      "path": "casepath-api/casepath_api/hosted_app_v1.py",
+      "worker_commit": "0ff22cce40e6e29b481e698753eac4371e195c75",
+      "sha256": "5c042bf6e6f932d963ec550d3539753ed223b095c842f7c93e8d8ca33d15eccc"
+    },
+    {
+      "path": "casepath-api/casepath_api/hosted_proxy_v1.py",
+      "worker_commit": "0ff22cce40e6e29b481e698753eac4371e195c75",
+      "sha256": "5862cfdd5c6b9395f4e936ecb7fdebb508645339e0819e22f1009a409e6f5884"
+    },
+    {
+      "path": "casepath/tools/sites_worker.mjs",
+      "worker_commit": "0ff22cce40e6e29b481e698753eac4371e195c75",
+      "sha256": "915263dd14d7569f41e6c5bae28c6c392b957a7ac574786b064b70e2eb033b0e"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_proxy_v1.py",
+      "worker_commit": "0ff22cce40e6e29b481e698753eac4371e195c75",
+      "sha256": "92e8b080bd062de674e17d3ce65e4e8236ece2c9a6b35895ecc98667b00c9a45"
+    },
+    {
+      "path": "casepath-qa/sites-proxy.test.cjs",
+      "worker_commit": "0ff22cce40e6e29b481e698753eac4371e195c75",
+      "sha256": "ff4debf36a474b80a0cd54737227ade1123fd3099ff1cd5cd059df15daf6dd1b"
+    }
+  ],
+  "only_expected_changed_paths": [
+    "casepath-api/casepath_api/hosted_app_v1.py",
+    "casepath-api/casepath_api/hosted_proxy_v1.py",
+    "casepath-api/tests/test_hosted_proxy_v1.py",
+    "casepath-qa/autonomous-workspace-v1.test.cjs",
+    "casepath-qa/sites-autonomous-entry.test.cjs",
+    "casepath-qa/sites-proxy.test.cjs",
+    "casepath/assets/autonomous-entry-v1.js",
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/index.html",
+    "casepath/source-manifest.json",
+    "casepath/tools/sites_worker.mjs"
+  ],
+  "index_only_existing_script_hash_pins_changed": true,
+  "instructions_unchanged_from_c925": true,
+  "baseline_c925_inventory_ids": 2764,
+  "baseline_c925_inventory_sha256": "bb880afa11de431c7c635364ddc486c00b07e564a08b9e9f910a565b19c1da2c",
+  "tests_executed_by_this_check": 0,
+  "source_modified": false,
+  "verified_epoch": 1792280609.6515634
+}

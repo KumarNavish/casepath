@@ -1,0 +1,47 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "cwd": "/workspace/casepath-release-ae0-shard4",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/abth1",
+    "TMPDIR": "/workspace/abtt1",
+    "TMP": "/workspace/abtt1",
+    "TEMP": "/workspace/abtt1",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/shard1/pycache",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/shard1/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "UV_PYTHON_INSTALL_DIR": "/workspace/.local/share/uv/python"
+  },
+  "started_epoch": 1792280651.4666665,
+  "before_head": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "before_status": "",
+  "manifest_sha256": "46a2fc752a399545ea4c67049e0ef82f45a42eab4d0131d4adbad1d9596801aa",
+  "canonical_fetched_head": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "canonical_fetch_source": "https://github.com/KumarNavish/casepath",
+  "canonical_local_fetch_log": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/shard1/fetch.log",
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE",
+    "NODE_EXTRA_CA_CERTS"
+  ],
+  "internal_launcher_env_contract": "Exact source preserved: stdlib env-i probes omit temp aliases; locked/product env-i uses controlled runtime TMPDIR only."
+}

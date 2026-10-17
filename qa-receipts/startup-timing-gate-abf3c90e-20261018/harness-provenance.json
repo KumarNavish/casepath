@@ -1,0 +1,142 @@
+[
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/casepath_shard_observer.py",
+    "source_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/harness/casepath_shard_observer.py",
+    "target_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/prepare_clones.py",
+    "source_sha256": "d602ea41938dfd68bda4e23567e94752c8ceb0f85bf48d95459d1505b6d4b3aa",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/harness/prepare_clones.py",
+    "target_sha256": "d8330250957042b7aba72fbd700f7b53e88f993a731e3a4115af72ddaa387e9d",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/run_shard.py",
+    "source_sha256": "195c079b623c5c4641fafef5b35ef27fb9ccc763bb9a726d3e36f6bd8f619be8",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/harness/run_shard.py",
+    "target_sha256": "2bb5b7dcdf84bcf9f20bed24d4fda03bff72646c2e5901824088af811e870476",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/verify_prepared_capsules.py",
+    "source_sha256": "cc821ef95b5320d3752b83d5776b4f609e4ff777239ba32bd326bc8e7bcc6512",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/harness/verify_prepared_capsules.py",
+    "target_sha256": "c9a0d377a3d6f316beb54cadebdbe3c500959f61423f346c73313d06300cb8ba",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/harness/runtime_inventory.py",
+    "source_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/harness/runtime_inventory.py",
+    "target_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/verify.py",
+    "source_sha256": "adf941c8ac0291acf13abc8f879a7ec8e8d2c2c24c5976f42d1d34f259c84d94",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/verify.py",
+    "target_sha256": "e2a5756c127b30c916a1044807b6488a48a28ad86e7a34ca3dc77657d4a03622",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/one_shard.py",
+    "source_sha256": "ad6c83987538a88b8de996b631da4c76107b581442c1960bc44898a702efece0",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/one_shard.py",
+    "target_sha256": "fde1c47aca0d8c42cb9cd51e980c94af39d4d6355400c9b0ec4ebc73446aea07",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/resource_watch.py",
+    "source_sha256": "5679bfdce99e0d339596dc6a0da5cdca3f16828c34491052caf38daabf1edb56",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/resource_watch.py",
+    "target_sha256": "bf2af977fd0a6ed4c5bf5948e3ea2332f51089a573faa78b5c4bcfa7ec2ab0d1",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/export_receipts.py",
+    "source_sha256": "43c76f2ac6f4f03addb8c768acac6a89a61826f9f77aa415e6bb6b30541f42b4",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/export_receipts.py",
+    "target_sha256": "0e5cd157c5560d6d93e12071463dc4bbc990da28bdc07086e41bc83e731159e6",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/scan_export.py",
+    "source_sha256": "baaff0e4069cb595085a40e8ff38a763c911674272aaec427707de45a23a856c",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/scan_export.py",
+    "target_sha256": "fe8848567b220f081423122a8ba27f8b48450c7cb42f0cda3eb1f5c052392fa7",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/reconcile.py",
+    "source_sha256": "0ab20638f6bd4e5b3d47458e22f64933816bd6ec0135bfb2d4e0c3f0500bf5dd",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/reconcile.py",
+    "target_sha256": "5f9d685d9c7507c6da0899f50d6e7e9b65f75c345bb18e493c9f2360ef246b49",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/bundle.py",
+    "source_sha256": "aa1156cfc9fb5fd42587cdb6ddb00079a7aa54ca29d0faa27e92eb841778df8b",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/bundle.py",
+    "target_sha256": "152ea038662f781ff4db239f1d23984c44bf4225d938fd940141e64ee773d569",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/finish_audit.py",
+    "source_sha256": "b6729aac7c71cc02668a3e7d3e8e9067ea8fb0c612d10680286aac3647ae4481",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/finish_audit.py",
+    "target_sha256": "d57f1b862f727a7e46f48adbeace8e261763b71ad989f68fb02e0d0af9c8adb7",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/coordinator/summarize.py",
+    "source_sha256": "f195cf85846b101d0984d9ab2b88cef3173301c5d59d697c0ce27e33a428d3e6",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/summarize.py",
+    "target_sha256": "1be92243bbcda1cf8969cd019c16ece276dd0179ef392e99976e3861208af567",
+    "adaptation": "QA root, candidate, manifest, branch and owned short HOME/TMP parameters only"
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/mac-ids.txt",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/mac-ids.txt",
+    "sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/known-skips.json",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/known-skips.json",
+    "sha256": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/collected-ids.txt",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/prior-collected-ids.txt",
+    "sha256": "bb880afa11de431c7c635364ddc486c00b07e564a08b9e9f910a565b19c1da2c",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/per-file-durations.json",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/prior-per-file-durations.json",
+    "sha256": "c8570da39b960133d09acaebf0f818a343305fa4074048e79fe13844aacdb479",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/shard-map.json",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/coordinator/prior-shard-map.json",
+    "sha256": "f8ba0cb0572e19b41ac75bb59dab1c68c42c2fea92d512ee89435ea0c1b087e4",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/renamed-test-ids.json",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/renamed-test-ids.json",
+    "sha256": "ebf00d59009d74a2394bf84060426d67ea0310f1d8ba9c3d2e7ccd9027dd95a5",
+    "byte_equal": true
+  },
+  {
+    "source": "/workspace/casepath-roles-final-gate-c925a026-20261018/secret-scan-exact-allowlist.json",
+    "target": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/secret-scan-exact-allowlist.json",
+    "sha256": "9d55ee484d34db2cf80f8914e4af74b04516ebac3d2ec81f120518ccd6ff509c",
+    "byte_equal": true
+  }
+]

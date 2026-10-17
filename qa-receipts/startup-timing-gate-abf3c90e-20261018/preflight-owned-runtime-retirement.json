@@ -1,0 +1,32 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "repo": "/workspace/casepath-release-ae0-shard6",
+  "before_head": "0ff22cce40e6e29b481e698753eac4371e195c75",
+  "branch": "codex/knowledge-first-read-20261018",
+  "pushed_remote_head": "0ff22cce40e6e29b481e698753eac4371e195c75",
+  "clean": true,
+  "paths": [
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/source-capsules",
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv"
+  ],
+  "capsule_receipts": [
+    {
+      "path": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/source-capsules/1d4da0d965b790395b2d45979f04cc5e8f391b8a8accbeee7a6b1253d472c758/CAPSULE_RECEIPT.json",
+      "sha256": "112632be362498febeac03a25b60513b8f07dde07f7f80ea98d48d91fff308b6",
+      "saved": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/shard3/retired-1d4da0d965b790395b2d45979f04cc5e8f391b8a8accbeee7a6b1253d472c758-CAPSULE_RECEIPT.json"
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/source-capsules/6fec138ef5f8eacff8cc4fc19f0084f61b81fde81c2a37c300708c24b5eb2a2c/CAPSULE_RECEIPT.json",
+      "sha256": "8ab328a78ab53d2b02ca81d9e79f5ee6cce97a79e1b7d900bf049d1df8555024",
+      "saved": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/shard3/retired-6fec138ef5f8eacff8cc4fc19f0084f61b81fde81c2a37c300708c24b5eb2a2c-CAPSULE_RECEIPT.json"
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/source-capsules/83d09acf9bfae53fd19d5effbae68bf2db2d20d3844938f0c6734454fd0a8382/CAPSULE_RECEIPT.json",
+      "sha256": "e429f15e95b4c80c77ac5562cee929327ec90afadc93a32f43e0a530c9a1d4ea",
+      "saved": "/workspace/casepath-startup-timing-gate-abf3c90e-20261018/shard3/retired-83d09acf9bfae53fd19d5effbae68bf2db2d20d3844938f0c6734454fd0a8382-CAPSULE_RECEIPT.json"
+    }
+  ],
+  "before_free_bytes": 3706429440,
+  "authorization": "Retire only completed owned reproducible ignored runtime; source and prior raw receipts retained",
+  "after_free_bytes": 4203716608
+}
