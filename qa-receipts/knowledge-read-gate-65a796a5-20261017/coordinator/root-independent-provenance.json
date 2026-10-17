@@ -1,0 +1,21 @@
+{
+  "candidate": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "artifacts": [
+    {
+      "source": "/workspace/knowledge-read-gate-resources-20261017/root-raw-reconciliation65.json",
+      "copy": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/coordinator/root-raw-reconciliation65.json",
+      "sha256": "f16713e7478ebcf554e445ae0566271d9696603d105ec15d1cb36fa649ed01a0",
+      "byte_equal": true
+    },
+    {
+      "source": "/workspace/knowledge-read-gate-resources-20261017/root-independent65.py",
+      "copy": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/coordinator/root-independent65.py",
+      "sha256": "52356debd49b781c9a02661ffb744c63934f58815dcd8c61063adfe7f76ec908",
+      "byte_equal": true
+    }
+  ],
+  "source": "Parent root independently executed its raw union verifier; copied unchanged after reported PASS",
+  "gate_worker_did_not_execute_or_edit_parent_verifier": true,
+  "mac_raw_receipts_inspected_in_cloud": false,
+  "created_epoch": 1792274904.445618
+}

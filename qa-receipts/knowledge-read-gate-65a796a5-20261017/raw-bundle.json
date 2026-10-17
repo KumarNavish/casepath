@@ -2,10 +2,10 @@
   "candidate": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
   "manifest_sha256": "6fec138ef5f8eacff8cc4fc19f0084f61b81fde81c2a37c300708c24b5eb2a2c",
   "archive": "/workspace/casepath-knowledge-read-gate-65a796a5-20261017/raw-evidence.tar.gz",
-  "archive_sha256": "da43a480b7ea87f4bae10a7825ef5f3572e9ff9c6386245b209d96dc1e324d85",
-  "archive_size_bytes": 1919102,
-  "raw_file_count": 255,
-  "checksum_manifest_sha256": "3e47725397975a9c740e241270ff7ea5428ca41964e084acceac791739ed1ee5",
+  "archive_sha256": "379e0896795e91844efb023062ffbf946502295a3dd80078ca532ec668ac76b4",
+  "archive_size_bytes": 1923313,
+  "raw_file_count": 258,
+  "checksum_manifest_sha256": "9402d7dc6bf5cb60388709347d8577346398a4358eecd9720f3982225c5676d8",
   "all_archive_members_byte_verified": true,
   "contains_runtime_databases": false,
   "excludes": [
@@ -17,5 +17,5 @@
     "passing/failed temporary fixture bytes (retained separately on host if present)"
   ],
   "includes": "All raw collection, commands/controlled environments, phase observer, JUnit, first-attempt latch, normal prepare, source/capsule proofs, map and delta, source/artifact manifest, resources, cleanup provenance and shard terminal/retirement receipts",
-  "created_epoch": 1792274847.946096
+  "created_epoch": 1792274904.9059079
 }
