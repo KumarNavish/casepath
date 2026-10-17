@@ -2450,7 +2450,7 @@
       const area = viewport?.getBoundingClientRect?.(), bounds = node?.getBoundingClientRect?.();
       if (!area || !bounds) return;
       if (center || bounds.left < area.left+8 || bounds.right > area.right-8) viewport.scrollLeft += bounds.left-area.left-(area.width-bounds.width)/2;
-      if (center || bounds.top < area.top+8 || bounds.bottom > area.bottom-8) viewport.scrollTop += bounds.top-area.top-(area.height-bounds.height)/2;
+      if (center || bounds.top < area.top+8 || bounds.bottom > area.bottom-8) viewport.scrollTop += bounds.top-area.top-Math.max(0,(area.height-bounds.height)/2);
     }
     function sourceControls(surface) {
       const controls = new Map();
