@@ -1108,9 +1108,10 @@
     const item=event.versionRecord || event.item, id=item.knowledge_id || '', family=item.family || event.family || (id.startsWith('procedure.')?id.slice('procedure.'.length):'');
     return DOMAINS.some(domain=>domain.id===family) ? procedureLabel({...item,family}) : 'Procedure not accepted';
   }
+  let learningTimeFormat;
   function learningTime(event) {
     if (!event.at || !Number.isFinite(Date.parse(event.at))) return 'Timestamp unavailable · unordered';
-    return new Date(event.at).toLocaleString('en-GB',{timeZone:'UTC',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false})+' UTC';
+    return (learningTimeFormat ||= new Intl.DateTimeFormat('en-GB',{timeZone:'UTC',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false})).format(new Date(event.at))+' UTC';
   }
   function learningPinAttributes(item) {
     return item?.knowledge_id && item?.version ? ` data-au-knowledge="${h(item.knowledge_id)}" data-au-version="${h(item.version)}" data-au-knowledge-sha="${h(item.knowledge_sha256 || '')}" data-au-definition-sha="${h(item.definition_sha256 || item.qualification?.definition_sha256 || '')}"` : '';

@@ -3017,3 +3017,17 @@ test('direct packet readiness excludes Knowledge private saved and unrelated rou
   assert.equal(await controller.recordedPacketReady,false,fragment);assert.equal(api.calls.filter(row=>row.path.endsWith('/recorded-prototype.json')).length,0,fragment);controller.destroy();
  }
 });
+
+test('reused Knowledge time formatting preserves exact UTC labels boundaries and unavailable timestamps',()=>{
+ const events=[...learningFixtureData().learning_replay.events,{at:'2024-02-29T23:59:59Z'},{at:'2026-12-31T23:59:00-05:00'},{at:'2026-03-29T01:30:00+02:00'},{at:null},{at:'unavailable'}],before=JSON.stringify(events);
+ for(let pass=0;pass<2;pass++)for(const event of events){const expected=!event.at||!Number.isFinite(Date.parse(event.at))?'Timestamp unavailable · unordered':new Date(event.at).toLocaleString('en-GB',{timeZone:'UTC',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false})+' UTC';assert.equal(ui.learningTime(event),expected);}
+ assert.equal(JSON.stringify(events),before);
+});
+
+test('Knowledge timestamp formatting creates no formatter at startup or for unavailable time and reuses one for valid history',()=>{
+ const {runInNewContext}=require('node:vm'),{readFileSync}=require('node:fs'),{resolve}=require('node:path');let constructed=0;
+ const context={module:{exports:{}},require:file=>require(resolve(__dirname,'../casepath/assets',file)),Intl:{DateTimeFormat:function(...args){constructed++;return new Intl.DateTimeFormat(...args);}}};
+ runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-workspace-v1.js'),'utf8'),context);const fresh=context.module.exports;assert.equal(constructed,0,'workspace initialization does not pay formatting setup');
+ assert.equal(fresh.learningTime({at:null}),'Timestamp unavailable · unordered');assert.equal(fresh.learningTime({at:'unknown'}),'Timestamp unavailable · unordered');assert.equal(constructed,0);
+ const first={at:'2026-10-13T05:25:12+00:00'},second={at:'2026-10-15T12:10:00Z'};assert.equal(fresh.learningTime(first),ui.learningTime(first));assert.equal(fresh.learningTime(second),ui.learningTime(second));assert.equal(constructed,1,'one formatter serves the valid recorded history');
+});
