@@ -1,0 +1,434 @@
+{
+  "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "branch": "codex/casepath-simple-site-20261017",
+  "tip": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+  "commits": [
+    "401f0a707f01dc502e3e4d2b86271426b8372c97 fix(ui): keep the active fact beside its recorded source",
+    "7a490e415effa5eb5d565519855ee91e99320198 fix(ui): keep the current fact ahead of document slots",
+    "2c604f2b3f5469d81a539770aea395325f409fd0 fix(a11y): keep oversized source card headings visible",
+    "188cf626f55ba684fcec0c8b5b00534572fbde46 fix(ui): keep checked documents beside the recorded excerpt",
+    "1c163345c42c004ea7da8c4ed5722b556f2eb239 fix(ui): center active reads on their recorded source card",
+    "619d07fb7178494537c1a0bf4d4c86e362255132 fix(ui): flow multiple document slots below the active source",
+    "fc8be36e83d89de0441078a11942cbe9337c2226 fix(ui): describe recorded replay fallback accurately",
+    "bb11b6b18d811b493073050c148df86216443548 fix(ui): use present actions in the recorded now line",
+    "17767385377a964fb66ac24874f1805aea677d23 fix(a11y): keep replay sliders and timeline names accessible",
+    "075d2c66dafe9353c2dc8021370d38ed8b779eda fix(ui): keep replay roles tied to the current recorded work",
+    "7c94cebb91e63796c176a54cd48cad66598191e0 fix(a11y): include recorded case context in knowledge announcements",
+    "3f8b0e22389e58b27c4ee00e50382b2e70879ed8 fix(ui): keep mobile replay controls and load errors clear",
+    "a13348deeb19c5e8a771c81b8091e0dd0c32223d fix(ui): compact the existing knowledge replay header",
+    "3f6360d0c99ffab8124276cf70d7bc5a19f60b5d fix(ui): keep learning proof plain during recorded playback",
+    "1ed92e5a4b95dee6810d5635ae99a21da38fe24d fix(ui): keep replay facts compact and controls within view",
+    "ac7ad96c89313e8f6795f32bd5aa77758068c6fc fix(ui): use the selected knowledge header for recorded now",
+    "28eeb6e073068ab9e954797ba5a916aca3ce8462 fix(ui): keep recorded now visible across knowledge and replay",
+    "f3aa68b36749a1d2f8c374a2018bc746526f742a fix(a11y): give named replay controls appropriate group roles",
+    "32e1f18824caadc2e1ed7333bef348c1100779b9 fix(ui): announce recorded roles and results with safe error details",
+    "d7162d54638e879e217633d924b3630c6c85d187 fix(ui): show recorded legal findings and preserve raw plan checks",
+    "ae9babb9f52e81bb283e3279d6798f552c7d11e8 fix(ui): finish grouped replay and keep knowledge tabs reachable",
+    "77b528eb936cfc32d8c409963a2d90153f501521 fix(site): include the recorded language module in public assets",
+    "2ebef0e76f17bfd55e3998b848b76b15c07933b0 fix(ui): expose stopped-work details and readable document labels",
+    "448e4dcf3d01fe775c96b05d9f2e464973ff105d fix(ui): keep recorded results and live announcements clear",
+    "5b207bbba8da174b4dd5d7a01a2269907e710c6b feat(ui): show simple recorded roles and replay language"
+  ],
+  "scope": [
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-entry-v1.js",
+    "casepath/index.html",
+    "casepath/tools/build_static_site.py"
+  ],
+  "sha256": {
+    "casepath/assets/autonomous-workspace-v1.js": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+    "casepath/assets/autonomous-workspace-v1.css": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+    "casepath/assets/autonomous-entry-v1.js": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+    "casepath/index.html": "bf0aa195373a74ab146fa0094140da31ed88333d39371b99e460968b60e9b778",
+    "casepath/tools/build_static_site.py": "576654935aace0a9361e42daed4b11f52ea531b203e299d34a4c6ef2fb731318"
+  },
+  "module_dependency_chain": [
+    "cb09a54b7b0215ae2669389f0503334caee9b11f",
+    "930b5576b6dd28fff58b548a297f1dc0bc9eb321",
+    "55a9b750132f2be8aa271f09214a44a1eb34ecef",
+    "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5"
+  ],
+  "module_sha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+  "verified": {
+    "entry": "6/6 on7c94 (sites-autonomous-entry.test.cjs)",
+    "focused_native_and_knowledge": "8/8",
+    "bound_provenance": "actual positive +9 binding and4 ownership negative cases passed on7c94",
+    "curated_assets": "Final401 exactJS/CSS/module URL binding and regular-authored-file inventory passed; finalsource digest matchesQAservedbody/querydigest",
+    "copy": "824actual operation renders+2real cases\u00d75views+5Knowledge facets external scanner zero authored issues on17767385; QA actual38-eventKnowledge +allfacets accessible-name scan also passes",
+    "declared_color_contrast": "12 effective text/control/pseudo color pairs passed AA thresholds",
+    "now_quotes": "27actual fact operations including4currency spans match native compact quote and Unicode source offsets; state unchanged on075d",
+    "QA_focused_Node": "303/303 on2c exactfinalJS68295 unchanged through401 CSS-onlyfinalguards; QAownerfinalreceipt /workspace/site-language-20261017/qa/e/receipt.json recordsrawcommands/results",
+    "active_role_followup": "075d focused7/7 including immutable release regeneration; receipt-bound family/version+singular reuse+5nonsource kind guards+onecurrent step badge+nosettled badges+unchangedstate audit pass",
+    "native_geometry_QA_7c94": {
+      "desktop_transport_bottom": {
+        "1428x801": 784.28,
+        "1280x800": 783.28
+      },
+      "paused_source_bounds": {
+        "390": "39..351 inside16..374",
+        "320": "39..281 inside16..304",
+        "430": "58..372 inside16..414"
+      },
+      "same_actual_operation_and_revision": true,
+      "keyboard_unobscured_focus_pan_reduced": "pass1/1 reported byQA"
+    },
+    "QA_native_browser": "FINAL401 response-bound3/3nativePASS,11996ms; existingheatingpause/resizes+exactterminationop77ce/firstfact/lastfact/oversize/mobile+actuallegacy11savedmode. qa/e/layout-401f-bound.tap",
+    "QA_accessibility": "axe4.12.1:4actual source views+Knowledge zero violations; no pageoverflow320/390/430/true200%640CSS/DPR2;44px sliders;5facets keyboard/visibleunobscuredfocus and reducedmotion pass",
+    "QA_computed_contrast": "planned meaningful18px text opacity1=6.176:1; actual timeline text>=8.452:1,border/pseudotrack>=3.441:1",
+    "native_geometry_final": {
+      "1428x801": {
+        "transport": {
+          "x": 36,
+          "y": 707.28125,
+          "width": 1356,
+          "height": 77,
+          "top": 707.28125,
+          "right": 1392,
+          "bottom": 784.28125,
+          "left": 36
+        },
+        "excerpt": {
+          "x": 681,
+          "y": 585.71875,
+          "width": 266,
+          "height": 32,
+          "top": 585.71875,
+          "right": 947,
+          "bottom": 617.71875,
+          "left": 681
+        },
+        "overflow": false,
+        "now": "<div class=\"au-now\" data-au-now-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\"><span class=\"au-now-label\">Now</span> <span class=\"au-role-badge\" data-au-role=\"reader\"><span class=\"au-role-shape\" aria-hidden=\"true\"></span>Reader</span> <span data-au-now-copy=\"\">found a possible fact: <q data-au-recorded-quote=\"\" data-au-now-fact=\"op_31bcd3404de1cb6592883fb7509d9cfc\" data-au-source-artifact=\"src_c57d943a64c85cf37369ccbf747b6e3f\" data-au-source-start-char=\"229\" data-au-source-end-char=\"258\">three heating-failure reports</q> in \u201cLandlord knowledge and repair status\u201d using fixed rules.</span> <span data-au-now-result=\"\">Needs a document check.</span> <button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"operation\" data-au-record-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\">Details</button></div>",
+        "revision": "35",
+        "stateSha": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+        "paused": true
+      },
+      "1280x800": {
+        "transport": {
+          "x": 36,
+          "y": 706.28125,
+          "width": 1208,
+          "height": 77,
+          "top": 706.28125,
+          "right": 1244,
+          "bottom": 783.28125,
+          "left": 36
+        },
+        "excerpt": {
+          "x": 507,
+          "y": 585.71875,
+          "width": 266,
+          "height": 32,
+          "top": 585.71875,
+          "right": 773,
+          "bottom": 617.71875,
+          "left": 507
+        },
+        "overflow": false,
+        "now": "<div class=\"au-now\" data-au-now-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\"><span class=\"au-now-label\">Now</span> <span class=\"au-role-badge\" data-au-role=\"reader\"><span class=\"au-role-shape\" aria-hidden=\"true\"></span>Reader</span> <span data-au-now-copy=\"\">found a possible fact: <q data-au-recorded-quote=\"\" data-au-now-fact=\"op_31bcd3404de1cb6592883fb7509d9cfc\" data-au-source-artifact=\"src_c57d943a64c85cf37369ccbf747b6e3f\" data-au-source-start-char=\"229\" data-au-source-end-char=\"258\">three heating-failure reports</q> in \u201cLandlord knowledge and repair status\u201d using fixed rules.</span> <span data-au-now-result=\"\">Needs a document check.</span> <button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"operation\" data-au-record-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\">Details</button></div>",
+        "revision": "35",
+        "stateSha": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+        "paused": true
+      },
+      "390x844": {
+        "transport": {
+          "x": 16,
+          "y": 1189.078125,
+          "width": 358,
+          "height": 77,
+          "top": 1189.078125,
+          "right": 374,
+          "bottom": 1266.078125,
+          "left": 16
+        },
+        "excerpt": {
+          "x": 39,
+          "y": 935.90625,
+          "width": 312,
+          "height": 32,
+          "top": 935.90625,
+          "right": 351,
+          "bottom": 967.90625,
+          "left": 39
+        },
+        "overflow": false,
+        "now": "<div class=\"au-now\" data-au-now-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\"><span class=\"au-now-label\">Now</span> <span class=\"au-role-badge\" data-au-role=\"reader\"><span class=\"au-role-shape\" aria-hidden=\"true\"></span>Reader</span> <span data-au-now-copy=\"\">found a possible fact: <q data-au-recorded-quote=\"\" data-au-now-fact=\"op_31bcd3404de1cb6592883fb7509d9cfc\" data-au-source-artifact=\"src_c57d943a64c85cf37369ccbf747b6e3f\" data-au-source-start-char=\"229\" data-au-source-end-char=\"258\">three heating-failure reports</q> in \u201cLandlord knowledge and repair status\u201d using fixed rules.</span> <span data-au-now-result=\"\">Needs a document check.</span> <button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"operation\" data-au-record-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\">Details</button></div>",
+        "revision": "35",
+        "stateSha": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+        "paused": true
+      },
+      "320x844": {
+        "transport": {
+          "x": 16,
+          "y": 1213.875,
+          "width": 288,
+          "height": 77,
+          "top": 1213.875,
+          "right": 304,
+          "bottom": 1290.875,
+          "left": 16
+        },
+        "excerpt": {
+          "x": 39,
+          "y": 985.890625,
+          "width": 242,
+          "height": 64,
+          "top": 985.890625,
+          "right": 281,
+          "bottom": 1049.890625,
+          "left": 39
+        },
+        "overflow": false,
+        "now": "<div class=\"au-now\" data-au-now-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\"><span class=\"au-now-label\">Now</span> <span class=\"au-role-badge\" data-au-role=\"reader\"><span class=\"au-role-shape\" aria-hidden=\"true\"></span>Reader</span> <span data-au-now-copy=\"\">found a possible fact: <q data-au-recorded-quote=\"\" data-au-now-fact=\"op_31bcd3404de1cb6592883fb7509d9cfc\" data-au-source-artifact=\"src_c57d943a64c85cf37369ccbf747b6e3f\" data-au-source-start-char=\"229\" data-au-source-end-char=\"258\">three heating-failure reports</q> in \u201cLandlord knowledge and repair status\u201d using fixed rules.</span> <span data-au-now-result=\"\">Needs a document check.</span> <button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"operation\" data-au-record-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\">Details</button></div>",
+        "revision": "35",
+        "stateSha": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+        "paused": true
+      },
+      "430x844": {
+        "transport": {
+          "x": 16,
+          "y": 1189.078125,
+          "width": 398,
+          "height": 77,
+          "top": 1189.078125,
+          "right": 414,
+          "bottom": 1266.078125,
+          "left": 16
+        },
+        "excerpt": {
+          "x": 58,
+          "y": 935.90625,
+          "width": 314,
+          "height": 32,
+          "top": 935.90625,
+          "right": 372,
+          "bottom": 967.90625,
+          "left": 58
+        },
+        "overflow": false,
+        "now": "<div class=\"au-now\" data-au-now-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\"><span class=\"au-now-label\">Now</span> <span class=\"au-role-badge\" data-au-role=\"reader\"><span class=\"au-role-shape\" aria-hidden=\"true\"></span>Reader</span> <span data-au-now-copy=\"\">found a possible fact: <q data-au-recorded-quote=\"\" data-au-now-fact=\"op_31bcd3404de1cb6592883fb7509d9cfc\" data-au-source-artifact=\"src_c57d943a64c85cf37369ccbf747b6e3f\" data-au-source-start-char=\"229\" data-au-source-end-char=\"258\">three heating-failure reports</q> in \u201cLandlord knowledge and repair status\u201d using fixed rules.</span> <span data-au-now-result=\"\">Needs a document check.</span> <button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"operation\" data-au-record-id=\"op_31bcd3404de1cb6592883fb7509d9cfc\">Details</button></div>",
+        "revision": "35",
+        "stateSha": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+        "paused": true
+      }
+    },
+    "tense_followup": "bb11b6b1:QA5/5 focused tests passed including explicit present Now/past History, acceptedphase Now, completed/replay/paused/inspection stable recordedcontext, Knowledgepresentactions/pasttimeline; old177 negative2/2 proved regression sensitivity. External3kind+3Knowledgeevent/stateimmutability audits,27exactsourcequotes,824copy,curatedassetbinding also pass.",
+    "replay429_followup": "fc8b:QA3/3focused+303/303broadpass; exactshortrecorded/live/saved-unavailablecopy; rawprimary/nesteddiagnosticsDetails; verifiedheadidentity; existingReplaychoicesexplicitselectedrecordedretry exactlyonce/action withzeroauto/live/writes; late429/savedread no navigationpaint; actualstreamowner aborts. qa/e/replay429-fc8b-visible-final.tap andnode-fc8b-7bd.tap.",
+    "multislot_measured_negative": "619d exactnativeop77ce/head6d3/currentrev34:source414.81px>359pxrail,citedspanbottom744.09>rail687.28; slots775..941,1328..1380,1400..1452. Retainedqa/e/layout-619d; nativelegacy11pass.",
+    "multislot_repair": "188 sourcecontextoneCSSline withfullDOM/quotedpassage intact; layout-onlydocgroupdefaultcontents preservesmap/mobile, desktopgroupnexttosource andactualfocusedrequirementfirst; sourcecamerausesreal sourcecard. QA actualnative2/2pass; qa/e/layout-188c.",
+    "multislot_actual_geometry_188": {
+      "fixture": "retained native_fixture nine-native.json",
+      "claim": "clm_0f4f13b1e3e1328c",
+      "head": "6d3f6e70336e298d5c2fb58b74f86dc4e3f62750e866b7eef5086dd2721dc341",
+      "operation": "op_77ce0cdebce3c1f23bdf1acc3dd84334",
+      "recorded_prefix_revision": 34,
+      "unchanged_after_resize": true,
+      "desktop1428x801": {
+        "rail": "328..687",
+        "source_header": "363..421",
+        "cited_span": "466..618",
+        "active_slot": "460..626",
+        "other_slots": [
+          "646..698",
+          "718..770"
+        ]
+      },
+      "phone390": {
+        "rail": "593..1097",
+        "source_header": "732..790",
+        "cited_span": "835..955",
+        "slots": [
+          "986..1095",
+          "1107..1159",
+          "1171..1223"
+        ]
+      },
+      "legacy11_saved_mode": "pass,0operationrequests"
+    },
+    "oversize_source_followup": "FINAL401PASS: oversizedcardheaderstaysattop/insiderail; allsourcequotecontentwrapsunchanged; contextonlyoneCSSline withfullsourceaccessible. Exactasset/syntaxpassed; nativeoversizeactualop77ce confirmed.",
+    "first_fact_measured_negative": "2c exactnativefirstfactop9e9742927fbe93326e40ca91fca44697 seq24:destination724.05..768.14 belowrail376.28..687.28;citedspan514.16..538.16fit. qa/e/layout-portable-2c60/termination-first-fact.json; inheriteddocgrouprow2precededfirstfact.",
+    "first_fact_repair": "FINAL401PASS currentfirstfactdock508..552 inside376..687; op9e974 exactrecordedcontext unchanged. Currentfactrow2, docgroupautowhilefactcurrent; Checkerrow2unchanged.",
+    "entry_final": "FINAL4016/6PASS; qa/e/entry-401f.tap",
+    "last_fact_measured_negative": "7a actualop737a094ce5b71dd8edda24a77f084372 seq288, landed/visible dock1196..1292 belowrail352..687; quote490..578fit. qa/e/layout-7a49-last/termination-last-fact.json/png.",
+    "last_fact_repair": "401 CSSonly exactdata-au-current-fact=true grid-row2; priorfactautoflow followsreservedcurrentrow; noDOM/state/source/timing/fontchanges. FINAL401nativePASS, currentlastdock484..581 insiderail352..687, phaseLANDED/VISIBLE.",
+    "independent_review_final": "401 source/assets cleared by independentreviewer; exactguardcannotapplytohistoricalfacts; noactionablefinding"
+  },
+  "limitations": [
+    "Mac sole integrator/fullgate/sealer/publisher; frontend didnot run source seal or deployment",
+    "Actual scopednativefixture head6d3/op77ce used forfinalgeometry; Mac owns actualproductionhead inspection",
+    "Prior broadAA source4views+Knowledge audit passed; final401 scopednative3+entry6 passed, no new broadmatrix/fullgate perfreeze",
+    "No prepare/heavybuild/seed/provider call/production API/browser request or persistedcase/Knowledge record edit byfrontend",
+    "Untrackedlocal language-module copy remains fordependencytesting; integrate roleowner four-commit chain separately"
+  ],
+  "unchanged": [
+    "backend",
+    "source corpus/profile files",
+    "recorded packet",
+    "saved-history JSON",
+    "media",
+    "source seal",
+    "case/Knowledge journal/ledger"
+  ],
+  "evidence": "/workspace/site-language-20261017/frontend/e",
+  "errors": [
+    "Initial final entry command used nonexistent autonomous-entry-v1.test.cjs filename; corrected existing sites-autonomous-entry.test.cjs passed6/6.",
+    "Initial075d focused command referenced a removed shard6 Python venv and failed regeneration with ENOENT; reran all7 with existing dependency Python and all7 passed. Initial command tailed log after failing subprocess; both logs retained, corrected direct-run exit0 recorded."
+  ],
+  "QA_evidence": "/workspace/site-language-20261017/qa/e/layout-401f-bound",
+  "completed": true,
+  "commands": {
+    "copy_audit": "node /workspace/site-language-20261017/frontend/audit_markup.cjs",
+    "exact_quotes": "node /workspace/site-language-20261017/frontend/check_now_quotes.cjs",
+    "bound_provenance": "node /workspace/site-language-20261017/frontend/check_bound_provenance.cjs",
+    "active_role_delta": "node /workspace/site-language-20261017/frontend/check_active_roles.cjs",
+    "focused_native": "CASEPATH_PYTHON=/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python node --test --test-name-pattern=\"release procedure reconciliation|release procedure embedded|stage transport|early planned rail|stage clauses|NDJSON operations|uncited knowledge consequence\" casepath-qa/autonomous-workspace-v1.test.cjs",
+    "entry": "node --test casepath-qa/sites-autonomous-entry.test.cjs",
+    "curated_assets": "python -c import build_static_site; build_static_site._validate_authored_sources() (casepath/tools on sys.path)",
+    "QA_broad": "QA-owned node --test on workspace,entry,language suites; raw node-1776-7bd.tap",
+    "QA_browser": "QA-owned native Chromium tests selected recorded language accessibility in unified-product-browser-v1.test.cjs; secure localhost intercepted fixture; raw browser-1776.tap",
+    "now_tense_delta": "node /workspace/site-language-20261017/frontend/check_now_tense.cjs",
+    "QA_final_native": "QA-owned node --test selected3 cachednative guards in unified-product-browser-v1.test.cjs; raw layout-401f-bound.tap andqa5975246 receipt",
+    "QA_final_entry": "QA-owned node --test casepath-qa/sites-autonomous-entry.test.cjs; raw entry-401f.tap"
+  },
+  "frozen_at": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+  "QA_test_tip": "5975246c74ce14bc48763d9c6cc8a98a8fa3bfee",
+  "final_served_asset_binding": {
+    "fixture": "securelocalhostinterceptedactualnativefixtures",
+    "index_sha256": "bf0aa195373a74ab146fa0094140da31ed88333d39371b99e460968b60e9b778",
+    "source_sha256": {
+      "autonomous-workspace-v1.js": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+      "autonomous-workspace-v1.css": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+      "autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
+    },
+    "served": [
+      {
+        "url": "http://localhost:41999/assets/autonomous-workspace-v1.js?sha256=68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+        "path": "/assets/autonomous-workspace-v1.js",
+        "querySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+        "bodySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+        "bytes": 523902
+      },
+      {
+        "url": "http://localhost:41999/assets/autonomous-workspace-v1.css?sha256=ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+        "path": "/assets/autonomous-workspace-v1.css",
+        "querySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+        "bodySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+        "bytes": 250842
+      },
+      {
+        "url": "http://localhost:41999/assets/autonomous-language-v1.js?sha256=3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+        "path": "/assets/autonomous-language-v1.js",
+        "querySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+        "bodySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+        "bytes": 24731
+      }
+    ],
+    "assertion": "final local source bytes equal actual requested URL query digest and response body digest"
+  },
+  "final_fact_geometry": {
+    "first": {
+      "operation": "op_9e9742927fbe93326e40ca91fca44697",
+      "rail": {
+        "x": 36,
+        "y": 376.28125,
+        "width": 1356,
+        "height": 311,
+        "top": 376.28125,
+        "right": 1392,
+        "bottom": 687.28125,
+        "left": 36
+      },
+      "chip": {
+        "x": 887,
+        "y": 508.046875,
+        "width": 288,
+        "height": 44.09375,
+        "top": 508.046875,
+        "right": 1175,
+        "bottom": 552.140625,
+        "left": 887
+      },
+      "span": {
+        "x": 552,
+        "y": 514.15625,
+        "width": 238.6875,
+        "height": 24,
+        "top": 514.15625,
+        "right": 790.6875,
+        "bottom": 538.15625,
+        "left": 552
+      },
+      "phase": "read",
+      "visibility": "hidden"
+    },
+    "last": {
+      "operation": "op_737a094ce5b71dd8edda24a77f084372",
+      "rail": {
+        "x": 36,
+        "y": 352.484375,
+        "width": 1356,
+        "height": 335,
+        "top": 352.484375,
+        "right": 1392,
+        "bottom": 687.484375,
+        "left": 36
+      },
+      "chip": {
+        "x": 887,
+        "y": 484.25,
+        "width": 288,
+        "height": 96.28125,
+        "top": 484.25,
+        "right": 1175,
+        "bottom": 580.53125,
+        "left": 887
+      },
+      "span": {
+        "x": 552,
+        "y": 490.359375,
+        "width": 225.609375,
+        "height": 88,
+        "top": 490.359375,
+        "right": 777.609375,
+        "bottom": 578.359375,
+        "left": 552
+      },
+      "phase": "landed",
+      "visibility": "visible"
+    }
+  },
+  "final_oversize_geometry": {
+    "operation": "op_77ce0cdebce3c1f23bdf1acc3dd84334",
+    "rail": {
+      "x": 36,
+      "y": 328.28125,
+      "width": 1356,
+      "height": 208,
+      "top": 328.28125,
+      "right": 1392,
+      "bottom": 536.28125,
+      "left": 36
+    },
+    "card": {
+      "x": 535,
+      "y": 328.28125,
+      "width": 300,
+      "height": 288.875,
+      "top": 328.28125,
+      "right": 835,
+      "bottom": 617.15625,
+      "left": 535
+    },
+    "header": {
+      "x": 552,
+      "y": 343.28125,
+      "width": 266,
+      "height": 57.6875,
+      "top": 343.28125,
+      "right": 818,
+      "bottom": 400.96875,
+      "left": 552
+    }
+  }
+}

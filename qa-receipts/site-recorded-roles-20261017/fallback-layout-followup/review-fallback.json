@@ -1,0 +1,215 @@
+{
+  "reviewed_ui": "fc8be36e83d89de0441078a11942cbe9337c2226",
+  "base": "bb11b6b18d811b493073050c148df86216443548",
+  "language": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+  "ui_js_sha256": "0e4e10677c8fc23823feb8c4cdb64aa1d05167f4cf702ffd44a033200a383e7c",
+  "asset_query_matches": true,
+  "unchanged_functions": {
+    "operationActive": true,
+    "operationGate": true,
+    "checkedReplayHead": true,
+    "prepareOperationReads": true,
+    "operationRequest": true,
+    "cancelPreparedOperationReads": true,
+    "chooseRecordedOpening": true,
+    "stopPresentation": true
+  },
+  "fallback_admission_and_assignment_bytes_unchanged_except_notice": true,
+  "admission_cases": [
+    {
+      "name": "valid",
+      "passed": true,
+      "assigned": true,
+      "error": null,
+      "calls": [
+        "request",
+        "readReplay",
+        "stop",
+        "render",
+        "prime",
+        "notice",
+        "details"
+      ]
+    },
+    {
+      "name": "late-navigation",
+      "passed": true,
+      "assigned": false,
+      "error": null,
+      "calls": [
+        "request",
+        "readReplay"
+      ]
+    },
+    {
+      "name": "late-cancel",
+      "passed": true,
+      "assigned": false,
+      "error": null,
+      "calls": [
+        "request",
+        "readReplay"
+      ]
+    },
+    {
+      "name": "late-epoch",
+      "passed": true,
+      "assigned": false,
+      "error": null,
+      "calls": [
+        "request",
+        "readReplay"
+      ]
+    },
+    {
+      "name": "wrong-claim",
+      "passed": true,
+      "assigned": false,
+      "error": "The recorded replay head changed. Reopen to verify its newest history.",
+      "calls": [
+        "request",
+        "readReplay"
+      ]
+    },
+    {
+      "name": "wrong-revision",
+      "passed": true,
+      "assigned": false,
+      "error": "The recorded replay head changed. Reopen to verify its newest history.",
+      "calls": [
+        "request",
+        "readReplay"
+      ]
+    },
+    {
+      "name": "wrong-state",
+      "passed": true,
+      "assigned": false,
+      "error": "The recorded replay head changed. Reopen to verify its newest history.",
+      "calls": [
+        "request",
+        "readReplay"
+      ]
+    },
+    {
+      "name": "wrong-event",
+      "passed": true,
+      "assigned": false,
+      "error": "The recorded replay head changed. Reopen to verify its newest history.",
+      "calls": [
+        "request",
+        "readReplay"
+      ]
+    }
+  ],
+  "notice_cases": [
+    {
+      "name": "explicit-recorded",
+      "savedResult": true,
+      "visible": "Could not load this replay. Showing the saved result.",
+      "diagnostic": {
+        "message": "Stored operation trace unavailable (HTTP 429).",
+        "mode": "recorded"
+      },
+      "passed": true
+    },
+    {
+      "name": "explicit-recorded",
+      "savedResult": false,
+      "visible": "Could not load this replay or its saved result.",
+      "diagnostic": {
+        "message": "Stored operation trace unavailable (HTTP 429).",
+        "mode": "recorded",
+        "saved_result_error": "Saved result unavailable (HTTP 429)."
+      },
+      "passed": true
+    },
+    {
+      "name": "recorded-transport",
+      "savedResult": true,
+      "visible": "Could not load this replay. Showing the saved result.",
+      "diagnostic": {
+        "message": "Stored operation trace unavailable (HTTP 429).",
+        "mode": "recorded"
+      },
+      "passed": true
+    },
+    {
+      "name": "recorded-transport",
+      "savedResult": false,
+      "visible": "Could not load this replay or its saved result.",
+      "diagnostic": {
+        "message": "Stored operation trace unavailable (HTTP 429).",
+        "mode": "recorded",
+        "saved_result_error": "Saved result unavailable (HTTP 429)."
+      },
+      "passed": true
+    },
+    {
+      "name": "recorded-response",
+      "savedResult": true,
+      "visible": "Could not load this replay. Showing the saved result.",
+      "diagnostic": {
+        "message": "Stored operation trace unavailable (HTTP 429).",
+        "mode": "recorded"
+      },
+      "passed": true
+    },
+    {
+      "name": "recorded-response",
+      "savedResult": false,
+      "visible": "Could not load this replay or its saved result.",
+      "diagnostic": {
+        "message": "Stored operation trace unavailable (HTTP 429).",
+        "mode": "recorded",
+        "saved_result_error": "Saved result unavailable (HTTP 429)."
+      },
+      "passed": true
+    },
+    {
+      "name": "live",
+      "savedResult": true,
+      "visible": "Could not finish this check. Showing the saved result.",
+      "diagnostic": {
+        "message": "Stored operation trace unavailable (HTTP 429).",
+        "mode": "live"
+      },
+      "passed": true
+    },
+    {
+      "name": "live",
+      "savedResult": false,
+      "visible": "Could not finish this check or load its saved result.",
+      "diagnostic": {
+        "message": "Stored operation trace unavailable (HTTP 429).",
+        "mode": "live",
+        "saved_result_error": "Saved result unavailable (HTTP 429)."
+      },
+      "passed": true
+    }
+  ],
+  "limits": "Exact extracted head/gate/fallback/notice functions; wire decoder, request and render effects stubbed. Existing readReplay and request paths were not modified. No browser, service or network requests.",
+  "late_response_cases": [
+    {
+      "mode": "navigation",
+      "ownership_change": "after request began, before saved response resolution",
+      "assigned": false,
+      "presentation_effects": 0,
+      "passed": true
+    },
+    {
+      "mode": "cancel",
+      "ownership_change": "after request began, before saved response resolution",
+      "assigned": false,
+      "presentation_effects": 0,
+      "passed": true
+    },
+    {
+      "mode": "epoch",
+      "ownership_change": "after request began, before saved response resolution",
+      "assigned": false,
+      "presentation_effects": 0,
+      "passed": true
+    }
+  ]
+}

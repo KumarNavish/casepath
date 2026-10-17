@@ -1,20 +1,13 @@
 {
   "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
-  "frontend": "bb11b6b18d811b493073050c148df86216443548",
+  "frontend": "401f0a707f01dc502e3e4d2b86271426b8372c97",
   "language": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
-  "qa": "ae889bd3f834b82e37125440e0e1001b535483d5",
+  "qa": "5975246c74ce14bc48763d9c6cc8a98a8fa3bfee",
   "backend_gate": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
   "product_sealed": false,
-  "node": {
-    "passed": 300,
-    "failed": 0,
-    "skipped": 0
-  },
-  "native_browser": {
-    "passed": 2,
-    "failed": 0,
-    "source": "17767385377a964fb66ac24874f1805aea677d23",
-    "afterwards": "Tense-only JS/index delta. CSS/module/geometry unchanged; no native rerun claimed."
-  },
-  "limits": "Views actually audited only; VoiceOver/public-host acceptance and UI sealing/full gate belong to Mac."
+  "limits": "Views actually audited only; VoiceOver/public-host acceptance and UI sealing/full gate belong to Mac.",
+  "final_followup": "fallback-layout-followup",
+  "validation": "Exact commands, source bindings, attempts and results in the appended raw follow-up receipts. Prior captures retain their original tip bindings.",
+  "backend_atomic_candidate": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+  "backend_atomic_evidence": "9b92e1f3f210a206945e7c7218b92436dde00c4d"
 }

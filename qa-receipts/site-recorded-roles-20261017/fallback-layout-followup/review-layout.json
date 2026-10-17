@@ -1,0 +1,33 @@
+{
+  "reviewed_ui": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+  "base": "7a490e415effa5eb5d565519855ee91e99320198",
+  "language": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+  "changed_files": [
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/index.html"
+  ],
+  "only_css_change": ".au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) > .au-stage-fact[data-au-current-fact=true] { grid-row:2; }",
+  "js_byte_identical": true,
+  "guard": "Desktop source-bearing step, direct fact child with existing exact current-operation flag. Places current fact in row2 while historical facts and document group auto-flow; document-check default row2 remains.",
+  "unchanged": "IDs, DOM, source/citation/quote bytes, source camera, accepted state, operation gates/cancellation, requests, timing and focus behavior.",
+  "observed_failure_reported_by_qa": {
+    "revision": "7a490e415effa5eb5d565519855ee91e99320198",
+    "last_fact_sequence": 288,
+    "fact_dock_y": [
+      1196,
+      1292
+    ],
+    "rail_y": [
+      352,
+      687
+    ]
+  },
+  "asset_hashes": {
+    "autonomous-workspace-v1.js": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+    "autonomous-workspace-v1.css": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+    "autonomous-entry-v1.js": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+    "autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
+  },
+  "all_asset_queries_match": true,
+  "limits": "Final exact CSS/source/asset follow-up only. No new QA executed. Native final-tip geometry belongs to QA."
+}

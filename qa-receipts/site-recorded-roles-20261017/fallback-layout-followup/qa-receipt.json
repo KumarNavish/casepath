@@ -1,0 +1,1184 @@
+{
+  "host": "656813ef2295",
+  "base": "84f972c86fe556ccf5cac7e2aacddc6e154fdbb9",
+  "qaBranch": "codex/casepath-simple-site-qa-20261017",
+  "qaTip": "5975246c74ce14bc48763d9c6cc8a98a8fa3bfee",
+  "validatedProductTip": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+  "validatedLanguageTip": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+  "validationCheckout": "23475b6b",
+  "node": "v24.19.0",
+  "playwright": "1.62.1",
+  "sourceArtifacts": {
+    "heatingPacket": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+    "savedHistory": "a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0",
+    "knowledgeProjection": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8"
+  },
+  "negatives": [
+    {
+      "log": "baseline-node.tap",
+      "result": "269/270 passed; existing Python test missing local venv, exact retry passes with prepared shard6 Python."
+    },
+    {
+      "log": "preview-focused-full.tap",
+      "result": "230/288 passed; initial presentation assertions and absent result/focus mock, retained without masking failures."
+    },
+    {
+      "log": "frozen-node.tap",
+      "result": "293/295 passed; own obsolete AI prefix corrected; aggregate stream count included actual next-case bounded prefetch (exact selected count preserved)."
+    },
+    {
+      "log": "browser-initial.tap",
+      "result": "Invalid source selector and frozen clock stalled axe; own runner terminated. No active acceptance."
+    },
+    {
+      "log": "browser-corrected.tap",
+      "result": "503 outline only. No active acceptance."
+    },
+    {
+      "log": "browser-native.tap",
+      "result": "Insecure *.invalid origin prevented browser crypto.subtle. No active acceptance."
+    },
+    {
+      "log": "browser-eligible.tap",
+      "result": "Cases-first eligibility correctly attempted; insecure origin still prevented packet verification."
+    },
+    {
+      "log": "browser-secure.tap",
+      "result": "Actual recorded Reader source shown; zero axe violations in 4 views, serious incomplete transport role; landlord target not reached, recenter unverified. Product later changed."
+    },
+    {
+      "log": "browser-final.tap",
+      "result": "Pre-final source: late target was not reached by frozen virtual40s (actualseq13); invalid CSSzoom desktop media retained; no native200% acceptance."
+    },
+    {
+      "log": "browser-7c94.tap",
+      "result": "Pre-final: Skip wait happened before frozen acquisition timers progressed; actual640CSS/DPR2 reflow overflow, source geometry saved."
+    },
+    {
+      "log": "browser-7c94-controls.tap",
+      "result": "Pre-final: floating token overflow at640CSS x632.6..737.2;4 long authored aria labels; Knowledge actual projection reached. Writer later fixed; clock-related setup excluded."
+    },
+    {
+      "log": "browser-7c94-real.tap",
+      "result": "Real native Skip+keyboardseq37 worked. Frozen resize sampled stale viewport budget before resize/rAF settled; first desktop clipped. Correct real settled retry passed, raw failure retained."
+    },
+    {
+      "log": "browser-7c94-settled.tap",
+      "result": "Earlier source real-clock geometry1/1 passes with exact seq37; final source separately retested."
+    },
+    {
+      "log": "browser-075d.tap",
+      "result": "Actual real-clock geometry1/1 passes; remaining audit test failed only16px range control and3 generated refused IDs in accessible names. Actualaxe0violations plus manualcontrast receipts retained. Fixed in17767385 and final2/2pass."
+    },
+    {
+      "log": "node-7c94-7bd.tap",
+      "result": "Intermediate298tests295pass3fail: removed shard6 Python ENOENT,2 obsolete Knowledge refresh copy assertions. Source mutated only after workspace tests completed, so this is explicitly not used as final-source validation."
+    },
+    {
+      "log": "family-announcement.tap",
+      "result": "New test first expected obsolete family name Ending a tenancy; actual Lease termination corrected, exact identity/dedupe/context requirements retained."
+    },
+    {
+      "log": "tense-1776-negative.tap",
+      "result": "Both new tense regressions fail on17767385: replay Now used Found and Knowledge Now used saved. Same tests pass onbb11b6b1. Existing History/pin/state assertions retained."
+    },
+    {
+      "log": "replay429-bb11-negative.tap",
+      "result": "Original visible fallback incorrectly named live rules-based work and exposed HTTP429. New nested-failure expected copy absent. A new read-only assertion initially rejected undefined method though fetch defaults to GET; corrected to normalize defaultGET."
+    },
+    {
+      "log": "replay429-fc8b-focused.tap",
+      "result": "2/3passed; new cancellation assertion assumed the standalone saved-read signal must abort. Existing ownership model permits that read to finish but blocks stale paint; corrected to assert actual operation-stream owner cancellation plus unchanged other view."
+    },
+    {
+      "log": "layout-619d.tap",
+      "result": "Actual retained head6d3/op77ce three slots separated, but cited span592..744 clipped below graph328..687. Actual legacy11 passed. Raw negative screenshot and rectangles retained."
+    },
+    {
+      "log": "layout-portable-619d.tap",
+      "result": "New portable helper first requested recorded trace without sidecar admission: actual409. No UI acceptance."
+    },
+    {
+      "log": "layout-portable-admitted-619d.tap",
+      "result": "Fresh v2 helper lacks the real prior baseline required for reference replay. Switched to existing selected v1-to-v2 native fixture pattern, no fabricated state."
+    },
+    {
+      "log": "layout-portable-188c.tap",
+      "result": "Selected native migration reached actual sidecar admission but trace schema was not initialized in disposable DB. Added existing initializer only in that temp fixture."
+    },
+    {
+      "log": "layout-188c.tap",
+      "result": "Retained native op77ce and legacy11 geometry2/2passed; source/header now fit. Not a final-source result."
+    },
+    {
+      "log": "layout-portable-2c60.tap",
+      "result": "Portable fixture generated and codec verified. Target/oversize/legacy passed; first fact actual target724..768 was below rail376..687. Fixed by7a docgroup auto placement."
+    },
+    {
+      "log": "layout-7a49-last.tap",
+      "result": "Last actual landed/visible fact seq288 at1196..1292 below rail352..687. Minimal current-fact row2 rule in401 fixes it; same actual op measured484..581 in final run."
+    }
+  ],
+  "browserAcceptance": {
+    "status": "PASS for two bounded actual-recorded browser tests on exact final source, not a full browser suite or blanket WCAG certification.",
+    "caseOperation": "op_31bcd3404de1cb6592883fb7509d9cfc",
+    "operation_seq": 37,
+    "revision": 35,
+    "state_sha256": "d92982e9aaced2ec96490e4aef732b033aa20ccfbea68ea2ac47ce2de418b3f3",
+    "selection": "Actual Skip to result drains verified recording; native keyboard Home/ArrowRight selects packet-derived source-backed seq37.",
+    "pausedResize": {
+      "sameOperationRevisionState": true,
+      "sizes": [
+        "1428x801",
+        "1280x800",
+        "390x844",
+        "430x844",
+        "320x844"
+      ],
+      "desktopTransportBottoms": [
+        784.28125,
+        783.28125
+      ],
+      "phone390ExcerptX": [
+        39,
+        351
+      ],
+      "phone390RailX": [
+        16,
+        374
+      ],
+      "focus": "native keyboard :focus-visible plus center point hit-test unobscured and viewport bounds",
+      "manualPanRetained": true,
+      "reducedMotionRetainsInformation": true
+    },
+    "audit": {
+      "engine": "axe-core 4.12.1",
+      "wcagTags": [
+        "wcag2a",
+        "wcag2aa",
+        "wcag21a",
+        "wcag21aa",
+        "wcag22aa"
+      ],
+      "views": [
+        "320 CSS px active source",
+        "430 CSS px active source",
+        "640x422 CSS px / DPR2 equivalent 1280x844 at 200% reflow",
+        "390 CSS px active source",
+        "390 CSS px exact completed Knowledge pin"
+      ],
+      "violations": 0,
+      "seriousCriticalViolations": 0,
+      "rawIncomplete": "Color-contrast incomplete in actual source:3 planned labels/view; Knowledge:22 timeline elements. Raw findings retained, manually measured rendered colors.",
+      "manualPlannedLabelContrast": 6.176074848353738,
+      "plannedFontPx": 18,
+      "plannedEffectiveOpacity": 1,
+      "minimumTimelineTextContrast": 8.452340381567032,
+      "minimumTimelineBorderTrackContrast": 3.4414658176431283,
+      "noPageHorizontalOverflow": true,
+      "visibleControlMinimumPx": 24,
+      "touchControlMinimumPx": 44,
+      "singleAccessiblePoliteRegion": true,
+      "authoredCopyAndAccessibleNames": "Whole-word ban, visible shortened IDs and 20-word sentence checks pass; only exact recorded source subspans/Details exempt."
+    },
+    "knowledge": {
+      "fixture_sha256": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8",
+      "event": "06512d347c0967e3de9644e50484b0a5652a1b41c1c805481111451a3b75b83d",
+      "representative_index": 31,
+      "actualEvents": 38,
+      "completedTransportPosition": 37,
+      "facets": [
+        "process",
+        "facts",
+        "documents",
+        "exceptions",
+        "changes"
+      ],
+      "allFacetsKeyboardFocus": true,
+      "oneRecordedMemoryNow": true,
+      "reducedMotionRetainsEvent": true
+    },
+    "productTip": "17767385377a964fb66ac24874f1805aea677d23",
+    "postFreezeCopyOnlyDelta": "bb11b6b1 changes Now action tense only in JS/index; parent authorized focused Node plus broad combined Node, no native replay rerun. Browser evidence is explicitly bound to17767385."
+  },
+  "constraints": [
+    "No provider calls, production requests, source corpus/journal/Knowledge writes, server listeners, browser downloads, broad suite, sealing, publication or media work.",
+    "Locked existing axe-core4.12.1 package independently SHA512 verified before safe regular-file extraction.",
+    "All installed package manifests and lockfiles unchanged."
+  ],
+  "earlierChecks": [
+    {
+      "command": "node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/sites-autonomous-entry.test.cjs casepath-qa/autonomous-language-v1.test.cjs",
+      "environment": {
+        "CASEPATH_PYTHON": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp"
+      },
+      "exit": 0,
+      "tests": 296,
+      "passed": 296,
+      "failed": 0,
+      "skipped": 0,
+      "log": "qa-53f-node.tap"
+    },
+    {
+      "command": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/workspace/site-language-20261017/qa/tmp/inventory-final casepath/tools/test_build_deployment_identity.py::test_curated_static_build_has_exact_runtime_inventory",
+      "exit": 0,
+      "tests": 1,
+      "passed": 1,
+      "log": "curated-inventory-final.log"
+    }
+  ],
+  "qaCommitsAfter53f": [
+    "50c2638e9218bd5d8e97f07a6c95d33129c75feb",
+    "0a0fd1bf7fd4efe7faeee68502372d6bb138c0cf",
+    "fff7c5bc302127bced0d9b806f1186995e0e787c"
+  ],
+  "testedCode": "Validation checkout plus identical QA test working tree subsequently committed on QA-only branch.",
+  "validatedAssets": {
+    "autonomous-workspace-v1.js": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+    "autonomous-workspace-v1.css": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+    "autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
+  },
+  "testSourceSha256": {
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "0a0c7a43e9b5a3074593b3b3eb0b2514a1b7b775cb3450b4a8fef56dafa5ae6f",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "c77fa7e8245218543eb7220a6405c0c3b1ada186320e6bcf456bfa08f18bf2b4",
+    "casepath/tools/test_build_deployment_identity.py": "afc469b1dfabb1e13dfd0e77851030e372691f4d3dbef06a6e1868737fb5980e"
+  },
+  "checks": [
+    {
+      "command": "node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/sites-autonomous-entry.test.cjs casepath-qa/autonomous-language-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python"
+      },
+      "exit": 0,
+      "tests": 298,
+      "passed": 298,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 15444.28863,
+      "log": "node-1776-7bd.tap",
+      "productTip": "17767385377a964fb66ac24874f1805aea677d23"
+    },
+    {
+      "command": "node --test --test-reporter=tap --test-timeout=60000 --test-name-pattern='^recorded language accessibility:' casepath-qa/unified-product-browser-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_AXE_BUNDLE": "/workspace/site-language-20261017/qa/deps/axe-core/package/axe.min.js",
+        "CASEPATH_FOCUSED_RECEIPTS": "/workspace/site-language-20261017/qa/e/browser-1776",
+        "CASEPATH_KNOWLEDGE_FIXTURE": "/workspace/knowledge-learning-coordinator-20261016/projection-6064.json"
+      },
+      "exit": 0,
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 11000.537969,
+      "log": "browser-1776.tap",
+      "evidenceDirectory": "browser-1776",
+      "clock": "Native real clock only; no page.clock installation or private controller-state mutation.",
+      "productTip": "17767385377a964fb66ac24874f1805aea677d23"
+    },
+    {
+      "command": "node --test --test-reporter=tap --test-name-pattern='^(replay Now uses present actions|Knowledge Now uses present saves|recorded roles render|one recorded Now announcement|Knowledge announcements distinguish)' casepath-qa/autonomous-workspace-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python"
+      },
+      "productTip": "bb11b6b18d811b493073050c148df86216443548",
+      "languageTip": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+      "exit": 0,
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "log": "tense-bb11-focused.tap"
+    },
+    {
+      "command": "node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/sites-autonomous-entry.test.cjs casepath-qa/autonomous-language-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python"
+      },
+      "productTip": "bb11b6b18d811b493073050c148df86216443548",
+      "languageTip": "7bd58dc8e0fd66a7f7edd9ad0de105d35acd3cc5",
+      "exit": 0,
+      "tests": 300,
+      "passed": 300,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 15344.856579,
+      "log": "node-bb11-7bd.tap"
+    },
+    {
+      "command": "node --test --test-reporter=tap --test-name-pattern='^(recorded operations HTTP429|recorded HTTP429 with|late recorded HTTP429)' casepath-qa/autonomous-workspace-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python"
+      },
+      "productTip": "fc8be36e83d89de0441078a11942cbe9337c2226",
+      "exit": 0,
+      "tests": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "log": "replay429-fc8b-visible-final.tap"
+    },
+    {
+      "command": "node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/sites-autonomous-entry.test.cjs casepath-qa/autonomous-language-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python"
+      },
+      "productTip": "fc8be36e83d89de0441078a11942cbe9337c2226",
+      "exit": 0,
+      "tests": 303,
+      "passed": 303,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 15347.733782,
+      "log": "node-fc8b-7bd.tap"
+    },
+    {
+      "command": "node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/sites-autonomous-entry.test.cjs casepath-qa/autonomous-language-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python"
+      },
+      "productTip": "2c604f2b3f5469d81a539770aea395325f409fd0",
+      "codeSha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+      "note": "The final401 source has byte-identical JS and language module. Subsequent7a/401 changes were CSS and index asset digests only. This303 result remains explicitly bound to2c, not relabeled as a401 full Node run.",
+      "exit": 0,
+      "tests": 303,
+      "passed": 303,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 15392.953354,
+      "log": "node-2c60-7bd.tap"
+    },
+    {
+      "command": "node --test --test-reporter=tap --test-timeout=60000 --test-name-pattern='^(recorded language layout:|recorded language accessibility: paused active)' casepath-qa/unified-product-browser-v1.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PYTHON": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+        "CASEPATH_FOCUSED_RECEIPTS": "/workspace/site-language-20261017/qa/e/layout-401f-bound",
+        "CASEPATH_LAYOUT_REFERENCE_FIXTURE": "/workspace/site-language-20261017/qa/e/termination-native-fixture.json"
+      },
+      "productTip": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+      "exit": 0,
+      "tests": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 11996.210443,
+      "log": "layout-401f-bound.tap",
+      "evidenceDirectory": "layout-401f-bound",
+      "clock": "Native real clock; trusted Skip and keyboard history range, actual resize/panning. No provider, public API, listener or fabricated operations."
+    },
+    {
+      "command": "node --test --test-reporter=tap casepath-qa/sites-autonomous-entry.test.cjs",
+      "environment": {
+        "HOME": "/workspace/site-language-20261017/qa/home",
+        "TMPDIR": "/workspace/site-language-20261017/qa/tmp",
+        "TMP": "/workspace/site-language-20261017/qa/tmp",
+        "TEMP": "/workspace/site-language-20261017/qa/tmp",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+      },
+      "productTip": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+      "exit": 0,
+      "tests": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 204.432371,
+      "log": "entry-401f.tap"
+    }
+  ],
+  "standaloneRetryChecks": [
+    {
+      "log": "release-dto-system-python.tap",
+      "tests": 1,
+      "passed": 1,
+      "exit": 0,
+      "reason": "Existing runtime Python sufficient for stdlib-only release DTO regeneration."
+    },
+    {
+      "log": "knowledge-plain-retry.tap",
+      "tests": 3,
+      "passed": 3,
+      "exit": 0
+    }
+  ],
+  "qaTenseCommit": "ae889bd3f834b82e37125440e0e1001b535483d5",
+  "qaReplayFailureCommit": "7d27e5482812fb44fe6481a70f574eabde493b2a",
+  "qaLayoutCommit": "5975246c74ce14bc48763d9c6cc8a98a8fa3bfee",
+  "nativeLayoutAcceptance": {
+    "productTip": "401f0a707f01dc502e3e4d2b86271426b8372c97",
+    "qaCommit": "5975246c74ce14bc48763d9c6cc8a98a8fa3bfee",
+    "status": "PASS for the three explicitly scoped native tests. UI and QA frozen after this run.",
+    "assetBinding": {
+      "indexSha256": "bf0aa195373a74ab146fa0094140da31ed88333d39371b99e460968b60e9b778",
+      "sourceHashesBefore": {
+        "autonomous-workspace-v1.js": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+        "autonomous-workspace-v1.css": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+        "autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
+      },
+      "served": [
+        {
+          "url": "http://localhost:41999/assets/autonomous-language-v1.js?sha256=3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+          "path": "/assets/autonomous-language-v1.js",
+          "querySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+          "bodySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+          "bytes": 24731
+        },
+        {
+          "url": "http://localhost:41999/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "path": "/assets/claims-workspace-v1.css",
+          "querySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "bodySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "bytes": 4108
+        },
+        {
+          "url": "http://localhost:41999/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "path": "/assets/causal-process-v1.css",
+          "querySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "bodySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "bytes": 15740
+        },
+        {
+          "url": "http://localhost:41999/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "path": "/assets/claims-workspace-presentation-v1.css",
+          "querySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "bodySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "bytes": 20081
+        },
+        {
+          "url": "http://localhost:41999/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "path": "/assets/agent-work-v1.css",
+          "querySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "bodySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "bytes": 28141
+        },
+        {
+          "url": "http://localhost:41999/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "path": "/assets/process-evidence-v2.css",
+          "querySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "bodySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "bytes": 2197
+        },
+        {
+          "url": "http://localhost:41999/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "path": "/assets/agent-native-v2.css",
+          "querySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "bodySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "bytes": 67377
+        },
+        {
+          "url": "http://localhost:41999/assets/autonomous-workspace-v1.css?sha256=ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+          "path": "/assets/autonomous-workspace-v1.css",
+          "querySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+          "bodySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+          "bytes": 250842
+        },
+        {
+          "url": "http://localhost:41999/assets/autonomous-entry-v1.js?sha256=3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+          "path": "/assets/autonomous-entry-v1.js",
+          "querySha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+          "bodySha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+          "bytes": 2103
+        },
+        {
+          "url": "http://localhost:41999/assets/autonomous-workspace-v1.js?sha256=68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+          "path": "/assets/autonomous-workspace-v1.js",
+          "querySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+          "bodySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+          "bytes": 523902
+        }
+      ]
+    },
+    "bindingAssertions": "Fresh contexts actually requested each SHA-qualified JS/CSS/language URL. Recorded fulfilled bodySHA equals querySHA equals fileSHA. Source files and indexSHA unchanged before and after each run.",
+    "fixtureClassification": "Actual isolated selected v1-to-v2 native test fixture; no production history claim.",
+    "fixtureHead": {
+      "claimId": "clm_0f4f13b1e3e1328c",
+      "revision": 39,
+      "state_sha256": "8e539a4a817f69ff594721dc67782803176371af7e232bad7307267b8c0e63ef",
+      "event_sha256": "f540892ead7dc3b99e9d2bbe4277a5053c18b56b9a03d920c34b60aaa813332d"
+    },
+    "packetSha256": "f9663438f0eea168cb728bd7d69dd2ff0a956aff840e667098573e552da4a0c9",
+    "fixturePortability": "Default test optionally extends existing referenceFixture for one real termination case, normal v1-to-v2 disposable engine/store setup, existing exact sidecar builder/admission and actual recorded GET capture. Existing packer encodes exact response bytes. No external /workspace artifact or environment variable is required. Final repeat reused the same generated checked fixture to avoid recomputation.",
+    "portableGenerationAttempt": "layout-portable-2c60.tap successfully generated the fixture without retained-packet or cached-fixture input; its sole geometry failure was first-fact positioning, subsequently fixed.",
+    "cachedFixtureFile": "termination-native-fixture.json",
+    "cachedFixtureSha256": "f73bdb1d8eefcbd2218fe7ee7cdb88115ba9a2e4cdfea84345f0b66b27b2e84c",
+    "target": {
+      "id": "op_77ce0cdebce3c1f23bdf1acc3dd84334",
+      "seq": 134,
+      "kind": "document.check"
+    },
+    "pausedInspection": {
+      "revision": "34",
+      "stateSha256": "75b94b4303dbc2527ad2ea494af027d287a47ef64c586ac499c19e3413fb8b2a",
+      "desktop": {
+        "rail": {
+          "x": 36,
+          "y": 328.28125,
+          "width": 1356,
+          "height": 359,
+          "top": 328.28125,
+          "right": 1392,
+          "bottom": 687.28125,
+          "left": 36
+        },
+        "header": {
+          "x": 552,
+          "y": 363.28125,
+          "width": 266,
+          "height": 57.6875,
+          "top": 363.28125,
+          "right": 818,
+          "bottom": 420.96875,
+          "left": 552
+        },
+        "span": {
+          "x": 552,
+          "y": 466.15625,
+          "width": 268.890625,
+          "height": 152,
+          "top": 466.15625,
+          "right": 820.890625,
+          "bottom": 618.15625,
+          "left": 552
+        },
+        "slots": [
+          {
+            "text": "Relevant tenancy terms",
+            "rect": {
+              "x": 857,
+              "y": 460.046875,
+              "width": 318,
+              "height": 165.484375,
+              "top": 460.046875,
+              "right": 1175,
+              "bottom": 625.53125,
+              "left": 857
+            }
+          },
+          {
+            "text": "Received termination notice",
+            "rect": {
+              "x": 857,
+              "y": 645.53125,
+              "width": 318,
+              "height": 52,
+              "top": 645.53125,
+              "right": 1175,
+              "bottom": 697.53125,
+              "left": 857
+            }
+          },
+          {
+            "text": "Notice sender and delivery",
+            "rect": {
+              "x": 857,
+              "y": 717.53125,
+              "width": 318,
+              "height": 52,
+              "top": 717.53125,
+              "right": 1175,
+              "bottom": 769.53125,
+              "left": 857
+            }
+          }
+        ]
+      },
+      "phone390": {
+        "rail": {
+          "x": 16,
+          "y": 593.078125,
+          "width": 358,
+          "height": 504,
+          "top": 593.078125,
+          "right": 374,
+          "bottom": 1097.078125,
+          "left": 16
+        },
+        "header": {
+          "x": 39,
+          "y": 731.84375,
+          "width": 312,
+          "height": 57.6875,
+          "top": 731.84375,
+          "right": 351,
+          "bottom": 789.53125,
+          "left": 39
+        },
+        "span": {
+          "x": 39,
+          "y": 834.71875,
+          "width": 304.8125,
+          "height": 120,
+          "top": 834.71875,
+          "right": 343.8125,
+          "bottom": 954.71875,
+          "left": 39
+        },
+        "slots": [
+          {
+            "text": "Relevant tenancy terms",
+            "rect": {
+              "x": 34,
+              "y": 985.71875,
+              "width": 330,
+              "height": 109.484375,
+              "top": 985.71875,
+              "right": 364,
+              "bottom": 1095.203125,
+              "left": 34
+            }
+          },
+          {
+            "text": "Received termination notice",
+            "rect": {
+              "x": 34,
+              "y": 1107.203125,
+              "width": 330,
+              "height": 52,
+              "top": 1107.203125,
+              "right": 364,
+              "bottom": 1159.203125,
+              "left": 34
+            }
+          },
+          {
+            "text": "Notice sender and delivery",
+            "rect": {
+              "x": 34,
+              "y": 1171.203125,
+              "width": 330,
+              "height": 52,
+              "top": 1171.203125,
+              "right": 364,
+              "bottom": 1223.203125,
+              "left": 34
+            }
+          }
+        ]
+      },
+      "sameOperationRevisionStateNow": true
+    },
+    "oversizedSource": {
+      "assetBinding": {
+        "indexSha256": "bf0aa195373a74ab146fa0094140da31ed88333d39371b99e460968b60e9b778",
+        "sourceHashesBefore": {
+          "autonomous-workspace-v1.js": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+          "autonomous-workspace-v1.css": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+          "autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
+        },
+        "served": [
+          {
+            "url": "http://localhost:41999/assets/autonomous-language-v1.js?sha256=3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "path": "/assets/autonomous-language-v1.js",
+            "querySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "bodySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "bytes": 24731
+          },
+          {
+            "url": "http://localhost:41999/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "path": "/assets/claims-workspace-v1.css",
+            "querySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "bodySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "bytes": 4108
+          },
+          {
+            "url": "http://localhost:41999/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "path": "/assets/causal-process-v1.css",
+            "querySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "bodySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "bytes": 15740
+          },
+          {
+            "url": "http://localhost:41999/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "path": "/assets/claims-workspace-presentation-v1.css",
+            "querySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "bodySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "bytes": 20081
+          },
+          {
+            "url": "http://localhost:41999/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "path": "/assets/agent-work-v1.css",
+            "querySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "bodySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "bytes": 28141
+          },
+          {
+            "url": "http://localhost:41999/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "path": "/assets/process-evidence-v2.css",
+            "querySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "bodySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "bytes": 2197
+          },
+          {
+            "url": "http://localhost:41999/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "path": "/assets/agent-native-v2.css",
+            "querySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "bodySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "bytes": 67377
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-workspace-v1.css?sha256=ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "path": "/assets/autonomous-workspace-v1.css",
+            "querySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "bodySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "bytes": 250842
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-entry-v1.js?sha256=3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "path": "/assets/autonomous-entry-v1.js",
+            "querySha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "bodySha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "bytes": 2103
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-workspace-v1.js?sha256=68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "path": "/assets/autonomous-workspace-v1.js",
+            "querySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "bodySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "bytes": 523902
+          }
+        ]
+      },
+      "rail": {
+        "x": 36,
+        "y": 328.28125,
+        "width": 1356,
+        "height": 208,
+        "top": 328.28125,
+        "right": 1392,
+        "bottom": 536.28125,
+        "left": 36
+      },
+      "card": {
+        "x": 535,
+        "y": 328.28125,
+        "width": 300,
+        "height": 288.875,
+        "top": 328.28125,
+        "right": 835,
+        "bottom": 617.15625,
+        "left": 535
+      },
+      "header": {
+        "x": 552,
+        "y": 343.28125,
+        "width": 266,
+        "height": 57.6875,
+        "top": 343.28125,
+        "right": 818,
+        "bottom": 400.96875,
+        "left": 552
+      },
+      "operation": "op_77ce0cdebce3c1f23bdf1acc3dd84334"
+    },
+    "firstFact": {
+      "assetBinding": {
+        "indexSha256": "bf0aa195373a74ab146fa0094140da31ed88333d39371b99e460968b60e9b778",
+        "sourceHashesBefore": {
+          "autonomous-workspace-v1.js": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+          "autonomous-workspace-v1.css": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+          "autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
+        },
+        "served": [
+          {
+            "url": "http://localhost:41999/assets/autonomous-language-v1.js?sha256=3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "path": "/assets/autonomous-language-v1.js",
+            "querySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "bodySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "bytes": 24731
+          },
+          {
+            "url": "http://localhost:41999/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "path": "/assets/claims-workspace-v1.css",
+            "querySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "bodySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "bytes": 4108
+          },
+          {
+            "url": "http://localhost:41999/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "path": "/assets/causal-process-v1.css",
+            "querySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "bodySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "bytes": 15740
+          },
+          {
+            "url": "http://localhost:41999/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "path": "/assets/claims-workspace-presentation-v1.css",
+            "querySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "bodySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "bytes": 20081
+          },
+          {
+            "url": "http://localhost:41999/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "path": "/assets/agent-work-v1.css",
+            "querySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "bodySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "bytes": 28141
+          },
+          {
+            "url": "http://localhost:41999/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "path": "/assets/process-evidence-v2.css",
+            "querySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "bodySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "bytes": 2197
+          },
+          {
+            "url": "http://localhost:41999/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "path": "/assets/agent-native-v2.css",
+            "querySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "bodySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "bytes": 67377
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-workspace-v1.css?sha256=ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "path": "/assets/autonomous-workspace-v1.css",
+            "querySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "bodySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "bytes": 250842
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-entry-v1.js?sha256=3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "path": "/assets/autonomous-entry-v1.js",
+            "querySha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "bodySha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "bytes": 2103
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-workspace-v1.js?sha256=68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "path": "/assets/autonomous-workspace-v1.js",
+            "querySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "bodySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "bytes": 523902
+          }
+        ]
+      },
+      "fact": {
+        "id": "op_9e9742927fbe93326e40ca91fca44697",
+        "seq": 24,
+        "kind": "fact.extract"
+      },
+      "operation": "op_9e9742927fbe93326e40ca91fca44697",
+      "node": "lt_form",
+      "rail": {
+        "x": 36,
+        "y": 376.28125,
+        "width": 1356,
+        "height": 311,
+        "top": 376.28125,
+        "right": 1392,
+        "bottom": 687.28125,
+        "left": 36
+      },
+      "chip": {
+        "x": 887,
+        "y": 508.046875,
+        "width": 288,
+        "height": 44.09375,
+        "top": 508.046875,
+        "right": 1175,
+        "bottom": 552.140625,
+        "left": 887
+      },
+      "span": {
+        "x": 552,
+        "y": 514.15625,
+        "width": 238.6875,
+        "height": 24,
+        "top": 514.15625,
+        "right": 790.6875,
+        "bottom": 538.15625,
+        "left": 552
+      },
+      "phase": "read",
+      "visibility": "hidden"
+    },
+    "lastFact": {
+      "assetBinding": {
+        "indexSha256": "bf0aa195373a74ab146fa0094140da31ed88333d39371b99e460968b60e9b778",
+        "sourceHashesBefore": {
+          "autonomous-workspace-v1.js": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+          "autonomous-workspace-v1.css": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+          "autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
+        },
+        "served": [
+          {
+            "url": "http://localhost:41999/assets/autonomous-language-v1.js?sha256=3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "path": "/assets/autonomous-language-v1.js",
+            "querySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "bodySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "bytes": 24731
+          },
+          {
+            "url": "http://localhost:41999/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "path": "/assets/claims-workspace-v1.css",
+            "querySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "bodySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "bytes": 4108
+          },
+          {
+            "url": "http://localhost:41999/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "path": "/assets/causal-process-v1.css",
+            "querySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "bodySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "bytes": 15740
+          },
+          {
+            "url": "http://localhost:41999/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "path": "/assets/claims-workspace-presentation-v1.css",
+            "querySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "bodySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "bytes": 20081
+          },
+          {
+            "url": "http://localhost:41999/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "path": "/assets/agent-work-v1.css",
+            "querySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "bodySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "bytes": 28141
+          },
+          {
+            "url": "http://localhost:41999/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "path": "/assets/process-evidence-v2.css",
+            "querySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "bodySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "bytes": 2197
+          },
+          {
+            "url": "http://localhost:41999/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "path": "/assets/agent-native-v2.css",
+            "querySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "bodySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "bytes": 67377
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-workspace-v1.css?sha256=ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "path": "/assets/autonomous-workspace-v1.css",
+            "querySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "bodySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "bytes": 250842
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-entry-v1.js?sha256=3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "path": "/assets/autonomous-entry-v1.js",
+            "querySha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "bodySha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "bytes": 2103
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-workspace-v1.js?sha256=68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "path": "/assets/autonomous-workspace-v1.js",
+            "querySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "bodySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "bytes": 523902
+          }
+        ]
+      },
+      "fact": {
+        "id": "op_737a094ce5b71dd8edda24a77f084372",
+        "seq": 288,
+        "kind": "fact.extract"
+      },
+      "operation": "op_737a094ce5b71dd8edda24a77f084372",
+      "node": "lt_form",
+      "rail": {
+        "x": 36,
+        "y": 352.484375,
+        "width": 1356,
+        "height": 335,
+        "top": 352.484375,
+        "right": 1392,
+        "bottom": 687.484375,
+        "left": 36
+      },
+      "chip": {
+        "x": 887,
+        "y": 484.25,
+        "width": 288,
+        "height": 96.28125,
+        "top": 484.25,
+        "right": 1175,
+        "bottom": 580.53125,
+        "left": 887
+      },
+      "span": {
+        "x": 552,
+        "y": 490.359375,
+        "width": 225.609375,
+        "height": 88,
+        "top": 490.359375,
+        "right": 777.609375,
+        "bottom": 578.359375,
+        "left": 552
+      },
+      "phase": "landed",
+      "visibility": "visible"
+    },
+    "factGeometryLimit": "The first fact is a read-phase target in recorded inspection; its destination geometry was checked without claiming a live handoff. The last fact is actually landed and visible. Source/event/phase fields were not mutated.",
+    "legacy": {
+      "classification": "Actual checked-in saved legacy snapshot only; no operation trace manufactured.",
+      "assetBinding": {
+        "indexSha256": "bf0aa195373a74ab146fa0094140da31ed88333d39371b99e460968b60e9b778",
+        "sourceHashesBefore": {
+          "autonomous-workspace-v1.js": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+          "autonomous-workspace-v1.css": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+          "autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396"
+        },
+        "served": [
+          {
+            "url": "http://localhost:41999/assets/autonomous-language-v1.js?sha256=3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "path": "/assets/autonomous-language-v1.js",
+            "querySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "bodySha256": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+            "bytes": 24731
+          },
+          {
+            "url": "http://localhost:41999/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "path": "/assets/claims-workspace-v1.css",
+            "querySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "bodySha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+            "bytes": 4108
+          },
+          {
+            "url": "http://localhost:41999/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "path": "/assets/causal-process-v1.css",
+            "querySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "bodySha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+            "bytes": 15740
+          },
+          {
+            "url": "http://localhost:41999/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "path": "/assets/claims-workspace-presentation-v1.css",
+            "querySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "bodySha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+            "bytes": 20081
+          },
+          {
+            "url": "http://localhost:41999/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "path": "/assets/agent-work-v1.css",
+            "querySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "bodySha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+            "bytes": 28141
+          },
+          {
+            "url": "http://localhost:41999/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "path": "/assets/process-evidence-v2.css",
+            "querySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "bodySha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+            "bytes": 2197
+          },
+          {
+            "url": "http://localhost:41999/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "path": "/assets/agent-native-v2.css",
+            "querySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "bodySha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+            "bytes": 67377
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-workspace-v1.css?sha256=ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "path": "/assets/autonomous-workspace-v1.css",
+            "querySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "bodySha256": "ade67da7dcdbf410df07e695cdfe6b8bf1d6e5c38f7d7a30d04588fe78f59119",
+            "bytes": 250842
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-entry-v1.js?sha256=3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "path": "/assets/autonomous-entry-v1.js",
+            "querySha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "bodySha256": "3c75d393fed221cd7cb061d27556215bcf79c2b99bc1418138e958ce1eaaec17",
+            "bytes": 2103
+          },
+          {
+            "url": "http://localhost:41999/assets/autonomous-workspace-v1.js?sha256=68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "path": "/assets/autonomous-workspace-v1.js",
+            "querySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "bodySha256": "68295a15ac6214bfdb37341aa75c0ab32e11ebddfb02f6d9af3fb129cb1e6a9f",
+            "bytes": 523902
+          }
+        ]
+      },
+      "claim": "clm_2a9c260c26afaa34",
+      "revision": 15,
+      "stateSha": "63c7f9663040ad966daf87266b72dc31b0369de67b16c35a7b13fdd68fdcfe17",
+      "before": {
+        "left": 0,
+        "width": 900,
+        "scrollWidth": 900
+      },
+      "after": {
+        "left": 0,
+        "width": 900,
+        "scrollWidth": 900
+      }
+    },
+    "existingHeatingGuard": "Original native paused source resize/pan/keyboard/reduced-motion test passed again on final401 source.",
+    "scopeLimit": "The prior axe/copy/reflow audit remains bound to17767385 in browserAcceptance. This final layout run does not retroactively rebind that audit to401 or claim a full browser suite."
+  },
+  "replay429Acceptance": {
+    "productTip": "fc8be36e83d89de0441078a11942cbe9337c2226",
+    "qaCommit": "7d27e5482812fb44fe6481a70f574eabde493b2a",
+    "successNotice": "Could not load this replay. Showing the saved result.",
+    "nestedFailureNotice": "Could not load this replay or its saved result.",
+    "rawDiagnostic": "Stored operation trace unavailable (HTTP 429).",
+    "verifiedSavedHeadUnchanged": true,
+    "rawDetailsAvailable": true,
+    "technicalDiagnosticAbsentMainSurface": true,
+    "replayChoicesOpenWithoutStreamRequest": true,
+    "oneRecordedRequestPerExplicitSameCaseChoice": true,
+    "noAutomaticRetryOrLiveRequestOrWrite": true,
+    "lateResponsesCannotRepaintOtherView": true,
+    "canceledOperationOwnerAborted": true
+  },
+  "freeze": "Source401f0a707f01dc502e3e4d2b86271426b8372c97 and QA5975246c74ce14bc48763d9c6cc8a98a8fa3bfee frozen after final native3/3 and entry6/6. No further UI, QA, gate, media or publication actions."
+}
