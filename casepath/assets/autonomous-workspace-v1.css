@@ -679,6 +679,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-stage-source .au-operation-passage { margin:0; padding:0; min-height:0; max-height:none; overflow:visible; white-space:pre-wrap; overflow-wrap:anywhere; border:0; background:transparent; box-shadow:none; font:inherit; font-size:20px; line-height:1.6; cursor:default; }
 .au-workspace .au-stage-source .au-operation-passage mark { background:transparent; color:inherit; border-radius:2px; }
 .au-workspace .au-stage-source .au-operation-passage mark[data-au-phrase-locked] { background:rgb(116 155 99 / 25%); box-shadow:0 1px 0 var(--au-accent); }
+.au-workspace .au-stage-documents { display:contents; }
 .au-workspace .au-stage-slot { margin:8px 0 12px 30px; padding:10px 12px; min-height:52px; border:1px solid var(--au-line); border-radius:3px; color:var(--au-muted); font-size:18px; line-height:1.35; }
 .au-workspace .au-stage-slot[data-au-document-planned=true] { border-style:dashed; opacity:1; }
 .au-workspace .au-stage-slot[data-au-document-active=true] { border-style:solid; color:var(--au-ink); }
@@ -737,8 +738,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 @media (min-width:901px) {
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-graph-rank:has(.au-stage-source) { width:640px; flex-basis:640px; }
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) { display:grid; grid-template-columns:300px minmax(0,1fr); column-gap:22px; align-items:start; }
-  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) > :is(.au-node,.au-stage-fact,.au-stage-slot) { grid-column:2; }
-  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step > .au-stage-source { grid-column:1; grid-row:1 / span 20; margin-top:0; }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) > :is(.au-node,.au-stage-fact,.au-stage-documents) { grid-column:2; }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step > .au-stage-source { grid-column:1; grid-row:1; margin-top:0; }
 }
 .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport { height:calc(100dvh - 365px); min-height:260px; max-height:none; }
 .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-stage-process .au-graph { padding-top:20px; }
@@ -750,8 +751,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 @media (min-width:901px) {
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) { min-height:var(--au-stage-excerpt-height,180px); }
   .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step > .au-stage-source { position:absolute; left:0; top:0; width:300px; }
-  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) > .au-stage-slot { grid-column:1; grid-row:auto; margin:8px 0 12px; }
-  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) > .au-stage-slot:nth-child(1 of .au-stage-slot) { grid-row:1 / span 20; margin-top:calc(var(--au-stage-excerpt-height,180px) + 12px); }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step:has(.au-stage-source) > .au-stage-documents { display:flex; flex-direction:column; grid-column:2; grid-row:2; min-width:0; }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-documents > .au-stage-slot { margin:8px 0 12px; }
+  .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-documents > .au-stage-slot[data-au-document-focused=true] { order:-1; }
 }
 @media (max-width:700px) {
   .au-workspace :is([data-au-operation-presentation=playing],[data-au-operation-presentation=paused]) .au-operation-stage[data-au-stage-phase=source] .au-graph-viewport { height:calc(100dvh - 340px); }
@@ -950,7 +952,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-stage-source-title .au-role-badge { margin-bottom:5px; }
 .au-workspace .au-stage-fact > .au-role-badge { margin-bottom:5px; }
 .au-workspace .au-node-copy > .au-role-badge { margin-bottom:5px; }
-.au-workspace .au-stage-excerpt-context { white-space:pre-wrap; overflow:visible; }
+.au-workspace .au-stage-source .au-stage-excerpt-context { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .au-workspace :is(.au-identity-header,.au-work-head,.au-work-controls,.au-context-nav,.au-collection-tools,.au-stage-transport,.au-learning-transport) { min-width:0; max-width:100%; }
 .au-workspace :is(.au-learning-track,.au-learning-timeline,.au-learning-dates,.au-learning-lane,.au-learning-day) { min-width:0; }
 .au-workspace .au-stage-transport { flex-wrap:wrap; scroll-margin:24px; }
