@@ -1,0 +1,206 @@
+{
+  "started": 1792273508.176172,
+  "free_before": 3335897088,
+  "policy": "Only clean durably pushed tracked checkout copies retired; entire .git and every ignored/untracked file retained in place. Source can be restored from unchanged index/HEAD. No journals/receipts retired.",
+  "items": [
+    {
+      "path": "/workspace/casepath-replay-entry-session-20261013",
+      "head": "b94700035db97d5944e28905bb87b1b302afc244",
+      "tree": "1f2c2bf0d65e978ed22f515d2a3123609291d8ba",
+      "index_sha256": "4f7e46b5e8be8d03512dd27a95bebf50de15356bbc24e28d53bf5052b14283da",
+      "tracked_count": 3147,
+      "tracked_bytes": 351211069,
+      "ignored_manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "active": [],
+      "tracked_checkout_retired": true,
+      "full_git_retained": true,
+      "retained_nontracked_files": []
+    },
+    {
+      "path": "/workspace/casepath-entry-wiring-review-20261015",
+      "head": "5086624c8a024ba298819e5e27d749efbd0cc7fc",
+      "tree": "0e55e38648642b120025a17521fefacf26220670",
+      "index_sha256": "1b5a38e459efcf65f6d996985ffde079fb971c6477c40719395f86f12d9a51e5",
+      "tracked_count": 3176,
+      "tracked_bytes": 352956059,
+      "ignored_manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "active": [],
+      "tracked_checkout_retired": true,
+      "full_git_retained": true,
+      "retained_nontracked_files": []
+    },
+    {
+      "path": "/workspace/casepath-saved-history-preload-20261015",
+      "head": "413ca028a56eef2ce6f6dd66d20686731db8bf50",
+      "tree": "cde1ff0b828a4d1a7eab6ccc08ddd8fd55905c1d",
+      "index_sha256": "41203c730cd4dccd0b6b4861c88d635378d1a489a70b0a1eb9ecda036dab5daa",
+      "tracked_count": 3175,
+      "tracked_bytes": 352387890,
+      "ignored_manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "active": [],
+      "tracked_checkout_retired": true,
+      "full_git_retained": true,
+      "retained_nontracked_files": []
+    },
+    {
+      "path": "/workspace/casepath-replay-visibility-20261013",
+      "head": "0da0b9f784ddc662990035ba52a97834609075ac",
+      "tree": "fb4f8cec59eb3e124b53cdc8d7b6dc1097227a35",
+      "index_sha256": "94b622e854b7caee1ac7b305f3f033678fce137d68abd77e62110d4d52920258",
+      "tracked_count": 3147,
+      "tracked_bytes": 351235194,
+      "ignored_manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "active": [],
+      "tracked_checkout_retired": true,
+      "full_git_retained": true,
+      "retained_nontracked_files": []
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-admission-20261013",
+      "head": "cbf7a454d2c607d6cc4157633bba8340c765c3c3",
+      "tree": "f04f5b04a5cb3934609b2e72894a3aadc2455de8",
+      "index_sha256": "f748bac8136da5ed8c2243756311d2f3ccfb001a688bcbbc807ef46ad9167709",
+      "tracked_count": 3169,
+      "tracked_bytes": 351316041,
+      "ignored_manifest_sha256": "0929f2c2d654b2881ade4a5f415f2d0b98f35350e3e782fd7fb71d7358f5de3e",
+      "active": [],
+      "tracked_checkout_retired": true,
+      "full_git_retained": true,
+      "retained_nontracked_files": [
+        {
+          "path": "casepath-api/artifacts/management-reply.eml",
+          "bytes": 591,
+          "sha256": "0d598007aa543727b2b09b44b170a37c74797c5f44a76becd32b3673dde036f7"
+        },
+        {
+          "path": "casepath-api/artifacts/later-lease-agreement.pdf",
+          "bytes": 3521,
+          "sha256": "eabae42936630122e48e51303cd5c7ed27eae6cde623839c0733c6a2581add97"
+        },
+        {
+          "path": "casepath-api/artifacts/notification-email.eml",
+          "bytes": 589,
+          "sha256": "38f713fc3ceaa3d6320615a90abbc070b34df1d50f1f7f005e3c5cb6158dbba5"
+        },
+        {
+          "path": "casepath-api/artifacts/delivery-receipt.pdf",
+          "bytes": 2081,
+          "sha256": "09a7a03e5dd6488579c9839e7373530569da16ef7e97573d0563c837d7e8e025"
+        },
+        {
+          "path": "casepath-api/artifacts/defect-timeline.pdf",
+          "bytes": 3621,
+          "sha256": "5c8e9ef371f2038dbaa7849242504106b00e142c794fd35405f0c6a3d0c1ef33"
+        },
+        {
+          "path": "casepath-api/artifacts/bedroom-corner-2026-07-27.jpg",
+          "bytes": 216571,
+          "sha256": "b8de375c0a951e3970f4b4a392b5af348ea35b30f5750974fa1d9411da179860"
+        },
+        {
+          "path": "casepath-api/artifacts/window-corner-2026-08-08.jpg",
+          "bytes": 290375,
+          "sha256": "ff16af84a7dffa53305de336bc6cebeb80cb1c8b1544a3303d29caa92f8d5e9f"
+        },
+        {
+          "path": "casepath-api/artifacts/IMAGE_PROVENANCE.json",
+          "bytes": 1181,
+          "sha256": "8ecb9f07c2c8474bf7e791be895911c4d296828719751e1d217cafae5ac49ff8"
+        },
+        {
+          "path": "casepath-api/artifacts/window-replacement-notice.pdf",
+          "bytes": 1911,
+          "sha256": "be9d07cb8427ea99905906efa283952e68971ea2ced4032295c09a079f4de44e"
+        },
+        {
+          "path": "casepath-api/artifacts/lease-agreement.pdf",
+          "bytes": 7762,
+          "sha256": "eeed16af233d17a649418c397e1f601e24884209558907603f2aab17442e2add"
+        },
+        {
+          "path": "casepath-api/artifacts/later-notification-email.eml",
+          "bytes": 622,
+          "sha256": "73183d9fb092bd75edc404c3131f076b05a3be7b36addc5df34a7d69b3f752c8"
+        },
+        {
+          "path": "casepath-api/artifacts/later-management-reply.eml",
+          "bytes": 556,
+          "sha256": "67d13272ea62428bdd2312e27aafe937c30621a340abe26a9f94e53ccf6360f3"
+        },
+        {
+          "path": "casepath-api/artifacts/later-claim-email.eml",
+          "bytes": 797,
+          "sha256": "31c87b30447a81704a1d8c7a57ee9dab37244d55d5e10f183af733a61a961915"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_later_lease/page-1.png",
+          "bytes": 74817,
+          "sha256": "f54914e2af664b6395ab9f8e84a3da55743565227991b92bf4cd1ded7707d897"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_later_lease/page-2.png",
+          "bytes": 39479,
+          "sha256": "1371029f03848a927dbd220f1992e579ba393c8d8d923f6510a291c762a942bf"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_delivery/page-1.png",
+          "bytes": 52502,
+          "sha256": "41136eed7d0077f0c78e4c52f5752ae471f8f34c87f2ba3a6ad89a627df4e399"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_lease/page-1.png",
+          "bytes": 95983,
+          "sha256": "37cb5ddbb3f1c2dc9d0ee030335d5d5383441b3cb62374003e2300fa8bbbcfb5"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_lease/page-6.png",
+          "bytes": 21899,
+          "sha256": "a92769d0890ed071e4d0e3930819082680feca11c7fe0da2d51bf0b3ba28fa88"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_lease/page-5.png",
+          "bytes": 31039,
+          "sha256": "80cf296c182a8a40df8432b457d3dd792a15688b7b97f14595d7b082e20c3ecc"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_lease/page-4.png",
+          "bytes": 40753,
+          "sha256": "0f013674a04f77300197e4dec0de80af2ba26c465b23490d4a9d1ad479f8a84d"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_lease/page-3.png",
+          "bytes": 55880,
+          "sha256": "4b18d65b113e2d386c7ddf8dae381eef8ff65e77249c2c88d29a98289d6bdbbe"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_lease/page-2.png",
+          "bytes": 68811,
+          "sha256": "8a82d2c1739ffd7b3631bae5f3cd27216968e56fce8ff1c1bd97c6bbd3615afc"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_timeline/page-1.png",
+          "bytes": 78440,
+          "sha256": "300a21ec8ff2fead045b3a3f1b6097700d54134047f7f4bb20ab5237d3fec666"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_timeline/page-2.png",
+          "bytes": 51149,
+          "sha256": "4274b6aedbb61131af38842b0abf80704a92628d847971983e3e4c0cf88a9931"
+        },
+        {
+          "path": "casepath-api/artifacts/pages/art_window_notice/page-1.png",
+          "bytes": 52220,
+          "sha256": "8be598bafa159ab3b0b9c9df37ad20c480def1d4bd5c394bb973c004f960d7d8"
+        }
+      ]
+    }
+  ],
+  "finished": 1792273567.0044916,
+  "free_after": 5140033536,
+  "postcheck_correction": {
+    "original_error": "AssertionError comparing ignored path classification after .gitignore was removed among tracked checkout files",
+    "cause": "Ignored generated files are retained; without the tracked .gitignore they classify as untracked. No nontracked file was unlinked by the cleanup algorithm.",
+    "corrected_check": "All original tracked index rows/HEAD unchanged, every retired tracked checkout path absent, full .git retained; retained nontracked files enumerated and hashed.",
+    "first_preflight_aborted_before_mutation": "Sixth candidate native-qa HEAD not ancestor of remote; excluded with all its files intact."
+  }
+}

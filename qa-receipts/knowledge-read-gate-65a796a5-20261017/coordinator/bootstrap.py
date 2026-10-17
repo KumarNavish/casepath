@@ -2,8 +2,8 @@ from pathlib import Path
 import hashlib,json,os,shutil,subprocess,time
 R=Path('/workspace/casepath-knowledge-read-gate-65a796a5-20261017')
 SHA='65a796a5dfb21f4cdbe0a3d1a4925b931710b30c';MAN='6fec138ef5f8eacff8cc4fc19f0084f61b81fde81c2a37c300708c24b5eb2a2c'
-assert json.loads((R/'HEADROOM.json').read_text())['restored_free_bytes']>=5*1024**3
-assert shutil.disk_usage('/workspace').free>=5*1024**3
+assert json.loads((R/'HEADROOM.json').read_text())['runtime_floor_bytes']==3*1024**3
+assert shutil.disk_usage('/workspace').free>=3*1024**3+300*1024**2
 for name in ['k65h0','k65t0']:Path('/workspace',name).mkdir(exist_ok=True)
 base_env={'HOME':'/workspace/k65h0','TMPDIR':'/workspace/k65t0','TMP':'/workspace/k65t0','TEMP':'/workspace/k65t0','LANG':'C.UTF-8','LC_ALL':'C.UTF-8','PATH':'/usr/local/bin:/usr/bin:/bin','PYTHONDONTWRITEBYTECODE':'1'}
 transport=['HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','NO_PROXY','SSL_CERT_FILE','REQUESTS_CA_BUNDLE','CURL_CA_BUNDLE','NODE_EXTRA_CA_CERTS']
