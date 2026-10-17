@@ -1,0 +1,12 @@
+{
+  "phase": "Partial terminal shard1 receipt export; suite attempts unaffected",
+  "error_type": "PermissionError",
+  "errno": 13,
+  "error": "Permission denied: '/workspace/casepath-transport-gate-evidence-git-20261015/qa-receipts/knowledge-read-gate-65a796a5-20261017/shard1/source-before/CAPSULE_RECEIPT.json'",
+  "cause": "shutil.copy2 preserved immutable receipt read-only mode in the prior QA export",
+  "partial_files_preserved": true,
+  "test_retries": 0,
+  "source_changes": false,
+  "correction": "Exporter skips byte-identical existing files, including immutable receipts; changed owned QA copies are made writable before replacing. Original proof files untouched.",
+  "recorded_epoch": 1792274283.544658
+}

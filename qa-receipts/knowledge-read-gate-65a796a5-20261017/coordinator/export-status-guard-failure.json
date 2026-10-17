@@ -1,0 +1,10 @@
+{
+  "phase": "Resumed terminal receipt export scope guard",
+  "error_type": "AssertionError",
+  "before_any_copy": true,
+  "cause": "Git helper .strip removed leading porcelain status spaces; first path offset was parsed incorrectly",
+  "correction": "Preserve porcelain leading spaces using rstrip newline only",
+  "suite_attempts_retried": 0,
+  "source_changed": false,
+  "recorded_epoch": 1792274299.7034404
+}
