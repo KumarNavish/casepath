@@ -1,0 +1,18 @@
+{
+  "reviewed_source": "6b3fb7d0476fb77c235ee01146d18394badfd08e",
+  "sealed_candidate": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "command": [
+    "git",
+    "diff",
+    "--name-only",
+    "6b3fb7d0476fb77c235ee01146d18394badfd08e",
+    "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c"
+  ],
+  "cwd": "/workspace/casepath-release-ae0-shard4",
+  "changed_files": [
+    "casepath/source-manifest.json"
+  ],
+  "only_release_manifest_changed": true,
+  "parent_reported_focused_evidence_commit": "129994e240cf8e99185b2d371a010d9cfc523f4c",
+  "created_epoch": 1792273858.5095813
+}

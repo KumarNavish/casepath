@@ -1,0 +1,68 @@
+{
+  "review": "Bounded independent read-only follow-up review of raw-read HTTP/1.1 socket retirement",
+  "base": "af7dd2ddb303fbf25a9215f6f59d593bfcdb736d",
+  "commit": "6b3fb7d0476fb77c235ee01146d18394badfd08e",
+  "review_clone": "/workspace/casepath-release-ae0-shard4",
+  "prior_receipt_preserved": "/workspace/knowledge-read-warm-20261016/review/e/REVIEW-final.json",
+  "result": "No unresolved actionable source-backed finding within the assigned follow-up diff. No native performance or hosted acceptance claim.",
+  "findings": [],
+  "execution_host": {
+    "provider": "cloud",
+    "managed_environment_id": "ccarenv_b64_Y2NhcmVudl9mYWUwZGI1ZGMzYjg4MTkxOGMyYjA3ZGQ2MDM5MDhmZg",
+    "observations_current": true,
+    "observed_phase": "running",
+    "connectivity": "connected",
+    "hostname": "656813ef2295",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "network_policy_state": "unknown",
+    "network_used": false
+  },
+  "source_clean_and_exact_git_objects": true,
+  "pre_post_source_receipts_identical": true,
+  "files_sha256": {
+    "casepath-api/casepath_api/hosted_sql_v1.py": "bc04fdabbb4dbe793668177c27e46080784113503c4c064cd231aba69df45fd9",
+    "casepath-api/casepath_api/hosted_storage_v1.py": "cd72f4bde5627754caeb11e1dc537d62bd8d2c865b36acc99e061de9e96ae4f0",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py": "2b4b0f9faa32da0bb27878e23433c83fe0c81e5d2d53177cc36f493865d2846a",
+    "casepath-api/tests/test_hosted_snapshot_transport_v1.py": "ee4454e1fae99d172feab5ed2bf1c1f8c988a0bf33626e29030e477e4c6ddba5"
+  },
+  "reviewed_contracts": [
+    "close_http is keyword-only False by default on both read helpers; exact bool validation precedes transport/state mutation, rejects None/int/other truthy values, and leaves valid connections usable.",
+    "Connection: close is constructed in a new per-request headers mapping; shared client headers, ownership, pool limits, default reads and writes are unchanged, including overlapping raw and compact reads.",
+    "Only cold raw journal collection and raw HostedSources._fetch_many calls opt into retirement; compact SQL byte-proof snapshots retain pooling. SQLite fallback receives no unsupported transport keyword.",
+    "HTTP/1.1 retirement occurs after response completion/closure, without closing the shared client and without a fresh-socket-before-request guarantee. Installed h11 handles close on Request/Response by disabling keepalive; installed httpcore closes after response when state is not DONE/DONE.",
+    "No timeout, byte-bound, retry, origin/protocol verification, Hrana bookend, cache identity/admission, source-byte validation or authority semantics changed in this diff."
+  ],
+  "independent_tests": {
+    "passed": 69,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 1.722,
+    "scope": {
+      "snapshot_transport_module": 67,
+      "new_storage_raw_header_and_sqlite_cases": 2
+    },
+    "command": "env HOME=/workspace/knowledge-read-warm-20261016/review/h-retirement TMPDIR=/workspace/knowledge-read-warm-20261016/review/t-retirement TMP=/workspace/knowledge-read-warm-20261016/review/t-retirement TEMP=/workspace/knowledge-read-warm-20261016/review/t-retirement PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/casepath-release-ae0-shard4/casepath-api:/workspace/casepath-release-ae0-shard4/casepath-api/tests /workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python -m pytest -p no:cacheprovider -q casepath-api/tests/test_hosted_snapshot_transport_v1.py casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_raw_source_sqlite_fallback_receives_no_http_keyword --basetemp=/workspace/knowledge-read-warm-20261016/review/t-retirement/pytest --junitxml=/workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-independent.xml > /workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-independent.log 2>&1",
+    "exit_code": 0,
+    "command_script": "/workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-command.sh",
+    "junit": "/workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-independent.xml",
+    "log": "/workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-independent.log",
+    "exit_receipt": "/workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-exit.txt"
+  },
+  "source_receipts": {
+    "pre": "/workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-source-pre.txt",
+    "post": "/workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-source-post.txt"
+  },
+  "disk_receipts": {
+    "pre": "/workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-disk-pre.txt",
+    "post": "/workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-disk-post.txt",
+    "scratch": "/workspace/knowledge-read-warm-20261016/review/e/retirement-6b3-scratch.txt"
+  },
+  "scratch_bytes": 1759388,
+  "limits": [
+    "No source/test/doc/seal edits, new runtime, dependency installs, full suite, frontend, deployment, provider, secret or production operations.",
+    "All executed test requests were deterministic in-process MockTransport/SQLite; no real network/sockets or native-host timing measured by this worker.",
+    "Header retirement may use an already pooled socket for its own request; this change provides no preemptive fresh initial connection guarantee.",
+    "Coordinator-reported Mac pooled raw EOF failures and diagnostic raw-only close completion are not independent measurements here. Final source native hosted acceptance/performance remains with coordinator."
+  ]
+}
