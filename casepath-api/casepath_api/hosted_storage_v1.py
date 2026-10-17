@@ -8,6 +8,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 from threading import RLock
+from types import MethodType
 
 from .autonomous_store_v1 import AutonomousStore, AutonomousStoreError, MAX_FILE_BYTES, SESSION_ID
 
@@ -357,7 +358,7 @@ class HostedSources:
                 self._fetch_many(values, check=check, page_chunks=page_chunks)
 
 
-    def _knowledge_source_proof(self, values):
+    def _knowledge_source_queries(self, values):
         queries, expected = [(_schema_query('autonomous_source_chunks'), ())], []
         for start in range(0, len(values), self.BATCH_DIGESTS):
             batch = values[start:start + self.BATCH_DIGESTS]
@@ -374,6 +375,10 @@ class HostedSources:
             query = _proof_query('autonomous_source_chunks', _SOURCE_COLUMNS, 'casepath-source-bytes-v1',
                                  'sha256 IN (' + ','.join('?' for _ in batch) + ')', 'sha256,chunk_index')
             queries.append((query, (*batch, len(rows) + 1)))
+        return queries, expected
+
+    def _knowledge_source_proof(self, values):
+        queries, expected = self._knowledge_source_queries(values)
         with self.connect() as db:
             if not hasattr(db, 'read_snapshot'):
                 return None
@@ -438,10 +443,90 @@ class HostedAutonomousStore(AutonomousStore):
     def _validated_summary_states(self):
         # Collection and Knowledge share one certified raw-row authority path,
         # under the existing ordered summary lock and final source verification.
-        rows = self._knowledge_rows()
-        states = self._validated_knowledge_states(rows)
+        return self._validated_knowledge_snapshot()[1]
+
+    def _validated_knowledge_snapshot(self):
+        self._knowledge_pending = None
+        cached = getattr(self, '_knowledge_byte_cache', None)
+        sources = self._source_store
+        journal_connect, source_connect = self.journal.connect, getattr(sources, 'connect', None)
+        same_primary = (journal_connect is source_connect or
+                        isinstance(journal_connect, MethodType) and isinstance(source_connect, MethodType)
+                        and journal_connect.__self__ is source_connect.__self__
+                        and journal_connect.__func__ is source_connect.__func__)
+        if cached is not None and isinstance(sources, HostedSources) and same_primary:
+            # Summary -> source is the existing lock order. Keep every cached
+            # original present and unchanged through local validation, the final
+            # atomic certificate, and admission. A candidate has no authority.
+            with sources._lock:
+                result = self._cached_knowledge_snapshot(cached, sources)
+                if result is not None:
+                    return result
+        return super()._validated_knowledge_snapshot()
+
+    def _cached_knowledge_snapshot(self, cached, sources):
+        frozen_rows, schema, proof = cached
+        rows = [dict(row) for row in frozen_rows]
+        streams = {}
+        for row in rows:
+            streams.setdefault(row['loop_id'].removeprefix('autonomous.'), []).append(row)
+        summaries = getattr(self, '_summary_cache', {})
+        if (set(summaries) != set(streams) or any(
+                summaries[claim_id][0] != self._journal_snapshot(claim_rows)
+                for claim_id, claim_rows in streams.items())):
+            return None
+        digests = sources._digests(source['sha256'] for claim_id in streams
+                                  for source in summaries[claim_id][1]['source_descriptors'])
+        source_schema = getattr(sources, '_knowledge_schema', None)
+        # The combined request has two journal SELECTs and one source schema
+        # SELECT, leaving 125 source batches. Larger rosters retain the original
+        # separate certificates and their unchanged 128-SELECT bounds.
+        if (not digests or source_schema is None or any(digest not in sources._cache for digest in digests)
+                or len(digests) > 125 * sources.BATCH_DIGESTS):
+            return None
+        certified = []
+
+        def verify(current_digests):
+            if sources._digests(current_digests) != digests:
+                raise AutonomousStoreError('Validated source roster differs from the cached candidate.')
+            source_queries, expected = sources._knowledge_source_queries(digests)
+            query = _proof_query('claim_loop_events', _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1',
+                                 'session_id=?', 'loop_id,sequence')
+            with self.journal.connect() as db:
+                if not hasattr(db, 'read_snapshot'):
+                    return
+                cursors = db.read_snapshot([(_schema_query('claim_loop_events'), ()),
+                    (query, (SESSION_ID, len(rows) + 1)), *source_queries])
+            if len(cursors) != 3 + len(expected):
+                raise AutonomousStoreError('Atomic byte proof has an invalid result roster.')
+            current_schema = cursors[0].fetchall()
+            current_sources = cursors[2].fetchall()
+            # Only a confirmed schema/byte mismatch may take the old bounded
+            # path. Transport failures, malformed roots and unconfirmed COMMIT
+            # propagate directly; they never authorize a retry or a payload.
+            journal_matches = _proof_matches(cursors[1], proof)
+            if (not _standard_schema(current_schema, _JOURNAL_COLUMNS)
+                    or _schema_identity(current_schema) != schema
+                    or not journal_matches):
+                self._knowledge_byte_cache = None
+                return
+            if (not _standard_schema(current_sources, _SOURCE_COLUMNS)
+                    or _schema_identity(current_sources) != source_schema):
+                return
+            source_matches = [_proof_matches(cursor, value) for cursor, value in zip(cursors[3:], expected)]
+            if not all(source_matches):
+                sources.verify_many(digests)
+                raise AutonomousStoreError('Persistent source bytes changed during fresh verification.')
+            certified.append(True)
+
+        # This performs the same complete row identity and descriptor/original
+        # hash checks as the old warm path, before any final snapshot is read.
+        states = self._validated_states(rows, source_verifier=verify)
+        if not certified:
+            return None
+        self._knowledge_pending = cached
         self._after_validated_knowledge_states(rows, states)
-        return states
+        return rows, states
 
     def _knowledge_rows(self):
         self._knowledge_pending = None

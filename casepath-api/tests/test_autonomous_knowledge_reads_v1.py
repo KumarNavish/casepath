@@ -571,7 +571,7 @@ def test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages(process
                 assert max(size for _, size in server.journal_pages) <= 4 * 1024 * 1024
             else:
                 assert server.journal_pages == []
-                assert len(server.requests) == 2
+                assert len(server.requests) == 1
                 assert sum(server.response_bytes) < 16 * 1024
             assert max(server.response_bytes) <= 9 * 1024 * 1024
             assert len(server.requests) <= 48

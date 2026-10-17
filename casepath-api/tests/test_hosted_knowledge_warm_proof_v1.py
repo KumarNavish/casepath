@@ -82,21 +82,50 @@ def test_cold_population_keeps_prior_128_row_and_eight_chunk_raw_pages(native_pr
     assert all('LIMIT 8' in statement['sql'] for statement, _ in server.raw_sources)
 
 
-def test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes(native_proof_store, monkeypatch):
+def test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes(native_proof_store, monkeypatch):
     server, store, knowledge = native_proof_store
     original = knowledge.learning_view()
     server.reset()
     monkeypatch.setattr(store, '_replay', lambda *a, **k: pytest.fail('Unchanged journal replayed'))
     assert knowledge.learning_view() == original
-    assert len(server.requests) == 2
+    assert len(server.requests) == 1
     assert not server.raw_journal and not server.raw_sources
     assert sum(server.wire_bytes) < 16 * 1024
     for request in server.requests:
         operations = request['requests']
-        assert [operation['type'] for operation in operations] == ['execute'] * 4 + ['close']
+        assert [operation['type'] for operation in operations] == ['execute'] * 6 + ['close']
         assert operations[0]['stmt']['sql'] == 'BEGIN' and operations[-2]['stmt']['sql'] == 'COMMIT'
         assert all(operation['stmt']['sql'].startswith('SELECT') for operation in operations[1:-2])
     assert server.open_streams == 0
+
+
+@pytest.mark.parametrize('domain', ['journal', 'source'])
+def test_final_atomic_proof_follows_all_local_validation(native_proof_store, monkeypatch, domain):
+    server, store, knowledge = native_proof_store
+    knowledge.learning_view()
+    validate, changed = store._validate_descriptor, []
+
+    def mutate_after_local_source_check(descriptor, claim_id):
+        result = validate(descriptor, claim_id)
+        if not changed:
+            changed.append(True)
+            with sqlite3.connect(server.path) as db:
+                if domain == 'journal':
+                    db.execute("UPDATE claim_loop_events SET created_at='changed after local byte validation'")
+                else:
+                    db.execute('DROP TRIGGER autonomous_source_chunks_no_update')
+                    db.execute('UPDATE autonomous_source_chunks SET content=? WHERE sha256=? AND chunk_index=0',
+                               (b'Changed after local byte validation.', descriptor['sha256']))
+        return result
+
+    monkeypatch.setattr(store, '_validate_descriptor', mutate_after_local_source_check)
+    server.reset()
+    with pytest.raises(AutonomousStoreError):
+        knowledge.learning_view()
+    first = [operation.get('stmt', {}).get('sql', '') for operation in server.requests[0]['requests']]
+    assert any('casepath-journal-bytes-v1:set:' in sql for sql in first)
+    assert any('casepath-source-bytes-v1:set:' in sql for sql in first)
+    assert changed and server.open_streams == 0
 
 
 @pytest.mark.parametrize('column', ['event_json', 'created_at', 'command_sha256', 'idempotency_key'])
@@ -325,7 +354,7 @@ def test_changed_source_schema_forces_raw_eight_chunk_refresh_and_new_final_cert
     assert all('LIMIT 8' in statement['sql'] for statement, _ in server.raw_sources)
     assert store._source_store._knowledge_schema != previous
     server.reset()
-    assert knowledge.learning_view() == original and len(server.requests) == 2
+    assert knowledge.learning_view() == original and len(server.requests) == 1
     assert not server.raw_sources
 
 
@@ -450,7 +479,7 @@ def test_claim_summaries_and_knowledge_share_only_fully_certified_states(native_
         assert len(knowledge.learning_view()['learning_replay']['journal_heads']) == len(expected)
     else:
         assert store.list_summaries() == expected
-    assert len(server.requests) == 2 and not server.raw_journal and not server.raw_sources
+    assert len(server.requests) == 1 and not server.raw_journal and not server.raw_sources
     returned = store.list_summaries(statuses={expected[0]['status']})
     assert returned == [state for state in expected if state['status'] == expected[0]['status']]
     returned[0]['title'] = 'Caller-only mutation'
@@ -465,10 +494,12 @@ def test_concurrent_claim_and_knowledge_reads_keep_ordered_certification_and_rej
     with ThreadPoolExecutor(max_workers=2) as executor:
         a, b = executor.submit(store.list_summaries), executor.submit(knowledge.learning_view)
         assert len(a.result()) == 2 and b.result() == original
-    assert len(server.requests) == 4 and not server.raw_journal and not server.raw_sources
-    # SummaryLock orders each complete journal/source proof pair together.
-    proofs = [request['requests'][2]['stmt']['sql'] for request in server.requests]
-    assert ['casepath-journal-bytes-v1:set:' in sql for sql in proofs] == [True, False, True, False]
+    assert len(server.requests) == 2 and not server.raw_journal and not server.raw_sources
+    # SummaryLock orders complete atomic journal/source certificates together.
+    for request in server.requests:
+        proofs = [operation.get('stmt', {}).get('sql', '') for operation in request['requests']]
+        assert sum('casepath-journal-bytes-v1:set:' in sql for sql in proofs) == 1
+        assert sum('casepath-source-bytes-v1:set:' in sql for sql in proofs) == 1
     with sqlite3.connect(server.path) as db:
         db.execute("UPDATE claim_loop_events SET created_at='unaccepted metadata change'")
     for read in (store.list_summaries, knowledge.learning_view):
@@ -485,7 +516,7 @@ def test_raw_payload_reads_retire_http_sockets_while_compact_proofs_keep_pool(na
     assert compact and all(header != 'close' for header in compact)
     server.reset()
     assert knowledge.learning_view() == original
-    assert len(server.raw_http_policy) == 2
+    assert len(server.raw_http_policy) == 1
     assert all(not payload and header != 'close' for payload, header in server.raw_http_policy)
 
 
