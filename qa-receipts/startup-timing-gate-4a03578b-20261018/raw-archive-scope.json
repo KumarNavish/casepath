@@ -1,0 +1,130 @@
+{
+  "candidate": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+  "original_per_shard_archive_bytes_preserved": true,
+  "contains_owned_deterministic_fixture_database_snapshots": true,
+  "exact_nested_fixture_database_members": [
+    {
+      "shard": 2,
+      "archive_member": "retirement-receipts/shard2-raw.tar.gz::agent-work-v1.sqlite3",
+      "snapshot_size_bytes": 155648,
+      "owned_test_path": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard2/agent-work-v1.sqlite3",
+      "command_receipt": "shard2/command.json",
+      "command_receipt_sha256": "a78d83fdbd940241e05d2b9d74d7435e27cb447b397bd51ad36d8b8d6fd2dddb",
+      "controlled_CASEPATH_DB_PATH": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard2/casepath.db",
+      "controlled_CASEPATH_QA_ARTIFACTS": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard2",
+      "binding": "casepath.db selected by CASEPATH_DB_PATH; agent-work-v1.sqlite3 uses storage.path.parent in sealed app.py:392",
+      "sealed_source_file_sha256": {
+        "casepath-api/casepath_api/storage.py": "79e1ab10e4a6648c3b5f3521c113335088c424eda4d5ed5394119a149d5b9734",
+        "casepath-api/casepath_api/app.py": "deaac611f16a2ec48069c7f6722afd3465b58ddc07b1d054366935744358c8a0"
+      }
+    },
+    {
+      "shard": 2,
+      "archive_member": "retirement-receipts/shard2-raw.tar.gz::casepath.db",
+      "snapshot_size_bytes": 204800,
+      "owned_test_path": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard2/casepath.db",
+      "command_receipt": "shard2/command.json",
+      "command_receipt_sha256": "a78d83fdbd940241e05d2b9d74d7435e27cb447b397bd51ad36d8b8d6fd2dddb",
+      "controlled_CASEPATH_DB_PATH": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard2/casepath.db",
+      "controlled_CASEPATH_QA_ARTIFACTS": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard2",
+      "binding": "casepath.db selected by CASEPATH_DB_PATH; agent-work-v1.sqlite3 uses storage.path.parent in sealed app.py:392",
+      "sealed_source_file_sha256": {
+        "casepath-api/casepath_api/storage.py": "79e1ab10e4a6648c3b5f3521c113335088c424eda4d5ed5394119a149d5b9734",
+        "casepath-api/casepath_api/app.py": "deaac611f16a2ec48069c7f6722afd3465b58ddc07b1d054366935744358c8a0"
+      }
+    },
+    {
+      "shard": 3,
+      "archive_member": "retirement-receipts/shard3-raw.tar.gz::agent-work-v1.sqlite3",
+      "snapshot_size_bytes": 155648,
+      "owned_test_path": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard3/agent-work-v1.sqlite3",
+      "command_receipt": "shard3/command.json",
+      "command_receipt_sha256": "00d9834c867e4f1564869dab9bb2d8cc1800e74163455a2bda68d15d654a228e",
+      "controlled_CASEPATH_DB_PATH": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard3/casepath.db",
+      "controlled_CASEPATH_QA_ARTIFACTS": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard3",
+      "binding": "casepath.db selected by CASEPATH_DB_PATH; agent-work-v1.sqlite3 uses storage.path.parent in sealed app.py:392",
+      "sealed_source_file_sha256": {
+        "casepath-api/casepath_api/storage.py": "79e1ab10e4a6648c3b5f3521c113335088c424eda4d5ed5394119a149d5b9734",
+        "casepath-api/casepath_api/app.py": "deaac611f16a2ec48069c7f6722afd3465b58ddc07b1d054366935744358c8a0"
+      }
+    },
+    {
+      "shard": 3,
+      "archive_member": "retirement-receipts/shard3-raw.tar.gz::casepath.db",
+      "snapshot_size_bytes": 204800,
+      "owned_test_path": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard3/casepath.db",
+      "command_receipt": "shard3/command.json",
+      "command_receipt_sha256": "00d9834c867e4f1564869dab9bb2d8cc1800e74163455a2bda68d15d654a228e",
+      "controlled_CASEPATH_DB_PATH": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard3/casepath.db",
+      "controlled_CASEPATH_QA_ARTIFACTS": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard3",
+      "binding": "casepath.db selected by CASEPATH_DB_PATH; agent-work-v1.sqlite3 uses storage.path.parent in sealed app.py:392",
+      "sealed_source_file_sha256": {
+        "casepath-api/casepath_api/storage.py": "79e1ab10e4a6648c3b5f3521c113335088c424eda4d5ed5394119a149d5b9734",
+        "casepath-api/casepath_api/app.py": "deaac611f16a2ec48069c7f6722afd3465b58ddc07b1d054366935744358c8a0"
+      }
+    },
+    {
+      "shard": 4,
+      "archive_member": "retirement-receipts/shard4-raw.tar.gz::casepath.db",
+      "snapshot_size_bytes": 118784,
+      "owned_test_path": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard4/casepath.db",
+      "command_receipt": "shard4/command.json",
+      "command_receipt_sha256": "3def8a5fcf998ce55d3c0090e568019efbb600391a291eddc20e930bb6794652",
+      "controlled_CASEPATH_DB_PATH": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard4/casepath.db",
+      "controlled_CASEPATH_QA_ARTIFACTS": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard4",
+      "binding": "casepath.db selected by CASEPATH_DB_PATH; agent-work-v1.sqlite3 uses storage.path.parent in sealed app.py:392",
+      "sealed_source_file_sha256": {
+        "casepath-api/casepath_api/storage.py": "79e1ab10e4a6648c3b5f3521c113335088c424eda4d5ed5394119a149d5b9734",
+        "casepath-api/casepath_api/app.py": "deaac611f16a2ec48069c7f6722afd3465b58ddc07b1d054366935744358c8a0"
+      }
+    },
+    {
+      "shard": 5,
+      "archive_member": "retirement-receipts/shard5-raw.tar.gz::casepath.db",
+      "snapshot_size_bytes": 118784,
+      "owned_test_path": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard5/casepath.db",
+      "command_receipt": "shard5/command.json",
+      "command_receipt_sha256": "dbf8be8a2fd21da0b1cde98e6f986c81102a0a7cb6dd4b6628e59789fed38d3d",
+      "controlled_CASEPATH_DB_PATH": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard5/casepath.db",
+      "controlled_CASEPATH_QA_ARTIFACTS": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard5",
+      "binding": "casepath.db selected by CASEPATH_DB_PATH; agent-work-v1.sqlite3 uses storage.path.parent in sealed app.py:392",
+      "sealed_source_file_sha256": {
+        "casepath-api/casepath_api/storage.py": "79e1ab10e4a6648c3b5f3521c113335088c424eda4d5ed5394119a149d5b9734",
+        "casepath-api/casepath_api/app.py": "deaac611f16a2ec48069c7f6722afd3465b58ddc07b1d054366935744358c8a0"
+      }
+    },
+    {
+      "shard": 6,
+      "archive_member": "retirement-receipts/shard6-raw.tar.gz::agent-work-v1.sqlite3",
+      "snapshot_size_bytes": 155648,
+      "owned_test_path": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard6/agent-work-v1.sqlite3",
+      "command_receipt": "shard6/command.json",
+      "command_receipt_sha256": "164fedc6a23b45fb329446d2a8624ddd9b1cb6280dc3979deaab16d792e13ac5",
+      "controlled_CASEPATH_DB_PATH": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard6/casepath.db",
+      "controlled_CASEPATH_QA_ARTIFACTS": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard6",
+      "binding": "casepath.db selected by CASEPATH_DB_PATH; agent-work-v1.sqlite3 uses storage.path.parent in sealed app.py:392",
+      "sealed_source_file_sha256": {
+        "casepath-api/casepath_api/storage.py": "79e1ab10e4a6648c3b5f3521c113335088c424eda4d5ed5394119a149d5b9734",
+        "casepath-api/casepath_api/app.py": "deaac611f16a2ec48069c7f6722afd3465b58ddc07b1d054366935744358c8a0"
+      }
+    },
+    {
+      "shard": 6,
+      "archive_member": "retirement-receipts/shard6-raw.tar.gz::casepath.db",
+      "snapshot_size_bytes": 204800,
+      "owned_test_path": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard6/casepath.db",
+      "command_receipt": "shard6/command.json",
+      "command_receipt_sha256": "164fedc6a23b45fb329446d2a8624ddd9b1cb6280dc3979deaab16d792e13ac5",
+      "controlled_CASEPATH_DB_PATH": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard6/casepath.db",
+      "controlled_CASEPATH_QA_ARTIFACTS": "/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard6",
+      "binding": "casepath.db selected by CASEPATH_DB_PATH; agent-work-v1.sqlite3 uses storage.path.parent in sealed app.py:392",
+      "sealed_source_file_sha256": {
+        "casepath-api/casepath_api/storage.py": "79e1ab10e4a6648c3b5f3521c113335088c424eda4d5ed5394119a149d5b9734",
+        "casepath-api/casepath_api/app.py": "deaac611f16a2ec48069c7f6722afd3465b58ddc07b1d054366935744358c8a0"
+      }
+    }
+  ],
+  "direct_mutable_database_files_excluded": true,
+  "unrelated_or_production_databases_excluded": true,
+  "qualification": "Known original per-shard snapshots only, proven by isolated command environments and sealed storage.py:67/app.py:392. No database content inspection or export expansion. No production histories, credentials, or production journals transported. Mac verifier must not interpret nested original fixture snapshots as excluded database bytes."
+}

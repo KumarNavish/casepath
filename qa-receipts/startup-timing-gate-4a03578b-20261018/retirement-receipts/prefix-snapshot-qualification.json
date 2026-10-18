@@ -1,0 +1,92 @@
+[
+  {
+    "shard": 1,
+    "original_archive_sha256": "ca7bbb9d55a9fdd0cdcce789c3adee379012078eb21d7bf3687d0932e7a5d5fb",
+    "members_byte_verified_as_exact_or_append_prefix": 28,
+    "append_only_prefix_snapshots": [
+      {
+        "path": "worker-wrapper.log",
+        "archive_member_sha256": "8e1cc28d249da89b20b05b5d6571c2752400705c0d1d701872169da375e071a1",
+        "final_file_sha256": "8af20c16c27066d83be5738da06e819a2c0a2c060a0e64c2d37721453c007e68",
+        "snapshot_bytes": 497,
+        "final_bytes": 714
+      }
+    ],
+    "qualification": "Original per-shard raw archive is an immutable byte-verified snapshot before worker terminal events; final gate archive separately includes full final worker wrapper bytes."
+  },
+  {
+    "shard": 2,
+    "original_archive_sha256": "5270371c925a57f367765823568d6d13947475ce073d697828fcd814a41c5d91",
+    "members_byte_verified_as_exact_or_append_prefix": 30,
+    "append_only_prefix_snapshots": [
+      {
+        "path": "worker-wrapper.log",
+        "archive_member_sha256": "396625cebad784b55f4d81623b8dd6888f12619c5893bb941658756c1baa98cf",
+        "final_file_sha256": "f361e31eff86cf1f8ae4b1fa34c3e27ec31dd54b81cb12723f5125779451866d",
+        "snapshot_bytes": 510,
+        "final_bytes": 726
+      }
+    ],
+    "qualification": "Original per-shard raw archive is an immutable byte-verified snapshot before worker terminal events; final gate archive separately includes full final worker wrapper bytes."
+  },
+  {
+    "shard": 3,
+    "original_archive_sha256": "8dd09ae6e7cc259f5f0d53ee1d3d81271ab4ff4263b7e620ceacc035402c3d9d",
+    "members_byte_verified_as_exact_or_append_prefix": 30,
+    "append_only_prefix_snapshots": [
+      {
+        "path": "worker-wrapper.log",
+        "archive_member_sha256": "2862dc2e8441026b469a8892fb1089f26d1e29267eeb8e7c3d3abab486009db3",
+        "final_file_sha256": "5eb4e7d093059b1a5512715f136d0eaeaeeb85bf3ab28fcafdfb0aeb9f8fba73",
+        "snapshot_bytes": 592,
+        "final_bytes": 809
+      }
+    ],
+    "qualification": "Original per-shard raw archive is an immutable byte-verified snapshot before worker terminal events; final gate archive separately includes full final worker wrapper bytes."
+  },
+  {
+    "shard": 4,
+    "original_archive_sha256": "e0dd0d4008f7fcd2c8c4d335b186087763f618488992577ae637498d6eb7e4b7",
+    "members_byte_verified_as_exact_or_append_prefix": 29,
+    "append_only_prefix_snapshots": [
+      {
+        "path": "worker-wrapper.log",
+        "archive_member_sha256": "1b566b52bca12d6e53a7036e07c4b648c0d845cb2124d1acec8e8dfc9c04fe72",
+        "final_file_sha256": "d90f499356ffea0eaf4b7240fdbc046a1b1dc4babfa2b99df64ae420c3d7cb29",
+        "snapshot_bytes": 588,
+        "final_bytes": 805
+      }
+    ],
+    "qualification": "Original per-shard raw archive is an immutable byte-verified snapshot before worker terminal events; final gate archive separately includes full final worker wrapper bytes."
+  },
+  {
+    "shard": 5,
+    "original_archive_sha256": "8541257223f85d99f577e721477ad639d31260d31c0b3b3ef254d7a02302e9e6",
+    "members_byte_verified_as_exact_or_append_prefix": 29,
+    "append_only_prefix_snapshots": [
+      {
+        "path": "worker-wrapper.log",
+        "archive_member_sha256": "f3928dbe643ec235a241c8b48ca6248c05b046a26b9bb9ca1fff8e12036ab261",
+        "final_file_sha256": "8845db49ece56e01bfbc171aa5ffcc2e441dac552c903cdbe6c81bca62565852",
+        "snapshot_bytes": 603,
+        "final_bytes": 820
+      }
+    ],
+    "qualification": "Original per-shard raw archive is an immutable byte-verified snapshot before worker terminal events; final gate archive separately includes full final worker wrapper bytes."
+  },
+  {
+    "shard": 6,
+    "original_archive_sha256": "8bb334fff311c6a73ebca41f87005e871189d2d7ea66c10ff408375e80f65908",
+    "members_byte_verified_as_exact_or_append_prefix": 32,
+    "append_only_prefix_snapshots": [
+      {
+        "path": "worker-wrapper.log",
+        "archive_member_sha256": "b08378032df4a44e0537dbe92dbb35803f726471e6adfd516401b768cc6b8e24",
+        "final_file_sha256": "40bd73ba28fc999dc3f8216019cc4a153d28b28146df7501cd9aa03f314af950",
+        "snapshot_bytes": 599,
+        "final_bytes": 816
+      }
+    ],
+    "qualification": "Original per-shard raw archive is an immutable byte-verified snapshot before worker terminal events; final gate archive separately includes full final worker wrapper bytes."
+  }
+]
