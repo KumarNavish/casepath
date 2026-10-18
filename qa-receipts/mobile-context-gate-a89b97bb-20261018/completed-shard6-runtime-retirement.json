@@ -1,0 +1,31 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "shard": "6",
+  "pushed_receipts_commit": "81e5f89d4bfcfb9368ce6401d1dedd53c1a88751",
+  "pushed_receipt_file_bindings": {
+    "shard6/prepare.json": "49b9483453c80d9d498b1481b6ce2477d2a39369369f4100ade6261768147df0",
+    "shard6/command.json": "609b30f8aa27ff6609cfecacc544aad04bec1f640bcb71dff25839e4a1be0e6f",
+    "shard6/result.json": "f4ec48faf4bd7f1adc2549936aef08514eef808c9e93bb18842bc465cf812e6d",
+    "shard6/reports.jsonl": "a5c2c6905920ed1574738452544be651d4cbbc48b7fbd2e1dc3b4e7bb5582262",
+    "shard6/junit.xml": "19ccc03a4895a43c5055dd10133cafa00dd90fece43f84851c81d66258ae914d",
+    "shard6/source-before/capsule-verification.json": "5631990765539242f506c63acf8714f3a49b301965784895bbb58ddcff463305",
+    "shard6/source-after/capsule-verification.json": "91763378235a7265111773248387e3ffa7261d115282640caea2db098a829c9c",
+    "shard6/runtime-before.json": "e5b38f898fe5134dcb28fe5a759f829c2d1928a48556af56461ae3319cbde945",
+    "shard6/runtime-after.json": "f96a56df279dfc0e54c16e0d23d35c101bccfc4d615141fcee998efce91069dc",
+    "retirement-receipts/shard6-raw.tar.gz": "788a7d848f83afa09be3221ff6a90d0fd76e1cd6022d05cefe48e01a1a444f23"
+  },
+  "source_capsule_before_after_equal": true,
+  "full_venv_before_after_equal": true,
+  "runtime_observed_before_first_test_start": true,
+  "raw_archive_byte_verified": true,
+  "archive_sha256": "788a7d848f83afa09be3221ff6a90d0fd76e1cd6022d05cefe48e01a1a444f23",
+  "only_this_gate_reproducible_runtime_paths": [
+    "/workspace/casepath-operations-review-20261013/.runtime/casepath-dev-v2/source-capsules/416eea6c4831046fca1bab76ec7072bc116cdc2912a169b094341d3a2ee68b0a",
+    "/workspace/casepath-operations-review-20261013/.runtime/casepath-dev-v2/venv",
+    "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard6/uv-cache"
+  ],
+  "source_clones_fixture_databases_journals_and_failed_fixtures_preserved": true,
+  "before_free_bytes": 3790897152,
+  "epoch": 1792286875.7920048,
+  "after_free_bytes": 4080156672
+}

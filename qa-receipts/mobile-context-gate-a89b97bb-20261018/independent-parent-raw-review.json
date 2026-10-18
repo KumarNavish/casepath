@@ -1,0 +1,58 @@
+{
+  "verdict": "PASS",
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "cloud_ids": 2650,
+  "passed": 2640,
+  "known_skips": 10,
+  "raw_phases": 7941,
+  "junit_cases": 2650,
+  "complete_disjoint_inventory": 2777,
+  "mac_owner_attestation_passed": 127,
+  "mac_raw_cloud_inspected": false,
+  "all6_capsules_unchanged_and_clean": true,
+  "known_skip_phase_file_line_reason_unchanged": true,
+  "shards": [
+    {
+      "shard": 1,
+      "ids": 9,
+      "phases": 27,
+      "junit": 9,
+      "passed": 9
+    },
+    {
+      "shard": 2,
+      "ids": 598,
+      "phases": 1794,
+      "junit": 598,
+      "passed": 597
+    },
+    {
+      "shard": 3,
+      "ids": 403,
+      "phases": 1200,
+      "junit": 403,
+      "passed": 394
+    },
+    {
+      "shard": 4,
+      "ids": 473,
+      "phases": 1419,
+      "junit": 473,
+      "passed": 473
+    },
+    {
+      "shard": 5,
+      "ids": 509,
+      "phases": 1527,
+      "junit": 509,
+      "passed": 509
+    },
+    {
+      "shard": 6,
+      "ids": 658,
+      "phases": 1974,
+      "junit": 658,
+      "passed": 658
+    }
+  ]
+}

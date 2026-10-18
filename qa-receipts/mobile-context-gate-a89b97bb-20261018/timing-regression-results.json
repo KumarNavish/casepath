@@ -1,0 +1,111 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "count": 13,
+  "all_passed_once": true,
+  "results": [
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[-1.0-0.000]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[1e+20-999999999.999]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[inf-0.000]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[nan-0.000]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_is_request_local_and_copies_shared_start_headers",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims-True]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims/example-False]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge-True]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge/-False]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/healthz-False]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[HEAD-/api/claim-loops/v1/autonomous/knowledge-False]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[POST-/api/claim-loops/v1/autonomous/claims-False]",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_wraps_denial_without_opening_stores",
+      "phase_outcomes": {
+        "setup": "passed",
+        "call": "passed",
+        "teardown": "passed"
+      }
+    }
+  ]
+}
