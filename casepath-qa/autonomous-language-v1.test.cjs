@@ -31,6 +31,15 @@ function shortCopy(value) {
   assert.doesNotMatch(value,banned);
   assert.ok(value.trim().split(/\s+/u).filter(Boolean).length <= 20,`Long display copy: ${value}`);
 }
+function assertNextAction(state,expected) {
+  const outcome=state.outcome || state.deferral,before=JSON.stringify(state);
+  const view=language.outcomePresentation(state);
+  assert.equal(view.nextAction,expected);shortCopy(view.nextAction);
+  assert.equal(view.recordedSummary,outcome?.summary || outcome?.reason || '');
+  if(outcome)assert.equal(view.details,outcome);else assert.deepEqual(view.details,{});
+  assert.equal(JSON.stringify(state),before,'presentation must preserve every recorded byte and source quote');
+  return view;
+}
 
 test('UMD and CommonJS expose the same frozen, side-effect-free API',()=>{
   const source=fs.readFileSync(path.join(root,'casepath/assets/autonomous-language-v1.js'),'utf8');
@@ -208,7 +217,7 @@ test('outcome summaries follow only recorded checks, open facts, gaps and author
   assert.equal(view.summary,'The checks support repair and rent reduction eligibility.');assert.equal(view.recordedSummary,reference.outcome.summary);
   assert.equal(view.support,'Supported by the documents.');
   assert.deepEqual(view.constraints,['Real-world action still needs its own authority.']);
-  assert.equal(view.nextAction,"Waiting for the listed documents or a person's go-ahead.");
+  assert.equal(view.nextAction,"A person's go-ahead is needed before any real-world action.");
   assert.equal(JSON.stringify(reference),before);
   assert.equal(language.outcomePresentation(saved).summary,'Some facts still need proof.');
   const sameSummary=structuredClone(reference);delete sameSummary.outcome.legal_predicates;
@@ -223,6 +232,82 @@ test('outcome summaries follow only recorded checks, open facts, gaps and author
   for(const state of [reference,saved,{},sameSummary,{deferral:{reason:'An actual recorded reason.'}}]){
     const result=language.outcomePresentation(state);for(const key of ['label','summary','nextAction'])shortCopy(result[key]);
     assert.doesNotMatch(result.summary,/\b(?:repaired|paid|awarded|filed|sent|approved)\b/iu);
+  }
+});
+
+test('outcome next actions separate complete document checks from authority to act',()=>{
+  const expected="A person's go-ahead is needed before any real-world action.";
+  for(const state of recorded){
+    assert.equal(state.outcome.assessment_status,'complete');
+    assert.deepEqual(state.outcome.missing_evidence,[]);assert.deepEqual(state.outcome.unresolved_facts,[]);
+    assert.ok(state.outcome.authority_limits.length);
+    const view=assertNextAction(state,expected);
+    assert.equal(view.summary,'The checks support repair and rent reduction eligibility.');
+    assert.equal(view.support,'Supported by the documents.');
+    assert.deepEqual(view.constraints,['Real-world action still needs its own authority.']);
+  }
+  // Unit cases use the actual predicate IDs and statuses, not recorded notice workflows.
+  for(const [family,predicates,summary]of [
+    ['termination',[['residential_tenancy_scope','supported'],['issuer_authority_and_received_packet','supported'],
+      ['complete_channel_archive','supported'],['canton_approved_form','failed']],
+    'The termination notice is missing the required official form.'],
+    ['rent',[['residential_tenancy_scope','supported'],['ordinary_non269c_tenancy','supported'],
+      ['issuer_authority_and_complete_packet','supported'],['contemporaneous_substantive_reasons','failed'],
+      ['later_email_is_not_original_reasons','supported']],
+    'The rent increase notice is missing reasons supplied with the notice.']
+  ]){
+    const state={outcome:{assessment_status:'complete',status:'deferred',summary:`The  exact\n${family} unit summary. `,
+      legal_predicates:predicates.map(([predicate_id,status])=>({predicate_id,status})),
+      missing_evidence:[],unresolved_facts:[],authority_limits:['Separate authority is needed for real-world action.']}};
+    const view=assertNextAction(state,expected);
+    assert.equal(view.summary,summary);assert.equal(view.support,'Supported by the documents.');
+    assert.deepEqual(view.constraints,['Real-world action still needs its own authority.']);
+    assert.doesNotMatch(view.nextAction,/\b(?:documents|proof|approved|sent|filed|paid|awarded)\b/iu);
+  }
+});
+
+test('outcome next actions retain every combination of recorded wait causes',async t=>{
+  // Each input below is a unit case, including the deliberately incomplete records.
+  for(const field of ['outcome','deferral'])for(let mask=0;mask<16;mask++){
+    await t.test(`${field}: cause mask ${mask}`,()=>{
+      const missing=Boolean(mask&1),unresolved=Boolean(mask&2),unknown=Boolean(mask&4),limits=Boolean(mask&8);
+      const value={status:'deferred',assessment_status:'complete',summary:'The  exact\nrecorded unit summary. ',
+        legal_predicates:[{predicate_id:'residential_tenancy_scope',status:unknown?'unknown':'supported',
+          citations:[{quote:'The  exact\nsource quote. '}]}],
+        missing_evidence:missing?[{document_type:'lease_contract'}]:[],unresolved_facts:unresolved?[{fact_id:'open'}]:[],
+        authority_limits:limits?['Separate authority is needed for real-world action.']:[]};
+      const expected=[missing?'Waiting for the listed documents.':'',unresolved||unknown?'Waiting for proof of open facts.':'',
+        limits?"A person's go-ahead is needed before any real-world action.":''].filter(Boolean).join(' ') || 'Review the case details.';
+      assertNextAction({[field]:value},expected);
+    });
+  }
+});
+
+test('outcome next actions retain unknown checks without inventing document or authority gaps',async t=>{
+  for(const status of ['unknown','pending','true','false',true,false,null,undefined,'unexpected']){
+    await t.test(`unit predicate status ${String(status)} (${typeof status})`,()=>{
+      const state={outcome:{assessment_status:'complete',legal_predicates:[{predicate_id:'canton_approved_form',status}],
+        missing_evidence:[],unresolved_facts:[],authority_limits:[]}};
+      assertNextAction(state,'Waiting for proof of open facts.');
+    });
+  }
+  const duplicate={outcome:{legal_predicates:[{predicate_id:'canton_approved_form',status:'supported'},
+    {predicate_id:'canton_approved_form',status:'failed'}]}};
+  assertNextAction(duplicate,'Waiting for proof of open facts.');
+  for(const status of ['supported','failed']){
+    const unmapped={outcome:{assessment_status:'complete',legal_predicates:[{predicate_id:'future_check',status}]}};
+    assertNextAction(unmapped,'Review the case details.');
+    unmapped.outcome.authority_limits=['Separate authority is needed for real-world action.'];
+    assertNextAction(unmapped,"A person's go-ahead is needed before any real-world action.");
+  }
+});
+
+test('outcome next actions stay neutral when no result or wait cause is recorded',()=>{
+  for(const state of [{},{outcome:{}},{outcome:{status:'deferred'}},{deferral:{}},
+    {deferral:{reason:'The  exact\nrecorded reason. '}},
+    {outcome:{status:'deferred',assessment_status:'complete',missing_evidence:[],unresolved_facts:[],authority_limits:[]}},
+    {outcome:{status:'complete',assessment_status:'complete',summary:'The  exact\nrecorded unit summary. '}}]){
+    assertNextAction(state,'Review the case details.');
   }
 });
 
@@ -243,7 +328,7 @@ test('official form and original reasons findings preserve supported, failed and
     assert.deepEqual(view.findings,[{id:predicate_id,status,summary}]);
     assert.equal(view.recordedSummary,state.outcome.summary);
     assert.deepEqual(view.constraints,['More documents are needed.','Some facts still need proof.','Real-world action still needs its own authority.']);
-    assert.equal(view.nextAction,"Waiting for the listed documents or a person's go-ahead.");
+    assert.equal(view.nextAction,"Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.");
     assert.equal(JSON.stringify(state),before);
     assert.doesNotMatch(view.summary,/\b(?:valid|invalid|awarded|paid|sent|filed|excessive)\b/iu,'a specific check cannot assert a legal outcome or completed action');
   }

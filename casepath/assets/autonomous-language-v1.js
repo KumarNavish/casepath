@@ -312,8 +312,11 @@
     const constraints = [missing ? 'More documents are needed.' : '',
       unresolved || unknown ? 'Some facts still need proof.' : '',
       limits ? 'Real-world action still needs its own authority.' : ''].filter(Boolean);
+    const nextAction = [missing ? 'Waiting for the listed documents.' : '',
+      unresolved || unknown || findings.some(row => row.status === 'unknown') ? 'Waiting for proof of open facts.' : '',
+      limits ? "A person's go-ahead is needed before any real-world action." : ''].filter(Boolean).join(' ') || 'Review the case details.';
     return {label:supported ? 'Document checks complete' : state.outcome ? 'Recorded result' : state.deferral ? 'Work stopped' : 'Result pending',
-      summary,nextAction:missing || unresolved || unknown || limits || outcome.status === 'deferred' ? copy.waiting : 'Read the recorded result and its sources.',
+      summary,nextAction,
       findings,support:supported ? copy.supported : '',constraints,
       recordedSummary:text(outcome.summary) || text(outcome.reason),details:outcome};
   }
