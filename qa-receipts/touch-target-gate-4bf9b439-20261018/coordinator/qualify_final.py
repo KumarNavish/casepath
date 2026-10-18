@@ -79,6 +79,9 @@ aggregate.update(baseline_inventory=2777, all2777_prior_a89_ids_retained_unchang
                  exact_final_qa_css_js_equal_focused_browser_source=True,
                  minimum_observed_workspace_free_bytes=minimum,
                  maximum_actual_prepare_or_pytest_concurrency=maximum,
+                 configured_gate_heavy_cap=2, global_heavy_cap=2, actual_serial_schedule_heavy_cap=1,
+                 supplemental_proc_environment_actual_child_samples=0,
+                 supplemental_proc_environment_qualification='EACCES13; no observed child-path coverage; configured isolation recorded by exact command/result environments',
                  all_six_full_runtime_before_after_equal=True,
                  source_publication_or_deployment_by_gate=False,
                  configuration_draft_changes_needed=False)
