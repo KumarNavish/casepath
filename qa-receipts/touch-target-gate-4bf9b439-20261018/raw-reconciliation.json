@@ -1,0 +1,235 @@
+{
+  "candidate": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "manifest_sha256": "98bd51f82f96e146314496cd41255781634d19c407ced1a37221927b91a6b32e",
+  "coordinator_raw_reconciliation": true,
+  "full_inventory": 2777,
+  "all_baseline_ids_retained_with_explicit_rename": true,
+  "all2777_baseline_ids_retained_unchanged": true,
+  "baseline_inventory": 2777,
+  "explicit_renames": [],
+  "cloud_selected": 2650,
+  "cloud_passed": 2640,
+  "cloud_skipped": 10,
+  "cloud_failed": 0,
+  "cloud_raw_phase_rows": 7941,
+  "Mac": "Mac owner assigned unchanged127 partition; native receipt handled by parent; no independent Mac raw inspection or result asserted by Cloud gate",
+  "combined_known_skips": 10,
+  "no_gaps_duplicates_overlap": true,
+  "all_six_first_only_attempts": true,
+  "all_six_source_capsules_unchanged": true,
+  "all_junit_ids_match_raw_phases_and_collected": true,
+  "shards": [
+    {
+      "shard": 1,
+      "collected": 9,
+      "passed": 9,
+      "skipped": 0,
+      "raw_phase_rows": 27,
+      "junit_cases": 9,
+      "exit_code": 0,
+      "duration_seconds": 503.064950466156,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 2,
+      "collected": 598,
+      "passed": 597,
+      "skipped": 1,
+      "raw_phase_rows": 1794,
+      "junit_cases": 598,
+      "exit_code": 0,
+      "duration_seconds": 380.1280837059021,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 3,
+      "collected": 403,
+      "passed": 394,
+      "skipped": 9,
+      "raw_phase_rows": 1200,
+      "junit_cases": 403,
+      "exit_code": 0,
+      "duration_seconds": 386.8813462257385,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 4,
+      "collected": 473,
+      "passed": 473,
+      "skipped": 0,
+      "raw_phase_rows": 1419,
+      "junit_cases": 473,
+      "exit_code": 0,
+      "duration_seconds": 387.82410764694214,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 5,
+      "collected": 509,
+      "passed": 509,
+      "skipped": 0,
+      "raw_phase_rows": 1527,
+      "junit_cases": 509,
+      "exit_code": 0,
+      "duration_seconds": 378.8211512565613,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 6,
+      "collected": 658,
+      "passed": 658,
+      "skipped": 0,
+      "raw_phase_rows": 1974,
+      "junit_cases": 658,
+      "exit_code": 0,
+      "duration_seconds": 386.66360902786255,
+      "source_capsule_before_after_equal": true
+    }
+  ],
+  "known_skips": {
+    "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows": {
+      "when": "call",
+      "file": "test_document_lifecycle_shadow_v1.py",
+      "line": 605,
+      "reason": "Skipped: frozen independent-transition packet is not available"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 457,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 548,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 559,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 579,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 592,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 610,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 636,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 646,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request": {
+      "when": "setup",
+      "file": "test_document_lifecycle_shadow_v2.py",
+      "line": 696,
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    }
+  },
+  "environment_isolation": [
+    {
+      "shard": 1,
+      "HOME": "/workspace/tt4h1",
+      "TMPDIR": "/workspace/tt4t1",
+      "CASEPATH_DB_PATH": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard1/casepath.db"
+    },
+    {
+      "shard": 2,
+      "HOME": "/workspace/tt4h2",
+      "TMPDIR": "/workspace/tt4t2",
+      "CASEPATH_DB_PATH": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard2/casepath.db"
+    },
+    {
+      "shard": 3,
+      "HOME": "/workspace/tt4h3",
+      "TMPDIR": "/workspace/tt4t3",
+      "CASEPATH_DB_PATH": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard3/casepath.db"
+    },
+    {
+      "shard": 4,
+      "HOME": "/workspace/tt4h4",
+      "TMPDIR": "/workspace/tt4t4",
+      "CASEPATH_DB_PATH": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard4/casepath.db"
+    },
+    {
+      "shard": 5,
+      "HOME": "/workspace/tt4h5",
+      "TMPDIR": "/workspace/tt4t5",
+      "CASEPATH_DB_PATH": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard5/casepath.db"
+    },
+    {
+      "shard": 6,
+      "HOME": "/workspace/tt4h6",
+      "TMPDIR": "/workspace/tt4t6",
+      "CASEPATH_DB_PATH": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard6/casepath.db"
+    }
+  ],
+  "bindings": {
+    "shard1/collected.json": "9ee9bad3fd0db79188b6dccde1bfbdc32429fb0d522a35aef3e4954f2487c9e1",
+    "shard1/reports.jsonl": "14644df913675d217bcce5f68ff22480f82bd9cdaedba7bfcd693a5d2356ca87",
+    "shard1/junit.xml": "e6d9b5941d1c3291528f7cdb7c16ff993d27656518d44abbb9d77921077db1c4",
+    "shard1/command.json": "8e7ee9d188fdaf7d8a0d369ba5473a2c6f0b862cd3666a0b6307d3acf5c096a3",
+    "shard1/result.json": "61fffd42caf49f78a0c50ffd1081a83c760f336bfbc79f6758ab97d3a8f69a6b",
+    "shard1/source-before/capsule-verification.json": "d2d48c71b26eb11bd99507df572e57ab29709a8832158b61e6f36627963701a0",
+    "shard1/source-after/capsule-verification.json": "1409c5a00bcb03fad007e0485384550fce415ae083842bddb502b9acbf132d59",
+    "shard2/collected.json": "e87fe3a232657fffdbd32fc9ddcf9c7d5bca703ea3a32736cbc1973a1ede7818",
+    "shard2/reports.jsonl": "39f73a61ca25a911cbf7f8aac29a5b2a4f2d92d18ec7719017a5a1f22283cc8e",
+    "shard2/junit.xml": "5c13272ca65b2af56477f79a86c8c4cb96155c4671c3debadd3a67079575e326",
+    "shard2/command.json": "5cf9479fcb254d1b3fdc7d85111bfae834b001383f1ee3d627eae1a28e12a5eb",
+    "shard2/result.json": "fb8603c7be6e0b22102b0aff16de9b220d9acfc3ef681410662b91619f6f5e91",
+    "shard2/source-before/capsule-verification.json": "00f232ddfa9ab3f8452b5ad128ec718a656be773551ef81d4950a9c8ee4dd73a",
+    "shard2/source-after/capsule-verification.json": "954aead079cb0399c5e6e50ecb2e5b55f739ce541bfaac4e41c6c73f396ca000",
+    "shard3/collected.json": "33377b414dca2d0f007046e937c2ecb5b80ccc7daf8ccf5df2512a9a22e0a8cc",
+    "shard3/reports.jsonl": "aa05f5eadcfbd493ea9b303727ebd60a4fd57eff688cea0df129e57c6865a601",
+    "shard3/junit.xml": "d1f9f66eb2397969fa8e9375a6458afb9fc8f99c2c97412b02eb0fe33b7df526",
+    "shard3/command.json": "13288dbae85fecc764755672bcf20e781d500fea7ef435ad7daf3d9eba3e57eb",
+    "shard3/result.json": "dc73e46da8e4eec74f73495998f66402bf067fdd7dd5574b1a6e33e7f6452c45",
+    "shard3/source-before/capsule-verification.json": "6ffc7a5111d34180f9e60cfa0e9fe9ad66044b87dcdab40cd4e5fe1eb76d5072",
+    "shard3/source-after/capsule-verification.json": "50575b80171020f82318fa64348baa8acc21573343d8bbe038b216818c9eaf06",
+    "shard4/collected.json": "6c82b722a987e5d734df7d7f0e6f96196e3c13eb6abd820579988696bfbba2de",
+    "shard4/reports.jsonl": "d950351ddeb9c199f462e5923a95209f22b79ab4df8c3b5a2a5eba34541026a2",
+    "shard4/junit.xml": "c07dc6cb58a105cc9ea3364fa9338b9bf59a114be764ec240169587924f732cb",
+    "shard4/command.json": "b8c1f64354001bf4791c3bb238faf423ab2acbcdf8ec0da5bbeb0fc354042e32",
+    "shard4/result.json": "4f6e08aa19d5f472adc9dab9f94bb1d1bf8bdc2f207c6966dd7eeb25b808c1e8",
+    "shard4/source-before/capsule-verification.json": "bbead2352fd832bcd096028fe183c7caff96d37c52cd3a5c4a43d82346fd3d1b",
+    "shard4/source-after/capsule-verification.json": "4347f8e33f3aca5ba30876aa0b13f0d4cbdd30526adaf7033ec6027b6ba25104",
+    "shard5/collected.json": "dedc3fc607bb2e84c8e31485de8dfccb8fc568fe8a9e29d544967d6a099cb78b",
+    "shard5/reports.jsonl": "a37c8cfd8a322dc42dcff1f524a06722d5bf1901aaa9bfa7f00f885de658be73",
+    "shard5/junit.xml": "f6bb92e7793a5dd528c00ea610950d90490929c0fdda6b242ded866f95efd0ad",
+    "shard5/command.json": "865ccd9c2a825e1350b23ec0daad3b85d36f65e304c74f14a743f0903ceef4fe",
+    "shard5/result.json": "cc4224ef9fb4a73c05f1465e3a284e2671efa975ca60e400a300ece94a03a143",
+    "shard5/source-before/capsule-verification.json": "a8a13941790ce7e1e0e99239b71fc90c81b56e0419c98158cc7812ac85830832",
+    "shard5/source-after/capsule-verification.json": "bfb0e25958b4b864f8c4075955330335f3e3025187a58c18dbe6a817333588f8",
+    "shard6/collected.json": "e7b881220ef26ee94534b28d1c3f71bba4c4bea02d1eea76414b4f7099bfdac1",
+    "shard6/reports.jsonl": "dcf8aad2f10f42fc282eb9c72e3b6e6eda021efee5913794702a8b6e1dac5930",
+    "shard6/junit.xml": "34c95098a2c103af6134e051bd3e6c1a51017a173836bfd4d153d539c07259d0",
+    "shard6/command.json": "cafac924f60ab645031fa3101917d4cff04a7515d3d7c0981709463e218cdb48",
+    "shard6/result.json": "8e61be04f8e5071e718a598033df9cb21a509a2df60201d2c2df96364644592d",
+    "shard6/source-before/capsule-verification.json": "21cdf96afa5d5f537147325ba0f021d7391f3ad7856e21c9452ec833a1d4c45a",
+    "shard6/source-after/capsule-verification.json": "8a453750e322d274e90143272c4e5d7d7b4dcd811cc96f51030f637f53f0a605"
+  },
+  "resource_qualification": "Read raw resource-observations.jsonl and headroom receipts for actual observed free space; no unobserved interval claim.",
+  "verified_epoch": 1792292076.7380476
+}

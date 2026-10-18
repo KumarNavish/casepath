@@ -1,0 +1,98 @@
+[
+  {
+    "path": "harness/casepath_shard_observer.py",
+    "sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+  },
+  {
+    "path": "harness/prepare_clones.py",
+    "sha256": "8208a551ce9c148c1980c0c8442b7460c4fbaea30e212fa35c3cc81fe55c1efe"
+  },
+  {
+    "path": "harness/run_shard.py",
+    "sha256": "95aac0e5c75ea7ba14f1365b753663f717c4cae403f65a4ae38dec5ab4661f57"
+  },
+  {
+    "path": "harness/runtime_inventory.py",
+    "sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342"
+  },
+  {
+    "path": "harness/verify_prepared_capsules.py",
+    "sha256": "d52b23b8ebd150ce0804d065e53c91dfdb99da7f687b50c7b4dcea2f54afcfbd"
+  },
+  {
+    "path": "coordinator/bundle.py",
+    "sha256": "381c02657a9dc9b6f7ebc04b790a8b8513c29a09fb831ab20520f8a0e9d00bcb"
+  },
+  {
+    "path": "coordinator/export_receipts.py",
+    "sha256": "78f9f76e8bb086aa1ba7e46aab23695f09cb605607de523eb179e5651f949f51"
+  },
+  {
+    "path": "coordinator/finalize_receipts.py",
+    "sha256": "55d58b6a03748b27fcaf132f12dcd74d91e405dd996fbbaa96fa589085919eab"
+  },
+  {
+    "path": "coordinator/finish_audit.py",
+    "sha256": "4f96ec38a421fcd9309384bf4fd4aafd2fcc5ac2edd65106a817c793f6116742"
+  },
+  {
+    "path": "coordinator/initialize_gate.py",
+    "sha256": "605a7cef299a6f1baa9ca1ddbcb62beb24ce3923f7f4dec5bc718a6ad3204517"
+  },
+  {
+    "path": "coordinator/inventory.py",
+    "sha256": "785f2e63ebd2c82c5852cfa2403c6d12b78bfacd9812b64d7bc3d49ad805ceb4"
+  },
+  {
+    "path": "coordinator/one_shard.py",
+    "sha256": "c777740ddb1b3ce69a826381a4ee91ded4f432629e4d19779db00a72592d24ea"
+  },
+  {
+    "path": "coordinator/process_observer.py",
+    "sha256": "af04c009b491a7a2496645ad6f3044f677e6b7016d1ca41838a22d45fb0ee9ee"
+  },
+  {
+    "path": "coordinator/qualify_final.py",
+    "sha256": "47cef8710ec09921b90e8089343dd7c4ebad6c592fa9404851c19de78697a6ee"
+  },
+  {
+    "path": "coordinator/reconcile.py",
+    "sha256": "f9df9755cda18cd85942b9382b826f4d5acd7335e4109f57692a6afd4f8f992c"
+  },
+  {
+    "path": "coordinator/resource_watch.py",
+    "sha256": "20a7a53946881f0a9f0cf566ed05aa7089ecc203173fbc7e70452b0288fe3283"
+  },
+  {
+    "path": "coordinator/retire_pushed_cache.py",
+    "sha256": "0c22f073c6aa4cd68e0c49dfb4ae55103d0bba1f6db0f942bb31d83fa8be0cc3"
+  },
+  {
+    "path": "coordinator/retire_pushed_runtime.py",
+    "sha256": "f769434583fdc408bc904b109cf0610fda9bd17dcdf6844a384f56f13f19be66"
+  },
+  {
+    "path": "coordinator/scan_export.py",
+    "sha256": "6c15303ed9d9be0c7a39e05a214843ff4e2c6038b97704e31ed8dcec4194322e"
+  },
+  {
+    "path": "coordinator/serial_driver.py",
+    "sha256": "29c45af419f9835c158397acdfd3a46f3b00e04918111a9cf3c26580725723e2"
+  },
+  {
+    "path": "coordinator/stage_one.py",
+    "sha256": "c566c38f15a439032d4a21990520a621c585ee8d570a65ff1f828e19240299de"
+  },
+  {
+    "path": "coordinator/summarize.py",
+    "sha256": "9bde512be92fb22613784569a8dd76e15c512f1f2c27ba55cd06144e754bc0c7"
+  },
+  {
+    "path": "coordinator/verify.py",
+    "sha256": "f88950aae67e86e6074573cab25711fe5ae645cb6417cf0642f01c3efefd0ad1"
+  },
+  {
+    "path": "coordinator/verify_pushed_bundle.py",
+    "sha256": "33744fea3bc105769d19716420ad85136b412f84d213b8e55662d7dabbbf8665"
+  }
+]
