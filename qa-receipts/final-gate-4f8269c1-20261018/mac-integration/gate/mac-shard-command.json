@@ -1,0 +1,16 @@
+[
+  "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-operations-validation-20261013/.runtime/casepath-dev-v2/venv/bin/python",
+  "-P",
+  "-m",
+  "pytest",
+  "-q",
+  "-p",
+  "no:cacheprovider",
+  "-p",
+  "casepath_shard_observer",
+  "--durations=0",
+  "--junitxml=/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-shared-pool-contract-20261018/gate/mac-shard-junit.xml",
+  "casepath-api/tests/test_cli_v1.py",
+  "casepath-api/tests/test_local_data_root.py",
+  "casepath-api/tests/test_journal_corpus_restart.py"
+]
