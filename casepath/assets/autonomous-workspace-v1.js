@@ -4197,7 +4197,7 @@
       } else if (target.hasAttribute('data-au-close')) closeSource();
     }
     function input(event) {
-      if(view==='knowledge' && event.target.hasAttribute?.('data-au-learning-scrub')){pauseLearning();selectLearning(Number(event.target.value),10,true);return;}
+      if(view==='knowledge' && event.target.hasAttribute?.('data-au-learning-scrub')){const index=Number(event.target.value);if(learningState)learningState.complete=false;pauseLearning();selectLearning(index,10,true);return;}
       if (event.isTrusted && event.target.hasAttribute?.('data-au-operation-scrub') && operationTrace) {
         pauseInspection(); operationPeek = operationInspection(operationTrace,Math.min(Number(event.target.value),operationTrace.rows.length-1));
         if (operationPeek) { host.setAttribute('data-au-inspection-operation',operationPeek.trace.current.id); renderClaim(); }

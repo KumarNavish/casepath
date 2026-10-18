@@ -963,7 +963,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-stage-scrubber { flex:1 1 160px; }
 .au-workspace .au-recorded-wording { margin:8px 0; font-size:16px; }
 .au-workspace .au-operation-passage mark { color:var(--au-ink); background:#e3ebc9; }
-@media (pointer:coarse) { .au-workspace :is(button,a,summary,input[type=range],input[type=checkbox]) { min-height:44px; } }
+@media (pointer:coarse) {
+  /* Compact component rules must not reduce the minimum touch area. */
+  .au-workspace :is(button,a[href],summary,input[type=range],input[type=checkbox]) { min-width:44px !important; min-height:44px !important; }
+  .au-workspace .au-legal-basis a { display:inline-block; max-width:100%; padding-block:10px; vertical-align:middle; }
+}
 @media (max-width:700px) {
   .au-workspace .au-role-explanation ul { grid-template-columns:1fr; }
   .au-workspace .au-identity-header { flex-wrap:wrap; }
@@ -1027,4 +1031,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 }
 @media (max-width:700px) and (pointer:coarse) {
   .au-workspace .au-learning .au-work-head .au-record-link { min-height:44px; }
+  .au-workspace .au-learning .au-work-head { flex-wrap:wrap; }
+  .au-workspace .au-learning .au-work-head > div:first-child { flex-basis:100%; }
 }
