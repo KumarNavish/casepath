@@ -1,0 +1,71 @@
+{
+  "contract": "casepath.gate-recovery/1",
+  "candidate": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+  "manifest_sha256": "e7fbfd43062c19ed04468966aee9a2c61dcb1064b8baaa449cd4a2fe841e0442",
+  "source_file_count": 1719,
+  "recovered_receipt_parent": "1c00aaf0ead42d154d2867ae6f81c5e0520d9f2a",
+  "prior_host": "656813ef2295",
+  "recovered_host": "ade3d3b7893a",
+  "recovery_observed_epoch": 1792317677.8746867,
+  "managed_state_observed": "running/connected",
+  "original_gate_directory_and_six_source_clones": "Absent on recovered host",
+  "original_gate_processes": "All four recorded PIDs absent; exact coordinator/runner/observer/pytest argument scan found none",
+  "signals_sent": [],
+  "new_tests_or_environments_started": 0,
+  "source_changes": 0,
+  "recovered_cloud1": {
+    "immutable_original": "e93737f466d13ccac39b2209286fb3d87e19e500",
+    "raw_unchanged_at_receipt_parent": true,
+    "passed": 9,
+    "phase_rows": 27,
+    "junit_cases": 9,
+    "exit_code": 0
+  },
+  "recovered_cloud2": {
+    "durable_preparation_and_before_proofs": true,
+    "execution_log_recovered": false,
+    "raw_phase_report_recovered": false,
+    "junit_recovered": false,
+    "terminal_result_recovered": false,
+    "exit_code": null,
+    "last_known_observation": {
+      "provenance": "Previously received executor message before outage, not recovered raw test data",
+      "elapsed_seconds": 94.1,
+      "passing_calls_observed": 13,
+      "failed_phases_observed": 0,
+      "skipped_phases_observed": 0
+    },
+    "disposition": "Superseded and unadmitted; no passing calls synthesized as accepted tests"
+  },
+  "original_cloud3_through6": {
+    "recovery_terminal_evidence_available": false,
+    "disposition": "Superseded and unadmitted regardless of any unobserved pre-loss driver progress"
+  },
+  "accepted_partition": {
+    "cloud1_ids": 9,
+    "mac_original_ids": 127,
+    "mac_single_remainder_ids": 2706,
+    "total_ids": 2842,
+    "expected_final_passed": 2832,
+    "expected_unchanged_fixture_skips": 10,
+    "mac_remainder_final_raw_review": "Pending Mac owner receipts; not asserted passed here"
+  },
+  "data_preservation_limit": "The replacement host does not expose the original workspace; unpublished original Cloud2\u20136 local raw could not be recovered. No raw phase/JUnit/exit data was reconstructed or invented. All durable parent receipt files remain unchanged.",
+  "actions": {
+    "recovery_checks": "One requested managed-status check plus bounded host/process/workspace inspection and immutable Git receipt recovery",
+    "processes_stopped": 0,
+    "gate_restarts": 0,
+    "new_test_clones_or_preparation": 0,
+    "product_or_production_requests": 0,
+    "private_data": false,
+    "deployments": 0,
+    "record_writes": 0
+  },
+  "bootstrap_product_checkout_preserved": {
+    "head": "d9a47d738523c28b22444f0041d691a510550044",
+    "branch": "codex/casepath-sites-hosting-20261009",
+    "clean": true,
+    "index_sha256": "32e3d15fc3c5a38f188b37722d5e243052a42f563c0169a63cb9097ac12ec5f5"
+  },
+  "ownership_note": "No matching owned driver or duplicate tests exist on the recovered host, so no signals were necessary. The previous host is not accessible through this recovered environment."
+}
