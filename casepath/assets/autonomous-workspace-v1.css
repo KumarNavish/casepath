@@ -539,7 +539,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-brand { grid-column:1 / 3; }
   .au-workspace .au-nav [data-au-nav=intake] { grid-column:3; }
   .au-workspace .au-header-new { grid-column:3; grid-row:1; padding:6px 8px; min-height:36px; white-space:nowrap; font-size:16px; }
-  .au-workspace .au-case-return { grid-column:1 / -1; grid-row:3; padding:4px 0 8px; gap:4px 14px; }
+  /* Keep the return text from enlarging the header's max-content grid tracks. */
+  .au-workspace .au-case-return { grid-column:1 / -1; grid-row:3; min-width:0; max-width:100%; contain:inline-size; padding:4px 0 8px; gap:4px 14px; }
+  .au-workspace .au-case-return-label { flex-basis:100%; min-width:0; }
+  .au-workspace .au-case-return button { min-width:44px; min-height:44px; }
   .au-workspace .au-main { padding:22px 18px 40px; }
   .au-workspace .au-work-head { display:block; padding-bottom:18px; }
   .au-workspace .au-work-head .au-page-heading { font-size:24px; line-height:1.25; letter-spacing:-.4px; }
