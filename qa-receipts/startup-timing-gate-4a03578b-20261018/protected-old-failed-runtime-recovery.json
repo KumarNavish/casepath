@@ -1,0 +1,27 @@
+{
+  "candidate": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "old_gate_status": "FAILED_INCOMPLETE; originalfailure immutable",
+  "old_evidence_commit": "acd2c3a979fb70b50404bf127aaba3ed6698e6c1",
+  "old_evidence_branch": "qa-receipts/startup-timing-gate-abf3c90e-20261018",
+  "repo": "/workspace/casepath-release-ae0-shard5",
+  "head": "abf3c90eb351bbd0cffe7ca65ad4c3a7a292f67c",
+  "status": "",
+  "source_artifact_static_files_reverified": [
+    1714,
+    25,
+    40
+  ],
+  "capsule_receipt_file_sha256": "0063951cf34a05282622f25ad02daa4622baa5bfe7a651492789de39631ccb81",
+  "old_afterproof_sha256": "f9cfe435ab33c51b8e719db53f4ebd17a0a6eb96153bcbfdc8e7f99b8c1345df",
+  "proof_bytes_equal_durably_pushed_gitblobs": true,
+  "exact_paths": [
+    "/workspace/casepath-release-ae0-shard5/.runtime/casepath-dev-v2/venv",
+    "/workspace/casepath-release-ae0-shard5/.runtime/casepath-dev-v2/source-capsules/46a2fc752a399545ea4c67049e0ef82f45a42eab4d0131d4adbad1d9596801aa"
+  ],
+  "capsule_files_exactly_known_reproducible_inventory": true,
+  "no_active_jobs_in_oldclone": true,
+  "authorization": "Root explicitly permits only old failed runtime venv and exact capsule recovery after strict byteproof; preserve every original source/Git/QA output/raw/home/tmp/pytest-tmp/artifactregistry/journal/failedfixture in place",
+  "before_free_bytes": 3955146752,
+  "epoch": 1792281591.8507898,
+  "after_free_bytes": 4244398080
+}

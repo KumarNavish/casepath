@@ -1,0 +1,19 @@
+{
+  "baseline_commit": "65a796a5dfb21f4cdbe0a3d1a4925b931710b30c",
+  "baseline_gate_receipt_commit": "cc395aa627e2063965780c7fb63a0e3a41982ad5",
+  "baseline_inventory_count": 2749,
+  "baseline_passed": 2739,
+  "baseline_known_skipped": 10,
+  "baseline_inventory_sha256": "2774ee7f663dd8ab44d1d069a9a43289596c51220cd6922d050807fa1907da58",
+  "candidate_commit": "cb648a3e8a7c5ef3605f25273afc14c3a247d52b",
+  "renamed_tests": [
+    {
+      "old_id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_two_fresh_compact_proofs_without_raw_bytes_or_writes",
+      "new_id": "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes",
+      "reason": "The same warm-read authority regression now requires one complete atomic proof instead of two sequential proofs. Raw-byte, write-refusal, exact-output and freshness assertions remain and are strengthened."
+    }
+  ],
+  "gate_reconciliation_rule": "Account for this explicit replacement. Require every other baseline ID unchanged, all current newly collected IDs executed once, and the same exact ten known skips. Do not report zero raw removed IDs.",
+  "fresh_full_inventory_collected": false,
+  "release_gate_executed": false
+}

@@ -1,0 +1,25 @@
+{
+  "candidate": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+  "manifest_sha256": "2a88cc939faa82c47132970a67275f2f6bda6fd20a98cb7dcdf22d463fe61a50",
+  "sealed_files_verified": 1714,
+  "source_paths_exact_worker_bytes": [
+    {
+      "path": "casepath/tools/sites_worker.mjs",
+      "worker_commit": "105ef1abf9cfd872f1898dab2d155c3de36e5f28",
+      "sha256": "d5930a5937cd73321f25feef114db7600b9d5070111f5c859ec838ad5428a085"
+    }
+  ],
+  "only_expected_changed_paths": [
+    "casepath/source-manifest.json",
+    "casepath/tools/sites_worker.mjs"
+  ],
+  "index_byte_identical_to_failed_abf": true,
+  "instructions_unchanged_from_failed_abf": true,
+  "frontend_bytes_unchanged": true,
+  "only_seal_added_after_worker": true,
+  "baseline_c925_inventory_ids": 2764,
+  "baseline_c925_inventory_sha256": "bb880afa11de431c7c635364ddc486c00b07e564a08b9e9f910a565b19c1da2c",
+  "tests_executed_by_this_check": 0,
+  "source_modified": false,
+  "verified_epoch": 1792281518.3897114
+}

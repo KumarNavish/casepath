@@ -1,0 +1,41 @@
+{
+  "candidate": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+  "prior_candidate": "c925a0267971edb52fea5f2bd9653a2495b7ac15",
+  "fresh_count": 2777,
+  "baseline_count": 2764,
+  "count_delta": 13,
+  "added_ids": [
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[-1.0-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[1e+20-999999999.999]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[inf-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[nan-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_is_request_local_and_copies_shared_start_headers",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims-True]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims/example-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge-True]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge/-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/healthz-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[HEAD-/api/claim-loops/v1/autonomous/knowledge-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[POST-/api/claim-loops/v1/autonomous/claims-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_wraps_denial_without_opening_stores"
+  ],
+  "removed_ids": [],
+  "renamed_tests": [],
+  "genuinely_new_ids": [
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[-1.0-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[1e+20-999999999.999]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[inf-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[nan-0.000]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_is_request_local_and_copies_shared_start_headers",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims-True]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims/example-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge-True]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge/-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/healthz-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[HEAD-/api/claim-loops/v1/autonomous/knowledge-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[POST-/api/claim-loops/v1/autonomous/claims-False]",
+    "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_wraps_denial_without_opening_stores"
+  ],
+  "all_other_prior_ids_included": true,
+  "prior_ids_sha256": "bb880afa11de431c7c635364ddc486c00b07e564a08b9e9f910a565b19c1da2c"
+}

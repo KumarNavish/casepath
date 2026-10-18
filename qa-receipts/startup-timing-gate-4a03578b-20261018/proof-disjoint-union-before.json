@@ -1,0 +1,44 @@
+{
+  "candidate": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+  "manifest_sha256": "2a88cc939faa82c47132970a67275f2f6bda6fd20a98cb7dcdf22d463fe61a50",
+  "full_inventory": 2777,
+  "baseline_inventory": 2764,
+  "genuinely_new_ids": 13,
+  "raw_added_ids": 13,
+  "raw_removed_ids": 0,
+  "explicit_renames": [],
+  "all2764_baseline_ids_included_unchanged": true,
+  "cloud_assigned": 2650,
+  "mac_explicit_partition": 127,
+  "mac_raw_inspected_in_cloud": false,
+  "known_skips": 10,
+  "counts": {
+    "1": 9,
+    "2": 598,
+    "3": 403,
+    "4": 473,
+    "5": 509,
+    "6": 658
+  },
+  "estimated_phase_seconds": {
+    "1": 520.2063199280528,
+    "2": 393.163926816429,
+    "3": 387.21482294786256,
+    "4": 389.1693803163944,
+    "5": 390.37565473886207,
+    "6": 387.268273764872
+  },
+  "no_overlap_or_gaps": true,
+  "whole_file_partition": true,
+  "serialized_launcher_port_group": [
+    "casepath-api/tests/test_agent_demo_launcher.py",
+    "casepath/tools/test_casepath_release.py",
+    "casepath/tools/test_build_deployment_identity.py"
+  ],
+  "collection_physical_clone": "/workspace/casepath-release-ae0-shard4",
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "cloud_ids_sha256": "203d600040752d229ba3c1dbca15ae58e1acbe2f56e0f47eed6914807d4c697e",
+  "full_ids_sha256": "2afdd1b449b87d017fd58ef7aa90c594c244dfd65fe64a9120225d562ba16c2c",
+  "free_bytes": 3446243328,
+  "test_run_authorization": "FINAL_GATE_AUTHORIZED"
+}
