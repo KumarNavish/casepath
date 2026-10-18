@@ -1,0 +1,58 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "prior_candidate": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+  "fresh_pytest_inventory": 2777,
+  "prior_pytest_inventory": 2777,
+  "pytest_id_delta": 0,
+  "all_prior_pytest_ids_retained_unchanged": true,
+  "new_node_cases": [
+    {
+      "name": "mobile case header: retained heating context fits Knowledge and Cases at 390px",
+      "viewport_width": 390,
+      "views": [
+        "knowledge",
+        "work"
+      ]
+    },
+    {
+      "name": "mobile case header: retained heating context fits Knowledge and Cases at 320px",
+      "viewport_width": 320,
+      "views": [
+        "knowledge",
+        "work"
+      ]
+    },
+    {
+      "name": "mobile case header: retained heating context fits Knowledge and Cases at 430px",
+      "viewport_width": 430,
+      "views": [
+        "knowledge",
+        "work"
+      ]
+    },
+    {
+      "name": "mobile case header: retained heating context fits Knowledge and Cases at 1428px",
+      "viewport_width": 1428,
+      "views": [
+        "knowledge",
+        "work"
+      ]
+    }
+  ],
+  "new_node_case_count": 4,
+  "node_cases_are_pytest_ids": false,
+  "python_wrapper_found": false,
+  "cloud_full_pytest_gate_executes_new_node_cases": false,
+  "scope_instruction": "Parent clarified established deterministic partition only; no separate broad Node/fullbrowser expansion",
+  "exact_source_bindings": {
+    "casepath-qa/unified-product-browser-v1.test.cjs": "c7903c7cbb03f4eeb564174ca149d3cbd4993540ffa80f5d82aecc29d5d8a9e1",
+    "casepath/assets/autonomous-workspace-v1.css": "410862600e0161cd3d0c9a07f750b97c98ea3ae0134ec8c43bf1afe88097cf56"
+  },
+  "focused_evidence_commit": "5620f0635ee23369d59e574754ad6adaa6ee5a60",
+  "focused_evidence_subtree": "qa-evidence/mobile-case-header-20261018",
+  "focused_four_browser_cases_owner_reported": "4/4 pass exact finalQA/CSS bytes; independent review PASS/no findings",
+  "integrated_mac_browser_owner_reported": "8 context checks pass",
+  "focused_receipts_independently_inspected_by": "root",
+  "qualification": "The four new Node cases are reconciled separately from the unchanged2777 pytest IDs. Cloud pytest gate does not assert Node execution; browser evidence remains separate.",
+  "epoch": 1792285160.8905816
+}

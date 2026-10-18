@@ -1,0 +1,77 @@
+diff --git a/casepath-qa/unified-product-browser-v1.test.cjs b/casepath-qa/unified-product-browser-v1.test.cjs
+index c87cb9f4..e55c6778 100644
+--- a/casepath-qa/unified-product-browser-v1.test.cjs
++++ b/casepath-qa/unified-product-browser-v1.test.cjs
+@@ -532,7 +532,7 @@ async function eventually(read, message, timeout = 5000) {
+ }
+ 
+ async function fixturePage(t, config = {}) {
+-  const context = await browser.newContext({viewport: {width: config.width || 1440, height: config.height || 1000}, serviceWorkers: 'block'});
++  const context = await browser.newContext({viewport: {width: config.width || 1440, height: config.height || 1000}, ...(config.mobile ? {isMobile: true, hasTouch: true} : {}), serviceWorkers: 'block'});
+   const page = await context.newPage(), errors = [], network = [];
+   page.__casepathErrors=errors;page.__casepathNetwork=network;
+   page.setDefaultTimeout(5000);
+@@ -565,7 +565,7 @@ async function fixturePage(t, config = {}) {
+   await page.route('**/*', route => {
+     network.push({url: route.request().url(), method: route.request().method()});
+     return route.request().isNavigationRequest()
+-      ? route.fulfill({status: 200, contentType: 'text/html', body: '<!doctype html><html><head><meta charset="utf-8"></head><body><main id="workspace"></main></body></html>'})
++      ? route.fulfill({status: 200, contentType: 'text/html', body: `<!doctype html><html><head><meta charset="utf-8">${config.mobile ? '<meta name="viewport" content="width=device-width, initial-scale=1">' : ''}</head><body><main id="workspace"></main></body></html>`})
+       : route.abort('blockedbyclient');
+   });
+   await page.goto('http://localhost:41999/' + (config.initialFragment || ''));
+@@ -3287,6 +3287,54 @@ test('quiet language: History pauses the real replay immediately and exposes exa
+   await page.locator('[data-au-demo-resume]').click();let paint=await acceptedPaint(page);for(let tick=0;paint.revision===11&&tick<300;tick++){await page.clock.runFor(20);paint=await acceptedPaint(page);}assertAcceptedPaint(paint,fixture.prefixes[12]);assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[12].state,projection:fixture.prefixes[12].projection});await page.locator('.au-nav [data-au-nav="work"]').click();
+ });
+ 
++for (const width of [390, 320, 430, 1428]) test(`mobile case header: retained heating context fits Knowledge and Cases at ${width}px`, async t => {
++  const mobile = width < 600, id = 'clm_314f2d309fea25e6';
++  const page = await fixturePage(t, {width, height: 844, mobile, publicReadOnly: true});
++  // The full product's page stylesheet removes the browser's default margin.
++  await page.evaluate(() => { document.body.style.margin = '0'; });
++  await open(page, id); await title(page, id);
++  const expectedLabel = await page.locator('[data-au-claim-title]').innerText(), measurements = [];
++  for (const view of ['knowledge', 'work']) {
++    const navigation = page.locator(`.au-nav [data-au-nav="${view}"]`);
++    if (mobile) await navigation.tap(); else await navigation.click();
++    await page.locator('[data-au-case-return]').waitFor({state: 'visible'});
++    await page.evaluate(() => document.fonts.ready);
++    const geometry = await page.evaluate(() => {
++      const header = document.querySelector('.au-identity-header'), current = header.querySelector('.au-case-return');
++      const measure = element => {
++        const style = getComputedStyle(element);
++        return {text: element.textContent, rect: element.getBoundingClientRect().toJSON(), clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, overflowX: style.overflowX, whiteSpace: style.whiteSpace};
++      };
++      return {visualWidth: visualViewport.width, scale: visualViewport.scale, innerWidth, documentWidth: document.documentElement.scrollWidth, coarse: matchMedia('(pointer:coarse)').matches,
++        header: measure(header), current: measure(current), label: measure(current.querySelector('.au-case-return-label')), controls: [...current.querySelectorAll('button')].map(measure), navigation: [...header.querySelectorAll('.au-nav button')].map(measure)};
++    });
++    measurements.push({view, ...geometry});
++  }
++  // Capture after both views: Chromium screenshots can change pointer emulation.
++  await focusedReceipt(page, `mobile-case-header-${width}`, {claim_id: id, expectedLabel, mobile, measurements});
++  for (const geometry of measurements) {
++    const detail = JSON.stringify(geometry);
++    assert.equal(geometry.visualWidth, width, `the actual visual viewport keeps its configured width: ${detail}`);
++    assert.equal(geometry.scale, 1, `the header fits without automatic mobile scaling: ${detail}`);
++    assert.equal(geometry.coarse, mobile);
++    assert.ok(geometry.documentWidth <= width + 1, `document width must fit the configured viewport even if innerWidth inflates: ${detail}`);
++    for (const item of [geometry.header, geometry.current, geometry.label, ...geometry.controls, ...geometry.navigation]) {
++      assert.ok(item.rect.left >= -1 && item.rect.right <= geometry.visualWidth + 1, `every retained header item fits the visual viewport: ${detail}`);
++      assert.ok(item.scrollWidth <= item.clientWidth + 1, `header content wraps without clipping or hidden overflow: ${detail}`);
++      assert.notEqual(item.overflowX, 'hidden'); assert.notEqual(item.overflowX, 'clip');
++    }
++    assert.equal(geometry.label.text, expectedLabel, 'the entire selected claim label stays visible');
++    assert.deepEqual(geometry.controls.map(row => row.text), ['Steps', 'Documents']);
++    assert.deepEqual(geometry.navigation.map(row => row.text), ['Cases', 'Demonstration', 'Knowledge']);
++    if (mobile) assert.ok(geometry.controls.every(row => row.rect.width >= 44 && row.rect.height >= 44), `return controls retain 44px coarse-pointer touch targets in both dimensions: ${detail}`);
++    else assert.ok(geometry.controls.every(row => row.rect.top < geometry.label.rect.bottom), `the desktop return context stays on one row: ${detail}`);
++  }
++  const documents = page.locator('[data-au-return-case="documents"]');
++  if (mobile) await documents.tap(); else await documents.click();
++  await title(page, id);
++  assert.equal(await page.locator('[data-au-panel="documents"]').isVisible(), true, 'the fitted return link retains the selected heating claim and Documents view');
++});
++
+ test('quiet work: Cases and global Knowledge return to the same verified claim and exact local requirement and knowledge version', async t => {
+   const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed'});
+   assert.equal(await page.locator('[data-au-return-case]:visible').count(),0,'a first visit cannot invent a current case');

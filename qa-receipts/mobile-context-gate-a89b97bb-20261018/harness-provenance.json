@@ -1,0 +1,96 @@
+{
+  "prior_root": "/workspace/casepath-startup-timing-gate-4a03578b-20261018",
+  "prior_commit": "e638d689741f4c5b303c069584e3d13141794d2d",
+  "rows": [
+    {
+      "path": "coordinator/bundle.py",
+      "sha256": "53d48f6980838ad713dc28bcf2125853f65e4cdcf8d6e1bb330bd81612447c1d",
+      "prior_sha256": "b5c8ba4f0bc4a0aeb01bf15f0dd7d72c5196881dd1c6bca1c9e47f8a8629c13b",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "coordinator/export_receipts.py",
+      "sha256": "4a17172829ac4e968249fe3bcdaee9dd35b0a64ccd3a2dd0381c8ee1b52b80fd",
+      "prior_sha256": "f81bd3c2974db67c162aad354231f4ea5ba9f3fdd0fab863d0b06c3f96f3c756",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "coordinator/finish_audit.py",
+      "sha256": "19e10823e39ca63617ffb223598c0f02cae6bc4e083259ddf6f7d65f308532b7",
+      "prior_sha256": "891432ae4d41923815177f3e2e6e76db002afd260e1478678fe6ab2022deff41",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "coordinator/inventory.py",
+      "sha256": "bc3ec026519a04fd5c337c1dc7a0d08fca3b12800e1885fd074084d8757038fb",
+      "prior_sha256": "434f5deb8707283bbebfd0dfd872460186313e232136a9a6df53bf0101d5c256",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "coordinator/one_shard.py",
+      "sha256": "078bbd0f38022946eb679368509c92fa8b19e72a0e8bd08a882dba01ca186ef7",
+      "prior_sha256": "ec074a1d352877e7e253a198202889aa3f4703a225f13a3013d32324f38fbe3a",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "coordinator/reconcile.py",
+      "sha256": "f4f19f4a861813c95cc14c04476a5c1812e5667f5484edb4b35ea9f4a6694685",
+      "prior_sha256": "e24061c8a7c10c7e43fddcc99f6da683dd1e0aa567e9ce7b8a135cc8d725ffe6",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "coordinator/resource_watch.py",
+      "sha256": "0f07658927d550d7cf27528d07eeb0f46f5fa111728b961eb9f22c23f8d48048",
+      "prior_sha256": "2e647a8f1ee3286e449345bd1b654b478fea652b25f5a66c17f7d4b19bfe5f7f",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "coordinator/scan_export.py",
+      "sha256": "fc7453d8e726c1f5ce2a1c951aa2031ebf497d3f05c1635ca98f740ebee84e87",
+      "prior_sha256": "e0103518ea166619faa0cbca3d8439ce3cbe099163210cad3e9bf75a59c3d9c7",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "coordinator/summarize.py",
+      "sha256": "2fc1f84576b484ba8aacda79b73f2d748b2b2667cf845f6be1477e78b764351f",
+      "prior_sha256": "6e39ca4fa96791e84864464579af557ea88279891b3bfcac68ccf9b35d4562b3",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "coordinator/verify.py",
+      "sha256": "51907fab4bdd898f0ef2cec4a0bd0d620ed48c51bafe80d107e155e246055f05",
+      "prior_sha256": "aade92bcb3866d00dc8513afe23756d94fc8523f0d84469c7cbd195cc7652c45",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "harness/casepath_shard_observer.py",
+      "sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "prior_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "harness/prepare_clones.py",
+      "sha256": "42addf8d9ca3ea1dba13b940a50be60c0595dd433f8bef93dce05701fa02c5f0",
+      "prior_sha256": "387d02acbbb4e4510d24056c1880b0ffcc4b03ef278193d611a3555ff7d37cac",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "harness/run_shard.py",
+      "sha256": "5deaa6f07cd7e9c861b285e70ea9d7666897161ddc8e0c4f00317493f2760079",
+      "prior_sha256": "58f60328304c53547128a76c5b0dfb4b05c9b910718341ac2944064a0463da2d",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "harness/runtime_inventory.py",
+      "sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+      "prior_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    },
+    {
+      "path": "harness/verify_prepared_capsules.py",
+      "sha256": "557ac3af567df4cc8a0fef441d9c79a9ebd2cf5aacde138a17340342744e16aa",
+      "prior_sha256": "c3cff5a2bb507e4598a79a121ae5a076834a7ef4581e33a14a16615068123411",
+      "adaptations": "exact candidate/root/manifest/temp; baseline2777; push-before-retire; before-test full runtime inventory; unchanged phase observer"
+    }
+  ]
+}

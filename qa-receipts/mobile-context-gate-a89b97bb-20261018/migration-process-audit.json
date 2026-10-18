@@ -1,0 +1,11 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "probe": "open /proc/1/maps read1byte",
+  "result": {
+    "readable": false,
+    "exception_type": "PermissionError",
+    "errno": 13
+  },
+  "audit_fail_closed_preserved": true,
+  "Mac_partition_owns_migration_tests": true
+}
