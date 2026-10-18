@@ -1,0 +1,21 @@
+[
+  {
+    "epoch": 1792281681.7411923,
+    "max_gate_heavy": 2,
+    "global_max_heavy": 3,
+    "floor_bytes": 3221225472,
+    "measured_prior_normalprepare_peak_bytes": 493000000,
+    "owned_recovery_receipt": "protected-old-failed-runtime-recovery.json",
+    "two_initial_normal_prepare_receipts": [
+      "shard1/prepare.json",
+      "shard2/prepare.json"
+    ],
+    "initial_cache_retirements": [
+      "shard1/prepare-cache-retirement.json",
+      "shard2/prepare-cache-retirement.json"
+    ],
+    "free_after_initial_two_prepares_and_retired_caches": 3645648896,
+    "reason": "Two concurrent original attempts fit strict floor; further preparation waits for completed runtime retirement",
+    "manual_initialization_qualification": "First normalprepare completed before freshcollect; normalprepare2 overlapped only freshcollect on isolated clone1, at most2 initialization jobs. Subsequent initial workers only1/2."
+  }
+]

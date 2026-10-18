@@ -1,0 +1,157 @@
+{
+  "observed_epoch": 1792282042.8297355,
+  "processes": [
+    {
+      "pid": 1253927,
+      "ppid": 1253924,
+      "state": "S",
+      "cpu_seconds": 6.95,
+      "argv": [
+        "python3",
+        "/workspace/casepath-startup-timing-gate-4a03578b-20261018/coordinator/resource_watch.py"
+      ],
+      "cpu_delta_1s": 0.0
+    },
+    {
+      "pid": 1265080,
+      "ppid": 1265079,
+      "state": "S",
+      "cpu_seconds": 0.59,
+      "argv": [
+        "/usr/bin/python3",
+        "/workspace/casepath-startup-timing-gate-4a03578b-20261018/coordinator/one_shard.py",
+        "1"
+      ],
+      "cpu_delta_1s": 0.01
+    },
+    {
+      "pid": 1265091,
+      "ppid": 1265080,
+      "state": "S",
+      "cpu_seconds": 0.2,
+      "argv": [
+        "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "/workspace/casepath-startup-timing-gate-4a03578b-20261018/harness/run_shard.py",
+        "run",
+        "1"
+      ],
+      "cpu_delta_1s": 0.0
+    },
+    {
+      "pid": 1265107,
+      "ppid": 1265091,
+      "state": "R",
+      "cpu_seconds": 363.56,
+      "argv": [
+        "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "-o",
+        "tmp_path_retention_policy=failed",
+        "--junitxml=/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard1/junit.xml",
+        "--durations=0",
+        "--basetemp=/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard1/pytest-tmp",
+        "@/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard1/pytest-arguments.txt"
+      ],
+      "cpu_delta_1s": 1.04
+    },
+    {
+      "pid": 1265121,
+      "ppid": 1265120,
+      "state": "S",
+      "cpu_seconds": 0.51,
+      "argv": [
+        "/usr/bin/python3",
+        "/workspace/casepath-startup-timing-gate-4a03578b-20261018/coordinator/one_shard.py",
+        "2"
+      ],
+      "cpu_delta_1s": 0.0
+    },
+    {
+      "pid": 1265142,
+      "ppid": 1265121,
+      "state": "S",
+      "cpu_seconds": 0.19,
+      "argv": [
+        "/workspace/casepath-knowledge-startup-render-20261018/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "/workspace/casepath-startup-timing-gate-4a03578b-20261018/harness/run_shard.py",
+        "run",
+        "2"
+      ],
+      "cpu_delta_1s": 0.0
+    },
+    {
+      "pid": 1265151,
+      "ppid": 1265142,
+      "state": "R",
+      "cpu_seconds": 346.23,
+      "argv": [
+        "/workspace/casepath-knowledge-startup-render-20261018/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "-o",
+        "tmp_path_retention_policy=failed",
+        "--junitxml=/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard2/junit.xml",
+        "--durations=0",
+        "--basetemp=/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard2/pytest-tmp",
+        "@/workspace/casepath-startup-timing-gate-4a03578b-20261018/shard2/pytest-arguments.txt"
+      ],
+      "cpu_delta_1s": 0.99
+    }
+  ],
+  "progress": [
+    {
+      "shard": 1,
+      "started": true,
+      "latch_epoch": 1792281676.0593045,
+      "raw_phase_rows": 19,
+      "passed_calls": 6,
+      "failed": 0,
+      "skipped": 0,
+      "last_phase_age_s": 16.81,
+      "terminal_exit": null
+    },
+    {
+      "shard": 2,
+      "started": true,
+      "latch_epoch": 1792281682.3055117,
+      "raw_phase_rows": 1225,
+      "passed_calls": 408,
+      "failed": 0,
+      "skipped": 0,
+      "last_phase_age_s": 0.98,
+      "terminal_exit": null
+    },
+    {
+      "shard": 3,
+      "started": false
+    },
+    {
+      "shard": 4,
+      "started": false
+    },
+    {
+      "shard": 5,
+      "started": false
+    },
+    {
+      "shard": 6,
+      "started": false
+    }
+  ],
+  "duplicate_launches": false
+}
