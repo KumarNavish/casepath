@@ -246,6 +246,86 @@ def test_public_readiness_is_closed_before_startup_and_after_failed_warmup(saved
         client.close()
 
 
+def saved_seed_environment(server, tmp_path):
+    import base64
+    from hashlib import sha256
+    from casepath_api.hosted_read_seed_v1 import pack_seed
+    with sqlite3.connect(server.path) as db:
+        db.row_factory = sqlite3.Row
+        journal_rows = [dict(row) for row in db.execute('SELECT * FROM claim_loop_events ORDER BY loop_id,sequence')]
+        chunks = {}
+        for row in db.execute('SELECT * FROM autonomous_source_chunks ORDER BY sha256,chunk_index'):
+            chunks.setdefault(row['sha256'], bytearray()).extend(row['content'])
+    sources = [{'sha256': digest, 'content_base64': base64.b64encode(raw).decode('ascii')}
+               for digest, raw in chunks.items()]
+    raw = pack_seed('a' * 40, journal_rows, sources)
+    path = tmp_path / 'read-seed.json'
+    path.write_bytes(raw)
+    return {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
+            'CASEPATH_SOURCE_COMMIT': 'a' * 40, 'CASEPATH_READ_SEED_PATH': str(path),
+            'CASEPATH_READ_SEED_SHA256': sha256(raw).hexdigest()}
+
+
+def test_public_startup_seed_avoids_raw_reads_before_readiness_without_changing_rows(saved_runtime, tmp_path, monkeypatch):
+    server, database, *_ = saved_runtime
+    env = saved_seed_environment(server, tmp_path)
+    before, controllers = rows(server.path), []
+    construct = hosted_app_v1.HostedAutonomousController
+    def controller(*args, **kwargs):
+        value = construct(*args, **kwargs)
+        controllers.append(value)
+        return value
+    monkeypatch.setattr(hosted_app_v1, 'HostedAutonomousController', controller)
+    monkeypatch.setattr(HostedSources, '_fetch_many', lambda *a, **k: pytest.fail('Seed startup downloaded raw bytes'))
+    app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'seeded')
+    with TestClient(app) as client:
+        assert controllers[-1]._closed and controllers[-1].store._read_only
+        assert client.get('/healthz').status_code == 200
+        baseline = len(server.requests)
+        assert client.get(PREFIX + '/knowledge', headers=HEADERS).status_code == 200
+        requests = server.requests[baseline:]
+        assert len(requests) == 1
+        assert any('casepath-journal-bytes-v1:set:' in sql for sql in statements(requests))
+        assert any('casepath-source-bytes-v1:set:' in sql for sql in statements(requests))
+        assert rows(server.path) == before
+
+
+def test_public_startup_invalid_seed_checksum_keeps_readiness_closed(saved_runtime, tmp_path):
+    from casepath_api.hosted_read_seed_v1 import SeedError
+    server, database, *_ = saved_runtime
+    env = saved_seed_environment(server, tmp_path)
+    env['CASEPATH_READ_SEED_SHA256'] = '0' * 64
+    before = rows(server.path)
+    app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'bad-seed')
+    client = TestClient(app)
+    try:
+        with pytest.raises(SeedError):
+            with client:
+                pytest.fail('Invalid seed reached readiness')
+        assert client.get('/healthz').status_code == 503
+        assert rows(server.path) == before
+    finally:
+        client.close()
+
+
+def test_confirmed_stale_seed_uses_existing_cold_startup_for_valid_new_rows(saved_runtime, tmp_path, monkeypatch):
+    server, database, fixture_store, *_ = saved_runtime
+    env = saved_seed_environment(server, tmp_path)
+    fixture_store.intake(packet(), 'valid-new-intake-after-seed')
+    before, admitted = rows(server.path), []
+    original = HostedAutonomousStore.admit_read_seed
+    def admit(store, *args, **kwargs):
+        result = original(store, *args, **kwargs)
+        admitted.append(result)
+        return result
+    monkeypatch.setattr(HostedAutonomousStore, 'admit_read_seed', admit)
+    app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'stale-seed')
+    with TestClient(app) as client:
+        assert admitted == [False]
+        assert client.get('/healthz').status_code == 200
+        assert rows(server.path) == before
+
+
 def test_public_app_closes_only_its_owned_shared_database(saved_runtime, tmp_path, monkeypatch):
     server, injected, *_ = saved_runtime
     created, closed = [], []

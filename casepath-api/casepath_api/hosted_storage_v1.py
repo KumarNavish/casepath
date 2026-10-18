@@ -430,6 +430,10 @@ class HostedAutonomousStore(AutonomousStore):
     JOURNAL_ROW_BYTES = JOURNAL_PAGE_BYTES + 64 * 1024
     KNOWLEDGE_RAW_PAGE_BYTES = 256 * 1024
 
+    def admit_read_seed(self, candidate, *, deployment_commit):
+        from .hosted_read_seed_v1 import admit_seed
+        return admit_seed(self, candidate, deployment_commit=deployment_commit)
+
     def list(self, *, statuses=None):
         # Startup discovery needs the same full accepted states as knowledge,
         # without per-claim remote reads. Scheduling semantics remain with the

@@ -12,6 +12,7 @@ from .autonomous_api_v1 import create_autonomous_router
 from .autonomous_corpus_v1 import CanonicalCorpus
 from .hosted_lease_v1 import HostedAutonomousController, HostedWorkflowLease
 from .hosted_proxy_v1 import HostedReadTiming, SitesProxyBoundary
+from .hosted_read_seed_v1 import load_seed
 from .hosted_storage_v1 import HostedAutonomousStore, HostedJournal, HostedSources, HostedStorageError, TursoDatabase
 from .workspace_corpus import PublicCorpus, default_workspace_corpus_root
 
@@ -54,6 +55,11 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
                 # Close dispatch before exposure. Startup, discovery, callbacks and
                 # timers have no execution authority in the public read service.
                 controller.shutdown()
+                seed = load_seed(env.get('CASEPATH_READ_SEED_PATH') or
+                                 Path(__file__).parent / 'artifacts' / 'hosted-read-seed-v1.json',
+                                 deployment_commit=commit, expected_sha256=env.get('CASEPATH_READ_SEED_SHA256'))
+                if seed is not None:
+                    store.admit_read_seed(seed, deployment_commit=commit)
                 # Warm through the complete journal/source validators, before
                 # publishing any service state or acknowledging readiness.
                 controller.knowledge.learning_view()
