@@ -14,6 +14,7 @@ from .autonomous_store_v1 import AutonomousStore, AutonomousStoreError, MAX_FILE
 
 
 from .hosted_sql_v1 import HostedStorageError, LibsqlConnection, TursoDatabase
+from .hosted_read_timing_v1 import read_lock
 
 JOURNAL_SCHEMA = """
 CREATE TABLE IF NOT EXISTS claim_loop_events (
@@ -462,7 +463,7 @@ class HostedAutonomousStore(AutonomousStore):
             # Summary -> source is the existing lock order. Keep every cached
             # original present and unchanged through local validation, the final
             # atomic certificate, and admission. A candidate has no authority.
-            with sources._lock:
+            with read_lock(sources._lock):
                 result = self._cached_knowledge_snapshot(cached, sources)
                 if result is not None:
                     return result

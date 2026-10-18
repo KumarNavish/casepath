@@ -66,6 +66,16 @@ GET handling, which performs no durable data writes. Its store also uses the
 existing read-only source-publication and journal-admission guards. Local and
 operator storage and workflow classes retain their existing behavior.
 
+Knowledge and Cases GETs report request-local `Server-Timing` measurements:
+`casepath_api` is the complete response-header time; `casepath_primary_count`
+counts database HTTP requests; `primary` includes connection, TLS and body
+transfer time. `connect`, `tls`, `headers` and `body` are parts of `primary`,
+not additional waits. `headers` includes waiting for the database response.
+`lock` measures the read locks; `json` measures final JSON rendering; `compute`
+is the remaining validation, encoding preparation and framework time. These
+numeric measurements contain no queries, credentials, sources or claim IDs.
+They change no read authority, deadlines, retries or caching policy.
+
 FastAPI Cloud supports secret input over stdin:
 
 ```sh

@@ -92,7 +92,8 @@ def _operation_encoding(request):
 
 def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corpus_getter=None, saved_work_getter=None,
                              read_only=False):
-    router = APIRouter(prefix='/api/claim-loops/v1/autonomous')
+    from .hosted_proxy_v1 import ReadTimedJSONResponse
+    router = APIRouter(prefix='/api/claim-loops/v1/autonomous', default_response_class=ReadTimedJSONResponse)
 
     def invoke(fn):
         try:

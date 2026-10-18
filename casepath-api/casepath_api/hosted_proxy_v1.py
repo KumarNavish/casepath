@@ -6,6 +6,14 @@ from urllib.parse import urlsplit
 
 from starlette.responses import JSONResponse
 
+from .hosted_read_timing_v1 import CURRENT_READ, measured
+
+
+class ReadTimedJSONResponse(JSONResponse):
+    def render(self, content):
+        with measured('json'):
+            return super().render(content)
+
 
 class HostedReadTiming:
     """Measure selected public reads through response headers, without reading bodies."""
@@ -19,6 +27,8 @@ class HostedReadTiming:
         if scope['type'] != 'http' or scope['method'] != 'GET' or scope['path'] not in self.PATHS:
             return await self.app(scope, receive, send)
         started = monotonic()
+        values = {}
+        token = CURRENT_READ.set(values)
 
         async def timed_send(message):
             if message['type'] == 'http.response.start':
@@ -26,10 +36,25 @@ class HostedReadTiming:
                 duration = min(999999999.999, max(0.0, elapsed)) if isfinite(elapsed) else 0.0
                 headers = list(message.get('headers', ()))
                 headers.append((b'server-timing', f'casepath_api;dur={duration:.3f}'.encode('ascii')))
+                if values:
+                    # Primary includes connect/TLS. Compute includes validation,
+                    # encoding preparation and framework work, excluding waits
+                    # and the final JSON render. No content or identifiers escape.
+                    values['compute'] = max(0.0, duration / 1000 - sum(
+                        values.get(name, 0.0) for name in ('primary', 'lock', 'json')))
+                    fields = [f'casepath_primary_count;desc="{values.get("primary_count", 0)}"']
+                    for name in ('primary', 'connect', 'tls', 'headers', 'body', 'lock', 'compute', 'json'):
+                        elapsed = values.get(name, 0.0) * 1000
+                        bounded = min(999999999.999, max(0.0, elapsed)) if isfinite(elapsed) else 0.0
+                        fields.append(f'casepath_{name};dur={bounded:.3f}')
+                    headers.append((b'server-timing', ', '.join(fields).encode('ascii')))
                 message = {**message, 'headers': headers}
             await send(message)
 
-        await self.app(scope, receive, timed_send)
+        try:
+            await self.app(scope, receive, timed_send)
+        finally:
+            CURRENT_READ.reset(token)
 
 
 class SitesProxyBoundary:

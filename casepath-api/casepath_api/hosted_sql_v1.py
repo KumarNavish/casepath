@@ -17,6 +17,8 @@ from urllib.parse import urlsplit
 
 import httpx
 
+from .hosted_read_timing_v1 import primary_request
+
 
 class HostedStorageError(RuntimeError):
     pass
@@ -204,8 +206,8 @@ class LibsqlConnection:
             headers['Connection'] = 'close'
         self._started = True
         try:
-            with self._client.stream('POST', self._base + '/v2/pipeline',
-                    headers=headers, content=payload) as response:
+            with primary_request() as diagnostics, self._client.stream('POST', self._base + '/v2/pipeline',
+                    headers=headers, content=payload, **diagnostics) as response:
                 phase = 'http_status_and_encoding'
                 if response.status_code != 200 or response.headers.get('content-encoding', 'identity') != 'identity':
                     raise ValueError('HTTP failure')

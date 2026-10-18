@@ -8,6 +8,7 @@ from .autonomous_policy_v1 import POLICY_ID, REQUIRED_FIELDS, compile_process
 from .causal_process_v1 import evaluate, seal_graph
 from .workspace_corpus import digest_value
 from .autonomous_operations_v1 import observe, suspend_observations
+from .hosted_read_timing_v1 import read_lock
 
 
 DEFINITION_KEYS = ('family', 'rule_pack_sha256', 'graph', 'facts', 'obligations', 'policy_id', 'evidence_recipes')
@@ -334,7 +335,7 @@ class AutonomousKnowledge:
         return self._read(True)
 
     def _read(self, include_learning):
-        with self._projection_lock:
+        with read_lock(self._projection_lock):
             snapshot = getattr(self.store, 'knowledge_snapshot', None)
             validated = getattr(self.store, 'validated_states', None)
             # Cache observation is ordered after *fresh* complete row/source

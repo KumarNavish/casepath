@@ -23,6 +23,8 @@ from threading import RLock
 import unicodedata
 from urllib.parse import quote
 
+from .hosted_read_timing_v1 import read_lock
+
 from .causal_process_v1 import evaluate, seal_graph, validate_graph
 from .workspace_corpus import digest_value
 
@@ -950,7 +952,7 @@ class AutonomousStore:
         head-only lookup to skip those checks. Event command identities come
         from the same validated rows as the compact reducer event metadata.
         """
-        with getattr(self, "_summary_lock", self._extraction_lock):
+        with read_lock(getattr(self, "_summary_lock", self._extraction_lock)):
             rows, states = self._validated_knowledge_snapshot()
             commands = {(row["loop_id"], row["sequence"]): row for row in rows}
             values = []
@@ -977,7 +979,7 @@ class AutonomousStore:
         # Order collection SQL snapshots and cache observations together. A
         # slower old snapshot must not mistake a concurrent admission already
         # observed by a newer collection read for a deleted stream.
-        with getattr(self, "_summary_lock", self._extraction_lock):
+        with read_lock(getattr(self, "_summary_lock", self._extraction_lock)):
             return self._read_summaries(statuses=statuses)
 
     def _validated_summary_states(self):
