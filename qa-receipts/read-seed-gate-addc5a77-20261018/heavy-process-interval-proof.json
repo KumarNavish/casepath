@@ -1,0 +1,271 @@
+{
+  "intervals": [
+    {
+      "shard": 0,
+      "phase": "fresh_full_collection",
+      "start": 1792309964.2370424,
+      "finish": 1792309974.5445082
+    },
+    {
+      "shard": 1,
+      "phase": "prepare",
+      "start": 1792309932.4495132,
+      "finish": 1792309940.7733524
+    },
+    {
+      "shard": 1,
+      "phase": "pytest",
+      "start": 1792310021.666926,
+      "finish": 1792310523.2033534
+    },
+    {
+      "shard": 2,
+      "phase": "prepare",
+      "start": 1792310529.4565995,
+      "finish": 1792310537.7113583
+    },
+    {
+      "shard": 2,
+      "phase": "pytest",
+      "start": 1792310542.7088633,
+      "finish": 1792310920.591953
+    },
+    {
+      "shard": 3,
+      "phase": "prepare",
+      "start": 1792310925.7671986,
+      "finish": 1792310934.130035
+    },
+    {
+      "shard": 3,
+      "phase": "pytest",
+      "start": 1792310939.477068,
+      "finish": 1792311332.9302678
+    },
+    {
+      "shard": 4,
+      "phase": "prepare",
+      "start": 1792311339.3553722,
+      "finish": 1792311347.967703
+    },
+    {
+      "shard": 4,
+      "phase": "pytest",
+      "start": 1792311354.3389678,
+      "finish": 1792311732.2520087
+    },
+    {
+      "shard": 5,
+      "phase": "prepare",
+      "start": 1792311738.9491541,
+      "finish": 1792311747.5172384
+    },
+    {
+      "shard": 5,
+      "phase": "pytest",
+      "start": 1792311754.1483078,
+      "finish": 1792312128.070566
+    },
+    {
+      "shard": 6,
+      "phase": "prepare",
+      "start": 1792312135.2774305,
+      "finish": 1792312143.5194821
+    },
+    {
+      "shard": 6,
+      "phase": "pytest",
+      "start": 1792312150.6328087,
+      "finish": 1792312535.7411253
+    }
+  ],
+  "timeline": [
+    {
+      "epoch": 1792309932.4495132,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 1,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792309940.7733524,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 1,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792309964.2370424,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 0,
+      "phase": "fresh_full_collection"
+    },
+    {
+      "epoch": 1792309974.5445082,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 0,
+      "phase": "fresh_full_collection"
+    },
+    {
+      "epoch": 1792310021.666926,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 1,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792310523.2033534,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 1,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792310529.4565995,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 2,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792310537.7113583,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 2,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792310542.7088633,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 2,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792310920.591953,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 2,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792310925.7671986,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 3,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792310934.130035,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 3,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792310939.477068,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 3,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792311332.9302678,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 3,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792311339.3553722,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 4,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792311347.967703,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 4,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792311354.3389678,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 4,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792311732.2520087,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 4,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792311738.9491541,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 5,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792311747.5172384,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 5,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792311754.1483078,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 5,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792312128.070566,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 5,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792312135.2774305,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 6,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792312143.5194821,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 6,
+      "phase": "prepare"
+    },
+    {
+      "epoch": 1792312150.6328087,
+      "change": 1,
+      "active_heavy": 1,
+      "shard": 6,
+      "phase": "pytest"
+    },
+    {
+      "epoch": 1792312535.7411253,
+      "change": -1,
+      "active_heavy": 0,
+      "shard": 6,
+      "phase": "pytest"
+    }
+  ],
+  "maximum_actual_prepare_or_pytest_concurrency": 1,
+  "configured_gate_limit": 2,
+  "global_limit": 2,
+  "parent_reports_other_heavy_work": false,
+  "qualification": "All six prepare and pytest command receipts plus fresh full collection prove this gate interval overlap; protected services and lightweight observers are excluded from heavy-test accounting."
+}

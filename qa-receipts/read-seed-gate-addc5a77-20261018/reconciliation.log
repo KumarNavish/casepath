@@ -1,0 +1,91 @@
+{
+  "candidate": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "manifest_sha256": "0d713ebe1ea45681c139ac8ed39b5d9c811cdfb6ea08af55617e155ecf60c2b8",
+  "coordinator_raw_reconciliation": true,
+  "full_inventory": 2833,
+  "all_baseline_ids_retained_with_explicit_rename": true,
+  "all2777_baseline_ids_retained_unchanged": true,
+  "baseline_inventory": 2777,
+  "explicit_renames": [],
+  "cloud_selected": 2706,
+  "cloud_passed": 2696,
+  "cloud_skipped": 10,
+  "cloud_failed": 0,
+  "cloud_raw_phase_rows": 8109,
+  "Mac": "Mac owner assigned unchanged127 partition; native receipt handled by parent; no independent Mac raw inspection or result asserted by Cloud gate",
+  "combined_known_skips": 10,
+  "no_gaps_duplicates_overlap": true,
+  "all_six_first_only_attempts": true,
+  "all_six_source_capsules_unchanged": true,
+  "all_junit_ids_match_raw_phases_and_collected": true,
+  "shards": [
+    {
+      "shard": 1,
+      "collected": 9,
+      "passed": 9,
+      "skipped": 0,
+      "raw_phase_rows": 27,
+      "junit_cases": 9,
+      "exit_code": 0,
+      "duration_seconds": 501.53642749786377,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 2,
+      "collected": 598,
+      "passed": 597,
+      "skipped": 1,
+      "raw_phase_rows": 1794,
+      "junit_cases": 598,
+      "exit_code": 0,
+      "duration_seconds": 377.8830897808075,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 3,
+      "collected": 406,
+      "passed": 397,
+      "skipped": 9,
+      "raw_phase_rows": 1209,
+      "junit_cases": 406,
+      "exit_code": 0,
+      "duration_seconds": 393.45319986343384,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 4,
+      "collected": 500,
+      "passed": 500,
+      "skipped": 0,
+      "raw_phase_rows": 1500,
+      "junit_cases": 500,
+      "exit_code": 0,
+      "duration_seconds": 377.91304087638855,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 5,
+      "collected": 535,
+      "passed": 535,
+      "skipped": 0,
+      "raw_phase_rows": 1605,
+      "junit_cases": 535,
+      "exit_code": 0,
+      "duration_seconds": 373.9222581386566,
+      "source_capsule_before_after_equal": true
+    },
+    {
+      "shard": 6,
+      "collected": 658,
+      "passed": 658,
+      "skipped": 0,
+      "raw_phase_rows": 1974,
+      "junit_cases": 658,
+      "exit_code": 0,
+      "duration_seconds": 385.10831665992737,
+      "source_capsule_before_after_equal": true
+    }
+  ],
+  "resource_qualification": "Read raw resource-observations.jsonl and headroom receipts for actual observed free space; no unobserved interval claim.",
+  "verified_epoch": 1792312551.6348891
+}

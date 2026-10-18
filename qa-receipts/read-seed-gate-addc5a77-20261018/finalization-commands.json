@@ -1,0 +1,138 @@
+[
+  {
+    "command": [
+      "/usr/bin/python3",
+      "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/reconcile.py"
+    ],
+    "env_names": [
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "LANG",
+      "LC_ALL",
+      "NODE_EXTRA_CA_CERTS",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONDONTWRITEBYTECODE",
+      "REQUESTS_CA_BUNDLE",
+      "SSL_CERT_FILE",
+      "TEMP",
+      "TMP",
+      "TMPDIR"
+    ],
+    "inherited_transport_variable_names": [
+      "HTTP_PROXY",
+      "HTTPS_PROXY",
+      "NO_PROXY",
+      "SSL_CERT_FILE",
+      "REQUESTS_CA_BUNDLE",
+      "NODE_EXTRA_CA_CERTS"
+    ],
+    "started_epoch": 1792312547.5224273,
+    "finished_epoch": 1792312551.6427748,
+    "exit_code": 0,
+    "log": "/workspace/casepath-read-seed-gate-addc5a77-20261018/reconciliation.log"
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/summarize.py"
+    ],
+    "env_names": [
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "LANG",
+      "LC_ALL",
+      "NODE_EXTRA_CA_CERTS",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONDONTWRITEBYTECODE",
+      "REQUESTS_CA_BUNDLE",
+      "SSL_CERT_FILE",
+      "TEMP",
+      "TMP",
+      "TMPDIR"
+    ],
+    "inherited_transport_variable_names": [
+      "HTTP_PROXY",
+      "HTTPS_PROXY",
+      "NO_PROXY",
+      "SSL_CERT_FILE",
+      "REQUESTS_CA_BUNDLE",
+      "NODE_EXTRA_CA_CERTS"
+    ],
+    "started_epoch": 1792312551.6431413,
+    "finished_epoch": 1792312551.734152,
+    "exit_code": 0,
+    "log": "/workspace/casepath-read-seed-gate-addc5a77-20261018/summary.log"
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/qualify_final.py"
+    ],
+    "env_names": [
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "LANG",
+      "LC_ALL",
+      "NODE_EXTRA_CA_CERTS",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONDONTWRITEBYTECODE",
+      "REQUESTS_CA_BUNDLE",
+      "SSL_CERT_FILE",
+      "TEMP",
+      "TMP",
+      "TMPDIR"
+    ],
+    "inherited_transport_variable_names": [
+      "HTTP_PROXY",
+      "HTTPS_PROXY",
+      "NO_PROXY",
+      "SSL_CERT_FILE",
+      "REQUESTS_CA_BUNDLE",
+      "NODE_EXTRA_CA_CERTS"
+    ],
+    "started_epoch": 1792312551.7344804,
+    "finished_epoch": 1792312551.8132043,
+    "exit_code": 0,
+    "log": "/workspace/casepath-read-seed-gate-addc5a77-20261018/qualify-final.log"
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/finish_audit.py"
+    ],
+    "env_names": [
+      "HOME",
+      "HTTPS_PROXY",
+      "HTTP_PROXY",
+      "LANG",
+      "LC_ALL",
+      "NODE_EXTRA_CA_CERTS",
+      "NO_PROXY",
+      "PATH",
+      "PYTHONDONTWRITEBYTECODE",
+      "REQUESTS_CA_BUNDLE",
+      "SSL_CERT_FILE",
+      "TEMP",
+      "TMP",
+      "TMPDIR"
+    ],
+    "inherited_transport_variable_names": [
+      "HTTP_PROXY",
+      "HTTPS_PROXY",
+      "NO_PROXY",
+      "SSL_CERT_FILE",
+      "REQUESTS_CA_BUNDLE",
+      "NODE_EXTRA_CA_CERTS"
+    ],
+    "started_epoch": 1792312551.8134282,
+    "finished_epoch": 1792312553.3706584,
+    "exit_code": 0,
+    "log": "/workspace/casepath-read-seed-gate-addc5a77-20261018/finish-audit.log"
+  }
+]
