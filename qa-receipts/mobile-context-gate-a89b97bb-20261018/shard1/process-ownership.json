@@ -1,0 +1,59 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "shard": 1,
+  "observation_epoch_precision": "bounded to launch and first process table; process table captured after epoch1792285209.6037245 and before epoch1792285266.3148677",
+  "terminal_observed_epoch": 1792285752.498251,
+  "coordinator": {
+    "pid": 1281370,
+    "parent_pid": 1281369,
+    "argv": [
+      "/usr/bin/python3",
+      "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/one_shard.py",
+      "1"
+    ]
+  },
+  "wrapper": {
+    "pid": 1281373,
+    "parent_pid": 1281370,
+    "argv": [
+      "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv/bin/python",
+      "-P",
+      "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/harness/run_shard.py",
+      "run",
+      "1"
+    ]
+  },
+  "pytest": {
+    "pid": 1281382,
+    "parent_pid": 1281373,
+    "argv": [
+      "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv/bin/python",
+      "-P",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "-p",
+      "casepath_shard_observer",
+      "-o",
+      "tmp_path_retention_policy=failed",
+      "--junitxml=/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard1/junit.xml",
+      "--durations=0",
+      "--basetemp=/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard1/pytest-tmp",
+      "@/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard1/pytest-arguments.txt"
+    ]
+  },
+  "home_path": "/workspace/a9h1",
+  "temporary_paths": [
+    "/workspace/a9t1",
+    "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard1/pytest-tmp"
+  ],
+  "source": "Direct ps -eo pid,ppid,comm,args observation during live first attempt; argv matched ATTEMPT_STARTED.json/command.json",
+  "observation_epoch_bounds": [
+    1792285209.6037245,
+    1792285266.3148677
+  ],
+  "observation_epoch": null,
+  "observation_epoch_note": "Live process table did not print wallclock; conservative observed epoch bounds are retained without inventing precision."
+}

@@ -1,0 +1,105 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "shard": 1,
+  "validation_epoch": 1792285752.4984972,
+  "attempt_count": 1,
+  "counts": {
+    "selected": 9,
+    "arguments": 9,
+    "collected": 9,
+    "junit": 9,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "phase_reports": 27
+  },
+  "exact_ordered_map_arguments_collected_junit_ids_equal": true,
+  "every_selected_id_has_exactly_one_passed_setup_call_teardown": true,
+  "phase_counts": {
+    "setup:passed": 9,
+    "call:passed": 9,
+    "teardown:passed": 9
+  },
+  "pytest_exit_code": 0,
+  "started_epoch": 1792285209.6037245,
+  "finished_epoch": 1792285720.7656446,
+  "duration_seconds": 511.1619200706482,
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "9",
+      "time": "508.915",
+      "timestamp": "2026-10-18T01:00:11.191578+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "calls": [
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_operator_pins_current_profile_and_both_immutable_source_histories",
+      "duration_seconds": 0.005556076066568494
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix",
+      "duration_seconds": 343.0349322829861
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[unknown]",
+      "duration_seconds": 0.6997301990631968
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[adverse]",
+      "duration_seconds": 0.7649940599221736
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[partial_legacy]",
+      "duration_seconds": 0.6954981150338426
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[foreign_policy]",
+      "duration_seconds": 0.6858224620809779
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_prepare_apply_all_nine_preserves_old_rows_budget_restart_and_exact_retry",
+      "duration_seconds": 162.1758879040135
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_selected_rejected_provider_stage_and_global_unknown_outcome_refuse_read_only",
+      "duration_seconds": 0.1439963619923219
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_hosted_canonical_draft_submit_run_startup_recovery_never_calls_model_or_writes",
+      "duration_seconds": 0.48941332497633994
+    }
+  ],
+  "source": {
+    "before_after_head": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+    "before_after_status": "",
+    "manifest_sha256": "416eea6c4831046fca1bab76ec7072bc116cdc2912a169b094341d3a2ee68b0a",
+    "sealed_files_verified": 1714,
+    "artifacts": 25,
+    "static": 40,
+    "equal_capsule_receipt": true,
+    "capsule_receipt_file_sha256": "6c10fd977a42effacf3a924432a2f43d0891de071ea1d8bbd34fc2052c4b8c9b",
+    "source_artifact_static_bindings_verified_before_after": true,
+    "before_proof_sha256": "e8834770c471962901a3a21e13f54cb406daf8bce271b84290d5fac44fa62a8b",
+    "after_proof_sha256": "fa21db46867e47c2b5e85090ed084033b3299f8f6e20c7c60fa71b901c915f95"
+  },
+  "raw_archive": {
+    "path": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/retirement-receipts/shard1-raw.tar.gz",
+    "sha256": "78c7c517f2650e865e524bd8a3ca0a071717943357198f3072739270bc6b99b3",
+    "file_count": 28,
+    "byte_verified_independently": true,
+    "pushed_flag_at_archive_receipt_read": false
+  },
+  "runtime_retired_by_worker": false,
+  "orchestrator_handoff": {
+    "reported_epoch": 1792285768.901471,
+    "raw_push_commit": "86d2c009fdb8bb59bbe2766d10b4e7dd484fc11f",
+    "verification": "Parent reported all source/runtime/JUnit/archive bindings git-show byte verified before retiring only new candidate capsule and venv. Worker did not reopen runtime.",
+    "source": "Parent collaboration message"
+  }
+}
