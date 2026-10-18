@@ -1,0 +1,23 @@
+{
+  "base": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "candidate": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "name_status": [
+    "M\tcasepath-qa/autonomous-language-v1.test.cjs",
+    "M\tcasepath/assets/autonomous-language-v1.js",
+    "M\tcasepath/index.html",
+    "M\tcasepath/source-manifest.json"
+  ],
+  "expected_scope": "Two language files plus index asset pins and seal only",
+  "focused_source_bindings": [
+    {
+      "path": "casepath/assets/autonomous-language-v1.js",
+      "sha256": "a803c34ceb0f995fb1eb05eeb6ba52cc9c8d9c210d767a3c6140ba381b651594",
+      "frozen_equal_f6_writer_commit": true
+    },
+    {
+      "path": "casepath-qa/autonomous-language-v1.test.cjs",
+      "sha256": "f6202f002fdad90f661f75891b18e11e04f8f191f345eaaceb9997754c06b90f",
+      "frozen_equal_f6_writer_commit": true
+    }
+  ]
+}

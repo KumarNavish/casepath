@@ -1,0 +1,137 @@
+{
+  "basis": "Exact proven4bf harness; new frozen candidate/root/short child paths/protected writer and correct focused metadata only; no product edits; optional denied environ sampler omitted",
+  "files": [
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/casepath_shard_observer.py",
+      "source_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/casepath_shard_observer.py",
+      "target_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/prepare_clones.py",
+      "source_sha256": "8208a551ce9c148c1980c0c8442b7460c4fbaea30e212fa35c3cc81fe55c1efe",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/prepare_clones.py",
+      "target_sha256": "7deb01e7f4fbb4db10dcdcf76277c74917781072e36cc6fe33ce2fcd3c85705f"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/run_shard.py",
+      "source_sha256": "95aac0e5c75ea7ba14f1365b753663f717c4cae403f65a4ae38dec5ab4661f57",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/run_shard.py",
+      "target_sha256": "8786b20a228c804b80ae9d1e2de35c8bf6947c9ceb912a12fde2577ae6d40321"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/runtime_inventory.py",
+      "source_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/runtime_inventory.py",
+      "target_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/verify_prepared_capsules.py",
+      "source_sha256": "d52b23b8ebd150ce0804d065e53c91dfdb99da7f687b50c7b4dcea2f54afcfbd",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/verify_prepared_capsules.py",
+      "target_sha256": "0464f1b1b95b37de038eb197a44ab7d71949c286fa24b36e85f89c37fd68bb01"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/bundle.py",
+      "source_sha256": "381c02657a9dc9b6f7ebc04b790a8b8513c29a09fb831ab20520f8a0e9d00bcb",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/bundle.py",
+      "target_sha256": "d0e687510026ec545985020d96f357c4bf8cb624ec7120c7e8a4f8a0647fca45"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/export_receipts.py",
+      "source_sha256": "78f9f76e8bb086aa1ba7e46aab23695f09cb605607de523eb179e5651f949f51",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/export_receipts.py",
+      "target_sha256": "f3e13a7911775af34bd63c495b9adf56136648e209cb2c12c425a6b7952b5ad3"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/finalize_receipts.py",
+      "source_sha256": "55d58b6a03748b27fcaf132f12dcd74d91e405dd996fbbaa96fa589085919eab",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/finalize_receipts.py",
+      "target_sha256": "215807be76dddec1cc5a2e23f28772cd69d2e20d5da411f4380e76a4ad125ffa"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/finish_audit.py",
+      "source_sha256": "4f96ec38a421fcd9309384bf4fd4aafd2fcc5ac2edd65106a817c793f6116742",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/finish_audit.py",
+      "target_sha256": "f0c270be6457f7b8f80f6c9bb667aad2fc22c577737d1295182d72fab222b337"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/inventory.py",
+      "source_sha256": "785f2e63ebd2c82c5852cfa2403c6d12b78bfacd9812b64d7bc3d49ad805ceb4",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/inventory.py",
+      "target_sha256": "29407e5bd4330614af8e52c917cde41f0fe76c01dadea85b63210c4ea4a61547"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/one_shard.py",
+      "source_sha256": "c777740ddb1b3ce69a826381a4ee91ded4f432629e4d19779db00a72592d24ea",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/one_shard.py",
+      "target_sha256": "74039a9a7688401fcd9722f1d07c4a40643ffd596e1d5c9b5bf8e1e2f5624a4f"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/qualify_final.py",
+      "source_sha256": "47cef8710ec09921b90e8089343dd7c4ebad6c592fa9404851c19de78697a6ee",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/qualify_final.py",
+      "target_sha256": "15a9718302c2196d2b9e8b8247e5ae6fb55d1fe22d8b73e725144fa2987df524"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/reconcile.py",
+      "source_sha256": "f9df9755cda18cd85942b9382b826f4d5acd7335e4109f57692a6afd4f8f992c",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/reconcile.py",
+      "target_sha256": "df365c2019e040cb28265df139227756c119b0ae88cc43297debc862350bc4a4"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/resource_watch.py",
+      "source_sha256": "20a7a53946881f0a9f0cf566ed05aa7089ecc203173fbc7e70452b0288fe3283",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/resource_watch.py",
+      "target_sha256": "e926d033896bed40aecee5a6e85abc5288cf1ce876e2940ec803f2f91cea422b"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/retire_pushed_cache.py",
+      "source_sha256": "0c22f073c6aa4cd68e0c49dfb4ae55103d0bba1f6db0f942bb31d83fa8be0cc3",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/retire_pushed_cache.py",
+      "target_sha256": "f21deba3a822ebb70500c428bdeffff9ea83f748eee07265d36715112a5dc8e8"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/retire_pushed_runtime.py",
+      "source_sha256": "f769434583fdc408bc904b109cf0610fda9bd17dcdf6844a384f56f13f19be66",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/retire_pushed_runtime.py",
+      "target_sha256": "76b96d64a367456a5765c27d4747f9ce1bdc8054f4803a35f41426f85d40c6ad"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/scan_export.py",
+      "source_sha256": "6c15303ed9d9be0c7a39e05a214843ff4e2c6038b97704e31ed8dcec4194322e",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/scan_export.py",
+      "target_sha256": "e4416056b642b56998795dc45e5349ad83496123a522374f560550a0aca135c2"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/serial_driver.py",
+      "source_sha256": "29c45af419f9835c158397acdfd3a46f3b00e04918111a9cf3c26580725723e2",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/serial_driver.py",
+      "target_sha256": "ee8df2dc53a6d191e1a6bd57588733e1bed9b6ed57f1da8fb31d9f1227387c3b"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/stage_one.py",
+      "source_sha256": "c566c38f15a439032d4a21990520a621c585ee8d570a65ff1f828e19240299de",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/stage_one.py",
+      "target_sha256": "211b1e4a405a1414b22c83cbaafe77691b1841092496f98389fa4eaecc62ec5b"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/summarize.py",
+      "source_sha256": "9bde512be92fb22613784569a8dd76e15c512f1f2c27ba55cd06144e754bc0c7",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/summarize.py",
+      "target_sha256": "3cde9e68f389febe698e4a112c9b23c4c9dd5eeaffee14c92d9c3b51b8746b6b"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/verify.py",
+      "source_sha256": "f88950aae67e86e6074573cab25711fe5ae645cb6417cf0642f01c3efefd0ad1",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/verify.py",
+      "target_sha256": "51916137eee66a86b78252e7978cea61f89a0ff6276fc4afe5b3fb03b4469bbe"
+    },
+    {
+      "source": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/verify_pushed_bundle.py",
+      "source_sha256": "33744fea3bc105769d19716420ad85136b412f84d213b8e55662d7dabbbf8665",
+      "target": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/verify_pushed_bundle.py",
+      "target_sha256": "d31e268d11e220635d3410a33fdce4886e551bfa2f6627d5fba8617ad3afd1e6"
+    }
+  ]
+}

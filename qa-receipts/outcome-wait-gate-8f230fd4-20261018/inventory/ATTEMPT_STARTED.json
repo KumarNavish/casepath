@@ -1,0 +1,20 @@
+{
+  "candidate": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "started_epoch": 1792295589.598095,
+  "command": [
+    "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "casepath_shard_observer",
+    "--collect-only",
+    "casepath-api/tests",
+    "casepath/tools/test_build_deployment_identity.py",
+    "casepath/tools/test_casepath_release.py"
+  ],
+  "retry_allowed": false
+}
