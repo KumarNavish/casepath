@@ -1,0 +1,22 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "review_evidence_commit": "5620f0635ee23369d59e574754ad6adaa6ee5a60",
+  "bindings": [
+    {
+      "path": "casepath-qa/unified-product-browser-v1.test.cjs",
+      "candidate_sha256": "c7903c7cbb03f4eeb564174ca149d3cbd4993540ffa80f5d82aecc29d5d8a9e1",
+      "focused_browser_source_commit": "002820d942379c0916d17407bf30df90b3ef8948",
+      "focused_source_sha256": "c7903c7cbb03f4eeb564174ca149d3cbd4993540ffa80f5d82aecc29d5d8a9e1",
+      "byte_equal": true
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.css",
+      "candidate_sha256": "410862600e0161cd3d0c9a07f750b97c98ea3ae0134ec8c43bf1afe88097cf56",
+      "focused_browser_source_commit": "002820d942379c0916d17407bf30df90b3ef8948",
+      "focused_source_sha256": "410862600e0161cd3d0c9a07f750b97c98ea3ae0134ec8c43bf1afe88097cf56",
+      "byte_equal": true
+    }
+  ],
+  "all_final_qa_css_bytes_equal_focused_browser_tested_source": true,
+  "no_browser_tests_rerun_by_gate": true
+}

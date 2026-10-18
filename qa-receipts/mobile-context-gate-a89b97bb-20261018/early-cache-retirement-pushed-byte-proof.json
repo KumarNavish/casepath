@@ -1,0 +1,22 @@
+[
+  {
+    "shard": 1,
+    "push_commit_before_cache_retirement": "f67a3b50c4f2f39695c842953ea4622a2c8d3991",
+    "all_source_prepare_full_runtime_proofs_pushed_byte_equal": true,
+    "bindings": {
+      "shard1/prepare.json": "1bbec41105c8ecd8f1a360a54f2079e3dee34e6d09131b5b85186abf95b9f98e",
+      "shard1/source-before/capsule-verification.json": "e8834770c471962901a3a21e13f54cb406daf8bce271b84290d5fac44fa62a8b",
+      "shard1/runtime-before.json": "994dd863041297e12284e39909144251e6cb4cd7fc546d50489ab07f915ede58"
+    }
+  },
+  {
+    "shard": 2,
+    "push_commit_before_cache_retirement": "f3172ffb425d3bea5f5ec03b5a7e4791cfecd4a9",
+    "all_source_prepare_full_runtime_proofs_pushed_byte_equal": true,
+    "bindings": {
+      "shard2/prepare.json": "6c30e92dcd2a1c3c50f97c03eaa0d9f728292b9f22b57ed48f8be8c425012aa8",
+      "shard2/source-before/capsule-verification.json": "6a568f818c6c3326c98d18ccc9e4074436ed68bbc9197555c98e413cc9e2e56f",
+      "shard2/runtime-before.json": "abd50f75f02e728da80f79e842b562891ed89969c6ba3ba4aecfb9a3c94303d7"
+    }
+  }
+]

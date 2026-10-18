@@ -1,0 +1,46 @@
+{
+  "epoch": 1792285253.0958874,
+  "rows": [
+    {
+      "shard": "1",
+      "venv_exists": true,
+      "capsules": [
+        "416eea6c4831046fca1bab76ec7072bc116cdc2912a169b094341d3a2ee68b0a"
+      ],
+      "normal_prepare_receipt_exists": true
+    },
+    {
+      "shard": "2",
+      "venv_exists": true,
+      "capsules": [
+        "416eea6c4831046fca1bab76ec7072bc116cdc2912a169b094341d3a2ee68b0a"
+      ],
+      "normal_prepare_receipt_exists": true
+    },
+    {
+      "shard": "3",
+      "venv_exists": false,
+      "capsules": [],
+      "normal_prepare_receipt_exists": false
+    },
+    {
+      "shard": "4",
+      "venv_exists": false,
+      "capsules": [],
+      "normal_prepare_receipt_exists": false
+    },
+    {
+      "shard": "5",
+      "venv_exists": false,
+      "capsules": [],
+      "normal_prepare_receipt_exists": false
+    },
+    {
+      "shard": "6",
+      "venv_exists": false,
+      "capsules": [],
+      "normal_prepare_receipt_exists": false
+    }
+  ],
+  "qualification": "For unpreparedshards3..6, observed no venv/candidatecapsule means future createdruntime owned by newgate; sourceclones themselves preexist and will not be retired"
+}
