@@ -1,0 +1,609 @@
+diff --git a/casepath-api/casepath_api/hosted_app_v1.py b/casepath-api/casepath_api/hosted_app_v1.py
+index a5487043..d12d1528 100644
+--- a/casepath-api/casepath_api/hosted_app_v1.py
++++ b/casepath-api/casepath_api/hosted_app_v1.py
+@@ -12,6 +12,7 @@ from .autonomous_api_v1 import create_autonomous_router
+ from .autonomous_corpus_v1 import CanonicalCorpus
+ from .hosted_lease_v1 import HostedAutonomousController, HostedWorkflowLease
+ from .hosted_proxy_v1 import HostedReadTiming, SitesProxyBoundary
++from .hosted_read_seed_v1 import load_seed
+ from .hosted_storage_v1 import HostedAutonomousStore, HostedJournal, HostedSources, HostedStorageError, TursoDatabase
+ from .workspace_corpus import PublicCorpus, default_workspace_corpus_root
+ 
+@@ -54,6 +55,11 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
+                 # Close dispatch before exposure. Startup, discovery, callbacks and
+                 # timers have no execution authority in the public read service.
+                 controller.shutdown()
++                seed = load_seed(env.get('CASEPATH_READ_SEED_PATH') or
++                                 Path(__file__).parent / 'artifacts' / 'hosted-read-seed-v1.json',
++                                 deployment_commit=commit, expected_sha256=env.get('CASEPATH_READ_SEED_SHA256'))
++                if seed is not None:
++                    store.admit_read_seed(seed, deployment_commit=commit)
+                 # Warm through the complete journal/source validators, before
+                 # publishing any service state or acknowledging readiness.
+                 controller.knowledge.learning_view()
+diff --git a/casepath-api/casepath_api/hosted_read_seed_v1.py b/casepath-api/casepath_api/hosted_read_seed_v1.py
+new file mode 100644
+index 00000000..d53f0be4
+--- /dev/null
++++ b/casepath-api/casepath_api/hosted_read_seed_v1.py
+@@ -0,0 +1,221 @@
++"""Untrusted, server-only original bytes for optional hosted startup acceleration.
++
++The JSON contains no reducer states, schemas or SQL. Decoding supplies candidates;
++only native replay and a new complete atomic primary proof can admit cache state.
++"""
++import base64
++from hashlib import sha256
++import json
++import os
++from pathlib import Path
++import re
++import stat
++from threading import RLock
++from types import SimpleNamespace
++
++from .autonomous_store_v1 import AutonomousStoreError, MAX_FILE_BYTES, SESSION_ID
++
++
++CONTRACT = 'casepath.hosted-read-seed/1'
++MAX_SEED_BYTES = 128 * 1024 * 1024
++MAX_SOURCE_BYTES = 64 * 1024 * 1024
++MAX_ROWS = 16384
++MAX_SOURCES = 125 * 128
++MAX_ROW_BYTES = 4 * 1024 * 1024 + 64 * 1024
++JOURNAL_COLUMNS = ('session_id', 'loop_id', 'sequence', 'idempotency_key',
++                   'command_sha256', 'event_sha256', 'event_json', 'created_at')
++_HASH = re.compile(r'[a-f0-9]{64}\Z')
++_COMMIT = re.compile(r'[a-f0-9]{40}\Z')
++
++
++class SeedError(AutonomousStoreError):
++    """Malformed or ineligible candidate; no candidate details are exposed."""
++
++
++def _require(condition):
++    if not condition:
++        raise SeedError('The optional saved-read seed is invalid or ineligible.')
++
++
++def _integer(value):
++    _require(len(value) <= 20)
++    number = int(value)
++    _require(-(2 ** 63) <= number < 2 ** 63)
++    return number
++
++
++def _number(value):
++    raise SeedError('The optional saved-read seed requires native integers.')
++
++
++def _object(pairs):
++    result = {}
++    for key, value in pairs:
++        _require(key not in result)
++        result[key] = value
++    return result
++
++
++def _candidate(value, deployment_commit):
++    _require(type(deployment_commit) is str and _COMMIT.fullmatch(deployment_commit))
++    _require(type(value) is dict and set(value) == {'contract', 'deployment_commit', 'journal_rows', 'sources'})
++    _require(value['contract'] == CONTRACT and value['deployment_commit'] == deployment_commit)
++    rows, originals = value['journal_rows'], value['sources']
++    _require(type(rows) is list and len(rows) <= MAX_ROWS)
++    _require(type(originals) is list and len(originals) <= MAX_SOURCES)
++    copied, previous, row_bytes = [], None, 0
++    for row in rows:
++        _require(type(row) is dict and set(row) == set(JOURNAL_COLUMNS))
++        size_bytes = 1024
++        for name in JOURNAL_COLUMNS:
++            if name == 'sequence':
++                _require(type(row[name]) is int and 1 <= row[name] < 2 ** 63)
++                size_bytes += len(str(row[name]))
++            else:
++                _require(type(row[name]) is str)
++                size = len(row[name].encode('utf-8'))
++                _require(size <= MAX_ROW_BYTES)
++                size_bytes += size
++        _require(size_bytes <= MAX_ROW_BYTES)
++        row_bytes += size_bytes
++        _require(row_bytes <= 32 * 1024 * 1024 and row['session_id'] == SESSION_ID)
++        identity = (row['loop_id'], row['sequence'])
++        _require(previous is None or previous < identity)
++        previous = identity
++        copied.append({name: row[name] for name in JOURNAL_COLUMNS})
++    sources, raw_sources, total, previous = [], {}, 0, None
++    for item in originals:
++        _require(type(item) is dict and set(item) == {'sha256', 'content_base64'})
++        digest, encoded = item['sha256'], item['content_base64']
++        _require(type(digest) is str and _HASH.fullmatch(digest) and (previous is None or previous < digest))
++        _require(type(encoded) is str and len(encoded) <= 4 * ((MAX_FILE_BYTES + 2) // 3))
++        raw = base64.b64decode(encoded, validate=True)
++        _require(1 <= len(raw) <= MAX_FILE_BYTES and base64.b64encode(raw).decode('ascii') == encoded)
++        _require(sha256(raw).hexdigest() == digest)
++        total += len(raw)
++        _require(total <= MAX_SOURCE_BYTES)
++        sources.append({'sha256': digest, 'content_base64': encoded})
++        raw_sources[digest], previous = raw, digest
++    return {'contract': CONTRACT, 'deployment_commit': deployment_commit,
++            'journal_rows': copied, 'sources': sources}, raw_sources
++
++
++def decode_seed(raw, *, deployment_commit):
++    """Strict bounded JSON candidate; event_json text is preserved verbatim."""
++    try:
++        _require(type(raw) is bytes and len(raw) <= MAX_SEED_BYTES)
++        value = json.loads(raw.decode('utf-8'), object_pairs_hook=_object,
++                           parse_int=_integer, parse_float=_number, parse_constant=_number)
++        return _candidate(value, deployment_commit)[0]
++    except (ValueError, TypeError, UnicodeError, RecursionError) as error:
++        raise SeedError('The optional saved-read seed could not be decoded.') from None
++
++
++def pack_seed(deployment_commit, journal_rows, sources):
++    """Pack raw candidates only; successful packing establishes no authority."""
++    try:
++        candidate = _candidate({'contract': CONTRACT, 'deployment_commit': deployment_commit,
++                                'journal_rows': journal_rows, 'sources': sources}, deployment_commit)[0]
++        raw = json.dumps(candidate, sort_keys=True, separators=(',', ':'), ensure_ascii=False,
++                         allow_nan=False).encode('utf-8')
++        _require(len(raw) <= MAX_SEED_BYTES)
++        return raw
++    except (ValueError, TypeError, UnicodeError, RecursionError):
++        raise SeedError('The optional saved-read seed could not be packed.') from None
++
++
++def load_seed(path, *, deployment_commit, expected_sha256):
++    """Missing files retain cold startup; configured invalid bytes fail closed."""
++    try:
++        descriptor = os.open(Path(path), os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0)
++                             | getattr(os, 'O_NONBLOCK', 0))
++    except FileNotFoundError:
++        return None
++    with os.fdopen(descriptor, 'rb') as source:
++        info = os.fstat(source.fileno())
++        _require(stat.S_ISREG(info.st_mode) and 0 < info.st_size <= MAX_SEED_BYTES)
++        _require(type(expected_sha256) is str and _HASH.fullmatch(expected_sha256))
++        raw = source.read(MAX_SEED_BYTES + 1)
++    _require(len(raw) <= MAX_SEED_BYTES and sha256(raw).hexdigest() == expected_sha256)
++    return decode_seed(raw, deployment_commit=deployment_commit)
++
++
++def admit_seed(store, candidate, *, deployment_commit):
++    """Startup-only: stage native caches, certify every byte, then install once.
++
++    False means a confirmed current SQL/schema mismatch and permits the existing
++    cold reader. Malformed proofs and uncertain transport propagate without retry.
++    The caller must not publish this pristine read-only store before admission.
++    """
++    from types import MethodType
++    from . import hosted_storage_v1 as hs
++    _require(type(store) is hs.HostedAutonomousStore and store._read_only is True)
++    actual_sources = store._source_store
++    _require(type(actual_sources) is hs.HostedSources and store.storage is None)
++    first, second = store.journal.connect, actual_sources.connect
++    _require(first is second or isinstance(first, MethodType) and isinstance(second, MethodType)
++             and first.__self__ is second.__self__ and first.__func__ is second.__func__)
++    try:
++        value, originals = _candidate(candidate, deployment_commit)
++    except (ValueError, TypeError, UnicodeError, RecursionError):
++        raise SeedError('The optional saved-read seed candidate is invalid.') from None
++
++    def pristine():
++        return (not getattr(store, '_summary_cache', {}) and not store._extractions
++                and getattr(store, '_knowledge_byte_cache', None) is None
++                and getattr(store, '_knowledge_pending', None) is None
++                and not actual_sources._cache and actual_sources._size == 0
++                and getattr(actual_sources, '_knowledge_schema', None) is None)
++
++    class CandidateSources(hs.HostedSources):
++        def _fetch_many(self, *args, **kwargs):
++            # An omitted original must never turn this candidate into raw SQL.
++            raise SeedError('The optional saved-read seed lacks a referenced original.')
++
++    with store._summary_lock, actual_sources._lock:
++        _require(pristine())
++        stage = hs.HostedAutonomousStore.__new__(hs.HostedAutonomousStore)
++        stage._read_only, stage.storage = True, None
++        stage.journal = SimpleNamespace(path=store.journal.path, connect=first)
++        stage.path, stage.source_root = store.path, store.source_root
++        stage._extractions, stage._extraction_lock, stage._summary_lock = {}, RLock(), RLock()
++        stage._source_store = CandidateSources(first)
++        for digest, raw in originals.items():
++            stage._source_store._remember(digest, raw)
++        rows = value['journal_rows']
++        proof = hs._proof_expected(rows, hs._JOURNAL_COLUMNS, 'casepath-journal-bytes-v1')
++        frozen = tuple(tuple(row.items()) for row in rows)
++        certified = []
++
++        def verify(digests):
++            _require(stage._source_store._digests(digests) == list(originals))
++            source_queries, expected = stage._source_store._knowledge_source_queries(list(originals))
++            query = hs._proof_query('claim_loop_events', hs._JOURNAL_COLUMNS,
++                                   'casepath-journal-bytes-v1', 'session_id=?', 'loop_id,sequence')
++            with first() as db:
++                _require(hasattr(db, 'read_snapshot'))
++                cursors = db.read_snapshot([(hs._schema_query('claim_loop_events'), ()),
++                    (query, (SESSION_ID, len(rows) + 1)), *source_queries])
++            _require(len(cursors) == 3 + len(expected))
++            journal_schema, source_schema = cursors[0].fetchall(), cursors[2].fetchall()
++            journal_matches = hs._proof_matches(cursors[1], proof)
++            source_matches = [hs._proof_matches(cursor, item) for cursor, item in zip(cursors[3:], expected)]
++            if (not hs._standard_schema(journal_schema, hs._JOURNAL_COLUMNS)
++                    or not hs._standard_schema(source_schema, hs._SOURCE_COLUMNS)
++                    or not journal_matches or not all(source_matches)):
++                return
++            certified.append((hs._schema_identity(journal_schema), hs._schema_identity(source_schema)))
++
++        states = stage._validated_states(rows, source_verifier=verify)
++        if not certified:
++            return False
++        stage._knowledge_pending = (frozen, certified[0][0], proof)
++        stage._after_validated_knowledge_states(rows, states)
++        _require(pristine())
++        # No caller object is installed: rows were copied and all derived values
++        # were created by native replay in the detached stage before certification.
++        store._summary_cache, store._extractions = stage._summary_cache, stage._extractions
++        store._knowledge_byte_cache = stage._knowledge_byte_cache
++        actual_sources._cache, actual_sources._size = stage._source_store._cache, stage._source_store._size
++        actual_sources._knowledge_schema = certified[0][1]
++        return True
+diff --git a/casepath-api/casepath_api/hosted_storage_v1.py b/casepath-api/casepath_api/hosted_storage_v1.py
+index a1b4d3e3..75969efb 100644
+--- a/casepath-api/casepath_api/hosted_storage_v1.py
++++ b/casepath-api/casepath_api/hosted_storage_v1.py
+@@ -430,6 +430,10 @@ class HostedAutonomousStore(AutonomousStore):
+     JOURNAL_ROW_BYTES = JOURNAL_PAGE_BYTES + 64 * 1024
+     KNOWLEDGE_RAW_PAGE_BYTES = 256 * 1024
+ 
++    def admit_read_seed(self, candidate, *, deployment_commit):
++        from .hosted_read_seed_v1 import admit_seed
++        return admit_seed(self, candidate, deployment_commit=deployment_commit)
++
+     def list(self, *, statuses=None):
+         # Startup discovery needs the same full accepted states as knowledge,
+         # without per-claim remote reads. Scheduling semantics remain with the
+diff --git a/casepath-api/tests/test_hosted_read_seed_v1.py b/casepath-api/tests/test_hosted_read_seed_v1.py
+new file mode 100644
+index 00000000..25299ace
+--- /dev/null
++++ b/casepath-api/tests/test_hosted_read_seed_v1.py
+@@ -0,0 +1,246 @@
++"""A deployment seed is only a candidate for native validation and fresh SQL proof."""
++import base64
++from copy import deepcopy
++import json
++import sqlite3
++
++import pytest
++
++from casepath_api.autonomous_knowledge_v1 import AutonomousKnowledge
++from casepath_api.autonomous_store_v1 import AutonomousStore, AutonomousStoreError
++from test_hosted_knowledge_warm_proof_v1 import native_proof_store
++
++
++COMMIT = 'a' * 40
++
++
++def material(store):
++    with sqlite3.connect(store.path.parent / 'native.sqlite3') as db:
++        db.row_factory = sqlite3.Row
++        rows = [dict(row) for row in db.execute('SELECT * FROM claim_loop_events ORDER BY loop_id,sequence')]
++    sources = [{'sha256': path.name, 'content_base64': base64.b64encode(path.read_bytes()).decode('ascii')}
++               for path in sorted((store.path.parent / 'autonomous-sources-v1').iterdir())]
++    return rows, sources
++
++
++def candidate(store):
++    from casepath_api.hosted_read_seed_v1 import decode_seed, pack_seed
++    rows, sources = material(store)
++    raw = pack_seed(COMMIT, rows, sources)
++    return decode_seed(raw, deployment_commit=COMMIT)
++
++
++def pristine(store):
++    return (not getattr(store, '_summary_cache', {}) and not store._extractions
++            and not getattr(store, '_knowledge_byte_cache', None) and not store._source_store._cache
++            and store._source_store._size == 0 and not getattr(store._source_store, '_knowledge_schema', None))
++
++
++def test_valid_seed_replays_locally_then_one_fresh_atomic_proof_before_admission(native_proof_store, monkeypatch):
++    server, store, knowledge = native_proof_store
++    store._read_only = True
++    native = AutonomousStore.open_read_only(store.path.parent / 'native.sqlite3')
++    expected = AutonomousKnowledge(native, {}).learning_view()
++    seed = candidate(store)
++    original = deepcopy(seed)
++    assert pristine(store)
++    assert store.admit_read_seed(seed, deployment_commit=COMMIT) is True
++    assert seed == original and len(server.requests) == 1
++    assert not server.raw_journal and not server.raw_sources and server.open_streams == 0
++    commands = [item.get('stmt', {}).get('sql', '') for item in server.requests[0]['requests']]
++    assert commands[0] == 'BEGIN' and commands[-2:] == ['COMMIT', '']
++    assert sum('casepath-journal-bytes-v1:set:' in sql for sql in commands) == 1
++    assert sum('casepath-source-bytes-v1:set:' in sql for sql in commands) == 1
++    monkeypatch.setattr(store, '_replay', lambda *a, **k: pytest.fail('Admitted unchanged seed replayed'))
++    seed['journal_rows'][0]['created_at'] = 'caller-only change'
++    seed['sources'].clear()
++    server.reset()
++    assert knowledge.learning_view() == expected
++    assert len(server.requests) == 1 and not server.raw_journal and not server.raw_sources
++
++
++@pytest.mark.parametrize('change', ['missing_source', 'extra_source', 'bad_chain', 'wrong_release'])
++def test_bad_candidate_never_uses_raw_fallback_or_changes_actual_caches(native_proof_store, change):
++    from casepath_api.hosted_read_seed_v1 import SeedError
++    server, store, _ = native_proof_store
++    store._read_only = True
++    seed = candidate(store)
++    if change == 'missing_source':
++        seed['sources'].pop()
++    elif change == 'extra_source':
++        from hashlib import sha256
++        raw = b'Unreferenced isolated fixture bytes.'
++        seed['sources'].append({'sha256': sha256(raw).hexdigest(),
++                                'content_base64': base64.b64encode(raw).decode()})
++        seed['sources'].sort(key=lambda row: row['sha256'])
++    elif change == 'bad_chain':
++        seed['journal_rows'][0]['event_json'] = '{}'
++    else:
++        seed['deployment_commit'] = 'b' * 40
++    with pytest.raises((SeedError, AutonomousStoreError)):
++        store.admit_read_seed(seed, deployment_commit=COMMIT)
++    assert pristine(store) and not server.requests
++
++
++@pytest.mark.parametrize('column,value', [('created_at', 'changed'), ('sequence', 1.5)])
++def test_confirmed_typed_journal_mismatch_discards_seed_without_actual_cache_admission(native_proof_store, column, value):
++    server, store, _ = native_proof_store
++    store._read_only = True
++    seed = candidate(store)
++    with sqlite3.connect(server.path) as db:
++        db.execute('UPDATE claim_loop_events SET ' + column + '=?', (value,))
++    assert store.admit_read_seed(seed, deployment_commit=COMMIT) is False
++    assert pristine(store) and len(server.requests) == 1
++
++
++@pytest.mark.parametrize('fault', ['malformed_root', 'transport'])
++def test_unconfirmed_proof_never_falls_back_or_admits(native_proof_store, monkeypatch, fault):
++    from casepath_api.hosted_sql_v1 import HostedStorageError
++    server, store, _ = native_proof_store
++    store._read_only = True
++    seed = candidate(store)
++    if fault == 'transport':
++        server.fail_next('timeout')
++    else:
++        original = server._statement
++        def malformed(db, statement):
++            result = original(db, statement)
++            if 'casepath-journal-bytes-v1:set:' in statement['sql']:
++                names = [row['name'] for row in result['cols']]
++                result['rows'][0][names.index('concat_bytes')] = server._value(0)
++            return result
++        monkeypatch.setattr(server, '_statement', malformed)
++    with pytest.raises((HostedStorageError, AutonomousStoreError)):
++        store.admit_read_seed(seed, deployment_commit=COMMIT)
++    assert pristine(store) and len(server.requests) == 1
++
++
++@pytest.mark.parametrize('raw', [b'{"contract":1,"contract":2}', b'{"sequence":1.0}', b'{"x":NaN}',
++    b'{"x":9223372036854775808}', b'[]'])
++def test_decoder_rejects_duplicate_keys_numbers_and_non_objects(raw):
++    from casepath_api.hosted_read_seed_v1 import decode_seed, SeedError
++    with pytest.raises(SeedError):
++        decode_seed(raw, deployment_commit=COMMIT)
++
++
++def test_decoder_preserves_event_json_and_rejects_bool_sequence_and_noncanonical_base64(native_proof_store):
++    from casepath_api.hosted_read_seed_v1 import decode_seed, pack_seed, SeedError
++    _, store, _ = native_proof_store
++    rows, sources = material(store)
++    raw = pack_seed(COMMIT, rows, sources)
++    assert decode_seed(raw, deployment_commit=COMMIT)['journal_rows'] == rows
++    for change in ('bool', 'base64', 'keys'):
++        value = json.loads(raw)
++        if change == 'bool':
++            value['journal_rows'][0]['sequence'] = True
++        elif change == 'base64':
++            value['sources'][0]['content_base64'] += '\n'
++        else:
++            value['journal_rows'][0]['unknown_authority'] = 'omitted'
++        with pytest.raises(SeedError):
++            decode_seed(json.dumps(value).encode(), deployment_commit=COMMIT)
++
++
++@pytest.mark.parametrize('change', ['content', 'extra_chunk', 'schema'])
++def test_complete_source_chunk_and_schema_mismatch_never_admits_candidate(native_proof_store, change):
++    server, store, _ = native_proof_store
++    store._read_only = True
++    seed = candidate(store)
++    with sqlite3.connect(server.path) as db:
++        digest = seed['sources'][0]['sha256']
++        if change == 'content':
++            db.execute('DROP TRIGGER autonomous_source_chunks_no_update')
++            db.execute('UPDATE autonomous_source_chunks SET content=? WHERE sha256=? AND chunk_index=0',
++                       (b'Changed isolated bytes.', digest))
++        elif change == 'extra_chunk':
++            db.execute('INSERT INTO autonomous_source_chunks VALUES (?,?,?)', (digest, 99, b'extra'))
++        else:
++            db.execute('ALTER TABLE autonomous_source_chunks ADD COLUMN hidden_authority TEXT')
++    assert store.admit_read_seed(seed, deployment_commit=COMMIT) is False
++    assert pristine(store) and len(server.requests) == 1 and not server.raw_sources
++
++
++def test_local_validation_precedes_final_proof_and_post_validation_hook_precedes_admission(native_proof_store, monkeypatch):
++    from casepath_api.hosted_storage_v1 import HostedAutonomousStore
++    server, store, _ = native_proof_store
++    store._read_only = True
++    seed = candidate(store)
++    original = HostedAutonomousStore._validated_states
++    def change_after_validation(stage, rows, **kwargs):
++        states = original(stage, rows, **kwargs)
++        rows[0]['created_at'] = 'changed after successful final proof'
++        return states
++    monkeypatch.setattr(HostedAutonomousStore, '_validated_states', change_after_validation)
++    with pytest.raises(AutonomousStoreError, match='Certified journal bytes differ'):
++        store.admit_read_seed(seed, deployment_commit=COMMIT)
++    assert pristine(store) and len(server.requests) == 1
++
++
++def test_admission_is_startup_only_and_existing_reads_still_verify_remote_mutation(native_proof_store):
++    from casepath_api.hosted_read_seed_v1 import SeedError
++    server, store, knowledge = native_proof_store
++    seed = candidate(store)
++    with pytest.raises(SeedError):
++        store.admit_read_seed(seed, deployment_commit=COMMIT)
++    store._read_only = True
++    assert store.admit_read_seed(seed, deployment_commit=COMMIT)
++    server.reset()
++    with pytest.raises(SeedError):
++        store.admit_read_seed(seed, deployment_commit=COMMIT)
++    assert not server.requests
++    with sqlite3.connect(server.path) as db:
++        db.execute("UPDATE claim_loop_events SET created_at='invalid persisted mutation'")
++    with pytest.raises(AutonomousStoreError):
++        knowledge.learning_view()
++
++
++@pytest.mark.parametrize('change', ['duplicate_row', 'duplicate_source', 'oversize', 'bad_hash', 'missing_column'])
++def test_decoder_enforces_exact_rosters_and_size_bounds(native_proof_store, monkeypatch, change):
++    from casepath_api import hosted_read_seed_v1 as seed_module
++    _, store, _ = native_proof_store
++    value = candidate(store)
++    if change == 'duplicate_row':
++        value['journal_rows'].append(value['journal_rows'][0])
++    elif change == 'duplicate_source':
++        value['sources'].append(value['sources'][0])
++    elif change == 'bad_hash':
++        value['sources'][0]['sha256'] = '0' * 64
++    elif change == 'missing_column':
++        del value['journal_rows'][0]['event_json']
++    else:
++        monkeypatch.setattr(seed_module, 'MAX_SEED_BYTES', 10)
++    with pytest.raises(seed_module.SeedError):
++        seed_module.decode_seed(json.dumps(value).encode(), deployment_commit=COMMIT)
++
++
++def test_file_load_checks_checksum_release_regular_file_and_missing_fallback(native_proof_store, tmp_path):
++    from hashlib import sha256
++    from casepath_api.hosted_read_seed_v1 import load_seed, pack_seed, SeedError
++    _, store, _ = native_proof_store
++    assert load_seed(tmp_path / 'absent.json', deployment_commit=COMMIT, expected_sha256=None) is None
++    rows, sources = material(store)
++    raw = pack_seed(COMMIT, rows, sources)
++    path = tmp_path / 'seed.json'
++    path.write_bytes(raw)
++    assert load_seed(path, deployment_commit=COMMIT, expected_sha256=sha256(raw).hexdigest()) == candidate(store)
++    for commit, digest in ((COMMIT, None), (COMMIT, '0' * 64), ('b' * 40, sha256(raw).hexdigest())):
++        with pytest.raises(SeedError):
++            load_seed(path, deployment_commit=commit, expected_sha256=digest)
++    link = tmp_path / 'link.json'
++    link.symlink_to(path)
++    with pytest.raises(OSError):
++        load_seed(link, deployment_commit=COMMIT, expected_sha256=sha256(raw).hexdigest())
++    import os
++    fifo = tmp_path / 'fifo.json'
++    os.mkfifo(fifo)
++    with pytest.raises(SeedError):
++        load_seed(fifo, deployment_commit=COMMIT, expected_sha256=sha256(raw).hexdigest())
++
++
++def test_candidate_preserves_native_complete_row_byte_bound(native_proof_store):
++    from casepath_api.hosted_read_seed_v1 import decode_seed, MAX_ROW_BYTES, SeedError
++    _, store, _ = native_proof_store
++    value = candidate(store)
++    value['journal_rows'][0]['created_at'] = 'x' * (MAX_ROW_BYTES - 1024)
++    with pytest.raises(SeedError):
++        decode_seed(json.dumps(value).encode(), deployment_commit=COMMIT)
+diff --git a/casepath-api/tests/test_public_hosted_read_only_v1.py b/casepath-api/tests/test_public_hosted_read_only_v1.py
+index aa47ee66..497600af 100644
+--- a/casepath-api/tests/test_public_hosted_read_only_v1.py
++++ b/casepath-api/tests/test_public_hosted_read_only_v1.py
+@@ -246,6 +246,86 @@ def test_public_readiness_is_closed_before_startup_and_after_failed_warmup(saved
+         client.close()
+ 
+ 
++def saved_seed_environment(server, tmp_path):
++    import base64
++    from hashlib import sha256
++    from casepath_api.hosted_read_seed_v1 import pack_seed
++    with sqlite3.connect(server.path) as db:
++        db.row_factory = sqlite3.Row
++        journal_rows = [dict(row) for row in db.execute('SELECT * FROM claim_loop_events ORDER BY loop_id,sequence')]
++        chunks = {}
++        for row in db.execute('SELECT * FROM autonomous_source_chunks ORDER BY sha256,chunk_index'):
++            chunks.setdefault(row['sha256'], bytearray()).extend(row['content'])
++    sources = [{'sha256': digest, 'content_base64': base64.b64encode(raw).decode('ascii')}
++               for digest, raw in chunks.items()]
++    raw = pack_seed('a' * 40, journal_rows, sources)
++    path = tmp_path / 'read-seed.json'
++    path.write_bytes(raw)
++    return {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
++            'CASEPATH_SOURCE_COMMIT': 'a' * 40, 'CASEPATH_READ_SEED_PATH': str(path),
++            'CASEPATH_READ_SEED_SHA256': sha256(raw).hexdigest()}
++
++
++def test_public_startup_seed_avoids_raw_reads_before_readiness_without_changing_rows(saved_runtime, tmp_path, monkeypatch):
++    server, database, *_ = saved_runtime
++    env = saved_seed_environment(server, tmp_path)
++    before, controllers = rows(server.path), []
++    construct = hosted_app_v1.HostedAutonomousController
++    def controller(*args, **kwargs):
++        value = construct(*args, **kwargs)
++        controllers.append(value)
++        return value
++    monkeypatch.setattr(hosted_app_v1, 'HostedAutonomousController', controller)
++    monkeypatch.setattr(HostedSources, '_fetch_many', lambda *a, **k: pytest.fail('Seed startup downloaded raw bytes'))
++    app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'seeded')
++    with TestClient(app) as client:
++        assert controllers[-1]._closed and controllers[-1].store._read_only
++        assert client.get('/healthz').status_code == 200
++        baseline = len(server.requests)
++        assert client.get(PREFIX + '/knowledge', headers=HEADERS).status_code == 200
++        requests = server.requests[baseline:]
++        assert len(requests) == 1
++        assert any('casepath-journal-bytes-v1:set:' in sql for sql in statements(requests))
++        assert any('casepath-source-bytes-v1:set:' in sql for sql in statements(requests))
++        assert rows(server.path) == before
++
++
++def test_public_startup_invalid_seed_checksum_keeps_readiness_closed(saved_runtime, tmp_path):
++    from casepath_api.hosted_read_seed_v1 import SeedError
++    server, database, *_ = saved_runtime
++    env = saved_seed_environment(server, tmp_path)
++    env['CASEPATH_READ_SEED_SHA256'] = '0' * 64
++    before = rows(server.path)
++    app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'bad-seed')
++    client = TestClient(app)
++    try:
++        with pytest.raises(SeedError):
++            with client:
++                pytest.fail('Invalid seed reached readiness')
++        assert client.get('/healthz').status_code == 503
++        assert rows(server.path) == before
++    finally:
++        client.close()
++
++
++def test_confirmed_stale_seed_uses_existing_cold_startup_for_valid_new_rows(saved_runtime, tmp_path, monkeypatch):
++    server, database, fixture_store, *_ = saved_runtime
++    env = saved_seed_environment(server, tmp_path)
++    fixture_store.intake(packet(), 'valid-new-intake-after-seed')
++    before, admitted = rows(server.path), []
++    original = HostedAutonomousStore.admit_read_seed
++    def admit(store, *args, **kwargs):
++        result = original(store, *args, **kwargs)
++        admitted.append(result)
++        return result
++    monkeypatch.setattr(HostedAutonomousStore, 'admit_read_seed', admit)
++    app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'stale-seed')
++    with TestClient(app) as client:
++        assert admitted == [False]
++        assert client.get('/healthz').status_code == 200
++        assert rows(server.path) == before
++
++
+ def test_public_app_closes_only_its_owned_shared_database(saved_runtime, tmp_path, monkeypatch):
+     server, injected, *_ = saved_runtime
+     created, closed = [], []

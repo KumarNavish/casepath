@@ -1,0 +1,142 @@
+{
+  "contract": "casepath.hosted-read-seed-focused-receipt/1",
+  "host": "656813ef2295",
+  "base_commit": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "source": {
+    "backend": {
+      "commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "branch": "codex/casepath-read-seed-startup-20261018",
+      "base": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "files": {
+        "casepath-api/casepath_api/hosted_app_v1.py": {
+          "sha256": "7093ea418e38a56e856ff06d8a5539e8c7e9518ffef572209f7f3ade585d77f0",
+          "bytes": 5708
+        },
+        "casepath-api/casepath_api/hosted_read_seed_v1.py": {
+          "sha256": "7da6d150cdb21ebfc909514c3480514aba96cd2fc504c4b8f5c1f5f1a264f20f",
+          "bytes": 10904
+        },
+        "casepath-api/casepath_api/hosted_storage_v1.py": {
+          "sha256": "d0e85a231d1db482acd15322a4f4e1df03251c07c04a56377af2591cacf3ee47",
+          "bytes": 43157
+        },
+        "casepath-api/tests/test_hosted_read_seed_v1.py": {
+          "sha256": "e4f122e63af2ac02aadcfd9a7fd350a857a64222aa06821248e647e0906052bb",
+          "bytes": 11839
+        },
+        "casepath-api/tests/test_public_hosted_read_only_v1.py": {
+          "sha256": "22643a44b57a950d8981696041d6cc8fea2cb8ec539e1e64f481f9d6fd82fe51",
+          "bytes": 21710
+        }
+      }
+    },
+    "tools": {
+      "commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "branch": "codex/casepath-read-seed-tools-20261018",
+      "base": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "files": {
+        ".gitignore": {
+          "sha256": "e8fc792628c2f8a75736017716a96ef43c67488d34848b9bf6bed1b0fd9c4473",
+          "bytes": 673
+        },
+        "casepath-api/pyproject.toml": {
+          "sha256": "0dead3de785fb466adee140ed28b0c246ee2423f4de4bb53a595067df05a91a7",
+          "bytes": 1889
+        },
+        "casepath-api/tests/test_hosted_read_seed_export_v1.py": {
+          "sha256": "d0199a10e6521197586f7542fbbb94a0a1f81702526bcd9c1023a345cee4d5d3",
+          "bytes": 14370
+        },
+        "casepath-api/tools/export_read_seed.py": {
+          "sha256": "656e03729220f803faea0738b39e1328866ff31a5c253899ff9f6372484bba59",
+          "bytes": 21304
+        },
+        "docs/HOSTED_CASEPATH.md": {
+          "sha256": "db56b40590afc470453248ef4a4ae44af8f51c37d541aef8cb0af6257ccb67af",
+          "bytes": 16324
+        }
+      }
+    }
+  },
+  "integration_unchanged_at_readback": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "source_scopes_disjoint": true,
+  "focused_results": {
+    "backend_author": {
+      "passed": 100,
+      "failed": 0,
+      "skipped": 0,
+      "logs": [
+        "backend/seed-startup.log",
+        "backend/warm-proof.log"
+      ]
+    },
+    "export_author": {
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "logs": [
+        "tools/final-pytest.log"
+      ]
+    },
+    "independent": {
+      "passed": 18,
+      "components": {
+        "adversarial_pytest": 6,
+        "output_path_stdlib": 6,
+        "protocol_budget_stdlib": 6
+      },
+      "review": "review/independent-review.json"
+    }
+  },
+  "schema": {
+    "contract": "casepath.hosted-read-seed/1",
+    "deployment_commit": "Exact target final sealed 40 lowercase hex commit; not the predecessor",
+    "journal_rows": {
+      "order": [
+        "loop_id",
+        "sequence"
+      ],
+      "exact_columns": {
+        "session_id": "TEXT",
+        "loop_id": "TEXT",
+        "sequence": "INTEGER",
+        "idempotency_key": "TEXT",
+        "command_sha256": "TEXT",
+        "event_sha256": "TEXT",
+        "event_json": "Exact verbatim SQL TEXT",
+        "created_at": "TEXT"
+      }
+    },
+    "sources": {
+      "order": "sha256",
+      "exact_columns": [
+        "sha256",
+        "content_base64"
+      ],
+      "content": "Canonical base64 of the whole exact original bytes. No serialized states/SQL/templates/credentials."
+    }
+  },
+  "admission": "Detached copies undergo all existing chain/reducer/extraction/source validators, then one unchanged complete typed ordered journal/source/schema atomic SQL proof and native post-validation check. Real pristine caches transfer only after success. Current reads retain complete fresh proofs.",
+  "export_bounds": {
+    "raw_slice_bytes": 32768,
+    "encoded_request_and_response_bytes_each": 65536,
+    "max_requests": 4096,
+    "max_seconds_cooperative": 3600,
+    "max_cumulative_encoded_payload_bytes": 268435456,
+    "native_request_seconds": 12,
+    "retries": 0
+  },
+  "packaging": "Mac generates after final seal; private exact server-only filename outside every Git checkout, only temporary API upload artifact. Verify actual official archive inclusion and exact digest/release binding. Never Sites or Git. No seed generated in Cloud.",
+  "resource_observations": {
+    "floor_bytes": 3221225472,
+    "free_at_export": 3443552256,
+    "continuous_monitoring": false
+  },
+  "preserved_failures": "Backend raw red/initial-green logs retained. Exporter earlier failed attempts exist only in tool/transcript output; summary preserved in tools/receipt.json, no recreated runs.",
+  "limits": [
+    "No real Mac export or official upload archive verified here",
+    "No native production performance measurement, hosted <=1s claim, full suite, source seal, integration or publication",
+    "Existing startup initializer behavior unchanged; exporter constructs no schema/work-store/lease initializers",
+    "Cold Knowledge TTFB and VoiceOver exceptions remain unwaived"
+  ]
+}

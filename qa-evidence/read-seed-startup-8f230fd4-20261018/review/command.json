@@ -1,0 +1,8 @@
+{
+  "cwd": "/workspace",
+  "actual_command_from_reviewer": "mkdir -p /workspace/casepath-read-seed-20261018/review/home /workspace/casepath-read-seed-20261018/review/tmp /workspace/casepath-read-seed-20261018/review/fixtures && env HOME=/workspace/casepath-read-seed-20261018/review/home TMPDIR=/workspace/casepath-read-seed-20261018/review/tmp TMP=/workspace/casepath-read-seed-20261018/review/tmp TEMP=/workspace/casepath-read-seed-20261018/review/tmp PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/casepath-release-ae0-shard3/casepath-api:/workspace/casepath-release-ae0-shard3/casepath-api/tests /workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/workspace/casepath-read-seed-20261018/review/fixtures /workspace/casepath-read-seed-20261018/review/test_seed_adversarial_review.py > /workspace/casepath-read-seed-20261018/review/adversarial.log 2>&1; result=$?; cat /workspace/casepath-read-seed-20261018/review/adversarial.log; exit \"$result\"",
+  "exit": 0,
+  "passed": 6,
+  "seconds": 1.59,
+  "metadata_only_no_rerun": true
+}

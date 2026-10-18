@@ -1,0 +1,28 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_valid_seed_replays_locally_then_one_fresh_atomic_proof_before_admission _
+
+native_proof_store = (<test_hosted_knowledge_warm_proof_v1.ProofHrana object at 0x7f032e4b1d30>, <casepath_api.hosted_storage_v1.HostedAuto...usStore object at 0x7f032e4b3620>, <casepath_api.autonomous_knowledge_v1.AutonomousKnowledge object at 0x7f032e4b3770>)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f032f143ce0>
+
+    def test_valid_seed_replays_locally_then_one_fresh_atomic_proof_before_admission(native_proof_store, monkeypatch):
+        server, store, knowledge = native_proof_store
+        store._read_only = True
+        native = AutonomousStore.open_read_only(store.path.parent / 'native.sqlite3')
+        expected = AutonomousKnowledge(native, {}).learning_view()
+>       seed = candidate(store)
+               ^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_read_seed_v1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+store = <casepath_api.hosted_storage_v1.HostedAutonomousStore object at 0x7f032e4b3620>
+
+    def candidate(store):
+>       from casepath_api.hosted_read_seed_v1 import decode_seed, pack_seed
+E       ModuleNotFoundError: No module named 'casepath_api.hosted_read_seed_v1'
+
+casepath-api/tests/test_hosted_read_seed_v1.py:27: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_hosted_read_seed_v1.py::test_valid_seed_replays_locally_then_one_fresh_atomic_proof_before_admission
+1 failed, 14 deselected in 1.45s

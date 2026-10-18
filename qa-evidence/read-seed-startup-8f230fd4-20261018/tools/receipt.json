@@ -1,0 +1,73 @@
+{
+  "backend_commit": "af78642d485e050674b462718517f6e2cadaa308",
+  "imports": [
+    {
+      "module": "casepath_api.hosted_read_seed_v1",
+      "imported_path": "/workspace/read-seed-tools-test/overlay/casepath_api/hosted_read_seed_v1.py",
+      "resolved_path": "/workspace/casepath-release-ae0-shard3/casepath-api/casepath_api/hosted_read_seed_v1.py",
+      "sha256": "7da6d150cdb21ebfc909514c3480514aba96cd2fc504c4b8f5c1f5f1a264f20f"
+    },
+    {
+      "module": "casepath_api.hosted_storage_v1",
+      "imported_path": "/workspace/read-seed-tools-test/overlay/casepath_api/hosted_storage_v1.py",
+      "resolved_path": "/workspace/casepath-release-ae0-shard3/casepath-api/casepath_api/hosted_storage_v1.py",
+      "sha256": "d0e85a231d1db482acd15322a4f4e1df03251c07c04a56377af2591cacf3ee47"
+    }
+  ],
+  "focused_test_command": "HOME=/workspace/read-seed-tools-test/home TMPDIR=/workspace/read-seed-tools-test/tmp PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/read-seed-tools-test/overlay:/workspace/casepath-release-ae0-shard4/casepath-api/tests /workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python -c 'import casepath_api; import pytest; raise SystemExit(pytest.main([\"casepath-api/tests/test_hosted_read_seed_export_v1.py\", \"-q\", \"-p\", \"no:cacheprovider\"]))'",
+  "test_result": "26 passed in 1.78s",
+  "exit_status": 0,
+  "packaging_result": "minimal synthetic wheel exact fixture bytes included; unlisted artifact excluded; no real seed",
+  "previous_failures": [
+    "system Python pytest unavailable",
+    "pinned first collection helper module absent",
+    "first combined run 6 failed/6 passed: empty sandbox .git sentinels incorrectly treated as checkout",
+    "second combined run 15 passed/1 failed: all-source roster validation needed before any source payload (fixed)",
+    "uv default cache read-only; isolated offline build setuptools absent (resolved using writable prepared cache and isolated build only)"
+  ],
+  "tools_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+  "base_commit": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "branch": "codex/casepath-read-seed-tools-20261018",
+  "push_exit_status": 0,
+  "working_tree": "clean",
+  "host": "656813ef2295",
+  "final_raw_test_log": "/workspace/read-seed-tools-test/final-pytest.log",
+  "earlier_raw_log_retention": "Earlier pytest failures and uv cache/build failures exist only in tool/transcript output; no standalone earlier raw logs were saved. They were not rerun to recreate evidence. previous_failures lists summaries only.",
+  "no_remaining_failure": true,
+  "unrun": "Mac production source acquisition, official hosting upload payload inspection, native Mac/runtime performance, final source seal/full suite/deployment (integration-owner scope)",
+  "file_sha256": {
+    ".gitignore": "e8fc792628c2f8a75736017716a96ef43c67488d34848b9bf6bed1b0fd9c4473",
+    "casepath-api/pyproject.toml": "0dead3de785fb466adee140ed28b0c246ee2423f4de4bb53a595067df05a91a7",
+    "casepath-api/tools/export_read_seed.py": "656e03729220f803faea0738b39e1328866ff31a5c253899ff9f6372484bba59",
+    "casepath-api/tests/test_hosted_read_seed_export_v1.py": "d0199a10e6521197586f7542fbbb94a0a1f81702526bcd9c1023a345cee4d5d3",
+    "docs/HOSTED_CASEPATH.md": "db56b40590afc470453248ef4a4ae44af8f51c37d541aef8cb0af6257ccb67af"
+  },
+  "package_selector": {
+    "synthetic_fixture_sha256": "a5ce63d901d99ee0de1fdd110e24606c81fc8d022f331a8f366a6a85bbd028d3",
+    "wheel_path": "/workspace/read-seed-tools-test/package-selector-wheel/casepath_hosted_api-1.0.0-py3-none-any.whl",
+    "wheel_sha256": "c5c3b5bd5eec076227df3729ff08dbbb8c868d17cc332bcab3497c45006b7a44",
+    "scope": "minimal synthetic package only; no full corpus wheel, real seed, secrets or global runtime install",
+    "commands": [
+      {
+        "command": "uv build --offline --no-sources --wheel --python /workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python --out-dir /workspace/read-seed-tools-test/package-selector-wheel /workspace/read-seed-tools-test/package-selector",
+        "exit": 2,
+        "error": "default /home/agent/.cache/uv/CACHEDIR.TAG read-only"
+      },
+      {
+        "command": "HOME=/workspace/read-seed-tools-test/home TMPDIR=/workspace/read-seed-tools-test/tmp UV_CACHE_DIR=/workspace/.cache/uv UV_LINK_MODE=copy PYTHONDONTWRITEBYTECODE=1 uv build --offline --no-sources --wheel --python /workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python --out-dir /workspace/read-seed-tools-test/package-selector-wheel /workspace/read-seed-tools-test/package-selector",
+        "exit": 2,
+        "error": "setuptools>=80,<81 absent from cache"
+      },
+      {
+        "command": "HOME=/workspace/read-seed-tools-test/home TMPDIR=/workspace/read-seed-tools-test/tmp UV_CACHE_DIR=/workspace/.cache/uv UV_LINK_MODE=copy PYTHONDONTWRITEBYTECODE=1 uv build --no-sources --wheel --python /workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python --out-dir /workspace/read-seed-tools-test/package-selector-wheel /workspace/read-seed-tools-test/package-selector",
+        "exit": 0,
+        "note": "isolated build-only setuptools dependency; installed app/pinned runtime unchanged"
+      },
+      {
+        "command": "Python zipfile assertion: exact synthetic fixture bytes match and unlisted-private-file.json absent",
+        "exit": 0
+      }
+    ],
+    "warning": "setuptools warns artifacts is an implicit namespace absent from package discovery; exact package-data file still included; unlisted file excluded."
+  }
+}

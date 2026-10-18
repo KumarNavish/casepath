@@ -1,0 +1,14 @@
+{
+  "passed": 6,
+  "method": "stdlib AST-isolated _output_path checks",
+  "cases": [
+    "Git worktree marker",
+    "parent traversal",
+    "symlink ancestor",
+    "missing parent",
+    "actual canonical checkout",
+    "existing private parent"
+  ],
+  "network": false,
+  "production_data": false
+}

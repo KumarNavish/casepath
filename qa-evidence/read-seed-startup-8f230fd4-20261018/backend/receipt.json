@@ -1,0 +1,75 @@
+{
+  "contract": "casepath.hosted-read-seed-backend-receipt/1",
+  "host": "656813ef2295",
+  "base_commit": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "commit": "af78642d485e050674b462718517f6e2cadaa308",
+  "branch": "codex/casepath-read-seed-startup-20261018",
+  "changed_files": [
+    "casepath-api/casepath_api/hosted_read_seed_v1.py",
+    "casepath-api/casepath_api/hosted_app_v1.py",
+    "casepath-api/casepath_api/hosted_storage_v1.py",
+    "casepath-api/tests/test_hosted_read_seed_v1.py",
+    "casepath-api/tests/test_public_hosted_read_only_v1.py"
+  ],
+  "runtime": "/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python",
+  "setup": [
+    {
+      "command": "./bin/casepath prepare",
+      "exit_code": 2,
+      "failure": "uv cache /home/agent/.cache/uv read-only; failed before installing"
+    },
+    {
+      "command": "UV_CACHE_DIR=/workspace/.cache/uv UV_PYTHON_INSTALL_DIR=/workspace/.local/share/uv/python UV_LINK_MODE=copy UV_OFFLINE=true ./bin/casepath prepare",
+      "exit_code": 0
+    }
+  ],
+  "validation": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider casepath-api/tests/test_hosted_read_seed_v1.py -k valid_seed",
+      "exit_code": 2,
+      "failure": "Initial invocation missing PYTHONPATH=casepath-api; collection error, no feature validation"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=casepath-api .runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider casepath-api/tests/test_hosted_read_seed_v1.py -k valid_seed",
+      "exit_code": 1,
+      "failed": 1,
+      "deselected": 14,
+      "log": "red.log",
+      "failure": "Required hosted_read_seed_v1 module absent before implementation"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=casepath-api .runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider casepath-api/tests/test_hosted_read_seed_v1.py",
+      "exit_code": 0,
+      "passed": 15,
+      "log": "first-green.log",
+      "note": "Initial focused cases before expanding invariant tests"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=casepath-api .runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider casepath-api/tests/test_hosted_read_seed_v1.py casepath-api/tests/test_public_hosted_read_only_v1.py",
+      "exit_code": 0,
+      "passed": 36,
+      "log": "seed-startup.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=casepath-api .runtime/casepath-dev-v2/venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/workspace/casepath-read-seed-20261018/backend/warm-proof-tmp casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py casepath-api/tests/test_hosted_app_v1.py",
+      "exit_code": 0,
+      "passed": 64,
+      "log": "warm-proof.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "independent_review": "Reviewer separately reported six adversarial cases passed; see sibling review artifacts.",
+  "resources": {
+    "floor_free_bytes": 3221225472,
+    "post_tests_free_bytes": 3453353984
+  },
+  "limits": [
+    "No production/private journal/credentials/model calls were used",
+    "No source manifest seal, full suite, integration or deployment performed; parent owns these steps",
+    "No hosted latency claim; deterministic fixtures only"
+  ],
+  "authority": "Candidate raw rows/originals stage in detached memory. Native replay/extraction/descriptor validation precedes one fresh full typed/schema/full-roster atomic journal/source proof and post-validation check, then locked pristine cache transfer. Later reads retain existing proof."
+}

@@ -1,0 +1,15 @@
+{
+  "passed": 6,
+  "checks": [
+    "oversized final-proof request stops before dispatch",
+    "non-read protocol stops before dispatch",
+    "request budget stops before dispatch",
+    "12-second reserve stops before dispatch",
+    "cumulative response payload budget stops without retry",
+    "oversized final-proof response stops without retry"
+  ],
+  "method": "stdlib AST-isolated final exporter protocol/budget classes with fake client and clock",
+  "exporter_sha256": "656e03729220f803faea0738b39e1328866ff31a5c253899ff9f6372484bba59",
+  "network_calls": 0,
+  "production_data": false
+}

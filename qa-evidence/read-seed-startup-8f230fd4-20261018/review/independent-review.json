@@ -1,0 +1,132 @@
+{
+  "contract": "casepath.hosted-read-seed-independent-review/1",
+  "verdict": "PASS: no remaining blocking source findings in the reviewed backend and exporter commits",
+  "reviewer": "cold_knowledge_proxy_review",
+  "host": "656813ef2295",
+  "bindings": {
+    "backend": {
+      "commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "base_commit": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "clean": true,
+      "checkout": "/workspace/casepath-release-ae0-shard3",
+      "files": {
+        "casepath-api/casepath_api/hosted_read_seed_v1.py": "7da6d150cdb21ebfc909514c3480514aba96cd2fc504c4b8f5c1f5f1a264f20f",
+        "casepath-api/casepath_api/hosted_storage_v1.py": "d0e85a231d1db482acd15322a4f4e1df03251c07c04a56377af2591cacf3ee47",
+        "casepath-api/casepath_api/hosted_app_v1.py": "7093ea418e38a56e856ff06d8a5539e8c7e9518ffef572209f7f3ade585d77f0",
+        "casepath-api/tests/test_hosted_read_seed_v1.py": "e4f122e63af2ac02aadcfd9a7fd350a857a64222aa06821248e647e0906052bb",
+        "casepath-api/tests/test_public_hosted_read_only_v1.py": "22643a44b57a950d8981696041d6cc8fea2cb8ec539e1e64f481f9d6fd82fe51"
+      }
+    },
+    "tools": {
+      "commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "base_commit": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "clean": true,
+      "checkout": "/workspace/casepath-release-ae0-shard4",
+      "files": {
+        "casepath-api/tools/export_read_seed.py": "656e03729220f803faea0738b39e1328866ff31a5c253899ff9f6372484bba59",
+        "casepath-api/tests/test_hosted_read_seed_export_v1.py": "d0199a10e6521197586f7542fbbb94a0a1f81702526bcd9c1023a345cee4d5d3",
+        "docs/HOSTED_CASEPATH.md": "db56b40590afc470453248ef4a4ae44af8f51c37d541aef8cb0af6257ccb67af",
+        ".gitignore": "e8fc792628c2f8a75736017716a96ef43c67488d34848b9bf6bed1b0fd9c4473",
+        "casepath-api/pyproject.toml": "0dead3de785fb466adee140ed28b0c246ee2423f4de4bb53a595067df05a91a7"
+      }
+    }
+  },
+  "findings_resolved": [
+    {
+      "issue": "Seed row bounds were looser than the native cold reader.",
+      "resolution": "Decoder and exporter metadata enforce complete native row byte total including sequence and 1024-byte overhead; aggregate journal bound is 32 MiB."
+    },
+    {
+      "issue": "Exporter path exception allowed unignored Git files and lexical parent traversal.",
+      "resolution": "All Git checkout destinations, parent traversal, symlink ancestors, missing or noncanonical parents are refused; publication uses checked existing parent directory descriptor, mode 0600, fsync and no-overwrite link."
+    },
+    {
+      "issue": "Per-transfer bounds alone allowed an impractically long acquisition.",
+      "resolution": "One native client enforces 4096 sends, 3600s cooperative elapsed budget reserving unchanged 12s per send, 256 MiB aggregate encoded request/response payload and 64 KiB per request/response, including final proof. Elapsed budget checked again before publication."
+    }
+  ],
+  "integrity_conclusions": [
+    "A seed contains raw eight-field native journal rows and hash-bound original bytes only; strict JSON decoding rejects duplicate keys, nonnative numbers/types, unordered or duplicate identities, invalid/noncanonical base64 and wrong release binding.",
+    "Copied candidate rows and immutable original bytes enter a detached store. Full existing replay, reducer, descriptor, extraction and source validation runs before the final proof; missing originals cannot fall back to raw SQL.",
+    "One fresh atomic SELECT snapshot certifies standard journal/source schemas and typed all-column ordered complete-roster byte roots. Confirmed mismatch returns without installing caches; malformed or uncertain proofs propagate without retry.",
+    "The native post-validation hook checks frozen journal bytes again; live caches are installed only after a pristine recheck under live summary/source locks. No caller-owned dictionaries are installed.",
+    "Every later public read retains the existing fresh complete proof. Missing seed retains the existing cold startup; stale seed can fall back only after confirmed mismatch. Corrupt/checksum/release failures do not establish readiness.",
+    "Exporter uses bounded native metadata and 32 KiB BLOB slices, reassembles bytes before strict UTF8 decoding, checks complete source chunk rosters before payload reads and pins initial schema identities in the final atomic proof.",
+    "Exporter protocol permits execute/close only, with transaction verbs or native SELECT-only stacked-statement checks; SQL text is internally generated and source identities remain bound parameters. No journal, work-store, lease or schema initializer is constructed by export.",
+    "Artifact output stays outside Git and Sites. Only the exact server-side package-data filename is added; actual private upload construction and inspection remain with Mac."
+  ],
+  "independent_validation": {
+    "backend_adversarial_pytest": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.59,
+      "exit_code": 0,
+      "raw": "adversarial.log",
+      "cases": [
+        "complete valid JSON with duplicate identical contract key",
+        "noncanonical base64 pad bits",
+        "extra source chunk with no live attribute/object changes",
+        "malformed typed source proof with no live attribute/object changes",
+        "unknown source schema column",
+        "fresh source proof after admission rejects changed roster"
+      ]
+    },
+    "output_path_stdlib": {
+      "passed": 6,
+      "exit_code": 0,
+      "raw": "output-path-checks.json"
+    },
+    "final_protocol_budget_stdlib": {
+      "passed": 6,
+      "exit_code": 0,
+      "raw": "protocol-budget-checks.json",
+      "final_exporter_sha256": "656e03729220f803faea0738b39e1328866ff31a5c253899ff9f6372484bba59"
+    },
+    "writer_evidence_inspected": {
+      "backend": "100 passed reported by backend writer; 36 seed/startup plus 64 existing warm-proof/app regressions. Not rerun by reviewer.",
+      "tools": "26 passed in 1.78s, raw log copied; writer used exact backend af78642d through source overlay. Not rerun by reviewer."
+    },
+    "method": "Only bounded synthetic native/HTTP fixtures and stdlib AST-isolated guard mocks. Independent fixture HOME/tmp/databases/artifacts stayed beneath review directory; PYTHONDONTWRITEBYTECODE=1; no pytest cache."
+  },
+  "evidence": {
+    "test_seed_adversarial_review.py": {
+      "sha256": "0c1a957686b1d1f7da298dcc3470e2411386a385dc95ad8c48a93827e3464d2c",
+      "bytes": 5124
+    },
+    "adversarial.log": {
+      "sha256": "465ed2d3ad9fabde7c5ec1ed471c69ab67cd407648ac2d6bf5f0a4e0907d4201",
+      "bytes": 98
+    },
+    "output-path-checks.json": {
+      "sha256": "d01d0e984f76d2d17ffb2ebe754400f7d41ccec8a35d3311c606f1c60ede3334",
+      "bytes": 299
+    },
+    "protocol-budget-checks.json": {
+      "sha256": "d58017fb69b741a39b95b47c26c38569adbb2aee9c96c41e6963073c90330b30",
+      "bytes": 593
+    },
+    "tools-final-pytest.log": {
+      "sha256": "d336dfffa11f4fd792bba26974dbae8fa021a5ae6cdba3602be564146d4b46d6",
+      "bytes": 99
+    }
+  },
+  "limits": [
+    "Source review is bound to two independent commits on 8f; integration, sealing and required release gate remain with the integration owner.",
+    "No production requests, private journal/source bytes, credentials, paid calls, service startup or deployment performed in Cloud.",
+    "Cooperative elapsed budget preserves existing blocking SDK behavior; it is not a hard process deadline. Payload accounting excludes HTTP/TLS framing.",
+    "No real Mac export, private official upload payload or newly deployed instance verified here.",
+    "No cold end-to-end performance acceptance claimed; the unwaived 1-second target remains for Mac measurement."
+  ],
+  "reviewer_work_limits": {
+    "product_source_edits": 0,
+    "network_calls": 0,
+    "credential_reads": 0,
+    "production_database_reads_or_writes": 0,
+    "provider_calls": 0,
+    "services": 0,
+    "broad_suites": 0,
+    "sealing": 0,
+    "deployments": 0
+  }
+}
