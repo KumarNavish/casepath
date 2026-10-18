@@ -1,0 +1,36 @@
+{
+  "candidate": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "evidence_commit": "0fd8c8562d8516e4159d2e00ed6affb2fc636e3f",
+  "evidence_subtree": "qa-evidence/touch-targets-20261018",
+  "inspected_tap_sha256": "82744c559a31c3d9ec01a811aa8da57d41c80c4df6486fb329afedbfd7c7fc53",
+  "already_passed_case_names": [
+    "mobile case header: retained heating context fits Knowledge and Cases at 390px",
+    "mobile case header: retained heating context fits Knowledge and Cases at 320px",
+    "mobile case header: retained heating context fits Knowledge and Cases at 430px",
+    "mobile case header: retained heating context fits Knowledge and Cases at 1428px",
+    "coarse touch targets: real claim, Knowledge and Cases controls fit at 320px",
+    "coarse touch targets: real claim, Knowledge and Cases controls fit at 390px",
+    "coarse touch targets: real claim, Knowledge and Cases controls fit at 430px",
+    "coarse touch targets: real claim, Knowledge and Cases controls fit at 1428px",
+    "knowledge native scrub: touch paused preserves the exact requested event",
+    "knowledge native scrub: touch playing preserves the exact requested event",
+    "knowledge native scrub: touch completed preserves the exact requested event",
+    "knowledge native scrub: mouse paused preserves the exact requested event",
+    "knowledge native scrub: mouse playing preserves the exact requested event",
+    "knowledge native scrub: mouse completed preserves the exact requested event"
+  ],
+  "groups": {
+    "coarse touch targets": 4,
+    "knowledge native scrub": 6,
+    "mobile case header": 4
+  },
+  "total_existing_focused_cases": 14,
+  "new_focused_cases": 10,
+  "retained_focused_cases": 4,
+  "added_pytest_ids": 0,
+  "pytest_full_inventory": 2777,
+  "focused_reexecution_by_this_gate": false,
+  "raw_browser_fixture_archive_copied_or_reexecuted": false,
+  "qualification": "Existing immutable focused native-browser final TAP inspected; metadata receipts bind exact three authored source hashes. Pytest collection remains unchanged2777.",
+  "epoch": 1792289688.0187068
+}

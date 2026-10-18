@@ -1,0 +1,34 @@
+{
+  "candidate": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "already_completed_focused_evidence_commit": "0fd8c8562d8516e4159d2e00ed6affb2fc636e3f",
+  "focused_new_node_cases": 10,
+  "retained_node_cases": 4,
+  "already_passed_total": 14,
+  "source_files": [
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.css",
+      "sha256": "7fb412f2023ddb48ac693b42ed640e1e272b88c8d55c1ee1614d60a918b3e032"
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "sha256": "c43508640478e0b581d7d33a8af2772d5026d380b2d4d4300dee411aaddd8f1f"
+    },
+    {
+      "path": "casepath-qa/unified-product-browser-v1.test.cjs",
+      "sha256": "483746279e32c2ab55dacecf330e6e68b4b83d111d49a04619a2617ed92807f6"
+    }
+  ],
+  "product_test_reexecution_by_this_gate": false,
+  "qualification": "Existing focused receipt and native TAP inspected from immutable0fd8 evidence commit; exact three authored source hashes match frozen4bf. Focused browser fixture JSON archive remains on original branch, with no reexecution for export.",
+  "epoch": 1792289573.5690794,
+  "focused_metadata_and_tap_inspected": true,
+  "focused_source_hashes_match_exact_frozen_candidate": true,
+  "raw_receipt_git_blob_sha256": {
+    "receipt.json": "d753c9fb23adc506189dfe805d31830a8c09200893b7dbb443d6d024dc5c3c54",
+    "coordinator-verification.json": "862cd07250c349eac9cc274f5dbd04756b228dfbf979dedb91575e4e4fc674fc",
+    "source-sha256.txt": "805c7b2abe8dc30ae8543f368e61b0ad94ee130692c540c6edab3c4deb8ffe2c",
+    "final.tap": "82744c559a31c3d9ec01a811aa8da57d41c80c4df6486fb329afedbfd7c7fc53",
+    "SHA256SUMS": "9585ddb2908b9be6086d6cee63a25b78153fdce7ee17a35da78a433cad45b933"
+  },
+  "focused_browser_suite_rerun_by_gate": false
+}

@@ -45,7 +45,7 @@ for epoch, change, interval in sorted(events, key=lambda x: (x[0], x[1])):
 assert maximum <= 2 and active == 0
 save(R / 'heavy-process-interval-proof.json', {'intervals': intervals, 'timeline': timeline,
      'maximum_actual_prepare_or_pytest_concurrency': maximum, 'configured_gate_limit': 2,
-     'global_limit': 3, 'parent_reports_other_heavy_work': False,
+     'global_limit': 2, 'parent_reports_other_heavy_work': False,
      'qualification': 'Prepare and pytest command receipts prove this gate interval overlap; protected services are excluded from heavy-test accounting.'})
 
 resource = read(R / 'resource-after.json')
@@ -64,14 +64,16 @@ resource.update(minimum_observed_workspace_free_bytes=minimum,
 save(R / 'resource-after.json', resource)
 
 aggregate = read(R / 'aggregate.json')
-aggregate.update(baseline_inventory=2777, all2777_prior4a_ids_retained_unchanged=True,
+aggregate.update(baseline_inventory=2777, all2777_prior_a89_ids_retained_unchanged=True,
+                 original_b861_inventory=2613, all_b861_ids_retained_unchanged=True,
                  pytest_added_ids=0, pytest_removed_ids=0,
                  retained_timing_regressions=13, retained_timing_regressions_passed=13,
-                 new_node_browser_case_count=4, new_node_browser_cases_are_pytest_ids=False,
-                 new_node_browser_cases_executed_by_cloud_pytest_gate=False,
-                 browser_validation_evidence_commit='5620f0635ee23369d59e574754ad6adaa6ee5a60',
-                 exact_final_qa_css_equal_focused_browser_source=True,
-                 mac_owner_reported_integrated_context_checks=8,
+                 new_node_browser_case_count=10, retained_node_browser_case_count=4,
+                 already_passed_focused_node_browser_cases=14,
+                 new_node_browser_cases_are_pytest_ids=False,
+                 focused_node_browser_cases_reexecuted_by_this_gate=False,
+                 browser_validation_evidence_commit='0fd8c8562d8516e4159d2e00ed6affb2fc636e3f',
+                 exact_final_qa_css_js_equal_focused_browser_source=True,
                  minimum_observed_workspace_free_bytes=minimum,
                  maximum_actual_prepare_or_pytest_concurrency=maximum,
                  all_six_full_runtime_before_after_equal=True,
@@ -79,5 +81,5 @@ aggregate.update(baseline_inventory=2777, all2777_prior4a_ids_retained_unchanged
                  configuration_draft_changes_needed=False)
 save(R / 'aggregate.json', aggregate)
 print(json.dumps({'all13_timing_passed': True, 'all2777_ids_retained': True,
-                  'new_node_cases_separately_reconciled': 4,
+                  'new_node_cases_separately_reconciled': 10, 'retained_focused_node_cases': 4,
                   'minimum_observed_free_bytes': minimum, 'max_heavy': maximum}), flush=True)

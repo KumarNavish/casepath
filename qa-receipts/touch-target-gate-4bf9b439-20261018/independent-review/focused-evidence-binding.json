@@ -1,0 +1,38 @@
+{
+  "status": "PASS_EXISTING_FOCUSED_EVIDENCE_BINDING",
+  "candidate": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "manifest_sha256": "98bd51f82f96e146314496cd41255781634d19c407ced1a37221927b91a6b32e",
+  "source_commit": "5fe9a95757c6feaefde02ca239d14df9ec6684ed",
+  "evidence_commit": "0fd8c8562d8516e4159d2e00ed6affb2fc636e3f",
+  "evidence_subtree": "qa-evidence/touch-targets-20261018/",
+  "prior_independent_review_sha256": "7de69d5e9b6dfb71e5b07639b78617b253c598af44516b44e39b646142deea13",
+  "prior_independent_verdict": "PASS: no blocking findings in the bounded immutable patch",
+  "final_tap_sha256": "82744c559a31c3d9ec01a811aa8da57d41c80c4df6486fb329afedbfd7c7fc53",
+  "focused_tests": 14,
+  "passed": 14,
+  "failed": 0,
+  "skipped": 0,
+  "pytest_inventory_delta": 0,
+  "source_bindings": [
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.css",
+      "sha256": "7fb412f2023ddb48ac693b42ed640e1e272b88c8d55c1ee1614d60a918b3e032",
+      "candidate_bytes_equal_authored_5fe9": true
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "sha256": "c43508640478e0b581d7d33a8af2772d5026d380b2d4d4300dee411aaddd8f1f",
+      "candidate_bytes_equal_authored_5fe9": true
+    },
+    {
+      "path": "casepath-qa/unified-product-browser-v1.test.cjs",
+      "sha256": "483746279e32c2ab55dacecf330e6e68b4b83d111d49a04619a2617ed92807f6",
+      "candidate_bytes_equal_authored_5fe9": true
+    }
+  ],
+  "reexecution_by_this_reviewer": false,
+  "limits": [
+    "Existing independently approved focused scope reused per root instruction. Raw archive full355-file checksum audit performed by root; this reviewer checked final TAP and prior independent review directly from immutable evidence Git."
+  ],
+  "reviewed_epoch": 1792289654.0571828
+}

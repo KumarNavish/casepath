@@ -1,0 +1,5 @@
+{"epoch": 1792289524.2756367, "type": "heavy_slot_reserved", "shard": "1", "active": {"1": "reserved"}}
+{"epoch": 1792289524.2765863, "type": "pytest_start", "shard": "1", "pid": 1301289, "command": ["/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv/bin/python", "-P", "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/run_shard.py", "run", "1"], "free_bytes": 3725127680}
+{"epoch": 1792290027.6433578, "type": "pytest_terminal", "shard": "1", "exit_code": 0}
+{"epoch": 1792290028.5925353, "type": "raw_archive_ready_for_push_before_retirement", "shard": "1", "archive_sha256": "36e5110575c7eb57d1536b003792b39f1b6df8e63df27d3f8dac56b8936205ce"}
+{"epoch": 1792290028.5930035, "type": "shard_finished", "shard": "1", "active": {}, "free_bytes": 3723550720}

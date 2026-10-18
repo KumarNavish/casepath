@@ -1,0 +1,11 @@
+{
+  "reason": "Explicit isolated DB/artifact environment for every later prepare child; source prepare1 is DB-free and prior normal harness did not select DB variables",
+  "shard1_prepare_started_before_addition": true,
+  "applies_shards": [
+    2,
+    3,
+    4,
+    5,
+    6
+  ]
+}

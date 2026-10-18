@@ -23,6 +23,7 @@ def prepare(name):
          'PYTHONHASHSEED':'0','PYTHONNOUSERSITE':'1','PYTHONSAFEPATH':'1','PYTHONDONTWRITEBYTECODE':'1',
          'PYTHONPYCACHEPREFIX':str(out/'pycache'),'SOURCE_DATE_EPOCH':'1786406400',
          'CASEPATH_MODEL_MODE':'deterministic_reference','CASEPATH_SOURCE_COMMIT':SHA,
+         'CASEPATH_DB_PATH':str(out/'casepath.db'),'CASEPATH_ARTIFACT_REGISTRY_PATH':str(out/'artifact-registry'),
          'CASEPATH_UV':'/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv',
          'UV_CACHE_DIR':str(out/'uv-cache'),'UV_LINK_MODE':'copy',
          'UV_PYTHON_INSTALL_DIR':'/workspace/.local/share/uv/python'}
