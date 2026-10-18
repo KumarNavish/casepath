@@ -1,0 +1,84 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "manifest_sha256": "416eea6c4831046fca1bab76ec7072bc116cdc2912a169b094341d3a2ee68b0a",
+  "shard": 4,
+  "validation_epoch": 1792286311.496662,
+  "attempt_count": 1,
+  "counts": {
+    "assigned": 473,
+    "arguments": 473,
+    "collected": 473,
+    "junit": 473,
+    "passed": 473,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "phase_reports": 1419
+  },
+  "exact_ordered_map_arguments_collected_junit_ids_equal": true,
+  "every_assigned_id_has_exactly_one_passed_setup_call_teardown": true,
+  "phase_counts": {
+    "setup:passed": 473,
+    "call:passed": 473,
+    "teardown:passed": 473
+  },
+  "known_skip_ids_assigned": 0,
+  "pytest_exit_code": 0,
+  "started_epoch": 1792285874.6127794,
+  "finished_epoch": 1792286265.3585713,
+  "duration_seconds": 390.74579191207886,
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "473",
+      "time": "387.861",
+      "timestamp": "2026-10-18T01:11:16.331460+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "source": {
+    "head": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+    "status": "",
+    "sealed_files_independently_byte_verified_each_root": 1714,
+    "artifact_files_independently_byte_verified_each_root": 25,
+    "static_files_independently_byte_verified_each_root": 40,
+    "capsule_receipt_equal_before_after": true,
+    "capsule_receipt_file_sha256": "6c10fd977a42effacf3a924432a2f43d0891de071ea1d8bbd34fc2052c4b8c9b",
+    "before_proof_sha256": "20620e27ae8599b0817136982d52cfa92449667d71ef5bbd1a7c48baf8bfe045",
+    "after_proof_sha256": "3414f73ba982d9907a59ea748afe5e9c0d5805915971d2074b8d0077e33ffa67"
+  },
+  "runtime": {
+    "before_observed_before_test_start": true,
+    "before_after_inventory_equal": true,
+    "current_runtime_independently_matches": true,
+    "file_and_symlink_count": 3800,
+    "inventory_sha256": "0c978844c9c182fe0ff77d48c82c42336d77be160b5f637e06da3c14f15c9b5c",
+    "before_record_sha256": "16e6976040b32a5f7018269d1b107917b129f59f8e20a7196e04957ba743cdef",
+    "after_record_sha256": "6e140493bde12e3c610f8e570132aaaed0cb9a4d3898c99e5435a077db1d7f06"
+  },
+  "raw_archive": {
+    "path": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/retirement-receipts/shard4-raw.tar.gz",
+    "sha256": "296539a80460a725698b83f88c56347393e8c537b881a80c8a42ef264229ad7e",
+    "file_count": 31,
+    "byte_verified_independently": true,
+    "pushed_flag_at_receipt_read": false
+  },
+  "raw_evidence_hashes": {
+    "ATTEMPT_STARTED.json": "01b05c7b3501bea7795ce9a0f2b324c98f9f5d55d1e1eac28964cc5007892a62",
+    "command.json": "14c02f8aad0342bdc8c4a46443dd18442d16c5f8e7145912e9112f516b2ffb29",
+    "result.json": "9f3a2e1a618975f10b4b8f641bb4b29d4bafde74fd92818ac083e9b13ffa5e90",
+    "collected.json": "6c82b722a987e5d734df7d7f0e6f96196e3c13eb6abd820579988696bfbba2de",
+    "pytest-arguments.txt": "0a772c6c3fcffabf4620760603d8089d3fb95409dc697e96c2d82e9d053b58ee",
+    "reports.jsonl": "b73aeb94898c21c29e0195b4c2d000b12b66796eab45f007c4f8720e34887757",
+    "junit.xml": "8e81f347346ea479f2ec54758d03dfabc736e0bd295cee1954b7675a4f96e1a8",
+    "pytest.log": "0711a7457d8c2a2b5a0c5a7414d566af8579a4c4beedd455d8c1b8c54d72e25d",
+    "process-ownership.json": "39ef87bef742c8b20e503cd00e0faaab372fca5a0303ac807d7076f5709eeac7"
+  },
+  "runtime_retired_by_worker": false,
+  "source_edits": false,
+  "retries": 0,
+  "extra_test_commands": 0
+}
