@@ -1,0 +1,31 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "shard": "4",
+  "pushed_receipts_commit": "2354d3b76cc674e719e6ae301e3c7a41da517d57",
+  "pushed_receipt_file_bindings": {
+    "shard4/prepare.json": "aff952c537f3afb282765ff4b63cca0c74e99f6edbb19f64b5c974cf5ff34420",
+    "shard4/command.json": "14c02f8aad0342bdc8c4a46443dd18442d16c5f8e7145912e9112f516b2ffb29",
+    "shard4/result.json": "9f3a2e1a618975f10b4b8f641bb4b29d4bafde74fd92818ac083e9b13ffa5e90",
+    "shard4/reports.jsonl": "b73aeb94898c21c29e0195b4c2d000b12b66796eab45f007c4f8720e34887757",
+    "shard4/junit.xml": "8e81f347346ea479f2ec54758d03dfabc736e0bd295cee1954b7675a4f96e1a8",
+    "shard4/source-before/capsule-verification.json": "20620e27ae8599b0817136982d52cfa92449667d71ef5bbd1a7c48baf8bfe045",
+    "shard4/source-after/capsule-verification.json": "3414f73ba982d9907a59ea748afe5e9c0d5805915971d2074b8d0077e33ffa67",
+    "shard4/runtime-before.json": "16e6976040b32a5f7018269d1b107917b129f59f8e20a7196e04957ba743cdef",
+    "shard4/runtime-after.json": "6e140493bde12e3c610f8e570132aaaed0cb9a4d3898c99e5435a077db1d7f06",
+    "retirement-receipts/shard4-raw.tar.gz": "296539a80460a725698b83f88c56347393e8c537b881a80c8a42ef264229ad7e"
+  },
+  "source_capsule_before_after_equal": true,
+  "full_venv_before_after_equal": true,
+  "runtime_observed_before_first_test_start": true,
+  "raw_archive_byte_verified": true,
+  "archive_sha256": "296539a80460a725698b83f88c56347393e8c537b881a80c8a42ef264229ad7e",
+  "only_this_gate_reproducible_runtime_paths": [
+    "/workspace/casepath-reference-85a-qa/.runtime/casepath-dev-v2/source-capsules/416eea6c4831046fca1bab76ec7072bc116cdc2912a169b094341d3a2ee68b0a",
+    "/workspace/casepath-reference-85a-qa/.runtime/casepath-dev-v2/venv",
+    "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard4/uv-cache"
+  ],
+  "source_clones_fixture_databases_journals_and_failed_fixtures_preserved": true,
+  "before_free_bytes": 3809058816,
+  "epoch": 1792286327.7594702,
+  "after_free_bytes": 4098318336
+}

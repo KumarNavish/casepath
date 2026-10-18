@@ -1,0 +1,31 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "shard": "3",
+  "pushed_receipts_commit": "2354d3b76cc674e719e6ae301e3c7a41da517d57",
+  "pushed_receipt_file_bindings": {
+    "shard3/prepare.json": "9a6c9f54dbc58d4499289c7a84a1764477e6bab474333b3994ac702f5efc5626",
+    "shard3/command.json": "658c45f9447bf5b4f5dcb40451cb62d7a495bcf98dc9538f5df68156c6e534df",
+    "shard3/result.json": "e9b95bebce9f441c0e15fffd5266267171a1280be609b1683036e4511c5a6b3b",
+    "shard3/reports.jsonl": "f36de2979bcfec562cf77b1b4db5f900d7aa1055a9ddb800adaac55354f25336",
+    "shard3/junit.xml": "0ba4bf798dda3a3bf058dff8c9b4a651acdfa1a9de5042cee5340099022e714c",
+    "shard3/source-before/capsule-verification.json": "e658a1f868fe9d4f5dd6725496de14d7992cf35bb587f0444f33736616ad7ee1",
+    "shard3/source-after/capsule-verification.json": "b3363e2ce7b6facd1c7720d0ea7ba17dea34acbab07a0800edf1c20823baaaaf",
+    "shard3/runtime-before.json": "cfb6dd5bbabdc14745393de11310f1af4f7061ec017c096b59126e4db3dcec20",
+    "shard3/runtime-after.json": "73e970b13ed46b4d314346fdd49601d84aa50b810f6779148597527ac638762d",
+    "retirement-receipts/shard3-raw.tar.gz": "4497f5ceded4bb3f88d1e502287db2769c43c40987f536e142536d847b6c16c5"
+  },
+  "source_capsule_before_after_equal": true,
+  "full_venv_before_after_equal": true,
+  "runtime_observed_before_first_test_start": true,
+  "raw_archive_byte_verified": true,
+  "archive_sha256": "4497f5ceded4bb3f88d1e502287db2769c43c40987f536e142536d847b6c16c5",
+  "only_this_gate_reproducible_runtime_paths": [
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/source-capsules/416eea6c4831046fca1bab76ec7072bc116cdc2912a169b094341d3a2ee68b0a",
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv",
+    "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard3/uv-cache"
+  ],
+  "source_clones_fixture_databases_journals_and_failed_fixtures_preserved": true,
+  "before_free_bytes": 3519803392,
+  "epoch": 1792286327.2075303,
+  "after_free_bytes": 3809062912
+}
