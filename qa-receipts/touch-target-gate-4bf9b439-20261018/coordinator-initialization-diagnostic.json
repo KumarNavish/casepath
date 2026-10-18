@@ -1,0 +1,9 @@
+{
+  "candidate": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "initial_diagnostic": "git rev-parse refs/heads/qa-receipts/touch-targets-20261018 was absent locally; initialization stopped after empty root/coordinator/harness directory creation and protected HEAD/index checks",
+  "correction": "Read-only git ls-remote origin exact focused branch instead of requiring a local ref; initialization resumed before EXECUTION_AUTHORIZATION or any PREPARE_STARTED/ATTEMPT_STARTED latch existed",
+  "product_test_or_prepare_retries": 0,
+  "initialization_script_sha256": "605a7cef299a6f1baa9ca1ddbcb62beb24ce3923f7f4dec5bc718a6ad3204517",
+  "all_prior_raw_negative_capture_source_evidence_preserved": true,
+  "epoch": 1792291474.996767
+}
