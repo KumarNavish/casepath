@@ -33,8 +33,8 @@ INT64_MIN, INT64_MAX = -(2**63), 2**63 - 1
 _LOG = logging.getLogger(__name__)
 
 
-def _http_client():
-    limits = httpx.Limits(max_connections=8, max_keepalive_connections=4, keepalive_expiry=30)
+def _http_client(*, keepalive_expiry=30):
+    limits = httpx.Limits(max_connections=8, max_keepalive_connections=4, keepalive_expiry=keepalive_expiry)
     return httpx.Client(follow_redirects=False, trust_env=False, limits=limits,
         transport=httpx.HTTPTransport(retries=0, limits=limits),
         # Retain the independent total request deadline and SDK timeouts.
@@ -482,7 +482,10 @@ class TursoDatabase:
             raise ValueError('A server database credential is required.')
         self._token, self._client_factory = token, client_factory
         self._closed = False
-        self._shared_client = (client_factory() if client_factory is not None else _http_client()) if reuse_http else None
+        # Retain healthy idle sockets between reads; every read still sends its
+        # fresh proof. This adds neither keep-warm requests nor transport retries.
+        self._shared_client = (client_factory() if client_factory is not None else
+                               _http_client(keepalive_expiry=120)) if reuse_http else None
 
     def __repr__(self):
         return 'TursoDatabase(credential=<redacted>)'

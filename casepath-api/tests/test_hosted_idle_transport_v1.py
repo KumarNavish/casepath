@@ -1,0 +1,266 @@
+"""Exercise the native HTTP pool without sockets, sleeping or remote data."""
+from contextlib import contextmanager
+import json
+import ssl
+from types import SimpleNamespace
+import unittest
+from unittest.mock import patch
+
+import h11
+import httpcore
+import httpcore._sync.http11 as http11
+import httpx
+
+from casepath_api import hosted_sql_v1 as sql
+
+
+_SELECT = [('SELECT ? AS observed', (7,))]
+
+
+class _Clock:
+    def __init__(self):
+        self.value = 1000.0
+
+    def monotonic(self):
+        return self.value
+
+    def advance(self, seconds):
+        self.value += seconds
+
+
+class _Stream(httpcore.NetworkStream):
+    def __init__(self, backend):
+        self.backend = backend
+        self.server = h11.Connection(h11.SERVER)
+        self.output, self.body, self.headers = bytearray(), bytearray(), []
+        self.closed = self.peer_close = self.undetected_failure = False
+        self.read_timeouts, self.write_timeouts = [], []
+
+    def write(self, buffer, timeout=None):
+        assert not self.closed
+        self.write_timeouts.append(timeout)
+        if not buffer:
+            return  # An empty transport write does not signal peer EOF.
+        self.server.receive_data(buffer)
+        while True:
+            event = self.server.next_event()
+            if event is h11.NEED_DATA or event is h11.PAUSED:
+                return
+            if isinstance(event, h11.Request):
+                assert event.method == b'POST' and event.target == b'/v2/pipeline'
+                self.headers, self.body = list(event.headers), bytearray()
+            elif isinstance(event, h11.Data):
+                self.body.extend(event.data)
+            elif isinstance(event, h11.EndOfMessage):
+                payload = json.loads(self.body)
+                self.backend.requests.append(payload)
+                if self.undetected_failure:
+                    return
+                results = []
+                for command in payload['requests']:
+                    if command['type'] == 'close':
+                        response = {'type': 'close'}
+                    else:
+                        query = command['stmt']['sql']
+                        assert query in {'BEGIN', 'COMMIT', 'SELECT ? AS observed'}
+                        result = {'cols': [], 'rows': [], 'affected_row_count': 0, 'last_insert_rowid': None}
+                        if query.startswith('SELECT'):
+                            result.update(cols=[{'name': 'observed', 'decltype': 'INTEGER'}],
+                                          rows=[[{'type': 'integer', 'value': str(len(self.backend.requests))}]])
+                        response = {'type': 'execute', 'result': result}
+                    results.append({'type': 'ok', 'response': response})
+                body = json.dumps({'baton': None, 'base_url': None, 'results': results}).encode()
+                close = (b'connection', b'close') in self.headers
+                headers = [(b'Content-Length', str(len(body)).encode())]
+                if close:
+                    headers.append((b'Connection', b'close'))
+                self.output.extend(self.server.send(h11.Response(status_code=200, headers=headers)))
+                self.output.extend(self.server.send(h11.Data(data=body)))
+                self.output.extend(self.server.send(h11.EndOfMessage()))
+                if self.server.our_state is h11.DONE and self.server.their_state is h11.DONE:
+                    self.server.start_next_cycle()
+                else:
+                    self.peer_close = True
+                return
+
+    def read(self, max_bytes, timeout=None):
+        assert not self.closed
+        self.read_timeouts.append(timeout)
+        if self.undetected_failure:
+            return b''
+        assert self.output, 'isolated peer has no response bytes'
+        data = bytes(self.output[:max_bytes])
+        del self.output[:max_bytes]
+        return data
+
+    def close(self):
+        self.closed = True
+
+    def start_tls(self, ssl_context, server_hostname=None, timeout=None):
+        assert server_hostname == 'fixture.invalid' and timeout == 3
+        assert ssl_context.verify_mode == ssl.CERT_REQUIRED and ssl_context.check_hostname
+        self.backend.tls_starts += 1
+        return self
+
+    def get_extra_info(self, name):
+        if name == 'is_readable':
+            return self.peer_close
+        if name == 'ssl_object':
+            return SimpleNamespace(selected_alpn_protocol=lambda: 'http/1.1')
+        return None
+
+
+class _Backend(httpcore.NetworkBackend):
+    def __init__(self):
+        self.streams, self.requests = [], []
+        self.connects = self.tls_starts = 0
+
+    def connect_tcp(self, host, port, timeout=None, local_address=None, socket_options=None):
+        assert host == 'fixture.invalid' and port == 443 and timeout == 3
+        self.connects += 1
+        stream = _Stream(self)
+        self.streams.append(stream)
+        return stream
+
+    def connect_unix_socket(self, *args, **kwargs):
+        raise AssertionError('Unexpected socket')
+
+    def sleep(self, seconds):
+        raise AssertionError('Unexpected transport retry/backoff')
+
+
+@contextmanager
+def _shared():
+    clock, backend = _Clock(), _Backend()
+    # Replace the dependency's clock alias, not the SDK's real deadline clock.
+    with patch.object(http11, 'time', SimpleNamespace(monotonic=clock.monotonic)), \
+            patch('threading.Thread.start', side_effect=AssertionError('Unexpected background worker')):
+        database = sql.TursoDatabase('libsql://fixture.invalid', 'fictional-test-token-' * 3, reuse_http=True)
+        client = database._shared_client
+        pool = client._transport._pool
+        assert isinstance(client._transport, httpx.HTTPTransport)
+        assert isinstance(pool, httpcore.ConnectionPool) and not pool.connections
+        pool._network_backend = backend
+        try:
+            yield SimpleNamespace(db=database, client=client, pool=pool, clock=clock, backend=backend)
+        finally:
+            database.close()
+
+
+def _read(harness, *, close_http=False):
+    with harness.db.connect() as connection:
+        cursors = connection.read_snapshot(_SELECT, close_http=close_http)
+        return cursors[0].fetchone()['observed']
+
+
+class HostedIdleTransportTests(unittest.TestCase):
+    def assert_fresh_snapshots(self, harness, count):
+        self.assertEqual(len(harness.backend.requests), count)
+        for payload in harness.backend.requests:
+            self.assertIsNone(payload['baton'])
+            self.assertEqual([row['type'] for row in payload['requests']], ['execute'] * 3 + ['close'])
+            self.assertEqual([row['stmt']['sql'] for row in payload['requests'][:-1]],
+                             ['BEGIN', 'SELECT ? AS observed', 'COMMIT'])
+            self.assertEqual(payload['requests'][1]['stmt']['args'], [{'type': 'integer', 'value': '7'}])
+
+    def test_shared_pool_keeps_existing_bounds_and_tls(self):
+        with _shared() as h:
+            self.assertEqual(h.pool._keepalive_expiry, 120)
+            self.assertEqual((h.pool._max_connections, h.pool._max_keepalive_connections, h.pool._retries), (8, 4, 0))
+            self.assertEqual((h.client.timeout.connect, h.client.timeout.read,
+                              h.client.timeout.write, h.client.timeout.pool), (3, 8, 4, 2))
+            self.assertFalse(h.client.follow_redirects)
+            self.assertFalse(h.client._trust_env)
+            self.assertEqual((sql.MAX_BYTES, sql.REQUEST_SECONDS), (32 * 1024 * 1024, 12))
+            self.assertEqual(_read(h), 1)
+            self.assertTrue(all(value == 8 for value in h.backend.streams[0].read_timeouts))
+            self.assertTrue(all(value == 4 for value in h.backend.streams[0].write_timeouts))
+
+    def test_shared_healthy_socket_reuses_after_47_seconds_with_fresh_snapshot(self):
+        with _shared() as h:
+            self.assertEqual(_read(h), 1)
+            h.clock.advance(47)
+            self.assert_fresh_snapshots(h, 1)  # No keep-warm or background request.
+            self.assertEqual(_read(h), 2)
+            self.assertEqual((h.backend.connects, h.backend.tls_starts), (1, 1))
+            self.assert_fresh_snapshots(h, 2)
+
+    def test_shared_socket_expires_after_120_seconds(self):
+        with _shared() as h:
+            self.assertEqual(_read(h), 1)
+            h.clock.advance(121)
+            self.assert_fresh_snapshots(h, 1)
+            self.assertEqual(_read(h), 2)
+            self.assertTrue(h.backend.streams[0].closed)
+            self.assertEqual((h.backend.connects, h.backend.tls_starts), (2, 2))
+            self.assert_fresh_snapshots(h, 2)
+
+    def test_retention_renews_from_last_response_without_background_requests(self):
+        with _shared() as h:
+            self.assertEqual(_read(h), 1)
+            for ordinal in (2, 3):
+                h.clock.advance(100)
+                self.assert_fresh_snapshots(h, ordinal - 1)
+                self.assertEqual(_read(h), ordinal)
+            self.assertEqual((h.backend.connects, h.backend.tls_starts), (1, 1))
+            self.assert_fresh_snapshots(h, 3)
+
+    def test_detected_peer_close_reconnects_without_replaying_a_request(self):
+        with _shared() as h:
+            self.assertEqual(_read(h), 1)
+            h.backend.streams[0].peer_close = True
+            h.clock.advance(47)
+            self.assertEqual(_read(h), 2)
+            self.assertTrue(h.backend.streams[0].closed)
+            self.assertEqual((h.backend.connects, h.backend.tls_starts), (2, 2))
+            self.assert_fresh_snapshots(h, 2)
+
+    def test_undetected_peer_failure_poisoned_without_retry_or_cached_result(self):
+        with _shared() as h:
+            self.assertEqual(_read(h), 1)
+            h.backend.streams[0].undetected_failure = True
+            h.clock.advance(47)
+            connection = h.db.connect()
+            with self.assertLogs(sql._LOG, level='WARNING'), self.assertRaises(sql.HostedStorageError):
+                connection.read_snapshot(_SELECT)
+            self.assertTrue(connection._poisoned)
+            with self.assertRaises(sql.HostedStorageError):
+                connection.read_snapshot(_SELECT)
+            connection.close()
+            self.assertEqual((h.backend.connects, h.backend.tls_starts), (1, 1))
+            self.assert_fresh_snapshots(h, 2)
+
+    def test_raw_read_close_retires_socket_not_shared_client(self):
+        with _shared() as h:
+            self.assertEqual(_read(h, close_http=True), 1)
+            self.assertTrue(h.backend.streams[0].closed)
+            self.assertFalse(h.client.is_closed)
+            self.assertEqual(_read(h), 2)
+            self.assertEqual((h.backend.connects, h.backend.tls_starts), (2, 2))
+            self.assert_fresh_snapshots(h, 2)
+
+    def test_nonshared_default_retention_is_unchanged(self):
+        with sql.TursoDatabase('libsql://fixture.invalid', 'fictional-test-token-' * 3).connect() as connection:
+            self.assertEqual(connection._client._transport._pool._keepalive_expiry, 30)
+
+    def test_injected_factory_and_shared_client_ownership_are_unchanged(self):
+        client = httpx.Client(transport=httpx.MockTransport(lambda request: self.fail('Unexpected request')))
+        with patch.object(client, 'close', wraps=client.close) as close:
+            factory = unittest.mock.Mock(return_value=client)
+            database = sql.TursoDatabase('libsql://fixture.invalid', 'fictional-test-token-' * 3,
+                                         client_factory=factory, reuse_http=True)
+            try:
+                for _ in range(2):
+                    with database.connect() as connection:
+                        self.assertIs(connection._client, client)
+                    self.assertFalse(client.is_closed)
+                factory.assert_called_once_with()
+                close.assert_not_called()
+            finally:
+                database.close()
+                database.close()
+            close.assert_called_once_with()
+
+
+if __name__ == '__main__':
+    unittest.main()
