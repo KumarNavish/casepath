@@ -1,0 +1,31 @@
+{
+  "candidate": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "shard": "3",
+  "pushed_receipts_commit": "7fc79a7af0c565c2c5af2237d1aa8b84ed5ae4f3",
+  "pushed_receipt_file_bindings": {
+    "shard3/prepare.json": "74d46dd5a0478fbca6e3b51dde557edf34da2ed79161734632a42a469bce884d",
+    "shard3/command.json": "13288dbae85fecc764755672bcf20e781d500fea7ef435ad7daf3d9eba3e57eb",
+    "shard3/result.json": "dc73e46da8e4eec74f73495998f66402bf067fdd7dd5574b1a6e33e7f6452c45",
+    "shard3/reports.jsonl": "aa05f5eadcfbd493ea9b303727ebd60a4fd57eff688cea0df129e57c6865a601",
+    "shard3/junit.xml": "d1f9f66eb2397969fa8e9375a6458afb9fc8f99c2c97412b02eb0fe33b7df526",
+    "shard3/source-before/capsule-verification.json": "6ffc7a5111d34180f9e60cfa0e9fe9ad66044b87dcdab40cd4e5fe1eb76d5072",
+    "shard3/source-after/capsule-verification.json": "50575b80171020f82318fa64348baa8acc21573343d8bbe038b216818c9eaf06",
+    "shard3/runtime-before.json": "c8482083249c8db95440d1304afa0b4a6cab548dc28bfe98aed378bf538e49de",
+    "shard3/runtime-after.json": "19b5bf64ec561f21e349cc0c64c19e3866ed3afd191dae2e8e2edfff3e54005a",
+    "retirement-receipts/shard3-raw.tar.gz": "9de8c4e8c263a9b8085483dec987b62e83ffe7c3057f1a34dddda7c5415faefe"
+  },
+  "source_capsule_before_after_equal": true,
+  "full_venv_before_after_equal": true,
+  "runtime_observed_before_first_test_start": true,
+  "raw_archive_byte_verified": true,
+  "archive_sha256": "9de8c4e8c263a9b8085483dec987b62e83ffe7c3057f1a34dddda7c5415faefe",
+  "only_this_gate_reproducible_runtime_paths": [
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/source-capsules/98bd51f82f96e146314496cd41255781634d19c407ced1a37221927b91a6b32e",
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv",
+    "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard3/uv-cache"
+  ],
+  "source_clones_fixture_databases_journals_and_failed_fixtures_preserved": true,
+  "before_free_bytes": 3704868864,
+  "epoch": 1792290838.6222498,
+  "after_free_bytes": 3994148864
+}
