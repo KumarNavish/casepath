@@ -59,9 +59,6 @@ def one(n):
     with lock:active[n]='prepare'
     event({'type':'prepare_start','shard':n,'free_bytes':shutil.disk_usage('/workspace').free})
     code=checked(['/usr/bin/python3',str(R/'harness/prepare_clones.py'),f'shard{n}'],repo,process_env,out/'prepare-wrapper.log');assert code==0,('prepare',n,code)
-    cache=out/'uv-cache';record={'path':str(cache),'normal_prepare_exit_code':0,'before_free_bytes':shutil.disk_usage('/workspace').free,'only_owned_reproducible_cache':True}
-    if cache.exists():shutil.rmtree(cache)
-    record['after_free_bytes']=shutil.disk_usage('/workspace').free;save(out/'prepare-cache-retirement.json',record)
   if not (out/'source-before/capsule-verification.json').exists():verify(n,'before')
   env=json.loads((out/'prepare.json').read_text())['env'];assert shutil.disk_usage('/workspace').free>=MIN
   with lock:active[n]='pytest'
