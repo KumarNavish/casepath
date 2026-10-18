@@ -1,0 +1,64 @@
+{
+  "status": "PASS_TERMINAL_SHARD",
+  "shard": 2,
+  "selected": 598,
+  "passed": 597,
+  "skipped": 1,
+  "failed": 0,
+  "raw_phase_rows": 1794,
+  "junit_cases": 598,
+  "raw_phase_and_junit_ids_exact": true,
+  "known_skip_details": {
+    "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows": {
+      "when": "call",
+      "reason": "Skipped: frozen independent-transition packet is not available",
+      "line": 605
+    }
+  },
+  "single_original_attempt": true,
+  "exit_code": 0,
+  "pytest_duration_seconds": 382.7015001773834,
+  "prepare_seconds": 8.748786687850952,
+  "source_before_after_equal": true,
+  "capsule_receipt_file_sha256": "e574d5099aefffb62cc19581d12126c3e14919b3f0d12a3403282732d600b5ad",
+  "source_artifact_static_counts": [
+    1714,
+    25,
+    40
+  ],
+  "direct_terminal_clone_sealed_files_verified": 1714,
+  "runtime_file_and_symlink_count": 3800,
+  "runtime_inventory_sha256": "c2b71bcf6ff0585439ffd65be4723a013038825dac84d12ff0578cd137a2816c",
+  "runtime_before_after_equal": true,
+  "runtime_observed_before_test_start": true,
+  "timing_regressions_passed": 0,
+  "env_isolation": {
+    "HOME": "/workspace/owh2",
+    "TMPDIR": "/workspace/owt2",
+    "TMP": "/workspace/owt2",
+    "TEMP": "/workspace/owt2",
+    "CASEPATH_DB_PATH": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard2/casepath.db",
+    "CASEPATH_ARTIFACT_REGISTRY_PATH": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard2/artifact-registry"
+  },
+  "bindings": {
+    "shard2/collected.json": "e87fe3a232657fffdbd32fc9ddcf9c7d5bca703ea3a32736cbc1973a1ede7818",
+    "shard2/reports.jsonl": "65803dcc3a1e0d7ac5e6bc90ae0916a5c949d4954e48c4ef7fe9c2b7bb4a0805",
+    "shard2/junit.xml": "f899139cb112264de538294f48dc56d4e09a04af6226b42e4c2445120f3be28e",
+    "shard2/command.json": "ef998073fb3c4bcec8a0c292ca2ebb291657e9d2b77b5774c0dabe15126b602c",
+    "shard2/result.json": "d1c0587709a377c20881d69a4ac4f9aa3d063443476acd97f955d58edd9ff44e",
+    "shard2/ATTEMPT_STARTED.json": "8141db1877d04195d754794207f913da845a998a45ed1ff6a0c6c5fe14d2d44a",
+    "shard2/pytest-arguments.txt": "940879ba95c09b33cdca57bea373642a743b3fd79baff49b5fe6493957891649",
+    "shard2/pytest.log": "48ffe39683006c3bdd4da76231f8ac8db4fee9de690d86335e8326ceed843a3e",
+    "shard2/prepare.json": "b8a532f22b1edb177923ecded271bf2e9013c08b7817c99cbb85109ef67a055f",
+    "shard2/source-before/capsule-verification.json": "3052fe836a7db51c8e0365d0cf78fc448ddc4964a79fc4483848e4f2c2e408dc",
+    "shard2/source-after/capsule-verification.json": "11461e8a347a6113663673b6f0b1da229bf9f4d1b47bd1307b97f9557b6a3455",
+    "shard2/source-before/CAPSULE_RECEIPT.json": "e574d5099aefffb62cc19581d12126c3e14919b3f0d12a3403282732d600b5ad",
+    "shard2/source-after/CAPSULE_RECEIPT.json": "e574d5099aefffb62cc19581d12126c3e14919b3f0d12a3403282732d600b5ad",
+    "shard2/runtime-before.json": "811ecfa8fb18b599bafcf148063883af4e0366048b2717635c7140e0a429d58b",
+    "shard2/runtime-after.json": "9f0ce62c18c56a602373a8dbb99f948434ded1423cf6a74536b5bfa1b3e7e33b"
+  },
+  "candidate": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "manifest_sha256": "b7af849b48589e598bcb5385d7dd4ad63bc9a868e634f62ff0be96910ec453e3",
+  "reviewer": "/root/gate_4bf_review",
+  "reviewed_epoch": 1792296578.4652197
+}

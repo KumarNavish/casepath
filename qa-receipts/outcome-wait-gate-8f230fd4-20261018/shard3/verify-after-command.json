@@ -1,0 +1,40 @@
+{
+  "shard": "3",
+  "phase": "after",
+  "command": [
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/verify_prepared_capsules.py",
+    "shard3",
+    "after"
+  ],
+  "cwd": "/workspace/casepath-release-ae0-shard6",
+  "env": {
+    "HOME": "/workspace/owh3",
+    "TMPDIR": "/workspace/owt3",
+    "TMP": "/workspace/owt3",
+    "TEMP": "/workspace/owt3",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard3/pycache",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+    "CASEPATH_DB_PATH": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard3/casepath.db",
+    "CASEPATH_ARTIFACT_REGISTRY_PATH": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard3/artifact-registry",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard3/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "UV_PYTHON_INSTALL_DIR": "/workspace/.local/share/uv/python"
+  },
+  "started_epoch": 1792296929.380957,
+  "exit_code": 0,
+  "finished_epoch": 1792296930.2323225
+}
