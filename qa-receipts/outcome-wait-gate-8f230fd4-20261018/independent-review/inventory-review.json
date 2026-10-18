@@ -1,0 +1,105 @@
+{
+  "status": "PASS_INVENTORY_TERMINAL_SHARDS_PENDING",
+  "full_count": 2777,
+  "full_sha256": "2afdd1b449b87d017fd58ef7aa90c594c244dfd65fe64a9120225d562ba16c2c",
+  "prior_4bf_and_a89_exact_set_equal": true,
+  "baseline_b861_count": 2613,
+  "baseline_b861_sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+  "baseline_b861_exact_subset": true,
+  "added_ids": 0,
+  "removed_ids": 0,
+  "renamed_ids": 0,
+  "cloud_count": 2650,
+  "mac_count": 127,
+  "mac_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "mac_excluded_from_cloud": true,
+  "whole_file_disjoint_partition": true,
+  "counts": {
+    "1": 9,
+    "2": 598,
+    "3": 403,
+    "4": 473,
+    "5": 509,
+    "6": 658
+  },
+  "known_skips_exact_prior_10": true,
+  "timing_regressions_all_13_retained_in_shard5": true,
+  "collection_exit_code": 0,
+  "collection_seconds": 10.708262920379639,
+  "direct_source_observations": [
+    {
+      "shard": 1,
+      "repo": "/workspace/casepath-release-ae0-shard4",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_file_hashes_verified": 1714
+    },
+    {
+      "shard": 2,
+      "repo": "/workspace/casepath-knowledge-startup-render-20261018",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_file_hashes_verified": 1714
+    },
+    {
+      "shard": 3,
+      "repo": "/workspace/casepath-release-ae0-shard6",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_file_hashes_verified": 1714
+    },
+    {
+      "shard": 4,
+      "repo": "/workspace/casepath-release-ae0-shard2",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_file_hashes_verified": 1714
+    },
+    {
+      "shard": 5,
+      "repo": "/workspace/casepath-polish-gate-inventory-20261013",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_file_hashes_verified": 1714
+    },
+    {
+      "shard": 6,
+      "repo": "/workspace/casepath-release-ae0-shard3",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_file_hashes_verified": 1714
+    }
+  ],
+  "bindings": {
+    "source-manifest.json": "b7af849b48589e598bcb5385d7dd4ad63bc9a868e634f62ff0be96910ec453e3",
+    "collected-ids.txt": "2afdd1b449b87d017fd58ef7aa90c594c244dfd65fe64a9120225d562ba16c2c",
+    "cloud-assigned-ids.txt": "203d600040752d229ba3c1dbca15ae58e1acbe2f56e0f47eed6914807d4c697e",
+    "mac-ids.txt": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "shard-map.json": "73e0f791cbcb1787c20ddd762a33745708d2529de545fb2f06674834393023c5",
+    "known-skips.json": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7",
+    "timing-regression-ids.json": "32981b594b82fc3c6ee3a8064ad4d64e5acb441f681a2f353bb454339d573e8d",
+    "inventory/collected.json": "0e3e19128163b37c308a1b64629ebbfb659341cbb737f5a58182efce304f38dd",
+    "inventory/command.json": "9ef6e8daca8def083690c6c384c13128bb662e0cf4f8d7c52be245d2e32d2fca",
+    "inventory/result.json": "04b589003d8f9bf9e2c97bdc9c7aeda81592be888c74f3b9ff116aebbe416d68",
+    "inventory/ATTEMPT_STARTED.json": "8c2825bc402962140269fd2873f8687d65e11c60512f5e00518311a9a61c32c0",
+    "harness/run_shard.py": "8786b20a228c804b80ae9d1e2de35c8bf6947c9ceb912a12fde2577ae6d40321",
+    "harness/casepath_shard_observer.py": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "harness/verify_prepared_capsules.py": "0464f1b1b95b37de038eb197a44ab7d71949c286fa24b36e85f89c37fd68bb01",
+    "harness/runtime_inventory.py": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342"
+  },
+  "limits": [
+    "No product tests, prepare, browser, provider, network, or source edits run by this reviewer.",
+    "Mac result is owner attestation; Mac raw evidence is not inspected here.",
+    "Shard terminal phases/JUnit/runtime equality remain pending."
+  ],
+  "candidate": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "manifest_sha256": "b7af849b48589e598bcb5385d7dd4ad63bc9a868e634f62ff0be96910ec453e3",
+  "reviewer": "/root/gate_4bf_review",
+  "reviewed_epoch": 1792295666.9796562
+}

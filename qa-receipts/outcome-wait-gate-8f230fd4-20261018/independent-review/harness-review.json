@@ -1,0 +1,44 @@
+{
+  "status": "PASS_HARNESS_REVIEW",
+  "candidate": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "manifest_sha256": "b7af849b48589e598bcb5385d7dd4ad63bc9a868e634f62ff0be96910ec453e3",
+  "normalized_to_proven4bf_harness": true,
+  "files": [
+    {
+      "file": "harness/casepath_shard_observer.py",
+      "prior_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "current_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "only_candidate_manifest_root_child_path_substitutions": true
+    },
+    {
+      "file": "harness/runtime_inventory.py",
+      "prior_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+      "current_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+      "only_candidate_manifest_root_child_path_substitutions": true
+    },
+    {
+      "file": "harness/run_shard.py",
+      "prior_sha256": "95aac0e5c75ea7ba14f1365b753663f717c4cae403f65a4ae38dec5ab4661f57",
+      "current_sha256": "8786b20a228c804b80ae9d1e2de35c8bf6947c9ceb912a12fde2577ae6d40321",
+      "only_candidate_manifest_root_child_path_substitutions": true
+    },
+    {
+      "file": "harness/prepare_clones.py",
+      "prior_sha256": "8208a551ce9c148c1980c0c8442b7460c4fbaea30e212fa35c3cc81fe55c1efe",
+      "current_sha256": "7deb01e7f4fbb4db10dcdcf76277c74917781072e36cc6fe33ce2fcd3c85705f",
+      "only_candidate_manifest_root_child_path_substitutions": true
+    },
+    {
+      "file": "harness/verify_prepared_capsules.py",
+      "prior_sha256": "d52b23b8ebd150ce0804d065e53c91dfdb99da7f687b50c7b4dcea2f54afcfbd",
+      "current_sha256": "0464f1b1b95b37de038eb197a44ab7d71949c286fa24b36e85f89c37fd68bb01",
+      "only_candidate_manifest_root_child_path_substitutions": true
+    }
+  ],
+  "configured_environment_isolation_only": true,
+  "optional_environ_sampling_retried": false,
+  "observed_child_environment_path_coverage": false,
+  "qualification_sha256": "f3ff4126c98b024eebfbf1b85b763a3c498b1ac0449e5df26fe171985a201b28",
+  "no_product_execution_by_reviewer": true,
+  "reviewed_epoch": 1792295710.9063258
+}

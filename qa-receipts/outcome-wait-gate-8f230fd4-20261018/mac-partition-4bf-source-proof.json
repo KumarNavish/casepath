@@ -1,0 +1,27 @@
+{
+  "candidate": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "count": 127,
+  "files": [
+    {
+      "file": "casepath-api/tests/test_cli_v1.py",
+      "sha256": "47f728e0521b3a6870f66f2f95be76d4ee587237a3fc00a767c7f9b4e96e786c",
+      "byte_equal_to_4bf": true,
+      "ids": 69
+    },
+    {
+      "file": "casepath-api/tests/test_journal_corpus_restart.py",
+      "sha256": "93cd1df865e62917968d974ecd45bc737f082211692f22a9802f25962c83ec40",
+      "byte_equal_to_4bf": true,
+      "ids": 6
+    },
+    {
+      "file": "casepath-api/tests/test_local_data_root.py",
+      "sha256": "25a28743798307ceae39a8361d8e3b0808dd6e616c689e65f27bd5106ea462d9",
+      "byte_equal_to_4bf": true,
+      "ids": 52
+    }
+  ],
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "prior4bf_attestation_not_reused": true,
+  "current_owner_attestation": "mac-owner-attestation.json"
+}

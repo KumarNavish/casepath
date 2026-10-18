@@ -1,0 +1,82 @@
+{
+  "status": "PASS_SOURCE_ADMISSION",
+  "actual_cloud_host": "656813ef2295",
+  "source_file_count": 1714,
+  "base": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "reviewed_language_commit": "f6e6f7bb033f38b4d999fe0f5b353f656eef87bd",
+  "changed_paths_vs_4bf": [
+    "casepath-qa/autonomous-language-v1.test.cjs",
+    "casepath/assets/autonomous-language-v1.js",
+    "casepath/index.html",
+    "casepath/source-manifest.json"
+  ],
+  "language_source_hashes": {
+    "casepath/assets/autonomous-language-v1.js": "a803c34ceb0f995fb1eb05eeb6ba52cc9c8d9c210d767a3c6140ba381b651594",
+    "casepath-qa/autonomous-language-v1.test.cjs": "f6202f002fdad90f661f75891b18e11e04f8f191f345eaaceb9997754c06b90f"
+  },
+  "index_pin_matches": true,
+  "clone_observations": [
+    {
+      "shard": 1,
+      "repo": "/workspace/casepath-release-ae0-shard4",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1714,
+      "reviewed_f6_language_bytes_equal": true
+    },
+    {
+      "shard": 2,
+      "repo": "/workspace/casepath-knowledge-startup-render-20261018",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1714,
+      "reviewed_f6_language_bytes_equal": true
+    },
+    {
+      "shard": 3,
+      "repo": "/workspace/casepath-release-ae0-shard6",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1714,
+      "reviewed_f6_language_bytes_equal": true
+    },
+    {
+      "shard": 4,
+      "repo": "/workspace/casepath-release-ae0-shard2",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1714,
+      "reviewed_f6_language_bytes_equal": true
+    },
+    {
+      "shard": 5,
+      "repo": "/workspace/casepath-polish-gate-inventory-20261013",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1714,
+      "reviewed_f6_language_bytes_equal": true
+    },
+    {
+      "shard": 6,
+      "repo": "/workspace/casepath-release-ae0-shard3",
+      "head": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1714,
+      "reviewed_f6_language_bytes_equal": true
+    }
+  ],
+  "limits": [
+    "Source admission only; current fresh pytest collection, six terminal attempts, and current Mac127 attestation remain pending.",
+    "Protected f6 writer checkout was not selected, reset, or mutated by this reviewer."
+  ],
+  "candidate": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "manifest_sha256": "b7af849b48589e598bcb5385d7dd4ad63bc9a868e634f62ff0be96910ec453e3",
+  "reviewer": "/root/gate_4bf_review",
+  "reviewed_epoch": 1792295612.8925369
+}

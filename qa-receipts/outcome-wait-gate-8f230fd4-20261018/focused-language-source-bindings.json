@@ -1,0 +1,31 @@
+{
+  "candidate": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "focused_commit": "81c71464a5e33b51de0159f064b7cd4d2e713ed4",
+  "subtree": "qa-evidence/outcome-wait-reasons-20261018",
+  "reviewed_source_commit": "f6e6f7bb033f38b4d999fe0f5b353f656eef87bd",
+  "source_sha256": {
+    "casepath-qa/autonomous-language-v1.test.cjs": "f6202f002fdad90f661f75891b18e11e04f8f191f345eaaceb9997754c06b90f",
+    "casepath/assets/autonomous-language-v1.js": "a803c34ceb0f995fb1eb05eeb6ba52cc9c8d9c210d767a3c6140ba381b651594"
+  },
+  "existing_green_node_tests": 62,
+  "top_level_node_tests": 21,
+  "nested_node_tests": 41,
+  "new_including_nested": 45,
+  "baseline_existing": 17,
+  "existing_red_failures": 45,
+  "native_adapter_rows": 9,
+  "native_all_other_fields_unchanged_previously_verified": true,
+  "focused_tests_reexecuted_by_gate": false,
+  "not_pytest_ids": true,
+  "inspected_git_blob_sha256": {
+    "coordinator-verification.json": "139fd25952ee25a578d12815bcbdcea8728aee2c2b0c72c7d0dd4cf05dc613a6",
+    "writer/receipt.json": "b7c65f84908ef86b6df76278b830a5b5bd3753e074c8884e024339cd95eac9d6",
+    "writer/green.tap": "77b386dd2dd6f6ac6a6a77d8a889b1ecb049a64e8ee14dfef7edf52bd837732a",
+    "writer/green-source-test.sha256": "ccbd2e8f12d73ebe3003f019554479fc4e00bf069bdd2fcb2bb349bf8bd2791e",
+    "review/review-receipt.json": "dba1935a26616fc35ef08fd0fedb5f9a6d8bf32016353d35f7a1b1e2ff7787c1",
+    "root/native-nine.json": "69c3784b5007931a6b4efd83df390e529a2a33ddf38db8b6bf9f4bb46cbedce9",
+    "SHA256SUMS": "fdd05e74174233a46d93c72e476d3091a7f34e7624641244d3c25080d46f6319"
+  },
+  "qualification": "Existing62 Node results and native9 proof inspected from immutable81c evidence; exact two current language source bytes match frozen8f. Prior touch14 remains previous4bf evidence, with no focused rerun and no claim that everyUIasset is unchanged.",
+  "epoch": 1792295654.9074001
+}
