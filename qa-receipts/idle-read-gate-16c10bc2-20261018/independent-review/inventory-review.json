@@ -1,0 +1,71 @@
+{
+  "status": "PASS_INVENTORY_TERMINAL_SHARDS_PENDING",
+  "full_count": 2842,
+  "full_sha256": "11fa293dda8a8c4256605bd439857d245b2f41697e31f80a3c8cadbff65729cf",
+  "prior_baseline_count": 2833,
+  "prior_8f_4bf_a89_all_ids_unchanged": true,
+  "baseline_b861_count": 2613,
+  "baseline_b861_sha256": "9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720",
+  "baseline_b861_exact_subset": true,
+  "new_id_count": 9,
+  "new_id_counts_by_file": {
+    "casepath-api/tests/test_hosted_idle_transport_v1.py": 9
+  },
+  "new_test_ids": [
+    "casepath-api/tests/test_hosted_idle_transport_v1.py::HostedIdleTransportTests::test_detected_peer_close_reconnects_without_replaying_a_request",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py::HostedIdleTransportTests::test_injected_factory_and_shared_client_ownership_are_unchanged",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py::HostedIdleTransportTests::test_nonshared_default_retention_is_unchanged",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py::HostedIdleTransportTests::test_raw_read_close_retires_socket_not_shared_client",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py::HostedIdleTransportTests::test_retention_renews_from_last_response_without_background_requests",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py::HostedIdleTransportTests::test_shared_healthy_socket_reuses_after_47_seconds_with_fresh_snapshot",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py::HostedIdleTransportTests::test_shared_pool_keeps_existing_bounds_and_tls",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py::HostedIdleTransportTests::test_shared_socket_expires_after_120_seconds",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py::HostedIdleTransportTests::test_undetected_peer_failure_poisoned_without_retry_or_cached_result"
+  ],
+  "removed_ids": 0,
+  "renamed_ids": 0,
+  "cloud_count": 2715,
+  "mac_count": 127,
+  "mac_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "mac_excluded_from_cloud": true,
+  "whole_file_disjoint_partition": true,
+  "counts": {
+    "1": 9,
+    "2": 598,
+    "3": 406,
+    "4": 500,
+    "5": 544,
+    "6": 658
+  },
+  "all_prior_cloud_owners_unchanged": true,
+  "known_skips_exact_prior_10": true,
+  "timing_regressions_all_13_retained_in_shard5": true,
+  "collection_exit_code": 0,
+  "collection_seconds": 10.866256952285767,
+  "bindings": {
+    "source-manifest.json": "e7fbfd43062c19ed04468966aee9a2c61dcb1064b8baaa449cd4a2fe841e0442",
+    "collected-ids.txt": "11fa293dda8a8c4256605bd439857d245b2f41697e31f80a3c8cadbff65729cf",
+    "cloud-assigned-ids.txt": "b9cb6f16d89cb6cdce43a3b1aa14e3ef5c046accc4f05c8ba6d4c092cc2c6f6f",
+    "mac-ids.txt": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "shard-map.json": "863ccf99b0a4d1c9dfb0bd3b9d9cb18873712abebd806ddc0346e6b4b192c8f3",
+    "fresh-inventory-delta.json": "66ff3fac8c596e71b99dee49cf3ba8664e97d850c7203a427f4f6dfdfc48fd92",
+    "known-skips.json": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7",
+    "timing-regression-ids.json": "32981b594b82fc3c6ee3a8064ad4d64e5acb441f681a2f353bb454339d573e8d",
+    "inventory/collected.json": "cf0be9eabda109dca6fe7fa3d1176784c4308c3235ad73270d6ea6d03043a7bb",
+    "inventory/command.json": "2deb5d215d797d017952ca29c52af584da2b6307eb3317792b807a8158d23a43",
+    "inventory/result.json": "5679b7cc29a857b754fc9758e87fdb3279306760e24b959564881015b215846f",
+    "inventory/ATTEMPT_STARTED.json": "47df870c59b171ddacc5804c59d1b36783177505dd79fe1f97292bf517c722df",
+    "harness/run_shard.py": "12af02eeef6ee7e8bae1335c6b03619a9e9fc8c0465701ff748b8d5329f902fc",
+    "harness/casepath_shard_observer.py": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "harness/verify_prepared_capsules.py": "6ceb8911de080c533334035d9ccc1951f96fe5769ab64298a21d0e708c7f97f9",
+    "harness/runtime_inventory.py": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342"
+  },
+  "limits": [
+    "CurrentMac127 is owner attestation, not Cloud raw inspection.",
+    "All9 new durable transport pytest IDs are assigned; their terminal passing phase evidence remains pending."
+  ],
+  "candidate": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+  "manifest_sha256": "e7fbfd43062c19ed04468966aee9a2c61dcb1064b8baaa449cd4a2fe841e0442",
+  "reviewer": "/root/gate_4bf_review",
+  "reviewed_epoch": 1792314863.4595854
+}

@@ -1,0 +1,26 @@
+{
+  "status": "PASS_METADATA_CORRECTION_REVIEW",
+  "candidate": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+  "reviewer": "/root/gate_4bf_review",
+  "reviewed_epoch": 1792314881.4818351,
+  "initial_metadata_assertion_exit_code": 1,
+  "corrected_baseline_parameter": 2833,
+  "fresh_pytest_collection_original_exit_code": 0,
+  "fresh_pytest_collection_not_repeated": true,
+  "new_inventory_and_independent_raw_reconciliation_passed": true,
+  "original_harness_review_preserved": true,
+  "current_inventory_script_sha256": "b00ba09f04e6c94b168223e7f077f3a292fd97289eb05fce477fab079c0ee09c",
+  "prior_inventory_script_sha256_from_original_provenance": "d339c9f656411c0fbd7c0c9317e171c98b4a049e0db1161b1867777189674c45",
+  "scope": "Coordinator inventory metadata assertion only; five execution/observer/capsule/runtime harness files remain unchanged.",
+  "bindings": {
+    "coordinator/inventory.py": "b00ba09f04e6c94b168223e7f077f3a292fd97289eb05fce477fab079c0ee09c",
+    "harness-inventory-parameter-correction.json": "96449dbc97a87cdfee9cc19d58fe9675c40bdbfef1aa40aa61c3375fd6932fa6",
+    "inventory/command.json": "2deb5d215d797d017952ca29c52af584da2b6307eb3317792b807a8158d23a43",
+    "inventory/result.json": "5679b7cc29a857b754fc9758e87fdb3279306760e24b959564881015b215846f",
+    "inventory/ATTEMPT_STARTED.json": "47df870c59b171ddacc5804c59d1b36783177505dd79fe1f97292bf517c722df",
+    "inventory/collected.json": "cf0be9eabda109dca6fe7fa3d1176784c4308c3235ad73270d6ea6d03043a7bb",
+    "independent-review/inventory-review.json": "aaf930bcbe87cf0ed619ba83753dcf68fec3a276396da57f19f8735452d71243"
+  },
+  "immutable_initial_script_commit": "faca3517e8a14a445b057578facc1b04c76ee9fc",
+  "actual_diff_only_prior_count_assertion_2777_to_2833": true
+}
