@@ -1,0 +1,31 @@
+{
+  "candidate": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "shard": "1",
+  "pushed_receipts_commit": "a7cb2b3dada8da084d30ab8768bd22053fb29a5e",
+  "pushed_receipt_file_bindings": {
+    "shard1/prepare.json": "bbf2881ee302134ca3a0667b2b305a1be76ecbb8ed1e0948021f05481baa1aac",
+    "shard1/command.json": "26b4e9a22e8a6770ecbde6985116e48b334fc7efa4aae56562cc6cebd1b5b0d7",
+    "shard1/result.json": "1f84db02b3132f7bd49c76a0121c47bfbd0b5cc28c2a78a3db8bb7802290dbd5",
+    "shard1/reports.jsonl": "e0984aa651cd81ac675354ac5d4f0e524a966d775ad5c783716e232363aa4d29",
+    "shard1/junit.xml": "e0c61ad4ad4e7577fe787630dc5b6411e95377b794a9a08cd1070a8a000bc9b3",
+    "shard1/source-before/capsule-verification.json": "281763dc87c6c3d7302703095495bbed5d7f599cd0a154ec966673eef0faf4d9",
+    "shard1/source-after/capsule-verification.json": "b07ff6d625d0e5c7115b8702cfd602bdc3937b82291e771003f12c08ed1b8a89",
+    "shard1/runtime-before.json": "5cff764921ce66c72e10b3249a93e8781ca5f7d8731d90c86eb8402af41ecad8",
+    "shard1/runtime-after.json": "383eb3a68cfcb49341a0ec01bb9729df0a869880a33e0d804fbde0c3c775766b",
+    "retirement-receipts/shard1-raw.tar.gz": "bc52b66890949aad6d9bc959a525cba1e01858b1459ac755bf1009c1378bb1bd"
+  },
+  "source_capsule_before_after_equal": true,
+  "full_venv_before_after_equal": true,
+  "runtime_observed_before_first_test_start": true,
+  "raw_archive_byte_verified": true,
+  "archive_sha256": "bc52b66890949aad6d9bc959a525cba1e01858b1459ac755bf1009c1378bb1bd",
+  "only_this_gate_reproducible_runtime_paths": [
+    "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/source-capsules/0d713ebe1ea45681c139ac8ed39b5d9c811cdfb6ea08af55617e155ecf60c2b8",
+    "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv",
+    "/workspace/casepath-read-seed-gate-addc5a77-20261018/shard1/uv-cache"
+  ],
+  "source_clones_fixture_databases_journals_and_failed_fixtures_preserved": true,
+  "before_free_bytes": 3524362240,
+  "epoch": 1792310529.280618,
+  "after_free_bytes": 3813720064
+}
