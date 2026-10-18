@@ -9,6 +9,9 @@ def save(p, value):
 
 byid = collections.defaultdict(list)
 intervals = []
+collection = read(R / 'inventory/result.json')
+assert collection['exit_code'] == 0
+intervals.append({'shard': 0, 'phase': 'fresh_full_collection', 'start': collection['started_epoch'], 'finish': collection['finished_epoch']})
 for n in range(1, 7):
     out = R / f'shard{n}'
     for line in (out / 'reports.jsonl').read_text().splitlines():
@@ -46,7 +49,7 @@ assert maximum <= 2 and active == 0
 save(R / 'heavy-process-interval-proof.json', {'intervals': intervals, 'timeline': timeline,
      'maximum_actual_prepare_or_pytest_concurrency': maximum, 'configured_gate_limit': 2,
      'global_limit': 2, 'parent_reports_other_heavy_work': False,
-     'qualification': 'Prepare and pytest command receipts prove this gate interval overlap; protected services are excluded from heavy-test accounting.'})
+     'qualification': 'All six prepare and pytest command receipts plus fresh full collection prove this gate interval overlap; protected services and lightweight observers are excluded from heavy-test accounting.'})
 
 resource = read(R / 'resource-after.json')
 observations = [resource['minimum_observed_workspace_free_bytes']]

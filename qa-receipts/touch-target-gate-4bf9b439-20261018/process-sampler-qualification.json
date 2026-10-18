@@ -1,0 +1,27 @@
+{
+  "candidate": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "observer_sample_rows_preserved": true,
+  "actual_child_samples": 0,
+  "sample_only_not_exhaustive": true,
+  "no_actual_child_path_coverage_claimed": true,
+  "configured_environment_isolation_verified_by_command_and_result_receipts": true,
+  "bounded_open_only_diagnosis_pid": 1304417,
+  "proc_open_checks_no_contents_dumped": {
+    "comm": {
+      "openable": true
+    },
+    "status": {
+      "openable": true
+    },
+    "cmdline": {
+      "openable": true
+    },
+    "environ": {
+      "openable": false,
+      "error_type": "PermissionError",
+      "errno": 13
+    }
+  },
+  "no_guard_bypass_or_product_rerun": true,
+  "epoch": 1792290737.5822456
+}
