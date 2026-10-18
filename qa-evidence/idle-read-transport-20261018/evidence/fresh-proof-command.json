@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=/workspace/casepath-idle-read-transport-20261018/proof-pytest-basetemp",
+    "--junitxml=/workspace/casepath-idle-read-transport-20261018/evidence/fresh-proof.junit.xml",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes"
+  ],
+  "cwd": "/workspace/casepath-release-ae0-shard3",
+  "env_overrides": {
+    "PYTHONPATH": "/workspace/casepath-idle-read-transport-20261018/pytest-tools:/workspace/casepath-idle-read-transport-20261018/proof-tools:/workspace/casepath-release-ae0-shard3/casepath-api",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "TMPDIR": "/workspace/casepath-idle-read-transport-20261018/tmp"
+  },
+  "exit_code": 0,
+  "seconds": 2.7331811040639877,
+  "reason": "Only previously setup-blocked proof case, after installing exact project-pinned imports into private target; no successful test repeated."
+}

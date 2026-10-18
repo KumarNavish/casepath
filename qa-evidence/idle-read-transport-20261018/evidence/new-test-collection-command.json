@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "pytest",
+    "--collect-only",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py"
+  ],
+  "cwd": "/workspace/casepath-release-ae0-shard3",
+  "env_overrides": {
+    "PYTHONPATH": "/workspace/casepath-idle-read-transport-20261018/pytest-tools:/workspace/casepath-release-ae0-shard3/casepath-api",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+  },
+  "exit_code": 0,
+  "seconds": 0.49741915496997535,
+  "collection_only_no_test_execution": true
+}

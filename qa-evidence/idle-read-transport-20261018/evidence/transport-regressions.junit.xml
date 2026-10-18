@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="32" time="1.585" timestamp="2026-10-18T08:58:32.427697+00:00" hostname="656813ef2295"><testcase classname="tests.test_hosted_sql_v1" name="test_exact_int64_unicode_blob_and_cursor_rows" time="0.003" /><testcase classname="tests.test_hosted_sql_v1" name="test_invalid_parameters_are_rejected_before_transport[9223372036854775808]" time="0.001" /><testcase classname="tests.test_hosted_sql_v1" name="test_invalid_parameters_are_rejected_before_transport[-9223372036854775809]" time="0.001" /><testcase classname="tests.test_hosted_sql_v1" name="test_invalid_parameters_are_rejected_before_transport[inf]" time="0.001" /><testcase classname="tests.test_hosted_sql_v1" name="test_invalid_parameters_are_rejected_before_transport[nan]" time="0.001" /><testcase classname="tests.test_hosted_sql_v1" name="test_invalid_parameters_are_rejected_before_transport[value4]" time="0.001" /><testcase classname="tests.test_hosted_sql_v1" name="test_received_sql_failure_keeps_latest_baton_for_rollback" time="0.005" /><testcase classname="tests.test_hosted_sql_v1" name="test_failed_sequence_rolls_back_schema_and_successful_context_commits" time="0.008" /><testcase classname="tests.test_hosted_sql_v1" name="test_trimmed_batches_cache_only_inside_current_unmodified_transaction" time="0.006" /><testcase classname="tests.test_hosted_sql_v1" name="test_lost_commit_acknowledgement_poisons_without_retry_or_hidden_rollback[timeout]" time="0.005" /><testcase classname="tests.test_hosted_sql_v1" name="test_lost_commit_acknowledgement_poisons_without_retry_or_hidden_rollback[http_error]" time="0.005" /><testcase classname="tests.test_hosted_sql_v1" name="test_lost_commit_acknowledgement_poisons_without_retry_or_hidden_rollback[origin]" time="0.005" /><testcase classname="tests.test_hosted_sql_v1" name="test_lost_commit_acknowledgement_poisons_without_retry_or_hidden_rollback[missing_result]" time="0.004" /><testcase classname="tests.test_hosted_sql_v1" name="test_disappearing_transaction_baton_does_not_open_fresh_transaction" time="0.001" /><testcase classname="tests.test_hosted_sql_v1" name="test_malformed_http_responses_are_sanitized_and_never_followed[non_json]" time="0.001" /><testcase classname="tests.test_hosted_sql_v1" name="test_malformed_http_responses_are_sanitized_and_never_followed[missing_statement_result]" time="0.000" /><testcase classname="tests.test_hosted_sql_v1" name="test_malformed_http_responses_are_sanitized_and_never_followed[invalid_cell]" time="0.001" /><testcase classname="tests.test_hosted_sql_v1" name="test_malformed_http_responses_are_sanitized_and_never_followed[redirect]" time="0.000" /><testcase classname="tests.test_hosted_sql_v1" name="test_response_byte_limit_closes_stream_and_poisons_connection" time="0.000" /><testcase classname="tests.test_hosted_sql_v1" name="test_slow_drip_cannot_hide_total_response_deadline" time="0.000" /><testcase classname="tests.test_hosted_sql_v1" name="test_interrupted_source_upload_admits_no_event_and_exact_retry_recovers" time="0.121" /><testcase classname="tests.test_hosted_sql_v1" name="test_maximum_source_survives_restart_under_small_response_bound" time="0.775" /><testcase classname="tests.test_hosted_sql_v1" name="test_turso_unpadded_blob_encoding_preserves_exact_bytes[]" time="0.000" /><testcase classname="tests.test_hosted_sql_v1" name="test_turso_unpadded_blob_encoding_preserves_exact_bytes[x]" time="0.000" /><testcase classname="tests.test_hosted_sql_v1" name="test_turso_unpadded_blob_encoding_preserves_exact_bytes[xy]" time="0.000" /><testcase classname="tests.test_hosted_sql_v1" name="test_turso_unpadded_blob_encoding_preserves_exact_bytes[xyz]" time="0.000" /><testcase classname="tests.test_hosted_sql_v1" name="test_turso_unpadded_blob_encoding_preserves_exact_bytes[\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7f\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff]" time="0.000" /><testcase classname="tests.test_hosted_sql_v1" name="test_one_shot_read_decodes_and_closes_in_single_pipeline" time="0.001" /><testcase classname="tests.test_hosted_sql_v1" name="test_one_shot_read_rejects_writes_and_existing_stream_before_transport" time="0.001" /><testcase classname="tests.test_hosted_sql_v1" name="test_fresh_source_verification_uses_one_closed_read_pipeline" time="0.008" /><testcase classname="tests.test_hosted_sql_v1" name="test_source_cancel_after_first_page_sends_no_next_read_and_keeps_no_stream" time="0.082" /><testcase classname="tests.test_hosted_knowledge_warm_proof_v1" name="test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes" time="0.179"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'langchain_core'&quot;">tmp_path = PosixPath('/workspace/casepath-idle-read-transport-20261018/pytest-basetemp/test_warm_read_has_one_final_a0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f9758886d50&gt;
+
+    @pytest.fixture
+    def native_proof_store(tmp_path, monkeypatch):
+&gt;       native = AutonomousStore(tmp_path / 'native.sqlite3')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_store_v1.py:103: in __init__
+    from .claim_loop_store import ClaimLoopStore
+casepath-api/casepath_api/claim_loop_store.py:11: in &lt;module&gt;
+    from .claim_loop import (
+casepath-api/casepath_api/claim_loop.py:40: in &lt;module&gt;
+    from .claim_loop_cycle import (
+casepath-api/casepath_api/claim_loop_cycle.py:13: in &lt;module&gt;
+    from .multi_agent import (
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from __future__ import annotations
+    
+    from collections.abc import Callable, Mapping
+    from copy import deepcopy
+    from dataclasses import dataclass
+    from enum import Enum
+    from hashlib import sha256
+    from itertools import combinations
+    import json
+    import math
+    import operator
+    import os
+    import threading
+    from time import perf_counter, sleep
+    from typing import Annotated, Any, Literal, Protocol, TypedDict, get_args
+    
+&gt;   from langchain_core.messages import HumanMessage, SystemMessage
+E   ModuleNotFoundError: No module named 'langchain_core'
+
+casepath-api/casepath_api/multi_agent.py:17: ModuleNotFoundError</error></testcase></testsuite></testsuites>

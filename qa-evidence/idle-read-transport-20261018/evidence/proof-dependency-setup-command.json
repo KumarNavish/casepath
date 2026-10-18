@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "uv",
+    "pip",
+    "install",
+    "--target",
+    "/workspace/casepath-idle-read-transport-20261018/proof-tools",
+    "--python",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "--constraint",
+    "/workspace/casepath-release-ae0-shard3/casepath-api/requirements.lock",
+    "langchain_core==1.5.3",
+    "langgraph==1.2.9",
+    "langchain-openrouter==0.2.7",
+    "openrouter==0.11.46",
+    "pydantic==2.11.7"
+  ],
+  "cwd": "/workspace/casepath-release-ae0-shard3",
+  "env_overrides": {
+    "UV_CACHE_DIR": "/workspace/.cache/uv"
+  },
+  "exit_code": 0,
+  "seconds": 0.8285447909729555
+}

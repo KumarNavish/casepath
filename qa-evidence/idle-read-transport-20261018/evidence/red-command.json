@@ -1,0 +1,22 @@
+{
+  "phase": "red_before_production_change",
+  "cwd": "/workspace/casepath-release-ae0-shard3",
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "casepath-api/tests",
+    "-p",
+    "test_hosted_idle_transport_v1.py",
+    "-v"
+  ],
+  "env_overrides": {
+    "PYTHONPATH": "/workspace/casepath-release-ae0-shard3/casepath-api",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_code": 1,
+  "wall_seconds": 0.23773510998580605
+}

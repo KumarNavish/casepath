@@ -1,0 +1,100 @@
+{
+  "contract": "casepath.idle-read-transport-followup/1",
+  "base": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "commit": "023a9d1365d94f4c84a4c59dbacbc2dae871ec92",
+  "branch": "codex/casepath-idle-read-transport-20261018",
+  "host": "656813ef2295",
+  "scope": [
+    "casepath-api/casepath_api/hosted_sql_v1.py",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py"
+  ],
+  "source_clean_after_commit": true,
+  "source_sha256": {
+    "casepath-api/casepath_api/hosted_sql_v1.py": "1ab4337c9d21f1c8e58d7a17542accebd38c4da5b69d810c0c8c7f88edf40955",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py": "0cc3b10d634f7a7f6cc763e47e3302ecae1c3597b982edb6696b741737d01bba"
+  },
+  "base_manifest_unchanged": {
+    "sha256": "0d713ebe1ea45681c139ac8ed39b5d9c811cdfb6ea08af55617e155ecf60c2b8",
+    "file_count": 1718,
+    "worker_seal_regenerated": false
+  },
+  "implementation": "Only internally-created reuse_http=True shared HTTP clients get fixed120-second idle retention. Default nonshared helper30, injected zero-argument factories and ownership unchanged.",
+  "preserved": [
+    "max_connections8/max_keepalive4",
+    "retries0 and TLS verification",
+    "connect3/read8/write4/pool2; total12s;32MiB",
+    "fresh complete atomic journal/source proof on every Knowledge/collection read",
+    "raw read close_http=True retirement",
+    "fail-closed uncertainty; no hidden retry, preflight, polling or background request"
+  ],
+  "targeted_results": {
+    "red": {
+      "tests": 9,
+      "passed": 5,
+      "failed": 4,
+      "exit": 1
+    },
+    "green_durable": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "exit": 0
+    },
+    "existing_transport": {
+      "passed": 31,
+      "failed": 0
+    },
+    "fresh_complete_atomic_proof": {
+      "passed": 1,
+      "failed": 0,
+      "exit": 0
+    },
+    "writer_distinct_passes": 41,
+    "independent_extra_passes": 2,
+    "new_collected_tests": 9
+  },
+  "preserved_attempts": [
+    {
+      "attempt": "initial pytest-tools setup",
+      "result": "uv default cache under inherited HOME was read-only. No global install/config change. Set command-local UV_CACHE_DIR=/workspace/.cache/uv."
+    },
+    {
+      "attempt": "offline pytest-tools setup",
+      "result": "Exact pytest pin unavailable offline; no tests ran. Installed five exact project-pinned test dependencies into private task target via normal package registry."
+    },
+    {
+      "attempt": "first transport and proof command",
+      "result": "31 transport tests passed; one proof fixture setup error: langchain_core missing. Original log/JUnit retained."
+    },
+    {
+      "attempt": "proof environment correction",
+      "result": "Installed38 exact project-constrained import dependencies into private task target; reran only previously setup-blocked proof case:1passed. No successful tests repeated."
+    }
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "runtime": "Supported systemPython3.12.14 with targeted project-pinned dependencies in private task directories; no global install or full prepared release runtime.",
+    "httpx": "0.28.1",
+    "httpcore": "1.0.9",
+    "pytest": "8.4.2"
+  },
+  "review": {
+    "verdict": "PASS: no blocking source findings in the reviewed two-file candidate",
+    "code_bytes_match_final_commit": true,
+    "receipt": "review/review.json",
+    "sha256": "0b0a3cd31218532d3b4e96d5c7c5c8de170f3db30d2e165e0ebe9d1c4f4526c8"
+  },
+  "limits": {
+    "hosted_or_native_latency_measured": false,
+    "production_requests": 0,
+    "private_seed_data": false,
+    "provider_calls": 0,
+    "services": 0,
+    "deployments": 0,
+    "full_suite": false,
+    "sealed": false,
+    "records_or_ledger_changed": false
+  },
+  "claim_limit": "Avoids local forced reconnect during healthy idle window; cannot guarantee server socket survival, process lifetime, network or absolute1s latency.",
+  "free_bytes": 3686047744
+}

@@ -1,0 +1,25 @@
+{
+  "phase": "existing_transport_and_complete_fresh_proof_regressions",
+  "cwd": "/workspace/casepath-release-ae0-shard3",
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=/workspace/casepath-idle-read-transport-20261018/pytest-basetemp",
+    "--junitxml=/workspace/casepath-idle-read-transport-20261018/evidence/transport-regressions.junit.xml",
+    "casepath-api/tests/test_hosted_sql_v1.py",
+    "casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes"
+  ],
+  "env_overrides": {
+    "PYTHONPATH": "/workspace/casepath-idle-read-transport-20261018/pytest-tools:/workspace/casepath-release-ae0-shard3/casepath-api",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "TMPDIR": "/workspace/casepath-idle-read-transport-20261018/tmp"
+  },
+  "exit_code": 1,
+  "wall_seconds": 2.0134057180257514
+}

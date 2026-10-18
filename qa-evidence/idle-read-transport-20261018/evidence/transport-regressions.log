@@ -1,0 +1,48 @@
+...............................E                                         [100%]
+==================================== ERRORS ====================================
+_ ERROR at setup of test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes _
+
+tmp_path = PosixPath('/workspace/casepath-idle-read-transport-20261018/pytest-basetemp/test_warm_read_has_one_final_a0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f9758886d50>
+
+    @pytest.fixture
+    def native_proof_store(tmp_path, monkeypatch):
+>       native = AutonomousStore(tmp_path / 'native.sqlite3')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_store_v1.py:103: in __init__
+    from .claim_loop_store import ClaimLoopStore
+casepath-api/casepath_api/claim_loop_store.py:11: in <module>
+    from .claim_loop import (
+casepath-api/casepath_api/claim_loop.py:40: in <module>
+    from .claim_loop_cycle import (
+casepath-api/casepath_api/claim_loop_cycle.py:13: in <module>
+    from .multi_agent import (
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from __future__ import annotations
+    
+    from collections.abc import Callable, Mapping
+    from copy import deepcopy
+    from dataclasses import dataclass
+    from enum import Enum
+    from hashlib import sha256
+    from itertools import combinations
+    import json
+    import math
+    import operator
+    import os
+    import threading
+    from time import perf_counter, sleep
+    from typing import Annotated, Any, Literal, Protocol, TypedDict, get_args
+    
+>   from langchain_core.messages import HumanMessage, SystemMessage
+E   ModuleNotFoundError: No module named 'langchain_core'
+
+casepath-api/casepath_api/multi_agent.py:17: ModuleNotFoundError
+- generated xml file: /workspace/casepath-idle-read-transport-20261018/evidence/transport-regressions.junit.xml -
+=========================== short test summary info ============================
+ERROR casepath-api/tests/test_hosted_knowledge_warm_proof_v1.py::test_warm_read_has_one_final_atomic_proof_without_raw_bytes_or_writes
+31 passed, 1 error in 1.59s

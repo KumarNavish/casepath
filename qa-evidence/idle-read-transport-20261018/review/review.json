@@ -1,0 +1,81 @@
+{
+  "contract": "casepath.idle-read-transport-independent-review/1",
+  "verdict": "PASS: no blocking source findings in the reviewed two-file candidate",
+  "reviewer": "cold_knowledge_proxy_review",
+  "source_base": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "branch": "codex/casepath-idle-read-transport-20261018",
+  "checkout": "/workspace/casepath-release-ae0-shard3",
+  "reviewed_state": "Uncommitted root-authored candidate on exact addc base; reviewer made no source edits or commits.",
+  "code_sha256": {
+    "casepath-api/casepath_api/hosted_sql_v1.py": "1ab4337c9d21f1c8e58d7a17542accebd38c4da5b69d810c0c8c7f88edf40955",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py": "0cc3b10d634f7a7f6cc763e47e3302ecae1c3597b982edb6696b741737d01bba"
+  },
+  "patch_sha256": "d5e45c9383c730d073ab0af0f338b282dc6d2e4f26378ad7acaa437a1850151a",
+  "findings": [],
+  "conclusions": [
+    "Fixed 120-second idle retention applies only when TursoDatabase internally constructs its shared reuse_http=True client. Direct _http_client() and nonshared logical clients retain the 30-second default. Injected factories receive no new arguments.",
+    "Max connections 8, max idle 4, zero transport retries, verified TLS, connect 3/read 8/write 4/pool 2 timeouts, 12-second SDK deadline and 32-MiB response guard remain unchanged.",
+    "No SQL, fresh proof, response caching, background polling, request scheduling or client ownership behavior changes. Existing per-read read_snapshot and close_http=True behavior are preserved.",
+    "Durable tests exercise actual HTTPX/httpcore/H11 with fake backend and module-local expiry clock. They obtain 120 seconds from the production shared factory without mutating expiry in the test.",
+    "Detected peer closure still evicts and reconnects. Undetected peer EOF still fails closed and poisons its logical connection without retry or returning a cached result.",
+    "The exporter continues calling _http_client() with zero arguments and thus retains default 30; its injected factory path is untouched."
+  ],
+  "writer_evidence_reviewed": {
+    "base_red": {
+      "tests": 9,
+      "passed": 5,
+      "failed": 4,
+      "raw": "writer-red.log",
+      "command": "writer-red-command.json"
+    },
+    "candidate_green": {
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "raw": "writer-green.log",
+      "command": "writer-green-command.json"
+    },
+    "independent_rerun_of_writer_cases": false
+  },
+  "independent_validation": {
+    "tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "cwd": "/workspace",
+    "exact_command": "HOME=/workspace/casepath-idle-read-transport-20261018/review/home TMPDIR=/workspace/casepath-idle-read-transport-20261018/review/tmp TMP=/workspace/casepath-idle-read-transport-20261018/review/tmp TEMP=/workspace/casepath-idle-read-transport-20261018/review/tmp PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/casepath-release-ae0-shard3/casepath-api:/workspace/casepath-release-ae0-shard3/casepath-api/tests python3 -B -m unittest discover -s /workspace/casepath-idle-read-transport-20261018/review -p test_independent_idle_transport.py -v > /workspace/casepath-idle-read-transport-20261018/review/independent.log 2>&1; result=$?; cat /workspace/casepath-idle-read-transport-20261018/review/independent.log; exit \"$result\"",
+    "raw": "independent.log",
+    "harness": "test_independent_idle_transport.py",
+    "cases": [
+      "Fresh TCP connect failure attempts once, poisons native logical connection and cannot resend.",
+      "Nonshared injected factory called without arguments per logical connection; each owned client closed once and database close does not close again."
+    ],
+    "real_socket_constructor": "Patched to fail in both independent cases; actual transport pool plus fake backend exercised."
+  },
+  "environment": {
+    "python": "3.12.14",
+    "httpx": "0.28.1",
+    "httpcore": "1.0.9",
+    "qualification": "System Python 3.12.14 is supported by project range; exact HTTPX 0.28.1/httpcore 1.0.9 pins. Native Mac and deployed process were not exercised."
+  },
+  "limits": [
+    "The 120-second policy only retains a healthy socket; it cannot prevent peer/proxy closure.",
+    "Health checks and other reads share the pool, so user navigation idle does not establish database-pool idle.",
+    "No absolute hosted latency improvement, production cause or one-second acceptance is established.",
+    "Integration commit, sealing and any required release validation remain with the integration owner."
+  ],
+  "reviewer_actions": {
+    "product_edits": 0,
+    "commits": 0,
+    "production_requests": 0,
+    "sockets": 0,
+    "credentials": 0,
+    "services": 0,
+    "installs": 0,
+    "broad_suites": 0,
+    "seed_operations": 0
+  }
+}

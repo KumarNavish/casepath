@@ -1,0 +1,61 @@
+test_detected_peer_close_reconnects_without_replaying_a_request (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_detected_peer_close_reconnects_without_replaying_a_request) ... ok
+test_injected_factory_and_shared_client_ownership_are_unchanged (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_injected_factory_and_shared_client_ownership_are_unchanged) ... ok
+test_nonshared_default_retention_is_unchanged (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_nonshared_default_retention_is_unchanged) ... ok
+test_raw_read_close_retires_socket_not_shared_client (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_raw_read_close_retires_socket_not_shared_client) ... ok
+test_retention_renews_from_last_response_without_background_requests (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_retention_renews_from_last_response_without_background_requests) ... FAIL
+test_shared_healthy_socket_reuses_after_47_seconds_with_fresh_snapshot (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_shared_healthy_socket_reuses_after_47_seconds_with_fresh_snapshot) ... FAIL
+test_shared_pool_keeps_existing_bounds_and_tls (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_shared_pool_keeps_existing_bounds_and_tls) ... FAIL
+test_shared_socket_expires_after_120_seconds (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_shared_socket_expires_after_120_seconds) ... ok
+test_undetected_peer_failure_poisoned_without_retry_or_cached_result (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_undetected_peer_failure_poisoned_without_retry_or_cached_result) ... FAIL
+
+======================================================================
+FAIL: test_retention_renews_from_last_response_without_background_requests (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_retention_renews_from_last_response_without_background_requests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/casepath-release-ae0-shard3/casepath-api/tests/test_hosted_idle_transport_v1.py", line 205, in test_retention_renews_from_last_response_without_background_requests
+    self.assertEqual((h.backend.connects, h.backend.tls_starts), (1, 1))
+AssertionError: Tuples differ: (3, 3) != (1, 1)
+
+First differing element 0:
+3
+1
+
+- (3, 3)
++ (1, 1)
+
+======================================================================
+FAIL: test_shared_healthy_socket_reuses_after_47_seconds_with_fresh_snapshot (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_shared_healthy_socket_reuses_after_47_seconds_with_fresh_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/casepath-release-ae0-shard3/casepath-api/tests/test_hosted_idle_transport_v1.py", line 185, in test_shared_healthy_socket_reuses_after_47_seconds_with_fresh_snapshot
+    self.assertEqual((h.backend.connects, h.backend.tls_starts), (1, 1))
+AssertionError: Tuples differ: (2, 2) != (1, 1)
+
+First differing element 0:
+2
+1
+
+- (2, 2)
++ (1, 1)
+
+======================================================================
+FAIL: test_shared_pool_keeps_existing_bounds_and_tls (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_shared_pool_keeps_existing_bounds_and_tls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/casepath-release-ae0-shard3/casepath-api/tests/test_hosted_idle_transport_v1.py", line 168, in test_shared_pool_keeps_existing_bounds_and_tls
+    self.assertEqual(h.pool._keepalive_expiry, 120)
+AssertionError: 30 != 120
+
+======================================================================
+FAIL: test_undetected_peer_failure_poisoned_without_retry_or_cached_result (test_hosted_idle_transport_v1.HostedIdleTransportTests.test_undetected_peer_failure_poisoned_without_retry_or_cached_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/casepath-release-ae0-shard3/casepath-api/tests/test_hosted_idle_transport_v1.py", line 224, in test_undetected_peer_failure_poisoned_without_retry_or_cached_result
+    with self.assertLogs(sql._LOG, level='WARNING'), self.assertRaises(sql.HostedStorageError):
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: HostedStorageError not raised
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.060s
+
+FAILED (failures=4)
