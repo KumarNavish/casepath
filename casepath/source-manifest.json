@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1718,
+  "file_count": 1719,
   "files": [
     {
       "executable": false,
@@ -6959,8 +6959,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/hosted_sql_v1.py",
-      "sha256": "bc04fdabbb4dbe793668177c27e46080784113503c4c064cd231aba69df45fd9",
-      "size_bytes": 21963
+      "sha256": "1ab4337c9d21f1c8e58d7a17542accebd38c4da5b69d810c0c8c7f88edf40955",
+      "size_bytes": 22213
     },
     {
       "executable": false,
@@ -8449,6 +8449,12 @@
       "path": "casepath-api/tests/test_hosted_append_v1.py",
       "sha256": "414ff7aeee658233d542d0d4ed424b0062748e8c103776509d05912dd2ff6463",
       "size_bytes": 7999
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_hosted_idle_transport_v1.py",
+      "sha256": "0cc3b10d634f7a7f6cc763e47e3302ecae1c3597b982edb6696b741737d01bba",
+      "size_bytes": 11980
     },
     {
       "executable": false,
