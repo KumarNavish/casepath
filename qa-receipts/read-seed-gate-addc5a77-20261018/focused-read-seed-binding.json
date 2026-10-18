@@ -1,0 +1,72 @@
+{
+  "candidate": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "focused_evidence_commit": "81919a0beceab6672f72daf1e823120e9046e2cc",
+  "focused_subtree": "qa-evidence/read-seed-startup-8f230fd4-20261018",
+  "focused_evidence_checksums_verified": 18,
+  "source_bindings": [
+    {
+      "path": "casepath-api/casepath_api/hosted_read_seed_v1.py",
+      "focused_source_commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "candidate_byte_equal": true,
+      "sha256": "7da6d150cdb21ebfc909514c3480514aba96cd2fc504c4b8f5c1f5f1a264f20f"
+    },
+    {
+      "path": "casepath-api/casepath_api/hosted_storage_v1.py",
+      "focused_source_commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "candidate_byte_equal": true,
+      "sha256": "d0e85a231d1db482acd15322a4f4e1df03251c07c04a56377af2591cacf3ee47"
+    },
+    {
+      "path": "casepath-api/casepath_api/hosted_app_v1.py",
+      "focused_source_commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "candidate_byte_equal": true,
+      "sha256": "7093ea418e38a56e856ff06d8a5539e8c7e9518ffef572209f7f3ade585d77f0"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_read_seed_v1.py",
+      "focused_source_commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "candidate_byte_equal": true,
+      "sha256": "e4f122e63af2ac02aadcfd9a7fd350a857a64222aa06821248e647e0906052bb"
+    },
+    {
+      "path": "casepath-api/tests/test_public_hosted_read_only_v1.py",
+      "focused_source_commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "candidate_byte_equal": true,
+      "sha256": "22643a44b57a950d8981696041d6cc8fea2cb8ec539e1e64f481f9d6fd82fe51"
+    },
+    {
+      "path": "casepath-api/tools/export_read_seed.py",
+      "focused_source_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "candidate_byte_equal": true,
+      "sha256": "656e03729220f803faea0738b39e1328866ff31a5c253899ff9f6372484bba59"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_read_seed_export_v1.py",
+      "focused_source_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "candidate_byte_equal": true,
+      "sha256": "d0199a10e6521197586f7542fbbb94a0a1f81702526bcd9c1023a345cee4d5d3"
+    },
+    {
+      "path": "docs/HOSTED_CASEPATH.md",
+      "focused_source_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "candidate_byte_equal": true,
+      "sha256": "db56b40590afc470453248ef4a4ae44af8f51c37d541aef8cb0af6257ccb67af"
+    },
+    {
+      "path": ".gitignore",
+      "focused_source_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "candidate_byte_equal": true,
+      "sha256": "e8fc792628c2f8a75736017716a96ef43c67488d34848b9bf6bed1b0fd9c4473"
+    },
+    {
+      "path": "casepath-api/pyproject.toml",
+      "focused_source_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "candidate_byte_equal": true,
+      "sha256": "0dead3de785fb466adee140ed28b0c246ee2423f4de4bb53a595067df05a91a7"
+    }
+  ],
+  "focused_commands_reexecuted_separately_by_gate": false,
+  "fresh_full_pytest_includes_all_new_tests_once": true,
+  "synthetic_only": true,
+  "actual_seed_loaded_by_gate": false
+}

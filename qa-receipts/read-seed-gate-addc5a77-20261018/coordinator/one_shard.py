@@ -8,7 +8,7 @@ base_env={'HOME':'/workspace/rsh0','TMPDIR':'/workspace/rst0','TMP':'/workspace/
 transport=['HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','NO_PROXY','SSL_CERT_FILE','REQUESTS_CA_BUNDLE','CURL_CA_BUNDLE','NODE_EXTRA_CA_CERTS'];process_env=dict(base_env);process_env.update({k:os.environ[k] for k in transport if k in os.environ})
 def budget():
  value=json.loads((R/'heavy-budget.json').read_text())['max_gate_heavy']
- assert value in [1,2,3]
+ assert value in [1,2]
  return value
 def save(path,value):path.write_text(json.dumps(value,indent=2)+'\n')
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()

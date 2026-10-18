@@ -1,0 +1,45 @@
+{
+  "candidate": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "scope": "QA harness only; no product edits",
+  "initial_provenance_preserved": true,
+  "changes_after_initial_copy": [
+    {
+      "file": "coordinator/finish_audit.py",
+      "initial_copy_sha256": "a951d55177404f74ce4b824b484e61cd17861e82a55e949b00bc4e6962e8b102",
+      "current_sha256": "b999041b5762241e5aebdd74e119b438d8b41c5ad1b41d1d6c5004306eaa338a"
+    },
+    {
+      "file": "coordinator/inventory.py",
+      "initial_copy_sha256": "21883a32d8094f19d910777360c4cfac98b174683d4bc4bd8f6bab17c92c1480",
+      "current_sha256": "3532529d4300f98649a34e3edf08905f2f3ebe3a72d46a4db9e0e8a1e35f798e"
+    },
+    {
+      "file": "coordinator/one_shard.py",
+      "initial_copy_sha256": "679c517ec7e1f5867e150848e23bd659a368c495054c6f43c8d7d44c912d42af",
+      "current_sha256": "52544767e25cf0e19187e723b03a7e1077a6aa066650b372b5c079da8ec24409"
+    },
+    {
+      "file": "coordinator/qualify_final.py",
+      "initial_copy_sha256": "b4f8066e9635c1c7682d997875001d6cce5f86edcd864e7f567d891bfee70f8a",
+      "current_sha256": "8d10e21591a77554fe87dabae9a0a5968450e139bf3914b3482552fda6b8adf7"
+    },
+    {
+      "file": "coordinator/reconcile.py",
+      "initial_copy_sha256": "ae03cd3734a6240ffd4744be55a31cb0ff61268a38f27c750f027c9b3be9a73d",
+      "current_sha256": "391df2572b1ca2e6d21abf56aec5f8828742f6600083bb11c8ee1320fcb067c5"
+    },
+    {
+      "file": "coordinator/summarize.py",
+      "initial_copy_sha256": "dc21f9338b3fd32374869408dd8d2eef30c524baff6dc0bf88639f12eea0b0ba",
+      "current_sha256": "1305c8a1a7d3bc91f7e515ec214146e6aa736f236a3b9b7ec2d8e82b1dd17ca5"
+    }
+  ],
+  "reasons": [
+    "Fresh inventory genuine56 additions with prior whole-file owners retained",
+    "Strict current heavy cap2 instead of stale permitted3 value",
+    "Current read-seed focused evidence and genuine added-ID count",
+    "Explicit optional seed environment exclusion and exact Mac owner attestation schema",
+    "Preserve focused source branchrefs and cleanup EACCES qualification"
+  ],
+  "epoch": 1792310372.793365
+}

@@ -5,5 +5,14 @@
   "proc_audit_failure": false,
   "correction": "Prior proven retirement method: chmod700 directories only within four approved own paths then remove; no broader source/private paths changed",
   "source_and_evidence_preserved": true,
-  "epoch": 1792309981.941342
+  "epoch": 1792309981.941342,
+  "command": [
+    "python",
+    "/workspace/read-seed-addc-retire.py"
+  ],
+  "exit_code": 1,
+  "initial_raw_capture": "Tool transcript retained; this JSON preserves verbatim terminal exception, not a separately captured original file",
+  "terminal_exception": "PermissionError: [Errno 13] Permission denied: '/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/source-capsules/b7af849b48589e598bcb5385d7dd4ad63bc9a868e634f62ff0be96910ec453e3'",
+  "failing_operation": "shutil.rmtree(p)",
+  "retry_scope": "Approved cleanup only; no prepare/test retry"
 }

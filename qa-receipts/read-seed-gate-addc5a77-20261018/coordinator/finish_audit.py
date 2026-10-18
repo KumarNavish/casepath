@@ -49,3 +49,10 @@ assert writer_head=='f6e6f7bb033f38b4d999fe0f5b353f656eef87bd' and writer_status
 outcome_focus=subprocess.check_output(['git','ls-remote','origin','refs/heads/qa-receipts/outcome-wait-reasons-20261018'],cwd=G,text=True).split()[0]
 assert outcome_focus=='81c71464a5e33b51de0159f064b7cd4d2e713ed4'
 (R/'protected-outcome-writer-after.json').write_text(json.dumps({'writer_head':writer_head,'writer_status':writer_status,'outcome_focused_ref':outcome_focus,'epoch':time.time()},indent=2)+'\n')
+
+branch_proof=json.loads((R/'approved-retirement-proof.json').read_text());preserved=[]
+for row in branch_proof['source_branches_preserved']:
+ actual=subprocess.check_output(['git','rev-parse',row['branch']],cwd=row['path'],text=True).strip();assert actual==row['head']
+ remote=subprocess.check_output(['git','ls-remote','origin','refs/heads/'+row['branch']],cwd=G,text=True).split()[0];assert remote==row['remote']
+ preserved.append({'path':row['path'],'branch':row['branch'],'local':actual,'remote':remote})
+(R/'focused-source-branches-after.json').write_text(json.dumps({'branches':preserved,'focused_evidence_commit':'81919a0beceab6672f72daf1e823120e9046e2cc','no_source_branch_rewritten':True,'epoch':time.time()},indent=2)+'\n')

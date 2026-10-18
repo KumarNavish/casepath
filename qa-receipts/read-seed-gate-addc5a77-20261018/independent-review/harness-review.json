@@ -1,0 +1,52 @@
+{
+  "status": "PASS_HARNESS_REVIEW",
+  "candidate": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "manifest_sha256": "0d713ebe1ea45681c139ac8ed39b5d9c811cdfb6ea08af55617e155ecf60c2b8",
+  "files": [
+    {
+      "file": "harness/casepath_shard_observer.py",
+      "prior_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "current_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "changes": "Candidate/manifest/root/child paths/source1718 and optional/private-seed absence guard only."
+    },
+    {
+      "file": "harness/runtime_inventory.py",
+      "prior_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+      "current_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+      "changes": "Candidate/manifest/root/child paths/source1718 and optional/private-seed absence guard only."
+    },
+    {
+      "file": "harness/run_shard.py",
+      "prior_sha256": "8786b20a228c804b80ae9d1e2de35c8bf6947c9ceb912a12fde2577ae6d40321",
+      "current_sha256": "7957d379222faab25688f0d8edd2149eb81cc198a1d9d5f1f916f6f6932ad0b9",
+      "changes": "Candidate/manifest/root/child paths/source1718 and optional/private-seed absence guard only."
+    },
+    {
+      "file": "harness/prepare_clones.py",
+      "prior_sha256": "7deb01e7f4fbb4db10dcdcf76277c74917781072e36cc6fe33ce2fcd3c85705f",
+      "current_sha256": "c808803989a67505ab40fd2d0b11ee5fb3fbf3a956d086c9c4a12df10812e4a7",
+      "changes": "Candidate/manifest/root/child paths/source1718 and optional/private-seed absence guard only."
+    },
+    {
+      "file": "harness/verify_prepared_capsules.py",
+      "prior_sha256": "0464f1b1b95b37de038eb197a44ab7d71949c286fa24b36e85f89c37fd68bb01",
+      "current_sha256": "57111207cd78df6ef721af2d76d0081506ec7337387b2dad87fb3c68a59a518a",
+      "changes": "Candidate/manifest/root/child paths/source1718 and optional/private-seed absence guard only."
+    }
+  ],
+  "no_retry_skip_deselection_logic_added": true,
+  "source_artifact_static_counts": [
+    1718,
+    25,
+    40
+  ],
+  "optional_private_seed_rejected_before_prepare_and_pytest": true,
+  "configured_isolation_only": true,
+  "optional_environ_sampling_retried": false,
+  "current_proc1_maps_probe_claimed": false,
+  "limits": [
+    "Current migration audit preserves prior8fEACCES13 observation, explicitly observed_in_current_gate=false; current unchanged Mac127 result remains owner attestation.",
+    "Continuous resource watcher covers disk/concurrency. Memory evidence is recorded preflight snapshots plus selected serial-heavy admission; no continuous memory usage coverage is claimed."
+  ],
+  "reviewed_epoch": 1792310244.5608032
+}

@@ -1,0 +1,105 @@
+{
+  "epoch": 1792310480.4644022,
+  "workspace_free_bytes": 3517149184,
+  "scratch_candidates": [
+    {
+      "path": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard4/pytest-tmp",
+      "allocated_bytes": 9478144,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard4/pytest-tmp",
+      "allocated_bytes": 9478144,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard4/pytest-tmp",
+      "allocated_bytes": 9478144,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard6/pytest-tmp",
+      "allocated_bytes": 5234688,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard6/pytest-tmp",
+      "allocated_bytes": 5234688,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard6/pytest-tmp",
+      "allocated_bytes": 5234688,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard5/pytest-tmp",
+      "allocated_bytes": 2981888,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard5/pytest-tmp",
+      "allocated_bytes": 2981888,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard5/pytest-tmp",
+      "allocated_bytes": 2981888,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/read-seed-tools-test/overlay",
+      "allocated_bytes": 524288,
+      "kind": "focused_tools_scratch_requires_identity_check"
+    },
+    {
+      "path": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard3/pytest-tmp",
+      "allocated_bytes": 425984,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard3/pytest-tmp",
+      "allocated_bytes": 425984,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard3/pytest-tmp",
+      "allocated_bytes": 425984,
+      "prior_gate_final_durable": true,
+      "kind": "pytest-tmp"
+    },
+    {
+      "path": "/workspace/read-seed-tools-test/package-selector",
+      "allocated_bytes": 69632,
+      "kind": "focused_tools_scratch_requires_identity_check"
+    },
+    {
+      "path": "/workspace/read-seed-tools-test/package-selector-wheel",
+      "allocated_bytes": 8192,
+      "kind": "focused_tools_scratch_requires_identity_check"
+    },
+    {
+      "path": "/workspace/read-seed-tools-test/home",
+      "allocated_bytes": 0,
+      "kind": "focused_tools_scratch_requires_identity_check"
+    }
+  ],
+  "memory": {
+    "memory.current": "32986415104",
+    "memory.max": "34359738368",
+    "memory.stat": "anon 1753264128\nfile 29822259200\nkernel 1410166784\nkernel_stack 2211840\npagetables 12869632\nsec_pagetables 0\npercpu 19096\nsock 4096\nvmalloc 40960\nshmem 17679409152\nfile_mapped 28835840\nfile_dirty 520192\nfile_writeback 0\nswapcached 0\nanon_thp 0\nfile_thp 683671552\nshmem_thp 0\ninactive_anon 9593126912\nactive_anon 9839370240\ninactive_file 2790125568\nactive_file 9352753152\nunevictable 0\nslab_reclaimable 1236798528\nslab_unreclaimable 157925832\nslab 1394724360\nworkingset_refault_anon 0\nworkingset_refault_file 2071538\nworkingset_activate_anon 0\nworkingset_activate_file 535603\nworkingset_restore_anon 0\nworkingset_restore_file 281468\nworkingset_nodereclaim 0\npgdemote_kswapd 0\npgdemote_direct 0\npgdemote_khugepaged 0\npgdemote_proactive 0\npgscan 7386218\npgsteal 7356123\npswpin 0\npswpout 0\npgscan_kswapd 999187\npgscan_direct 6387031\npgscan_khugepaged 0\npgscan_proactive 0\npgsteal_kswapd 999182\npgsteal_direct 6356941\npgsteal_khugepaged 0\npgsteal_proactive 0\npgfault 2758863265\npgmajfault 340966\npgrefill 2589955\npgactivate 54523387\npgdeactivate 2589571\npglazyfree 25279\npglazyfreed 0\nswpin_zero 0\nswpout_zero 0\nthp_fault_alloc 1494\nthp_collapse_alloc 0\nthp_swpout 0\nthp_swpout_fallback 0"
+  },
+  "owned_gate_processes": [],
+  "no_deletion_or_process_changes": true
+}

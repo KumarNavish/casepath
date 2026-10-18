@@ -1,0 +1,15 @@
+{
+  "candidate": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "proc1_maps_openable": false,
+  "errno": 13,
+  "error_type": "PermissionError",
+  "fail_closed_guard_preserved": true,
+  "mac_partition_required": true,
+  "no_bypass_or_skip_added": true,
+  "epoch": 1792295654.930888,
+  "prior_observation_candidate": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "prior_observation_receipt": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/migration-process-audit.json",
+  "observed_in_current_gate": false,
+  "current_mac127_owner_attestation_received": true,
+  "qualification": "Prior supported-host limitation preserved; no new proc1 maps or environment probe attempted. Guard source unchanged and current exact Mac127 partition passed by owner attestation."
+}

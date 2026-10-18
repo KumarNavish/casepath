@@ -1,0 +1,134 @@
+{
+  "status": "PASS_SOURCE_ADMISSION",
+  "actual_cloud_host": "656813ef2295",
+  "source_file_count": 1718,
+  "base": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "reviewed_backend_commit": "af78642d485e050674b462718517f6e2cadaa308",
+  "reviewed_tools_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+  "source_bindings": {
+    "casepath-api/casepath_api/hosted_app_v1.py": {
+      "reviewed_commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "sha256": "7093ea418e38a56e856ff06d8a5539e8c7e9518ffef572209f7f3ade585d77f0"
+    },
+    "casepath-api/casepath_api/hosted_read_seed_v1.py": {
+      "reviewed_commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "sha256": "7da6d150cdb21ebfc909514c3480514aba96cd2fc504c4b8f5c1f5f1a264f20f"
+    },
+    "casepath-api/casepath_api/hosted_storage_v1.py": {
+      "reviewed_commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "sha256": "d0e85a231d1db482acd15322a4f4e1df03251c07c04a56377af2591cacf3ee47"
+    },
+    "casepath-api/tests/test_hosted_read_seed_v1.py": {
+      "reviewed_commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "sha256": "e4f122e63af2ac02aadcfd9a7fd350a857a64222aa06821248e647e0906052bb"
+    },
+    "casepath-api/tests/test_public_hosted_read_only_v1.py": {
+      "reviewed_commit": "af78642d485e050674b462718517f6e2cadaa308",
+      "sha256": "22643a44b57a950d8981696041d6cc8fea2cb8ec539e1e64f481f9d6fd82fe51"
+    },
+    ".gitignore": {
+      "reviewed_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "sha256": "e8fc792628c2f8a75736017716a96ef43c67488d34848b9bf6bed1b0fd9c4473"
+    },
+    "casepath-api/pyproject.toml": {
+      "reviewed_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "sha256": "0dead3de785fb466adee140ed28b0c246ee2423f4de4bb53a595067df05a91a7"
+    },
+    "casepath-api/tests/test_hosted_read_seed_export_v1.py": {
+      "reviewed_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "sha256": "d0199a10e6521197586f7542fbbb94a0a1f81702526bcd9c1023a345cee4d5d3"
+    },
+    "casepath-api/tools/export_read_seed.py": {
+      "reviewed_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "sha256": "656e03729220f803faea0738b39e1328866ff31a5c253899ff9f6372484bba59"
+    },
+    "docs/HOSTED_CASEPATH.md": {
+      "reviewed_commit": "8b92084acd150783b5f728893fed47d9e2b71f5c",
+      "sha256": "db56b40590afc470453248ef4a4ae44af8f51c37d541aef8cb0af6257ccb67af"
+    }
+  },
+  "changed_paths_vs_8f": [
+    ".gitignore",
+    "casepath-api/casepath_api/hosted_app_v1.py",
+    "casepath-api/casepath_api/hosted_read_seed_v1.py",
+    "casepath-api/casepath_api/hosted_storage_v1.py",
+    "casepath-api/pyproject.toml",
+    "casepath-api/tests/test_hosted_read_seed_export_v1.py",
+    "casepath-api/tests/test_hosted_read_seed_v1.py",
+    "casepath-api/tests/test_public_hosted_read_only_v1.py",
+    "casepath-api/tools/export_read_seed.py",
+    "casepath/source-manifest.json",
+    "docs/HOSTED_CASEPATH.md"
+  ],
+  "clone_observations": [
+    {
+      "shard": 1,
+      "repo": "/workspace/casepath-release-ae0-shard4",
+      "head": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1718,
+      "backend_and_tools_bytes_equal_reviewed_branches": true,
+      "optional_private_seed_absent": true
+    },
+    {
+      "shard": 2,
+      "repo": "/workspace/casepath-knowledge-startup-render-20261018",
+      "head": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1718,
+      "backend_and_tools_bytes_equal_reviewed_branches": true,
+      "optional_private_seed_absent": true
+    },
+    {
+      "shard": 3,
+      "repo": "/workspace/casepath-release-ae0-shard6",
+      "head": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1718,
+      "backend_and_tools_bytes_equal_reviewed_branches": true,
+      "optional_private_seed_absent": true
+    },
+    {
+      "shard": 4,
+      "repo": "/workspace/casepath-release-ae0-shard2",
+      "head": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1718,
+      "backend_and_tools_bytes_equal_reviewed_branches": true,
+      "optional_private_seed_absent": true
+    },
+    {
+      "shard": 5,
+      "repo": "/workspace/casepath-polish-gate-inventory-20261013",
+      "head": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1718,
+      "backend_and_tools_bytes_equal_reviewed_branches": true,
+      "optional_private_seed_absent": true
+    },
+    {
+      "shard": 6,
+      "repo": "/workspace/casepath-release-ae0-shard3",
+      "head": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+      "status": "",
+      "normal_clone": true,
+      "direct_sealed_files_verified": 1718,
+      "backend_and_tools_bytes_equal_reviewed_branches": true,
+      "optional_private_seed_absent": true
+    }
+  ],
+  "optional_seed_isolation_sha256": "4d2caf2b76bb11ae62193b81bad793ce376521382e5e4fe15728157d739409b2",
+  "limits": [
+    "Read-only source admission; six terminal raw/JUnit/source/runtime results remain pending.",
+    "No production requests, private seed acquisition, private data inspection, exporter execution, upload, package publication, or deployment by this reviewer."
+  ],
+  "candidate": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "manifest_sha256": "0d713ebe1ea45681c139ac8ed39b5d9c811cdfb6ea08af55617e155ecf60c2b8",
+  "reviewer": "/root/gate_4bf_review",
+  "reviewed_epoch": 1792310074.7053494
+}
