@@ -1,0 +1,50 @@
+{
+  "verdict": "PASS",
+  "reviewer": "Cloud coordinator, separate from sole CSS/test writer",
+  "commit": "002820d942379c0916d17407bf30df90b3ef8948",
+  "base": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+  "scope": [
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath-qa/unified-product-browser-v1.test.cjs"
+  ],
+  "findings": [],
+  "confirmed": [
+    "Exact immutable commit parent, only the two authorized paths, clean checkout and all reported source hashes independently verified.",
+    "Inline-size containment removes the return row intrinsic grid contribution; normal block height, visible overflow and full plain title are preserved.",
+    "Title takes a mobile row; return buttons explicitly keep 44px minimum width and height. Rules remain within existing max-width:640px query.",
+    "Final native Chromium test bytes pass all four viewports, Knowledge and Cases, and return to the same Documents view.",
+    "Same final test bytes with immutable base CSS fail all three mobile widths and pass desktop. Negative and intermediate receipts are preserved.",
+    "Body margin reset matches production casepath/index.html:86, not a test-only geometry workaround.",
+    "Actual 390px full-page Cases screenshot reviewed at original resolution: full title and all navigation/return labels are visible, with no cut right edge. 320px screenshot and all four geometry receipts reviewed."
+  ],
+  "results": {
+    "final": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0
+    },
+    "base_counterfactual": {
+      "pass": 1,
+      "fail": 3
+    }
+  },
+  "screenshots": [
+    "screenshots/final-cases-320.png",
+    "screenshots/final-cases-390.png",
+    "screenshots/final-cases-430.png",
+    "screenshots/final-cases-1428.png",
+    "screenshots/original-knowledge-320.png",
+    "screenshots/original-knowledge-390.png"
+  ],
+  "limits": [
+    "Intercepted local native-browser fixture; Mac owns hosted/full-shell visual acceptance.",
+    "No new product tests were run during artifact review. No full gate, API/backend, seal, deployment or media edits.",
+    "Test execution preceded source commit, so raw receipts correctly bind base checkout plus exact authored asset/test hashes."
+  ],
+  "resource": {
+    "workspace_free_bytes_at_review": 4159823872,
+    "tmp_free_bytes": 218312704,
+    "subprocess_tmp": "/workspace/mch-tmp; TMPDIR/TMP/TEMP set before Node/browser startup",
+    "new_dependencies": false
+  }
+}

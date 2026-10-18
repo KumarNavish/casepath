@@ -1,0 +1,691 @@
+{
+  "base": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+  "branch": "codex/mobile-case-header-20261018",
+  "commit": "002820d942379c0916d17407bf30df90b3ef8948",
+  "host": "656813ef2295",
+  "clean": true,
+  "versions": {
+    "node": "v24.19.0",
+    "nodeExecutable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "playwright": "1.62.1",
+    "playwrightRoot": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
+    "chromium": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)",
+    "python": "3.13.9 (existing managed interpreter; unused by focused regression)"
+  },
+  "sourceFiles": {
+    "casepath/assets/autonomous-workspace-v1.css": "410862600e0161cd3d0c9a07f750b97c98ea3ae0134ec8c43bf1afe88097cf56",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "c7903c7cbb03f4eeb564174ca149d3cbd4993540ffa80f5d82aecc29d5d8a9e1",
+    "casepath/assets/autonomous-workspace-v1.js": "399c2fb7a3050a9c7eabb95e91c5956ae35d25d72129bc80f62ce5c95341a993",
+    "casepath/index.html": "20f96ec494937e84a120d9cdda416a75e05134932e42b42d75574215c0b38de6"
+  },
+  "commands": {
+    "fixed": "bash /workspace/casepath-mobile-case-header-20261018/run-focused.sh verified",
+    "counterfactual": "CASEPATH_BROWSER_CSS_ASSET=/workspace/casepath-mobile-case-header-20261018/e/base.css CASEPATH_RECEIPTS_JSON_ONLY=1 bash /workspace/casepath-mobile-case-header-20261018/run-focused.sh final-base-counterfactual"
+  },
+  "results": {
+    "final": {
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "exit": 0
+    },
+    "counterfactual": {
+      "tests": 4,
+      "pass": 1,
+      "fail": 3,
+      "exit": 1
+    }
+  },
+  "limits": [
+    "Targeted intercepted native-browser fixture only; no provider, public API, server, journal or corpus writes.",
+    "No full gate, seal, index query rebinding, publication or deployment; Mac integration owner retains those steps.",
+    "Prepared Node/Playwright versions were reused without installation or dependency/lock changes.",
+    "Intermediate screenshots reset Chromium151 pointer emulation; final test captures after both views. Negative run evidence is retained."
+  ],
+  "final": [
+    {
+      "width": 390,
+      "mobile": true,
+      "assets": {
+        "javascript": "399c2fb7a3050a9c7eabb95e91c5956ae35d25d72129bc80f62ce5c95341a993",
+        "css": "410862600e0161cd3d0c9a07f750b97c98ea3ae0134ec8c43bf1afe88097cf56"
+      },
+      "testSha256": "c7903c7cbb03f4eeb564174ca149d3cbd4993540ffa80f5d82aecc29d5d8a9e1",
+      "checkoutDuringTest": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+      "views": [
+        {
+          "view": "knowledge",
+          "visualWidth": 390,
+          "scale": 1,
+          "innerWidth": 390,
+          "documentWidth": 390,
+          "coarse": true,
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 220.59375,
+            "top": 0,
+            "right": 390,
+            "bottom": 220.59375,
+            "left": 0
+          },
+          "current": {
+            "x": 16,
+            "y": 110,
+            "width": 358,
+            "height": 109.59375,
+            "top": 110,
+            "right": 374,
+            "bottom": 219.59375,
+            "left": 16
+          },
+          "label": {
+            "x": 16,
+            "y": 114,
+            "width": 358,
+            "height": 49.59375,
+            "top": 114,
+            "right": 374,
+            "bottom": 163.59375,
+            "left": 16
+          },
+          "controls": [
+            {
+              "text": "Steps",
+              "rect": {
+                "x": 16,
+                "y": 167.59375,
+                "width": 44,
+                "height": 44,
+                "top": 167.59375,
+                "right": 60,
+                "bottom": 211.59375,
+                "left": 16
+              }
+            },
+            {
+              "text": "Documents",
+              "rect": {
+                "x": 74,
+                "y": 167.59375,
+                "width": 85.828125,
+                "height": 44,
+                "top": 167.59375,
+                "right": 159.828125,
+                "bottom": 211.59375,
+                "left": 74
+              }
+            }
+          ],
+          "navigation": [
+            "Cases",
+            "Demonstration",
+            "Knowledge"
+          ]
+        },
+        {
+          "view": "work",
+          "visualWidth": 390,
+          "scale": 1,
+          "innerWidth": 390,
+          "documentWidth": 390,
+          "coarse": true,
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 220.59375,
+            "top": 0,
+            "right": 390,
+            "bottom": 220.59375,
+            "left": 0
+          },
+          "current": {
+            "x": 16,
+            "y": 110,
+            "width": 358,
+            "height": 109.59375,
+            "top": 110,
+            "right": 374,
+            "bottom": 219.59375,
+            "left": 16
+          },
+          "label": {
+            "x": 16,
+            "y": 114,
+            "width": 358,
+            "height": 49.59375,
+            "top": 114,
+            "right": 374,
+            "bottom": 163.59375,
+            "left": 16
+          },
+          "controls": [
+            {
+              "text": "Steps",
+              "rect": {
+                "x": 16,
+                "y": 167.59375,
+                "width": 44,
+                "height": 44,
+                "top": 167.59375,
+                "right": 60,
+                "bottom": 211.59375,
+                "left": 16
+              }
+            },
+            {
+              "text": "Documents",
+              "rect": {
+                "x": 74,
+                "y": 167.59375,
+                "width": 85.828125,
+                "height": 44,
+                "top": 167.59375,
+                "right": 159.828125,
+                "bottom": 211.59375,
+                "left": 74
+              }
+            }
+          ],
+          "navigation": [
+            "Cases",
+            "Demonstration",
+            "Knowledge"
+          ]
+        }
+      ],
+      "browserRequests": [
+        {
+          "url": "http://localhost:41999/",
+          "method": "GET"
+        }
+      ],
+      "javascriptErrors": []
+    },
+    {
+      "width": 320,
+      "mobile": true,
+      "assets": {
+        "javascript": "399c2fb7a3050a9c7eabb95e91c5956ae35d25d72129bc80f62ce5c95341a993",
+        "css": "410862600e0161cd3d0c9a07f750b97c98ea3ae0134ec8c43bf1afe88097cf56"
+      },
+      "testSha256": "c7903c7cbb03f4eeb564174ca149d3cbd4993540ffa80f5d82aecc29d5d8a9e1",
+      "checkoutDuringTest": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+      "views": [
+        {
+          "view": "knowledge",
+          "visualWidth": 320,
+          "scale": 1,
+          "innerWidth": 320,
+          "documentWidth": 320,
+          "coarse": true,
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 220.59375,
+            "top": 0,
+            "right": 320,
+            "bottom": 220.59375,
+            "left": 0
+          },
+          "current": {
+            "x": 16,
+            "y": 110,
+            "width": 288,
+            "height": 109.59375,
+            "top": 110,
+            "right": 304,
+            "bottom": 219.59375,
+            "left": 16
+          },
+          "label": {
+            "x": 16,
+            "y": 114,
+            "width": 288,
+            "height": 49.59375,
+            "top": 114,
+            "right": 304,
+            "bottom": 163.59375,
+            "left": 16
+          },
+          "controls": [
+            {
+              "text": "Steps",
+              "rect": {
+                "x": 16,
+                "y": 167.59375,
+                "width": 44,
+                "height": 44,
+                "top": 167.59375,
+                "right": 60,
+                "bottom": 211.59375,
+                "left": 16
+              }
+            },
+            {
+              "text": "Documents",
+              "rect": {
+                "x": 74,
+                "y": 167.59375,
+                "width": 85.828125,
+                "height": 44,
+                "top": 167.59375,
+                "right": 159.828125,
+                "bottom": 211.59375,
+                "left": 74
+              }
+            }
+          ],
+          "navigation": [
+            "Cases",
+            "Demonstration",
+            "Knowledge"
+          ]
+        },
+        {
+          "view": "work",
+          "visualWidth": 320,
+          "scale": 1,
+          "innerWidth": 320,
+          "documentWidth": 320,
+          "coarse": true,
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 220.59375,
+            "top": 0,
+            "right": 320,
+            "bottom": 220.59375,
+            "left": 0
+          },
+          "current": {
+            "x": 16,
+            "y": 110,
+            "width": 288,
+            "height": 109.59375,
+            "top": 110,
+            "right": 304,
+            "bottom": 219.59375,
+            "left": 16
+          },
+          "label": {
+            "x": 16,
+            "y": 114,
+            "width": 288,
+            "height": 49.59375,
+            "top": 114,
+            "right": 304,
+            "bottom": 163.59375,
+            "left": 16
+          },
+          "controls": [
+            {
+              "text": "Steps",
+              "rect": {
+                "x": 16,
+                "y": 167.59375,
+                "width": 44,
+                "height": 44,
+                "top": 167.59375,
+                "right": 60,
+                "bottom": 211.59375,
+                "left": 16
+              }
+            },
+            {
+              "text": "Documents",
+              "rect": {
+                "x": 74,
+                "y": 167.59375,
+                "width": 85.828125,
+                "height": 44,
+                "top": 167.59375,
+                "right": 159.828125,
+                "bottom": 211.59375,
+                "left": 74
+              }
+            }
+          ],
+          "navigation": [
+            "Cases",
+            "Demonstration",
+            "Knowledge"
+          ]
+        }
+      ],
+      "browserRequests": [
+        {
+          "url": "http://localhost:41999/",
+          "method": "GET"
+        }
+      ],
+      "javascriptErrors": []
+    },
+    {
+      "width": 430,
+      "mobile": true,
+      "assets": {
+        "javascript": "399c2fb7a3050a9c7eabb95e91c5956ae35d25d72129bc80f62ce5c95341a993",
+        "css": "410862600e0161cd3d0c9a07f750b97c98ea3ae0134ec8c43bf1afe88097cf56"
+      },
+      "testSha256": "c7903c7cbb03f4eeb564174ca149d3cbd4993540ffa80f5d82aecc29d5d8a9e1",
+      "checkoutDuringTest": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+      "views": [
+        {
+          "view": "knowledge",
+          "visualWidth": 430,
+          "scale": 1,
+          "innerWidth": 430,
+          "documentWidth": 430,
+          "coarse": true,
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 430,
+            "height": 195.796875,
+            "top": 0,
+            "right": 430,
+            "bottom": 195.796875,
+            "left": 0
+          },
+          "current": {
+            "x": 16,
+            "y": 110,
+            "width": 398,
+            "height": 84.796875,
+            "top": 110,
+            "right": 414,
+            "bottom": 194.796875,
+            "left": 16
+          },
+          "label": {
+            "x": 16,
+            "y": 114,
+            "width": 398,
+            "height": 24.796875,
+            "top": 114,
+            "right": 414,
+            "bottom": 138.796875,
+            "left": 16
+          },
+          "controls": [
+            {
+              "text": "Steps",
+              "rect": {
+                "x": 16,
+                "y": 142.796875,
+                "width": 44,
+                "height": 44,
+                "top": 142.796875,
+                "right": 60,
+                "bottom": 186.796875,
+                "left": 16
+              }
+            },
+            {
+              "text": "Documents",
+              "rect": {
+                "x": 74,
+                "y": 142.796875,
+                "width": 85.828125,
+                "height": 44,
+                "top": 142.796875,
+                "right": 159.828125,
+                "bottom": 186.796875,
+                "left": 74
+              }
+            }
+          ],
+          "navigation": [
+            "Cases",
+            "Demonstration",
+            "Knowledge"
+          ]
+        },
+        {
+          "view": "work",
+          "visualWidth": 430,
+          "scale": 1,
+          "innerWidth": 430,
+          "documentWidth": 430,
+          "coarse": true,
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 430,
+            "height": 195.796875,
+            "top": 0,
+            "right": 430,
+            "bottom": 195.796875,
+            "left": 0
+          },
+          "current": {
+            "x": 16,
+            "y": 110,
+            "width": 398,
+            "height": 84.796875,
+            "top": 110,
+            "right": 414,
+            "bottom": 194.796875,
+            "left": 16
+          },
+          "label": {
+            "x": 16,
+            "y": 114,
+            "width": 398,
+            "height": 24.796875,
+            "top": 114,
+            "right": 414,
+            "bottom": 138.796875,
+            "left": 16
+          },
+          "controls": [
+            {
+              "text": "Steps",
+              "rect": {
+                "x": 16,
+                "y": 142.796875,
+                "width": 44,
+                "height": 44,
+                "top": 142.796875,
+                "right": 60,
+                "bottom": 186.796875,
+                "left": 16
+              }
+            },
+            {
+              "text": "Documents",
+              "rect": {
+                "x": 74,
+                "y": 142.796875,
+                "width": 85.828125,
+                "height": 44,
+                "top": 142.796875,
+                "right": 159.828125,
+                "bottom": 186.796875,
+                "left": 74
+              }
+            }
+          ],
+          "navigation": [
+            "Cases",
+            "Demonstration",
+            "Knowledge"
+          ]
+        }
+      ],
+      "browserRequests": [
+        {
+          "url": "http://localhost:41999/",
+          "method": "GET"
+        }
+      ],
+      "javascriptErrors": []
+    },
+    {
+      "width": 1428,
+      "mobile": false,
+      "assets": {
+        "javascript": "399c2fb7a3050a9c7eabb95e91c5956ae35d25d72129bc80f62ce5c95341a993",
+        "css": "410862600e0161cd3d0c9a07f750b97c98ea3ae0134ec8c43bf1afe88097cf56"
+      },
+      "testSha256": "c7903c7cbb03f4eeb564174ca149d3cbd4993540ffa80f5d82aecc29d5d8a9e1",
+      "checkoutDuringTest": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+      "views": [
+        {
+          "view": "knowledge",
+          "visualWidth": 1428,
+          "scale": 1,
+          "innerWidth": 1428,
+          "documentWidth": 1428,
+          "coarse": false,
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1428,
+            "height": 89.796875,
+            "top": 0,
+            "right": 1428,
+            "bottom": 89.796875,
+            "left": 0
+          },
+          "current": {
+            "x": 32,
+            "y": 44.796875,
+            "width": 1364,
+            "height": 44,
+            "top": 44.796875,
+            "right": 1396,
+            "bottom": 88.796875,
+            "left": 32
+          },
+          "label": {
+            "x": 32,
+            "y": 51.59375,
+            "width": 359.0625,
+            "height": 24.796875,
+            "top": 51.59375,
+            "right": 391.0625,
+            "bottom": 76.390625,
+            "left": 32
+          },
+          "controls": [
+            {
+              "text": "Steps",
+              "rect": {
+                "x": 407.0625,
+                "y": 48.796875,
+                "width": 41.875,
+                "height": 30,
+                "top": 48.796875,
+                "right": 448.9375,
+                "bottom": 78.796875,
+                "left": 407.0625
+              }
+            },
+            {
+              "text": "Documents",
+              "rect": {
+                "x": 464.9375,
+                "y": 48.796875,
+                "width": 85.828125,
+                "height": 30,
+                "top": 48.796875,
+                "right": 550.765625,
+                "bottom": 78.796875,
+                "left": 464.9375
+              }
+            }
+          ],
+          "navigation": [
+            "Cases",
+            "Demonstration",
+            "Knowledge"
+          ]
+        },
+        {
+          "view": "work",
+          "visualWidth": 1428,
+          "scale": 1,
+          "innerWidth": 1428,
+          "documentWidth": 1428,
+          "coarse": false,
+          "header": {
+            "x": 0,
+            "y": 0,
+            "width": 1428,
+            "height": 89.796875,
+            "top": 0,
+            "right": 1428,
+            "bottom": 89.796875,
+            "left": 0
+          },
+          "current": {
+            "x": 32,
+            "y": 44.796875,
+            "width": 1364,
+            "height": 44,
+            "top": 44.796875,
+            "right": 1396,
+            "bottom": 88.796875,
+            "left": 32
+          },
+          "label": {
+            "x": 32,
+            "y": 51.59375,
+            "width": 359.0625,
+            "height": 24.796875,
+            "top": 51.59375,
+            "right": 391.0625,
+            "bottom": 76.390625,
+            "left": 32
+          },
+          "controls": [
+            {
+              "text": "Steps",
+              "rect": {
+                "x": 407.0625,
+                "y": 48.796875,
+                "width": 41.875,
+                "height": 30,
+                "top": 48.796875,
+                "right": 448.9375,
+                "bottom": 78.796875,
+                "left": 407.0625
+              }
+            },
+            {
+              "text": "Documents",
+              "rect": {
+                "x": 464.9375,
+                "y": 48.796875,
+                "width": 85.828125,
+                "height": 30,
+                "top": 48.796875,
+                "right": 550.765625,
+                "bottom": 78.796875,
+                "left": 464.9375
+              }
+            }
+          ],
+          "navigation": [
+            "Cases",
+            "Demonstration",
+            "Knowledge"
+          ]
+        }
+      ],
+      "browserRequests": [
+        {
+          "url": "http://localhost:41999/",
+          "method": "GET"
+        }
+      ],
+      "javascriptErrors": []
+    }
+  ]
+}

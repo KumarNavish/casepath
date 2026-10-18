@@ -1,0 +1,58 @@
+✖ mobile case header: retained heating context fits Knowledge and Cases at 390px (1871.982881ms)
+✖ mobile case header: retained heating context fits Knowledge and Cases at 320px (1226.059588ms)
+✖ mobile case header: retained heating context fits Knowledge and Cases at 430px (1232.798993ms)
+✔ mobile case header: retained heating context fits Knowledge and Cases at 1428px (1244.810971ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 1
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5995.152514
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3290:44
+✖ mobile case header: retained heating context fits Knowledge and Cases at 390px (1871.982881ms)
+  AssertionError [ERR_ASSERTION]: document width must fit the configured viewport even if innerWidth inflates: {"view":"knowledge","visualWidth":390,"scale":1,"innerWidth":531,"documentWidth":531,"coarse":true,"header":{"text":"CasePathFollow the documentsView onlyCasesDemonstrationKnowledgeRepeated heating failure and reported repair callsStepsDocuments","rect":{"x":0,"y":0,"width":390,"height":167,"top":0,"right":390,"bottom":167,"left":0},"clientWidth":390,"scrollWidth":531,"overflowX":"visible","whiteSpace":"normal"},"current":{"text":"Repeated heating failure and reported repair callsStepsDocuments","rect":{"x":16,"y":110,"width":514.765625,"height":56,"top":110,"right":530.765625,"bottom":166,"left":16},"clientWidth":515,"scrollWidth":515,"overflowX":"visible","whiteSpace":"normal"},"label":{"text":"Repeated heating failure and reported repair calls","rect":{"x":16,"y":123.796875,"width":359.0625,"height":24.796875,"top":123.796875,"right":375.0625,"bottom":148.59375,"left":16},"clientWidth":359,"scrollWidth":359,"overflowX":"visible","whiteSpace":"normal"},"controls":[{"text":"Steps","rect":{"x":389.0625,"y":114,"width":41.875,"height":44,"top":114,"right":430.9375,"bottom":158,"left":389.0625},"clientWidth":42,"scrollWidth":42,"overflowX":"visible","whiteSpace":"normal"},{"text":"Documents","rect":{"x":444.9375,"y":114,"width":85.828125,"height":44,"top":114,"right":530.765625,"bottom":158,"left":444.9375},"clientWidth":86,"scrollWidth":86,"overflowX":"visible","whiteSpace":"normal"}],"navigation":[{"text":"Cases","rect":{"x":16,"y":66,"width":123.265625,"height":44,"top":66,"right":139.265625,"bottom":110,"left":16},"clientWidth":123,"scrollWidth":123,"overflowX":"visible","whiteSpace":"nowrap"},{"text":"Demonstration","rect":{"x":147.265625,"y":66,"width":213.390625,"height":44,"top":66,"right":360.65625,"bottom":110,"left":147.265625},"clientWidth":213,"scrollWidth":213,"overflowX":"visible","whiteSpace":"nowrap"},{"text":"Knowledge","rect":{"x":368.65625,"y":66,"width":162.109375,"height":44,"top":66,"right":530.765625,"bottom":110,"left":368.65625},"clientWidth":162,"scrollWidth":162,"overflowX":"visible","whiteSpace":"nowrap"}]}
+      at TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3320:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3290:44
+✖ mobile case header: retained heating context fits Knowledge and Cases at 320px (1226.059588ms)
+  AssertionError [ERR_ASSERTION]: document width must fit the configured viewport even if innerWidth inflates: {"view":"knowledge","visualWidth":320,"scale":1,"innerWidth":531,"documentWidth":531,"coarse":true,"header":{"text":"CasePathFollow the documentsView onlyCasesDemonstrationKnowledgeRepeated heating failure and reported repair callsStepsDocuments","rect":{"x":0,"y":0,"width":320,"height":167,"top":0,"right":320,"bottom":167,"left":0},"clientWidth":320,"scrollWidth":531,"overflowX":"visible","whiteSpace":"normal"},"current":{"text":"Repeated heating failure and reported repair callsStepsDocuments","rect":{"x":16,"y":110,"width":514.765625,"height":56,"top":110,"right":530.765625,"bottom":166,"left":16},"clientWidth":515,"scrollWidth":515,"overflowX":"visible","whiteSpace":"normal"},"label":{"text":"Repeated heating failure and reported repair calls","rect":{"x":16,"y":123.796875,"width":359.0625,"height":24.796875,"top":123.796875,"right":375.0625,"bottom":148.59375,"left":16},"clientWidth":359,"scrollWidth":359,"overflowX":"visible","whiteSpace":"normal"},"controls":[{"text":"Steps","rect":{"x":389.0625,"y":114,"width":41.875,"height":44,"top":114,"right":430.9375,"bottom":158,"left":389.0625},"clientWidth":42,"scrollWidth":42,"overflowX":"visible","whiteSpace":"normal"},{"text":"Documents","rect":{"x":444.9375,"y":114,"width":85.828125,"height":44,"top":114,"right":530.765625,"bottom":158,"left":444.9375},"clientWidth":86,"scrollWidth":86,"overflowX":"visible","whiteSpace":"normal"}],"navigation":[{"text":"Cases","rect":{"x":16,"y":66,"width":123.265625,"height":44,"top":66,"right":139.265625,"bottom":110,"left":16},"clientWidth":123,"scrollWidth":123,"overflowX":"visible","whiteSpace":"nowrap"},{"text":"Demonstration","rect":{"x":147.265625,"y":66,"width":213.390625,"height":44,"top":66,"right":360.65625,"bottom":110,"left":147.265625},"clientWidth":213,"scrollWidth":213,"overflowX":"visible","whiteSpace":"nowrap"},{"text":"Knowledge","rect":{"x":368.65625,"y":66,"width":162.109375,"height":44,"top":66,"right":530.765625,"bottom":110,"left":368.65625},"clientWidth":162,"scrollWidth":162,"overflowX":"visible","whiteSpace":"nowrap"}]}
+      at TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3320:12)
+      at runNextTicks (node:internal/process/task_queues:65:5)
+      at process.processImmediate (node:internal/timers:502:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3290:44
+✖ mobile case header: retained heating context fits Knowledge and Cases at 430px (1232.798993ms)
+  AssertionError [ERR_ASSERTION]: document width must fit the configured viewport even if innerWidth inflates: {"view":"knowledge","visualWidth":430,"scale":1,"innerWidth":531,"documentWidth":531,"coarse":true,"header":{"text":"CasePathFollow the documentsView onlyCasesDemonstrationKnowledgeRepeated heating failure and reported repair callsStepsDocuments","rect":{"x":0,"y":0,"width":430,"height":167,"top":0,"right":430,"bottom":167,"left":0},"clientWidth":430,"scrollWidth":531,"overflowX":"visible","whiteSpace":"normal"},"current":{"text":"Repeated heating failure and reported repair callsStepsDocuments","rect":{"x":16,"y":110,"width":514.765625,"height":56,"top":110,"right":530.765625,"bottom":166,"left":16},"clientWidth":515,"scrollWidth":515,"overflowX":"visible","whiteSpace":"normal"},"label":{"text":"Repeated heating failure and reported repair calls","rect":{"x":16,"y":123.796875,"width":359.0625,"height":24.796875,"top":123.796875,"right":375.0625,"bottom":148.59375,"left":16},"clientWidth":359,"scrollWidth":359,"overflowX":"visible","whiteSpace":"normal"},"controls":[{"text":"Steps","rect":{"x":389.0625,"y":114,"width":41.875,"height":44,"top":114,"right":430.9375,"bottom":158,"left":389.0625},"clientWidth":42,"scrollWidth":42,"overflowX":"visible","whiteSpace":"normal"},{"text":"Documents","rect":{"x":444.9375,"y":114,"width":85.828125,"height":44,"top":114,"right":530.765625,"bottom":158,"left":444.9375},"clientWidth":86,"scrollWidth":86,"overflowX":"visible","whiteSpace":"normal"}],"navigation":[{"text":"Cases","rect":{"x":16,"y":66,"width":123.265625,"height":44,"top":66,"right":139.265625,"bottom":110,"left":16},"clientWidth":123,"scrollWidth":123,"overflowX":"visible","whiteSpace":"nowrap"},{"text":"Demonstration","rect":{"x":147.265625,"y":66,"width":213.390625,"height":44,"top":66,"right":360.65625,"bottom":110,"left":147.265625},"clientWidth":213,"scrollWidth":213,"overflowX":"visible","whiteSpace":"nowrap"},{"text":"Knowledge","rect":{"x":368.65625,"y":66,"width":162.109375,"height":44,"top":66,"right":530.765625,"bottom":110,"left":368.65625},"clientWidth":162,"scrollWidth":162,"overflowX":"visible","whiteSpace":"nowrap"}]}
+      at TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3320:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
