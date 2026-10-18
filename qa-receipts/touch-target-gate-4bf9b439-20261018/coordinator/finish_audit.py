@@ -27,3 +27,18 @@ prior=json.loads((R/'prior-evidence-preservation.json').read_text());pr=Path(pri
 assert hashlib.sha256((pr/'raw-evidence.tar.gz').read_bytes()).hexdigest()==prior['prior_raw_archive_sha256']
 assert hashlib.sha256((pr/'SHA256SUMS').read_bytes()).hexdigest()==prior['prior_sumfile_sha256']
 (R/'protected-identities-after.json').write_text(json.dumps({'source_head':head,'source_status':status,'evidence_head':ehead,'evidence_index_sha256':index,'focused_evidence_remote_ref':focused,'prior_raw_archive_and_sumfile_unchanged':True,'epoch':time.time()},indent=2)+'\n')
+
+import os
+owned=[];unreadable=0
+for d in Path('/proc').iterdir():
+    if not d.name.isdigit() or int(d.name)==os.getpid():continue
+    try:
+        comm=(d/'comm').read_text().strip()
+        args=[a.decode(errors='replace') for a in (d/'cmdline').read_bytes().split(b'\0') if a]
+        cwd=os.readlink(d/'cwd')
+        scoped=cwd.startswith(str(R)+'/') or any(cwd==repo or cwd.startswith(repo+'/') for repo in repos.values()) or any(str(R) in a for a in args)
+        kind='pytest' if 'pytest' in args else 'uvicorn' if any(a=='uvicorn' or a.startswith('uvicorn.') for a in args) else 'launcher' if any(a.endswith('/bin/casepath') for a in args) else 'gate_runner' if any(a.endswith('/one_shard.py') or a.endswith('/stage_one.py') or a.endswith('/run_shard.py') for a in args) else None
+        if scoped and kind:owned.append({'pid':int(d.name),'comm':comm,'kind':kind,'cwd':cwd})
+    except OSError:unreadable+=1
+assert not owned,owned
+(R/'owned-test-processes-after.json').write_text(json.dumps({'candidate':'4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd','own_active_product_or_test_processes':owned,'process_metadata_access_failures':unreadable,'scope':'Own gate artifact tree and six source clones; cmdline/cwd/comm only, no process environments or maps read','no_unrelated_processes_signalled':True,'epoch':time.time()},indent=2)+'\n')
