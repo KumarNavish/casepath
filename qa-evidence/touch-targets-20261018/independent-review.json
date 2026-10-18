@@ -1,0 +1,100 @@
+{
+  "reviewer": "touch_target_review",
+  "reviewed_at_utc": "2026-10-18T02:03:58.857436+00:00",
+  "base": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "commit": "5fe9a95757c6feaefde02ca239d14df9ec6684ed",
+  "verdict": "PASS: no blocking findings in the bounded immutable patch",
+  "findings": [],
+  "scope": {
+    "repository_writes": false,
+    "reviewer_browser_runs": 0,
+    "review_checkout_clean_at_base": true,
+    "writer_checkout_clean_at_tip": true,
+    "only_allowed_paths_changed": true,
+    "diff_check": "PASS"
+  },
+  "sha256": {
+    "casepath/assets/autonomous-workspace-v1.css": "7fb412f2023ddb48ac693b42ed640e1e272b88c8d55c1ee1614d60a918b3e032",
+    "casepath/assets/autonomous-workspace-v1.js": "c43508640478e0b581d7d33a8af2772d5026d380b2d4d4300dee411aaddd8f1f",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "483746279e32c2ab55dacecf330e6e68b4b83d111d49a04619a2617ed92807f6"
+  },
+  "css_verdict": "PASS: coarse-pointer 44x44 minima outrank dense rules; legal anchors acquire nonoverlapping boxes; native summary/button displays remain; cached Knowledge heading wraps intact. Fine-pointer CSS rules unchanged.",
+  "javascript_verdict": "PASS: requested input is captured before pause synchronization; completed state clears before selecting. Existing clamping, pause, selection, route and pin helpers remain unchanged; no record, timing or API changes.",
+  "evidence": {
+    "same_final_qa_sha256": "483746279e32c2ab55dacecf330e6e68b4b83d111d49a04619a2617ed92807f6",
+    "final": {
+      "path": "e/final.tap",
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "skip": 0,
+      "asset_bytes_match_commit": true,
+      "run_head_was_base_before_commit": true
+    },
+    "css_counterfactual": {
+      "path": "e/css-counterfactual.tap",
+      "mobile_geometry_fail": [
+        320,
+        390,
+        430
+      ],
+      "desktop_1428_pass": true,
+      "base_css_sha256": "410862600e0161cd3d0c9a07f750b97c98ea3ae0134ec8c43bf1afe88097cf56"
+    },
+    "js_counterfactual": {
+      "path": "e/js-counterfactual.tap",
+      "tests": 6,
+      "fail": 6,
+      "base_js_sha256": "399c2fb7a3050a9c7eabb95e91c5956ae35d25d72129bc80f62ce5c95341a993"
+    },
+    "touch": {
+      "widths": [
+        320,
+        390,
+        430
+      ],
+      "views_per_width": 11,
+      "target_observations_per_width": 312,
+      "minimum_fragment_size": [
+        44,
+        44
+      ],
+      "reachable_probes_per_width": 11,
+      "measured_overlaps": 0,
+      "covered_measured_centers": 0,
+      "native_summary_markers_preserved": true,
+      "visual_viewports_fit": true,
+      "refresh_heading_lines": 1
+    },
+    "native_scrub": {
+      "mouse_and_touch_modes": [
+        "paused_after_Final_view",
+        "playing",
+        "actual_autoplay_completed"
+      ],
+      "trusted_inputs_verified": true,
+      "range_and_global_keyboard_verified": true,
+      "exact_event_routes_and_version_pins_verified": true,
+      "refused_events_have_no_publication_pins": true,
+      "completed_representative_31_from_displayed_37_clears_complete": true
+    },
+    "desktop": {
+      "width": 1428,
+      "raw_measurements_exactly_equal": false,
+      "raw_difference": "23 vertical reveal-animation numbers; max displacement 0.746979px and height difference 0.000030518px",
+      "hitProbes_exactly_equal": true,
+      "legalLinks_exactly_equal": true,
+      "rangeInteraction_exactly_equal": true,
+      "coarse_rules_inactive": true
+    },
+    "fixture_knowledge_sha256": "ab6bc467ac40b8981440e10e71e2c4df27d0f9f005dac3ef66be40f30e771fe8",
+    "native_runs_browser_api_requests": 0,
+    "native_runs_writes": 0,
+    "native_runs_javascript_errors": 0
+  },
+  "limits": [
+    "Review used native Chromium fixture evidence; no additional browser or broad-suite runs by reviewer.",
+    "Modal inventories normalize scroll position and separately probe reachable source controls; initial citation-seek placement is not claimed overlap-free.",
+    "Integration sealing, index asset pins, full release checks and Mac visual acceptance remain coordinator-owned."
+  ]
+}

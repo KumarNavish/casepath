@@ -1,0 +1,105 @@
+{
+  "base": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "commit": "5fe9a95757c6feaefde02ca239d14df9ec6684ed",
+  "source_branch": "codex/touch-targets-20261018",
+  "host": "656813ef2295",
+  "verification": "PASS",
+  "source_scope": [
+    "casepath-qa/unified-product-browser-v1.test.cjs",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-workspace-v1.js"
+  ],
+  "source_files_byte_bound_to_commit": true,
+  "source_clean": true,
+  "focused_execution_head": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "focused_execution_binding": "Tests ran before committing; exact injected CSS/JS and test SHA256 independently match the committed patch. This is not a sealed release gate.",
+  "final_json_artifacts": 64,
+  "final_tests": 14,
+  "final_pass": 14,
+  "css_counterfactual": {
+    "mobile_fail": 3,
+    "desktop_pass": 1
+  },
+  "js_counterfactual": {
+    "native_scrub_fail": 6
+  },
+  "counterfactual_test_bytes_match_final": true,
+  "independent_review_sha256": "7de69d5e9b6dfb71e5b07639b78617b253c598af44516b44e39b646142deea13",
+  "native_touch": {
+    "widths": [
+      320,
+      390,
+      430
+    ],
+    "views_per_width": 11,
+    "rendered_target_observations_per_width": 312,
+    "full_reachability_probes_per_width": 11,
+    "too_small": 0,
+    "overlaps": 0,
+    "covered_measured_centers": 0
+  },
+  "native_scrub": {
+    "mouse_touch_modes": 6,
+    "requested_value_captured_before_synchronization": true,
+    "completed_representative_index": 31,
+    "completed_display_index": 37,
+    "deliberate_input_clears_complete": true,
+    "exact_event_and_existing_pin_routes_preserved": true
+  },
+  "desktop": {
+    "rawJsonEqual": false,
+    "classification": "Existing reveal-animation sampling differs vertically; no full raw JSON equality claim.",
+    "width": 1428,
+    "pointerCoarse": false,
+    "views": 11,
+    "exactlyEqual": [
+      "hitProbes",
+      "legalLinks",
+      "rangeInteraction",
+      "all non-differing measurement fields, including computed display/minimum sizes and horizontal geometry"
+    ],
+    "numericDifferences": 23,
+    "maxAbsoluteDifferences": {
+      "y": 0.746978759765625,
+      "top": 0.746978759765625,
+      "bottom": 0.746978759765625,
+      "documentTop": 0.746978759765625,
+      "height": 3.0517578125e-05
+    },
+    "heightPrecisionTolerance": 0.001,
+    "verticalAnimationSamplingLimit": 1,
+    "staticScope": "Every authored CSS rule is guarded by pointer:coarse."
+  },
+  "export": {
+    "files": 355,
+    "raw_archive_bytes": 1802018,
+    "raw_archive_sha256": "7684a8b9d503061955a99109b2c1f3b2a75f2d5bb40ae7637996b9f5f448efc4",
+    "raw_member_hashes_independently_verified": true,
+    "secret_scan_matches": 0,
+    "secret_scan_kinds": [
+      "private_key",
+      "github_token",
+      "aws_access_key",
+      "bearer_credential"
+    ],
+    "fixtures_not_exported": true
+  },
+  "runtime": {
+    "new_dependencies": false,
+    "existing_home_preserved": true,
+    "child_tmp": "/workspace/tt-tmp",
+    "disk_available_bytes": 4043321344,
+    "disk_floor_bytes": 3221225472
+  },
+  "not_run": [
+    "full gate",
+    "sealing",
+    "production/browser/API/provider access",
+    "publication"
+  ],
+  "limits": [
+    "No screenshots were generated: JSON-only native geometry and trusted-input receipts; Mac owns pixel/hosted acceptance.",
+    "Raw desktop geometry has documented existing reveal-motion sampling jitter; no full raw equality claim.",
+    "Initial modal citation seek may partly obscure Download original; inventories reset modal scroll and separate probes prove reachable hit boxes. Earlier evidence is retained."
+  ]
+}

@@ -1,0 +1,124 @@
+✖ knowledge native scrub: touch paused preserves the exact requested event (2110.345442ms)
+✖ knowledge native scrub: touch playing preserves the exact requested event (1641.446194ms)
+✖ knowledge native scrub: touch completed preserves the exact requested event (1931.480621ms)
+✖ knowledge native scrub: mouse paused preserves the exact requested event (1521.668037ms)
+✖ knowledge native scrub: mouse playing preserves the exact requested event (1533.575225ms)
+✖ knowledge native scrub: mouse completed preserves the exact requested event (1868.634625ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11062.859404
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3461:89
+✖ knowledge native scrub: touch paused preserves the exact requested event (2110.345442ms)
+  AssertionError [ERR_ASSERTION]: native track action: the range retains the native requested index
+  
+  37 !== 8
+  
+      at selected (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3479:12)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3500:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 37,
+    expected: 8,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3461:89
+✖ knowledge native scrub: touch playing preserves the exact requested event (1641.446194ms)
+  AssertionError [ERR_ASSERTION]: native track action: the range retains the native requested index
+  
+  0 !== 8
+  
+      at selected (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3479:12)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3500:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 8,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3461:89
+✖ knowledge native scrub: touch completed preserves the exact requested event (1931.480621ms)
+  AssertionError [ERR_ASSERTION]: native track action: the range retains the native requested index
+  
+  37 !== 31
+  
+      at selected (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3479:12)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3500:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 37,
+    expected: 31,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3461:89
+✖ knowledge native scrub: mouse paused preserves the exact requested event (1521.668037ms)
+  AssertionError [ERR_ASSERTION]: native track action: the range retains the native requested index
+  
+  37 !== 9
+  
+      at selected (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3479:12)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3500:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 37,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3461:89
+✖ knowledge native scrub: mouse playing preserves the exact requested event (1533.575225ms)
+  AssertionError [ERR_ASSERTION]: native track action: the range retains the native requested index
+  
+  0 !== 9
+  
+      at selected (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3479:12)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3500:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3461:89
+✖ knowledge native scrub: mouse completed preserves the exact requested event (1868.634625ms)
+  AssertionError [ERR_ASSERTION]: native track action: the range retains the native requested index
+  
+  37 !== 31
+  
+      at selected (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3479:12)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3500:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 37,
+    expected: 31,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

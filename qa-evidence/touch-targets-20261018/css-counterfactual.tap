@@ -1,0 +1,3547 @@
+✖ coarse touch targets: real claim, Knowledge and Cases controls fit at 320px (6307.387615ms)
+✖ coarse touch targets: real claim, Knowledge and Cases controls fit at 390px (4745.134636ms)
+✖ coarse touch targets: real claim, Knowledge and Cases controls fit at 430px (4661.912117ms)
+✔ coarse touch targets: real claim, Knowledge and Cases controls fit at 1428px (4637.387694ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 1
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20868.541705
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3377:44
+✖ coarse touch targets: real claim, Knowledge and Cases controls fit at 320px (6307.387615ms)
+  AssertionError [ERR_ASSERTION]: all rendered enabled controls retain touch areas, unobscured centers, native disclosures and visual-viewport reflow
+  + actual - expected
+  
+  + [
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 320,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1499.765625,
+  +       fragments: [
+  +         {
+  +           bottom: 1521.765625,
+  +           height: 22,
+  +           left: 115.34375,
+  +           right: 230.4375,
+  +           top: 1499.765625,
+  +           width: 115.09375,
+  +           x: 115.34375,
+  +           y: 1499.765625
+  +         },
+  +         {
+  +           bottom: 1546.953125,
+  +           height: 22,
+  +           left: 16,
+  +           right: 180.9375,
+  +           top: 1524.953125,
+  +           width: 164.9375,
+  +           x: 16,
+  +           y: 1524.953125
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 19,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1546.953125,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 230.4375,
+  +         top: 1499.765625,
+  +         width: 214.4375,
+  +         x: 16,
+  +         y: 1499.765625
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 320,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1524.953125,
+  +       fragments: [
+  +         {
+  +           bottom: 1546.953125,
+  +           height: 22,
+  +           left: 190,
+  +           right: 284.703125,
+  +           top: 1524.953125,
+  +           width: 94.703125,
+  +           x: 190,
+  +           y: 1524.953125
+  +         },
+  +         {
+  +           bottom: 1572.140625,
+  +           height: 22,
+  +           left: 16,
+  +           right: 210.84375,
+  +           top: 1550.140625,
+  +           width: 194.84375,
+  +           x: 16,
+  +           y: 1550.140625
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 20,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1572.140625,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 284.703125,
+  +         top: 1524.953125,
+  +         width: 268.703125,
+  +         x: 16,
+  +         y: 1524.953125
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259a',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 320,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1550.140625,
+  +       fragments: [
+  +         {
+  +           bottom: 1572.140625,
+  +           height: 22,
+  +           left: 219.90625,
+  +           right: 266.15625,
+  +           top: 1550.140625,
+  +           width: 46.25,
+  +           x: 219.90625,
+  +           y: 1550.140625
+  +         },
+  +         {
+  +           bottom: 1597.328125,
+  +           height: 22,
+  +           left: 16,
+  +           right: 260.703125,
+  +           top: 1575.328125,
+  +           width: 244.703125,
+  +           x: 16,
+  +           y: 1575.328125
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 21,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1597.328125,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 266.15625,
+  +         top: 1550.140625,
+  +         width: 250.15625,
+  +         x: 16,
+  +         y: 1550.140625
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259d',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 320,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1600.515625,
+  +       fragments: [
+  +         {
+  +           bottom: 1622.515625,
+  +           height: 22,
+  +           left: 16,
+  +           right: 247.859375,
+  +           top: 1600.515625,
+  +           width: 231.859375,
+  +           x: 16,
+  +           y: 1600.515625
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20240101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20240101-de-pdf-a.pdf',
+  +       index: 22,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1622.515625,
+  +         height: 22,
+  +         left: 16,
+  +         right: 247.859375,
+  +         top: 1600.515625,
+  +         width: 231.859375,
+  +         x: 16,
+  +         y: 1600.515625
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Earlier law text (2024-01-01)',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 320,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 2069.703125,
+  +       fragments: [
+  +         {
+  +           bottom: 2091.703125,
+  +           height: 22,
+  +           left: 115.34375,
+  +           right: 230.4375,
+  +           top: 2069.703125,
+  +           width: 115.09375,
+  +           x: 115.34375,
+  +           y: 2069.703125
+  +         },
+  +         {
+  +           bottom: 2116.890625,
+  +           height: 22,
+  +           left: 16,
+  +           right: 180.9375,
+  +           top: 2094.890625,
+  +           width: 164.9375,
+  +           x: 16,
+  +           y: 2094.890625
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 19,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 2116.890625,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 230.4375,
+  +         top: 2069.703125,
+  +         width: 214.4375,
+  +         x: 16,
+  +         y: 2069.703125
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 320,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 2094.890625,
+  +       fragments: [
+  +         {
+  +           bottom: 2116.890625,
+  +           height: 22,
+  +           left: 190,
+  +           right: 284.703125,
+  +           top: 2094.890625,
+  +           width: 94.703125,
+  +           x: 190,
+  +           y: 2094.890625
+  +         },
+  +         {
+  +           bottom: 2142.078125,
+  +           height: 22,
+  +           left: 16,
+  +           right: 210.84375,
+  +           top: 2120.078125,
+  +           width: 194.84375,
+  +           x: 16,
+  +           y: 2120.078125
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 20,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 2142.078125,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 284.703125,
+  +         top: 2094.890625,
+  +         width: 268.703125,
+  +         x: 16,
+  +         y: 2094.890625
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259a',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 320,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 2120.078125,
+  +       fragments: [
+  +         {
+  +           bottom: 2142.078125,
+  +           height: 22,
+  +           left: 219.90625,
+  +           right: 266.15625,
+  +           top: 2120.078125,
+  +           width: 46.25,
+  +           x: 219.90625,
+  +           y: 2120.078125
+  +         },
+  +         {
+  +           bottom: 2167.265625,
+  +           height: 22,
+  +           left: 16,
+  +           right: 260.703125,
+  +           top: 2145.265625,
+  +           width: 244.703125,
+  +           x: 16,
+  +           y: 2145.265625
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 21,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 2167.265625,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 266.15625,
+  +         top: 2120.078125,
+  +         width: 250.15625,
+  +         x: 16,
+  +         y: 2120.078125
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259d',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 320,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 2170.453125,
+  +       fragments: [
+  +         {
+  +           bottom: 2192.453125,
+  +           height: 22,
+  +           left: 16,
+  +           right: 247.859375,
+  +           top: 2170.453125,
+  +           width: 231.859375,
+  +           x: 16,
+  +           y: 2170.453125
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20240101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20240101-de-pdf-a.pdf',
+  +       index: 22,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 2192.453125,
+  +         height: 22,
+  +         left: 16,
+  +         right: 247.859375,
+  +         top: 2170.453125,
+  +         width: 231.859375,
+  +         x: 16,
+  +         y: 2170.453125
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Earlier law text (2024-01-01)',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-secondary',
+  +       clientWidth: 66,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 670.375
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 724.375,
+  +       fragments: [
+  +         {
+  +           bottom: 749.171875,
+  +           height: 24.796875,
+  +           left: 43.671875,
+  +           right: 109.171875,
+  +           top: 724.375,
+  +           width: 65.5,
+  +           x: 43.671875,
+  +           y: 724.375
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 749.171875,
+  +         height: 24.796875,
+  +         left: 43.671875,
+  +         right: 109.171875,
+  +         top: 724.375,
+  +         width: 65.5,
+  +         x: 43.671875,
+  +         y: 724.375
+  +       },
+  +       scrollWidth: 66,
+  +       tag: 'BUTTON',
+  +       text: 'Version 1',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-refreshing'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 670.375
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 856.15625,
+  +       fragments: [
+  +         {
+  +           bottom: 880.953125,
+  +           height: 24.796875,
+  +           left: 147.5625,
+  +           right: 203.28125,
+  +           top: 856.15625,
+  +           width: 55.71875,
+  +           x: 147.5625,
+  +           y: 856.15625
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 880.953125,
+  +         height: 24.796875,
+  +         left: 147.5625,
+  +         right: 203.28125,
+  +         top: 856.15625,
+  +         width: 55.71875,
+  +         x: 147.5625,
+  +         y: 856.15625
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-refreshing'
+  +   },
+  +   {
+  +     heading: {
+  +       lines: [
+  +         {
+  +           bottom: 455.578125,
+  +           height: 34,
+  +           left: 16,
+  +           right: 50.375,
+  +           top: 421.578125,
+  +           width: 34.375,
+  +           x: 16,
+  +           y: 421.578125
+  +         },
+  +         {
+  +           bottom: 490.578125,
+  +           height: 34,
+  +           left: 16,
+  +           right: 57.703125,
+  +           top: 456.578125,
+  +           width: 41.703125,
+  +           x: 16,
+  +           y: 456.578125
+  +         },
+  +         {
+  +           bottom: 525.578125,
+  +           height: 34,
+  +           left: 16,
+  +           right: 63.046875,
+  +           top: 491.578125,
+  +           width: 47.046875,
+  +           x: 16,
+  +           y: 491.578125
+  +         },
+  +         {
+  +           bottom: 560.578125,
+  +           height: 34,
+  +           left: 16,
+  +           right: 30.859375,
+  +           top: 526.578125,
+  +           width: 14.859375,
+  +           x: 16,
+  +           y: 526.578125
+  +         }
+  +       ],
+  +       rect: {
+  +         bottom: 561.578125,
+  +         height: 140,
+  +         left: 16,
+  +         right: 64.234375,
+  +         top: 421.578125,
+  +         width: 48.234375,
+  +         x: 16,
+  +         y: 421.578125
+  +       },
+  +       text: 'Knowledge'
+  +     },
+  +     problem: 'cached refresh header does not wrap naturally',
+  +     status: {
+  +       rect: {
+  +         bottom: 442.96875,
+  +         height: 24.796875,
+  +         left: 76.234375,
+  +         right: 243.25,
+  +         top: 418.171875,
+  +         width: 167.015625,
+  +         x: 76.234375,
+  +         y: 418.171875
+  +       },
+  +       text: 'Saved copy · refreshing'
+  +     },
+  +     view: 'knowledge-refreshing'
+  +   },
+  +   {
+  +     problem: 'the readable replay subtitle splits inside a word',
+  +     subtitle: {
+  +       fontSize: 16,
+  +       rect: {
+  +         bottom: 419.578125,
+  +         height: 123.984375,
+  +         left: 16,
+  +         right: 64.234375,
+  +         top: 295.59375,
+  +         width: 48.234375,
+  +         x: 16,
+  +         y: 295.59375
+  +       },
+  +       text: 'Replay · Fictional cases',
+  +       words: [
+  +         {
+  +           lines: [
+  +             {
+  +               bottom: 317.59375,
+  +               height: 20,
+  +               left: 16,
+  +               right: 57.109375,
+  +               top: 297.59375,
+  +               width: 41.109375,
+  +               x: 16,
+  +               y: 297.59375
+  +             },
+  +             {
+  +               bottom: 342.390625,
+  +               height: 20,
+  +               left: 16,
+  +               right: 24.375,
+  +               top: 322.390625,
+  +               width: 8.375,
+  +               x: 16,
+  +               y: 322.390625
+  +             }
+  +           ],
+  +           text: 'Replay'
+  +         },
+  +         {
+  +           lines: [
+  +             {
+  +               bottom: 367.1875,
+  +               height: 20,
+  +               left: 16,
+  +               right: 56.8125,
+  +               top: 347.1875,
+  +               width: 40.8125,
+  +               x: 16,
+  +               y: 347.1875
+  +             },
+  +             {
+  +               bottom: 391.984375,
+  +               height: 20,
+  +               left: 16,
+  +               right: 37.90625,
+  +               top: 371.984375,
+  +               width: 21.90625,
+  +               x: 16,
+  +               y: 371.984375
+  +             }
+  +           ],
+  +           text: 'Fictional'
+  +         },
+  +         {
+  +           lines: [
+  +             {
+  +               bottom: 416.78125,
+  +               height: 20,
+  +               left: 16,
+  +               right: 57.453125,
+  +               top: 396.78125,
+  +               width: 41.453125,
+  +               x: 16,
+  +               y: 396.78125
+  +             }
+  +           ],
+  +           text: 'cases'
+  +         }
+  +       ]
+  +     },
+  +     view: 'knowledge-refreshing'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-secondary',
+  +       clientWidth: 68,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 504.1875,
+  +       fragments: [
+  +         {
+  +           bottom: 528.984375,
+  +           height: 24.796875,
+  +           left: 43.671875,
+  +           right: 111.703125,
+  +           top: 504.1875,
+  +           width: 68.03125,
+  +           x: 43.671875,
+  +           y: 504.1875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 528.984375,
+  +         height: 24.796875,
+  +         left: 43.671875,
+  +         right: 111.703125,
+  +         top: 504.1875,
+  +         width: 68.03125,
+  +         x: 43.671875,
+  +         y: 504.1875
+  +       },
+  +       scrollWidth: 68,
+  +       tag: 'BUTTON',
+  +       text: 'Version 2',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-version-2'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 635.96875,
+  +       fragments: [
+  +         {
+  +           bottom: 660.765625,
+  +           height: 24.796875,
+  +           left: 147.5625,
+  +           right: 203.28125,
+  +           top: 635.96875,
+  +           width: 55.71875,
+  +           x: 147.5625,
+  +           y: 635.96875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 660.765625,
+  +         height: 24.796875,
+  +         left: 147.5625,
+  +         right: 203.28125,
+  +         top: 635.96875,
+  +         width: 55.71875,
+  +         x: 147.5625,
+  +         y: 635.96875
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-version-2'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 42,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 466.1875
+  +       },
+  +       display: 'block',
+  +       documentTop: 883.953125,
+  +       fragments: [
+  +         {
+  +           bottom: 927.953125,
+  +           height: 44,
+  +           left: 33,
+  +           right: 74.875,
+  +           top: 883.953125,
+  +           width: 41.875,
+  +           x: 33,
+  +           y: 883.953125
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 15,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 927.953125,
+  +         height: 44,
+  +         left: 33,
+  +         right: 74.875,
+  +         top: 883.953125,
+  +         width: 41.875,
+  +         x: 33,
+  +         y: 883.953125
+  +       },
+  +       scrollWidth: 42,
+  +       tag: 'BUTTON',
+  +       text: 'Steps',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-version-2'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-secondary',
+  +       clientWidth: 68,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: -243.8125,
+  +       fragments: [
+  +         {
+  +           bottom: -219.015625,
+  +           height: 24.796875,
+  +           left: 43.671875,
+  +           right: 111.703125,
+  +           top: -243.8125,
+  +           width: 68.03125,
+  +           x: 43.671875,
+  +           y: -243.8125
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: -219.015625,
+  +         height: 24.796875,
+  +         left: 43.671875,
+  +         right: 111.703125,
+  +         top: -243.8125,
+  +         width: 68.03125,
+  +         x: 43.671875,
+  +         y: -243.8125
+  +       },
+  +       scrollWidth: 68,
+  +       tag: 'BUTTON',
+  +       text: 'Version 2',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: -112.03125,
+  +       fragments: [
+  +         {
+  +           bottom: -87.234375,
+  +           height: 24.796875,
+  +           left: 147.5625,
+  +           right: 203.28125,
+  +           top: -112.03125,
+  +           width: 55.71875,
+  +           x: 147.5625,
+  +           y: -112.03125
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: -87.234375,
+  +         height: 24.796875,
+  +         left: 147.5625,
+  +         right: 203.28125,
+  +         top: -112.03125,
+  +         width: 55.71875,
+  +         x: 147.5625,
+  +         y: -112.03125
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 42,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 466.1875
+  +       },
+  +       display: 'block',
+  +       documentTop: 135.953125,
+  +       fragments: [
+  +         {
+  +           bottom: 179.953125,
+  +           height: 44,
+  +           left: 33,
+  +           right: 74.875,
+  +           top: 135.953125,
+  +           width: 41.875,
+  +           x: 33,
+  +           y: 135.953125
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 15,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 179.953125,
+  +         height: 44,
+  +         left: 33,
+  +         right: 74.875,
+  +         top: 135.953125,
+  +         width: 41.875,
+  +         x: 33,
+  +         y: 135.953125
+  +       },
+  +       scrollWidth: 42,
+  +       tag: 'BUTTON',
+  +       text: 'Steps',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-secondary',
+  +       clientWidth: 68,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: -243.8125,
+  +       fragments: [
+  +         {
+  +           bottom: -219.015625,
+  +           height: 24.796875,
+  +           left: 121.15625,
+  +           right: 189.1875,
+  +           top: -243.8125,
+  +           width: 68.03125,
+  +           x: 121.15625,
+  +           y: -243.8125
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: -219.015625,
+  +         height: 24.796875,
+  +         left: 121.15625,
+  +         right: 189.1875,
+  +         top: -243.8125,
+  +         width: 68.03125,
+  +         x: 121.15625,
+  +         y: -243.8125
+  +       },
+  +       scrollWidth: 68,
+  +       tag: 'BUTTON',
+  +       text: 'Version 2',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-range'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: -87.234375,
+  +       fragments: [
+  +         {
+  +           bottom: -62.4375,
+  +           height: 24.796875,
+  +           left: 33,
+  +           right: 88.71875,
+  +           top: -87.234375,
+  +           width: 55.71875,
+  +           x: 33,
+  +           y: -87.234375
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: -62.4375,
+  +         height: 24.796875,
+  +         left: 33,
+  +         right: 88.71875,
+  +         top: -87.234375,
+  +         width: 55.71875,
+  +         x: 33,
+  +         y: -87.234375
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-range'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 42,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 304,
+  +         top: 466.1875
+  +       },
+  +       display: 'block',
+  +       documentTop: 879.09375,
+  +       fragments: [
+  +         {
+  +           bottom: 923.09375,
+  +           height: 44,
+  +           left: 33,
+  +           right: 74.875,
+  +           top: 879.09375,
+  +           width: 41.875,
+  +           x: 33,
+  +           y: 879.09375
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 22,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 923.09375,
+  +         height: 44,
+  +         left: 33,
+  +         right: 74.875,
+  +         top: 879.09375,
+  +         width: 41.875,
+  +         x: 33,
+  +         y: 879.09375
+  +       },
+  +       scrollWidth: 42,
+  +       tag: 'BUTTON',
+  +       text: 'Steps',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-range'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link',
+  +       clientWidth: 35,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 320,
+  +         top: 0
+  +       },
+  +       display: 'flex',
+  +       documentTop: 6590.546875,
+  +       fragments: [
+  +         {
+  +           bottom: 6634.546875,
+  +           height: 44,
+  +           left: 268.90625,
+  +           right: 304,
+  +           top: 6590.546875,
+  +           width: 35.09375,
+  +           x: 268.90625,
+  +           y: 6590.546875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 38,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 6634.546875,
+  +         height: 44,
+  +         left: 268.90625,
+  +         right: 304,
+  +         top: 6590.546875,
+  +         width: 35.09375,
+  +         x: 268.90625,
+  +         y: 6590.546875
+  +       },
+  +       scrollWidth: 35,
+  +       tag: 'BUTTON',
+  +       text: 'Next',
+  +       type: 'button'
+  +     },
+  +     view: 'cases'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link',
+  +       clientWidth: 35,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 320,
+  +         top: 0
+  +       },
+  +       display: 'flex',
+  +       documentTop: 6764.125,
+  +       fragments: [
+  +         {
+  +           bottom: 6808.125,
+  +           height: 44,
+  +           left: 268.90625,
+  +           right: 304,
+  +           top: 6764.125,
+  +           width: 35.09375,
+  +           x: 268.90625,
+  +           y: 6764.125
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 39,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 6808.125,
+  +         height: 44,
+  +         left: 268.90625,
+  +         right: 304,
+  +         top: 6764.125,
+  +         width: 35.09375,
+  +         x: 268.90625,
+  +         y: 6764.125
+  +       },
+  +       scrollWidth: 35,
+  +       tag: 'BUTTON',
+  +       text: 'Next',
+  +       type: 'button'
+  +     },
+  +     view: 'cases-page-2'
+  +   },
+  +   {
+  +     problem: 'an exercised target does not expose its full reachable hit area',
+  +     target: {
+  +       centerHit: false,
+  +       name: 'legal article',
+  +       rect: {
+  +         bottom: 640.953125,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 230.4375,
+  +         top: 593.765625,
+  +         width: 214.4375,
+  +         x: 16,
+  +         y: 593.765625
+  +       },
+  +       text: 'Swiss Code of Obligations, art. 259',
+  +       visualHeight: 844,
+  +       visualWidth: 320
+  +     }
+  +   },
+  +   {
+  +     problem: 'an exercised target does not expose its full reachable hit area',
+  +     target: {
+  +       centerHit: false,
+  +       name: 'legal article',
+  +       rect: {
+  +         bottom: 666.140625,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 284.703125,
+  +         top: 618.953125,
+  +         width: 268.703125,
+  +         x: 16,
+  +         y: 618.953125
+  +       },
+  +       text: 'Swiss Code of Obligations, art. 259a',
+  +       visualHeight: 844,
+  +       visualWidth: 320
+  +     }
+  +   },
+  +   {
+  +     problem: 'an exercised target does not expose its full reachable hit area',
+  +     target: {
+  +       centerHit: false,
+  +       name: 'legal article',
+  +       rect: {
+  +         bottom: 691.328125,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 266.15625,
+  +         top: 644.140625,
+  +         width: 250.15625,
+  +         x: 16,
+  +         y: 644.140625
+  +       },
+  +       text: 'Swiss Code of Obligations, art. 259d',
+  +       visualHeight: 844,
+  +       visualWidth: 320
+  +     }
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3458:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-refreshing', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-refreshing', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-refreshing', problem: 'cached refresh header does not wrap naturally', heading: [Object], status: [Object] }, { view: 'knowledge-refreshing', problem: 'the readable replay subtitle splits inside a word', subtitle: [Object] }, { view: 'knowledge-version-2', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-version-2', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-version-2', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-range', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-range', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-range', problem: 'target hit area below 44px', target: [Object] }, { view: 'cases', problem: 'target hit area below 44px', target: [Object] }, { view: 'cases-page-2', problem: 'target hit area below 44px', target: [Object] }, { problem: 'an exercised target does not expose its full reachable hit area', target: [Object] }, { problem: 'an exercised target does not expose its full reachable hit area', target: [Object] }, { problem: 'an exercised target does not expose its full reachable hit area', target: [Object] } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3377:44
+✖ coarse touch targets: real claim, Knowledge and Cases controls fit at 390px (4745.134636ms)
+  AssertionError [ERR_ASSERTION]: all rendered enabled controls retain touch areas, unobscured centers, native disclosures and visual-viewport reflow
+  + actual - expected
+  
+  + [
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 390,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1419.1875,
+  +       fragments: [
+  +         {
+  +           bottom: 1441.1875,
+  +           height: 22,
+  +           left: 115.34375,
+  +           right: 364.25,
+  +           top: 1419.1875,
+  +           width: 248.90625,
+  +           x: 115.34375,
+  +           y: 1419.1875
+  +         },
+  +         {
+  +           bottom: 1466.375,
+  +           height: 22,
+  +           left: 16,
+  +           right: 47.125,
+  +           top: 1444.375,
+  +           width: 31.125,
+  +           x: 16,
+  +           y: 1444.375
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 19,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1466.375,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 364.25,
+  +         top: 1419.1875,
+  +         width: 348.25,
+  +         x: 16,
+  +         y: 1419.1875
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 390,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1444.375,
+  +       fragments: [
+  +         {
+  +           bottom: 1466.375,
+  +           height: 22,
+  +           left: 56.1875,
+  +           right: 349.328125,
+  +           top: 1444.375,
+  +           width: 293.140625,
+  +           x: 56.1875,
+  +           y: 1444.375
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 20,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1466.375,
+  +         height: 22,
+  +         left: 56.1875,
+  +         right: 349.328125,
+  +         top: 1444.375,
+  +         width: 293.140625,
+  +         x: 56.1875,
+  +         y: 1444.375
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259a',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 390,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1469.5625,
+  +       fragments: [
+  +         {
+  +           bottom: 1491.5625,
+  +           height: 22,
+  +           left: 16,
+  +           right: 310.546875,
+  +           top: 1469.5625,
+  +           width: 294.546875,
+  +           x: 16,
+  +           y: 1469.5625
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 21,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1491.5625,
+  +         height: 22,
+  +         left: 16,
+  +         right: 310.546875,
+  +         top: 1469.5625,
+  +         width: 294.546875,
+  +         x: 16,
+  +         y: 1469.5625
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259d',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 390,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1469.5625,
+  +       fragments: [
+  +         {
+  +           bottom: 1491.5625,
+  +           height: 22,
+  +           left: 319.609375,
+  +           right: 372.359375,
+  +           top: 1469.5625,
+  +           width: 52.75,
+  +           x: 319.609375,
+  +           y: 1469.5625
+  +         },
+  +         {
+  +           bottom: 1516.75,
+  +           height: 22,
+  +           left: 16,
+  +           right: 191.53125,
+  +           top: 1494.75,
+  +           width: 175.53125,
+  +           x: 16,
+  +           y: 1494.75
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20240101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20240101-de-pdf-a.pdf',
+  +       index: 22,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1516.75,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 372.359375,
+  +         top: 1469.5625,
+  +         width: 356.359375,
+  +         x: 16,
+  +         y: 1469.5625
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Earlier law text (2024-01-01)',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 390,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1889.9375,
+  +       fragments: [
+  +         {
+  +           bottom: 1911.9375,
+  +           height: 22,
+  +           left: 115.34375,
+  +           right: 364.25,
+  +           top: 1889.9375,
+  +           width: 248.90625,
+  +           x: 115.34375,
+  +           y: 1889.9375
+  +         },
+  +         {
+  +           bottom: 1937.125,
+  +           height: 22,
+  +           left: 16,
+  +           right: 47.125,
+  +           top: 1915.125,
+  +           width: 31.125,
+  +           x: 16,
+  +           y: 1915.125
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 19,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1937.125,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 364.25,
+  +         top: 1889.9375,
+  +         width: 348.25,
+  +         x: 16,
+  +         y: 1889.9375
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 390,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1915.125,
+  +       fragments: [
+  +         {
+  +           bottom: 1937.125,
+  +           height: 22,
+  +           left: 56.1875,
+  +           right: 349.328125,
+  +           top: 1915.125,
+  +           width: 293.140625,
+  +           x: 56.1875,
+  +           y: 1915.125
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 20,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1937.125,
+  +         height: 22,
+  +         left: 56.1875,
+  +         right: 349.328125,
+  +         top: 1915.125,
+  +         width: 293.140625,
+  +         x: 56.1875,
+  +         y: 1915.125
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259a',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 390,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1940.3125,
+  +       fragments: [
+  +         {
+  +           bottom: 1962.3125,
+  +           height: 22,
+  +           left: 16,
+  +           right: 310.546875,
+  +           top: 1940.3125,
+  +           width: 294.546875,
+  +           x: 16,
+  +           y: 1940.3125
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 21,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1962.3125,
+  +         height: 22,
+  +         left: 16,
+  +         right: 310.546875,
+  +         top: 1940.3125,
+  +         width: 294.546875,
+  +         x: 16,
+  +         y: 1940.3125
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259d',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 390,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1940.3125,
+  +       fragments: [
+  +         {
+  +           bottom: 1962.3125,
+  +           height: 22,
+  +           left: 319.609375,
+  +           right: 372.359375,
+  +           top: 1940.3125,
+  +           width: 52.75,
+  +           x: 319.609375,
+  +           y: 1940.3125
+  +         },
+  +         {
+  +           bottom: 1987.5,
+  +           height: 22,
+  +           left: 16,
+  +           right: 191.53125,
+  +           top: 1965.5,
+  +           width: 175.53125,
+  +           x: 16,
+  +           y: 1965.5
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20240101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20240101-de-pdf-a.pdf',
+  +       index: 22,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1987.5,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 372.359375,
+  +         top: 1940.3125,
+  +         width: 356.359375,
+  +         x: 16,
+  +         y: 1940.3125
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Earlier law text (2024-01-01)',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-secondary',
+  +       clientWidth: 66,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 525.984375
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 549.984375,
+  +       fragments: [
+  +         {
+  +           bottom: 574.78125,
+  +           height: 24.796875,
+  +           left: 240.90625,
+  +           right: 306.40625,
+  +           top: 549.984375,
+  +           width: 65.5,
+  +           x: 240.90625,
+  +           y: 549.984375
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 574.78125,
+  +         height: 24.796875,
+  +         left: 240.90625,
+  +         right: 306.40625,
+  +         top: 549.984375,
+  +         width: 65.5,
+  +         x: 240.90625,
+  +         y: 549.984375
+  +       },
+  +       scrollWidth: 66,
+  +       tag: 'BUTTON',
+  +       text: 'Version 1',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-refreshing'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 525.984375
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 656.96875,
+  +       fragments: [
+  +         {
+  +           bottom: 681.765625,
+  +           height: 24.796875,
+  +           left: 249.65625,
+  +           right: 305.375,
+  +           top: 656.96875,
+  +           width: 55.71875,
+  +           x: 249.65625,
+  +           y: 656.96875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 681.765625,
+  +         height: 24.796875,
+  +         left: 249.65625,
+  +         right: 305.375,
+  +         top: 656.96875,
+  +         width: 55.71875,
+  +         x: 249.65625,
+  +         y: 656.96875
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-refreshing'
+  +   },
+  +   {
+  +     heading: {
+  +       lines: [
+  +         {
+  +           bottom: 381.1875,
+  +           height: 34,
+  +           left: 16,
+  +           right: 123.046875,
+  +           top: 347.1875,
+  +           width: 107.046875,
+  +           x: 16,
+  +           y: 347.1875
+  +         },
+  +         {
+  +           bottom: 416.1875,
+  +           height: 34,
+  +           left: 16,
+  +           right: 46.9375,
+  +           top: 382.1875,
+  +           width: 30.9375,
+  +           x: 16,
+  +           y: 382.1875
+  +         }
+  +       ],
+  +       rect: {
+  +         bottom: 417.1875,
+  +         height: 70,
+  +         left: 16,
+  +         right: 134.234375,
+  +         top: 347.1875,
+  +         width: 118.234375,
+  +         x: 16,
+  +         y: 347.1875
+  +       },
+  +       text: 'Knowledge'
+  +     },
+  +     problem: 'cached refresh header does not wrap naturally',
+  +     status: {
+  +       rect: {
+  +         bottom: 370.78125,
+  +         height: 24.796875,
+  +         left: 146.234375,
+  +         right: 313.25,
+  +         top: 345.984375,
+  +         width: 167.015625,
+  +         x: 146.234375,
+  +         y: 345.984375
+  +       },
+  +       text: 'Saved copy · refreshing'
+  +     },
+  +     view: 'knowledge-refreshing'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-secondary',
+  +       clientWidth: 68,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 474.1875,
+  +       fragments: [
+  +         {
+  +           bottom: 498.984375,
+  +           height: 24.796875,
+  +           left: 240.90625,
+  +           right: 308.9375,
+  +           top: 474.1875,
+  +           width: 68.03125,
+  +           x: 240.90625,
+  +           y: 474.1875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 498.984375,
+  +         height: 24.796875,
+  +         left: 240.90625,
+  +         right: 308.9375,
+  +         top: 474.1875,
+  +         width: 68.03125,
+  +         x: 240.90625,
+  +         y: 474.1875
+  +       },
+  +       scrollWidth: 68,
+  +       tag: 'BUTTON',
+  +       text: 'Version 2',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-version-2'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 581.171875,
+  +       fragments: [
+  +         {
+  +           bottom: 605.96875,
+  +           height: 24.796875,
+  +           left: 249.65625,
+  +           right: 305.375,
+  +           top: 581.171875,
+  +           width: 55.71875,
+  +           x: 249.65625,
+  +           y: 581.171875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 605.96875,
+  +         height: 24.796875,
+  +         left: 249.65625,
+  +         right: 305.375,
+  +         top: 581.171875,
+  +         width: 55.71875,
+  +         x: 249.65625,
+  +         y: 581.171875
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-version-2'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: '',
+  +       clientWidth: 42,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 466.1875
+  +       },
+  +       display: 'block',
+  +       documentTop: 779.5625,
+  +       fragments: [
+  +         {
+  +           bottom: 823.5625,
+  +           height: 44,
+  +           left: 33,
+  +           right: 74.875,
+  +           top: 779.5625,
+  +           width: 41.875,
+  +           x: 33,
+  +           y: 779.5625
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 15,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 823.5625,
+  +         height: 44,
+  +         left: 33,
+  +         right: 74.875,
+  +         top: 779.5625,
+  +         width: 41.875,
+  +         x: 33,
+  +         y: 779.5625
+  +       },
+  +       scrollWidth: 42,
+  +       tag: 'BUTTON',
+  +       text: 'Steps',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-version-2'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-secondary',
+  +       clientWidth: 68,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: -16.8125,
+  +       fragments: [
+  +         {
+  +           bottom: 7.984375,
+  +           height: 24.796875,
+  +           left: 240.90625,
+  +           right: 308.9375,
+  +           top: -16.8125,
+  +           width: 68.03125,
+  +           x: 240.90625,
+  +           y: -16.8125
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 7.984375,
+  +         height: 24.796875,
+  +         left: 240.90625,
+  +         right: 308.9375,
+  +         top: -16.8125,
+  +         width: 68.03125,
+  +         x: 240.90625,
+  +         y: -16.8125
+  +       },
+  +       scrollWidth: 68,
+  +       tag: 'BUTTON',
+  +       text: 'Version 2',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 90.171875,
+  +       fragments: [
+  +         {
+  +           bottom: 114.96875,
+  +           height: 24.796875,
+  +           left: 249.65625,
+  +           right: 305.375,
+  +           top: 90.171875,
+  +           width: 55.71875,
+  +           x: 249.65625,
+  +           y: 90.171875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 114.96875,
+  +         height: 24.796875,
+  +         left: 249.65625,
+  +         right: 305.375,
+  +         top: 90.171875,
+  +         width: 55.71875,
+  +         x: 249.65625,
+  +         y: 90.171875
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 42,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 466.1875
+  +       },
+  +       display: 'block',
+  +       documentTop: 288.5625,
+  +       fragments: [
+  +         {
+  +           bottom: 332.5625,
+  +           height: 44,
+  +           left: 33,
+  +           right: 74.875,
+  +           top: 288.5625,
+  +           width: 41.875,
+  +           x: 33,
+  +           y: 288.5625
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 15,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 332.5625,
+  +         height: 44,
+  +         left: 33,
+  +         right: 74.875,
+  +         top: 288.5625,
+  +         width: 41.875,
+  +         x: 33,
+  +         y: 288.5625
+  +       },
+  +       scrollWidth: 42,
+  +       tag: 'BUTTON',
+  +       text: 'Steps',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-secondary',
+  +       clientWidth: 68,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: -16.8125,
+  +       fragments: [
+  +         {
+  +           bottom: 7.984375,
+  +           height: 24.796875,
+  +           left: 254.484375,
+  +           right: 322.515625,
+  +           top: -16.8125,
+  +           width: 68.03125,
+  +           x: 254.484375,
+  +           y: -16.8125
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 7.984375,
+  +         height: 24.796875,
+  +         left: 254.484375,
+  +         right: 322.515625,
+  +         top: -16.8125,
+  +         width: 68.03125,
+  +         x: 254.484375,
+  +         y: -16.8125
+  +       },
+  +       scrollWidth: 68,
+  +       tag: 'BUTTON',
+  +       text: 'Version 2',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-range'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 114.96875,
+  +       fragments: [
+  +         {
+  +           bottom: 139.765625,
+  +           height: 24.796875,
+  +           left: 33,
+  +           right: 88.71875,
+  +           top: 114.96875,
+  +           width: 55.71875,
+  +           x: 33,
+  +           y: 114.96875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 139.765625,
+  +         height: 24.796875,
+  +         left: 33,
+  +         right: 88.71875,
+  +         top: 114.96875,
+  +         width: 55.71875,
+  +         x: 33,
+  +         y: 114.96875
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-range'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 42,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 374,
+  +         top: 466.1875
+  +       },
+  +       display: 'block',
+  +       documentTop: 1006.90625,
+  +       fragments: [
+  +         {
+  +           bottom: 1050.90625,
+  +           height: 44,
+  +           left: 33,
+  +           right: 74.875,
+  +           top: 1006.90625,
+  +           width: 41.875,
+  +           x: 33,
+  +           y: 1006.90625
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 22,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 1050.90625,
+  +         height: 44,
+  +         left: 33,
+  +         right: 74.875,
+  +         top: 1006.90625,
+  +         width: 41.875,
+  +         x: 33,
+  +         y: 1006.90625
+  +       },
+  +       scrollWidth: 42,
+  +       tag: 'BUTTON',
+  +       text: 'Steps',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-range'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link',
+  +       clientWidth: 35,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 390,
+  +         top: 0
+  +       },
+  +       display: 'flex',
+  +       documentTop: 5436.6875,
+  +       fragments: [
+  +         {
+  +           bottom: 5480.6875,
+  +           height: 44,
+  +           left: 338.90625,
+  +           right: 374,
+  +           top: 5436.6875,
+  +           width: 35.09375,
+  +           x: 338.90625,
+  +           y: 5436.6875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 38,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 5480.6875,
+  +         height: 44,
+  +         left: 338.90625,
+  +         right: 374,
+  +         top: 5436.6875,
+  +         width: 35.09375,
+  +         x: 338.90625,
+  +         y: 5436.6875
+  +       },
+  +       scrollWidth: 35,
+  +       tag: 'BUTTON',
+  +       text: 'Next',
+  +       type: 'button'
+  +     },
+  +     view: 'cases'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link',
+  +       clientWidth: 35,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 390,
+  +         top: 0
+  +       },
+  +       display: 'flex',
+  +       documentTop: 5535.875,
+  +       fragments: [
+  +         {
+  +           bottom: 5579.875,
+  +           height: 44,
+  +           left: 338.90625,
+  +           right: 374,
+  +           top: 5535.875,
+  +           width: 35.09375,
+  +           x: 338.90625,
+  +           y: 5535.875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 39,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 5579.875,
+  +         height: 44,
+  +         left: 338.90625,
+  +         right: 374,
+  +         top: 5535.875,
+  +         width: 35.09375,
+  +         x: 338.90625,
+  +         y: 5535.875
+  +       },
+  +       scrollWidth: 35,
+  +       tag: 'BUTTON',
+  +       text: 'Next',
+  +       type: 'button'
+  +     },
+  +     view: 'cases-page-2'
+  +   },
+  +   {
+  +     problem: 'an exercised target does not expose its full reachable hit area',
+  +     target: {
+  +       centerHit: false,
+  +       name: 'legal article',
+  +       rect: {
+  +         bottom: 666.375,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 364.25,
+  +         top: 619.1875,
+  +         width: 348.25,
+  +         x: 16,
+  +         y: 619.1875
+  +       },
+  +       text: 'Swiss Code of Obligations, art. 259',
+  +       visualHeight: 844,
+  +       visualWidth: 390
+  +     }
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3458:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-refreshing', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-refreshing', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-refreshing', problem: 'cached refresh header does not wrap naturally', heading: [Object], status: [Object] }, { view: 'knowledge-version-2', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-version-2', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-version-2', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-range', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-range', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-range', problem: 'target hit area below 44px', target: [Object] }, { view: 'cases', problem: 'target hit area below 44px', target: [Object] }, { view: 'cases-page-2', problem: 'target hit area below 44px', target: [Object] }, { problem: 'an exercised target does not expose its full reachable hit area', target: [Object] } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3377:44
+✖ coarse touch targets: real claim, Knowledge and Cases controls fit at 430px (4661.912117ms)
+  AssertionError [ERR_ASSERTION]: all rendered enabled controls retain touch areas, unobscured centers, native disclosures and visual-viewport reflow
+  + actual - expected
+  
+  + [
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 430,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1395.1875,
+  +       fragments: [
+  +         {
+  +           bottom: 1417.1875,
+  +           height: 22,
+  +           left: 115.34375,
+  +           right: 398.96875,
+  +           top: 1395.1875,
+  +           width: 283.625,
+  +           x: 115.34375,
+  +           y: 1395.1875
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 19,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1417.1875,
+  +         height: 22,
+  +         left: 115.34375,
+  +         right: 398.96875,
+  +         top: 1395.1875,
+  +         width: 283.625,
+  +         x: 115.34375,
+  +         y: 1395.1875
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 430,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1420.375,
+  +       fragments: [
+  +         {
+  +           bottom: 1442.375,
+  +           height: 22,
+  +           left: 16,
+  +           right: 309.140625,
+  +           top: 1420.375,
+  +           width: 293.140625,
+  +           x: 16,
+  +           y: 1420.375
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 20,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1442.375,
+  +         height: 22,
+  +         left: 16,
+  +         right: 309.140625,
+  +         top: 1420.375,
+  +         width: 293.140625,
+  +         x: 16,
+  +         y: 1420.375
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259a',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 430,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1420.375,
+  +       fragments: [
+  +         {
+  +           bottom: 1442.375,
+  +           height: 22,
+  +           left: 318.203125,
+  +           right: 412.90625,
+  +           top: 1420.375,
+  +           width: 94.703125,
+  +           x: 318.203125,
+  +           y: 1420.375
+  +         },
+  +         {
+  +           bottom: 1467.5625,
+  +           height: 22,
+  +           left: 16,
+  +           right: 212.25,
+  +           top: 1445.5625,
+  +           width: 196.25,
+  +           x: 16,
+  +           y: 1445.5625
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 21,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1467.5625,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 412.90625,
+  +         top: 1420.375,
+  +         width: 396.90625,
+  +         x: 16,
+  +         y: 1420.375
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259d',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 430,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1445.5625,
+  +       fragments: [
+  +         {
+  +           bottom: 1467.5625,
+  +           height: 22,
+  +           left: 221.3125,
+  +           right: 401.875,
+  +           top: 1445.5625,
+  +           width: 180.5625,
+  +           x: 221.3125,
+  +           y: 1445.5625
+  +         },
+  +         {
+  +           bottom: 1492.75,
+  +           height: 22,
+  +           left: 16,
+  +           right: 67.890625,
+  +           top: 1470.75,
+  +           width: 51.890625,
+  +           x: 16,
+  +           y: 1470.75
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20240101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20240101-de-pdf-a.pdf',
+  +       index: 22,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1492.75,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 401.875,
+  +         top: 1445.5625,
+  +         width: 385.875,
+  +         x: 16,
+  +         y: 1445.5625
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Earlier law text (2024-01-01)',
+  +       type: null
+  +     },
+  +     view: 'claim'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 430,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1816.34375,
+  +       fragments: [
+  +         {
+  +           bottom: 1838.34375,
+  +           height: 22,
+  +           left: 115.34375,
+  +           right: 398.96875,
+  +           top: 1816.34375,
+  +           width: 283.625,
+  +           x: 115.34375,
+  +           y: 1816.34375
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 19,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1838.34375,
+  +         height: 22,
+  +         left: 115.34375,
+  +         right: 398.96875,
+  +         top: 1816.34375,
+  +         width: 283.625,
+  +         x: 115.34375,
+  +         y: 1816.34375
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 430,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1841.53125,
+  +       fragments: [
+  +         {
+  +           bottom: 1863.53125,
+  +           height: 22,
+  +           left: 16,
+  +           right: 309.140625,
+  +           top: 1841.53125,
+  +           width: 293.140625,
+  +           x: 16,
+  +           y: 1841.53125
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 20,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1863.53125,
+  +         height: 22,
+  +         left: 16,
+  +         right: 309.140625,
+  +         top: 1841.53125,
+  +         width: 293.140625,
+  +         x: 16,
+  +         y: 1841.53125
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259a',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 430,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1841.53125,
+  +       fragments: [
+  +         {
+  +           bottom: 1863.53125,
+  +           height: 22,
+  +           left: 318.203125,
+  +           right: 412.90625,
+  +           top: 1841.53125,
+  +           width: 94.703125,
+  +           x: 318.203125,
+  +           y: 1841.53125
+  +         },
+  +         {
+  +           bottom: 1888.71875,
+  +           height: 22,
+  +           left: 16,
+  +           right: 212.25,
+  +           top: 1866.71875,
+  +           width: 196.25,
+  +           x: 16,
+  +           y: 1866.71875
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf',
+  +       index: 21,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1888.71875,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 412.90625,
+  +         top: 1841.53125,
+  +         width: 396.90625,
+  +         x: 16,
+  +         y: 1841.53125
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Swiss Code of Obligations, art. 259d',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 0,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 430,
+  +         top: 0
+  +       },
+  +       display: 'inline',
+  +       documentTop: 1866.71875,
+  +       fragments: [
+  +         {
+  +           bottom: 1888.71875,
+  +           height: 22,
+  +           left: 221.3125,
+  +           right: 401.875,
+  +           top: 1866.71875,
+  +           width: 180.5625,
+  +           x: 221.3125,
+  +           y: 1866.71875
+  +         },
+  +         {
+  +           bottom: 1913.90625,
+  +           height: 22,
+  +           left: 16,
+  +           right: 67.890625,
+  +           top: 1891.90625,
+  +           width: 51.890625,
+  +           x: 16,
+  +           y: 1891.90625
+  +         }
+  +       ],
+  +       href: 'https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20240101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20240101-de-pdf-a.pdf',
+  +       index: 22,
+  +       minHeight: '44px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 1913.90625,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 401.875,
+  +         top: 1866.71875,
+  +         width: 385.875,
+  +         x: 16,
+  +         y: 1866.71875
+  +       },
+  +       scrollWidth: 0,
+  +       tag: 'A',
+  +       text: 'Earlier law text (2024-01-01)',
+  +       type: null
+  +     },
+  +     view: 'claim-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-secondary',
+  +       clientWidth: 66,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 490.1875,
+  +       fragments: [
+  +         {
+  +           bottom: 514.984375,
+  +           height: 24.796875,
+  +           left: 240.90625,
+  +           right: 306.40625,
+  +           top: 490.1875,
+  +           width: 65.5,
+  +           x: 240.90625,
+  +           y: 490.1875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 514.984375,
+  +         height: 24.796875,
+  +         left: 240.90625,
+  +         right: 306.40625,
+  +         top: 490.1875,
+  +         width: 65.5,
+  +         x: 240.90625,
+  +         y: 490.1875
+  +       },
+  +       scrollWidth: 66,
+  +       tag: 'BUTTON',
+  +       text: 'Version 1',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-refreshing'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 466.1875
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 597.171875,
+  +       fragments: [
+  +         {
+  +           bottom: 621.96875,
+  +           height: 24.796875,
+  +           left: 147.5625,
+  +           right: 203.28125,
+  +           top: 597.171875,
+  +           width: 55.71875,
+  +           x: 147.5625,
+  +           y: 597.171875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 621.96875,
+  +         height: 24.796875,
+  +         left: 147.5625,
+  +         right: 203.28125,
+  +         top: 597.171875,
+  +         width: 55.71875,
+  +         x: 147.5625,
+  +         y: 597.171875
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-refreshing'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-secondary',
+  +       clientWidth: 68,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 441.390625
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 449.390625,
+  +       fragments: [
+  +         {
+  +           bottom: 474.1875,
+  +           height: 24.796875,
+  +           left: 240.90625,
+  +           right: 308.9375,
+  +           top: 449.390625,
+  +           width: 68.03125,
+  +           x: 240.90625,
+  +           y: 449.390625
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 474.1875,
+  +         height: 24.796875,
+  +         left: 240.90625,
+  +         right: 308.9375,
+  +         top: 449.390625,
+  +         width: 68.03125,
+  +         x: 240.90625,
+  +         y: 449.390625
+  +       },
+  +       scrollWidth: 68,
+  +       tag: 'BUTTON',
+  +       text: 'Version 2',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-version-2'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 441.390625
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 556.375,
+  +       fragments: [
+  +         {
+  +           bottom: 581.171875,
+  +           height: 24.796875,
+  +           left: 147.5625,
+  +           right: 203.28125,
+  +           top: 556.375,
+  +           width: 55.71875,
+  +           x: 147.5625,
+  +           y: 556.375
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 581.171875,
+  +         height: 24.796875,
+  +         left: 147.5625,
+  +         right: 203.28125,
+  +         top: 556.375,
+  +         width: 55.71875,
+  +         x: 147.5625,
+  +         y: 556.375
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-version-2'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: true,
+  +       centerVisible: true,
+  +       className: '',
+  +       clientWidth: 42,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 441.390625
+  +       },
+  +       display: 'block',
+  +       documentTop: 754.765625,
+  +       fragments: [
+  +         {
+  +           bottom: 798.765625,
+  +           height: 44,
+  +           left: 33,
+  +           right: 74.875,
+  +           top: 754.765625,
+  +           width: 41.875,
+  +           x: 33,
+  +           y: 754.765625
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 15,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 798.765625,
+  +         height: 44,
+  +         left: 33,
+  +         right: 74.875,
+  +         top: 754.765625,
+  +         width: 41.875,
+  +         x: 33,
+  +         y: 754.765625
+  +       },
+  +       scrollWidth: 42,
+  +       tag: 'BUTTON',
+  +       text: 'Steps',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-version-2'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-secondary',
+  +       clientWidth: 68,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 441.390625
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: -24.609375,
+  +       fragments: [
+  +         {
+  +           bottom: 0.1875,
+  +           height: 24.796875,
+  +           left: 240.90625,
+  +           right: 308.9375,
+  +           top: -24.609375,
+  +           width: 68.03125,
+  +           x: 240.90625,
+  +           y: -24.609375
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 0.1875,
+  +         height: 24.796875,
+  +         left: 240.90625,
+  +         right: 308.9375,
+  +         top: -24.609375,
+  +         width: 68.03125,
+  +         x: 240.90625,
+  +         y: -24.609375
+  +       },
+  +       scrollWidth: 68,
+  +       tag: 'BUTTON',
+  +       text: 'Version 2',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 441.390625
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 82.375,
+  +       fragments: [
+  +         {
+  +           bottom: 107.171875,
+  +           height: 24.796875,
+  +           left: 147.5625,
+  +           right: 203.28125,
+  +           top: 82.375,
+  +           width: 55.71875,
+  +           x: 147.5625,
+  +           y: 82.375
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 107.171875,
+  +         height: 24.796875,
+  +         left: 147.5625,
+  +         right: 203.28125,
+  +         top: 82.375,
+  +         width: 55.71875,
+  +         x: 147.5625,
+  +         y: 82.375
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 42,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 441.390625
+  +       },
+  +       display: 'block',
+  +       documentTop: 280.765625,
+  +       fragments: [
+  +         {
+  +           bottom: 324.765625,
+  +           height: 44,
+  +           left: 33,
+  +           right: 74.875,
+  +           top: 280.765625,
+  +           width: 41.875,
+  +           x: 33,
+  +           y: 280.765625
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 15,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 324.765625,
+  +         height: 44,
+  +         left: 33,
+  +         right: 74.875,
+  +         top: 280.765625,
+  +         width: 41.875,
+  +         x: 33,
+  +         y: 280.765625
+  +       },
+  +       scrollWidth: 42,
+  +       tag: 'BUTTON',
+  +       text: 'Steps',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-disclosure'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-secondary',
+  +       clientWidth: 68,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 441.390625
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: -24.609375,
+  +       fragments: [
+  +         {
+  +           bottom: 0.1875,
+  +           height: 24.796875,
+  +           left: 254.484375,
+  +           right: 322.515625,
+  +           top: -24.609375,
+  +           width: 68.03125,
+  +           x: 254.484375,
+  +           y: -24.609375
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 11,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 0.1875,
+  +         height: 24.796875,
+  +         left: 254.484375,
+  +         right: 322.515625,
+  +         top: -24.609375,
+  +         width: 68.03125,
+  +         x: 254.484375,
+  +         y: -24.609375
+  +       },
+  +       scrollWidth: 68,
+  +       tag: 'BUTTON',
+  +       text: 'Version 2',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-range'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link au-record-link',
+  +       clientWidth: 56,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 441.390625
+  +       },
+  +       display: 'inline-flex',
+  +       documentTop: 82.375,
+  +       fragments: [
+  +         {
+  +           bottom: 107.171875,
+  +           height: 24.796875,
+  +           left: 221.4375,
+  +           right: 277.15625,
+  +           top: 82.375,
+  +           width: 55.71875,
+  +           x: 221.4375,
+  +           y: 82.375
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 12,
+  +       minHeight: '24px',
+  +       minWidth: '0px',
+  +       rect: {
+  +         bottom: 107.171875,
+  +         height: 24.796875,
+  +         left: 221.4375,
+  +         right: 277.15625,
+  +         top: 82.375,
+  +         width: 55.71875,
+  +         x: 221.4375,
+  +         y: 82.375
+  +       },
+  +       scrollWidth: 56,
+  +       tag: 'BUTTON',
+  +       text: 'Details',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-range'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: '',
+  +       clientWidth: 42,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 16,
+  +         right: 414,
+  +         top: 441.390625
+  +       },
+  +       display: 'block',
+  +       documentTop: 924.71875,
+  +       fragments: [
+  +         {
+  +           bottom: 968.71875,
+  +           height: 44,
+  +           left: 33,
+  +           right: 74.875,
+  +           top: 924.71875,
+  +           width: 41.875,
+  +           x: 33,
+  +           y: 924.71875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 22,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 968.71875,
+  +         height: 44,
+  +         left: 33,
+  +         right: 74.875,
+  +         top: 924.71875,
+  +         width: 41.875,
+  +         x: 33,
+  +         y: 924.71875
+  +       },
+  +       scrollWidth: 42,
+  +       tag: 'BUTTON',
+  +       text: 'Steps',
+  +       type: 'button'
+  +     },
+  +     view: 'knowledge-range'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link',
+  +       clientWidth: 35,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 430,
+  +         top: 0
+  +       },
+  +       display: 'flex',
+  +       documentTop: 5021.140625,
+  +       fragments: [
+  +         {
+  +           bottom: 5065.140625,
+  +           height: 44,
+  +           left: 378.90625,
+  +           right: 414,
+  +           top: 5021.140625,
+  +           width: 35.09375,
+  +           x: 378.90625,
+  +           y: 5021.140625
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 38,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 5065.140625,
+  +         height: 44,
+  +         left: 378.90625,
+  +         right: 414,
+  +         top: 5021.140625,
+  +         width: 35.09375,
+  +         x: 378.90625,
+  +         y: 5021.140625
+  +       },
+  +       scrollWidth: 35,
+  +       tag: 'BUTTON',
+  +       text: 'Next',
+  +       type: 'button'
+  +     },
+  +     view: 'cases'
+  +   },
+  +   {
+  +     problem: 'target hit area below 44px',
+  +     target: {
+  +       centerHit: null,
+  +       centerVisible: false,
+  +       className: 'au-link',
+  +       clientWidth: 35,
+  +       clip: {
+  +         bottom: 844,
+  +         left: 0,
+  +         right: 430,
+  +         top: 0
+  +       },
+  +       display: 'flex',
+  +       documentTop: 4970.546875,
+  +       fragments: [
+  +         {
+  +           bottom: 5014.546875,
+  +           height: 44,
+  +           left: 378.90625,
+  +           right: 414,
+  +           top: 4970.546875,
+  +           width: 35.09375,
+  +           x: 378.90625,
+  +           y: 4970.546875
+  +         }
+  +       ],
+  +       href: null,
+  +       index: 39,
+  +       minHeight: '44px',
+  +       minWidth: 'auto',
+  +       rect: {
+  +         bottom: 5014.546875,
+  +         height: 44,
+  +         left: 378.90625,
+  +         right: 414,
+  +         top: 4970.546875,
+  +         width: 35.09375,
+  +         x: 378.90625,
+  +         y: 4970.546875
+  +       },
+  +       scrollWidth: 35,
+  +       tag: 'BUTTON',
+  +       text: 'Next',
+  +       type: 'button'
+  +     },
+  +     view: 'cases-page-2'
+  +   },
+  +   {
+  +     problem: 'an exercised target does not expose its full reachable hit area',
+  +     target: {
+  +       centerHit: false,
+  +       name: 'legal article',
+  +       rect: {
+  +         bottom: 691.5625,
+  +         height: 47.1875,
+  +         left: 16,
+  +         right: 412.90625,
+  +         top: 644.375,
+  +         width: 396.90625,
+  +         x: 16,
+  +         y: 644.375
+  +       },
+  +       text: 'Swiss Code of Obligations, art. 259d',
+  +       visualHeight: 844,
+  +       visualWidth: 430
+  +     }
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/workspace/casepath-reference-85a-qa/casepath-qa/unified-product-browser-v1.test.cjs:3458:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'claim-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-refreshing', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-refreshing', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-version-2', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-version-2', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-version-2', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-disclosure', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-range', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-range', problem: 'target hit area below 44px', target: [Object] }, { view: 'knowledge-range', problem: 'target hit area below 44px', target: [Object] }, { view: 'cases', problem: 'target hit area below 44px', target: [Object] }, { view: 'cases-page-2', problem: 'target hit area below 44px', target: [Object] }, { problem: 'an exercised target does not expose its full reachable hit area', target: [Object] } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

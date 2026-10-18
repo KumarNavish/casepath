@@ -1,0 +1,221 @@
+diff --git a/casepath-qa/unified-product-browser-v1.test.cjs b/casepath-qa/unified-product-browser-v1.test.cjs
+index e55c677..051256d 100644
+--- a/casepath-qa/unified-product-browser-v1.test.cjs
++++ b/casepath-qa/unified-product-browser-v1.test.cjs
+@@ -3335,6 +3335,179 @@ for (const width of [390, 320, 430, 1428]) test(`mobile case header: retained he
+   assert.equal(await page.locator('[data-au-panel="documents"]').isVisible(), true, 'the fitted return link retains the selected heating claim and Documents view');
+ });
+ 
++async function renderedTouchTargets(page, view) {
++  await page.evaluate(() => { scrollTo(0, 0); const modal = document.querySelector('dialog:modal'); if (modal) modal.scrollTop = 0; });
++  await page.evaluate(() => document.fonts.ready);
++  return page.evaluate(view => {
++    const modal = document.querySelector('dialog:modal'), scope = modal || document.querySelector('.au-workspace');
++    const controls = [...scope.querySelectorAll('a[href],button,summary,input[type=range],input[type=checkbox]')].filter(element =>
++      !element.matches(':disabled,[aria-disabled=true]') && !element.closest('[hidden],[inert],dialog:not([open])') && element.checkVisibility({checkOpacity: true, checkVisibilityCSS: true}));
++    const targets = controls.map((element, index) => {
++      const rect = element.getBoundingClientRect(), style = getComputedStyle(element), clip = {left: 0, top: 0, right: visualViewport.width, bottom: visualViewport.height};
++      for (let parent = element.parentElement; parent; parent = parent.parentElement) {
++        const bounds = parent.getBoundingClientRect(), css = getComputedStyle(parent);
++        if (/(auto|scroll|hidden|clip)/.test(css.overflowX)) { clip.left = Math.max(clip.left, bounds.left); clip.right = Math.min(clip.right, bounds.right); }
++        if (/(auto|scroll|hidden|clip)/.test(css.overflowY)) { clip.top = Math.max(clip.top, bounds.top); clip.bottom = Math.min(clip.bottom, bounds.bottom); }
++      }
++      const fragments = [...element.getClientRects()].filter(part => part.width > 0 && part.height > 0).map(part => part.toJSON()), hits = [];
++      for (const part of fragments) {
++        const x = part.left + part.width / 2, y = part.top + part.height / 2;
++        if (x > clip.left && x < clip.right && y > clip.top && y < clip.bottom) { const hit = document.elementFromPoint(x, y); hits.push(element === hit || element.contains(hit)); }
++      }
++      return {index, tag: element.tagName, text: (element.textContent || element.getAttribute('aria-label') || '').trim(), className: element.className, type: element.type || null, href: element.getAttribute('href'), rect: rect.toJSON(), fragments, documentTop: rect.top + scrollY,
++        display: style.display, minWidth: style.minWidth, minHeight: style.minHeight, clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, clip, centerVisible: hits.length > 0, centerHit: hits.length ? hits.every(Boolean) : null};
++    }).filter(row => row.rect.width > 0 && row.rect.height > 0);
++    const overlaps = [];
++    for (let left = 0; left < targets.length; left++) for (let right = left + 1; right < targets.length; right++) {
++      const a = targets[left], b = targets[right];
++      if (!a.centerVisible || !b.centerVisible || controls[a.index].contains(controls[b.index]) || controls[b.index].contains(controls[a.index])) continue;
++      for (const first of a.fragments) for (const second of b.fragments) {
++        const width = Math.min(first.right, second.right, a.clip.right, b.clip.right) - Math.max(first.left, second.left, a.clip.left, b.clip.left), height = Math.min(first.bottom, second.bottom, a.clip.bottom, b.clip.bottom) - Math.max(first.top, second.top, a.clip.top, b.clip.top);
++        if (width > 1 && height > 1) overlaps.push({left: a.text, right: b.text, width, height});
++      }
++    }
++    const heading = document.querySelector('.au-learning h1'), status = document.querySelector('[data-au-knowledge-read-label]'), subtitle = document.querySelector('.au-learning-label');
++    const lines = element => { const range = document.createRange(); range.selectNodeContents(element); return [...range.getClientRects()].map(rect => rect.toJSON()); };
++    const words = subtitle ? [...subtitle.textContent.matchAll(/\p{L}+/gu)].map(word => { const range = document.createRange(); range.setStart(subtitle.firstChild, word.index); range.setEnd(subtitle.firstChild, word.index + word[0].length); return {text: word[0], lines: [...range.getClientRects()].map(rect => rect.toJSON())}; }) : [];
++    return {view, modal: modal?.className || null, visualWidth: visualViewport.width, scale: visualViewport.scale, innerWidth, documentWidth: document.documentElement.scrollWidth, coarse: matchMedia('(pointer:coarse)').matches, targets, overlaps,
++      heading: heading ? {text: heading.textContent, lines: lines(heading), rect: heading.getBoundingClientRect().toJSON()} : null, subtitle: subtitle ? {text: subtitle.textContent, fontSize: parseFloat(getComputedStyle(subtitle).fontSize), words, rect: subtitle.getBoundingClientRect().toJSON()} : null, status: status ? {text: status.textContent, rect: status.getBoundingClientRect().toJSON()} : null};
++  }, view);
++}
++
++for (const width of [320, 390, 430, 1428]) test(`coarse touch targets: real claim, Knowledge and Cases controls fit at ${width}px`, async t => {
++  assert.ok(process.env.CASEPATH_KNOWLEDGE_FIXTURE, 'use the retained public Knowledge projection with its recorded learning events');
++  const knowledgeBytes = fs.readFileSync(process.env.CASEPATH_KNOWLEDGE_FIXTURE), knowledge = JSON.parse(knowledgeBytes), id = 'clm_314f2d309fea25e6', mobile = width < 600;
++  const page = await fixturePage(t, {width, height: 844, mobile, publicReadOnly: true, referenceFixture: true, referenceReplayIds: [], recordedKnowledgeData: knowledge, holdKnowledge: true});
++  await page.evaluate(() => { document.body.style.margin = '0'; });
++  const activate = async locator => { if (mobile) await locator.tap(); else await locator.click(); }, measurements = [], hitProbes = [];
++  const probe = async (locator, name) => {
++    await locator.scrollIntoViewIfNeeded();
++    hitProbes.push(await locator.evaluate((element, name) => { const rect = element.getBoundingClientRect(), hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2); return {name, text: element.textContent, rect: rect.toJSON(), centerHit: element === hit || element.contains(hit), visualWidth: visualViewport.width, visualHeight: visualViewport.height}; }, name));
++  };
++  const collect = async view => {
++    const row = await renderedTouchTargets(page, view); measurements.push(row);
++    if (focusedReceiptRoot) { fs.mkdirSync(focusedReceiptRoot, {recursive: true}); fs.writeFileSync(path.join(focusedReceiptRoot, `touch-${width}-${view}.json`), JSON.stringify({testSha256: sha(fs.readFileSync(__filename)), assets: await page.evaluate(() => window.__injectedAssets), ...row}, null, 2)); }
++  };
++  // Complete Cases' actual warm GET before leaving, then hold revalidation.
++  await eventually(() => page.evaluate(() => window.__fixture.held.some(row => row.kind === 'knowledge')), 'Cases did not start its read-only Knowledge warm');
++  await page.evaluate(async () => { window.__fixture.holdKnowledge = false; for (const held of window.__fixture.held.filter(row => row.kind === 'knowledge')) held.release(); window.__fixture.held = window.__fixture.held.filter(row => row.kind !== 'knowledge'); for (let turn = 0; turn < 100; turn++) await Promise.resolve(); window.__fixture.holdKnowledge = true; });
++  await page.evaluate(id => window.__controller.openClaim(id, true, {mode: 'saved'}), id); await title(page, id);
++  assert.ok(await page.locator('[data-au-law-article]').count(), 'the actual accepted heating claim exposes its official legal article links');
++  const legalLinks = await page.locator('[data-au-law-article]').evaluateAll(rows => rows.map(row => ({text: row.textContent, href: row.getAttribute('href')})));
++  for (const link of await page.locator('[data-au-law-article]').all()) await probe(link, 'legal article');
++  await collect('claim');
++  await activate(page.locator('.au-role-explanation summary'));
++  await collect('claim-disclosure');
++  await probe(page.locator('.au-role-explanation summary'), 'claim disclosure');
++  await activate(page.locator('.au-role-explanation summary'));
++  await activate(page.locator('button[data-au-source]:visible').first());
++  await page.locator('.au-source-dialog[open]').waitFor();
++  assert.ok((await page.locator('[data-au-source-content]').innerText()).length > 80, 'the direct source control still opens the retained source text');
++  await collect('source-dialog');
++  await probe(page.locator('.au-source-dialog a[href]'), 'Download original');
++  const sourceDisclosure = page.locator('.au-source-dialog summary');
++  await probe(sourceDisclosure, 'source disclosure'); await activate(sourceDisclosure); await collect('source-disclosure');
++  await activate(page.locator('[data-au-close]'));
++  await activate(page.locator('.au-nav [data-au-nav="knowledge"]'));
++  await eventually(() => page.locator('[data-au-knowledge-read-label]').textContent().then(text => text === 'Saved copy · refreshing'), 'the real warmed Knowledge read must show its refreshing status');
++  await collect('knowledge-refreshing');
++  await page.evaluate(() => { window.__fixture.holdKnowledge = false; for (const held of window.__fixture.held.splice(0)) held.release(); });
++  await eventually(() => currentReadState(page).then(read => read === 'verified'), 'the retained public Knowledge projection did not settle');
++  const ui = require('../casepath/assets/autonomous-workspace-v1.js'), event = ui.knowledgeLearningModel(knowledge).events.find(row => (row.versionRecord || row.item)?.version === 2), version = event.versionRecord || event.item;
++  const parameters = new URLSearchParams({knowledge: version.knowledge_id, version: '2', sha256: version.knowledge_sha256, event: event.id, stage: '10'});
++  if (version.qualification?.definition_sha256) parameters.set('definition', version.qualification.definition_sha256);
++  await page.evaluate(fragment => { location.hash = fragment; }, '#autonomous/knowledge?' + parameters);
++  await eventually(() => page.locator('[data-au-learning]').getAttribute('data-au-learning-event-id').then(value => value === event.id), 'the exact retained Version 2 event did not render');
++  assert.ok(await page.getByRole('button', {name: 'Version 2', exact: true}).count(), 'the real Version 2 control participates in the audit');
++  await probe(page.getByRole('button', {name: 'Version 2', exact: true}), 'Version 2');
++  await collect('knowledge-version-2');
++  await probe(page.getByRole('button', {name: 'Details', exact: true}), 'Details');
++  await activate(page.getByRole('button', {name: 'Details', exact: true}));
++  await page.locator('.au-record-dialog[open]').waitFor(); await collect('knowledge-details');
++  await activate(page.locator('[data-au-close-record]'));
++  const disclosure = page.locator('.au-learning-focus summary:visible').first();
++  await probe(disclosure, 'Knowledge disclosure'); await activate(disclosure); await collect('knowledge-disclosure');
++  const range = page.locator('[data-au-learning-scrub]');
++  await probe(range, 'recorded-event range');
++  const beforeRange = await range.inputValue(), rangeBox = await range.boundingBox(), position = {x: rangeBox.width - 1, y: rangeBox.height / 2};
++  if (mobile) await range.tap({position}); else await range.click({position});
++  const rangeInteraction = {before: beforeRange, after: await range.inputValue(), max: await range.getAttribute('max')};
++  assert.equal(await range.isEnabled(), true, 'the real recorded-event range remains enabled and participates in hit-area checks');
++  assert.equal(rangeInteraction.after, rangeInteraction.max, 'a native end-of-track action selects the final real recorded event');
++  await collect('knowledge-range');
++  await activate(page.locator('.au-nav [data-au-nav="work"]'));
++  await page.locator('[data-au-page="2"]').waitFor(); await collect('cases');
++  await probe(page.locator('[data-au-page="2"]'), 'Next'); await activate(page.locator('[data-au-page="2"]'));
++  assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('page'), '2', 'the enabled Next control retains pagination');
++  await collect('cases-page-2');
++  // Screenshots occur after every measurement to preserve coarse-pointer emulation.
++  await focusedReceipt(page, `coarse-touch-targets-${width}`, {claim_id: id, mobile, knowledgeFixtureSha256: sha(knowledgeBytes), classification: 'Native accepted claim fixture and independent frozen public Knowledge projection; geometry only, no trace or publication authority.', legalLinks, hitProbes, rangeInteraction, measurements});
++  const problems = [];
++  for (const row of measurements) {
++    if (row.visualWidth !== width || row.documentWidth > width + 1 || row.scale !== 1 || row.coarse !== mobile) problems.push({view: row.view, viewport: row});
++    if (row.overlaps.length) problems.push({view: row.view, problem: 'independent visible target rectangles overlap', overlaps: row.overlaps});
++    for (const target of row.targets) {
++      if (mobile && target.fragments.some(part => part.width < 44 || part.height < 44)) problems.push({view: row.view, problem: 'target hit area below 44px', target});
++      if (target.centerHit === false) problems.push({view: row.view, problem: 'target center is covered', target});
++      if (target.tag === 'SUMMARY' && target.display !== 'list-item') problems.push({view: row.view, problem: 'native disclosure marker display changed', target});
++    }
++    if (row.view === 'knowledge-refreshing' && (row.heading.text !== 'Knowledge' || row.heading.lines.length !== 1 || row.heading.rect.right > width || row.status.text !== 'Saved copy · refreshing' || row.status.rect.right > width)) problems.push({view: row.view, problem: 'cached refresh header does not wrap naturally', heading: row.heading, status: row.status});
++    if (row.view === 'knowledge-refreshing' && (row.subtitle.text !== 'Replay · Fictional cases' || row.subtitle.fontSize < 16 || row.subtitle.words.some(word => word.lines.length !== 1) || row.subtitle.rect.right > width)) problems.push({view: row.view, problem: 'the readable replay subtitle splits inside a word', subtitle: row.subtitle});
++  }
++  for (const target of hitProbes) if (!target.centerHit || target.rect.left < -1 || target.rect.right > target.visualWidth + 1 || target.rect.top < -1 || target.rect.bottom > target.visualHeight + 1) problems.push({problem: 'an exercised target does not expose its full reachable hit area', target});
++  assert.deepEqual(problems, [], 'all rendered enabled controls retain touch areas, unobscured centers, native disclosures and visual-viewport reflow');
++});
++
++for (const width of [390, 1428]) for (const mode of ['paused', 'playing', 'completed']) test(`knowledge native scrub: ${width < 600 ? 'touch' : 'mouse'} ${mode} preserves the exact requested event`, async t => {
++  assert.ok(process.env.CASEPATH_KNOWLEDGE_FIXTURE, 'use the retained public Knowledge projection');
++  const bytes = fs.readFileSync(process.env.CASEPATH_KNOWLEDGE_FIXTURE), knowledge = JSON.parse(bytes), model = require('../casepath/assets/autonomous-workspace-v1.js').knowledgeLearningModel(knowledge), mobile = width < 600;
++  const page = await fixturePage(t, {width, height: 844, mobile, publicReadOnly: true, recordedKnowledgeData: knowledge}), observations = [];
++  const activate = async locator => { if (mobile) await locator.tap(); else await locator.click(); };
++  await page.evaluate(() => { document.body.style.margin = '0'; window.__nativeRangeInputs = []; document.addEventListener('input', event => { if (event.isTrusted && event.target.matches('[data-au-learning-scrub]')) window.__nativeRangeInputs.push(Number(event.target.value)); }, true); });
++  await activate(page.locator('.au-nav [data-au-nav="knowledge"]'));
++  await eventually(() => page.locator('[data-au-learning]').count().then(count => count === 1), 'the actual recorded Knowledge view did not render');
++  if (await page.locator('[data-au-learning]').getAttribute('data-au-learning-playing') === 'true') await activate(page.locator('[data-au-learning-play]'));
++  const range = page.locator('[data-au-learning-scrub]'), heading = page.locator('.au-learning h1');
++  const read = async action => {
++    const state = await page.evaluate(() => ({value: Number(document.querySelector('[data-au-learning-scrub]').value), event: document.querySelector('[data-au-learning]').dataset.auLearningEventId, playing: document.querySelector('[data-au-learning]').dataset.auLearningPlaying, complete: document.querySelector('[data-au-learning]').dataset.auLearningComplete, route: location.hash, nativeInputs: [...window.__nativeRangeInputs], assets: window.__injectedAssets}));
++    observations.push({action, ...state});
++    if (focusedReceiptRoot) { fs.mkdirSync(focusedReceiptRoot, {recursive: true}); fs.writeFileSync(path.join(focusedReceiptRoot, `native-scrub-${width}-${mode}.json`), JSON.stringify({testSha256: sha(fs.readFileSync(__filename)), knowledgeFixtureSha256: sha(bytes), observations}, null, 2)); }
++    return state;
++  };
++  const selected = async (index, action) => {
++    const state = await read(action), event = model.events[index], item = event.versionRecord || event.item, query = new URLSearchParams(state.route.split('?')[1]);
++    assert.equal(state.value, index, `${action}: the range retains the native requested index`);
++    assert.equal(state.event, event.id, `${action}: the selected event is the exact retained recording`);
++    assert.equal(state.playing, 'false'); assert.equal(state.complete, 'false', 'explicit selection leaves the completed overview');
++    const pin = item?.knowledge_id && item?.version ? {knowledge: item.knowledge_id, version: String(item.version), sha256: item.knowledge_sha256, definition: item.definition_sha256 || item.qualification?.definition_sha256 || null} : {knowledge: null, version: null, sha256: null, definition: null};
++    for (const [key, value] of Object.entries({event: event.id, stage: '10', ...pin})) assert.equal(query.get(key), value, `${action}: exact ${key} preserves the recorded event's publication or refusal status`);
++  };
++  if (mode === 'paused') { await activate(page.locator('[data-au-learning-end]')); const state = await read('Final view'); assert.equal(state.value, model.events.length - 1); assert.equal(state.complete, 'true'); }
++  else {
++    await heading.focus(); await page.keyboard.press('Home'); await selected(0, 'global Home');
++    await activate(page.locator('[data-au-learning-play]'));
++    if (mode === 'completed') {
++      await page.clock.runFor(model.frames.reduce((sum, frame) => sum + frame.duration, 0) + 2000);
++      const state = await read('actual autoplay completion'); assert.equal(state.complete, 'true'); assert.equal(state.value, model.events.length - 1); assert.equal(state.event, model.events[model.frames.at(-1).index].id);
++    } else assert.equal((await read('playing before scrub')).playing, 'true');
++  }
++  await range.scrollIntoViewIfNeeded();
++  const box = await range.boundingBox(), representative = model.frames.at(-1).index, position = {x: mode === 'completed' ? 8 + (box.width - 16) * representative / (model.events.length - 1) : box.width / 4, y: box.height / 2};
++  if (mobile) await range.tap({position}); else await range.click({position});
++  const native = await read('native track action'), desired = native.nativeInputs.at(-1);
++  assert.ok(Number.isInteger(desired), 'the trusted native input event exposes the requested index before the controller handles it');
++  if (mode === 'completed') assert.equal(desired, representative, 'the native action selects the same representative index that completion currently retains');
++  await selected(desired, 'native track action');
++  await range.press('Home'); await selected(0, 'input Home');
++  await range.press('ArrowRight'); await selected(1, 'input ArrowRight');
++  await range.press('End'); await selected(model.events.length - 1, 'input End');
++  await heading.focus(); await page.keyboard.press('ArrowLeft'); await selected(model.events.length - 2, 'global ArrowLeft');
++  await page.keyboard.press('Home'); await selected(0, 'global Home after scrub');
++  await page.keyboard.press('ArrowRight'); await selected(1, 'global ArrowRight');
++  await page.keyboard.press('End'); await selected(model.events.length - 1, 'global End');
++  await focusedReceipt(page, `knowledge-native-scrub-${width}-${mode}`, {knowledgeFixtureSha256: sha(bytes), observations});
++});
++
+ test('quiet work: Cases and global Knowledge return to the same verified claim and exact local requirement and knowledge version', async t => {
+   const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed'});
+   assert.equal(await page.locator('[data-au-return-case]:visible').count(),0,'a first visit cannot invent a current case');
+diff --git a/casepath/assets/autonomous-workspace-v1.css b/casepath/assets/autonomous-workspace-v1.css
+index 3b0d500..a6d6c5a 100644
+--- a/casepath/assets/autonomous-workspace-v1.css
++++ b/casepath/assets/autonomous-workspace-v1.css
+@@ -963,7 +963,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+ .au-workspace .au-stage-scrubber { flex:1 1 160px; }
+ .au-workspace .au-recorded-wording { margin:8px 0; font-size:16px; }
+ .au-workspace .au-operation-passage mark { color:var(--au-ink); background:#e3ebc9; }
+-@media (pointer:coarse) { .au-workspace :is(button,a,summary,input[type=range],input[type=checkbox]) { min-height:44px; } }
++@media (pointer:coarse) {
++  /* Compact component rules must not reduce the minimum touch area. */
++  .au-workspace :is(button,a[href],summary,input[type=range],input[type=checkbox]) { min-width:44px !important; min-height:44px !important; }
++  .au-workspace .au-legal-basis a { display:inline-block; max-width:100%; padding-block:10px; vertical-align:middle; }
++}
+ @media (max-width:700px) {
+   .au-workspace .au-role-explanation ul { grid-template-columns:1fr; }
+   .au-workspace .au-identity-header { flex-wrap:wrap; }
+@@ -1027,4 +1031,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+ }
+ @media (max-width:700px) and (pointer:coarse) {
+   .au-workspace .au-learning .au-work-head .au-record-link { min-height:44px; }
++  .au-workspace .au-learning .au-work-head { flex-wrap:wrap; }
++  .au-workspace .au-learning .au-work-head > div:first-child { flex-basis:100%; }
+ }
+diff --git a/casepath/assets/autonomous-workspace-v1.js b/casepath/assets/autonomous-workspace-v1.js
+index e053739..659a08e 100644
+--- a/casepath/assets/autonomous-workspace-v1.js
++++ b/casepath/assets/autonomous-workspace-v1.js
+@@ -4197,7 +4197,7 @@
+       } else if (target.hasAttribute('data-au-close')) closeSource();
+     }
+     function input(event) {
+-      if(view==='knowledge' && event.target.hasAttribute?.('data-au-learning-scrub')){pauseLearning();selectLearning(Number(event.target.value),10,true);return;}
++      if(view==='knowledge' && event.target.hasAttribute?.('data-au-learning-scrub')){const index=Number(event.target.value);if(learningState)learningState.complete=false;pauseLearning();selectLearning(index,10,true);return;}
+       if (event.isTrusted && event.target.hasAttribute?.('data-au-operation-scrub') && operationTrace) {
+         pauseInspection(); operationPeek = operationInspection(operationTrace,Math.min(Number(event.target.value),operationTrace.rows.length-1));
+         if (operationPeek) { host.setAttribute('data-au-inspection-operation',operationPeek.trace.current.id); renderClaim(); }
