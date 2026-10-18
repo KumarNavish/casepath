@@ -1,0 +1,11 @@
+{
+  "base": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "candidate": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+  "name_status": [
+    "M\tcasepath-api/casepath_api/hosted_sql_v1.py",
+    "A\tcasepath-api/tests/test_hosted_idle_transport_v1.py",
+    "M\tcasepath/source-manifest.json"
+  ],
+  "expected_scope": "Reviewed hosted_sql_v1.py+new idle transport tests+seal only",
+  "focused_evidence_commit": "98c4b3042ee29678507dac09076a1bf8a8a99eb6"
+}

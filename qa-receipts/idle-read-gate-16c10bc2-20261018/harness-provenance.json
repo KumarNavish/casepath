@@ -1,0 +1,143 @@
+{
+  "basis": "Proven addc full gate harness, new16c/root/1719/short env paths; baseline2833 and9 new IDs reconciled dynamically; no product edits",
+  "files": [
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/harness/casepath_shard_observer.py",
+      "source_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/harness/casepath_shard_observer.py",
+      "target_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/harness/prepare_clones.py",
+      "source_sha256": "c808803989a67505ab40fd2d0b11ee5fb3fbf3a956d086c9c4a12df10812e4a7",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/harness/prepare_clones.py",
+      "target_sha256": "b428e7b06698f4b218ee00b414e84d04af1d372cb32d81405efe396a8d8a1cc2"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/harness/run_shard.py",
+      "source_sha256": "7957d379222faab25688f0d8edd2149eb81cc198a1d9d5f1f916f6f6932ad0b9",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/harness/run_shard.py",
+      "target_sha256": "12af02eeef6ee7e8bae1335c6b03619a9e9fc8c0465701ff748b8d5329f902fc"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/harness/runtime_inventory.py",
+      "source_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/harness/runtime_inventory.py",
+      "target_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/harness/verify_prepared_capsules.py",
+      "source_sha256": "57111207cd78df6ef721af2d76d0081506ec7337387b2dad87fb3c68a59a518a",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/harness/verify_prepared_capsules.py",
+      "target_sha256": "6ceb8911de080c533334035d9ccc1951f96fe5769ab64298a21d0e708c7f97f9"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/bundle.py",
+      "source_sha256": "2b4d1807ae481592c95288eb7fcc27afb3b6e9b48e7628dcf9199be7cd358eba",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/bundle.py",
+      "target_sha256": "dcb60d14619f70da3f0770da549aa8e85fa6d0b92a63bf3ef706abbe33226007"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/close_after_driver.py",
+      "source_sha256": "32e78fc1a713b47b9d9f03fe8700994cfa39e4a9d78488c24729f372d493afcc",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/close_after_driver.py",
+      "target_sha256": "59a97fb93822b35a393381348ff09edf88a4727124f51de4f3b7052e09d8a9a2"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/export_receipts.py",
+      "source_sha256": "160b8cdd3c8c4863209490f0506bf6c4af33eb8eebd8a925237a86b270e047a3",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/export_receipts.py",
+      "target_sha256": "8982e4003a9d2ed3053eb697218d6236fd66ef31a22be185244cadcdae107268"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/finalize_receipts.py",
+      "source_sha256": "9bbb6c7ff4c26ef871309f62ef8269935e89f5ab9b008f0f60a8dffdfa58a38c",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/finalize_receipts.py",
+      "target_sha256": "1913ad88799c7b7bcc0008632068f05e80a3c2f3834770619f9e034ad885b5d9"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/finish_audit.py",
+      "source_sha256": "b999041b5762241e5aebdd74e119b438d8b41c5ad1b41d1d6c5004306eaa338a",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/finish_audit.py",
+      "target_sha256": "015f5a138aa65a99b0df332d3229efa12bca191e22db48718d923534943f71af"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/inventory.py",
+      "source_sha256": "3532529d4300f98649a34e3edf08905f2f3ebe3a72d46a4db9e0e8a1e35f798e",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/inventory.py",
+      "target_sha256": "d339c9f656411c0fbd7c0c9317e171c98b4a049e0db1161b1867777189674c45"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/one_shard.py",
+      "source_sha256": "52544767e25cf0e19187e723b03a7e1077a6aa066650b372b5c079da8ec24409",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/one_shard.py",
+      "target_sha256": "afe14674dbf2a96d300949a87856f0395b494be8fcdfbe0d5bb4d23633294750"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/qualify_final.py",
+      "source_sha256": "8d10e21591a77554fe87dabae9a0a5968450e139bf3914b3482552fda6b8adf7",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/qualify_final.py",
+      "target_sha256": "b686e2e77b7a73b521b18bbf27b844974bd624f460cd3b2dcc208a4fa783ecef"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/reconcile.py",
+      "source_sha256": "391df2572b1ca2e6d21abf56aec5f8828742f6600083bb11c8ee1320fcb067c5",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/reconcile.py",
+      "target_sha256": "628602f2dfb9506b3c376e97265b758574c942179eb040bca609a1f868a683ce"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/resource_watch.py",
+      "source_sha256": "ca1b83fa559fcad8217da62dda9de4a954393fda3d3ea117cfca24678f1f54ca",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/resource_watch.py",
+      "target_sha256": "05eba726e092f92e2118d33b18ea41aa15415342780fb7e66ef2306d0b7be9b7"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/retire_pushed_cache.py",
+      "source_sha256": "351d0a46bb7459ddc17f2d15b93c3e9d86686ceac1a99f067b7f204164ae94fe",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/retire_pushed_cache.py",
+      "target_sha256": "403717b99107bffff33d20c9635fbee839e61304529221bd6734b86fa8f8fca1"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/retire_pushed_runtime.py",
+      "source_sha256": "037283a3ee9f325b15d1905d7bc593f1da65cb65a04eb0144197f58573853312",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/retire_pushed_runtime.py",
+      "target_sha256": "6ffc2581cd944ef5334b95a83074a9a101d14dea3f362fc08123a5657f869c8e"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/scan_export.py",
+      "source_sha256": "de9f1c5fc1928780923731c85f1660139326f88235f30f39f027f921fd068ed8",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/scan_export.py",
+      "target_sha256": "4a5ce527d9039552d616bbfb97ead2a59367784f0a37796bec8254057871497f"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/serial_driver.py",
+      "source_sha256": "ae9286301709e96b758ccde82f8cb17ada08a129ac0e3d3ce5a6684ad1766215",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/serial_driver.py",
+      "target_sha256": "4f82847b8fc063f52bb51ef6a8b53997eb1f56f6bc906432358bf01503bf458e"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/stage_one.py",
+      "source_sha256": "f112284c181bc3b673a1f500835e7cf008a5bf14d8803decfa0b54271560e405",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/stage_one.py",
+      "target_sha256": "5bf67bbe93c74bace94b3382b531063b4247423f5c50cbc03f490ee7889abcbc"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/summarize.py",
+      "source_sha256": "1e2c2103085b0f69f35f7c82635f4542f2b3ff8e3c676bbca6817b4d9cdd8a8b",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/summarize.py",
+      "target_sha256": "a54cd8427f7c3aba59b13cd0dd13a4a940b2d4c8c701f6ffc3e92815f0e4ca06"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/verify.py",
+      "source_sha256": "7ed861dee2f6006883d68951940ef44c8c486fbff876e839327611aabeb757e6",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/verify.py",
+      "target_sha256": "0d7105779f6a2d1dda344418811632ec73e20d0a23952279cdf922719fa7dc7c"
+    },
+    {
+      "source": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/verify_pushed_bundle.py",
+      "source_sha256": "48cb81b2160ce9a5daeb39b743b07e05ed148d42f6fbba0cd91a2f4793d54ce0",
+      "target": "/workspace/casepath-idle-read-gate-16c10bc2-20261018/coordinator/verify_pushed_bundle.py",
+      "target_sha256": "fb8e76139aa2f37c719a02f948e3a4eb1ecf807830d2655c4bac73d34e1efc6a"
+    }
+  ]
+}
