@@ -1,0 +1,29 @@
+{
+  "name": "shard3",
+  "repo": "/workspace/casepath-final-gate-4f8269c1-shard3-20261018",
+  "head": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+  "status": "",
+  "normal_clone": true,
+  "manifest_sha256": "3532003ba5f916e4d45d02ff57139fb4122d69001667d14f4431f2b4771dd790",
+  "sealed_files_verified": 1719,
+  "capsule_root": "/workspace/casepath-final-gate-4f8269c1-shard3-20261018/.runtime/casepath-dev-v2/source-capsules/3532003ba5f916e4d45d02ff57139fb4122d69001667d14f4431f2b4771dd790",
+  "capsule_receipt_path": "/workspace/casepath-final-gate-4f8269c1-shard3-20261018/.runtime/casepath-dev-v2/source-capsules/3532003ba5f916e4d45d02ff57139fb4122d69001667d14f4431f2b4771dd790/CAPSULE_RECEIPT.json",
+  "capsule_receipt_file_sha256": "920c1b8f48e83f5d5e085933515a9c8c44ae4d28d3e513a4872c97d5c89a79f7",
+  "capsule_receipt": {
+    "artifact_file_count": 25,
+    "artifact_manifest_file_sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2",
+    "contract": "casepath.sealed-source-capsule/1.0.0",
+    "receipt_sha256": "168588badee4e8769db18c241f335506d016574ecab7837e48f37af053952d93",
+    "source_file_count": 1719,
+    "source_manifest_file_sha256": "3532003ba5f916e4d45d02ff57139fb4122d69001667d14f4431f2b4771dd790",
+    "source_roster_sha256": "6e084fcaed35fbd93741834ef81632699c6fdab7bc9119a8d48b3528175baac7",
+    "static_file_count": 40,
+    "static_inventory_sha256": "5c5de3013e72398157d11d2ae156e2751953e1ba1fbb12b1b4477e736c905ccc"
+  },
+  "source_artifact_static_bindings_verified": true,
+  "existing_cli_prepare_verifies_repository_and_capsule_release": true,
+  "static_helper": "build_static_site.verify_inventory and build_deployment_identity.build_payload",
+  "prepare_exit_code": 0,
+  "prepare_duration_seconds": 7.787753105163574,
+  "verified_epoch": 1792320837.5255823
+}

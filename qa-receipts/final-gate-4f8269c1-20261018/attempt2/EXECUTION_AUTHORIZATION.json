@@ -3,11 +3,20 @@
   "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
   "authorized_shards": [
     "3",
-    "4"
+    "4",
+    "6"
   ],
   "authorization": "Mac owner approved exact trusted historical object fetch then one complete rerun per affected shard into fresh attempt2 dirs; originals terminal and durably exported.",
   "original_failure_receipt_commit": "e598661d3cf39c5bb36bf3427bb260d0b3ada3d4",
   "max_active_heavy": 2,
-  "shard6_not_authorized": true,
-  "epoch": 1792320348.4279594
+  "shard6_not_authorized": false,
+  "epoch": 1792320348.4279594,
+  "shard6_conditions": {
+    "entire658_ID_map": true,
+    "both_attempt2_shards3_4_terminal": true,
+    "no_other_heavy_process_active": true,
+    "unchanged15s_deadline": true,
+    "diagnostic_not_repeated": true
+  },
+  "latest_Mac_authorization_epoch": 1792320693.1659646
 }

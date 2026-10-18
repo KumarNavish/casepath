@@ -1,0 +1,90 @@
+{
+  "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+  "host": "ade3d3b7893a",
+  "exact_test": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication",
+  "diagnostic_attempts": 1,
+  "gate_admission": false,
+  "original_shard_result": "657 passed,1 failed; unchanged",
+  "resource_admission": {
+    "epoch": 1792320481.546214,
+    "cpu_sample_seconds": 1.5000916899998629,
+    "used_vcpu": 1.999884420398512,
+    "quota_vcpu": 4,
+    "spare_vcpu_sampled": 2.000115579601488,
+    "memory_current_bytes": 9043959808,
+    "memory_limit_bytes": 34359738368,
+    "free_disk_bytes": 24163516416,
+    "other_heavy_work": "Only authorized attempt2 shards3/4; all original six terminal.",
+    "diagnostic_not_gate_admission": true
+  },
+  "result": {
+    "exit_code": 0,
+    "wrapper_duration_seconds": 18.119030714035034,
+    "call_duration_seconds": 15.44088761400053,
+    "phases": {
+      "setup:passed": 1,
+      "call:passed": 1,
+      "teardown:passed": 1
+    },
+    "junit": [
+      {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "1",
+        "time": "15.601",
+        "timestamp": "2026-10-18T10:48:16.335985+00:00",
+        "hostname": "ade3d3b7893a"
+      }
+    ]
+  },
+  "proofs": {
+    "prepare_exit": 0,
+    "before_exit": 0,
+    "after_exit": 0,
+    "sealed_source_artifact_static_counts": [
+      1719,
+      25,
+      40
+    ],
+    "before_after_capsule_receipt_equal": true,
+    "capsule_receipt_sha256": "920c1b8f48e83f5d5e085933515a9c8c44ae4d28d3e513a4872c97d5c89a79f7",
+    "runtime_entries_before": 3800,
+    "runtime_entries_after": 3800,
+    "runtime_inventory_sha256_before": "f65b6a43e20ce2c81943f3cf0a5677dda8120ddec26549fd7c2239150c3a7c97",
+    "runtime_inventory_sha256_after": "f65b6a43e20ce2c81943f3cf0a5677dda8120ddec26549fd7c2239150c3a7c97",
+    "runtime_rows_equal": true,
+    "head": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+    "status": "",
+    "original_failure_database_sha256_unchanged": true
+  },
+  "resources_during_diagnostic": {
+    "observations": [
+      {
+        "epoch": 1792320493.8542213,
+        "free_disk_bytes": 24141533184,
+        "memory_current_bytes": 9094389760,
+        "pid": 15309,
+        "running": true
+      },
+      {
+        "epoch": 1792320503.8546424,
+        "free_disk_bytes": 24139448320,
+        "memory_current_bytes": 9208512512,
+        "pid": 15309,
+        "running": true
+      },
+      {
+        "epoch": 1792320512.2694154,
+        "free_disk_bytes": 24145612800,
+        "memory_current_bytes": 9085202432,
+        "pid": 15309,
+        "running": false
+      }
+    ],
+    "min_free_disk_bytes": 24139448320,
+    "max_memory_current_bytes": 9208512512
+  },
+  "interpretation": "The same unchanged exact test passed with fresh data and sampled CPU spare capacity. Combined with original eventual qualified publication, this supports timing sensitivity. It does not establish a specific CPU/scheduler cause, replace original gate failure, or admit the full shard."
+}

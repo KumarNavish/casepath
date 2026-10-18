@@ -1,6 +1,6 @@
 from pathlib import Path
 import json,os,subprocess,sys,time,shutil
-R=Path('/workspace/scratch/casepath-final-gate-4f8269c1-20261018/attempt2');n=sys.argv[1];assert n in ['3','4']
+R=Path('/workspace/scratch/casepath-final-gate-4f8269c1-20261018/attempt2');n=sys.argv[1];assert n in ['3','4','6']
 SHA='4f8269c1781c4097f79790f39dd0312a2f9f32bf';p=R/f'shard{n}';repo=Path(json.loads((R/'clone-map.json').read_text())['repos'][n]);prep=json.loads((p/'prepare.json').read_text());env=prep['env']
 assert prep['exit_code']==0 and (p/'runtime-before.json').is_file() and not (p/'ATTEMPT_STARTED.json').exists()
 assert shutil.disk_usage('/workspace').free>=3*1024**3+2*1024**3
