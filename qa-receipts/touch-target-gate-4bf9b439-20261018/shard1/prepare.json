@@ -1,0 +1,52 @@
+{
+  "candidate": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "cwd": "/workspace/casepath-release-ae0-shard4",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/tt4h1",
+    "TMPDIR": "/workspace/tt4t1",
+    "TMP": "/workspace/tt4t1",
+    "TEMP": "/workspace/tt4t1",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard1/pycache",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard1/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "UV_PYTHON_INSTALL_DIR": "/workspace/.local/share/uv/python"
+  },
+  "started_epoch": 1792289467.2045867,
+  "before_head": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "before_status": "",
+  "manifest_sha256": "98bd51f82f96e146314496cd41255781634d19c407ced1a37221927b91a6b32e",
+  "canonical_fetched_head": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "canonical_fetch_source": "https://github.com/KumarNavish/casepath",
+  "canonical_local_fetch_log": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard1/fetch.log",
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE",
+    "NODE_EXTRA_CA_CERTS"
+  ],
+  "internal_launcher_env_contract": "Exact source preserved: stdlib env-i probes omit temp aliases; locked/product env-i uses controlled runtime TMPDIR only.",
+  "exit_code": 0,
+  "finished_epoch": 1792289476.2709692,
+  "after_head": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "after_status": "",
+  "duration_seconds": 9.06638240814209
+}

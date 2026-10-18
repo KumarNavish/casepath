@@ -1,0 +1,125 @@
+{
+  "basis": "Reuse immutable prior pinned harness with candidate/root/owned paths, two-heavy limit, current prior inventory and explicit commit push substitutions only",
+  "files": [
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/harness/casepath_shard_observer.py",
+      "source_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/casepath_shard_observer.py",
+      "target_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/harness/prepare_clones.py",
+      "source_sha256": "42addf8d9ca3ea1dba13b940a50be60c0595dd433f8bef93dce05701fa02c5f0",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/prepare_clones.py",
+      "target_sha256": "609e0b2310a61e22e44dd978487b71287a74f2a651e85591402cfa5ceba35a57"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/harness/run_shard.py",
+      "source_sha256": "5deaa6f07cd7e9c861b285e70ea9d7666897161ddc8e0c4f00317493f2760079",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/run_shard.py",
+      "target_sha256": "95aac0e5c75ea7ba14f1365b753663f717c4cae403f65a4ae38dec5ab4661f57"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/harness/runtime_inventory.py",
+      "source_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/runtime_inventory.py",
+      "target_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/harness/verify_prepared_capsules.py",
+      "source_sha256": "557ac3af567df4cc8a0fef441d9c79a9ebd2cf5aacde138a17340342744e16aa",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/harness/verify_prepared_capsules.py",
+      "target_sha256": "d52b23b8ebd150ce0804d065e53c91dfdb99da7f687b50c7b4dcea2f54afcfbd"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/inventory.py",
+      "source_sha256": "bc3ec026519a04fd5c337c1dc7a0d08fca3b12800e1885fd074084d8757038fb",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/inventory.py",
+      "target_sha256": "785f2e63ebd2c82c5852cfa2403c6d12b78bfacd9812b64d7bc3d49ad805ceb4"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/one_shard.py",
+      "source_sha256": "6d600b26c322d5d752b1ffbd7e167487239653263298c4f5bca509bffffc2a8d",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/one_shard.py",
+      "target_sha256": "c777740ddb1b3ce69a826381a4ee91ded4f432629e4d19779db00a72592d24ea"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/verify.py",
+      "source_sha256": "51907fab4bdd898f0ef2cec4a0bd0d620ed48c51bafe80d107e155e246055f05",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/verify.py",
+      "target_sha256": "f88950aae67e86e6074573cab25711fe5ae645cb6417cf0642f01c3efefd0ad1"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/reconcile.py",
+      "source_sha256": "f4f19f4a861813c95cc14c04476a5c1812e5667f5484edb4b35ea9f4a6694685",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/reconcile.py",
+      "target_sha256": "f9df9755cda18cd85942b9382b826f4d5acd7335e4109f57692a6afd4f8f992c"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/summarize.py",
+      "source_sha256": "2fc1f84576b484ba8aacda79b73f2d748b2b2667cf845f6be1477e78b764351f",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/summarize.py",
+      "target_sha256": "9bde512be92fb22613784569a8dd76e15c512f1f2c27ba55cd06144e754bc0c7"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/resource_watch.py",
+      "source_sha256": "0f07658927d550d7cf27528d07eeb0f46f5fa111728b961eb9f22c23f8d48048",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/resource_watch.py",
+      "target_sha256": "20a7a53946881f0a9f0cf566ed05aa7089ecc203173fbc7e70452b0288fe3283"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/retire_pushed_runtime.py",
+      "source_sha256": "a5a39761a12b14753ee8152d4605d911bc1faea2db8028f88d3fe0dcefa2cae8",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/retire_pushed_runtime.py",
+      "target_sha256": "f769434583fdc408bc904b109cf0610fda9bd17dcdf6844a384f56f13f19be66"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/retire_pushed_cache.py",
+      "source_sha256": "3ea8428eab2c48a00867fd38705c2c61db44963640c98f1c1bb7b4aa4fce9c9f",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/retire_pushed_cache.py",
+      "target_sha256": "0c22f073c6aa4cd68e0c49dfb4ae55103d0bba1f6db0f942bb31d83fa8be0cc3"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/stage_one.py",
+      "source_sha256": "6b7e53c0478ff8cb9a354af3ce509aee3596d6e1a83ff9a31ae85dd5fd8e7d7e",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/stage_one.py",
+      "target_sha256": "c566c38f15a439032d4a21990520a621c585ee8d570a65ff1f828e19240299de"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/export_receipts.py",
+      "source_sha256": "4a17172829ac4e968249fe3bcdaee9dd35b0a64ccd3a2dd0381c8ee1b52b80fd",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/export_receipts.py",
+      "target_sha256": "78f9f76e8bb086aa1ba7e46aab23695f09cb605607de523eb179e5651f949f51"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/scan_export.py",
+      "source_sha256": "fc7453d8e726c1f5ce2a1c951aa2031ebf497d3f05c1635ca98f740ebee84e87",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/scan_export.py",
+      "target_sha256": "6c15303ed9d9be0c7a39e05a214843ff4e2c6038b97704e31ed8dcec4194322e"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/bundle.py",
+      "source_sha256": "53d48f6980838ad713dc28bcf2125853f65e4cdcf8d6e1bb330bd81612447c1d",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/bundle.py",
+      "target_sha256": "381c02657a9dc9b6f7ebc04b790a8b8513c29a09fb831ab20520f8a0e9d00bcb"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/finish_audit.py",
+      "source_sha256": "19e10823e39ca63617ffb223598c0f02cae6bc4e083259ddf6f7d65f308532b7",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/finish_audit.py",
+      "target_sha256": "22483b69a0dd13023197edd35a931284fcfc06800deb36fc038125baac552e8d"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/qualify_final.py",
+      "source_sha256": "aeec034761f6cdf38999377208eb8a2f723317b8b2f89e76ff7b0d1cc07f76c1",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/qualify_final.py",
+      "target_sha256": "7b5ac576c4318339a7e3575ee5c753ba2bed74483cd3ac565a3a9aab17043bfb"
+    },
+    {
+      "source": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/verify_pushed_bundle.py",
+      "source_sha256": "b9821f3062990c1cc512e1d9cc71c1aeedf6d62c8f6c1ce9e37aeec0608481bc",
+      "target": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/coordinator/verify_pushed_bundle.py",
+      "target_sha256": "33744fea3bc105769d19716420ad85136b412f84d213b8e55662d7dabbbf8665"
+    }
+  ]
+}
