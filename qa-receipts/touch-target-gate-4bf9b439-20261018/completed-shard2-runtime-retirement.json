@@ -1,0 +1,31 @@
+{
+  "candidate": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "shard": "2",
+  "pushed_receipts_commit": "6fe52692d7c7421a37f69b52c360ec07e0191ffc",
+  "pushed_receipt_file_bindings": {
+    "shard2/prepare.json": "c2b40585db61f05afab2ed1f17f42e2f05a6a02ea7a73d2b5a29b4ed0d7b6ca3",
+    "shard2/command.json": "5cf9479fcb254d1b3fdc7d85111bfae834b001383f1ee3d627eae1a28e12a5eb",
+    "shard2/result.json": "fb8603c7be6e0b22102b0aff16de9b220d9acfc3ef681410662b91619f6f5e91",
+    "shard2/reports.jsonl": "39f73a61ca25a911cbf7f8aac29a5b2a4f2d92d18ec7719017a5a1f22283cc8e",
+    "shard2/junit.xml": "5c13272ca65b2af56477f79a86c8c4cb96155c4671c3debadd3a67079575e326",
+    "shard2/source-before/capsule-verification.json": "00f232ddfa9ab3f8452b5ad128ec718a656be773551ef81d4950a9c8ee4dd73a",
+    "shard2/source-after/capsule-verification.json": "954aead079cb0399c5e6e50ecb2e5b55f739ce541bfaac4e41c6c73f396ca000",
+    "shard2/runtime-before.json": "f703d63da2767fa0327b7d2d01abe5e08e951574dbfd70057a5ae1627220b52d",
+    "shard2/runtime-after.json": "67ae802c1e9ab31509bee3a900dd17c9c9188dbc32357eff8ebc7d0e20c8df9f",
+    "retirement-receipts/shard2-raw.tar.gz": "099781bfe18fa4e0ed65b1fcbed5e5a0e9e458be9d9e9075b7a10aea0fd83cab"
+  },
+  "source_capsule_before_after_equal": true,
+  "full_venv_before_after_equal": true,
+  "runtime_observed_before_first_test_start": true,
+  "raw_archive_byte_verified": true,
+  "archive_sha256": "099781bfe18fa4e0ed65b1fcbed5e5a0e9e458be9d9e9075b7a10aea0fd83cab",
+  "only_this_gate_reproducible_runtime_paths": [
+    "/workspace/casepath-knowledge-startup-render-20261018/.runtime/casepath-dev-v2/source-capsules/98bd51f82f96e146314496cd41255781634d19c407ced1a37221927b91a6b32e",
+    "/workspace/casepath-knowledge-startup-render-20261018/.runtime/casepath-dev-v2/venv",
+    "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard2/uv-cache"
+  ],
+  "source_clones_fixture_databases_journals_and_failed_fixtures_preserved": true,
+  "before_free_bytes": 3717525504,
+  "epoch": 1792290431.7114465,
+  "after_free_bytes": 4006805504
+}
