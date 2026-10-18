@@ -1,0 +1,54 @@
+{
+  "shard": 5,
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "observed_epoch": 1792286437.6098437,
+  "processes": [
+    {
+      "pid": 1288387,
+      "ppid": 1288386,
+      "argv": [
+        "/usr/bin/python3",
+        "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/one_shard.py",
+        "5"
+      ],
+      "observed_epoch": 1792286437.609559
+    },
+    {
+      "pid": 1288390,
+      "ppid": 1288387,
+      "argv": [
+        "/workspace/casepath-polish-gate-inventory-20261013/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/harness/run_shard.py",
+        "run",
+        "5"
+      ],
+      "observed_epoch": 1792286437.6096315
+    },
+    {
+      "pid": 1288399,
+      "ppid": 1288390,
+      "argv": [
+        "/workspace/casepath-polish-gate-inventory-20261013/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "-o",
+        "tmp_path_retention_policy=failed",
+        "--junitxml=/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard5/junit.xml",
+        "--durations=0",
+        "--basetemp=/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard5/pytest-tmp",
+        "@/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard5/pytest-arguments.txt"
+      ],
+      "observed_epoch": 1792286437.6097772
+    }
+  ],
+  "method": "ps -eo pid=,ppid=,args=; scoped Python argv only",
+  "no_environment_dump": true,
+  "initial_direct_proc_observation": "cwd read denied under sandbox, no process rows captured; safe ps replacement used"
+}

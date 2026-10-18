@@ -1,0 +1,52 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "shard": 6,
+  "observed_epoch": 1792286441.4121635,
+  "latch_exists": true,
+  "processes": [
+    {
+      "role": "coordinator",
+      "pid": 1288617,
+      "ppid": 1288616,
+      "argv": [
+        "/usr/bin/python3",
+        "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/one_shard.py",
+        "6"
+      ]
+    },
+    {
+      "role": "wrapper",
+      "pid": 1288620,
+      "ppid": 1288617,
+      "argv": [
+        "/workspace/casepath-operations-review-20261013/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/harness/run_shard.py",
+        "run",
+        "6"
+      ]
+    },
+    {
+      "role": "pytest",
+      "pid": 1288631,
+      "ppid": 1288620,
+      "argv": [
+        "/workspace/casepath-operations-review-20261013/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "-o",
+        "tmp_path_retention_policy=failed",
+        "--junitxml=/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard6/junit.xml",
+        "--durations=0",
+        "--basetemp=/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard6/pytest-tmp",
+        "@/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard6/pytest-arguments.txt"
+      ]
+    }
+  ]
+}
