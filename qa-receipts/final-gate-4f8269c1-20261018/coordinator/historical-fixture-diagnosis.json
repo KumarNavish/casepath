@@ -1,0 +1,39 @@
+{
+  "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+  "gate_setup_defect": "Local normal clones derived from depth1 control clone lacked historical object explicitly read by tests.",
+  "source_callsite": "casepath-api/tests/test_original_nine_preflight_v1.py:62",
+  "command": [
+    "git",
+    "show",
+    "80939f0ec4430402b029a646d60f5bf8b465e9f8:docs/product/NINE_CASE_SELECTION_20261009.json"
+  ],
+  "trusted_repository": "https://github.com/KumarNavish/casepath.git",
+  "historical_commit": "80939f0ec4430402b029a646d60f5bf8b465e9f8",
+  "required_file": "docs/product/NINE_CASE_SELECTION_20261009.json",
+  "historical_file_sha256": "7d70edaf6e886ace18ea55f6b41ab3e44dd5760431bcf8f844ee47ab30b9537e",
+  "historical_file_bytes": 36764,
+  "original_failure": "git show exit128; no corresponding test call phase reached",
+  "affected_unexecuted_test_bodies": 50,
+  "by_file": {
+    "test_original_nine_preflight_v1.py": 9,
+    "test_original_nine_hosted_v1.py": 9,
+    "test_original_nine_budget_v1.py": 32
+  },
+  "control_repair_only": {
+    "fetch": [
+      "git",
+      "fetch",
+      "origin",
+      "80939f0ec4430402b029a646d60f5bf8b465e9f8"
+    ],
+    "fetch_exit": 0,
+    "verified_commit_object": true,
+    "canonical_HEAD_unchanged": true,
+    "worktree_clean": true
+  },
+  "original_test_clones_and_attempts_unchanged": true,
+  "no_other_historical_object_prerequisite_found_in_independent_review": true,
+  "proposed_minimal_remedy": "Fresh attempt directories/normal clone at exact unchanged candidate; fetch the exact trusted historical object into that clone, verify exact git show bytes; execute only the50 test bodies that never reached call. Preserve all original failures and successes. Await Mac coordination before test execution.",
+  "other_failure": "The single adversarial reassessment timeout is separate and still under read-only diagnosis.",
+  "epoch": 1792320207.32523
+}

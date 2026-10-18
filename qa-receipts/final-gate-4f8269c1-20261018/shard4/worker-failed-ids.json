@@ -1,0 +1,340 @@
+{
+  "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+  "shard": "4",
+  "attempt_count": 1,
+  "classification": "setup_error_historical_git_fixture_lookup",
+  "failed_phase_count": 41,
+  "unique_failed_id_count": 41,
+  "exact_failed_ids": [
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_additive_epoch_preserves_old_rows_and_admits_only_eighteen_calls",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_changed_stage_schema_is_refused_before_any_new_reservation",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_exact_nine_midpoint_blocks_fresh_workflow_but_allows_verifier_and_replay",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_existing_dollar_option_stops_truthfully_at_full_workflow_reservation",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[DELETE FROM work_original_nine_grant]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[INSERT OR REPLACE INTO work_original_nine_grant SELECT * FROM work_original_nine_grant]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[UPDATE work_original_nine_grant SET record_sha256='changed']",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_launcher_readback_partitions_old_and_new_receipt_counters",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_missing_or_resealed_invalid_prior_epoch_fails_closed",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_missing_runtime_source_identity_cannot_create_new_exact_nine_intent",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_pending_serial_slot_unknown_and_rejection_consume_original_slots",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_prior_epoch_approval_identity_cannot_be_reused",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_resealed_wrong_schema_intent_is_rejected_during_readback",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[9999999999999999999999999999999999999999]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[None]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[unknown]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_same_approval_concurrent_application_is_one_immutable_receipt",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[ack]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[actor]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[approval]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[budget]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[key]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[option]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[preflight]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[binding]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[claim]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[corpus]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[model]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[price]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[rules]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[sources]",
+    "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[workflow]",
+    "casepath-api/tests/test_original_nine_hosted_v1.py::test_exact_nine_adapter_sends_eighteen_mock_requests_and_replays_without_more",
+    "casepath-api/tests/test_original_nine_hosted_v1.py::test_hosted_generation_fence_prevents_grant_and_reservation_writes",
+    "casepath-api/tests/test_original_nine_hosted_v1.py::test_lost_grant_commit_readback_replays_exact_approval_without_send",
+    "casepath-api/tests/test_original_nine_hosted_v1.py::test_lost_reservation_acknowledgement_sends_zero_and_new_key_cannot_resend",
+    "casepath-api/tests/test_original_nine_hosted_v1.py::test_remote_midpoint_restart_blocks_another_workflow_and_changed_source",
+    "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[acquire-error]",
+    "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[apply-error]",
+    "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[release-error]",
+    "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[success]"
+  ],
+  "failures": [
+    {
+      "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_lost_grant_commit_readback_replays_exact_approval_without_send",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319849.565475,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_lost_reservation_acknowledgement_sends_zero_and_new_key_cannot_resend",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319850.530491,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_hosted_generation_fence_prevents_grant_and_reservation_writes",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319850.5758328,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_exact_nine_adapter_sends_eighteen_mock_requests_and_replays_without_more",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319850.6399467,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_remote_midpoint_restart_blocks_another_workflow_and_changed_source",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319850.6862566,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[success]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319851.4312232,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[acquire-error]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319851.5352564,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[apply-error]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319851.64528,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[release-error]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319851.7432349,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_additive_epoch_preserves_old_rows_and_admits_only_eighteen_calls",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.4738035,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_same_approval_concurrent_application_is_one_immutable_receipt",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.5178492,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[budget]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.5422666,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[approval]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.5665278,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[option]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.5941594,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[ack]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.6336527,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[key]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.6649387,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[actor]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.6936743,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[preflight]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.7352638,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[claim]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.7685397,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[workflow]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.7923954,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[sources]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.8314807,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[rules]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.8559866,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[binding]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.880073,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[corpus]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.923114,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[model]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.949037,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[price]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319852.973898,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_pending_serial_slot_unknown_and_rejection_consume_original_slots",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319853.0229156,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_existing_dollar_option_stops_truthfully_at_full_workflow_reservation",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319853.05043,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[UPDATE work_original_nine_grant SET record_sha256='changed']",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319853.0809975,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[DELETE FROM work_original_nine_grant]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319853.132785,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[INSERT OR REPLACE INTO work_original_nine_grant SELECT * FROM work_original_nine_grant]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319853.1619434,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_missing_or_resealed_invalid_prior_epoch_fails_closed",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319853.218269,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_launcher_readback_partitions_old_and_new_receipt_counters",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319853.2420127,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_changed_stage_schema_is_refused_before_any_new_reservation",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319853.269293,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_prior_epoch_approval_identity_cannot_be_reused",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319853.312615,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_resealed_wrong_schema_intent_is_rejected_during_readback",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319853.3361893,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_exact_nine_midpoint_blocks_fresh_workflow_but_allows_verifier_and_replay",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319854.0855048,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_missing_runtime_source_identity_cannot_create_new_exact_nine_intent",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319854.1551175,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[None]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319854.2200599,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[unknown]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319854.2699878,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    },
+    {
+      "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[9999999999999999999999999999999999999999]",
+      "when": "setup",
+      "outcome": "failed",
+      "utc_epoch": 1792319854.3341615,
+      "failure_text_sha256": "1915816ca81cf766600c0cc49cb606700d6b3cb69b5030a10ff3090eab4a37ff"
+    }
+  ]
+}

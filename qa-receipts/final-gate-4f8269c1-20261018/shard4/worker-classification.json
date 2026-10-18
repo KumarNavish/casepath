@@ -1,0 +1,81 @@
+{
+  "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+  "shard": "4",
+  "host": "ade3d3b7893a",
+  "attempt_count": 1,
+  "prepared_exit": 0,
+  "pytest_exit": 1,
+  "after_verification_exit": 0,
+  "expected_count": 500,
+  "collected_count": 500,
+  "unique_reported_ids": 500,
+  "collection_exact_order_equal": true,
+  "collection_exact_set_equal": true,
+  "phase_counts": [
+    {
+      "when": "call",
+      "outcome": "passed",
+      "count": 459
+    },
+    {
+      "when": "setup",
+      "outcome": "failed",
+      "count": 41
+    },
+    {
+      "when": "setup",
+      "outcome": "passed",
+      "count": 459
+    },
+    {
+      "when": "teardown",
+      "outcome": "passed",
+      "count": 500
+    }
+  ],
+  "test_outcomes": {
+    "passed": 459,
+    "call_failures": 0,
+    "setup_errors": 41,
+    "teardown_errors": 0,
+    "skipped_phases": 0
+  },
+  "failure_classification": "setup_error_historical_git_fixture_lookup",
+  "failure_git_commit": "80939f0ec4430402b029a646d60f5bf8b465e9f8",
+  "failure_git_path": "docs/product/NINE_CASE_SELECTION_20261009.json",
+  "failure_file_counts": {
+    "casepath-api/tests/test_original_nine_hosted_v1.py": 9,
+    "casepath-api/tests/test_original_nine_budget_v1.py": 32
+  },
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "41",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "500",
+      "time": "707.686",
+      "timestamp": "2026-10-18T10:27:56.657181+00:00",
+      "hostname": "ade3d3b7893a"
+    }
+  ],
+  "duration_seconds": 710.3593285083771,
+  "started_epoch": 1792319274.7031868,
+  "finished_epoch": 1792319985.0625153,
+  "source_after": {
+    "head": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+    "status": "",
+    "sealed_files_verified": 1719,
+    "source_artifact_static_bindings_verified": true,
+    "capsule_receipt_file_sha256": "920c1b8f48e83f5d5e085933515a9c8c44ae4d28d3e513a4872c97d5c89a79f7",
+    "capsule_before_after_equal": true
+  },
+  "runtime": {
+    "before_observed_before_test_start": true,
+    "before_after_inventory_equal": true,
+    "file_and_symlink_count": 3800,
+    "inventory_sha256": "9ec728c22abc6be4a5262bdee91a0ba94fa88b0e9e1b451057528010410d3959"
+  },
+  "failed_ids_receipt": "worker-failed-ids.json",
+  "recorded_epoch": 1792320049.135546
+}
