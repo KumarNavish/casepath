@@ -76,6 +76,70 @@ uv run --with 'fastapi[standard]' --no-project fastapi cloud env set NAME \
 Resolve credentials from a secret manager directly into stdin. Never paste them
 into commands, source, receipts, logs, or a browser bundle.
 
+### Private read seed
+
+After sealing and committing the final release source, the authorized Mac
+operator can acquire a release-bound startup seed from the current primary.
+Use the existing private `CASEPATH_TURSO_URL` and `TURSO_AUTH_TOKEN` bindings;
+neither credentials nor hosted journal/source bytes belong in Codex Cloud.
+The exporter needs no completed cache or local production replica:
+
+```sh
+mkdir -p "$PRIVATE_UPLOAD_ROOT/casepath_api/artifacts"
+.runtime/casepath-dev-v2/venv/bin/python casepath-api/tools/export_read_seed.py \
+  --deployment-commit "$CASEPATH_SOURCE_COMMIT" \
+  --output "$PRIVATE_UPLOAD_ROOT/casepath_api/artifacts/hosted-read-seed-v1.json"
+```
+
+The JSON schema is `contract: "casepath.hosted-read-seed/1"`,
+`deployment_commit: <final 40-hex release>`, `journal_rows: [<row>, ...]`, and
+`sources: [{sha256, content_base64}, ...]`. Each row has exactly `session_id`,
+`loop_id`, `sequence` (integer), `idempotency_key`, `command_sha256`,
+`event_sha256`, `event_json` (verbatim SQL TEXT), and `created_at`; the other row
+values are TEXT. Sources contain canonical base64 of the exact original bytes.
+No reduced states or SQL templates are serialized.
+
+`CASEPATH_SOURCE_COMMIT` must be the exact final 40-hex release commit, recorded
+after source sealing. Do not seal again to include the generated seed. The
+output is a server-only API artifact in a temporary private upload archive or
+source copy outside every Git checkout. Keep it out of the canonical checkout,
+Git, Sites, frontend assets, shared receipts, and logs. The exact artifact path
+is also ignored as a defense against accidental copying. Export refuses an
+existing output, missing parent directory, Git checkout destination, symlink
+ancestor or parent traversal. It rechecks the canonical directory before atomic
+publication through its open directory handle.
+Remove or archive an old private seed deliberately before a new acquisition.
+
+Every acquisition uses SELECT-only, independently closed snapshots: small
+type/length/key metadata pages carry bounded short TEXT values; larger TEXT
+and BLOB payloads are reassembled from at most 32 KiB raw byte slices. Encoded
+requests and responses, including the final proof, are capped at 64 KiB. Export
+also stops at 4,096 requests, one hour, or 256 MiB of cumulative request/response
+bytes; it reserves the unchanged 12-second request deadline before each send.
+The native transport retains its 32 MiB outer guard and zero retries. The export
+transport rejects writes, sequence and batch operations before dispatch.
+The exporter preserves exact SQL TEXT bytes, integers and BLOBs; the seed stores
+only raw journal rows and hash-bound original source bytes. Full native replay,
+source extraction/validation, and one unchanged fresh atomic journal/source
+schema and complete byte proof must pass before a new mode-0600 file appears.
+A failed acquisition or mutation stops the export; do not relax bounds or
+substitute historical fixtures or old local journal/source copies.
+
+The success receipt prints only the target commit, checksum, counts and size.
+`CASEPATH_READ_SEED_PATH` defaults to the API package's
+`casepath_api/artifacts/hosted-read-seed-v1.json`; set it explicitly for another
+private deployed path. `CASEPATH_READ_SEED_SHA256` is required when a seed is
+present. Keep the final release commit binding unchanged. A confirmed SQL/schema
+mismatch falls back to the current bounded reader; malformed or unconfirmed
+proofs fail closed. The exact package-data allowlist includes only
+`casepath_api/artifacts/hosted-read-seed-v1.json`; before upload, inspect the
+actual private wheel or upload payload and verify it contains those exact seed
+bytes and no frontend copy. Git ignore rules do not establish the hosting CLI's
+upload behavior. Create the official CLI archive only after verifying clean
+canonical source and the full release gate, and inject the seed only into that
+temporary API payload. Exporting, building, or checking a package does not deploy
+it. Hosting region remains unchanged.
+
 ## Ownership, failures, and allowance
 
 Stop the local paid writer before copying its durable journals. Produce SQLite

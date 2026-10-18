@@ -79,4 +79,4 @@ include = ["casepath_api*"]
 namespaces = false
 
 [tool.setuptools.package-data]
-casepath_api = ["corpora/**/*", "reference_profiles/**/*"]
+casepath_api = ["corpora/**/*", "reference_profiles/**/*", "artifacts/hosted-read-seed-v1.json"]
