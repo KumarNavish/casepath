@@ -1,0 +1,10 @@
+{
+  "epoch": 1792319412.1675355,
+  "first_partial_receipt_commit": "f84a2988346ae9f98651b7bf9a6f77596f361609",
+  "all_remote_receipt_blobs_verified_before_exception": true,
+  "post_push_exception": "The helper queried status using its temporary alternate index, reporting absent evidence files in the control worktree.",
+  "diagnosis": "Source checkout HEAD remains exact and default index/worktree clean. No test or source failure.",
+  "correction": "Use default index for source status verification only. The alternate evidence index remains separate.",
+  "test_retries": 0,
+  "source_changes": 0
+}

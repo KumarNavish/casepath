@@ -48,6 +48,7 @@ subprocess.run(['git','-C',str(repo),'push','origin',f'{commit}:refs/heads/{bran
 assert git('ls-remote','--heads','origin',branch).split()[0]==commit
 for p in sorted(dest.rglob('*')):
  if p.is_file():assert hashlib.sha256(subprocess.check_output(['git','-C',str(repo),'show',f'{commit}:{p.relative_to(stage).as_posix()}'])).hexdigest()==digest(p)
-assert git('rev-parse','HEAD')==SHA and not git('status','--porcelain')
+assert subprocess.check_output(['git','-C',str(repo),'rev-parse','HEAD'],text=True).strip()==SHA
+assert subprocess.check_output(['git','-C',str(repo),'status','--porcelain'],text=True)==''
 record={**state,'receipt_commit':commit,'branch':branch,'subtree':prefix,'checksums':len(files),'SHA256SUMS_sha256':digest(dest/'SHA256SUMS'),'remote_and_all_blob_hashes_verified':True}
 (R/f'export-{commit[:12]}.json').write_text(json.dumps(record,indent=2)+'\n');print(json.dumps(record),flush=True)

@@ -1,0 +1,19 @@
+{
+  "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+  "current_gate_attempt_policy": "One execution per mapped shard. No automatic retries or substitutions.",
+  "prior_16c_failed_Mac_attempt": "Mac owner stopped the original attempt after the stale shared keepalive_expiry==30 assertion; raw failure retained by Mac.",
+  "focused_red_green_receipt": {
+    "source_commit": "113a538684104a598a23c627974b24e6067744ae",
+    "receipt_commit": "d4b00cebf32a7c8b3bcb4f6064aeef2ae82dae7e",
+    "branch": "qa-receipts/idle-snapshot-regression-20261018",
+    "red": "Original assertion reproduced on exact16c, one failure; preserved, not substituted.",
+    "green": "76 requested transport tests passed after the two-assertion correction; no real connections."
+  },
+  "prior_Cloud_host_loss": {
+    "recovery_receipt_commit": "0d4613fe4f8a677f0c9b88e2c54f38b7f2c5d25c",
+    "branch": "qa-receipts/idle-read-gate-16c10bc2-20261018",
+    "original_shard2": "Unverified after original host loss; never admitted as a pass.",
+    "unchanged_current_gate": "No earlier test execution is substituted into this candidate gate."
+  },
+  "current_failures": "Retained in original shard reports if any; read raw current reports for final disposition."
+}
