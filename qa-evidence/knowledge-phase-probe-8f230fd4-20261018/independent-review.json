@@ -1,0 +1,57 @@
+{
+  "contract": "casepath.native-knowledge-phase-probe-independent-review/1",
+  "verdict": "PASS for bounded caller-owned Mac diagnostic use",
+  "reviewer": "cold_knowledge_proxy_review",
+  "review_host": "656813ef2295",
+  "source_commit": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "probe": {
+    "path": "/workspace/knowledge-first-read-20261018/8f-phase-probe/native_phase_probe.py",
+    "sha256": "843c17fe0837e938b1e91ea331f17692f0206ba1cb3dd9d619f332a2c7126945",
+    "lines": 359
+  },
+  "blocking_findings": [],
+  "safety_review": {
+    "initialization": "HostedAutonomousStore.__new__ and SimpleNamespace journal bypass constructors that initialize schema or local directories; HostedSources and AutonomousKnowledge constructors create only in-memory state.",
+    "dispatch_guards": "Exact clean 8f source and six module hashes, exact TursoDatabase type, dedicated default client factory, open nonredirecting borrowed client, pinned HTTPS origin/path, exact generated SELECT allowlist, fixed read-only transaction/close envelopes and bounds checked before client dispatch.",
+    "client_and_limits": "Borrows existing product client without changing HOME, timeouts, retries, 12-second SDK deadline or 32-MiB per-response bound. Adds cooperative 300-second maximum, 160 observed-request maximum and 256-MiB payload-body budget.",
+    "cleanup": "ExitStack restores borrowed client identity and instance method/lock attributes on success or failure, including removal of temporary overrides of inherited attributes. Probe does not close borrowed client.",
+    "output": "Fixed labels, durations, counts, dependency versions, hashes and class-only failures; no tokens, endpoints, SQL text, parameters, journal/source contents or trace info are exported.",
+    "measurements": "TCP includes DNS; no observed connect event proves reuse. Header/body measures are native client intervals. Read-method timings overlap and include local protocol/JSON work. Residual is expressly not pure network or CPU time. Probe-owned locks measure isolated acquisition overhead. Encoding times cover FastAPI primitives, not ASGI scheduling or a full request."
+  },
+  "resolved_review_findings": [
+    "Reject redirecting or closed borrowed clients.",
+    "Reject custom client factories that could hide transport retries outside the observer request cap.",
+    "Rename and qualify residual arithmetic; distinguish fresh isolated locks from hosted contention.",
+    "Redact setup/cleanup exceptions and count preflight within the cooperative budget."
+  ],
+  "independent_checks": {
+    "syntax_ast": "PASS",
+    "stdlib_checks_passed": 4,
+    "checks": [
+      "Inherited attribute restoration after success and exception.",
+      "Borrowed client identity restoration after exception.",
+      "Public failure wrapper exports exception class only.",
+      "All six source module hashes match the reviewed exact checkout."
+    ],
+    "method": "python3 -I -B; compile/exec temporary probe definitions and stdlib-only mock checks; no run_probe native dispatch.",
+    "exit_code": 0
+  },
+  "limits": [
+    "No native Mac or production database execution performed by this reviewer.",
+    "Cooperative timing budget is not a hard process deadline; original SDK blocking timeouts remain unchanged.",
+    "Caller must supply an existing empty directory and a dedicated quiescent, unmodified default product database client.",
+    "Cold population is probe-local cache population; it does not establish a cold hosting instance.",
+    "all_ok reports phase completion; responses_identical separately reports output stability.",
+    "No end-to-end latency acceptance or causal diagnosis follows from local mock checks."
+  ],
+  "reviewer_work_limits": {
+    "product_edits": 0,
+    "probe_edits": 0,
+    "database_access": 0,
+    "network_calls": 0,
+    "credential_reads": 0,
+    "sqlite_writes": 0,
+    "services_started": 0,
+    "broad_tests": 0
+  }
+}

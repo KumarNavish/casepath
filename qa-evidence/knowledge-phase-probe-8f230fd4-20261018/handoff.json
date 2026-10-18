@@ -1,0 +1,46 @@
+{
+  "source_commit": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "probe_sha256": "843c17fe0837e938b1e91ea331f17692f0206ba1cb3dd9d619f332a2c7126945",
+  "entrypoint": "run_probe(database, existing_empty_directory, expected_origin=explicit_https_origin, idle_seconds=35, max_requests=160, max_seconds=300)",
+  "invocation_requirements": [
+    "Run in a dedicated Python process from a clean exact8f normal clone with existing prepared pinned runtime and PYTHONDONTWRITEBYTECODE=1; set PYTHONPATH to its casepath-api directory.",
+    "Privately construct TursoDatabase(private_libsql_url, private_token, reuse_http=True) with the unmodified default client; no client_factory. Do not call create_hosted_app, HostedJournal, WorkStore or lease initialization.",
+    "Pass an existing empty scoped directory and the explicit canonical HTTPS database origin (no path/trailing slash). No credential arguments on command line, logs or receipts.",
+    "Import this probe by importlib.util.spec_from_file_location; call run_probe once; save only its returned redacted dictionary outside the empty directory; finally close the caller-owned database. Stop if all_ok is false; no automatic retry.",
+    "Use the existing prepared Mac runtime; no dependency installation required. httpx0.28.1/httpcore1.0.9/FastAPI0.116.1/Starlette0.47.3 from current repository pins. Actual dependency versions are recorded."
+  ],
+  "phases": [
+    "cold_population",
+    "first_warm",
+    "idle_warm after35s",
+    "immediate_repeat"
+  ],
+  "guard_bounds": {
+    "max_requests": 160,
+    "cooperative_seconds": 300,
+    "per_request_deadline_seconds_unchanged": 12,
+    "per_response_MAX_BYTES_unchanged": 33554432,
+    "overall_request_response_payload_bytes": 268435456
+  },
+  "measurement_limits": [
+    "HTTPX connect_tcp includes DNS; absent trace events do not prove socket reuse.",
+    "Headers/body plus native trace events; no Sites/client network path is measured.",
+    "Probe-owned locks measure isolated acquisition overhead, not contention or dispatch inside the deployed ASGI instance.",
+    "Method timings are inclusive and overlap; residual is not a pure CPU/network subtraction.",
+    "Encoding uses current no-response-model jsonable_encoder/JSONResponse primitives, not a whole HTTP request.",
+    "Cloud checks use MockTransport only and different FastAPI/Starlette versions; no native performance acceptance claim."
+  ],
+  "latest_owner_reported_lead": {
+    "initial_public_abort_ms": 15006.6,
+    "initial_response_start_ms": 0,
+    "user_retry_status": 200,
+    "user_retry_ttfb_ms": 1698.1,
+    "user_retry_total_ms": 9122.6,
+    "qualification": "Mac owner reports; not independently requested from Cloud; no instance or transport cause inferred."
+  },
+  "product_edits": 0,
+  "production_or_public_network_requests_from_cloud": 0,
+  "database_or_sqlite_writes": 0,
+  "provider_calls": 0,
+  "deployments": 0
+}

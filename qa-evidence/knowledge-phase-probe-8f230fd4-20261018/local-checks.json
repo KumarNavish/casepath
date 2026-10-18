@@ -1,0 +1,31 @@
+{
+  "verdict": "PASS",
+  "checks": [
+    "syntax",
+    "exact_proof_query_with_quoted_question_marks_admitted",
+    "all_unknown_sql_and_protocol_denied_before_dispatch",
+    "method_origin_path_pinned",
+    "headers_body_trace_and_redaction_mock_only",
+    "request_budget_denied_before_second_dispatch",
+    "reentrant_and_contended_lock_measurement",
+    "actual_constructor_bypass_failure_stops_without_retry_and_restores_private_client"
+  ],
+  "check_count": 8,
+  "probe_sha256": "843c17fe0837e938b1e91ea331f17692f0206ba1cb3dd9d619f332a2c7126945",
+  "dependencies": {
+    "httpx": "0.28.1",
+    "httpcore": "1.0.9",
+    "fastapi": "0.141.1",
+    "starlette": "1.6.0",
+    "pydantic": "2.13.4"
+  },
+  "qualifications": [
+    "MockTransport only: no real sockets, database operations, SQLite creation, services or credentials.",
+    "Trace events are injected mock events; no native connection-reuse or performance claim.",
+    "Cloud FastAPI/Starlette differ from pinned Mac runtime; no encoding/native timing acceptance claimed.",
+    "The full successful four-phase native sequence is not executed in Cloud."
+  ],
+  "native_or_production_requests": 0,
+  "sqlite_operations": 0,
+  "product_edits": 0
+}
