@@ -1,0 +1,31 @@
+{
+  "candidate": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "shard": "5",
+  "pushed_receipts_commit": "7d47c5716dc2176ac6c4aa135a03ef0b7b810fc1",
+  "pushed_receipt_file_bindings": {
+    "shard5/prepare.json": "b1da6853208cb42476eb3f1b931ef9cc789eefc2fd41458d2b0fecaddba33b9e",
+    "shard5/command.json": "a6511043981b9ab40e797a7b5d530c95e3991742714c63ed3a06368b5f3c11e7",
+    "shard5/result.json": "580dd89147f17830b68e7d62adc00160ffc61e829fbc1e88602d1eb2fcf9e887",
+    "shard5/reports.jsonl": "9f54c0ea5fb50df2dfdcc18cb5c4e15191655e1a9da4fd104275a8e801bb88e1",
+    "shard5/junit.xml": "83348b4eeb50e06f72ee9d51871187062b848e1168ff23e84ab194db80c6ad62",
+    "shard5/source-before/capsule-verification.json": "6edb4e0f9c141bc5948ad6b0bf0f0e2eac9bffd117e14c1baf4d5707baee2d61",
+    "shard5/source-after/capsule-verification.json": "433085616cdf54406bda13d0da6ec70562981c53709bf64cd9b0c09acc429a78",
+    "shard5/runtime-before.json": "5c72cebd2a530c7b8f66ff15e7655471fd975edc4e863f8ea87819e60361aa94",
+    "shard5/runtime-after.json": "2399eccf0cc85ebda7177319e7469dffee17157b507a550a28a58a0a239ff9dc",
+    "retirement-receipts/shard5-raw.tar.gz": "3b4ccf99cebca954535a00e83d60ec67db4d37c28bc677d96f2c0f3d2e6294fb"
+  },
+  "source_capsule_before_after_equal": true,
+  "full_venv_before_after_equal": true,
+  "runtime_observed_before_first_test_start": true,
+  "raw_archive_byte_verified": true,
+  "archive_sha256": "3b4ccf99cebca954535a00e83d60ec67db4d37c28bc677d96f2c0f3d2e6294fb",
+  "only_this_gate_reproducible_runtime_paths": [
+    "/workspace/casepath-polish-gate-inventory-20261013/.runtime/casepath-dev-v2/source-capsules/0d713ebe1ea45681c139ac8ed39b5d9c811cdfb6ea08af55617e155ecf60c2b8",
+    "/workspace/casepath-polish-gate-inventory-20261013/.runtime/casepath-dev-v2/venv",
+    "/workspace/casepath-read-seed-gate-addc5a77-20261018/shard5/uv-cache"
+  ],
+  "source_clones_fixture_databases_journals_and_failed_fixtures_preserved": true,
+  "before_free_bytes": 3484569600,
+  "epoch": 1792312135.0986085,
+  "after_free_bytes": 3773927424
+}
