@@ -1,0 +1,31 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "shard": "2",
+  "pushed_receipts_commit": "0adc34ffeae4227cbaaee728360d65d28d999d31",
+  "pushed_receipt_file_bindings": {
+    "shard2/prepare.json": "6c30e92dcd2a1c3c50f97c03eaa0d9f728292b9f22b57ed48f8be8c425012aa8",
+    "shard2/command.json": "4edd90aa0552cd97389f4a653c0c6c2c722f22ee2fa90e59518e493115fa162e",
+    "shard2/result.json": "96b1546aa2273ff341c615fc4de62557c67fec4845ff9b816105b7a4229bbe75",
+    "shard2/reports.jsonl": "5a24de17931fe31e9fd464e425e074935ea7bc4de86181c3bb032a314a6f8ec5",
+    "shard2/junit.xml": "91037d0292cfbe95821057838d373447344ae1958cb7a0b157c820f8e7da259a",
+    "shard2/source-before/capsule-verification.json": "6a568f818c6c3326c98d18ccc9e4074436ed68bbc9197555c98e413cc9e2e56f",
+    "shard2/source-after/capsule-verification.json": "edfef2f115243c97a199c78fa74fd30c1b21b4f58a7232a31ca24309564495f6",
+    "shard2/runtime-before.json": "abd50f75f02e728da80f79e842b562891ed89969c6ba3ba4aecfb9a3c94303d7",
+    "shard2/runtime-after.json": "dabfabec8986efc4f7bed2eeef9991aafe375ebfda38f9bff39db2f2f2619134",
+    "retirement-receipts/shard2-raw.tar.gz": "9fcd802374f9f9b74b21df477671406640aca8c8a268b8a4a0a2cff949a924b5"
+  },
+  "source_capsule_before_after_equal": true,
+  "full_venv_before_after_equal": true,
+  "runtime_observed_before_first_test_start": true,
+  "raw_archive_byte_verified": true,
+  "archive_sha256": "9fcd802374f9f9b74b21df477671406640aca8c8a268b8a4a0a2cff949a924b5",
+  "only_this_gate_reproducible_runtime_paths": [
+    "/workspace/casepath-knowledge-startup-render-20261018/.runtime/casepath-dev-v2/source-capsules/416eea6c4831046fca1bab76ec7072bc116cdc2912a169b094341d3a2ee68b0a",
+    "/workspace/casepath-knowledge-startup-render-20261018/.runtime/casepath-dev-v2/venv",
+    "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard2/uv-cache"
+  ],
+  "source_clones_fixture_databases_journals_and_failed_fixtures_preserved": true,
+  "before_free_bytes": 3533627392,
+  "epoch": 1792285664.528609,
+  "after_free_bytes": 3822886912
+}

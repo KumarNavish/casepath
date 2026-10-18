@@ -1,0 +1,13 @@
+{
+  "shard": 2,
+  "coordinator_pid": 1281796,
+  "wrapper_pid": 1281799,
+  "pytest_pid": 1281808,
+  "observed_by": "a89_shard2 worker contemporaneous active process-tree inspection",
+  "worker_observation_epoch": 1792285264,
+  "retained_epoch": 1792285733.4459817,
+  "exact_first_attempt_latch": "shard2/ATTEMPT_STARTED.json",
+  "scheduler_wrapper_pid_receipt": "scheduler-events.jsonl",
+  "no_environment_values_dumped": true,
+  "qualification": "Worker observation retained after terminal; active coordinator also independently recorded by global resource watcher"
+}
