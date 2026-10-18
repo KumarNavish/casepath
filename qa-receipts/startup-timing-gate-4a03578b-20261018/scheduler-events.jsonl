@@ -17,3 +17,9 @@
 {"epoch": 1792282526.2610478, "type": "pytest_terminal", "shard": "3", "exit_code": 0}
 {"epoch": 1792282526.9014876, "type": "completed_runtime_retired", "shard": "3", "free_bytes": 3918827520}
 {"epoch": 1792282526.9020023, "type": "shard_finished", "shard": "3", "active": {}, "free_bytes": 3918819328}
+{"epoch": 1792282596.6206803, "type": "heavy_slot_reserved", "shard": "5", "active": {"5": "reserved"}}
+{"epoch": 1792282596.620854, "type": "prepare_start", "shard": "5", "free_bytes": 3920986112}
+{"epoch": 1792282605.9073439, "type": "pytest_start", "shard": "5", "pid": 1269623, "command": ["/workspace/casepath-polish-gate-inventory-20261013/.runtime/casepath-dev-v2/venv/bin/python", "-P", "/workspace/casepath-startup-timing-gate-4a03578b-20261018/harness/run_shard.py", "run", "5"], "free_bytes": 3632836608}
+{"epoch": 1792282663.3309808, "type": "pytest_terminal", "shard": "4", "exit_code": 0}
+{"epoch": 1792282663.9078555, "type": "completed_runtime_retired", "shard": "4", "free_bytes": 3837210624}
+{"epoch": 1792282663.9082732, "type": "shard_finished", "shard": "4", "active": {}, "free_bytes": 3837202432}
