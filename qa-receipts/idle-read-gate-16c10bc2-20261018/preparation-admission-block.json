@@ -1,0 +1,16 @@
+{
+  "phase": "Pre-heavy normalprepare admission",
+  "command": [
+    "python",
+    "/workspace/idle16-retire.py"
+  ],
+  "exit_code": 1,
+  "terminal_exception": "AssertionError: remaining free3706716160 below unchanged3745513472 reservation after authorized targeted directory retirement",
+  "cleanup_itself_succeeded": true,
+  "normal_prepare_started_by_this_command": false,
+  "product_test_started_by_this_command": false,
+  "retry_or_duplicate_test_attempt": false,
+  "original_capture": "Tool transcript; successful scoped-retirement result retained in approved-retirement-result.json",
+  "resolution": "Root-authorized scoped completed addc generated/static test scratch and conditional8f shard4 pytest-tmp after immutable proof and exact remote readback; first normalprepare admitted only when original guard passed",
+  "epoch": 1792314780.1725607
+}

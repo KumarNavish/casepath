@@ -1,0 +1,90 @@
+{
+  "status": "PASS_SOURCE_ADMISSION",
+  "actual_host": "656813ef2295",
+  "source_file_count": 1719,
+  "reviewed_source_commit": "023a9d1365d94f4c84a4c59dbacbc2dae871ec92",
+  "reviewed_source_blobs_byte_identical": {
+    "casepath-api/casepath_api/hosted_sql_v1.py": "1ab4337c9d21f1c8e58d7a17542accebd38c4da5b69d810c0c8c7f88edf40955",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py": "0cc3b10d634f7a7f6cc763e47e3302ecae1c3597b982edb6696b741737d01bba"
+  },
+  "changed_paths_vs_addc": [
+    "casepath-api/casepath_api/hosted_sql_v1.py",
+    "casepath-api/tests/test_hosted_idle_transport_v1.py",
+    "casepath/source-manifest.json"
+  ],
+  "six_clones": [
+    {
+      "shard": "1",
+      "repo": "/workspace/casepath-release-ae0-shard4",
+      "normal_clone": true,
+      "head": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+      "status": "",
+      "direct_sealed_file_hashes_verified": 1719,
+      "optional_package_seed_absent": true
+    },
+    {
+      "shard": "2",
+      "repo": "/workspace/casepath-knowledge-startup-render-20261018",
+      "normal_clone": true,
+      "head": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+      "status": "",
+      "direct_sealed_file_hashes_verified": 1719,
+      "optional_package_seed_absent": true
+    },
+    {
+      "shard": "3",
+      "repo": "/workspace/casepath-release-ae0-shard6",
+      "normal_clone": true,
+      "head": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+      "status": "",
+      "direct_sealed_file_hashes_verified": 1719,
+      "optional_package_seed_absent": true
+    },
+    {
+      "shard": "4",
+      "repo": "/workspace/casepath-release-ae0-shard2",
+      "normal_clone": true,
+      "head": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+      "status": "",
+      "direct_sealed_file_hashes_verified": 1719,
+      "optional_package_seed_absent": true
+    },
+    {
+      "shard": "5",
+      "repo": "/workspace/casepath-polish-gate-inventory-20261013",
+      "normal_clone": true,
+      "head": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+      "status": "",
+      "direct_sealed_file_hashes_verified": 1719,
+      "optional_package_seed_absent": true
+    },
+    {
+      "shard": "6",
+      "repo": "/workspace/casepath-release-ae0-shard3",
+      "normal_clone": true,
+      "head": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+      "status": "",
+      "direct_sealed_file_hashes_verified": 1719,
+      "optional_package_seed_absent": true
+    }
+  ],
+  "instructions_read_immutable_candidate": {
+    "AGENTS.md": "44b8b4833d25bdf153d3978bb7c9fa6d920daec3caffa8d9fc5434e0b40c49a1",
+    "CONTRIBUTING.md": "cbac312085c0d90537e0b68a23c5373f2d2817282bde7278fa897ad53cb41076",
+    "docs/HYBRID_DEVELOPMENT.md": "0190e252e3958670bc76886cea78ef76dd48dae404a855abaebd66b12b0edd67"
+  },
+  "bindings": {
+    "source-manifest.json": "e7fbfd43062c19ed04468966aee9a2c61dcb1064b8baaa449cd4a2fe841e0442",
+    "clone-map.json": "3729294d844ee239a13c6d69653317582acf6b06184c8e3c9b5e7ecc68f6e467",
+    "canonical-fetch.json": "1f9c62116f5ad5dec5981d6535420713b82f8cd14515b0b70b61cfc69f4d125f",
+    "candidate-diff-vs-addc.json": "aa8970ec8e569c0bc0fe3681187cd630a32051ad355c16fcf805210103460838"
+  },
+  "limits": [
+    "Read-only source admission; no product test, prepare, provider call, source edit, or process probe by reviewer.",
+    "Current Mac127 requires the current candidate owner attestation and is not inferred from prior gates."
+  ],
+  "candidate": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+  "manifest_sha256": "e7fbfd43062c19ed04468966aee9a2c61dcb1064b8baaa449cd4a2fe841e0442",
+  "reviewer": "/root/gate_4bf_review",
+  "reviewed_epoch": 1792314744.5707946
+}

@@ -1,0 +1,50 @@
+{
+  "status": "PASS_SCOPED_PREFLIGHT",
+  "candidate": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+  "reviewer": "/root/gate_4bf_review",
+  "reviewed_epoch": 1792314795.0368493,
+  "immutable_retirement_proof_blobs_exact": true,
+  "focused_preserved_evidence_hashes_verified": 26,
+  "prior_closed_gate_checksum_bindings": [
+    {
+      "root": "/workspace/casepath-read-seed-gate-addc5a77-20261018",
+      "immutable_commit": "6953f0eb9c325fdef906d01321a9d198432fd0c4",
+      "checksums_verified_local": 397,
+      "sumfile_blob_identical": true,
+      "sumfile_sha256": "3a6fb19a5f1939480e860504fe674f11e8b7a8400e4db377c0c97dc2dcce2d94"
+    },
+    {
+      "root": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018",
+      "immutable_commit": "9d7e4f0bfd2e1dca18e11ba79282ddb0272a5f28",
+      "checksums_verified_local": 376,
+      "sumfile_blob_identical": true,
+      "sumfile_sha256": "5bb6346815e98eac24ded8559d843fb0de866c0a6fc3f7b21aead5fc6d790f06"
+    }
+  ],
+  "retired_paths_within_exact_parent_scope": true,
+  "conditional_extra8f_deletion_only_with_remaining_prepare_guard_deficit": true,
+  "no_active_owned_jobs_reported_before_deletion": true,
+  "source_raw_receipts_and_databases_outside_pytest_tmp_preserved": true,
+  "first_prepare_admission_free_bytes": 3749105664,
+  "disk_floor_bytes": 3221225472,
+  "unchanged_prepare_guard_bytes": 3745513472,
+  "actual_serial_heavy_cap": 1,
+  "global_heavy_cap": 2,
+  "bindings": {
+    "approved-retirement-proof.json": "f17022a00d8019cbc043c21069cf7c4c96e91a84f91e9de3ec36d6ba4e1ccb8b",
+    "additional-derived-retirement-proof.json": "15482169bbc9075ed1bc97506df2f4cb34d1623e214240cf5a5968c1df45d1df",
+    "approved-retirement-result.json": "3f498b1b098197a9bc7cc456ff76e2fde03f77a7adf273d126823a15b5be691c",
+    "additional-derived-retirement-result.json": "3d310ef1c033939b48a4fcab867e81a19a4d3123cf3f7037317a2c4402aa1ca5",
+    "shard1/prepare-admission.json": "0eeea48387d929cebd2db2bf9aa8cc5f7c7d195a202b772ae01db680fb73e311",
+    "heavy-budget.json": "bd90a654e1aaaf1be3e22bea11ff9591db587b0bf37c2cb6405010b594642bab",
+    "initial-resource.json": "10a76784d001815e0eeeed761af9bbe3dac4bb9f301c7ff5b7014c41955611ff",
+    "migration-process-audit.json": "3df42ecad80ca395c0d26d9a4ac4634b08cccd4f5f0ab910613fc19d9577f69b",
+    "process-sampler-qualification.json": "0907cbce8531dc869035152e3661c0f4b12ff136a57e3407426f83f429005419"
+  },
+  "limits": [
+    "Cleanup was executor-owned; reviewer performed no deletion, prepare, test, network access, or process probe.",
+    "Process ownership is based on preserved bounded cmdline/cwd metadata; no environment or proc-map coverage inferred.",
+    "Memory is bounded admission/snapshot evidence, not continuous per-child memory observation.",
+    "Prior addc permission correction EACCES negative evidence remains preserved; no claim of a current permission failure."
+  ]
+}

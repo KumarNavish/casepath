@@ -1,0 +1,22 @@
+{
+  "candidate": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+  "focused_evidence_commit": "98c4b3042ee29678507dac09076a1bf8a8a99eb6",
+  "focused_subtree": "qa-evidence/idle-read-transport-20261018",
+  "focused26checksums_verified": true,
+  "source_bindings": [
+    {
+      "path": "casepath-api/casepath_api/hosted_sql_v1.py",
+      "focused_source_commit": "023a9d1365d94f4c84a4c59dbacbc2dae871ec92",
+      "sha256": "1ab4337c9d21f1c8e58d7a17542accebd38c4da5b69d810c0c8c7f88edf40955",
+      "candidate_byte_equal": true
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_idle_transport_v1.py",
+      "focused_source_commit": "023a9d1365d94f4c84a4c59dbacbc2dae871ec92",
+      "sha256": "0cc3b10d634f7a7f6cc763e47e3302ecae1c3597b982edb6696b741737d01bba",
+      "candidate_byte_equal": true
+    }
+  ],
+  "focused_commands_reexecuted_separately_by_gate": false,
+  "fresh_full_suite_includes_new_idle_test_file_once": true
+}

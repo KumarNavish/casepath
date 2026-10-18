@@ -1,0 +1,8 @@
+{
+  "operation": "Fresh inventory metadata reconciliation",
+  "initial_exit_code": 1,
+  "initial_assertion": "Prior ID count chained assertion still2777 after template copy; actual prioraddc file has2833",
+  "correction": "Set chained prior count assertion to actual2833; fresh collection retained and never rerun",
+  "product_test_or_collection_failure": false,
+  "pytest_retry": false
+}

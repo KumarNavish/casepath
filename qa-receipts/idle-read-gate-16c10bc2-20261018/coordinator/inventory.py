@@ -7,7 +7,7 @@ def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 rows=json.loads((R/'inventory/collected.json').read_text());ids=[x['id'] for x in rows]
 prior=(R/'coordinator/prior-collected-ids.txt').read_text().splitlines();mac=(R/'mac-ids.txt').read_text().splitlines();known=json.loads((R/'known-skips.json').read_text())
 rename=[]
-assert len(ids)==len(set(ids)) and len(prior)==len(set(prior))==2777
+assert len(ids)==len(set(ids)) and len(prior)==len(set(prior))==2833
 assert set(prior)<=set(ids),'Unexpected prior test ID removed'
 assert set(prior)<=set(ids), 'Prior inventory must remain an exact subset'
 original=(R/'coordinator/original2613-collected-ids.txt').read_text().splitlines();assert len(original)==len(set(original))==2613 and set(original)<=set(ids)
