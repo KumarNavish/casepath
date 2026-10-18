@@ -1,0 +1,406 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "shard": 5,
+  "validation_started_epoch": 1792286850.3417313,
+  "validation_epoch": 1792286850.988595,
+  "attempt_count": 1,
+  "counts": {
+    "assigned": 509,
+    "arguments": 509,
+    "collected": 509,
+    "junit": 509,
+    "passed": 509,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "phase_reports": 1527
+  },
+  "exact_ordered_map_arguments_collected_junit_ids_equal": true,
+  "every_selected_id_has_exactly_one_passed_setup_call_teardown": true,
+  "phase_counts": {
+    "setup:passed": 509,
+    "call:passed": 509,
+    "teardown:passed": 509
+  },
+  "known_skip_ids_assigned": [],
+  "pytest_exit_code": 0,
+  "started_epoch": 1792286411.7709417,
+  "finished_epoch": 1792286799.1527603,
+  "duration_seconds": 387.3818185329437,
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "509",
+      "time": "384.489",
+      "timestamp": "2026-10-18T01:20:13.489695+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "timing_regressions": {
+    "ids_file": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/timing-regression-ids.json",
+    "ids_file_sha256": "32981b594b82fc3c6ee3a8064ad4d64e5acb441f681a2f353bb454339d573e8d",
+    "reconciled_once_at_terminal": true,
+    "count": 13,
+    "all_assigned_only_to_shard5": true,
+    "all_13_have_exactly_one_passed_setup_call_teardown": true,
+    "rows": [
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[-1.0-0.000]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.00010523502714931965,
+            "utc_epoch": 1792286797.8596942
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.00018379103858023882,
+            "utc_epoch": 1792286797.8599765
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 6.583705544471741e-05,
+            "utc_epoch": 1792286797.8601937
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[1e+20-999999999.999]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.00010449404362589121,
+            "utc_epoch": 1792286797.860476
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.00017941498663276434,
+            "utc_epoch": 1792286797.8607962
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 6.408500485122204e-05,
+            "utc_epoch": 1792286797.8609853
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[inf-0.000]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.00010481500066816807,
+            "utc_epoch": 1792286797.8589075
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0002218770096078515,
+            "utc_epoch": 1792286797.8592324
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 6.351398769766092e-05,
+            "utc_epoch": 1792286797.8594189
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_has_finite_bounded_duration[nan-0.000]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.00014648702926933765,
+            "utc_epoch": 1792286797.8581316
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.00020405102986842394,
+            "utc_epoch": 1792286797.8584461
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 6.409501656889915e-05,
+            "utc_epoch": 1792286797.8586347
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_is_request_local_and_copies_shared_start_headers",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.0001071080332621932,
+            "utc_epoch": 1792286797.8571496
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0003524899948388338,
+            "utc_epoch": 1792286797.8576136
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 6.006809417158365e-05,
+            "utc_epoch": 1792286797.8578024
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims-True]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.00013600103557109833,
+            "utc_epoch": 1792286797.8519583
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0002329839626327157,
+            "utc_epoch": 1792286797.8523436
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 7.130496669560671e-05,
+            "utc_epoch": 1792286797.8525481
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/claims/example-False]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.0001397870946675539,
+            "utc_epoch": 1792286797.855485
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0001945780823007226,
+            "utc_epoch": 1792286797.8557906
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 6.674893666058779e-05,
+            "utc_epoch": 1792286797.8559806
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge-True]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.00014377199113368988,
+            "utc_epoch": 1792286797.8507605
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.0005151010118424892,
+            "utc_epoch": 1792286797.8514037
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 7.536099292337894e-05,
+            "utc_epoch": 1792286797.851627
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/api/claim-loops/v1/autonomous/knowledge/-False]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.00012216100003570318,
+            "utc_epoch": 1792286797.8545747
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.00018406205344945192,
+            "utc_epoch": 1792286797.8548617
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 6.456498522311449e-05,
+            "utc_epoch": 1792286797.8550737
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[GET-/healthz-False]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.00012996199075132608,
+            "utc_epoch": 1792286797.8563344
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.00018795696087181568,
+            "utc_epoch": 1792286797.8566346
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 0.00010471499990671873,
+            "utc_epoch": 1792286797.8568645
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[HEAD-/api/claim-loops/v1/autonomous/knowledge-False]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.0001717240083962679,
+            "utc_epoch": 1792286797.8529105
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.00022331904619932175,
+            "utc_epoch": 1792286797.8532495
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 6.78299693390727e-05,
+            "utc_epoch": 1792286797.8534498
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_preserves_response_and_exact_get_scope[POST-/api/claim-loops/v1/autonomous/claims-False]",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 0.00012580608017742634,
+            "utc_epoch": 1792286797.853755
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.00018691609147936106,
+            "utc_epoch": 1792286797.854077
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 6.749900057911873e-05,
+            "utc_epoch": 1792286797.8542743
+          }
+        ]
+      },
+      {
+        "id": "casepath-api/tests/test_hosted_proxy_v1.py::test_hosted_read_timing_wraps_denial_without_opening_stores",
+        "assignment": 5,
+        "phases": [
+          {
+            "when": "setup",
+            "outcome": "passed",
+            "duration": 5.3499010391533375e-05,
+            "utc_epoch": 1792286797.861253
+          },
+          {
+            "when": "call",
+            "outcome": "passed",
+            "duration": 0.017961214063689113,
+            "utc_epoch": 1792286797.879405
+          },
+          {
+            "when": "teardown",
+            "outcome": "passed",
+            "duration": 8.548598270863295e-05,
+            "utc_epoch": 1792286797.8797162
+          }
+        ]
+      }
+    ]
+  },
+  "source": {
+    "before_after_head": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+    "before_after_status": "",
+    "manifest_sha256": "416eea6c4831046fca1bab76ec7072bc116cdc2912a169b094341d3a2ee68b0a",
+    "sealed_files_verified": 1714,
+    "artifacts": 25,
+    "static": 40,
+    "equal_capsule_receipt": true,
+    "capsule_receipt_file_sha256": "6c10fd977a42effacf3a924432a2f43d0891de071ea1d8bbd34fc2052c4b8c9b",
+    "source_artifact_static_actual_bytes_verified_independently": true,
+    "before_proof_sha256": "cdf7fc0da49d708b7b10cb13d9820b00f3546beb70f577ade3d23d60c83cd14c",
+    "after_proof_sha256": "008585da9e8aac206d090461c0751743eb19a0eb2a014c2930863be3e501a73c"
+  },
+  "runtime": {
+    "file_and_symlink_count": 3800,
+    "inventory_sha256": "ce1a0d5ec1483a60afd4519c976e1ad020fc9e440b42b283fb21201d38b6aff5",
+    "before_after_rows_and_actual_bytes_equal": true,
+    "all_regular_files_and_symlink_targets_rehashed": true,
+    "before_observed_before_test_start": true,
+    "before_proof_sha256": "834d0255d9d744cd33e6f3835335fa7605bb9728ff687d424f6020782489f52d",
+    "after_proof_sha256": "2521a62afd339f73313a2b7e863a298c1a8f4f4a35bdc6806c5dcdfe96a7d78e"
+  },
+  "raw_archive": {
+    "path": "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/retirement-receipts/shard5-raw.tar.gz",
+    "sha256": "376fb2b068d7d3c4e2bfa2bb96764960199a2be23434b9f6141dffe5080cd4da",
+    "file_count": 32,
+    "byte_verified_independently": true,
+    "archive_roster_sha256": "06a75f6b56fddd67a4ad0fe0563ce0f82f3dc21eebd260402c5c7660ec79161e",
+    "pushed_flag_at_archive_receipt_read": false
+  },
+  "raw_files": {
+    "ATTEMPT_STARTED.json": "b6b391b212d785729a3e3c02d86f71edf9ffae1264bb1dd4f437793d75be2d43",
+    "pytest-arguments.txt": "1aa1d240e875753b577ff6e7f19fe04eef098ae303c098abcb6adad01f2bd8ce",
+    "collected.json": "dedc3fc607bb2e84c8e31485de8dfccb8fc568fe8a9e29d544967d6a099cb78b",
+    "reports.jsonl": "57f51af4c4d92f921ef9b73c9d114fb6c9799ef41c3062f26a0eac451b7575f6",
+    "junit.xml": "e44f95ac1debe3ab78f0cf3c349c3a0901383edf973458c7235a7429c741d7e6",
+    "result.json": "22b2f9374482085d2cb838d45bde6174d30ae36d8366c1f60f6ec49028cad919",
+    "worker-terminal.json": "2b567b3fbaa14db042035fd5da3179d9cda6a51208e87b6483e4982658c261f9",
+    "independent-process-ownership-ps.json": "32a69f7b4d2480deedc99af3c59a8f508aaa762be5d746d691a2ba88d5382bca"
+  },
+  "runtime_retired_by_worker": false,
+  "no_source_edits_or_retries_or_extra_suites": true
+}
