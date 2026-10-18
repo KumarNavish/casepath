@@ -1,0 +1,39 @@
+{
+  "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+  "manifest_sha256": "3532003ba5f916e4d45d02ff57139fb4122d69001667d14f4431f2b4771dd790",
+  "full_inventory": 2842,
+  "cloud_selected": 2715,
+  "mac_partition": 127,
+  "counts": {
+    "1": 9,
+    "2": 598,
+    "3": 406,
+    "4": 500,
+    "5": 544,
+    "6": 658
+  },
+  "no_overlap_or_gaps": true,
+  "known_skips": 10,
+  "all16c_ids_unchanged": true,
+  "b861_exact_subset": true,
+  "estimated_phase_seconds": {
+    "1": 499.0381632299395,
+    "2": 369.972623837064,
+    "3": 385.842459048843,
+    "4": 372.2207961031236,
+    "5": 376.34892150352243,
+    "6": 376.92021364415996
+  },
+  "fixed_port_group": [
+    "casepath-api/tests/test_agent_demo_launcher.py",
+    "casepath/tools/test_casepath_release.py",
+    "casepath/tools/test_build_deployment_identity.py"
+  ],
+  "free_disk_bytes": 24634585088,
+  "memory_limit_bytes": 34359738368,
+  "memory_current_bytes": 8001744896,
+  "cpu_quota_vcpu": 4,
+  "max_gate_heavy_authorized": 6,
+  "resource_reserve_per_running_shard_bytes": 2147483648,
+  "disk_floor_bytes": 3221225472
+}
