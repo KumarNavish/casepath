@@ -1,0 +1,247 @@
+{
+  "review": "bounded read-only first-use API diagnosis",
+  "candidate": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+  "host": "656813ef2295",
+  "source_clean": true,
+  "source_bindings": [
+    {
+      "path": "casepath-api/casepath_api/hosted_app_v1.py",
+      "sha256": "5c042bf6e6f932d963ec550d3539753ed223b095c842f7c93e8d8ca33d15eccc",
+      "line_anchors": [
+        28,
+        56,
+        59,
+        60,
+        103
+      ]
+    },
+    {
+      "path": "casepath-api/casepath_api/autonomous_api_v1.py",
+      "sha256": "0b500f347aa1dd26b886ab60b94d815a29f089196503dbf37523d8e9cf65a270",
+      "line_anchors": [
+        97,
+        569
+      ]
+    },
+    {
+      "path": "casepath-api/casepath_api/autonomous_knowledge_v1.py",
+      "sha256": "5a36ec3d418063abb44c34c653a45c3a8804527fbd8cd362c77be5a45654c464",
+      "line_anchors": [
+        336,
+        348,
+        355,
+        357
+      ]
+    },
+    {
+      "path": "casepath-api/casepath_api/autonomous_store_v1.py",
+      "sha256": "ae42896a74867342117dc407bcadd3ba3a01f494fecca489969b00943744a06f",
+      "line_anchors": [
+        945,
+        953,
+        996,
+        1008
+      ]
+    },
+    {
+      "path": "casepath-api/casepath_api/hosted_storage_v1.py",
+      "sha256": "737820c41572e97841bde2ff7b87b91e668cb7dce1be93296576c53ff0a858dd",
+      "line_anchors": [
+        448,
+        467,
+        485,
+        498,
+        525,
+        619
+      ]
+    },
+    {
+      "path": "casepath-api/casepath_api/hosted_sql_v1.py",
+      "sha256": "bc04fdabbb4dbe793668177c27e46080784113503c4c064cd231aba69df45fd9",
+      "line_anchors": [
+        36,
+        37,
+        324,
+        357,
+        490
+      ]
+    },
+    {
+      "path": "casepath-api/casepath_api/hosted_proxy_v1.py",
+      "sha256": "5862cfdd5c6b9395f4e936ecb7fdebb508645339e0819e22f1009a409e6f5884",
+      "line_anchors": [
+        18,
+        21,
+        25,
+        30
+      ]
+    },
+    {
+      "path": "casepath/tools/sites_worker.mjs",
+      "sha256": "d5930a5937cd73321f25feef114db7600b9d5070111f5c859ec838ad5428a085",
+      "line_anchors": [
+        51,
+        57,
+        61
+      ]
+    }
+  ],
+  "cache_store_SQL_router_implementations_byte_identical_to_c925": true,
+  "production_measurements": {
+    "provenance": "Mac owner-reported GET measurements; not independently requested or executed in Cloud. Exact response equality reported by owner.",
+    "API_deployment_id": "b680a267-9f09-4856-821e-345d934bb20e",
+    "observations": [
+      {
+        "case": "first_new_API_via_old_Sites",
+        "endpoint": "knowledge",
+        "ttfb_ms": 2684.245,
+        "client_connection_ms": 167.38,
+        "api_ms": 911.052,
+        "proxy_upstream_ms": null,
+        "status": 200,
+        "decoded_bytes": 405923,
+        "ttfb_minus_API_ms": 1773.193
+      },
+      {
+        "case": "immediate_collection",
+        "endpoint": "claims",
+        "ttfb_ms": 533.897,
+        "api_ms": 254.771,
+        "status": 200,
+        "ttfb_minus_API_ms": 279.126
+      },
+      {
+        "case": "repeat_knowledge_old_Sites",
+        "endpoint": "knowledge",
+        "ttfb_ms": 448.181,
+        "api_ms": 279.173,
+        "status": 200,
+        "ttfb_minus_API_ms": 169.008
+      },
+      {
+        "case": "repeat_collection_old_Sites",
+        "endpoint": "claims",
+        "ttfb_ms": 438.714,
+        "api_ms": 243.515,
+        "status": 200,
+        "ttfb_minus_API_ms": 195.199
+      },
+      {
+        "case": "new_Sites_v35_warm_knowledge",
+        "endpoint": "knowledge",
+        "ttfb_ms": 584.916,
+        "client_connection_ms": 98.023,
+        "api_ms": 296.702,
+        "proxy_upstream_ms": 412.0,
+        "status": 200,
+        "ttfb_minus_API_ms": 288.214,
+        "proxy_upstream_minus_API_ms": 115.298,
+        "ttfb_minus_proxy_upstream_ms": 172.916
+      },
+      {
+        "case": "new_Sites_v35_warm_collection",
+        "endpoint": "claims",
+        "ttfb_ms": 408.405,
+        "api_ms": 251.344,
+        "proxy_upstream_ms": 344.0,
+        "status": 200,
+        "ttfb_minus_API_ms": 157.061,
+        "proxy_upstream_minus_API_ms": 92.656,
+        "ttfb_minus_proxy_upstream_ms": 64.405
+      },
+      {
+        "case": "new_Sites_v35_repeat_knowledge",
+        "endpoint": "knowledge",
+        "ttfb_ms": 450.416,
+        "api_ms": 269.16,
+        "proxy_upstream_ms": 361.0,
+        "status": 200,
+        "ttfb_minus_API_ms": 181.256,
+        "proxy_upstream_minus_API_ms": 91.84,
+        "ttfb_minus_proxy_upstream_ms": 89.416
+      },
+      {
+        "case": "new_Sites_v35_repeat_collection",
+        "endpoint": "claims",
+        "ttfb_ms": 425.41,
+        "api_ms": 267.15,
+        "proxy_upstream_ms": 359.0,
+        "status": 200,
+        "ttfb_minus_API_ms": 158.26,
+        "proxy_upstream_minus_API_ms": 91.85,
+        "ttfb_minus_proxy_upstream_ms": 66.41
+      },
+      {
+        "case": "hosted_v35_cold_browser_cache",
+        "endpoint": "knowledge",
+        "resource_ttfb_ms": 1110.9,
+        "resource_start_ms": 3592.5,
+        "resource_response_start_ms": 4703.4,
+        "api_ms": null,
+        "proxy_upstream_ms": null,
+        "first_content_after_DOMContentLoaded_ms": 1212.7,
+        "max_longtask_ms": 87,
+        "replay_states": 82,
+        "events": 21,
+        "polite_announcements": 21,
+        "settled": true,
+        "JS_errors": 0,
+        "qualification": "Browser resource TTFB still110.9ms above1s; frontend first-content1.5s andlongtask200ms acceptance pass. No per-request serverTiming components supplied for this browser request."
+      }
+    ]
+  },
+  "interval_findings": {
+    "first_API_minus_repeat_API_ms": 631.879,
+    "first_TTFB_minus_API_ms": 1773.193,
+    "first_TTFB_minus_API_minus_client_connection_ms": 1605.813,
+    "qualification": "Arithmetic residuals only. Not pure routing/CPU measurements. Old proxy had no upstream duration, so cold outside-API time cannot be localized retrospectively."
+  },
+  "code_findings": [
+    "Startup calls complete learning_view before publishing controller state/readiness; qualified projection and replay are built there.",
+    "Warm unchanged identity reuses projection and learning replay only AFTER fresh complete journal/source validation. No first-visitor projection initialization was found.",
+    "Warm eligible cached path uses one atomic read_snapshot for typed complete journal/schema/source roster proofs. No additional live-head GET, duplicate per-request HTTP client construction or separate source proof is added on this hit path.",
+    "Shared HTTP client is constructed once for hosted database; fresh logical connections borrow it. Pool keepalive expiry is30seconds. Reconnection after idle is possible, not established by these measurements.",
+    "Summary/projection/source locks, sync route scheduling, local validation/hashing/deepcopy, proof network/SQL/decoding and response encoding all fall inside API Server-Timing. It does not separate them.",
+    "Startup cold certificates already execute the four warm SELECT statements with equal typed parameters in prior local query coverage; the combined atomic envelope itself is first used on the warm path. A redundant warm read is not evidence of a fix.",
+    "FastAPI serialization is done on every response, unlike cached derivation. Startup learning_view does not render HTTP JSON, but prior local public encoding cost16.1ms versus15ms repeats did not reproduce a632ms first-use penalty."
+  ],
+  "prior_local_evidence": {
+    "receipt_branch": "qa-receipts/knowledge-first-read-c925a026-20261018",
+    "files": {
+      "diagnosis.json": "3833c885e0edeb4307f25b5f146e3ac808a3511b5b77ba424928f2a74fb5b601",
+      "measurements.json": "4d3f8225858214b14c2bf988719c159c156fd7a20b0f1deb4e258e060f65ad5b",
+      "query-coverage.json": "917b6a17a016b0170fa24b959e871d8455a3505e9c28208bc29ea71a4dbecb1f"
+    },
+    "first_poststartup_ms": 51.286553,
+    "repeat_ms": [
+      46.238102,
+      46.421353
+    ],
+    "first_project_calls": 0,
+    "first_learning_replay_calls": 0,
+    "fresh_atomic_requests_per_read": 1,
+    "qualification": "Existing local18-claim/mock-Hrana experiment, not new execution and not production26-head timing; source read-path equality checked, no transfer of performance guarantee."
+  },
+  "decision": {
+    "source_changes": [],
+    "proven_in_repo_first_use_root_fix": null,
+    "recommendation": "No further source patch justified by this bounded review. Keep all integrity/proof checks. Warm isolated hosted reads pass; true first-instance2.684s and cold-browser resource1.111s misses remain explicit. Frontend first content1212.7ms/maxlongtask87ms pass; no frontend CPU correction justified.",
+    "safe_but_unproven_option": "One full verified warm-path read before readiness would prime the combined envelope without dropping checks, but adds a startup read, cannot prevent30s idle socket expiry, and has no measured cold benefit. Do not add it speculatively.",
+    "discriminating_evidence_if_scope_reopens": [
+      "API request-local wait for projection/summary/source locks and sync dispatch",
+      "Verified-hit versus bounded fallback path and actual proof request count",
+      "Atomic proof send-to-headers/body and local pre/post-proof CPU time",
+      "Response encoding duration; no identifiers or persistent telemetry needed"
+    ]
+  },
+  "boundaries": {
+    "product_source_edits": 0,
+    "production_or_public_API_requests": 0,
+    "database_reads_or_writes": 0,
+    "provider_calls": 0,
+    "new_tests_profiles_or_full_gate_runs": 0,
+    "services_or_configuration_changes": 0,
+    "deployment": false
+  },
+  "verified_epoch": 1792283957.0162501
+}
