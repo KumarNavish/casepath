@@ -1,0 +1,13 @@
+{
+  "host": "ade3d3b7893a",
+  "disk_free_bytes": 31094464512,
+  "disk_floor_bytes": 3221225472,
+  "six_existing_prepare_reservations_bytes": 3145728000,
+  "disk_margin_after_six_prepare_reservations_and_floor_bytes": 24727511040,
+  "memory_limit_bytes": 34359738368,
+  "memory_current_bytes": 1083768832,
+  "memory_headroom_bytes": 33275969536,
+  "cpu_quota_vcpu": 4.0,
+  "six_gate_shards_started": false,
+  "observed_notes": "Disk and memory have ample current headroom for six isolated source/runtime preparations. Four-vCPU quota means six heavy workers would oversubscribe CPU; actual peak memory, scratch and any shared fixed-port groups still require admission/serialization at frozen gate."
+}

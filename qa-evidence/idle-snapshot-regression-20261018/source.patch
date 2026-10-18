@@ -1,0 +1,16 @@
+diff --git a/casepath-api/tests/test_hosted_snapshot_transport_v1.py b/casepath-api/tests/test_hosted_snapshot_transport_v1.py
+index 4f33d45..08a3f59 100644
+--- a/casepath-api/tests/test_hosted_snapshot_transport_v1.py
++++ b/casepath-api/tests/test_hosted_snapshot_transport_v1.py
+@@ -346,9 +346,10 @@ def test_reused_default_http_transport_has_bounded_pool_and_original_timeouts(mo
+         assert options['timeout'].as_dict() == {'connect': 3, 'read': 8, 'write': 4, 'pool': 2}
+         assert options['limits'].max_connections == 8
+         assert options['limits'].max_keepalive_connections == 4
+-        assert options['limits'].keepalive_expiry == 30
++        assert options['limits'].keepalive_expiry == 120
+         pool = options['transport']._pool
+         assert pool._max_connections == 8 and pool._max_keepalive_connections == 4
++        assert pool._keepalive_expiry == 120
+         assert pool._retries == 0
+         assert sql.MAX_BYTES == 32 * 1024 * 1024 and sql.REQUEST_SECONDS == 12
+     finally:

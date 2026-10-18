@@ -1,0 +1,7 @@
+casepath-api/casepath_api/hosted_sql_v1.py:36:def _http_client(*, keepalive_expiry=30):
+casepath-api/casepath_api/hosted_sql_v1.py:37:    limits = httpx.Limits(max_connections=8, max_keepalive_connections=4, keepalive_expiry=keepalive_expiry)
+casepath-api/casepath_api/hosted_sql_v1.py:488:                               _http_client(keepalive_expiry=120)) if reuse_http else None
+casepath-api/tests/test_hosted_idle_transport_v1.py:168:            self.assertEqual(h.pool._keepalive_expiry, 120)
+casepath-api/tests/test_hosted_idle_transport_v1.py:244:            self.assertEqual(connection._client._transport._pool._keepalive_expiry, 30)
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:349:        assert options['limits'].keepalive_expiry == 120
+casepath-api/tests/test_hosted_snapshot_transport_v1.py:352:        assert pool._keepalive_expiry == 120

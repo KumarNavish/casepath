@@ -1,0 +1,66 @@
+{
+  "contract": "casepath.idle-snapshot-regression-receipt/1",
+  "host": "ade3d3b7893a",
+  "base_commit": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+  "source_commit": "113a538684104a598a23c627974b24e6067744ae",
+  "source_branch": "codex/casepath-idle-snapshot-regression-20261018",
+  "changed_paths": [
+    "casepath-api/tests/test_hosted_snapshot_transport_v1.py"
+  ],
+  "source_file_sha256": "2449513a24df8de56247fd6267e1c77cd821a5b9b13a0c6dbfff5f51bf727584",
+  "stable_test_id": "casepath-api/tests/test_hosted_snapshot_transport_v1.py::test_reused_default_http_transport_has_bounded_pool_and_original_timeouts",
+  "scope": "Test-only expectation 120 plus actual shared HTTP pool expiry assertion; production and every other assertion unchanged.",
+  "red": {
+    "tests": 1,
+    "failed": 1,
+    "exit_code": 1,
+    "failure": "Actual shared expiry 120 versus stale expected 30 on exact base.",
+    "real_connect_attempts": 0
+  },
+  "green": {
+    "tests": 76,
+    "snapshot_tests": 67,
+    "idle_tests": 9,
+    "passed": 76,
+    "failed": 0,
+    "skipped": 0,
+    "raw_phase_rows": 228,
+    "junit_cases": 76,
+    "exit_code": 0,
+    "real_connect_attempts": 0,
+    "pytest_seconds": 0.69,
+    "wrapper_seconds": 1.397933286999887
+  },
+  "preparation": {
+    "command": [
+      "./bin/casepath",
+      "prepare"
+    ],
+    "exit_code": 0,
+    "locked_distributions": 59,
+    "python": "3.13.9",
+    "source_clean_after": true,
+    "manifest_sha256": "e7fbfd43062c19ed04468966aee9a2c61dcb1064b8baaa449cd4a2fe841e0442"
+  },
+  "related_search": "Only non-shared _http_client default and its explicit test retain 30. Shared constructor and actual pool assert 120.",
+  "review": {
+    "verdict": "PASS",
+    "file": "review.json",
+    "reviewer": "cold_knowledge_proxy_review",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh"
+  },
+  "source_clean_after_commit": true,
+  "bootstrap": {
+    "head": "d9a47d738523c28b22444f0041d691a510550044",
+    "status": "",
+    "unchanged": true
+  },
+  "full_gate_started": false,
+  "seal_regenerated": false,
+  "limits": [
+    "Original failing Mac 16c gate remains failed and preserved; these focused results do not replace a full gate.",
+    "No production requests, provider calls or credential environment passed to tests.",
+    "Current capacity is only preparation evidence, not admission of six simultaneous heavy test jobs."
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "contract": "casepath.idle-snapshot-test-fix-independent-review/1",
+  "verdict": "PASS: exact requested test-only correction, no blocking findings",
+  "reviewer": "cold_knowledge_proxy_review",
+  "host": "ade3d3b7893a",
+  "base_commit": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+  "branch": "codex/casepath-idle-snapshot-regression-20261018",
+  "checkout": "/workspace/casepath-idle-snapshot-test-fix-20261018",
+  "source_path": "casepath-api/tests/test_hosted_snapshot_transport_v1.py",
+  "base_file_sha256": "ee4454e1fae99d172feab5ed2bf1c1f8c988a0bf33626e29030e477e4c6ddba5",
+  "reviewed_file_sha256": "2449513a24df8de56247fd6267e1c77cd821a5b9b13a0c6dbfff5f51bf727584",
+  "patch_sha256": "49cdc1b9eba0d163ea3c74f53817f567fcee8334e15763d7c04beb5d2e96fff9",
+  "reviewed_state": "Root-authored uncommitted one-file patch on exact base.",
+  "test_id": "test_reused_default_http_transport_has_bounded_pool_and_original_timeouts",
+  "changes": [
+    "Shared-client constructor limits.keepalive_expiry expectation 30 changed to 120.",
+    "Added actual HTTPTransport pool._keepalive_expiry==120 assertion beside existing connection bounds."
+  ],
+  "preservation": "Whole-file equality against the exact base plus only these two assertion changes verified. Existing test ID, all other pool/timeout/retry/deadline/payload/TLS-related assertions and every other test remain byte-identical.",
+  "validation_evidence_inspected": {
+    "red": {
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "exit_code": 1,
+      "failure": "Existing assertion at 349 reproduced actual 120 versus expected 30.",
+      "command": "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/red/command.json",
+      "raw": "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/red/pytest.log"
+    },
+    "green": {
+      "counts": {
+        "tests": 76,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "exit_code": 0,
+      "scope": "Entire snapshot transport file plus all 9 durable idle tests, one requested run.",
+      "command": "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/green/command.json",
+      "raw": "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/green/pytest.log",
+      "network_guard": {
+        "real_connect_attempts": 0
+      }
+    },
+    "runtime": "Writer reports normal prepared exact 16c source, Python 3.13.9 and all 59 pinned distributions; command files identify the isolated prepared runtime and controlled environment."
+  },
+  "evidence_sha256": {
+    "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/red/command.json": "94da95f50207dac93c084706e559c57b0913c4d569c2b0f1b91cbd909e0b82a6",
+    "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/red/pytest.log": "c5860c67f3fbeef8b4f7d3c11fe6d6e0383c8812e17636070dab06e0174fe00c",
+    "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/red/junit.xml": "132d0eb10cd57e428fe7e7517a9f082d607f5776f181dcec5f3b974751fd69a8",
+    "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/green/command.json": "b49dfedc0ab959b5bc78aaef525181311011885f1a4733eea10a14ebde1c1bc5",
+    "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/green/pytest.log": "71ebbb1457610861fe545866c274748b7f0287f6577d73f763b2ccf6dab035a4",
+    "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/green/junit.xml": "3c78afa74c7a5882a9cc0fe313116b751c00fcbb1a9ccb527e65057da1a309d8",
+    "/workspace/scratch/casepath-idle-snapshot-test-fix-20261018/green/network-guard.json": "d9a78aae200b2758a9919ba17c72c90c2fbb0614d9b465382e5c3d88e7138854"
+  },
+  "reviewer_actions": {
+    "test_runs": 0,
+    "test_repeats": 0,
+    "source_edits": 0,
+    "installations": 0,
+    "production_requests": 0,
+    "services": 0,
+    "commits": 0,
+    "sealing": 0,
+    "full_gates": 0,
+    "bootstrap_checkout_access_or_changes": 0
+  },
+  "limits": [
+    "Read-only source/evidence review; test executions belong to the root writer.",
+    "No production behavior change or cold end-to-end latency acceptance is claimed.",
+    "The stopped Mac 16c full-attempt evidence is outside this focused correction and is not replaced by these results."
+  ]
+}
