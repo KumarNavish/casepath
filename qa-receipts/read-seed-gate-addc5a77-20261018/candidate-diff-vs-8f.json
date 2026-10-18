@@ -1,0 +1,19 @@
+{
+  "base": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "candidate": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "name_status": [
+    "M\t.gitignore",
+    "M\tcasepath-api/casepath_api/hosted_app_v1.py",
+    "A\tcasepath-api/casepath_api/hosted_read_seed_v1.py",
+    "M\tcasepath-api/casepath_api/hosted_storage_v1.py",
+    "M\tcasepath-api/pyproject.toml",
+    "A\tcasepath-api/tests/test_hosted_read_seed_export_v1.py",
+    "A\tcasepath-api/tests/test_hosted_read_seed_v1.py",
+    "M\tcasepath-api/tests/test_public_hosted_read_only_v1.py",
+    "A\tcasepath-api/tools/export_read_seed.py",
+    "M\tcasepath/source-manifest.json",
+    "M\tdocs/HOSTED_CASEPATH.md"
+  ],
+  "expected_scope": "Reviewed backend5/tools5 plus seal only",
+  "focused_evidence_commit": "81919a0beceab6672f72daf1e823120e9046e2cc"
+}

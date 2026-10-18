@@ -1,0 +1,137 @@
+{
+  "basis": "Reuse proven8f harness; new frozen candidate/root/manifest1718/short child paths; explicit optional seed absent; fresh inventory genuine delta reconciled",
+  "files": [
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/casepath_shard_observer.py",
+      "source_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/harness/casepath_shard_observer.py",
+      "target_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/prepare_clones.py",
+      "source_sha256": "7deb01e7f4fbb4db10dcdcf76277c74917781072e36cc6fe33ce2fcd3c85705f",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/harness/prepare_clones.py",
+      "target_sha256": "c808803989a67505ab40fd2d0b11ee5fb3fbf3a956d086c9c4a12df10812e4a7"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/run_shard.py",
+      "source_sha256": "8786b20a228c804b80ae9d1e2de35c8bf6947c9ceb912a12fde2577ae6d40321",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/harness/run_shard.py",
+      "target_sha256": "7957d379222faab25688f0d8edd2149eb81cc198a1d9d5f1f916f6f6932ad0b9"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/runtime_inventory.py",
+      "source_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/harness/runtime_inventory.py",
+      "target_sha256": "c25fbb551853dcbbfebbb31285988195d379ac43bd027347402310d76542f342"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/harness/verify_prepared_capsules.py",
+      "source_sha256": "0464f1b1b95b37de038eb197a44ab7d71949c286fa24b36e85f89c37fd68bb01",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/harness/verify_prepared_capsules.py",
+      "target_sha256": "57111207cd78df6ef721af2d76d0081506ec7337387b2dad87fb3c68a59a518a"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/bundle.py",
+      "source_sha256": "d0e687510026ec545985020d96f357c4bf8cb624ec7120c7e8a4f8a0647fca45",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/bundle.py",
+      "target_sha256": "857563a9801e0ae8a19d69d99dc49c6da8fdc5f9514f171323db7dac48c5f44f"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/export_receipts.py",
+      "source_sha256": "f3e13a7911775af34bd63c495b9adf56136648e209cb2c12c425a6b7952b5ad3",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/export_receipts.py",
+      "target_sha256": "160b8cdd3c8c4863209490f0506bf6c4af33eb8eebd8a925237a86b270e047a3"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/finalize_receipts.py",
+      "source_sha256": "215807be76dddec1cc5a2e23f28772cd69d2e20d5da411f4380e76a4ad125ffa",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/finalize_receipts.py",
+      "target_sha256": "9bbb6c7ff4c26ef871309f62ef8269935e89f5ab9b008f0f60a8dffdfa58a38c"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/finish_audit.py",
+      "source_sha256": "f0c270be6457f7b8f80f6c9bb667aad2fc22c577737d1295182d72fab222b337",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/finish_audit.py",
+      "target_sha256": "a951d55177404f74ce4b824b484e61cd17861e82a55e949b00bc4e6962e8b102"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/inventory.py",
+      "source_sha256": "29407e5bd4330614af8e52c917cde41f0fe76c01dadea85b63210c4ea4a61547",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/inventory.py",
+      "target_sha256": "21883a32d8094f19d910777360c4cfac98b174683d4bc4bd8f6bab17c92c1480"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/one_shard.py",
+      "source_sha256": "74039a9a7688401fcd9722f1d07c4a40643ffd596e1d5c9b5bf8e1e2f5624a4f",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/one_shard.py",
+      "target_sha256": "679c517ec7e1f5867e150848e23bd659a368c495054c6f43c8d7d44c912d42af"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/qualify_final.py",
+      "source_sha256": "31b9b4d2eb5301b4b9bc526f871f01e8480d64bdf3ea340d4b229cddc27ffac6",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/qualify_final.py",
+      "target_sha256": "b4f8066e9635c1c7682d997875001d6cce5f86edcd864e7f567d891bfee70f8a"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/reconcile.py",
+      "source_sha256": "df365c2019e040cb28265df139227756c119b0ae88cc43297debc862350bc4a4",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/reconcile.py",
+      "target_sha256": "ae03cd3734a6240ffd4744be55a31cb0ff61268a38f27c750f027c9b3be9a73d"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/resource_watch.py",
+      "source_sha256": "e926d033896bed40aecee5a6e85abc5288cf1ce876e2940ec803f2f91cea422b",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/resource_watch.py",
+      "target_sha256": "ca1b83fa559fcad8217da62dda9de4a954393fda3d3ea117cfca24678f1f54ca"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/retire_pushed_cache.py",
+      "source_sha256": "f21deba3a822ebb70500c428bdeffff9ea83f748eee07265d36715112a5dc8e8",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/retire_pushed_cache.py",
+      "target_sha256": "351d0a46bb7459ddc17f2d15b93c3e9d86686ceac1a99f067b7f204164ae94fe"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/retire_pushed_runtime.py",
+      "source_sha256": "76b96d64a367456a5765c27d4747f9ce1bdc8054f4803a35f41426f85d40c6ad",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/retire_pushed_runtime.py",
+      "target_sha256": "037283a3ee9f325b15d1905d7bc593f1da65cb65a04eb0144197f58573853312"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/scan_export.py",
+      "source_sha256": "e4416056b642b56998795dc45e5349ad83496123a522374f560550a0aca135c2",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/scan_export.py",
+      "target_sha256": "de9f1c5fc1928780923731c85f1660139326f88235f30f39f027f921fd068ed8"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/serial_driver.py",
+      "source_sha256": "ee8df2dc53a6d191e1a6bd57588733e1bed9b6ed57f1da8fb31d9f1227387c3b",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/serial_driver.py",
+      "target_sha256": "ae9286301709e96b758ccde82f8cb17ada08a129ac0e3d3ce5a6684ad1766215"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/stage_one.py",
+      "source_sha256": "211b1e4a405a1414b22c83cbaafe77691b1841092496f98389fa4eaecc62ec5b",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/stage_one.py",
+      "target_sha256": "f112284c181bc3b673a1f500835e7cf008a5bf14d8803decfa0b54271560e405"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/summarize.py",
+      "source_sha256": "3cde9e68f389febe698e4a112c9b23c4c9dd5eeaffee14c92d9c3b51b8746b6b",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/summarize.py",
+      "target_sha256": "dc21f9338b3fd32374869408dd8d2eef30c524baff6dc0bf88639f12eea0b0ba"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/verify.py",
+      "source_sha256": "51916137eee66a86b78252e7978cea61f89a0ff6276fc4afe5b3fb03b4469bbe",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/verify.py",
+      "target_sha256": "7ed861dee2f6006883d68951940ef44c8c486fbff876e839327611aabeb757e6"
+    },
+    {
+      "source": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/coordinator/verify_pushed_bundle.py",
+      "source_sha256": "d31e268d11e220635d3410a33fdce4886e551bfa2f6627d5fba8617ad3afd1e6",
+      "target": "/workspace/casepath-read-seed-gate-addc5a77-20261018/coordinator/verify_pushed_bundle.py",
+      "target_sha256": "48cb81b2160ce9a5daeb39b743b07e05ed148d42f6fbba0cd91a2f4793d54ce0"
+    }
+  ]
+}
