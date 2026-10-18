@@ -4,3 +4,6 @@
 {"epoch": 1792296139.0057776, "kind": "prepared_before_first_test", "shard": "2", "free_bytes": 3423256576}
 {"epoch": 1792296142.7606428, "kind": "test_admission", "shard": "2", "free_bytes": 3626541056}
 {"epoch": 1792296526.7551973, "kind": "terminal_raw_ready", "shard": "2", "exit_code": 0, "call_outcomes": {"passed": 597, "skipped": 1}, "skips": 1, "duration_seconds": 382.7015001773834}
+{"epoch": 1792296530.604433, "kind": "terminal_durably_pushed_and_owned_runtime_retired", "shard": "2", "free_bytes": 3911958528}
+{"epoch": 1792296530.604652, "kind": "prepare_admission", "shard": "3", "free_bytes": 3911958528}
+{"epoch": 1792296540.1598375, "kind": "prepared_before_first_test", "shard": "3", "free_bytes": 3418103808}
