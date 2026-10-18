@@ -1,0 +1,15 @@
+{
+  "scope": "Only completed CURRENT six clones casepath-public physical paths in clone-map; no active shard cleanup",
+  "parent_explicit_authorization_received": true,
+  "required_before_retirement": [
+    "Passed original terminal and source/runtime-after",
+    "Raw/source/static proof pushed and exact remote bytes matched",
+    "Clean frozen source",
+    "Ignored generated static root, not symlink",
+    "All40 files canonical inventory hash matches pushed CAPSULE_RECEIPT static_inventory_sha256"
+  ],
+  "retirement_hook_sha256": "9dc7c357ed8bf9ebec690b2ba6a07d277afa7ba4417076bbeb1b9800073e3935",
+  "normalprepare_500MiB_reservation_unchanged": true,
+  "workspace_3GiB_floor_unchanged": true,
+  "epoch": 1792315130.8134873
+}

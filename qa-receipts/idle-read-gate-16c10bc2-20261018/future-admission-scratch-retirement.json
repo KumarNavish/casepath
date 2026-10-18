@@ -1,0 +1,37 @@
+{
+  "proof_commit": "955e7fff4b1a9ae3bcd7d0b6c4a82b75f999d949",
+  "actual_remote_proof_bytes_match": true,
+  "owned_jobs_before_delete": [],
+  "retired_only": [
+    {
+      "path": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard5/pytest-tmp",
+      "before_free_bytes": 3417669632,
+      "after_free_bytes": 3420663808
+    },
+    {
+      "path": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard6/pytest-tmp",
+      "before_free_bytes": 3420663808,
+      "after_free_bytes": 3425923072
+    },
+    {
+      "path": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard4/pytest-tmp",
+      "before_free_bytes": 3425923072,
+      "after_free_bytes": 3435413504
+    },
+    {
+      "path": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard5/pytest-tmp",
+      "before_free_bytes": 3435413504,
+      "after_free_bytes": 3438407680
+    },
+    {
+      "path": "/workspace/casepath-touch-target-gate-4bf9b439-20261018/shard6/pytest-tmp",
+      "before_free_bytes": 3438407680,
+      "after_free_bytes": 3443662848
+    }
+  ],
+  "before_free_bytes": 3417669632,
+  "after_free_bytes": 3443662848,
+  "active_current_shard_untouched": true,
+  "all_prior_raw_source_Git_and_DBs_outside_approved_tmp_preserved": true,
+  "epoch": 1792315082.4104328
+}

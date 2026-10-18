@@ -1,0 +1,24 @@
+{
+  "status": "PASS_SCOPED_SCRATCH_AND_HOOK_REVIEW",
+  "candidate": "16c10bc21c1b2b3b6602cb028028adf28e20823b",
+  "reviewer": "/root/gate_4bf_review",
+  "reviewed_epoch": 1792315157.4636388,
+  "immutable_proof_commit": "955e7fff4b1a9ae3bcd7d0b6c4a82b75f999d949",
+  "proof_bytes_identical": true,
+  "exact_five_parent_authorized_old_passed_pytest_tmp_paths_only": true,
+  "old4bf380_checksum_targets_preserved": true,
+  "old8f376_targets_previously_verified_in_preflight_review": true,
+  "no_owned_jobs_reported_before_retirement": true,
+  "current_completed_static_hook_only_extension": true,
+  "static_hook_nonlink_ignored_40rows_canonical_hash_matches_remotely_bound_capsule": true,
+  "test_prepare_selection_and_admission_unchanged": true,
+  "bindings": {
+    "future-admission-scratch-proof.json": "94a9569896adf75e753d434ba2be8c477188b4c907ae7ab45d132be676cbc099",
+    "future-admission-scratch-retirement.json": "9a1632a743c517f4302ddcf537b2a0f5c689f181e38dbd9ee7fe49ea8708b86f",
+    "coordinator/retire_pushed_runtime.py": "9dc7c357ed8bf9ebec690b2ba6a07d277afa7ba4417076bbeb1b9800073e3935"
+  },
+  "limits": [
+    "Reviewer made no deletions, process probes, tests, prepare calls, or network requests.",
+    "Current static retirement is permitted only after the same completed terminal/raw/static proofs are byte-bound in pushed evidence; each actual per-shard retirement will be reconciled in final review."
+  ]
+}

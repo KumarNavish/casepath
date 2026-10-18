@@ -46,8 +46,23 @@ for rel in [f'shard{n}/prepare.json', f'shard{n}/command.json', f'shard{n}/resul
     pushed = hashlib.sha256(git('show', remote + ':' + BRANCH + '/' + rel)).hexdigest()
     assert local == pushed, rel
     bindings[rel] = local
+public = repo / 'casepath-public'
+assert public.is_dir() and not public.is_symlink()
+assert subprocess.run(['git','check-ignore','-q','casepath-public'],cwd=repo).returncode == 0
+static_rows=[]
+for item in sorted(public.rglob('*')):
+    assert not item.is_symlink()
+    if item.is_file():
+        raw=item.read_bytes()
+        static_rows.append({'path':item.relative_to(public).as_posix(),'sha256':hashlib.sha256(raw).hexdigest(),'size_bytes':len(raw),'executable':bool(item.stat().st_mode & 0o100)})
+assert len(static_rows)==after['capsule_receipt']['static_file_count']==40
+# Use the exact canonical encoder from the proven frozen capsule verifier.
+import sys
+sys.path.insert(0,str(R/'harness'))
+from verify_prepared_capsules import canonical
+assert hashlib.sha256(canonical(static_rows)).hexdigest()==after['capsule_receipt']['static_inventory_sha256']
 paths = [repo / '.runtime/casepath-dev-v2/source-capsules' / MAN,
-         repo / '.runtime/casepath-dev-v2/venv', out / 'uv-cache']
+         repo / '.runtime/casepath-dev-v2/venv', out / 'uv-cache', public]
 record = {'candidate': SHA, 'shard': n, 'pushed_receipts_commit': remote,
           'pushed_receipt_file_bindings': bindings,
           'source_capsule_before_after_equal': True,
@@ -55,6 +70,9 @@ record = {'candidate': SHA, 'shard': n, 'pushed_receipts_commit': remote,
           'runtime_observed_before_first_test_start': True,
           'raw_archive_byte_verified': True, 'archive_sha256': archive['archive_sha256'],
           'only_this_gate_reproducible_runtime_paths': list(map(str, paths)),
+          'completed_generated_static_inventory': static_rows,
+          'completed_generated_static_matches_remotely_pushed_receipt': True,
+          'current_generated_static_retirement_authorized_by_parent': True,
           'source_clones_fixture_databases_journals_and_failed_fixtures_preserved': True,
           'before_free_bytes': shutil.disk_usage('/workspace').free, 'epoch': time.time()}
 for path in paths:
