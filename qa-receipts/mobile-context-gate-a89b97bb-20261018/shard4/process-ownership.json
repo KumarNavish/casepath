@@ -1,0 +1,50 @@
+{
+  "observed_epoch": 1792285880.8032985,
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "shard": 4,
+  "cwd": "/workspace/casepath-reference-85a-qa",
+  "processes": [
+    {
+      "pid": 1284777,
+      "ppid": 1284776,
+      "argv": [
+        "/usr/bin/python3",
+        "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/coordinator/one_shard.py",
+        "4"
+      ]
+    },
+    {
+      "pid": 1284780,
+      "ppid": 1284777,
+      "argv": [
+        "/workspace/casepath-reference-85a-qa/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "/workspace/casepath-mobile-context-gate-a89b97bb-20261018/harness/run_shard.py",
+        "run",
+        "4"
+      ]
+    },
+    {
+      "pid": 1284789,
+      "ppid": 1284780,
+      "argv": [
+        "/workspace/casepath-reference-85a-qa/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "-o",
+        "tmp_path_retention_policy=failed",
+        "--junitxml=/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard4/junit.xml",
+        "--durations=0",
+        "--basetemp=/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard4/pytest-tmp",
+        "@/workspace/casepath-mobile-context-gate-a89b97bb-20261018/shard4/pytest-arguments.txt"
+      ]
+    }
+  ],
+  "environment_dumped": false
+}

@@ -1,0 +1,28 @@
+{
+  "candidate": "a89b97bb8eecdd8e98771c99ca879d4e253f7881",
+  "prior_candidate": "4a03578bcaecd0cc4948d36747d96ce68e905244",
+  "partition_count": 127,
+  "all_three_files_byte_unchanged_from_exact4a": true,
+  "files": [
+    {
+      "file": "casepath-api/tests/test_cli_v1.py",
+      "prior4a_sha256": "47f728e0521b3a6870f66f2f95be76d4ee587237a3fc00a767c7f9b4e96e786c",
+      "candidate_sha256": "47f728e0521b3a6870f66f2f95be76d4ee587237a3fc00a767c7f9b4e96e786c",
+      "byte_equal": true
+    },
+    {
+      "file": "casepath-api/tests/test_journal_corpus_restart.py",
+      "prior4a_sha256": "93cd1df865e62917968d974ecd45bc737f082211692f22a9802f25962c83ec40",
+      "candidate_sha256": "93cd1df865e62917968d974ecd45bc737f082211692f22a9802f25962c83ec40",
+      "byte_equal": true
+    },
+    {
+      "file": "casepath-api/tests/test_local_data_root.py",
+      "prior4a_sha256": "25a28743798307ceae39a8361d8e3b0808dd6e616c689e65f27bd5106ea462d9",
+      "candidate_sha256": "25a28743798307ceae39a8361d8e3b0808dd6e616c689e65f27bd5106ea462d9",
+      "byte_equal": true
+    }
+  ],
+  "qualification": "Additional exact prior4a proof; original inventory retained older unchanged c925 comparison from established helper. No Mac raw tests inspected or executed by Cloud.",
+  "epoch": 1792286139.2848105
+}
