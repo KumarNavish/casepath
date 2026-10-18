@@ -72,7 +72,7 @@ aggregate.update(baseline_inventory=2777, all2777_prior_4bf_ids_retained_unchang
                  all_b861_ids_retained_unchanged=True, pytest_added_ids=0, pytest_removed_ids=0,
                  retained_timing_regressions=13, retained_timing_regressions_passed=13,
                  existing_outcome_focused_node_cases=62, retained_touch_browser_cases=14,
-                 focused_node_cases_are_pytest_ids=False, focused_cases_reexecuted_by_this_gate=False,
+                 focused_node_cases_are_pytest_ids=False, separate_focused_commands_reexecuted_by_this_gate=False,
                  outcome_focused_evidence_commit='81c71464a5e33b51de0159f064b7cd4d2e713ed4',
                  touch_focused_evidence_commit='0fd8c8562d8516e4159d2e00ed6affb2fc636e3f',
                  minimum_observed_workspace_free_bytes=minimum,

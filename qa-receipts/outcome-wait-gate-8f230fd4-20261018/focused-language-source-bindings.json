@@ -15,7 +15,6 @@
   "existing_red_failures": 45,
   "native_adapter_rows": 9,
   "native_all_other_fields_unchanged_previously_verified": true,
-  "focused_tests_reexecuted_by_gate": false,
   "not_pytest_ids": true,
   "inspected_git_blob_sha256": {
     "coordinator-verification.json": "139fd25952ee25a578d12815bcbdcea8728aee2c2b0c72c7d0dd4cf05dc613a6",
@@ -27,5 +26,7 @@
     "SHA256SUMS": "fdd05e74174233a46d93c72e476d3091a7f34e7624641244d3c25080d46f6319"
   },
   "qualification": "Existing62 Node results and native9 proof inspected from immutable81c evidence; exact two current language source bytes match frozen8f. Prior touch14 remains previous4bf evidence, with no focused rerun and no claim that everyUIasset is unchanged.",
-  "epoch": 1792295654.9074001
+  "epoch": 1792295654.9074001,
+  "separate_focused_commands_reexecuted_by_gate": false,
+  "full_gate_qualification": "Only authorized pytest shard commands execute in this gate; existing suite behavior remains intact. No separate focused62/14 command is run for export."
 }

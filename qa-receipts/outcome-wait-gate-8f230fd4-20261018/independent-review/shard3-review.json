@@ -1,0 +1,104 @@
+{
+  "status": "PASS_TERMINAL_SHARD",
+  "shard": 3,
+  "selected": 403,
+  "passed": 394,
+  "skipped": 9,
+  "failed": 0,
+  "raw_phase_rows": 1200,
+  "junit_cases": 403,
+  "raw_phase_and_junit_ids_exact": true,
+  "known_skip_details": {
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality": {
+      "when": "setup",
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "line": 457
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected": {
+      "when": "setup",
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "line": 548
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected": {
+      "when": "setup",
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "line": 559
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text": {
+      "when": "setup",
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "line": 579
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected": {
+      "when": "setup",
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "line": 592
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected": {
+      "when": "setup",
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "line": 610
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected": {
+      "when": "setup",
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "line": 636
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete": {
+      "when": "setup",
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "line": 646
+    },
+    "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request": {
+      "when": "setup",
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "line": 696
+    }
+  },
+  "single_original_attempt": true,
+  "exit_code": 0,
+  "pytest_duration_seconds": 384.8161702156067,
+  "prepare_seconds": 8.613294124603271,
+  "source_before_after_equal": true,
+  "capsule_receipt_file_sha256": "e574d5099aefffb62cc19581d12126c3e14919b3f0d12a3403282732d600b5ad",
+  "source_artifact_static_counts": [
+    1714,
+    25,
+    40
+  ],
+  "direct_terminal_clone_sealed_files_verified": 1714,
+  "runtime_file_and_symlink_count": 3800,
+  "runtime_inventory_sha256": "9eaef3fdbc002a722d6ef7c3b32a1e501ee8d217362b77d9fff2508c27a913b1",
+  "runtime_before_after_equal": true,
+  "runtime_observed_before_test_start": true,
+  "timing_regressions_passed": 0,
+  "env_isolation": {
+    "HOME": "/workspace/owh3",
+    "TMPDIR": "/workspace/owt3",
+    "TMP": "/workspace/owt3",
+    "TEMP": "/workspace/owt3",
+    "CASEPATH_DB_PATH": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard3/casepath.db",
+    "CASEPATH_ARTIFACT_REGISTRY_PATH": "/workspace/casepath-outcome-wait-gate-8f230fd4-20261018/shard3/artifact-registry"
+  },
+  "bindings": {
+    "shard3/collected.json": "33377b414dca2d0f007046e937c2ecb5b80ccc7daf8ccf5df2512a9a22e0a8cc",
+    "shard3/reports.jsonl": "f3c8d075de5fd821ba7ee4d96ad71ee516b7fb5cb73062a0dd608f49ce34b088",
+    "shard3/junit.xml": "fde733c867067b1927167bf7c56733f49f0a92c434390fbb64cf44f3897f977a",
+    "shard3/command.json": "a4c0dd7c3ccf3c19185f54bd1b2452ba5fbcaee2a1996db93ddbf879799dbb43",
+    "shard3/result.json": "43bdef02bb4b96697f1808917ce47ff6eef9c1a916835c46572fa8ffe279fc7c",
+    "shard3/ATTEMPT_STARTED.json": "878c55da6a7d58e6d88d717c8d8c9a697fe1a0871783816cef4107b09b388c5a",
+    "shard3/pytest-arguments.txt": "e031f5e8dadf817bf60569a7e8e516ed3f29ee395cdbf31c1338f87d7c29971e",
+    "shard3/pytest.log": "7f02feaed5360ebf0fcbcc88a6e866b09dc707f7eb160f1daef48dc423d7f6e4",
+    "shard3/prepare.json": "2b99568d77d351b1fba67a050a2dd38873e674759e093ca50d1072d77096d019",
+    "shard3/source-before/capsule-verification.json": "7aa8cc3233420617d856939f88ed245236c2a336f159896902edaf0c8addb2c6",
+    "shard3/source-after/capsule-verification.json": "7d973de6b856f4b5b4a3bb28f2dd6688d919ddbd9ee2be42eb14eb5e1166d0c3",
+    "shard3/source-before/CAPSULE_RECEIPT.json": "e574d5099aefffb62cc19581d12126c3e14919b3f0d12a3403282732d600b5ad",
+    "shard3/source-after/CAPSULE_RECEIPT.json": "e574d5099aefffb62cc19581d12126c3e14919b3f0d12a3403282732d600b5ad",
+    "shard3/runtime-before.json": "1c169e7d87bd51ec02b0ad5c07fd63ab42b09c7efced9254444871590cbb27cd",
+    "shard3/runtime-after.json": "8049cefa211965935977c69412c25f854b0c5f06b4ba342d414b9fa639bb67cb"
+  },
+  "candidate": "8f230fd4ad455a15a7a53803ae7b857a4db2aaff",
+  "manifest_sha256": "b7af849b48589e598bcb5385d7dd4ad63bc9a868e634f62ff0be96910ec453e3",
+  "reviewer": "/root/gate_4bf_review",
+  "reviewed_epoch": 1792296963.1585524
+}
