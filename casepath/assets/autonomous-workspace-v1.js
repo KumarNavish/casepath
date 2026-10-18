@@ -2266,7 +2266,7 @@
       if (opening) knowledgeOpening = null;
       const controller = opening?.controller || new AbortController(); controllers.add(controller);
       const owner = {controller,foreground:!quiet}; if (readonly) readOwners.set(identity,owner);
-      const timeout = opening?.timeout || root.setTimeout(() => controller.abort(),15000);
+      const timeout = opening?.timeout || root.setTimeout(() => controller.abort(new DOMException('No response within 15 seconds. Try again.','TimeoutError')),15000);
       const operation = (async () => {
         try {
           const response = await (opening ? opening.response : fetcher(base + path,{...init,signal:controller.signal,headers:{Accept:'application/json',...(init.body ? {'Content-Type':'application/json','X-CasePath-Agent-Work':'1'} : {}),...init.headers},cache:'no-store'}));
@@ -2285,7 +2285,7 @@
       let bytes = cachedRead(nativeBytes,identity);
       if (!bytes) {
         const controller = new AbortController(); controllers.add(controller);
-        const timeout = root.setTimeout(() => controller.abort(),15000);
+        const timeout = root.setTimeout(() => controller.abort(new DOMException('No response within 15 seconds. Try again.','TimeoutError')),15000);
         try {
           const response = await fetcher(base + path,{signal:controller.signal,headers:{Accept:descriptor.media_type || 'application/octet-stream'},cache:'no-store',credentials:'same-origin',redirect:'error'});
           if (!response.ok) throw new Error('Native preview unavailable. Download the original file.');
@@ -3807,7 +3807,7 @@
       const meta = doc.querySelector?.('meta[name="casepath-autonomous-demo-packets"]')?.content;
       if (!meta || !root.location) return;
       const controller = new AbortController(); controllers.add(controller);
-      const timeout = root.setTimeout(() => controller.abort(), 15000);
+      const timeout = root.setTimeout(() => controller.abort(new DOMException('No response within 15 seconds. Try again.','TimeoutError')), 15000);
       try {
         if (!examples) {
           const url = demoAssetURL(meta, root.location);

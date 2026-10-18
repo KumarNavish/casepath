@@ -2964,6 +2964,43 @@ test('late recorded HTTP429 or its saved fallback cannot repaint a different vie
  }
 });
 
+test('Knowledge fetch and body timeouts explain the unchanged deadline and keep explicit Retry',async t=>{
+ routingFixture(t,'#autonomous/knowledge');
+ const {runInNewContext}=require('node:vm'),{readFileSync}=require('node:fs'),{resolve}=require('node:path');
+ const originalTimeout=globalThis.setTimeout,timers=new Map();
+ globalThis.setTimeout=(callback,delay,...args)=>{const handle=originalTimeout(delay===15000?()=>{}:callback,delay===15000?60000:delay,...args);if(delay===15000)timers.set(handle,callback);return handle;};
+ t.after(()=>{globalThis.setTimeout=originalTimeout;for(const handle of timers.keys())clearTimeout(handle);});
+ for(const early of [false,true])for(const phase of ['fetch','body']){
+  const f=knowledgeFixture(),data=learningFixtureData();let signal,attempts=0,opening;
+  const api=fakeApi({handle:async(path,init)=>{
+   if(!path.endsWith('/knowledge'))return null;
+   if(++attempts>1)return response(data);
+   signal=init.signal;
+   const pending=()=>new Promise((_,reject)=>signal.addEventListener('abort',()=>reject(signal.reason),{once:true}));
+   return phase==='fetch'?pending():{ok:true,json:pending};
+  }});
+  if(early){
+   const scripts=[],window={CASEPATH_PUBLIC_READ_ONLY:true,addEventListener(){},CasePathAutonomous:{mount(_container,options){opening=options.knowledgeOpening;}}};
+   const document={documentElement:{dataset:{}},createElement:()=>({}),querySelector:selector=>selector.includes('script')?{content:'workspace.js'}:null,getElementById:()=>({}),body:{append:script=>scripts.push(script)}};
+   const loaded=runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-entry-v1.js'),'utf8'),{window,document,location:globalThis.location,AbortController,DOMException,setTimeout:globalThis.setTimeout,clearTimeout,fetch:api.fetch});
+   scripts[0].onload();await loaded;
+  }
+  const controller=ui.mount(f.container,{fetch:api.fetch,knowledgeOpening:opening});
+  try{
+   await waitFor(()=>Boolean(signal));await settle();
+   const deadlines=[...timers.entries()].filter(([handle])=>!handle._destroyed);assert.equal(deadlines.length,1,'one unchanged 15-second deadline owns the GET and body');
+   clearTimeout(deadlines[0][0]);deadlines[0][1]();
+   await waitFor(()=>f.status.textContent==='Could not load Knowledge. Try again.');
+   assert.equal(signal.reason.name,'TimeoutError');assert.equal(signal.reason.message,'No response within 15 seconds. Try again.');
+   f.listeners.get('click')({target:control(f,'data-au-inspect','notice')});
+   assert.equal(JSON.parse(f.recordPre.textContent).message.message,signal.reason.message);assert.doesNotMatch(f.recordPre.textContent,/aborted without reason/);
+   assert.equal(attempts,1,'a timeout never retries automatically');
+   await controller.showKnowledge();assert.equal(attempts,2);assert.ok(f.versions.length);assert.equal(f.status.textContent,'');
+   assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
+  }finally{controller.destroy();for(const handle of timers.keys())clearTimeout(handle);timers.clear();globalThis.sessionStorage.removeItem('casepath.read-cache/1');await settle();}
+ }
+});
+
 test('a selected Knowledge boot response uses normal validation once and Retry obtains a fresh GET',async t=>{
  routingFixture(t,'#autonomous/knowledge');const f=knowledgeFixture(),opening=new AbortController(),data=learningFixtureData();
  const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null});
