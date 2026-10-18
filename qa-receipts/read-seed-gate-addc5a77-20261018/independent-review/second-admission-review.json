@@ -1,0 +1,20 @@
+{
+  "status": "PASS_SERIAL_ADMISSION_DECISION",
+  "candidate": "addc5a77748ebb7cb534ca1b31ac37cd0a3bfa59",
+  "audit_sha256": "cfd04ef82fe49e54fbc6662ee4c36abe4d85569e7a0576822482057f931b43bf",
+  "floor_bytes": 3221225472,
+  "prepare_reservation_bytes": 524288000,
+  "actual_free_bytes": 3517149184,
+  "free_above_floor_bytes": 295923712,
+  "extra_bytes_needed_before_second_prepare": 228364288,
+  "bounded_completed_scratch_bytes": 54362112,
+  "remaining_shortfall_after_all_bounded_completed_scratch": 174002176,
+  "no_deletion_or_process_change": true,
+  "second_attempt_launched_by_audit": false,
+  "decision": "Keep original one-heavy serial driver and assignments.",
+  "limits": [
+    "RSS/current memory and scratch sizes are bounded snapshots, not guaranteed future peaks.",
+    "Empty cwd/process sampler is explicitly non-exhaustive and does not establish absent active workers or observed child environment paths; known worker/RSS inspection is parent evidence."
+  ],
+  "reviewed_epoch": 1792310591.4181135
+}

@@ -14,5 +14,7 @@
   "initial_raw_capture": "Tool transcript retained; this JSON preserves verbatim terminal exception, not a separately captured original file",
   "terminal_exception": "PermissionError: [Errno 13] Permission denied: '/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/source-capsules/b7af849b48589e598bcb5385d7dd4ad63bc9a868e634f62ff0be96910ec453e3'",
   "failing_operation": "shutil.rmtree(p)",
-  "retry_scope": "Approved cleanup only; no prepare/test retry"
+  "retry_scope": "Approved cleanup only; no prepare/test retry",
+  "phase": "Gate preparation: approved disposable-runtime retirement",
+  "normal_prepare_command_failure": false
 }
