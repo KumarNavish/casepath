@@ -1,0 +1,10 @@
+{
+  "epoch": 1792282724.5686228,
+  "shard": 6,
+  "state": "NOT_STARTED_WAITING_HEADROOM",
+  "shard5_active_fixture_bytes_approx": 137363456,
+  "free_bytes": 3749576704,
+  "floor_bytes": 3221225472,
+  "measured_prepare_peak_bytes": 493000000,
+  "reason": "Owned shard5 pytest fixtures actively growing; wait for stage cleanup or completion before admitting another normalprepare; no attempt/preparation latch created"
+}

@@ -1,0 +1,13 @@
+{
+  "epoch": 1792282773.6099327,
+  "shard": 6,
+  "state": "ADMISSION_WAIT_RESOLVED_BY_NATURAL_FIXTURE_STAGE_COMPLETION",
+  "prior_receipt": "shard6/resource-admission-wait.json",
+  "passed_stage": "test_all_150_original_claims_enter_the_same_workflow_without_accepting_evidence",
+  "reported_stage_seconds": 128.59,
+  "reported_pytest_tmp_bytes_after_stage": 3744348,
+  "reported_free_bytes_after_stage": 3907223552,
+  "current_free_bytes": 3908583424,
+  "required_before_prepare_peak_plus_reserve_bytes": 3895459840,
+  "no_fixture_cleanup_or_retry": true
+}
