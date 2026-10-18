@@ -1,0 +1,126 @@
+{
+  "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+  "original_attempts_only": true,
+  "gate_passed": false,
+  "Cloud_unique_ids": 2715,
+  "full_inventory_with_Mac127": 2842,
+  "counts": {
+    "pass": 2654,
+    "skip": 10,
+    "error": 50,
+    "failure": 1
+  },
+  "same10_skip_reasons_lines_and_phases": true,
+  "all_raw_phase_and_JUnit_outcomes_reconciled": true,
+  "no_missing_or_duplicate_assigned_ids": true,
+  "shards": [
+    {
+      "shard": 1,
+      "counts": {
+        "pass": 9
+      },
+      "raw_phases": 27,
+      "junit_cases": 9,
+      "source_capsule_before_after_equal": true,
+      "result": {
+        "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+        "shard": "1",
+        "pytest_wrapper_exit": 0,
+        "source_runtime_after_exit": 0,
+        "epoch": 1792320264.3907855,
+        "attempt_count": 1
+      }
+    },
+    {
+      "shard": 2,
+      "counts": {
+        "pass": 597,
+        "skip": 1
+      },
+      "raw_phases": 1794,
+      "junit_cases": 598,
+      "source_capsule_before_after_equal": true,
+      "result": {
+        "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+        "shard": "2",
+        "pytest_wrapper_exit": 0,
+        "source_runtime_after_exit": 0,
+        "epoch": 1792320110.5252085,
+        "attempt_count": 1
+      }
+    },
+    {
+      "shard": 3,
+      "counts": {
+        "pass": 388,
+        "error": 9,
+        "skip": 9
+      },
+      "raw_phases": 1200,
+      "junit_cases": 406,
+      "source_capsule_before_after_equal": true,
+      "result": {
+        "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+        "shard": "3",
+        "pytest_wrapper_exit": 1,
+        "source_runtime_after_exit": 0,
+        "epoch": 1792320135.616217,
+        "attempt_count": 1
+      }
+    },
+    {
+      "shard": 4,
+      "counts": {
+        "pass": 459,
+        "error": 41
+      },
+      "raw_phases": 1459,
+      "junit_cases": 500,
+      "source_capsule_before_after_equal": true,
+      "result": {
+        "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+        "shard": "4",
+        "pytest_wrapper_exit": 1,
+        "source_runtime_after_exit": 0,
+        "epoch": 1792319988.852737,
+        "attempt_count": 1
+      }
+    },
+    {
+      "shard": 5,
+      "counts": {
+        "pass": 544
+      },
+      "raw_phases": 1632,
+      "junit_cases": 544,
+      "source_capsule_before_after_equal": true,
+      "result": {
+        "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+        "shard": "5",
+        "pytest_wrapper_exit": 0,
+        "source_runtime_after_exit": 0,
+        "epoch": 1792320192.5224435,
+        "attempt_count": 1
+      }
+    },
+    {
+      "shard": 6,
+      "counts": {
+        "pass": 657,
+        "failure": 1
+      },
+      "raw_phases": 1974,
+      "junit_cases": 658,
+      "source_capsule_before_after_equal": true,
+      "result": {
+        "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+        "shard": "6",
+        "pytest_wrapper_exit": 1,
+        "source_runtime_after_exit": 0,
+        "epoch": 1792320162.9847934,
+        "attempt_count": 1
+      }
+    }
+  ],
+  "qualification": "50 historical-object setup errors +1 reassessment deadline failure retained. Original shard1 derived runtime bytecode cache delta documented separately. Recovery whole-shard attempts3/4 explicitly authorized; diagnostic6 is not admission."
+}

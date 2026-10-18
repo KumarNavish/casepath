@@ -18,9 +18,16 @@ for n in range(1,7):
   if not p.is_file() or p.is_symlink() or p.suffix not in allowed or any(x in {'pytest-tmp','home','tmp','pycache','uv-cache','artifact-registry','__pycache__'} for x in rel.parts):continue
   if not terminal and p.name not in {'CLONE_STARTED.json','clone.log','fetch.log','PREPARE_STARTED.json','prepare.log','prepare.json','prepare_clones-wrapper.log','verify-wrapper.log','verify-before.log','verify-before-command.json','runtime-before.json','TEST_ADMITTED.json','TEST_PROCESS.json','ATTEMPT_STARTED.json','command.json','pytest-arguments.txt','CAPSULE_RECEIPT.json','capsule-verification.json'}:continue
   paths.append(p)
+for area in ['attempt2','diagnostic-shard6']:
+ base=R/area
+ if base.exists():
+  for p in base.rglob('*'):
+   if not p.is_file() or p.is_symlink() or p.suffix not in allowed or any(x in {'pytest-tmp','home','tmp','pycache','uv-cache','artifact-registry','__pycache__'} for x in p.relative_to(base).parts):continue
+   # A live file is a declared checkpoint snapshot; original terminal raws never change.
+   paths.append(p)
 for p in sorted(set(paths)):
  target=dest/p.relative_to(R);target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,target)
-state={'candidate':SHA,'finished_shards':finished,'all_six_terminal':len(finished)==6,'partial':len(finished)!=6,'epoch':time.time(),'full_gate_not_admitted_until_raw_reconciliation':True}
+state={'candidate':SHA,'finished_shards':finished,'all_six_terminal':len(finished)==6,'partial':len(finished)!=6,'epoch':time.time(),'full_gate_not_admitted_until_raw_reconciliation':True,'original_shard_exit_codes':{str(n):json.loads((R/f'shard{n}/worker-terminal.json').read_text())['pytest_wrapper_exit'] for n in finished},'original_gate_passed':len(finished)==6 and all(json.loads((R/f'shard{n}/worker-terminal.json').read_text())['pytest_wrapper_exit']==0 for n in finished)}
 (dest/'checkpoint.json').write_text(json.dumps(state,indent=2)+'\n')
 files=[p for p in sorted(dest.rglob('*')) if p.is_file() and p.name not in {'SHA256SUMS','raw-evidence.tar.gz','raw-bundle.json'}]
 digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()

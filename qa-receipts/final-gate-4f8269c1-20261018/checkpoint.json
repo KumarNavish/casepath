@@ -1,14 +1,24 @@
 {
   "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
   "finished_shards": [
+    1,
     2,
     3,
     4,
     5,
     6
   ],
-  "all_six_terminal": false,
-  "partial": true,
-  "epoch": 1792320208.3054993,
-  "full_gate_not_admitted_until_raw_reconciliation": true
+  "all_six_terminal": true,
+  "partial": false,
+  "epoch": 1792320522.9391446,
+  "full_gate_not_admitted_until_raw_reconciliation": true,
+  "original_shard_exit_codes": {
+    "1": 0,
+    "2": 0,
+    "3": 1,
+    "4": 1,
+    "5": 0,
+    "6": 1
+  },
+  "original_gate_passed": false
 }

@@ -1,0 +1,138 @@
+{
+  "candidate": "4f8269c1781c4097f79790f39dd0312a2f9f32bf",
+  "host": "ade3d3b7893a",
+  "shard": 6,
+  "attempt_count": 1,
+  "diagnosis_kind": "preserved-state-and-static-source-only",
+  "rerun": false,
+  "failure": {
+    "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication",
+    "when": "call",
+    "outcome": "failed",
+    "duration": 18.938886987999922,
+    "utc_epoch": 1792320060.6137083
+  },
+  "test_contract": {
+    "first_outcome_wait_seconds": 10,
+    "await_finished_timeout_seconds": 15,
+    "poll_sleep_seconds": 0.01,
+    "success_requires": [
+      "future exists and future.done()",
+      "claim not in controller._pending",
+      "state has outcome",
+      "new artifact acquired"
+    ],
+    "source": "casepath-api/tests/test_autonomous_adversarial_v1.py:101-113,143-176"
+  },
+  "failure_state": {
+    "revision": 26,
+    "status": "deferred",
+    "deferral": null,
+    "outcome_status": "deferred",
+    "event_count": 26,
+    "event_kind_counts": {
+      "intake": 1,
+      "work.started": 2,
+      "process.prepared": 1,
+      "work.phase": 8,
+      "sources.acquired": 2,
+      "work.context": 2,
+      "interpretation.accepted": 2,
+      "action.completed": 5,
+      "outcome.recorded": 2,
+      "sources.arrived": 1
+    },
+    "source_descriptors": 3,
+    "acquired_sources": 3,
+    "knowledge_published": 0,
+    "run_id": "autonomy.f281fe90af8c1f3cf33555ae"
+  },
+  "retained_database": {
+    "path": "/workspace/scratch/casepath-final-gate-4f8269c1-20261018/shard6/pytest-tmp/test_submit_reassesses_arrival0/claims.sqlite3",
+    "opened_mode": "ro,immutable=1",
+    "sha256": "e0efa9dd368276dd0d08dad6a2f2726fb6eb6d71fc443f8d1859255026815374",
+    "event_count": 27,
+    "last_event": {
+      "sequence": 27,
+      "kind": "knowledge.published",
+      "created_at": "2026-10-18T10:41:00.245303+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.knowledge",
+      "qualification_status": "qualified"
+    }
+  },
+  "timeline": [
+    {
+      "sequence": 2,
+      "kind": "work.started",
+      "created_at": "2026-10-18T10:40:41.959275+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.start"
+    },
+    {
+      "sequence": 13,
+      "kind": "outcome.recorded",
+      "created_at": "2026-10-18T10:40:43.437305+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.outcome"
+    },
+    {
+      "sequence": 14,
+      "kind": "sources.arrived",
+      "created_at": "2026-10-18T10:40:43.551077+00:00",
+      "idempotency_key": "after-outcome"
+    },
+    {
+      "sequence": 15,
+      "kind": "work.started",
+      "created_at": "2026-10-18T10:40:45.049383+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.start"
+    },
+    {
+      "sequence": 26,
+      "kind": "outcome.recorded",
+      "created_at": "2026-10-18T10:40:55.639343+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.outcome"
+    },
+    {
+      "sequence": 27,
+      "kind": "knowledge.published",
+      "created_at": "2026-10-18T10:41:00.245303+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.knowledge"
+    }
+  ],
+  "elapsed_seconds": {
+    "test_call": 18.938886987999922,
+    "arrival_to_second_start": 1.4983060359954834,
+    "second_start_to_second_outcome": 10.589960098266602,
+    "second_outcome_to_knowledge_publication": 4.605959892272949,
+    "arrival_to_knowledge_publication": 16.694226026535034,
+    "whole_pytest_wrapper": 880.3568336963654
+  },
+  "resources": {
+    "during_test_samples": [
+      {
+        "epoch": 1792320049.6686406,
+        "free_disk_bytes": 24435261440,
+        "memory_current_bytes": 9889034240,
+        "pid": 6479,
+        "running": true
+      },
+      {
+        "epoch": 1792320059.6714947,
+        "free_disk_bytes": 24454160384,
+        "memory_current_bytes": 9814708224,
+        "pid": 6479,
+        "running": true
+      }
+    ],
+    "whole_shard_min_free_disk_bytes": 24368099328,
+    "whole_shard_max_memory_current_bytes": 10042949632,
+    "disk_floor_bytes": 3221225472,
+    "cpu_scheduler_samples": "Not captured in shard6 receipts; root has aggregate sampling."
+  },
+  "conclusion": {
+    "observed": "The 15-second await_finished condition was not observed before its deadline. At assertion-state capture, second interpretation, all 3 sources, and second outcome already existed; knowledge publication was still absent. The retained post-shutdown fixture database contains a later qualified knowledge.published event for the second workflow.",
+    "missing_git_history": "This test constructs a local SQLite store and SemanticFixture, with no Git operation or missing-history error in its traceback.",
+    "behavior_limit": "No lost second assessment or permanently missing knowledge publication is evidenced. Future.done() and _pending at the timeout were not recorded, so exact unsatisfied transient condition cannot be proven.",
+    "contention_limit": "Elapsed event timings are consistent with a timing-sensitive test; shard receipts lack CPU/scheduler snapshots at failure and cannot establish CPU contention as the cause.",
+    "disposition": "Original run remains 1 failed,657 passed; no retry, timeout change, test change or product edit."
+  }
+}
