@@ -2,3 +2,5 @@
 {"epoch": 1792296129.3142214, "kind": "terminal_durably_pushed_and_owned_runtime_retired", "shard": "1", "free_bytes": 3917049856}
 {"epoch": 1792296129.3144326, "kind": "prepare_admission", "shard": "2", "free_bytes": 3917049856}
 {"epoch": 1792296139.0057776, "kind": "prepared_before_first_test", "shard": "2", "free_bytes": 3423256576}
+{"epoch": 1792296142.7606428, "kind": "test_admission", "shard": "2", "free_bytes": 3626541056}
+{"epoch": 1792296526.7551973, "kind": "terminal_raw_ready", "shard": "2", "exit_code": 0, "call_outcomes": {"passed": 597, "skipped": 1}, "skips": 1, "duration_seconds": 382.7015001773834}
