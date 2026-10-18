@@ -1,8 +1,9 @@
 from pathlib import Path
-import collections, hashlib, json, time
+import collections, hashlib, json, math, time
 R=Path('/workspace/casepath-touch-target-gate-4bf9b439-20261018');O=R/'independent-review';SHA='4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd';MAN='98bd51f82f96e146314496cd41255781634d19c407ced1a37221927b91a6b32e'
 def read(p):return json.loads(p.read_text())
 def h(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+assert Path('/proc/sys/kernel/hostname').read_text().strip()=='656813ef2295'
 inv=read(O/'inventory-review.json');focused=read(O/'focused-evidence-binding.json');shards=[read(O/f'shard{n}-review.json') for n in range(1,7)]
 assert inv['full_count']==2777 and inv['cloud_count']==2650 and inv['mac_count']==127
 assert focused['status']=='PASS_EXISTING_FOCUSED_EVIDENCE_BINDING' and focused['passed']==14
@@ -14,6 +15,8 @@ for n,x in enumerate(shards,1):
  for kind in ['prepare','result']:
   row=read(R/f'shard{n}/{kind}.json');intervals.extend([(row['started_epoch'],1,n,kind),(row['finished_epoch'],-1,n,kind)])
  actual_durations.append(read(R/f'shard{n}/result.json')['duration_seconds'])
+ for line in (R/f'shard{n}/reports.jsonl').read_text().splitlines():
+  phase=json.loads(line);assert math.isfinite(phase['duration']) and phase['duration']>=0
 assert sum(x['selected'] for x in shards)==2650 and sum(x['passed'] for x in shards)==2640 and sum(x['skipped'] for x in shards)==10
 assert phases==7941 and len(allskips)==10 and set(allskips)=={x['id'] for x in read(R/'known-skips.json')}
 assert len({x['capsule_receipt_file_sha256'] for x in shards})==1 and sum(x['timing_regressions_passed'] for x in shards)==13

@@ -1,5 +1,5 @@
 from pathlib import Path
-import ast, collections, hashlib, json, os, subprocess, sys, time, xml.etree.ElementTree as ET
+import ast, collections, hashlib, json, math, os, subprocess, sys, time, xml.etree.ElementTree as ET
 R=Path('/workspace/casepath-touch-target-gate-4bf9b439-20261018'); O=R/'independent-review'
 SHA='4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd'; MAN='98bd51f82f96e146314496cd41255781634d19c407ced1a37221927b91a6b32e'
 FULL='2afdd1b449b87d017fd58ef7aa90c594c244dfd65fe64a9120225d562ba16c2c'; MAC='e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8'; B861='9805b5fe6fc46cc5fa11c0a730135aa9066813487c9e8b22328d1fb0683b0720'
@@ -60,7 +60,7 @@ elif sys.argv[1]=='shard':
  assert not any(k.endswith('_API_KEY') or k.endswith('_TOKEN') for k in env)
  known={x['id']:x for x in read(R/'known-skips.json')};reports=[json.loads(x) for x in (p/'reports.jsonl').read_text().splitlines()];byid=collections.defaultdict(dict);skips={}
  for x in reports:
-  assert x['id'] in expected and x['when'] in ['setup','call','teardown'] and x['when'] not in byid[x['id']] and x['outcome'] in ['passed','skipped'];byid[x['id']][x['when']]=x
+  assert math.isfinite(x['duration']) and x['duration']>=0 and x['id'] in expected and x['when'] in ['setup','call','teardown'] and x['when'] not in byid[x['id']] and x['outcome'] in ['passed','skipped'];byid[x['id']][x['when']]=x
  assert set(byid)==set(expected)
  for ident,ph in byid.items():
   assert set(ph) in [{'setup','call','teardown'},{'setup','teardown'}]

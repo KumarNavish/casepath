@@ -7,5 +7,10 @@
     4,
     5,
     6
-  ]
+  ],
+  "normal_prepare_data_free_source_sha256": "791f012084d06dcfae16e8de1e42bb1236df695d2fbcc001a35669d8226d4295",
+  "prepare_exit_block_sha256": "df7ba04f8b9ec515194dc7b477a41a730f3464341289f3a47ea72b03e1e4d4b1",
+  "prepare_exits_after_verified_capsule_before_domain_database_or_data_root_operations": true,
+  "qualification": "Initial prior-harness prepare1 had separate own HOME/TMP and isolated normal clone, and exact sealed launcher prepare branch exits after capsule verification before any durable DB/domain invocation. Later prepare2..6 additionally select owned DB/artifact variables. Test children for all six have explicit isolated DB/artifact paths before startup.",
+  "observed_epoch": 1792290119.7149384
 }
