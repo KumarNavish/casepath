@@ -1,0 +1,66 @@
+{
+  "base": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "source_commit": "f6e6f7bb033f38b4d999fe0f5b353f656eef87bd",
+  "source_branch": "codex/outcome-wait-reasons-20261018",
+  "scope": [
+    "casepath-qa/autonomous-language-v1.test.cjs",
+    "casepath/assets/autonomous-language-v1.js"
+  ],
+  "host": "656813ef2295",
+  "verdict": "PASS",
+  "source_clean": true,
+  "only_nextAction_changed_in_production": true,
+  "red": {
+    "tests": 45,
+    "failed": 45,
+    "exit": 1,
+    "base_source_unchanged": true
+  },
+  "green": {
+    "tests": 62,
+    "passed": 62,
+    "failed": 0,
+    "skipped": 0,
+    "exit": 0
+  },
+  "new_regression_bytes_unchanged": true,
+  "only_red_to_green_test_changes": "Two existing directly related nextAction expectations updated; no other changed expectations.",
+  "native_adapter": {
+    "rows": 9,
+    "fixture_sha256": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce",
+    "all_non_next_action_fields_unchanged": true,
+    "all_original_state_json_unchanged": true,
+    "details_same_original_object": true,
+    "hosted_acceptance": false
+  },
+  "independent_review_sha256": "dba1935a26616fc35ef08fd0fedb5f9a6d8bf32016353d35f7a1b1e2ff7787c1",
+  "source_sha256": {
+    "casepath-qa/autonomous-language-v1.test.cjs": "f6202f002fdad90f661f75891b18e11e04f8f191f345eaaceb9997754c06b90f",
+    "casepath/assets/autonomous-language-v1.js": "a803c34ceb0f995fb1eb05eeb6ba52cc9c8d9c210d767a3c6140ba381b651594"
+  },
+  "secret_scan": {
+    "matches": 0,
+    "kinds": [
+      "private_key",
+      "github_token",
+      "aws_access_key",
+      "bearer_credential"
+    ]
+  },
+  "limits": [
+    "Full deterministic gate and final index/manifest sealing await Mac frozen candidate.",
+    "No browser or production/provider/API requests; no corpus, Knowledge, journal or ledger changes.",
+    "Cold Knowledge TTFB and native VoiceOver limits remain unchanged and unwaived."
+  ],
+  "environment": {
+    "existing_node": "v24.19.0",
+    "new_dependencies": false,
+    "existing_home_preserved": true,
+    "writer_tmp": "/workspace/owt",
+    "root_tmp": "/workspace/ow-root-tmp",
+    "cloud_observed_running": true,
+    "network_policy_observed_state": "unknown",
+    "configuration_changes": false
+  },
+  "files_preserved": 26
+}

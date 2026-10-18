@@ -1,0 +1,1151 @@
+✖ outcome next actions separate complete document checks from authority to act (6.032634ms)
+▶ outcome next actions retain every combination of recorded wait causes
+  ✖ outcome: cause mask 0 (0.358158ms)
+  ✖ outcome: cause mask 1 (0.328815ms)
+  ✖ outcome: cause mask 2 (0.217491ms)
+  ✖ outcome: cause mask 3 (0.247255ms)
+  ✖ outcome: cause mask 4 (0.149551ms)
+  ✖ outcome: cause mask 5 (0.132575ms)
+  ✖ outcome: cause mask 6 (0.251431ms)
+  ✖ outcome: cause mask 7 (0.207746ms)
+  ✖ outcome: cause mask 8 (0.256169ms)
+  ✖ outcome: cause mask 9 (0.252593ms)
+  ✖ outcome: cause mask 10 (0.158694ms)
+  ✖ outcome: cause mask 11 (0.151023ms)
+  ✖ outcome: cause mask 12 (0.118385ms)
+  ✖ outcome: cause mask 13 (0.106196ms)
+  ✖ outcome: cause mask 14 (0.141639ms)
+  ✖ outcome: cause mask 15 (0.160046ms)
+  ✖ deferral: cause mask 0 (0.138374ms)
+  ✖ deferral: cause mask 1 (0.177813ms)
+  ✖ deferral: cause mask 2 (0.170772ms)
+  ✖ deferral: cause mask 3 (0.199404ms)
+  ✖ deferral: cause mask 4 (0.121159ms)
+  ✖ deferral: cause mask 5 (0.105315ms)
+  ✖ deferral: cause mask 6 (0.102101ms)
+  ✖ deferral: cause mask 7 (0.096683ms)
+  ✖ deferral: cause mask 8 (0.199184ms)
+  ✖ deferral: cause mask 9 (0.116763ms)
+  ✖ deferral: cause mask 10 (0.102542ms)
+  ✖ deferral: cause mask 11 (0.102331ms)
+  ✖ deferral: cause mask 12 (0.171533ms)
+  ✖ deferral: cause mask 13 (0.107038ms)
+  ✖ deferral: cause mask 14 (0.111464ms)
+  ✖ deferral: cause mask 15 (0.100078ms)
+✖ outcome next actions retain every combination of recorded wait causes (7.720115ms)
+▶ outcome next actions retain unknown checks without inventing document or authority gaps
+  ✖ unit predicate status unknown (string) (0.316367ms)
+  ✖ unit predicate status pending (string) (0.14874ms)
+  ✖ unit predicate status true (string) (0.107108ms)
+  ✖ unit predicate status false (string) (0.09537ms)
+  ✖ unit predicate status true (boolean) (0.092566ms)
+  ✖ unit predicate status false (boolean) (0.151384ms)
+  ✖ unit predicate status null (object) (0.107429ms)
+  ✖ unit predicate status undefined (undefined) (0.092757ms)
+  ✖ unit predicate status unexpected (string) (0.090113ms)
+✖ outcome next actions retain unknown checks without inventing document or authority gaps (1.99875ms)
+✖ outcome next actions stay neutral when no result or wait cause is recorded (0.178033ms)
+ℹ tests 45
+ℹ suites 0
+ℹ pass 0
+ℹ fail 45
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 139.419074
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-language-v1.test.cjs:238:1
+✖ outcome next actions separate complete document checks from authority to act (6.032634ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:244:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 0 (0.358158ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Review the case details.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Review the case details.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 1 (0.328815ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for the listed documents.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for the listed documents.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 2 (0.217491ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 3 (0.247255ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for the listed documents. Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for the listed documents. Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 4 (0.149551ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 5 (0.132575ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for the listed documents. Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for the listed documents. Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 6 (0.251431ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 7 (0.207746ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for the listed documents. Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for the listed documents. Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 8 (0.256169ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 9 (0.252593ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for the listed documents. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for the listed documents. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 10 (0.158694ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 11 (0.151023ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 12 (0.118385ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 13 (0.106196ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 14 (0.141639ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ outcome: cause mask 15 (0.160046ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 0 (0.138374ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Review the case details.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Review the case details.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 1 (0.177813ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for the listed documents.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for the listed documents.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 2 (0.170772ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 3 (0.199404ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for the listed documents. Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for the listed documents. Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 4 (0.121159ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 5 (0.105315ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for the listed documents. Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for the listed documents. Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 6 (0.102101ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 7 (0.096683ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for the listed documents. Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for the listed documents. Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 8 (0.199184ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 9 (0.116763ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for the listed documents. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for the listed documents. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 10 (0.102542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 11 (0.102331ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 12 (0.171533ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 13 (0.107038ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 14 (0.111464ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:272:13
+✖ deferral: cause mask 15 (0.100078ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action."
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:281:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:272:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:288:13
+✖ unit predicate status unknown (string) (0.316367ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:291:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:288:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:288:13
+✖ unit predicate status pending (string) (0.14874ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:291:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:288:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:288:13
+✖ unit predicate status true (string) (0.107108ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:291:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:288:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:288:13
+✖ unit predicate status false (string) (0.09537ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:291:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:288:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:288:13
+✖ unit predicate status true (boolean) (0.092566ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:291:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:288:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:288:13
+✖ unit predicate status false (boolean) (0.151384ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:291:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:288:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:288:13
+✖ unit predicate status null (object) (0.107429ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:291:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:288:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:288:13
+✖ unit predicate status undefined (undefined) (0.092757ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:291:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:288:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:288:13
+✖ unit predicate status unexpected (string) (0.090113ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + "Waiting for the listed documents or a person's go-ahead."
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:291:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at TestContext.test (node:internal/test_runner/test:394:20)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:288:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "Waiting for the listed documents or a person's go-ahead.",
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:286:1
+✖ outcome next actions retain unknown checks without inventing document or authority gaps (1.99875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'Read the recorded result and its sources.'
+  - 'Waiting for proof of open facts.'
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:296:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Read the recorded result and its sources.',
+    expected: 'Waiting for proof of open facts.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/autonomous-language-v1.test.cjs:305:1
+✖ outcome next actions stay neutral when no result or wait cause is recorded (0.178033ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'Read the recorded result and its sources.'
+  - 'Review the case details.'
+       ^
+  
+      at assertNextAction (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:37:10)
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/autonomous-language-v1.test.cjs:310:5)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Read the recorded result and its sources.',
+    expected: 'Review the case details.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

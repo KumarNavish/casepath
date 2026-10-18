@@ -1,0 +1,165 @@
+{
+  "verdict": "PASS: no blocking findings in the bounded nextAction wording patch",
+  "reviewer": "/root/outcome_wait_review",
+  "host": "656813ef2295",
+  "base_commit": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "reviewed_commit": "f6e6f7bb033f38b4d999fe0f5b353f656eef87bd",
+  "branch": "codex/outcome-wait-reasons-20261018",
+  "source_scope": [
+    "casepath-qa/autonomous-language-v1.test.cjs",
+    "casepath/assets/autonomous-language-v1.js"
+  ],
+  "patch_sha256": "7430ed5e3f41949fb42716b6483b8ea1c590027bb81283bd46b5562e7f6d6b58",
+  "asset_sha256": {
+    "base": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+    "final": "a803c34ceb0f995fb1eb05eeb6ba52cc9c8d9c210d767a3c6140ba381b651594"
+  },
+  "test_sha256": {
+    "red_snapshot": "40539c1e170d32ca9471a4d93ffc55219e4698c81b5e61bece6e012808455f9e",
+    "final": "f6202f002fdad90f661f75891b18e11e04f8f191f345eaaceb9997754c06b90f",
+    "unchanged_added_regressions": "444010320de3ff74a601c2f214fae935de8a916c61264a29801123132a14b199"
+  },
+  "review_findings": [],
+  "verified_statically": [
+    "Committed patch bytes equal immutable patch artifact; clean writer checkout matches reviewed commit.",
+    "Only nextAction selection changes in product source; exact reversal recovers base source byte for byte.",
+    "Missing documents, unresolved/raw unknown facts, known conflicting findings, and authority combine without dropping causes.",
+    "Unmapped supported/failed predicates preserve recorded status without invented document or proof gaps.",
+    "No authority sentence occurs without recorded authority limits; failed findings do not imply completed or approved action.",
+    "No-result, empty-outcome, and deferred-no-cause cases use neutral case-details copy.",
+    "All eight distinct resulting copies pass the existing whole-word ban and both whole-message and per-sentence 20-word limits.",
+    "Added RED/GREEN regression bytes are identical; only two explicitly authorized pre-existing nextAction expectations differ.",
+    "Tests retain exact recordedSummary, Details object identity, and whole-state JSON preservation assertions.",
+    "Rent and termination additions are explicitly labelled unit examples, separate from recorded heating fixtures.",
+    "No unrelated assertions removed or weakened; git diff --check passes.",
+    "Independent baseline checkout remains clean at exact base with unchanged asset, test, and Git index hashes."
+  ],
+  "writer_execution_evidence": {
+    "red": {
+      "command": "#!/usr/bin/env bash\ncd /workspace/casepath-operations-review-20261013 || exit\nexport TMPDIR=/workspace/owt TMP=/workspace/owt TEMP=/workspace/owt\nexport NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules\n/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test --test-reporter=tap --test-name-pattern='outcome next actions' casepath-qa/autonomous-language-v1.test.cjs\n",
+      "exit": 1,
+      "tap": {
+        "tests": 45,
+        "suites": 0,
+        "pass": 0,
+        "fail": 45,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "source_unchanged": true
+    },
+    "green": {
+      "command": "#!/usr/bin/env bash\ncd /workspace/casepath-operations-review-20261013 || exit\nexport TMPDIR=/workspace/owt TMP=/workspace/owt TEMP=/workspace/owt\nexport NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules\n/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node --test --test-reporter=tap casepath-qa/autonomous-language-v1.test.cjs\n",
+      "exit": 0,
+      "tap": {
+        "tests": 62,
+        "suites": 0,
+        "pass": 62,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  },
+  "artifact_sha256": {
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/base-source.sha256": "a8a7c0dad56b2f7ac70052a72776d4c46ef8ddfd7b8bff7426ca88db7d105730",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/red-command.sh": "8d8797197103732383d13e9b7839c4cc6e1888fd2dc2569775bb1df2e3835acf",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/red.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/red.tap": "43814cb241007d00352e4927d23b20aaa9236dc1f627b72576411207f8656856",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/red-source-test.sha256": "5bca19913e63754c5d092b770ad45111bffc125b796fa6d5af6d0733e705cdc9",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/red-test.cjs": "40539c1e170d32ca9471a4d93ffc55219e4698c81b5e61bece6e012808455f9e",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/red-unchanged-source.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/red-initial-spec.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/red-initial-spec.log": "a9586dedd96c7e0eccfe715869921de7814218f2223847c9d9acfd0545d68236",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/green-command.sh": "e1e3a39466d23dd16660af35daac385eebc46cbd1c288a4209bdf489326f904f",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/green.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/green.tap": "77b386dd2dd6f6ac6a6a77d8a889b1ecb049a64e8ee14dfef7edf52bd837732a",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/green-source-test.sha256": "ccbd2e8f12d73ebe3003f019554479fc4e00bf069bdd2fcb2bb349bf8bd2791e",
+    "/workspace/casepath-outcome-wait-reasons-20261018/writer/outcome-wait-reasons.patch": "7430ed5e3f41949fb42716b6483b8ea1c590027bb81283bd46b5562e7f6d6b58"
+  },
+  "baseline_receipt_sha256": "aee6a63006065ae599b8eba7356b46b3a2df66bdd44a4ec93fb255e513813b09",
+  "reviewer_execution_limits": [
+    "No independent product tests or application runtimes executed; writer raw evidence inspected.",
+    "No source, clone, Git index, service, backend, record, Knowledge, journal, ledger, or corpus writes.",
+    "No provider, paid, API, browser, install, network, seal, full suite, gate, publish, or deployment operations.",
+    "Native nine-fixture checks, Mac freeze/sealing/release gates, cold Knowledge TTFB, and native VoiceOver remain outside this review."
+  ],
+  "display_copy_checks": [
+    {
+      "mask_documents_proof_authority": 0,
+      "copy": "Review the case details.",
+      "words": 4,
+      "sentence_words": [
+        4
+      ]
+    },
+    {
+      "mask_documents_proof_authority": 1,
+      "copy": "Waiting for the listed documents.",
+      "words": 5,
+      "sentence_words": [
+        5
+      ]
+    },
+    {
+      "mask_documents_proof_authority": 2,
+      "copy": "Waiting for proof of open facts.",
+      "words": 6,
+      "sentence_words": [
+        6
+      ]
+    },
+    {
+      "mask_documents_proof_authority": 3,
+      "copy": "Waiting for the listed documents. Waiting for proof of open facts.",
+      "words": 11,
+      "sentence_words": [
+        5,
+        6
+      ]
+    },
+    {
+      "mask_documents_proof_authority": 4,
+      "copy": "A person's go-ahead is needed before any real-world action.",
+      "words": 9,
+      "sentence_words": [
+        9
+      ]
+    },
+    {
+      "mask_documents_proof_authority": 5,
+      "copy": "Waiting for the listed documents. A person's go-ahead is needed before any real-world action.",
+      "words": 14,
+      "sentence_words": [
+        5,
+        9
+      ]
+    },
+    {
+      "mask_documents_proof_authority": 6,
+      "copy": "Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+      "words": 15,
+      "sentence_words": [
+        6,
+        9
+      ]
+    },
+    {
+      "mask_documents_proof_authority": 7,
+      "copy": "Waiting for the listed documents. Waiting for proof of open facts. A person's go-ahead is needed before any real-world action.",
+      "words": 20,
+      "sentence_words": [
+        5,
+        6,
+        9
+      ]
+    }
+  ],
+  "baseline_clone_final_sha256": {
+    "casepath/assets/autonomous-language-v1.js": "3138648a023fdc38b6e5f334f448b88369d8fb769d5bb9044340b92f45dca396",
+    "casepath-qa/autonomous-language-v1.test.cjs": "3022e3f51c0bfaa4508b7db19d3fa51bfee0001cb21572d70cf376d7875789b6",
+    ".git/index": "d6c37edd2e92ea7a5b715b7fc5dcac91e118aacac20a76ce5b32ed2d4b426fa7"
+  }
+}

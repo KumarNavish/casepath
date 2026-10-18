@@ -1,0 +1,65 @@
+{
+  "created_utc": "2026-10-18T03:46:23.684149+00:00",
+  "repository": "KumarNavish/casepath",
+  "checkout": "/workspace/casepath-operations-review-20261013",
+  "host": "656813ef2295",
+  "base": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "tip": "f6e6f7bb033f38b4d999fe0f5b353f656eef87bd",
+  "parent": "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd",
+  "branch": "codex/outcome-wait-reasons-20261018",
+  "working_tree_porcelain": "",
+  "remote_refs": [
+    "4bf9b439813ae5dd82c8820cbe96e4c1ec6db2cd\trefs/heads/codex/casepath-causal-experience-integration-20261009",
+    "f6e6f7bb033f38b4d999fe0f5b353f656eef87bd\trefs/heads/codex/outcome-wait-reasons-20261018"
+  ],
+  "files": [
+    "casepath-qa/autonomous-language-v1.test.cjs",
+    "casepath/assets/autonomous-language-v1.js"
+  ],
+  "patch": {
+    "file": "outcome-wait-reasons.patch",
+    "sha256": "7430ed5e3f41949fb42716b6483b8ea1c590027bb81283bd46b5562e7f6d6b58",
+    "matches_committed_patch": true
+  },
+  "red": {
+    "command_file": "red-command.sh",
+    "log": "red.tap",
+    "exit": 1,
+    "tests": 45,
+    "passed": 0,
+    "failed": 45,
+    "skipped": 0,
+    "source_test_hashes": "red-source-test.sha256",
+    "source_diff_empty": true,
+    "test_snapshot": "red-test.cjs",
+    "base_source": "base-autonomous-language-v1.js",
+    "initial_default_reporter_attempt": "red-initial-spec.log (also exit 1; repeated with explicit TAP before any JavaScript edit)"
+  },
+  "green": {
+    "command_file": "green-command.sh",
+    "log": "green.tap",
+    "exit": 0,
+    "tests": 62,
+    "top_level_tests": 21,
+    "passed": 62,
+    "failed": 0,
+    "skipped": 0,
+    "source_test_hashes": "green-source-test.sha256"
+  },
+  "scope": "Only display nextAction selection and its direct regression coverage/expectations changed. Summary, support, findings, constraints, recordedSummary and details remain unchanged.",
+  "fixtures": {
+    "recorded": "One committed heating head snapshot decoded by the existing test with byte length and SHA-256 verification from casepath/assets/autonomous-recorded-heating-v1.json.",
+    "unit": "Rent and termination cases use predicate IDs/statuses from autonomous_reference_v1.py. Cause combinations, unknown statuses, duplicates, unmapped IDs, empty and deferred inputs are expressly unit cases; they are not production history.",
+    "preservation": "Tests check original outcome object identity, exact recordedSummary, full state JSON including quoted whitespace, restricted vocabulary and 20-word total nextAction limit."
+  },
+  "not_run": [
+    "Full suite/gate and source sealing: reserved for Mac owner after combined sealed SHA.",
+    "Browser/native VoiceOver/production reads: outside worker scope.",
+    "Large retained nine-case native fixture: root owns independent verification."
+  ],
+  "limits": [
+    "Existing cold Knowledge TTFB and native VoiceOver limits remain unchanged and unwaived."
+  ],
+  "setup": "Used cloud setup/runtime skills and existing Node v24.19.0, with child TMPDIR/TMP/TEMP=/workspace/owt, existing NODE_PATH, unchanged HOME, no installs or configuration draft changes.",
+  "fetch_note": "The clone fetch refspec omitted integration initially; read-only ls-remote verified the exact SHA and an explicit branch fetch created its tracking ref before branching."
+}
