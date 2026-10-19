@@ -36,6 +36,13 @@ class StateStore:
         with self.lock:
             return deepcopy(list(self.rows.values()))
 
+    def _validated_summary_states(self):
+        return self.list()
+
+    def list_summaries(self, *, statuses=None):
+        # Use the native read projection over independent fixture state copies.
+        return AutonomousStore._read_summaries(self, statuses=statuses)
+
     def put(self, claim, **changes):
         with self.lock:
             self.rows[claim] = {'claim_id': claim, 'status': 'received', 'outcome': None,
@@ -91,12 +98,19 @@ class HostedRecoveryTests(unittest.TestCase):
         with TemporaryDirectory(prefix='casepath-hosted-recovery-') as runtime_directory, \
              patch.object(hosted_app, 'HostedAutonomousController', side_effect=construct), \
              patch.object(hosted_app, 'HostedAutonomousStore', return_value=self.store), \
-             patch.object(AutonomousController, 'run', run):
+             patch.object(AutonomousController, 'run', run), \
+             patch.object(AutonomousController, '_learn', side_effect=AssertionError('unexpected public learning')) as learn:
             app = hosted_app.create_hosted_app(database=SimpleNamespace(connect=self.connect),
                                                environment=env, runtime_directory=runtime_directory)
             with TestClient(app) as client:
                 self.assertTrue(live[0]._closed)
                 self.store.put('late-claim')  # Simulate an authorized operator's saved admission.
+                saved = self.store.get('late-claim')
+                collection = client.get('/api/claim-loops/v1/autonomous/claims', headers=headers)
+                self.assertEqual(collection.status_code, 200)
+                late = next(row for row in collection.json()['claims'] if row['claim_id'] == 'late-claim')
+                self.assertEqual(late['status'], saved['status'])
+                self.assertEqual(collection.json()['total'], 151)
                 self.assertEqual(calls, [])
                 live[0]._next_discovery = 0.0  # Next actual HTTP poll is due.
                 response = client.get('/api/claim-loops/v1/autonomous/status', headers=headers)
@@ -114,6 +128,15 @@ class HostedRecoveryTests(unittest.TestCase):
                 client.get('/api/claim-loops/v1/autonomous/status', headers=headers)
                 self.assertTrue(live[1]._closed)
                 self.assertEqual(calls, [])
+                collection = client.get('/api/claim-loops/v1/autonomous/claims', headers=headers)
+                self.assertEqual(collection.status_code, 200)
+                self.assertEqual(collection.json()['total'], 151)
+                self.assertEqual(self.store.get('late-claim'), saved)
+                learn.assert_not_called()
+                with self.connect() as db:
+                    lease = db.execute('SELECT owner,generation,expires_at FROM hosted_workflow_lease').fetchone()
+                    self.assertEqual(tuple(lease), (None, 0, 0))
+                    self.assertEqual(db.execute('SELECT count(*) FROM claim_loop_events').fetchone()[0], 0)
 
     def test_all_failure_deferrals_and_pause_are_excluded(self):
         for code in ('paused', 'provider_deferred', 'verification_deferred', 'execution_deferred', 'model_unavailable'):
