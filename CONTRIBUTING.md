@@ -32,11 +32,39 @@ Prepare an unchanged clone once:
 ```
 
 Make a focused change, run the smallest meaningful regression, and inspect the
-affected workflow. The complete deterministic suite is:
+affected workflow. For frontend changes, the focused Node suites take about
+30 seconds and need Node 22 and Playwright Chromium:
+
+```bash
+node --test casepath-qa/autonomous-workspace-v1.test.cjs \
+  casepath-qa/autonomous-language-v1.test.cjs \
+  casepath-qa/sites-autonomous-entry.test.cjs \
+  casepath-qa/autonomous-evidence-identity-v2.test.cjs \
+  casepath-qa/unified-product-v1.test.cjs
+```
+
+The complete deterministic suite is:
 
 ```bash
 ./bin/casepath test
 ```
+
+It includes the same Node suites through
+`casepath-api/tests/test_frontend_node_suites_v1.py`. The launcher runs tests in
+a cleared environment, so it forwards only `CASEPATH_NODE`, `NODE_PATH`,
+`PLAYWRIGHT_BROWSERS_PATH`, `PLAYWRIGHT_EXECUTABLE_PATH` and
+`CASEPATH_REQUIRE_FRONTEND_SUITES`. Without `node` on
+`/usr/local/bin:/usr/bin:/bin` or a resolvable `playwright` module, the affected
+suites are skipped with the reason. Set `CASEPATH_REQUIRE_FRONTEND_SUITES=1` to
+turn those skips into failures, for example:
+
+```bash
+CASEPATH_REQUIRE_FRONTEND_SUITES=1 NODE_PATH="$(npm root -g)" \
+  PLAYWRIGHT_BROWSERS_PATH="$HOME/Library/Caches/ms-playwright" ./bin/casepath test
+```
+
+`./bin/casepath test` cannot run while `./bin/casepath dev` holds the
+environment lease; it exits with status 75.
 
 The complete suite is intentionally broad and can take about 13 minutes on the
 validated macOS host. Run it when the change crosses subsystem boundaries or

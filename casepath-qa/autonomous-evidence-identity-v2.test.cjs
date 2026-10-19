@@ -8,6 +8,7 @@ const {createHash,webcrypto} = require('node:crypto');
 const {chromium} = require('playwright');
 if (!globalThis.crypto) globalThis.crypto = webcrypto;
 const ui = require('../casepath/assets/autonomous-workspace-v1.js');
+const language = require('../casepath/assets/autonomous-language-v1.js');
 const root = path.resolve(__dirname,'..');
 const base = '/api/claim-loops/v1/autonomous';
 const captured = JSON.parse(gunzipSync(fs.readFileSync(path.join(root,'design/evidence-path/recorded-fixtures.json.gz'))));
@@ -40,7 +41,7 @@ test('all nine recorded claims retain their complete actual DAG, edge applicabil
    assert.ok(layout.parents.get(edge.target_node_id).includes(edge.source_node_id));
    assert.ok(layout.children.get(edge.source_node_id).includes(edge.target_node_id));
   }
-  for(const node of state.graph.nodes) assert.ok(html.includes(`<strong class="au-node-title">${escaped(node.label)}</strong>`),`complete saved label ${node.node_id}`);
+  for(const node of state.graph.nodes) assert.ok(html.includes(`<strong class="au-node-title">${escaped(language.stepLabel(node))}</strong>`),`complete display label ${node.node_id}`);
   if(state.graph.nodes.length===1){
    assert.equal(state.graph.nodes[0].node_id,'investigate_packet');assert.equal(state.graph.edges.length,0);assert.equal(state.status,'deferred');
    assert.deepEqual([...html.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1]),['investigate_packet']);
@@ -87,10 +88,10 @@ test('family-home applicability does not establish separate spouse service or ad
  assert.deepEqual(state.facts.find(fact=>fact.fact_id==='fact:spouse_notice_copy').citations,[]);
  const html=ui.evidencePathMarkup(state,'lt_family',envelope(robin).projection,{fact:'condition:family_home',document:'spouse_notice_copy',trace:true});
  assert.match(html,/data-au-document="spouse_notice_copy"[^>]*data-route="needed_later"/);
- assert.match(html,/Required after a requiring step is reached/);assert.match(html,/Requires[\s\S]*Classify termination type/);
+ assert.match(html,/Needed after its step is reached\./);assert.match(html,/Requires[\s\S]*Check the type of termination/);
  assert.ok(html.includes(`<q>${escaped(relationship.fact.citations[0].quote)}</q>`));
  assert.ok(html.includes(escaped(relationship.fact.summary)),'the reading column retains the actual saved condition assessment');
- assert.doesNotMatch(html,/data-au-inspect=/,'the reading view presents its case evidence without raw record controls');
+ assert.doesNotMatch(html,/data-au-inspect="(?!step")/,'the reading view presents its case evidence without raw record controls');assert.match(html,/data-au-inspect="step" data-au-record-id="lt_family">Details</);
  const history=ui.workMarkup(state,envelope(robin).projection,'lt_family',[],'activity');
  assert.match(history,/data-au-inspect="claim" data-au-record-id="">Case details</,'the complete saved claim remains accessible through History');
  assert.doesNotMatch(html,/spouse_notice_copy"[^>]*data-route="needed_now"|Spouse service established|Separate spouse service completed/);
@@ -103,9 +104,9 @@ test('shared document timing preserves its process-wide route without declaring 
  state.obligations.push({obligation_id:'isolated:shared-notice-period',node_id:'lt_family',decision_node_id:'lt_family',document_type:document.document_type,label:document.label,required_fact_ids:['fact:notice_period_evidence']});
  const before=JSON.stringify(state),html=ui.evidencePathMarkup(state,'lt_family',{}, {document:'notice_period_evidence',fact:'fact:notice_period_evidence'});
  assert.match(html,/data-au-document="notice_period_evidence"[^>]*data-route="needed_now"/);
- assert.match(html,/Required now in the recorded process/);assert.match(html,/class="au-step-status">Waiting for prerequisites/);
+ assert.match(html,/Listed as needed now\./);assert.match(html,/class="au-step-status">Waiting for prerequisites/);
  assert.equal(state.evaluation.nodes.find(node=>node.node_id==='lt_family').execution_state,'blocked');
- assert.match(html,/Requires[\s\S]*Classify termination type/);
+ assert.match(html,/Requires[\s\S]*Check the type of termination/);
  assert.doesNotMatch(html,/Needed at the current step|Selected step ready|This step is executable/);
  assert.equal(JSON.stringify(state),before);
 });
@@ -126,6 +127,7 @@ async function fixturePage(t,{width=1440,reducedMotion='no-preference'}={}){
  await page.route('**/*',route=>route.request().isNavigationRequest() ? route.fulfill({status:200,contentType:'text/html',body:'<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0"><main id="workspace"></main></body></html>'}) : route.abort('blockedbyclient'));
  await page.goto('http://localhost:41999/');
  await page.addStyleTag({path:path.join(root,'casepath/assets/autonomous-workspace-v1.css')});
+ await page.addScriptTag({path:path.join(root,'casepath/assets/autonomous-language-v1.js')});
  await page.addScriptTag({path:path.join(root,'casepath/assets/autonomous-workspace-v1.js')});
  await page.evaluate(({responses,base})=>{
   responses[`${base}/claims`].claims=responses[`${base}/claims`].claims.map(row=>({...row,origin:'native_intake'}));
@@ -220,7 +222,7 @@ test('zero recorded active gaps still expose held requirements, questions and th
  assert.equal(await page.locator('[data-au-panel="documents"]').isVisible(),true);
  const held=state.evaluation.documents.filter(doc=>doc.route_state==='held_behind_question');
  assert.deepEqual(sorted(await page.locator('[data-au-panel="documents"] [data-au-document]').evaluateAll(nodes=>nodes.filter(node=>node.dataset.status==='held_behind_question').map(node=>node.dataset.auDocument))),sorted(held.map(doc=>doc.document_type)));
- assert.deepEqual(await page.locator('[data-au-panel="documents"] [data-status="held_behind_question"] .au-document-state').allTextContents(),held.map(()=>'May be needed'));
+ assert.deepEqual(await page.locator('[data-au-panel="documents"] [data-status="held_behind_question"] .au-document-state').allTextContents(),held.map(()=>'May be needed.'));
  const node=state.evaluation.nodes.find(node=>node.activation==='unresolved' && node.condition_flags.includes('termination_received')).node_id;
  await page.locator('[data-au-detail="step"]').click();await page.locator(`[data-au-node="${node}"]`).click();
  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),node);
@@ -248,10 +250,10 @@ test('Documents opens an unassigned received JPEG through the verified original 
  await open(page,robin);await page.getByRole('button',{name:'Documents',exact:true}).click();
  const files=page.locator('[data-au-panel="documents"] .au-supporting').filter({has:page.getByRole('heading',{name:'Files awaiting a document assignment',exact:true})});
  assert.deepEqual(await files.locator('[data-au-source]').evaluateAll(nodes=>nodes.map(node=>node.dataset.auSource)),[artifact_id]);
- assert.match(await files.innerText(),/termination_notice\.jpg[\s\S]*Interpretation unsupported/);
+ assert.match(await files.innerText(),/Termination notice[\s\S]*Text could not be read/);
  const trigger=files.locator(`[data-au-source="${artifact_id}"]`);await trigger.click();
  await page.locator('.au-source-dialog[open] .au-source-capability').waitFor();
- assert.match(await page.locator('.au-source-dialog').innerText(),/Original image preview unavailable\. The agent cannot interpret this image\./);
+ assert.match(await page.locator('.au-source-dialog').innerText(),/Original image preview unavailable\. CasePath could not read this image\./);
  assert.equal(await page.locator('.au-source-dialog .au-source-body').count(),0);
  assert.equal(await page.locator('.au-record-dialog[open]').count(),0);
  await page.locator('.au-source-dialog .au-source-identity > summary').click();
@@ -277,7 +279,7 @@ test('the production browser draws all nine saved graphs without demo substituti
   const actual=await page.evaluate(()=>({nodes:[...document.querySelectorAll('[data-au-node]')].map(node=>({id:node.dataset.auNode,label:node.querySelector('.au-node-title').textContent,selected:node.getAttribute('aria-pressed'),visible:node.getBoundingClientRect().width>0})),edges:[...document.querySelectorAll('[data-au-edge]')].map(edge=>({id:edge.dataset.auEdge,state:edge.dataset.state,path:edge.getAttribute('d'),visible:getComputedStyle(edge).display!=='none'})),selected:document.querySelector('[data-au-selected-step]')?.dataset.auSelectedStep,animations:window.__animations.filter(row=>row.node || row.edge || row.fact || row.document).length,stages:[...document.querySelectorAll('[data-au-stage="sources"],[data-au-stage="interpretation"],[data-au-stage="verification"],[data-au-stage="process"],[data-au-stage="knowledge"]')].filter(row=>!row.closest('[hidden],details:not([open])')).length}));
   assert.deepEqual(sorted(actual.nodes.map(node=>node.id)),sorted(state.graph.nodes.map(node=>node.node_id)),claim.claim_id);
   assert.deepEqual(sorted(actual.edges.map(edge=>edge.id)),sorted(state.graph.edges.map(edge=>edge.edge_id)),claim.claim_id);
-  for(const node of actual.nodes){assert.equal(node.label,state.graph.nodes.find(row=>row.node_id===node.id).label);assert.equal(node.visible,true,'every saved node is exposed in the full process');}
+  for(const node of actual.nodes){assert.equal(node.label,language.stepLabel(state.graph.nodes.find(row=>row.node_id===node.id)));assert.equal(node.visible,true,'every saved node is exposed in the full process');}
   for(const edge of actual.edges){assert.equal(edge.state,state.evaluation.edges.find(row=>row.edge_id===edge.id).activation);assert.ok(edge.path && !/NaN|Infinity/.test(edge.path));assert.equal(edge.visible,true,'every saved edge is exposed in the full process');}
   assert.equal(actual.selected,ui.preferredNode(state,null,responses[`${base}/claims/${claim.claim_id}/events?after=0`].events));assert.equal(actual.nodes.filter(node=>node.selected==='true').length,1);
   assert.equal(actual.animations,0);assert.equal(actual.stages,0);
@@ -286,7 +288,7 @@ test('the production browser draws all nine saved graphs without demo substituti
   const collapsed=await page.evaluate(()=>({selected:document.querySelector('[data-au-selected-step]')?.dataset.auSelectedStep,fact:document.querySelector('.au-reading-fact')?.dataset.auFact || null,requirement:document.querySelector('.au-reading-requirement')?.dataset.auObligation || null,visibleNodes:[...document.querySelectorAll('[data-au-node]')].filter(node=>node.getBoundingClientRect().width>0).map(node=>node.dataset.auNode),sameNodes:[...document.querySelectorAll('[data-au-node]')].every((node,index)=>node===window.__graphObjects.nodes[index]),sameEdges:[...document.querySelectorAll('[data-au-edge]')].every((edge,index)=>edge===window.__graphObjects.edges[index]),sameReading:document.querySelector('[data-au-evidence-path]')===window.__graphObjects.reading,sameQuestion:document.querySelector('.au-reading-question')===window.__graphObjects.question}));
   assert.deepEqual(collapsed,{...compact,sameNodes:true,sameEdges:true,sameReading:true,sameQuestion:true},'collapsing keeps the exact graph objects and selected evidence context');
   assert.equal(await page.locator('[data-au-panel]').count(),1);
-  assert.equal(await page.locator('[data-au-panel] details').count(),0,'the current reading view has no nested record disclosures');
+  assert.equal(await page.locator('[data-au-panel] details pre, [data-au-panel] details [data-au-inspect]').count(),0,'the current reading view has no nested record disclosures');
   assert.deepEqual(await caseHistoryRecord(page),{state,projection:envelope(claim.claim_id).projection},`${claim.claim_id} retains its complete exact saved claim record through History`);
  }
  await noWrites(page);
@@ -314,14 +316,14 @@ test('fact selection exposes only its exact original passage and source inspecti
  await page.locator('[data-au-panel="step"] [data-au-fact-select="condition:family_home"]').click();
  assert.deepEqual(await page.locator('[data-au-evidence-path] .au-reading-passages q').allTextContents(),[citation.quote]);
  assert.equal(await page.locator('.au-reading-fact').getAttribute('data-au-fact'),fact.fact_id);
- assert.equal(await page.locator('.au-reading-fact .au-fact-summary').textContent(),fact.summary);
- assert.equal(await page.locator('.au-reading-question').textContent(),saved(robin).graph.nodes.find(node=>node.node_id==='lt_family').label);
+ assert.equal(await page.locator('.au-reading-fact .au-fact-summary').textContent(),'Applies');assert.equal(await page.locator('.au-reading-fact > details > p').textContent(),fact.summary);
+ assert.equal(await page.locator('.au-reading-question').textContent(),language.stepLabel(saved(robin).graph.nodes.find(node=>node.node_id==='lt_family')));
  assert.equal(await page.locator('[data-au-evidence-path] select').count(),0,'objects are selected with contextual buttons');
  const requirement=page.locator('[data-au-evidence-path] [data-au-document="spouse_notice_copy"]');
- assert.equal(await requirement.getAttribute('data-route'),'needed_later');assert.match(await requirement.innerText(),/Required after a requiring step is reached/);
+ assert.equal(await requirement.getAttribute('data-route'),'needed_later');assert.match(await requirement.innerText(),/Needed after its step is reached\./);
  const obligation=saved(robin).obligations.find(row=>row.node_id==='lt_family' && row.document_type==='spouse_notice_copy');
  assert.equal(await requirement.getAttribute('data-au-obligation'),obligation.obligation_id);
- assert.equal(await page.locator('[data-au-panel="step"] [data-au-inspect]').count(),0);
+ assert.equal(await page.locator('[data-au-panel="step"] [data-au-inspect]:not([data-au-inspect="step"])').count(),0);
  const record=await caseHistoryRecord(page);assert.deepEqual(record,{state:saved(robin),projection:envelope(robin).projection});
  assert.deepEqual(record.state.facts.find(row=>row.fact_id===fact.fact_id),fact);
  assert.deepEqual(record.state.obligations.find(row=>row.obligation_id===obligation.obligation_id),obligation);
@@ -358,7 +360,7 @@ test('receiving claims bind to their exact knowledge version, with id/version fa
  await page.evaluate(()=>window.__controller.showKnowledge());
  async function receiving(number){
   const version=knowledge.versions.find(row=>row.knowledge_id==='procedure.lease_termination_dispute' && row.version===number);
-  await page.locator(`.au-procedure-versions button[data-au-knowledge="${version.knowledge_id}"][data-au-version="${number}"][data-au-knowledge-sha="${version.knowledge_sha256}"]`).click();
+  await page.locator(`.au-learning-track .au-learning-node[data-au-learning-event-id*="version:"][data-au-knowledge="${version.knowledge_id}"][data-au-version="${number}"][data-au-knowledge-sha="${version.knowledge_sha256}"]`).click();
   const selected=page.locator(`[data-au-knowledge-identity="${version.knowledge_id}:${number}"]`);await selected.waitFor();
   assert.equal(await page.locator('[data-au-knowledge-identity]').count(),1,'one exact reusable procedure is open for reading');
   await selected.locator('[data-au-knowledge-facet="changes"]').click();

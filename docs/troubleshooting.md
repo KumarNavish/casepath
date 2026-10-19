@@ -24,6 +24,12 @@ For intentional source edits, complete all changes and follow
 [the sealing commands](../CONTRIBUTING.md#seal-authored-changes). Do not hand-edit
 manifest hashes or run generation repeatedly around unfinished edits.
 
+Commit the sealed manifest before running prepare or dev. The source capsule is
+keyed only by the manifest, while its deployment.json carries HEAD. If
+`prepare` or `dev` runs before that commit, the capsule records the previous
+HEAD, and later launches reuse it after the commit because the manifest bytes
+are unchanged.
+
 ## Port 4173 is occupied
 
 The launcher refuses to seed, launch, or take over a foreign listener. Keep the
@@ -33,10 +39,14 @@ a configurable product port.
 
 ## A lock is busy
 
-Another CasePath command may own the environment, data, or launch lease. Wait
-for that command or stop it through its controlling terminal. Do not remove lock
-files while a process may be alive; the launcher validates kernel ownership,
-not only the file name.
+Another CasePath command may own the environment, data, or launch lease. The
+command exits with status 75: on Linux the launcher names the held lease, and on
+macOS `lockf` reports the locked file. For example,
+`./bin/casepath test` cannot run while `./bin/casepath dev` serves
+127.0.0.1:4173, because both hold the environment lease for their whole
+lifetime. Wait for that command or stop it through its controlling terminal. Do
+not remove lock files while a process may be alive; the launcher validates
+kernel ownership, not only the file name.
 
 ## The journal does not start
 

@@ -392,6 +392,15 @@ def replay(args: argparse.Namespace) -> int:
     return 0
 
 
+FRONTEND_TOOL_VARIABLES = (
+    "CASEPATH_NODE",
+    "NODE_PATH",
+    "PLAYWRIGHT_BROWSERS_PATH",
+    "PLAYWRIGHT_EXECUTABLE_PATH",
+    "CASEPATH_REQUIRE_FRONTEND_SUITES",
+)
+
+
 def run_tests(args: argparse.Namespace) -> int:
     repository = Path(__file__).resolve().parents[2]
     source_manifest_raw = _read_regular_nofollow(
@@ -437,6 +446,12 @@ def run_tests(args: argparse.Namespace) -> int:
             "CASEPATH_ENV_LOCK_HELD": os.getenv("CASEPATH_ENV_LOCK_HELD", ""),
             "CASEPATH_ENV_READY": os.getenv("CASEPATH_ENV_READY", ""),
             "CASEPATH_UV": os.getenv("CASEPATH_UV_RESOLVED", ""),
+            # Tool locations for tests/test_frontend_node_suites_v1.py only.
+            **{
+                name: os.environ[name]
+                for name in FRONTEND_TOOL_VARIABLES
+                if os.environ.get(name)
+            },
         }
         command = [
             sys.executable,

@@ -11,6 +11,8 @@ const {execFileSync} = require('node:child_process');
 const {chromium} = require('playwright');
 
 const root = path.resolve(__dirname, '..');
+const executablePath = process.env.PLAYWRIGHT_EXECUTABLE_PATH || (fs.existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : undefined);
+const python = process.env.CASEPATH_PYTHON || path.join(root, '.runtime/casepath-dev-v2/venv/bin/python');
 const base = '/api/claim-loops/v1/autonomous';
 const captured = JSON.parse(gunzipSync(fs.readFileSync(path.join(root, 'design/evidence-path/recorded-fixtures.json.gz')))).responses;
 const historicalIds = captured[`${base}/claims`].claims.map(row => row.claim_id);
@@ -290,7 +292,7 @@ with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temp
     const output = layoutOnly ? process.env.CASEPATH_LAYOUT_REFERENCE_FIXTURE_OUTPUT : migrated ? process.env.CASEPATH_REFERENCE_MIGRATION_FIXTURE_OUTPUT : process.env.CASEPATH_REFERENCE_FIXTURE_OUTPUT;
     const encoded = input
       ? (input.endsWith('.gz') ? gunzipSync(fs.readFileSync(input)).toString('utf8') : fs.readFileSync(input,'utf8'))
-      : execFileSync(process.env.CASEPATH_PYTHON || '/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python', ['-c',script,JSON.stringify(layoutOnly?['clm_0f4f13b1e3e1328c']:referenceIds),migrated?'migration':'fresh',layoutOnly?'layout':'standard'],
+      : execFileSync(python, ['-c',script,JSON.stringify(layoutOnly?['clm_0f4f13b1e3e1328c']:referenceIds),migrated?'migration':'fresh',layoutOnly?'layout':'standard'],
         {cwd:root,encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'},maxBuffer:(migrated?256:128)*1024*1024});
     fixture = JSON.parse(encoded);
     if (layoutOnly) nativeLayoutReferenceFixture = fixture; else if (migrated) nativeMigrationReferenceFixture = fixture; else nativeReferenceFixture = fixture;
@@ -304,7 +306,7 @@ function pdfDrawerFixture() {
     const descriptor = binding.observable_artifacts.find(source => source.media_type === 'application/pdf');
     const bytes = fs.readFileSync(path.join(corpusRoot, descriptor.path));
     assert.equal(sha(bytes), descriptor.sha256);
-    const text = JSON.parse(execFileSync(process.env.CASEPATH_PYTHON || '/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python',
+    const text = JSON.parse(execFileSync(python,
       ['-c', 'import json,sys; from pypdf import PdfReader; print(json.dumps("\\n".join(page.extract_text() or "" for page in PdfReader(sys.argv[1]).pages)))', path.join(corpusRoot, descriptor.path)],
       {encoding: 'utf8', env: {...process.env, PYTHONDONTWRITEBYTECODE: '1'}}));
     assert.ok(text.length > 100);
@@ -324,7 +326,7 @@ function priorAssessmentFixture() {
   if (!acceptedFixture) {
     const encoded = process.env.CASEPATH_PRIOR_ASSESSMENT_FIXTURE
       ? fs.readFileSync(process.env.CASEPATH_PRIOR_ASSESSMENT_FIXTURE, 'utf8')
-      : execFileSync(process.env.CASEPATH_PYTHON || path.join(root, '.runtime/casepath-dev-v2/venv/bin/python'),
+      : execFileSync(python,
         [path.join(root, 'casepath-qa/build-prior-assessment-fixture-v1.py')],
         {encoding: 'utf8', env: {...process.env, PYTHONDONTWRITEBYTECODE: '1'}, maxBuffer: 64 * 1024 * 1024});
     acceptedFixture = JSON.parse(encoded);
@@ -516,7 +518,7 @@ function fixtureData(config = {}) {
 let browser;
 test.before(async () => {
   browser = await chromium.launch({
-    executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH || '/usr/bin/chromium',
+    ...(executablePath ? {executablePath} : {}),
     headless: true, args: ['--no-sandbox'],
   });
 });
@@ -1291,7 +1293,7 @@ test('replay lifecycle: actual index restores native back-forward autoplay and k
  ]),resetId=fixture.earlier_context.claim_id,resetThrough=fixture.snapshots[resetId].replay_start.from_seq,evidence={checkoutCommit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),testSha256:sha(fs.readFileSync(__filename)),assets:Object.fromEntries([...assets].map(([file,bytes])=>[file,sha(bytes)])),runs:[]};
  // Playwright normally disables BFCache. This separate browser exercises a
  // genuine persisted pageshow without changing other tests' browser policy.
- const cachedBrowser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH || '/usr/bin/chromium',headless:true,args:['--no-sandbox'],ignoreDefaultArgs:['--disable-back-forward-cache']});
+ const cachedBrowser=await chromium.launch({...(executablePath ? {executablePath} : {}),headless:true,args:['--no-sandbox'],ignoreDefaultArgs:['--disable-back-forward-cache']});
  try {
   for(const fragment of [`#autonomous/claim/${id}?collection=reference&mode=replay&through=18&detail=sources`,'#autonomous/demonstration?mode=replay',`#autonomous/claim/${resetId}?collection=reference&mode=replay&through=${resetThrough}&detail=sources`]){
    const claim=fragment.includes(resetId)?resetId:id;

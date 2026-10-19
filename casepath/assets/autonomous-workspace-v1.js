@@ -6,6 +6,7 @@
 })(typeof globalThis === 'object' ? globalThis : this, function (root) {
   'use strict';
   const language = root.CasepathLanguage || (typeof require === 'function' ? require('./autonomous-language-v1.js') : null);
+  if (!language) throw new Error('autonomous-language-v1.js must load before autonomous-workspace-v1.js');
   const plain = (value, fallback = 'Recorded item') => language?.plainLabel(value,fallback) || fallback;
   const BASE = '/api/claim-loops/v1/autonomous';
   const PUBLIC_READ_ONLY_MESSAGE = 'View only. Open saved cases, documents, replay and Knowledge.';

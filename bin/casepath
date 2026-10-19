@@ -1932,6 +1932,12 @@ else
       /usr/bin/env CASEPATH_ENV_LOCK_HELD=1 CASEPATH_ENV_READY=0 \
       CASEPATH_INVOCATION_DIRECTORY="$invocation_directory" "$0" "$@"
   else
+    # flock -n exits 1 without a message when the lease is held. Probe first
+    # so contention is named and returns EX_TEMPFAIL, like lockf -t 0.
+    "$trusted_lock_executable" -n "$environment_lock_path" true || {
+      printf 'CasePath command failed: another CasePath command (for example dev on 127.0.0.1:4173) holds the environment lease\n' >&2
+      exit 75
+    }
     exec "$trusted_lock_executable" -n "$environment_lock_path" \
       /usr/bin/env CASEPATH_ENV_LOCK_HELD=1 CASEPATH_ENV_READY=0 \
       CASEPATH_INVOCATION_DIRECTORY="$invocation_directory" "$0" "$@"
@@ -1948,6 +1954,10 @@ if [[ "$operation" == "dev" || "$operation" == "seed" || "$operation" == "replay
       exec "$trusted_lock_executable" -k -t 0 "$repository_root/.runtime/casepath-data-v1.lock" \
         /usr/bin/env CASEPATH_DATA_LOCK_HELD=1 "$0" "$@"
     else
+      "$trusted_lock_executable" -n "$repository_root/.runtime/casepath-data-v1.lock" true || {
+        printf 'CasePath command failed: another CasePath dev, seed or replay command holds the data lease\n' >&2
+        exit 75
+      }
       exec "$trusted_lock_executable" -n "$repository_root/.runtime/casepath-data-v1.lock" \
         /usr/bin/env CASEPATH_DATA_LOCK_HELD=1 "$0" "$@"
     fi
@@ -2040,8 +2050,20 @@ if [[ "$operation" != "dev" ]]; then
     command_database="$runtime_root/tmp/${operation}-outer-$$.db"
     command_registry="$runtime_root/tmp/${operation}-outer-artifacts-$$"
   fi
+  # `test` also runs the focused frontend Node suites. Forward only the
+  # tool-location variables they read; nothing else crosses this boundary.
+  frontend_tool_environment=()
+  if [[ "$operation" == "test" ]]; then
+    for frontend_tool_variable in CASEPATH_NODE NODE_PATH PLAYWRIGHT_BROWSERS_PATH \
+      PLAYWRIGHT_EXECUTABLE_PATH CASEPATH_REQUIRE_FRONTEND_SUITES; do
+      if [[ -n "${!frontend_tool_variable:-}" ]]; then
+        frontend_tool_environment+=("$frontend_tool_variable=${!frontend_tool_variable}")
+      fi
+    done
+  fi
   cd "$repository_root"
   exec /usr/bin/env -i \
+    ${frontend_tool_environment[@]+"${frontend_tool_environment[@]}"} \
     HOME="$runtime_root/home" \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
@@ -2077,6 +2099,10 @@ if [[ "${CASEPATH_LAUNCH_LOCK_HELD:-}" != "1" ]]; then
     exec "$trusted_lock_executable" -k -t 0 "$runtime_root/launcher.lock" \
       /usr/bin/env CASEPATH_LAUNCH_LOCK_HELD=1 "$0" "$@"
   else
+    "$trusted_lock_executable" -n "$runtime_root/launcher.lock" true || {
+      printf 'CasePath launch failed: another CasePath dev launch holds the runtime lease\n' >&2
+      exit 75
+    }
     exec "$trusted_lock_executable" -n "$runtime_root/launcher.lock" \
       /usr/bin/env CASEPATH_LAUNCH_LOCK_HELD=1 "$0" "$@"
   fi
