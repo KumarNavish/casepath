@@ -6,7 +6,7 @@ from urllib.parse import urlsplit
 
 from starlette.responses import JSONResponse
 
-from .hosted_read_timing_v1 import CURRENT_READ, measured
+from .hosted_read_timing_v1 import CURRENT_READ, measured, statement_timing_fields
 
 
 class ReadTimedJSONResponse(JSONResponse):
@@ -47,6 +47,7 @@ class HostedReadTiming:
                         elapsed = values.get(name, 0.0) * 1000
                         bounded = min(999999999.999, max(0.0, elapsed)) if isfinite(elapsed) else 0.0
                         fields.append(f'casepath_{name};dur={bounded:.3f}')
+                    fields.extend(statement_timing_fields(values))
                     headers.append((b'server-timing', ', '.join(fields).encode('ascii')))
                 message = {**message, 'headers': headers}
             await send(message)

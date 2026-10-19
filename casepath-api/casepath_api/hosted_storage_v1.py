@@ -14,7 +14,7 @@ from .autonomous_store_v1 import AutonomousStore, AutonomousStoreError, MAX_FILE
 
 
 from .hosted_sql_v1 import HostedStorageError, LibsqlConnection, TursoDatabase
-from .hosted_read_timing_v1 import read_lock
+from .hosted_read_timing_v1 import primary_shape, read_lock
 
 JOURNAL_SCHEMA = """
 CREATE TABLE IF NOT EXISTS claim_loop_events (
@@ -380,7 +380,7 @@ class HostedSources:
 
     def _knowledge_source_proof(self, values):
         queries, expected = self._knowledge_source_queries(values)
-        with self.connect() as db:
+        with self.connect() as db, primary_shape(4):
             if not hasattr(db, 'read_snapshot'):
                 return None
             cursors = db.read_snapshot(queries)
@@ -497,7 +497,7 @@ class HostedAutonomousStore(AutonomousStore):
             source_queries, expected = sources._knowledge_source_queries(digests)
             query = _proof_query('claim_loop_events', _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1',
                                  'session_id=?', 'loop_id,sequence')
-            with self.journal.connect() as db:
+            with self.journal.connect() as db, primary_shape(1):
                 if not hasattr(db, 'read_snapshot'):
                     return
                 cursors = db.read_snapshot([(_schema_query('claim_loop_events'), ()),
@@ -537,7 +537,7 @@ class HostedAutonomousStore(AutonomousStore):
         self._knowledge_pending = None
         cached = getattr(self, '_knowledge_byte_cache', None)
         if cached is not None:
-            with self.journal.connect() as db:
+            with self.journal.connect() as db, primary_shape(2):
                 frozen_rows, schema, proof = cached
                 query = _proof_query('claim_loop_events', _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1',
                                      'session_id=?', 'loop_id,sequence')
@@ -559,7 +559,7 @@ class HostedAutonomousStore(AutonomousStore):
         schema = None
         while True:
             query, parameters = self._journal_page_query(self.JOURNAL_PAGE_ROWS, rows, after_loop, after_sequence)
-            with self.journal.connect() as db:
+            with self.journal.connect() as db, primary_shape(3):
                 if not hasattr(db, 'read_snapshot'):
                     return self._state_rows()
                 queries = [(query, parameters)]
@@ -596,7 +596,7 @@ class HostedAutonomousStore(AutonomousStore):
             raise AutonomousStoreError('Journal raw values cannot establish an exact byte proof.') from exc
         query = _proof_query('claim_loop_events', _JOURNAL_COLUMNS, 'casepath-journal-bytes-v1',
                              'session_id=?', 'loop_id,sequence')
-        with self.journal.connect() as db:
+        with self.journal.connect() as db, primary_shape(2):
             schema_cursor, proof_cursor = db.read_snapshot([
                 (_schema_query('claim_loop_events'), ()), (query, (SESSION_ID, len(rows) + 1))])
         if _schema_identity(schema_cursor.fetchall()) != _schema_identity(schema) or not _proof_matches(proof_cursor, proof):
