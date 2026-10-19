@@ -836,7 +836,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-learning-transport > label { flex:1; flex-basis:90px; min-width:80px; gap:8px; }
   .au-workspace .au-learning-transport > label > span { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
   .au-workspace .au-learning-transport > p { display:none; }
-  .au-workspace .au-learning-focus { height:min(560px,calc(100svh - 282px)); padding:16px; }
+  .au-workspace .au-learning-focus { height:auto; padding:16px; }
   .au-workspace .au-learning-record-head { gap:8px; }
   .au-workspace .au-learning-record-head > div { display:block; }
   .au-workspace .au-learning-record-head h2 { font-size:24px; margin:2px 0 4px; }
