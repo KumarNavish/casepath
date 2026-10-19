@@ -775,6 +775,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning-provenance .au-procedure-provenance { margin:12px 0 0; }
 .au-workspace .au-learning [data-au-learning-waiting=true] { visibility:hidden; }
 .au-workspace .au-learning-reuse-arc { display:flex; align-items:center; gap:18px; padding:8px 0; }
+.au-workspace .au-learning-reuse-arc > span:first-child { flex:none; white-space:nowrap; }
 .au-workspace .au-learning-reuse-arc > span:nth-child(2) { font-size:32px; color:#3e7050; }
 .au-workspace .au-learning-receipts { margin:14px 0; padding-top:12px; border-top:1px solid #d0d8ce; }
 .au-workspace .au-learning-receipts ul { padding-left:20px; }
