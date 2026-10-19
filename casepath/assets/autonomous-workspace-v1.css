@@ -994,4 +994,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning-receipts [data-au-current-case=true] { border-left:3px solid #24563c; padding-left:12px; }
 
 html[data-autonomous-workspace=true] { scroll-padding-top:100px; }
-.au-workspace :is(button,a,input,summary,[tabindex],.au-learning-record) { scroll-margin-top:100px; }
+.au-workspace :is(button,a,input,summary,[tabindex],.au-learning-record) { scroll-margin-top:calc(var(--au-header-height,64px) + var(--au-now-height,0px) + 20px); }
+
+.au-workspace .au-quiet-claim > .au-now { position:sticky; top:var(--au-header-height,64px); z-index:11; background:var(--au-field); }
+.au-workspace .au-quiet-claim > .au-now { display:block; margin:6px 0 10px; padding:4px 0; border:0; line-height:1.45; }
+.au-workspace .au-quiet-claim > .au-now :is([data-au-now-copy],[data-au-now-result]) { display:inline; margin:0; }

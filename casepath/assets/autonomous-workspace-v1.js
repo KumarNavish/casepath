@@ -1719,6 +1719,7 @@
     trace.visibleResults.set(key,identity); return true;
   }
   const sourcePresentations = new WeakMap();
+  let sourceSentences;
   function sourceCharacters(source) {
     let presentation = sourcePresentations.get(source);
     if (!presentation || presentation.text !== source.text) { presentation = {text:source.text,chars:Object.freeze(Array.from(source.text))}; sourcePresentations.set(source,presentation); }
@@ -1770,11 +1771,16 @@
       if (!source || !inkPin) return '';
       const bodyStart=sourceBodySpan(source)?.start_char || 0;
       let left=inkPin.start_char, right=inkPin.end_char;
-      // Read only the sentence containing the pin, never the fictional metadata.
-      while(left>bodyStart && !/[.!?\r\n]/u.test(chars[left-1]))left--;
+      // Native sentence boundaries keep decimals and complete cited words intact.
+      let offset=bodyStart;
+      for(const {segment} of (sourceSentences ||= new Intl.Segmenter('en',{granularity:'sentence'})).segment(chars.slice(bodyStart).join(''))) {
+        const end=offset+Array.from(segment).length;
+        if(offset<=inkPin.start_char && inkPin.start_char<end)left=offset;
+        if(offset<inkPin.end_char && inkPin.end_char<=end){right=end;break;}
+        offset=end;
+      }
       while(left<inkPin.start_char && /\s/u.test(chars[left]))left++;
-      while(right<chars.length && !/[.!?\r\n]/u.test(chars[right]))right++;
-      if(/[.!?]/u.test(chars[right] || ''))right++;
+      while(right>inkPin.end_char && /\s/u.test(chars[right-1]))right--;
       const excerpt=`${sourceHTML(chars.slice(left,inkPin.start_char).join(''))}<${reading.active?'mark':'span'} ${reading.active?'data-au-operation-span':'data-au-operation-read-context'}="${h(reading.id)}" data-au-operation-start-char="${inkPin.start_char}" data-au-operation-end-char="${inkPin.end_char}" data-au-citation-start-char="${pin?.start_char ?? inkPin.start_char}" data-au-citation-end-char="${pin?.end_char ?? inkPin.end_char}">${sourceHTML(inkPin.quote)}</${reading.active?'mark':'span'}>${sourceHTML(chars.slice(inkPin.end_char,right).join(''))}`;
       return `<section class="au-operation-reading" data-au-operation-object="${h(operation.object.id)}" data-au-object-type="${h(operation.object.type)}" data-au-object-id="${h(operation.object.id)}"><button type="button" class="au-stage-source-title" data-au-source="${h(source.artifact_id)}" data-au-source-origin="operation:${h(reading.id)}"${pin?` data-au-citation="${h(JSON.stringify(pin))}"`:''}>${h(operationSourceTitle(source))}</button><pre class="au-operation-passage" data-au-compact-excerpt data-au-operation-source="${h(source.artifact_id)}" data-au-operation-text-sha="${h(source.text_sha256)}" data-au-source-active="${reading.active}">${excerpt}</pre></section>`;
     }
@@ -3007,11 +3013,22 @@
         pane.replaceWith(previous); pane = previous; pane.scrollTop = scroll;
       }
     }
+    let mobileFollowId = null;
     function positionOperationSource() {
       const pane = host.querySelector('.au-operation-passage');
       if (!pane) return;
       if (doc.hidden) return;
-      if (pane.hasAttribute('data-au-compact-excerpt')) { const source=pane.closest('.au-stage-source'), step=pane.closest('.au-stage-step'); if (source && step) step.style.setProperty('--au-stage-excerpt-height',`${source.offsetHeight}px`); return; }
+      if (pane.hasAttribute('data-au-compact-excerpt')) {
+        const source=pane.closest('.au-stage-source'), layout=host.querySelector('.au-stage-layout'), step=host.querySelector('[data-au-stage-active=true]');
+        const narrow=(root.innerWidth || 1280)<=700, target=narrow&&step?step:layout;
+        if(source && target && source.parentElement!==target)target.prepend?.(source);
+        const id=operationTrace?.current?.id;
+        if(narrow && source && id!==mobileFollowId && demoSession && !inspectionHold && !operationPeek && !reduced?.matches && !operationTrace?.finished){
+          mobileFollowId=id;
+          source.scrollIntoView?.({block:'center',behavior:'smooth'});
+        }
+        return;
+      }
       const operation = (operationPeek?.trace || operationTrace)?.current, mark = pane.querySelector('[data-au-operation-span]');
       if (mark && mark.dataset.auOperationSpan === operation?.id) {
         const frame = pane.getBoundingClientRect(), bounds = mark.getBoundingClientRect(), body = pane.querySelector('[data-au-source-body-anchor]'), floor = body ? pane.scrollTop+body.getBoundingClientRect().top-frame.top-28 : 0, top = pane.scrollTop + bounds.top-frame.top-Math.max(28,(frame.height-bounds.height)/2);
@@ -4263,7 +4280,7 @@
         if([' ','ArrowLeft','ArrowRight','Home','End'].includes(event.key) && !event.altKey && !event.ctrlKey && !event.metaKey){event.preventDefault();if(event.key===' '){if(learningState?.playing)pauseLearning();else playLearning();}else{pauseLearning();selectLearning(event.key==='Home'?0:event.key==='End'?learningState?.model.events.length-1:(learningState?.index||0)+(event.key==='ArrowRight'?1:-1),10,true);}return;}
         if(event.key==='Tab')pauseLearning();
       }
-      if (event.isTrusted && (event.key === 'Tab' || event.key?.startsWith('Arrow'))) { keyboard=true;container.setAttribute('data-au-keyboard','true');pauseInspection();motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
+      if (event.isTrusted && (['Tab','PageDown','PageUp','Home','End'].includes(event.key) || event.key?.startsWith('Arrow'))) { keyboard=true;container.setAttribute('data-au-keyboard','true');pauseInspection();motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
     function focusInput(event) {
       claimWarmIntent(event);
       const target = event.target?.closest?.('[data-au-inspect],[data-au-source],[data-au-node],[data-au-select],[data-au-detail],[data-au-fact-select],[data-au-document-select],[data-au-expand-process],[data-au-graph-pan]');
@@ -4276,7 +4293,7 @@
       const target = event?.isTrusted && event.target?.closest?.('.au-operation-passage,summary,[data-au-operation-scrub],[data-au-inspect],[data-au-source],[data-au-node],[data-au-select],[data-au-detail],[data-au-fact-select],[data-au-document-select],[data-au-expand-process]');
       if (target && container.contains(target)) pauseInspection();
     }
-    function sourceWheel(event) { if (event.isTrusted && event.target?.closest?.('.au-operation-passage')) { pauseInspection(); attentionMarker?.remove?.(); } }
+    function sourceWheel(event) { if (event.isTrusted && event.target?.closest?.('.au-operation-stage')) { pauseInspection(); attentionMarker?.remove?.(); } }
     function motionPreference() { if (reduced?.matches) { if(view==='knowledge' && learningState){pauseLearning();selectLearning(learningState.index,10,true,false);}  skipOperations(); motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
     doc.addEventListener('keydown',keyboardInput);container.addEventListener('pointerdown',pointerInput);reduced?.addEventListener?.('change',motionPreference);
     container.addEventListener('wheel',sourceWheel,{passive:true});
@@ -4287,6 +4304,10 @@
     root.addEventListener?.('hashchange',routeChanged); root.addEventListener?.('popstate',routeChanged);
     function fitActiveStage() {
       host.querySelector('.au-operation-stage .au-graph-viewport')?.style.removeProperty('--au-stage-available-height');
+      for(const [name,selector] of [['header','.au-identity-header'],['now','.au-quiet-claim > .au-now']]) {
+        const height=container.querySelector(selector)?.getBoundingClientRect?.().height || 0;
+        container.style?.setProperty?.(`--au-${name}-height`,`${Math.ceil(height)}px`);
+      }
     }
     function centerActiveOperation(force = false) {
       const viewport = host.querySelector('.au-operation-stage .au-graph-viewport');

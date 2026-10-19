@@ -3077,3 +3077,12 @@ test('empty learning leaves every transport action plainly named and disabled',(
  assert.match(html,/data-au-learning-scrub[^>]*disabled/);
  assert.match(html,/No recorded learning events are available/);
 });
+
+test('a cited measurement keeps its complete sentence across decimals and Unicode',()=>{
+ const sentence='On 2025-02-21, a calibrated instrument (uncertainty ±0.2°C) measured the living room at 15.8°C.';
+ const metadata='Synthetic demonstration document (fictional)\n\n',source={artifact_id:'measurement',file_name:'02-heating-observation.txt',text:metadata+sentence+' A later sentence stays separate.'};
+ const start=Array.from(metadata).length,pin={artifact_id:source.artifact_id,start_char:start,end_char:start+Array.from(sentence).length,quote:sentence},operation={id:'exact-measurement',kind:'fact.extract',object:{type:'fact',id:'fact:objective_defect_observation'},source:pin,result:{verification_required:false}};
+ const trace={current:operation,rows:[operation],sources:new Map([[source.artifact_id,source]])},html=ui.operationReadingMarkup(trace,true),passage=html.match(/data-au-compact-excerpt[^>]*>([\s\S]*?)<\/pre>/)[1].replace(/<[^>]+>/g,'');
+ assert.equal(passage,sentence);assert.doesNotMatch(passage,/Synthetic|later sentence/);assert.equal(ui.operationReading(trace).pin,pin);
+ const span=ui.stageFactSpan(operation,true);assert.equal(Array.from(source.text).slice(span.start_char,span.end_char).join(''),span.quote);
+});
