@@ -17,7 +17,7 @@ from urllib.parse import urlsplit
 
 import httpx
 
-from .hosted_read_timing_v1 import primary_request
+from .hosted_read_timing_v1 import primary_request, record_primary_statements
 
 
 class HostedStorageError(RuntimeError):
@@ -255,6 +255,7 @@ class LibsqlConnection:
         if any(entry['type'] == 'error' for entry in entries):
             self._cache.clear()
             raise HostedSQLFailure('The persistent database rejected the SQL statement.') from None
+        record_primary_statements(entries)
         return [entry['response'] for entry in entries]
 
     def _result(self, value):
