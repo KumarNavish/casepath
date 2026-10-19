@@ -318,6 +318,7 @@
     return {label:supported ? 'Document checks complete' : state.outcome ? 'Recorded result' : state.deferral ? 'Work stopped' : 'Result pending',
       summary,nextAction,
       findings,support:supported ? copy.supported : '',constraints,
+      openItems:outcome.assessment_scope==='defect_removal_and_reduction_eligibility' && text(outcome.summary).includes('Repair, the reduction amount and any award remain undetermined.') ? 'Repair, the reduction amount and any award remain undetermined.' : '',
       recordedSummary:text(outcome.summary) || text(outcome.reason),details:outcome};
   }
 
@@ -338,6 +339,12 @@
       tabs,details:value};
   }
 
-  return Object.freeze({roles,copy,tabs,stepLabels,documentLabels,plainLabel,stepLabel,documentTitle,
+  function refusalReason(reason) {
+    return ({
+      'knowledge candidate is not bound to a verified sufficient supporting file':'A checked supporting document was not linked to these steps.',
+      'The independent verifier rejected this knowledge candidate.':'The independent check rejected these steps.'
+    })[text(reason)] || 'These steps were not saved. Open Details for the recorded reason.';
+  }
+  return Object.freeze({refusalReason,roles,copy,tabs,stepLabels,documentLabels,plainLabel,stepLabel,documentTitle,
     provenancePresentation,operationPresentation,outcomePresentation,knowledgePresentation});
 });

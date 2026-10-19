@@ -1572,7 +1572,7 @@ test('Inspect reused knowledge navigates to and reveals the exact historical ver
  assert.match(f.host.innerHTML,/data-au-knowledge="procedure.one"[^>]*data-au-version="1"[^>]*data-au-knowledge-sha="1{64}"/);
  const trigger=control(f,'data-au-knowledge','procedure.one');trigger.dataset.auVersion='1';trigger.dataset.auKnowledgeSha=hash('1');f.listeners.get('click')({target:trigger});await waitFor(()=>f.versions.length===1);assert.match(f.host.innerHTML,/data-au-knowledge="procedure.one"[^>]*data-au-version="2"/,'the other version remains reachable in the procedure list');
  const historical=f.versions.find(row=>row.dataset.auKnowledgeIdentity==='procedure.one:1'),current=f.versions.find(row=>row.dataset.auKnowledgeIdentity==='procedure.one:2');
- assert.equal(routing.hash,`#autonomous/knowledge?knowledge=procedure.one&version=1&sha256=${hash('1')}`);assert.equal(historical.attributes['data-pinned'],'true');assert.equal(current,undefined,'a second version is not rendered as another competing record');assert.equal(f.historyDisclosure.open,false,'the exact historical version is the primary record, not a hidden history disclosure');assert.equal(f.container.ownerDocument.activeElement,historical);assert.deepEqual(historical.scrollOptions,{block:'nearest',behavior:'instant'});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.equal(routing.hash,`#autonomous/knowledge?knowledge=procedure.one&version=1&sha256=${hash('1')}`);assert.equal(historical.attributes['data-pinned'],'true');assert.equal(current,undefined,'a second version is not rendered as another competing record');assert.equal(f.historyDisclosure.open,false,'the exact historical version is the primary record, not a hidden history disclosure');assert.equal(f.container.ownerDocument.activeElement,historical);assert.deepEqual(historical.scrollOptions,{block:'start',behavior:'instant'});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('an unavailable pinned knowledge version or hash never selects the latest version as its replacement',async t=>{
@@ -2419,7 +2419,7 @@ test('a pending observed handoff retains its phase through inspection and only a
 
 test('stage chips keep complete source phrases and bounded context starts at actual word and sentence boundaries',()=>{
  const text='The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed heating.',pin={artifact_id:'original',start_char:0,end_char:Array.from(text).length,quote:text},operation={id:'terms-fact',kind:'fact.extract',object:{type:'fact',id:'fact:tenancy_terms_evidence'},source:pin,result:{},cause_ids:[]},trace={current:operation,rows:[operation],sources:new Map([['original',{artifact_id:'original',file_name:'01-terms.txt',text}]])};
- const html=ui.operationReadingMarkup(trace,true);assert.match(html,/class="au-stage-excerpt-context">Current monthly net rent is CHF1800;/);assert.doesNotMatch(html,/class="au-stage-excerpt-context">(?:tische|che|Wohnraum)/);
+ const html=ui.operationReadingMarkup(trace,true);assert.match(html,/data-au-source-active="true">Current monthly net rent is <mark[^>]*>CHF1800<\/mark>;/);assert.doesNotMatch(html,/data-au-source-active="true">(?:tische|che|Wohnraum)/);
  for(const [id,quote,expected] of [['residential_tenancy_scope','I am the tenant under an indefinite ordinary residential lease.','ordinary residential lease'],['landlord_first_knowledge',"We received the first report on2025-02-01; this is the landlord’s first documented knowledge.",'received the first report on2025-02-01'],['continuing_defect_without_remedy','We remain responsible; no lasting repair has yet occurred as of this acknowledgment.','no lasting repair has yet occurred'],['objective_use_impairment','Heating is inadequate for the contracted winter residential use of the principal living rooms.','Heating is inadequate']]){
   const full={...pin,start_char:2,end_char:2+Array.from(quote).length,quote},actual={...operation,object:{type:'fact',id},source:full},span=ui.stageFactSpan(actual,true);assert.equal(span.quote,expected);assert.equal(Array.from('😀 '+quote).slice(span.start_char,span.end_char).join(''),expected);assert.equal(actual.source,full);
  }
@@ -2433,7 +2433,7 @@ test('the same fact rereads changed source or meaning while verification-only re
 
 test('an excerpt context remains inside the actual cited body and excludes source metadata headers',()=>{
  const header='Synthetic demonstration document (fictional)\nSource date: 2026-10-15\nReview as-of: 2026-10-15\n\n',quote='Current monthly net rent is CHF1800; the landlord maintains the fixed heating.',text=header+quote,start=Array.from(header).length,pin={artifact_id:'original',start_char:start,end_char:start+Array.from(quote).length,quote},operation={id:'actual-body-fact',kind:'fact.extract',object:{type:'fact',id:'fact:tenancy_terms_evidence'},source:pin,result:{},cause_ids:[]},trace={current:operation,rows:[operation],sources:new Map([['original',{artifact_id:'original',file_name:'01-original.txt',text}]])};
- const html=ui.operationReadingMarkup(trace,true),context=html.match(/class="au-stage-excerpt-context">([^<]*)<\/p>/)[1];assert.match(context,/^Current monthly net rent is CHF1800;/);assert.doesNotMatch(context,/Synthetic|Source date|Review as-of|2026-10-15/);assert.equal(ui.operationReading(trace).pin,pin);
+ const html=ui.operationReadingMarkup(trace,true),context=html.match(/data-au-compact-excerpt[^>]*>([\s\S]*?)<\/pre>/)[1].replace(/<[^>]+>/g,'');assert.match(context,/^Current monthly net rent is CHF1800;/);assert.doesNotMatch(context,/Synthetic|Source date|Review as-of|2026-10-15/);assert.equal(ui.operationReading(trace).pin,pin);
 });
 
 test('a settled filled document slot has one source card while active delivery keeps its source preview and complete native inspection pin',()=>{
@@ -2660,7 +2660,7 @@ function learningFixtureData() {
 test('learning timeline uses persisted event identities, UTC chronology and later reuse without mutating records',()=>{
  const data=learningFixtureData(),before=JSON.stringify(data),model=ui.knowledgeLearningModel(data);
  assert.equal(model,ui.knowledgeLearningModel(data),'the same response reuses its index');assert.deepEqual(model.events.map(e=>e.id),[hash('a'),hash('c'),hash('b')]);
- const html=ui.knowledgeMarkup(data,[],null,'process',{index:2,stage:10});assert.match(html,/13 Oct/);assert.match(html,/10 Oct/);assert.match(html,/<span>Versions · ↪ Reuses<\/span>/);assert.match(html,/Replay · Fictional cases/);assert.match(html,/Persisted receiver title/);assert.match(html,/data-au-learning-position-label/);assert.ok(html.indexOf('data-au-learning-focus')<html.indexOf('class="au-learning-timeline"'),'focus precedes the timeline in reading and tab order');assert.doesNotMatch(html,/<p data-au-learning-position>/);
+ const html=ui.knowledgeMarkup(data,[],null,'process',{index:2,stage:10});assert.match(html,/13 Oct/);assert.match(html,/10 Oct/);assert.match(html,/<span>Versions and reuses<\/span>/);assert.match(html,/Replay · Fictional cases/);assert.match(html,/Persisted receiver title/);assert.match(html,/data-au-learning-position-label/);assert.ok(html.indexOf('data-au-learning-focus')<html.indexOf('class="au-learning-timeline"'),'focus precedes the timeline in reading and tab order');assert.doesNotMatch(html,/<p data-au-learning-position>/);
  assert.equal(JSON.stringify(data),before);assert.equal(model.frames.reduce((n,f)=>n+f.duration,0),8000,'two complete publications and one grouped reuse keep their deliberate reading holds');
  const offset=learningFixtureData();offset.learning_replay.events[0].at='2026-10-08T23:30:00-02:00';offset.learning_replay.events[2].at='2026-10-09T00:57:33Z';assert.equal(ui.knowledgeLearningModel(offset).events[0].id,hash('a'),'sort instants, not lexical offsets');assert.match(ui.knowledgeMarkup(offset),/9 Oct/);
 });
@@ -2673,7 +2673,7 @@ test('unavailable learning pins retain exact receipts and cannot borrow the late
 
 test('known recipe slots are marked from an exact pinned count without claiming checked receiving-case evidence',()=>{
  const data=learningFixtureData(),model=ui.knowledgeLearningModel(data),event=model.events.find(e=>e.kind==='knowledge.used'),html=ui.knowledgeLearningFocus(model,event);
- assert.match(html,/data-au-recipe-reused="true"/);assert.match(html,/This case still needs its own proof/);assert.match(html,/1 rebuild avoided/);assert.match(html,/Recorded reuse/);assert.doesNotMatch(html,/data-au-document-checked="true"|data-au-document-supported="true"|Source checked/);
+ assert.match(html,/data-au-recipe-reused="true"/);assert.match(html,/This case still needed its own proof/);assert.match(html,/1 rebuild avoided/);assert.match(html,/Recorded reuse/);assert.doesNotMatch(html,/data-au-document-checked="true"|data-au-document-supported="true"|Source checked/);
  const mismatch=structuredClone(data);mismatch.learning_replay.events.find(e=>e.kind==='knowledge.used').reused_evidence_recipes=99;const other=ui.knowledgeLearningModel(mismatch);assert.doesNotMatch(ui.knowledgeLearningFocus(other,other.events.find(e=>e.kind==='knowledge.used')),/data-au-recipe-reused="true"/);
 });
 
@@ -3067,4 +3067,13 @@ test('Knowledge timestamp formatting creates no formatter at startup or for unav
  runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-workspace-v1.js'),'utf8'),context);const fresh=context.module.exports;assert.equal(constructed,0,'workspace initialization does not pay formatting setup');
  assert.equal(fresh.learningTime({at:null}),'Timestamp unavailable · unordered');assert.equal(fresh.learningTime({at:'unknown'}),'Timestamp unavailable · unordered');assert.equal(constructed,0);
  const first={at:'2026-10-13T05:25:12+00:00'},second={at:'2026-10-15T12:10:00Z'};assert.equal(fresh.learningTime(first),ui.learningTime(first));assert.equal(fresh.learningTime(second),ui.learningTime(second));assert.equal(constructed,1,'one formatter serves the valid recorded history');
+});
+
+
+test('empty learning leaves every transport action plainly named and disabled',()=>{
+ const html=ui.knowledgeMarkup({versions:[],uses:[],quarantined:[]});
+ assert.match(html,/data-au-learning-play disabled>Play<\/button>/);
+ assert.match(html,/data-au-learning-end disabled>Final view<\/button>/);
+ assert.match(html,/data-au-learning-scrub[^>]*disabled/);
+ assert.match(html,/No recorded learning events are available/);
 });

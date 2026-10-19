@@ -415,3 +415,24 @@ test('every actual operation in the committed replay has short display copy and 
   }
   assert.equal(crypto.createHash('sha256').update(JSON.stringify(operations)).digest('hex'),before);
 });
+
+
+test('settled defect limits stay visible only when the exact recorded scope and sentence support them',()=>{
+  for(const state of recorded){
+    assert.equal(language.outcomePresentation(state).openItems,'Repair, the reduction amount and any award remain undetermined.');
+    const altered=structuredClone(state);altered.outcome.summary='A different recorded finding.';
+    assert.equal(language.outcomePresentation(altered).openItems,'');
+    altered.outcome.summary=state.outcome.summary;delete altered.outcome.assessment_scope;
+    assert.equal(language.outcomePresentation(altered).openItems,'');
+    const html=ui.workMarkup(state,{},state.graph.nodes[0].node_id,[], 'step',{}, {readOnly:true});
+    assert.match(html,/class="au-outcome-open">Repair, the reduction amount and any award remain undetermined/);
+    assert.equal((html.match(/class="au-role-badge"/g)||[]).length,1);
+    assert.doesNotMatch(html,/no recorded method|Waiting for the listed documents/);
+  }
+});
+
+test('refusal labels explain the recorded cause while unknown reasons remain in Details',()=>{
+  assert.equal(language.refusalReason('knowledge candidate is not bound to a verified sufficient supporting file'),'A checked supporting document was not linked to these steps.');
+  assert.equal(language.refusalReason('The independent verifier rejected this knowledge candidate.'),'The independent check rejected these steps.');
+  assert.equal(language.refusalReason('Another unknown cause'),'These steps were not saved. Open Details for the recorded reason.');
+});
