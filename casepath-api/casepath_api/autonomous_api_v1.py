@@ -175,7 +175,10 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
 
     @router.get('/status')
     def status():
+        # provider_ready and reference_ready together state whether any execution
+        # path exists here; neither grants a start, which intake eligibility decides.
         return invoke(lambda s: {'enabled': True, 'provider_ready': s.model is not None,
+                                  'reference_ready': getattr(s, 'reference_adapter', None) is not None,
                                   'read_only': read_only, 'writable': not read_only,
                                   'model': s.model.config if s.model is not None and hasattr(s.model, 'config') else None,
                                   'policy_id': POLICY_ID, 'limits': budget_getter(),
@@ -285,7 +288,12 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
                 service = service_getter()
                 if mode == 'recorded':
                     from .autonomous_operation_trace_store_v1 import OperationTraceStore
-                    saved = service.store.snapshot(claim_id)
+                    try:
+                        saved = service.store.snapshot(claim_id)
+                    except AutonomousStoreError as error:
+                        if str(error) == 'claim does not exist':
+                            raise runtime.OperationsNoHistory('No saved history for this claim.') from error
+                        raise
                     head, start = saved['state'], saved['replay_start']
                     if start is None:
                         raise runtime.OperationsUnavailable('No recorded reference check is available.')
@@ -307,7 +315,8 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
             except Exception as error:
                 if not cancellation.is_set() and monotonic() < deadline:
                     try:
-                        send({'contract': runtime.CONTRACT, 'type': 'error', 'code': 'recomputation_unavailable',
+                        send({'contract': runtime.CONTRACT, 'type': 'error',
+                              'code': error.code if isinstance(error, runtime.OperationsUnavailable) else 'recomputation_unavailable',
                               'detail': str(error) if isinstance(error, ValueError) else 'The saved check is unavailable.'})
                     except runtime.OperationCancelled:
                         pass
@@ -348,6 +357,10 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
         first_frame = json.loads(first)
         if first_frame['type'] == 'error':
             cancellation.set()
+            # No journal is an ordinary unrun case; any other refusal is a conflict
+            # with the saved head, its row count, tail or exact inputs.
+            if first_frame.get('code') == 'no_history':
+                raise HTTPException(404, 'No saved history for this claim.')
             raise HTTPException(409, first_frame['detail'])
 
         async def stream():

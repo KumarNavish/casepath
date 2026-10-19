@@ -436,3 +436,41 @@ test('refusal labels explain the recorded cause while unknown reasons remain in 
   assert.equal(language.refusalReason('The independent verifier rejected this knowledge candidate.'),'The independent check rejected these steps.');
   assert.equal(language.refusalReason('Another unknown cause'),'These steps were not saved. Open Details for the recorded reason.');
 });
+
+test('the mode line names original intake, saved result, replay, live and view only; added cases are never fictional',()=>{
+  const at='2026-10-19T21:18:51.039329+00:00',rules={mode:'deterministic_reference'};
+  const lines={
+    original:language.modeLine({revision:0,presentation:'saved',origin:'canonical_original'}),
+    saved:language.modeLine({revision:39,presentation:'saved',origin:'canonical_original'}),
+    replay:language.modeLine({revision:39,presentation:'replay',provenance:rules,origin:'featured',recordedAt:at}),
+    replayModel:language.modeLine({revision:39,presentation:'replay',provenance:{mode:'model'},origin:'featured',recordedAt:at}),
+    live:language.modeLine({revision:4,presentation:'live',origin:'canonical_original'}),
+    added:language.modeLine({revision:4,presentation:'saved',origin:'native_intake'}),
+    viewOnly:language.modeLine({revision:39,presentation:'replay',provenance:rules,origin:'featured',recordedAt:at,readOnly:true})
+  };
+  assert.equal(lines.original,'Original intake · not run · Fictional case');
+  assert.equal(lines.saved,'Saved result · revision 39 · Fictional case');
+  assert.equal(lines.replay,'Replay · recorded 19 Oct 2026 · fixed rules · Fictional case');
+  assert.equal(lines.replayModel,'Replay · recorded 19 Oct 2026 · Fictional case','only a fixed-rule history says fixed rules');
+  assert.equal(lines.live,'Live · Fictional case');
+  assert.equal(lines.added,'Saved result · revision 4');
+  assert.equal(lines.viewOnly,'Replay · recorded 19 Oct 2026 · fixed rules · Fictional case · View only');
+  assert.equal(new Set(Object.values(lines)).size,Object.keys(lines).length);
+  for(const presentation of ['saved','replay','live'])for(const revision of [0,1,48])for(const readOnly of [false,true]){
+    const line=language.modeLine({revision,presentation,provenance:rules,origin:'native_intake',recordedAt:at,readOnly});
+    assert.doesNotMatch(line,/Fictional/,'an added case is never called fictional');shortCopy(line);
+  }
+  assert.equal(language.modeLine({revision:0,presentation:'replay',provenance:rules,origin:'featured',recordedAt:at}),'Original intake · not run · Fictional case','a revision-zero head is never a replay');
+  assert.equal(language.modeLine({presentation:'replay'}),'Replay','an unknown recording date is not invented');
+  assert.doesNotMatch(Object.values(lines).join(' '),/No real-world action/,'the safety note lives in the reading guide');
+  assert.match(language.copy.noRealWorldAction,/^No real-world action\./);
+});
+
+test('saved journal events read as past-tense work by the recorded role',()=>{
+  assert.deepEqual(language.eventPresentation({kind:'outcome.recorded'}),{roleId:'rulebook',roleLabel:'Rulebook',past:'saved the result'});
+  assert.deepEqual(language.eventPresentation({kind:'work.phase',payload:{phase:'verifying'}}),{roleId:'checker',roleLabel:'Checker',past:'checked the proposed wording'});
+  assert.equal(language.eventPresentation({kind:'knowledge.published',payload:{knowledge:{qualification:{status:'qualified'}}}}).past,'saved steps for reuse');
+  assert.equal(language.eventPresentation({kind:'knowledge.published',payload:{knowledge:{qualification:{status:'quarantined'}}}}).past,'did not save the steps');
+  assert.deepEqual(language.eventPresentation({kind:'unknown.kind'}),{roleId:'casepath',roleLabel:'CasePath',past:'recorded work'});
+  for(const kind of ['intake','sources.arrived','work.started','interpretation.accepted','action.completed','work.deferred','knowledge.used','reconciliation.failed'])shortCopy(language.eventPresentation({kind}).past);
+});

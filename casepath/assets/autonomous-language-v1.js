@@ -88,7 +88,14 @@
     ['exceptions','Special cases'], ['changes','What changed']
   ].map(([id,label]) => Object.freeze({id,label})));
   const copy = Object.freeze({
-    replay:'Replay · Fictional case · No real-world action', viewOnly:'View only',
+    replay:'Replay', viewOnly:'View only', notRun:'Original intake · not run', live:'Live',
+    fictional:'Fictional case', fixedRules:'fixed rules',
+    noRealWorldAction:'No real-world action. Playback shows saved records and changes nothing.',
+    analysisUnavailable:'Analysis is not available in this workspace. Original sources are viewable.',
+    notRunHere:'Not run in this workspace', noHistories:'No recorded histories in this workspace yet.',
+    procedureNotRun:'Procedure for this domain · not run for this case',
+    intakeNotChecked:'Intake not checked', notCheckedYet:'Not checked yet',
+    candidateFiles:'Attached files, not yet checked against these items',
     supported:'Supported by the documents.', waiting:"Waiting for the listed documents or a person's go-ahead.",
     draft:'Draft ready, not sent.', documentChecks:'Document checks', whenItApplies:'When it applies',
     exactVersion:'Exact version used', ruleChecks:'Rule checks', reused:'Times reused instead of rebuilding'
@@ -221,6 +228,51 @@
       recordedResult:text(operation.result?.summary) || text(operation.result?.reason),details:operation};
   }
 
+  // Past-tense journal wording for the "Last:" line. The role names who the
+  // saved event belongs to; unknown kinds stay with CasePath.
+  const journalEvents = Object.freeze({
+    'intake':['casepath','received the case'], 'intake.received':['casepath','received the case'],
+    'sources.arrived':['casepath','added supporting files'], 'sources.acquired':['casepath','read the supplied files'],
+    'process.prepared':['casepath','opened the case'], 'work.started':['casepath','started the checks'],
+    'work.context':['casepath','recorded the check setup'],
+    'interpretation.accepted':['casepath','saved the checked evidence assessment'],
+    'graph.advanced':['rulebook','updated the document requirements'], 'action.completed':['rulebook','saved an action result'],
+    'outcome.recorded':['rulebook','saved the result'], 'work.completed':['rulebook','saved the result'],
+    'work.deferred':['casepath','stopped the checks'], 'knowledge.used':['memory','reused a saved procedure'],
+    'knowledge.reused':['memory','reused a saved procedure'],
+    'reconciliation.started':['casepath','started a saved result review'],
+    'reconciliation.completed':['casepath','finished a saved result review'],
+    'reconciliation.failed':['casepath','stopped a saved result review']
+  });
+  const journalPhases = Object.freeze({acquiring:['casepath','read the supplied files'],interpreting:['reader','proposed facts and wording'],
+    verifying:['checker','checked the proposed wording'],progressing:['rulebook','applied rules to confirmed wording'],learning:['memory','checked procedures for reuse']});
+  function eventPresentation(event = {}) {
+    let [roleId,past] = event.kind === 'work.phase' ? journalPhases[event.payload?.phase] || ['casepath','recorded work']
+      : journalEvents[event.kind] || ['casepath','recorded work'];
+    if (event.kind === 'knowledge.published') [roleId,past] = event.payload?.knowledge?.qualification?.status === 'qualified'
+      ? ['memory','saved steps for reuse'] : ['memory','did not save the steps'];
+    return {roleId,roleLabel:roles[roleId].label,past};
+  }
+  const recordedDay = value => {
+    const time = Date.parse(text(value));
+    return Number.isFinite(time) ? new Intl.DateTimeFormat('en-GB',{timeZone:'UTC',day:'numeric',month:'short',year:'numeric'}).format(new Date(time)) : '';
+  };
+  // One header phrase names what the viewer is looking at. Only corpus or
+  // featured originals are fictional; an added case never inherits that word.
+  function modeLine({revision, presentation = 'saved', provenance = null, origin = '', recordedAt = '', readOnly = false} = {}) {
+    const known = Number.isSafeInteger(revision) && revision >= 0, parts = [];
+    if (known && revision === 0) parts.push(copy.notRun);
+    else if (presentation === 'replay') {
+      const day = recordedDay(recordedAt);
+      parts.push(day ? `${copy.replay} · recorded ${day}` : copy.replay);
+      if (provenance?.mode === 'deterministic_reference') parts.push(copy.fixedRules);
+    } else if (presentation === 'live') parts.push(copy.live);
+    else parts.push(known ? `Saved result · revision ${revision}` : 'Saved result');
+    if (['canonical_original','corpus','featured'].includes(origin)) parts.push(copy.fictional);
+    if (readOnly) parts.push(copy.viewOnly);
+    return parts.join(' · ');
+  }
+
   const legalFindingLabels = Object.freeze({
     residential_tenancy_scope:[
       'The residential tenancy is supported.',
@@ -346,5 +398,5 @@
     })[text(reason)] || 'These steps were not saved. Open Details for the recorded reason.';
   }
   return Object.freeze({refusalReason,roles,copy,tabs,stepLabels,documentLabels,plainLabel,stepLabel,documentTitle,
-    provenancePresentation,operationPresentation,outcomePresentation,knowledgePresentation});
+    provenancePresentation,operationPresentation,outcomePresentation,knowledgePresentation,modeLine,eventPresentation});
 });

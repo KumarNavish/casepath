@@ -462,6 +462,56 @@ def test_recorded_get_requires_admitted_trace_and_never_recomputes(migrated, mon
         assert runtime.PUBLIC_LIMITS.active == 0
 
 
+def test_unrun_claim_is_not_found_while_a_damaged_head_still_conflicts(migrated, tmp_path, monkeypatch):
+    service, corpus, cid, head, _ = migrated
+    monkeypatch.setattr(runtime, 'PUBLIC_LIMITS', runtime.PublicOperationLimits())
+    url = '/api/claim-loops/v1/autonomous/claims/' + cid + '/operations'
+    empty = service_at(tmp_path / 'unrun.sqlite', corpus)
+    try:
+        app = FastAPI()
+        app.include_router(create_autonomous_router(lambda: empty, corpus_getter=lambda: corpus, read_only=True))
+        with TestClient(app) as client:
+            for mode in ('live', 'recorded'):
+                response = client.get(url + '?mode=' + mode)
+                assert response.status_code == 404, (mode, response.text)
+                assert response.json()['detail'] == 'No saved history for this claim.'
+                assert '"type":"binding"' not in response.text
+        from casepath_api.autonomous_store_v1 import AutonomousStoreError
+        with pytest.raises(AutonomousStoreError, match='does not exist'):
+            empty.store.snapshot(cid)  # the GETs wrote nothing
+        assert runtime.PUBLIC_LIMITS.active == 0
+    finally:
+        empty.shutdown()
+    with pytest.raises(runtime.OperationsNoHistory) as missing:
+        runtime.capture_operation_inputs(empty.store, cid, empty.policy)
+    assert missing.value.code == 'no_history'
+
+    # A saved head whose bounded read loses its tail is a conflict, never "no history".
+    original = service.store.journal.connect
+    class Truncated:
+        def __enter__(self):
+            self.connection = original().__enter__()
+            outer = self
+            class Reader:
+                def execute(self, query, parameters=()):
+                    rows = outer.connection.execute(query, parameters).fetchall()
+                    return SimpleNamespace(fetchall=lambda: rows[:-1] if '__tail' in query else rows)
+            return Reader()
+        def __exit__(self, *error):
+            return self.connection.__exit__(*error)
+    monkeypatch.setattr(service.store.journal, 'connect', Truncated)
+    with pytest.raises(runtime.OperationsUnavailable, match='row count differs') as damaged:
+        runtime.capture_operation_inputs(service.store, cid, service.policy)
+    assert not isinstance(damaged.value, runtime.OperationsNoHistory)
+    app = FastAPI()
+    app.include_router(create_autonomous_router(lambda: service, corpus_getter=lambda: corpus, read_only=True))
+    with TestClient(app) as client:
+        response = client.get(url)
+    assert response.status_code == 409 and 'row count differs' in response.json()['detail']
+    monkeypatch.setattr(service.store.journal, 'connect', original)
+    assert service.store.get(cid) == head and runtime.PUBLIC_LIMITS.active == 0
+
+
 @pytest.mark.parametrize('mode', ['live', 'recorded'])
 def test_real_operation_transport_preserves_exact_ndjson_and_hashes_in_both_encodings(migrated, monkeypatch, mode):
     from casepath_api.autonomous_operation_trace_store_v1 import initialize_operation_trace_storage, admit_operation_trace

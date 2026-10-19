@@ -1000,3 +1000,29 @@ html[data-autonomous-workspace=true] { scroll-padding-top:100px; }
 .au-workspace .au-quiet-claim > .au-now { position:sticky; top:var(--au-header-height,64px); z-index:11; background:var(--au-field); }
 .au-workspace .au-quiet-claim > .au-now { display:block; margin:6px 0 10px; padding:4px 0; border:0; line-height:1.45; }
 .au-workspace .au-quiet-claim > .au-now :is([data-au-now-copy],[data-au-now-result]) { display:inline; margin:0; }
+
+/* Honest unrun states: Start keeps its reason beside it and stays focusable. */
+.au-workspace .au-work-controls:has(.au-start-control) { align-items:flex-start; }
+.au-workspace .au-start-control { display:flex; flex-direction:column; align-items:flex-end; gap:6px; min-width:0; max-width:300px; }
+.au-workspace .au-start-reason { margin:0; color:var(--au-muted); font-size:15px; line-height:1.45; text-align:right; }
+.au-workspace button[aria-disabled=true] { cursor:default; }
+.au-workspace .au-primary[aria-disabled=true],
+.au-workspace .au-primary[aria-disabled=true]:hover { border-color:var(--au-line); background:transparent; color:var(--au-muted); }
+.au-workspace .au-quiet-claim > .au-now.au-last { position:static; }
+.au-workspace .au-now.au-last time { white-space:nowrap; }
+.au-workspace .au-intake-candidates { padding:13px 0 0; border-top:1px solid var(--au-line); }
+.au-workspace .au-intake-candidates .au-related { margin-top:4px; }
+.au-workspace :is(.au-intake-candidates,.au-intake-checklist) .au-related button { min-height:38px; border:0; padding:5px 0; color:var(--au-ink); text-decoration:underline; text-underline-offset:4px; text-align:left; }
+.au-workspace .au-demo-overview { max-width:1100px; }
+.au-workspace .au-demo-cases { margin:4px 0 0; padding:0; list-style:none; border-top:1px solid var(--au-line); }
+.au-workspace .au-demo-case { display:grid; grid-template-columns:32px minmax(0,1fr) minmax(0,max-content) max-content; align-items:baseline; gap:4px 24px; padding:14px 0; border-bottom:1px solid var(--au-line); }
+.au-workspace .au-demo-case-copy { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.au-workspace .au-demo-case-copy strong { font-size:17px; font-weight:500; line-height:1.4; }
+.au-workspace :is(.au-demo-case-facts,.au-demo-case-state) { color:var(--au-muted); font-size:16px; }
+.au-workspace .au-demo-intake-link { display:inline-flex; align-items:center; min-height:32px; }
+@media (max-width:640px) {
+  .au-workspace .au-start-control { align-items:flex-start; max-width:none; }
+  .au-workspace .au-start-reason { text-align:left; }
+  .au-workspace .au-demo-case { grid-template-columns:28px minmax(0,1fr); gap:2px 12px; }
+  .au-workspace .au-demo-case > :is(.au-demo-case-state,.au-demo-intake-link) { grid-column:2; }
+}

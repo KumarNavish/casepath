@@ -29,7 +29,12 @@ _SINK = ContextVar('casepath_engine_operation_sink', default=None)
 
 
 class OperationsUnavailable(ValueError):
-    pass
+    code = 'recomputation_unavailable'
+
+
+class OperationsNoHistory(OperationsUnavailable):
+    """The selected claim has no saved journal, so nothing exists to recompute."""
+    code = 'no_history'
 
 
 class OperationCancelled(RuntimeError):
@@ -214,7 +219,7 @@ def capture_operation_inputs(store, claim_id, policy, *, check=lambda: None):
         collected[0] += size
         if collected[0] > MAX_INPUT_BYTES:
             raise OperationsUnavailable('Snapshot exceeds the input bound.')
-    def bounded_journals(connection, claim_ids):
+    def bounded_journals(connection, claim_ids, *, history_claim_id=None):
         from .autonomous_store_v1 import SESSION_ID
         from .hosted_sql_v1 import MAX_BYTES
         check()
@@ -246,6 +251,9 @@ def capture_operation_inputs(store, claim_id, policy, *, check=lambda: None):
             grouped[cid].append({key: row[key] for key in columns})
         for cid, rows in grouped.items():
             metadata = next((row for row in page if row['loop_id'] == 'autonomous.' + cid), None)
+            if not rows and cid == history_claim_id:
+                # An unrun original is a normal state, not a damaged head.
+                raise OperationsNoHistory('No saved history for this claim.')
             if not rows or len(rows) != metadata['__count'] or rows[-1]['sequence'] != metadata['__tail']:
                 raise OperationsUnavailable('Snapshot journal head or row count differs.')
         return grouped
@@ -269,7 +277,7 @@ def capture_operation_inputs(store, claim_id, policy, *, check=lambda: None):
         return result
     check()
     with store.journal.connect() as connection:
-        rows = bounded_journals(connection, (claim_id,))[claim_id]
+        rows = bounded_journals(connection, (claim_id,), history_claim_id=claim_id)[claim_id]
     if not rows or len(rows) > MAX_EVENTS:
         raise OperationsUnavailable('A bounded saved reference history is required.')
     reserve(len(canonical_json_bytes(rows)))
