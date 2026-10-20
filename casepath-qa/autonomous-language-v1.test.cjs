@@ -474,3 +474,30 @@ test('saved journal events read as past-tense work by the recorded role',()=>{
   assert.deepEqual(language.eventPresentation({kind:'unknown.kind'}),{roleId:'casepath',roleLabel:'CasePath',past:'recorded work'});
   for(const kind of ['intake','sources.arrived','work.started','interpretation.accepted','action.completed','work.deferred','knowledge.used','reconciliation.failed'])shortCopy(language.eventPresentation({kind}).past);
 });
+
+test('recorded outcome fields lead and the draft line follows only its own record',()=>{
+  const before=JSON.stringify(saved),view=language.outcomePresentation(saved);
+  assert.equal(view.recorded.summary,saved.outcome.summary);assert.deepEqual(view.recorded.issues,saved.outcome.issues);
+  assert.deepEqual(view.recorded.openFacts,['Rent arrears','Tenancy extension','Family home','Retaliation concern','Termination received']);
+  assert.equal(view.recorded.nextAction,saved.outcome.next_action);assert.deepEqual(view.recorded.missing,[]);assert.deepEqual(view.recorded.limits,[]);
+  assert.deepEqual(view.recorded.draft,{status:'no_gap',label:'No document gap identified'});
+  assert.equal(view.summary,'Some facts still need proof.','the templated fallback is unchanged');assert.equal(JSON.stringify(saved),before);
+  for(const state of recorded){
+    const shown=language.outcomePresentation(state);
+    assert.deepEqual(shown.recorded.draft,{status:'draft',label:'Draft ready · not sent'});assert.deepEqual(shown.recorded.limits,state.outcome.authority_limits);
+    assert.ok(shown.recorded.summary.includes(shown.openItems),'the recorded limit stays inside the recorded sentence');
+  }
+  const draft={status:'prepared_not_sent',body:'No additional active document gap was identified.'};
+  assert.equal(language.draftStatus({missing_evidence:[{document_type:'lease_contract'}],request_draft:draft}).status,'draft','a listed missing document is never described as no gap');
+  assert.equal(language.draftStatus({request_draft:draft}).status,'draft','an unrecorded missing list is not an empty one');
+  assert.deepEqual(language.draftStatus({}),{status:'',label:''});assert.deepEqual(language.draftStatus({request_draft:{status:'unexpected'}}),{status:'recorded',label:'Draft recorded'});
+  assert.deepEqual(language.outcomePresentation({outcome:{issues:[{code:'source_discrepancy',reason:'Recorded discrepancy.'},'  ',null]}}).recorded.issues,['Recorded discrepancy.']);
+});
+
+test('fact labels name the subject without field identifiers',()=>{
+  assert.equal(language.factLabel({fact_id:'condition:family_home',label:'family home'}),'Family home');
+  assert.equal(language.factLabel('condition:arrears'),'Rent arrears');
+  assert.equal(language.factLabel({fact_id:'fact:tenancy_terms_evidence',label:'Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract'}),'Relevant residential tenancy terms, parties and dwelling');
+  assert.equal(language.factLabel({fact_id:'fact:landlord_knowledge_evidence',label:'INTERNAL_FACT_FIELD'}),'Landlord notice and repair status');
+  assert.equal(language.factLabel({fact_id:'unknown'}),'Recorded fact');
+});

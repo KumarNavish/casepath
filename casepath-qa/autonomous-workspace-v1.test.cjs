@@ -323,7 +323,7 @@ test('replay gives readable dwell to accepted content changes while routine pref
 test('selected decision joins its own facts and exact contextual authority and action records',()=>{
  const s=state(),before=JSON.stringify(s),html=ui.inspectorMarkup(s,'branch');
  for(const phrase of [s.facts[0].summary,'Separate notice'])assert.ok(html.includes(phrase),phrase);
- assert.match(html,/Ready to check/);assert.match(html,/Document for this decision/);assert.equal(ui.contextualRecord(s,{},[],'step','branch').evaluation.execution_state,'ready');
+ assert.match(html,/Ready to check/);assert.match(html,/data-au-document="notice"[^>]*data-route="needed_now"[\s\S]*?Open:<\/strong> <span class="au-subject-name">Separate notice<\/span> · needs <span class="au-subject-need">Separate notice<\/span>/);assert.equal(ui.contextualRecord(s,{},[],'step','branch').evaluation.execution_state,'ready');
  assert.deepEqual(ui.contextualRecord(s,{},[],'step','branch').node,s.graph.nodes[1]);
  assert.deepEqual(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).obligations,[s.obligations[0]]);
  assert.deepEqual(ui.contextualRecord(s,{},[],'action','0'),ui.actionRows(s)[0]);
@@ -334,7 +334,7 @@ test('selected decision joins its own facts and exact contextual authority and a
 test('case facts show the accepted account and unique reason once while keeping raw verdicts and unknown step states exact',()=>{
  const s=state(),fact=s.facts[0];fact.label='INTERNAL_FACT_FIELD';fact.verdict='insufficient';fact.summary='The notice names only Alex.';fact.reason=fact.summary;
  s.evaluation.nodes[1].execution_state='unknown_recorded_step_state';s.evaluation.documents[0].review_state='insufficient';
- const render=()=>ui.inspectorMarkup(s,'branch'),factSection=html=>html.match(/<section class="au-reading-fact"[\s\S]*?<\/section>/)[0];
+ const render=()=>ui.inspectorMarkup(s,'branch'),factSection=html=>html.match(/<section class="[^"]*au-reading-fact[^"]*"[\s\S]*?<\/section>/)[0];
  let before=JSON.stringify(s),html=render(),reading=factSection(html);
  assert.equal(reading.split(fact.summary).length-1,1);assert.doesNotMatch(reading,/INTERNAL_FACT_FIELD|Insufficient|Not yet supported|data-au-inspect=/);
  assert.equal(ui.contextualRecord(s,{},[],'fact',fact.fact_id).verdict,'insufficient');assert.equal(ui.contextualRecord(s,{},[],'step','branch').evaluation.execution_state,'unknown_recorded_step_state');assert.equal(JSON.stringify(s),before);
@@ -348,8 +348,13 @@ test('case facts show the accepted account and unique reason once while keeping 
 test('alternate facts expose their recorded states as Other questions beside an established main fact without borrowing its verdict',()=>{
  const s=state(),main=s.facts[0];main.status='established';main.summary='The supplied source establishes the recorded main question.';
  const alternatives=[{fact_id:'fact:unresolved-arrears',node_id:'branch',label:'Whether the allocation is rent arrears',status:'unresolved',summary:'The allocation remains unresolved.'},{fact_id:'fact:false-question',node_id:'branch',label:'Another lease applies',status:'false',summary:'The recorded condition does not apply.'},{fact_id:'fact:known-question',node_id:'branch',label:'Recorded sender',status:'established',summary:'The source establishes this sender.'},{fact_id:'fact:applicable-question',node_id:'branch',label:'Recorded period applies',status:'true',summary:'The recorded period applies.'},{fact_id:'fact:insufficient-question',node_id:'branch',label:'Notice addresses both tenants',status:'insufficient',summary:'The source does not establish both recipients.'}];s.facts.push(...alternatives);const before=JSON.stringify(s),labels={'fact:unresolved-arrears':'Not established','fact:false-question':'Does not apply','fact:known-question':'Established','fact:applicable-question':'Applies','fact:insufficient-question':'Not established'};
- for(const forming of [false,true]){const html=ui.evidencePathMarkup(s,'branch',{}, {fact:main.fact_id},forming),mainSection=html.match(/<section class="au-reading-fact"[\s\S]*?<\/section>/)[0];assert.match(mainSection,/<h3 class="au-reading-label">Other questions<\/h3>/);assert.match(mainSection,/aria-label="Other questions for this decision"/);assert.equal((mainSection.match(new RegExp(main.summary,'g'))||[]).length,1);assert.match(mainSection,new RegExp(`data-au-fact="${main.fact_id}"`));
-  for(const fact of alternatives){const control=html.match(new RegExp(`<button[^>]*data-au-fact-select="${fact.fact_id}"[^>]*>([\\s\\S]*?)<\\/button>`));assert.match(control[0],new RegExp(`data-au-fact-state="${fact.status}"`));assert.equal(control[1].replace(/<[^>]*>/g,''),`${labels[fact.fact_id]}: ${fact.label}`);assert.deepEqual(ui.contextualRecord(s,{},[],'fact',fact.fact_id),fact);}
+ // The selected step names each subject once with one status; forming work keeps its compact Other questions list.
+ const lines={'fact:unresolved-arrears':'Open: Whether the allocation is rent arrears','fact:false-question':'Established: Another lease applies · Does not apply · no passage cited','fact:known-question':'Established: Recorded sender · no passage cited','fact:applicable-question':'Established: Recorded period applies · Applies · no passage cited','fact:insufficient-question':'Open: Notice addresses both tenants'};
+ for(const forming of [false,true]){const html=ui.evidencePathMarkup(s,'branch',{}, {fact:main.fact_id},forming),mainSection=html.match(/<section class="[^"]*au-reading-fact[^"]*"[\s\S]*?<\/section>/)[0];
+  if(forming){assert.match(mainSection,/<h3 class="au-reading-label">Other questions<\/h3>/);assert.match(mainSection,/aria-label="Other questions for this decision"/);}
+  else{assert.match(mainSection,/aria-label="What this step established and what is open"/);assert.match(mainSection,new RegExp(`data-au-subject="${main.fact_id}" data-au-subject-state="established" aria-current="true"`));assert.doesNotMatch(mainSection,/<h3 class="au-reading-label">Other questions/);}
+  assert.equal((mainSection.match(new RegExp(main.summary,'g'))||[]).length,1);assert.match(mainSection,new RegExp(`data-au-fact="${main.fact_id}"`));
+  for(const fact of alternatives){const control=html.match(new RegExp(`<button[^>]*data-au-fact-select="${fact.fact_id}"[^>]*>([\\s\\S]*?)<\\/button>`));assert.match(control[0],new RegExp(`data-au-fact-state="${fact.status}"`));assert.equal(control[1].replace(/<[^>]*>/g,''),forming?`${labels[fact.fact_id]}: ${fact.label}`:lines[fact.fact_id]);assert.deepEqual(ui.contextualRecord(s,{},[],'fact',fact.fact_id),fact);}
   assert.doesNotMatch(html,/>Established: Whether the allocation is rent arrears</);const selected=ui.evidencePathMarkup(s,'branch',{}, {fact:alternatives[0].fact_id},forming);assert.match(selected,/data-au-fact="fact:unresolved-arrears"/);assert.ok(selected.includes(alternatives[0].summary));assert.deepEqual(ui.evidenceRelationships(s,'branch',{fact:alternatives[0].fact_id}).fact,alternatives[0]);
  }
  assert.equal(JSON.stringify(s),before,'alternative-question wording must not establish an unresolved fact or rewrite false/known/insufficient records');
@@ -619,7 +624,7 @@ test('source extraction labels do not contradict a sufficient review for one doc
 test('zero active gaps can leave requirements held by unresolved questions without rewriting the outcome or draft',()=>{
  const s=state({status:'deferred',outcome:{title:'Saved provider outcome',summary:'The received evidence leaves the branch unresolved.',missing_evidence:[],unresolved_facts:[{fact_id:'condition:family_home',summary:'The family-home condition remains unresolved.'}],request_draft:{status:'prepared_not_sent',subject:'Saved request subject',body:'No active document request is recorded.'}}});
  s.evaluation.documents[0]={...s.evaluation.documents[0],route_state:'held_behind_question',review_state:'missing',required_at_node_ids:['branch']};s.evaluation.nodes[1]={...s.evaluation.nodes[1],activation:'unresolved',execution_state:'unresolved'};
- const before=JSON.stringify(s),html=ui.inspectorMarkup(s,'branch');assert.match(html,/May be needed/);assert.doesNotMatch(html,/Not yet supported/);assert.equal(ui.contextualRecord(s,{},[],'step','branch').evaluation.activation,'unresolved');assert.equal(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).evaluation[0].review_state,'missing');assert.doesNotMatch(html,/All evidence satisfied|All documents received|Missing file|No attachment received/);
+ const before=JSON.stringify(s),html=ui.inspectorMarkup(s,'branch');assert.match(html,/Open:<\/strong> <span class="au-subject-name">Separate notice<\/span> · may need <span class="au-subject-need">Separate notice<\/span>/);assert.doesNotMatch(html,/Supplied evidence is sufficient|May be needed/);assert.doesNotMatch(html,/Not yet supported/);assert.equal(ui.contextualRecord(s,{},[],'step','branch').evaluation.activation,'unresolved');assert.equal(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).evaluation[0].review_state,'missing');assert.doesNotMatch(html,/All evidence satisfied|All documents received|Missing file|No attachment received/);
  assert.deepEqual(ui.contextualRecord(s,{},[],'outcome').outcome,s.outcome);assert.equal(JSON.stringify(s),before);
  s.evaluation.documents[0].route_state='not_needed';assert.match(ui.inspectorMarkup(s,'branch'),/not required on the recorded route/);
 });
@@ -3264,4 +3269,91 @@ test('a cited measurement keeps its complete sentence across decimals and Unicod
  const trace={current:operation,rows:[operation],sources:new Map([[source.artifact_id,source]])},html=ui.operationReadingMarkup(trace,true),passage=html.match(/data-au-compact-excerpt[^>]*>([\s\S]*?)<\/pre>/)[1].replace(/<[^>]+>/g,'');
  assert.equal(passage,sentence);assert.doesNotMatch(passage,/Synthetic|later sentence/);assert.equal(ui.operationReading(trace).pin,pin);
  const span=ui.stageFactSpan(operation,true);assert.equal(Array.from(source.text).slice(span.start_char,span.end_char).join(''),span.quote);
+});
+
+const savedHistory=()=>JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/autonomous-saved-history-v1.json'),'utf8')).state;
+const escapeText=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+test('record dialog answers an operation with a What happened row and its exact cited passage while JSON stays in Technical record',()=>{
+ const text='Fictional header\n\nOur call log records three heating-failure reports on 2025-02-01. We received the first report.',quote='Our call log records three heating-failure reports on 2025-02-01.';
+ const start=Array.from(text.slice(0,text.indexOf(quote))).length,end=start+Array.from(quote).length;
+ const source={artifact_id:'call-log',sha256:hash('1'),text_sha256:hash('2'),text};
+ const s=state({source_descriptors:[{artifact_id:'call-log',file_name:'03-landlord-knowledge-and-repair-status.txt',sha256:hash('1')}]});
+ const operation={id:'op_1',seq:4,kind:'fact.extract',object:{id:'fact:landlord_knowledge_evidence',type:'fact'},cause_ids:[],input:{document_type:'landlord_knowledge_evidence'},result:{status:'provisional',summary:'The call log records first knowledge.',verification_required:true},source:{artifact_id:'call-log',start_char:start,end_char:end,quote,sha256:hash('1'),text_sha256:hash('2'),offset_unit:'unicode_code_point'},stage:'interpret_reference'};
+ const trace={rows:[operation],sources:new Map([['call-log',source]]),checkpoints:[{after_operation:2,revision:7,events:[{seq:7,timestamp:'2026-10-19T21:17:00Z'}]}]},before=JSON.stringify([s,operation]);
+ const {html}=ui.recordExplanation('operation',operation,{state:s,trace,id:'op_1'});
+ assert.match(html,/^<dl class="au-record-rows"><div data-au-record-row="what"><dt>What happened<\/dt><dd>Found a possible fact: Landlord notice and repair status\.<\/dd><\/div><\/dl><figure class="au-record-passage" data-au-record-passage data-au-passage-verified="true"/);
+ assert.equal(html.match(/<mark[^>]*>([\s\S]*?)<\/mark>/)[1],quote);assert.doesNotMatch(html,/<pre/);
+ assert.match(html,/<button type="button" class="au-secondary au-record-open-source" data-au-source="call-log" data-au-citation="[^"]+"[^>]*>Open source<\/button>/);
+ assert.match(html,/data-au-record-row="role"><dt>Role<\/dt><dd><span class="au-role-badge" data-au-role="reader">/);
+ assert.match(html,new RegExp(`data-au-record-row="source"><dt>Source</dt><dd>Landlord knowledge and repair status · line 3, characters ${start}–${end}</dd>`));
+ assert.match(html,/data-au-record-row="result"><dt>Result<\/dt><dd>The call log records first knowledge\. Needs a document check\.<\/dd>/);
+ assert.match(html,/data-au-record-row="revision"><dt>Accepted revision<\/dt><dd>7 at this point · operation 4<\/dd>/);
+ assert.match(html,/data-au-record-row="time"><dt>Time<\/dt><dd><time datetime="2026-10-19T21:17:00Z">/);
+ // A fact chip opens the passage first and marks its own exact span inside the citation.
+ const focusStart=start+Array.from('Our call log records ').length,focusEnd=focusStart+Array.from('three heating-failure reports').length;
+ const chip=ui.recordExplanation('operation',operation,{state:s,trace,passageFirst:true,focus:{start:focusStart,end:focusEnd}}).html;
+ assert.match(chip,/^<figure class="au-record-passage"/);assert.equal(chip.match(/<mark[^>]*>([\s\S]*?)<\/mark>/)[1],'three heating-failure reports');
+ assert.ok(chip.indexOf('<figure')<chip.indexOf('What happened'));
+ // A step's own evaluation cites nothing; it opens the passage cited by a fact checked at that step and says so.
+ const step={id:'op_2',seq:5,kind:'node.evaluate',object:{id:'branch',type:'node'},cause_ids:[],input:{},result:{activation:'true',execution_state:'ready'}};
+ const docked={...trace,rows:[operation,step],dockedFacts:new Map([[operation.object.id,{operation,node:'branch',observed:true}]])};
+ const stepView=ui.recordExplanation('operation',step,{state:s,trace:docked,passageFirst:true}).html;
+ assert.match(stepView,/^<figure class="au-record-passage" data-au-record-passage data-au-passage-verified="true"[^>]*><figcaption><span class="au-record-passage-title">Landlord knowledge and repair status<\/span> <span class="au-meta">Cited for Landlord notice and repair status<\/span><\/figcaption>/);
+ assert.match(stepView,/What happened<\/dt><dd>Checked a step: Check separate service\.<\/dd>/);
+ // An unverifiable span is quoted without a highlight.
+ const unmarked=ui.recordExplanation('operation',{...operation,source:{...operation.source,quote:'Not in the text.'}},{state:s,trace}).html;
+ assert.doesNotMatch(unmarked,/<mark/);assert.match(unmarked,/data-au-passage-verified="false"/);
+ // The dialog's only <pre> sits inside the Technical record disclosure.
+ assert.equal((ui.RECORD_DIALOG_SKELETON.match(/<pre/g)||[]).length,1);
+ assert.match(ui.RECORD_DIALOG_SKELETON,/<details[^>]*><summary>Technical record<\/summary>(?:(?!<\/details>)[\s\S])*<pre[^>]*><\/pre><\/details>$/);
+ assert.equal(JSON.stringify([s,operation]),before);
+});
+
+test('record dialog rows explain journal events and outcomes, and the mounted dialog keeps JSON behind Technical record',async t=>{
+ const s=state({status:'deferred',outcome:{status:'deferred',summary:'Recorded outcome sentence.',citations:[{artifact_id:'original',quote:'reports'}]},acquired_sources:[{artifact_id:'original',sha256:hash('d'),text:'The tenant reports a cold flat.'}]});
+ const event={seq:3,kind:'outcome.recorded',timestamp:'2026-10-19T21:18:00Z',payload:{summary:'Recorded outcome sentence.'}};
+ const shown=ui.recordExplanation('event',event,{state:s,events:[event]}).html;
+ assert.match(shown,/^<dl class="au-record-rows"><div data-au-record-row="what"><dt>What happened<\/dt><dd>Rulebook saved the result\.<\/dd>/);assert.match(shown,/Accepted revision<\/dt><dd>3<\/dd>/);assert.match(shown,/Source<\/dt><dd>None cited<\/dd>/);
+ const outcome=ui.recordExplanation('outcome',{outcome:s.outcome,deferral:null},{state:s,events:[event]}).html;
+ assert.match(outcome,/<mark data-au-record-mark>reports<\/mark>/);assert.match(outcome,/Result<\/dt><dd>Recorded outcome sentence\.<\/dd>/);
+ const f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ await controller.openClaim('claim-a');await settle();
+ f.listeners.get('click')({target:control(f,'data-au-inspect','claim')});
+ assert.equal(f.recordDialog.open,true);assert.equal(f.recordBody.innerHTML,ui.RECORD_DIALOG_SKELETON);assert.ok(JSON.parse(f.recordPre.textContent).state);
+});
+
+test('outcome markup leads with recorded sentences, names open facts and the draft status, and keeps recorded limits visible',()=>{
+ const saved=savedHistory(),before=JSON.stringify(saved),html=ui.outcomeSummaryMarkup(saved);
+ assert.ok(html.startsWith(`<p class="au-outcome-summary" data-au-outcome-recorded>${escapeText(saved.outcome.summary)}</p>`),'the recorded summary leads');
+ assert.ok(html.includes(`<li data-au-outcome-issue>${escapeText(saved.outcome.issues[0])} <button type="button" class="au-link au-outcome-cite" data-au-source="${saved.outcome.citations[0].artifact_id}"`),'the recorded issue carries its citation link');
+ assert.match(html,/data-au-outcome-open-facts><span class="au-outcome-key">Open<\/span> <span class="au-outcome-value"><span class="au-outcome-fact">Rent arrears<\/span>/);
+ assert.match(html,/<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next<\/span> <span class="au-outcome-value">Await the named evidence or an authorized external action\./);
+ assert.match(html,/data-au-draft-status="no_gap">No document gap identified<\/p>/);
+ assert.doesNotMatch(html,/<details|Some facts still need proof|More evidence needed|Waiting for proof/);
+ const header=ui.workMarkup(saved,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0];
+ assert.match(header,/data-au-claim-status>Deferred\.<\/span> Open: Rent arrears, Tenancy extension, Family home and 2 more\./,'the status word stays recorded and the explanation names the open facts');
+ // A recorded limit inside the summary stays visible and keeps its emphasis; limits stay one quiet line.
+ const limited=structuredClone(saved);Object.assign(limited.outcome,{assessment_scope:'defect_removal_and_reduction_eligibility',summary:'The sources support eligibility until remedy. Repair, the reduction amount and any award remain undetermined.',authority_limits:['No repair, rent quantum or court outcome was performed.']});
+ const visible=ui.outcomeSummaryMarkup(limited).replace(/<details[\s\S]*?<\/details>/g,'');
+ assert.match(visible,/^<p class="au-outcome-summary" data-au-outcome-recorded>The sources support eligibility until remedy\. <span class="au-outcome-open">Repair, the reduction amount and any award remain undetermined\.<\/span><\/p>/);
+ assert.match(visible,/<p class="au-outcome-limit" data-au-outcome-limit>No repair, rent quantum or court outcome was performed\.<\/p>/);
+ // Templated sentences remain only as the fallback for a record without its own sentence.
+ const bare=ui.outcomeSummaryMarkup({...saved,outcome:{status:'deferred',missing_evidence:[{document_type:'lease_contract'}],unresolved_facts:[]}});
+ assert.match(bare,/^<p class="au-outcome-summary">More documents are needed\.<\/p>/);assert.match(bare,/Needs<\/span> <span class="au-outcome-value"><button type="button" class="au-link" data-au-detail="documents" data-au-outcome-document="lease_contract">Lease contract<\/button>/);
+ assert.equal(JSON.stringify(saved),before);
+});
+
+test('the selected step reads title, first cited passage, one status per subject, rule and the used version',()=>{
+ const saved=savedHistory(),before=JSON.stringify(saved),html=ui.stepDetailMarkup(saved,'lt_arrears',{}, {});
+ const at=marker=>{const index=html.indexOf(marker);assert.ok(index>=0,marker);return index;};
+ assert.ok(at('<h3 class="au-step-detail-title">Check the unpaid rent and payment warning</h3>')<at('<section class="au-reading-passages"'));
+ assert.ok(at('<section class="au-reading-passages"')<at('<ul class="au-subject-lines">'));
+ assert.ok(at('<ul class="au-subject-lines">')<at('<p class="au-step-rule'));assert.ok(at('<p class="au-step-rule')<at('data-au-step-version'));
+ const lines=[...html.matchAll(/<li class="au-subject"[\s\S]*?<\/li>/g)].map(match=>match[0].replace(/<[^>]*>/g,''));
+ assert.ok(lines.length>=2);
+ for(const line of lines){assert.equal((line.match(/\b(?:Established|Open):/g)||[]).length,1,line);assert.doesNotMatch(line,/May be needed|Supplied evidence is sufficient|Not established|Needs checking/,line);}
+ assert.ok(lines.some(line=>line.startsWith('Established: ')));assert.ok(lines.some(line=>line.startsWith('Open: ')));
+ assert.match(html,/Used<\/span> <span class="au-outcome-value"><span class="au-step-version-used"[^>]*><button[^>]*data-au-version="2"[^>]*>v2<\/button> · Lease termination<\/span><span class="au-step-version-later"> · Later version saved from this case: <button[^>]*data-au-version="3"[^>]*>v3<\/button>/);
+ assert.equal(JSON.stringify(saved),before);
 });

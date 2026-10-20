@@ -110,6 +110,23 @@
     if (typeof node === 'string') return labels[node] || stepLabels[node] || plainLabel(node,'Recorded step');
     return labels[text(node?.label)] || stepLabels[text(node?.node_id)] || plainLabel(node,'Recorded step');
   }
+  // Condition flags name the question a step asks; the saved fact keeps its own wording.
+  const conditionSubjects = Object.freeze({arrears:'Rent arrears',family_home:'Family home',extension_relevant:'Tenancy extension',
+    termination_received:'Termination received',retaliation_screen:'Retaliation concern',health_effects:'Health effects',mold:'Mould',
+    heating:'Heating defect',specialist_needed:'Specialist inspection needed',deposit_considered:'Paying rent into an official account'});
+  const sentenceCase = value => value ? value.charAt(0).toLocaleUpperCase('en')+value.slice(1) : value;
+  function factLabel(fact, fallback = 'Recorded fact') {
+    const id = typeof fact === 'string' ? fact : text(fact?.fact_id);
+    if (id.startsWith('condition:')) {
+      const flag = id.slice('condition:'.length);
+      return conditionSubjects[flag] || sentenceCase(plainLabel(text(fact?.label) || flag.replace(/[_.-]+/gu,' '),fallback));
+    }
+    // Identifier-like labels are field names, not wording for a reader.
+    const own = text(fact?.label).split(';')[0].trim(), identifier = /^[A-Za-z0-9]+(?:_[A-Za-z0-9]+)+$/u.test(own);
+    if (own && !identifier && (labels[own] || safe(own))) return sentenceCase(plainLabel(own,fallback));
+    const type = id.startsWith('fact:') ? id.slice('fact:'.length) : '';
+    return documentLabels[type] || sentenceCase(plainLabel((identifier ? '' : own) || type.replace(/[_.-]+/gu,' ') || fallback,fallback));
+  }
   function documentTitle(document) {
     if (typeof document === 'string') document = documentLabels[document] ? {document_type:document}
       : /\.[a-z0-9]{1,8}$/iu.test(document) ? {file_name:document} : {label:document};
@@ -367,11 +384,32 @@
     const nextAction = [missing ? 'Waiting for the listed documents.' : '',
       unresolved || unknown || findings.some(row => row.status === 'unknown') ? 'Waiting for proof of open facts.' : '',
       limits ? "A person's go-ahead is needed before any real-world action." : ''].filter(Boolean).join(' ') || 'Review the case details.';
+    const facts = list(state.facts);
+    // Recorded sentences lead. The templated summary and next action above
+    // remain the fallback for a record that has none of its own.
+    const recorded = {summary:text(outcome.summary).trim() ? text(outcome.summary) : text(outcome.reason),
+      issues:list(outcome.issues).map(issueText).filter(Boolean),
+      openFacts:list(outcome.unresolved_facts).map(row => factLabel(facts.find(fact => fact.fact_id === row?.fact_id) || row)),
+      missing:list(outcome.missing_evidence).map(row => ({document_type:text(row?.document_type),label:documentTitle(row)})),
+      nextAction:text(outcome.next_action).trim(),draft:draftStatus(outcome),
+      limits:list(outcome.authority_limits).filter(row => typeof row === 'string' && row.trim())};
     return {label:supported ? 'Document checks complete' : state.outcome ? 'Recorded result' : state.deferral ? 'Work stopped' : 'Result pending',
-      summary,nextAction,
+      summary,nextAction,recorded,
       findings,support:supported ? copy.supported : '',constraints,
       openItems:outcome.assessment_scope==='defect_removal_and_reduction_eligibility' && text(outcome.summary).includes('Repair, the reduction amount and any award remain undetermined.') ? 'Repair, the reduction amount and any award remain undetermined.' : '',
       recordedSummary:text(outcome.summary) || text(outcome.reason),details:outcome};
+  }
+  function issueText(issue) {
+    return typeof issue === 'string' ? issue.trim() : text(issue?.reason).trim() || text(issue?.summary).trim() || text(issue?.message).trim();
+  }
+  // The draft's own record decides its line: a prepared request is never
+  // described as sent, and "no gap" needs both an empty missing list and the
+  // draft's recorded statement that no document gap was identified.
+  function draftStatus(outcome = {}) {
+    const draft = outcome?.request_draft;
+    if (!draft || typeof draft !== 'object') return {status:'',label:''};
+    if (Array.isArray(outcome.missing_evidence) && !outcome.missing_evidence.length && /\bno\b[^.]*\bdocument gap\b/iu.test(text(draft.body))) return {status:'no_gap',label:'No document gap identified'};
+    return draft.status === 'prepared_not_sent' ? {status:'draft',label:'Draft ready · not sent'} : {status:'recorded',label:'Draft recorded'};
   }
 
   function knowledgePresentation(value = {}, event = {}) {
@@ -397,6 +435,6 @@
       'The independent verifier rejected this knowledge candidate.':'The independent check rejected these steps.'
     })[text(reason)] || 'These steps were not saved. Open Details for the recorded reason.';
   }
-  return Object.freeze({refusalReason,roles,copy,tabs,stepLabels,documentLabels,plainLabel,stepLabel,documentTitle,
+  return Object.freeze({refusalReason,roles,copy,tabs,stepLabels,documentLabels,plainLabel,stepLabel,documentTitle,factLabel,draftStatus,
     provenancePresentation,operationPresentation,outcomePresentation,knowledgePresentation,modeLine,eventPresentation});
 });

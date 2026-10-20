@@ -2683,7 +2683,8 @@ function assertAcceptedPaint(paint,prefix,message='the visible accepted prefix r
   for(const row of paint.documents){const obligation=state.obligations.find(item=>item.obligation_id===row.id),document=state.evaluation?.documents.find(item=>item.document_type===row.type);assert.ok(obligation,message);assert.equal(row.type,obligation.document_type,message);assert.equal(row.status,document?.route_state||obligation.status||'pending',message);if(row.review)assert.equal(row.review,document?.review_state,message);}
   for(const row of paint.facts){const fact=state.facts.find(item=>item.fact_id===row.id);assert.ok(fact,message);if(row.status)assert.equal(row.status,fact.verdict||fact.status,message);}
   for(const identity of paint.sources)assert.ok(state.source_descriptors.some(row=>identity===`${state.claim_id}:${row.artifact_id}:${row.sha256}:${state.acquired_sources.find(source=>source.artifact_id===row.artifact_id)?.text_sha256||''}`),message);
-  const citations=state.facts.flatMap(row=>row.citations||[]).concat(state.actions.flatMap(row=>(row.result||row).citations||[]));
+  // The recorded-first outcome links its own accepted citation beside the recorded issue.
+  const citations=state.facts.flatMap(row=>row.citations||[]).concat(state.actions.flatMap(row=>(row.result||row).citations||[]),state.outcome?.citations||[]);
   for(const citation of paint.citations){assert.ok(citations.some(row=>canonical(row)===canonical(citation)),message);assert.equal(citation.sha256,state.source_descriptors.find(row=>row.artifact_id===citation.artifact_id)?.sha256,message);}
   for(const pin of paint.knowledge)assert.ok([...state.knowledge_uses,...state.knowledge_published].some(row=>(row.knowledge_id||row.version_id)===pin.id&&String(row.version||row.version_id)===pin.version&&(row.knowledge_sha256||'')===pin.sha256),message);
   assert.equal(paint.outcome,paint.panel==='step'?state.outcome?.summary||null:null,message);
