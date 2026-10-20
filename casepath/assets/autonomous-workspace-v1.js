@@ -1279,8 +1279,8 @@
       : `<p class="au-outcome-summary">${h(shown.summary || shown.label)}</p>${shown.openItems ? `<p class="au-outcome-open">${h(shown.openItems)}</p>` : ''}${shown.support && !shown.findings.length ? `<p>${h(shown.support)}</p>` : ''}`;
     const cite = origin => citation ? `<button type="button" class="au-link au-outcome-cite" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="${h(origin)}">${h(sourceLabel(state,citation.artifact_id))}<span aria-hidden="true"> ↗</span></button>` : '';
     const issues = recorded.issues.length ? `<ul class="au-outcome-issues" aria-label="Recorded issue">${recorded.issues.map((issue,index) => `<li data-au-outcome-issue>${h(issue)}${index === 0 && citation ? ` ${cite('outcome:issue')}` : ''}</li>`).join('')}</ul>` : '';
-    const open = recorded.openFacts.length ? `<p class="au-outcome-facts au-outcome-row" data-au-outcome-open-facts><span class="au-outcome-key">Open</span> <span class="au-outcome-value">${recorded.openFacts.map(label => `<span class="au-outcome-fact">${h(label)}</span>`).join('<span aria-hidden="true"> · </span>')}</span></p>` : '';
-    const missing = recorded.missing.length ? `<p class="au-outcome-missing au-outcome-row" data-au-outcome-missing><span class="au-outcome-key">Needs</span> <span class="au-outcome-value">${recorded.missing.map(row => `<button type="button" class="au-link" data-au-detail="documents"${row.document_type ? ` data-au-outcome-document="${h(row.document_type)}"` : ''}>${h(row.label)}</button>`).join('<span aria-hidden="true"> · </span>')}</span></p>` : '';
+    const open = recorded.openFacts.length ? `<p class="au-outcome-facts au-outcome-row" data-au-outcome-open-facts><span class="au-outcome-key">Open</span> <span class="au-outcome-value">${recorded.openFacts.map(label => `<span class="au-outcome-fact">${h(label)}</span>`).join('<span aria-hidden="true">&nbsp;· </span>')}</span></p>` : '';
+    const missing = recorded.missing.length ? `<p class="au-outcome-missing au-outcome-row" data-au-outcome-missing><span class="au-outcome-key">Needs</span> <span class="au-outcome-value">${recorded.missing.map(row => `<button type="button" class="au-link" data-au-detail="documents"${row.document_type ? ` data-au-outcome-document="${h(row.document_type)}"` : ''}>${h(row.label)}</button>`).join('<span aria-hidden="true">&nbsp;· </span>')}</span></p>` : '';
     const next = recorded.nextAction || shown.nextAction;
     return `${lead}${issues}${open}${missing}${next ? `<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next</span> <span class="au-outcome-value">${h(next)}</span></p>` : ''}${recorded.draft.label ? `<p class="au-outcome-draft" data-au-draft-status="${h(recorded.draft.status)}">${h(recorded.draft.label)}</p>` : ''}${recorded.limits.length ? `<p class="au-outcome-limit" data-au-outcome-limit>${h(recorded.limits.join(' '))}</p>` : ''}`;
   }
@@ -4696,7 +4696,12 @@
       else if (target.hasAttribute('data-au-knowledge')) { if (!busy) showKnowledge(true,{knowledge_id:target.dataset.auKnowledge,version:target.dataset.auVersion,knowledge_sha256:target.dataset.auKnowledgeSha,definition_sha256:target.dataset.auDefinitionSha,claim_id:target.dataset.auKnowledgeClaim}); }
       else if (target.hasAttribute('data-au-add-files')) { pauseInspection(); setDetail('sources',true); }
       else if (target.hasAttribute('data-au-expand-process')) { pauseInspection(); setGraphExpanded(target.getAttribute('aria-expanded') !== 'true'); drawEdges(); }
-      else if (target.hasAttribute('data-au-detail')) { pauseInspection(); setDetail(target.dataset.auDetail); }
+      else if (target.hasAttribute('data-au-detail')) {
+        pauseInspection(); setDetail(target.dataset.auDetail);
+        // A missing document named by the result opens at its own checklist row.
+        const type = target.dataset.auOutcomeDocument, row = type ? [...host.querySelectorAll('[data-au-panel="documents"] .au-obligation')].find(element => element.dataset.auDocument === type) : null;
+        if (row) { row.querySelector('.au-document-choice')?.focus({preventScroll:true}); row.scrollIntoView?.({block:'nearest',behavior:reduced?.matches ? 'instant' : 'smooth'}); }
+      }
       else if (target.hasAttribute('data-au-back-process')) {
         const node = [...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
         node?.focus({preventScroll:true}); revealGraphNode(node); drawEdges();

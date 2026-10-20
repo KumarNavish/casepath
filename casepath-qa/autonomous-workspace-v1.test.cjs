@@ -3328,6 +3328,7 @@ test('outcome markup leads with recorded sentences, names open facts and the dra
  assert.ok(html.startsWith(`<p class="au-outcome-summary" data-au-outcome-recorded>${escapeText(saved.outcome.summary)}</p>`),'the recorded summary leads');
  assert.ok(html.includes(`<li data-au-outcome-issue>${escapeText(saved.outcome.issues[0])} <button type="button" class="au-link au-outcome-cite" data-au-source="${saved.outcome.citations[0].artifact_id}"`),'the recorded issue carries its citation link');
  assert.match(html,/data-au-outcome-open-facts><span class="au-outcome-key">Open<\/span> <span class="au-outcome-value"><span class="au-outcome-fact">Rent arrears<\/span>/);
+ assert.match(html,/Rent arrears<\/span><span aria-hidden="true">&nbsp;· <\/span><span class="au-outcome-fact">Tenancy extension<\/span>/,'the separator stays with the preceding fact so no line starts with a dot');
  assert.match(html,/<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next<\/span> <span class="au-outcome-value">Await the named evidence or an authorized external action\./);
  assert.match(html,/data-au-draft-status="no_gap">No document gap identified<\/p>/);
  assert.doesNotMatch(html,/<details|Some facts still need proof|More evidence needed|Waiting for proof/);

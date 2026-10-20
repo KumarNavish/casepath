@@ -268,6 +268,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace :is(.au-document-open,.au-document-choice):hover { color:var(--au-accent); }
 .au-workspace :is(.au-document-open,.au-document-choice) > strong { grid-column:1; }
 .au-workspace :is(.au-document-open,.au-document-choice) > span:not(.au-meta,.au-document-decision) { grid-column:2; grid-row:1 / 3; color:var(--au-muted); font-size:16px; }
+/* When a row has both a route and a review state, each keeps its own line instead of overprinting the shared cell.
+   :where() keeps the base specificity, so the single-column forming rail and narrow layouts still win. */
+.au-workspace :is(.au-document-open,.au-document-choice) > span:not(.au-meta,.au-document-decision):where(:has(~ span:not(.au-meta,.au-document-decision))) { grid-row:1; }
+.au-workspace :is(.au-document-open,.au-document-choice) > span:not(.au-meta,.au-document-decision):where(span:not(.au-meta,.au-document-decision) ~ *) { grid-row:2; }
 .au-workspace :is(.au-document-open,.au-document-choice) > :is(.au-meta,.au-document-decision) { grid-column:1; color:var(--au-muted); font-size:16px; }
 .au-workspace .au-process-question { max-width:900px; width:100%; margin:16px auto 8px; }
 
