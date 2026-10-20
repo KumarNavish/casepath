@@ -2887,6 +2887,20 @@ test('choosing a step whose answer starts below the screen moves focus with the 
  assert.match(ui.stepDetailMarkup(state(),'branch'),/<h3 class="au-step-detail-title" tabindex="-1">/);
 });
 
+test('a mounted featured replay names a fictional case, says View only on the public site, and unhides the reading guide with its safety note',async t=>{
+ const language=require('../casepath/assets/autonomous-language-v1.js'),before=globalThis.CASEPATH_PUBLIC_READ_ONLY;t.after(()=>{if(before===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=before;});
+ for(const publicSite of [false,true]) await t.test(publicSite?'public':'writable',async t=>{
+  globalThis.CASEPATH_PUBLIC_READ_ONLY=publicSite;
+  const tour=tourSkipFixture(t),legend={hidden:true},query=tour.f.container.querySelector;tour.f.container.querySelector=selector=>selector==='[data-au-role-legend]'?legend:query(selector);
+  await settle();await tour.controller.showDemonstration();await waitFor(()=>tour.timers.length===1);
+  const header=tour.f.host.innerHTML.match(/class="au-reference-mode"[^>]*>([^<]*)<\/p>/)?.[1];
+  assert.match(header,new RegExp(`^Replay(?: · recorded [A-Z][a-z]{2} \\d{1,2}, \\d{4})?(?: · fixed rules)? · Fictional case${publicSite?' · View only':''}$`));
+  assert.equal(legend.hidden,false,'the reading guide is shown during a replay with history');
+  const guide=tour.f.container.innerHTML.match(/<div data-au-role-legend hidden>([\s\S]*?)<\/div><div class="au-body"/)?.[1]||'';
+  assert.ok(guide.includes(language.copy.noRealWorldAction.replace(/'/g,'&#39;')),'the shown guide carries the no-real-world-action note');
+ });
+});
+
 test('Cases cold click can finish packet acquisition inside its original300ms choice',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),head=deferredRead();let assetSignal;
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')||path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
