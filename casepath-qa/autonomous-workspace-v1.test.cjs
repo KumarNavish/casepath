@@ -6,7 +6,7 @@ const ui = require('../casepath/assets/autonomous-workspace-v1.js');
 const sha = value => createHash('sha256').update(value).digest('hex');
 const hash = char => char.repeat(64);
 // The header names what is shown: a replay line never claims an unrun intake.
-const REPLAY_LINE = /class="au-reference-mode"[^>]*>Replay(?: · recorded \d{1,2} [A-Z][a-z]{2} \d{4})?(?: · fixed rules)?(?: · Fictional case)?(?: · View only)?<\/p>/;
+const REPLAY_LINE = /class="au-reference-mode"[^>]*>Replay(?: · recorded [A-Z][a-z]{2} \d{1,2}, \d{4})?(?: · fixed rules)?(?: · Fictional case)?(?: · View only)?<\/p>/;
 const REPLAY_LINE_ALL = new RegExp(REPLAY_LINE.source,'g');
 function state(extra={}) {
   return {claim_id:'claim-a',title:'Original incoming claim',revision:3,state_sha256:hash('a'),status:'running',
@@ -2143,7 +2143,7 @@ test('a writable demonstration with nine unrun originals shows an honest overvie
  assert.equal(routing.hash,'#autonomous/demonstration');assert.equal(api.calls.filter(row=>row.init.method&&row.init.method!=='GET').length,0);
  assert.equal(ui.rosterUnrun(catalog),true);assert.equal(ui.rosterUnrun(catalog.slice(1)),false,'a missing roster row is unknown, not unrun');
  const mixed=catalog.map((row,index)=>index===2?{...row,revision:48,mode:'saved'}:row);assert.equal(ui.rosterUnrun(mixed),false);
- const overview=ui.demonstrationOverviewMarkup(mixed);assert.match(overview,/1 of 9 cases have a saved history/);assert.match(overview,/Saved result · revision 48/);assert.equal((overview.match(/Not run in this workspace/g)||[]).length,8);
+ const overview=ui.demonstrationOverviewMarkup(mixed);assert.match(overview,/1 of 9 cases has a saved history/);assert.match(ui.demonstrationOverviewMarkup(mixed.map(row=>row.revision>0?row:{...row,revision:2})),/9 of 9 cases have a saved history/);assert.match(overview,/Saved result · revision 48/);assert.equal((overview.match(/Not run in this workspace/g)||[]).length,8);
 });
 
 test('an unrun reference outline is named as not run and has no transport',()=>{

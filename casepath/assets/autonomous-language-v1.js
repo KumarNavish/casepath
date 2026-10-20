@@ -270,9 +270,10 @@
       ? ['memory','saved steps for reuse'] : ['memory','did not save the steps'];
     return {roleId,roleLabel:roles[roleId].label,past};
   }
+  // The viewer's local day in the same format as the 'Last:' time beneath it.
   const recordedDay = value => {
     const time = Date.parse(text(value));
-    return Number.isFinite(time) ? new Intl.DateTimeFormat('en-GB',{timeZone:'UTC',day:'numeric',month:'short',year:'numeric'}).format(new Date(time)) : '';
+    return Number.isFinite(time) ? new Intl.DateTimeFormat('en',{dateStyle:'medium'}).format(new Date(time)) : '';
   };
   // One header phrase names what the viewer is looking at. Only corpus or
   // featured originals are fictional; an added case never inherits that word.
