@@ -316,7 +316,7 @@ test('fact selection exposes only its exact original passage and source inspecti
  await page.locator('[data-au-panel="step"] [data-au-fact-select="condition:family_home"]').click();
  assert.deepEqual(await page.locator('[data-au-evidence-path] .au-reading-passages q').allTextContents(),[citation.quote]);
  assert.equal(await page.locator('.au-reading-fact').getAttribute('data-au-fact'),fact.fact_id);
- assert.equal(await page.locator('.au-reading-fact .au-fact-summary').textContent(),'Applies');assert.equal(await page.locator('.au-reading-fact > details > p').textContent(),fact.summary);
+ assert.equal(await page.locator('.au-reading-fact [aria-current="true"] .au-subject-verdict').textContent(),'Applies');assert.equal(await page.locator('.au-reading-fact .au-fact-summary').textContent(),fact.summary,'the selected subject shows its recorded reason, not folded');
  assert.equal(await page.locator('.au-reading-question').textContent(),language.stepLabel(saved(robin).graph.nodes.find(node=>node.node_id==='lt_family')));
  assert.equal(await page.locator('[data-au-evidence-path] select').count(),0,'objects are selected with contextual buttons');
  const requirement=page.locator('[data-au-evidence-path] [data-au-document="spouse_notice_copy"]');

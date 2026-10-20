@@ -645,41 +645,60 @@
   }
   const sentence = value => /[.!?…]$/u.test(value.trim()) ? value.trim() : `${value.trim()}.`;
   const recordTime = timestamp => timestamp && Number.isFinite(Date.parse(timestamp)) ? `<time datetime="${h(timestamp)}">${h(dateLabel(timestamp))}</time>` : '';
+  // Every passage a record cites is reachable: the first is shown in its
+  // context with the exact span marked, the rest follow as source links.
+  function recordMorePassagesMarkup(state, trace, citations, origin) {
+    if (!citations.length) return '';
+    const openable = citation => list(state?.source_descriptors).some(row => row.artifact_id === citation.artifact_id);
+    return `<section class="au-record-more" data-au-record-more aria-label="Other cited passages"><p class="au-record-more-title">${citations.length === 1 ? '1 more cited passage' : `${citations.length} more cited passages`}</p><ul>${citations.map((citation,index) => {
+      const link = openable(citation), locator = `<span class="au-record-more-locator">${h(citationLocator(state,trace,citation))}${link ? '<span aria-hidden="true"> ↗</span>' : ''}</span>`, quote = `<q>${h(citation.quote)}</q>`;
+      return `<li>${link ? `<button type="button" class="au-source-link au-record-more-source" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="${h(`${origin}:${index+1}`)}">${locator}${quote}</button>` : `${locator}${quote}`}</li>`;
+    }).join('')}</ul></section>`;
+  }
+  const quotedCitations = rows => list(rows).filter(row => row?.artifact_id && typeof row.quote === 'string');
   function recordExplanation(kind, record, context = {}) {
     const state = context.state || {}, events = list(context.events), trace = context.trace || null, origin = `record:${kind}:${context.id || ''}`;
-    let title = '', what = '', role = '', citation = null, result = '', revision = '', time = '', caption = '';
+    let title = '', what = '', role = '', citations = [], result = '', revision = '', time = '', caption = '', revisionLabel = 'Accepted revision';
     const roleValue = (roleId, how = '') => `${roleBadge(roleId)}${how ? ` <span class="au-record-how">${h(how)}</span>` : ''}`;
     if (!record) return {title:'Details',html:recordRowsMarkup([{id:'what',label:'What happened',value:'This record is not available in the current view.'}])};
     if (kind === 'operation' || kind === 'operation-attempt') {
       const shown = language.operationPresentation(record,{state,history:true,documents:[...list(state.source_descriptors),...list(state.graph?.document_catalog)]}), subject = operationSubject(record,state,trace);
-      title = shown.label; what = sentence(`${shown.label}${subject ? `: ${subject}` : ''}`); role = roleValue(shown.roleId,shown.how !== 'CasePath' ? shown.how : '');
-      citation = operationCitation(record,trace);
-      if (!citation && record.object?.type === 'node') { const via = stepCitation(trace,record.object.id); if (via) { citation = via.source; caption = `Cited for ${operationSubject(via,state,trace) || 'this step'}`; } }
+      title = subject || shown.label; what = sentence(`${shown.label}${subject ? `: ${subject}` : ''}`); role = roleValue(shown.roleId,shown.how !== 'CasePath' ? shown.how : '');
+      const own = operationCitation(record,trace); citations = own ? [own] : [];
+      if (!own && record.object?.type === 'node') { const via = stepCitation(trace,record.object.id); if (via) { citations = [via.source]; caption = `Cited for ${operationSubject(via,state,trace) || 'this step'}`; } }
       // A recorded decision speaks for itself; templated status words only accompany other operations.
       result = [...new Set([text(shown.recordedResult).trim(),record.kind === 'decision' && text(shown.recordedResult).trim() ? '' : recordedResultLabel(record,state)].filter(value => value && value !== 'Recorded in History.'))].join(' ');
-      const checkpoint = kind === 'operation' && [...list(trace?.checkpoints)].reverse().find(row => row.after_operation < record.seq);
-      if (checkpoint) { revision = `${checkpoint.revision} at this point · operation ${record.seq}`; const event = list(checkpoint.events).find(row => row.seq === checkpoint.revision); time = recordTime(event?.timestamp) ? `${recordTime(event.timestamp)} · when revision ${h(checkpoint.revision)} was saved` : ''; }
-      else revision = Number.isSafeInteger(record.seq) ? `Not recorded for operation ${record.seq}` : '';
+      // A working step is a proposal inside the run, never an accepted event;
+      // the row names the accepted revision the case stood at instead.
+      revisionLabel = 'Accepted';
+      const checkpoint = kind === 'operation' && [...list(trace?.checkpoints)].reverse().find(row => row.after_operation < record.seq), step = Number.isSafeInteger(record.seq) ? `working step ${record.seq}` : 'a working step';
+      if (checkpoint) { revision = `No · ${step} while the case stood at revision ${checkpoint.revision}`; const event = list(checkpoint.events).find(row => row.seq === checkpoint.revision); time = recordTime(event?.timestamp) ? `${recordTime(event.timestamp)} · when revision ${h(checkpoint.revision)} was saved` : ''; }
+      else revision = `No · ${step}`;
     } else if (kind === 'event') {
       const shown = language.eventPresentation(record), semantic = semanticEventRecord(state,record);
-      title = historyLabel(record); what = sentence(`${shown.roleLabel} ${shown.past}${semantic?.title ? `: ${semantic.title}` : ''}`); role = roleValue(shown.roleId);
-      citation = semantic?.citations?.[0] || citationRows(record.payload?.result)[0] || citationRows(record.payload?.outcome)[0] || null;
+      title = Number.isSafeInteger(record.seq) ? `Revision ${record.seq}` : 'Saved record'; what = sentence(`${shown.roleLabel} ${shown.past}${semantic?.title ? `: ${semantic.title}` : ''}`); role = roleValue(shown.roleId);
+      citations = [semantic?.citations,citationRows(record.payload?.result),citationRows(record.payload?.outcome)].map(quotedCitations).find(rows => rows.length) || [];
       result = text(record.payload?.summary) || text(record.payload?.reason) || text(record.payload?.outcome?.summary) || text(semantic?.summary);
       revision = Number.isSafeInteger(record.seq) ? String(record.seq) : ''; time = recordTime(record.timestamp);
     } else if (kind === 'outcome') {
       const outcome = record.outcome, deferral = record.deferral, event = [...list(events)].reverse().find(row => ['outcome.recorded','work.completed','work.deferred'].includes(row.kind));
-      const shown = event ? language.eventPresentation(event) : outcome ? {roleId:'rulebook',roleLabel:'Rulebook',past:'saved the result'} : {roleId:'casepath',roleLabel:'CasePath',past:'stopped the checks'};
-      title = outcome ? 'Recorded result' : 'Work stopped'; what = `${shown.roleLabel} ${shown.past}.`; role = roleValue(shown.roleId);
-      citation = outcome ? outcomeCitation(state,outcome) : null; result = text(outcome?.summary) || text(outcome?.reason) || text(deferral?.reason);
-      revision = event ? String(event.seq) : Number.isSafeInteger(state.revision) ? String(state.revision) : ''; time = recordTime(event?.timestamp);
+      title = outcome ? 'Recorded result' : 'Work stopped';
+      if (event) { const shown = language.eventPresentation(event); what = `${shown.roleLabel} ${shown.past}.`; role = roleValue(shown.roleId); revision = String(event.seq); time = recordTime(event.timestamp); }
+      else {
+        // Without its journal event in view, the record does not say who saved it or when.
+        what = outcome ? 'This result is part of the saved case. Its journal entry is not in the loaded history.' : 'The checks stopped. Its journal entry is not in the loaded history.';
+        revision = Number.isSafeInteger(state.revision) ? `Not in the loaded history · the case at revision ${state.revision} includes it` : 'Not in the loaded history';
+      }
+      citations = outcome ? openableCitations(state,outcome) : []; result = text(outcome?.summary) || text(outcome?.reason) || text(deferral?.reason);
     } else if (kind === 'action') {
       const action = record.result || {}, receipt = record.receipt || {}, shown = language.eventPresentation({kind:'action.completed'}), seq = Number.isSafeInteger(receipt.parent_revision) ? receipt.parent_revision+1 : null;
       const step = [action.node_id,...list(action.node_ids)].map(id => list(state.graph?.nodes).find(node => node.node_id === id)).find(Boolean);
-      title = actionLabel(state,action); what = `${shown.roleLabel} ${shown.past}${step ? `: ${language.stepLabel(step)}` : ''}.`; role = roleValue(shown.roleId); citation = citationRows(action)[0] || null;
+      // The title names the step; the recorded sentence stays in Result only.
+      title = step ? `Recorded action · ${language.stepLabel(step)}` : 'Recorded action'; what = `${shown.roleLabel} ${shown.past}${step ? `: ${language.stepLabel(step)}` : ''}.`; role = roleValue(shown.roleId); citations = quotedCitations(citationRows(action));
       result = [text(action.summary) || text(action.reason),action.status ? statusLabel(action.status) : ''].filter(Boolean).join(' · ');
       revision = seq ? String(seq) : ''; time = recordTime(list(events).find(row => row.seq === seq)?.timestamp);
     } else if (kind === 'fact') {
-      title = language.factLabel(record); what = sentence(`Recorded finding: ${title}`); citation = citationRows(record)[0] || null;
+      title = language.factLabel(record); what = sentence(`Recorded finding: ${title}`); citations = quotedCitations(citationRows(record));
       result = `${statusLabel(record.verdict || record.status)} · ${factCaseText(record)}`;
     } else {
       const node = record.node, sentences = {claim:`The saved case at revision ${state.revision ?? 'not recorded'}.`,intake:'The source-backed intake check for this case.',
@@ -689,9 +708,11 @@
         quarantine:'A procedure that was not saved.','withheld-index':'Procedures that were not saved.','learning-event':'One recorded Knowledge event.'};
       what = sentences[kind] || 'The exact saved record.';
     }
-    const passage = citation ? recordPassageMarkup(state,trace,citation,{origin,focus:context.focus,caption}) : '';
-    const rest = recordRowsMarkup([{id:'role',label:'Role',value:role,html:true},{id:'source',label:'Source',value:citation ? citationLocator(state,trace,citation) : ['operation','operation-attempt','event','outcome','action','fact'].includes(kind) ? 'None cited' : ''},
-      {id:'result',label:'Result',value:result},{id:'revision',label:'Accepted revision',value:revision},{id:'time',label:'Time',value:time || (['event','outcome','action','operation'].includes(kind) ? 'Not recorded' : ''),html:Boolean(time)}]);
+    const first = citations[0] || null;
+    const passage = first ? `${recordPassageMarkup(state,trace,first,{origin,focus:context.focus,caption})}${recordMorePassagesMarkup(state,trace,citations.slice(1),origin)}` : '';
+    const source = first ? `${citationLocator(state,trace,first)}${citations.length > 1 ? ` · passage 1 of ${citations.length}` : ''}` : ['operation','operation-attempt','event','outcome','action','fact'].includes(kind) ? 'None cited' : '';
+    const rest = recordRowsMarkup([{id:'role',label:'Role',value:role,html:true},{id:'source',label:'Source',value:source},
+      {id:'result',label:'Result',value:result},{id:'revision',label:revisionLabel,value:revision},{id:'time',label:'Time',value:time || (['event','outcome','action','operation'].includes(kind) ? 'Not recorded' : ''),html:Boolean(time)}]);
     const lead = recordRowsMarkup([{id:'what',label:'What happened',value:what}]);
     return {title,html:context.passageFirst && passage ? `${passage}${lead}${rest}` : `${lead}${passage}${rest}`};
   }
@@ -1020,10 +1041,10 @@
   function factRecordMarkup(state, fact) {
     return `<article class="au-fact" data-au-fact="${h(fact.fact_id)}"><strong>${h(name(fact) || words(fact.flag))}</strong><span>${h(statusLabel(fact.verdict || fact.status))}</span>${fact.summary || fact.reason ? `<details><summary>Details</summary><p>${h(fact.summary || fact.reason)}</p></details>` : ''}${sourceButtons(state,fact)}${['unresolved','unknown','insufficient'].includes(fact.verdict || fact.status) ? button('Add evidence','data-au-add-files') : ''}<details class="au-technical-record" data-au-disclosure="fact-record:${h(fact.fact_id)}"><summary>Details</summary><pre class="au-record-body">${h(JSON.stringify(fact,null,2))}</pre></details></article>`;
   }
-  function evidencePathMarkup(state, selected, projection = {}, context = {}, forming = false) {
+  function evidencePathMarkup(state, selected, projection = {}, context = {}, forming = false, options = {}) {
     const r = evidenceRelationships(state,selected,context), {node,fact,document:requirement,evaluation} = r;
     if (!node) return forming ? `<div class="au-reading-column au-opening-content" data-au-evidence-path>${originalText(state) ? `<h2>Original message</h2><pre class="au-original-message">${h(originalText(state))}</pre>` : ''}${acquiredContentMarkup(state,projection) || sourceListMarkup(state,list(state.source_descriptors),'originals',projection)}</div>` : openingContentMarkup(state,projection);
-    if (!forming) return stepDetailMarkup(state,selected,projection,context);
+    if (!forming) return stepDetailMarkup(state,selected,projection,context,options);
     const citations = citationRows(fact), capability = projection.node_capabilities?.[selected];
     const sources = citations.map(citation => `<button type="button" class="au-source-link au-evidence-source" data-au-source-identity="${h(sourceObjectIdentity(state,citation.artifact_id))}" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="path:${h(selected)}:${h(fact.fact_id)}"><span class="au-evidence-source-label">${h(sourceLabel(state,citation.artifact_id))}<span aria-hidden="true">↗</span></span>${citation.quote ? `<q>${h(citation.quote)}</q>` : '<span>Open cited source</span>'}</button>`).join('');
     const route = requirement?.route_state || requirement?.status || 'pending', review = requirement?.review_state;
@@ -1049,16 +1070,34 @@
     for (const doc of r.documents) if (!rows.some(row => row.requirement && requirementIdentity(row.requirement) === requirementIdentity(doc))) rows.push({id:`document:${requirementIdentity(doc)}`,document:doc,established:doc.review_state === 'sufficient',requirement:doc,citation:null});
     return rows;
   }
+  // Each subject carries exactly one state. A question whose document the
+  // recorded route does not require is moot, so it is not called open.
+  function subjectEvaluation(state, row) {
+    return row.requirement ? {...row.requirement,...list(state.evaluation?.documents).find(doc => doc.document_type === row.requirement.document_type)} : null;
+  }
+  function subjectState(state, row) {
+    if (row.established) return 'established';
+    const evaluated = subjectEvaluation(state,row);
+    return evaluated && evaluated.review_state !== 'sufficient' && ['not_needed','inactive','excluded'].includes(evaluated.route_state || evaluated.status || '') ? 'not_needed' : 'open';
+  }
   function subjectLineMarkup(state, row, current, passageShown = false) {
     const fact = row.fact, verdict = String(fact?.verdict ?? fact?.status ?? '');
     const subject = fact ? language.factLabel(fact) : name(row.document) || 'Recorded document', document = row.requirement ? name(row.requirement) || language.documentTitle(row.requirement) : '';
-    const evaluated = row.requirement ? {...row.requirement,...list(state.evaluation?.documents).find(doc => doc.document_type === row.requirement.document_type)} : null;
-    const word = ['true','false'].includes(verdict) ? `<span class="${current ? 'au-fact-summary' : 'au-subject-verdict'}">${h(statusLabel(verdict))}</span>` : '';
-    if (row.established) return `<strong class="au-subject-state">Established:</strong> <span class="au-subject-name">${h(subject)}</span>${word ? ` · ${word}` : ''}${row.citation ? passageShown ? ' — cited above' : ` — <q class="au-subject-quote">${h(subjectQuote(row.citation.quote))}</q>` : ' · no passage cited'}`;
+    const evaluated = subjectEvaluation(state,row), standing = subjectState(state,row);
+    const word = ['true','false'].includes(verdict) ? `<span class="au-subject-verdict">${h(statusLabel(verdict))}</span>` : '';
+    if (standing === 'established') return `<strong class="au-subject-state">Established:</strong> <span class="au-subject-name">${h(subject)}</span>${word ? ` · ${word}` : ''}${row.citation ? passageShown ? ' — cited above' : ` — <q class="au-subject-quote">${h(subjectQuote(row.citation.quote))}</q>` : ' · no passage cited'}`;
+    if (standing === 'not_needed') return `<strong class="au-subject-state">Not needed:</strong> <span class="au-subject-name">${h(subject)}</span> · ${h(document)} is not required on the recorded route`;
     const route = evaluated?.route_state || evaluated?.status || '';
-    const need = !document ? '' : evaluated?.review_state === 'sufficient' ? ` · not established from ${h(document)}` : ['not_needed','inactive','excluded'].includes(route) ? ` · ${h(document)} is not required on the recorded route` : route === 'held_behind_question' ? ` · may need <span class="au-subject-need">${h(document)}</span>` : ` · needs <span class="au-subject-need">${h(document)}</span>`;
+    const need = !document ? '' : evaluated?.review_state === 'sufficient' ? ` · not established from ${h(document)}` : route === 'held_behind_question' ? ` · may need <span class="au-subject-need">${h(document)}</span>` : ` · needs <span class="au-subject-need">${h(document)}</span>`;
     const timing = {needed_later:'Needed after its step is reached.',needed_now:'Listed as needed now.'}[route] || '';
     return `<strong class="au-subject-state">Open:</strong> <span class="au-subject-name">${h(subject)}</span>${need}${timing ? ` <span class="au-document-route">${h(timing)}</span>` : ''}`;
+  }
+  // The step's own recorded action: its result sentence and cited passages.
+  function stepAction(state, selected) {
+    return [...list(state.actions)].reverse().map(entry => entry?.result || entry).find(row => row && (row.node_id === selected || list(row.node_ids).includes(selected))) || null;
+  }
+  function stepPassageButton(state, citation, origin) {
+    return `<button type="button" class="au-source-link au-evidence-source" data-au-source-identity="${h(sourceObjectIdentity(state,citation.artifact_id))}" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="${h(origin)}"><span class="au-evidence-source-label">${h(sourceLabel(state,citation.artifact_id))}<span aria-hidden="true">↗</span></span>${citation.quote ? `<q>${h(citation.quote)}</q>` : '<span>Open cited source</span>'}</button>`;
   }
   function stepVersionMarkup(state) {
     const uses = list(state.knowledge_uses);
@@ -1068,14 +1107,19 @@
       return `<span class="au-step-version-used" data-au-knowledge-use="${h(use.knowledge_sha256 || use.knowledge_id || use.version_id)}">${knowledgeLink(use,`v${use.version || use.version_id}`)} · ${h(procedureLabel(use))}</span>${later.map(item => `<span class="au-step-version-later"> · Later version saved from this case: ${knowledgeLink(item,`v${item.version}`)}</span>`).join('')}`;
     }).join('<br>')}</span></p>`;
   }
-  function stepDetailMarkup(state, selected, projection = {}, context = {}) {
+  function stepDetailMarkup(state, selected, projection = {}, context = {}, options = {}) {
     const r = evidenceRelationships(state,selected,context), {node,evaluation} = r;
     if (!node) return openingContentMarkup(state,projection);
     const rows = stepSubjects(state,r), selectedRow = rows.find(row => row.fact && row.fact.fact_id === r.fact?.fact_id);
     const passageRow = selectedRow?.citation ? selectedRow : rows.find(row => row.citation);
     const passageFact = passageRow?.fact, capability = projection.node_capabilities?.[selected];
-    const sources = passageFact ? citationRows(passageFact).map(citation => `<button type="button" class="au-source-link au-evidence-source" data-au-source-identity="${h(sourceObjectIdentity(state,citation.artifact_id))}" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="path:${h(selected)}:${h(passageFact.fact_id)}"><span class="au-evidence-source-label">${h(sourceLabel(state,citation.artifact_id))}<span aria-hidden="true">↗</span></span>${citation.quote ? `<q>${h(citation.quote)}</q>` : '<span>Open cited source</span>'}</button>`).join('') : '';
-    const passages = sources ? `<section class="au-reading-passages" aria-label="Cited passage">${passageRow !== selectedRow ? `<p class="au-meta">Cited for ${h(language.factLabel(passageFact))}</p>` : ''}${sources}</section>` : !list(state.facts).some(item => citationRows(item).length) ? acquiredContentMarkup(state,projection) : '';
+    const sources = passageFact ? citationRows(passageFact).map(citation => stepPassageButton(state,citation,`path:${selected}:${passageFact.fact_id}`)).join('') : '';
+    // A step without a cited fact answers with its own recorded action: the
+    // first passage that action cites, then the others one disclosure away.
+    const action = stepAction(state,selected), actionCitations = action ? citationRows(action).filter(row => row?.artifact_id && typeof row.quote === 'string' && list(state.source_descriptors).some(source => source.artifact_id === row.artifact_id)) : [];
+    const actionPassages = !sources && actionCitations.length ? `<section class="au-reading-passages" aria-label="Cited passage" data-au-step-action-passages><p class="au-meta">Cited for this step's recorded result</p>${stepPassageButton(state,actionCitations[0],`path:${selected}:action:0`)}${actionCitations.length > 1 ? `<details class="au-more-passages" data-au-disclosure="step-passages:${h(selected)}"><summary>${actionCitations.length === 2 ? '1 more cited passage' : `${actionCitations.length-1} more cited passages`}</summary>${actionCitations.slice(1).map((citation,index) => stepPassageButton(state,citation,`path:${selected}:action:${index+1}`)).join('')}</details>` : ''}</section>` : '';
+    const passages = sources ? `<section class="au-reading-passages" aria-label="Cited passage">${passageRow !== selectedRow ? `<p class="au-meta">Cited for ${h(language.factLabel(passageFact))}</p>` : ''}${sources}</section>` : actionPassages || (!list(state.facts).some(item => citationRows(item).length) ? acquiredContentMarkup(state,projection) : '');
+    const stepResult = text(action?.summary).trim() ? `<p class="au-step-result au-outcome-row" data-au-step-result><span class="au-outcome-key">Step result</span> <span class="au-outcome-value">${h(text(action.summary).trim())}</span></p>` : '';
     // One element carries the focused requirement's identity; other subjects
     // select their own fact (and its requirement) with a single control each.
     const focused = r.document ? requirementIdentity(r.document) : null, selects = new Set();
@@ -1083,21 +1127,26 @@
     const lines = rows.map(row => {
       const current = Boolean(selectedRow) && row === selectedRow, requirement = row.requirement, identity = requirement ? requirementIdentity(requirement) : '';
       const route = requirement ? list(state.evaluation?.documents).find(doc => doc.document_type === requirement.document_type)?.route_state || requirement.status || 'pending' : '';
-      const attributes = `class="au-subject" data-au-subject="${h(row.id)}" data-au-subject-state="${row.established ? 'established' : 'open'}"${row === focusRow ? ` data-au-document="${h(requirement.document_type)}" data-au-obligation="${h(identity)}" data-route="${h(route)}"` : requirement ? ` data-au-subject-document="${h(requirement.document_type)}"` : ''}${current ? ' aria-current="true"' : ''}`;
+      const attributes = `class="au-subject" data-au-subject="${h(row.id)}" data-au-subject-state="${subjectState(state,row)}"${row === focusRow ? ` data-au-document="${h(requirement.document_type)}" data-au-obligation="${h(identity)}" data-route="${h(route)}"` : requirement ? ` data-au-subject-document="${h(requirement.document_type)}"` : ''}${current ? ' aria-current="true"' : ''}`;
       const copy = subjectLineMarkup(state,row,current,Boolean(sources) && row === passageRow);
       const documentSelect = requirement && identity !== focused && !selects.has(identity) ? (selects.add(identity), ` data-au-document-select="${h(requirement.document_type)}" data-au-obligation-select="${h(identity)}"`) : '';
       const control = current ? '' : row.fact ? `data-au-fact-select="${h(row.fact.fact_id)}" data-au-fact-state="${h(row.fact.verdict || row.fact.status || '')}"${documentSelect}` : documentSelect.trim();
-      return `<li ${attributes}>${control ? `<button type="button" class="au-link au-subject-select" ${control}>${copy}</button>` : copy}</li>`;
+      // The selected subject's recorded reason is the answer, so it is shown, not folded.
+      const reason = current && row.fact && (text(row.fact.summary).trim() || text(row.fact.reason).trim() || subjectState(state,row) === 'open') ? `<p class="au-fact-summary">${h(factCaseText(row.fact))}</p>` : '';
+      return `<li ${attributes}>${control ? `<button type="button" class="au-link au-subject-select" ${control}>${copy}</button>` : copy}${reason}</li>`;
     }).join('');
-    const subjects = rows.length ? `<section class="au-step-subjects${r.fact ? ' au-reading-fact' : ''}"${r.fact ? ` data-au-fact="${h(r.fact.fact_id)}"` : ''} aria-label="What this step established and what is open"><ul class="au-subject-lines">${lines}</ul>${!r.fact ? '' : r.fact.summary || r.fact.reason ? `<details><summary>Recorded wording</summary><p>${h(factCaseText(r.fact))}</p></details>` : `<p class="au-meta">${h(factCaseText(r.fact))}</p>`}</section>` : '';
-    const legal = legalAuthorityRows(state);
+    const subjects = rows.length ? `<section class="au-step-subjects${r.fact ? ' au-reading-fact' : ''}"${r.fact ? ` data-au-fact="${h(r.fact.fact_id)}"` : ''} aria-label="What this step established and what is open"><ul class="au-subject-lines">${lines}</ul></section>` : '';
+    // The outcome's legal basis belongs to the step that records the result.
+    const legal = node.terminal === true ? legalAuthorityRows(state) : [];
     const rule = node.authority?.title ? `<p class="au-step-rule au-outcome-row"><span class="au-outcome-key">Rule</span> <span class="au-outcome-value">${h(procedureLabel({family:state.graph?.family,title:node.authority.title}))} procedure</span></p>` : '';
     const blocked = list(evaluation.blocked_by || evaluation.unresolved_dependencies);
     const branches = list(state.graph?.edges).filter(edge => edge.source_node_id === selected || edge.target_node_id === selected);
-    return `<div class="au-reading-column au-step-detail" data-au-evidence-path data-au-selected-step="${h(selected)}"><h3 class="au-step-detail-title">${h(name(node))}</h3>${passages}${subjects}${rule}${legal.length ? `<p class="au-step-legal au-outcome-row" data-au-step-legal><span class="au-outcome-key">Legal basis</span> <span class="au-outcome-value">Swiss Code of Obligations, ${h(legal.map(row => `art. ${row.article}`).join(', '))}</span></p>` : ''}${stepVersionMarkup(state)}<section class="au-reading-decision"><p class="au-step-line au-outcome-row"><span class="au-outcome-key">This step</span> <span class="au-outcome-value"><span class="au-step-status">${h(statusLabel(evaluation.execution_state || evaluation.state))}</span>${blocked.length ? ` · Requires ${blocked.map(id => `<button type="button" class="au-link" data-au-select="${h(id)}">${h(name(list(state.graph?.nodes).find(item => item.node_id === id)) || words(id))}</button>`).join(', ')}` : ''} ${recordButton('Details','step',selected)}</span></p></section>${capability?.authorized === false ? `<p class="au-reading-limit">${h(capability.reason || 'Execution is unavailable for this step.')}</p>` : ''}${branches.length ? `<nav class="au-reading-relations" aria-label="Connected decisions">${branches.map(edge => { const other = edge.source_node_id === selected ? edge.target_node_id : edge.source_node_id; return `<button type="button" class="au-link" data-au-select="${h(other)}">${edge.target_node_id === selected ? 'Requires' : 'Leads to'} ${h(name(list(state.graph?.nodes).find(item => item.node_id === other)) || words(other))}<span class="au-meta">${h(statusLabel(edgeState(state,edge.edge_id)))}</span></button>`; }).join('')}</nav>` : ''}</div>`;
+    const heading = options.title === false ? '' : `<h3 class="au-step-detail-title" tabindex="-1" data-au-step-detail-heading>${h(name(node))}</h3>`;
+    return `<div class="au-reading-column au-step-detail" data-au-evidence-path data-au-selected-step="${h(selected)}">${heading}${passages}${subjects}${stepResult}${rule}${legal.length ? `<p class="au-step-legal au-outcome-row" data-au-step-legal><span class="au-outcome-key">Legal basis</span> <span class="au-outcome-value">Swiss Code of Obligations, ${h(legal.map(row => `art. ${row.article}`).join(', '))} · basis of the recorded result</span></p>` : ''}${stepVersionMarkup(state)}</div><div class="au-reading-column au-step-record" data-au-step-record="${h(selected)}"><section class="au-reading-decision"><p class="au-step-line au-outcome-row"><span class="au-outcome-key">This step</span> <span class="au-outcome-value"><span class="au-step-status">${h(statusLabel(evaluation.execution_state || evaluation.state))}</span>${blocked.length ? ` · Requires ${blocked.map(id => `<button type="button" class="au-link" data-au-select="${h(id)}">${h(name(list(state.graph?.nodes).find(item => item.node_id === id)) || words(id))}</button>`).join(', ')}` : ''} ${recordButton('Details','step',selected)}</span></p></section>${capability?.authorized === false ? `<p class="au-reading-limit">${h(capability.reason || 'Execution is unavailable for this step.')}</p>` : ''}${branches.length ? `<nav class="au-reading-relations" aria-label="Connected decisions">${branches.map(edge => { const other = edge.source_node_id === selected ? edge.target_node_id : edge.source_node_id; return `<button type="button" class="au-link" data-au-select="${h(other)}">${edge.target_node_id === selected ? 'Requires' : 'Leads to'} ${h(name(list(state.graph?.nodes).find(item => item.node_id === other)) || words(other))}<span class="au-meta">${h(statusLabel(edgeState(state,edge.edge_id)))}</span></button>`; }).join('')}</nav>` : ''}</div>`;
   }
+  // The step title already heads this view above the map.
   function inspectorMarkup(state, selected, projection = {}, events = [], context = {}) {
-    return evidencePathMarkup(state,selected,projection,context);
+    return evidencePathMarkup(state,selected,projection,context,false,{title:false});
   }
 
   function eventLabel(event) {
@@ -1266,23 +1315,38 @@
     const at = limit ? summary.indexOf(limit) : -1;
     return at < 0 ? h(summary) : `${h(summary.slice(0,at))}<span class="au-outcome-open">${h(limit)}</span>${h(summary.slice(at+limit.length))}`;
   }
+  // Only citations whose source this case lists are linked; the reader then
+  // checks the exact span against the original.
+  function openableCitations(state, item) {
+    return citationRows(item).filter(citation => typeof citation?.artifact_id === 'string' && typeof citation.quote === 'string' && list(state.source_descriptors).some(source => source.artifact_id === citation.artifact_id));
+  }
   function outcomeCitation(state, outcome) {
-    return citationRows(outcome).find(citation => typeof citation?.artifact_id === 'string' && typeof citation.quote === 'string' && list(state.source_descriptors).some(source => source.artifact_id === citation.artifact_id)) || null;
+    return openableCitations(state,outcome)[0] || null;
+  }
+  function outcomeCiteMarkup(state, citations, role) {
+    return citations.map((citation,index) => `<button type="button" class="au-link au-outcome-cite" data-au-outcome-cite="${h(role)}" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="${h(`outcome:${role}:${index}`)}"><span class="au-outcome-cite-source">${h(sourceLabel(state,citation.artifact_id))}</span> <q>${h(subjectQuote(citation.quote,72))}</q><span aria-hidden="true"> ↗</span></button>`).join('');
+  }
+  // A prepared request stays readable in place; "no gap" names no document.
+  function outcomeDraftMarkup(draft) {
+    if (!draft.label) return '';
+    if (!draft.subject && !draft.body) return `<p class="au-outcome-draft" data-au-draft-status="${h(draft.status)}">${h(draft.label)}</p>`;
+    return `<details class="au-outcome-draft" data-au-draft-status="${h(draft.status)}" data-au-disclosure="outcome-draft"><summary>${h(draft.label)}</summary><div class="au-draft" data-au-draft>${draft.subject ? `<p class="au-draft-subject">${h(draft.subject)}</p>` : ''}${draft.body ? `<p class="au-draft-body">${h(draft.body)}</p>` : ''}</div></details>`;
   }
   function openFactsSentence(labels) {
     const shown = labels.slice(0,3), more = labels.length - shown.length;
     return `${shown.join(', ')}${more > 0 ? ` and ${more} more` : ''}`;
   }
   function outcomeSummaryMarkup(state, outcome = state.outcome) {
-    const shown = language.outcomePresentation({...state,outcome}), recorded = shown.recorded, citation = outcomeCitation(state,outcome || {});
+    const shown = language.outcomePresentation({...state,outcome}), recorded = shown.recorded, citations = openableCitations(state,outcome || {});
     const lead = recorded.summary ? `<p class="au-outcome-summary" data-au-outcome-recorded>${recordedSentenceMarkup(recorded.summary,shown.openItems)}</p>`
       : `<p class="au-outcome-summary">${h(shown.summary || shown.label)}</p>${shown.openItems ? `<p class="au-outcome-open">${h(shown.openItems)}</p>` : ''}${shown.support && !shown.findings.length ? `<p>${h(shown.support)}</p>` : ''}`;
-    const cite = origin => citation ? `<button type="button" class="au-link au-outcome-cite" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="${h(origin)}">${h(sourceLabel(state,citation.artifact_id))}<span aria-hidden="true"> ↗</span></button>` : '';
-    const issues = recorded.issues.length ? `<ul class="au-outcome-issues" aria-label="Recorded issue">${recorded.issues.map((issue,index) => `<li data-au-outcome-issue>${h(issue)}${index === 0 && citation ? ` ${cite('outcome:issue')}` : ''}</li>`).join('')}</ul>` : '';
+    // The outcome's citations support its recorded summary, so they follow it.
+    const cited = recorded.summary && citations.length ? `<p class="au-outcome-cited au-outcome-row" data-au-outcome-cited><span class="au-outcome-key">Cited</span> <span class="au-outcome-value">${outcomeCiteMarkup(state,citations,'summary')}</span></p>` : '';
+    const issues = recorded.issueRows.length ? `<ul class="au-outcome-issues" aria-label="Recorded issue">${recorded.issueRows.map(issue => { const own = openableCitations(state,issue); return `<li data-au-outcome-issue>${h(issue.text)}${own.length ? ` ${outcomeCiteMarkup(state,own,'issue')}` : ''}</li>`; }).join('')}</ul>` : '';
     const open = recorded.openFacts.length ? `<p class="au-outcome-facts au-outcome-row" data-au-outcome-open-facts><span class="au-outcome-key">Open</span> <span class="au-outcome-value">${recorded.openFacts.map(label => `<span class="au-outcome-fact">${h(label)}</span>`).join('<span aria-hidden="true">&nbsp;· </span>')}</span></p>` : '';
     const missing = recorded.missing.length ? `<p class="au-outcome-missing au-outcome-row" data-au-outcome-missing><span class="au-outcome-key">Needs</span> <span class="au-outcome-value">${recorded.missing.map(row => `<button type="button" class="au-link" data-au-detail="documents"${row.document_type ? ` data-au-outcome-document="${h(row.document_type)}"` : ''}>${h(row.label)}</button>`).join('<span aria-hidden="true">&nbsp;· </span>')}</span></p>` : '';
     const next = recorded.nextAction || shown.nextAction;
-    return `${lead}${issues}${open}${missing}${next ? `<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next</span> <span class="au-outcome-value">${h(next)}</span></p>` : ''}${recorded.draft.label ? `<p class="au-outcome-draft" data-au-draft-status="${h(recorded.draft.status)}">${h(recorded.draft.label)}</p>` : ''}${recorded.limits.length ? `<p class="au-outcome-limit" data-au-outcome-limit>${h(recorded.limits.join(' '))}</p>` : ''}`;
+    return `${lead}${cited}${issues}${open}${missing}${next ? `<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next</span> <span class="au-outcome-value">${h(next)}</span></p>` : ''}${outcomeDraftMarkup(recorded.draft)}${recorded.limits.length ? `<p class="au-outcome-limit" data-au-outcome-limit>${h(recorded.limits.join(' '))}</p>` : ''}`;
   }
   // Start stays focusable while unavailable, so its reason is announced
   // with it. aria-disabled blocks the action in the click handler.
@@ -2095,7 +2159,7 @@
     const planAttributes = planned?.release ? ` data-au-release-plan="${h(planned.release.artifact_sha256)}" data-au-release-profile-sha="${h(planned.release.profile_sha256)}" data-au-release-catalog-sha="${h(planned.release.catalog_sha256)}" data-au-release-rule-pack-sha="${h(planned.release.rule_pack_sha256)}" data-au-release-authority="none"` : planned ? ` data-au-planned-process="${h(planned.head_state_sha256)}" data-au-planned-head-revision="${planned.head_revision}" data-au-planned-graph-sha="${h(graph.graph_sha256)}" data-au-planned-rule-pack-sha="${h(planned.rule_pack_sha256)}" data-au-planned-knowledge="${h(planned.procedure?.knowledge_id || '')}" data-au-planned-version="${planned.procedure?.version || ''}" data-au-planned-definition-sha="${h(planned.procedure?.definition_sha256 || '')}" data-au-planned-authority="none"` : '';
     const planLabel = planned?.release ? trace?.unrun ? h(language.copy.procedureNotRun) : 'Procedure outline' : planned?.procedure ? knowledgeLink(planned.procedure,`${procedureLabel(planned.procedure)} · Version ${planned.procedure.version}`) : 'Recorded procedure · planned steps';
 
-    return `<section class="au-forming-work au-operation-stage" data-au-stage-phase="${map ? 'map' : 'source'}" data-au-forming="${!map}"${prefixIdentity}><div class="au-forming-layout au-stage-layout">${!map && sourceView ? `<div class="au-forming-reading au-stage-source au-stage-unbound-source">${sourceView}</div>` : ''}${graph ? `<section class="au-forming-process au-evidence-process au-stage-process" aria-label="${planned?.release ? 'Procedure outline' : planned ? 'Planned recorded process' : 'Case process'}"${planAttributes}${scope}>${recordedReuseMomentMarkup(reuseMoment)}${planned&&!reuseMoment ? `<p class="au-stage-plan-label${planned.procedure ? ' au-stage-reuse' : ''}">${planLabel}</p>` : ''}${graphMarkup(process,currentNode,working ? {} : projection,{overview:true,working,stage:{state,trace,map,planned:Boolean(planned),reuse:reuseMoment,excerpt:''}})}</section>` : ''}</div>${map && inspection.chosen && inspection.chosen === currentNode && list(state.graph?.nodes).some(row => row.node_id === currentNode) ? `<section class="au-stage-step-detail" data-au-stage-step-detail="${h(currentNode)}" aria-label="Selected step">${stepDetailMarkup(state,currentNode,projection,inspection.context || {})}</section>` : ''}${map && outcome?.summary ? `<div class="au-stage-outcome" data-au-stage-outcome>${outcomeSummaryMarkup(state,outcome)}${legalBasisMarkup({...state,outcome})}${use ? `<p class="au-stage-reuse">Reused procedure · ${knowledgeLink(use,`${procedureLabel(use)} · Version ${use.version || use.version_id}`,state.claim_id)}. This case still needed its own proof.</p>` : ''}</div>` : ''}</section>`;
+    return `<section class="au-forming-work au-operation-stage" data-au-stage-phase="${map ? 'map' : 'source'}" data-au-forming="${!map}"${prefixIdentity}><div class="au-forming-layout au-stage-layout">${!map && sourceView ? `<div class="au-forming-reading au-stage-source au-stage-unbound-source">${sourceView}</div>` : ''}${graph ? `<section class="au-forming-process au-evidence-process au-stage-process" aria-label="${planned?.release ? 'Procedure outline' : planned ? 'Planned recorded process' : 'Case process'}"${planAttributes}${scope}>${recordedReuseMomentMarkup(reuseMoment)}${planned&&!reuseMoment ? `<p class="au-stage-plan-label${planned.procedure ? ' au-stage-reuse' : ''}">${planLabel}</p>` : ''}${graphMarkup(process,currentNode,working ? {} : projection,{overview:true,working,stage:{state,trace,map,planned:Boolean(planned),reuse:reuseMoment,excerpt:''}})}</section>` : ''}</div>${map && outcome?.summary ? `<div class="au-stage-outcome" data-au-stage-outcome>${outcomeSummaryMarkup(state,outcome)}${legalBasisMarkup({...state,outcome})}${use ? `<p class="au-stage-reuse">Reused procedure · ${knowledgeLink(use,`${procedureLabel(use)} · Version ${use.version || use.version_id}`,state.claim_id)}. This case still needed its own proof.</p>` : ''}</div>` : ''}${map && inspection.chosen && inspection.chosen === currentNode && list(state.graph?.nodes).some(row => row.node_id === currentNode) ? `<section class="au-stage-step-detail" data-au-stage-step-detail="${h(currentNode)}" aria-label="Selected step">${stepDetailMarkup(state,currentNode,projection,inspection.context || {})}<p class="au-stage-step-back"><button type="button" class="au-link" data-au-back-process>Back to the steps</button></p></section>` : ''}</section>`;
   }
   function operationRoutePreference(fragment = '', search = '') {
     const query = fragment.includes('?') ? fragment.slice(fragment.indexOf('?')+1) : '';
@@ -2895,6 +2959,22 @@
       preserveClaimView();
     }
     function setView(name) { const legend=container.querySelector('[data-au-role-legend]'); if(legend)legend.hidden=name!=='claim' || !demoSession; if (name !== 'claim') { tour = null; for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute); } view = name; renderedClaimId = null; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); }
+    function revealStepAnswer(node) {
+      const answer = host.querySelector?.('[data-au-stage-step-detail]'), bounds = answer?.getBoundingClientRect?.(), height = root.innerHeight;
+      if (!bounds || !Number.isFinite(height)) return;
+      // The sticky header's scroll padding is not available to the answer's top edge.
+      const margin = 16, covered = Number.parseFloat(root.getComputedStyle?.(doc.documentElement)?.scrollPaddingTop) || 0;
+      let delta = 0;
+      if (bounds.top < covered || bounds.bottom > height) {
+        const end = bounds.top > 0 && bounds.height <= height - covered - 2*margin;
+        delta = end ? bounds.bottom - height + margin : bounds.top - covered - margin;
+        answer.scrollIntoView?.({block:end ? 'end' : 'start',behavior:reduced?.matches ? 'instant' : 'smooth'});
+      }
+      // Focus stays on the chosen step while it remains in view; otherwise it
+      // moves with the view to the answer's heading.
+      const place = node?.getBoundingClientRect?.();
+      if (!place || place.top - delta < covered || place.bottom - delta > height) answer.querySelector('[data-au-step-detail-heading]')?.focus({preventScroll:true});
+    }
     function revealGraphNode(node, center = false) {
       const viewport = host.querySelector('.au-graph-viewport');
       const area = viewport?.getBoundingClientRect?.(), bounds = node?.getBoundingClientRect?.();
@@ -4637,7 +4717,7 @@
       if (explain && recordExplained !== explanation.html) { explain.innerHTML = explanation.html; recordExplained = explanation.html; }
       const technical = body.querySelector('[data-au-record-technical]'); if (technical && opening) technical.open = false;
       if (opening && recordSelection.generic && explanation.title) recordDialog.querySelector('#auRecordTitle').textContent = explanation.title;
-      const context = body.querySelector('.au-record-context'); if (context) { const checkpoint = kind === 'operation' && [...list(operationTrace?.checkpoints)].reverse().find(row => row.after_operation < record?.seq); context.textContent = kind === 'operation' ? `History · operation ${record?.seq || ''}${checkpoint ? ` · accepted revision ${checkpoint.revision} at this point` : ''}` : ''; }
+      const context = body.querySelector('.au-record-context'); if (context) { const checkpoint = kind === 'operation' && [...list(operationTrace?.checkpoints)].reverse().find(row => row.after_operation < record?.seq); context.textContent = kind === 'operation' ? `History · working step ${record?.seq || ''}${checkpoint ? ` · the case stood at accepted revision ${checkpoint.revision}` : ''}` : ''; }
       const pre = body.querySelector('pre'); pre.dataset.auRecordKind = kind; pre.dataset.auRecordId = id; pre.textContent = JSON.stringify(record ?? null,null,2);
     }
     function openRecord(target) {
@@ -4645,7 +4725,7 @@
       // A fact chip or a step answers with its cited passage first.
       const chip = target.matches?.('.au-stage-fact'), step = target.matches?.('[data-au-node]'), label = target.textContent.trim();
       const start = Number(target.dataset?.auFactStartChar), end = Number(target.dataset?.auFactEndChar);
-      recordSelection = {kind:target.dataset.auInspect,id:target.dataset.auRecordId || '',passageFirst:Boolean(chip || step),focus:chip && Number.isSafeInteger(start) && Number.isSafeInteger(end) ? {start,end} : null,generic:!label || /^(?:Details|Technical record|Inspect)$/u.test(label)};
+      recordSelection = {kind:target.dataset.auInspect,id:target.dataset.auRecordId || '',passageFirst:Boolean(chip || step),focus:chip && Number.isSafeInteger(start) && Number.isSafeInteger(end) ? {start,end} : null,generic:Boolean(step) || !label || label.length > 80 || /^(?:Details|Technical record|Inspect)$/u.test(label)};
       recordReturn = {element:target,token:focusToken(target)}; recordExplained = null;
       recordDialog.querySelector('#auRecordTitle').textContent = recordSelection.kind === 'demo' ? 'Recorded investigations' : label || 'Details';
       synchronizeRecord(true); recordDialog.showModal();
@@ -4705,6 +4785,8 @@
       else if (target.hasAttribute('data-au-back-process')) {
         const node = [...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
         node?.focus({preventScroll:true}); revealGraphNode(node); drawEdges();
+        const bounds = node?.getBoundingClientRect?.();
+        if (bounds && (bounds.top < 0 || bounds.bottom > (root.innerHeight || Infinity))) node.scrollIntoView?.({block:'center',behavior:reduced?.matches ? 'instant' : 'smooth'});
       }
       else if (target.hasAttribute('data-au-fact-select') || target.hasAttribute('data-au-document-select')) {
         pauseInspection();
@@ -4751,10 +4833,11 @@
         setDetail('step',false,false); renderSelection(changed); rememberSelectionRoute();
         const node=[...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
         node?.focus({preventScroll:true});
-        // A step chosen on the settled map answers below it; bring that answer
-        // into view when it starts beyond the visible screen (narrow layouts).
-        const answer = host.querySelector?.('[data-au-stage-step-detail]'), top = answer?.getBoundingClientRect?.().top;
-        if (Number.isFinite(top) && top > (root.innerHeight || Infinity) - 96) answer.scrollIntoView?.({block:'start',behavior:reduced?.matches ? 'instant' : 'smooth'});
+        // A step chosen on the settled map answers below the recorded result.
+        // When that answer is not fully in view it is scrolled in; if the
+        // chosen step would then leave the screen, focus moves with the view
+        // to the answer's heading, and "Back to the steps" returns.
+        revealStepAnswer(node);
       } else if (target.hasAttribute('data-au-source')) {
         let citation; try { citation = target.dataset.auCitation ? JSON.parse(target.dataset.auCitation) : null; } catch (_) { notice('The source reference is invalid.',true); return; }
         openSource(target.dataset.auSource,citation,target);

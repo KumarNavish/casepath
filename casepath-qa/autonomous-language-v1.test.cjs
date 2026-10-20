@@ -484,14 +484,21 @@ test('recorded outcome fields lead and the draft line follows only its own recor
   assert.equal(view.summary,'Some facts still need proof.','the templated fallback is unchanged');assert.equal(JSON.stringify(saved),before);
   for(const state of recorded){
     const shown=language.outcomePresentation(state);
-    assert.deepEqual(shown.recorded.draft,{status:'draft',label:'Draft ready · not sent'});assert.deepEqual(shown.recorded.limits,state.outcome.authority_limits);
+    // A recorded empty missing list is the draft's own structure: it asks for no document.
+    assert.deepEqual(state.outcome.missing_evidence,[]);assert.deepEqual(shown.recorded.draft,{status:'no_gap',label:'No document gap identified'});assert.deepEqual(shown.recorded.limits,state.outcome.authority_limits);
     assert.ok(shown.recorded.summary.includes(shown.openItems),'the recorded limit stays inside the recorded sentence');
   }
   const draft={status:'prepared_not_sent',body:'No additional active document gap was identified.'};
   assert.equal(language.draftStatus({missing_evidence:[{document_type:'lease_contract'}],request_draft:draft}).status,'draft','a listed missing document is never described as no gap');
   assert.equal(language.draftStatus({request_draft:draft}).status,'draft','an unrecorded missing list is not an empty one');
-  assert.deepEqual(language.draftStatus({}),{status:'',label:''});assert.deepEqual(language.draftStatus({request_draft:{status:'unexpected'}}),{status:'recorded',label:'Draft recorded'});
-  assert.deepEqual(language.outcomePresentation({outcome:{issues:[{code:'source_discrepancy',reason:'Recorded discrepancy.'},'  ',null]}}).recorded.issues,['Recorded discrepancy.']);
+  assert.deepEqual(language.draftStatus({}),{status:'',label:''});assert.deepEqual(language.draftStatus({request_draft:{status:'unexpected'}}),{status:'recorded',label:'Draft recorded',subject:'',body:''});
+  // The line follows structure, not wording: a reworded or translated body changes nothing.
+  for(const body of ['Keine weitere Dokumentlücke festgestellt.','Nothing further is requested.','- Lease contract: still needed'])
+    assert.equal(language.draftStatus({missing_evidence:[],request_draft:{status:'prepared_not_sent',body}}).status,'no_gap',body);
+  const gap={missing_evidence:[{document_type:'termination_notice',label:'Termination notice'}],request_draft:{status:'prepared_not_sent',subject:'Evidence needed for the active claim process',body:'- Termination notice: required for lt_form.'}};
+  assert.deepEqual(language.draftStatus(gap),{status:'draft',label:'Draft ready · not sent',subject:gap.request_draft.subject,body:gap.request_draft.body},'a prepared request stays readable');
+  const citation={artifact_id:'src_1',quote:'Recorded passage.'};
+  assert.deepEqual(language.outcomePresentation({outcome:{issues:[{code:'source_discrepancy',reason:'Recorded discrepancy.',citations:[citation]},'  ',null,'Plain issue.']}}).recorded,{...language.outcomePresentation({outcome:{issues:[{code:'source_discrepancy',reason:'Recorded discrepancy.',citations:[citation]},'  ',null,'Plain issue.']}}).recorded,issues:['Recorded discrepancy.','Plain issue.'],issueRows:[{text:'Recorded discrepancy.',citations:[citation]},{text:'Plain issue.',citations:[]}]},'an issue keeps only its own citations');
 });
 
 test('fact labels name the subject without field identifiers',()=>{

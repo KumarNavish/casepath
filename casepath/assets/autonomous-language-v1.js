@@ -387,8 +387,11 @@
     const facts = list(state.facts);
     // Recorded sentences lead. The templated summary and next action above
     // remain the fallback for a record that has none of its own.
+    // An issue keeps only its own citations; the outcome's citations support
+    // the recorded summary, not any one issue.
+    const issueRows = list(outcome.issues).map(issue => ({text:issueText(issue),citations:issue && typeof issue === 'object' ? list(issue.citations) : []})).filter(row => row.text);
     const recorded = {summary:text(outcome.summary).trim() ? text(outcome.summary) : text(outcome.reason),
-      issues:list(outcome.issues).map(issueText).filter(Boolean),
+      issues:issueRows.map(row => row.text),issueRows,
       openFacts:list(outcome.unresolved_facts).map(row => factLabel(facts.find(fact => fact.fact_id === row?.fact_id) || row)),
       missing:list(outcome.missing_evidence).map(row => ({document_type:text(row?.document_type),label:documentTitle(row)})),
       nextAction:text(outcome.next_action).trim(),draft:draftStatus(outcome),
@@ -402,14 +405,16 @@
   function issueText(issue) {
     return typeof issue === 'string' ? issue.trim() : text(issue?.reason).trim() || text(issue?.summary).trim() || text(issue?.message).trim();
   }
-  // The draft's own record decides its line: a prepared request is never
-  // described as sent, and "no gap" needs both an empty missing list and the
-  // draft's recorded statement that no document gap was identified.
+  // The draft's line follows the recorded structure, never its wording: the
+  // controller writes one request line per recorded missing document, so a
+  // recorded empty missing list means the draft asks for nothing. A prepared
+  // request is never described as sent; its own subject and body stay readable.
   function draftStatus(outcome = {}) {
     const draft = outcome?.request_draft;
     if (!draft || typeof draft !== 'object') return {status:'',label:''};
-    if (Array.isArray(outcome.missing_evidence) && !outcome.missing_evidence.length && /\bno\b[^.]*\bdocument gap\b/iu.test(text(draft.body))) return {status:'no_gap',label:'No document gap identified'};
-    return draft.status === 'prepared_not_sent' ? {status:'draft',label:'Draft ready · not sent'} : {status:'recorded',label:'Draft recorded'};
+    if (Array.isArray(outcome.missing_evidence) && !outcome.missing_evidence.length) return {status:'no_gap',label:'No document gap identified'};
+    const readable = {subject:text(draft.subject).trim(),body:text(draft.body).trim()};
+    return draft.status === 'prepared_not_sent' ? {status:'draft',label:'Draft ready · not sent',...readable} : {status:'recorded',label:'Draft recorded',...readable};
   }
 
   function knowledgePresentation(value = {}, event = {}) {
@@ -435,6 +440,6 @@
       'The independent verifier rejected this knowledge candidate.':'The independent check rejected these steps.'
     })[text(reason)] || 'These steps were not saved. Open Details for the recorded reason.';
   }
-  return Object.freeze({refusalReason,roles,copy,tabs,stepLabels,documentLabels,plainLabel,stepLabel,documentTitle,factLabel,draftStatus,
+  return Object.freeze({refusalReason,roles,copy,tabs,stepLabels,documentLabels,plainLabel,stepLabel,documentTitle,factLabel,draftStatus,issueText,
     provenancePresentation,operationPresentation,outcomePresentation,knowledgePresentation,modeLine,eventPresentation});
 });

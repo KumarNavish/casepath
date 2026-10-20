@@ -922,11 +922,20 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-outcome-row { display:grid; grid-template-columns:6.5em minmax(0,1fr); column-gap:8px; align-items:baseline; }
 .au-workspace .au-outcome-value { min-width:0; overflow-wrap:anywhere; }
 .au-workspace .au-step-version button { min-height:32px; border:0; padding:2px 0; background:transparent; color:var(--au-ink); text-decoration:underline; text-underline-offset:4px; }
-.au-workspace :is(.au-stage-outcome,.au-assessment-conclusion,.au-history-outcome) > :is(.au-outcome-issues,.au-outcome-facts,.au-outcome-missing,.au-outcome-next,.au-outcome-draft,.au-outcome-limit) { max-width:78ch; margin:0 0 8px; font-size:16px; line-height:1.55; }
+.au-workspace :is(.au-stage-outcome,.au-assessment-conclusion,.au-history-outcome) > :is(.au-outcome-cited,.au-outcome-issues,.au-outcome-facts,.au-outcome-missing,.au-outcome-next,.au-outcome-draft,.au-outcome-limit) { max-width:78ch; margin:0 0 8px; font-size:16px; line-height:1.55; }
 .au-workspace .au-outcome-issues { padding:0; list-style:none; }
 .au-workspace .au-outcome-issues li { padding:2px 0 2px 12px; border-left:3px solid var(--au-amber); }
 .au-workspace :is(.au-outcome-cite,.au-outcome-missing .au-link) { min-height:32px; padding:2px 0; font-size:16px; }
+/* Each cited passage is one link: the source names it, the quote shows what it says. */
+.au-workspace .au-outcome-cite { display:block; width:fit-content; max-width:100%; text-align:left; text-decoration:none; line-height:1.5; }
+.au-workspace .au-outcome-cite .au-outcome-cite-source { text-decoration:underline; text-underline-offset:4px; }
+.au-workspace .au-outcome-cite q { quotes:'“' '”'; color:var(--au-muted); }
 .au-workspace .au-outcome-draft { color:var(--au-ink); }
+.au-workspace details.au-outcome-draft { margin-top:0; border-top:0; }
+.au-workspace details.au-outcome-draft > summary { min-height:32px; padding:2px 0; color:var(--au-ink); }
+.au-workspace .au-draft { margin:6px 0 0; padding:10px 14px; border-left:3px solid var(--au-line); background:var(--au-paper); }
+.au-workspace .au-draft p { margin:0 0 6px; }
+.au-workspace .au-draft-subject { font-weight:500; }
 .au-workspace .au-outcome-limit { color:var(--au-muted); }
 .au-workspace .au-record-rows { display:grid; grid-template-columns:minmax(0,1fr); gap:10px; margin:0 0 16px; }
 .au-workspace .au-record-rows > div { display:grid; grid-template-columns:150px minmax(0,1fr); gap:4px 16px; align-items:baseline; min-width:0; }
@@ -943,6 +952,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-record-cited { text-decoration:underline; text-decoration-color:#8ca18a; text-underline-offset:4px; }
 .au-workspace .au-record-open-source { margin-top:2px; }
 .au-workspace .au-record-technical { margin-top:20px; }
+.au-workspace .au-record-more { margin:-4px 0 16px; }
+.au-workspace .au-record-more-title { margin:0 0 6px; color:var(--au-muted); font-size:16px; }
+.au-workspace .au-record-more ul { display:grid; gap:6px; margin:0; padding:0; list-style:none; }
+.au-workspace .au-record-more-source { display:block; width:100%; min-height:32px; padding:6px 10px; border:0; border-left:3px solid var(--au-line); background:transparent; color:var(--au-ink); text-align:left; font:inherit; font-size:16px; line-height:1.5; cursor:pointer; }
+.au-workspace .au-record-more-source:hover { border-left-color:#8ca18a; background:var(--au-field); }
+.au-workspace .au-record-more-locator { display:block; color:var(--au-muted); font-size:14px; }
+.au-workspace .au-record-more q { quotes:'“' '”'; }
 .au-workspace .au-step-detail-title { margin:0 0 8px; font-size:22px; font-weight:500; line-height:1.3; letter-spacing:-.3px; }
 .au-workspace .au-step-subjects { max-width:80ch; margin:12px 0; }
 .au-workspace .au-subject-lines { margin:0; padding:0; list-style:none; }
@@ -954,16 +970,25 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-subject-select { display:block; width:100%; min-height:32px; padding:4px 0; text-align:left; text-decoration:none; font-weight:400; }
 .au-workspace .au-subject-select .au-subject-name { text-decoration:underline; text-underline-offset:4px; }
 .au-workspace .au-subject .au-document-route { color:var(--au-muted); }
-.au-workspace :is(.au-step-rule,.au-step-version,.au-step-line) { max-width:78ch; margin:8px 0; font-size:16px; }
+.au-workspace :is(.au-step-result,.au-step-rule,.au-step-version,.au-step-line) { max-width:78ch; margin:8px 0; font-size:16px; }
+.au-workspace .au-subject[data-au-subject-state="not_needed"] .au-subject-state { color:var(--au-muted); }
+.au-workspace .au-subject .au-fact-summary { margin:4px 0 2px; font-size:17px; line-height:1.55; color:var(--au-ink); }
+.au-workspace .au-more-passages { margin:4px 0 0; }
+.au-workspace .au-more-passages > summary { min-height:32px; padding:4px 0; color:var(--au-muted); cursor:pointer; }
 .au-workspace .au-step-line .au-step-status { color:var(--au-ink); }
-.au-workspace .au-stage-step-detail { max-width:1000px; margin:20px auto 0; padding-top:4px; border-top:1px solid var(--au-line); scroll-margin-top:16px; }
+.au-workspace .au-stage-step-detail { max-width:1000px; margin:20px auto 0; padding-top:4px; border-top:1px solid var(--au-line); scroll-margin:16px 0; }
+.au-workspace .au-stage-step-back { margin:4px 0 8px; }
+.au-workspace .au-stage-step-back .au-link { min-height:32px; padding:2px 0; font-size:16px; }
 .au-workspace .au-stage-step-detail .au-reading-column { max-width:none; margin:12px 0 0; padding-bottom:8px; }
+/* The step's record control and connections follow the reading column, outside it. */
+.au-workspace .au-reading-column.au-step-detail:has(+ .au-step-record) { padding-bottom:8px; }
+.au-workspace .au-reading-column.au-step-record { margin-top:0; }
 /* On wide screens the recorded statement, issue and limits lead on the left;
    open facts, needed documents, next action and draft sit beside them,
    keeping the steps in view. */
 @media (min-width:1100px) {
   .au-workspace .au-assessment-conclusion:has(> :is(.au-outcome-row,.au-outcome-issues,.au-outcome-draft)) { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:40px; align-items:start; max-width:1240px; grid-auto-flow:row dense; }
-  .au-workspace .au-assessment-conclusion > :is(.au-outcome-summary,.au-outcome-issues,.au-outcome-open,.au-outcome-limit) { grid-column:1; }
+  .au-workspace .au-assessment-conclusion > :is(.au-outcome-summary,.au-outcome-cited,.au-outcome-issues,.au-outcome-open,.au-outcome-limit) { grid-column:1; }
   .au-workspace .au-assessment-conclusion > :is(.au-outcome-facts,.au-outcome-missing,.au-outcome-next,.au-outcome-draft) { grid-column:2; }
   .au-workspace .au-assessment-conclusion > :is(p,ul) { margin-bottom:6px; }
   .au-workspace .au-assessment-conclusion > .au-legal-basis { grid-column:1 / -1; }

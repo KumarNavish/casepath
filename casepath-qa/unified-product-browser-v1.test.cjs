@@ -1067,8 +1067,10 @@ for(const [width,height,reduced]of [[1440,900,false],[1280,800,true],[390,844,fa
  const head=fixture.snapshots[id];await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.state.revision});await title(page,id);
  assert.equal(await page.locator('.au-operation-stage[data-au-stage-phase="map"]').count(),1);assert.ok((await page.locator('.au-stage-outcome').innerText()).includes(head.state.outcome.summary));
  assert.deepEqual(sorted(await page.locator('.au-operation-stage [data-au-stage-document]').evaluateAll(rows=>rows.map(row=>row.dataset.auStageDocument))),sorted(head.state.obligations.map(row=>row.document_type)));
- assert.equal(await page.locator('.au-operation-stage [data-au-document-checked="true"]').count(),3);assert.equal(await page.locator('.au-operation-stage [data-au-source][data-au-citation]').count(),3);
- for(const citation of await page.locator('.au-operation-stage [data-au-citation]').evaluateAll(rows=>rows.map(row=>JSON.parse(row.dataset.auCitation)))){assert.ok(head.state.facts.flatMap(row=>row.citations||[]).some(row=>canonical(row)===canonical(citation)));assert.equal(citation.sha256,head.state.source_descriptors.find(row=>row.artifact_id===citation.artifact_id).sha256);}
+ assert.equal(await page.locator('.au-operation-stage [data-au-document-checked="true"]').count(),3);assert.equal(await page.locator('.au-operation-stage [data-au-source][data-au-citation]:not([data-au-outcome-cite])').count(),3);
+ for(const citation of await page.locator('.au-operation-stage [data-au-citation]:not([data-au-outcome-cite])').evaluateAll(rows=>rows.map(row=>JSON.parse(row.dataset.auCitation)))){assert.ok(head.state.facts.flatMap(row=>row.citations||[]).some(row=>canonical(row)===canonical(citation)));assert.equal(citation.sha256,head.state.source_descriptors.find(row=>row.artifact_id===citation.artifact_id).sha256);}
+ // The outcome's own citations follow its recorded summary inside the result, never a step.
+ for(const citation of await page.locator('.au-operation-stage [data-au-outcome-cite]').evaluateAll(rows=>rows.map(row=>({inOutcome:Boolean(row.closest('.au-stage-outcome [data-au-outcome-cited]')),citation:JSON.parse(row.dataset.auCitation)})))){assert.equal(citation.inOutcome,true);assert.ok((head.state.outcome.citations||[]).some(row=>canonical(row)===canonical(citation.citation)));}
  assert.deepEqual(sorted(await page.locator('.au-stage-outcome [data-au-law-article]').evaluateAll(rows=>rows.map(row=>row.dataset.auLawArticle))),['259','259a','259d']);
  const connectors=await junctionConnections(page);assert.deepEqual(await visibleRecord(page),{state:head.state,projection:head.projection});
  await page.locator('.au-work-head [data-au-detail="activity"]').click();await page.locator('.au-context-nav [data-au-detail="knowledge"]').click();
@@ -2668,7 +2670,8 @@ function acceptedPaintDOM() {
     documents:[...surface.querySelectorAll('.au-forming-documents .au-obligation')].map(row=>({id:row.dataset.auObligation,type:row.dataset.auDocument,status:row.dataset.status,review:row.querySelector('[data-au-review]')?.dataset.auReview||null})),
     facts:[...surface.querySelectorAll('[data-au-fact],[data-au-fact-select]')].map(row=>({id:row.dataset.auFact||row.dataset.auFactSelect,status:row.dataset.auFactState||null})),
     sources:[...surface.querySelectorAll('[data-au-source-identity]')].map(row=>row.dataset.auSourceIdentity),
-    citations:[...surface.querySelectorAll('[data-au-citation]')].map(row=>JSON.parse(row.dataset.auCitation)),
+    citations:[...surface.querySelectorAll('[data-au-citation]:not([data-au-outcome-cite])')].map(row=>JSON.parse(row.dataset.auCitation)),
+    outcomeCitations:[...surface.querySelectorAll('[data-au-outcome-cite][data-au-citation]')].map(row=>({role:row.dataset.auOutcomeCite,citation:JSON.parse(row.dataset.auCitation),issue:row.closest('[data-au-outcome-issue]')?.firstChild?.textContent?.trim()||null,summary:row.closest('.au-assessment-conclusion,.au-stage-outcome,.au-history-outcome')?.querySelector('[data-au-outcome-recorded]')?.textContent||null})),
     knowledge:[...surface.querySelectorAll('[data-au-knowledge][data-au-version]')].map(row=>({id:row.dataset.auKnowledge,version:row.dataset.auVersion,sha256:row.dataset.auKnowledgeSha||''})),
     outcome:surface.querySelector('.au-assessment-conclusion > p,.au-stage-outcome > p')?.textContent||null};
 }
@@ -2683,9 +2686,13 @@ function assertAcceptedPaint(paint,prefix,message='the visible accepted prefix r
   for(const row of paint.documents){const obligation=state.obligations.find(item=>item.obligation_id===row.id),document=state.evaluation?.documents.find(item=>item.document_type===row.type);assert.ok(obligation,message);assert.equal(row.type,obligation.document_type,message);assert.equal(row.status,document?.route_state||obligation.status||'pending',message);if(row.review)assert.equal(row.review,document?.review_state,message);}
   for(const row of paint.facts){const fact=state.facts.find(item=>item.fact_id===row.id);assert.ok(fact,message);if(row.status)assert.equal(row.status,fact.verdict||fact.status,message);}
   for(const identity of paint.sources)assert.ok(state.source_descriptors.some(row=>identity===`${state.claim_id}:${row.artifact_id}:${row.sha256}:${state.acquired_sources.find(source=>source.artifact_id===row.artifact_id)?.text_sha256||''}`),message);
-  // The recorded-first outcome links its own accepted citation beside the recorded issue.
-  const citations=state.facts.flatMap(row=>row.citations||[]).concat(state.actions.flatMap(row=>(row.result||row).citations||[]),state.outcome?.citations||[]);
+  const citations=state.facts.flatMap(row=>row.citations||[]).concat(state.actions.flatMap(row=>(row.result||row).citations||[]));
   for(const citation of paint.citations){assert.ok(citations.some(row=>canonical(row)===canonical(citation)),message);assert.equal(citation.sha256,state.source_descriptors.find(row=>row.artifact_id===citation.artifact_id)?.sha256,message);}
+  // An outcome citation is painted only beside what it supports: the recorded summary, or an issue that carries it.
+  for(const row of paint.outcomeCitations){
+    if(row.role==='summary'){assert.equal(row.summary,state.outcome?.summary,message);assert.ok((state.outcome?.citations||[]).some(item=>canonical(item)===canonical(row.citation)),message);}
+    else{assert.equal(row.role,'issue',message);const issue=(state.outcome?.issues||[]).find(item=>item&&typeof item==='object'&&(item.reason||item.summary||item.message||'').trim()===row.issue);assert.ok(issue&&(issue.citations||[]).some(item=>canonical(item)===canonical(row.citation)),message);}
+  }
   for(const pin of paint.knowledge)assert.ok([...state.knowledge_uses,...state.knowledge_published].some(row=>(row.knowledge_id||row.version_id)===pin.id&&String(row.version||row.version_id)===pin.version&&(row.knowledge_sha256||'')===pin.sha256),message);
   assert.equal(paint.outcome,paint.panel==='step'?state.outcome?.summary||null:null,message);
 }
