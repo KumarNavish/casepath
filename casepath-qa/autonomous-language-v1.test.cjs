@@ -426,7 +426,7 @@ test('settled defect limits stay visible only when the exact recorded scope and 
     assert.equal(language.outcomePresentation(altered).openItems,'');
     const html=ui.workMarkup(state,{},state.graph.nodes[0].node_id,[], 'step',{}, {readOnly:true});
     assert.match(html,/class="au-outcome-open">Repair, the reduction amount and any award remain undetermined/);
-    assert.equal((html.match(/class="au-role-badge"/g)||[]).length,1);
+    assert.equal((html.match(/class="au-role-badge"/g)||[]).length,0,'a settled answer does not repeat its last actor');
     assert.doesNotMatch(html,/no recorded method|Waiting for the listed documents/);
   }
 });

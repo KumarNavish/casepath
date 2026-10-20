@@ -1,0 +1,42 @@
+// W1 focus, source and reduced-motion checks against the copied preview database.
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {createRequire} from 'node:module';
+const {chromium}=createRequire(new URL('../../casepath-qa/package.json',import.meta.url))('playwright');
+const out=process.argv[2];fs.mkdirSync(out,{recursive:true});fs.rmSync(`${out}/access.json`,{force:true});
+const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH});
+const errors=[],writes=[];
+try {
+ const page=await browser.newPage({viewport:{width:1440,height:900}});
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/*',r=>{if(!['GET','HEAD'].includes(r.request().method())){writes.push(r.request().url());return r.abort();}const name=new URL(r.request().url()).pathname.split('/').pop();if(process.env.W1_ASSET_ROOT && name==='autonomous-workspace-v1.js')return r.fulfill({path:process.env.W1_ASSET_ROOT+'/'+name,contentType:'text/javascript'});return r.continue();});
+ await page.goto((process.env.BASE||'http://127.0.0.1:4180')+'/#autonomous/demonstration');
+ const chip=page.locator('.au-stage-step[data-au-stage-active=true] .au-stage-fact').first();await chip.waitFor({timeout:60000});
+ await page.keyboard.press('Tab');await page.locator('[data-au-demo-resume]').waitFor();
+ await chip.focus();
+ const full=await chip.getAttribute('data-au-full-quote');assert.ok(full);
+ assert.equal(await chip.textContent(),full);
+ const tooltip=await chip.evaluate(e=>getComputedStyle(e,'::after').content);assert.ok(tooltip.includes(full.replaceAll('"','\\"')),'keyboard focus exposes the whole chip quote');
+ assert.ok(await page.locator('[data-au-role-legend]').isVisible(),'How to read becomes available when keyboard focus pauses playback');
+ await page.screenshot({path:`${out}/focused-quote.png`});
+ await chip.click();
+ const dialog=page.locator('dialog[open]');await dialog.waitFor();assert.ok((await dialog.innerText()).includes(full),'the operation record retains the quote');
+ const sourceButton=dialog.locator('[data-au-source][data-au-citation]').first();
+ const citation=JSON.parse(await sourceButton.getAttribute('data-au-citation'));await sourceButton.click();
+ const mark=page.locator('.au-source-dialog[open] .au-source-body mark');await mark.waitFor();
+ assert.equal(await mark.textContent(),citation.quote,'the source reader highlights the exact original cited span');
+ await page.screenshot({path:`${out}/../exact-source.png`});
+ await page.keyboard.press('Escape');await page.locator('.au-source-dialog[open]').waitFor({state:'detached'});
+ if(await page.locator('.au-record-dialog[open]').count())await page.keyboard.press('Escape');assert.equal(await page.locator('dialog[open]').count(),0);
+ assert.ok(await page.locator('.au-stage-fact:focus').count(),'Escape restores the fact opener');
+ await page.close();
+ const reduced=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
+ reduced.on('pageerror',e=>errors.push(e.message));await reduced.route('**/*',r=>{if(!['GET','HEAD'].includes(r.request().method())){writes.push(r.request().url());return r.abort();}const name=new URL(r.request().url()).pathname.split('/').pop();if(process.env.W1_ASSET_ROOT && name==='autonomous-workspace-v1.js')return r.fulfill({path:process.env.W1_ASSET_ROOT+'/'+name,contentType:'text/javascript'});return r.continue();});
+ await reduced.goto((process.env.BASE||'http://127.0.0.1:4180')+'/#autonomous/demonstration');
+ await reduced.waitForSelector('.au-operation-stage[data-au-stage-phase=map]',{timeout:60000});
+ assert.equal(await reduced.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length),0);
+ assert.equal(await reduced.evaluate(()=>document.documentElement.scrollWidth-innerWidth),0);
+ await reduced.screenshot({path:`${out}/reduced-motion-phone.png`});
+ assert.deepEqual(errors,[]);assert.deepEqual(writes,[]);
+ fs.writeFileSync(`${out}/access.json`,JSON.stringify({status:'passed',fullQuote:full,focusTooltip:true,recordQuote:true,exactSourceQuote:citation.quote,escapeFocusRestored:true,reducedMotionAnimations:0,errors,writes},null,2)+'\n');
+} finally {await browser.close();}

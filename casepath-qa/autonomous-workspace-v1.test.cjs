@@ -36,7 +36,7 @@ test('reference intake stays a source inspection and completed assessment retain
  assert.doesNotMatch(view,/data-au-start[^>]*\bdisabled\b(?!=)/);assert.match(view,/Notice record/);assert.doesNotMatch(view,/data-au-node=/);
  assert.match(view,/data-au-operation-mode>Original intake · not run<\/p>/);assert.doesNotMatch(view,/Replay|data-au-now-id/,'an unrun original is neither a replay nor a Now frame');
  const completed=ui.workMarkup(s,{},'branch',[]);
- assert.match(completed,/data-au-operation-mode>Saved result · revision 3<\/p>/);assert.doesNotMatch(completed,/>Replay|No real-world action/,'a saved head is not called a replay');assert.match(completed,/<span class="au-now-label">Last:<\/span>/);assert.equal(ui.contextualRecord(s,{},[],'outcome').outcome.reference_provenance.as_of,'2025-02-21');assert.match(completed,/Assessment only; no external action taken/);
+ assert.match(completed,/data-au-operation-mode>Saved result · revision 3<\/p>/);assert.doesNotMatch(completed,/>Replay|No real-world action/,'a saved head is not called a replay');assert.doesNotMatch(completed,/data-au-now-id=/);assert.equal(ui.contextualRecord(s,{},[],'outcome').outcome.reference_provenance.as_of,'2025-02-21');assert.match(completed,/Assessment only; no external action taken/);
 });
 
 test('an unrun original says not checked, links attached files as candidates and explains an unavailable Start',()=>{
@@ -604,7 +604,7 @@ test('missing reviews do not hide received unassigned originals or infer their d
  assert.doesNotMatch(docs,/data-au-source="(?:original|assigned)"|data-au-document=/);
  assert.match(docs,/data-au-source="photo"[^>]*>Notice/);for(const phrase of ['Text could not be read','Only part of the source is readable'])assert.ok(docs.includes(phrase),phrase);
  assert.doesNotMatch(docs,/Original file received|Text available for assessment/);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.source_descriptors,s.source_descriptors);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.acquired_sources,s.acquired_sources);
- assert.match(ui.obligationMarkup(s,'branch'),/Needed now/);assert.doesNotMatch(ui.obligationMarkup(s,'branch'),/No reviewed source matched|Insufficient|Not yet supported/);
+ assert.match(ui.obligationMarkup(s,'branch'),/Missing/);assert.doesNotMatch(ui.obligationMarkup(s,'branch'),/No reviewed source matched|Insufficient|Not yet supported/);
  assert.doesNotMatch(ui.evidencePathMarkup(s,'branch'),/Not yet supported/);assert.equal(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).evaluation[0].review_state,'missing');
  assert.equal(JSON.stringify(s),before);
 });
@@ -617,7 +617,7 @@ test('source extraction labels do not contradict a sufficient review for one doc
  s.actions=[{result:{action_id:'review:notice:supplied-form',type:'document_review',node_ids:['branch'],document_type:'notice',status:'completed',verdict:'sufficient',summary:'The supplied form establishes this requirement.'},receipt:{receipt_sha256:hash('c')}}];
  const before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[],'sources');
  assert.match(html,/data-au-source="supplied-form"/);assert.doesNotMatch(html,/Text available for assessment|sufficiency not established/);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.acquired_sources,s.acquired_sources);assert.equal(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).evaluation[0].review_state,'satisfied');
- const requirement=ui.obligationMarkup(s,'branch');assert.match(requirement,/Needed now/);assert.match(requirement,/data-au-review="satisfied"[^>]*>Source review: Satisfied\./);assert.doesNotMatch(requirement,/Needed now\s*·\s*Satisfied/);
+ const requirement=ui.obligationMarkup(s,'branch');assert.match(requirement,/Missing/);assert.match(requirement,/data-au-review="satisfied"[^>]*>Source review: Satisfied\./);assert.doesNotMatch(requirement,/Missing\s*·\s*Satisfied/);
  assert.match(ui.workMarkup(s,{},'branch',[],'activity'),/The supplied form establishes this requirement\./);
  assert.equal(JSON.stringify(s),before);
 });
@@ -682,7 +682,7 @@ test('activity keeps one record entry while preserving repeated rejection proven
  const interpretation={workflow_id:'run-a',receipt_sha256:sha('interpretation'),item_rejections:[rejection]},outcome={...interpretation,receipt_sha256:sha('outcome')};
  const distinct={...interpretation,receipt_sha256:sha('distinct'),item_rejections:[{...rejection,reason:'A separate rejection.'}]},later={...interpretation,workflow_id:'run-b',receipt_sha256:sha('later')};
  const saved=state({receipts:[{receipt:interpretation},{receipt:outcome},{receipt:distinct},{receipt:later}],actions:[{result:{action_id:'document-review',status:'completed'},receipt:interpretation}]}),before=JSON.stringify(saved);
- const html=ui.workMarkup(saved,{},'branch',[],'activity');assert.doesNotMatch(html,/<details|<summary>Rejected proposal items/);
+ const html=ui.workMarkup(saved,{},'branch',[],'activity');assert.doesNotMatch(html,/<summary>Rejected proposal items/);
  assert.match(html,/data-au-inspect="claim"/);assert.ok(html.includes(`data-au-inspect="action" data-au-record-id="${ui.actionRows(saved)[0].instanceId}"`));
  const claim=ui.contextualRecord(saved,{},[],'claim');assert.deepEqual(claim.state.receipts,[{receipt:interpretation},{receipt:outcome},{receipt:distinct},{receipt:later}]);
  assert.equal(new Set(claim.state.receipts.map(row=>row.receipt.receipt_sha256)).size,4);
@@ -1621,19 +1621,19 @@ test('the full checklist reads causally: one route line naming its step, one sup
  s.obligations=routes.map((_,index)=>({obligation_id:`obligation:${index}`,node_id:'branch',document_type:`document-${index}`,label:`Evidence ${index}`,required_fact_ids:index?[]:['fact:notice']}));
  s.evaluation.documents=routes.map(([route_state,review_state],index)=>({document_type:`document-${index}`,route_state,review_state}));
  const before=JSON.stringify(s),html=ui.obligationMarkup(s,'branch'),row=index=>html.match(new RegExp(`<li[^>]*data-au-obligation="obligation:${index}"[\\s\\S]*?</li>`))[0];
- assert.match(html,/data-au-document-count>2 needed now · 1 waiting on a step · 1 may be needed · 2 supplied · 1 to check · 1 not required</,'the count follows the returned routes; a requirement held behind a question is counted as it reads, not as waiting on a step');
- assert.match(row(0),/<span class="au-document-route-label">Needed now<\/span><span class="au-document-sep"> · <\/span><button type="button" class="au-link au-document-step" data-au-select="branch" data-au-select-document="document-0" data-au-select-obligation="obligation:0" data-au-select-fact="fact:notice" aria-label="because of Check separate service \(step for Evidence 0\)"><span class="au-document-connector">because of<\/span> <span class="au-document-step-name">Check separate service<\/span><\/button>/,'the connector travels inside the step control so a wrapped line never ends on it');
+ assert.match(html,/data-au-document-count>2 of 7 received · 2 missing · 1 waiting on a step · 1 may be needed · 1 to check · 1 not needed</,'the count follows the returned routes; a requirement held behind a question is counted as it reads, not as waiting on a step');
+ assert.match(row(0),/<span class="au-document-route-label">Missing<\/span><span class="au-document-sep"> · <\/span><button type="button" class="au-link au-document-step" data-au-select="branch" data-au-select-document="document-0" data-au-select-obligation="obligation:0" data-au-select-fact="fact:notice" aria-label="needed now for Check separate service \(step for Evidence 0\)"><span class="au-document-connector">needed now for<\/span> <span class="au-document-step-name">Check separate service<\/span><\/button>/,'the connector travels inside the step control so a wrapped line never ends on it');
  assert.match(row(0),/Source evidence is not yet established\./,'a missing review matters where the document is needed now');
  assert.match(row(1),/Supplied evidence is not sufficient\./);
  assert.match(row(2),/Needed later<\/span><span class="au-document-sep"> · <\/span><button[^>]*><span class="au-document-connector">waiting on<\/span> /);assert.doesNotMatch(row(2),/class="au-document-review"/,'a missing review adds nothing to a document still waiting on its step');
  assert.match(row(3),/May be needed<\/span><span class="au-document-sep"> · <\/span><button[^>]*><span class="au-document-connector">depends on<\/span> /);assert.match(row(3),/data-au-route-group="maybe"/);
- for(const index of [4,5]){assert.match(row(index),/data-au-review="sufficient"><span class="au-document-route-label">Supplied<\/span> <span aria-hidden="true">✓<\/span><span class="au-document-sep"> · <\/span><button[^>]*><span class="au-document-connector">sufficient for<\/span> /);assert.doesNotMatch(row(index),/May be needed|Established|class="au-document-review"/,'a sufficient review replaces the contradicting route');}
- assert.match(row(6),/Not required<\/span><span class="au-document-sep"> · <\/span><button[^>]*aria-label="Check separate service does not need it \(step for Evidence 6\)"><span class="au-document-step-name">Check separate service<\/span> <span class="au-document-connector">does not need it<\/span><\/button>/);
+ for(const index of [4,5]){assert.match(row(index),/data-au-review="sufficient"><span class="au-document-route-label">Received<\/span> <span aria-hidden="true">✓<\/span><span class="au-document-sep"> · <\/span><button[^>]*><span class="au-document-connector">sufficient for<\/span> /);assert.doesNotMatch(row(index),/May be needed|Established|class="au-document-review"/,'a sufficient review replaces the contradicting route');}
+ assert.match(row(6),/Not needed<\/span><span class="au-document-sep"> · <\/span><button[^>]*aria-label="Check separate service does not need it \(step for Evidence 6\)"><span class="au-document-step-name">Check separate service<\/span> <span class="au-document-connector">does not need it<\/span><\/button>/);
  assert.match(row(7),/Needs checking<\/span><span class="au-document-sep"> · <\/span><button[^>]*><span class="au-document-connector">for<\/span> /);
  const chosen=ui.obligationMarkup(s,'branch',null,{obligation:'obligation:4'});assert.match(chosen,/<li class="au-obligation" data-au-obligation="obligation:4"[^>]*data-selected="true" aria-current="true">/,'the document in focus is marked as current, not recoloured');
  assert.doesNotMatch(html,/<button[^>]*class="au-document-open/,'the step name is the control, not the whole row');
  const orphan=structuredClone(s);orphan.obligations[0].node_id='missing-step';orphan.obligations[0].decision_node_id='missing-step';
- assert.match(ui.obligationMarkup(orphan,'branch'),/<button type="button" class="au-link au-document-name au-document-record" data-au-inspect="requirement" data-au-record-id="obligation:0">Evidence 0<\/button><span class="au-document-state au-document-route" data-route="needed_now"><span class="au-document-route-label">Needed now<\/span>\.<\/span>/,'without a recorded step the requirement record stays reachable');
+ assert.match(ui.obligationMarkup(orphan,'branch'),/<button type="button" class="au-link au-document-name au-document-record" data-au-inspect="requirement" data-au-record-id="obligation:0">Evidence 0<\/button><span class="au-document-state au-document-route" data-route="needed_now"><span class="au-document-route-label">Missing<\/span>\.<\/span>/,'without a recorded step the requirement record stays reachable');
  assert.equal(JSON.stringify(s),before);
 });
 
@@ -1661,7 +1661,7 @@ test('graph markup shows one evaluated state per step and is a keyboard stop onl
 });
 
 test('supported document routes stay distinct and evidence intake is reachable from current needs',()=>{
- const statuses=['needed_now','needed_later','held_behind_question','held_not_reviewed','not_needed','optional'],labels=['Needed now','Needed later','May be needed','Needs checking','Not required','Optional'];
+ const statuses=['needed_now','needed_later','held_behind_question','held_not_reviewed','not_needed','optional'],labels=['Missing','Needed later','May be needed','Needs checking','Not needed','Optional'];
  const s=state();s.obligations=statuses.map((status,index)=>({obligation_id:`obligation:${index}`,node_id:'branch',document_type:`document-${index}`,label:`Evidence ${index}`}));s.evaluation.documents=statuses.map((route_state,index)=>({document_type:`document-${index}`,route_state,review_state:'unreviewed'}));
  const markup=ui.obligationMarkup(s,'branch');for(let i=0;i<statuses.length;i++){assert.match(markup,new RegExp(`data-status="${statuses[i]}"`));assert.ok(markup.includes(labels[i]),labels[i]);}
  assert.match(ui.workMarkup(state(),{},'branch',[],'documents'),/data-au-add-files/);assert.match(ui.workMarkup(state(),{},'branch',[],'sources'),/<form data-au-arrival/);
@@ -2240,7 +2240,7 @@ test('cold operation selection reuses one complete atomic head while showing onl
  const f=operationOpeningDOM(),native=operationOpeningFixture(),opening=deferredRead(),snapshot=deferredRead();
  const api=fakeApi({handle:async path=>path.endsWith('/snapshot?after=0')?snapshot.promise:path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();opening.resolve(response(native.zero));snapshot.resolve(response(native.snapshot));});await settle();const before=api.calls.length,selecting=controller.showDemonstration();await settle();
- assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.match(f.host.innerHTML,/>Procedure outline</);assert.doesNotMatch(f.host.innerHTML,/data-au-(?:revision|state-sha|forming-revision|forming-sha|planned-process)=|data-au-stage-fact=|data-status="completed"/);
+ assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.match(f.host.innerHTML,/aria-label="Procedure outline"/);assert.doesNotMatch(f.host.innerHTML,/data-au-(?:revision|state-sha|forming-revision|forming-sha|planned-process)=|data-au-stage-fact=|data-status="completed"/);
  assert.deepEqual(api.calls.slice(before).map(row=>row.path.split('/').at(-1)).sort(),['operations?mode=live','replay?through_seq=0','snapshot?after=0'],'all three selected reads start before opening resolves');
  snapshot.resolve(response(native.snapshot));await settle();assert.doesNotMatch(f.host.innerHTML,/data-au-planned-process=/,'a complete atomic head alone cannot bind its opening');
  opening.resolve(response(native.zero));await selecting;await waitFor(()=>f.host.innerHTML.includes('data-au-planned-process='));
@@ -2405,12 +2405,12 @@ test('one case label serves Cases, the Demonstration and Knowledge, and Cases ke
 test('the playing roster has one transport row with position, domain, Pause, Skip and the next case',()=>{
  const tour={collection:'reference',cases:ui.REFERENCE_DEMO_CASES,index:2},text=html=>html.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
  const playing=ui.demoTransportMarkup(tour,{playing:true});
- assert.equal(text(playing),`3/9·Defects and repairs·Pause·Skip·Next: ${ui.REFERENCE_DEMO_CASES[3].label}`);
+ assert.equal(text(playing),`3/9·Defects and repairs·Pause·Skip·Next: ${ui.REFERENCE_DEMO_CASES[3].label}Choose caseHistory`);
  assert.match(playing,/role="group" aria-label="Reference assessments · fixed rules · fictional supplements · case 3 of 9"/);
  assert.match(playing,/<button type="button" class="au-demo-control" data-au-demo-stop>Pause<\/button>/);assert.match(playing,/<button type="button" class="au-demo-control" data-au-demo-skip aria-describedby="auDemoNext">Skip<\/button>/);
  assert.match(ui.demoTransportMarkup(tour,{paused:true}),/data-au-demo-resume>Resume</);
  assert.doesNotMatch(ui.demoTransportMarkup(tour,{}),/data-au-demo-stop|data-au-demo-resume/,'a stopped case keeps Skip without a Pause it cannot honour');
- assert.match(text(ui.demoTransportMarkup({...tour,index:8},{playing:true})),/^9\/9·Rent increases·Pause·Skip·Next: Knowledge$/);
+ assert.match(text(ui.demoTransportMarkup({...tour,index:8},{playing:true})),/^9\/9·Rent increases·Pause·Skip·Next: KnowledgeChoose caseHistory$/);
  const selected=ui.demoTransportMarkup({collection:'selected',cases:ui.DEMO_CASES.slice(0,3),index:0},{playing:true});assert.match(text(selected),/^1\/3·Defects and repairs·/);assert.match(selected,/aria-label="Selected originals · case 1 of 3"/);
  assert.equal(ui.demoTransportMarkup({collection:'reference',cases:[],index:0}),'');
 });
@@ -2469,7 +2469,7 @@ test('selected operation priority defers the direct-route idle catalog and Knowl
 });
 
 test('release procedure outlines carry only the exact nine release catalogs and no accepted state identity',()=>{
- for(const row of ui.REFERENCE_DEMO_CASES){const plan=ui.releaseOperationProcess(row.claim_id),html=ui.releaseProcedurePreview(plan,'recorded');assert.ok(plan);assert.equal(plan.release.profile_id,'synthetic-nine-v2');assert.ok(plan.release.request_source_pin.quote);assert.match(html,REPLAY_LINE);assert.match(html,/data-au-release-authority="none"/);assert.match(html,/>Procedure outline</);assert.equal((html.match(/data-au-planned-node disabled/g)||[]).length,plan.graph.nodes.length);assert.doesNotMatch(html,/data-au-(?:revision|state-sha|forming-revision|forming-sha|planned-process|planned-head-revision|planned-graph-sha)=|data-au-stage-fact=|data-au-document-checked="true"|data-status="completed"|Procedure reused|Version [0-9]|undefined/);assert.equal(plan.head_revision,undefined);assert.equal(plan.graph.graph_sha256,undefined);}
+ for(const row of ui.REFERENCE_DEMO_CASES){const plan=ui.releaseOperationProcess(row.claim_id),html=ui.releaseProcedurePreview(plan,'recorded');assert.ok(plan);assert.equal(plan.release.profile_id,'synthetic-nine-v2');assert.ok(plan.release.request_source_pin.quote);assert.match(html,REPLAY_LINE);assert.match(html,/data-au-release-authority="none"/);assert.match(html,/aria-label="Procedure outline"/);assert.equal((html.match(/data-au-planned-node disabled/g)||[]).length,plan.graph.nodes.length);assert.doesNotMatch(html,/data-au-(?:revision|state-sha|forming-revision|forming-sha|planned-process|planned-head-revision|planned-graph-sha)=|data-au-stage-fact=|data-au-document-checked="true"|data-status="completed"|Procedure reused|Version [0-9]|undefined/);assert.equal(plan.head_revision,undefined);assert.equal(plan.graph.graph_sha256,undefined);}
  for(const id of ['clm_2a9c260c26afaa34','auto_a489b283495e7b03b5aab860','unknown'])assert.equal(ui.releaseOperationProcess(id),null,'historical and unknown cases have no release outline or operation permission');
 });
 
@@ -2546,7 +2546,7 @@ test('recorded delivery retains the captured binding while each visible mode kee
  const live=render({});assert.match(live,REPLAY_LINE);assert.equal((live.match(REPLAY_LINE_ALL)||[]).length,1);assert.doesNotMatch(live,/Recorded investigation/);assert.doesNotMatch(live,/data-au-operation-skip/);assert.match(render({buffer:{result:{exact_output_verified:true,state_sha256:f.binding.current_state_sha256,current_event_sha256:f.binding.current_event_sha256}}}),/data-au-operation-skip/);assert.doesNotMatch(render({finished:true}),/data-au-operation-skip/);
  const saved=render({savedFallback:true});assert.doesNotMatch(saved,REPLAY_LINE,'a saved-result fallback is not called a replay');
  const fallback=ui.workMarkup(f.head,{},'branch',f.journal,'step',{}, {mode:'replay',replay:{...replay,through_seq:4,state:f.head},operations:{binding:f.binding,rows:[],sources:new Map(),savedFallback:true,finished:true}});
- assert.match(fallback,/data-au-operation-mode>Saved result · revision 4<\/p>/);assert.match(fallback,/<span class="au-now-label">Last:<\/span>/);assert.doesNotMatch(fallback,/au-now-label">Now</);assert.doesNotMatch(saved,/Live check from saved sources/);assert.equal(JSON.stringify(f.binding),bindingBefore);assert.equal(ui.contextualRecord(f.baseline,{},[],'replay','',{},replay),replay,'the delivery qualifier retains its exact playback record in Details');
+ assert.match(fallback,/data-au-operation-mode>Saved result · revision 4<\/p>/);assert.doesNotMatch(fallback,/data-au-now-id=/);assert.doesNotMatch(fallback,/au-now-label">Now</);assert.doesNotMatch(saved,/Live check from saved sources/);assert.equal(JSON.stringify(f.binding),bindingBefore);assert.equal(ui.contextualRecord(f.baseline,{},[],'replay','',{},replay),replay,'the delivery qualifier retains its exact playback record in Details');
  assert.equal(ui.operationLabel({kind:'node.evaluate'}),'Checked a step');assert.equal(ui.operationLabel({kind:'dependency.evaluate'}),'Checked what a step needs');assert.equal(ui.operationLabel({kind:'branch.activate',result:{activation:'unresolved'}}),'Kept this path open');assert.equal(ui.operationLabel({kind:'fact.extract',result:{verification_required:false,status:'established'}}),'Checked it in the document');
 });
 
@@ -2658,7 +2658,7 @@ test('stage opening keeps a known original quiet and its complete map preserves 
 
 test('stage transport uses a bound total without granting access to future unverified operations',()=>{
  const f=operationFixture(),trace={binding:f.binding,rows:Array.from({length:3},(_,i)=>({id:`real-${i}`})),sources:new Map(),current:{id:'real-1',kind:'condition.evaluate',object:{type:'condition',id:'cold'},cause_ids:[],result:{}},buffer:{result:{contract:operationContract,exact_output_verified:true,state_sha256:f.binding.current_state_sha256,current_event_sha256:f.binding.current_event_sha256,operation_count:824}}};
- assert.equal(ui.bufferedOperationCount(trace),824);const html=ui.workMarkup(f.baseline,{},'branch',[],'step',{}, {mode:'replay',operations:trace,playing:true});assert.match(html,/max="823"/);assert.match(html,/>2 \/ 824</);assert.doesNotMatch(html,/ \/ Synthetic claim/);assert.equal(ui.operationInspection(trace,823),null);
+ assert.equal(ui.bufferedOperationCount(trace),824);const html=ui.workMarkup(f.baseline,{},'branch',[],'step',{}, {mode:'replay',operations:trace,playing:true});assert.match(html,/data-au-operation-count="824"/);assert.match(html,/data-au-operation-position="1"/);assert.doesNotMatch(html,/data-au-operation-scrub/);const paused=ui.workMarkup(f.baseline,{},'branch',[],'step',{}, {mode:'replay',operations:trace,paused:true});assert.match(paused,/max="823"/);assert.match(paused,/>2 \/ 824</);assert.doesNotMatch(html,/ \/ Synthetic claim/);assert.equal(ui.operationInspection(trace,823),null);
  for(const invalid of [{operation_count:4097},{operation_count:2.5},{exact_output_verified:false},{state_sha256:sha('different head')},{current_event_sha256:sha('different event')}]) assert.equal(ui.bufferedOperationCount({...trace,buffer:{result:{...trace.buffer.result,...invalid}}}),null);
 });
 test('stage excerpts stay compact while full source inspection retains every original Unicode character and exact document labels',async()=>{
@@ -2686,10 +2686,10 @@ test('an early planned rail comes only from the complete current-run pinned cata
  const head={claim_id:graph.claim_id,run_id:'current-workflow',revision:12,state_sha256:sha('head state'),last_event_sha256:sha('head event'),graph,semantic_contexts:{'current-workflow':{claim_id:graph.claim_id,rule_packs:[pack],compatible_knowledge:[]}},knowledge_uses:[],facts:[{fact_id:'future-fact'}],obligations:[{document_type:'notice'}],outcome:{summary:'Future accepted outcome'},evaluation:{nodes:graph.nodes.map(node=>({node_id:node.node_id,execution_state:'completed'}))}};
  const before=JSON.stringify(head),plan=await ui.plannedOperationProcess(head);assert.equal(plan.graph.nodes.length,3);assert.equal(plan.graph.edges.length,2);assert.equal(plan.procedure,null);assert.deepEqual(plan.evaluation,{nodes:[],edges:[],documents:[]});assert.deepEqual(plan.facts,[]);assert.deepEqual(plan.obligations,[]);assert.doesNotMatch(JSON.stringify(plan),/completed|future-source|future-fact|Future accepted outcome|validated|"condition"/);
  const prefix={...head,revision:0,state_sha256:sha('opening'),graph:{family:'incoming_packet',nodes:[],edges:[]},facts:[],obligations:[],evaluation:{nodes:[],documents:[]},outcome:null,message:'The actual original message.'},trace={plannedProcess:plan,rows:[],sources:new Map(),current:null};
- const html=ui.operationStageMarkup(prefix,{},'start',trace);assert.equal((html.match(/data-au-planned-node disabled/g)||[]).length,3);assert.match(html,/data-au-planned-authority="none"/);assert.match(html,/Recorded procedure · planned steps/);assert.match(html,/data-au-stage-document="notice"[^>]*data-au-document-active="false"[^>]*data-au-document-checked="false"/);assert.doesNotMatch(html,/data-au-stage-fact=|data-status="completed"|>✓<|Future accepted outcome/);assert.equal(ui.operationStageGraph(trace,prefix),plan.graph);
+ const html=ui.operationStageMarkup(prefix,{},'start',trace);assert.equal((html.match(/data-au-planned-node disabled/g)||[]).length,3);assert.match(html,/data-au-planned-authority="none"/);assert.doesNotMatch(html,/au-stage-plan-label/);assert.match(html,/aria-label="Planned recorded process"/);assert.match(html,/data-au-stage-document="notice"[^>]*data-au-document-active="false"[^>]*data-au-document-checked="false"/);assert.doesNotMatch(html,/data-au-stage-fact=|data-status="completed"|>✓<|Future accepted outcome/);assert.equal(ui.operationStageGraph(trace,prefix),plan.graph);
  for(const change of [copy=>copy.graph.nodes.pop(),copy=>copy.graph.edges.pop(),copy=>copy.graph.nodes[1].document_types=[],copy=>copy.graph.nodes[0].label='Pruned or changed meaning',copy=>copy.semantic_contexts['current-workflow'].claim_id='another-case']){const copy=structuredClone(head);change(copy);assert.equal(await ui.plannedOperationProcess(copy),null);}
  const use={workflow_id:head.run_id,knowledge_id:'procedure.test_family',version:2,rule_pack_sha256:pack.template_sha256,definition_sha256:sha('exact reused definition'),knowledge_sha256:sha('exact reused publication')};
- const reused=structuredClone(head);reused.knowledge_uses=[{...use,workflow_id:'old-workflow',version:99},use];reused.semantic_contexts[head.run_id].compatible_knowledge=[{...use}];const reusedPlan=await ui.plannedOperationProcess(reused);assert.equal(reusedPlan.procedure.version,2);const linked=ui.operationStageMarkup(prefix,{},null,{...trace,plannedProcess:reusedPlan});assert.match(linked,/data-au-knowledge="procedure.test_family" data-au-version="2"/);assert.ok(linked.includes(`data-au-knowledge-sha="${use.knowledge_sha256}" data-au-definition-sha="${use.definition_sha256}"`));assert.match(linked,/>Procedure test family · Version 2<\/button>/);assert.doesNotMatch(linked,/Recorded procedure · planned steps/);
+ const reused=structuredClone(head);reused.knowledge_uses=[{...use,workflow_id:'old-workflow',version:99},use];reused.semantic_contexts[head.run_id].compatible_knowledge=[{...use}];const reusedPlan=await ui.plannedOperationProcess(reused);assert.equal(reusedPlan.procedure.version,2);const linked=ui.operationStageMarkup(prefix,{},null,{...trace,plannedProcess:reusedPlan});assert.match(linked,/data-au-planned-knowledge="procedure.test_family" data-au-planned-version="2"/);assert.ok(linked.includes(`data-au-planned-definition-sha="${use.definition_sha256}"`));assert.doesNotMatch(linked,/>Procedure test family · Version 2<\/button>/);assert.doesNotMatch(linked,/Recorded procedure · planned steps/);
  for(const field of ['rule_pack_sha256','knowledge_sha256','version']){const copy=structuredClone(reused);copy.semantic_contexts[head.run_id].compatible_knowledge[0][field]=field==='version'?3:sha('other version');assert.equal(await ui.plannedOperationProcess(copy),null);}
  assert.equal(JSON.stringify(head),before);
 });
@@ -2809,7 +2809,7 @@ test('a settled filled document slot has one source card while active delivery k
  const f=operationFixture(),source={...f.descriptor,file_name:'01-delivery-attestation.txt',text:f.sourceText,text_sha256:sha(f.sourceText)},pin={artifact_id:source.artifact_id,sha256:source.sha256,text_sha256:source.text_sha256,start_char:0,end_char:20,quote:Array.from(source.text).slice(0,20).join('')},required={id:'actual-require',kind:'document.require',object:{id:'notice'},result:{activation:'true',active_node_ids:['branch']}},check={id:'actual-check',kind:'document.check',object:{id:'notice'},source:pin,result:{assessment:'sufficient'}},fact={id:'actual-fact',kind:'fact.extract',object:{type:'fact',id:'fact:notice'},source:pin,result:{verification_required:false}},node={node_id:'branch',document_types:['notice']},state={...f.baseline,graph:{...f.baseline.graph,document_catalog:[{document_type:'notice',label:'Separate notice'}]},evaluation:{...f.baseline.evaluation,documents:[{document_type:'notice',review_state:'sufficient'}]},obligations:[{document_type:'notice',required_fact_ids:[]}]},trace={rows:[required,check,fact],current:check,finished:true,sources:new Map([[source.artifact_id,source]]),dockedFacts:new Map([[fact.object.id,{operation:fact,node:node.node_id,observed:true}]])};
  const settled=ui.stageNodeContents(node,state,trace,null,true),active=ui.stageNodeContents(node,state,{...trace,finished:false},null,false),slot=settled.slice(settled.indexOf('<div class="au-stage-slot"'));
  assert.equal((slot.match(/class="au-stage-thumbnail"/g)||[]).length,1);assert.equal((slot.match(/class="au-stage-source-name"/g)||[]).length,1);assert.match(slot,/data-au-document-checked="true"/);assert.match(slot,/data-au-check-operation="actual-check"/);assert.ok(slot.includes('data-au-citation="'+JSON.stringify(pin).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;')+'"'));assert.match(slot,/Supported by documents/);assert.doesNotMatch(slot,/au-stage-paper|<span>Separate notice<\/span>/);assert.match(settled,/data-au-stage-fact="fact:notice"/);
- assert.match(active,/<span>Separate notice<\/span>/);assert.match(active,/au-stage-paper/);assert.equal(ui.operationRecord(trace,'operation',check.id).source,pin);
+ assert.doesNotMatch(active,/<span>Separate notice<\/span>|au-stage-paper/);assert.equal(ui.operationRecord(trace,'operation',check.id).source,pin);
 });
 
 test('an uncited knowledge consequence cannot bring retained source context above the map while exact History and cited inspection remain available',()=>{
@@ -2905,11 +2905,11 @@ test('completed outcome holds8000ms independently of a ready next case and reuse
  const api=fakeApi({handle:async path=>{const native=path.includes(first.id)?first:path.includes(next.id)?next:null;if(!native){if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;return null;}if(path.endsWith('/replay?through_seq=0'))return response(native.zero);if(path.endsWith('/snapshot?after=0'))return response(native.snapshot);if(path.includes('/operations?'))return new Response(native.body);}});
  const checkedTrace={binding:first.binding,rows:[],sources:new Map(),pinnedJournal:first.snapshot.events,journal:[],transportState:null};await ui.checkedOperationCheckpoint(first.frames.at(-3),checkedTrace);await ui.checkedOperationCheckpoint(first.frames.at(-2),checkedTrace);
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();future.resolve(response({}));});await settle();await controller.showDemonstration();await waitFor(()=>timers.length===1);
- assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.match(f.host.innerHTML,/max="823"/);assert.match(f.host.innerHTML,/The later accepted outcome/);assert.equal(f.attributes.get('data-au-operation-result-verified'),'true');
+ assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.match(f.host.innerHTML,/data-au-operation-count="824"/);assert.match(f.host.innerHTML,/The later accepted outcome/);assert.equal(f.attributes.get('data-au-operation-result-verified'),'true');
  assert.equal(api.calls.filter(row=>row.path.includes(next.id)).length,3,'one opening, one atomic head, one stream prepare during the current case');await settle();assert.ok(f.host.innerHTML.includes(`data-au-state-sha="${first.head.state_sha256}"`));assert.doesNotMatch(f.host.innerHTML,new RegExp(`data-au-claim-id="${next.id}"`));
  const boundary=writes.length;elapsed+=8000;clearTimeout(timers[0].handle);timers[0].fn();await waitFor(()=>timers.length===2);
  const nextWrites=writes.slice(boundary).filter(html=>html.includes(`data-au-state-sha="${next.zero.state.state_sha256}"`)||html.includes(`data-au-state-sha="${next.head.state_sha256}"`));
- assert.ok(nextWrites.length);assert.ok(nextWrites.every(html=>html.includes('max="298"')),'every second-case render uses its own admitted299-operation total');assert.ok(nextWrites.every(html=>!html.includes('max="823"')&&!html.includes('0 received')));assert.match(nextWrites[0],/value="0"/);assert.doesNotMatch(nextWrites[0],/The later accepted outcome|data-au-stage-fact=/,'a prefetched head never donates facts or its outcome to revision zero');assert.equal(api.calls.filter(row=>row.path.includes(next.id)).length,3,'handoff does not refetch the prepared native stream');
+ assert.ok(nextWrites.length);assert.ok(nextWrites.every(html=>html.includes('data-au-operation-count="299"')),'every second-case render uses its own admitted299-operation total');assert.ok(nextWrites.every(html=>!html.includes('data-au-operation-count="824"')&&!html.includes('0 received')));assert.match(nextWrites[0],/data-au-operation-position="0"/);assert.doesNotMatch(nextWrites[0],/The later accepted outcome|data-au-stage-fact=/,'a prefetched head never donates facts or its outcome to revision zero');assert.equal(api.calls.filter(row=>row.path.includes(next.id)).length,3,'handoff does not refetch the prepared native stream');
 });
 
 test('first genuine consequence retains a real sweep and transfer while subsequent reads keep their full pacing',()=>{
@@ -3067,7 +3067,7 @@ test('cold demo knowledge moment needs the accepted knowledge.used prefix and ex
  const op={id:'actual-reuse',kind:'knowledge.reuse',object:{id:use.knowledge_id,type:'knowledge'},input:{version:1,knowledge_sha256:version.knowledge_sha256,definition_sha256:use.definition_sha256},result:{},cause_ids:[]};
  const event={kind:'knowledge.used',claim_id:base.claim_id,seq:3,event_sha256:hash('f'),payload:{knowledge:use}},trace={current:op,journal:[event],rows:[op],sources:new Map(),plannedProcess:{claim_id:base.claim_id,procedure:{...use,knowledge_sha256:version.knowledge_sha256},graph:version.graph}};
  const before=JSON.stringify({base,trace});assert.ok(ui.recordedReuseMoment(base,trace,{}),'cold replay can use its already verified recorded plan and context recipes');const html=ui.recordedReuseMomentMarkup(ui.recordedReuseMoment(base,trace,{}));assert.doesNotMatch(html,/<ol|<li|Pinned procedure skeleton/);assert.match(html,/known document checks/);assert.match(html,/data-au-knowledge-sha="1{64}"/);assert.match(html,/Reuse receipt/);assert.doesNotMatch(html,/Source checked|data-au-document-checked|Established/);const moment=ui.recordedReuseMoment(base,trace,{}),slot=ui.stageNodeContents({node_id:'branch',document_types:['notice']},base,{rows:[],sources:new Map()},null,false,trace.plannedProcess.graph,moment);assert.match(slot,/data-au-recipe-known="true"/);assert.match(slot,/data-au-document-checked="false"/);assert.doesNotMatch(slot,/data-au-document-supported="true"/);
- assert.equal(ui.recordedReuseMoment(base,{...trace,journal:[]},data),null,'observed knowledge.reuse cannot anticipate a future accepted event');assert.equal(ui.recordedReuseMoment(base,{...trace,finished:true},data),null);assert.equal(ui.recordedReuseMoment(base,{...trace,current:{...op,input:{...op.input,knowledge_sha256:hash('9')}}},data),null);const rendered=ui.operationStageMarkup(base,{},null,trace,false,{});assert.match(rendered,/au-stage-process[\s\S]*data-au-knowledge-moment="f{64}"/);assert.equal((rendered.match(/data-au-node=/g)||[]).length,base.graph.nodes.length,'reuse unfolds the existing process without a second skeleton');assert.doesNotMatch(rendered,/Pinned procedure skeleton|Recorded knowledge\.used receipt/);assert.equal(JSON.stringify({base,trace}),before);
+ assert.equal(ui.recordedReuseMoment(base,{...trace,journal:[]},data),null,'observed knowledge.reuse cannot anticipate a future accepted event');assert.equal(ui.recordedReuseMoment(base,{...trace,finished:true},data),null);assert.equal(ui.recordedReuseMoment(base,{...trace,current:{...op,input:{...op.input,knowledge_sha256:hash('9')}}},data),null);const rendered=ui.operationStageMarkup(base,{},null,trace,false,{});assert.doesNotMatch(rendered,/data-au-knowledge-moment=/,'reuse remains in its exact record during playback; result discloses it once');assert.equal((rendered.match(/data-au-node=/g)||[]).length,base.graph.nodes.length,'reuse unfolds the existing process without a second skeleton');assert.doesNotMatch(rendered,/Pinned procedure skeleton|Recorded knowledge\.used receipt/);assert.equal(JSON.stringify({base,trace}),before);
 });
 
 test('an unavailable exact learning pin cannot be overridden by replay position or a delayed warm-cache refresh',async t=>{
@@ -3188,7 +3188,7 @@ function nowSurface(html) {
 }
 function operationSurface(saved,operation,extra={}) {
  const trace={rows:[operation],current:operation,sources:new Map(),state:saved,...extra};
- return ui.workMarkup(saved,{},'branch',[],'step',{}, {mode:'replay',readOnly:true,paused:true,operations:trace});
+ return operation.kind === 'decision' ? ui.nowMarkup(saved,[], {mode:'replay',readOnly:true,paused:true,operations:trace}) : ui.workMarkup(saved,{},'branch',[],'step',{}, {mode:'replay',readOnly:true,paused:true,operations:trace});
 }
 
 test('plain language audit checks names and whole words with exact Details and quotation exemptions',()=>{
@@ -3209,7 +3209,7 @@ test('plain language audit checks names and whole words with exact Details and q
 test('recorded roles render one stable Now line from the actual operation rather than view state or observations as accepted facts',()=>{
  const saved=state(),before=JSON.stringify(saved),roles=[['fact.extract',{verification_required:true},'reader','Reader'],['fact.extract',{verification_required:false},'checker','Checker'],['document.check',{},'checker','Checker'],['step.complete',{},'rulebook','Rulebook'],['decision',{},'rulebook','Rulebook'],['knowledge.used',{},'memory','Memory'],['knowledge.add',{},'memory','Memory'],['unknown.recorded.operation',{},'casepath','CasePath']];
  for(const [kind,result,role,label]of roles){const operation={id:`recorded-${kind}-${role}`,kind,object:{type:'fact',id:'fact:notice'},input:{},result,cause_ids:[]},html=operationSurface(saved,operation),now=nowSurface(html);assert.equal(now.id,operation.id);assert.equal((html.match(/\bdata-au-now-id=/g)||[]).length,1);assert.match(now.html,new RegExp(`data-au-role="${role}"[^>]*>[\\s\\S]*?${label}`));assert.match(now.html,/data-au-now-copy/);assert.match(now.html,/data-au-now-result/);assert.doesNotMatch(now.html,/AI\b/,'a role or model configuration is not a model-call receipt');
-  const changed=ui.workMarkup(saved,{current_action:'UNRECORDED_NARRATION'},'start',[],'step',{}, {mode:'replay',readOnly:true,playing:true,operations:{rows:[operation],current:operation,sources:new Map(),state:saved,displayedAt:Date.now()+9000}});assert.deepEqual(nowSurface(changed),now,'playback time, selected step and read-only presentation cannot rewrite Now');
+  const changed=(operation.kind === 'decision' ? ui.nowMarkup(saved,[], {mode:'replay',playing:true,operations:{rows:[operation],current:operation,sources:new Map()}}) : ui.workMarkup(saved,{current_action:'UNRECORDED_NARRATION'},'start',[],'step',{}, {mode:'replay',readOnly:true,playing:true,operations:{rows:[operation],current:operation,sources:new Map(),state:saved,displayedAt:Date.now()+9000}}));assert.deepEqual(nowSurface(changed),now,'playback time, selected step and read-only presentation cannot rewrite Now');
  }
  assert.equal(JSON.stringify(saved),before,'role presentation cannot accept an observed fact or rewrite the case');assert.equal(saved.facts[1].status,'unresolved');
 });
@@ -3218,9 +3218,9 @@ test('AI model labels in the Reader and Checker surface require the exact record
  const saved=JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/autonomous-saved-history-v1.json'),'utf8')).state,before=JSON.stringify(saved);
  for(const verification_required of [true,false]){
   const operation={id:`provider-${verification_required}`,kind:'fact.extract',stage:verification_required?'interpretation':'verification',object:{type:'fact',id:saved.facts[0].fact_id},input:{},result:{verification_required},cause_ids:[]},positive=nowSurface(operationSurface(saved,operation)).html;
-  assert.match(positive,/using openai\/gpt-6-luna/);
+  assert.doesNotMatch(positive,/using openai\/gpt-6-luna/,'provider details stay off the main reading line');assert.match(require('../casepath/assets/autonomous-language-v1.js').operationPresentation(operation,ui.operationDisplayContext(saved,null,operation)).how,/openai\/gpt-6-luna/);
   for(const change of [copy=>{copy.receipts=[];},copy=>{for(const row of copy.receipts)if(row.receipt)row.receipt.workflow_id='another-workflow';},copy=>{for(const row of copy.receipts){const receipt=row.receipt?.[verification_required?'proposal_receipt':'verifier_receipt'];if(receipt)delete receipt.metadata.response_sha256;}}]){
-   const copy=structuredClone(saved);change(copy);const negative=nowSurface(operationSurface(copy,operation)).html;assert.doesNotMatch(negative,/AI\b|openai\/gpt-6-luna/,'missing, foreign or incomplete provider proof cannot label a role AI');
+   const copy=structuredClone(saved);change(copy);const negative=nowSurface(operationSurface(copy,operation)).html;assert.doesNotMatch(negative,/AI\b|openai\/gpt-6-luna/,'missing, foreign or incomplete provider proof cannot label a role AI');assert.doesNotMatch(require('../casepath/assets/autonomous-language-v1.js').operationPresentation(operation,ui.operationDisplayContext(copy,null,operation)).how,/openai\/gpt-6-luna/,'Details also requires the exact provider receipt');
   }
  }
  assert.equal(JSON.stringify(saved),before,'the real saved receipt remains byte-for-byte unchanged as parsed');
@@ -3234,7 +3234,7 @@ test('the case and Knowledge surfaces share one polite live region and preserve 
 });
 
 test('case tabs and recorded Knowledge copy stay short and plain including accessible names',()=>{
- const saved=state(),operation={id:'copy-reader',kind:'fact.extract',object:{type:'fact',id:'fact:notice'},input:{},result:{verification_required:true},cause_ids:[]},cases=operationSurface(saved,operation),knowledge=ui.knowledgeMarkup(learningFixtureData());
+ const saved=state(),operation={id:'copy-reader',kind:'fact.extract',object:{type:'fact',id:'fact:notice'},input:{},result:{verification_required:true},cause_ids:[]},cases=ui.workMarkup(saved,{},'branch',[],'step',{}, {mode:'replay',readOnly:true,paused:true,operations:{rows:[operation],current:operation,sources:new Map(),state:saved}}),knowledge=ui.knowledgeMarkup(learningFixtureData());
  for(const label of ['Steps','Facts it needs','Documents','Special cases','What changed'])assert.ok((cases+knowledge).includes(`>${label}<`),label);
  assert.match(cases,REPLAY_LINE);
  assert.deepEqual(surfaceCopyProblems(cases),[]);assert.deepEqual(surfaceCopyProblems(knowledge),[]);
@@ -3300,10 +3300,10 @@ test('Knowledge announcements distinguish the recorded family and source case fo
 });
 
 test('replay Now uses present actions while History keeps past actions and a pause preserves the exact recorded context',()=>{
- const saved=state({status:'completed'}),before=JSON.stringify(saved),cases=[['fact.extract',{verification_required:true},'finds a possible fact','Found a possible fact'],['document.check',{},'checks it in the document','Checked it in the document'],['step.complete',{},'completes this step','Completed this step'],['knowledge.used',{},'reuses the exact version','Reused the exact version']];
+ const saved=state({status:'completed'}),before=JSON.stringify(saved),cases=[['fact.extract',{verification_required:true},'finds a possible fact','Found a possible fact'],['document.check',{},'checks this document','Checked it in the document'],['step.complete',{},'completes this step','Completed this step'],['knowledge.used',{},'reuses saved steps','Reused the exact version']];
  for(const [kind,result,present,past]of cases){
   const operation={id:`tense-${kind}`,kind,object:{type:'fact',id:'fact:notice'},input:{},result,cause_ids:[]},trace={binding:{mode:'recorded'},recorded:true,rows:[operation],current:operation,sources:new Map(),state:saved},snapshot=JSON.stringify({saved,operation}),presentation={mode:'replay',readOnly:true,playing:true,operations:trace};
-  const playing=nowSurface(ui.workMarkup(saved,{},'branch',[],'step',{},presentation)),paused=nowSurface(ui.workMarkup(saved,{},'branch',[],'step',{}, {...presentation,playing:false,paused:true})),inspected=nowSurface(ui.workMarkup(saved,{},'branch',[],'step',{}, {...presentation,playing:false,paused:true,operations:{...trace,inspection:true}}));
+  const playing=nowSurface(ui.nowMarkup(saved,[],presentation)),paused=nowSurface(ui.nowMarkup(saved,[], {...presentation,playing:false,paused:true})),inspected=nowSurface(ui.nowMarkup(saved,[], {...presentation,playing:false,paused:true,operations:{...trace,inspection:true}}));
   assert.equal(playing.id,operation.id);assert.match(decodedSurface(playing.html),new RegExp(present));assert.doesNotMatch(decodedSurface(playing.html),new RegExp(past,'i'));assert.deepEqual(paused,playing,'pausing cannot change the actual operation or its Now wording');assert.deepEqual(inspected,playing,'recorded inspection keeps the same present action and record identifier');
   const history=ui.operationHistoryMarkup(trace);assert.match(history,new RegExp(past));assert.doesNotMatch(history,new RegExp(present));assert.ok(history.includes(`data-au-record-id="${operation.id}"`));assert.equal(JSON.stringify({saved,operation}),snapshot,'tense changes cannot change recorded state, result or operation');
  }
@@ -3480,7 +3480,7 @@ test('record dialog answers an operation with a What happened row and its exact 
  assert.match(html,/<button type="button" class="au-secondary au-record-open-source" data-au-source="call-log" data-au-citation="[^"]+"[^>]*>Open source<\/button>/);
  assert.match(html,/data-au-record-row="role"><dt>Role<\/dt><dd><span class="au-role-badge" data-au-role="reader">/);
  assert.match(html,new RegExp(`data-au-record-row="source"><dt>Source</dt><dd>Landlord knowledge and repair status · line 3, characters ${start}–${end}</dd>`));
- assert.match(html,/data-au-record-row="result"><dt>Result<\/dt><dd>The call log records first knowledge\. Needs a document check\.<\/dd>/);
+ assert.match(html,/data-au-record-row="result"><dt>Result<\/dt><dd>The call log records first knowledge\. To be confirmed\.<\/dd>/);
  // A working step is a proposal inside the run: it is never labelled as an accepted revision.
  assert.match(html,/data-au-record-row="revision"><dt>Accepted<\/dt><dd>No · working step 4 while the case stood at revision 7<\/dd>/);assert.doesNotMatch(html,/Accepted revision/);
  assert.match(html,/data-au-record-row="time"><dt>Time<\/dt><dd><time datetime="2026-10-19T21:17:00Z">/);
@@ -3539,9 +3539,9 @@ test('record dialog reaches every passage a record cites and titles an action by
  assert.equal(JSON.stringify(s),before);
 });
 
-test('outcome markup leads with recorded sentences, names open facts and the draft status, and keeps recorded limits visible',()=>{
+test('outcome leads with three plain rows and preserves exact recorded sentences and citations inside Why',()=>{
  const saved=savedHistory(),before=JSON.stringify(saved),html=ui.outcomeSummaryMarkup(saved);
- assert.ok(html.startsWith(`<p class="au-outcome-summary" data-au-outcome-recorded>${escapeText(saved.outcome.summary)}</p><p class="au-outcome-cited au-outcome-row" data-au-outcome-cited><span class="au-outcome-key">Cited</span> <span class="au-outcome-value"><button type="button" class="au-link au-outcome-cite" data-au-outcome-cite="summary" data-au-source="${saved.outcome.citations[0].artifact_id}"`),'the outcome citation follows the recorded summary it supports');
+ assert.ok(html.includes(`<p class="au-outcome-summary" data-au-outcome-recorded>${escapeText(saved.outcome.summary)}</p><p class="au-outcome-cited au-outcome-row" data-au-outcome-cited><span class="au-outcome-key">Cited</span> <span class="au-outcome-value"><button type="button" class="au-link au-outcome-cite" data-au-outcome-cite="summary" data-au-source="${saved.outcome.citations[0].artifact_id}"`),'the outcome citation follows the recorded summary it supports');
  // A recorded issue is never given the outcome's citation; it links only a citation of its own.
  assert.ok(html.includes(`<li data-au-outcome-issue>${escapeText(saved.outcome.issues[0])}</li>`));
  assert.equal((html.match(/data-au-outcome-cite=/g)||[]).length,saved.outcome.citations.length);assert.doesNotMatch(html,/data-au-outcome-cite="issue"/);
@@ -3550,14 +3550,14 @@ test('outcome markup leads with recorded sentences, names open facts and the dra
  assert.match(linked,/<li data-au-outcome-issue>An issue with its own passage\. <button type="button" class="au-link au-outcome-cite" data-au-outcome-cite="issue"/);assert.match(linked,/<li data-au-outcome-issue>An issue without one\.<\/li>/);
  assert.match(html,/data-au-outcome-open-facts><span class="au-outcome-key">Open<\/span> <span class="au-outcome-value"><span class="au-outcome-fact">Rent arrears<\/span>/);
  assert.match(html,/Rent arrears<\/span><span aria-hidden="true">&nbsp;· <\/span><span class="au-outcome-fact">Tenancy extension<\/span>/,'the separator stays with the preceding fact so no line starts with a dot');
- assert.match(html,/<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next<\/span> <span class="au-outcome-value">Await the named evidence or an authorized external action\./);
- assert.match(html,/data-au-draft-status="no_gap">No document gap identified<\/p>/);
- assert.doesNotMatch(html,/<details|Some facts still need proof|More evidence needed|Waiting for proof/);
+ assert.match(html,/<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next<\/span> <span class="au-outcome-value">Waiting for proof of open facts\.<\/span><\/p>/);
+ assert.match(html,/data-au-outcome-documents>[\s\S]*1 of 11 received<\/button> · no active document gap identified<\/span><\/p>/);
+ assert.match(html,/<details class="au-outcome-why" data-au-disclosure="outcome-why"><summary>Why<\/summary>/);assert.ok(html.indexOf('data-au-outcome-next')<html.indexOf('data-au-outcome-recorded'));assert.equal((html.split('<details')[0].match(/<p /g)||[]).length,3);
  const header=ui.workMarkup(saved,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0];
  assert.match(header,/data-au-claim-status>Deferred\.<\/span> Open: Rent arrears, Tenancy extension, Family home and 2 more\./,'with no document gap the status stays Deferred (ade555a, restored in the P7 review), not More evidence needed or Stopped, and the explanation names the open facts');
  // The no-gap line follows the recorded empty missing list, not the draft's wording.
  const reworded=structuredClone(saved);reworded.outcome.request_draft.body='Keine weitere Dokumentlücke.';
- assert.match(ui.outcomeSummaryMarkup(reworded),/data-au-draft-status="no_gap">No document gap identified<\/p>/);
+ assert.match(ui.outcomeSummaryMarkup(reworded),/data-au-outcome-documents>[\s\S]*1 of 11 received<\/button> · no active document gap identified<\/span><\/p>/);
  assert.match(ui.workMarkup(reworded,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0],/data-au-claim-status>Deferred\.<\/span> Open: Rent arrears/);
  // A prepared request stays readable in place: its subject and body are one disclosure away, never only in JSON.
  const gap=structuredClone(saved);Object.assign(gap.outcome,{missing_evidence:[{document_type:'termination_notice',label:'Termination notice'}],request_draft:{status:'prepared_not_sent',subject:'Evidence needed for the active claim process',body:'- Termination notice: required for the form check.'}});
@@ -3566,11 +3566,11 @@ test('outcome markup leads with recorded sentences, names open facts and the dra
  // A recorded limit inside the summary stays visible and keeps its emphasis; limits stay one quiet line.
  const limited=structuredClone(saved);Object.assign(limited.outcome,{assessment_scope:'defect_removal_and_reduction_eligibility',summary:'The sources support eligibility until remedy. Repair, the reduction amount and any award remain undetermined.',authority_limits:['No repair, rent quantum or court outcome was performed.']});
  const visible=ui.outcomeSummaryMarkup(limited).replace(/<details[\s\S]*?<\/details>/g,'');
- assert.match(visible,/^<p class="au-outcome-summary" data-au-outcome-recorded>The sources support eligibility until remedy\. <span class="au-outcome-open">Repair, the reduction amount and any award remain undetermined\.<\/span><\/p>/);
- assert.match(visible,/<p class="au-outcome-limit" data-au-outcome-limit>No repair, rent quantum or court outcome was performed\.<\/p>/);
+ assert.match(visible,/class="au-outcome-open">Repair, the reduction amount and any award remain undetermined\.<\/span>/);
+ assert.match(ui.outcomeSummaryMarkup(limited),/<p class="au-outcome-limit" data-au-outcome-limit>No repair, rent quantum or court outcome was performed\.<\/p>/);
  // Templated sentences remain only as the fallback for a record without its own sentence.
  const bare=ui.outcomeSummaryMarkup({...saved,outcome:{status:'deferred',missing_evidence:[{document_type:'lease_contract'}],unresolved_facts:[]}});
- assert.match(bare,/^<p class="au-outcome-summary">More documents are needed\.<\/p>/);assert.match(bare,/Needs<\/span> <span class="au-outcome-value"><button type="button" class="au-link" data-au-detail="documents" data-au-outcome-document="lease_contract">Lease contract<\/button>/);
+ assert.match(bare,/^<p class="au-outcome-plain" data-au-outcome-plain>More documents are needed\.<\/p>/);assert.match(bare,/Missing: <button type="button" class="au-link" data-au-detail="documents" data-au-outcome-document="lease_contract">Lease contract<\/button>/);
  assert.equal(JSON.stringify(saved),before);
 });
 
@@ -3746,4 +3746,43 @@ test('an entry link without a version opens the library at that domain and marks
  const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await waitFor(()=>f.host.innerHTML.includes('data-au-library'));await settle();
  assert.match(f.host.innerHTML,/data-au-knowledge-identity="procedure.lease_termination_dispute:2"/);assert.match(f.host.innerHTML,/data-au-claim="receiver" data-au-current-case="true"/);assert.equal(f.status.textContent,'');assert.equal(routing.hash,'#autonomous/knowledge?knowledge=procedure.lease_termination_dispute&claim=receiver');
  assert.doesNotMatch(f.host.innerHTML,/class="au-learning-transport"/);assert.equal(api.calls.filter(call=>call.init.method!=='GET'&&call.init.method!==undefined).length,0);
+});
+
+test('short replay actions identify the visible document without duplicating the exact quote',()=>{
+ const saved=state({source_descriptors:[{artifact_id:'w1-source',file_name:'02-tenancy-details.txt',sha256:hash('1')}]});
+ for(const [kind,copy] of [['source.open','opens this document.'],['span.read','reads the marked words.'],['phrase.match','finds matching wording.'],['document.check','checks this document.']]) {
+  const operation={id:`w1-${kind}`,kind,object:{type:'document',id:'lease_contract'},input:{},result:{},cause_ids:[],source:{artifact_id:'w1-source'}};
+  const trace={recorded:true,rows:[operation],current:operation,sources:new Map(),state:saved};
+  const text=decodedSurface(ui.nowMarkup(saved,[],{operations:trace}));
+  assert.ok(text.includes(copy),text);assert.ok(!text.includes('in in'));
+ }
+});
+
+
+test('the answer keeps model wording and issues behind Why while records remain exact',()=>{
+ const saved=savedHistory(),before=JSON.stringify(saved),html=ui.outcomeSummaryMarkup(saved),primary=html.split('<details class="au-outcome-why"')[0];
+ assert.equal((primary.match(/<p /g)||[]).length,3);
+ assert.ok(!primary.includes(escapeText(saved.outcome.summary)));
+ for(const issue of saved.outcome.issues)assert.ok(!primary.includes(escapeText(issue)));
+ assert.ok(html.includes(escapeText(saved.outcome.summary)));
+ assert.deepEqual(ui.contextualRecord(saved,{},[],'outcome').outcome,saved.outcome);
+ assert.equal(JSON.stringify(saved),before);
+});
+
+
+test('the compact public tour retains exact fictional and view-only provenance in its mode disclosure',()=>{
+ const saved=state({claim_id:ui.REFERENCE_DEMO_CASES[0].claim_id,policy_id:REFERENCE_POLICY}),tour={collection:'reference',cases:ui.REFERENCE_DEMO_CASES,index:0};
+ const html=ui.workMarkup(saved,{},'branch',[],'step',{}, {mode:'replay',readOnly:true,tour,playing:true});
+ assert.match(html,/<summary>Replay · Fictional case<\/summary><p class="au-reference-mode" data-au-operation-mode>Replay · Fictional case · View only<\/p>/);
+ assert.equal((html.match(/data-au-inspect="demo"/g)||[]).length,1);
+ assert.equal((html.match(/data-au-detail="activity"/g)||[]).length,1);
+ assert.doesNotMatch(html,/data-au-operation-scrub|data-au-operation-skip/);
+});
+
+
+test('a completed case keeps its status in Case details instead of repeating it above the answer',()=>{
+ const saved=savedHistory(),html=ui.workMarkup(saved,{},null,[]),header=html.match(/<header[\s\S]*?<\/header>/)[0];
+ assert.match(header,/<details class="au-claim-meta"[\s\S]*data-au-claim-status>Deferred/);
+ assert.doesNotMatch(header.replace(/<details[\s\S]*?<\/details>/g,''),/Deferred|revision|data-au-claim-status/);
+ assert.deepEqual(ui.contextualRecord(saved,{},[],'outcome').outcome,saved.outcome);
 });

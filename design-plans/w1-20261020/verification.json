@@ -1,0 +1,91 @@
+{
+  "base_commit": "a59cff2bbdd8e4a339e574ad18d64f2e52710feb",
+  "target_branch": "claude/casepath-agents-20261019",
+  "source_manifest_sha256": "10d4840c3c37bad1b0e3fe23eb761c11785b9c0dd9fdce512fc20c14b434be59",
+  "source_files": 1723,
+  "focused_suites": [
+    {
+      "log": "checks/focused-unit.tap",
+      "tests": 431,
+      "pass": 431,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "log": "checks/focused-browser.tap",
+      "tests": 34,
+      "pass": 34,
+      "fail": 0,
+      "skipped": 0
+    }
+  ],
+  "focused_total": 465,
+  "strict_frontend_and_imported_gate_tests": {
+    "pass": 10,
+    "fail": 0,
+    "skipped": 0,
+    "seconds": 78.5,
+    "log": "checks/focused-gate.log"
+  },
+  "visual_count": {
+    "method": "Apple Vision accurate OCR; identical settings; one detected region per element",
+    "baseline": "../cues-20261020/before-demo-12s.png",
+    "matched_frame": "after/demo-matched-heating.png",
+    "before": 48,
+    "after": 25,
+    "reduction_percent": 47.92
+  },
+  "live_checks": "checks/checks.json",
+  "access_checks": "checks/access.json",
+  "empty_workspace_check": "checks/empty-main.json",
+  "full_gate": {
+    "status": "not_completed",
+    "scope": "W5 under planner assignment 6302005554",
+    "note": "Preliminary broad runs were interrupted while source changed. No full-suite pass is claimed."
+  },
+  "provider_calls": 0,
+  "hosted_writes_by_this_task": 0,
+  "deployment_by_this_task": false,
+  "human_acceptance": "awaiting planner",
+  "screenshots": {
+    "after/claim-docs.png": "b37f78a793d25c5167275ada118908d2d6a2e9880597b7220f684e95b70ea789",
+    "after/claim-heating.png": "14f24bb8d679802e0b6cf660cdcd9881c882ba0df8b9667c615b665d7a189ba2",
+    "after/claim.png": "cc5797222df13dd85388238c43f95ae3661777f6de46378881e42cbc21e08929",
+    "after/demo-06s.png": "0552fa1b5bb8ea302fd739428996ef510375595fb6d8650b0fa0ed59f8017c16",
+    "after/demo-10s.png": "acc1d624137878f11ad4b4c444517944648c50e05c735e17f9a0526a58cc81ef",
+    "after/demo-12s.png": "26c597a4e4fa710dcfa4b0f87ca3d0af2e93e845ceeaab86680b35024198a623",
+    "after/demo-18s.png": "9828833cc13484f7b132789cefeb4b2640be1fbf33dd374a6ea57049b98e659a",
+    "after/demo-24s.png": "62255754d7c94470e921813f1115d0c5b99971961bb71c9d51e5f18caaaa6402",
+    "after/demo-matched-heating.png": "25a284310b6fd8df598f64f1e82e8be5b281dc84d094dbf49f5bc92782819f25",
+    "after/mobile-demo-12s.png": "ad05c63948e2b96674ad284573490115c1278f4cd2be72fa7b36736c71ac9208",
+    "before/claim-docs.png": "8b7312447f924fbefcc9610ffa58b65ad5d3c74c6eb53713bf29e85d8a7a52f0",
+    "before/claim-heating.png": "430b02ed907cbb17ca0bec877b40db3a52199fd10263227606865e99574eb27c",
+    "before/claim.png": "d5f270aa34f4a2f085a3b98346698798f86e384cf9f9c600d1f7d1f5f54bf6de",
+    "before/demo-06s.png": "f612d1cfe110607f6c8884d93ec76bb074d917d13f0e6ad7a714044b749e2a56",
+    "before/demo-12s.png": "9042c8b30808d3ae0f494041d3afbb98c042ea5b65fac780c5051a63d4fb761e",
+    "before/demo-18s.png": "390d192f227ee8859a572e28161a61063e990ae6266764772587644f2779a9a9",
+    "before/demo-24s.png": "2dc473c689b551818b0d0b836d7a4b3adc3b9578b4df806bf4aff4cf16fef529",
+    "before/mobile-demo-12s.png": "d4dd6f0f1fe1836d3a6c4f386e6ae7657ab43854981e5cbf54387145a644d1b6",
+    "checks/focused-quote.png": "c398f29acd0c7ded0c27697bf386cc87b4698dcecd955031fe0f13bfa2b8b144",
+    "checks/reduced-motion-phone.png": "8dc12271b09e3b39da7c81d79cb22fc8bd662cacee647d6cbaba2f0e208b1ec2",
+    "checks/w1-1440-result.png": "288c0c0a9025ad8a2a9c825d05f6453d3334f840261dfccbcfb1dd1408a4bce8",
+    "checks/w1-390-result.png": "6676d0d2e6a411c4e5dca69ee364ca65bcfd255322c9850ab4f85a92b0b55065",
+    "empty-main.png": "0c41cebe00f7bda8a53a36d620fbc999f12dce28356cf98da6d72d39c66c6209",
+    "exact-source.png": "66da8be941af810c437979f4bc8e4adfe589d91cf2b114a9dabc281339fd009b"
+  },
+  "runtime_repair": {
+    "extra_generated_bytecode_paths_quarantined": 846,
+    "cache_directories": 105,
+    "recorded_package_files_changed": 0,
+    "recorded_package_files_missing": 0,
+    "boot_history_preserved": true,
+    "native_dev_boot_after_repair": "passed"
+  },
+  "capture_source_manifest_sha256": "af2e9fde895ba3f019eb6a15ef256f849689655b98417ff987f34c84c7459a6f",
+  "capture_note": "Final seal strengthens one Next-copy test; captured application assets are byte-identical to the final seal.",
+  "captured_application_assets": {
+    "autonomous-workspace-v1.js": "8aec2405346ece4f3388980999b419f57b61957b22b3654978fd230b63825d18",
+    "autonomous-workspace-v1.css": "df28c381903d186fd626c0c38308021e643fc31132181485666ceee090b7ad35",
+    "autonomous-language-v1.js": "4445ae6594dc4d753607d94355f86569a45f875735b044b8ac9308725947eb54"
+  }
+}

@@ -113,7 +113,9 @@ def test_frontend_node_suite_passes(suite: str, needs_browser: bool) -> None:
     assert path.is_file(), f"focused frontend suite is missing: {path}"
     try:
         completed = subprocess.run(
-            [node, "--test", str(path)],
+            # Newer Node prints the spec reporter even when piped; the checks
+            # below read TAP.
+            [node, "--test", "--test-reporter=tap", str(path)],
             cwd=REPOSITORY,
             env=_node_environment(),
             stdout=subprocess.PIPE,

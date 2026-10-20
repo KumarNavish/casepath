@@ -219,17 +219,17 @@ test('zero recorded active gaps still expose held requirements, questions and th
  assert.equal((await recordData(page)).outcome.request_draft.status,'prepared_not_sent');
  assert.equal(await page.locator('.au-source-dialog[open]').count(),0);
  await closeRecord(page);
- await page.locator('[data-au-detail="documents"]').click();
+ await page.locator('.au-context-nav [data-au-detail="documents"]').click();
  assert.equal(await page.locator('[data-au-panel="documents"]').isVisible(),true);
  const held=state.evaluation.documents.filter(doc=>doc.route_state==='held_behind_question');
  assert.deepEqual(sorted(await page.locator('[data-au-panel="documents"] [data-au-document]').evaluateAll(nodes=>nodes.filter(node=>node.dataset.status==='held_behind_question').map(node=>node.dataset.auDocument))),sorted(held.map(doc=>doc.document_type)));
- assert.deepEqual(await page.locator('[data-au-panel="documents"] [data-status="held_behind_question"] .au-document-route-label').allTextContents(),held.map(doc=>doc.review_state==='sufficient'?'Supplied':'May be needed'));
+ assert.deepEqual(await page.locator('[data-au-panel="documents"] [data-status="held_behind_question"] .au-document-route-label').allTextContents(),held.map(doc=>doc.review_state==='sufficient'?'Received':'May be needed'));
  const steps=await page.locator('[data-au-panel="documents"] [data-status="held_behind_question"]').evaluateAll(rows=>rows.map(row=>({document:row.dataset.auDocument,route:row.querySelector('.au-document-route').textContent,select:row.querySelector('.au-document-step')?.dataset.auSelect})));
- for(const row of steps){const doc=held.find(item=>item.document_type===row.document);assert.ok(doc.required_at_node_ids.includes(row.select),`${row.document} names the step it depends on`);assert.match(row.route,doc.review_state==='sufficient'?/^Supplied ✓ · sufficient for /:/^May be needed · depends on /);}
+ for(const row of steps){const doc=held.find(item=>item.document_type===row.document);assert.ok(doc.required_at_node_ids.includes(row.select),`${row.document} names the step it depends on`);assert.match(row.route,doc.review_state==='sufficient'?/^Received ✓ · sufficient for /:/^May be needed · depends on /);}
  const routes=state.evaluation.documents.map(doc=>doc.route_state);
  // A requirement held behind a question is counted as it reads ("may be needed"), not as waiting on a step.
  const maybe=held.filter(doc=>doc.review_state!=='sufficient').length;
- assert.equal(await page.locator('[data-au-panel="documents"] [data-au-document-count]').textContent(),`${routes.filter(route=>route==='needed_now').length} needed now · ${routes.filter(route=>route==='needed_later').length} waiting on a step${maybe?` · ${maybe} may be needed`:''} · ${held.filter(doc=>doc.review_state==='sufficient').length+routes.filter(route=>['established','satisfied'].includes(route)).length} supplied`);
+ assert.equal(await page.locator('[data-au-panel="documents"] [data-au-document-count]').textContent(),`${held.filter(doc=>doc.review_state==='sufficient').length+routes.filter(route=>['established','satisfied'].includes(route)).length} of ${routes.length} received · ${routes.filter(route=>route==='needed_now').length} missing · ${routes.filter(route=>route==='needed_later').length} waiting on a step${maybe?` · ${maybe} may be needed`:''}`);
  const node=state.evaluation.nodes.find(node=>node.activation==='unresolved' && node.condition_flags.includes('termination_received')).node_id;
  await page.locator('[data-au-detail="step"]').click();await page.locator(`[data-au-node="${node}"]`).click();
  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),node);
@@ -517,14 +517,17 @@ for(const width of [1440,390])test(`Documents read as a causal checklist whose r
    }
   }
   const needed=state.obligations.filter(item=>state.evaluation.documents.find(doc=>doc.document_type===item.document_type)?.route_state==='needed_now').length;
-  assert.match(await page.locator('[data-au-panel="documents"] [data-au-document-count]').textContent(),new RegExp(`^${needed} needed now · `),claim.claim_id);
+  const documents=state.obligations.map(item=>state.evaluation.documents.find(doc=>doc.document_type===item.document_type));
+  const received=documents.filter(doc=>doc?.review_state==='sufficient' && ['established','satisfied','held_behind_question','needed_later','optional'].includes(doc.route_state)).length;
+  const total=documents.filter(doc=>doc?.route_state!=='not_needed').length;
+  assert.match(await page.locator('[data-au-panel="documents"] [data-au-document-count]').textContent(),new RegExp(`^${received} of ${total} received · ${needed} missing · `),claim.claim_id);
   assert.equal(JSON.stringify(state),before);
  }
  // A step name in the checklist opens that step with the document in focus.
  const id='auto_764f712d3833988ce6ff6cfd',state=saved(id);await open(page,id);await page.locator('.au-context-nav [data-au-detail="documents"]').click();
  const row=page.locator('[data-au-panel="documents"] .au-obligation[data-status="needed_now"]').first(),document=await row.getAttribute('data-au-document'),step=await row.locator('.au-document-step').getAttribute('data-au-select');
  assert.equal(state.evaluation.documents.find(doc=>doc.document_type===document).review_state,'insufficient');
- assert.match(await row.locator('.au-document-route').textContent(),/^Needed now · because of /);assert.equal(await row.locator('.au-document-review').textContent(),'Supplied evidence is not sufficient.');
+ assert.match(await row.locator('.au-document-route').textContent(),/^Missing · needed now for /);assert.equal(await row.locator('.au-document-review').textContent(),'Supplied evidence is not sufficient.');
  await row.locator('.au-document-step').click();
  await page.locator('[data-au-panel="step"]').waitFor();
  assert.equal(await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node'),step);

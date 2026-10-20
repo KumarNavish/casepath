@@ -717,7 +717,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-stage-paper { display:none; }
 .au-workspace .au-stage-source-check { position:absolute; right:6px; top:8px; color:var(--au-accent); font-size:18px; }
 .au-workspace .au-stage-fact { display:block; margin:6px 0 8px 24px; max-width:calc(100% - 24px); min-height:44px; padding:6px 8px; border:1px solid var(--au-line); border-radius:3px; background:var(--au-wash); color:var(--au-ink); font-size:18px; line-height:1.4; text-align:left; overflow-wrap:anywhere; }
-.au-workspace .au-stage-fact span { display:block; margin:0; font-size:18px; }
+.au-workspace .au-stage-fact span { display:block; margin:0; font-size:18px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .au-workspace .au-stage-fact[data-au-fact-state=observed] { background:var(--au-paper); border-style:dashed; }
 .au-workspace .au-stage-outcome { max-width:1000px; margin:16px auto 0; }
 .au-workspace .au-stage-outcome > p { margin:0 0 8px; font-size:20px; line-height:1.45; }
@@ -740,8 +740,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-document-total { flex-basis:100%; text-align:center; }
 }
 
-.au-workspace .au-operation-fact-token { background:var(--au-paper); width:max-content; max-width:210px; padding:8px 12px; border:1px solid var(--au-line); border-radius:3px; font-size:18px; line-height:1.45; box-shadow:0 4px 16px rgb(24 61 53 / 8%); }
-.au-workspace .au-operation-fact-token[data-au-document-transfer] :is(strong,span) { display:block; font-size:18px; line-height:1.4; font-weight:400; }
+/* The exact quote stays in the passage and destination; a thin transfer cue
+   cannot cover the step name or document on the way there. */
+.au-workspace .au-operation-fact-token { background:var(--au-green); width:16px; height:2px; padding:0; border:0; border-radius:0; font-size:0; line-height:0; overflow:hidden; box-shadow:none; }
 .au-workspace .au-operation-attention[data-au-actor=reading],.au-workspace .au-operation-read-trail { position:absolute; left:0; top:0; z-index:4; pointer-events:none; transform-origin:left center; border-radius:2px; background:rgb(116 155 99 / 50%); box-shadow:none; }
 .au-workspace .au-visually-hidden { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
 /* The skip link stays out of view until it receives keyboard focus. */
@@ -1400,18 +1401,11 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
    The step being worked on keeps its pale band and gains a thin green rule; other steps step back to muted ink. */
 .au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step[data-au-stage-active=true] > .au-node { box-shadow:inset 2px 0 0 var(--au-green); }
 .au-workspace .au-operation-stage[data-au-stage-phase=source]:has([data-au-stage-active=true]) .au-stage-step[data-au-stage-active=false] :is(.au-node,.au-stage-fact,.au-stage-slot) { color:var(--au-muted); }
-.au-workspace .au-operation-stage :is(.au-node,.au-stage-fact,.au-stage-slot) { transition:color .2s ease,background-color .2s ease,border-color .2s ease; }
 /* The words just read and what they produced share the passage's green tint: a fact, or a document box ticked as received. */
 .au-workspace .au-stage-fact[data-au-landed-recent] { border-color:var(--au-green); background:rgb(116 155 99 / 25%); }
 .au-workspace .au-stage-slot:is([data-au-document-focused=true],[data-au-landed-recent]) { border-color:var(--au-green); }
 .au-workspace .au-stage-slot[data-au-landed-recent] { background:rgb(116 155 99 / 25%); }
-/* Progress: the step's place in the transport row, and a gentle pulse on the role at work. */
 .au-workspace .au-demo-step { color:var(--au-ink); }
-@media (prefers-reduced-motion:no-preference) {
-  .au-workspace [data-au-operation-presentation=playing] .au-quiet-claim > .au-now:not(.au-last) .au-role-shape,
-  .au-workspace [data-au-operation-presentation=playing] .au-stage-step[data-au-stage-active=true] .au-step-role .au-role-shape { animation:au-role-at-work 1.6s ease-in-out infinite; }
-}
-@keyframes au-role-at-work { 50% { opacity:.3; } }
 /* Outcome: the recorded finding in plain words first; the recorded sentence follows as its basis. */
 .au-workspace .au-stage-outcome > .au-outcome-plain { margin-bottom:4px; }
 .au-workspace .au-outcome-summary[data-au-outcome-basis] { color:var(--au-muted); font-size:18px; line-height:1.5; }
@@ -1421,9 +1415,8 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
   .au-workspace .au-assessment-conclusion > .au-outcome-plain { grid-column:1; }
   .au-workspace .au-assessment-conclusion > .au-outcome-documents { grid-column:2; }
 }
-/* While a case plays, the active step's facts and documents stay at full strength; the others recede (text stays above 4.5:1). */
-.au-workspace .au-operation-stage:has([data-au-stage-active=true]) .au-stage-step[data-au-stage-active=false] :is(.au-stage-fact,.au-stage-slot) { opacity:.75; transition:opacity .25s ease; }
-@media (forced-colors:active) { .au-workspace .au-operation-stage .au-stage-step :is(.au-stage-fact,.au-stage-slot) { opacity:1; } }
+/* Existing muted ink keeps inactive facts readable without reducing contrast. */
+.au-workspace .au-operation-stage:has([data-au-stage-active=true]) .au-stage-step[data-au-stage-active=false] :is(.au-stage-fact,.au-stage-slot) { color:var(--au-muted); }
 
 /* Facts on the stage read as quoted words, not links; the underline returns on hover and focus. */
 .au-workspace .au-operation-stage .au-stage-fact, .au-workspace .au-operation-stage .au-stage-fact span { text-decoration:none; }
@@ -1434,8 +1427,36 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 
 /* The open passage points at the step it feeds. */
 .au-workspace .au-stage-source[data-au-pointing] { margin-bottom:22px; }
-@media (prefers-reduced-motion:no-preference) { .au-workspace .au-stage-source[data-au-pointing] { transition:margin-left .35s cubic-bezier(.2,.65,.3,1); } }
 .au-workspace .au-stage-source[data-au-pointing] .au-operation-reading { position:relative; }
 .au-workspace .au-stage-source[data-au-pointing] .au-operation-reading::after { content:''; position:absolute; left:var(--au-pointer,50%); bottom:-8px; width:14px; height:14px; background:var(--au-paper); border-right:1px solid var(--au-line); border-bottom:1px solid var(--au-line); transform:translateX(-50%) rotate(45deg); }
 /* The words just read stand out from the passage around them. */
 .au-workspace .au-stage-source .au-operation-passage mark[data-au-operation-span] { background:rgb(116 155 99 / 30%); box-shadow:inset 0 -2px 0 var(--au-green); }
+
+/* W1: three header rows; the action sits with the passage it describes. */
+.au-workspace [data-au-tour=true] > .au-work-head :is(.au-eyebrow,.au-work-controls,.au-claim-constraint) { display:none; }
+.au-workspace [data-au-tour=true] > .au-work-head { display:block; margin-bottom:10px; }
+.au-workspace .au-claim-meta { color:var(--au-muted); margin-top:6px; }
+.au-workspace .au-claim-meta summary { width:fit-content; cursor:pointer; }
+.au-workspace .au-demo-transport { flex-wrap:wrap; overflow:visible; gap:4px 8px; }
+.au-workspace .au-demo-next { flex:1 1 100px; max-width:180px; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+.au-workspace .au-demo-mode { margin-left:auto; color:var(--au-muted); white-space:nowrap; }
+.au-workspace .au-demo-control { min-height:44px; }
+.au-workspace .au-stage-source > .au-now { display:block; position:static; margin:0 0 8px; padding:0; border:0; background:transparent; line-height:1.45; }
+.au-workspace .au-stage-source > .au-now :is([data-au-now-copy],[data-au-now-result]) { display:inline; margin:0; }
+.au-workspace .au-stage-source > .au-now .au-record-link { margin-left:8px; }
+.au-workspace .au-stage-step[data-au-stage-active=false][data-au-stage-complete=false] > :is(.au-stage-fact,.au-stage-documents) { display:none; }
+/* Document identity and its check are a single line, without nested boxes. */
+.au-workspace .au-stage-slot { padding:0; border:0; border-radius:0; background:transparent; }
+.au-workspace .au-stage-slot:is([data-au-document-checked=true],[data-au-landed-recent]) { background:transparent; }
+.au-workspace .au-stage-thumbnail { margin:0; padding:8px 22px 8px 0; border:0; border-radius:0; background:transparent; }
+.au-workspace .au-stage-source-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.au-workspace .au-stage-slot[data-au-recipe-known=true] > span::after { content:none; }
+.au-workspace .au-outcome-why { margin-top:8px; }
+.au-workspace .au-outcome-why > summary { cursor:pointer; color:var(--au-muted); width:fit-content; min-height:44px; }
+.au-workspace .au-outcome-why > :not(summary) { margin:8px 0; }
+.au-workspace .au-stage-fact { position:relative; }
+.au-workspace .au-stage-fact:is(:hover,:focus-visible)::after { content:attr(data-au-full-quote); position:absolute; z-index:20; left:0; top:100%; width:max-content; max-width:min(300px,calc(100vw - 48px)); padding:6px 8px; background:var(--au-paper); color:var(--au-ink); border:1px solid var(--au-line); white-space:normal; font:inherit; }
+@media (max-width:700px) {
+  .au-workspace .au-demo-mode { flex-basis:100%; white-space:normal; margin-left:0; }
+  .au-workspace .au-stage-source > .au-now { font-size:16px; }
+}

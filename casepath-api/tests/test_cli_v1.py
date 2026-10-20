@@ -1161,3 +1161,55 @@ def test_standalone_seed_rejects_self_excluded_identity_drift_before_open(
     assert "sealed source manifest is invalid" in completed.stderr
     assert not uv_called.exists()
     assert not candidate.joinpath(".runtime/casepath-data-v1").exists()
+
+
+@pytest.mark.parametrize(
+    ("flock_status", "expected_status", "contention_named"),
+    ((0, 0, False), (1, 75, True), (66, 66, False), (73, 73, False)),
+)
+def test_linux_lease_probe_reports_only_a_held_lock_as_contention(
+    tmp_path: Path, flock_status: int, expected_status: int, contention_named: bool
+) -> None:
+    source = (REPOSITORY / "bin/casepath").read_text()
+    start = source.index("probe_flock_lease() {")
+    probe = source[start : source.index("\n}\n", start) + 3]
+    fake_flock = tmp_path / "flock"
+    fake_flock.write_text(f"#!/bin/sh\necho 'flock: cannot open lock file' >&2\nexit {flock_status}\n")
+    fake_flock.chmod(0o755)
+    completed = subprocess.run(
+        [
+            "/bin/bash",
+            "-c",
+            f'set -euo pipefail\ntrusted_lock_executable="$1"\n{probe}probe_flock_lease "$2" "held message"\necho after',
+            "probe",
+            str(fake_flock),
+            str(tmp_path / "environment.lock"),
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == expected_status
+    assert ("held message" in completed.stderr) is contention_named
+    assert ("after" in completed.stdout) is (expected_status == 0)
+    for lock in (
+        "$environment_lock_path",
+        "$repository_root/.runtime/casepath-data-v1.lock",
+        "$runtime_root/launcher.lock",
+    ):
+        assert f'probe_flock_lease "{lock}"' in source
+
+
+def test_run_tests_prints_skip_reasons(monkeypatch: pytest.MonkeyPatch) -> None:
+    commands: list[list[str]] = []
+    monkeypatch.setattr(cli_module, "_read_regular_nofollow", lambda *_args, **_kwargs: b"{}")
+    monkeypatch.setattr(cli_module, "_validate_source_manifest", lambda *_args, **_kwargs: None)
+    monkeypatch.setenv("CASEPATH_SOURCE_COMMIT", "a" * 40)
+    monkeypatch.setattr(
+        cli_module.subprocess,
+        "run",
+        lambda command, **_kwargs: commands.append(command)
+        or subprocess.CompletedProcess(command, 1),
+    )
+    assert cli_module.run_tests(Namespace(workspace_only=True)) == 1
+    assert commands[0][commands[0].index("pytest") :][:3] == ["pytest", "-q", "-rs"]

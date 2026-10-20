@@ -459,6 +459,8 @@ def run_tests(args: argparse.Namespace) -> int:
             "-m",
             "pytest",
             "-q",
+            # Print every skip reason, so a skipped frontend suite is visible.
+            "-rs",
             "-p",
             "no:cacheprovider",
             *(str(target) for target in targets),
