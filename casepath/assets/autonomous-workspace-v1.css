@@ -639,7 +639,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-intake-checklist > li > div:first-child { display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 20px; justify-content:space-between; }
 .au-workspace .au-intake-checklist strong { font-size:16px; font-weight:500; }
 .au-workspace .au-intake-checklist span { color:var(--au-muted); font-size:16px; }
-.au-workspace .au-demo-picker > details { margin-top:24px; border-top:1px solid var(--au-line); padding-top:18px; }
 .au-evidence-canvas { position: relative; }
 .au-operation-reading { min-width: 0; margin: 0 0 1.4rem; }
 .au-operation-passage { margin: .8rem 0; max-height: 18rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.6; color: var(--au-ink, #253b45); }
@@ -1025,4 +1024,53 @@ html[data-autonomous-workspace=true] { scroll-padding-top:100px; }
   .au-workspace .au-start-reason { text-align:left; }
   .au-workspace .au-demo-case { grid-template-columns:28px minmax(0,1fr); gap:2px 12px; }
   .au-workspace .au-demo-case > :is(.au-demo-case-state,.au-demo-intake-link) { grid-column:2; }
+}
+
+/* Demonstration transport: one quiet row under the case header while a roster plays. */
+.au-workspace .au-quiet-claim > .au-demo-transport { position:sticky; top:var(--au-header-height,64px); z-index:11; display:flex; align-items:center; gap:0 8px; min-width:0; max-width:100%; margin:6px 0 0; padding:2px 0; border-bottom:1px solid var(--au-line); background:var(--au-field); color:var(--au-muted); font-size:16px; line-height:1.4; white-space:nowrap; overflow:hidden; }
+.au-workspace .au-demo-transport > * { flex:none; }
+.au-workspace .au-demo-position { color:var(--au-ink); font-weight:500; font-variant-numeric:tabular-nums; }
+.au-workspace .au-demo-domain { flex:0 1 auto; min-width:0; max-width:32%; overflow:hidden; text-overflow:ellipsis; }
+.au-workspace .au-demo-next { flex:1 1 0; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+.au-workspace .au-demo-control { min-height:36px; padding:4px 2px; border:0; background:transparent; color:var(--au-ink); text-decoration:underline; text-underline-offset:4px; }
+.au-workspace .au-demo-control:hover { color:var(--au-accent); }
+.au-workspace .au-quiet-claim > .au-demo-transport ~ .au-now:not(.au-last) { top:calc(var(--au-header-height,64px) + var(--au-transport-height,0px)); }
+.au-workspace .au-quiet-claim:has(> .au-demo-transport) :is(button,a,summary,[tabindex]) { scroll-margin-top:calc(var(--au-header-height,64px) + var(--au-transport-height,0px) + var(--au-now-height,0px) + 20px); }
+.au-workspace .au-knowledge-payoff { margin:0 0 10px; font-size:16px; line-height:1.45; }
+.au-workspace .au-knowledge-payoff a { text-underline-offset:4px; }
+@media (max-width:640px) {
+  .au-workspace .au-quiet-claim > .au-demo-transport { gap:0 5px; font-size:15px; }
+}
+/* Cases keep catalog order; a featured case names its original subject quietly. */
+.au-workspace .au-claim-open > .au-case-subject { margin-top:2px; font-size:15px; }
+.au-workspace .au-claim-row:has(> .au-claim-demo) { display:grid; grid-template-columns:minmax(0,1fr) max-content; grid-template-rows:auto 1fr; align-items:start; gap:2px 24px; }
+.au-workspace .au-claim-row:has(> .au-claim-demo) > .au-claim-open { grid-row:1 / span 2; }
+.au-workspace .au-claim-demo { color:var(--au-muted); font-size:15px; text-align:right; white-space:nowrap; }
+.au-workspace .au-claim-row:has(> .au-claim-demo) > .au-claim-state { padding-top:4px; text-align:right; }
+@media (max-width:640px) {
+  .au-workspace .au-claim-row:has(> .au-claim-demo) { grid-template-columns:minmax(0,1fr); grid-template-rows:none; gap:4px 0; }
+  .au-workspace .au-claim-row:has(> .au-claim-demo) > .au-claim-open { grid-row:auto; }
+  .au-workspace .au-claim-row:has(> .au-claim-demo) > :is(.au-claim-state,.au-claim-demo) { text-align:left; }
+}
+.au-workspace .au-case-link { flex-direction:column; align-items:flex-start; gap:0; text-align:left; }
+.au-workspace .au-learning-receipts li > button[data-au-learning-event] { display:inline-flex; flex-direction:column; align-items:flex-start; vertical-align:top; padding:2px 0; border:0; background:transparent; text-align:left; text-decoration:none; }
+.au-workspace :is(.au-case-link,.au-learning-receipts button) :is(.au-case-label,.au-case-subject) { display:block; }
+.au-workspace .au-learning-receipts .au-case-label { text-decoration:underline; text-underline-offset:4px; }
+.au-workspace :is(.au-case-link,.au-learning-receipts button) .au-case-subject,
+.au-workspace .au-demo-case-copy .au-case-subject { color:var(--au-muted); font-size:15px; text-decoration:none; }
+/* The Choose case dialog lists both rosters, each in its own order. */
+.au-workspace .au-demo-roster { margin-top:24px; }
+.au-workspace .au-demo-roster h3 { font-size:19px; }
+.au-workspace .au-demo-picks { margin:8px 0 0; padding:0; list-style:none; border-top:1px solid var(--au-line); }
+.au-workspace .au-demo-pick { display:grid; grid-template-columns:28px minmax(0,1fr) max-content max-content; align-items:baseline; gap:2px 18px; padding:10px 0; border-bottom:1px solid var(--au-line); }
+.au-workspace .au-demo-pick-copy { display:flex; flex-direction:column; min-width:0; }
+.au-workspace .au-demo-pick-copy :is(strong,.au-demo-case-open) { font-size:16px; font-weight:500; text-align:left; }
+.au-workspace .au-demo-case-open { min-height:32px; padding:2px 0; border:0; background:transparent; color:var(--au-ink); text-decoration:underline; text-underline-offset:4px; }
+.au-workspace :is(.au-demo-pick-facts,.au-demo-pick-state) { color:var(--au-muted); font-size:15px; }
+.au-workspace .au-demo-pick .au-link { min-height:32px; padding:2px 0; }
+@media (max-width:640px) {
+  .au-workspace .au-demo-pick { grid-template-columns:24px max-content minmax(0,1fr); gap:2px 14px; }
+  .au-workspace .au-demo-pick > .au-demo-pick-copy { grid-column:2 / -1; }
+  .au-workspace .au-demo-pick > :is(.au-demo-pick-state,.au-link) { grid-column:2; justify-self:start; }
+  .au-workspace .au-demo-pick > .au-demo-sources { grid-column:3; }
 }

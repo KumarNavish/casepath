@@ -47,8 +47,43 @@
   // Structural release context only; never an accepted claim or current-run result.
   const RELEASE_PROCEDURE_OUTLINE = freezeRelease({"artifact_material_sha256":"0dc901886e4399084f9600df8a3311445ca92d3c4ea4ba65d515261e0fd1e01a","base_policy_sha256":"986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343","bounded_policy_sha256":"919645ab51b74ccc4ad01ba9d06148af08b28ccd6c9a3f67b19284feb9646056","catalogs":[{"catalog_sha256":"d23d143adc79bdf96bc2cbcf5573297aeb63a8566b73b089a903875285a6f5a9","documents":[{"document_type":"tenancy_terms_evidence","label":"Relevant tenancy terms","required_at_node_ids":["dh_scope"]},{"document_type":"landlord_knowledge_evidence","label":"Landlord knowledge and continuing repair status","required_at_node_ids":["dh_notice"]},{"document_type":"objective_defect_observation","label":"Dated technical defect observation","required_at_node_ids":["dh_evidence"]}],"family":"defect_mold_heating","nodes":[{"document_types":[],"label":"Capture the reported defect","node_id":"dh_intake"},{"document_types":["tenancy_terms_evidence"],"label":"Establish relevant tenancy terms","node_id":"dh_scope"},{"document_types":["landlord_knowledge_evidence"],"label":"Establish landlord knowledge","node_id":"dh_notice"},{"document_types":[],"label":"Assess supported cause","node_id":"dh_cause"},{"document_types":["objective_defect_observation"],"label":"Assess objective defect evidence","node_id":"dh_evidence"},{"document_types":[],"label":"Record repair and rent reduction eligibility","node_id":"dh_response"}],"rule_pack_sha256":"79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831","transitions":[{"edge_id":"reference_defect_mold_heating_0","source_node_id":"dh_intake","target_node_id":"dh_scope"},{"edge_id":"reference_defect_mold_heating_1","source_node_id":"dh_scope","target_node_id":"dh_notice"},{"edge_id":"reference_defect_mold_heating_2","source_node_id":"dh_notice","target_node_id":"dh_cause"},{"edge_id":"reference_defect_mold_heating_3","source_node_id":"dh_cause","target_node_id":"dh_evidence"},{"edge_id":"reference_defect_mold_heating_4","source_node_id":"dh_evidence","target_node_id":"dh_response"}]},{"catalog_sha256":"7049334aeafc7c0b04f796195c080c46337368bc46ef961d4699b87aeb1f2945","documents":[{"document_type":"tenancy_terms_evidence","label":"Relevant tenancy terms","required_at_node_ids":["lt_form"]},{"document_type":"received_termination_packet","label":"Received termination notice","required_at_node_ids":["lt_form"]},{"document_type":"original_notification_context","label":"Who sent the notice and how it arrived","required_at_node_ids":["lt_form"]}],"family":"lease_termination_dispute","nodes":[{"document_types":[],"label":"Capture the received termination packet","node_id":"lt_intake"},{"document_types":["tenancy_terms_evidence","received_termination_packet","original_notification_context"],"label":"Assess whether the termination notice is valid","node_id":"lt_form"}],"rule_pack_sha256":"0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297","transitions":[{"edge_id":"reference_lease_termination_dispute_0","source_node_id":"lt_intake","target_node_id":"lt_form"}]},{"catalog_sha256":"2145779142660c3449df9d269c3bce7da0e0dcf86d58ec2e4866c40a13314ca1","documents":[{"document_type":"tenancy_terms_evidence","label":"Relevant ordinary tenancy terms","required_at_node_ids":["ri_form"]},{"document_type":"received_rent_increase_packet","label":"Received rent increase notice","required_at_node_ids":["ri_form"]},{"document_type":"original_notification_context","label":"Reasons supplied with the increase notice","required_at_node_ids":["ri_reason"]}],"family":"rent_increase_dispute","nodes":[{"document_types":[],"label":"Capture the original increase packet","node_id":"ri_intake"},{"document_types":["tenancy_terms_evidence","received_rent_increase_packet"],"label":"Assess notification context","node_id":"ri_form"},{"document_types":["original_notification_context"],"label":"Assess whether the increase notice is valid","node_id":"ri_reason"}],"rule_pack_sha256":"3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1","transitions":[{"edge_id":"reference_rent_increase_dispute_0","source_node_id":"ri_intake","target_node_id":"ri_form"},{"edge_id":"reference_rent_increase_dispute_1","source_node_id":"ri_form","target_node_id":"ri_reason"}]}],"claims":[{"claim_binding_sha256":"b0d51893ca6bd8debb408edf60a10e0dcf6016d2a23c7c059120c2257310cc64","claim_id":"clm_0f4f13b1e3e1328c","corpus_manifest_sha256":"921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e","family":"lease_termination_dispute","request_source_pin":{"end_char":887,"family":"lease_termination_dispute","file_name":"01-sole-packet-and-tenant-clarification.txt","offset_unit":"unicode_code_point","quote":"assessment of the received landlord notice's approved-form/nullity defect","source_sha256":"5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e","start_char":814,"text_sha256":"5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e"},"source_sha256s":["5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e","e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"]},{"claim_binding_sha256":"462c8217555033ab5bba43c966848536cce00b326f7d1f2d92dcd9528d4717e7","claim_id":"clm_2c55cdd816b1d0e8","corpus_manifest_sha256":"921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e","family":"rent_increase_dispute","request_source_pin":{"end_char":1153,"family":"rent_increase_dispute","file_name":"01-ordinary-tenancy-and-original-notification-packet.txt","offset_unit":"unicode_code_point","quote":"assessment of the original notice's missing-reasons/nullity ground","source_sha256":"4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2","start_char":1087,"text_sha256":"4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"},"source_sha256s":["4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28","4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"]},{"claim_binding_sha256":"c121e223860d7509a29fa96c0955dbe06a752699c47d6d3a193fc6fd43ab5a13","claim_id":"clm_314f2d309fea25e6","corpus_manifest_sha256":"921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e","family":"defect_mold_heating","request_source_pin":{"end_char":555,"family":"defect_mold_heating","file_name":"01-customer-and-tenancy-clarification.txt","offset_unit":"unicode_code_point","quote":"removal of the continuing heating defect and assessment of proportional rent-reduction eligibility","source_sha256":"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9","start_char":457,"text_sha256":"b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"},"source_sha256s":["1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569","a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c","b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"]},{"claim_binding_sha256":"40a5529a0dec3bc53c7527d50fccdbdb982f890586da75fa5a58a9c6cf485e22","claim_id":"clm_393285577dcb12c4","corpus_manifest_sha256":"921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e","family":"lease_termination_dispute","request_source_pin":{"end_char":899,"family":"lease_termination_dispute","file_name":"01-sole-packet-and-tenant-clarification.txt","offset_unit":"unicode_code_point","quote":"assessment of the received landlord notice's approved-form/nullity defect","source_sha256":"d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e","start_char":826,"text_sha256":"d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e"},"source_sha256s":["af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469","d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e"]},{"claim_binding_sha256":"4e886feafbe2c7c29e8c19d385c2efc2105f6de32d0b654134b175994a862dc4","claim_id":"clm_4a07dbbbd859a3ce","corpus_manifest_sha256":"921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e","family":"defect_mold_heating","request_source_pin":{"end_char":555,"family":"defect_mold_heating","file_name":"01-customer-and-tenancy-clarification.txt","offset_unit":"unicode_code_point","quote":"removal of the continuing heating defect and assessment of proportional rent-reduction eligibility","source_sha256":"3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0","start_char":457,"text_sha256":"3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0"},"source_sha256s":["3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0","6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a","691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916"]},{"claim_binding_sha256":"b35d1825a4ead3fb0fa3c9b4ca7d1c39080407a003b0344c69acc8bab47468e6","claim_id":"clm_4a53299cfe619303","corpus_manifest_sha256":"921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e","family":"lease_termination_dispute","request_source_pin":{"end_char":892,"family":"lease_termination_dispute","file_name":"01-sole-packet-and-tenant-clarification.txt","offset_unit":"unicode_code_point","quote":"assessment of the received landlord notice's approved-form/nullity defect","source_sha256":"6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96","start_char":819,"text_sha256":"6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96"},"source_sha256s":["6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96","b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff"]},{"claim_binding_sha256":"026155cce657cd2ae8209aa4f7f24b107137e351fde68939c8e17b66fe7ee182","claim_id":"clm_543f08f2415b2a33","corpus_manifest_sha256":"921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e","family":"rent_increase_dispute","request_source_pin":{"end_char":1154,"family":"rent_increase_dispute","file_name":"01-ordinary-tenancy-and-original-notification-packet.txt","offset_unit":"unicode_code_point","quote":"assessment of the original notice's missing-reasons/nullity ground","source_sha256":"9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f","start_char":1088,"text_sha256":"9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"},"source_sha256s":["92bda8ef8744a22132cb37f3516c40cdcd03019191a660a15578927bc5bcb8d0","9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"]},{"claim_binding_sha256":"2464f5bb86f065e9c7ecbca0027966e68eb047936e2f3c98f3bfa7ce133768d6","claim_id":"clm_7dbd7c7d1c4ddf90","corpus_manifest_sha256":"921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e","family":"rent_increase_dispute","request_source_pin":{"end_char":1146,"family":"rent_increase_dispute","file_name":"01-ordinary-tenancy-and-original-notification-packet.txt","offset_unit":"unicode_code_point","quote":"assessment of the original notice's missing-reasons/nullity ground","source_sha256":"a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4","start_char":1080,"text_sha256":"a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4"},"source_sha256s":["66717d12a5196d405dbc05f003c39224951dbabdb63522dae601e6718dc95fc7","a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4"]},{"claim_binding_sha256":"eafe9d2487947160481f604b31d7596e34eb8e9dc42b211e265ca33602433413","claim_id":"clm_95d08975bc575592","corpus_manifest_sha256":"921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e","family":"defect_mold_heating","request_source_pin":{"end_char":552,"family":"defect_mold_heating","file_name":"01-customer-and-tenancy-clarification.txt","offset_unit":"unicode_code_point","quote":"removal of the continuing heating defect and assessment of proportional rent-reduction eligibility","source_sha256":"3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317","start_char":454,"text_sha256":"3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317"},"source_sha256s":["3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317","a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761","f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8"]}],"contract":"casepath.release-procedure-outline/1","profile_id":"synthetic-nine-v2","profile_raw_sha256":"18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869","source_files_sha256":{"casepath-api/casepath_api/autonomous_reference_policy_v1.py":"c0f28e7f3d1190a3eaa1d0f303500a9c422708ab3c7558477ddd01d897f788cb","casepath-api/casepath_api/corpora/synthetic-150/policy/static-rule-templates-v3.json":"986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343","casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/normative_sources.json":"57686c1be8943715f6b93893ba31579c3cf5dca623837a56241114902f0fb2a0"}});
   const featuredCase = id => REFERENCE_DEMO_CASES.find(row => row.claim_id === id) || DEMO_CASES.find(row => row.claim_id === id);
-  const demoCases = collection => collection === 'legacy' ? DEMO_CASES : REFERENCE_DEMO_CASES;
-  const replayCollection = (id, collection) => ['reference','legacy'].includes(collection) ? collection : REFERENCE_DEMO_CASES.some(row => row.claim_id === id) ? 'reference' : DEMO_CASES.some(row => row.claim_id === id) ? 'legacy' : 'reference';
+  // Collections are named by provenance. `legacy` stays a URL alias only.
+  const DEMO_COLLECTIONS = Object.freeze({selected:'Selected originals',reference:'Reference assessments · fixed rules · fictional supplements'});
+  const demoCollection = value => value === 'selected' || value === 'legacy' ? 'selected' : value === 'reference' ? 'reference' : null;
+  const demoCases = collection => demoCollection(collection) === 'selected' ? DEMO_CASES : REFERENCE_DEMO_CASES;
+  const replayCollection = (id, collection) => demoCollection(collection) || (REFERENCE_DEMO_CASES.some(row => row.claim_id === id) ? 'reference' : DEMO_CASES.some(row => row.claim_id === id) ? 'selected' : 'reference');
+  const REFERENCE_POLICY_ID = 'casepath.bounded-reference-assessment/1.0.0';
+  // Catalog heads are routing hints. A fixed-rule reference history never
+  // counts as a selected-original recording, and a model history never plays
+  // as a reference assessment.
+  const fixedRuleHistory = row => Boolean(row) && row.revision > 0 && (row.policy_id === REFERENCE_POLICY_ID || row.outcome?.reference_provenance?.mode === 'deterministic_reference');
+  const selectedHistory = row => Boolean(row) && row.revision > 0 && !fixedRuleHistory(row);
+  const referenceHistory = row => Boolean(row) && row.revision > 0 && (!row.policy_id || row.policy_id === REFERENCE_POLICY_ID);
+  const collectionHistory = (collection, row) => demoCollection(collection) === 'selected' ? selectedHistory(row) : referenceHistory(row);
+  // The Demonstration plays the best verified set that exists and never mixes
+  // the two: selected originals with a recorded history first, otherwise the
+  // reference assessments. A row absent from a partial catalog is unknown, not
+  // unrun, so it stays in the reference fallback; an all-zero catalog has none.
+  function demoRoster(catalogRows) {
+    const rows = list(catalogRows), at = id => rows.find(row => row?.claim_id === id);
+    const selected = DEMO_CASES.filter(row => selectedHistory(at(row.claim_id)));
+    if (selected.length) return {collection:'selected',cases:selected};
+    const reference = REFERENCE_DEMO_CASES.filter(row => !at(row.claim_id) || referenceHistory(at(row.claim_id)));
+    return reference.length ? {collection:'reference',cases:reference} : {collection:null,cases:[]};
+  }
+  // An explicitly chosen collection drops only cases known to lack its kind of
+  // history. With none known, its fixed order opens and states what is missing.
+  function collectionRoster(collection, catalogRows) {
+    const fixed = demoCases(collection), rows = list(catalogRows);
+    const kept = fixed.filter(row => { const known = rows.find(claim => claim?.claim_id === row.claim_id); return !known || collectionHistory(collection,known); });
+    return kept.length ? kept : fixed;
+  }
+  // One label for a case everywhere: the featured label first, the original
+  // subject second. Unfeatured cases keep their original subject.
+  function caseLabel(claimId, apiRow = null) {
+    const featured = featuredCase(claimId), subject = String(apiRow?.title || apiRow?.claim_title || '').trim();
+    return featured ? {primary:featured.label,secondary:subject && subject !== featured.label ? subject : ''} : {primary:subject || claimId || 'Untitled claim',secondary:''};
+  }
   const mounts = new WeakMap();
   let activeMount = null;
   const h = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
@@ -1049,12 +1084,12 @@
     const slots=[...stageHTML.matchAll(/<div class="au-stage-slot"([^>]*)>/g)].map(row=>({type:row[1].match(/data-au-stage-document="([^"]+)"/)?.[1],active:row[1].includes('data-au-document-active="true"'),checked:row[1].includes('data-au-document-checked="true"')}));
     const requiredCount=new Set(slots.filter(row=>row.active).map(row=>row.type)).size, checkedCount=new Set(slots.filter(row=>row.checked).map(row=>row.type)).size;
     const receivedCount = list(transportTrace?.rows).length, totalCount = bufferedOperationCount(transportTrace), operationCount = totalCount || receivedCount, operationIndex = trace?.inspection ? presentation.inspectionIndex : trace?.finished ? Math.max(0,operationCount-1) : Math.max(0,list(transportTrace?.rows).findIndex(row => row.id === trace?.current?.id));
-    const transport = trace ? `<div class="au-stage-transport" role="group" aria-label="Replay controls"><span class="au-document-total">${requiredCount?`Documents checked ${checkedCount} of ${requiredCount}`:'Document checks appear with each step'}</span>${presentation.playing ? button('Pause','data-au-demo-stop') : presentation.paused ? button('Play','data-au-demo-resume') : trace.inspection ? button('Result','data-au-inspection-clear') : ''}<label class="au-stage-scrubber" style="--au-operation-ticks:${Math.max(1,operationCount)}"><span class="au-visually-hidden">Inspect this step</span><input type="range" data-au-operation-scrub min="0" max="${Math.max(0,operationCount-1)}" step="1" value="${operationIndex}" aria-valuetext="Operation ${operationIndex+1} of ${operationCount}" aria-label="Inspect this step"${operationCount ? '' : ' disabled'}><span class="au-visually-hidden" data-au-scrub-position>${totalCount || transportTrace?.finished ? `${operationCount ? operationIndex+1 : 0} / ${operationCount}` : `${receivedCount} received`}</span></label>${resultAvailable && !transportTrace.finished ? button('Skip to result','data-au-operation-skip') : ''}</div>` : '';
-    const playControls = stageView ? '' : (presentation.operations && !presentation.operations.finished ? button('Skip to result','data-au-operation-skip') : '') + (presentation.playing ? button('Pause','data-au-demo-stop') : presentation.paused ? button('Resume','data-au-demo-resume') : presentation.mode === 'replay' && presentation.replay?.current_revision !== 0 ? button(presentation.operations?.finished ? 'Play saved history' : 'Play','data-au-demo-play') : '');
+    const transport = trace ? `<div class="au-stage-transport" role="group" aria-label="Replay controls"><span class="au-document-total">${requiredCount?`Documents checked ${checkedCount} of ${requiredCount}`:'Document checks appear with each step'}</span>${presentation.tour ? trace.inspection ? button('Result','data-au-inspection-clear') : '' : presentation.playing ? button('Pause','data-au-demo-stop') : presentation.paused ? button('Play','data-au-demo-resume') : trace.inspection ? button('Result','data-au-inspection-clear') : ''}<label class="au-stage-scrubber" style="--au-operation-ticks:${Math.max(1,operationCount)}"><span class="au-visually-hidden">Inspect this step</span><input type="range" data-au-operation-scrub min="0" max="${Math.max(0,operationCount-1)}" step="1" value="${operationIndex}" aria-valuetext="Operation ${operationIndex+1} of ${operationCount}" aria-label="Inspect this step"${operationCount ? '' : ' disabled'}><span class="au-visually-hidden" data-au-scrub-position>${totalCount || transportTrace?.finished ? `${operationCount ? operationIndex+1 : 0} / ${operationCount}` : `${receivedCount} received`}</span></label>${resultAvailable && !transportTrace.finished ? button('Skip to result','data-au-operation-skip') : ''}</div>` : '';
+    const playControls = stageView ? '' : (presentation.operations && !presentation.operations.finished ? button('Skip to result','data-au-operation-skip') : '') + (presentation.tour && (presentation.playing || presentation.paused) ? '' : presentation.playing ? button('Pause','data-au-demo-stop') : presentation.paused ? button('Resume','data-au-demo-resume') : presentation.mode === 'replay' && presentation.replay?.current_revision !== 0 ? button(presentation.operations?.finished ? 'Play saved history' : 'Play','data-au-demo-play') : '');
     const panels = [['step','Steps'],['documents','Documents'],['knowledge','Knowledge'],['sources','Sources'],['activity','History']];
     const chosen = panels.some(([id]) => id === detail) ? detail : 'step', publicationFocus = presentation.attention && (!presentation.inspectionHold || presentation.attention.retained) && formingPublication(state,events,presentation.attention), forming = chosen === 'step' && (formingWork(state,presentation) || Boolean(publicationFocus) || Boolean(presentation.operations));
     const body = chosen === 'step' ? forming ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,presentation.attention,false,presentation.operations) + (!state.graph && !presentation.operations ? intakeMarkup(state,projection) : '') : !state.graph ? openingContentMarkup(state,projection) + intakeMarkup(state,projection) : referenceAssessmentComplete(state) ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,undefined,true) : formingKnowledgeMarkup(state,presentation.knowledge,true) + inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Document checklist</h2>${state.graph ? obligationMarkup(state,selected,undefined,context) + unassignedSourcesMarkup(state) : intakeMarkup(state,projection)}${canWrite && state.revision > 0 ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events) : chosen === 'sources' ? sourcesMarkup(state,!canWrite,projection) : `${operationHistoryMarkup(presentation.operations)}${activityMarkup(state,events,projection)}${presentation.replay ? recordButton('Playback details','replay') : ''}`;
-    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"${stageView ? ' data-au-stage-view="true"' : ''}><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p>${claimHeadingMarkup(state)}<p class="au-reference-mode" data-au-operation-mode>${h(claimModeLine(state,{...presentation,events}))}</p><p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${failure ? recordButton('Details','outcome') : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' Assessment only; no external action taken.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? startControlMarkup(presentation.availability,presentation.pendingStart) : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' && presentation.replay?.current_revision === 0 ? `<a class="au-link" href="#autonomous/claim/${key(state.claim_id)}" data-au-original-intake>Original intake</a>` : ''}${presentation.mode === 'replay' || stageView ? recordButton(transportTrace?.savedFallback || transportTrace?.replayUnavailable ? 'Replay choices' : 'Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}"${chosen === 'activity' ? ' aria-controls="auPanel-activity"' : ''}>History</button></div></header>${nowMarkup(state,events,presentation)}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}"${chosen === id ? ` aria-controls="auPanel-${id}"` : ''}>${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${!stageView && chosen === 'step' && !active(state.status) && state.outcome?.summary ? `<div class="au-assessment-conclusion">${outcomeSummaryMarkup(state)}${legalBasisMarkup(state)}</div>` : !stageView && chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div>${stageView && !trace?.unrun ? transport : ''}</div></section></section>`;
+    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"${stageView ? ' data-au-stage-view="true"' : ''}><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p>${claimHeadingMarkup(state)}<p class="au-reference-mode" data-au-operation-mode>${h(claimModeLine(state,{...presentation,events}))}</p><p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${failure ? recordButton('Details','outcome') : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' Assessment only; no external action taken.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? startControlMarkup(presentation.availability,presentation.pendingStart) : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' && presentation.replay?.current_revision === 0 ? `<a class="au-link" href="#autonomous/claim/${key(state.claim_id)}" data-au-original-intake>Original intake</a>` : ''}${presentation.mode === 'replay' ? recordButton(transportTrace?.savedFallback || transportTrace?.replayUnavailable ? 'Replay choices' : 'Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}"${chosen === 'activity' ? ' aria-controls="auPanel-activity"' : ''}>History</button></div></header>${presentation.tour ? demoTransportMarkup(presentation.tour,presentation) : ''}${nowMarkup(state,events,presentation)}${presentation.mode === 'replay' && resultReached(state,presentation) ? knowledgePayoffMarkup(state,presentation.knowledge) : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}"${chosen === id ? ` aria-controls="auPanel-${id}"` : ''}>${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${!stageView && chosen === 'step' && !active(state.status) && state.outcome?.summary ? `<div class="au-assessment-conclusion">${outcomeSummaryMarkup(state)}${legalBasisMarkup(state)}</div>` : !stageView && chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div>${stageView && !trace?.unrun ? transport : ''}</div></section></section>`;
   }
 
   function replayIdentityMarkup(record) {
@@ -1180,7 +1215,8 @@
   function learningPinAttributes(item) {
     return item?.knowledge_id && item?.version ? ` data-au-knowledge="${h(item.knowledge_id)}" data-au-version="${h(item.version)}" data-au-knowledge-sha="${h(item.knowledge_sha256 || '')}" data-au-definition-sha="${h(item.definition_sha256 || item.qualification?.definition_sha256 || '')}"` : '';
   }
-  function learningClaimLink(id, title) { return id ? button(title || id,`data-au-claim="${h(id)}"`) : '<span>Source claim unavailable</span>'; }
+  function caseLabelMarkup(label) { return `<span class="au-case-label">${h(label.primary)}</span>${label.secondary ? `<span class="au-case-subject">${h(label.secondary)}</span>` : ''}`; }
+  function learningClaimLink(id, title) { return id ? `<button type="button" class="au-secondary au-case-link" data-au-claim="${h(id)}">${caseLabelMarkup(caseLabel(id,{title}))}</button>` : '<span>Source claim unavailable</span>'; }
   function learningDefinitionDiff(version, versions) {
     const parent = versions.find(item => item.knowledge_sha256 && item.knowledge_sha256 === version.parent_knowledge_sha256);
     if (!parent) return '';
@@ -1206,7 +1242,7 @@
   }
   function learningReceiptsMarkup(model,event) {
     const group=list(event.reuseGroup).map(index=>({event:model.events[index],index}));
-    return group.length?`<section class="au-learning-receipts"><h3>${group.length} recorded reuse receipts</h3><ul>${group.map(({event:row,index})=>`<li${row.claim_id===event.claim_id?' data-au-current-case="true"':''}><button type="button" data-au-learning-event="${index}"${learningPinAttributes(row.versionRecord || row.item)}>${row.claim_id===event.claim_id?'This case · ':''}${h(row.claim_title || row.claim_id || 'Receiving claim')} · ${h(learningTime(row))}</button> ${row.recorded?recordButton('Inspect receipt','learning-event',row.id):''}</li>`).join('')}</ul></section>`:'';
+    return group.length?`<section class="au-learning-receipts"><h3>${group.length} recorded reuse receipts</h3><ul>${group.map(({event:row,index})=>`<li${row.claim_id===event.claim_id?' data-au-current-case="true"':''}><button type="button" data-au-learning-event="${index}"${learningPinAttributes(row.versionRecord || row.item)}>${(()=>{const label=row.claim_id?caseLabel(row.claim_id,{title:row.claim_title}):{primary:'Receiving claim',secondary:''};return `<span class="au-case-label">${row.claim_id===event.claim_id?'This case · ':''}${h(label.primary)}</span><span class="au-case-subject">${label.secondary?`${h(label.secondary)} · `:''}${h(learningTime(row))}</span>`;})()}</button> ${row.recorded?recordButton('Inspect receipt','learning-event',row.id):''}</li>`).join('')}</ul></section>`:'';
   }
   function knowledgeLearningFocus(model, event, facet = 'process') {
     if (!event) return '<p class="au-empty">No recorded learning events are available.</p>';
@@ -1260,7 +1296,8 @@
   }
   function matchingClaims(claims, {search = '', filter = 'all', domain = 'all', scope = 'all'} = {}) {
     const terms = search.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-    return collectionRows(claims,scope).slice().sort((a,b)=>{const rank=id=>{const i=REFERENCE_DEMO_CASES.findIndex(row=>row.claim_id===id);return i<0?REFERENCE_DEMO_CASES.length:i;};return rank(a.claim_id)-rank(b.claim_id);}).filter(claim => (domain === 'all' || domainOf(claim) === domain) && (filter === 'all' || filter === 'working' && active(claim.status) || statusFilter(claim.status,claim) === statusFilter(filter)) && terms.every(term => [claim.claim_id,claim.title,originalText(claim),claim.language,claim.channel,claimStatusLabel(claim.status,claim),claim.phase,claim.phase_summary,claim.outcome?.summary,claim.outcome?.reason,claimConstraint(claim),claim.browse_metadata?.family_id].filter(Boolean).join(' ').toLocaleLowerCase().includes(term)));
+    // Catalog order stays as recorded; demonstration cases are marked, not promoted.
+    return collectionRows(claims,scope).filter(claim => (domain === 'all' || domainOf(claim) === domain) && (filter === 'all' || filter === 'working' && active(claim.status) || statusFilter(claim.status,claim) === statusFilter(filter)) && terms.every(term => [claim.claim_id,claim.title,originalText(claim),claim.language,claim.channel,claimStatusLabel(claim.status,claim),claim.phase,claim.phase_summary,claim.outcome?.summary,claim.outcome?.reason,claimConstraint(claim),claim.browse_metadata?.family_id].filter(Boolean).join(' ').toLocaleLowerCase().includes(term)));
   }
   function claimConstraint(claim) {
     const outcome = claim.outcome;
@@ -1278,8 +1315,8 @@
   }
   function catalogPreviewMarkup(row, claimId) {
     if (!row || row.claim_id !== claimId || typeof row.title !== 'string') return null;
-    const excerpt = messagePreview(originalText(row)), featured = featuredCase(claimId);
-    return `<section class="au-catalog-preview" data-au-preview="catalog" data-au-preview-claim="${h(row.claim_id)}" aria-busy="true"><header class="au-work-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button>${row.origin === 'canonical_original' ? ' / Fictional case' : ''}</p><h1 class="au-page-heading" data-au-catalog-title tabindex="-1">${h(featured?.label || row.title)}</h1>${featured ? `<p class="au-catalog-subject">${h(row.title)}</p>` : ''}</div></header>${excerpt ? `<section class="au-catalog-original"><h2>Original message excerpt</h2><pre class="au-original-message">${h(excerpt)}</pre></section>` : ''}</section>`;
+    const excerpt = messagePreview(originalText(row)), label = caseLabel(claimId,row);
+    return `<section class="au-catalog-preview" data-au-preview="catalog" data-au-preview-claim="${h(row.claim_id)}" aria-busy="true"><header class="au-work-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button>${row.origin === 'canonical_original' ? ' / Fictional case' : ''}</p><h1 class="au-page-heading" data-au-catalog-title tabindex="-1">${h(label.primary)}</h1>${label.secondary ? `<p class="au-catalog-subject">${h(label.secondary)}</p>` : ''}</div></header>${excerpt ? `<section class="au-catalog-original"><h2>Original message excerpt</h2><pre class="au-original-message">${h(excerpt)}</pre></section>` : ''}</section>`;
   }
   function unknownClaimMarkup(claimId) {
     const featured = featuredCase(claimId);
@@ -1287,9 +1324,13 @@
   }
   function claimsMarkup(claims, options = {}) {
     const visible = options.page === undefined ? matchingClaims(claims,options) : collectionPage(claims,options).rows;
+    // The quiet marker names a case's place in the sequence the Demonstration plays.
+    const roster = list(claims).length ? demoRoster(claims) : {cases:[]}, position = id => roster.cases.findIndex(row => row.claim_id === id);
     return visible.map(claim => {
       const constraint = messagePreview(originalText(claim)) || list(claim.outcome?.unresolved_facts).find(fact => fact.summary)?.summary || claimConstraint(claim) || claim.deferral?.reason || claim.outcome?.summary;
-      return `<article class="au-claim-row au-identity-claim-row" data-au-claim-row="${h(claim.claim_id)}"><button type="button" class="au-claim-open" data-au-claim="${h(claim.claim_id)}" title="${h(claim.title || 'Untitled claim')}"><strong>${h(featuredCase(claim.claim_id)?.label || claim.title || 'Untitled claim')}</strong>${constraint ? `<span class="au-claim-constraint">${h(constraint)}</span>` : ''}</button>${claim.status && !['not_started','not_run'].includes(claim.status) ? `<span class="au-claim-state">${h(claimStatusLabel(claim.status,claim))}</span>` : ''}</article>`;
+      const label = caseLabel(claim.claim_id,claim), place = position(claim.claim_id), state = claim.status && !['not_started','not_run'].includes(claim.status) ? `<span class="au-claim-state">${h(claimStatusLabel(claim.status,claim))}</span>` : '';
+      const marker = place >= 0 ? `<span class="au-claim-demo" data-au-demo-position="${place+1}">In demonstration · ${String(place+1).padStart(2,'0')}</span>` : '';
+      return `<article class="au-claim-row au-identity-claim-row" data-au-claim-row="${h(claim.claim_id)}"><button type="button" class="au-claim-open" data-au-claim="${h(claim.claim_id)}" title="${h(claim.title || 'Untitled claim')}"><strong>${h(label.primary)}</strong>${label.secondary ? `<span class="au-case-subject">${h(label.secondary)}</span>` : ''}${constraint ? `<span class="au-claim-constraint">${h(constraint)}</span>` : ''}</button>${state}${marker}</article>`;
     }).join('') || '<p class="au-empty">No cases match this search.</p>';
   }
 
@@ -1312,8 +1353,8 @@
   }
   function demoItineraryMarkup(claims, position = null, current = null, roster = REFERENCE_DEMO_CASES) {
     return `<div class="au-demo-selection" role="group" aria-label="Presentation order of independent cases">${DOMAINS.map(domain => `<section data-au-demo-domain="${domain.id}"><div class="au-section-heading"><h2>${h(domain.label)}</h2><span>3 original cases</span></div><ol start="${roster.findIndex(row => row.domain === domain.id)+1}">${roster.filter(row => row.domain === domain.id).map(row => {
-      const index = roster.indexOf(row), claim = current?.claim_id === row.claim_id ? current : claims.find(claim => claim.claim_id === row.claim_id), here = index === position;
-      return `<li data-au-demo-case="${row.claim_id}"${here ? ' aria-current="step"' : ''}><span class="au-demo-order" aria-hidden="true">${String(index+1).padStart(2,'0')}</span><button type="button" data-au-claim="${row.claim_id}" title="${h(claim?.title || 'Original record')}" aria-label="${h(`Presentation case ${String(index+1).padStart(2,'0')}. ${row.label}. ${claim?.title || 'Original record'}`)}"><strong>${h(row.label)}</strong><span>${h(claim?.title || 'Original record')}</span></button>${claim?.status && !['not_started','not_run'].includes(claim.status) ? `<span class="au-status" data-tone="${tone(claim.status)}">${h(claimStatusLabel(claim.status,claim))}</span>` : ''}</li>`;
+      const index = roster.indexOf(row), claim = current?.claim_id === row.claim_id ? current : claims.find(claim => claim.claim_id === row.claim_id), here = index === position, label = caseLabel(row.claim_id,claim);
+      return `<li data-au-demo-case="${row.claim_id}"${here ? ' aria-current="step"' : ''}><span class="au-demo-order" aria-hidden="true">${String(index+1).padStart(2,'0')}</span><button type="button" data-au-claim="${row.claim_id}" title="${h(claim?.title || 'Original record')}" aria-label="${h(`Presentation case ${String(index+1).padStart(2,'0')}. ${label.primary}. ${claim?.title || 'Original record'}`)}"><strong>${h(label.primary)}</strong><span>${h(claim?.title || 'Original record')}</span></button>${claim?.status && !['not_started','not_run'].includes(claim.status) ? `<span class="au-status" data-tone="${tone(claim.status)}">${h(claimStatusLabel(claim.status,claim))}</span>` : ''}</li>`;
     }).join('')}</ol></section>`).join('')}</div>`;
   }
   // Catalog revisions are routing hints only: they decide whether a replay is
@@ -1328,8 +1369,22 @@
     const recorded = rows.filter(({claim}) => claim?.revision > 0).length;
     return `<section class="au-demonstration au-demo-overview" data-au-demo-overview><header class="au-collection-head"><div><p class="au-eyebrow">Demonstration · three domains</p><h1 class="au-page-heading" tabindex="-1">Nine original cases</h1><p class="au-lead">${recorded ? `${recorded} of 9 cases have a saved history in this workspace.` : h(language.copy.noHistories)}</p></div></header><ol class="au-demo-cases" aria-label="Nine original cases">${rows.map(({row,index,claim}) => {
       const domain = DOMAINS.find(item => item.id === row.domain)?.label || 'Other', stateLabel = !claim ? 'Not in this workspace' : claim.revision > 0 ? `Saved result · revision ${claim.revision}` : language.copy.notRunHere;
-      return `<li class="au-demo-case" data-au-demo-case="${h(row.claim_id)}" data-au-demo-state="${!claim ? 'unknown' : claim.revision > 0 ? 'saved' : 'not_run'}"><span class="au-demo-order" aria-hidden="true">${String(index+1).padStart(2,'0')}</span><div class="au-demo-case-copy"><strong>${h(row.label)}</strong><span class="au-demo-case-facts">${h(domain)} · ${h(languageName(claim?.language))} · ${h(attachmentLabel(claim?.attachment_count))}</span></div><span class="au-demo-case-state">${h(stateLabel)}</span>${claim ? `<a class="au-demo-intake-link" href="#autonomous/claim/${key(row.claim_id)}" aria-label="${h(`Original intake: ${row.label}`)}">Original intake</a>` : ''}</li>`;
+      const label = caseLabel(row.claim_id,claim);
+      return `<li class="au-demo-case" data-au-demo-case="${h(row.claim_id)}" data-au-demo-state="${!claim ? 'unknown' : claim.revision > 0 ? 'saved' : 'not_run'}"><span class="au-demo-order" aria-hidden="true">${String(index+1).padStart(2,'0')}</span><div class="au-demo-case-copy"><strong>${h(label.primary)}</strong>${label.secondary ? `<span class="au-case-subject">${h(label.secondary)}</span>` : ''}<span class="au-demo-case-facts">${h(domain)} · ${h(languageName(claim?.language))} · ${h(attachmentLabel(claim?.attachment_count))}</span></div><span class="au-demo-case-state">${h(stateLabel)}</span>${claim ? `<a class="au-demo-intake-link" href="#autonomous/claim/${key(row.claim_id)}" aria-label="${h(`Original intake: ${label.primary}`)}">Original intake</a>` : ''}</li>`;
     }).join('')}</ol></section>`;
+  }
+  // Both rosters, named by provenance. A row offers its saved history only
+  // when the catalog records one of that kind; its original sources always open.
+  function demoPickerMarkup(claims, first = null) {
+    const order = first === 'selected' ? ['selected','reference'] : ['reference','selected'];
+    const roster = collection => `<section class="au-demo-roster" data-au-demo-roster="${collection}"><h3>${h(DEMO_COLLECTIONS[collection])}</h3><ol class="au-demo-picks">${demoCases(collection).map((row,index) => {
+      const claim = catalogRow(claims,row.claim_id), label = caseLabel(row.claim_id,claim), saved = collectionHistory(collection,claim), other = !saved && claim?.revision > 0;
+      const state = !claim ? 'unknown' : saved ? 'saved' : other ? 'other_history' : 'not_run', domain = DOMAINS.find(item => item.id === row.domain)?.label || '';
+      const open = state === 'saved' || state === 'unknown' ? `<button type="button" class="au-demo-case-open" data-au-demo-case="${h(row.claim_id)}" data-au-demo-collection="${collection}">${h(label.primary)}</button>` : `<strong>${h(label.primary)}</strong>`;
+      const status = saved ? `<button type="button" class="au-link" data-au-demo-case="${h(row.claim_id)}" data-au-demo-collection="${collection}" data-au-demo-saved="true">Saved history</button>` : state === 'unknown' ? '' : `<span class="au-demo-pick-state">${h(other ? collection === 'selected' ? 'Fixed-rule history only' : 'Model history only' : language.copy.notRunHere)}</span>`;
+      return `<li class="au-demo-pick" data-au-demo-pick="${h(row.claim_id)}" data-au-demo-pick-state="${state}"><span class="au-demo-order" aria-hidden="true">${String(index+1).padStart(2,'0')}</span><div class="au-demo-pick-copy">${open}<span class="au-demo-pick-facts">${h(domain)}</span></div>${status}<a class="au-link au-demo-sources" href="#autonomous/claim/${key(row.claim_id)}" aria-label="${h(`Original sources: ${label.primary}`)}">Original sources</a></li>`;
+    }).join('')}</ol></section>`;
+    return `<div class="au-demo-picker"><h2>Demonstration cases</h2><p class="au-meta">Each list plays on its own. A saved history replays without new work.</p>${order.map(roster).join('')}</div>`;
   }
   function demonstrationMarkup(claims, status, mode = 'reference') {
     const availability = liveAvailability(status);
@@ -1593,10 +1648,62 @@
   }
   // The outline is release structure only. A known revision-zero catalog row
   // names it as not run; otherwise its recording date waits for the head.
+  // One compact row while a roster plays: position, domain, Pause, Skip and
+  // the next case. Real buttons; the row itself never animates.
+  function demoTransportMarkup(tour, presentation = {}) {
+    const row = tour?.cases?.[tour.index];
+    if (!row) return '';
+    const total = tour.cases.length, position = tour.index + 1, next = tour.cases[tour.index+1], domain = DOMAINS.find(item => item.id === row.domain)?.label || '';
+    const separator = '<span class="au-demo-separator" aria-hidden="true">·</span>';
+    const toggle = presentation.playing ? '<button type="button" class="au-demo-control" data-au-demo-stop>Pause</button>' : presentation.paused ? '<button type="button" class="au-demo-control" data-au-demo-resume>Resume</button>' : '';
+    return `<div class="au-demo-transport" role="group" aria-label="${h(`${DEMO_COLLECTIONS[tour.collection] || 'Demonstration'} · case ${position} of ${total}`)}" data-au-demo-transport data-au-demo-collection="${h(tour.collection)}" data-au-demo-position="${position}"><span class="au-demo-position">${position}/${total}</span>${separator}<span class="au-demo-domain">${h(domain)}</span>${toggle ? separator + toggle : ''}${separator}<button type="button" class="au-demo-control" data-au-demo-skip aria-describedby="auDemoNext">Skip</button>${separator}<span class="au-demo-next" id="auDemoNext">Next: ${h(next ? caseLabel(next.claim_id).primary : 'Knowledge')}</span></div>`;
+  }
+  function resultReached(state, presentation = {}) {
+    const trace = presentation.operations, replay = presentation.replay;
+    if (Number.isSafeInteger(presentation.inspectionIndex)) return false;
+    if (trace) return trace.finished === true && !trace.unrun;
+    return Boolean(state?.revision > 0 && replay && replay.current_revision > 0 && replay.through_seq >= replay.current_revision);
+  }
+  const knowledgeFragment = pin => `#autonomous/knowledge?knowledge=${key(pin.knowledge_id)}&version=${key(pin.version)}${pin.knowledge_sha256 ? `&sha256=${key(pin.knowledge_sha256)}` : ''}${pin.definition_sha256 ? `&definition=${key(pin.definition_sha256)}` : ''}${pin.claim_id ? `&claim=${key(pin.claim_id)}` : ''}`;
+  // What this case's accepted state saved or reused, counted only from the
+  // recorded Knowledge index. Without that index the count is not stated.
+  function knowledgePayoff(state, data = null) {
+    const publication = [...list(state?.knowledge_published)].reverse().find(item => item?.qualification?.status === 'qualified' && item.knowledge_id && item.version);
+    const versions = list(data?.versions), indexed = Array.isArray(data?.uses);
+    if (publication) {
+      const version = versions.find(row => knowledgePinMatches(row,{knowledge_id:publication.knowledge_id,version:publication.version,knowledge_sha256:publication.knowledge_sha256})) || publication;
+      const later = new Set(knowledgeUses(version,data?.uses).map(use => use.claim_id).filter(id => id && id !== state.claim_id)).size;
+      return {kind:'published',pin:{knowledge_id:publication.knowledge_id,version:publication.version,knowledge_sha256:publication.knowledge_sha256 || '',definition_sha256:version.qualification?.definition_sha256 || version.definition_sha256 || ''},label:`${procedureLabel(publication)} · version ${publication.version} · ${indexed && later ? `reused by ${later} later case${later === 1 ? '' : 's'}` : 'saved for reuse'}`};
+    }
+    const use = list(state?.knowledge_uses).filter(item => item?.knowledge_id && item.version).at(-1);
+    if (!use) return null;
+    return {kind:'reused',pin:{knowledge_id:use.knowledge_id,version:use.version,knowledge_sha256:use.knowledge_sha256 || '',definition_sha256:use.definition_sha256 || '',claim_id:state.claim_id},label:`${procedureLabel(use)} · version ${use.version} · reused in this case`};
+  }
+  function knowledgePayoffMarkup(state, data = null) {
+    const payoff = knowledgePayoff(state,data);
+    return payoff ? `<p class="au-knowledge-payoff" data-au-knowledge-payoff="${h(payoff.kind)}"><span class="au-now-label">Knowledge</span> <a href="${h(knowledgeFragment(payoff.pin))}">${h(payoff.label)}</a></p>` : '';
+  }
+  // The tour ends at the last version its cases published, opened on a later
+  // tour case's reuse receipt when one exists; otherwise at the last reuse.
+  function tourKnowledgePayoff(data, claimIds = []) {
+    const model = knowledgeLearningModel(data), ids = list(claimIds), place = id => ids.indexOf(id);
+    const ordered = rows => rows.map(event => ({event,at:model.events.indexOf(event)})).sort((a,b) => place(a.event.claim_id || a.event.source_claim_id) - place(b.event.claim_id || b.event.source_claim_id) || a.at - b.at).map(row => row.event);
+    const published = ordered(model.events.filter(event => event.kind === 'knowledge.published' && !event.refused && event.versionRecord && ids.includes(event.source_claim_id || event.claim_id))).at(-1);
+    const fromUse = published ? null : ordered(model.events.filter(event => event.kind === 'knowledge.used' && event.versionRecord && ids.includes(event.claim_id))).at(-1);
+    const version = published?.versionRecord || fromUse?.versionRecord;
+    if (!version) return null;
+    const source = version.source_claim_id || published?.source_claim_id;
+    const receipts = model.events.filter(event => event.kind === 'knowledge.used' && event.versionRecord === version);
+    const receiving = ordered(receipts.filter(event => event.claim_id !== source && ids.includes(event.claim_id))).at(-1) || fromUse;
+    const later = new Set(receipts.map(event => event.claim_id).filter(id => id && id !== source)).size;
+    const pin = {knowledge_id:version.knowledge_id,version:version.version,knowledge_sha256:version.knowledge_sha256 || '',definition_sha256:version.qualification?.definition_sha256 || version.definition_sha256 || '',...(receiving?.claim_id ? {claim_id:receiving.claim_id} : {})};
+    const label = `${procedureLabel(version)} · version ${version.version}`;
+    return {pin,label,receipts:receipts.length,announcement:`${label}${source ? `, saved from ${caseLabel(source).primary}` : ''}${later ? `, reused by ${later} later case${later === 1 ? '' : 's'}` : ''}.`};
+  }
   function releaseProcedurePreview(plan, mode = 'live', options = {}) {
     const unrun = options.revision === 0, trace = {releasePlan:plan,rows:[],sources:new Map(),unrun};
     const line = language.modeLine({revision:Number.isSafeInteger(options.revision) ? options.revision : null,presentation:'replay',origin:'featured',readOnly:Boolean(options.readOnly)});
-    return `<section class="au-quiet-claim" data-au-stage-view="true" data-au-release-opening="${h(plan.claim_id)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p><h1 class="au-page-heading" tabindex="-1">${h(featuredCase(plan.claim_id)?.label || 'Fictional case')}</h1><p class="au-reference-mode">${h(line)}</p></div></header>${nowMarkup(plan,[],{operations:trace,mode:'replay'})}<section class="au-evidence-canvas" data-au-canvas><div class="au-evidence-stage" data-au-evidence-stage>${operationStageMarkup(plan,{},null,trace)}${unrun ? '' : `<div class="au-stage-transport">${button('Pause','data-au-demo-stop')}</div>`}</div></section></section>`;
+    return `<section class="au-quiet-claim" data-au-stage-view="true" data-au-release-opening="${h(plan.claim_id)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p><h1 class="au-page-heading" tabindex="-1">${h(featuredCase(plan.claim_id)?.label || 'Fictional case')}</h1><p class="au-reference-mode">${h(line)}</p></div></header>${options.tour && !unrun ? demoTransportMarkup(options.tour) : ''}${nowMarkup(plan,[],{operations:trace,mode:'replay'})}<section class="au-evidence-canvas" data-au-canvas><div class="au-evidence-stage" data-au-evidence-stage>${operationStageMarkup(plan,{},null,trace)}${unrun ? '' : `<div class="au-stage-transport">${button('Pause','data-au-demo-stop')}</div>`}</div></section></section>`;
   }
   // A verified historical head supplies a plan, never the earlier prefix's
   // facts, conditions, requirements, completion flags or accepted outcome.
@@ -2155,7 +2262,7 @@
     let publicReadOnly = root.CASEPATH_PUBLIC_READ_ONLY === true;
     let publicationAttention = null, inspectionHold = false, operationTrace = null, attentionMarker = null, attentionPosition = null, attentionAnimation = null, factToken = null, factTokenAnimation = null, factTokenOperation = null, stageMotionTimer = null, stageCameraAnimation = null, stageReadAnimations = [], stageScrollCancel = null, stageScrollTarget = null, stageChoreography = null, operationPeek = null;
     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, recordReturn = null, recordSelection = null, sourceEpoch = 0, polling = null, claimRead = 0;
-    let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'reference', demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
+    let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'reference', tour = null, demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
     let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, statusAuthority = null, readGeneration = 0;
     let learningState = null, learningTimer = null, learningVisited = false, noticeCategory = null, announcedNow = null, noticeRecord = null;
     let knowledgeWarmGeneration = -1, knowledgeFacet = 'process', knowledgePin = null, lastCaseContext = null, collectionCache = null, knowledgeCache = null, statusCache = null, knowledgeRead = 0, renderedKnowledge = null;
@@ -2201,16 +2308,18 @@
     function pendingRoute() { return Boolean(root.location && root.location.hash !== routedFragment); }
     function routeChanged() {
       if (disposed || busy || (!root.location && routedFragment !== null)) return;
-      const fragment = root.location?.hash || '';
+      let fragment = root.location?.hash || '';
+      // `legacy` stays an accepted alias; the address shows the provenance name.
+      if (/[?&]collection=legacy(?=&|$)/.test(fragment) && root.history?.replaceState) { fragment = fragment.replace(/([?&]collection=)legacy(?=&|$)/,'$1selected'); root.history.replaceState(null,'',root.location.pathname + root.location.search + fragment); }
       if (knowledgeOpening && fragment !== knowledgeOpening.fragment) discardKnowledgeOpening();
       if (fragment === routedFragment) return;
-      if (!fragment && readOnlyAccess()) { showDemonstration(false,'reference',operationRoutePreference(fragment,root.location?.search)); return; }
+      if (!fragment && readOnlyAccess()) { showDemonstration(false,null,operationRoutePreference(fragment,root.location?.search)); return; }
       if (fragment === '#autonomous/knowledge') showKnowledge(false);
       else if (fragment.startsWith('#autonomous/knowledge?')) { const params = new URLSearchParams(fragment.slice(fragment.indexOf('?')+1)); showKnowledge(false,params.get('knowledge')?{knowledge_id:params.get('knowledge'),version:params.get('version'),knowledge_sha256:params.get('sha256'),definition_sha256:params.get('definition'),claim_id:params.get('claim')}:null,{event:params.get('event'),stage:Number(params.get('stage')??10),facet:params.get('facet'),complete:params.get('complete')==='1'}); }
       else if (fragment.startsWith('#autonomous/claim/')) {
         try { const [encoded,query = ''] = fragment.slice('#autonomous/claim/'.length).split('?'), params = new URLSearchParams(query), id = decodeURIComponent(encoded); id ? openClaim(id,false,{mode:params.get('mode') === 'replay' ? 'replay' : 'saved',through:Number(params.get('through') || 0),collection:params.get('collection'),detail:params.get('detail'),node:params.get('node'),document:params.get('document'),obligation:params.get('obligation'),fact:params.get('fact'),trace:params.get('trace') === '1',operations:operationRoutePreference(fragment,root.location?.search)}) : showWork(false); }
         catch (_) { showWork(false); }
-      } else if (fragment.startsWith('#autonomous/demonstration')) { const params = new URLSearchParams(fragment.split('?')[1] || ''); showDemonstration(false,params.get('collection') === 'legacy' ? 'legacy' : 'reference',operationRoutePreference(fragment,root.location?.search)); }
+      } else if (fragment.startsWith('#autonomous/demonstration')) { const params = new URLSearchParams(fragment.split('?')[1] || ''); showDemonstration(false,demoCollection(params.get('collection')),operationRoutePreference(fragment,root.location?.search)); }
       else if (fragment.startsWith('#autonomous/cases?') || fragment.startsWith('#autonomous/work?')) {
         const params = new URLSearchParams(fragment.split('?')[1]); collection.search = params.get('q') || ''; collection.filter = statusFilter(params.get('status') || 'all'); collection.domain = params.get('domain') || 'all'; collection.scope = params.get('scope') === 'added' ? 'added' : 'originals'; collection.page = Number(params.get('page') || 1); showWork(false);
       } else if (['#autonomous/new','#autonomous/intake'].includes(fragment)) showIntake(false);
@@ -2362,7 +2471,8 @@
       const readonly = !init.method || init.method === 'GET';
       if (!readonly && (publicReadOnly || !status || !writable(status))) { const error = new Error(PUBLIC_READ_ONLY_MESSAGE); error.status = 403; return Promise.reject(error); }
       const identity = `${readGeneration}:${path}`;
-      if (readonly && inflightReads.has(identity)) { if (!quiet && readOwners.has(identity)) readOwners.get(identity).foreground = true; return inflightReads.get(identity); }
+      // A read whose owner was just cancelled is settling; a new reader starts its own.
+      if (readonly && inflightReads.has(identity) && !readOwners.get(identity)?.controller.signal.aborted) { if (!quiet && readOwners.has(identity)) readOwners.get(identity).foreground = true; return inflightReads.get(identity); }
       const opening = readonly && path === '/knowledge' && knowledgeOpening && root.location?.hash === knowledgeOpening.fragment ? knowledgeOpening : null;
       if (opening) knowledgeOpening = null;
       const controller = opening?.controller || new AbortController(); controllers.add(controller);
@@ -2562,7 +2672,7 @@
       if (view === 'work') { const main = container.querySelector('.au-main'); collection.scrollTop = host.scrollTop || 0; collection.mainTop = main?.scrollTop || 0; collection.mainLeft = main?.scrollLeft || 0; collection.scrollX = root.scrollX || 0; collection.scrollY = root.scrollY || 0; }
       preserveClaimView();
     }
-    function setView(name) { const legend=container.querySelector('[data-au-role-legend]'); if(legend)legend.hidden=name!=='claim' || !demoSession; if (name !== 'claim') { for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute); } view = name; renderedClaimId = null; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); }
+    function setView(name) { const legend=container.querySelector('[data-au-role-legend]'); if(legend)legend.hidden=name!=='claim' || !demoSession; if (name !== 'claim') { tour = null; for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute); } view = name; renderedClaimId = null; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); }
     function revealGraphNode(node, center = false) {
       const viewport = host.querySelector('.au-graph-viewport');
       const area = viewport?.getBoundingClientRect?.(), bounds = node?.getBoundingClientRect?.();
@@ -2632,7 +2742,7 @@
       const stageBefore = host.querySelector('.au-operation-stage'), priorStagePhase = stageBefore?.dataset.auStagePhase;
       const enteringMap = priorStagePhase === 'source' && (displayedTrace?.finished || displayedTrace?.current?.kind === 'decision');
       const priorProcessBounds = enteringMap && !doc.hidden && !inspectionHold && !reduced?.matches ? stageBefore.querySelector('.au-stage-process')?.getBoundingClientRect() : null;
-      host.innerHTML = workMarkup(displayedState,displayedProjection,operationPeek?.node || selected,operationPeek?.events || history,detail,evidenceContext,{mode:presentationMode,readOnly:publicReadOnly,origin:claims.find(row => row.claim_id === displayedState.claim_id)?.origin,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),operations:displayedTrace,transportOperations:operationTrace,inspectionIndex:operationPeek?.index,operationOpening:(demoSession || pausedPresentation)?.mode === 'operations',playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
+      host.innerHTML = workMarkup(displayedState,displayedProjection,operationPeek?.node || selected,operationPeek?.events || history,detail,evidenceContext,{mode:presentationMode,readOnly:publicReadOnly,origin:claims.find(row => row.claim_id === displayedState.claim_id)?.origin,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),operations:displayedTrace,transportOperations:operationTrace,inspectionIndex:operationPeek?.index,operationOpening:(demoSession || pausedPresentation)?.mode === 'operations',playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,tour:activeTour(),claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
       const now = host.querySelector('[data-au-now-id]'), nowId = now?.dataset.auNowId;
       if (nowId && announcedNow !== `${displayedState.claim_id}:${nowId}` && !operationPeek) {
         announcedNow = `${displayedState.claim_id}:${nowId}`;
@@ -2822,6 +2932,7 @@
     }
     async function openClaim(id, writeHistory = true, preferences = {}) {
       if (preferences.mode === 'replay') preferences = {...preferences,collection:replayCollection(id,preferences.collection)};
+      if (!preferences.demo && tour?.cases[tour.index]?.claim_id !== id) tour = null;
       if (!preferences.demo) stopPresentation();
       else { if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; if (demoSession) demoSession.preparing = null; }
       leaveView(Boolean(preferences.demo && demoSession?.mode === 'operations' && !doc.hidden),(preferences.mode || 'saved') === 'saved' && id === options.savedSnapshot?.claim_id && !doc.hidden); route(claimFragment(id,preferences),writeHistory);
@@ -2840,7 +2951,7 @@
       if (session?.mode === 'operations') { session.releasePlan = releaseOperationProcess(id); if (session.releasePlan) operationTrace = {releasePlan:session.releasePlan,rows:[],sources:new Map()}; }
       if (demoSession) demoSession.verifiedOpening = null;
       const cached = presentationMode !== 'replay' && paintSavedClaim(id,preferences);
-      if (!doc.hidden && !cached && !opening) { host.innerHTML = session?.releasePlan ? releaseProcedurePreview(session.releasePlan,packetAtSelection ? 'pending' : session.operations,{revision:catalogRow(claims,id)?.revision,readOnly:publicReadOnly}) : catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); if (session?.releasePlan) drawEdges(); }
+      if (!doc.hidden && !cached && !opening) { host.innerHTML = session?.releasePlan ? releaseProcedurePreview(session.releasePlan,packetAtSelection ? 'pending' : session.operations,{revision:catalogRow(claims,id)?.revision,readOnly:publicReadOnly,tour:tour?.cases === session.cases && tour.cases[tour.index]?.claim_id === id ? tour : null}) : catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); if (session?.releasePlan) drawEdges(); }
       interact(host);
       if (presentationMode !== 'replay') {
         sessionRestore?.then(() => { if (!disposed && token === epoch && !pendingRoute() && view === 'claim' && !current && id === openingId) paintSavedClaim(id,preferences); });
@@ -2874,7 +2985,7 @@
         if (preferences.demo && ['replay','operations'].includes(session?.mode)) {
           session.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256};
           session.referenceReady = Boolean(opening?.referenceReady);
-          session.replayStart = through === 0 && session.collection !== 'legacy' ? incoming.replay.replay_start : null;
+          session.replayStart = through === 0 && session.collection !== 'selected' ? incoming.replay.replay_start : null;
           session.openingBinding = opening?.openingBinding || null; session.operationBuffer = opening?.operationBuffer || null;
           session.verifiedHeadState = opening?.verifiedHeadState || null; session.verifiedReplayStart = opening?.verifiedReplayStart || null; session.verifiedJournal = opening?.verifiedJournal || null; session.referenceAsOf = opening?.referenceAsOf; session.operationBinding = opening?.operationBinding; session.plannedProcess = opening?.plannedProcess || null;
           session.preparing = null; session.displayedAt = Date.now(); session.motionDuration = motion?.duration || 0;
@@ -2934,6 +3045,9 @@
         const data = readKnowledge(await request('/knowledge',{},true));
         if (!canWarmReads(token,generation,ticket) || read !== knowledgeRead) return;
         if (JSON.stringify(data).length * 2 <= 8 * 1024 * 1024) knowledgeCache = {value:data};
+        // The recorded index can now count later reuse for a shown result.
+        const payoff = view === 'claim' && current && host.querySelector('[data-au-knowledge-payoff]');
+        if (payoff && knowledgeCache) { const fresh = doc.createElement?.('div'); if (fresh) { fresh.innerHTML = knowledgePayoffMarkup(current,knowledgeCache.value); const next = fresh.querySelector('[data-au-knowledge-payoff]'); if (next && next.outerHTML !== payoff.outerHTML) payoff.replaceWith(next); } }
       } catch (_) { /* A quiet GET warm never replaces a successful read or reports an error. */ }
     }
     function queueClaimWarm(id, intent = false) {
@@ -3081,34 +3195,77 @@
       if (view !== 'demonstration') { leaveView(); epoch++; cancelPoll(); setView('demonstration'); current = null; }
       route('#autonomous/demonstration',writeHistory); nav('demonstration'); notice('');
     }
-    async function showDemonstration(writeHistory = true, collection = 'reference', operations = operationRoutePreference(root.location?.hash,root.location?.search)) {
+    async function showDemonstration(writeHistory = true, collection = null, operations = operationRoutePreference(root.location?.hash,root.location?.search)) {
       if (busy) return;
-      stopPresentation(); demoMode = collection === 'legacy' ? 'replay' : 'reference';
-      let start = 0;
+      stopPresentation(); tour = null;
+      const requested = demoCollection(collection);
+      demoMode = requested === 'selected' ? 'replay' : 'reference';
       // View-only Sites and a configured recorded opening carry their own verified
-      // history; a writable workspace first asks its catalog whether any exists.
-      if (collection !== 'legacy' && !publicReadOnly && !options.recordedPacket) {
-        if (!claimsLoaded && !inflightReads.has(`${readGeneration}:/claims`)) {
-          // Direct entry reads the catalog once, so an unrun workspace never
-          // opens a replay frame or requests a history that does not exist.
-          enterDemonstrationView(writeHistory); writeHistory = false;
-          host.innerHTML = readSkeletonMarkup('demonstration','Nine original cases');
-          const token = epoch;
-          try { await loadClaims(token); } catch (_) { /* An unreadable catalog keeps the verified opening path. */ }
-          if (disposed || token !== epoch || pendingRoute() || view !== 'demonstration') return;
-        }
-        if (rosterUnrun(claims)) {
-          enterDemonstrationView(writeHistory);
-          host.innerHTML = demonstrationMarkup(claims,status,'reference'); focusTitle(); interact(host);
-          return;
-        }
-        start = Math.max(0,REFERENCE_DEMO_CASES.findIndex(row => catalogRow(claims,row.claim_id)?.revision > 0));
+      // history and open without waiting; a writable workspace first asks its
+      // catalog which recorded set exists.
+      if (!publicReadOnly && !options.recordedPacket && !claimsLoaded && !inflightReads.has(`${readGeneration}:/claims`)) {
+        // Direct entry reads the catalog once, so an unrun workspace never
+        // opens a replay frame or requests a history that does not exist.
+        enterDemonstrationView(writeHistory); writeHistory = false;
+        host.innerHTML = readSkeletonMarkup('demonstration','Demonstration');
+        const token = epoch;
+        try { await loadClaims(token); } catch (_) { /* An unreadable catalog keeps the verified opening path. */ }
+        if (disposed || token !== epoch || pendingRoute() || view !== 'demonstration') return;
       }
-      const chosen = claimFragment(demoCases(collection)[start].claim_id,{mode:'replay',collection,operations,through:0,detail:'step'});
+      const roster = requested ? {collection:requested,cases:collectionRoster(requested,claims)} : demoRoster(claims);
+      if (!roster.collection) {
+        enterDemonstrationView(writeHistory);
+        host.innerHTML = demonstrationMarkup(claims,status,'reference'); focusTitle(); interact(host);
+        return;
+      }
+      const chosen = claimFragment(roster.cases[0].claim_id,{mode:'replay',collection:roster.collection,operations,through:0,detail:'step'});
       route(chosen,writeHistory);
       if (!writeHistory && root.history?.replaceState && root.location?.hash !== chosen) { root.history.replaceState(null,'',root.location.pathname + root.location.search + chosen); routedFragment = chosen; }
-      demoSession = {mode:collection === 'legacy' ? 'replay' : 'operations',collection,index:start,operations,useRecorded:operations === 'recorded'};
+      demoSession = tourSession(roster.collection,roster.cases,0,operations);
       await openPresentationCase(demoSession,writeHistory);
+    }
+    // A tour is one roster played in order. Its session owns the exact cases,
+    // so a sequence never mixes selected originals with reference assessments.
+    function tourSession(collection, cases, index, operations, saved = false) {
+      tour = {collection,cases,index,operations};
+      return {mode:collection === 'selected' || saved ? 'replay' : 'operations',collection,cases,index,operations,useRecorded:operations === 'recorded'};
+    }
+    const sessionCases = session => session?.cases || demoCases(session?.collection);
+    function activeTour() {
+      const row = tour?.cases[tour.index];
+      // A release opening has no accepted state yet; its routed case still counts.
+      return row && view === 'claim' && presentationMode === 'replay' && (current ? current.claim_id : openingId) === row.claim_id ? tour : null;
+    }
+    // Skip moves on within the same roster; after the last case it ends the tour.
+    function skipTourCase() {
+      const shown = activeTour(); if (!shown || busy) return;
+      const session = demoSession || pausedPresentation, next = shown.index + 1, operations = session?.operations || shown.operations;
+      operationPeek = null; host.removeAttribute?.('data-au-inspection-operation'); inspectionHold = false;
+      // A playing check finishes unpresented and advances on its own stream, so
+      // the shared check allowance is not spent twice on one case.
+      if (session?.mode === 'operations' && session.cases === shown.cases && session.claimId === current?.claim_id && operationTrace && !operationTrace.savedFallback && !reduced?.matches) {
+        pausedPresentation = null; demoSession = session; session.skip = true; session.skipCase = true;
+        if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; session.operationWake?.();
+        cancelStageMotion(); renderClaim(); return;
+      }
+      stopPresentation();
+      if (next >= shown.cases.length) { finishTour(shown,true); return; }
+      demoSession = tourSession(shown.collection,shown.cases,next,operations);
+      openPresentationCase(demoSession,true);
+    }
+    // The tour ends at the knowledge its cases saved or reused. Without any,
+    // the last case stays and says so; nothing is inferred from labels.
+    async function finishTour(finished, explicit = false) {
+      const token = epoch, generation = readGeneration, ids = finished.cases.map(row => row.claim_id);
+      stopPresentation();
+      let data = knowledgeCache?.value || null;
+      if (!data) { try { data = readKnowledge(await request('/knowledge')); } catch (_) { data = null; } }
+      if (disposed || token !== epoch || generation !== readGeneration || pendingRoute() || view !== 'claim' || tour !== finished) return;
+      const payoff = data && tourKnowledgePayoff(data,ids);
+      if (!payoff) { tour = null; renderClaim(); notice(explicit ? 'Demonstration finished. These cases saved or reused no knowledge.' : 'Recorded playback finished.'); return; }
+      tour = null;
+      await showKnowledge(true,payoff.pin);
+      if (!disposed && view === 'knowledge') announceRecorded(`Demonstration finished. ${payoff.announcement}`);
     }
     function stopPresentation() {
       const session = demoSession || pausedPresentation;
@@ -3312,7 +3469,7 @@
       if (slot.owner.operationPreparation) cancelPreparedOperationReads(slot.owner.operationPreparation);
     }
     function prefetchNextOperationOpening(session) {
-      const next = demoCases(session.collection)[session.index+1];
+      const next = sessionCases(session)[session.index+1];
       if (next && !session.skip && !reduced?.matches && !doc.hidden) nextOperationOpening(session,next.claim_id).catch(() => {});
     }
     function nextOperationOpening(session,id) {
@@ -3455,13 +3612,21 @@
             if (!operationTrace.binding || current.revision !== session.replayHead.revision || current.state_sha256 !== session.replayHead.state_sha256 ||
                 frame.state_sha256 !== current.state_sha256 || frame.operation_count !== operationTrace.rows.length || frame.operation_chain_sha256 !== operationTrace.rows.at(-1)?.operation_sha256 || frame.exact_output_verified !== true || frame.trace_sha256 !== traceHash) throw new Error('The operation result differs from its pinned saved result.');
             operationTrace.finished = true; operationTrace.verifiedResult = true; operationTrace.current = null; selected = preferredNode(current,selected,history); renderClaim();
-            const next = demoCases(session.collection)[session.index+1];
-            if (next && !session.skip && !reduced?.matches) {
+            // Skip in the tour finishes this case unpresented, then advances like
+            // a finished case, reusing the next opening this session prefetched.
+            const next = sessionCases(session)[session.index+1], advancing = () => session.skipCase || !session.skip && !reduced?.matches;
+            if (next && advancing()) {
               presentationOpening(session,next.claim_id);
-              if (!await operationOutcomeHold(session,token)) return;
-              if (session.skip || reduced?.matches) { stopPresentation(); renderClaim(); primeClaimReads(token); return; }
+              if (!session.skipCase && !await operationOutcomeHold(session,token)) return;
+              if (!advancing()) { stopPresentation(); renderClaim(); primeClaimReads(token); return; }
+              session.skip = false; session.skipCase = false;
               session.operationStarted = false; session.operationOpeningAnchor = null; session.previousAttempts = []; session.useRecorded = session.operations === 'recorded'; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null; session.verifiedHeadState = null; session.verifiedJournal = null; session.operationBinding = null; session.plannedProcess = null;
               await openPresentationCase(session,true,session.index+1); return;
+            }
+            // The last result holds like any other, then the tour ends at its knowledge.
+            if (!next && session.cases && tour?.cases === session.cases && advancing()) {
+              if (!session.skipCase && !await operationOutcomeHold(session,token)) return;
+              if (advancing() && activeTour()?.cases === session.cases) { finishTour(tour,Boolean(session.skipCase)); return; }
             }
             stopPresentation(); renderClaim(); primeClaimReads(token); notice(''); return;
           } else if (frame.type === 'error') throw new Error(frame.message || frame.reason || frame.detail || 'The rules-based assessment stopped.');
@@ -3523,14 +3688,16 @@
     async function beginPresentation() {
       if (busy || view !== 'claim' || presentationMode !== 'replay' || !current || !replayRecord || dialog.open || recordDialog.open) return;
       if (pausedPresentation) { resumePresentation(); return; }
-      const collection = openingPreferences.collection || (REFERENCE_DEMO_CASES.some(row => row.claim_id === current.claim_id) ? 'reference' : 'legacy');
-      const index = demoCases(collection).findIndex(row => row.claim_id === current.claim_id);
+      const shown = activeTour(), collection = shown?.collection || replayCollection(current.claim_id,openingPreferences.collection);
+      const filtered = shown?.cases || collectionRoster(collection,claims), cases = filtered.some(row => row.claim_id === current.claim_id) ? filtered : demoCases(collection);
+      const index = cases.findIndex(row => row.claim_id === current.claim_id);
       if (index < 0) { notice('This recorded case is outside the selected demonstration collection. Its verified history remains available for inspection.'); return; }
       inspectionHold = false;
       if (replayRecord.through_seq >= replayRecord.current_revision) {
-        demoSession = {mode:'replay',collection,index}; await openPresentationCase(demoSession); return;
+        demoSession = {...tourSession(collection,cases,index,shown?.operations || openingPreferences.operations,true)}; await openPresentationCase(demoSession); return;
       }
-      demoSession = {mode:'replay',collection,index,claimId:current.claim_id,epoch,replayHead:{claimId:current.claim_id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256},displayedAt:Date.now(),motionDuration:0};
+      tourSession(collection,cases,index,shown?.operations || openingPreferences.operations,true);
+      demoSession = {mode:'replay',collection,cases,index,claimId:current.claim_id,epoch,replayHead:{claimId:current.claim_id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256},displayedAt:Date.now(),motionDuration:0};
       openingPreferences = {...openingPreferences,demo:true};
       renderClaim(); await startReplay(demoSession,epoch);
     }
@@ -3539,7 +3706,7 @@
       if (session.failure) { presentationFailed(session,session.failure); return; }
       if (inspectionHold) { pausePresentation(); renderClaim(); return; }
       if (dialog.open || recordDialog.open) return;
-      if (session.collection !== 'legacy' && !session.referenceReady) {
+      if (session.collection !== 'selected' && !session.referenceReady) {
         session.preparing = token;
         try {
           if (!await verifyReferenceHead(session)) { if (replayActive(session,token)) presentationFailed(session,'This synthetic reference assessment has no completed recorded history available.'); return; }
@@ -3570,8 +3737,13 @@
     }
     async function openPresentationCase(session, writeHistory = true, index = session.index) {
       if (demoSession !== session || disposed || pendingRoute() || doc.hidden && session.replayHead || session.preparing) return;
-      if (index >= demoCases(session.collection).length) { stopPresentation(); detail = 'step'; selected = preferredNode(current,selected,history); evidenceContext = evidenceSelection(current,selected,evidenceContext); notice('Recorded playback finished.'); renderClaim(); return; }
-      const id = demoCases(session.collection)[index].claim_id;
+      if (index >= sessionCases(session).length) {
+        detail = 'step'; selected = preferredNode(current,selected,history); evidenceContext = evidenceSelection(current,selected,evidenceContext);
+        const shown = activeTour();
+        if (shown && shown.cases === session.cases) { finishTour(shown); return; }
+        stopPresentation(); notice('Recorded playback finished.'); renderClaim(); return;
+      }
+      const id = sessionCases(session)[index].claim_id;
       if (['replay','operations'].includes(session.mode) && current && replayRecord && session.claimId === current.claim_id && id !== current.claim_id) {
         const token = epoch, generation = readGeneration, priorId = current.claim_id, priorHash = current.state_sha256;
         session.preparing = token;
@@ -3582,7 +3754,7 @@
             if (session.skip || reduced?.matches) { stopPresentation(); renderClaim(); return; }
           }
           if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
-          if (session.collection !== 'legacy' && !opening.referenceReady) {
+          if (session.collection !== 'selected' && !opening.referenceReady) {
             const verification = {replayHead:opening.head,replayStart:opening.response.replay_start};
             if (!await verifyReferenceHead(verification)) throw new Error('No completed recorded reference assessment is available.');
             opening.referenceReady = true; opening.verifiedReplayStart = verification.verifiedReplayStart;
@@ -3605,6 +3777,7 @@
       if (session.verifiedOpening?.operationPreparation?.recorded) { session.operations = 'recorded'; session.useRecorded = true; }
       if (session.nextOperationOpening?.id === id) session.nextOperationOpening = null;
       session.index = index; session.claimId = id; session.startAttempted = false;
+      if (session.cases && tour?.cases === session.cases) tour.index = index;
       await openClaim(id,writeHistory,{mode:session.mode === 'operations' ? 'replay' : session.mode,collection:session.collection || 'reference',operations:session.operations,through:0,detail:'step',demo:true});
       if (demoSession !== session || !current || disposed || pendingRoute()) return;
       if (['replay','operations'].includes(session.mode)) {
@@ -3620,8 +3793,8 @@
         const head = {claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256};
         if (!head.revision) throw new Error('No recorded execution is available for this original case.');
         const verification = {replayHead:head,replayStart:response.replay_start};
-        const referenceReady = session.collection !== 'legacy' && !doc.hidden && await verifyReferenceHead(verification);
-        if (session.collection !== 'legacy' && !doc.hidden && !referenceReady) throw new Error('No completed recorded reference assessment is available.');
+        const referenceReady = session.collection !== 'selected' && !doc.hidden && await verifyReferenceHead(verification);
+        if (session.collection !== 'selected' && !doc.hidden && !referenceReady) throw new Error('No completed recorded reference assessment is available.');
         if (disposed || token !== epoch || generation !== readGeneration || demoSession !== session || pendingRoute()) throw new Error('The presentation changed while verifying the next case.');
         return {claimId:id,generation,response,head,referenceReady,verifiedReplayStart:verification.verifiedReplayStart,verifiedJournal:verification.verifiedJournal,referenceAsOf:verification.referenceAsOf,operationBinding:verification.operationBinding,plannedProcess:verification.plannedProcess};
       })();
@@ -3871,7 +4044,7 @@
       if (session.failure) { presentationFailed(session,session.failure); return; }
       if (replayRecord.through_seq >= replayRecord.current_revision) {
         if (!replayCanAdvance(current)) { stopPresentation(); renderClaim(); notice('This recorded investigation has no settled operational outcome. Replay stopped at its saved head.',true); return; }
-        const next = demoCases(session.collection)[session.index+1];
+        const next = sessionCases(session)[session.index+1];
         if (next) presentationOpening(session,next.claim_id);
         const remaining = session.mode === 'operations' ? 0 : Math.max(0,4000 - (Date.now() - session.displayedAt));
         demoTimer = root.setTimeout(() => { demoTimer = null; if (!replayActive(session,token) || doc.hidden || dialog.open) return; openPresentationCase(session,true,session.index+1); },remaining);
@@ -3889,7 +4062,7 @@
     }
     function resumeLivePresentation() {
       const session = demoSession;
-      if (!session || session.mode !== 'live' || session.epoch !== epoch || disposed || pendingRoute() || doc.hidden || dialog.open || recordDialog.open || view !== 'claim' || presentationMode !== 'live' || !openingPreferences.demo || !current || !freshClaim || current.claim_id !== session.claimId || demoCases(session.collection)[session.index]?.claim_id !== session.claimId || current.revision !== 0 || busy || pendingStart || session.startAttempted || !canStartHere()) return;
+      if (!session || session.mode !== 'live' || session.epoch !== epoch || disposed || pendingRoute() || doc.hidden || dialog.open || recordDialog.open || view !== 'claim' || presentationMode !== 'live' || !openingPreferences.demo || !current || !freshClaim || current.claim_id !== session.claimId || sessionCases(session)[session.index]?.claim_id !== session.claimId || current.revision !== 0 || busy || pendingStart || session.startAttempted || !canStartHere()) return;
       // Play authorizes one original Start after a verified opening. An uncertain
       // admission retains its exact request for explicit operator recovery.
       session.startAttempted = true;
@@ -3904,7 +4077,7 @@
     }
     function livePresentationTick(session, token, id) {
       demoTimer = null;
-      if (demoSession !== session || disposed || token !== epoch || pendingRoute() || session.epoch !== token || view !== 'claim' || presentationMode !== 'live' || current?.claim_id !== id || session.claimId !== id || demoCases(session.collection)[session.index]?.claim_id !== id || busy || pendingStart || active(current.status)) return;
+      if (demoSession !== session || disposed || token !== epoch || pendingRoute() || session.epoch !== token || view !== 'claim' || presentationMode !== 'live' || current?.claim_id !== id || session.claimId !== id || sessionCases(session)[session.index]?.claim_id !== id || busy || pendingStart || active(current.status)) return;
       if (doc.hidden || dialog.open) { demoTimer = root.setTimeout(() => livePresentationTick(session,token,id),1600); return; }
       openPresentationCase(session,true,session.index+1);
     }
@@ -4229,8 +4402,7 @@
       if (!recordSelection || !opening && !recordDialog.open) return;
       const {kind,id} = recordSelection, body = recordDialog.querySelector('[data-au-record-content]');
       if (kind === 'demo') {
-        const roster = (rows,collection) => DOMAINS.map(domain => `<section><h3>${h(domain.label)}</h3>${rows.filter(row => row.domain === domain.id).map(row => `<button type="button" class="au-demo-case-open" data-au-demo-case="${h(row.claim_id)}" data-au-demo-collection="${collection}">${h(row.label)}</button>${collection === 'reference' ? `<button type="button" class="au-link" data-au-demo-case="${h(row.claim_id)}" data-au-demo-collection="reference" data-au-demo-saved="true">Saved history</button>` : ''}`).join('')}</section>`).join('');
-        body.innerHTML = `<div class="au-demo-picker"><h2>Demonstration cases</h2><p class="au-meta">Choose a fictional case to see its saved work.</p>${roster(REFERENCE_DEMO_CASES,'reference')}<details data-au-disclosure="earlier-recordings"><summary>Earlier recordings</summary><p class="au-meta">Original recorded histories retain their execution modes and receipts.</p>${roster(DEMO_CASES,'legacy')}</details></div>`;
+        body.innerHTML = demoPickerMarkup(claims,activeTour()?.collection || demoRoster(claims).collection);
         return;
       }
       const record = kind === 'notice' ? {message:noticeRecord} : ['operation','operation-attempt'].includes(kind) ? operationRecord(operationPeek?.trace || operationTrace,kind,id) : contextualRecord(operationPeek?.state || current,operationPeek?.projection || projection,operationPeek?.events || history,kind,id,knowledgeCache?.value || {},replayRecord);
@@ -4268,7 +4440,8 @@
       else if (target.hasAttribute('data-au-return-case')) { if (!busy && lastCaseContext) openClaim(lastCaseContext.claim_id,true,{...lastCaseContext,detail:target.dataset.auReturnCase}); }
       else if (target.hasAttribute('data-au-knowledge-facet')) { if (view === 'knowledge' && ['process','facts','documents','exceptions','changes'].includes(target.dataset.auKnowledgeFacet) && knowledgeCache) { knowledgeFacet = target.dataset.auKnowledgeFacet; if(learningState){selectLearning(learningState.index,10,true,false);}else renderKnowledge(knowledgeCache.value,knowledgePin); host.querySelector(`[data-au-knowledge-facet="${knowledgeFacet}"]`)?.focus({preventScroll:true}); } }
       else if (target.hasAttribute('data-au-inspect')) openRecord(target);
-      else if (target.hasAttribute('data-au-demo-case')) { const id = target.dataset.auDemoCase; recordReturn = null; recordDialog.close(); stopPresentation(); demoMode = 'replay'; const collection = target.dataset.auDemoCollection === 'legacy' ? 'legacy' : 'reference', index = demoCases(collection).findIndex(row => row.claim_id === id); if (index >= 0) { const operations=openingPreferences.operations || operationRoutePreference(root.location?.hash,root.location?.search); demoSession = {mode:collection === 'legacy' || target.dataset.auDemoSaved === 'true' ? 'replay' : 'operations',collection,index,operations,useRecorded:operations === 'recorded'}; openPresentationCase(demoSession); } }
+      else if (target.hasAttribute('data-au-demo-case')) { const id = target.dataset.auDemoCase; recordReturn = null; recordDialog.close(); stopPresentation(); demoMode = 'replay'; const collection = demoCollection(target.dataset.auDemoCollection) || 'reference', filtered = collectionRoster(collection,claims), cases = filtered.some(row => row.claim_id === id) ? filtered : demoCases(collection), index = cases.findIndex(row => row.claim_id === id); if (index >= 0) { const operations=openingPreferences.operations || operationRoutePreference(root.location?.hash,root.location?.search); demoSession = tourSession(collection,cases,index,operations,target.dataset.auDemoSaved === 'true'); openPresentationCase(demoSession); } }
+      else if (target.hasAttribute('data-au-demo-skip')) skipTourCase();
       else if (target.hasAttribute('data-au-filter')) { collection.filter = target.dataset.auFilter; collection.page = 1; refreshCollection(); rememberCollectionRoute(true); for (const control of host.querySelectorAll('[data-au-filter]')) control.setAttribute('aria-pressed',String(control.dataset.auFilter === collection.filter)); }
       else if (target.hasAttribute('data-au-page')) { if (view === 'work' && !target.disabled) { collection.page = Number(target.dataset.auPage); refreshCollection(); rememberCollectionRoute(true); host.querySelector('[data-au-claims]')?.scrollIntoView?.({block:'start',behavior:'instant'}); } }
       else if (target.hasAttribute('data-au-nav')) { if (busy) return; target.dataset.auNav === 'knowledge' ? showKnowledge() : target.dataset.auNav === 'intake' ? showIntake() : target.dataset.auNav === 'demonstration' ? showDemonstration() : showWork(); }
@@ -4424,7 +4597,7 @@
     root.addEventListener?.('hashchange',routeChanged); root.addEventListener?.('popstate',routeChanged);
     function fitActiveStage() {
       host.querySelector('.au-operation-stage .au-graph-viewport')?.style.removeProperty('--au-stage-available-height');
-      for(const [name,selector] of [['header','.au-identity-header'],['now','.au-quiet-claim > .au-now']]) {
+      for(const [name,selector] of [['header','.au-identity-header'],['transport','.au-quiet-claim > .au-demo-transport'],['now','.au-quiet-claim > .au-now']]) {
         const height=container.querySelector(selector)?.getBoundingClientRect?.().height || 0;
         container.style?.setProperty?.(`--au-${name}-height`,`${Math.ceil(height)}px`);
       }
@@ -4458,5 +4631,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {learningChangeSummary,learningFrameStart,learningProcessMarkup,recordedReuseMoment,recordedReuseMomentMarkup,knowledgeLearningModel,knowledgeLearningFocus,knowledgePinMatches,learningEventLabel,learningTime,checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,roleBadge,boundDisplayReceipt,operationDisplayContext,knowledgeNowMarkup,nowMarkup,outcomeSummaryMarkup,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,demonstrationOverviewMarkup,learningLabel,claimModeLine,rosterUnrun,startControlMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {demoRoster,collectionRoster,demoCollection,DEMO_COLLECTIONS,caseLabel,demoPickerMarkup,demoTransportMarkup,resultReached,knowledgePayoff,knowledgePayoffMarkup,tourKnowledgePayoff,learningChangeSummary,learningFrameStart,learningProcessMarkup,recordedReuseMoment,recordedReuseMomentMarkup,knowledgeLearningModel,knowledgeLearningFocus,knowledgePinMatches,learningEventLabel,learningTime,checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,roleBadge,boundDisplayReceipt,operationDisplayContext,knowledgeNowMarkup,nowMarkup,outcomeSummaryMarkup,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,demonstrationOverviewMarkup,learningLabel,claimModeLine,rosterUnrun,startControlMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });

@@ -1153,7 +1153,7 @@ test('replay entry: a legacy link without collection plays its exact roster and 
  await page.locator('[data-au-demo-play]').click();await page.clock.runFor(1600);
  assert.ok(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))>0,'Play must consume a real legacy prefix');
  assert.equal(await page.locator('.au-nav [aria-current="page"]').getAttribute('data-au-nav'),'demonstration');
- assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),'legacy');
+ assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),'selected','collections are named by provenance; legacy is only an accepted alias');
  await page.locator('.au-nav [data-au-nav="work"]').click();
 });
 
@@ -1246,7 +1246,7 @@ test('replay entry: shared reference identity and explicit legacy links keep man
  for(const [id,query,collection]of [[shared,'','reference'],[demoIds[0],'&collection=legacy','legacy']])await t.test(collection,async t=>{
   const page=await fixturePage(t,{referenceFixture:true,presentationSuite:'replay',publicReadOnly:true,initialFragment:`#autonomous/claim/${id}?mode=replay&through=0&detail=sources${query}`});
   await title(page,id);const before=await visibleRecord(page);await page.clock.runFor(8000);assert.deepEqual(await visibleRecord(page),before);assert.equal(await page.locator('[data-au-demo-play]').count(),1);assert.equal(await page.locator('.au-nav [aria-current="page"]').getAttribute('data-au-nav'),'demonstration');
-  assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),collection);
+  assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),collection==='legacy'?'selected':collection,'an accepted legacy alias is shown by its provenance name');
   if(collection==='reference')assert.deepEqual(before,{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});
   await page.locator('[data-au-demo-play]').focus();await page.keyboard.press('Enter');for(let tick=0;Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))===0&&tick<300;tick++)await page.clock.runFor(20);assert.equal(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision')),1,'manual Play follows its exact explicitly opened historical zero');if(collection==='reference')assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[id][1].state);
   await page.locator('.au-nav [data-au-nav="work"]').click();
@@ -1519,7 +1519,7 @@ test('reference native: an earlier ordinary canonical prefix keeps its mode and 
  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'legacy',through,detail:'activity'}),{id,through:earlier.revision});await title(page,id);
  await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.locator('[data-au-return-case]').count().then(count=>count>0),'Knowledge lost the earlier recorded return context');
  await page.locator('[data-au-return-case="step"]').click();await title(page,id);assert.deepEqual((await visibleRecord(page)).state,old.state);assert.equal(await page.locator('[data-au-reference-mode]').count(),0);
- assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),'legacy');
+ assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),'selected');
 });
 
 test('reference native: public entry omits creation and forged flag status and controls cannot reopen writes',async t=>{

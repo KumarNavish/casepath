@@ -2149,6 +2149,123 @@ test('an unrun reference outline is named as not run and has no transport',()=>{
  }
 });
 
+const REFERENCE_POLICY='casepath.bounded-reference-assessment/1.0.0',MODEL_POLICY='casepath.autonomous-local/1.0.0';
+function demoCatalog({selected=0,reference=0}={}) {
+ const ids=[...new Set([...ui.DEMO_CASES,...ui.REFERENCE_DEMO_CASES].map(row=>row.claim_id))];
+ return [...ids.map((claim_id,index)=>{
+  const isReference=ui.REFERENCE_DEMO_CASES.some(row=>row.claim_id===claim_id),isSelected=ui.DEMO_CASES.some(row=>row.claim_id===claim_id);
+  const model=isSelected&&selected&&ui.DEMO_CASES.findIndex(row=>row.claim_id===claim_id)<selected,fixed=!model&&isReference&&reference;
+  return {claim_id,title:`Original subject ${index+1}`,origin:'canonical_original',status:model||fixed?'deferred':'not_started',mode:model||fixed?'saved':'unprocessed',revision:model?15:fixed?41:0,...(model?{policy_id:MODEL_POLICY}:fixed?{policy_id:REFERENCE_POLICY,outcome:{assessment_status:'complete',reference_provenance:{mode:'deterministic_reference',synthetic:true}}}:{})};
+ }),{claim_id:'clm_other',title:'Another original',origin:'canonical_original',status:'not_started',revision:0}];
+}
+
+test('the Demonstration roster prefers recorded selected originals, then reference assessments, and never mixes them',()=>{
+ const ids=rows=>rows.cases.map(row=>row.claim_id);
+ const both=ui.demoRoster(demoCatalog({selected:9,reference:1}));assert.equal(both.collection,'selected');assert.deepEqual(ids(both),ui.DEMO_CASES.map(row=>row.claim_id));assert.equal(both.cases[0].claim_id,'clm_e262801f9368bc12');
+ const partial=ui.demoRoster(demoCatalog({selected:3,reference:1}));assert.equal(partial.collection,'selected');assert.deepEqual(ids(partial),ui.DEMO_CASES.slice(0,3).map(row=>row.claim_id),'a partial recording plays only the selected cases with histories, in selection order');
+ const reference=ui.demoRoster(demoCatalog({reference:1}));assert.equal(reference.collection,'reference');assert.deepEqual(ids(reference),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id));
+ assert.ok(!reference.cases.some(row=>ui.DEMO_CASES.includes(row)),'the reference sequence carries no selected roster row');
+ const shared='clm_7dbd7c7d1c4ddf90';assert.ok(ui.DEMO_CASES.some(row=>row.claim_id===shared)&&ui.REFERENCE_DEMO_CASES.some(row=>row.claim_id===shared));
+ assert.equal(reference.collection,'reference','a fixed-rule history on the shared original never counts as a selected recording');
+ assert.deepEqual(ui.demoRoster(demoCatalog()),{collection:null,cases:[]},'an all-zero catalog has no roster and renders the overview');
+ assert.deepEqual(ids(ui.demoRoster([])),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id),'an unread catalog keeps the verified reference opening');
+ const one=demoCatalog().map(row=>row.claim_id===ui.REFERENCE_DEMO_CASES[4].claim_id?{...row,revision:39,policy_id:REFERENCE_POLICY}:row);assert.deepEqual(ids(ui.demoRoster(one)),[ui.REFERENCE_DEMO_CASES[4].claim_id]);
+ assert.equal(ui.demoCollection('legacy'),'selected');assert.equal(ui.demoCollection('selected'),'selected');assert.equal(ui.demoCollection('reference'),'reference');assert.equal(ui.demoCollection('other'),null);
+ assert.deepEqual(ui.collectionRoster('legacy',[]).map(row=>row.claim_id),ui.DEMO_CASES.map(row=>row.claim_id),'an explicit collection keeps unknown rows');
+ assert.deepEqual(ui.collectionRoster('selected',demoCatalog({selected:2})).map(row=>row.claim_id),ui.DEMO_CASES.slice(0,2).map(row=>row.claim_id));
+ assert.deepEqual(ui.collectionRoster('selected',demoCatalog()).map(row=>row.claim_id),ui.DEMO_CASES.map(row=>row.claim_id),'with none recorded the fixed order opens and states what is missing');
+ assert.deepEqual(Object.values(ui.DEMO_COLLECTIONS),['Selected originals','Reference assessments · fixed rules · fictional supplements']);
+});
+
+test('Choose case lists both rosters by provenance and offers a saved history only when one is recorded',()=>{
+ const visible=html=>html.replace(/<[^>]+>/g,' ');
+ const unrun=ui.demoPickerMarkup(demoCatalog());
+ assert.doesNotMatch(unrun,/Saved history/);assert.doesNotMatch(visible(unrun),/legacy|Earlier recordings/i);
+ assert.equal((unrun.match(/Not run in this workspace/g)||[]).length,18);assert.equal((unrun.match(/>Original sources</g)||[]).length,18);
+ for(const row of [...ui.DEMO_CASES,...ui.REFERENCE_DEMO_CASES])assert.ok(unrun.includes(`href="#autonomous/claim/${row.claim_id}"`));
+ assert.doesNotMatch(unrun,/data-au-demo-case=/,'an unrun case cannot start a replay');
+ const reference=ui.demoPickerMarkup(demoCatalog({reference:1}),'reference');
+ assert.match(reference,/<h3>Reference assessments · fixed rules · fictional supplements<\/h3>[\s\S]*<h3>Selected originals<\/h3>/);
+ const roster=id=>reference.slice(reference.indexOf(`data-au-demo-roster="${id}"`)).split('</section>')[0];
+ assert.equal((roster('reference').match(/data-au-demo-saved="true">Saved history</g)||[]).length,9);
+ assert.equal((roster('selected').match(/Not run in this workspace/g)||[]).length,8);assert.match(roster('selected'),/data-au-demo-pick="clm_7dbd7c7d1c4ddf90" data-au-demo-pick-state="other_history"[\s\S]*?Fixed-rule history only/);
+ const selected=ui.demoPickerMarkup(demoCatalog({selected:9,reference:1}),'selected');assert.match(selected,/<h3>Selected originals<\/h3>[\s\S]*<h3>Reference assessments/);
+ assert.ok(ui.DEMO_CASES.every(row=>selected.includes(`data-au-demo-case="${row.claim_id}" data-au-demo-collection="selected" data-au-demo-saved="true"`)));
+ assert.doesNotMatch(visible(selected),/legacy|Earlier recordings/i);
+});
+
+test('one case label serves Cases, the Demonstration and Knowledge, and Cases keep catalog order',()=>{
+ const shared='clm_7dbd7c7d1c4ddf90',german='clm_4a07dbbbd859a3ce';
+ assert.deepEqual(ui.caseLabel(german,{title:'Mehrere Angaben sind unklar: Heizung'}),{primary:'Heating resets and an uncertain onset date',secondary:'Mehrere Angaben sind unklar: Heizung'});
+ assert.deepEqual(ui.caseLabel(german,{claim_title:'Mehrere Angaben sind unklar: Heizung'}).primary,'Heating resets and an uncertain onset date');
+ assert.deepEqual(ui.caseLabel('clm_plain',{title:'Plain subject'}),{primary:'Plain subject',secondary:''});
+ assert.equal(ui.caseLabel(shared).primary,ui.REFERENCE_DEMO_CASES.find(row=>row.claim_id===shared).label,'the shared original has one label in both rosters');
+ const catalog=demoCatalog({reference:1}),cases=ui.claimsMarkup(catalog),order=[...cases.matchAll(/data-au-claim-row="([^"]+)"/g)].map(row=>row[1]);
+ assert.deepEqual(order,catalog.map(row=>row.claim_id),'reference cases are not promoted above catalog order');
+ assert.match(cases,new RegExp(`data-au-claim-row="${german}"[\\s\\S]*?<strong>Heating resets and an uncertain onset date</strong><span class="au-case-subject">Original subject \\d+</span>[\\s\\S]*?In demonstration · 02</span>`));
+ assert.doesNotMatch(ui.claimsMarkup(demoCatalog()),/In demonstration/,'with nothing to play no case is marked');
+ const transport=ui.demoTransportMarkup({collection:'reference',cases:ui.REFERENCE_DEMO_CASES,index:7},{playing:true});assert.match(transport,new RegExp(`Next: ${ui.caseLabel(shared).primary}<`));
+ const data=learningFixtureData(),used=data.learning_replay.events.find(event=>event.kind==='knowledge.used'),model=ui.knowledgeLearningModel({...data,learning_replay:{...data.learning_replay,events:data.learning_replay.events.map(event=>event===used?{...event,claim_id:german,claim_title:'Mehrere Angaben sind unklar: Heizung'}:event)},uses:data.uses.map(use=>use.claim_id===used.claim_id?{...use,claim_id:german}:use)});
+ const html=ui.knowledgeMarkup({...data,learning_replay:{...data.learning_replay,events:data.learning_replay.events.map(event=>event===used?{...event,claim_id:german,claim_title:'Mehrere Angaben sind unklar: Heizung'}:event)},uses:data.uses.map(use=>use.claim_id===used.claim_id?{...use,claim_id:german}:use)},[],null,'process',{index:model.events.findIndex(event=>event.kind==='knowledge.used'),stage:10});
+ assert.match(html,/<span class="au-case-label">(?:This case · )?Heating resets and an uncertain onset date<\/span><span class="au-case-subject">Mehrere Angaben sind unklar: Heizung · /,'Knowledge reuse rows lead with the case label and keep the original subject second');
+});
+
+test('the playing roster has one transport row with position, domain, Pause, Skip and the next case',()=>{
+ const tour={collection:'reference',cases:ui.REFERENCE_DEMO_CASES,index:2},text=html=>html.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+ const playing=ui.demoTransportMarkup(tour,{playing:true});
+ assert.equal(text(playing),`3/9·Defects and repairs·Pause·Skip·Next: ${ui.REFERENCE_DEMO_CASES[3].label}`);
+ assert.match(playing,/role="group" aria-label="Reference assessments · fixed rules · fictional supplements · case 3 of 9"/);
+ assert.match(playing,/<button type="button" class="au-demo-control" data-au-demo-stop>Pause<\/button>/);assert.match(playing,/<button type="button" class="au-demo-control" data-au-demo-skip aria-describedby="auDemoNext">Skip<\/button>/);
+ assert.match(ui.demoTransportMarkup(tour,{paused:true}),/data-au-demo-resume>Resume</);
+ assert.doesNotMatch(ui.demoTransportMarkup(tour,{}),/data-au-demo-stop|data-au-demo-resume/,'a stopped case keeps Skip without a Pause it cannot honour');
+ assert.match(text(ui.demoTransportMarkup({...tour,index:8},{playing:true})),/^9\/9·Rent increases·Pause·Skip·Next: Knowledge$/);
+ const selected=ui.demoTransportMarkup({collection:'selected',cases:ui.DEMO_CASES.slice(0,3),index:0},{playing:true});assert.match(text(selected),/^1\/3·Defects and repairs·/);assert.match(selected,/aria-label="Selected originals · case 1 of 3"/);
+ assert.equal(ui.demoTransportMarkup({collection:'reference',cases:[],index:0}),'');
+});
+
+test('a case result links the knowledge it saved or reused, and the tour ends at the last saved version with its receipts',()=>{
+ const version={knowledge_id:'procedure.rent_increase_dispute',version:1,knowledge_sha256:hash('k'),family:'rent_increase_dispute',source_claim_id:'clm_2c55cdd816b1d0e8',qualification:{status:'qualified',definition_sha256:hash('d')}};
+ const uses=[{knowledge_id:version.knowledge_id,version:1,definition_sha256:hash('d'),claim_id:'clm_2c55cdd816b1d0e8',workflow_id:'w0'},{knowledge_id:version.knowledge_id,version:1,definition_sha256:hash('d'),claim_id:'clm_543f08f2415b2a33',workflow_id:'w1'},{knowledge_id:version.knowledge_id,version:1,definition_sha256:hash('d'),claim_id:'clm_7dbd7c7d1c4ddf90',workflow_id:'w2'}];
+ const event=(kind,claim_id,index)=>({event_id:hash(String(index)),kind,at:`2026-10-19T21:1${index}:00Z`,claim_id,claim_title:`Subject ${claim_id}`,knowledge_id:version.knowledge_id,version:1,knowledge_sha256:version.knowledge_sha256,definition_sha256:hash('d'),family:version.family,pin_status:'exact',projection_status:'qualified',...(kind==='knowledge.published'?{source_claim_id:claim_id,qualification:version.qualification}:{})});
+ const data={versions:[version],uses,quarantined:[],learning_replay:{contract:'casepath.knowledge-learning-replay/1.0.0',events:[event('knowledge.published','clm_2c55cdd816b1d0e8',1),event('knowledge.used','clm_2c55cdd816b1d0e8',2),event('knowledge.used','clm_543f08f2415b2a33',3),event('knowledge.used','clm_7dbd7c7d1c4ddf90',4)]}};
+ const publisher={claim_id:'clm_2c55cdd816b1d0e8',knowledge_published:[version],knowledge_uses:[uses[0]]};
+ assert.equal(ui.knowledgePayoff(publisher,data).label,'Rent increases · version 1 · reused by 2 later cases');
+ assert.equal(ui.knowledgePayoff(publisher,null).label,'Rent increases · version 1 · saved for reuse','without the recorded index no reuse count is stated');
+ const link=ui.knowledgePayoffMarkup(publisher,data);assert.match(link,/^<p class="au-knowledge-payoff" data-au-knowledge-payoff="published"><span class="au-now-label">Knowledge<\/span> <a href="#autonomous\/knowledge\?knowledge=procedure\.rent_increase_dispute&amp;version=1&amp;sha256=k{64}&amp;definition=d{64}">/);
+ const receiver={claim_id:'clm_543f08f2415b2a33',knowledge_published:[],knowledge_uses:[uses[1]]};
+ assert.equal(ui.knowledgePayoff(receiver,data).label,'Rent increases · version 1 · reused in this case');assert.match(ui.knowledgePayoffMarkup(receiver,data),/&amp;claim=clm_543f08f2415b2a33">/);
+ assert.equal(ui.knowledgePayoffMarkup({claim_id:'x',knowledge_published:[{...version,qualification:{status:'quarantined'}}],knowledge_uses:[]},data),'','an unqualified candidate is not presented as saved knowledge');
+ assert.equal(ui.resultReached({revision:4},{operations:{finished:true}}),true);assert.equal(ui.resultReached({revision:4},{operations:{finished:false}}),false);assert.equal(ui.resultReached({revision:4},{replay:{through_seq:3,current_revision:4}}),false);assert.equal(ui.resultReached({revision:4},{replay:{through_seq:4,current_revision:4}}),true);assert.equal(ui.resultReached({revision:4},{operations:{finished:true},inspectionIndex:2}),false);
+ const tour=ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id),payoff=ui.tourKnowledgePayoff(data,tour);
+ assert.deepEqual(payoff.pin,{knowledge_id:version.knowledge_id,version:1,knowledge_sha256:version.knowledge_sha256,definition_sha256:hash('d'),claim_id:'clm_7dbd7c7d1c4ddf90'},'the last later reuse in the tour opens with its receipts');
+ assert.equal(payoff.announcement,'Rent increases · version 1, saved from A blank reason field and a later market email, reused by 2 later cases.');
+ assert.equal(ui.tourKnowledgePayoff(data,['clm_other']),null,'a tour that saved or reused nothing has no knowledge destination');
+ assert.equal(ui.tourKnowledgePayoff(data,['clm_543f08f2415b2a33']).pin.claim_id,'clm_543f08f2415b2a33','a tour that only reused opens on its own reuse');
+});
+
+test('a writable Demonstration opens the recorded selected originals first, and Choose case appears only there',async t=>{
+ const routing=routingFixture(t,'#autonomous/demonstration'),f=dom(),catalog=demoCatalog({selected:9,reference:1}),first='clm_e262801f9368bc12';
+ const zero=claim_id=>({state:{claim_id,title:'Original',message:'Original message.',revision:0,state_sha256:sha(claim_id),status:'not_started',mode:'unprocessed',phase:'not_run',graph:null,evaluation:null,outcome:null,deferral:null,facts:[],obligations:[],actions:[],acquired_sources:[],source_descriptors:[]},projection:{revision:0,state_sha256:sha(claim_id)},events:[],cursor_sha256:null,mode:'replay',replay_only:true,through_seq:0,current_revision:0,current_state_sha256:sha(claim_id),current_event_sha256:null,provenance:{}});
+ const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:catalog,total:catalog.length}):path.match(/\/claims\/([^/]+)\/replay\?through_seq=0$/)?response(zero(path.match(/\/claims\/([^/]+)\//)[1])):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();await settle();
+ const replays=api.calls.filter(row=>row.path.includes('/replay?')).map(row=>row.path);
+ assert.ok(replays[0].includes(`/claims/${first}/replay?through_seq=0`),'the first replay read is the first selected original');
+ assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,0,'selected originals replay their journal; no reference check starts');
+ assert.match(routing.hash,new RegExp(`^#autonomous/claim/${first}\\?collection=selected&mode=replay`));
+ assert.doesNotMatch(f.host.innerHTML,/legacy/i);assert.equal(api.calls.filter(row=>row.init.method&&row.init.method!=='GET').length,0);
+ const settled=state({policy_id:REFERENCE_POLICY,status:'deferred',revision:41,outcome:{status:'deferred',assessment_status:'complete',summary:'Recorded result.',reference_provenance:{mode:'deterministic_reference',synthetic:true}}});
+ assert.doesNotMatch(ui.workMarkup(settled,{},null,[],'step',{},{mode:'saved'}),/Choose case/,'a case opened from Cases has no demonstration picker');
+ assert.match(ui.workMarkup(settled,{},null,[],'step',{},{mode:'replay',replay:{through_seq:41,current_revision:41}}),/data-au-inspect="demo"[^>]*>Choose case</);
+});
+
+test('a legacy collection link is accepted and shown by its provenance name',async t=>{
+ const routing=routingFixture(t,'#autonomous/demonstration?collection=legacy'),f=dom(),catalog=demoCatalog({selected:2});
+ const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:catalog,total:catalog.length}):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();await settle();
+ assert.doesNotMatch(routing.hash,/legacy/);assert.match(routing.hash,/collection=selected/);
+ assert.ok(api.calls.some(row=>row.path.includes(`/claims/${ui.DEMO_CASES[0].claim_id}/replay?through_seq=0`)),'the alias opens the selected originals');
+});
+
 test('selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends',async t=>{
  routingFixture(t,'#autonomous/demonstration');const native=operationOpeningFixture(),f=operationOpeningDOM(),head=deferredRead();
  const api=fakeApi({handle:async path=>path.includes('/snapshot?')?response(native.snapshot):path.endsWith('/replay?through_seq=0')?response(native.zero):path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(native.binding):null});
