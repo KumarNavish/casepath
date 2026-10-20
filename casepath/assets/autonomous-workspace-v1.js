@@ -60,16 +60,17 @@
   const selectedHistory = row => Boolean(row) && row.revision > 0 && !fixedRuleHistory(row);
   const referenceHistory = row => Boolean(row) && row.revision > 0 && (!row.policy_id || row.policy_id === REFERENCE_POLICY_ID);
   const collectionHistory = (collection, row) => demoCollection(collection) === 'selected' ? selectedHistory(row) : referenceHistory(row);
-  // The Demonstration plays the best verified set that exists and never mixes
-  // the two: selected originals with a recorded history first, otherwise the
-  // reference assessments. A row absent from a partial catalog is unknown, not
-  // unrun, so it stays in the reference fallback; an all-zero catalog has none.
+  // The Demonstration plays one roster and never mixes the two: the reference
+  // assessments first, so a cold entry, the Cases markers and a later click
+  // agree; selected originals with a recorded history only when no reference
+  // case is available. A row absent from a partial catalog is unknown, not
+  // unrun, so it stays in the reference roster; an all-zero catalog has none.
   function demoRoster(catalogRows) {
     const rows = list(catalogRows), at = id => rows.find(row => row?.claim_id === id);
-    const selected = DEMO_CASES.filter(row => selectedHistory(at(row.claim_id)));
-    if (selected.length) return {collection:'selected',cases:selected};
     const reference = REFERENCE_DEMO_CASES.filter(row => !at(row.claim_id) || referenceHistory(at(row.claim_id)));
-    return reference.length ? {collection:'reference',cases:reference} : {collection:null,cases:[]};
+    if (reference.length) return {collection:'reference',cases:reference};
+    const selected = DEMO_CASES.filter(row => selectedHistory(at(row.claim_id)));
+    return selected.length ? {collection:'selected',cases:selected} : {collection:null,cases:[]};
   }
   // An explicitly chosen collection drops only cases known to lack its kind of
   // history. With none known, its fixed order opens and states what is missing.

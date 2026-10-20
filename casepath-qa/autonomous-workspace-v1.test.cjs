@@ -2164,10 +2164,15 @@ function demoCatalog({selected=0,reference=0}={}) {
  }),{claim_id:'clm_other',title:'Another original',origin:'canonical_original',status:'not_started',revision:0}];
 }
 
-test('the Demonstration roster prefers recorded selected originals, then reference assessments, and never mixes them',()=>{
+test('the Demonstration roster prefers the reference assessments, falls back to recorded selected originals, and never mixes them',()=>{
  const ids=rows=>rows.cases.map(row=>row.claim_id);
- const both=ui.demoRoster(demoCatalog({selected:9,reference:1}));assert.equal(both.collection,'selected');assert.deepEqual(ids(both),ui.DEMO_CASES.map(row=>row.claim_id));assert.equal(both.cases[0].claim_id,'clm_e262801f9368bc12');
- const partial=ui.demoRoster(demoCatalog({selected:3,reference:1}));assert.equal(partial.collection,'selected');assert.deepEqual(ids(partial),ui.DEMO_CASES.slice(0,3).map(row=>row.claim_id),'a partial recording plays only the selected cases with histories, in selection order');
+ // The recorded live shape: eight selected model histories beside nine reference assessments.
+ const live=demoCatalog({selected:9,reference:1}).map(row=>row.claim_id==='clm_7dbd7c7d1c4ddf90'?{...row,revision:41,policy_id:REFERENCE_POLICY}:row);
+ const both=ui.demoRoster(live);assert.equal(both.collection,'reference','selected histories never displace the reference roster');assert.deepEqual(ids(both),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id));
+ assert.deepEqual(ids(ui.demoRoster(demoCatalog({selected:3,reference:1}))),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id));
+ const marked=ui.claimsMarkup(live);assert.match(marked,new RegExp(`data-au-claim-row="${ui.REFERENCE_DEMO_CASES[0].claim_id}"[\\s\\S]*?In demonstration · 01<`),'the Cases markers name the roster a cold entry plays');const row=id=>marked.split(`data-au-claim-row="${id}"`)[1].split('data-au-claim-row=')[0];assert.ok(ui.DEMO_CASES.filter(item=>!ui.REFERENCE_DEMO_CASES.some(other=>other.claim_id===item.claim_id)).every(item=>!row(item.claim_id).includes('In demonstration')),'no selected-only case is marked');
+ const fallback=ui.demoRoster(demoCatalog({selected:9}));assert.equal(fallback.collection,'selected');assert.deepEqual(ids(fallback),ui.DEMO_CASES.map(row=>row.claim_id));assert.equal(fallback.cases[0].claim_id,'clm_e262801f9368bc12');
+ const partial=ui.demoRoster(demoCatalog({selected:3}));assert.equal(partial.collection,'selected');assert.deepEqual(ids(partial),ui.DEMO_CASES.slice(0,3).map(row=>row.claim_id),'without a reference case a partial recording plays only the selected cases with histories, in selection order');
  const reference=ui.demoRoster(demoCatalog({reference:1}));assert.equal(reference.collection,'reference');assert.deepEqual(ids(reference),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id));
  assert.ok(!reference.cases.some(row=>ui.DEMO_CASES.includes(row)),'the reference sequence carries no selected roster row');
  const shared='clm_7dbd7c7d1c4ddf90';assert.ok(ui.DEMO_CASES.some(row=>row.claim_id===shared)&&ui.REFERENCE_DEMO_CASES.some(row=>row.claim_id===shared));
@@ -2248,8 +2253,8 @@ test('a case result links the knowledge it saved or reused, and the tour ends at
  assert.equal(ui.tourKnowledgePayoff(data,['clm_543f08f2415b2a33']).pin.claim_id,'clm_543f08f2415b2a33','a tour that only reused opens on its own reuse');
 });
 
-test('a writable Demonstration opens the recorded selected originals first, and Choose case appears only there',async t=>{
- const routing=routingFixture(t,'#autonomous/demonstration'),f=dom(),catalog=demoCatalog({selected:9,reference:1}),first='clm_e262801f9368bc12';
+test('a writable Demonstration without a reference case opens the recorded selected originals, and Choose case appears only there',async t=>{
+ const routing=routingFixture(t,'#autonomous/demonstration'),f=dom(),catalog=demoCatalog({selected:9}),first='clm_e262801f9368bc12';
  const zero=claim_id=>({state:{claim_id,title:'Original',message:'Original message.',revision:0,state_sha256:sha(claim_id),status:'not_started',mode:'unprocessed',phase:'not_run',graph:null,evaluation:null,outcome:null,deferral:null,facts:[],obligations:[],actions:[],acquired_sources:[],source_descriptors:[]},projection:{revision:0,state_sha256:sha(claim_id)},events:[],cursor_sha256:null,mode:'replay',replay_only:true,through_seq:0,current_revision:0,current_state_sha256:sha(claim_id),current_event_sha256:null,provenance:{}});
  const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:catalog,total:catalog.length}):path.match(/\/claims\/([^/]+)\/replay\?through_seq=0$/)?response(zero(path.match(/\/claims\/([^/]+)\//)[1])):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();await settle();
