@@ -2756,8 +2756,8 @@
     function focusTarget(token) {
       if (!token) return null;
       if (token.disclosure) return [...host.querySelectorAll('[data-au-disclosure]')].find(el => el.dataset.auDisclosure === token.disclosure && focusEligible(el.querySelector('summary'),token))?.querySelector('summary');
-      // Pause and Resume are one toggle; focus follows it across the swap.
-      if (['data-au-demo-stop','data-au-demo-resume'].includes(token.attr)) return [...host.querySelectorAll('[data-au-demo-stop],[data-au-demo-resume]')][0];
+      // Pause and Resume are one toggle; focus follows it across the swap, and to Skip when a stop removes it.
+      if (['data-au-demo-stop','data-au-demo-resume'].includes(token.attr)) return [...host.querySelectorAll('[data-au-demo-stop],[data-au-demo-resume]')][0] || [...host.querySelectorAll('[data-au-demo-skip]')][0];
       const found = [...host.querySelectorAll(`[${token.attr}]`)].find(el => el.getAttribute(token.attr) === token.value && el.getAttribute('data-au-record-id') === (token.recordId ?? null) && el.getAttribute('data-au-citation') === token.citation && el.getAttribute('data-au-source-origin') === token.origin && (el.getAttribute('data-au-obligation-select') || el.getAttribute('data-au-select-obligation')) === token.obligation && el.getAttribute('data-au-version') === token.version && el.getAttribute('data-au-knowledge-sha') === token.knowledgeSha && el.getAttribute('data-au-definition-sha') === token.definitionSha && focusEligible(el,token));
       if (found || !['data-au-fact-select','data-au-document-select'].includes(token.attr)) return found;
       // A chosen subject becomes the current line without a control; focus stays on that line.
@@ -3857,7 +3857,7 @@
               presentationOpening(session,next.claim_id);
               if (!session.skipCase && !await operationOutcomeHold(session,token)) return;
               if (!advancing()) { stopPresentation(); renderClaim(); primeClaimReads(token); return; }
-              session.skip = false; session.skipCase = false;
+              session.skipAdvance = session.skipCase; session.skip = false; session.skipCase = false;
               session.operationStarted = false; session.operationOpeningAnchor = null; session.previousAttempts = []; session.useRecorded = session.operations === 'recorded'; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null; session.verifiedHeadState = null; session.verifiedJournal = null; session.operationBinding = null; session.plannedProcess = null;
               await openPresentationCase(session,true,session.index+1); return;
             }
@@ -4015,7 +4015,9 @@
       }
       if (session.verifiedOpening?.operationPreparation?.recorded) { session.operations = 'recorded'; session.useRecorded = true; }
       if (session.nextOperationOpening?.id === id) session.nextOperationOpening = null;
-      session.index = index; session.claimId = id; session.startAttempted = false;
+      // A Skip while a finished case hands over reaches the case Next names; only a Skip that caused this advance skips that case too.
+      if (session.skipCase && !session.skipAdvance) session.skip = session.skipCase = false;
+      session.skipAdvance = false; session.index = index; session.claimId = id; session.startAttempted = false;
       if (session.cases && tour?.cases === session.cases) tour.index = index;
       await openClaim(id,writeHistory,{mode:session.mode === 'operations' ? 'replay' : session.mode,collection:session.collection || 'reference',operations:session.operations,through:0,detail:'step',demo:true});
       if (demoSession !== session || !current || disposed || pendingRoute()) return;

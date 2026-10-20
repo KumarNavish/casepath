@@ -2236,7 +2236,10 @@ test('the playing roster has one transport row with position, domain, Pause, Ski
 test('the transport row never clips a focus ring and the cited-span underline is a visible boundary',()=>{
  const css=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/autonomous-workspace-v1.css'),'utf8');
  const rule=selector=>css.match(new RegExp(`${selector.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')} \\{([^}]*)\\}`))[1];
- assert.doesNotMatch(rule('.au-workspace .au-quiet-claim > .au-demo-transport'),/overflow\s*:\s*hidden/,'the 3px outline at a 3px offset falls outside the 2px row padding');
+ assert.doesNotMatch(rule('.au-workspace .au-quiet-claim > .au-demo-transport'),/overflow\s*:\s*hidden/);
+ // Stuck under the header with the Now row below, only the control's own box stays uncovered, so the ring is drawn inside it.
+ const ring=Number(rule('.au-workspace :is(button,a,input,select,textarea,summary,[tabindex]):focus-visible').match(/outline:(\d+)px/)[1]),offset=Number(rule('.au-workspace .au-demo-control:focus-visible').match(/outline-offset:(-?\d+)px/)[1]);
+ assert.ok(ring+offset<=0,`a ${ring}px ring at offset ${offset}px stays inside the transport control`);
  for(const clipped of ['.au-workspace .au-demo-domain','.au-workspace .au-demo-next'])assert.match(rule(clipped),/overflow:hidden; text-overflow:ellipsis/,'only the text spans clip');
  const luminance=hex=>{const [r,g,b]=[0,2,4].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(c=>c<=.03928?c/12.92:((c+.055)/1.055)**2.4);return .2126*r+.7152*g+.0722*b;};
  const contrast=(a,b)=>{const [low,high]=[luminance(a),luminance(b)].sort((x,y)=>x-y);return (high+.05)/(low+.05);};
@@ -2780,6 +2783,22 @@ test('a second Skip while the next case is preparing skips that case instead of 
  await waitFor(tour.nextShown);assert.doesNotMatch(tour.f.status.textContent,/stopped|unavailable/);
 });
 
+test('one Skip while a naturally advanced case opens plays that case instead of skipping past it',async t=>{
+ const f=operationOpeningDOM(),first=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[0].claim_id,1),next=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[1].claim_id,1),third=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[2].claim_id),opening=deferredRead(),future=deferredRead(),timers=[];
+ let elapsed=0;const now=Date.now.bind(Date);t.mock.method(Date,'now',()=>now()+elapsed);
+ const timeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===8000){const handle=timeout(()=>{},60000);timers.push({fn,handle});return handle;}return timeout(fn,ms,...args);};
+ const api=fakeApi({handle:async path=>{for(const [row,zero] of [[first,()=>response(first.zero)],[next,()=>opening.promise]])if(path.includes(row.id)){if(path.includes('/snapshot?'))return response(row.snapshot);if(path.endsWith('/replay?through_seq=0'))return zero();if(path.includes('/operations?'))return new Response(row.body);}if(path.includes(third.id)){if(path.includes('/snapshot?'))return response(third.snapshot);if(path.includes('/operations?'))return pendingOperationResponse(third.binding);if(path.endsWith('/replay?through_seq=0'))return response(third.zero);}if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;}});
+ const controller=ui.mount(f.container,{fetch:api.fetch});
+ t.after(async()=>{controller.destroy();opening.resolve(response(next.zero));future.resolve(response({}));for(const timer of timers)clearTimeout(timer.handle);globalThis.setTimeout=timeout;await settle();});
+ await settle();await controller.showDemonstration();await waitFor(()=>timers.length===1);
+ elapsed+=8000;clearTimeout(timers[0].handle);timers[0].fn();await settle();await settle();
+ assert.match(f.host.innerHTML,/data-au-demo-position="1"/,'the next case is still opening');
+ f.listeners.get('click')({target:control(f,'data-au-demo-skip')});await settle();opening.resolve(response(next.zero));
+ await waitFor(()=>timers.length===2);
+ assert.match(f.host.innerHTML,/data-au-demo-position="2"/,'the case Next named plays and holds its result');
+ assert.ok(!f.host.innerHTML.includes(`data-au-planned-process="${third.head.state_sha256}"`));
+});
+
 test('Skip after Pause during a result hold advances at once without a fresh hold',async t=>{
  const tour=tourSkipFixture(t);
  await settle();await tour.controller.showDemonstration();await waitFor(()=>tour.timers.length===1);
@@ -2801,15 +2820,16 @@ test('Skip in a Saved history tour keeps saved replay for the next case',async t
 test('reduced motion stops a replay tour at each recorded result and Skip advances',async t=>{
  t.mock.timers.enable({apis:['setTimeout']});
  const originalMatch=globalThis.matchMedia;globalThis.matchMedia=query=>({matches:query==='(prefers-reduced-motion: reduce)',addEventListener(){},removeEventListener(){}});t.after(()=>{globalThis.matchMedia=originalMatch;});
- const f=dom(),id=ui.DEMO_CASES[0].claim_id,next=ui.DEMO_CASES[1].claim_id;
+ const f=dom(),focus=focusHarness(f),id=ui.DEMO_CASES[0].claim_id,next=ui.DEMO_CASES[1].claim_id;
  const zero=claim_id=>({claim_id,title:'Original source packet',message:'Original customer message.',revision:0,state_sha256:sha(`${claim_id}:0`),status:'not_started',mode:'unprocessed',phase:'not_run',graph:null,evaluation:null,outcome:null,deferral:null,facts:[],obligations:[],actions:[],acquired_sources:[],source_descriptors:[]});
  const head=state({claim_id:id,title:'Original source packet',revision:1,state_sha256:sha(`${id}:1`),last_event_sha256:sha('event:1'),graph:{...state().graph,claim_id:id},status:'deferred',phase:'deferred',outcome:{status:'deferred',summary:'The supplied source leaves a question unresolved.',missing_evidence:[],unresolved_facts:[]},actions:[]});
  const envelope=(claim_id,seq)=>{const s=claim_id===id&&seq?head:zero(claim_id),current_revision=claim_id===id?1:0;return {state:s,projection:{revision:seq,state_sha256:s.state_sha256},events:seq?[{seq:1,kind:'outcome.recorded',revision:1,state_sha256:s.state_sha256,event_sha256:sha('event:1'),payload:{}}]:[],cursor_sha256:seq?sha('event:1'):null,mode:'replay',replay_only:true,through_seq:seq,current_revision,current_state_sha256:current_revision?head.state_sha256:s.state_sha256,current_event_sha256:current_revision?sha('event:1'):null,provenance:seq?{event_sha256:sha('event:1')}:{}};};
  const api=fakeApi({handle:async path=>{if(path.endsWith('/claims'))return response({claims:[{...head,origin:'canonical_original'}]});const replay=path.match(/\/claims\/([^/]+)\/replay\?through_seq=(\d+)$/);if(replay)return response(envelope(replay[1],Number(replay[2])));}});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
- await controller.showDemonstration(true,'legacy');
+ await controller.showDemonstration(true,'legacy');focus.active=focus.find('[data-au-demo-stop]');
  for(let tick=0;tick<4;tick++){t.mock.timers.tick(4100);await settle();}
  assert.match(f.host.innerHTML,new RegExp(`data-au-revision="1" data-au-state-sha="${head.state_sha256}"`));
+ assert.doesNotMatch(f.host.innerHTML,/data-au-demo-(?:stop|resume)/);assert.ok(f.host.contains(focus.active)&&focus.active.hasAttribute('data-au-demo-skip'),'focus on the removed Pause moves to Skip');
  const reads=()=>api.calls.filter(call=>call.path.includes(`/claims/${next}/replay?`)).length;
  assert.equal(reads(),0,'reduced motion never opens the next case on its own');
  f.listeners.get('click')({target:control(f,'data-au-demo-skip')});await settle();await settle();

@@ -1089,6 +1089,7 @@ html[data-autonomous-workspace=true] { scroll-padding-top:100px; }
 .au-workspace .au-demo-next { flex:1 1 0; min-width:0; overflow:hidden; text-overflow:ellipsis; }
 .au-workspace .au-demo-control { min-height:36px; padding:4px 2px; border:0; background:transparent; color:var(--au-ink); text-decoration:underline; text-underline-offset:4px; }
 .au-workspace .au-demo-control:hover { color:var(--au-accent); }
+.au-workspace .au-demo-control:focus-visible { outline-offset:-3px; }
 .au-workspace .au-quiet-claim > .au-demo-transport ~ .au-now:not(.au-last) { top:calc(var(--au-header-height,64px) + var(--au-transport-height,0px)); }
 .au-workspace .au-quiet-claim:has(> .au-demo-transport) :is(button,a,summary,[tabindex]) { scroll-margin-top:calc(var(--au-header-height,64px) + var(--au-transport-height,0px) + var(--au-now-height,0px) + 20px); }
 .au-workspace .au-knowledge-payoff { margin:0 0 10px; font-size:16px; line-height:1.45; }
