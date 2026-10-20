@@ -49,7 +49,7 @@ def test_intake_api_headers_idempotency_saved_events_and_source_readback(tmp_pat
     service.shutdown()
 
 
-def test_collection_search_reads_full_messages_files_and_language_names_without_exposing_them(tmp_path):
+def test_collection_search_reads_full_messages_files_and_row_labels_without_exposing_them(tmp_path):
     from casepath_api.autonomous_corpus_v1 import CanonicalCorpus
     corpus = CanonicalCorpus()
     store = AutonomousStore(tmp_path / 'claims.sqlite3')
@@ -69,7 +69,24 @@ def test_collection_search_reads_full_messages_files_and_language_names_without_
         attached = {r['claim_id'] for r in everything if r['attachment_count']}
         assert len(attached) == 45 and ids('pdf') | ids('jpeg') == attached
         assert len(ids('German')) == 75 and ids('German') == {r['claim_id'] for r in everything if r['language'] == 'de-CH'}
-        assert ids('Swiss Standard German') == ids('German') and len(ids('English')) == 75
+        assert len(ids('English')) == 75
+        # Only words a row shows are searchable labels: no extra language name
+        # and no raw media type can match every German or every attached case.
+        for hidden in ('Swiss', 'standard', 'image', 'application', 'application/pdf', 'image/jpeg', 'de-CH'):
+            assert ids(hidden) == set(), hidden
+        rows = lambda query: {r['claim_id']: r for r in client.get(prefix + '/claims', params={'q': query, 'limit': 500}).json()['claims']}
+        # A match the row cannot show carries a short hint: the passage of the
+        # full message, or the attached file name. Visible matches carry none.
+        hinted = rows('vacant possession')['clm_5a25bfdab3e98a61']['search_match']
+        assert hinted['field'] == 'message' and 'vacant' in hinted['text'].casefold() and len(hinted['text']) < 200
+        assert hinted['text'].strip('…') in ' '.join(corpus.preview_state('clm_5a25bfdab3e98a61')['message'].split())
+        named = rows('Kuendigung_September')
+        assert named and all(r['search_match'] == {'field': 'file_name', 'text': next(
+            a['file_name'] for a in corpus.preview_state(cid)['original_binding']['intake']['attachments']
+            if 'kuendigung_september' in a['file_name'].casefold())} for cid, r in named.items())
+        assert not any('search_match' in r for r in rows('pdf').values())
+        assert not any('search_match' in r for r in rows('German').values())
+        assert not any('search_match' in r for r in everything)
         for query in ('', 'vacant possession', 'pdf', 'German'):
             for result in client.get(prefix + '/claims', params={'q': query, 'limit': 500}).json()['claims']:
                 assert 'search_text' not in result
@@ -77,8 +94,9 @@ def test_collection_search_reads_full_messages_files_and_language_names_without_
                     a['media_type'] for a in corpus.preview_state(result['claim_id'])['original_binding']['intake']['attachments']]
         for cid in corpus.ids:
             state = corpus.preview_state(cid)
-            assert not {'search_text', 'attachment_media_types'}.intersection(state)
+            assert not {'search_text', 'search_match', 'attachment_media_types'}.intersection(state)
             snapshot = client.get(f'{prefix}/claims/{cid}/snapshot').json()
-            assert snapshot['state']['state_sha256'] == state['state_sha256'] and 'search_text' not in snapshot['state']
+            assert snapshot['state']['state_sha256'] == state['state_sha256']
+            assert not {'search_text', 'search_match'}.intersection(snapshot['state'])
         assert store.list() == []
     service.shutdown()

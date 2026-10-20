@@ -30,8 +30,25 @@ _SUBMISSION_FIELDS = frozenset({"canton", "channel", "claim_id", "language", "re
 _MESSAGE_FIELDS = frozenset({
     "attachment_ids", "body", "from_role", "message_id", "raw_file", "sent_at", "subject", "to_role",
 })
-# Readable names for the recorded submission language, searchable only.
-_LANGUAGE_NAMES = {"en": ("English",), "de-CH": ("German", "Swiss Standard German")}
+# Searchable words are the ones a collection row shows: its language and file
+# type labels (autonomous-language-v1.js caseFacts), never a raw media type or
+# an extra language name the row cannot explain.
+_LANGUAGE_LABELS = {"en": "English", "de-CH": "German"}
+_MEDIA_TYPE_LABELS = {"application/pdf": "PDF", "image/jpeg": "JPEG", "image/png": "PNG", "image/heic": "HEIC"}
+_PREVIEW_CHARS = 240
+
+
+def _passage(body, start, end, before=60, after=90):
+    """A short word-bounded passage around one match, whitespace collapsed."""
+    left, right = max(0, start - before), min(len(body), end + after)
+    if left > 0:
+        space = re.search(r"\s", body[left:start])
+        left = left + space.end() if space else left
+    if right < len(body):
+        spaces = [m.start() for m in re.finditer(r"\s", body[end:right])]
+        right = end + spaces[-1] if spaces else right
+    text = " ".join(body[left:right].split())
+    return ("…" if left > 0 else "") + text + ("…" if right < len(body) else "")
 
 
 def _seal(value, key):
@@ -75,6 +92,7 @@ class CanonicalCorpus:
         if len(self._ids) != 150 or any(not _CLAIM_ID.fullmatch(cid) for cid in self._ids):
             raise WorkspaceCorpusError("canonical original claim identities differ")
         self._states, self._sources, self._summaries, self._search = {}, {}, [], {}
+        self._search_shown, self._search_sources = {}, {}
         # The existing reader is a pure extraction cache. Deliberately avoid its
         # constructor, which creates journal/source directories for a real store.
         self._reader = AutonomousStore.__new__(AutonomousStore)
@@ -189,13 +207,17 @@ class CanonicalCorpus:
             "attachment_media_types": [row["media_type"] for row in original_files[1:]],
         })
         # Browsing text only: the full original message, the attached file
-        # names and media types, and readable language names. It is held
+        # names and the type and language labels the row shows. It is held
         # beside the state, never inside it, a binding or an engine packet.
-        self._search[claim_id] = "\n".join([
-            message["body"],
-            *(f"{row['file_name']} {row['media_type']}" for row in original_files[1:]),
-            *_LANGUAGE_NAMES.get(submission["language"], ()),
-        ])
+        labels = [_MEDIA_TYPE_LABELS[row["media_type"]] for row in original_files[1:]
+                  if row["media_type"] in _MEDIA_TYPE_LABELS]
+        if submission["language"] in _LANGUAGE_LABELS:
+            labels.append(_LANGUAGE_LABELS[submission["language"]])
+        file_names = tuple(row["file_name"] for row in original_files[1:])
+        self._search[claim_id] = "\n".join([message["body"], *file_names, *labels])
+        self._search_shown[claim_id] = "\n".join(
+            [message["subject"], message["body"][:_PREVIEW_CHARS], submission["channel"], *labels]).casefold()
+        self._search_sources[claim_id] = (message["body"], file_names)
 
     def preview_state(self, claim_id):
         self._require(claim_id)
@@ -210,6 +232,38 @@ class CanonicalCorpus:
         """Every original's search text under one identity check, for one query."""
         self._guard()
         return dict(self._search)
+
+    def search_hints(self, claim_ids, terms):
+        """Where a match the row cannot show was found, for one browsing query.
+
+        For each original, the first term that is not already visible in the
+        row's title, excerpt or labels yields a short passage of the full
+        original message, or the attached file name that matched. Rows with
+        nothing hidden are left out. Browsing only: a hint never enters
+        state, a binding or an engine packet.
+        """
+        self._guard()
+        hints = {}
+        for claim_id in claim_ids:
+            if claim_id not in self._search_sources:
+                continue
+            body, file_names = self._search_sources[claim_id]
+            for term in terms:
+                folded = term.casefold()
+                if not folded or folded in self._search_shown[claim_id]:
+                    continue
+                match = re.search(re.escape(term), body, re.IGNORECASE)
+                name = next((name for name in file_names if folded in name.casefold()), None)
+                if match:
+                    hints[claim_id] = {"field": "message", "text": _passage(body, match.start(), match.end())}
+                elif folded in body.casefold():
+                    hints[claim_id] = {"field": "message", "text": None}
+                elif name is not None:
+                    hints[claim_id] = {"field": "file_name", "text": name}
+                else:
+                    continue
+                break
+        return hints
 
     def summary_rows(self):
         self._guard()
