@@ -11,6 +11,7 @@ const {execFileSync} = require('node:child_process');
 const {chromium} = require('playwright');
 
 const root = path.resolve(__dirname, '..');
+const language = require(path.resolve(process.env.CASEPATH_BROWSER_LANGUAGE_ASSET || path.join(root, 'casepath/assets/autonomous-language-v1.js')));
 const executablePath = process.env.PLAYWRIGHT_EXECUTABLE_PATH || (fs.existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : undefined);
 const python = process.env.CASEPATH_PYTHON || path.join(root, '.runtime/casepath-dev-v2/venv/bin/python');
 const base = '/api/claim-loops/v1/autonomous';
@@ -2683,11 +2684,13 @@ function assertAcceptedPaint(paint,prefix,message='the visible accepted prefix r
   for(const row of paint.documents){const obligation=state.obligations.find(item=>item.obligation_id===row.id),document=state.evaluation?.documents.find(item=>item.document_type===row.type);assert.ok(obligation,message);assert.equal(row.type,obligation.document_type,message);assert.equal(row.status,document?.route_state||obligation.status||'pending',message);if(row.review)assert.equal(row.review,document?.review_state,message);}
   for(const row of paint.facts){const fact=state.facts.find(item=>item.fact_id===row.id);assert.ok(fact,message);if(row.status)assert.equal(row.status,fact.verdict||fact.status,message);}
   for(const identity of paint.sources)assert.ok(state.source_descriptors.some(row=>identity===`${state.claim_id}:${row.artifact_id}:${row.sha256}:${state.acquired_sources.find(source=>source.artifact_id===row.artifact_id)?.text_sha256||''}`),message);
-  // The recorded-first outcome links its own accepted citation beside the recorded issue.
+  // The outcome links its own accepted citation beside the recorded issue, shown or under Recorded wording.
   const citations=state.facts.flatMap(row=>row.citations||[]).concat(state.actions.flatMap(row=>(row.result||row).citations||[]),state.outcome?.citations||[]);
   for(const citation of paint.citations){assert.ok(citations.some(row=>canonical(row)===canonical(citation)),message);assert.equal(citation.sha256,state.source_descriptors.find(row=>row.artifact_id===citation.artifact_id)?.sha256,message);}
   for(const pin of paint.knowledge)assert.ok([...state.knowledge_uses,...state.knowledge_published].some(row=>(row.knowledge_id||row.version_id)===pin.id&&String(row.version||row.version_id)===pin.version&&(row.knowledge_sha256||'')===pin.sha256),message);
-  assert.equal(paint.outcome,paint.panel==='step'?state.outcome?.summary||null:null,message);
+  // Only a fixed-rule outcome leads with its recorded sentence; a model outcome leads with the templated summary.
+  const shown=state.outcome&&language.outcomePresentation(state),fixedRule=state.outcome?.reference_provenance?.mode==='deterministic_reference'&&shown.recorded.summary;
+  assert.equal(paint.outcome,paint.panel==='step'&&state.outcome?(fixedRule?state.outcome.summary:shown.summary||shown.label):null,message);
 }
 const currentReadState = page => page.locator('[data-au-view]').getAttribute('data-au-read-state');
 
