@@ -2233,6 +2233,17 @@ test('the playing roster has one transport row with position, domain, Pause, Ski
  assert.equal(ui.demoTransportMarkup({collection:'reference',cases:[],index:0}),'');
 });
 
+test('the transport row never clips a focus ring and the cited-span underline is a visible boundary',()=>{
+ const css=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/autonomous-workspace-v1.css'),'utf8');
+ const rule=selector=>css.match(new RegExp(`${selector.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')} \\{([^}]*)\\}`))[1];
+ assert.doesNotMatch(rule('.au-workspace .au-quiet-claim > .au-demo-transport'),/overflow\s*:\s*hidden/,'the 3px outline at a 3px offset falls outside the 2px row padding');
+ for(const clipped of ['.au-workspace .au-demo-domain','.au-workspace .au-demo-next'])assert.match(rule(clipped),/overflow:hidden; text-overflow:ellipsis/,'only the text spans clip');
+ const luminance=hex=>{const [r,g,b]=[0,2,4].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(c=>c<=.03928?c/12.92:((c+.055)/1.055)**2.4);return .2126*r+.7152*g+.0722*b;};
+ const contrast=(a,b)=>{const [low,high]=[luminance(a),luminance(b)].sort((x,y)=>x-y);return (high+.05)/(low+.05);};
+ const underline=rule('.au-workspace .au-record-cited').match(/text-decoration-color:#([0-9a-f]{6})/)[1];
+ assert.ok(contrast(underline,'eff1ec')>=3,`the cited-span underline #${underline} needs 3:1 on the passage field`);
+});
+
 test('a case result links the knowledge it saved or reused, and the tour ends at the last saved version with its receipts',()=>{
  const version={knowledge_id:'procedure.rent_increase_dispute',version:1,knowledge_sha256:hash('k'),family:'rent_increase_dispute',source_claim_id:'clm_2c55cdd816b1d0e8',qualification:{status:'qualified',definition_sha256:hash('d')}};
  const uses=[{knowledge_id:version.knowledge_id,version:1,definition_sha256:hash('d'),claim_id:'clm_2c55cdd816b1d0e8',workflow_id:'w0'},{knowledge_id:version.knowledge_id,version:1,definition_sha256:hash('d'),claim_id:'clm_543f08f2415b2a33',workflow_id:'w1'},{knowledge_id:version.knowledge_id,version:1,definition_sha256:hash('d'),claim_id:'clm_7dbd7c7d1c4ddf90',workflow_id:'w2'}];
@@ -2818,6 +2829,62 @@ test('Skip on the last case tells a failed Knowledge read apart from an index wi
    else {assert.equal(f.status.textContent,'Demonstration finished. These cases saved or reused no knowledge.');assert.doesNotMatch(html,/Open Knowledge/);}
   } finally {controller.destroy();future.resolve(response({}));await settle();}
  }
+});
+
+// Elements parsed from the host's current markup, so focus restoration can be
+// checked after a real re-render. A replaced render detaches older elements.
+function focusHarness(f) {
+ const doc=f.container.ownerDocument,base=f.host.querySelectorAll;
+ const parse=html=>[...html.matchAll(/<([a-z][\w-]*)((?:\s+[\w-]+(?:="[^"]*")?)*)\s*>/g)].map(match=>{
+  const attrs=Object.fromEntries([...match[2].matchAll(/([\w-]+)(?:="([^"]*)")?/g)].map(([,name,value=''])=>[name,value]));
+  const dataset=Object.fromEntries(Object.entries(attrs).filter(([name])=>name.startsWith('data-')).map(([name,value])=>[name.slice(5).replace(/-([a-z])/g,(_,c)=>c.toUpperCase()),value]));
+  return {tag:match[1],attrs,dataset,source:html,isConnected:true,hasAttribute:name=>name in attrs,getAttribute:name=>name in attrs?attrs[name]:null,matches:()=>false,closest(selector){return selector==='button,[data-au-nav]'?this:null;},querySelector:()=>null,focus(){doc.activeElement=this;}};
+ });
+ const matches=(element,selector)=>selector.split(',').some(part=>{const parsed=part.trim().match(/^(\.[\w-]+)?((?:\[[\w-]+(?:="[^"]*")?\])*)$/);if(!parsed)return false;if(parsed[1]&&!` ${element.attrs.class||''} `.includes(` ${parsed[1].slice(1)} `))return false;return [...parsed[2].matchAll(/\[([\w-]+)(?:="([^"]*)")?\]/g)].every(([,name,value])=>name in element.attrs&&(value===undefined||element.attrs[name]===value));});
+ f.host.contains=element=>element?.source===f.host.innerHTML;
+ f.host.querySelectorAll=selector=>{const found=parse(f.host.innerHTML).filter(element=>matches(element,selector));return found.length?found:base(selector);};
+ return {find:selector=>parse(f.host.innerHTML).find(element=>matches(element,selector)),click:element=>f.listeners.get('click')({target:element}),get active(){return doc.activeElement;},set active(element){doc.activeElement=element;}};
+}
+
+test('Pause, Resume and Skip in the tour transport keep keyboard focus on the transport',async t=>{
+ const tour=tourSkipFixture(t),focus=focusHarness(tour.f);
+ await settle();await tour.controller.showDemonstration();await waitFor(()=>tour.timers.length===1);
+ focus.active=focus.find('[data-au-demo-stop]');focus.click(focus.active);
+ assert.ok(focus.active.hasAttribute('data-au-demo-resume')&&tour.f.host.contains(focus.active),'focus follows Pause to Resume');
+ focus.click(focus.active);assert.ok(focus.active.hasAttribute('data-au-demo-stop')&&tour.f.host.contains(focus.active),'focus follows Resume back to Pause');
+ const skip=focus.find('[data-au-demo-skip]');focus.active=skip;focus.click(skip);
+ assert.ok(focus.active!==skip&&focus.active.hasAttribute('data-au-demo-skip')&&tour.f.host.contains(focus.active),'focus stays on Skip after the re-render');
+});
+
+test('when the transport leaves at the end of a tour, focus held there moves to the case title',async t=>{
+ const last=operationOpeningFixture(ui.REFERENCE_DEMO_CASES.at(-1).claim_id),f=operationOpeningDOM(),future=deferredRead(),focus=focusHarness(f);
+ const api=fakeApi({handle:async path=>{if(path.includes(last.id)){if(path.endsWith('/replay?through_seq=0'))return response(last.zero);if(path.includes('/snapshot?'))return response(last.snapshot);if(path.endsWith('/replay?through_seq=4'))return response(last.replay);}if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;}});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(async()=>{controller.destroy();future.resolve(response({}));await settle();});await settle();
+ const choice=control(f,'data-au-demo-case',last.id);Object.assign(choice.dataset,{auDemoCollection:'reference',auDemoSaved:'true'});f.listeners.get('click')({target:choice});
+ await waitFor(()=>f.host.innerHTML.includes(last.zero.state.state_sha256)&&f.host.innerHTML.includes('data-au-demo-skip'));
+ focus.active=focus.find('[data-au-demo-skip]');focus.click(focus.active);
+ await waitFor(()=>/^Demonstration finished/.test(f.status.textContent));
+ assert.doesNotMatch(f.host.innerHTML,/data-au-demo-skip/);assert.equal(focus.active,f.host.querySelector('h1'),'focus lands on the case title, not the page body');
+});
+
+test('choosing a subject line keeps focus on that line once it becomes the current subject',async t=>{
+ const saved=savedHistory(),f=dom(),focus=focusHarness(f),api=fakeApi({handle:async path=>path.includes('/events?')?response(events(saved)):path.endsWith(`/claims/${saved.claim_id}`)?response(saved):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ await controller.openClaim(saved.claim_id,true,{node:'lt_arrears',detail:'step'});await settle();
+ const choice=focus.find('.au-subject-select[data-au-fact-select="fact:payment_deadline_letter"]');assert.ok(choice,'a subject line other than the current one is a control');
+ focus.active=choice;focus.click(choice);
+ assert.equal(focus.find('[data-au-fact-select="fact:payment_deadline_letter"]'),undefined,'the chosen subject has no control after the re-render');
+ assert.equal(focus.active.attrs['data-au-subject'],'fact:payment_deadline_letter');assert.equal(focus.active.attrs['aria-current'],'true');assert.equal(focus.active.attrs.tabindex,'-1');assert.ok(f.host.contains(focus.active),'focus is on the current line, not the page body');
+});
+
+test('choosing a step whose answer starts below the screen moves focus with the scroll to the answer title',async t=>{
+ const f=dom(),focus=focusHarness(f),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch}),height=globalThis.innerHeight;globalThis.innerHeight=800;t.after(()=>{controller.destroy();globalThis.innerHeight=height;});await settle();
+ await controller.openClaim('claim-a');await settle();
+ let scrolled=false;const title={focus(){f.container.ownerDocument.activeElement=this;}},answer={getBoundingClientRect:()=>({top:1600}),scrollIntoView(){scrolled=true;},querySelector:selector=>selector==='.au-step-detail-title'?title:null};
+ const query=f.host.querySelector;f.host.querySelector=selector=>selector==='[data-au-stage-step-detail]'?answer:query(selector);
+ focus.click(control(f,'data-au-node','branch'));
+ assert.equal(scrolled,true);assert.equal(focus.active,title,'focus is not left on a node scrolled out of view');
+ assert.match(ui.stepDetailMarkup(state(),'branch'),/<h3 class="au-step-detail-title" tabindex="-1">/);
 });
 
 test('Cases cold click can finish packet acquisition inside its original300ms choice',async t=>{
@@ -3428,7 +3495,7 @@ test('a model outcome leads with templated lines and keeps its recorded wording 
 test('the selected step reads title, first cited passage, one status per subject, rule and the used version',()=>{
  const saved=savedHistory(),before=JSON.stringify(saved),html=ui.stepDetailMarkup(saved,'lt_arrears',{}, {});
  const at=marker=>{const index=html.indexOf(marker);assert.ok(index>=0,marker);return index;};
- assert.ok(at('<h3 class="au-step-detail-title">Check the unpaid rent and payment warning</h3>')<at('<section class="au-reading-passages"'));
+ assert.ok(at('<h3 class="au-step-detail-title" tabindex="-1">Check the unpaid rent and payment warning</h3>')<at('<section class="au-reading-passages"'));
  assert.ok(at('<section class="au-reading-passages"')<at('<ul class="au-subject-lines">'));
  assert.ok(at('<ul class="au-subject-lines">')<at('<p class="au-step-rule'));assert.ok(at('<p class="au-step-rule')<at('data-au-step-version'));
  const lines=[...html.matchAll(/<li class="au-subject"[\s\S]*?<\/li>/g)].map(match=>match[0].replace(/<[^>]*>/g,''));
