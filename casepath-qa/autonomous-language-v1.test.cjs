@@ -455,9 +455,10 @@ test('the mode line names original intake, saved result, replay, live and view o
   assert.equal(lines.live,'Live · Fictional case');
   assert.equal(lines.added,'Saved result · revision 4');
   assert.equal(lines.viewOnly,`Replay · recorded ${day} · fixed rules · Fictional case · View only`);
-  // The header day is the viewer's local day in the 'Last:' format (Oct 12, 2026, 11:30 PM), even near midnight UTC.
-  const late='2026-10-12T22:30:00Z',lastDay=new Intl.DateTimeFormat('en',{dateStyle:'medium',timeStyle:'short'}).format(new Date(late)).split(', ').slice(0,2).join(', ');
-  assert.equal(language.modeLine({revision:39,presentation:'replay',recordedAt:late}),`Replay · recorded ${lastDay}`);
+  // The header day is the viewer's local day in the 'Last:' format, even near midnight UTC; a pinned zone keeps this check exact on a UTC host.
+  const tz=process.env.TZ;process.env.TZ='Europe/Zurich';
+  try{assert.equal(language.modeLine({revision:39,presentation:'replay',recordedAt:'2026-10-12T22:30:00Z'}),'Replay · recorded Oct 13, 2026');}
+  finally{if(tz===undefined)delete process.env.TZ;else process.env.TZ=tz;}
   assert.equal(new Set(Object.values(lines)).size,Object.keys(lines).length);
   for(const presentation of ['saved','replay','live'])for(const revision of [0,1,48])for(const readOnly of [false,true]){
     const line=language.modeLine({revision,presentation,provenance:rules,origin:'native_intake',recordedAt:at,readOnly});
