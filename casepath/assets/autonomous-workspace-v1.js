@@ -875,11 +875,30 @@
     return render(expression);
   }
   const routeLabel = value => ['true','applied','active'].includes(value) ? 'Applies' : ['false','excluded','inactive'].includes(value) ? 'Excluded' : 'Unresolved';
+  // One visible state per step, read from the returned evaluation: done (✓),
+  // active (ring with a dot), open (empty ring: unresolved) and inactive
+  // (dashed ring: not activated or excluded).
+  const DONE_NODE_STATES = ['completed','complete','resolved','established','satisfied'];
+  function graphNodeState(evaluated = {}) {
+    const execution = evaluated.execution_state || evaluated.state;
+    if (DONE_NODE_STATES.includes(execution) || evaluated.effective_completed === true && execution !== 'provisional') return 'done';
+    if (['false','excluded','inactive'].includes(evaluated.activation)) return 'inactive';
+    return ['true','applied','active'].includes(evaluated.activation) ? 'active' : 'open';
+  }
+  const GRAPH_LEGEND = [['done','completed'],['active','active'],['open','unresolved'],['inactive','does not apply']];
+  function graphLegendMarkup(states) {
+    const rows = GRAPH_LEGEND.filter(([id]) => states.includes(id)).map(([id,label]) => `<span class="au-graph-legend-item" data-au-node-state="${id}"><span class="au-evidence-junction" aria-hidden="true">${id === 'done' ? '✓' : ''}</span>${states.filter(row => row === id).length} ${label}</span>`);
+    return rows.length ? `<p class="au-graph-legend" aria-label="Step states">${rows.join('')}</p>` : '';
+  }
   function graphMarkup(state, selected, projection = {}, options = {}) {
     if (!state.graph) return '';
     const layout = layoutGraph(state.graph), neighborhood = new Set([selected,...(layout.parents.get(selected) || []),...(layout.children.get(selected) || [])]), evaluation = new Map(list(state.evaluation?.nodes).map(node => [node.node_id,node]));
-    return `<div class="au-graph-chrome"><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">${options.overview ? 'Open all steps' : 'Open all steps'}</button></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-overview="${Boolean(options.overview)}" data-au-graph-expanded="false" tabindex="0" role="region" aria-label="${options.overview ? 'All steps. Use arrow keys or scroll to explore.' : 'Nearby steps. Open all steps to explore further.'}"><div class="au-graph au-evidence-graph" data-au-graph${options.working ? ` data-au-working-graph-sha="${h(options.working.graph.graph_sha256)}" data-au-working-scope="${h(options.working.inspect.id)}" data-au-working-evaluation-sha="${h(options.working.inspect.result.evaluation_sha256)}" data-au-operation-stage="${h(options.working.stage)}"` : ''} data-orientation="${options.stage ? 'horizontal' : options.overview ? 'vertical' : 'horizontal'}" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true"><defs>${['true','false','unresolved'].map(value => `<marker id="au-process-arrow-${value}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="${value}" d="M1 1 L9 5 L1 9 Z" /></marker>`).join('')}</defs>${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-au-edge-source="${h(edge.source_node_id)}" data-au-edge-target="${h(edge.target_node_id)}" data-au-neighborhood="${neighborhood.has(edge.source_node_id) && neighborhood.has(edge.target_node_id)}" data-state="${h(edgeState(state,edge.edge_id))}" marker-end="url(#au-process-arrow-${edgeState(state,edge.edge_id) === 'true' ? 'true' : ['false','excluded'].includes(edgeState(state,edge.edge_id)) ? 'false' : 'unresolved'})" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(plain(edge.label || edge.relation,'Step connection'))} · ${h(options.stage ? routeLabel(edgeState(state,edge.edge_id)) : options.working ? `When this applies: ${routeLabel(edgeState(state,edge.edge_id))}` : statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row,rank) => `<div class="au-graph-rank" data-rank="${rank}" data-au-neighborhood="${row.some(node => neighborhood.has(node.node_id))}">${row.map(node => {
-      const evaluated = evaluation.get(node.node_id) || {}, accepted = options.stage && options.working && options.working.graph.graph_sha256 === options.stage.state.graph?.graph_sha256 ? list(options.stage.state.evaluation?.nodes).find(row => row.node_id === node.node_id) : null, status = options.stage?.planned ? 'planned' : accepted?.execution_state === 'completed' ? 'completed' : options.working ? 'provisional' : evaluated.execution_state || evaluated.state || 'pending', inspection = options.working?.nodes.get(node.node_id) || options.working?.inspect;
+    const acceptedNode = id => options.stage && options.working && options.working.graph.graph_sha256 === options.stage.state.graph?.graph_sha256 ? list(options.stage.state.evaluation?.nodes).find(row => row.node_id === id) : null;
+    const nodeStatus = id => { const evaluated = evaluation.get(id) || {}; return options.stage?.planned ? 'planned' : acceptedNode(id)?.execution_state === 'completed' ? 'completed' : options.working ? 'provisional' : evaluated.execution_state || evaluated.state || 'pending'; };
+    const nodeStates = new Map(layout.nodes.map(node => [node.node_id,options.stage?.planned ? 'planned' : graphNodeState({...(evaluation.get(node.node_id) || {}),execution_state:nodeStatus(node.node_id)})]));
+    const legend = options.stage || options.overview ? '' : graphLegendMarkup([...nodeStates.values()]);
+    return `<div class="au-graph-chrome"><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">${options.overview ? 'Open all steps' : 'Open all steps'}</button></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-overview="${Boolean(options.overview)}" data-au-graph-expanded="false" role="group" aria-label="${options.overview ? 'All steps' : 'Nearby steps'}"><div class="au-graph au-evidence-graph" data-au-graph${options.working ? ` data-au-working-graph-sha="${h(options.working.graph.graph_sha256)}" data-au-working-scope="${h(options.working.inspect.id)}" data-au-working-evaluation-sha="${h(options.working.inspect.result.evaluation_sha256)}" data-au-operation-stage="${h(options.working.stage)}"` : ''} data-orientation="${options.stage ? 'horizontal' : options.overview ? 'vertical' : 'horizontal'}" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true"><defs>${['true','false','unresolved'].map(value => `<marker id="au-process-arrow-${value}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="${value}" d="M1 1 L9 5 L1 9 Z" /></marker>`).join('')}</defs>${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-au-edge-source="${h(edge.source_node_id)}" data-au-edge-target="${h(edge.target_node_id)}" data-au-neighborhood="${neighborhood.has(edge.source_node_id) && neighborhood.has(edge.target_node_id)}" data-state="${h(edgeState(state,edge.edge_id))}" marker-end="url(#au-process-arrow-${edgeState(state,edge.edge_id) === 'true' ? 'true' : ['false','excluded'].includes(edgeState(state,edge.edge_id)) ? 'false' : 'unresolved'})" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(plain(edge.label || edge.relation,'Step connection'))} · ${h(options.stage ? routeLabel(edgeState(state,edge.edge_id)) : options.working ? `When this applies: ${routeLabel(edgeState(state,edge.edge_id))}` : statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row,rank) => `<div class="au-graph-rank" data-rank="${rank}" data-au-neighborhood="${row.some(node => neighborhood.has(node.node_id))}">${row.map(node => {
+      const evaluated = evaluation.get(node.node_id) || {}, accepted = acceptedNode(node.node_id), status = nodeStatus(node.node_id), nodeState = nodeStates.get(node.node_id), inspection = options.working?.nodes.get(node.node_id) || options.working?.inspect;
       const parents = layout.parents.get(node.node_id).map(id => name(layout.byId.get(id)));
       const incoming = layout.edges.filter(edge => edge.target_node_id === node.node_id);
       const conditional = incoming.filter(edge => conditionLabel(state,edge.condition) || ['blocks','invalidates','supersedes'].includes(edge.relation));
@@ -888,15 +907,16 @@
 
       const visibleStatus = options.working ? evaluated.activation && (selected === node.node_id || evaluated.activation === 'false') ? `When it applies · ${routeLabel(evaluated.activation)}` : '' : ['false','excluded'].includes(evaluated.activation) && !conditional.length ? 'Does not apply' : selected === node.node_id && ['completed','complete','resolved','ready','blocked','running','working','queued','paused','failed','deferred'].includes(status) ? statusLabel(status) : '';
       const readiness = options.working && selected === node.node_id ? workingReadiness(evaluated,state.graph) : '';
-      const nodeHTML = `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}"${options.stage?.planned ? ' data-au-planned-node disabled' : ''}${inspection ? ` data-au-inspect="operation" data-au-record-id="${h(inspection.id)}" data-au-operation-id="${h(inspection.id)}" data-au-working-graph-sha="${h(options.working.graph.graph_sha256)}" data-au-working-scope="${h(options.working.inspect.id)}" data-au-working-evaluation-sha="${h(options.working.inspect.result.evaluation_sha256)}" data-au-operation-stage="${h(options.working.stage)}"` : ''} data-au-neighborhood="${neighborhood.has(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" aria-pressed="${selected === node.node_id}" aria-label="${h(name(node))}. ${h(options.stage ? options.stage.planned ? 'Planned step; source support is not yet assessed' : status === 'completed' ? 'Completed' : options.working ? 'Awaiting verification' : 'Awaiting source support' : options.working ? evaluated.activation ? `When this applies: ${routeLabel(evaluated.activation)}${readiness ? `. ${readiness}` : ''}` : 'Step awaiting a check' : statusLabel(status))}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}" aria-hidden="true">${status === 'completed' && (!options.working || accepted) ? '✓' : evaluated.activation === 'false' ? '−' : '·'}</span><span class="au-node-copy"><span class="au-node-relation"${neighborhood.has(node.node_id) ? '' : ' hidden'}>${neighborhood.has(node.node_id) ? node.node_id === selected ? 'This decision' : layout.parents.get(selected)?.includes(node.node_id) ? 'Before' : 'Then' : ''}</span>${options.stage ? '' : labels}${ownCondition && !options.stage ? `<span class="au-node-condition" data-au-node-condition="${h(node.node_id)}">${h(ownCondition)}<span>${h(routeLabel(evaluated.activation))}</span></span>` : ''}${options.stage && stepRole(node,options.stage.state,options.stage.trace) ? `<span class="au-step-role" data-au-role="${stepRole(node,options.stage.state,options.stage.trace)}" aria-hidden="true"><span class="au-role-shape"></span></span>` : ''}<strong class="au-node-title">${h(name(node))}</strong>${visibleStatus && !options.stage ? `<span class="au-node-state">${h(visibleStatus)}</span>` : ''}${readiness && !options.stage ? `<span class="au-node-state" data-au-working-readiness>${h(readiness)}</span>` : ''}</span></button>`;
+      const nodeHTML = `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}"${options.stage?.planned ? ' data-au-planned-node disabled' : ''}${inspection ? ` data-au-inspect="operation" data-au-record-id="${h(inspection.id)}" data-au-operation-id="${h(inspection.id)}" data-au-working-graph-sha="${h(options.working.graph.graph_sha256)}" data-au-working-scope="${h(options.working.inspect.id)}" data-au-working-evaluation-sha="${h(options.working.inspect.result.evaluation_sha256)}" data-au-operation-stage="${h(options.working.stage)}"` : ''} data-au-neighborhood="${neighborhood.has(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" data-au-node-state="${nodeState}" aria-pressed="${selected === node.node_id}" aria-label="${h(name(node))}. ${h(options.stage ? options.stage.planned ? 'Planned step; source support is not yet assessed' : status === 'completed' ? 'Completed' : options.working ? 'Awaiting verification' : 'Awaiting source support' : options.working ? evaluated.activation ? `When this applies: ${routeLabel(evaluated.activation)}${readiness ? `. ${readiness}` : ''}` : 'Step awaiting a check' : statusLabel(status))}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}" aria-hidden="true">${nodeState === 'done' ? '✓' : ''}</span><span class="au-node-copy"><span class="au-node-relation"${neighborhood.has(node.node_id) ? '' : ' hidden'}>${neighborhood.has(node.node_id) ? node.node_id === selected ? 'This decision' : layout.parents.get(selected)?.includes(node.node_id) ? 'Before' : 'Then' : ''}</span>${options.stage ? '' : labels}${ownCondition && !options.stage ? `<span class="au-node-condition" data-au-node-condition="${h(node.node_id)}">${h(ownCondition)}<span>${h(routeLabel(evaluated.activation))}</span></span>` : ''}${options.stage && stepRole(node,options.stage.state,options.stage.trace) ? `<span class="au-step-role" data-au-role="${stepRole(node,options.stage.state,options.stage.trace)}" aria-hidden="true"><span class="au-role-shape"></span></span>` : ''}<strong class="au-node-title">${h(name(node))}</strong>${visibleStatus && !options.stage ? `<span class="au-node-state">${h(visibleStatus)}</span>` : ''}${readiness && !options.stage ? `<span class="au-node-state" data-au-working-readiness>${h(readiness)}</span>` : ''}</span></button>`;
       return options.stage ? `<div class="au-stage-step" data-au-stage-step="${h(node.node_id)}" data-au-stage-active="${selected === node.node_id}">${nodeHTML}${selected === node.node_id && options.stage.excerpt ? `<div class="au-forming-reading au-stage-source">${options.stage.excerpt}</div>` : ''}${stageNodeContents(node,options.stage.state,options.stage.trace,options.working,options.stage.map,options.stage.planned ? state.graph : null,options.stage.reuse)}</div>` : nodeHTML;
-    }).join('')}</div>`).join('')}</div></div>`;
+    }).join('')}</div>`).join('')}</div></div>${legend}`;
   }
 
   function obligationMarkup(state, selected, suppliedRows, context = {}, forming = false) {
     const documents = new Map(list(state.evaluation?.documents).map(doc => [doc.document_type,doc]));
     const rows = suppliedRows || list(state.obligations).concat(list(state.evaluation?.documents).filter(doc => !list(state.obligations).some(item => item.document_type === doc.document_type)));
     if (!rows.length) return '<p class="au-empty">No document requirements have been recorded.</p>';
+    if (!forming) return documentChecklistMarkup(state,rows,documents,context);
     return `<ul class="au-obligations">${rows.map(obligation => {
       const doc = documents.get(obligation.document_type) || {}, nodes = requiringNodeIds(obligation,doc);
       const requiring = nodes.find(id => list(state.graph?.nodes).some(node => node.node_id === id) && (!forming || requiringNodeReached(list(state.evaluation?.nodes).find(node => node.node_id === id),obligation,doc))), fact = list(obligation.required_fact_ids).find(id => list(state.facts).some(row => row.fact_id === id));
@@ -907,6 +927,41 @@
       const evidence = forming && reviewed ? citations.filter((citation,index) => citations.findIndex(row => row.artifact_id === citation.artifact_id) === index).map(citation => `<button type="button" class="au-link au-document-source" data-au-source="${h(citation.artifact_id)}" data-au-source-origin="requirement:${h(identity)}" data-au-citation="${h(JSON.stringify(citation))}">Source evidence · ${h(sourceLabel(state,citation.artifact_id))}</button>`).join('') : '';
       return `<li class="au-obligation" data-au-obligation="${h(identity)}" data-au-document="${h(obligation.document_type)}" data-status="${h(status)}"${context.obligation === identity ? ' data-selected="true"' : ''}><button type="button" class="au-document-open au-document-choice" ${selection}><strong>${h(name(obligation) || name(doc))}</strong>${!forming || ['needed_now','established','satisfied'].includes(status) ? `<span class="au-document-state au-document-route">${h(statusLabel(status))}.</span>` : ''}${!forming || reviewed ? documentReviewMarkup(doc.review_state) : ''}${requiring ? `<span class="au-document-decision">${h(name(list(state.graph?.nodes).find(node => node.node_id === requiring)))}</span>` : ''}</button>${evidence}</li>`;
     }).join('')}</ul>`;
+  }
+  // The full checklist reads causally: each row states its recorded route and
+  // the step it belongs to, and that step's name selects it. A sufficient
+  // review is said once ("Supplied") instead of beside a contradicting route.
+  const DOCUMENT_ROUTE_COPY = {needed_now:['Needed now','because of'],needed_later:['Needed later','waiting on'],held_behind_question:['May be needed','depends on'],held_not_reviewed:['Needs checking','for'],optional:['Optional','for'],not_needed:['Not required','',' does not need it'],established:['Established','for'],satisfied:['Established','for']};
+  const SUPPLIED_ROUTES = ['established','satisfied','held_behind_question','needed_later','optional'];
+  function documentRouteGroup(route, review) {
+    if (route === 'needed_now') return 'now';
+    if (['established','satisfied'].includes(route) || review === 'sufficient' && SUPPLIED_ROUTES.includes(route)) return 'supplied';
+    if (['needed_later','held_behind_question'].includes(route)) return 'waiting';
+    return route === 'held_not_reviewed' ? 'checking' : route === 'optional' ? 'optional' : route === 'not_needed' ? 'not_needed' : 'other';
+  }
+  function documentCountLine(groups) {
+    const count = group => groups.filter(row => row === group).length;
+    const extras = [['checking','to check'],['optional','optional'],['not_needed','not required'],['other','without a recorded route']].filter(([group]) => count(group)).map(([group,label]) => `${count(group)} ${label}`);
+    return [`${count('now')} needed now`,`${count('waiting')} waiting on a step`,`${count('supplied')} supplied`,...extras].join(' · ');
+  }
+  function documentChecklistMarkup(state, rows, documents, context = {}) {
+    const nodes = list(state.graph?.nodes), groups = [];
+    const items = rows.map(obligation => {
+      const doc = documents.get(obligation.document_type) || {}, identity = requirementIdentity(obligation), route = doc.route_state || obligation.status || 'pending', review = doc.review_state;
+      const requiring = requiringNodeIds(obligation,doc).find(id => nodes.some(node => node.node_id === id)), fact = list(obligation.required_fact_ids).find(id => list(state.facts).some(row => row.fact_id === id));
+      const supplied = review === 'sufficient' && SUPPLIED_ROUTES.includes(route), group = documentRouteGroup(route,review), label = name(obligation) || name(doc) || words(obligation.document_type);
+      groups.push(group);
+      const [state_, connector, suffix = ''] = supplied ? ['Supplied','sufficient for'] : DOCUMENT_ROUTE_COPY[route] || [statusLabel(route),'for'];
+      const stepName = requiring ? name(nodes.find(node => node.node_id === requiring)) : '';
+      const step = requiring ? ` · ${connector ? `${h(connector)} ` : ''}<button type="button" class="au-link au-document-step" data-au-select="${h(requiring)}" data-au-select-document="${h(obligation.document_type)}" data-au-select-obligation="${h(identity)}" data-au-select-fact="${h(fact || '')}" aria-label="${h(stepName)} · step for ${h(label)}">${h(stepName)}</button>${h(suffix)}` : '.';
+      const routeLine = `<span class="au-document-state au-document-route" data-route="${h(route)}"${supplied ? ' data-au-review="sufficient"' : ''}><span class="au-document-route-label">${h(state_)}</span>${supplied ? ' <span aria-hidden="true">✓</span>' : ''}${step}</span>`;
+      // A missing review adds nothing beside a route that already says the
+      // document is not in hand, except where it is needed now.
+      const reviewLine = supplied || !review || ['missing','unreviewed','unresolved'].includes(review) && route !== 'needed_now' ? '' : documentReviewMarkup(review);
+      const title = requiring ? `<strong class="au-document-name">${h(label)}</strong>` : `<button type="button" class="au-link au-document-name au-document-record" data-au-inspect="requirement" data-au-record-id="${h(identity)}">${h(label)}</button>`;
+      return `<li class="au-obligation" data-au-obligation="${h(identity)}" data-au-document="${h(obligation.document_type)}" data-status="${h(route)}" data-au-route-group="${group}"${context.obligation === identity ? ' data-selected="true"' : ''}><div class="au-document-row">${title}${routeLine}${reviewLine}</div></li>`;
+    });
+    return `<p class="au-document-count" data-au-document-count>${h(documentCountLine(groups))}</p><ul class="au-obligations au-document-checklist">${items.join('')}</ul>`;
   }
 
   function actionInstanceIdentity(action, receipt = {}, index = 0, entry = {}) {
@@ -2828,7 +2883,8 @@
       const navigation = container.querySelector('[data-au-case-return]'); if (!navigation) return;
       navigation.hidden = !lastCaseContext || !['work','knowledge'].includes(view);
       if (!lastCaseContext) { navigation.innerHTML = ''; return; }
-      navigation.innerHTML = `<span class="au-case-return-label">${h(lastCaseContext.label)}</span><button type="button" class="au-link" data-au-return-case="step">Steps</button><button type="button" class="au-link" data-au-return-case="documents">Documents</button>`;
+      // Phones show one line, "← case", inside the brand row; wider screens name the case and its views.
+      navigation.innerHTML = `<button type="button" class="au-link au-case-return-compact" data-au-return-case="step" aria-label="Back to case: ${h(lastCaseContext.label)}"><span aria-hidden="true">←</span> <span class="au-case-return-name">${h(lastCaseContext.label)}</span></button><span class="au-case-return-label">${h(lastCaseContext.label)}</span><button type="button" class="au-link" data-au-return-case="step">Steps</button><button type="button" class="au-link" data-au-return-case="documents">Documents</button>`;
     }
     function nav(name) { renderCaseReturn(); container.querySelectorAll('.au-identity-header [data-au-nav]').forEach(item => { if (item.dataset.auNav === name) item.setAttribute('aria-current','page'); else item.removeAttribute('aria-current'); }); }
     function connectionGeometry(surface, pairs) {
@@ -2843,6 +2899,18 @@
       }).join('');
       return {svg,width:frame.width,height:frame.height,paths};
     }
+    function orthogonalPath(points, radius = 6) {
+      const rows = points.filter((point,index) => !index || point[0] !== points[index-1][0] || point[1] !== points[index-1][1]);
+      let d = `M${rows[0][0]} ${rows[0][1]}`;
+      for (let i = 1; i < rows.length; i++) {
+        const [x,y] = rows[i], next = rows[i+1];
+        if (!next) { d += ` L${x} ${y}`; break; }
+        const [px,py] = rows[i-1], r = Math.min(radius,Math.hypot(x-px,y-py)/2,Math.hypot(next[0]-x,next[1]-y)/2);
+        const ax = x-Math.sign(x-px)*r, ay = y-Math.sign(y-py)*r, bx = x+Math.sign(next[0]-x)*r, by = y+Math.sign(next[1]-y)*r;
+        d += ` L${ax} ${ay} Q${x} ${y},${bx} ${by}`;
+      }
+      return d;
+    }
     function drawEdges(navigation = false) {
       if (disposed) return;
       // Read every relevant rectangle before writing SVG geometry.
@@ -2852,13 +2920,25 @@
       if (graphSvg && frame?.width && frame.height && displayed?.graph) {
         const nodes = new Map([...graph.querySelectorAll('[data-au-node]')].map(element => {
           const junction = element.querySelector('[data-au-junction]') || element;
-          return [element.dataset.auNode,{bounds:junction.getBoundingClientRect(),rank:Number(element.closest('.au-graph-rank').dataset.rank)}];
+          return [element.dataset.auNode,{bounds:junction.getBoundingClientRect(),box:element.getBoundingClientRect?.() || junction.getBoundingClientRect(),rank:Number(element.closest('.au-graph-rank').dataset.rank)}];
         }));
         const ranks = new Map([...graph.querySelectorAll('.au-graph-rank')].map(element => [Number(element.dataset.rank),element.getBoundingClientRect()]));
+        // "Open all steps" wraps ranks into rows; its edges keep to the gutters.
+        const wrapped = graph.dataset.orientation === 'horizontal' && !host.querySelector('.au-operation-stage') && graph.closest?.('[data-au-graph-pan]')?.dataset.auGraphExpanded === 'true';
+        const rowTops = wrapped ? [...new Set([...ranks.values()].filter(rect => rect.height).map(rect => Math.round(rect.top)))].sort((a,b) => a-b) : [];
+        const rowBottom = top => Math.max(...[...ranks.values()].filter(rect => rect.height && Math.round(rect.top) === top).map(rect => rect.bottom));
         graphPaths = list(displayed.graph.edges).map((edge,index) => {
           const from = nodes.get(edge.source_node_id), to = nodes.get(edge.target_node_id); if (!from || !to || !from.bounds.width || !from.bounds.height || !to.bounds.width || !to.bounds.height) return null;
           const vertical = graph.dataset.orientation === 'vertical';
-          const x1=(vertical ? from.bounds.left+from.bounds.width/2 : from.bounds.right)-frame.left,y1=(vertical ? from.bounds.bottom : from.bounds.top+from.bounds.height/2)-frame.top,x2=(vertical ? to.bounds.left+to.bounds.width/2 : to.bounds.left)-frame.left,y2=(vertical ? to.bounds.top : to.bounds.top+to.bounds.height/2)-frame.top;
+          if (wrapped) {
+            const source = ranks.get(from.rank), target = ranks.get(to.rank), offset = (index%3)*5, sourceTop = Math.round(source.top), sameRow = sourceTop === Math.round(target.top);
+            const sx = from.box.right-frame.left, sy = from.bounds.top+from.bounds.height/2-frame.top, tx = to.bounds.left-frame.left-1, ty = to.bounds.top+to.bounds.height/2-frame.top;
+            if (sameRow && to.rank-from.rank === 1) return {id:edge.edge_id,d:`M${sx} ${sy} C${(sx+tx)/2} ${sy},${(sx+tx)/2} ${ty},${tx} ${ty}`,state:edgeState(displayed,edge.edge_id),selected:edge.source_node_id === graphSelected || edge.target_node_id === graphSelected};
+            const nextTop = rowTops.find(top => top > sourceTop), outX = source.right-frame.left+10+offset, inX = target.left-frame.left-10-offset;
+            const lane = sameRow || nextTop === undefined ? source.top-frame.top-10-offset : (rowBottom(sourceTop)+nextTop)/2-frame.top-5+offset;
+            return {id:edge.edge_id,d:orthogonalPath([[sx,sy],[outX,sy],[outX,lane],[inX,lane],[inX,ty],[tx,ty]]),state:edgeState(displayed,edge.edge_id),selected:edge.source_node_id === graphSelected || edge.target_node_id === graphSelected};
+          }
+          const x1=(vertical ? from.bounds.left+from.bounds.width/2 : Math.max(from.bounds.right,from.box.right))-frame.left,y1=(vertical ? from.bounds.bottom : from.bounds.top+from.bounds.height/2)-frame.top,x2=(vertical ? to.bounds.left+to.bounds.width/2 : to.bounds.left)-frame.left,y2=(vertical ? to.bounds.top : to.bounds.top+to.bounds.height/2)-frame.top;
           let path;
           if (vertical) {
             const sourceRank=ranks.get(from.rank), nextRank=ranks.get(from.rank+1), targetRank=ranks.get(to.rank), previousRank=ranks.get(to.rank-1);
@@ -2958,7 +3038,7 @@
       if (view === 'work') { const main = container.querySelector('.au-main'); collection.scrollTop = host.scrollTop || 0; collection.mainTop = main?.scrollTop || 0; collection.mainLeft = main?.scrollLeft || 0; collection.scrollX = root.scrollX || 0; collection.scrollY = root.scrollY || 0; }
       preserveClaimView();
     }
-    function setView(name) { const legend=container.querySelector('[data-au-role-legend]'); if(legend)legend.hidden=name!=='claim' || !demoSession; if (name !== 'claim') { tour = null; for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute); } view = name; renderedClaimId = null; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); }
+    function setView(name) { const legend=container.querySelector('[data-au-role-legend]'); if(legend)legend.hidden=name!=='claim' || !demoSession; if (name !== 'claim') { tour = null; for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute); } view = name; renderedClaimId = null; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); measureChrome(); observeChrome(); }
     function revealStepAnswer(node) {
       const answer = host.querySelector?.('[data-au-stage-step-detail]'), bounds = answer?.getBoundingClientRect?.(), height = root.innerHeight;
       if (!bounds || !Number.isFinite(height)) return;
@@ -3068,7 +3148,7 @@
       for (const disclosure of host.querySelectorAll('[data-au-disclosure]')) disclosure.open = open.has(disclosure.dataset.auDisclosure);
       focusTarget(focusKey)?.focus({preventScroll:true});
       if (navigation || !priorViewport && !host.querySelector('[data-au-forming="true"]')) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
-      fitActiveStage();
+      fitActiveStage(); syncGraphViewport();
       positionOperationSource();
       drawEdges(navigation);
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open || recordDialog.open,reducedMotion:reduced?.matches,keyboard,inspecting:inspectionHold,activeElement:doc.activeElement,selected});
@@ -3082,8 +3162,20 @@
       control.setAttribute('aria-expanded',String(expanded));
       const overview = viewport.dataset.auGraphOverview === 'true';
       control.textContent = overview ? expanded ? 'Close larger process' : 'Open all steps' : expanded ? 'Close full process' : 'Open all steps';
-      viewport.setAttribute('aria-label',expanded || overview ? 'All steps. Use arrow keys or scroll to explore.' : 'Nearby steps. Open all steps to explore further.');
       host.querySelector('.au-evidence-process')?.setAttribute('aria-label',expanded || overview ? 'Complete process' : 'Decision neighborhood');
+      syncGraphViewport();
+    }
+    // A graph frame is a keyboard stop only while it actually scrolls; a
+    // frame that shows everything is a labelled group, not a tab stop.
+    function syncGraphViewport() {
+      for (const viewport of host.querySelectorAll?.('[data-au-graph-pan]') || []) {
+        if (!viewport.setAttribute) continue;
+        const style = root.getComputedStyle?.(viewport), scrolls = value => !style || /auto|scroll/.test(value || '');
+        const scrollable = (viewport.scrollWidth > viewport.clientWidth+1 && scrolls(style?.overflowX)) || (viewport.scrollHeight > viewport.clientHeight+1 && scrolls(style?.overflowY));
+        const label = viewport.dataset.auGraphExpanded === 'true' || viewport.dataset.auGraphOverview === 'true' ? 'All steps' : 'Nearby steps';
+        if (scrollable) { viewport.setAttribute('tabindex','0'); viewport.setAttribute('role','region'); viewport.setAttribute('aria-label',`${label}. Use arrow keys or scroll to explore.`); }
+        else { viewport.removeAttribute?.('tabindex'); viewport.setAttribute('role','group'); viewport.setAttribute('aria-label',label); }
+      }
     }
     function renderSelection(navigation = false) {
       if (!current || view !== 'claim') return;
@@ -3114,7 +3206,7 @@
       if (next) next.disabled = index >= nodes.length - 1;
       if (!focused?.isConnected) focusTarget(focusKey)?.focus({preventScroll:true});
       if (navigation) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(node => node.dataset.auNode === selected));
-      drawEdges(navigation); interact(panel); rememberLastCase();
+      syncGraphViewport(); drawEdges(navigation); interact(panel); rememberLastCase();
     }
     function setDetail(value, focusFiles = false, writeRoute = true) {
       if (view !== 'claim' || !['step','documents','knowledge','sources','activity'].includes(value)) return;
@@ -4689,7 +4781,7 @@
         if (nativePreview) {
           const preview = await nativePreview;
           if (preview.error) nativeMarkup = `<p class="au-meta">${h(preview.error.message)}</p>`;
-          else if (preview.blob) { nativeViewable = true; nativeMarkup = native === 'application/pdf' ? `<iframe class="au-native-document" src="${h(preview.blob)}" title="${h(operationSourceTitle(descriptor))}"></iframe>` : `<img class="au-native-image" src="${h(preview.blob)}" alt="${h(operationSourceTitle(descriptor))}">`; }
+          else if (preview.blob) { nativeViewable = true; nativeMarkup = `<div class="au-native-source" data-au-native-kind="${native === 'application/pdf' ? 'document' : 'image'}">${native === 'application/pdf' ? `<iframe class="au-native-document" src="${h(preview.blob)}" title="${h(operationSourceTitle(descriptor))}"></iframe>` : `<img class="au-native-image" src="${h(preview.blob)}" alt="${h(operationSourceTitle(descriptor))}">`}</div>`; }
         }
         if (disposed || token !== epoch || sourceToken !== sourceEpoch || !dialog.open) return;
         const unassessed = assessmentFreshness(current).sources.some(source => source.artifact_id === descriptor.artifact_id);
@@ -4775,12 +4867,16 @@
       else if (target.hasAttribute('data-au-refresh-claims')) { const token = epoch; loadClaims(token,true).catch(error => { if (!disposed && token === epoch) notice(error.message,true); }); }
       else if (target.hasAttribute('data-au-knowledge')) { if (!busy) showKnowledge(true,{knowledge_id:target.dataset.auKnowledge,version:target.dataset.auVersion,knowledge_sha256:target.dataset.auKnowledgeSha,definition_sha256:target.dataset.auDefinitionSha,claim_id:target.dataset.auKnowledgeClaim}); }
       else if (target.hasAttribute('data-au-add-files')) { pauseInspection(); setDetail('sources',true); }
-      else if (target.hasAttribute('data-au-expand-process')) { pauseInspection(); setGraphExpanded(target.getAttribute('aria-expanded') !== 'true'); drawEdges(); }
+      else if (target.hasAttribute('data-au-expand-process')) {
+        pauseInspection(); const expanding = target.getAttribute('aria-expanded') !== 'true'; setGraphExpanded(expanding); drawEdges();
+        // The complete process opens around the chosen step.
+        if (expanding) [...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected)?.scrollIntoView?.({block:'nearest',inline:'nearest',behavior:reduced?.matches ? 'instant' : 'smooth'});
+      }
       else if (target.hasAttribute('data-au-detail')) {
         pauseInspection(); setDetail(target.dataset.auDetail);
         // A missing document named by the result opens at its own checklist row.
         const type = target.dataset.auOutcomeDocument, row = type ? [...host.querySelectorAll('[data-au-panel="documents"] .au-obligation')].find(element => element.dataset.auDocument === type) : null;
-        if (row) { row.querySelector('.au-document-choice')?.focus({preventScroll:true}); row.scrollIntoView?.({block:'nearest',behavior:reduced?.matches ? 'instant' : 'smooth'}); }
+        if (row) { row.querySelector('.au-document-choice,.au-document-step,.au-document-record')?.focus({preventScroll:true}); row.scrollIntoView?.({block:'nearest',behavior:reduced?.matches ? 'instant' : 'smooth'}); }
       }
       else if (target.hasAttribute('data-au-back-process')) {
         const node = [...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
@@ -4918,15 +5014,32 @@
     container.addEventListener('wheel',sourceWheel,{passive:true});
     function geometryEvent(event) { if (event.target?.matches?.('.au-operation-passage')) { if (host.querySelector('.au-operation-stage')) return; if (!doc.hidden && !inspectionHold) { positionOperationAttention(false); drawEdges(); } return; } if (event.type === 'toggle') { drawEdges(); if (event.target?.open) interact(event.target.querySelector(':scope > :not(summary)')); } else if (event.target?.hasAttribute?.('data-au-graph-pan')) drawEdges(); }
     container.addEventListener('scroll',geometryEvent,true);container.addEventListener('toggle',geometryEvent,true);
-    doc.fonts?.ready?.then(() => { if (!disposed) {fitActiveStage();drawEdges();} });
+    doc.fonts?.ready?.then(() => { if (!disposed) {fitActiveStage();syncGraphViewport();drawEdges();} });
     container.addEventListener('click',click); container.addEventListener('pointerover',claimWarmIntent); container.addEventListener('focusin',focusInput); container.addEventListener('submit',submit); container.addEventListener('change',change); container.addEventListener('input',input); dialog.addEventListener('close',closed); recordDialog.addEventListener('close',closedRecord); doc.addEventListener('visibilitychange',visibility);
     root.addEventListener?.('hashchange',routeChanged); root.addEventListener?.('popstate',routeChanged);
     function fitActiveStage() {
       host.querySelector('.au-operation-stage .au-graph-viewport')?.style.removeProperty('--au-stage-available-height');
-      for(const [name,selector] of [['header','.au-identity-header'],['transport','.au-quiet-claim > .au-demo-transport'],['now','.au-quiet-claim > .au-now']]) {
-        const height=container.querySelector(selector)?.getBoundingClientRect?.().height || 0;
-        container.style?.setProperty?.(`--au-${name}-height`,`${Math.ceil(height)}px`);
+      measureChrome(); observeChrome();
+    }
+    // Sticky chrome heights stay current: only chrome that actually sticks is
+    // counted, and the case bands count only inside a claim. The page's scroll
+    // padding reads the same values from the root element.
+    const CHROME = [['header','.au-identity-header'],['transport','.au-quiet-claim > .au-demo-transport'],['now','.au-quiet-claim > .au-now']];
+    function measureChrome() {
+      if (disposed) return;
+      for (const [name,selector] of CHROME) {
+        const element = container.querySelector(selector), style = element && root.getComputedStyle?.(element);
+        const sticks = Boolean(element) && (name === 'header' || view === 'claim') && (!style || ['sticky','fixed'].includes(style.position));
+        const value = `${Math.ceil(sticks ? element.getBoundingClientRect?.().height || 0 : 0)}px`;
+        container.style?.setProperty?.(`--au-${name}-height`,value);
+        doc.documentElement?.style?.setProperty?.(`--au-${name}-height`,value);
       }
+    }
+    const chromeObserver = root.ResizeObserver ? new root.ResizeObserver(() => measureChrome()) : null;
+    function observeChrome() {
+      if (!chromeObserver || disposed) return;
+      chromeObserver.disconnect();
+      for (const [,selector] of CHROME) { const element = container.querySelector(selector); if (element) chromeObserver.observe(element); }
     }
     function centerActiveOperation(force = false) {
       const viewport = host.querySelector('.au-operation-stage .au-graph-viewport');
@@ -4942,13 +5055,14 @@
       positionOperationSource();
     }
     function resized() {
+      syncGraphViewport();
       if (host.querySelector('.au-operation-stage')) { cancelStageMotion();fitActiveStage();centerActiveOperation();drawEdges();return; }
       const area=host.querySelector('.au-graph-viewport')?.getBoundingClientRect?.();
       if (!host.querySelector('[data-au-forming="true"]') && area && graphViewportWidth !== null && area.width !== graphViewportWidth) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
       drawEdges(); positionOperationAttention();
     }
     const resize = root.ResizeObserver ? new root.ResizeObserver(resized) : null; resize?.observe(host); root.addEventListener?.('resize',resized);
-    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),savedSnapshotReady:savedSnapshotLoad=Promise.resolve().then(loadSavedSnapshot),refresh:poll,destroy() { if (disposed) return; disposed = true; discardKnowledgeOpening(); cancelLearning(); packetLoadController?.abort(); savedSnapshotController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',focusInput); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
+    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),savedSnapshotReady:savedSnapshotLoad=Promise.resolve().then(loadSavedSnapshot),refresh:poll,destroy() { if (disposed) return; disposed = true; discardKnowledgeOpening(); cancelLearning(); packetLoadController?.abort(); savedSnapshotController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();chromeObserver?.disconnect();for (const [name] of CHROME) doc.documentElement?.style?.removeProperty?.(`--au-${name}-height`);container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',focusInput); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
     mounts.set(container,controller); activeMount = controller;
     sessionRestore = restoreReadCache();
     if (options.recordedPacket) packetAcquisition = {promise:controller.recordedPacketReady.then(ready => { if (!ready) throw new Error('The recorded packet asset is unavailable.'); return recordedPacket; })};

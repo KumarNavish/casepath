@@ -1474,6 +1474,40 @@ test('each local view renders only its current purpose while retaining the same 
  assert.equal(JSON.stringify(s),before);
 });
 
+test('the full checklist reads causally: one route line naming its step, one supplied line and a count by route',()=>{
+ const s=state(),routes=[['needed_now','missing'],['needed_now','insufficient'],['needed_later','missing'],['held_behind_question','missing'],['held_behind_question','sufficient'],['established','sufficient'],['not_needed','missing'],['held_not_reviewed','unreviewed']];
+ s.obligations=routes.map((_,index)=>({obligation_id:`obligation:${index}`,node_id:'branch',document_type:`document-${index}`,label:`Evidence ${index}`,required_fact_ids:index?[]:['fact:notice']}));
+ s.evaluation.documents=routes.map(([route_state,review_state],index)=>({document_type:`document-${index}`,route_state,review_state}));
+ const before=JSON.stringify(s),html=ui.obligationMarkup(s,'branch'),row=index=>html.match(new RegExp(`<li[^>]*data-au-obligation="obligation:${index}"[\\s\\S]*?</li>`))[0];
+ assert.match(html,/data-au-document-count>2 needed now · 2 waiting on a step · 2 supplied · 1 to check · 1 not required</,'the count follows the returned routes');
+ assert.match(row(0),/<span class="au-document-route-label">Needed now<\/span> · because of <button type="button" class="au-link au-document-step" data-au-select="branch" data-au-select-document="document-0" data-au-select-obligation="obligation:0" data-au-select-fact="fact:notice"[^>]*>Check separate service<\/button>/);
+ assert.match(row(0),/Source evidence is not yet established\./,'a missing review matters where the document is needed now');
+ assert.match(row(1),/Supplied evidence is not sufficient\./);
+ assert.match(row(2),/Needed later<\/span> · waiting on <button/);assert.doesNotMatch(row(2),/class="au-document-review"/,'a missing review adds nothing to a document still waiting on its step');
+ assert.match(row(3),/May be needed<\/span> · depends on <button/);
+ for(const index of [4,5]){assert.match(row(index),/data-au-review="sufficient"><span class="au-document-route-label">Supplied<\/span> <span aria-hidden="true">✓<\/span> · sufficient for <button/);assert.doesNotMatch(row(index),/May be needed|Established|class="au-document-review"/,'a sufficient review replaces the contradicting route');}
+ assert.match(row(6),/Not required<\/span> · <button[^>]*>Check separate service<\/button> does not need it/);
+ assert.match(row(7),/Needs checking<\/span> · for <button/);
+ assert.doesNotMatch(html,/<button[^>]*class="au-document-open/,'the step name is the control, not the whole row');
+ const orphan=structuredClone(s);orphan.obligations[0].node_id='missing-step';orphan.obligations[0].decision_node_id='missing-step';
+ assert.match(ui.obligationMarkup(orphan,'branch'),/<button type="button" class="au-link au-document-name au-document-record" data-au-inspect="requirement" data-au-record-id="obligation:0">Evidence 0<\/button><span class="au-document-state au-document-route" data-route="needed_now"><span class="au-document-route-label">Needed now<\/span>\.<\/span>/,'without a recorded step the requirement record stays reachable');
+ assert.equal(JSON.stringify(s),before);
+});
+
+test('graph markup shows one evaluated state per step and is a keyboard stop only after it scrolls',()=>{
+ const s=state();s.graph.nodes.push({node_id:'gone',label:'Retired route'},{node_id:'open',label:'Open question'});s.graph.edges.push({edge_id:'retired',source_node_id:'start',target_node_id:'gone'},{edge_id:'later',source_node_id:'branch',target_node_id:'open'});
+ s.evaluation.nodes.push({node_id:'gone',activation:'false',execution_state:'not_reached'},{node_id:'open',activation:'unresolved',execution_state:'unresolved'});
+ const before=JSON.stringify(s),html=ui.graphMarkup(s,'branch'),node=id=>html.match(new RegExp(`<button[^>]*data-au-node="${id}"[\\s\\S]*?</button>`))[0];
+ assert.match(node('start'),/data-au-node-state="done"[\s\S]*data-au-junction="start" aria-hidden="true">✓</);
+ assert.match(node('branch'),/data-au-node-state="active"[\s\S]*data-au-junction="branch" aria-hidden="true"><\/span>/);
+ assert.match(node('gone'),/data-au-node-state="inactive"/);assert.match(node('open'),/data-au-node-state="open"/);
+ assert.match(html,/<p class="au-graph-legend" aria-label="Step states">[\s\S]*1 completed[\s\S]*1 active[\s\S]*1 unresolved[\s\S]*1 does not apply<\/span><\/p>/);
+ assert.match(html,/id="auProcessGraphViewport"[^>]*role="group" aria-label="Nearby steps">/);assert.doesNotMatch(html,/tabindex="0"/,'the frame becomes a tab stop only when the mounted view measures it scrolling');
+ const resolved=structuredClone(s);resolved.evaluation.nodes[1]={node_id:'branch',activation:'true',execution_state:'resolved'};assert.match(ui.graphMarkup(resolved,'branch'),/data-au-node="branch"[^>]*data-au-node-state="done"/);
+ assert.doesNotMatch(ui.graphMarkup(s,'branch',{}, {overview:true}),/au-graph-legend/,'the fitted forming map keeps its own height');
+ assert.equal(JSON.stringify(s),before);
+});
+
 test('supported document routes stay distinct and evidence intake is reachable from current needs',()=>{
  const statuses=['needed_now','needed_later','held_behind_question','held_not_reviewed','not_needed','optional'],labels=['Needed now','Needed later','May be needed','Needs checking','Not required','Optional'];
  const s=state();s.obligations=statuses.map((status,index)=>({obligation_id:`obligation:${index}`,node_id:'branch',document_type:`document-${index}`,label:`Evidence ${index}`}));s.evaluation.documents=statuses.map((route_state,index)=>({document_type:`document-${index}`,route_state,review_state:'unreviewed'}));

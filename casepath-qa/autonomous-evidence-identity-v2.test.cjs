@@ -222,7 +222,11 @@ test('zero recorded active gaps still expose held requirements, questions and th
  assert.equal(await page.locator('[data-au-panel="documents"]').isVisible(),true);
  const held=state.evaluation.documents.filter(doc=>doc.route_state==='held_behind_question');
  assert.deepEqual(sorted(await page.locator('[data-au-panel="documents"] [data-au-document]').evaluateAll(nodes=>nodes.filter(node=>node.dataset.status==='held_behind_question').map(node=>node.dataset.auDocument))),sorted(held.map(doc=>doc.document_type)));
- assert.deepEqual(await page.locator('[data-au-panel="documents"] [data-status="held_behind_question"] .au-document-state').allTextContents(),held.map(()=>'May be needed.'));
+ assert.deepEqual(await page.locator('[data-au-panel="documents"] [data-status="held_behind_question"] .au-document-route-label').allTextContents(),held.map(doc=>doc.review_state==='sufficient'?'Supplied':'May be needed'));
+ const steps=await page.locator('[data-au-panel="documents"] [data-status="held_behind_question"]').evaluateAll(rows=>rows.map(row=>({document:row.dataset.auDocument,route:row.querySelector('.au-document-route').textContent,select:row.querySelector('.au-document-step')?.dataset.auSelect})));
+ for(const row of steps){const doc=held.find(item=>item.document_type===row.document);assert.ok(doc.required_at_node_ids.includes(row.select),`${row.document} names the step it depends on`);assert.match(row.route,doc.review_state==='sufficient'?/^Supplied ✓ · sufficient for /:/^May be needed · depends on /);}
+ const routes=state.evaluation.documents.map(doc=>doc.route_state);
+ assert.equal(await page.locator('[data-au-panel="documents"] [data-au-document-count]').textContent(),`${routes.filter(route=>route==='needed_now').length} needed now · ${held.filter(doc=>doc.review_state!=='sufficient').length+routes.filter(route=>route==='needed_later').length} waiting on a step · ${held.filter(doc=>doc.review_state==='sufficient').length+routes.filter(route=>['established','satisfied'].includes(route)).length} supplied`);
  const node=state.evaluation.nodes.find(node=>node.activation==='unresolved' && node.condition_flags.includes('termination_received')).node_id;
  await page.locator('[data-au-detail="step"]').click();await page.locator(`[data-au-node="${node}"]`).click();
  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),node);
@@ -467,4 +471,72 @@ test('fresh changes remain still for reduced motion, hidden views and reconnect 
  await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:false});document.dispatchEvent(new Event('visibilitychange'));});
  await page.locator('[data-au-node="lt_form"][data-status="ready"]').waitFor();
  assert.equal(await page.evaluate(()=>window.__animations.length),0);await noWrites(page);
+});
+
+for(const width of [1440,390])test(`Documents read as a causal checklist whose route and review never share a line at ${width}px`,async t=>{
+ const page=await fixturePage(t,{width});
+ for(const claim of claims){
+  const state=saved(claim.claim_id),before=JSON.stringify(state);if(!state.obligations.length)continue;
+  await open(page,claim.claim_id);await page.locator('.au-context-nav [data-au-detail="documents"]').click();await page.locator('[data-au-panel="documents"] [data-au-document-count]').waitFor();
+  const rows=await page.locator('[data-au-panel="documents"] .au-obligation').evaluateAll(items=>items.map(item=>{const rect=element=>element?.getBoundingClientRect().toJSON();return {document:item.dataset.auDocument,status:item.dataset.status,route:rect(item.querySelector('.au-document-route')),review:rect(item.querySelector('.au-document-review')),select:item.querySelector('.au-document-step')?.dataset.auSelect || null};}));
+  assert.equal(rows.length,state.obligations.length,claim.claim_id);
+  for(const row of rows){
+   assert.ok(row.route && row.route.width>0,`${claim.claim_id} ${row.document} states its route`);
+   if(row.review)assert.ok(row.review.top>=row.route.bottom-0.5 || row.review.left>=row.route.right-0.5,`${claim.claim_id} ${row.document} route and review overprint: ${JSON.stringify(row)}`);
+   if(row.select)assert.ok(state.graph.nodes.some(node=>node.node_id===row.select),`${row.document} names a recorded step`);
+  }
+  const needed=state.obligations.filter(item=>state.evaluation.documents.find(doc=>doc.document_type===item.document_type)?.route_state==='needed_now').length;
+  assert.match(await page.locator('[data-au-panel="documents"] [data-au-document-count]').textContent(),new RegExp(`^${needed} needed now · `),claim.claim_id);
+  assert.equal(JSON.stringify(state),before);
+ }
+ // A step name in the checklist opens that step with the document in focus.
+ const id='auto_764f712d3833988ce6ff6cfd',state=saved(id);await open(page,id);await page.locator('.au-context-nav [data-au-detail="documents"]').click();
+ const row=page.locator('[data-au-panel="documents"] .au-obligation[data-status="needed_now"]').first(),document=await row.getAttribute('data-au-document'),step=await row.locator('.au-document-step').getAttribute('data-au-select');
+ assert.equal(state.evaluation.documents.find(doc=>doc.document_type===document).review_state,'insufficient');
+ assert.match(await row.locator('.au-document-route').textContent(),/^Needed now · because of /);assert.equal(await row.locator('.au-document-review').textContent(),'Supplied evidence is not sufficient.');
+ await row.locator('.au-document-step').click();
+ await page.locator('[data-au-panel="step"]').waitFor();
+ assert.equal(await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node'),step);
+ assert.match(await page.evaluate(()=>location.hash),new RegExp(`document=${document}`));
+});
+
+test('Open all steps wraps the complete process without sideways panning and every edge ends on its step',async t=>{
+ const page=await fixturePage(t,{width:1440});
+ for(const claim of claims){
+  const state=saved(claim.claim_id);if(state.graph.nodes.length<11)continue;
+  await open(page,claim.claim_id);await page.locator('.au-context-nav [data-au-detail="step"]').click();
+  await openFullProcess(page);
+  const geometry=await page.evaluate(()=>{
+   const viewport=document.querySelector('[data-au-graph-pan]'),frame=viewport.getBoundingClientRect(),box=element=>element.getBoundingClientRect();
+   const nodes=[...viewport.querySelectorAll('[data-au-node]')].map(node=>({id:node.dataset.auNode,state:node.dataset.auNodeState,rect:box(node).toJSON(),junction:box(node.querySelector('[data-au-junction]')).toJSON()}));
+   const edges=[...viewport.querySelectorAll('[data-au-edge]')].map(edge=>{const length=edge.getTotalLength(),matrix=edge.getScreenCTM(),point=at=>{const p=edge.getPointAtLength(at);return {x:p.x*matrix.a+matrix.e,y:p.y*matrix.d+matrix.f};};return {id:edge.dataset.auEdge,source:edge.dataset.auEdgeSource,target:edge.dataset.auEdgeTarget,start:point(0),end:point(length)};});
+   return {frame:frame.toJSON(),scrollWidth:viewport.scrollWidth,clientWidth:viewport.clientWidth,tabindex:viewport.getAttribute('tabindex'),role:viewport.getAttribute('role'),label:viewport.getAttribute('aria-label'),nodes,edges,pageWidth:document.documentElement.scrollWidth,innerWidth};
+  });
+  assert.ok(geometry.scrollWidth<=geometry.clientWidth,`${claim.claim_id} has no sideways panning: ${geometry.scrollWidth} > ${geometry.clientWidth}`);
+  assert.ok(geometry.pageWidth<=geometry.innerWidth);
+  assert.equal(geometry.tabindex,null,'a frame that shows everything is not a tab stop');assert.equal(geometry.role,'group');assert.equal(geometry.label,'All steps');
+  assert.equal(geometry.nodes.length,state.graph.nodes.length);
+  const evaluation=new Map(state.evaluation.nodes.map(node=>[node.node_id,node]));
+  for(const node of geometry.nodes){
+   assert.ok(node.rect.left>=geometry.frame.left-0.5 && node.rect.right<=geometry.frame.right+0.5 && node.rect.top>=geometry.frame.top-0.5 && node.rect.bottom<=geometry.frame.bottom+0.5,`${claim.claim_id} ${node.id} is fully inside the full process`);
+   const evaluated=evaluation.get(node.id);
+   assert.equal(node.state,['completed','complete','resolved','established','satisfied'].includes(evaluated.execution_state) || evaluated.effective_completed===true ? 'done' : ['false','excluded'].includes(evaluated.activation) ? 'inactive' : evaluated.activation==='true' ? 'active' : 'open',`${node.id} shows its evaluated state`);
+  }
+  const byId=new Map(geometry.nodes.map(node=>[node.id,node]));
+  for(const edge of geometry.edges){
+   const source=byId.get(edge.source),target=byId.get(edge.target);
+   assert.ok(Math.abs(edge.end.x-target.junction.left)<=2 && edge.end.y>=target.junction.top-1 && edge.end.y<=target.junction.bottom+1,`${edge.id} ends on ${edge.target}: ${JSON.stringify({end:edge.end,junction:target.junction})}`);
+   assert.ok(Math.abs(edge.start.x-source.rect.right)<=2 && edge.start.y>=source.junction.top-1 && edge.start.y<=source.junction.bottom+1,`${edge.id} leaves ${edge.source} at its box edge`);
+  }
+ }
+});
+
+for(const width of [1440,390])test(`the step frame is a keyboard stop only while it scrolls at ${width}px`,async t=>{
+ const page=await fixturePage(t,{width});await open(page,robin);await page.locator('.au-context-nav [data-au-detail="step"]').click();
+ const frame=()=>page.locator('[data-au-graph-pan]').evaluate(element=>({scrolls:element.scrollWidth>element.clientWidth+1 || element.scrollHeight>element.clientHeight+1,tabindex:element.getAttribute('tabindex'),role:element.getAttribute('role'),label:element.getAttribute('aria-label')}));
+ const compact=await frame();
+ assert.deepEqual(compact,compact.scrolls ? {scrolls:true,tabindex:'0',role:'region',label:'Nearby steps. Use arrow keys or scroll to explore.'} : {scrolls:false,tabindex:null,role:'group',label:'Nearby steps'});
+ if(width===390)assert.equal(compact.scrolls,true,'the phone neighborhood scrolls sideways and stays reachable by keyboard');
+ await openFullProcess(page);
+ assert.deepEqual(await frame(),{scrolls:false,tabindex:null,role:'group',label:'All steps'});
 });

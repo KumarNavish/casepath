@@ -1077,7 +1077,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
 .au-workspace .au-learning-receipts [data-au-current-case=true] { border-left:3px solid #24563c; padding-left:12px; }
 
-html[data-autonomous-workspace=true] { scroll-padding-top:100px; }
+html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-height,64px) + var(--au-transport-height,0px) + var(--au-now-height,0px) + 12px); }
 .au-workspace :is(button,a,input,summary,[tabindex],.au-learning-record) { scroll-margin-top:calc(var(--au-header-height,64px) + var(--au-now-height,0px) + 20px); }
 
 .au-workspace .au-quiet-claim > .au-now { position:sticky; top:var(--au-header-height,64px); z-index:11; background:var(--au-field); }
@@ -1158,3 +1158,116 @@ html[data-autonomous-workspace=true] { scroll-padding-top:100px; }
   .au-workspace .au-demo-pick > :is(.au-demo-pick-state,.au-link) { grid-column:2; justify-self:start; }
   .au-workspace .au-demo-pick > .au-demo-sources { grid-column:3; }
 }
+
+/* Documents read as a causal checklist: name, then the recorded route and the step it belongs to.
+   The route keeps row 1 and any review row 2 of the second column, so the two never share a cell. */
+.au-workspace .au-documents > h2 { margin-bottom:4px; }
+.au-workspace .au-document-count { margin:0 0 14px; color:var(--au-muted); font-size:16px; }
+.au-workspace .au-documents > .au-secondary { margin-top:18px; }
+.au-workspace .au-document-checklist > .au-obligation { padding:10px 0; }
+.au-workspace .au-obligation > .au-document-row { display:grid; grid-template-columns:minmax(180px,.75fr) minmax(0,1.25fr); align-items:baseline; gap:4px 28px; min-height:32px; padding:4px 0; }
+.au-workspace .au-obligation > .au-document-row > .au-document-name { grid-column:1; grid-row:1 / 3; font-size:18px; font-weight:450; letter-spacing:-.25px; }
+.au-workspace .au-obligation > .au-document-row > button.au-document-name { justify-content:flex-start; min-height:32px; padding:0; text-align:left; }
+.au-workspace .au-obligation > .au-document-row > .au-document-route { grid-column:2; grid-row:1; color:var(--au-ink); font-size:16px; line-height:1.5; }
+.au-workspace .au-obligation > .au-document-row > .au-document-review { grid-column:2; grid-row:2; color:var(--au-muted); font-size:16px; line-height:1.45; }
+.au-workspace .au-document-route-label { font-weight:500; }
+.au-workspace .au-obligation[data-au-route-group=waiting] .au-document-route-label { color:var(--au-amber); }
+.au-workspace .au-obligation[data-au-route-group=supplied] .au-document-route-label { color:var(--au-green); }
+.au-workspace .au-obligation:is([data-au-route-group=not_needed],[data-au-route-group=optional]) :is(.au-document-route,.au-document-name) { color:var(--au-muted); }
+.au-workspace .au-document-step { display:inline; min-height:0; padding:0; border:0; background:transparent; color:inherit; font:inherit; text-align:left; text-decoration:underline; text-underline-offset:4px; }
+.au-workspace .au-obligation[data-selected=true] .au-document-name { color:var(--au-accent); }
+@media (pointer:coarse) {
+  .au-workspace .au-document-step { display:inline-flex; align-items:center; vertical-align:baseline; }
+}
+@media (max-width:700px) {
+  .au-workspace .au-obligation > .au-document-row { grid-template-columns:minmax(0,1fr); gap:2px; }
+  .au-workspace .au-obligation > .au-document-row > :is(.au-document-name,.au-document-route,.au-document-review) { grid-column:1; grid-row:auto; }
+  .au-workspace :is(.au-document-open,.au-document-choice) { grid-template-columns:minmax(0,1fr); gap:5px; }
+  .au-workspace :is(.au-document-open,.au-document-choice) > span:not(.au-meta,.au-document-decision) { grid-column:1; grid-row:auto; }
+}
+
+/* Original files are readable in place: a PDF gets a wide, tall frame; an image stays within one screen. */
+.au-workspace dialog.au-source-dialog:has(.au-native-source[data-au-native-kind=document]) { width:min(1200px,calc(100% - 56px)); }
+.au-workspace .au-native-source :is(iframe,object) { height:500px; max-height:calc(100dvh - 220px); min-height:360px; background:var(--au-paper); }
+.au-workspace .au-native-source img { max-height:min(560px,calc(100dvh - 200px)); }
+@media (max-width:640px) {
+  .au-workspace dialog.au-source-dialog:has(.au-native-source[data-au-native-kind=document]) { width:calc(100% - 20px); }
+  .au-workspace .au-native-source :is(iframe,object) { height:max(360px,55dvh); max-height:none; }
+  .au-workspace .au-native-source img { max-height:min(560px,70dvh); }
+}
+
+/* Each step shows one state from the returned evaluation: ✓ done, a dotted ring active,
+   an open ring unresolved and a dashed ring not activated or excluded. The glyph sits inside its dot. */
+.au-workspace .au-evidence-junction { line-height:1; font-size:12px; font-weight:700; overflow:hidden; }
+.au-workspace .au-forming-process .au-evidence-junction { font-size:9px; }
+.au-workspace .au-stage-process .au-evidence-junction { font-size:11px; }
+.au-workspace :is(.au-node,.au-graph-legend-item)[data-au-node-state=done] .au-evidence-junction { border-color:var(--au-ink); background:var(--au-ink); color:var(--au-paper); }
+.au-workspace :is(.au-node,.au-graph-legend-item)[data-au-node-state=active] .au-evidence-junction { border-color:var(--au-ink); background:radial-gradient(circle,var(--au-ink) 0 2.5px,transparent 3px) var(--au-field); color:transparent; }
+.au-workspace :is(.au-node,.au-graph-legend-item)[data-au-node-state=open] .au-evidence-junction { border-style:solid; border-color:#6f8577; background:var(--au-field); color:transparent; }
+.au-workspace :is(.au-node,.au-graph-legend-item)[data-au-node-state=inactive] .au-evidence-junction { border-style:dashed; border-color:#6f8577; background:transparent; color:transparent; }
+.au-workspace .au-node[aria-pressed=true][data-au-node-state] .au-evidence-junction { box-shadow:0 0 0 2px var(--au-field),0 0 0 3.5px var(--au-accent); }
+.au-workspace .au-graph-legend { display:flex; flex-wrap:wrap; align-items:center; gap:4px 18px; margin:8px 0 0; color:var(--au-muted); font-size:16px; line-height:1.5; }
+.au-workspace .au-graph-legend-item { display:inline-flex; align-items:center; gap:6px; }
+.au-workspace .au-graph-legend-item .au-evidence-junction { display:inline-grid; place-items:center; flex:0 0 14px; width:14px; height:14px; margin:0; border:1px solid #6f8577; border-radius:50%; font-size:9px; }
+/* Edges leave and enter at the node boxes, so they stay visible in the gaps between steps.
+   Steps align to the top of their rank, so no empty band opens above a shorter step. */
+.au-workspace .au-process-hero .au-graph { padding-top:4px; }
+.au-workspace .au-process-hero .au-graph-rank { justify-content:flex-start; }
+@media (max-width:900px) {
+  .au-workspace .au-process-hero.au-evidence-process { padding-top:0; }
+  .au-workspace .au-process-hero .au-graph-chrome { min-height:0; }
+}
+
+/* Open all steps: the complete process wraps into rows that fit the page, with no sideways panning. */
+.au-workspace .au-process-hero.au-evidence-process:has(> .au-graph-viewport[data-au-graph-expanded=true]) { max-width:none; }
+.au-workspace .au-process-hero .au-graph-viewport[data-au-graph-expanded=true] { height:auto; max-height:none; overflow:visible; }
+.au-workspace .au-process-hero .au-graph-viewport[data-au-graph-expanded=true] > .au-graph { display:grid; grid-template-columns:repeat(auto-fill,minmax(184px,1fr)); align-items:start; gap:40px; width:100%; min-width:0; min-height:0; padding:24px 28px 8px; }
+.au-workspace .au-process-hero .au-graph-viewport[data-au-graph-expanded=true] .au-graph-rank { justify-content:flex-start; gap:14px; min-width:0; }
+.au-workspace .au-process-hero .au-graph-viewport[data-au-graph-expanded=true] .au-node { width:100%; min-height:0; }
+@media (max-width:640px) {
+  .au-workspace .au-process-hero .au-graph-viewport[data-au-graph-expanded=true] > .au-graph { grid-template-columns:repeat(auto-fill,minmax(136px,1fr)); gap:32px 28px; padding:16px 20px 8px; }
+  .au-workspace .au-process-hero .au-graph-viewport[data-au-graph-expanded=true] .au-node { gap:6px; padding-inline:2px; }
+}
+.au-workspace .au-process-hero .au-graph-viewport[data-au-graph-expanded=true] .au-node-relation { display:none; }
+.au-workspace .au-node-condition > span { white-space:nowrap; }
+
+/* Fixed chrome stays small: the nav joins the brand row from 541px, a returning case is one line
+   ("← case") beside the brand on phones, and a short landscape screen keeps its header in the page. */
+.au-workspace .au-case-return-compact { display:none; }
+@media (max-width:900px) {
+  .au-workspace .au-identity-header { display:flex; flex-wrap:wrap; align-items:center; gap:0 14px; padding:0 20px; }
+  .au-workspace .au-identity-header .au-brand { order:0; flex:none; font-size:22px; }
+  .au-workspace .au-identity-header .au-brand > span { display:none; }
+  .au-workspace .au-identity-header :is(.au-header-new,.au-access-label) { order:2; flex:none; }
+  .au-workspace .au-identity-header .au-header-new { min-height:38px; padding:6px 10px; white-space:nowrap; }
+  .au-workspace .au-identity-header .au-nav { order:3; display:flex; flex-wrap:nowrap; align-self:stretch; gap:14px; margin-left:auto; }
+  .au-workspace .au-identity-header .au-nav :is(button,a) { grid-row:auto; grid-column:auto; min-height:44px; margin:0; padding:8px 0; white-space:nowrap; }
+  .au-workspace .au-identity-header .au-case-return { order:4; flex:1 1 100%; flex-wrap:nowrap; align-items:center; min-width:0; max-width:100%; padding:0 0 6px; gap:4px 16px; contain:inline-size; }
+  .au-workspace .au-identity-header .au-case-return-label { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .au-workspace .au-identity-header .au-case-return button { flex:none; }
+}
+@media (max-width:700px) {
+  .au-workspace .au-identity-header { gap:0 10px; }
+  .au-workspace .au-identity-header .au-nav { gap:12px; }
+  .au-workspace .au-identity-header .au-header-new { padding:6px 8px; }
+  .au-workspace .au-identity-header .au-case-return { order:1; flex:1 1 0; min-width:min(6em,100%); padding:0; }
+  .au-workspace .au-identity-header .au-case-return > :not(.au-case-return-compact) { display:none; }
+  .au-workspace .au-identity-header .au-case-return-compact { display:inline-flex; flex:0 1 auto; align-items:center; gap:6px; min-width:0; max-width:100%; min-height:44px; padding:0; overflow:hidden; color:var(--au-ink); white-space:nowrap; text-decoration:none; }
+  .au-workspace .au-case-return-compact .au-case-return-name { min-width:0; overflow:hidden; text-overflow:ellipsis; text-decoration:underline; text-underline-offset:4px; }
+}
+@media (max-width:540px) {
+  .au-workspace .au-identity-header { gap:0 10px; padding:8px 16px 0; }
+  .au-workspace .au-identity-header .au-case-return { min-width:0; }
+  .au-workspace .au-identity-header :is(.au-header-new,.au-access-label) { margin-left:auto; }
+  .au-workspace .au-identity-header .au-nav { flex:1 1 100%; display:grid; grid-template-columns:minmax(max-content,1fr) minmax(max-content,1.3fr) minmax(max-content,1fr); column-gap:8px; margin:4px 0 0; }
+  .au-workspace .au-identity-header .au-nav :is(button,a) { justify-content:center; }
+}
+@media (max-height:500px) {
+  .au-workspace :is(.au-identity-header,.au-header) { position:static; }
+  .au-workspace .au-quiet-claim > .au-now { position:static; }
+}
+/* While a case plays on a phone, only what changes stays in view: the replay row and the Now line. */
+@media (max-width:700px) {
+  .au-workspace:has(.au-quiet-claim > :is(.au-demo-transport,.au-now:not(.au-last))) .au-identity-header { position:static; }
+}
+.au-workspace .au-stage-process .au-node[data-au-node-state=planned] .au-evidence-junction { background:var(--au-field); }
