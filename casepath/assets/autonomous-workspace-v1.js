@@ -875,20 +875,25 @@
     return render(expression);
   }
   const routeLabel = value => ['true','applied','active'].includes(value) ? 'Applies' : ['false','excluded','inactive'].includes(value) ? 'Excluded' : 'Unresolved';
-  // One visible state per step, read from the returned evaluation: done (✓),
-  // active (ring with a dot), open (empty ring: unresolved) and inactive
+  // One visible state per step, read from the returned evaluation: done (✓)
+  // only for a completion the evaluation accepts; review (!) for a recorded
+  // completion it flags as inconsistent (a prerequisite, condition or document
+  // is still open, so the API asks to review the completed step); active (ring
+  // with a dot: applies, not done); open (empty ring: unresolved); inactive
   // (dashed ring: not activated or excluded).
   const DONE_NODE_STATES = ['completed','complete','resolved','established','satisfied'];
   function graphNodeState(evaluated = {}) {
     const execution = evaluated.execution_state || evaluated.state;
-    if (DONE_NODE_STATES.includes(execution) || evaluated.effective_completed === true && execution !== 'provisional') return 'done';
+    if (evaluated.inconsistent_completion === true && !['completed','provisional','planned'].includes(execution)) return 'review';
+    if (DONE_NODE_STATES.includes(execution)) return 'done';
     if (['false','excluded','inactive'].includes(evaluated.activation)) return 'inactive';
     return ['true','applied','active'].includes(evaluated.activation) ? 'active' : 'open';
   }
-  const GRAPH_LEGEND = [['done','completed'],['active','active'],['open','unresolved'],['inactive','does not apply']];
+  const NODE_REVIEW_LABEL = 'Marked complete, needs review';
+  const GRAPH_LEGEND = [['done','✓','completed','completed'],['review','!','marked complete, needs review','marked complete, need review'],['active','','applies, not done','apply, not done'],['open','','unresolved','unresolved'],['inactive','','does not apply','do not apply']];
   function graphLegendMarkup(states) {
-    const rows = GRAPH_LEGEND.filter(([id]) => states.includes(id)).map(([id,label]) => `<span class="au-graph-legend-item" data-au-node-state="${id}"><span class="au-evidence-junction" aria-hidden="true">${id === 'done' ? '✓' : ''}</span>${states.filter(row => row === id).length} ${label}</span>`);
-    return rows.length ? `<p class="au-graph-legend" aria-label="Step states">${rows.join('')}</p>` : '';
+    const rows = GRAPH_LEGEND.filter(([id]) => states.includes(id)).map(([id,glyph,one,many]) => { const count = states.filter(row => row === id).length; return `<li class="au-graph-legend-item" data-au-node-state="${id}"><span class="au-evidence-junction" aria-hidden="true">${glyph}</span>${count} ${count === 1 ? one : many}</li>`; });
+    return rows.length ? `<ul class="au-graph-legend" role="list" aria-label="Step states">${rows.join('')}</ul>` : '';
   }
   function graphMarkup(state, selected, projection = {}, options = {}) {
     if (!state.graph) return '';
@@ -905,9 +910,9 @@
       const labels = conditional.map(edge => `<span class="au-node-condition" data-au-edge-label="${h(edge.edge_id)}" data-state="${h(edgeState(state,edge.edge_id))}">${h(conditionLabel(state,edge.condition) || plain(edge.label || words(edge.relation),'Recorded path'))}<span>${h(routeLabel(edgeState(state,edge.edge_id)))}</span></span>`).join('');
       const ownCondition = !conditional.length && !incoming.length && conditionLabel(state,node.condition);
 
-      const visibleStatus = options.working ? evaluated.activation && (selected === node.node_id || evaluated.activation === 'false') ? `When it applies · ${routeLabel(evaluated.activation)}` : '' : ['false','excluded'].includes(evaluated.activation) && !conditional.length ? 'Does not apply' : selected === node.node_id && ['completed','complete','resolved','ready','blocked','running','working','queued','paused','failed','deferred'].includes(status) ? statusLabel(status) : '';
+      const visibleStatus = options.working ? evaluated.activation && (selected === node.node_id || evaluated.activation === 'false') ? `When it applies · ${routeLabel(evaluated.activation)}` : '' : nodeState === 'review' ? NODE_REVIEW_LABEL : ['false','excluded'].includes(evaluated.activation) && !conditional.length ? 'Does not apply' : selected === node.node_id && ['completed','complete','resolved','ready','blocked','running','working','queued','paused','failed','deferred'].includes(status) ? statusLabel(status) : '';
       const readiness = options.working && selected === node.node_id ? workingReadiness(evaluated,state.graph) : '';
-      const nodeHTML = `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}"${options.stage?.planned ? ' data-au-planned-node disabled' : ''}${inspection ? ` data-au-inspect="operation" data-au-record-id="${h(inspection.id)}" data-au-operation-id="${h(inspection.id)}" data-au-working-graph-sha="${h(options.working.graph.graph_sha256)}" data-au-working-scope="${h(options.working.inspect.id)}" data-au-working-evaluation-sha="${h(options.working.inspect.result.evaluation_sha256)}" data-au-operation-stage="${h(options.working.stage)}"` : ''} data-au-neighborhood="${neighborhood.has(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" data-au-node-state="${nodeState}" aria-pressed="${selected === node.node_id}" aria-label="${h(name(node))}. ${h(options.stage ? options.stage.planned ? 'Planned step; source support is not yet assessed' : status === 'completed' ? 'Completed' : options.working ? 'Awaiting verification' : 'Awaiting source support' : options.working ? evaluated.activation ? `When this applies: ${routeLabel(evaluated.activation)}${readiness ? `. ${readiness}` : ''}` : 'Step awaiting a check' : statusLabel(status))}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}" aria-hidden="true">${nodeState === 'done' ? '✓' : ''}</span><span class="au-node-copy"><span class="au-node-relation"${neighborhood.has(node.node_id) ? '' : ' hidden'}>${neighborhood.has(node.node_id) ? node.node_id === selected ? 'This decision' : layout.parents.get(selected)?.includes(node.node_id) ? 'Before' : 'Then' : ''}</span>${options.stage ? '' : labels}${ownCondition && !options.stage ? `<span class="au-node-condition" data-au-node-condition="${h(node.node_id)}">${h(ownCondition)}<span>${h(routeLabel(evaluated.activation))}</span></span>` : ''}${options.stage && stepRole(node,options.stage.state,options.stage.trace) ? `<span class="au-step-role" data-au-role="${stepRole(node,options.stage.state,options.stage.trace)}" aria-hidden="true"><span class="au-role-shape"></span></span>` : ''}<strong class="au-node-title">${h(name(node))}</strong>${visibleStatus && !options.stage ? `<span class="au-node-state">${h(visibleStatus)}</span>` : ''}${readiness && !options.stage ? `<span class="au-node-state" data-au-working-readiness>${h(readiness)}</span>` : ''}</span></button>`;
+      const nodeHTML = `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}"${options.stage?.planned ? ' data-au-planned-node disabled' : ''}${inspection ? ` data-au-inspect="operation" data-au-record-id="${h(inspection.id)}" data-au-operation-id="${h(inspection.id)}" data-au-working-graph-sha="${h(options.working.graph.graph_sha256)}" data-au-working-scope="${h(options.working.inspect.id)}" data-au-working-evaluation-sha="${h(options.working.inspect.result.evaluation_sha256)}" data-au-operation-stage="${h(options.working.stage)}"` : ''} data-au-neighborhood="${neighborhood.has(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" data-au-node-state="${nodeState}" aria-pressed="${selected === node.node_id}" aria-label="${h(name(node))}. ${h(options.stage ? options.stage.planned ? 'Planned step; source support is not yet assessed' : status === 'completed' ? 'Completed' : options.working ? 'Awaiting verification' : 'Awaiting source support' : options.working ? evaluated.activation ? `When this applies: ${routeLabel(evaluated.activation)}${readiness ? `. ${readiness}` : ''}` : 'Step awaiting a check' : statusLabel(status))}${nodeState === 'review' ? '. Marked complete; needs review' : ''}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}" aria-hidden="true">${nodeState === 'done' ? '✓' : nodeState === 'review' ? '!' : ''}</span><span class="au-node-copy"><span class="au-node-relation"${neighborhood.has(node.node_id) ? '' : ' hidden'}>${neighborhood.has(node.node_id) ? node.node_id === selected ? 'This decision' : layout.parents.get(selected)?.includes(node.node_id) ? 'Before' : 'Then' : ''}</span>${options.stage ? '' : labels}${ownCondition && !options.stage ? `<span class="au-node-condition" data-au-node-condition="${h(node.node_id)}">${h(ownCondition)}<span>${h(routeLabel(evaluated.activation))}</span></span>` : ''}${options.stage && stepRole(node,options.stage.state,options.stage.trace) ? `<span class="au-step-role" data-au-role="${stepRole(node,options.stage.state,options.stage.trace)}" aria-hidden="true"><span class="au-role-shape"></span></span>` : ''}<strong class="au-node-title">${h(name(node))}</strong>${visibleStatus && !options.stage ? `<span class="au-node-state">${h(visibleStatus)}</span>` : ''}${readiness && !options.stage ? `<span class="au-node-state" data-au-working-readiness>${h(readiness)}</span>` : ''}</span></button>`;
       return options.stage ? `<div class="au-stage-step" data-au-stage-step="${h(node.node_id)}" data-au-stage-active="${selected === node.node_id}">${nodeHTML}${selected === node.node_id && options.stage.excerpt ? `<div class="au-forming-reading au-stage-source">${options.stage.excerpt}</div>` : ''}${stageNodeContents(node,options.stage.state,options.stage.trace,options.working,options.stage.map,options.stage.planned ? state.graph : null,options.stage.reuse)}</div>` : nodeHTML;
     }).join('')}</div>`).join('')}</div></div>${legend}`;
   }
@@ -936,13 +941,16 @@
   function documentRouteGroup(route, review) {
     if (route === 'needed_now') return 'now';
     if (['established','satisfied'].includes(route) || review === 'sufficient' && SUPPLIED_ROUTES.includes(route)) return 'supplied';
-    if (['needed_later','held_behind_question'].includes(route)) return 'waiting';
+    // A requirement held behind an open question is counted as it reads, "may be needed",
+    // not as certain and merely waiting on its step.
+    if (route === 'needed_later') return 'waiting';
+    if (route === 'held_behind_question') return 'maybe';
     return route === 'held_not_reviewed' ? 'checking' : route === 'optional' ? 'optional' : route === 'not_needed' ? 'not_needed' : 'other';
   }
   function documentCountLine(groups) {
     const count = group => groups.filter(row => row === group).length;
     const extras = [['checking','to check'],['optional','optional'],['not_needed','not required'],['other','without a recorded route']].filter(([group]) => count(group)).map(([group,label]) => `${count(group)} ${label}`);
-    return [`${count('now')} needed now`,`${count('waiting')} waiting on a step`,`${count('supplied')} supplied`,...extras].join(' · ');
+    return [`${count('now')} needed now`,`${count('waiting')} waiting on a step`,...count('maybe') ? [`${count('maybe')} may be needed`] : [],`${count('supplied')} supplied`,...extras].join(' · ');
   }
   function documentChecklistMarkup(state, rows, documents, context = {}) {
     const nodes = list(state.graph?.nodes), groups = [];
@@ -953,13 +961,16 @@
       groups.push(group);
       const [state_, connector, suffix = ''] = supplied ? ['Supplied','sufficient for'] : DOCUMENT_ROUTE_COPY[route] || [statusLabel(route),'for'];
       const stepName = requiring ? name(nodes.find(node => node.node_id === requiring)) : '';
-      const step = requiring ? ` · ${connector ? `${h(connector)} ` : ''}<button type="button" class="au-link au-document-step" data-au-select="${h(requiring)}" data-au-select-document="${h(obligation.document_type)}" data-au-select-obligation="${h(identity)}" data-au-select-fact="${h(fact || '')}" aria-label="${h(stepName)} · step for ${h(label)}">${h(stepName)}</button>${h(suffix)}` : '.';
+      // The connector travels inside the step control, so a narrow line never ends on a dangling
+      // "depends on"; on phones the control takes its own line under the route.
+      const stepWords = [connector,stepName,suffix.trim()].filter(Boolean).join(' ');
+      const step = requiring ? `<span class="au-document-sep"> · </span><button type="button" class="au-link au-document-step" data-au-select="${h(requiring)}" data-au-select-document="${h(obligation.document_type)}" data-au-select-obligation="${h(identity)}" data-au-select-fact="${h(fact || '')}" aria-label="${h(stepWords)} (step for ${h(label)})">${connector ? `<span class="au-document-connector">${h(connector)}</span> ` : ''}<span class="au-document-step-name">${h(stepName)}</span>${suffix ? ` <span class="au-document-connector">${h(suffix.trim())}</span>` : ''}</button>` : '.';
       const routeLine = `<span class="au-document-state au-document-route" data-route="${h(route)}"${supplied ? ' data-au-review="sufficient"' : ''}><span class="au-document-route-label">${h(state_)}</span>${supplied ? ' <span aria-hidden="true">✓</span>' : ''}${step}</span>`;
       // A missing review adds nothing beside a route that already says the
       // document is not in hand, except where it is needed now.
       const reviewLine = supplied || !review || ['missing','unreviewed','unresolved'].includes(review) && route !== 'needed_now' ? '' : documentReviewMarkup(review);
       const title = requiring ? `<strong class="au-document-name">${h(label)}</strong>` : `<button type="button" class="au-link au-document-name au-document-record" data-au-inspect="requirement" data-au-record-id="${h(identity)}">${h(label)}</button>`;
-      return `<li class="au-obligation" data-au-obligation="${h(identity)}" data-au-document="${h(obligation.document_type)}" data-status="${h(route)}" data-au-route-group="${group}"${context.obligation === identity ? ' data-selected="true"' : ''}><div class="au-document-row">${title}${routeLine}${reviewLine}</div></li>`;
+      return `<li class="au-obligation" data-au-obligation="${h(identity)}" data-au-document="${h(obligation.document_type)}" data-status="${h(route)}" data-au-route-group="${group}"${context.obligation === identity ? ' data-selected="true" aria-current="true"' : ''}><div class="au-document-row">${title}${routeLine}${reviewLine}</div></li>`;
     });
     return `<p class="au-document-count" data-au-document-count>${h(documentCountLine(groups))}</p><ul class="au-obligations au-document-checklist">${items.join('')}</ul>`;
   }
@@ -2630,7 +2641,7 @@
     const collection = {search:'',filter:'all',domain:'all',scope:'originals',page:1};
     container.classList.add('au-workspace');
     container.removeAttribute('data-au-keyboard');
-    container.innerHTML = `<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Follow the documents</span></a>${publicReadOnly ? '' : '<button type="button" class="au-header-new" data-au-nav="intake">New claim <span aria-hidden="true">↗</span></button>'}<span class="au-access-label" data-au-public-access${publicReadOnly ? '' : ' hidden'}>View only</span><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav><div class="au-case-return" data-au-case-return hidden></div></header><${mainTag} class="au-main"><div class="au-global-status"></div><p class="au-visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-au-announcement></p><div data-au-role-legend hidden>${roleExplanationMarkup()}</div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog><dialog class="au-record-dialog" aria-labelledby="auRecordTitle"><header class="au-dialog-header"><h2 id="auRecordTitle">Details</h2><button type="button" class="au-secondary" data-au-close-record>Close</button></header><div data-au-record-content></div></dialog>`;
+    container.innerHTML = `<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Follow the documents</span></a>${publicReadOnly ? '' : '<button type="button" class="au-header-new" data-au-nav="intake" aria-label="New claim">New<span class="au-header-new-noun"> claim</span> <span aria-hidden="true">↗</span></button>'}<span class="au-access-label" data-au-public-access${publicReadOnly ? '' : ' hidden'}>View only</span><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav><div class="au-case-return" data-au-case-return hidden></div></header><${mainTag} class="au-main"><div class="au-global-status"></div><p class="au-visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-au-announcement></p><div data-au-role-legend hidden>${roleExplanationMarkup()}</div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog><dialog class="au-record-dialog" aria-labelledby="auRecordTitle"><header class="au-dialog-header"><h2 id="auRecordTitle">Details</h2><button type="button" class="au-secondary" data-au-close-record>Close</button></header><div data-au-record-content></div></dialog>`;
     const host = container.querySelector('[data-au-view]'), globalStatus = container.querySelector('.au-global-status'), dialog = container.querySelector('.au-source-dialog'), recordDialog = container.querySelector('.au-record-dialog');
     function announceRecorded(message) { const live=container.querySelector('[data-au-announcement]');if(live)live.textContent=message; }
     function notice(message, error = false, category = null) {
@@ -2927,9 +2938,19 @@
         const wrapped = graph.dataset.orientation === 'horizontal' && !host.querySelector('.au-operation-stage') && graph.closest?.('[data-au-graph-pan]')?.dataset.auGraphExpanded === 'true';
         const rowTops = wrapped ? [...new Set([...ranks.values()].filter(rect => rect.height).map(rect => Math.round(rect.top)))].sort((a,b) => a-b) : [];
         const rowBottom = top => Math.max(...[...ranks.values()].filter(rect => rect.height && Math.round(rect.top) === top).map(rect => rect.bottom));
+        // A single column (a narrow phone) keeps every edge in the left gutter: out of the source's dot,
+        // down, and into the target's dot, instead of looping out to the right and back.
+        const columnLefts = wrapped ? new Set([...ranks.values()].filter(rect => rect.height).map(rect => Math.round(rect.left))) : null;
+        const singleColumn = Boolean(columnLefts && columnLefts.size === 1 && ranks.size > 1);
+        const gutter = singleColumn ? Math.min(...[...nodes.values()].map(node => node.bounds.left)) - frame.left : 0;
         graphPaths = list(displayed.graph.edges).map((edge,index) => {
           const from = nodes.get(edge.source_node_id), to = nodes.get(edge.target_node_id); if (!from || !to || !from.bounds.width || !from.bounds.height || !to.bounds.width || !to.bounds.height) return null;
           const vertical = graph.dataset.orientation === 'vertical';
+          if (singleColumn) {
+            const sx = from.bounds.left-frame.left, sy = from.bounds.top+from.bounds.height/2-frame.top, tx = to.bounds.left-frame.left-1, ty = to.bounds.top+to.bounds.height/2-frame.top;
+            const lane = Math.max(2,gutter-7-Math.min(Math.max(0,to.rank-from.rank-1),2)*4);
+            return {id:edge.edge_id,d:orthogonalPath([[sx,sy],[lane,sy],[lane,ty],[tx,ty]],5),state:edgeState(displayed,edge.edge_id),selected:edge.source_node_id === graphSelected || edge.target_node_id === graphSelected};
+          }
           if (wrapped) {
             const source = ranks.get(from.rank), target = ranks.get(to.rank), offset = (index%3)*5, sourceTop = Math.round(source.top), sameRow = sourceTop === Math.round(target.top);
             const sx = from.box.right-frame.left, sy = from.bounds.top+from.bounds.height/2-frame.top, tx = to.bounds.left-frame.left-1, ty = to.bounds.top+to.bounds.height/2-frame.top;
@@ -3164,6 +3185,17 @@
       control.textContent = overview ? expanded ? 'Close larger process' : 'Open all steps' : expanded ? 'Close full process' : 'Open all steps';
       host.querySelector('.au-evidence-process')?.setAttribute('aria-label',expanded || overview ? 'Complete process' : 'Decision neighborhood');
       syncGraphViewport();
+    }
+    // The complete process opens into view: the whole frame when it fits below the sticky chrome,
+    // otherwise its top, and always the chosen step. One scroll, smooth only without reduced motion.
+    function revealExpandedProcess() {
+      const viewport = host.querySelector('[data-au-graph-pan][data-au-graph-expanded="true"]'), frame = viewport?.getBoundingClientRect?.();
+      if (!frame || !Number.isFinite(root.innerHeight)) return;
+      const node = [...viewport.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected)?.getBoundingClientRect?.();
+      const top = parseFloat(root.getComputedStyle?.(doc.documentElement)?.scrollPaddingTop) || 0, bottom = root.innerHeight - 12;
+      let delta = frame.bottom > bottom ? Math.min(frame.bottom-bottom,frame.top-top) : frame.top < top ? frame.top-top : 0;
+      if (node) { if (node.bottom-delta > bottom) delta = node.bottom-bottom; else if (node.top-delta < top) delta = node.top-top; }
+      if (Math.abs(delta) > 1) root.scrollBy?.({top:delta,behavior:reduced?.matches ? 'instant' : 'smooth'});
     }
     // A graph frame is a keyboard stop only while it actually scrolls; a
     // frame that shows everything is a labelled group, not a tab stop.
@@ -4869,8 +4901,7 @@
       else if (target.hasAttribute('data-au-add-files')) { pauseInspection(); setDetail('sources',true); }
       else if (target.hasAttribute('data-au-expand-process')) {
         pauseInspection(); const expanding = target.getAttribute('aria-expanded') !== 'true'; setGraphExpanded(expanding); drawEdges();
-        // The complete process opens around the chosen step.
-        if (expanding) [...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected)?.scrollIntoView?.({block:'nearest',inline:'nearest',behavior:reduced?.matches ? 'instant' : 'smooth'});
+        if (expanding) revealExpandedProcess();
       }
       else if (target.hasAttribute('data-au-detail')) {
         pauseInspection(); setDetail(target.dataset.auDetail);
@@ -5019,7 +5050,7 @@
     root.addEventListener?.('hashchange',routeChanged); root.addEventListener?.('popstate',routeChanged);
     function fitActiveStage() {
       host.querySelector('.au-operation-stage .au-graph-viewport')?.style.removeProperty('--au-stage-available-height');
-      measureChrome(); observeChrome();
+      headerReturn(); measureChrome(); observeChrome();
     }
     // Sticky chrome heights stay current: only chrome that actually sticks is
     // counted, and the case bands count only inside a claim. The page's scroll
@@ -5036,6 +5067,31 @@
       }
     }
     const chromeObserver = root.ResizeObserver ? new root.ResizeObserver(() => measureChrome()) : null;
+    // Phones, while a case plays: the header leaves the stack of sticky chrome so the replay row and
+    // the Now line stay small, and it comes back on the first upward touch or wheel scroll, so the
+    // navigation is always one gesture away. Focus-driven scrolling never brings it back over a
+    // focused control.
+    const phoneChrome = root.matchMedia?.('(max-width:700px)');
+    let chromeY = root.scrollY || 0, chromeFrame = 0, scrollIntent = 0;
+    function scrollIntentEvent() { scrollIntent = Date.now(); }
+    function chromeScroll() {
+      if (disposed || chromeFrame) return;
+      if (!root.requestAnimationFrame) { headerReturn(); return; }
+      chromeFrame = root.requestAnimationFrame(() => { chromeFrame = 0; headerReturn(); });
+    }
+    function headerReturn() {
+      const header = container.querySelector('.au-identity-header'); if (disposed || !header) return;
+      const y = root.scrollY || 0, playing = Boolean(phoneChrome?.matches && view === 'claim' && container.querySelector('.au-quiet-claim > :is(.au-demo-transport,.au-now:not(.au-last))'));
+      const was = Boolean(header.hasAttribute?.('data-au-header-return'));
+      let back = was;
+      if (!playing || y <= 0) back = false;
+      else if (y < chromeY - 4) back = back || Date.now() - scrollIntent < 700;
+      else if (y > chromeY + 4) back = false;
+      if (Math.abs(y - chromeY) > 4 || !playing) chromeY = y;
+      if (back !== was) { if (back) header.setAttribute?.('data-au-header-return',''); else header.removeAttribute?.('data-au-header-return'); measureChrome(); }
+    }
+    root.addEventListener?.('scroll',chromeScroll,{passive:true});
+    for (const type of ['wheel','touchmove']) doc.addEventListener?.(type,scrollIntentEvent,{passive:true});
     function observeChrome() {
       if (!chromeObserver || disposed) return;
       chromeObserver.disconnect();
@@ -5062,7 +5118,7 @@
       drawEdges(); positionOperationAttention();
     }
     const resize = root.ResizeObserver ? new root.ResizeObserver(resized) : null; resize?.observe(host); root.addEventListener?.('resize',resized);
-    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),savedSnapshotReady:savedSnapshotLoad=Promise.resolve().then(loadSavedSnapshot),refresh:poll,destroy() { if (disposed) return; disposed = true; discardKnowledgeOpening(); cancelLearning(); packetLoadController?.abort(); savedSnapshotController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();chromeObserver?.disconnect();for (const [name] of CHROME) doc.documentElement?.style?.removeProperty?.(`--au-${name}-height`);container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',focusInput); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
+    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),savedSnapshotReady:savedSnapshotLoad=Promise.resolve().then(loadSavedSnapshot),refresh:poll,destroy() { if (disposed) return; disposed = true; discardKnowledgeOpening(); cancelLearning(); packetLoadController?.abort(); savedSnapshotController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();chromeObserver?.disconnect();if (chromeFrame) root.cancelAnimationFrame?.(chromeFrame);root.removeEventListener?.('scroll',chromeScroll);for (const type of ['wheel','touchmove']) doc.removeEventListener?.(type,scrollIntentEvent);for (const [name] of CHROME) doc.documentElement?.style?.removeProperty?.(`--au-${name}-height`);container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',focusInput); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
     mounts.set(container,controller); activeMount = controller;
     sessionRestore = restoreReadCache();
     if (options.recordedPacket) packetAcquisition = {promise:controller.recordedPacketReady.then(ready => { if (!ready) throw new Error('The recorded packet asset is unavailable.'); return recordedPacket; })};

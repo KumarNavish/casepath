@@ -137,7 +137,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-nav [aria-current] { color:var(--au-ink); border-bottom-color:var(--au-ink); }
 .au-workspace .au-nav [data-au-nav=intake] { min-height:38px; padding:7px 12px; margin-left:16px; border:1px solid var(--au-line); color:var(--au-ink); }
 .au-workspace .au-header-new { min-height:38px; border:1px solid var(--au-line); padding:7px 12px; background:transparent; font-size:16px; }
-.au-workspace .au-header-new span { margin-left:5px; }
+.au-workspace .au-header-new span[aria-hidden] { margin-left:5px; }
 .au-workspace .au-case-return { flex:1 1 100%; display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 16px; padding:4px 0 10px; color:var(--au-muted); font-size:16px; }
 .au-workspace .au-case-return button { min-height:30px; border:0; padding:3px 0; background:transparent; font-size:16px; text-decoration:underline; text-underline-offset:4px; }
 .au-workspace .au-main { width:100%; max-width:1440px; min-width:0; margin:0 auto; padding:30px 36px 64px; }
@@ -1171,13 +1171,24 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 .au-workspace .au-obligation > .au-document-row > .au-document-route { grid-column:2; grid-row:1; color:var(--au-ink); font-size:16px; line-height:1.5; }
 .au-workspace .au-obligation > .au-document-row > .au-document-review { grid-column:2; grid-row:2; color:var(--au-muted); font-size:16px; line-height:1.45; }
 .au-workspace .au-document-route-label { font-weight:500; }
-.au-workspace .au-obligation[data-au-route-group=waiting] .au-document-route-label { color:var(--au-amber); }
+.au-workspace .au-obligation:is([data-au-route-group=waiting],[data-au-route-group=maybe]) .au-document-route-label { color:var(--au-amber); }
 .au-workspace .au-obligation[data-au-route-group=supplied] .au-document-route-label { color:var(--au-green); }
 .au-workspace .au-obligation:is([data-au-route-group=not_needed],[data-au-route-group=optional]) :is(.au-document-route,.au-document-name) { color:var(--au-muted); }
-.au-workspace .au-document-step { display:inline; min-height:0; padding:0; border:0; background:transparent; color:inherit; font:inherit; text-align:left; text-decoration:underline; text-underline-offset:4px; }
-.au-workspace .au-obligation[data-selected=true] .au-document-name { color:var(--au-accent); }
+.au-workspace .au-document-step { display:inline; min-height:0; padding:0; border:0; background:transparent; color:inherit; font:inherit; text-align:left; text-decoration:none; }
+.au-workspace .au-document-step-name { text-decoration:underline; text-underline-offset:4px; }
+/* Where the route column is too narrow for one sentence, it reads as two lines: the state, then the
+   step it depends on, so no line ends on a dangling separator or "depends on". */
+.au-workspace .au-obligation > .au-document-row > .au-document-route { container-type:inline-size; }
+@container (max-width:560px) {
+  .au-workspace .au-document-route > .au-document-sep { display:none; }
+  .au-workspace .au-document-route > .au-document-step { display:block; width:fit-content; max-width:100%; min-height:32px; padding-block:4px; }
+}
+/* The document in focus is marked by a rule beside its row, not by recolouring its name (red reads as an error). */
+.au-workspace .au-document-checklist > .au-obligation[data-selected=true] { margin-left:-15px; padding-left:12px; border-left:3px solid var(--au-ink); }
+.au-workspace .au-document-checklist > .au-obligation[data-selected=true] .au-document-name { color:var(--au-ink); }
 @media (pointer:coarse) {
-  .au-workspace .au-document-step { display:inline-flex; align-items:center; vertical-align:baseline; }
+  /* A touch target grows around the words instead of pulling the step onto its own line. */
+  .au-workspace .au-document-step { display:inline-block; padding-block:10px; vertical-align:baseline; }
 }
 @media (max-width:700px) {
   .au-workspace .au-obligation > .au-document-row { grid-template-columns:minmax(0,1fr); gap:2px; }
@@ -1205,8 +1216,11 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 .au-workspace :is(.au-node,.au-graph-legend-item)[data-au-node-state=active] .au-evidence-junction { border-color:var(--au-ink); background:radial-gradient(circle,var(--au-ink) 0 2.5px,transparent 3px) var(--au-field); color:transparent; }
 .au-workspace :is(.au-node,.au-graph-legend-item)[data-au-node-state=open] .au-evidence-junction { border-style:solid; border-color:#6f8577; background:var(--au-field); color:transparent; }
 .au-workspace :is(.au-node,.au-graph-legend-item)[data-au-node-state=inactive] .au-evidence-junction { border-style:dashed; border-color:#6f8577; background:transparent; color:transparent; }
+/* A recorded completion the evaluation does not accept is never drawn as done: an amber ring with "!". */
+.au-workspace :is(.au-node,.au-graph-legend-item)[data-au-node-state=review] .au-evidence-junction { border-style:solid; border-color:var(--au-amber); background:var(--au-paper); color:var(--au-amber); }
+.au-workspace .au-node[data-au-node-state=review] .au-node-state { color:var(--au-amber); }
 .au-workspace .au-node[aria-pressed=true][data-au-node-state] .au-evidence-junction { box-shadow:0 0 0 2px var(--au-field),0 0 0 3.5px var(--au-accent); }
-.au-workspace .au-graph-legend { display:flex; flex-wrap:wrap; align-items:center; gap:4px 18px; margin:8px 0 0; color:var(--au-muted); font-size:16px; line-height:1.5; }
+.au-workspace .au-graph-legend { display:flex; flex-wrap:wrap; align-items:center; gap:4px 18px; margin:8px 0 0; padding:0; list-style:none; color:var(--au-muted); font-size:16px; line-height:1.5; }
 .au-workspace .au-graph-legend-item { display:inline-flex; align-items:center; gap:6px; }
 .au-workspace .au-graph-legend-item .au-evidence-junction { display:inline-grid; place-items:center; flex:0 0 14px; width:14px; height:14px; margin:0; border:1px solid #6f8577; border-radius:50%; font-size:9px; }
 /* Edges leave and enter at the node boxes, so they stay visible in the gaps between steps.
@@ -1266,8 +1280,28 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
   .au-workspace :is(.au-identity-header,.au-header) { position:static; }
   .au-workspace .au-quiet-claim > .au-now { position:static; }
 }
-/* While a case plays on a phone, only what changes stays in view: the replay row and the Now line. */
+/* While a case plays on a phone, the replay row and a two-line Now line stay in view. The header
+   leaves the sticky stack while the page scrolls down and returns on the first upward scroll
+   (data-au-header-return), so the navigation is always one gesture away. */
 @media (max-width:700px) {
-  .au-workspace:has(.au-quiet-claim > :is(.au-demo-transport,.au-now:not(.au-last))) .au-identity-header { position:static; }
+  .au-workspace:has(.au-quiet-claim > :is(.au-demo-transport,.au-now:not(.au-last))) .au-identity-header:not([data-au-header-return]) { position:static; }
+  .au-workspace .au-quiet-claim > .au-now:not(.au-last) { height:calc(2.9em + 15px); overflow:hidden; line-height:1.45; border-bottom:1px solid var(--au-line); }
+  .au-workspace .au-quiet-claim > .au-now:not(.au-last):focus-within { height:auto; }
+  .au-workspace .au-quiet-claim > .au-now:not(.au-last) > .au-record-link { position:absolute; right:0; bottom:6px; display:inline-flex; align-items:flex-end; min-height:1.45em; padding:0 0 0 32px; background:linear-gradient(90deg,rgb(239 241 236 / 0),var(--au-field) 28px) bottom / 100% 1.45em no-repeat; }
+}
+/* From 541 to 700px a returning case shares the brand row: "New claim" shortens to "New" there. */
+@media (min-width:541px) and (max-width:700px) {
+  .au-workspace .au-identity-header:has(> .au-case-return:not([hidden])) { gap:0 8px; padding-inline:16px; }
+  .au-workspace .au-identity-header:has(> .au-case-return:not([hidden])) .au-header-new-noun { display:none; }
+  .au-workspace .au-identity-header:has(> .au-case-return:not([hidden])) .au-nav { gap:10px; }
+  .au-workspace .au-identity-header .au-case-return { min-width:44px; }
+}
+/* A PDF on a short landscape screen fits inside its dialog, below the sticky dialog header. */
+@media (max-height:500px) {
+  .au-workspace dialog { max-height:calc(100dvh - 16px); }
+  .au-workspace :is(.au-source-dialog-header,.au-record-dialog-header,.au-dialog-header) { min-height:52px; padding-block:6px; }
+  .au-workspace :is([data-au-source-content],[data-au-record-content]) { padding-block:12px; }
+  .au-workspace .au-native-source { margin-block:8px 12px; }
+  .au-workspace .au-native-source :is(iframe,object) { height:calc(100dvh - 160px); min-height:0; max-height:none; }
 }
 .au-workspace .au-stage-process .au-node[data-au-node-state=planned] .au-evidence-junction { background:var(--au-field); }
