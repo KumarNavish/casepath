@@ -366,16 +366,17 @@ test('receiving claims bind to their exact knowledge version, with id/version fa
  await page.evaluate(()=>window.__controller.showKnowledge());
  async function receiving(number){
   const version=knowledge.versions.find(row=>row.knowledge_id==='procedure.lease_termination_dispute' && row.version===number);
-  await page.locator(`.au-learning-track .au-learning-node[data-au-learning-event-id*="version:"][data-au-knowledge="${version.knowledge_id}"][data-au-version="${number}"][data-au-knowledge-sha="${version.knowledge_sha256}"]`).click();
+  // The library opens the exact version inside its domain entry.
+  await page.evaluate(pin=>window.__controller.showKnowledge(true,pin),{knowledge_id:version.knowledge_id,version:number,knowledge_sha256:version.knowledge_sha256});
   const selected=page.locator(`[data-au-knowledge-identity="${version.knowledge_id}:${number}"]`);await selected.waitFor();
   assert.equal(await page.locator('[data-au-knowledge-identity]').count(),1,'one exact reusable procedure is open for reading');
-  await selected.locator('[data-au-knowledge-facet="changes"]').click();
-  assert.equal(await selected.locator('[data-au-knowledge-facet-panel="changes"]').count(),1);
-  assert.equal(await page.locator('[data-au-knowledge-facet-panel]').count(),1,'one procedure facet is open for reading');
+  assert.equal(await selected.getAttribute('data-pinned'),'true');
+  assert.equal(await selected.locator(`.au-library-versions [aria-current="true"][data-au-library-version="${number}"]`).count(),1,'Versions marks the exact version shown');
+  assert.equal(await selected.locator('details').count(),0,'the entry reads top to bottom without disclosures');
   const expected=await page.evaluate(()=>window.__responses[`${window.__base}/knowledge`]),record=await knowledgeHistoryRecord(page);
   assert.deepEqual(record,expected,'Knowledge History preserves the complete saved versions, uses and quarantined candidates');
   assert.deepEqual(record.versions.find(row=>row.knowledge_id===version.knowledge_id && row.version===number && row.knowledge_sha256===version.knowledge_sha256),version);
-  return selected.locator('.au-procedure-provenance > article [data-au-claim]').evaluateAll(nodes=>nodes.map(node=>node.dataset.auClaim));
+  return selected.locator(`[data-au-library-cases="${number}"] [data-au-library-receiving] [data-au-claim]`).evaluateAll(nodes=>nodes.map(node=>node.dataset.auClaim));
  }
  assert.deepEqual(sorted(await receiving(1)),sorted([robin,'auto_571f85327c290a71cde37df8','auto_7373bbf206ab25bacf71b82e']));
  assert.deepEqual(sorted(await receiving(2)),sorted(['auto_764f712d3833988ce6ff6cfd','auto_80bf8f54f289f5e4a966e645']));

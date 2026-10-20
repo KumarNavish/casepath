@@ -115,6 +115,25 @@
     termination_received:'Termination received',retaliation_screen:'Retaliation concern',health_effects:'Health effects',mold:'Mould',
     heating:'Heating defect',specialist_needed:'Specialist inspection needed',deposit_considered:'Paying rent into an official account'});
   const sentenceCase = value => value ? value.charAt(0).toLocaleUpperCase('en')+value.slice(1) : value;
+  // Plain-word clauses for "Only if …" and "Unless …" lines. Each pair is
+  // [holds, does not hold]; an unknown flag keeps its recorded fact label.
+  const conditionClauses = Object.freeze({
+    family_home:['the flat is a family home','the flat is not a family home'],
+    arrears:['the termination is for unpaid rent','the termination is not for unpaid rent'],
+    extension_relevant:['more time to move out is relevant','more time to move out is not relevant'],
+    termination_received:['a termination notice was received','no termination notice was received'],
+    retaliation_screen:['the tenant raises a retaliation concern','the tenant raises no retaliation concern'],
+    health_effects:['there are health effects','there are no health effects'], mold:['there is mould','there is no mould'],
+    heating:['the heating is defective','the heating is not defective'],
+    specialist_needed:['a specialist inspection is needed','no specialist inspection is needed'],
+    deposit_considered:['paying rent into an official account is considered','paying rent into an official account is not considered']
+  });
+  function conditionClause(flag, recordedLabel = '', holds = true) {
+    const known = conditionClauses[text(flag)];
+    if (known) return known[holds ? 0 : 1];
+    const subject = plainLabel(text(recordedLabel) || text(flag).replace(/[_.-]+/gu,' '),'this condition').toLocaleLowerCase('en');
+    return holds ? `“${subject}” applies` : `“${subject}” does not apply`;
+  }
   function factLabel(fact, fallback = 'Recorded fact') {
     const id = typeof fact === 'string' ? fact : text(fact?.fact_id);
     if (id.startsWith('condition:')) {
@@ -440,6 +459,6 @@
       'The independent verifier rejected this knowledge candidate.':'The independent check rejected these steps.'
     })[text(reason)] || 'These steps were not saved. Open Details for the recorded reason.';
   }
-  return Object.freeze({refusalReason,roles,copy,tabs,stepLabels,documentLabels,plainLabel,stepLabel,documentTitle,factLabel,draftStatus,issueText,
+  return Object.freeze({conditionClause,refusalReason,roles,copy,tabs,stepLabels,documentLabels,plainLabel,stepLabel,documentTitle,factLabel,draftStatus,issueText,
     provenancePresentation,operationPresentation,outcomePresentation,knowledgePresentation,modeLine,eventPresentation});
 });

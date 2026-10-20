@@ -2931,7 +2931,7 @@ test('an unavailable exact learning pin cannot be overridden by replay position 
  const data=learningFixtureData(),invalid={knowledge_id:data.versions[0].knowledge_id,version:1,knowledge_sha256:hash('9')},html=ui.knowledgeMarkup(data,[],invalid,'process',{index:1,stage:10});assert.doesNotMatch(html,/data-au-knowledge-identity|au-procedure-stage/);assert.match(html,/This exact saved version is unavailable/);
  const routing=routingFixture(t),f=knowledgeFixture(),shell={dataset:{}},originalQuery=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:originalQuery(selector);
  let count=0,finish;const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?++count===1?response(data):new Promise(resolve=>{finish=resolve;}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finish?.(response(data));controller.destroy();});await waitFor(()=>count===1);await settle();
- routing.external(`#autonomous/knowledge?knowledge=${invalid.knowledge_id}&version=1&sha256=${invalid.knowledge_sha256}`);await waitFor(()=>Boolean(finish));assert.equal(f.versions.length,0);finish(response(structuredClone(data)));await settle();await settle();assert.equal(f.versions.length,0);assert.doesNotMatch(f.host.innerHTML,/data-au-knowledge-identity|au-procedure-stage/);assert.match(f.status.textContent,/exact reused knowledge version is not available/);assert.equal(shell.dataset.auLearningPosition,'-1');
+ routing.external(`#autonomous/knowledge?view=learning&knowledge=${invalid.knowledge_id}&version=1&sha256=${invalid.knowledge_sha256}`);await waitFor(()=>Boolean(finish));assert.equal(f.versions.length,0);finish(response(structuredClone(data)));await settle();await settle();assert.equal(f.versions.length,0);assert.doesNotMatch(f.host.innerHTML,/data-au-knowledge-identity|au-procedure-stage/);assert.match(f.status.textContent,/exact reused knowledge version is not available/);assert.equal(shell.dataset.auLearningPosition,'-1');
 });
 
 
@@ -2957,29 +2957,35 @@ test('learning summaries use ordinary recorded document labels while Changes ret
 });
 
 
-test('final learning view retains restart intent when a fresh response replaces its warm copy',async t=>{
- const routing=routingFixture(t),f=knowledgeFixture(),shell={dataset:{}},original=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:original(selector);
+test('Final view leaves the replay for the current library and How this was learned replays from the first event',async t=>{
+ const routing=routingFixture(t),f=knowledgeFixture(),shell={dataset:{}},original=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('class="au-learning-transport"')?shell:original(selector);
  const data=learningFixtureData();let count=0,finish;const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?++count===1?response(data):new Promise(resolve=>{finish=resolve;}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finish?.(response(data));controller.destroy();});await waitFor(()=>count===1);await settle();
- routing.external('#autonomous/knowledge');await waitFor(()=>Boolean(finish));f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.match(routing.hash,/complete=1/);finish(response(structuredClone(data)));await settle();await settle();
- f.listeners.get('click')({target:control(f,'data-au-learning-play')});assert.equal(shell.dataset.auLearningPosition,'0','the completed final view restarts at the first real event after refresh');
+ routing.external('#autonomous/knowledge');await waitFor(()=>Boolean(finish));
+ assert.match(f.host.innerHTML,/data-au-library/,'Knowledge opens as the library');assert.doesNotMatch(f.host.innerHTML,/data-au-learning-play|data-au-learning-end|data-au-learning-scrub/,'the library has no replay transport');assert.equal(shell.dataset.auLearningPlaying,undefined,'nothing plays on arrival');
+ const landing=finish;landing(response(structuredClone(data)));await settle();await settle();assert.match(f.host.innerHTML,/data-au-library/);assert.equal(shell.dataset.auLearningPlaying,undefined,'a fresh read does not start the replay');
+ routing.external('#autonomous/knowledge?view=learning');await waitFor(()=>finish!==landing);assert.match(f.host.innerHTML,/class="au-learning-transport"/);assert.equal(shell.dataset.auLearningPlaying,'false','the learning view opens paused');
+ f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.equal(routing.hash,'#autonomous/knowledge?knowledge=procedure.lease_termination_dispute','Final view is the current library entry, never the last refused candidate');assert.match(f.host.innerHTML,/data-au-library/);assert.doesNotMatch(f.host.innerHTML,/class="au-learning-transport"/);
+ finish(response(structuredClone(data)));await settle();await settle();assert.match(f.host.innerHTML,/data-au-knowledge-identity="procedure.lease_termination_dispute:2"/,'the library shows the current qualified version');
+ f.listeners.get('click')({target:control(f,'data-au-learning-open','')});assert.match(routing.hash,/view=learning/);assert.equal(shell.dataset.auLearningPosition,'0','How this was learned replays from the first recorded event');assert.equal(shell.dataset.auLearningPlaying,'true');
 });
 
 
-test('leaving an unavailable learning pin clears only that obsolete notice and keeps a genuine refresh error',async t=>{
- const routing=routingFixture(t,'#autonomous/knowledge?knowledge=procedure.lease_termination_dispute&version=999&sha256='+hash('0')),f=knowledgeFixture(),shell={dataset:{}},pane={firstElementChild:{},innerHTML:'',dataset:{},querySelectorAll:()=>[]},original=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:selector==='[data-au-learning-focus]'?pane:original(selector);
+test('leaving an unavailable learning pin clears only that obsolete notice and a genuine refresh error returns with the next read',async t=>{
+ const routing=routingFixture(t,'#autonomous/knowledge?view=learning&knowledge=procedure.lease_termination_dispute&version=999&sha256='+hash('0')),f=knowledgeFixture(),shell={dataset:{}},pane={firstElementChild:{},innerHTML:'',dataset:{},querySelectorAll:()=>[]},original=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:selector==='[data-au-learning-focus]'?pane:original(selector);
  const data=learningFixtureData();let reads=0;const api=fakeApi({handle:async path=>{if(path.endsWith('/knowledge')){if(++reads===1)return response(data);throw new Error('Native refresh unavailable');}return null;}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await waitFor(()=>f.status.textContent.includes('exact reused'));
- assert.match(f.host.innerHTML,/Return to recorded learning/);assert.doesNotMatch(f.host.innerHTML.match(/<div class="au-learning-focus"[\s\S]*?<\/div>/)[0],/No recorded events/);f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.equal(f.status.textContent,'');assert.match(pane.innerHTML,/data-au-knowledge-identity="procedure.lease_termination_dispute:1"/);assert.doesNotMatch(routing.hash,/version=999/);
- routing.external('#autonomous/knowledge?knowledge=procedure.lease_termination_dispute&version=999&sha256='+hash('9'));await waitFor(()=>f.status.textContent==='Could not load Knowledge. Try again.');const actualError=f.status.textContent;f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.equal(f.status.textContent,actualError,'returning to recorded learning cannot erase a genuine refresh failure');
+ assert.match(f.host.innerHTML,/Open the library/);assert.doesNotMatch(f.host.innerHTML.match(/<div class="au-learning-focus"[\s\S]*?<\/div>/)[0],/No recorded events/);f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.equal(f.status.textContent,'');assert.match(f.host.innerHTML,/data-au-library/);assert.match(f.host.innerHTML,/data-au-knowledge-identity="procedure.lease_termination_dispute:2"/,'the library shows the current version');assert.doesNotMatch(routing.hash,/version=999/);
+ await waitFor(()=>f.status.textContent==='Could not load Knowledge. Try again.');
+ routing.external('#autonomous/knowledge?view=learning&knowledge=procedure.lease_termination_dispute&version=999&sha256='+hash('9'));await waitFor(()=>f.status.textContent==='Could not load Knowledge. Try again.');assert.match(f.host.innerHTML,/This exact saved version is unavailable/);f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.equal(f.status.textContent,'','a new navigation starts a new read');await waitFor(()=>f.status.textContent==='Could not load Knowledge. Try again.');assert.match(f.host.innerHTML,/data-au-library/,'the genuine refresh failure is reported again over the saved library');
 });
 
 
-test('a deferred successful Knowledge refresh keeps a valid return from an unavailable pin and its final-view intent',async t=>{
+test('a deferred successful Knowledge refresh keeps the library a reader returned to from an unavailable learning pin',async t=>{
  const routing=routingFixture(t),f=knowledgeFixture(),shell={dataset:{}},pane={firstElementChild:{},innerHTML:'',dataset:{},querySelectorAll:()=>[]},original=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:selector==='[data-au-learning-focus]'?pane:original(selector);
  const data=learningFixtureData();let reads=0,finish;const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?++reads===1?response(data):new Promise(resolve=>{finish=resolve;}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finish?.(response(data));controller.destroy();});await waitFor(()=>reads===1);await settle();
- const refreshing=controller.showKnowledge(false,{knowledge_id:data.versions[0].knowledge_id,version:999,knowledge_sha256:hash('0')});await waitFor(()=>Boolean(finish));assert.equal(shell.dataset.auLearningPosition,'-1');
- f.listeners.get('click')({target:control(f,'data-au-learning-end')});const selectedRoute=routing.hash;assert.equal(shell.dataset.auLearningEventId,hash('b'));assert.match(selectedRoute,/complete=1/);
- finish(response(structuredClone(data)));await refreshing;assert.equal(shell.dataset.auLearningEventId,hash('b'),'the successful read keeps the actual newly selected receipt');assert.equal(shell.dataset.auLearningPosition,'2');assert.equal(pane.dataset.auLearningStage,'10');assert.equal(routing.hash,selectedRoute);assert.equal(f.status.textContent,'');assert.doesNotMatch(f.host.innerHTML,/This exact saved version is unavailable/);
- f.listeners.get('click')({target:control(f,'data-au-learning-play')});assert.equal(shell.dataset.auLearningPosition,'0','the retained final-view intent restarts the recorded replay');
+ const refreshing=controller.showKnowledge(false,{knowledge_id:data.versions[0].knowledge_id,version:999,knowledge_sha256:hash('0')},{view:'learning'});await waitFor(()=>Boolean(finish));assert.equal(shell.dataset.auLearningPosition,'-1');
+ const stale=finish;f.listeners.get('click')({target:control(f,'data-au-learning-end')});const selectedRoute=routing.hash;assert.equal(selectedRoute,'#autonomous/knowledge');assert.match(f.host.innerHTML,/data-au-library/);
+ stale(response(structuredClone(data)));await refreshing;await settle();await settle();assert.equal(routing.hash,selectedRoute,'the superseded learning read cannot reopen the replay');assert.match(f.host.innerHTML,/data-au-library/);assert.doesNotMatch(f.host.innerHTML,/This exact saved version is unavailable/);assert.equal(f.status.textContent,'');assert.match(f.host.innerHTML,/data-au-knowledge-identity="procedure.lease_termination_dispute:2"/);
+ f.listeners.get('click')({target:control(f,'data-au-learning-open','')});assert.equal(shell.dataset.auLearningPosition,'0','How this was learned replays from the first recorded event');
 });
 
 
@@ -3138,7 +3144,7 @@ test('settled and exact Knowledge pins retain one recorded Memory Now with fixed
 test('Knowledge announcements distinguish the recorded family and source case for the same version and action',async t=>{
  const data=learningFixtureData(),first=data.versions[0],second={...first,knowledge_id:'procedure.defect_mold_heating',family:'defect_mold_heating',knowledge_sha256:hash('6'),source_claim_id:'source-two'},original=data.learning_replay.events.find(row=>row.event_id===hash('a'));
  data.versions=[first,second];data.uses=[];data.learning_replay.events=[{...original,source_claim_title:'First recorded source',claim_title:'First recorded source'},{...original,event_id:hash('d'),at:'2026-10-10T00:00:00Z',knowledge_id:second.knowledge_id,knowledge_sha256:second.knowledge_sha256,family:second.family,claim_id:second.source_claim_id,source_claim_id:second.source_claim_id,source_claim_title:'Second recorded source',claim_title:'Second recorded source'}];
- const before=JSON.stringify(data),model=ui.knowledgeLearningModel(data),route=routingFixture(t,'#autonomous/knowledge'),f=knowledgeFixture(),shell={dataset:{}},writes=[],announcement={};Object.defineProperty(announcement,'textContent',{get:()=>writes.at(-1)||'',set:value=>writes.push(value)});
+ const before=JSON.stringify(data),model=ui.knowledgeLearningModel(data),route=routingFixture(t,'#autonomous/knowledge?view=learning'),f=knowledgeFixture(),shell={dataset:{}},writes=[],announcement={};Object.defineProperty(announcement,'textContent',{get:()=>writes.at(-1)||'',set:value=>writes.push(value)});
  const containerQuery=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-announcement]'?announcement:containerQuery(selector);
  const hostQuery=f.host.querySelector;f.host.querySelector=selector=>{
   if(selector==='[data-au-learning]')return shell;if(selector!=='.au-now')return hostQuery(selector);
@@ -3461,4 +3467,91 @@ test('the selected step without a cited fact answers with its own recorded actio
  // A step whose fact cites a passage keeps that passage first.
  const evidence=ui.stepDetailMarkup(s,'dh_evidence',{}, {});assert.doesNotMatch(evidence,/data-au-step-action-passages/);assert.ok(evidence.indexOf('<section class="au-reading-passages"')<evidence.indexOf('<ul class="au-subject-lines">'));
  assert.equal(JSON.stringify(s),before);
+});
+
+const recordedFixtureResponses=()=>JSON.parse(require('node:zlib').gunzipSync(require('node:fs').readFileSync(require('node:path').join(__dirname,'../design/evidence-path/recorded-fixtures.json.gz')))).responses;
+const libraryEntry=(html,family)=>html.match(new RegExp(`<article class="au-library-entry"[^>]*data-au-library-entry="${family}"[\\s\\S]*?</article>`))?.[0] || '';
+
+test('the Knowledge library reads each recorded entry top to bottom outside any disclosure',()=>{
+ const responses=recordedFixtureResponses(),knowledge=responses['/api/claim-loops/v1/autonomous/knowledge'],claims=responses['/api/claim-loops/v1/autonomous/claims'].claims,before=JSON.stringify(knowledge);
+ const html=ui.knowledgeLibraryMarkup(knowledge,claims),entry=libraryEntry(html,'lease_termination_dispute');
+ assert.ok(entry,'Lease termination has its own library entry');assert.doesNotMatch(entry,/<details/,'nothing in the entry is behind a disclosure');
+ assert.equal((html.match(/data-au-library-entry="/g)||[]).length,3,'one entry per domain');assert.equal((html.match(/data-au-library-jump="/g)||[]).length,3,'the index names all three domains');
+ const order=['When it applies','Steps','Facts','Documents','Actions and limits','Supporting passages','Versions','Contributing and receiving cases'].map(title=>entry.indexOf(`<h3>${title}</h3>`));
+ assert.ok(order.every(index=>index>0),'every section is present');assert.deepEqual(order,[...order].sort((a,b)=>a-b),'sections read top to bottom');
+ assert.match(entry,/data-au-library-status="qualified">Version 2 · qualified · current</);assert.match(entry,/data-au-knowledge-identity="procedure.lease_termination_dispute:2"/);
+ const spouse=entry.match(/<li data-au-library-document="spouse_notice_copy">[\s\S]*?<\/li>/)[0];
+ assert.match(spouse,/Separate notice for the spouse/);assert.match(spouse,/For Step \d+ · Check separate delivery to each spouse/);assert.match(spouse,/Establishes: The separate spouse addressee/);assert.match(spouse,/Only if the flat is a family home/);
+ assert.match(entry,/<li data-au-library-step="lt_family"><strong>Check separate delivery to each spouse<\/strong><p class="au-meta">After step \d<\/p><p class="au-library-condition">Only if the flat is a family home<\/p>/,'branch conditions are plain words');
+ const facts=entry.slice(entry.indexOf('<h3>Facts</h3>'),entry.indexOf('<h3>Documents</h3>'));assert.doesNotMatch(facts,/<li>(?:Family home|Rent arrears|Tenancy extension|Termination received|Retaliation concern|family home|arrears|termination received|retaliation screen|extension relevant)</,'branch conditions are not listed as bare fact tokens');
+ const version=knowledge.versions.find(row=>row.version===2),quote=version.source_evidence[0].citations[0];
+ assert.ok(entry.includes(`<blockquote>${quote.quote}</blockquote>`),'a recorded supporting passage is shown');
+ assert.match(entry,new RegExp(`data-au-source="${quote.artifact_id}" data-au-knowledge-source-claim="${version.source_claim_id}"`),'the passage opens its source case reader');
+ const receiving=entry.match(/<li data-au-library-cases="2">[\s\S]*?<\/li>/)[0];
+ for(const id of ['auto_764f712d3833988ce6ff6cfd','auto_80bf8f54f289f5e4a966e645'])assert.match(receiving.slice(receiving.indexOf('data-au-library-receiving')),new RegExp(`data-au-claim="${id}"`));
+ assert.match(receiving,/data-au-library-contributing[\s\S]*data-au-claim="auto_571f85327c290a71cde37df8"/);assert.match(entry,/<li data-au-library-cases="1">/,'earlier versions keep their own cases');
+ assert.match(entry,/data-au-knowledge="procedure.lease_termination_dispute" data-au-version="1"/,'the earlier exact version stays reachable');
+ for(const family of ['defect_mold_heating','rent_increase_dispute']){const base=libraryEntry(html,family);assert.match(base,/Base procedure · admitted rule pack · nothing learned yet/);assert.match(base,/Structural context from the admitted rule pack\. It is not a result for any case\./);assert.doesNotMatch(base,/data-au-knowledge-identity|qualified/);}
+ assert.match(html,/2 candidates not saved · domain not recorded/,'refused candidates stay distinct from qualified versions');
+ assert.equal(JSON.stringify(knowledge),before);
+});
+
+test('an exact library pin shows that version in its entry and an unavailable one borrows nothing',()=>{
+ const knowledge=recordedFixtureResponses()['/api/claim-loops/v1/autonomous/knowledge'],first=knowledge.versions.find(row=>row.version===1);
+ const pinned=libraryEntry(ui.knowledgeLibraryMarkup(knowledge,[],{knowledge_id:first.knowledge_id,version:1,knowledge_sha256:first.knowledge_sha256,claim_id:'auto_7373bbf206ab25bacf71b82e'}),'lease_termination_dispute');
+ assert.match(pinned,/data-au-knowledge-identity="procedure.lease_termination_dispute:1"/);assert.match(pinned,/Showing version 1/);assert.match(pinned,/data-au-version="2"[^>]*>Show current version 2</);assert.match(pinned,/<li aria-current="true" data-au-library-version="1">/);
+ assert.match(pinned,/data-au-claim="auto_7373bbf206ab25bacf71b82e" data-au-current-case="true"/,'the receiving case that followed the link is marked');
+ const missing=libraryEntry(ui.knowledgeLibraryMarkup(knowledge,[],{knowledge_id:first.knowledge_id,version:9,knowledge_sha256:hash('9')}),'lease_termination_dispute');
+ assert.match(missing,/This exact saved version is unavailable in this record/);assert.doesNotMatch(missing,/data-au-knowledge-identity|When it applies/);assert.match(missing,/data-au-version="2"[^>]*>Open current version 2</);
+ const entryOnly=libraryEntry(ui.knowledgeLibraryMarkup(knowledge,[],{knowledge_id:first.knowledge_id}),'lease_termination_dispute');assert.match(entryOnly,/data-au-knowledge-identity="procedure.lease_termination_dispute:2"/,'an entry link without a version opens the current version');
+});
+
+test('empty Knowledge lists the three base procedures without a replay transport, empty lanes or white boxes',()=>{
+ const html=ui.knowledgeLibraryMarkup({versions:[],uses:[],quarantined:[]});
+ for(const domain of ui.DOMAINS){const entry=libraryEntry(html,domain.id);assert.match(entry,new RegExp(`<h2[^>]*>${domain.label}</h2>`));assert.match(entry,/Base procedure · admitted rule pack · nothing learned yet/);assert.match(entry,/<h3>Steps<\/h3>[\s\S]*<h3>Documents<\/h3>/);}
+ assert.match(html,/Knowledge forms when a case finishes its checks\. <button type="button" class="au-link" data-au-nav="demonstration">Demonstration<\/button> · <button type="button" class="au-link" data-au-nav="work">Cases<\/button>/);
+ assert.doesNotMatch(html,/data-au-learning-play|data-au-learning-end|data-au-learning-scrub|au-learning-lane|au-learning-timeline|How this was learned/,'no Play, Final view, scrubber or empty lanes');
+ assert.doesNotMatch(html,/<details/);
+ const css=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/autonomous-workspace-v1.css'),'utf8').replace(/\/\*[\s\S]*?\*\//g,'');
+ const rules=[...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(match=>({selector:match[1].trim(),body:match[2]}));
+ const involved=rules.filter(rule=>/au-library|au-learning-(?:transport|focus|node|no-events|lane|track)|data-au-role=(?:reader|memory)/.test(rule.selector));
+ assert.ok(involved.length>10);for(const rule of involved)assert.doesNotMatch(rule.body,/background(?:-color)?:\s*#fff(?:fff)?\b/i,`${rule.selector} has no white box`);
+ const focus=rules.find(rule=>rule.selector==='.au-workspace .au-learning-focus');assert.doesNotMatch(focus.body,/min-height/,'the learning pane reserves no empty height');
+ assert.match(rules.find(rule=>rule.selector==='.au-workspace [data-au-role=reader]').body,/color:var\(--au-ink\)/);assert.match(rules.find(rule=>rule.selector==='.au-workspace [data-au-role=memory]').body,/color:var\(--au-green\)/);
+ assert.doesNotMatch(css,/#164f88;?\s*border-radius:14px|#59357b|#f1eafa|#eaf2ff/,'reader and memory badges use the product tokens');
+});
+
+test('recorded branch conditions read as plain words and unknown flags keep their label',()=>{
+ const facts=new Map([['condition:custom_rule',{fact_id:'condition:custom_rule',label:'custom rule'}]]);
+ assert.equal(ui.conditionSentence({flag:'family_home'},facts),'the flat is a family home');
+ assert.equal(ui.conditionSentence({all:[{not:{flag:'arrears'}},{not:{flag:'family_home'}}]},facts),'the termination is not for unpaid rent and the flat is not a family home');
+ assert.equal(ui.conditionSentence({any:[{flag:'arrears'},{flag:'custom_rule'}]},facts),'the termination is for unpaid rent or “custom rule” applies');
+ assert.equal(ui.conditionSentence({const:'true'},facts),'');
+ const exceptions=ui.knowledgeFacetMarkup(recordedFixtureResponses()['/api/claim-loops/v1/autonomous/knowledge'].versions[1],'exceptions');
+ assert.match(exceptions,/<h4>Separate notice for the spouse<\/h4><p>Only if the flat is a family home<\/p>/);assert.doesNotMatch(exceptions,/<p>family home<\/p>|<h4>Lease contract<\/h4>/,'unconditional documents and bare flags are not special cases');
+ assert.doesNotMatch(ui.knowledgeFacetMarkup(recordedFixtureResponses()['/api/claim-loops/v1/autonomous/knowledge'].versions[1],'facts'),/<p>(?:Family home|Rent arrears|family home|arrears)<\/p>/);assert.match(exceptions,/<li>the flat is a family home<\/li>/);
+});
+
+test('a case names its domain procedure and similar cases for browsing only',()=>{
+ const version={knowledge_id:'procedure.lease_termination_dispute',family:'lease_termination_dispute',version:2,knowledge_sha256:hash('1'),source_claim_id:'clm_source',qualification:{status:'qualified',definition_sha256:hash('2')},graph:{nodes:[],edges:[]},obligations:[]};
+ const knowledge={versions:[version],uses:[{knowledge_id:version.knowledge_id,version:2,knowledge_sha256:hash('1'),definition_sha256:hash('2'),claim_id:'clm_self'},{knowledge_id:version.knowledge_id,version:2,knowledge_sha256:hash('1'),definition_sha256:hash('2'),claim_id:'clm_receiver'}],quarantined:[]};
+ const family=index=>({claim_id:`clm_family_${index}`,title:`Family case ${index}`,browse_metadata:{domain:'lease_termination_dispute',family_id:'ndg_same',browsing_only:true}});
+ const claims=[{claim_id:'clm_self',title:'This case',browse_metadata:{domain:'lease_termination_dispute',family_id:'ndg_same'}},family(1),family(2),{claim_id:'clm_other',title:'Other family',browse_metadata:{domain:'lease_termination_dispute',family_id:'ndg_other'}},{claim_id:'clm_source',title:'Source case',browse_metadata:{family_id:'ndg_other'}},{claim_id:'clm_receiver',title:'Receiving case',browse_metadata:{family_id:'ndg_other'}}];
+ const self=state({claim_id:'clm_self',graph:null,knowledge_uses:[],knowledge_published:[]}),before=JSON.stringify({self,claims,knowledge});
+ const html=ui.claimKnowledgeMarkup(self,[],{claims,knowledge});
+ assert.match(html,/<p class="au-case-procedure" data-au-case-procedure="lease_termination_dispute"><button type="button" class="au-link" data-au-knowledge="procedure.lease_termination_dispute" data-au-knowledge-claim="clm_self">Lease termination<\/button> · version 2 qualified · whether it applies is checked when the case runs<\/p>/);
+ const similar=html.match(/<section class="au-similar-cases"[\s\S]*?<\/section>/)[0];assert.match(similar,/Similar cases · browsing only/);
+ assert.deepEqual([...similar.matchAll(/data-au-claim="([^"]+)"/g)].map(match=>match[1]),['clm_family_1','clm_family_2','clm_source','clm_receiver'],'same scenario family first, then knowledge-linked cases, never this case');
+ assert.doesNotMatch(similar,/data-au-source|data-au-citation|data-au-fact|data-au-document|data-au-inspect/,'browsing links carry no evidence');
+ const many=[...claims,...Array.from({length:8},(_,index)=>family(index+3))];assert.equal(ui.similarCases(self,many,knowledge).length,6);assert.ok(ui.similarCases(self,many,knowledge).every(row=>row.reason==='family'));
+ assert.match(ui.claimKnowledgeMarkup(self,[],{claims,knowledge:{versions:[],uses:[],quarantined:[]}}),/Lease termination<\/button> · base procedure · nothing learned yet/);
+ assert.equal(ui.claimKnowledgeMarkup(state({claim_id:'clm_alone',graph:null}),[],{claims:[],knowledge}).includes('au-similar-cases'),false,'no list is invented without a family or a shared version');
+ assert.equal(JSON.stringify({self,claims,knowledge}),before);
+});
+
+test('an entry link without a version opens the library at that domain and marks the case that followed it',async t=>{
+ const routing=routingFixture(t,'#autonomous/knowledge?knowledge=procedure.lease_termination_dispute&claim=receiver'),f=knowledgeFixture(),data=learningFixtureData();
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await waitFor(()=>f.host.innerHTML.includes('data-au-library'));await settle();
+ assert.match(f.host.innerHTML,/data-au-knowledge-identity="procedure.lease_termination_dispute:2"/);assert.match(f.host.innerHTML,/data-au-claim="receiver" data-au-current-case="true"/);assert.equal(f.status.textContent,'');assert.equal(routing.hash,'#autonomous/knowledge?knowledge=procedure.lease_termination_dispute&claim=receiver');
+ assert.doesNotMatch(f.host.innerHTML,/class="au-learning-transport"/);assert.equal(api.calls.filter(call=>call.init.method!=='GET'&&call.init.method!==undefined).length,0);
 });

@@ -746,18 +746,53 @@
     const friendly = {defect_mold_heating:'Defects and repairs',lease_termination_dispute:'Lease termination',rent_increase_dispute:'Rent increases'};
     return friendly[family] || item.name || item.title || words(id) || 'Recorded procedure';
   }
-  function claimKnowledgeMarkup(state, events = []) {
+  function caseDomain(state, claims = []) {
+    const row = list(claims).find(claim => claim?.claim_id === state.claim_id), family = state.graph?.family !== 'incoming_packet' ? state.graph?.family : '';
+    return [family,row?.browse_metadata?.domain,state.browse_metadata?.domain].find(id => DOMAINS.some(domain => domain.id === id)) || '';
+  }
+  // The procedure that applies to this case's domain, from the Knowledge
+  // index. Whether it applies is decided when the case runs, not here.
+  function caseProcedureMarkup(state, context = {}) {
+    const family = caseDomain(state,context.claims);
+    if (!family) return '';
+    const entry = context.knowledge ? knowledgeLibrary(context.knowledge).find(row => row.family === family) : null;
+    const status = !context.knowledge ? 'Knowledge index not loaded' : entry?.current ? `version ${entry.current.version} qualified · whether it applies is checked when the case runs` : entry?.candidates.length ? 'no qualified version · candidates were not saved' : 'base procedure · nothing learned yet';
+    return `<p class="au-case-procedure" data-au-case-procedure="${h(family)}"><button type="button" class="au-link" data-au-knowledge="procedure.${h(family)}" data-au-knowledge-claim="${h(state.claim_id)}">${h(procedureScope({family}))}</button> · ${h(status)}</p>`;
+  }
+  // Browsing only: the same scenario family first, then cases that share an
+  // exact saved knowledge version. Never evidence or engine context.
+  function similarCases(state, claims = [], knowledge = null, limit = 6) {
+    const rows = list(claims), self = state.claim_id, own = rows.find(row => row?.claim_id === self);
+    const family = own?.browse_metadata?.family_id || state.browse_metadata?.family_id, found = [];
+    const add = (id, reason) => { if (id && id !== self && !found.some(row => row.id === id)) found.push({id,reason,row:rows.find(row => row?.claim_id === id) || null}); };
+    if (family) for (const row of rows) if (row?.browse_metadata?.family_id === family) add(row.claim_id,'family');
+    if (knowledge) {
+      const model = knowledgeLearningModel(knowledge);
+      for (const version of model.versions) {
+        const receiving = knowledgeUses(version,model.uses).map(use => use.claim_id);
+        if (version.source_claim_id !== self && !receiving.includes(self)) continue;
+        for (const id of [version.source_claim_id,...receiving]) add(id,'knowledge');
+      }
+    }
+    return found.slice(0,limit);
+  }
+  function similarCasesMarkup(state, context = {}) {
+    const rows = similarCases(state,context.claims,context.knowledge);
+    if (!rows.length) return '';
+    return `<section class="au-similar-cases" data-au-similar-cases aria-labelledby="au-similar-title"><h3 id="au-similar-title">Similar cases · browsing only</h3><p class="au-meta">Not used as evidence or by the checks.</p><ul>${rows.map(({id,reason,row}) => `<li data-au-similar-reason="${reason}"><button type="button" class="au-secondary au-case-link" data-au-claim="${h(id)}">${caseLabelMarkup(caseLabel(id,row))}</button><span class="au-meta">${reason === 'family' ? 'Same scenario family' : 'Shares a saved procedure version'}</span></li>`).join('')}</ul></section>`;
+  }
+  function claimKnowledgeMarkup(state, events = [], context = {}) {
     const uses = list(state.knowledge_uses), publications = list(state.knowledge_published);
     const latest = [...events].reverse().filter(event => ['knowledge.used','knowledge.published'].includes(event.kind)).map(event => semanticEventRecord(state,event)).find(Boolean);
     const focus = latest ? {kind:latest.type === 'reused' ? 'use' : 'publication',item:latest.knowledge} : publications.length ? {kind:'publication',item:publications.at(-1)} : uses.length ? {kind:'use',item:uses.at(-1)} : null;
-    if (!focus) return '<section class="au-claim-knowledge"><h2>Knowledge in this case</h2><p>No reusable procedure has been recorded for this case.</p></section>';
+    if (!focus) return `<section class="au-claim-knowledge" data-au-case-knowledge><h2>Knowledge in this case</h2>${caseProcedureMarkup(state,context)}<p>No reusable procedure has been recorded for this case.</p>${similarCasesMarkup(state,context)}</section>`;
     const item = focus.item, index = (focus.kind === 'use' ? uses : publications).findIndex(row => canonicalJSON(row) === canonicalJSON(item));
     const qualified = item.qualification?.status === 'qualified';
     const identity = item.knowledge_sha256 || item.knowledge_id || item.version_id || item.candidate_id;
     const applicability = (item.applicability === 'same_verified_family_and_rule_version' ? `Used for this ${({'Lease termination':'lease-termination','Defects and repairs':'defects-and-repairs','Rent increases':'rent-increase'})[procedureLabel(item)] || 'current'} case.` : item.applicability?.summary || '');
     const body = focus.kind === 'use' ? `<article class="au-knowledge-use" data-au-knowledge-use="${h(identity)}"><h3>${h(procedureLabel(item))}</h3><p>Used for this case · Version ${h(item.version || item.version_id)}</p>${applicability ? `<p>${h(applicability)}</p>` : ''}<p>The case still requires its own source evidence.</p>${knowledgeLink(item)}</article>` : `<article class="au-knowledge-publication" data-au-knowledge-publication="${h(identity)}"><h3>${h(procedureLabel(item.candidate || item))}</h3><p>${qualified && item.version ? `Saved for reuse · Version ${h(item.version)}` : 'Not saved'}</p>${!qualified ? `<blockquote>${h(item.qualification?.reason || item.reason || 'No reason is recorded.')}</blockquote>` : ''}${qualified ? `${procedureScope(item) !== procedureLabel(item) ? `<p>${h(procedureScope(item))}</p>` : ''}${list(item.added_document_types).length ? `${item.added_document_types.map(type => { const recipe = list(item.evidence_recipes).find(row => row.document_type === type), requirement = list(item.obligations).find(row => row.document_type === type); return `<p class="au-knowledge-change">Added ${h((name(requirement) || words(type)).toLocaleLowerCase())} requirements${list(recipe?.required_fields).length ? `: ${h(recipe.required_fields.map(field => words(field).toLocaleLowerCase()).join(', '))}` : ''}.</p>`; }).join('')}` : list(item.obligations).length ? `<h4>Reusable document requirements</h4><ul class="au-definition-list">${item.obligations.map(obligation => `<li>${h(name(obligation))}</li>`).join('')}</ul>` : ''}${knowledgeLink(item)}` : item.candidate?.summary ? `<h4>Proposed content</h4><p>Not saved. The recorded checks did not pass.</p>${recordButton('Details','publication',String(index))}` : ''}</article>`;
-    const related = uses.filter(use => focus.kind !== 'use' || canonicalJSON(use) !== canonicalJSON(item)).map(use => `<div>Used for this case · ${h(procedureLabel(use))} · Version ${h(use.version || use.version_id)} ${knowledgeLink(use)}</div>`).concat(publications.filter(publication => focus.kind !== 'publication' || canonicalJSON(publication) !== canonicalJSON(item)).map(publication => `<div>${h(procedureLabel(publication.candidate || publication))} </div>`));
-    return `<section class="au-claim-knowledge"><h2>Knowledge in this case</h2>${body}${related.length ? `<nav class="au-reading-objects" aria-label="Other knowledge recorded in this case">${related.join('')}</nav>` : ''}</section>`;
+    const related = uses.filter(use => focus.kind !== 'use' || canonicalJSON(use) !== canonicalJSON(item)).map(use => `<div>Used for this case · ${h(procedureLabel(use))} · Version ${h(use.version || use.version_id)} ${knowledgeLink(use)}</div>`).concat(publications.filter(publication => focus.kind !== 'publication' || canonicalJSON(publication) !== canonicalJSON(item)).map(publication => publication.qualification?.status === 'qualified' && publication.version ? focus.kind === 'use' && String(publication.knowledge_id) === String(item.knowledge_id) && String(publication.version) === String(item.version) ? `<div>Contributed by this case · the same ${h(procedureLabel(publication))} version ${h(publication.version)}</div>` : `<div>Contributed by this case · ${h(procedureLabel(publication))} · Version ${h(publication.version)} ${knowledgeLink(publication)}</div>` : `<div>Proposed by this case · ${h(procedureLabel(publication.candidate || publication))} · not saved</div>`));
+    return `<section class="au-claim-knowledge" data-au-case-knowledge><h2>Knowledge in this case</h2>${caseProcedureMarkup(state,context)}${body}${related.length ? `<nav class="au-reading-objects" aria-label="Other knowledge recorded in this case">${related.join('')}</nav>` : ''}${similarCasesMarkup(state,context)}</section>`;
   }
   function formingWork(state, presentation = {}) {
     if (presentation.mode === 'replay') {
@@ -1440,7 +1475,7 @@
     const playControls = stageView ? '' : (presentation.operations && !presentation.operations.finished ? button('Skip to result','data-au-operation-skip') : '') + (presentation.tour && (presentation.playing || presentation.paused) ? '' : presentation.playing ? button('Pause','data-au-demo-stop') : presentation.paused ? button('Resume','data-au-demo-resume') : presentation.mode === 'replay' && presentation.replay?.current_revision !== 0 ? button(presentation.operations?.finished ? 'Play saved history' : 'Play','data-au-demo-play') : '');
     const panels = [['step','Steps'],['documents','Documents'],['knowledge','Knowledge'],['sources','Sources'],['activity','History']];
     const chosen = panels.some(([id]) => id === detail) ? detail : 'step', publicationFocus = presentation.attention && (!presentation.inspectionHold || presentation.attention.retained) && formingPublication(state,events,presentation.attention), forming = chosen === 'step' && (formingWork(state,presentation) || Boolean(publicationFocus) || Boolean(presentation.operations));
-    const body = chosen === 'step' ? forming ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,presentation.attention,false,presentation.operations,presentation.chosenNode) + (!state.graph && !presentation.operations ? intakeMarkup(state,projection) : '') : !state.graph ? openingContentMarkup(state,projection) + intakeMarkup(state,projection) : referenceAssessmentComplete(state) ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,undefined,true,null,presentation.chosenNode) : formingKnowledgeMarkup(state,presentation.knowledge,true) + inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Document checklist</h2>${state.graph ? obligationMarkup(state,selected,undefined,context) + unassignedSourcesMarkup(state) : intakeMarkup(state,projection)}${canWrite && state.revision > 0 ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events) : chosen === 'sources' ? sourcesMarkup(state,!canWrite,projection) : `${operationHistoryMarkup(presentation.operations)}${activityMarkup(state,events,projection)}${presentation.replay ? recordButton('Playback details','replay') : ''}`;
+    const body = chosen === 'step' ? forming ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,presentation.attention,false,presentation.operations,presentation.chosenNode) + (!state.graph && !presentation.operations ? intakeMarkup(state,projection) : '') : !state.graph ? openingContentMarkup(state,projection) + intakeMarkup(state,projection) : referenceAssessmentComplete(state) ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,undefined,true,null,presentation.chosenNode) : formingKnowledgeMarkup(state,presentation.knowledge,true) + inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Document checklist</h2>${state.graph ? obligationMarkup(state,selected,undefined,context) + unassignedSourcesMarkup(state) : intakeMarkup(state,projection)}${canWrite && state.revision > 0 ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events,{claims:presentation.claims,knowledge:presentation.knowledge}) : chosen === 'sources' ? sourcesMarkup(state,!canWrite,projection) : `${operationHistoryMarkup(presentation.operations)}${activityMarkup(state,events,projection)}${presentation.replay ? recordButton('Playback details','replay') : ''}`;
     return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"${stageView ? ' data-au-stage-view="true"' : ''}><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p>${claimHeadingMarkup(state)}<p class="au-reference-mode" data-au-operation-mode>${h(claimModeLine(state,{...presentation,events}))}</p><p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${failure ? recordButton('Details','outcome') : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' Assessment only; no external action taken.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? startControlMarkup(presentation.availability,presentation.pendingStart) : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' && presentation.replay?.current_revision === 0 ? `<a class="au-link" href="#autonomous/claim/${key(state.claim_id)}" data-au-original-intake>Original intake</a>` : ''}${presentation.mode === 'replay' ? recordButton(transportTrace?.savedFallback || transportTrace?.replayUnavailable ? 'Replay choices' : 'Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}"${chosen === 'activity' ? ' aria-controls="auPanel-activity"' : ''}>History</button></div></header>${presentation.tour ? demoTransportMarkup(presentation.tour,presentation) : ''}${nowMarkup(state,events,presentation)}${presentation.mode === 'replay' && resultReached(state,presentation) ? knowledgePayoffMarkup(state,presentation.knowledge) : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}"${chosen === id ? ` aria-controls="auPanel-${id}"` : ''}>${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${!stageView && chosen === 'step' && !active(state.status) && state.outcome?.summary ? `<div class="au-assessment-conclusion">${outcomeSummaryMarkup(state)}${legalBasisMarkup(state)}</div>` : !stageView && chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div>${stageView && !trace?.unrun ? transport : ''}</div></section></section>`;
   }
 
@@ -1458,15 +1493,138 @@
     if (Number.isSafeInteger(use.avoided_qualification_cases) && use.avoided_qualification_cases >= 0) observed.push(`${use.avoided_qualification_cases} rule checks reused`);
     return `${use.reason || applicability ? `<p>${h(plain(use.reason || applicability,'When it applies is recorded in Details.'))}</p>` : ''}${observed.length ? `<p class="au-meta">${h(observed.join(' · '))}</p>` : ''}<details class="au-technical-record au-reuse-record" data-au-disclosure="reuse:${h(use.knowledge_id || use.version_id || '')}:${h(use.version || use.version_id || '')}:${h(use.workflow_id || use.claim_id || '')}"><summary>Details</summary><pre class="au-record-body">${h(JSON.stringify(use,null,2))}</pre></details>`;
   }
-  function definitionMarkup(version) {
-    const graph = version.graph || {nodes:[],edges:[]}, layout = layoutGraph(graph), facts = new Map(list(version.facts).map(fact => [fact.fact_id,fact]));
-    const conditions = Object.entries(graph.conditions || {}), conditionalDocuments = list(graph.document_catalog).filter(item => item.condition || item.condition_flag);
-    const applicability = conditions.length || conditionalDocuments.length ? `<section><h3>When it applies</h3><ul class="au-definition-list">${conditions.map(([flag]) => `<li>${h(name(facts.get(`condition:${flag}`)) || words(flag))}</li>`).join('')}${conditionalDocuments.map(item => `<li>${h(name(item))}${item.condition_flag ? ` · ${h(name(facts.get(`condition:${item.condition_flag}`)) || words(item.condition_flag))}` : ''}</li>`).join('')}</ul></section>` : '';
-    const requiredFacts = `<section><h3>Facts to establish</h3><ul class="au-definition-list">${[...facts.values()].map(fact => `<li>${h(name(fact))}</li>`).join('') || '<li>No fact definition recorded.</li>'}</ul></section>`;
-    const requirements = `<section><h3>Document requirements</h3><ul class="au-definition-list">${list(version.obligations).map(item => `<li><strong>${h(name(item))}</strong><p class="au-meta">${h(list(item.required_fact_ids).map(id => name(facts.get(id)) || words(id)).join('; '))}</p></li>`).join('') || '<li>No document requirements recorded.</li>'}</ul></section>`;
-    const evidence = list(version.evidence_recipes).length ? `<section><h3>Evidence to look for</h3><ul class="au-definition-list">${version.evidence_recipes.map(recipe => `<li><strong>${h(words(recipe.document_type))}</strong><p>Document checks are saved for this version.</p><details><summary>Details</summary><p>${h(recipe.summary)}</p></details><ul>${list(recipe.required_fields).map(field => `<li>${h(field)}</li>`).join('')}</ul></li>`).join('')}</ul></section>` : '';
-    const process = `<section><h3>Process</h3><ol class="au-definition-steps">${layout.nodes.map(node => `<li><strong>${h(name(node))}</strong>${layout.parents.get(node.node_id).length ? `<p class="au-meta">Requires ${h(layout.parents.get(node.node_id).map(id => name(layout.byId.get(id))).join(' and '))}</p>` : ''}</li>`).join('') || '<li>No process definition recorded.</li>'}</ol></section>`;
-    return `<div class="au-procedure-definition">${applicability}${requiredFacts}${requirements}${evidence}${process}</div>`;
+  // Plain words for a recorded branch condition. A constant true has none.
+  function conditionSentence(expression, facts = new Map()) {
+    if (!expression || typeof expression !== 'object') return '';
+    const label = flag => facts.get(`condition:${flag}`)?.label || '';
+    if (Object.prototype.hasOwnProperty.call(expression,'const')) return expression.const === false || expression.const === 'false' ? 'never' : '';
+    if (expression.flag) return language.conditionClause(expression.flag,label(expression.flag),true);
+    if (expression.not) {
+      if (expression.not.flag) return language.conditionClause(expression.not.flag,label(expression.not.flag),false);
+      if (Object.prototype.hasOwnProperty.call(expression.not,'const')) return expression.not.const === false || expression.not.const === 'false' ? '' : 'never';
+      const inner = conditionSentence(expression.not,facts);
+      return inner ? `not (${inner})` : '';
+    }
+    const parts = list(expression.all || expression.any).map(child => conditionSentence(child,facts)).filter(Boolean);
+    return parts.join(expression.all ? ' and ' : ' or ');
+  }
+  const joinWords = (values, last = 'or') => values.length < 2 ? values.join('') : `${values.slice(0,-1).join(', ')} ${last} ${values.at(-1)}`;
+  const NON_FLOW_RELATIONS = new Set(['requires','blocks','invalidates','supersedes']);
+  // Steps in executable order. Branch conditions come from the recorded edges
+  // and the step's own condition; nothing is inferred from labels.
+  function libraryStepsMarkup(graph, facts = new Map()) {
+    let layout;
+    try { layout = layoutGraph(graph); } catch (_) { return '<p class="au-meta">The recorded steps cannot be shown in order.</p>'; }
+    if (!layout.nodes.length) return '<p class="au-meta">No steps are recorded.</p>';
+    const number = new Map(layout.nodes.map((node,index) => [node.node_id,index+1]));
+    return `<ol class="au-library-steps">${layout.nodes.map(node => {
+      const incoming = list(graph.edges).filter(edge => edge.target_node_id === node.node_id), flow = incoming.filter(edge => !NON_FLOW_RELATIONS.has(edge.relation));
+      const plainSources = [...new Set(flow.filter(edge => !conditionSentence(edge.condition,facts)).map(edge => number.get(edge.source_node_id)))];
+      const branches = flow.map(edge => ({source:number.get(edge.source_node_id),clause:conditionSentence(edge.condition,facts)})).filter(row => row.clause);
+      const required = incoming.filter(edge => edge.relation === 'requires').map(edge => number.get(edge.source_node_id));
+      const own = conditionSentence(node.condition,facts), order = [], conditions = [];
+      if (node.entry || !incoming.length) order.push('First step');
+      if (!plainSources.length && branches.length === 1) { order.push(`After step ${branches[0].source}`); conditions.push(`Only if ${branches[0].clause}`); }
+      else { if (plainSources.length) order.push(`After step ${joinWords(plainSources)}`); for (const row of branches) conditions.push(`After step ${row.source} only if ${row.clause}`); }
+      if (required.length) order.push(`Needs step ${joinWords(required,'and')} finished`);
+      if (own) conditions.push(`Only if ${own}`);
+      const documents = list(node.document_types).map(type => language.documentTitle({document_type:type}));
+      return `<li data-au-library-step="${h(node.node_id)}"><strong>${h(name(node))}</strong>${order.length ? `<p class="au-meta">${h(order.join(' · '))}</p>` : ''}${conditions.map(line => `<p class="au-library-condition">${h(line)}</p>`).join('')}${documents.length ? `<p class="au-meta">Documents: ${h(documents.join(', '))}</p>` : ''}</li>`;
+    }).join('')}</ol>`;
+  }
+  const libraryFamily = item => item?.family || (String(item?.knowledge_id || '').startsWith('procedure.') ? String(item.knowledge_id).slice('procedure.'.length) : '') || item?.candidate?.family || '';
+  const LIBRARY_CAPABILITIES = Object.freeze({'local_inbox.read':'Reads the files supplied with the case'});
+  // The reusable definition of one saved version, read top to bottom.
+  // Conditions are facts a case establishes, so they appear as plain-word
+  // branch conditions rather than as facts or bare flags.
+  function definitionMarkup(version, options = {}) {
+    const graph = version.graph || {nodes:[],edges:[]}, facts = new Map(list(version.facts).map(fact => [fact.fact_id,fact]));
+    const catalog = new Map(list(graph.document_catalog).map(item => [item.document_type,item]));
+    const nodes = new Map(list(graph.nodes).map(node => [node.node_id,node]));
+    let numbers = new Map(); try { numbers = new Map(layoutGraph(graph).nodes.map((node,index) => [node.node_id,index+1])); } catch (_) { /* steps say they cannot be ordered */ }
+    const stepName = id => nodes.has(id) ? `Step ${numbers.get(id) ?? '?'} · ${name(nodes.get(id))}` : language.stepLabel(id);
+    const used = new Set([...list(graph.edges).flatMap(edge => conditionFlags(edge.condition)),...list(graph.nodes).flatMap(node => conditionFlags(node.condition)),...list(graph.document_catalog).flatMap(item => [item.condition_flag,...conditionFlags(item.condition)].filter(Boolean))]);
+    const flags = [...new Set([...Object.keys(graph.conditions || {}),...used])].filter(flag => used.has(flag)), scope = procedureScope(version);
+    const applies = `<section class="au-library-applies"><h3>When it applies</h3><p>${h(scope)} cases checked under the same recorded rules.</p>${flags.length ? `<p>Each case establishes from its own documents whether:</p><ul class="au-definition-list">${flags.map(flag => `<li>${h(language.conditionClause(flag,facts.get(`condition:${flag}`)?.label,true))}</li>`).join('')}</ul>` : '<p>No step or document depends on a branch condition; every step applies to each case.</p>'}<p class="au-meta">Reuse does not decide a case. Each case still needs its own source evidence.</p></section>`;
+    const steps = `<section><h3>Steps</h3>${libraryStepsMarkup(graph,facts)}</section>`;
+    const evidenceFor = new Map();
+    for (const item of list(version.obligations)) for (const id of list(item.required_fact_ids)) { if (!evidenceFor.has(id)) evidenceFor.set(id,[]); evidenceFor.get(id).push(name(item)); }
+    const plainFacts = [...facts.values()].filter(fact => !String(fact.fact_id || '').startsWith('condition:'));
+    const factsSection = `<section><h3>Facts</h3><ul class="au-definition-list">${plainFacts.map(fact => `<li>${h(language.factLabel(fact))}${evidenceFor.has(fact.fact_id) ? `<p class="au-meta">From ${h([...new Set(evidenceFor.get(fact.fact_id))].join(', '))}</p>` : ''}</li>`).join('') || '<li>No facts are recorded.</li>'}</ul></section>`;
+    const documents = `<section><h3>Documents</h3><ul class="au-definition-list au-library-documents">${list(version.obligations).map(item => {
+      const entry = catalog.get(item.document_type), step = item.decision_node_id || item.node_id;
+      const condition = entry?.condition_flag ? language.conditionClause(entry.condition_flag,facts.get(`condition:${entry.condition_flag}`)?.label,true) : conditionSentence(entry?.condition,facts);
+      const establishes = list(item.required_fact_ids).map(id => language.factLabel(facts.get(id) || id));
+      return `<li data-au-library-document="${h(item.document_type)}"><strong>${h(name(item))}</strong>${step ? `<p class="au-meta">For ${h(stepName(step))}</p>` : ''}${establishes.length ? `<p class="au-meta">Establishes: ${h(establishes.join('; '))}</p>` : ''}${condition ? `<p class="au-library-condition">Only if ${h(condition)}</p>` : ''}${entry?.requirement_class === 'optional' ? '<p class="au-meta">Optional</p>' : ''}</li>`;
+    }).join('') || '<li>No documents are recorded.</li>'}</ul></section>`;
+    const capabilities = [...new Set(list(version.obligations).map(item => item.capability_id).filter(Boolean))].map(id => LIBRARY_CAPABILITIES[id] || `Uses ${words(id).toLocaleLowerCase()}`);
+    const endings = list(graph.nodes).filter(node => node.terminal === true).map(node => `Ends at ${stepName(node.node_id)}`);
+    const recordedLimits = list(version.source_outcome?.authority_limits).filter(value => typeof value === 'string' && value.trim());
+    const checked = list(version.qualification?.checks).some(check => (typeof check === 'string' ? check : check?.id) === 'no_case_values_or_files');
+    const actions = `<section><h3>Actions and limits</h3><ul class="au-definition-list">${[...capabilities,...endings].map(line => `<li>${h(line)}</li>`).join('') || '<li>No actions are recorded.</li>'}</ul><ul class="au-definition-list au-library-limits">${recordedLimits.map(line => `<li>${h(line)}</li>`).join('')}${checked ? '<li>Holds no personal case details; this was checked before saving.</li>' : ''}<li>Takes no real-world action.</li></ul></section>`;
+    const passages = list(version.source_evidence).flatMap(row => list(row.citations).filter(citation => typeof citation?.quote === 'string' && citation.quote.trim()).map(citation => ({row,citation})));
+    const sourceClaim = version.source_claim_id, label = options.caseTitle ? caseLabel(sourceClaim,{title:options.caseTitle(sourceClaim)}) : caseLabel(sourceClaim);
+    const supporting = `<section><h3>Supporting passages</h3>${passages.length ? `<ul class="au-library-passages">${passages.map(({row,citation},index) => `<li><p class="au-meta">${h(language.documentTitle({document_type:row.document_type}))}${sourceClaim ? ` · ${h(label.primary)}` : ''}</p><blockquote>${h(citation.quote)}</blockquote>${sourceClaim && citation.artifact_id ? `<button type="button" class="au-source-link au-library-source" data-au-source="${h(citation.artifact_id)}" data-au-knowledge-source-claim="${h(sourceClaim)}" data-au-source-origin="${h(`library:${version.knowledge_id || ''}:${version.version || ''}:${index}`)}" data-au-citation="${h(JSON.stringify(citation))}">Open source</button>` : ''}</li>`).join('')}</ul>` : '<p>No supporting passage is recorded for this version.</p>'}</section>`;
+    return `<div class="au-procedure-definition">${applies}${steps}${factsSection}${documents}${actions}${supporting}</div>`;
+  }
+  // Base procedure from the admitted release rule pack. Structural context
+  // only: it is never presented as a case result or a saved version.
+  function baseOutlineMarkup(family) {
+    const outline = list(RELEASE_PROCEDURE_OUTLINE.catalogs).find(row => row.family === family);
+    if (!outline) return '<p class="au-meta">No base procedure is recorded for this domain.</p>';
+    const graph = {nodes:list(outline.nodes).map((node,index) => ({...node,condition:{const:'true'},entry:!list(outline.transitions).some(edge => edge.target_node_id === node.node_id)})),edges:list(outline.transitions).map(edge => ({...edge,relation:'enables',condition:{const:'true'}}))};
+    const numbers = new Map(graph.nodes.map((node,index) => [node.node_id,index+1]));
+    try { layoutGraph(graph).nodes.forEach((node,index) => numbers.set(node.node_id,index+1)); } catch (_) { /* outline order */ }
+    const step = id => { const node = graph.nodes.find(row => row.node_id === id); return node ? `Step ${numbers.get(id)} · ${name(node)}` : language.stepLabel(id); };
+    return `<p class="au-library-context">Structural context from the admitted rule pack. It is not a result for any case.</p><div class="au-procedure-definition"><section><h3>Steps</h3>${libraryStepsMarkup(graph)}</section><section><h3>Documents</h3><ul class="au-definition-list au-library-documents">${list(outline.documents).map(item => `<li data-au-library-document="${h(item.document_type)}"><strong>${h(language.documentTitle({document_type:item.document_type,label:item.label}))}</strong>${list(item.required_at_node_ids).length ? `<p class="au-meta">For ${h(item.required_at_node_ids.map(step).join('; '))}</p>` : ''}</li>`).join('') || '<li>No documents are recorded.</li>'}</ul></section></div>`;
+  }
+  // One entry per domain: its current qualified version, candidates that were
+  // not saved, and the cases that contributed or received each version.
+  function knowledgeLibrary(data) {
+    const model = knowledgeLearningModel(data), versions = model.versions;
+    const families = [...DOMAINS.map(row => row.id),...new Set(versions.map(libraryFamily).filter(id => id && !DOMAINS.some(row => row.id === id)))];
+    // Learned entries come first, then candidates, then base procedures.
+    const rank = entry => entry.current ? 0 : entry.candidates.length ? 1 : 2;
+    return families.map(family => {
+      const own = versions.filter(version => libraryFamily(version) === family).sort((a,b) => Number(b.version)-Number(a.version));
+      const qualified = own.filter(version => version.qualification?.status === 'qualified');
+      const candidates = model.events.filter(event => event.refused && event.family === family);
+      return {family,label:procedureScope({family}),versions:own,current:qualified[0] || null,candidates,events:model.events.filter(event => event.family === family && !event.refused)};
+    }).map((entry,index) => ({entry,index})).sort((a,b) => rank(a.entry)-rank(b.entry) || a.index-b.index).map(row => row.entry);
+  }
+  function libraryStatus(entry) {
+    if (entry.current) return `Version ${entry.current.version} · qualified · current`;
+    if (entry.candidates.length) return `No qualified version · ${entry.candidates.length} candidate${entry.candidates.length === 1 ? '' : 's'} not saved`;
+    return 'Base procedure · admitted rule pack · nothing learned yet';
+  }
+  function libraryEntryMarkup(entry, data, options = {}) {
+    const model = knowledgeLearningModel(data), pin = options.pin, exactRequested = pin?.version != null && pin.version !== '', exact = exactRequested ? entry.versions.find(version => knowledgePinMatches(version,pin)) : null;
+    // An unavailable exact pin never borrows another version's content.
+    if (exactRequested && !exact) return `<article class="au-library-entry" id="au-library-${h(entry.family)}" data-au-library-entry="${h(entry.family)}" data-au-library-unavailable aria-labelledby="au-library-${h(entry.family)}-title"><header class="au-library-entry-head"><h2 id="au-library-${h(entry.family)}-title" tabindex="-1">${h(entry.label)}</h2><p class="au-library-status" data-au-library-status="unavailable">This exact saved version is unavailable in this record.</p></header>${entry.current ? `<p>${knowledgeLink(entry.current,`Open current version ${entry.current.version}`)}</p>` : '<p>No qualified version is recorded for this domain.</p>'}</article>`;
+    const shown = exact || entry.current, caseTitle = options.caseTitle || (() => ''), anchor = `au-library-${entry.family}`;
+    const caseLink = (id, current = false) => id ? `<button type="button" class="au-secondary au-case-link" data-au-claim="${h(id)}"${current ? ' data-au-current-case="true" aria-current="true"' : ''}>${caseLabelMarkup(caseLabel(id,{title:caseTitle(id)}))}</button>` : '<span>Case not recorded</span>';
+    const versionRows = entry.versions.map(version => {
+      const qualified = version.qualification?.status === 'qualified', current = version === entry.current, selected = version === shown;
+      return `<li${selected ? ' aria-current="true"' : ''} data-au-library-version="${h(version.version)}">${selected ? `<strong>Version ${h(version.version)}</strong>` : knowledgeLink(version,`Version ${version.version}`)} · ${qualified ? 'qualified' : 'candidate · not qualified'}${current ? ' · current' : ''}${version.created_at ? ` · ${h(learningTime({at:version.created_at}))}` : ''}<p class="au-meta">${h(learningChangeSummary(version))}</p></li>`;
+    }).concat(entry.candidates.map(event => `<li data-au-library-candidate><span>Candidate · not saved</span>${event.at ? ` · ${h(learningTime(event))}` : ''}<p class="au-meta">${h(language.refusalReason(event.item?.qualification?.reason || event.qualification?.reason || event.item?.reason))}</p></li>`));
+    const cases = entry.versions.map(version => {
+      const receiving = [...new Set(knowledgeUses(version,model.uses).map(use => use.claim_id).filter(Boolean))];
+      return `<li data-au-library-cases="${h(version.version)}"><p class="au-library-cases-version">Version ${h(version.version)}</p><div class="au-library-case-group" data-au-library-contributing><span class="au-meta">Contributed by</span>${caseLink(version.source_claim_id,pin?.claim_id && pin.claim_id === version.source_claim_id)}</div><div class="au-library-case-group" data-au-library-receiving><span class="au-meta">Received by</span>${receiving.map(id => caseLink(id,pin?.claim_id === id)).join('') || '<span>No receiving case is recorded.</span>'}</div></li>`;
+    }).concat(entry.candidates.map(event => `<li data-au-library-candidate-case><p class="au-library-cases-version">Candidate · not saved</p><div class="au-library-case-group"><span class="au-meta">Proposed by</span>${caseLink(event.source_claim_id || event.claim_id || event.item?.source_claim_id)}</div></li>`));
+    const header = `<header class="au-library-entry-head"><h2 id="${h(anchor)}-title" tabindex="-1">${h(entry.label)}</h2><p class="au-library-status" data-au-library-status="${entry.current ? 'qualified' : entry.candidates.length ? 'candidate' : 'base'}">${h(libraryStatus(entry))}</p>${shown && shown !== entry.current ? `<p class="au-library-shown">Showing version ${h(shown.version)}${entry.current ? ` · ${knowledgeLink(entry.current,`Show current version ${entry.current.version}`)}` : ''}</p>` : ''}${entry.events.length ? `<button type="button" class="au-link au-library-learning" data-au-learning-open="${h(entry.family)}" data-au-learning-version="${h(shown ? `${shown.knowledge_id || shown.version_id}:${shown.version || shown.version_id}` : '')}">How this was learned</button>` : ''}</header>`;
+    const body = shown ? `${definitionMarkup(shown,{caseTitle})}<section><h3>Versions</h3><ul class="au-library-versions">${versionRows.join('')}</ul></section><section class="au-library-cases"><h3>Contributing and receiving cases</h3><ul>${cases.join('')}</ul></section>` : `${baseOutlineMarkup(entry.family)}${entry.candidates.length ? `<section><h3>Versions</h3><ul class="au-library-versions">${versionRows.join('')}</ul></section><section class="au-library-cases"><h3>Contributing and receiving cases</h3><ul>${cases.join('')}</ul></section>` : ''}`;
+    const identity = shown ? ` data-au-knowledge-identity="${h(`${shown.knowledge_id || shown.version_id}:${shown.version || shown.version_id}`)}" data-au-version="${h(shown.version)}"` : '';
+    return `<article class="au-library-entry" id="${h(anchor)}" data-au-library-entry="${h(entry.family)}"${identity} aria-labelledby="${h(anchor)}-title">${header}${body}</article>`;
+  }
+  function knowledgeLibraryMarkup(data, claims = [], pin = null) {
+    const model = knowledgeLearningModel(data), entries = knowledgeLibrary(data), learned = entries.some(entry => entry.current);
+    const titles = new Map(list(claims).map(row => [row.claim_id,row.title]));
+    for (const event of model.events) { if (event.claim_id && event.claim_title && !titles.has(event.claim_id)) titles.set(event.claim_id,event.claim_title); if (event.source_claim_id && event.source_claim_title && !titles.has(event.source_claim_id)) titles.set(event.source_claim_id,event.source_claim_title); }
+    const orphans = model.events.filter(event => event.refused && !entries.some(entry => entry.family === event.family));
+    const caseTitle = id => titles.get(id) || '', label = learningLabel(model,claims,false).replace(/^(?:Saved learning|No saved learning yet)/,'Procedure library');
+    const indexStatus = entry => { if (!entry.current) return entry.candidates.length ? 'No qualified version' : 'Nothing learned yet'; const receiving = new Set(knowledgeUses(entry.current,model.uses).map(use => use.claim_id).filter(Boolean)).size; return `Version ${entry.current.version} · qualified${receiving ? ` · ${receiving} receiving case${receiving === 1 ? '' : 's'}` : ''}`; };
+    const index = `<nav class="au-library-index" aria-label="Procedures">${entries.map(entry => `<button type="button" data-au-library-jump="${h(entry.family)}" aria-controls="au-library-${h(entry.family)}"><strong>${h(entry.label)}</strong><span>${h(indexStatus(entry))}</span></button>`).join('')}</nav>`;
+    return `<section class="au-quiet-knowledge au-library" data-au-library><header class="au-work-head"><div><p class="au-learning-label">${h(label)}</p><h1 class="au-page-heading" tabindex="-1">Knowledge</h1></div><div><span class="au-read-state" data-au-knowledge-read-label></span>${button('Retry','data-au-knowledge-retry hidden')}${model.events.length ? button('How this was learned','data-au-learning-open=""') : ''}${recordButton('History','knowledge-index')}</div></header>${learned ? '' : `<p class="au-library-empty">Knowledge forms when a case finishes its checks. <button type="button" class="au-link" data-au-nav="demonstration">Demonstration</button> · <button type="button" class="au-link" data-au-nav="work">Cases</button></p>`}<div class="au-library-layout">${index}<div class="au-library-entries">${entries.map(entry => libraryEntryMarkup(entry,data,{pin:pin && (libraryFamily(pin) === entry.family) ? pin : null,caseTitle})).join('')}${orphans.length ? `<p class="au-meta au-library-orphans">${orphans.length} candidate${orphans.length === 1 ? '' : 's'} not saved · domain not recorded · shown in How this was learned</p>` : ''}</div></div></section>`;
   }
   function lineageMarkup(version, versions = []) {
     const parent = versions.find(item => item.knowledge_sha256 && item.knowledge_sha256 === version.parent_knowledge_sha256);
@@ -1485,12 +1643,14 @@
   }
   function knowledgeFacetMarkup(version, facet = 'process', versions = []) {
     const graph = version.graph || {nodes:[],edges:[]}, layout = layoutGraph(graph), facts = new Map(list(version.facts).map(fact => [fact.fact_id,fact]));
-    if (facet === 'facts') return `<div class="au-procedure-facts"><h3>Facts to establish in each case</h3>${[...facts.values()].map(fact => `<p>${h(name(fact))}</p>`).join('') || '<p>No required facts are recorded.</p>'}</div>`;
+    // Condition facts are branch questions, shown in plain words under Special cases.
+    if (facet === 'facts') return `<div class="au-procedure-facts"><h3>Facts to establish in each case</h3>${[...facts.values()].filter(fact => !String(fact.fact_id || '').startsWith('condition:')).map(fact => `<p>${h(language.factLabel(fact))}</p>`).join('') || '<p>No required facts are recorded.</p>'}</div>`;
     if (facet === 'documents') return `<div class="au-procedure-documents"><h3>Document requirements</h3>${list(version.obligations).map(item => `<article><h4>${h(name(item))}</h4>${list(item.required_fact_ids).length ? `<p>${h(item.required_fact_ids.map(id => name(facts.get(id)) || words(id)).join('; '))}</p>` : ''}</article>`).join('') || '<p>No document requirements are recorded.</p>'}</div>`;
     if (facet === 'exceptions') {
-      const conditional = list(graph.document_catalog).filter(item => item.condition || item.condition_flag), conditions = Object.keys(graph.conditions || {});
+      const conditional = list(graph.document_catalog).filter(item => item.condition_flag || conditionFlags(item.condition).length), conditions = Object.keys(graph.conditions || {});
       const conditionalEdges = list(graph.edges).filter(edge => edge.condition && conditionFlags(edge.condition).length);
-      return `<div class="au-procedure-exceptions"><h3>Conditions and exceptions</h3>${conditions.map(flag => `<p>${h(name(facts.get(`condition:${flag}`)) || words(flag))}</p>`).join('')}${conditional.map(item => `<article><h4>${h(name(item))}</h4>${item.condition_flag ? `<p>${h(name(facts.get(`condition:${item.condition_flag}`)) || words(item.condition_flag))}</p>` : ''}</article>`).join('')}${conditionalEdges.map(edge => `<p>${h(name(layout.byId.get(edge.source_node_id)))} → ${h(name(layout.byId.get(edge.target_node_id)))} · ${h(conditionFlags(edge.condition).map(flag => name(facts.get(`condition:${flag}`)) || words(flag)).join('; '))}</p>`).join('')}${!conditions.length && !conditional.length && !conditionalEdges.length ? '<p>No conditional exception is recorded in this version.</p>' : ''}</div>`;
+      const documentCondition = item => item.condition_flag ? language.conditionClause(item.condition_flag,facts.get(`condition:${item.condition_flag}`)?.label,true) : conditionSentence(item.condition,facts);
+      return `<div class="au-procedure-exceptions"><h3>Conditions and exceptions</h3>${conditions.length ? `<p>Each case establishes from its own documents whether:</p><ul class="au-definition-list">${conditions.map(flag => `<li>${h(language.conditionClause(flag,facts.get(`condition:${flag}`)?.label,true))}</li>`).join('')}</ul>` : ''}${conditional.map(item => `<article><h4>${h(name(item))}</h4><p>Only if ${h(documentCondition(item))}</p></article>`).join('')}${conditionalEdges.map(edge => `<p>${h(name(layout.byId.get(edge.source_node_id)))} → ${h(name(layout.byId.get(edge.target_node_id)))} · Only if ${h(conditionSentence(edge.condition,facts))}</p>`).join('')}${!conditions.length && !conditional.length && !conditionalEdges.length ? '<p>No conditional exception is recorded in this version.</p>' : ''}</div>`;
     }
     if (facet === 'changes') {
       const added = list(version.added_document_types), parent = list(versions).find(item => item.knowledge_sha256 === version.parent_knowledge_sha256);
@@ -1635,7 +1795,7 @@
     const families=[...DOMAINS.map(row=>({id:row.id,label:procedureScope({family:row.id})})),...new Set(model.events.filter(event=>!event.refused&&!DOMAINS.some(row=>row.id===event.family)).map(event=>event.family))].map(row=>typeof row==='string'?{id:row,label:words(row)}:row);
     const lanes=[...families,{id:'refused',label:'Not saved'}];
     const totals=model.totals, initialStage=position?.stage ?? 10;
-    return `<section class="au-quiet-knowledge au-learning" data-au-learning><header class="au-work-head"><div><p class="au-learning-label" data-au-learning-label>${h(learningLabel(model,claims,false))}</p><h1 class="au-page-heading" tabindex="-1">Knowledge</h1><p>See which steps were saved, checked again and reused.</p></div><div><span class="au-read-state" data-au-knowledge-read-label></span>${button('Retry','data-au-knowledge-retry hidden')}${recordButton('History','knowledge-index')}</div></header><div class="au-learning-transport" role="group" aria-label="Learning replay controls"><button type="button" data-au-learning-play${!model.events.length?' disabled':''}>Play</button><button type="button" data-au-learning-end${!model.events.length?' disabled':''}>Final view</button><label><span>Replay position</span><input type="range" data-au-learning-scrub min="0" max="${Math.max(0,model.events.length-1)}" value="${Math.max(0,model.events.indexOf(selected))}" aria-label="Recorded learning event"${!model.events.length?' disabled':''}></label><p data-au-learning-position-label>${selected?h(learningEventLabel(selected)):model.events.length?'Exact version unavailable':'No recorded events'}</p></div><div class="au-learning-focus" role="region" aria-label="Selected recorded knowledge" tabindex="0" data-au-learning-focus data-au-learning-stage="${initialStage}">${pin&&!pinned?`<article class="au-learning-unavailable">${knowledgeNowMarkup(model,null)}<h2>This exact saved version is unavailable.</h2><p>The recorded learning history is still available.</p>${button('Return to recorded learning','data-au-learning-end')}</article>`:knowledgeLearningFocus(model,selected,facet)}</div><section class="au-learning-timeline" style="--au-learning-days:${Math.max(1,days.length)}" aria-label="Recorded learning timeline"><div class="au-learning-dates"><span>Versions and reuses</span>${days.map(day=>`<span>${h(day==='unordered'?'Unordered':new Date(day+'T00:00:00Z').toLocaleDateString('en-GB',{timeZone:'UTC',day:'numeric',month:'short'}))}</span>`).join('')}</div>${lanes.map(lane=>`<section class="au-learning-lane" data-au-learning-lane="${h(lane.id)}"><h2>${h(lane.label)}</h2><div class="au-learning-track">${days.map(day=>`<div class="au-learning-day" data-au-learning-day="${h(day)}"><span class="au-learning-mobile-date">${h(day==='unordered'?'Unordered':day.slice(5))}</span>${model.events.map((event,index)=>({event,index})).filter(({event,index})=>(lane.id==='refused'?event.refused:!event.refused&&event.family===lane.id)&&learningDay(event)===day&&(!event.reuseGroup||event.reuseGroup[0]===index)).map(({event,index})=>`<button type="button" class="au-learning-node" data-au-learning-event="${index}" data-au-learning-event-id="${h(event.id)}"${learningPinAttributes(event.versionRecord || event.item)} aria-current="${selected===event?'step':'false'}" aria-label="${h(`${learningEventLabel(event)}. ${learningTimelineProcedure(event)}. ${learningTime(event)}.`)}"><span>${h(event.kind==='knowledge.used'?`${event.reuseGroup?.length || 1} ${event.reuseGroup?.length===1?'reuse':'reuses'}`:event.refused?'×':`v${event.item.version || '?'}`)}</span><span class="au-learning-node-text">${h(event.kind==='knowledge.used'?'':event.refused?'Not saved':String(event.item.change_reason || '').startsWith('Requalified ')?'Rechecked':event.item.parent_knowledge_sha256?'Updated':'Saved')}</span></button>`).join('')}</div>`).join('')}${!model.events.some(event=>lane.id==='refused'?event.refused:!event.refused&&event.family===lane.id)?'<p class="au-learning-no-events">No recorded events</p>':''}</div></section>`).join('')}</section><p class="au-learning-disclosure">Replay shows saved records. Playback does not change them.</p><p class="au-learning-totals">${h(totals.recorded_uses ?? model.uses.length)} recorded uses · ${h(totals.receiving_claims ?? 0)} receiving claims · ${h(totals.avoided_rule_compilations ?? 0)} times reused instead of rebuilding</p><p class="au-learning-announcement" data-au-learning-announcement></p></section>`;
+    return `<section class="au-quiet-knowledge au-learning" data-au-learning><header class="au-work-head"><div><p class="au-learning-label" data-au-learning-label>${h(learningLabel(model,claims,false))}</p><h1 class="au-page-heading" tabindex="-1">How this was learned</h1><p>See which steps were saved, checked again and reused.</p></div><div><span class="au-read-state" data-au-knowledge-read-label></span>${button('Retry','data-au-knowledge-retry hidden')}<button type="button" class="au-link" data-au-library-return>Back to the library</button>${recordButton('History','knowledge-index')}</div></header><div class="au-learning-transport" role="group" aria-label="Learning replay controls"><button type="button" data-au-learning-play${!model.events.length?' disabled':''}>Play</button><button type="button" data-au-learning-end${!model.events.length?' disabled':''}>Final view</button><label><span>Replay position</span><input type="range" data-au-learning-scrub min="0" max="${Math.max(0,model.events.length-1)}" value="${Math.max(0,model.events.indexOf(selected))}" aria-label="Recorded learning event"${!model.events.length?' disabled':''}></label><p data-au-learning-position-label>${selected?h(learningEventLabel(selected)):model.events.length?'Exact version unavailable':'No recorded events'}</p></div><div class="au-learning-focus" role="region" aria-label="Selected recorded knowledge" tabindex="0" data-au-learning-focus data-au-learning-stage="${initialStage}">${pin&&!pinned?`<article class="au-learning-unavailable">${knowledgeNowMarkup(model,null)}<h2>This exact saved version is unavailable.</h2><p>The recorded learning history is still available.</p>${button('Open the library','data-au-learning-end')}</article>`:knowledgeLearningFocus(model,selected,facet)}</div><section class="au-learning-timeline" style="--au-learning-days:${Math.max(1,days.length)}" aria-label="Recorded learning timeline"><div class="au-learning-dates"><span>Versions and reuses</span>${days.map(day=>`<span>${h(day==='unordered'?'Unordered':new Date(day+'T00:00:00Z').toLocaleDateString('en-GB',{timeZone:'UTC',day:'numeric',month:'short'}))}</span>`).join('')}</div>${lanes.map(lane=>`<section class="au-learning-lane" data-au-learning-lane="${h(lane.id)}"><h2>${h(lane.label)}</h2><div class="au-learning-track">${days.map(day=>`<div class="au-learning-day" data-au-learning-day="${h(day)}"><span class="au-learning-mobile-date">${h(day==='unordered'?'Unordered':day.slice(5))}</span>${model.events.map((event,index)=>({event,index})).filter(({event,index})=>(lane.id==='refused'?event.refused:!event.refused&&event.family===lane.id)&&learningDay(event)===day&&(!event.reuseGroup||event.reuseGroup[0]===index)).map(({event,index})=>`<button type="button" class="au-learning-node" data-au-learning-event="${index}" data-au-learning-event-id="${h(event.id)}"${learningPinAttributes(event.versionRecord || event.item)} aria-current="${selected===event?'step':'false'}" aria-label="${h(`${learningEventLabel(event)}. ${learningTimelineProcedure(event)}. ${learningTime(event)}.`)}"><span>${h(event.kind==='knowledge.used'?`${event.reuseGroup?.length || 1} ${event.reuseGroup?.length===1?'reuse':'reuses'}`:event.refused?'×':`v${event.item.version || '?'}`)}</span><span class="au-learning-node-text">${h(event.kind==='knowledge.used'?'':event.refused?'Not saved':String(event.item.change_reason || '').startsWith('Requalified ')?'Rechecked':event.item.parent_knowledge_sha256?'Updated':'Saved')}</span></button>`).join('')}</div>`).join('')}${!model.events.some(event=>lane.id==='refused'?event.refused:!event.refused&&event.family===lane.id)?'<p class="au-learning-no-events">No recorded events</p>':''}</div></section>`).join('')}</section><p class="au-learning-disclosure">Replay shows saved records. Playback does not change them.</p><p class="au-learning-totals">${h(totals.recorded_uses ?? model.uses.length)} recorded uses · ${h(totals.receiving_claims ?? 0)} receiving claims · ${h(totals.avoided_rule_compilations ?? 0)} times reused instead of rebuilding</p><p class="au-learning-announcement" data-au-learning-announcement></p></section>`;
   }
   function collectionRows(claims, scope = 'all') {
     return list(claims).filter(claim => scope === 'all' || (scope === 'originals' ? claim.origin === 'canonical_original' : claim.origin !== 'canonical_original'));
@@ -2616,7 +2776,8 @@
     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, recordReturn = null, recordSelection = null, recordExplained = null, chosenNode = null, sourceEpoch = 0, polling = null, claimRead = 0;
     let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'reference', tour = null, demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
     let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, statusAuthority = null, readGeneration = 0;
-    let learningState = null, learningTimer = null, learningVisited = false, noticeCategory = null, announcedNow = null, noticeRecord = null;
+    // Knowledge opens as the procedure library; the learning replay is a secondary view.
+    let knowledgeMode = 'library', learningState = null, learningTimer = null, noticeCategory = null, announcedNow = null, noticeRecord = null;
     let knowledgeWarmGeneration = -1, knowledgeFacet = 'process', knowledgePin = null, lastCaseContext = null, collectionCache = null, knowledgeCache = null, statusCache = null, knowledgeRead = 0, renderedKnowledge = null;
     const snapshots = new Map(), sourcePreviews = new Map(), nativeBytes = new Map(), replayPrefixes = new Map(), inflightReads = new Map(), readOwners = new Map();
     const savedHeads = new Map(), warmQueue = [], warmAttempts = new Set(), warmIntents = new Set(), warmWorkers = new Set();
@@ -2667,7 +2828,7 @@
       if (fragment === routedFragment) return;
       if (!fragment && readOnlyAccess()) { showDemonstration(false,null,operationRoutePreference(fragment,root.location?.search)); return; }
       if (fragment === '#autonomous/knowledge') showKnowledge(false);
-      else if (fragment.startsWith('#autonomous/knowledge?')) { const params = new URLSearchParams(fragment.slice(fragment.indexOf('?')+1)); showKnowledge(false,params.get('knowledge')?{knowledge_id:params.get('knowledge'),version:params.get('version'),knowledge_sha256:params.get('sha256'),definition_sha256:params.get('definition'),claim_id:params.get('claim')}:null,{event:params.get('event'),stage:Number(params.get('stage')??10),facet:params.get('facet'),complete:params.get('complete')==='1'}); }
+      else if (fragment.startsWith('#autonomous/knowledge?')) { const params = new URLSearchParams(fragment.slice(fragment.indexOf('?')+1)), learning = params.get('view') === 'learning' || params.has('event'); showKnowledge(false,params.get('knowledge')?{knowledge_id:params.get('knowledge'),version:params.get('version') || null,knowledge_sha256:params.get('sha256'),definition_sha256:params.get('definition'),claim_id:params.get('claim')}:null,{view:learning ? 'learning' : 'library',event:params.get('event'),stage:Number(params.get('stage')??10),facet:params.get('facet'),complete:params.get('complete')==='1'}); }
       else if (fragment.startsWith('#autonomous/claim/')) {
         try { const [encoded,query = ''] = fragment.slice('#autonomous/claim/'.length).split('?'), params = new URLSearchParams(query), id = decodeURIComponent(encoded); id ? openClaim(id,false,{mode:params.get('mode') === 'replay' ? 'replay' : 'saved',through:Number(params.get('through') || 0),collection:params.get('collection'),detail:params.get('detail'),node:params.get('node'),document:params.get('document'),obligation:params.get('obligation'),fact:params.get('fact'),trace:params.get('trace') === '1',operations:operationRoutePreference(fragment,root.location?.search)}) : showWork(false); }
         catch (_) { showWork(false); }
@@ -3119,6 +3280,11 @@
         replacement.replaceWith(original);
       }
     }
+    // The case Knowledge tab names its procedure and similar cases from the
+    // catalog and Knowledge index; it repaints once either read arrives.
+    function refreshCaseKnowledge() {
+      if (view === 'claim' && detail === 'knowledge' && current && !demoSession && !operationPeek && host.querySelector('[data-au-case-knowledge]')) renderClaim();
+    }
     function renderClaim(changes = null, navigation = false) {
       const displayedState = operationPeek?.state || current, displayedProjection = operationPeek?.projection || projection, displayedTrace = operationPeek?.trace || operationTrace;
       if (!current || view !== 'claim') return;
@@ -3471,7 +3637,7 @@
       try {
         const data = readKnowledge(await request('/knowledge',{},true));
         if (!canWarmReads(token,generation,ticket) || read !== knowledgeRead) return;
-        if (JSON.stringify(data).length * 2 <= 8 * 1024 * 1024) knowledgeCache = {value:data};
+        if (JSON.stringify(data).length * 2 <= 8 * 1024 * 1024) { knowledgeCache = {value:data}; refreshCaseKnowledge(); }
         // The recorded index can now count later reuse for a shown result.
         const payoff = view === 'claim' && current && host.querySelector('[data-au-knowledge-payoff]');
         if (payoff && knowledgeCache) { const fresh = doc.createElement?.('div'); if (fresh) { fresh.innerHTML = knowledgePayoffMarkup(current,knowledgeCache.value); const next = fresh.querySelector('[data-au-knowledge-payoff]'); if (next && next.outerHTML !== payoff.outerHTML) payoff.replaceWith(next); } }
@@ -3558,7 +3724,7 @@
       });
       if (fromCache) { for (const [id,row] of remembered) if (!claims.some(claim => claim.claim_id === id)) claims.push(row); }
       else if (current && !claims.some(row => row.claim_id === current.claim_id) && remembered.has(current.claim_id)) claims.unshift(remembered.get(current.claim_id));
-      claimsLoaded = true; railClaims(); refreshCollection(); refreshDemonstration(); warmKnowledge(token); primeClaimReads(token);
+      claimsLoaded = true; railClaims(); refreshCollection(); refreshDemonstration(); refreshCaseKnowledge(); warmKnowledge(token); primeClaimReads(token);
     }
     async function serviceStatus(token, force = false) {
       const generation = readGeneration;
@@ -4594,7 +4760,7 @@
       if (!learningState || !root.history?.replaceState || !root.location || view !== 'knowledge') return;
       const event=learningState.model.events[learningState.index], item=event?.versionRecord || event?.item;
       if (!event) return;
-      const params=new URLSearchParams();
+      const params=new URLSearchParams([['view','learning']]);
       if(item?.knowledge_id && item?.version) { params.set('knowledge',item.knowledge_id);params.set('version',item.version);params.set('sha256',item.knowledge_sha256 || '');const definition=item.definition_sha256 || item.qualification?.definition_sha256;if(definition)params.set('definition',definition); }
       if(knowledgePin?.claim_id)params.set('claim',knowledgePin.claim_id);
       params.set('event',event.id);params.set('stage',String(learningState.stage));params.set('facet',knowledgeFacet);if(learningState.complete)params.set('complete','1');
@@ -4643,13 +4809,49 @@
       }
       tick();
     }
+    const knowledgePinKey = pin => pin ? [pin.knowledge_id,pin.version,pin.knowledge_sha256,pin.definition_sha256,pin.claim_id].map(value => value ?? '').join('|') : '';
+    let renderedLibraryPin = null;
     function renderKnowledge(data, pin, initial = false, preference = null) {
+      if (knowledgeMode === 'learning' && knowledgeLearningModel(data).events.length) return renderLearning(data,pin,initial,preference);
+      knowledgeMode = 'library';
+      return renderLibrary(data,pin,initial);
+    }
+    function markLibraryEntry(family) {
+      for (const row of host.querySelectorAll('[data-au-library-jump]')) row.setAttribute('aria-current',String(row.dataset.auLibraryJump === family));
+      for (const row of host.querySelectorAll('[data-au-library-entry]')) { if (row.dataset.auLibraryEntry === family) row.setAttribute('data-pinned','true'); else row.removeAttribute('data-pinned'); }
+      return [...host.querySelectorAll('[data-au-library-entry]')].find(row => row.dataset.auLibraryEntry === family) || null;
+    }
+    // The library is the current state of every domain. An exact pin shows that
+    // version inside its entry; an unavailable pin says so and keeps the rest.
+    function renderLibrary(data, pin, initial = false) {
+      cancelLearning(); learningState = null;
+      const exactRequested = pin?.version != null && pin.version !== '', matching = exactRequested ? knowledgeLearningModel(data).versions.find(item => knowledgePinMatches(item,pin)) : null;
+      const pinChanged = knowledgePinKey(renderedLibraryPin) !== knowledgePinKey(pin);
+      const same = !initial && !pinChanged && host.querySelector('[data-au-library]') && (renderedKnowledge === data || JSON.stringify(renderedKnowledge) === JSON.stringify(data));
+      if (!same) {
+        const open = new Set([...host.querySelectorAll('details[open][data-au-disclosure]')].map(element => element.dataset.auDisclosure));
+        host.innerHTML = knowledgeLibraryMarkup(data,claims,pin);
+        for (const disclosure of host.querySelectorAll('[data-au-disclosure]')) disclosure.open = open.has(disclosure.dataset.auDisclosure);
+        interact(host); if (initial) { focusTitle(); if (!pin) root.scrollTo?.(0,0); }
+      }
+      renderedKnowledge = data; knowledgePin = pin; renderedLibraryPin = pin;
+      synchronizeKnowledgeRead();
+      if (exactRequested && !matching) notice('The exact reused knowledge version is not available in this record.',true,'knowledge-pin-unavailable');
+      else if (noticeCategory === 'knowledge-pin-unavailable') notice('');
+      const entry = pin ? (matching ? [...host.querySelectorAll('[data-au-knowledge-identity]')].find(row => row.dataset.auKnowledgeIdentity === `${matching.knowledge_id || matching.version_id}:${matching.version || matching.version_id}`) : null) || markLibraryEntry(libraryFamily(pin)) : null;
+      if (entry) { markLibraryEntry(libraryFamily(pin)); entry.setAttribute('data-pinned','true'); }
+      if (entry && (initial || pinChanged)) { entry.setAttribute('tabindex','-1'); entry.focus({preventScroll:true}); entry.scrollIntoView?.({block:'start',behavior:'instant'}); }
+      return !(exactRequested && !matching);
+    }
+    function renderLearning(data, pin, initial = false, preference = null) {
+      renderedLibraryPin = null;
       const open = new Set([...host.querySelectorAll('details[open][data-au-disclosure]')].map(element => element.dataset.auDisclosure));
       const model=knowledgeLearningModel(data), matching=pin?model.versions.find(item=>knowledgePinMatches(item,pin)):null;
       const reusedEvent=matching&&pin?.claim_id?model.events.findIndex(event=>event.kind==='knowledge.used'&&event.claim_id===pin.claim_id&&event.versionRecord===matching):-1;
       const pinnedEvent=reusedEvent>=0?reusedEvent:matching?model.events.findIndex(event=>event.kind==='knowledge.published'&&event.versionRecord===matching&&!event.refused):-1;
       const explicit=preference?.event ? model.events.findIndex(event=>event.id===preference.event):-1;
-      const first=!learningVisited && !pin && !preference?.event && !reduced?.matches && model.events.some(event=>event.recorded);
+      // The replay plays only when a reader asks for it, never on arrival.
+      const first=Boolean(preference?.play) && !pin && !preference?.event && !reduced?.matches && model.frames.length>0;
       const retainedId=learningState?.model.events[learningState.index]?.id;
       const retainedIndex=retainedId?model.events.findIndex(event=>event.id===retainedId):-1;
       const preserve=(!pin || matching) && !initial && !preference && retainedIndex>=0,wasPlaying=Boolean(preserve&&learningState?.playing),announced=preserve?learningState.announced:null,completed=preference?.complete ?? Boolean(preserve&&learningState.complete);
@@ -4661,7 +4863,7 @@
         learningState={data,model,index:pin&&!matching?-1:position?.index??Math.max(0,fallback),stage:position?.stage??10,playing:false,complete:completed,facet:knowledgeFacet,announced};
         renderedKnowledge=data;knowledgePin=pin;
         for(const disclosure of host.querySelectorAll('[data-au-disclosure]'))disclosure.open=open.has(disclosure.dataset.auDisclosure);
-        interact(host);if(initial)focusTitle();
+        interact(host);if(initial){focusTitle();if(!(pin&&matching))root.scrollTo?.(0,0);}
       } else {knowledgePin=pin;if(position)selectLearning(position.index,position.stage,false,false);else if(learningState?.facet!==knowledgeFacet)selectLearning(learningState.index,learningState.stage,false,false);}
       synchronizeKnowledgeRead();synchronizeLearning();
       host.querySelectorAll('[data-pinned]').forEach(row=>row.removeAttribute('data-pinned'));
@@ -4670,20 +4872,22 @@
         const row=[...host.querySelectorAll('[data-au-knowledge-identity]')].find(element=>element.dataset.auKnowledgeIdentity===`${pin.knowledge_id}:${pin.version}`);
         if(row){row.setAttribute('data-pinned','true');row.setAttribute('tabindex','-1');row.focus({preventScroll:true});row.scrollIntoView?.({block:'start',behavior:'instant'});}
       }
-      if(first || wasPlaying&&!sameData){learningVisited=true;playLearning();}else if(model.events.length)learningVisited=true;
+      if(first || wasPlaying&&!sameData)playLearning();
       return true;
     }
     async function showKnowledge(writeHistory = true, pin = null, preference = null) {
+      knowledgeMode = preference?.view === 'learning' || preference?.event ? 'learning' : 'library';
       knowledgeFacet = ['process','facts','documents','exceptions','changes'].includes(preference?.facet)?preference.facet:'process'; knowledgePin = pin;
       stopPresentation(); leaveView();
-      const fragment = pin ? `#autonomous/knowledge?knowledge=${key(pin.knowledge_id)}&version=${key(pin.version)}&sha256=${key(pin.knowledge_sha256 || '')}${pin.definition_sha256 ? `&definition=${key(pin.definition_sha256)}` : ''}${pin.claim_id ? `&claim=${key(pin.claim_id)}` : ''}` : '#autonomous/knowledge';
+      const exact = pin?.version != null && pin.version !== '';
+      const fragment = `#autonomous/knowledge${knowledgeMode === 'learning' || pin ? '?' : ''}${knowledgeMode === 'learning' ? `view=learning${pin ? '&' : ''}` : ''}${pin ? `knowledge=${key(pin.knowledge_id)}${exact ? `&version=${key(pin.version)}&sha256=${key(pin.knowledge_sha256 || '')}${pin.definition_sha256 ? `&definition=${key(pin.definition_sha256)}` : ''}` : ''}${pin.claim_id ? `&claim=${key(pin.claim_id)}` : ''}` : ''}${knowledgeMode === 'learning' && preference?.event ? `&event=${key(preference.event)}&stage=${key(preference.stage ?? 10)}` : ''}`;
       route(fragment,writeHistory);
       epoch++; const token = epoch, read = ++knowledgeRead, generation = readGeneration;
       let awaitingFresh = true, freshReadFailed = false;
       // A read may finish after inspection changes the pin or replay position.
       // Only the first paint consumes the originally requested preference.
       const reconcileKnowledge = data => {
-        const initial = !host.querySelector('[data-au-learning]');
+        const initial = !host.querySelector('[data-au-learning]') && !host.querySelector('[data-au-library]');
         return renderKnowledge(data,initial ? pin : knowledgePin,initial,initial ? preference : null);
       };
       cancelPoll(); setView('knowledge'); nav('knowledge'); current = null;
@@ -4781,12 +4985,12 @@
         if (!disposed && token === epoch && pendingControl) notice(`${error.message} ${words(action)} response unconfirmed; retry uses the same request.`,true);
       } finally { busy = false; synchronizeAuthority(); routeChanged(); }
     }
-    async function openSource(id, citation, trigger) {
-      if (!current) return;
-      const saved = operationPeek?.state || current, token = epoch, sourceToken = ++sourceEpoch, descriptor = list(saved.source_descriptors).find(source => source.artifact_id === id);
+    async function openSource(id, citation, trigger, sourceState = null) {
+      if (!sourceState && !current) return;
+      const saved = sourceState || operationPeek?.state || current, sourceProjection = sourceState ? {} : projection, token = epoch, sourceToken = ++sourceEpoch, descriptor = list(saved.source_descriptors).find(source => source.artifact_id === id);
       if (!descriptor) { notice('This source is not part of the saved claim.',true); return; }
       dialogReturn = {element:trigger,token:focusToken(trigger)}; container.querySelector('#auSourceTitle').textContent = operationSourceTitle(descriptor);
-      const sourceEyebrow = dialog.querySelector?.('.au-eyebrow'); if (sourceEyebrow) sourceEyebrow.textContent = sourceKind(saved,descriptor,projection);
+      const sourceEyebrow = dialog.querySelector?.('.au-eyebrow'); if (sourceEyebrow) sourceEyebrow.textContent = sourceKind(saved,descriptor,sourceProjection);
       const body = container.querySelector('[data-au-source-content]'), url = `${base}/sources/${key(saved.claim_id)}/${key(id)}`;
       const native = descriptor.media_type?.split(';')[0];
       let nativeMarkup = '', nativeViewable = false; clearNativeSource();
@@ -4816,7 +5020,7 @@
           else if (preview.blob) { nativeViewable = true; nativeMarkup = `<div class="au-native-source" data-au-native-kind="${native === 'application/pdf' ? 'document' : 'image'}">${native === 'application/pdf' ? `<iframe class="au-native-document" src="${h(preview.blob)}" title="${h(operationSourceTitle(descriptor))}"></iframe>` : `<img class="au-native-image" src="${h(preview.blob)}" alt="${h(operationSourceTitle(descriptor))}">`}</div>`; }
         }
         if (disposed || token !== epoch || sourceToken !== sourceEpoch || !dialog.open) return;
-        const unassessed = assessmentFreshness(current).sources.some(source => source.artifact_id === descriptor.artifact_id);
+        const unassessed = !sourceState && assessmentFreshness(current).sources.some(source => source.artifact_id === descriptor.artifact_id);
         const source = checked.source, unsupported = source.extraction === 'unsupported_metadata';
         const extraction = unsupported ? 'Received · interpretation unsupported' : source.complete ? 'Extracted text' : 'Extraction incomplete';
         const identity = `<details class="au-source-identity"><summary>Details</summary><p class="au-meta">${acquired ? 'Source text verified' : 'Document preview checked'}${checked.span ? ' · exact cited span verified' : ''} · ${h(extraction)}</p>${!acquired ? '<p class="au-meta">Preview does not admit evidence or establish understanding or sufficiency.</p>' : ''}<dl class="au-chain"><div><dt>Original filename</dt><dd>${h(descriptor.file_name)}</dd></div><div><dt>Media type</dt><dd>${h(descriptor.media_type)}</dd></div><div><dt>Original bytes · SHA-256</dt><dd class="au-hash">${h(descriptor.sha256)}</dd></div><div><dt>Extracted text · SHA-256</dt><dd class="au-hash">${h(source.text_sha256)}</dd></div>${!acquired ? `<div><dt>Preview · SHA-256</dt><dd class="au-hash">${h(source.preview_sha256)}</dd></div>` : ''}</dl><pre class="au-record-body">${h(JSON.stringify({descriptor,preview_only:source.preview_only,evidence_admitted:source.evidence_admitted,receipt_sha256:source.receipt_sha256,preview_sha256:source.preview_sha256,extraction:source.extraction,complete:source.complete,coverage:source.coverage,reason:source.reason,limitation:source.limitation},null,2))}</pre>${!source.text ? '<p class="au-meta">No readable text was extracted.</p>' : ''}</details>`;
@@ -4824,6 +5028,20 @@
         body.innerHTML = (unassessed ? '<p class="au-assessment-freshness" data-au-source-freshness="unassessed"><strong>New source · awaiting assessment</strong></p>' : '') + (unsupportedImage ? `<div class="au-source-meta"><a href="${h(url)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div><p class="au-source-capability">${nativeViewable ? 'Original image viewable.' : 'Original image preview unavailable.'} CasePath could not read this image.</p>${nativeMarkup}${identity}` : `<div class="au-source-meta"><span>${acquired ? 'Source text verified' : 'Document preview checked'}${checked.span ? ' · exact cited span verified' : ''}</span><span>${h(extraction)}</span><a href="${h(url)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div>${nativeMarkup}${!acquired ? '<p class="au-meta">Preview does not admit evidence or establish understanding or sufficiency.</p>' : ''}${!source.complete ? `<p class="au-notice">${h(source.reason || source.limitation || words(source.coverage?.limitation) || 'This source does not have a complete text extraction.')}</p>` : ''}${source.text ? `<pre class="au-source-body">${checked.span ? `${h(checked.span.before)}<mark tabindex="-1">${h(checked.span.quote)}</mark>${h(checked.span.after)}` : h(source.text)}</pre>` : '<p class="au-meta">No readable text was extracted.</p>'}${identity}`);
         interact(body); body.querySelector('mark')?.scrollIntoView({block:'center',behavior:'instant'});
       } catch (error) { if (!disposed && token === epoch && sourceToken === sourceEpoch && dialog.open) body.innerHTML = `<div class="au-source-meta"><a href="${h(url)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div>${nativeMarkup}<p class="au-error" role="alert">${h(plain(error.message,'The document could not open.'))}</p><details><summary>Details</summary><p>${h(error.message)}</p></details>`; }
+    }
+    // A Knowledge passage opens through its source case's verified snapshot
+    // (GET only); the library never reads source bytes without that identity.
+    async function openKnowledgeSource(claimId, id, citation, trigger) {
+      const token = epoch;
+      let saved = cachedRead(snapshots,claimId)?.state || null;
+      if (!saved) {
+        try {
+          const incoming = await consistentRead(claimId,null,true,token,() => view === 'knowledge',true);
+          saved = incoming.state; rememberSnapshot(claimId,{state:incoming.state,projection:incoming.projection,cursor:incoming.accepted.cursor,history:incoming.accepted.events},true);
+        } catch (error) { if (!disposed && token === epoch && view === 'knowledge') notice(plain(error.message,'The source could not open.'),true); return; }
+      }
+      if (disposed || token !== epoch || view !== 'knowledge') return;
+      return openSource(id,citation,trigger,saved);
     }
     function synchronizeRecord(opening = false) {
       if (!recordSelection || !opening && !recordDialog.open) return;
@@ -4872,8 +5090,10 @@
       if(view==='knowledge' && !target.hasAttribute('data-au-learning-play'))pauseLearning();
       if(target.hasAttribute('data-au-learning-play')){if(learningState?.playing)pauseLearning();else playLearning();}
       else if(target.hasAttribute('data-au-learning-event')){selectLearning(Number(target.dataset.auLearningEvent),10,true,true,false);}
-      else if(target.hasAttribute('data-au-learning-end')){if(learningState){selectLearning(learningState.model.events.length-1,10,true,true,false);learningState.complete=true;synchronizeLearning();learningRoute();}}
-      else if(target.hasAttribute('data-au-knowledge-retry')){showKnowledge(false,knowledgePin,learningState?{event:learningState.model.events[learningState.index]?.id,stage:learningState.stage,facet:knowledgeFacet,complete:learningState.complete}:null);}
+      else if(target.hasAttribute('data-au-learning-end') || target.hasAttribute('data-au-library-return')){if(busy)return;const event=learningState?.model.events[learningState.index],family=event && !event.refused ? libraryFamily(event.versionRecord || event.item) || event.family : '';showKnowledge(true,DOMAINS.some(row=>row.id===family)?{knowledge_id:`procedure.${family}`}:null);}
+      else if(target.hasAttribute('data-au-learning-open')){if(busy)return;const data=renderedKnowledge || knowledgeCache?.value;if(!data)return;const model=knowledgeLearningModel(data),family=target.dataset.auLearningOpen,identity=target.dataset.auLearningVersion,event=family?model.events.find(row=>row.kind==='knowledge.published'&&!row.refused&&row.versionRecord&&`${row.versionRecord.knowledge_id || row.versionRecord.version_id}:${row.versionRecord.version || row.versionRecord.version_id}`===identity) || model.events.find(row=>row.family===family):null;showKnowledge(true,null,event?{view:'learning',event:event.id,stage:10}:{view:'learning',play:true});}
+      else if(target.hasAttribute('data-au-library-jump')){const family=target.dataset.auLibraryJump,entry=markLibraryEntry(family);if(!entry)return;knowledgePin=renderedLibraryPin={knowledge_id:`procedure.${family}`};const fragment=`#autonomous/knowledge?knowledge=${key(`procedure.${family}`)}`;if(root.history?.replaceState&&root.location){root.history.replaceState(null,'',root.location.pathname+root.location.search+fragment);routedFragment=fragment;}entry.setAttribute('tabindex','-1');entry.focus({preventScroll:true});entry.scrollIntoView?.({block:'start',behavior:reduced?.matches?'instant':'smooth'});}
+      else if(target.hasAttribute('data-au-knowledge-retry')){showKnowledge(false,knowledgePin,knowledgeMode==='learning'?{view:'learning',event:learningState?.model.events[learningState.index]?.id,stage:learningState?.stage,facet:knowledgeFacet,complete:learningState?.complete}:null);}
       else if (target.hasAttribute('data-au-close-record')) closeRecord();
       else if (target.hasAttribute('data-au-return-case')) { if (!busy && lastCaseContext) openClaim(lastCaseContext.claim_id,true,{...lastCaseContext,detail:target.dataset.auReturnCase}); }
       else if (target.hasAttribute('data-au-knowledge-facet')) { if (view === 'knowledge' && ['process','facts','documents','exceptions','changes'].includes(target.dataset.auKnowledgeFacet) && knowledgeCache) { knowledgeFacet = target.dataset.auKnowledgeFacet; if(learningState){selectLearning(learningState.index,10,true,false);}else renderKnowledge(knowledgeCache.value,knowledgePin); host.querySelector(`[data-au-knowledge-facet="${knowledgeFacet}"]`)?.focus({preventScroll:true}); } }
@@ -4967,7 +5187,8 @@
         revealStepAnswer(node);
       } else if (target.hasAttribute('data-au-source')) {
         let citation; try { citation = target.dataset.auCitation ? JSON.parse(target.dataset.auCitation) : null; } catch (_) { notice('The source reference is invalid.',true); return; }
-        openSource(target.dataset.auSource,citation,target);
+        if (view === 'knowledge' && target.dataset.auKnowledgeSourceClaim) openKnowledgeSource(target.dataset.auKnowledgeSourceClaim,target.dataset.auSource,citation,target);
+        else openSource(target.dataset.auSource,citation,target);
       } else if (target.hasAttribute('data-au-close')) closeSource();
     }
     function input(event) {
@@ -5022,7 +5243,7 @@
     }
     function keyboardInput(event) {
       if(view==='knowledge' && event.key==='Tab' && container.contains(event.target))pauseLearning();
-      if(view==='knowledge' && container.contains(event.target) && !dialog.open && !recordDialog.open && !event.target?.closest?.('input,textarea,select,button,a,summary,[contenteditable=true]')) {
+      if(view==='knowledge' && knowledgeMode==='learning' && learningState && container.contains(event.target) && !dialog.open && !recordDialog.open && !event.target?.closest?.('input,textarea,select,button,a,summary,[contenteditable=true]')) {
         if([' ','ArrowLeft','ArrowRight','Home','End'].includes(event.key) && !event.altKey && !event.ctrlKey && !event.metaKey){event.preventDefault();if(event.key===' '){if(learningState?.playing)pauseLearning();else playLearning();}else{pauseLearning();selectLearning(event.key==='Home'?0:event.key==='End'?learningState?.model.events.length-1:(learningState?.index||0)+(event.key==='ArrowRight'?1:-1),10,true);}return;}
         if(event.key==='Tab')pauseLearning();
       }
@@ -5127,5 +5348,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {RECORD_DIALOG_SKELETON,recordExplanation,recordPassageMarkup,outcomeSummaryMarkup,stepDetailMarkup,demoRoster,collectionRoster,demoCollection,DEMO_COLLECTIONS,caseLabel,demoPickerMarkup,demoTransportMarkup,resultReached,knowledgePayoff,knowledgePayoffMarkup,tourKnowledgePayoff,learningChangeSummary,learningFrameStart,learningProcessMarkup,recordedReuseMoment,recordedReuseMomentMarkup,knowledgeLearningModel,knowledgeLearningFocus,knowledgePinMatches,learningEventLabel,learningTime,checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,roleBadge,boundDisplayReceipt,operationDisplayContext,knowledgeNowMarkup,nowMarkup,outcomeSummaryMarkup,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,demonstrationOverviewMarkup,learningLabel,claimModeLine,rosterUnrun,startControlMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {caseProcedureMarkup,similarCases,similarCasesMarkup,caseDomain,knowledgeLibraryMarkup,knowledgeLibrary,libraryEntryMarkup,definitionMarkup,baseOutlineMarkup,conditionSentence,libraryStepsMarkup,RECORD_DIALOG_SKELETON,recordExplanation,recordPassageMarkup,outcomeSummaryMarkup,stepDetailMarkup,demoRoster,collectionRoster,demoCollection,DEMO_COLLECTIONS,caseLabel,demoPickerMarkup,demoTransportMarkup,resultReached,knowledgePayoff,knowledgePayoffMarkup,tourKnowledgePayoff,learningChangeSummary,learningFrameStart,learningProcessMarkup,recordedReuseMoment,recordedReuseMomentMarkup,knowledgeLearningModel,knowledgeLearningFocus,knowledgePinMatches,learningEventLabel,learningTime,checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,roleBadge,boundDisplayReceipt,operationDisplayContext,knowledgeNowMarkup,nowMarkup,outcomeSummaryMarkup,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,demonstrationOverviewMarkup,learningLabel,claimModeLine,rosterUnrun,startControlMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });

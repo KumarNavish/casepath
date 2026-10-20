@@ -1473,8 +1473,9 @@ test('reference native: exact nine actual accepted assessments retain graph docu
   assert.equal(await page.locator('[data-au-start],[data-au-pause],[data-au-resume],[data-au-arrival]').count(),0,'visitor permission cannot be inferred from engine capabilities');
  }
  assert.equal(fixture.knowledge.versions.length,3);assert.equal(fixture.knowledge.uses.length,6);
- await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.locator('[data-au-knowledge-identity]').count().then(count=>count===1),'native reference Knowledge did not open');
- const version=await page.locator('[data-au-knowledge-identity]').getAttribute('data-au-knowledge-identity');assert.ok(fixture.knowledge.versions.some(row=>`${row.knowledge_id}:${row.version}`===version));
+ const learnedFamilies=new Set(fixture.knowledge.versions.map(row=>row.family||String(row.knowledge_id).replace(/^procedure\./,'')));
+ await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.locator('[data-au-knowledge-identity]').count().then(count=>count===learnedFamilies.size),'native reference Knowledge did not open one library entry per learned domain');
+ const versions=await page.locator('[data-au-knowledge-identity]').evaluateAll(rows=>rows.map(row=>row.dataset.auKnowledgeIdentity));assert.ok(versions.every(version=>fixture.knowledge.versions.some(row=>`${row.knowledge_id}:${row.version}`===version)));
  assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
 });
 
@@ -3376,7 +3377,7 @@ async function renderedTouchTargets(page, view) {
         if (width > 1 && height > 1) overlaps.push({left: a.text, right: b.text, width, height});
       }
     }
-    const heading = document.querySelector('.au-learning h1'), status = document.querySelector('[data-au-knowledge-read-label]'), subtitle = document.querySelector('.au-learning-label');
+    const heading = document.querySelector(':is(.au-learning,.au-library) h1'), status = document.querySelector('[data-au-knowledge-read-label]'), subtitle = document.querySelector('.au-learning-label');
     const lines = element => { const range = document.createRange(); range.selectNodeContents(element); return [...range.getClientRects()].map(rect => rect.toJSON()); };
     const words = subtitle ? [...subtitle.textContent.matchAll(/\p{L}+/gu)].map(word => { const range = document.createRange(); range.setStart(subtitle.firstChild, word.index); range.setEnd(subtitle.firstChild, word.index + word[0].length); return {text: word[0], lines: [...range.getClientRects()].map(rect => rect.toJSON())}; }) : [];
     return {view, modal: modal?.className || null, visualWidth: visualViewport.width, scale: visualViewport.scale, innerWidth, documentWidth: document.documentElement.scrollWidth, coarse: matchMedia('(pointer:coarse)').matches, targets, overlaps,
@@ -3462,7 +3463,7 @@ for (const width of [320, 390, 430, 1428]) test(`coarse touch targets: real clai
       if (target.tag === 'SUMMARY' && target.display !== 'list-item') problems.push({view: row.view, problem: 'native disclosure marker display changed', target});
     }
     if (row.view === 'knowledge-refreshing' && (row.heading.text !== 'Knowledge' || row.heading.lines.length !== 1 || row.heading.rect.right > width || row.status.text !== 'Saved copy · refreshing' || row.status.rect.right > width)) problems.push({view: row.view, problem: 'cached refresh header does not wrap naturally', heading: row.heading, status: row.status});
-    if (row.view === 'knowledge-refreshing' && (row.subtitle.text !== 'Replay · Fictional cases' || row.subtitle.fontSize < 16 || row.subtitle.words.some(word => word.lines.length !== 1) || row.subtitle.rect.right > width)) problems.push({view: row.view, problem: 'the readable replay subtitle splits inside a word', subtitle: row.subtitle});
+    if (row.view === 'knowledge-refreshing' && (row.subtitle.text !== 'Procedure library · Fictional cases' || row.subtitle.fontSize < 16 || row.subtitle.words.some(word => word.lines.length !== 1) || row.subtitle.rect.right > width)) problems.push({view: row.view, problem: 'the readable replay subtitle splits inside a word', subtitle: row.subtitle});
   }
   for (const target of hitProbes) if (!target.centerHit || target.rect.left < -1 || target.rect.right > target.visualWidth + 1 || target.rect.top < -1 || target.rect.bottom > target.visualHeight + 1) problems.push({problem: 'an exercised target does not expose its full reachable hit area', target});
   assert.deepEqual(problems, [], 'all rendered enabled controls retain touch areas, unobscured centers, native disclosures and visual-viewport reflow');
@@ -3474,8 +3475,8 @@ for (const width of [390, 1428]) for (const mode of ['paused', 'playing', 'compl
   const page = await fixturePage(t, {width, height: 844, mobile, publicReadOnly: true, recordedKnowledgeData: knowledge}), observations = [];
   const activate = async locator => { if (mobile) await locator.tap(); else await locator.click(); };
   await page.evaluate(() => { document.body.style.margin = '0'; window.__nativeRangeInputs = []; document.addEventListener('input', event => { if (event.isTrusted && event.target.matches('[data-au-learning-scrub]')) window.__nativeRangeInputs.push(Number(event.target.value)); }, true); });
-  await activate(page.locator('.au-nav [data-au-nav="knowledge"]'));
-  await eventually(() => page.locator('[data-au-learning]').count().then(count => count === 1), 'the actual recorded Knowledge view did not render');
+  await page.evaluate(() => { location.hash = '#autonomous/knowledge?view=learning'; });
+  await eventually(() => page.locator('[data-au-learning]').count().then(count => count === 1), 'the actual recorded learning view did not render');
   if (await page.locator('[data-au-learning]').getAttribute('data-au-learning-playing') === 'true') await activate(page.locator('[data-au-learning-play]'));
   const range = page.locator('[data-au-learning-scrub]'), heading = page.locator('.au-learning h1');
   const read = async action => {
@@ -3492,7 +3493,11 @@ for (const width of [390, 1428]) for (const mode of ['paused', 'playing', 'compl
     const pin = item?.knowledge_id && item?.version ? {knowledge: item.knowledge_id, version: String(item.version), sha256: item.knowledge_sha256, definition: item.definition_sha256 || item.qualification?.definition_sha256 || null} : {knowledge: null, version: null, sha256: null, definition: null};
     for (const [key, value] of Object.entries({event: event.id, stage: '10', ...pin})) assert.equal(query.get(key), value, `${action}: exact ${key} preserves the recorded event's publication or refusal status`);
   };
-  if (mode === 'paused') { await activate(page.locator('[data-au-learning-end]')); const state = await read('Final view'); assert.equal(state.value, model.events.length - 1); assert.equal(state.complete, 'true'); }
+  if (mode === 'paused') {
+    await activate(page.locator('[data-au-learning-end]')); await page.locator('[data-au-library]').waitFor();
+    assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('event'), null, 'Final view is the current library, not a replay position');
+    await page.goBack(); await eventually(() => page.locator('[data-au-learning]').count().then(count => count === 1), 'Back did not return to the paused learning view');
+  }
   else {
     await heading.focus(); await page.keyboard.press('Home'); await selected(0, 'global Home');
     await activate(page.locator('[data-au-learning-play]'));
@@ -3536,8 +3541,9 @@ test('quiet work: Cases and global Knowledge return to the same verified claim a
   assert.equal(pin.get('knowledge'),use.knowledge_id);assert.equal(pin.get('version'),String(use.version));
   if(use.definition_sha256)assert.equal(pin.get('definition'),use.definition_sha256);
   const knowledgeReads=(await calls(page,'/knowledge')).length;
-  for(const facet of ['process','facts','documents','exceptions','changes']){const tab=page.locator(`[data-au-knowledge-facet="${facet}"]`);await tab.focus();await page.keyboard.press('Enter');assert.equal(await page.locator(`[data-au-knowledge-facet-panel="${facet}"]`).count(),1);assert.equal(await page.locator('[data-au-knowledge-facet-panel]').count(),1,'one exact immutable procedure facet owns the reading surface');assert.equal(await page.locator('[data-au-knowledge-identity]').getAttribute('data-au-knowledge-identity'),`${use.knowledge_id}:${use.version}`);}
-  assert.equal((await calls(page,'/knowledge')).length,knowledgeReads,'procedure facet inspection uses its exact verified cached version');
+  const entryHeadings=await page.locator(`[data-au-knowledge-identity="${use.knowledge_id}:${use.version}"] h3`).allTextContents();assert.deepEqual(entryHeadings.slice(0,8),['When it applies','Steps','Facts','Documents','Actions and limits','Supporting passages','Versions','Contributing and receiving cases'],'the exact version reads top to bottom in its library entry');
+  assert.equal(await page.locator(`[data-au-knowledge-identity="${use.knowledge_id}:${use.version}"]`).getAttribute('data-pinned'),'true','the exact used version is the pinned library entry');assert.equal(await page.locator('[data-au-knowledge-facet-panel]').count(),0,'the library has no facet tabs');
+  assert.equal((await calls(page,'/knowledge')).length,knowledgeReads,'reading the library entry uses its exact verified cached version');
   await page.locator('[data-au-return-case="documents"]').click();await title(page,id);
   assert.equal(await page.locator('[data-au-panel="documents"]').isVisible(),true);
   const chosen=page.locator(`[data-au-panel="documents"] [data-au-obligation="${obligation.obligation_id}"]`);

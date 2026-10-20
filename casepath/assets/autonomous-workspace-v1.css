@@ -735,12 +735,12 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning .au-work-head h1 { margin:2px 0 4px; font-size:30px; letter-spacing:-1px; }
 .au-workspace .au-learning .au-work-head > div:last-child { display:flex; align-items:center; flex-wrap:wrap; gap:8px 20px; }
 .au-workspace .au-learning-transport { display:flex; align-items:center; flex-wrap:wrap; gap:10px 20px; margin:8px 0 4px; }
-.au-workspace .au-learning-transport > button { padding:7px 16px; border:1px solid #78917c; border-radius:4px; background:#fff; }
+.au-workspace .au-learning-transport > button { padding:7px 16px; border:1px solid #78917c; border-radius:4px; background:var(--au-paper); }
 .au-workspace .au-learning-transport > button:first-child { color:#fff; background:#24563c; border-color:#24563c; }
 .au-workspace .au-learning-transport > label { display:flex; flex:1; min-width:270px; align-items:center; gap:12px; }
 .au-workspace .au-learning-transport input { min-height:44px; flex:1; min-width:90px; height:40px; accent-color:#24563c; }
 .au-workspace .au-learning-transport > p { min-width:170px; }
-.au-workspace .au-learning-focus { height:auto; min-height:350px; overflow:visible; overscroll-behavior:contain; padding:16px 20px; background:var(--au-learning-paper); border:1px solid #d0d8ce; border-radius:8px; }
+.au-workspace .au-learning-focus { height:auto; overflow:visible; overscroll-behavior:contain; padding:16px 20px; background:var(--au-learning-paper); border:1px solid #d0d8ce; border-radius:8px; }
 .au-workspace .au-learning-focus .au-procedure-reading { max-width:none; }
 .au-workspace .au-learning-record-head { display:flex; justify-content:space-between; align-items:start; flex-wrap:wrap; gap:8px 16px; margin-bottom:12px; }
 .au-workspace .au-learning-record-head > div { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 16px; }
@@ -797,15 +797,15 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning-track { position:relative; display:grid; grid-template-columns:repeat(var(--au-learning-days),minmax(0,1fr)); gap:12px; padding:2px 0; min-height:44px; }
 .au-workspace .au-learning-track::before { content:''; position:absolute; top:22px; left:0; right:0; height:1px; background:#73857a; }
 .au-workspace .au-learning-day { position:relative; display:flex; flex-wrap:nowrap; align-items:start; gap:4px; min-width:0; }
-.au-workspace .au-learning-node { position:relative; flex:none; min-width:40px; padding:4px; border:1px solid #73857a; border-radius:4px; background:#fff; color:#3f5045; }
+.au-workspace .au-learning-node { position:relative; flex:none; min-width:40px; padding:4px; border:1px solid #73857a; border-radius:4px; background:var(--au-paper); color:#3f5045; }
 .au-workspace .au-learning-node[aria-current=step] { border-color:#24563c; background:#e6efe5; color:#1e4a32; box-shadow:0 0 0 1px #24563c; }
 .au-workspace .au-learning-node-text,.au-workspace .au-learning-mobile-date { display:none; }
 .au-workspace .au-learning-lane[data-au-learning-lane=refused] .au-learning-node { color:#70412e; border-color:#926b56; }
-.au-workspace .au-learning-no-events { position:absolute; top:10px; left:0; background:#fff; }
+.au-workspace .au-learning-no-events { position:absolute; top:10px; left:0; background:var(--au-field); }
 .au-workspace .au-learning-disclosure,.au-workspace .au-learning-totals { margin:8px 0 0; }
 .au-workspace .au-learning-announcement { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 /* Autoplay uses the same pane for each phase; inspection restores its disclosures. */
-.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-focus { overflow:hidden; }
+.au-workspace .au-learning[data-au-learning-playing=true] .au-learning-focus { overflow:hidden; min-height:350px; }
 .au-workspace .au-learning[data-au-learning-playing=true] :is(.au-procedure-facets,.au-learning-provenance,.au-learning-diff) { display:none; }
 .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-proof { margin:0; padding:0; border:0; }
 .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-proof > summary { display:none; }
@@ -889,13 +889,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace :is(.au-meta,.au-eyebrow,.au-reading-label,.au-record-context,.au-access-label,.au-node-condition,.au-node-state,.au-node-relation,.au-event-list time,.au-claim-state,.au-read-state,.au-source-list,.au-document-review,.au-chain,.au-reuse-record,.au-knowledge-change) { font-size:16px; }
 .au-workspace .au-role-badge { display:inline-flex!important; align-items:center; gap:6px; width:max-content; max-width:100%; margin:0 6px 0 0; padding:2px 7px; border:1px solid currentColor; border-radius:4px; background:#edf1ed; color:#254b3f; font-size:16px!important; line-height:1.4!important; font-weight:600; vertical-align:middle; white-space:nowrap; }
 .au-workspace .au-role-shape { display:inline-block!important; flex:none; width:9px; height:9px; margin:0!important; background:currentColor; }
-.au-workspace [data-au-role=reader] { background:#eaf2ff; color:#164f88; border-radius:14px; }
+.au-workspace [data-au-role=reader] { background:var(--au-paper); color:var(--au-ink); border-radius:14px; }
 .au-workspace [data-au-role=reader] .au-role-shape { border-radius:50%; }
 .au-workspace [data-au-role=checker] { background:#e5f3e9; color:#245c39; }
 .au-workspace [data-au-role=checker] .au-role-shape { transform:rotate(45deg); width:8px; height:8px; }
 .au-workspace [data-au-role=rulebook] { background:#f9edcf; color:#684300; border-radius:0; }
 .au-workspace [data-au-role=rulebook] .au-role-shape { height:10px; width:8px; border:1px solid currentColor; background:repeating-linear-gradient(to bottom,currentColor 0 1px,transparent 1px 3px); }
-.au-workspace [data-au-role=memory] { background:#f1eafa; color:#59357b; border-radius:4px 12px 4px 12px; }
+.au-workspace [data-au-role=memory] { background:var(--au-wash); color:var(--au-green); border-radius:4px 12px 4px 12px; }
 .au-workspace [data-au-role=memory] .au-role-shape { border-radius:50%; width:10px; height:10px; border:2px solid currentColor; background:transparent; }
 .au-workspace .au-now { display:flex; flex-wrap:wrap; align-items:baseline; gap:7px; margin:12px 0 18px; padding:10px 0; border-block:1px solid var(--au-line); font-size:16px; line-height:1.5; }
 .au-workspace .au-now-label { font-weight:600; }
@@ -1305,3 +1305,72 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
   .au-workspace .au-native-source :is(iframe,object) { height:calc(100dvh - 160px); min-height:0; max-height:none; }
 }
 .au-workspace .au-stage-process .au-node[data-au-node-state=planned] .au-evidence-junction { background:var(--au-field); }
+/* Knowledge library: one entry per domain, read top to bottom. */
+.au-workspace .au-library { max-width:1200px; margin:0 auto; }
+.au-workspace .au-library .au-work-head { align-items:start; margin:0; padding:0 0 6px; }
+.au-workspace .au-library .au-work-head > div:first-child { display:block; }
+.au-workspace .au-library .au-work-head h1 { margin:2px 0 4px; font-size:30px; letter-spacing:-1px; }
+.au-workspace .au-library .au-learning-label { color:var(--au-green); }
+.au-workspace .au-library-empty { max-width:75ch; margin:4px 0 12px; }
+.au-workspace :is(.au-library-empty,.au-library-entry-head,.au-library-shown) .au-link { display:inline; min-height:0; padding:0; border:0; background:transparent; color:var(--au-ink); text-decoration:underline; text-underline-offset:4px; }
+.au-workspace .au-library-layout { display:grid; grid-template-columns:260px minmax(0,1fr); gap:40px; align-items:start; margin-top:12px; }
+.au-workspace .au-library-index { position:sticky; top:calc(var(--au-header-height,64px) + 16px); display:flex; flex-direction:column; border-top:1px solid var(--au-line); }
+.au-workspace .au-library-index button { display:flex; flex-direction:column; align-items:flex-start; gap:2px; width:100%; min-height:44px; padding:10px 0 10px 12px; border:0; border-left:2px solid transparent; border-bottom:1px solid var(--au-line); background:transparent; color:var(--au-ink); text-align:left; font-size:16px; line-height:1.4; }
+.au-workspace .au-library-index button strong { font-weight:500; }
+.au-workspace .au-library-index button span { color:var(--au-muted); }
+.au-workspace .au-library-index button[aria-current=true] { border-left-color:var(--au-green); }
+.au-workspace .au-library-entries { min-width:0; max-width:820px; }
+.au-workspace .au-library-entry { margin:0 0 36px; padding:0 0 32px; border-bottom:1px solid var(--au-line); scroll-margin-top:calc(var(--au-header-height,64px) + 16px); }
+.au-workspace .au-library-entry:last-child { border-bottom:0; }
+.au-workspace .au-library-entry-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 16px; }
+.au-workspace .au-library-entry-head h2 { flex-basis:100%; margin:0; font-size:28px; letter-spacing:-.4px; }
+.au-workspace .au-library-entry-head p { margin:0; }
+.au-workspace .au-library-entry-head .au-library-learning { min-height:32px; }
+.au-workspace .au-library-status[data-au-library-status=qualified] { color:var(--au-green); }
+.au-workspace .au-library-status[data-au-library-status=candidate] { color:var(--au-amber); }
+.au-workspace .au-library-status[data-au-library-status=base],.au-workspace .au-library-shown { color:var(--au-muted); }
+.au-workspace .au-library-context { max-width:72ch; margin:16px 0 0; padding-left:12px; border-left:3px solid var(--au-line); color:var(--au-muted); }
+.au-workspace .au-library .au-procedure-definition > section { margin-top:24px; }
+.au-workspace .au-library :is(.au-library-steps,.au-definition-list) { padding-left:22px; font-size:16px; line-height:1.55; }
+.au-workspace .au-library :is(.au-library-steps,.au-definition-list) li { padding:5px 0; }
+.au-workspace .au-library :is(.au-library-steps,.au-library-documents) strong { font-weight:500; }
+.au-workspace .au-library :is(.au-library-steps,.au-definition-list) p { margin:2px 0 0; }
+.au-workspace .au-library-condition { color:var(--au-amber); }
+.au-workspace .au-library-limits { margin-top:8px; color:var(--au-muted); }
+.au-workspace .au-library :is(.au-library-passages,.au-library-versions,.au-library-cases ul) { list-style:none; padding:0; }
+.au-workspace .au-library-passages li { padding:8px 0; }
+.au-workspace .au-library-passages p { margin:0; }
+.au-workspace .au-library-passages blockquote { max-width:72ch; margin:4px 0; padding-left:12px; border-left:3px solid var(--au-green); white-space:pre-wrap; overflow-wrap:anywhere; }
+.au-workspace .au-library-source { min-height:36px; padding:4px 0; border:0; background:transparent; color:var(--au-ink); font-size:16px; text-decoration:underline; text-underline-offset:4px; }
+.au-workspace .au-library-versions li { padding:6px 0 6px 12px; border-left:2px solid transparent; }
+.au-workspace .au-library-versions li[aria-current=true] { border-left-color:var(--au-green); }
+.au-workspace .au-library-versions p { margin:2px 0 0; }
+.au-workspace .au-library-versions button { min-height:32px; padding:0; border:0; background:transparent; color:var(--au-ink); text-decoration:underline; text-underline-offset:4px; }
+.au-workspace .au-library-cases li { padding:8px 0; border-top:1px solid var(--au-line); }
+.au-workspace .au-library-cases li:first-child { border-top:0; }
+.au-workspace .au-library-cases-version { margin:0 0 4px; font-weight:500; }
+.au-workspace .au-library-case-group { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 16px; margin:4px 0; }
+.au-workspace .au-library-case-group > .au-meta { flex:0 0 8.5em; }
+.au-workspace .au-library-case-group .au-case-link { min-height:36px; padding:4px 0; border:0; background:transparent; }
+.au-workspace .au-library-case-group .au-case-link .au-case-label { text-decoration:underline; text-underline-offset:4px; }
+.au-workspace .au-library-case-group .au-case-link[data-au-current-case=true] { padding-left:10px; border-left:2px solid var(--au-green); }
+@media (max-width:760px) {
+  .au-workspace .au-library-layout { grid-template-columns:minmax(0,1fr); gap:12px; }
+  .au-workspace .au-library-index { position:static; }
+  .au-workspace .au-library-index button { padding:8px 0 8px 10px; }
+  .au-workspace .au-library-entry-head h2 { font-size:24px; }
+  .au-workspace .au-library-case-group > .au-meta { flex-basis:100%; }
+}
+.au-workspace :is(.au-library,.au-learning) [data-au-knowledge-read-label]:empty { display:none; }
+.au-workspace .au-case-procedure { margin:8px 0 18px; }
+.au-workspace .au-case-procedure .au-link { display:inline; min-height:0; padding:0; border:0; background:transparent; color:var(--au-ink); font-size:inherit; text-decoration:underline; text-underline-offset:4px; }
+.au-workspace .au-similar-cases { margin-top:28px; padding-top:16px; border-top:1px solid var(--au-line); }
+.au-workspace .au-similar-cases h3 { margin:0 0 2px; font-size:18px; }
+.au-workspace .au-similar-cases > p { margin:0 0 8px; }
+.au-workspace .au-similar-cases ul { list-style:none; padding:0; }
+.au-workspace .au-similar-cases li { display:flex; flex-wrap:wrap; align-items:baseline; gap:0 14px; padding:4px 0; }
+.au-workspace .au-similar-cases .au-case-link { min-height:36px; padding:4px 0; border:0; background:transparent; }
+.au-workspace .au-similar-cases .au-case-link .au-case-label { text-decoration:underline; text-underline-offset:4px; }
+.au-workspace .au-library-status[data-au-library-status=unavailable] { color:var(--au-amber); }
+.au-workspace .au-library-entry:focus { outline:none; }
+.au-workspace .au-library-entry:focus-visible { outline:3px solid #164f88; outline-offset:6px; }
