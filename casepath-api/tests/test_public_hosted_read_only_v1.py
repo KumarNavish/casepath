@@ -167,9 +167,10 @@ def test_public_restarts_reads_commands_and_callback_races_preserve_all_saved_ro
 
 def test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readiness(saved_runtime, tmp_path, monkeypatch):
     server, database, store, corpus, pending, completed, original, provider_calls = saved_runtime
-    controllers, warmed = [], []
+    controllers, warmed, summaries = [], [], []
     construct = hosted_app_v1.HostedAutonomousController
     learning_view = AutonomousKnowledge.learning_view
+    read_summaries = HostedAutonomousStore._read_summaries
     def controller(*args, **kwargs):
         value = construct(*args, **kwargs)
         controllers.append(value)
@@ -189,14 +190,28 @@ def test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readin
                    for command in statements(calls))
         warmed.append(result)
         return result
+    def summary_read(saved_store, *, statuses=None):
+        value = controllers[-1]
+        assert saved_store is value.store
+        assert value._closed and value.model is None and saved_store._read_only
+        before = rows(server.path)
+        baseline = len(server.requests)
+        result = read_summaries(saved_store, statuses=statuses)
+        calls = server.requests[baseline:]
+        assert calls and rows(server.path) == before
+        assert all(re.match(r'\s*(SELECT|BEGIN|COMMIT)\b', command, re.I)
+                   for command in statements(calls))
+        summaries.append(result)
+        return result
     def forbidden_model(*args, **kwargs):
         pytest.fail('read-only warmup constructed a provider model')
     def forbidden_discovery(*args, **kwargs):
-        pytest.fail('read-only startup entered claim discovery or summary reads')
+        pytest.fail('read-only startup entered claim discovery or execution')
     monkeypatch.setattr(hosted_app_v1, 'HostedAutonomousController', controller)
     monkeypatch.setattr(AutonomousKnowledge, 'learning_view', warm)
+    monkeypatch.setattr(HostedAutonomousStore, '_read_summaries', summary_read)
     monkeypatch.setattr(hosted_model_v1, 'HostedModel', forbidden_model)
-    for target, name in ((HostedAutonomousStore, 'list'), (HostedAutonomousStore, '_read_summaries'),
+    for target, name in ((HostedAutonomousStore, 'list'),
                          (construct, 'resume'), (construct, 'wake_pending')):
         monkeypatch.setattr(target, name, forbidden_discovery)
     env = {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
@@ -204,7 +219,8 @@ def test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readin
     app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'warm')
     before = rows(server.path)
     with TestClient(app) as client:
-        assert len(warmed) == 1
+        assert len(warmed) == len(summaries) == 1
+        assert {row['claim_id'] for row in summaries[0]} == {pending['claim_id'], completed['claim_id'], original['claim_id']}
         assert client.get('/healthz').status_code == 200
         assert rows(server.path) == before
     assert rows(server.path) == before
