@@ -2766,37 +2766,42 @@ test('pause and hide after the8000ms outcome hold preserve the finished case and
  }
 });
 
-function tourSkipFixture(t,{holdNext=false}={}) {
- const f=operationOpeningDOM(),first=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[0].claim_id,1),next=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[1].claim_id),opening=deferredRead(),future=deferredRead(),timers=[];
+function tourSkipFixture(t) {
+ const f=operationOpeningDOM(),first=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[0].claim_id,1),next=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[1].claim_id),future=deferredRead(),timers=[];
  const timeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===8000){const handle=timeout(()=>{},60000);timers.push({fn,handle});return handle;}return timeout(fn,ms,...args);};
- const api=fakeApi({handle:async path=>{if(path.includes(first.id)){if(path.includes('/snapshot?'))return response(first.snapshot);if(path.endsWith('/replay?through_seq=0'))return response(first.zero);if(path.includes('/operations?'))return new Response(first.body);}if(path.includes(next.id)){if(path.includes('/snapshot?'))return response(next.snapshot);if(path.includes('/operations?'))return pendingOperationResponse(next.binding);if(path.endsWith('/replay?through_seq=0'))return holdNext?opening.promise:response(next.zero);}if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;}});
+ const api=fakeApi({handle:async path=>{if(path.includes(first.id)){if(path.includes('/snapshot?'))return response(first.snapshot);if(path.endsWith('/replay?through_seq=0'))return response(first.zero);if(path.includes('/operations?'))return new Response(first.body);}if(path.includes(next.id)){if(path.includes('/snapshot?'))return response(next.snapshot);if(path.includes('/operations?'))return pendingOperationResponse(next.binding);if(path.endsWith('/replay?through_seq=0'))return response(next.zero);}if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;}});
  const controller=ui.mount(f.container,{fetch:api.fetch});
- t.after(async()=>{controller.destroy();opening.resolve(response(next.zero));future.resolve(response({}));for(const timer of timers)clearTimeout(timer.handle);globalThis.setTimeout=timeout;await settle();});
- return {f,first,next,opening,timers,controller,skip:()=>f.listeners.get('click')({target:control(f,'data-au-demo-skip')}),nextShown:()=>f.host.innerHTML.includes(`data-au-planned-process="${next.head.state_sha256}"`)};
+ t.after(async()=>{controller.destroy();future.resolve(response({}));for(const timer of timers)clearTimeout(timer.handle);globalThis.setTimeout=timeout;await settle();});
+ return {f,first,next,timers,controller,skip:()=>f.listeners.get('click')({target:control(f,'data-au-demo-skip')}),nextShown:()=>f.host.innerHTML.includes(`data-au-planned-process="${next.head.state_sha256}"`)};
 }
 
-test('a second Skip while the next case is preparing skips that case instead of stopping the tour',async t=>{
- const tour=tourSkipFixture(t,{holdNext:true});
- await settle();await tour.controller.showDemonstration();await waitFor(()=>tour.timers.length===1);
- tour.skip();await settle();await settle();assert.ok(tour.f.host.innerHTML.includes(tour.first.head.state_sha256),'the next opening is still preparing');
- tour.skip();await settle();tour.opening.resolve(response(tour.next.zero));
- await waitFor(tour.nextShown);assert.doesNotMatch(tour.f.status.textContent,/stopped|unavailable/);
-});
-
-test('one Skip while a naturally advanced case opens plays that case instead of skipping past it',async t=>{
+function threeCaseTour(t) {
  const f=operationOpeningDOM(),first=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[0].claim_id,1),next=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[1].claim_id,1),third=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[2].claim_id),opening=deferredRead(),future=deferredRead(),timers=[];
  let elapsed=0;const now=Date.now.bind(Date);t.mock.method(Date,'now',()=>now()+elapsed);
  const timeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===8000){const handle=timeout(()=>{},60000);timers.push({fn,handle});return handle;}return timeout(fn,ms,...args);};
  const api=fakeApi({handle:async path=>{for(const [row,zero] of [[first,()=>response(first.zero)],[next,()=>opening.promise]])if(path.includes(row.id)){if(path.includes('/snapshot?'))return response(row.snapshot);if(path.endsWith('/replay?through_seq=0'))return zero();if(path.includes('/operations?'))return new Response(row.body);}if(path.includes(third.id)){if(path.includes('/snapshot?'))return response(third.snapshot);if(path.includes('/operations?'))return pendingOperationResponse(third.binding);if(path.endsWith('/replay?through_seq=0'))return response(third.zero);}if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;}});
  const controller=ui.mount(f.container,{fetch:api.fetch});
  t.after(async()=>{controller.destroy();opening.resolve(response(next.zero));future.resolve(response({}));for(const timer of timers)clearTimeout(timer.handle);globalThis.setTimeout=timeout;await settle();});
- await settle();await controller.showDemonstration();await waitFor(()=>timers.length===1);
- elapsed+=8000;clearTimeout(timers[0].handle);timers[0].fn();await settle();await settle();
+ return {f,first,next,third,opening,timers,controller,advance:()=>{elapsed+=8000;clearTimeout(timers[0].handle);timers[0].fn();},skip:()=>f.listeners.get('click')({target:control(f,'data-au-demo-skip')}),thirdShown:()=>f.host.innerHTML.includes(`data-au-planned-process="${third.head.state_sha256}"`)};
+}
+
+test('a second Skip while the next case is preparing skips that case instead of stopping the tour',async t=>{
+ const tour=threeCaseTour(t);
+ await settle();await tour.controller.showDemonstration();await waitFor(()=>tour.timers.length===1);
+ tour.skip();await settle();await settle();assert.ok(tour.f.host.innerHTML.includes(tour.first.head.state_sha256),'the next opening is still preparing');
+ tour.skip();await settle();tour.opening.resolve(response(tour.next.zero));
+ await waitFor(tour.thirdShown);assert.match(tour.f.host.innerHTML,/data-au-demo-position="3"/,'the second Skip passes the case that was preparing');assert.doesNotMatch(tour.f.status.textContent,/stopped|unavailable/);
+});
+
+test('one Skip while a naturally advanced case opens plays that case instead of skipping past it',async t=>{
+ const tour=threeCaseTour(t),f=tour.f;
+ await settle();await tour.controller.showDemonstration();await waitFor(()=>tour.timers.length===1);
+ tour.advance();await settle();await settle();
  assert.match(f.host.innerHTML,/data-au-demo-position="1"/,'the next case is still opening');
- f.listeners.get('click')({target:control(f,'data-au-demo-skip')});await settle();opening.resolve(response(next.zero));
- await waitFor(()=>timers.length===2);
+ tour.skip();await settle();tour.opening.resolve(response(tour.next.zero));
+ await waitFor(()=>tour.timers.length===2);
  assert.match(f.host.innerHTML,/data-au-demo-position="2"/,'the case Next named plays and holds its result');
- assert.ok(!f.host.innerHTML.includes(`data-au-planned-process="${third.head.state_sha256}"`));
+ assert.ok(!tour.thirdShown());
 });
 
 test('Skip after Pause during a result hold advances at once without a fresh hold',async t=>{
@@ -2919,12 +2924,19 @@ test('a mounted featured replay names a fictional case, says View only on the pu
   const guide=tour.f.container.innerHTML.match(/<div data-au-role-legend hidden>([\s\S]*?)<\/div><div class="au-body"/)?.[1]||'';
   assert.ok(guide.includes(language.copy.noRealWorldAction.replace(/'/g,'&#39;')),'the shown guide carries the no-real-world-action note');
  });
+ const plan=ui.releaseOperationProcess(ui.REFERENCE_DEMO_CASES[0].claim_id);
+ assert.match(ui.releaseProcedurePreview(plan,'live',{readOnly:true}),/class="au-reference-mode">[^<]* · Fictional case · View only<\/p>/);assert.match(ui.releaseProcedurePreview(plan,'live'),/class="au-reference-mode">[^<]* · Fictional case<\/p>/);
 });
 
 test('Cases cold click can finish packet acquisition inside its original300ms choice',async t=>{
- const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),head=deferredRead();let assetSignal;
+ const before=globalThis.CASEPATH_PUBLIC_READ_ONLY;t.after(()=>{if(before===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=before;});
+ for(const publicSite of [false,true]) await t.test(publicSite?'public':'writable',async t=>{
+ globalThis.CASEPATH_PUBLIC_READ_ONLY=publicSite;
+ const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),head=deferredRead(),label={textContent:''},query=f.host.querySelector;let assetSignal;f.host.querySelector=key=>key==='.au-reference-mode'?label:query(key);
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')||path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
  const controller=ui.mount(f.container,{fetch:api.fetch,recordedPacket:packet.descriptor,allowNativeRecordedPacket:true});t.after(()=>{controller.destroy();opening.resolve(response(packet.native.zero));head.resolve(response(packet.native.snapshot));});await settle();await new Promise(resolve=>setTimeout(resolve,5));const selecting=controller.showDemonstration();assert.match(f.host.innerHTML,/data-au-release-plan=/);assert.equal(assetSignal.aborted,false);asset.resolve(new Response(packet.bytes));assert.equal(await controller.recordedPacketReady,true);await selecting;await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');assert.match(f.host.innerHTML,REPLAY_LINE);
+ assert.match(label.textContent,new RegExp(`^Replay.* · Fictional case${publicSite?' · View only':''}$`),'the packet opening relabels the header as a fictional replay');
+ });
 });
 
 
