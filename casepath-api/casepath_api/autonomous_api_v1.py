@@ -211,8 +211,16 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
                 values = [r for r in values if r.get('browse_metadata', {}).get('domain') == domain]
             terms = q.casefold().split()
             if terms:
-                values = [r for r in values if all(term in (' '.join(str(r.get(k, '')) for k in
-                          ('claim_id', 'title', 'source_preview', 'language', 'channel'))).casefold() for term in terms)]
+                # An installed corpus also searches each original's full
+                # message, attached file names and types and language names.
+                # That text is browsing-only and never joins a returned row.
+                full = corpus.search_texts() if corpus is not None else {}
+                def searchable(row):
+                    text = ' '.join(str(row.get(k, '')) for k in
+                                    ('claim_id', 'title', 'source_preview', 'language', 'channel'))
+                    return (text + ' ' + full.get(row['claim_id'], '')).casefold()
+                values = [r for r, text in ((r, searchable(r)) for r in values)
+                          if all(term in text for term in terms)]
             if corpus is None and not q and not domain and offset == 0 and limit == 200:
                 # Preserve the legacy router's envelope for integrations that
                 # have deliberately not installed canonical browsing.

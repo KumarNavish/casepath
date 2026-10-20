@@ -2,15 +2,19 @@
 version: agent-native-v2
 name: CasePath
 description: An editorial work surface connecting decisions, process, documents and reviewed knowledge
+# Shipped forest/mineral/vermilion identity: design/evidence-path/README.md
+# ("Identity and interaction"); tokens as in casepath/assets/autonomous-workspace-v1.css.
 colors:
-  white: '#ffffff'
-  ink: '#242522'
-  muted: '#666862'
-  rule: '#dedfd9'
-  control_line: '#85877f'
-  burgundy: '#85263c'
-  green: '#2f624b'
-  amber: '#805700'
+  forest: '#183D35'
+  mineral: '#EFF1EC'
+  vermilion: '#BC3E2A'
+  paper: '#FFFFFC'
+  muted: '#576D65'
+  rule: '#BDC9BD'
+  control_line: '#73857A'
+  focus: '#164F88'
+  green: '#315E49'
+  amber: '#80633C'
 ---
 
 ## The job
@@ -41,7 +45,7 @@ Encoded email citations show the verified readable body and highlight the exact 
 
 Self-host Merriweather Light for display text and Open Sans for body text. Their SIL Open Font License files ship with the assets and are credited in THIRD_PARTY_NOTICES.md. Fonts and all application assets load from the local origin.
 
-Use a white page, near-black text and hairline rules. Primary decision prose is at least 13 px; compact metadata uses 11–12 px. Body copy and control labels carry the reading hierarchy. Burgundy identifies active choices, unresolved asks and focus. Green identifies reviewed or received state. Amber is reserved for unresolved evidence. Always write the state. Numbers use tabular figures. Avoid decorative cards, shadows, gradients, avatars and confidence percentages.
+Use forest `#183D35` text on a mineral `#EFF1EC` field, paper `#FFFFFC` for sources and hairline rules (design/evidence-path/README.md). Primary decision prose is at least 13 px; compact metadata uses 11–12 px. Body copy and control labels carry the reading hierarchy. Vermilion `#BC3E2A` identifies the selected junction and active choices; focus is a separate 3 px `#164F88` ring. Green identifies reviewed or received state. Amber is reserved for unresolved evidence. Input boundaries use the `#73857A` control line (3.44:1 on mineral). Always write the state. Numbers use tabular figures. Avoid decorative cards, shadows, gradients, avatars and confidence percentages.
 
 The desk is at most 1240 px wide with 36 px side padding. Below 540 px, its counts use a three-plus-two arrangement with 12 px labels; the first claim remains fully visible at 390 × 844. Its heading and count bands leave room for the first decisions in the initial viewport. Scan rows are denser than reading sections. Expanded checks align beneath the claim instead of forming a detached right-hand block. The claim reads within 1100 px; long prose is constrained further. At narrow widths, reduce padding and stack controls. At 540 px and below, the claim panel owns one vertical scroll region; its workspace and work column expand within it. Refresh and tab navigation preserve that actual scroll region. Use normal wrapping, including filenames and selected question text. Sources becomes a sheet rather than forcing the work column sideways. When sources share the desktop, the claim header uses the narrower reading arrangement; opening Controls gives it the full remaining column width. The header responds to the source-panel state as well as the viewport. Source navigation is a native disclosure above the open document. Following a citation closes the file list, keeping the active source heading and exact passage together; opening the source library remains an explicit keyboard-accessible action. Read refreshes preserve the disclosure.
 
@@ -55,7 +59,7 @@ A verified, interrupted local process-node proposal offers Review interrupted st
 
 ## Keyboard and authority
 
-Use native links, buttons, radio groups, select controls and disclosures. Maintain visible 2 px burgundy focus, labelled inputs and status announcements. Main-navigation and source-close links have a minimum 32 px target height without extra button decoration. Input boundaries use the darker control-line token; decorative layout rules stay quiet. Desk section anchors and focusable claim links leave space below the fixed header. Claim tabs support arrow keys. Dialogs keep focus, Escape closes them, and the return target stays visible. Inactive panels are inert.
+Use native links, buttons, radio groups, select controls and disclosures. Maintain a visible 3 px `#164F88` focus ring, labelled inputs and status announcements. A skip link leads to the main heading, and every route change sets the document title, lands at the top with focus on its heading, and returns to the opened row when coming back to Cases. Main-navigation and source-close links have a minimum 32 px target height without extra button decoration. Input boundaries use the darker control-line token; decorative layout rules stay quiet. Desk section anchors and focusable claim links leave space below the fixed header. Claim tabs support arrow keys. Dialogs keep focus, Escape closes them, and the return target stays visible. Inactive panels are inert.
 
 Technical details preserve the open dialog, focused identity summary and expanded evidence receipts through a read refresh. Dynamic receipt content is rebuilt from the validated state before its disclosure state is restored.
 

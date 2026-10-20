@@ -101,7 +101,7 @@ test('completed reference assessments filter with completed assessments while ex
  const rows=[...reference,ordinary,wrongPolicy],before=JSON.stringify(rows);
  assert.deepEqual(ui.matchingClaims(rows,{filter:'investigation_complete'}).map(row=>row.claim_id),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id));
  assert.deepEqual(ui.matchingClaims(rows,{filter:'deferred'}).map(row=>row.claim_id),['ordinary','old-policy']);
- assert.match(ui.collectionMarkup(rows,{filter:'investigation_complete'}),/>Assessment complete<\/button>/);assert.equal(JSON.stringify(rows),before);
+ assert.match(ui.collectionMarkup(rows,{filter:'investigation_complete'}),/data-au-filter="investigation_complete" aria-pressed="true">9 assessment complete<\/button>/);assert.equal(JSON.stringify(rows),before);
 });
 
 test('pinned synthetic source excerpts show the actual body while the full acquired bytes remain exact',()=>{
@@ -672,7 +672,7 @@ test('reconciliation and item rejection history preserve rejected provenance wit
   assert.equal(ui.replayCanAdvance(saved),status==='completed');assert.equal(JSON.stringify(saved),before);
  }
  const saved=state({status:'deferred',deferral:{code:'execution_deferred',reason:'Current execution stopped.'},outcome:{status:'deferred',summary:'Older accepted assessment.'}}),html=ui.workMarkup(saved,{},'branch',[]);
- assert.match(html,/data-au-claim-status>Execution failed\.<\/span> Work stopped\./);
+ assert.match(html,/data-au-claim-status>Stopped\.<\/span> Execution failed\. Open Details for the recorded reason\./);
  assert.deepEqual(ui.contextualRecord(saved,{},[],'outcome'),{outcome:saved.outcome,deferral:saved.deferral});
 });
 
@@ -1202,7 +1202,7 @@ for(const scenario of ['failed-only','partial-outcome-with-failure','failed-reco
   assert.equal(f.recordPre.textContent,closedRecord,'quiet replay does not serialize into a closed History dialog');
  }
  assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${id}/replay?`)).length-priorReads,head+1,'every saved prefix, including failure, remains inspectable');
- if(blocked)assert.match(f.host.innerHTML,/data-au-claim-status>Execution failed\.<\/span>/);
+ if(blocked)assert.match(f.host.innerHTML,/data-au-claim-status>Stopped\.<\/span> Execution failed\./);
  t.mock.timers.tick(4100);await settle();
  const nextReads=api.calls.filter(call=>call.path.includes(`/claims/${next}/replay?`));
  assert.equal(nextReads.length,blocked?0:1);
@@ -1364,7 +1364,7 @@ test('initial revision mismatch bounds immediate reads and retains automatic rec
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
  const reads=api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length;
  assert.ok(reads>=2&&reads<=3,`mismatched initial load made ${reads} snapshot reads`);
- assert.doesNotMatch(f.host.innerHTML,/Original incoming claim|data-au-node/);assert.match(f.host.innerHTML,/Retry opening claim/);
+ assert.doesNotMatch(f.host.innerHTML,/Original incoming claim|data-au-node/);assert.match(f.host.innerHTML,/Retry opening case/);
  for(let i=0;i<4;i++)await settle();assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length,reads,'an unmatched initial claim must not start background polling');
 });
 
@@ -1430,6 +1430,8 @@ test('an invalid source text never becomes cited evidence and a late source resp
  assert.equal(f.dialog.open,false);assert.equal(f.body.innerHTML,settled);assert.match(f.host.innerHTML,/Second claim/);
 });
 
+// Answers the collection read and the API's browsing search (?q=) over each whole row.
+const claimsHandler=rows=>async(path,init)=>{if(init.method==='POST')return null;const url=new URL(path,'http://casepath.test');if(!url.pathname.endsWith('/claims'))return null;const terms=(url.searchParams.get('q')||'').toLowerCase().split(/\s+/).filter(Boolean);return response({claims:rows.filter(row=>terms.every(term=>JSON.stringify(row).toLowerCase().includes(term)))});};
 const claimRows=[
  {origin:'canonical_original',claim_id:'claim-a',title:'Notice needs a receipt',status:'deferred',phase_summary:'Waiting for the original receipt'},
  {origin:'canonical_original',claim_id:'claim-b',title:'Policy investigation',status:'running',phase_summary:'Checking the cited policy'},
@@ -1439,27 +1441,101 @@ const claimRows=[
 ];
 test('the default Work collection uses saved statuses and explicit New claim navigation',async t=>{
  const f=dom(),api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
- assert.match(f.container.innerHTML,/<header class="au-identity-header"/);assert.doesNotMatch(f.container.innerHTML,/class="au-rail"/);assert.match(f.container.innerHTML,/data-au-nav="work"/);assert.match(f.container.innerHTML,/data-au-nav="intake" aria-label="New claim">New<span class="au-header-new-noun"> claim<\/span>/);
+ assert.match(f.container.innerHTML,/<header class="au-identity-header"/);assert.doesNotMatch(f.container.innerHTML,/class="au-rail"/);assert.match(f.container.innerHTML,/data-au-nav="work"/);assert.match(f.container.innerHTML,/data-au-nav="intake" aria-label="New case">New<span class="au-header-new-noun"> case<\/span><\/button>/);assert.doesNotMatch(f.container.innerHTML,/↗/);
  assert.match(f.host.innerHTML,/class="au-collection(?:\s[^"]*)?"/);assert.doesNotMatch(f.host.innerHTML,/<form[^>]*data-au-intake/);
- const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Execution stopped/);assert.match(html,/Working/);assert.match(html,/Checks complete/);assert.match(html,/Execution stopped/);assert.match(html,/Queued/);
+ const html=ui.claimsMarkup(claimRows),word=id=>html.match(new RegExp(`data-au-claim-row="${id}"[\\s\\S]*?<span class="au-claim-status-word">([^<]+)<`))[1];assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);
+ // One lexicon (P7): a deferral without an outcome and a failure both read Stopped; queued work reads Working.
+ assert.deepEqual(['claim-a','claim-b','claim-c','claim-d','claim-e'].map(word),['Stopped','Working','Assessment complete','Stopped','Working']);assert.doesNotMatch(html,/Execution stopped|Checks complete|>Queued<|class="au-status"/);
  await newClaim(f);assert.match(f.host.innerHTML,/<form[^>]*data-au-intake/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('search and filters select only matching saved claims and preserve original statuses',()=>{
  const before=JSON.stringify(claimRows),ids=options=>[...ui.claimsMarkup(claimRows,options).matchAll(/data-au-claim="([^"]+)"/g)].map(match=>match[1]);
- assert.deepEqual(ids({filter:'working'}),['claim-b','claim-e']);assert.deepEqual(ids({filter:'deferred'}),['claim-a']);assert.deepEqual(ids({filter:'resolved'}),['claim-c']);assert.deepEqual(ids({filter:'failed'}),['claim-d']);
- assert.deepEqual(ids({search:'RECEIPT'}),['claim-a']);assert.deepEqual(ids({filter:'working',search:'policy'}),['claim-b']);assert.deepEqual(ids({filter:'deferred',search:'policy'}),[]);
- const collection=ui.collectionMarkup(claimRows,{filter:'working',search:'policy'});assert.equal([...collection.matchAll(/data-au-claim="/g)].length,1);assert.match(collection,/data-au-filter="working" aria-pressed="true"/);assert.deepEqual(ui.matchingClaims(claimRows,{filter:'failed'}).map(row=>row.claim_id),['claim-d']);
+ assert.deepEqual(ids({filter:'working'}),['claim-b','claim-e']);assert.deepEqual(ids({filter:'stopped'}),['claim-a','claim-d']);assert.deepEqual(ids({filter:'investigation_complete'}),['claim-c']);assert.deepEqual(ids({filter:'more_evidence'}),[]);
+ // Recorded codes in older links resolve to their lexicon status.
+ assert.deepEqual(ids({filter:'resolved'}),['claim-c']);assert.deepEqual(ids({filter:'failed'}),['claim-a','claim-d']);assert.deepEqual(ids({filter:'queued'}),['claim-b','claim-e']);
+ assert.deepEqual(ids({search:'RECEIPT'}),['claim-a']);assert.deepEqual(ids({filter:'working',search:'policy'}),['claim-b']);assert.deepEqual(ids({filter:'stopped',search:'policy'}),[]);
+ const collection=ui.collectionMarkup(claimRows,{filter:'working',search:'policy'});assert.equal([...collection.matchAll(/data-au-claim="/g)].length,1);assert.match(collection,/data-au-filter="working" aria-pressed="true">1 working<\/button>/,'status counts follow the current search');assert.match(collection,/data-au-collection-count>1 of 5</);assert.deepEqual(ui.matchingClaims(claimRows,{filter:'stopped'}).map(row=>row.claim_id),['claim-a','claim-d']);
  assert.equal(JSON.stringify(claimRows),before);assert.doesNotMatch(ui.claimsMarkup([]),/data-au-claim="/);
 });
 
+// P7: each row is a title in an h2, one metadata line, one state line and the excerpt.
+test('collection rows name the case in an h2 and read as metadata, one state line and the excerpt without the salutation',()=>{
+ const deferred={origin:'canonical_original',claim_id:'clm_deferred',title:'Notice served on the wrong person',status:'deferred',revision:4,language:'de-CH',channel:'email',attachment_count:2,attachment_media_types:['application/pdf','image/jpeg'],received_at:'2025-10-22T12:00:00+02:00',browse_metadata:{domain:'lease_termination_dispute'},source_preview:'Grüezi\n\nDie Kündigung kam an meinen Mann.',outcome:{status:'deferred',missing_evidence:[{document_type:'termination_notice',label:'Termination notice'},{document_type:'proof_of_receipt',label:'Proof of delivery'}]}};
+ const unprocessed={origin:'canonical_original',claim_id:'clm_unprocessed',title:'Question about my documents: mould in a bedroom',status:'not_started',revision:0,language:'en',channel:'phone_note',attachment_count:0,attachment_media_types:[],received_at:'2025-01-12T09:30:00+01:00',browse_metadata:{domain:'defect_mold_heating'},source_preview:'Dear Sir or Madam\n\nAs I understand it: the corner of the bedroom is black.'};
+ const complete={origin:'canonical_original',claim_id:'clm_complete',title:'Rent increase without reasons',status:'deferred',revision:9,policy_id:'casepath.bounded-reference-assessment/1.0.0',attachment_count:1,attachment_media_types:['application/pdf'],browse_metadata:{domain:'rent_increase_dispute'},source_preview:'Hello\nThe form had no reason.',outcome:{status:'deferred',assessment_status:'complete',next_action:'Inspect the recorded assessment and its cited sources.',reference_provenance:{mode:'deterministic_reference',synthetic:true}}};
+ const rows=[deferred,unprocessed,complete],before=JSON.stringify(rows),html=ui.claimsMarkup(rows),row=id=>html.match(new RegExp(`<article[^>]*data-au-claim-row="${id}"[\\s\\S]*?</article>`))[0];
+ const meta=id=>row(id).match(/<p class="au-case-facts">([\s\S]*?)<\/p>/)[1];
+ assert.equal(meta('clm_deferred'),'<span>Lease termination</span> · <span>German</span> · <span>2 files (PDF, JPEG)</span> · <span>email</span> · <span>22 Oct 2025</span>','each fact stays whole when the line wraps');
+ assert.match(row('clm_deferred'),/<p class="au-claim-state"><span class="au-claim-status-word">More evidence needed<\/span><span class="au-claim-state-detail"> · Missing: Termination notice; Proof of delivery\.<\/span><\/p>/,'a deferred row shows its recorded constraint');
+ assert.equal(meta('clm_unprocessed').replace(/<\/?span>/g,''),'Defects and repairs · English · Message only · phone note · 12 Jan 2025','an unprocessed row shows its language and attachment count');assert.match(row('clm_unprocessed'),/<\/p><p class="au-claim-state"><span class="au-claim-status-word">Not started<\/span><\/p>/);
+ assert.match(row('clm_complete'),/<span>Rent increases<\/span> · <span>1 file \(PDF\)<\/span><\/p><p class="au-claim-state"><span class="au-claim-status-word">Assessment complete<\/span><span class="au-claim-state-detail"> · Inspect the recorded assessment and its cited sources\.<\/span>/,'a complete row shows its recorded next action');
+ assert.match(row('clm_unprocessed'),/<p class="au-claim-excerpt" id="ex-clm_unprocessed">As I understand it: the corner of the bedroom is black\.<\/p>/,'the salutation is not part of the excerpt');
+ assert.match(row('clm_deferred'),/id="ex-clm_deferred">Die Kündigung kam an meinen Mann\.<\/p>/);assert.match(row('clm_complete'),/id="ex-clm_complete">The form had no reason\.<\/p>/);
+ for(const claim of rows){
+  const button=row(claim.claim_id).match(/<h2 class="au-claim-title"><button type="button" class="au-claim-open" data-au-claim="([^"]+)" aria-describedby="ex-([^"]+)">([^<]*)<\/button><\/h2>/);
+  assert.ok(button,'each row button sits alone inside an h2');assert.equal(button[1],claim.claim_id);assert.equal(button[2],claim.claim_id);
+  assert.equal(button[3],claim.title,'the accessible name is the title only');assert.ok(button[3].length<120);
+ }
+ assert.doesNotMatch(html,/title="|class="au-status"|<strong>/);assert.equal(JSON.stringify(rows),before);
+ assert.deepEqual(ui.matchingClaims(rows,{search:'german'}).map(row=>row.claim_id),['clm_deferred'],'the metadata line is searchable');
+ assert.deepEqual(ui.matchingClaims(rows,{search:'jpeg'}).map(row=>row.claim_id),['clm_deferred']);
+});
+test('the status line appears once a case moves past Not started and its counts filter through ?filter=',async t=>{
+ const unrun=Array.from({length:3},(_,index)=>({origin:'canonical_original',claim_id:`clm_${index}`,title:`Case ${index}`,status:'not_started',revision:0}));
+ assert.match(ui.collectionMarkup(unrun),/<div data-au-status-line><\/div>/,'an unrun collection has no status line');
+ const mixed=[...unrun,{origin:'canonical_original',claim_id:'clm_run',title:'Running case',status:'running',revision:2},{origin:'canonical_original',claim_id:'clm_gap',title:'Gap case',status:'deferred',revision:5,outcome:{status:'deferred',missing_evidence:[{document_type:'lease_contract'}]}},{origin:'canonical_original',claim_id:'clm_gap2',title:'Second gap case',status:'deferred',revision:5,outcome:{status:'deferred',missing_evidence:[{document_type:'lease_contract'}]}}];
+ const line=ui.collectionMarkup(mixed).match(/<nav class="au-case-filter" aria-label="Case status">[\s\S]*?<\/nav>/)[0];
+ assert.deepEqual([...line.matchAll(/data-au-filter="([^"]+)" aria-pressed="false">([^<]+)</g)].map(match=>[match[1],match[2]]),[['working','1 working'],['more_evidence','2 more evidence needed']]);
+ assert.match(ui.collectionMarkup(mixed,{search:'Case 1'}),/<div data-au-status-line><\/div>/,'a search that shows only unstarted cases has no empty status landmark');
+ const routing=routingFixture(t,'#autonomous/cases'),f=dom(),api=fakeApi({handle:claimsHandler(mixed)}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ const ids=()=>[...f.host.querySelector('[data-au-claims]').innerHTML.matchAll(/data-au-claim="([^"]+)"/g)].map(match=>match[1]),live=f.container.querySelector('[data-au-announcement]');
+ const announced=[];const query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-announcement]'?{set textContent(value){announced.push(value);},get textContent(){return announced.at(-1)||'';}}:query(selector);
+ f.listeners.get('click')({target:control(f,'data-au-filter','more_evidence')});
+ assert.deepEqual(ids(),['clm_gap','clm_gap2']);assert.equal(new URLSearchParams(routing.hash.split('?')[1]).get('filter'),'more_evidence');assert.equal(routing.pushes,1);
+ assert.equal(announced.at(-1),'2 cases, page 1 of 1');assert.equal(f.container.ownerDocument.title,'Cases — CasePath');assert.equal(f.container.ownerDocument.activeElement?.focus!==undefined,true,'the list heading receives focus');
+ routing.back();await settle();assert.equal(ids().length,6);routing.forward();await settle();assert.deepEqual(ids(),['clm_gap','clm_gap2'],'Forward restores the filter');
+ routing.external('#autonomous/cases?status=deferred');await settle();assert.deepEqual(ids(),['clm_gap','clm_gap2'],'an older status= link still resolves');
+ assert.equal(live===undefined || live===null || typeof live==='object',true);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+test('collection search asks the API for terms the rows lack and counts against the scope',async t=>{
+ t.mock.timers.enable({apis:['setTimeout']});
+ const rows=[{origin:'canonical_original',claim_id:'clm_vacant',title:'Renovation notice',status:'not_started',source_preview:'Short preview.'},{origin:'canonical_original',claim_id:'clm_other',title:'Heating',status:'not_started',source_preview:'Cold rooms.'}];
+ const searched=[],api=fakeApi({handle:async(path,init)=>{const url=new URL(path,'http://casepath.test');if(!url.pathname.endsWith('/claims')||init.method==='POST')return null;const q=url.searchParams.get('q');if(q){searched.push(q);return response({claims:q==='possession'?[rows[0]]:[],total:q==='possession'?1:0});}return response({claims:rows});}});
+ const f=dom(),search=control(f,'data-au-claim-search'),count={textContent:''},list={innerHTML:''};search.matches=selector=>selector==='[data-au-claim-search]';
+ const query=f.host.querySelector;f.host.querySelector=selector=>({'[data-au-claim-search]':search,'[data-au-collection-count]':count,'[data-au-claims]':list})[selector]||query(selector);
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ search.value='possession';f.listeners.get('input')({target:search});
+ assert.match(list.innerHTML,/Searching the full messages and files…/,'no false empty result while the full-message search runs');assert.equal(count.textContent,'0 of 2');assert.deepEqual(searched,[]);
+ t.mock.timers.tick(250);await settle();await settle();
+ assert.deepEqual(searched,['possession'],'one browsing request per uncached term');assert.match(list.innerHTML,/data-au-claim="clm_vacant"/);assert.doesNotMatch(list.innerHTML,/data-au-claim="clm_other"/);assert.equal(count.textContent,'1 of 2');
+ search.value='possession renovation';f.listeners.get('input')({target:search});assert.equal(count.textContent,'1 of 2','a cached term and a title match show at once');t.mock.timers.tick(250);await settle();await settle();
+ assert.deepEqual(searched,['possession','renovation'],'only the uncached term is asked; a title match may still occur in other full messages');assert.match(list.innerHTML,/data-au-claim="clm_vacant"/);assert.equal(count.textContent,'1 of 2');
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+test('an empty Added scope says so, offers New case and shows no pager',()=>{
+ const rows=[{origin:'canonical_original',claim_id:'clm_a',title:'Original',status:'not_started'}];
+ const added=ui.collectionMarkup(rows,{scope:'added'});
+ assert.match(added,/<p class="au-empty" data-au-added-empty>No added cases yet\. <button type="button" class="au-link" data-au-nav="intake">New case<\/button><\/p>/);assert.match(added,/<nav hidden class="au-pagination"/);assert.doesNotMatch(added,/No cases match/);
+ assert.doesNotMatch(ui.collectionMarkup(rows,{scope:'added',readOnly:true}),/data-au-nav="intake"/,'view-only Sites offer no intake');
+ assert.match(ui.collectionMarkup(rows),/<div class="au-collection-scope"><button type="button" data-au-collection-scope="added">Added <span data-au-scope-count>\(0\)<\/span><\/button><\/div>/);
+});
+test('each view names itself in the document title',async t=>{
+ const routing=routingFixture(t,'#autonomous/cases?page=2'),rows=Array.from({length:30},(_,index)=>({origin:'canonical_original',claim_id:`clm_${index}`,title:`Case ${index}`,status:'not_started'})),f=dom(),api=fakeApi({handle:claimsHandler(rows)}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ const title=()=>f.container.ownerDocument.title;
+ assert.equal(title(),'Cases · page 2 — CasePath');
+ await controller.openClaim('claim-a');assert.equal(title(),'Original incoming claim — CasePath');
+ navClick(f,'knowledge');await settle();assert.equal(title(),'Knowledge — CasePath');
+ navClick(f,'work');await settle();assert.equal(title(),'Cases · page 2 — CasePath');
+ controller.destroy();assert.equal(title(),'CasePath');assert.equal(routing.listeners.size,0);
+});
 test('typing a collection search updates results without replacing the focused native search input',async t=>{
  const f=dom(),search=control(f,'data-au-claim-search'),filter=control(f,'data-au-claim-filter'),count={textContent:''},rows={innerHTML:''};search.value='';filter.value='all';
  search.matches=selector=>selector==='[data-au-claim-search]';filter.matches=selector=>selector==='[data-au-claim-filter]';
  const query=f.host.querySelector;f.host.querySelector=selector=>({'[data-au-claim-search]':search,'[data-au-claim-filter]':filter,'[data-au-collection-count]':count,'[data-au-claims]':rows})[selector]||query(selector);
- const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ const api=fakeApi({handle:claimsHandler(claimRows)}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  const shell=f.host.innerHTML;search.focus();search.value='receipt';f.listeners.get('input')({target:search});assert.equal(f.host.innerHTML,shell);assert.equal(f.container.ownerDocument.activeElement,search);assert.match(rows.innerHTML,/Notice needs a receipt/);assert.doesNotMatch(rows.innerHTML,/Policy investigation/);assert.equal(count.textContent,'1 of 5');
- filter.value='working';f.listeners.get('change')({target:filter});assert.equal(f.host.innerHTML,shell);assert.doesNotMatch(rows.innerHTML,/data-au-claim="/);assert.equal(count.textContent,'0 of 5');assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ f.listeners.get('click')({target:control(f,'data-au-filter','working')});assert.equal(f.host.innerHTML,shell);assert.doesNotMatch(rows.innerHTML,/data-au-claim="/);assert.equal(count.textContent,'0 of 5');assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('each local view renders only its current purpose while retaining the same immutable selected claim',()=>{
@@ -1670,10 +1746,10 @@ test('Cancel returns to the same Work search, status filter and scroll position 
  const containerQuery=f.container.querySelector;f.container.querySelector=selector=>selector==='.au-main'?main:containerQuery(selector);
  let html='';Object.defineProperty(f.host,'innerHTML',{get:()=>html,set:value=>{html=value;f.host.scrollTop=0;main.scrollTop=0;main.scrollLeft=0;search.value=value.match(/data-au-claim-search value="([^"]*)"/)?.[1]||'';filter.value=value.match(/data-au-filter="([^"]+)" aria-pressed="true"/)?.[1]||'all';}});
  const query=f.host.querySelector;f.host.querySelector=selector=>({'[data-au-claim-search]':search,'[data-au-claim-filter]':filter,'[data-au-claims]':rows,'[data-au-collection-count]':count})[selector]||query(selector);
- const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
- search.value='receipt';f.listeners.get('input')({target:search});filter.value='deferred';f.listeners.get('click')({target:control(f,'data-au-filter','deferred')});f.host.scrollTop=127;main.scrollTop=246;main.scrollLeft=6;globalThis.scrollX=12;globalThis.scrollY=418;
+ const api=fakeApi({handle:claimsHandler(claimRows)}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ search.value='receipt';f.listeners.get('input')({target:search});f.listeners.get('click')({target:control(f,'data-au-filter','stopped')});f.host.scrollTop=127;main.scrollTop=246;main.scrollLeft=6;globalThis.scrollX=12;globalThis.scrollY=418;
  await newClaim(f);globalThis.scrollX=0;globalThis.scrollY=0;navClick(f,'work');await settle();
- assert.equal(search.value,'receipt');assert.equal(filter.value,'deferred');assert.match(rows.innerHTML,/Notice needs a receipt/);assert.doesNotMatch(rows.innerHTML,/Policy investigation/);assert.equal(count.textContent,'1 of 5');assert.equal(f.host.scrollTop,127);assert.equal(main.scrollTop,246);assert.equal(main.scrollLeft,6);assert.deepEqual(scrollCalls.at(-1),{left:12,top:418,behavior:'instant'});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.equal(search.value,'receipt');assert.equal(filter.value,'stopped');assert.match(rows.innerHTML,/Notice needs a receipt/);assert.doesNotMatch(rows.innerHTML,/Policy investigation/);assert.equal(count.textContent,'1 of 5');assert.equal(f.host.scrollTop,127);assert.equal(main.scrollTop,246);assert.equal(main.scrollLeft,6);assert.deepEqual(scrollCalls.at(-1),{left:12,top:418,behavior:'instant'});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('a mismatched polling event cursor never advances the displayed state or consumes the pending event',async t=>{
@@ -1761,16 +1837,16 @@ test('paused interpretation describes an unaccepted result instead of active rea
 test('an exhausted authoritative call allowance is visible before intake while packet saving remains available',async t=>{
  const savedStatus={enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24}},before=JSON.stringify(savedStatus),f=dom();
  const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/<h1[^>]*>Cases<\/h1>/);await newClaim(f);
- const message=f.host.querySelector('[data-au-service]').textContent;assert.match(message,/allowance does not permit more autonomous work/i);assert.match(message,/still save a new claim.*named deferral/i);assert.doesNotMatch(message,/Local evidence acquisition and document preparation are available/);
+ const message=f.host.querySelector('[data-au-service]').textContent;assert.match(message,/allowance does not permit more autonomous work/i);assert.match(message,/still save a new case.*named deferral/i);assert.doesNotMatch(message,/Local evidence acquisition and document preparation are available/);
  assert.equal(f.submit.disabled,false);assert.notEqual(f.fields.title.disabled,true);assert.doesNotMatch(f.submit.textContent,/retry|saving/i);assert.equal(f.message.textContent,'');assert.equal(JSON.stringify(savedStatus),before);
  assert.ok(api.calls.every(call=>['/status','/claims','/knowledge'].some(path=>call.path.endsWith(path)) && (!call.init.method || call.init.method==='GET')));assert.ok(api.calls.filter(call=>call.path.endsWith('/knowledge')).length<=1);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('cost, pending and unknown allowance statuses keep distinct honest intake messages without disabling saving',async()=>{
  const cases=[
-  {limits:{autonomous_can_start:false,autonomous_reason:'cost_limit_reached'},matches:[/cost allowance does not permit more autonomous work/i,/still save a new claim.*named deferral/i]},
-  {limits:{autonomous_can_start:false,autonomous_reason:'provider_outcome_pending'},matches:[/pending|unconfirmed/i,/cannot start yet/i,/still save a new claim.*named deferral/i],excludes:/allowance does not permit|exhausted|spent/i},
-  {limits:{autonomous_can_start:false,autonomous_reason:'provider_cost_bound_exceeded'},matches:[/provider cost.*bound/i,/still save a new claim.*named deferral/i],excludes:/allowance.*spent|call limit reached|cost limit reached/i},
+  {limits:{autonomous_can_start:false,autonomous_reason:'cost_limit_reached'},matches:[/cost allowance does not permit more autonomous work/i,/still save a new case.*named deferral/i]},
+  {limits:{autonomous_can_start:false,autonomous_reason:'provider_outcome_pending'},matches:[/pending|unconfirmed/i,/cannot start yet/i,/still save a new case.*named deferral/i],excludes:/allowance does not permit|exhausted|spent/i},
+  {limits:{autonomous_can_start:false,autonomous_reason:'provider_cost_bound_exceeded'},matches:[/provider cost.*bound/i,/still save a new case.*named deferral/i],excludes:/allowance.*spent|call limit reached|cost limit reached/i},
   {limits:{autonomous_can_start:false,autonomous_reason:'unknown_future_condition',effective_autonomous_max_provider_calls:24,provider_calls_used:24},excludes:/allowance does not permit|exhausted|spent|call limit reached/i},
   {limits:{autonomous_can_start:false,autonomous_reason:'constructor'},matches:[/Autonomous inference is unavailable for new work/],excludes:/allowance does not permit|exhausted|spent|function|object Object/i},
   {limits:{autonomous_can_start:false,autonomous_reason:'__proto__'},matches:[/Autonomous inference is unavailable for new work/],excludes:/allowance does not permit|exhausted|spent|function|object Object/i},
@@ -1832,7 +1908,7 @@ test('delayed claim collections preserve verified revisions without rejecting ge
   {name:'a delayed older current row',row:{claim_id:'claim-a',title:'Old collection title',status:'running',revision:3,state_sha256:hash('a')},expectedStatus:'More evidence needed'},
   {name:'a missing current row',row:null,expectedStatus:'More evidence needed'},
   {name:'a conflicting identity at the verified revision',row:{claim_id:'claim-a',title:'Conflicting collection title',status:'running',revision:4,state_sha256:hash('9')},expectedStatus:'More evidence needed'},
-  {name:'a genuinely newer collection row',row:{claim_id:'claim-a',title:'Newer collection title',status:'queued',revision:5,state_sha256:hash('5')},expectedStatus:'Queued'}
+  {name:'a genuinely newer collection row',row:{claim_id:'claim-a',title:'Newer collection title',status:'queued',revision:5,state_sha256:hash('5')},expectedStatus:'Working'}
  ])await t.test(example.name,async child=>{
   routingFixture(child,'#autonomous/claim/claim-a?detail=activity');const f=dom(),queue={innerHTML:''},query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-recent-claims]'?queue:query(selector);
   let saved=state(),projection={},finishList;const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?new Promise(resolve=>{finishList=resolve;}):path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256,...projection}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});child.after(()=>controller.destroy());await waitFor(()=>f.host.innerHTML.includes('data-au-revision="3"')&&Boolean(finishList));
@@ -1850,10 +1926,10 @@ test('delayed claim collections preserve verified revisions without rejecting ge
 test('idle intake labels distinguish saving a claim from available or unknown autonomous work',async()=>{
  const exhausted={enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24}};
  for(const [savedStatus,label,disabled]of [
-  [exhausted,/^Save claim$/,false],
-  [{enabled:true,provider_ready:false,limits:{}},/^Save claim$/,false],
-  [{enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'provider_outcome_pending'}},/^Save claim$/,false],
-  [{enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'unknown_future_condition'}},/^Save claim$/,false],
+  [exhausted,/^Save case$/,false],
+  [{enabled:true,provider_ready:false,limits:{}},/^Save case$/,false],
+  [{enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'provider_outcome_pending'}},/^Save case$/,false],
+  [{enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'unknown_future_condition'}},/^Save case$/,false],
   [{enabled:true,provider_ready:true,limits:{autonomous_can_start:true}},/^Start checking/,false],
   [{enabled:true,provider_ready:true},/^Start checking/,false],
   [{enabled:true,provider_ready:true,limits:{autonomous_reason:'call_limit_reached'}},/^Start checking/,false],
@@ -1897,8 +1973,8 @@ test('returning to intake updates its idle label and local validation restores t
  const api=fakeApi({handle:async path=>{if(!path.endsWith('/status'))return null;statusReads++;if(holdNext){holdNext=false;return new Promise(resolve=>{finishStatus=resolve;});}return response(savedStatus);}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finishStatus?.(response(savedStatus));controller.destroy();});await settle();await newClaim(f);
  const form=f.intake,list=Array.from({length:21},()=>fileFixture()),submit=form.querySelector('button[type="submit"]');form.elements.title.value='Typed original draft';form.elements.message.value='Retained original message';form.elements.files.files=list;
  await f.listeners.get('submit')({target:form,preventDefault(){}});assert.match(form.querySelector('.au-form-status').textContent,/at most 20/);assert.match(submit.textContent,/^Start checking/);assert.equal(form.elements.title.disabled,false);
- savedStatus={enabled:true,provider_ready:false,limits:{}};now+=10001;navClick(f,'work');await settle();holdNext=true;await newClaim(f);assert.equal(f.intake,form);assert.equal(submit.textContent,'Save claim','the cached unavailable status applies before the fresh status response');assert.equal(form.elements.files.files,list);assert.equal(form.elements.title.value,'Typed original draft');assert.equal(form.elements.message.value,'Retained original message');
- finishStatus(response(savedStatus));await settle();await f.listeners.get('submit')({target:form,preventDefault(){}});assert.equal(submit.textContent,'Save claim');assert.equal(submit.disabled,false);assert.equal(form.elements.title.disabled,false);assert.equal(form.elements.files.files,list);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ savedStatus={enabled:true,provider_ready:false,limits:{}};now+=10001;navClick(f,'work');await settle();holdNext=true;await newClaim(f);assert.equal(f.intake,form);assert.equal(submit.textContent,'Save case','the cached unavailable status applies before the fresh status response');assert.equal(form.elements.files.files,list);assert.equal(form.elements.title.value,'Typed original draft');assert.equal(form.elements.message.value,'Retained original message');
+ finishStatus(response(savedStatus));await settle();await f.listeners.get('submit')({target:form,preventDefault(){}});assert.equal(submit.textContent,'Save case');assert.equal(submit.disabled,false);assert.equal(form.elements.title.disabled,false);assert.equal(form.elements.files.files,list);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
  savedStatus={enabled:true,provider_ready:true,limits:{}};now+=10001;navClick(f,'work');await settle();await newClaim(f);assert.equal(f.intake,form);assert.match(submit.textContent,/^Start checking/);assert.equal(form.elements.files.files,list);assert.equal(statusReads,6);
 });
 
@@ -2252,7 +2328,7 @@ test('one case label serves Cases, the Demonstration and Knowledge, and Cases ke
  assert.equal(ui.caseLabel(shared).primary,ui.REFERENCE_DEMO_CASES.find(row=>row.claim_id===shared).label,'the shared original has one label in both rosters');
  const catalog=demoCatalog({reference:1}),cases=ui.claimsMarkup(catalog),order=[...cases.matchAll(/data-au-claim-row="([^"]+)"/g)].map(row=>row[1]);
  assert.deepEqual(order,catalog.map(row=>row.claim_id),'reference cases are not promoted above catalog order');
- assert.match(cases,new RegExp(`data-au-claim-row="${german}"[\\s\\S]*?<strong>Heating resets and an uncertain onset date</strong><span class="au-case-subject">Original subject \\d+</span>[\\s\\S]*?In demonstration · 02</span>`));
+ assert.match(cases,new RegExp(`data-au-claim-row="${german}"[\\s\\S]*?<h2 class="au-claim-title"><button type="button" class="au-claim-open" data-au-claim="${german}"[^>]*>Heating resets and an uncertain onset date</button></h2><p class="au-case-subject">Original subject \\d+</p>[\\s\\S]*?In demonstration · 02</p>`));
  assert.doesNotMatch(ui.claimsMarkup(demoCatalog()),/In demonstration/,'with nothing to play no case is marked');
  const transport=ui.demoTransportMarkup({collection:'reference',cases:ui.REFERENCE_DEMO_CASES,index:7},{playing:true});assert.match(transport,new RegExp(`Next: ${ui.caseLabel(shared).primary}<`));
  const data=learningFixtureData(),used=data.learning_replay.events.find(event=>event.kind==='knowledge.used'),model=ui.knowledgeLearningModel({...data,learning_replay:{...data.learning_replay,events:data.learning_replay.events.map(event=>event===used?{...event,claim_id:german,claim_title:'Mehrere Angaben sind unklar: Heizung'}:event)},uses:data.uses.map(use=>use.claim_id===used.claim_id?{...use,claim_id:german}:use)});
@@ -3412,11 +3488,11 @@ test('outcome markup leads with recorded sentences, names open facts and the dra
  assert.match(html,/data-au-draft-status="no_gap">No document gap identified<\/p>/);
  assert.doesNotMatch(html,/<details|Some facts still need proof|More evidence needed|Waiting for proof/);
  const header=ui.workMarkup(saved,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0];
- assert.match(header,/data-au-claim-status>Deferred\.<\/span> Open: Rent arrears, Tenancy extension, Family home and 2 more\./,'the status word stays recorded and the explanation names the open facts');
+ assert.match(header,/data-au-claim-status>Stopped\.<\/span> Open: Rent arrears, Tenancy extension, Family home and 2 more\./,'with no document gap the status is Stopped, not More evidence needed, and the explanation names the open facts');
  // The no-gap line follows the recorded empty missing list, not the draft's wording.
  const reworded=structuredClone(saved);reworded.outcome.request_draft.body='Keine weitere Dokumentlücke.';
  assert.match(ui.outcomeSummaryMarkup(reworded),/data-au-draft-status="no_gap">No document gap identified<\/p>/);
- assert.match(ui.workMarkup(reworded,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0],/data-au-claim-status>Deferred\.<\/span> Open: Rent arrears/);
+ assert.match(ui.workMarkup(reworded,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0],/data-au-claim-status>Stopped\.<\/span> Open: Rent arrears/);
  // A prepared request stays readable in place: its subject and body are one disclosure away, never only in JSON.
  const gap=structuredClone(saved);Object.assign(gap.outcome,{missing_evidence:[{document_type:'termination_notice',label:'Termination notice'}],request_draft:{status:'prepared_not_sent',subject:'Evidence needed for the active claim process',body:'- Termination notice: required for the form check.'}});
  const drafted=ui.outcomeSummaryMarkup(gap);

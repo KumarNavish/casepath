@@ -82,7 +82,7 @@
   // subject second. Unfeatured cases keep their original subject.
   function caseLabel(claimId, apiRow = null) {
     const featured = featuredCase(claimId), subject = String(apiRow?.title || apiRow?.claim_title || '').trim();
-    return featured ? {primary:featured.label,secondary:subject && subject !== featured.label ? subject : ''} : {primary:subject || claimId || 'Untitled claim',secondary:''};
+    return featured ? {primary:featured.label,secondary:subject && subject !== featured.label ? subject : ''} : {primary:subject || claimId || 'Untitled case',secondary:''};
   }
   const mounts = new WeakMap();
   let activeMount = null;
@@ -97,21 +97,31 @@
   const button = (label, attr, primary = false) => `<button type="button" class="${primary ? 'au-primary' : 'au-secondary'}" ${attr}>${h(label)}</button>`;
   const complete = status => ['completed','complete','resolved'].includes(status);
   const referenceAssessmentComplete = claim => claim?.policy_id === 'casepath.bounded-reference-assessment/1.0.0' && claim.outcome?.assessment_status === 'complete' && claim.outcome.reference_provenance?.mode === 'deterministic_reference' && claim.outcome.reference_provenance.synthetic === true && !claim.deferral && !active(claim.status);
-  const statusFilter = (status, claim) => referenceAssessmentComplete(claim) || complete(status) ? 'investigation_complete' : status;
+  const executionFailed = claim => claim?.status === 'failed' || !active(claim?.status) && (list(claim?.reconciliations).at(-1)?.status === 'failed' || ['provider_deferred','verification_deferred','execution_deferred'].includes(claim?.deferral?.code));
+  // Where a case stands, in the shared lexicon (language.caseStatuses). A
+  // collection row carries no deferral details, so a deferred row without an
+  // outcome stays Stopped. "More evidence needed" is used only when the
+  // recorded draft does not rule out a document gap.
+  function caseStatus(claim = {}) {
+    const status = claim?.status;
+    if (active(status)) return 'working';
+    if (!status || status === 'not_started' || status === 'not_run') return 'not_started';
+    if (executionFailed(claim) || claim.deferral) return 'stopped';
+    if (referenceAssessmentComplete(claim) || complete(status)) return 'investigation_complete';
+    return status === 'deferred' && claim.outcome && language.draftStatus(claim.outcome).status !== 'no_gap' ? 'more_evidence' : 'stopped';
+  }
+  // Status filters use the lexicon IDs. Recorded codes in older links still resolve.
+  const CASE_FILTER_ALIASES = Object.freeze({deferred:'more_evidence',failed:'stopped',paused:'stopped',completed:'investigation_complete',complete:'investigation_complete',resolved:'investigation_complete',not_run:'not_started',received:'working',queued:'working',running:'working',investigating:'working'});
+  const caseFilter = value => value === 'all' || language.caseStatuses.some(row => row.id === value) ? value : CASE_FILTER_ALIASES[value] || 'all';
   const active = status => ['received', 'queued', 'running', 'working', 'investigating'].includes(status);
   const tone = status => ['completed', 'complete', 'resolved', 'established', 'satisfied', 'qualified'].includes(status) ? 'done' : ['deferred', 'blocked', 'failed', 'unresolved', 'unknown', 'quarantined'].includes(status) ? 'blocked' : active(status) || status === 'ready' ? 'active' : 'neutral';
   const statusLabel = status => ({not_started:'Not started',not_run:'Not run',received:'Received', queued:'Queued', running:'Working', working:'Working', completed:'Completed', complete:'Completed', resolved:'Completed', investigation_complete:'Checks complete', deferred:'Deferred', failed:'Stopped', ready:'Ready to check', true:'Applies', false:'Does not apply', insufficient:'Not established', missing:'Not established', prepared_not_sent:'Draft ready, not sent', not_reached:'Not reached', inactive:'Does not apply', unresolved:'Not established', unknown:'Not established', blocked:'Waiting for prerequisites', established:'Established', satisfied:'Satisfied', needed_now:'Needed now', needed_later:'Needed later', held_behind_question:'May be needed', held_not_reviewed:'Needs checking', not_needed:'Not required', optional:'Optional'})[status] || words(status) || 'Not recorded';
-  function claimStatusLabel(status, claim = {}) {
-    if (status === 'failed' || !active(status) && list(claim.reconciliations).at(-1)?.status === 'failed') return 'Execution failed';
-    if (!active(status) && claim.deferral) {
-      if (claim.deferral.code === 'paused') return 'Paused';
-      return ['provider_deferred','verification_deferred','execution_deferred'].includes(claim.deferral.code) ? 'Execution failed' : 'Execution stopped';
-    }
-    if (referenceAssessmentComplete(claim)) return 'Assessment complete';
-    if (complete(status)) return 'Checks complete';
-    // "More evidence needed" only when a document gap is not ruled out by the
-    // recorded draft; otherwise the status word stays the recorded one.
-    return status === 'deferred' ? claim.outcome ? language.draftStatus(claim.outcome).status === 'no_gap' ? statusLabel(status) : 'More evidence needed' : 'Execution stopped' : statusLabel(status);
+  function claimStatusLabel(status, claim = {}) { return language.caseStatusLabel(caseStatus({...claim,status})); }
+  // Why a stopped case stopped, when the record says. A summary row without a
+  // deferral is not given a reason it does not carry.
+  function stopReason(claim = {}) {
+    if (caseStatus(claim) !== 'stopped') return '';
+    return claim.deferral?.code === 'paused' ? 'Paused.' : executionFailed(claim) ? 'Execution failed.' : '';
   }
   const replayCanAdvance = state => Boolean(state.outcome) && !active(state.status) && state.status !== 'failed' && !state.deferral && (!list(state.reconciliations).length || list(state.reconciliations).at(-1).status === 'completed');
   const isHash = value => /^[a-f0-9]{64}$/i.test(value || '');
@@ -1274,7 +1284,7 @@
   }
 
   function sourcesMarkup(state, readOnly = false, projection = {}) {
-    return `<section class="au-supporting au-originals"><h2>Sources</h2><p class="au-original-title">${h(state.title || 'Untitled claim')}</p>${originalText(state) ? `<pre class="au-original-message">${h(originalText(state))}</pre>` : ''}${sourceListMarkup(state,list(state.source_descriptors),'originals',projection)}${state.revision > 0 && !readOnly ? '<form data-au-arrival class="au-arrival"><label for="auAdditionalFiles">Add supporting files</label><input id="auAdditionalFiles" name="files" type="file" multiple required><button class="au-secondary" type="submit">Add files</button><p class="au-form-status"></p></form>' : ''}</section>`;
+    return `<section class="au-supporting au-originals"><h2>Sources</h2><p class="au-original-title">${h(state.title || 'Untitled case')}</p>${originalText(state) ? `<pre class="au-original-message">${h(originalText(state))}</pre>` : ''}${sourceListMarkup(state,list(state.source_descriptors),'originals',projection)}${state.revision > 0 && !readOnly ? '<form data-au-arrival class="au-arrival"><label for="auAdditionalFiles">Add supporting files</label><input id="auAdditionalFiles" name="files" type="file" multiple required><button class="au-secondary" type="submit">Add files</button><p class="au-form-status"></p></form>' : ''}</section>`;
   }
 
   function historyLabel(event) {
@@ -1303,7 +1313,7 @@
   }
   function claimHeadingMarkup(state, extraClass = '') {
     const featured = featuredCase(state.claim_id);
-    return `<h1 class="au-page-heading ${extraClass}" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(featured?.label || state.title || 'Untitled claim')}</h1>`;
+    return `<h1 class="au-page-heading ${extraClass}" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(featured?.label || state.title || 'Untitled case')}</h1>`;
   }
 
   function readSkeletonMarkup(kind, title = '', claimId = '') {
@@ -1466,7 +1476,7 @@
     const freshness = assessmentFreshness(state);
     const failure = state.deferral?.reason;
     const openFacts = state.outcome && !failure && language.draftStatus(state.outcome).status === 'no_gap' ? language.outcomePresentation(state).recorded.openFacts : [];
-    const constraint = freshness.status === 'prior' ? 'New documents await checking.' : failure ? 'Work stopped. Open Details for the recorded reason.' : openFacts.length ? `Open: ${openFactsSentence(openFacts)}.` : '';
+    const constraint = freshness.status === 'prior' ? 'New documents await checking.' : failure ? `${stopReason(state)} Open Details for the recorded reason.`.trim() : openFacts.length ? `Open: ${openFactsSentence(openFacts)}.` : stopReason(state);
     const stageView = (Boolean(presentation.operations) || referenceAssessmentComplete(state)) && detail === 'step';
     const trace = presentation.operations, transportTrace = presentation.transportOperations || trace, resultAvailable = transportTrace?.buffer?.result?.exact_output_verified === true && transportTrace.buffer.result.state_sha256 === transportTrace.binding?.current_state_sha256 && transportTrace.buffer.result.current_event_sha256 === transportTrace.binding?.current_event_sha256;
     const stageGraph=operationStageGraph(trace,state), stageHTML=stageGraph ? list(stageGraph.nodes).map(node=>stageNodeContents(node,state,trace,workingProcessState(trace),false)).join('') : '';
@@ -1644,7 +1654,7 @@
   }
   function lineageMarkup(version, versions = []) {
     const parent = versions.find(item => item.knowledge_sha256 && item.knowledge_sha256 === version.parent_knowledge_sha256);
-    return `<div class="au-lineage-summary">${version.change_reason ? `<p>${h(learningChangeSummary(version))}</p><details><summary>Details</summary><p>${h(version.change_reason)}</p></details>` : ''}${version.parent_knowledge_sha256 ? `<p class="au-meta">${parent ? `Derived from version ${h(parent.version || parent.version_id)}` : 'Parent version is not in this record'}${parent?.source_claim_id ? ` · ${button('Open parent source claim',`data-au-claim="${h(parent.source_claim_id)}"`)}` : ''}</p>` : '<p class="au-meta">First recorded version</p>'}</div>`;
+    return `<div class="au-lineage-summary">${version.change_reason ? `<p>${h(learningChangeSummary(version))}</p><details><summary>Details</summary><p>${h(version.change_reason)}</p></details>` : ''}${version.parent_knowledge_sha256 ? `<p class="au-meta">${parent ? `Derived from version ${h(parent.version || parent.version_id)}` : 'Parent version is not in this record'}${parent?.source_claim_id ? ` · ${button('Open parent source case',`data-au-claim="${h(parent.source_claim_id)}"`)}` : ''}</p>` : '<p class="au-meta">First recorded version</p>'}</div>`;
   }
   function knowledgeUses(version, uses = []) {
     return list(uses).filter(use => {
@@ -1744,7 +1754,7 @@
     return item?.knowledge_id && item?.version ? ` data-au-knowledge="${h(item.knowledge_id)}" data-au-version="${h(item.version)}" data-au-knowledge-sha="${h(item.knowledge_sha256 || '')}" data-au-definition-sha="${h(item.definition_sha256 || item.qualification?.definition_sha256 || '')}"` : '';
   }
   function caseLabelMarkup(label) { return `<span class="au-case-label">${h(label.primary)}</span>${label.secondary ? `<span class="au-case-subject">${h(label.secondary)}</span>` : ''}`; }
-  function learningClaimLink(id, title) { return id ? `<button type="button" class="au-secondary au-case-link" data-au-claim="${h(id)}">${caseLabelMarkup(caseLabel(id,{title}))}</button>` : '<span>Source claim unavailable</span>'; }
+  function learningClaimLink(id, title) { return id ? `<button type="button" class="au-secondary au-case-link" data-au-claim="${h(id)}">${caseLabelMarkup(caseLabel(id,{title}))}</button>` : '<span>Source case unavailable</span>'; }
   function learningDefinitionDiff(version, versions) {
     const parent = versions.find(item => item.knowledge_sha256 && item.knowledge_sha256 === version.parent_knowledge_sha256);
     if (!parent) return '';
@@ -1770,7 +1780,7 @@
   }
   function learningReceiptsMarkup(model,event) {
     const group=list(event.reuseGroup).map(index=>({event:model.events[index],index}));
-    return group.length?`<section class="au-learning-receipts"><h3>${group.length} recorded reuse receipts</h3><ul>${group.map(({event:row,index})=>`<li${row.claim_id===event.claim_id?' data-au-current-case="true"':''}><button type="button" data-au-learning-event="${index}"${learningPinAttributes(row.versionRecord || row.item)}>${(()=>{const label=row.claim_id?caseLabel(row.claim_id,{title:row.claim_title}):{primary:'Receiving claim',secondary:''};return `<span class="au-case-label">${row.claim_id===event.claim_id?'This case · ':''}${h(label.primary)}</span><span class="au-case-subject">${label.secondary?`${h(label.secondary)} · `:''}${h(learningTime(row))}</span>`;})()}</button> ${row.recorded?recordButton('Inspect receipt','learning-event',row.id):''}</li>`).join('')}</ul></section>`:'';
+    return group.length?`<section class="au-learning-receipts"><h3>${group.length} recorded reuse receipts</h3><ul>${group.map(({event:row,index})=>`<li${row.claim_id===event.claim_id?' data-au-current-case="true"':''}><button type="button" data-au-learning-event="${index}"${learningPinAttributes(row.versionRecord || row.item)}>${(()=>{const label=row.claim_id?caseLabel(row.claim_id,{title:row.claim_title}):{primary:'Receiving case',secondary:''};return `<span class="au-case-label">${row.claim_id===event.claim_id?'This case · ':''}${h(label.primary)}</span><span class="au-case-subject">${label.secondary?`${h(label.secondary)} · `:''}${h(learningTime(row))}</span>`;})()}</button> ${row.recorded?recordButton('Inspect receipt','learning-event',row.id):''}</li>`).join('')}</ul></section>`:'';
   }
   function knowledgeLearningFocus(model, event, facet = 'process') {
     if (!event) return '<p class="au-empty">No recorded learning events are available.</p>';
@@ -1783,7 +1793,7 @@
     const receiving=knowledgeUses(version,model.uses);
     const receipts=use?learningReceiptsMarkup(model,event):'';
     const requalification=list(event.requalificationGroup).length>1?`<section class="au-learning-requalification"><h3>Rechecked rules · ${event.requalificationGroup.length} families</h3><p>${h(learningChangeSummary(version))}</p><ul>${event.requalificationGroup.map(index=>{const row=model.events[index],current=row.versionRecord,prior=model.versions.find(v=>v.knowledge_sha256===current?.parent_knowledge_sha256);return `<li><button type="button" data-au-learning-event="${index}"${learningPinAttributes(current)}>${h(procedureLabel(current || row.item))} · v${h(current?.version)} · ${list(prior?.graph?.nodes).length} → ${list(current?.graph?.nodes).length} steps</button><p>${h(learningTime(row))}</p></li>`;}).join('')}</ul></section>`:'';
-    return `<article class="au-procedure-reading au-knowledge-version au-learning-record" data-au-knowledge-identity="${h(identity)}" data-au-version="${h(version.version)}"><header class="au-learning-record-head"><div><h2>${h(procedureLabel(version))} · ${knowledgeLink(version,`Version ${version.version}`)}</h2><p>${h(learningTime(event))}</p>${knowledgeNowMarkup(model,event)}</div></header><section class="au-learning-source" data-au-learning-reveal="0">${use?'':`<p>Source claim</p>${learningClaimLink(sourceId,event.source_claim_title || event.claim_title)}`}${!use && !requalification?`<p>${h(learningChangeSummary(version))}</p>`:''}${parent?`<p>Parent ${knowledgeLink(parent,`Version ${parent.version} · exact saved version`)}</p>`:''}</section>${requalification}${use?`<section class="au-learning-reuse" data-au-learning-reveal="1"><div class="au-learning-reuse-arc"><span>Version ${h(version.version)}</span><span aria-hidden="true">⤳</span>${learningClaimLink(event.claim_id || item.claim_id,event.claim_title)}</div>${typeof item.applicability==='string'?`<p>When it applies: ${h(plain(words(item.applicability),'Recorded rule conditions'))}</p>`:item.applicability?.summary?`<p>${h(plain(item.applicability.summary,'When it applies is recorded in Details.'))}</p>`:''}${Number.isSafeInteger(item.avoided_rule_compilations)?`<p>${item.avoided_rule_compilations} rebuild${item.avoided_rule_compilations===1?'':'s'} avoided</p>`:''}${Number.isSafeInteger(item.reused_evidence_recipes)?`<p>${item.reused_evidence_recipes} document checks reused</p>`:''}${event.recorded?`<p class="au-learning-receipt">Recorded reuse ${recordButton('Details','learning-event',event.id)}</p>`:''}</section>`:''}<nav class="au-procedure-facets" aria-label="Procedure details">${facets.map(([id,label])=>`<button type="button" data-au-knowledge-facet="${id}" aria-pressed="${selected===id}">${label}</button>`).join('')}</nav><section class="au-procedure-facet" data-au-knowledge-facet-panel="${selected}" data-au-learning-reveal="${selected==='documents'?2:1}">${selected==='documents'?learningRecipesMarkup(version,event):selected==='process'?learningProcessMarkup(version):knowledgeFacetMarkup(version,selected,model.versions)}${selected==='changes' || requalification?learningDefinitionDiff(version,model.versions):''}</section>${selected!=='documents'?`<section class="au-learning-documents" data-au-learning-reveal="2"><h3>Recorded document checklist</h3>${learningRecipesMarkup(version,event)}</section>`:''}${use?receipts:''}${!use?`<details class="au-learning-proof" data-au-learning-proof><summary>Details</summary><section class="au-learning-qualification" data-au-learning-reveal="3"><h3>Recorded qualification</h3><ul>${checks.map((check,index)=>`<li data-au-learning-check="${index}"><span class="au-learning-check-symbol" aria-hidden="true">✓</span>${h(learningChecks[typeof check==='string'?check:check.id] || words(typeof check==='string'?check:check.label || check.id))}</li>`).join('') || '<li>No qualification checks recorded.</li>'}</ul>${Number.isSafeInteger(version.qualification?.regression_cases)?`<p>${version.qualification.regression_cases} checked rule combinations · ${h(memory.status)}</p>`:''}</section><footer class="au-learning-seal" data-au-learning-reveal="10"><p>Saved after the recorded checks passed.</p><details class="au-learning-identity" data-au-disclosure="knowledge-identity:${h(identity)}"><summary>Details</summary><p>Exact version record <code>${h(version.knowledge_sha256 || 'unavailable')}</code></p>${requalification?'':lineageMarkup(version,model.versions)}</details></footer></details>`:''}${!use?`<details class="au-learning-provenance"><summary>Source and receiving cases</summary><section class="au-procedure-provenance">${learningClaimLink(sourceId,event.source_claim_title || event.claim_title)}${receiving.map(row=>`<article>${learningClaimLink(row.claim_id,model.events.find(e=>e.kind==='knowledge.used'&&e.claim_id===row.claim_id)?.claim_title)}</article>`).join('')}${!receiving.length?'<p>No receiving case is recorded for this version.</p>':''}</section></details>`:''}</article>`;
+    return `<article class="au-procedure-reading au-knowledge-version au-learning-record" data-au-knowledge-identity="${h(identity)}" data-au-version="${h(version.version)}"><header class="au-learning-record-head"><div><h2>${h(procedureLabel(version))} · ${knowledgeLink(version,`Version ${version.version}`)}</h2><p>${h(learningTime(event))}</p>${knowledgeNowMarkup(model,event)}</div></header><section class="au-learning-source" data-au-learning-reveal="0">${use?'':`<p>Source case</p>${learningClaimLink(sourceId,event.source_claim_title || event.claim_title)}`}${!use && !requalification?`<p>${h(learningChangeSummary(version))}</p>`:''}${parent?`<p>Parent ${knowledgeLink(parent,`Version ${parent.version} · exact saved version`)}</p>`:''}</section>${requalification}${use?`<section class="au-learning-reuse" data-au-learning-reveal="1"><div class="au-learning-reuse-arc"><span>Version ${h(version.version)}</span><span aria-hidden="true">⤳</span>${learningClaimLink(event.claim_id || item.claim_id,event.claim_title)}</div>${typeof item.applicability==='string'?`<p>When it applies: ${h(plain(words(item.applicability),'Recorded rule conditions'))}</p>`:item.applicability?.summary?`<p>${h(plain(item.applicability.summary,'When it applies is recorded in Details.'))}</p>`:''}${Number.isSafeInteger(item.avoided_rule_compilations)?`<p>${item.avoided_rule_compilations} rebuild${item.avoided_rule_compilations===1?'':'s'} avoided</p>`:''}${Number.isSafeInteger(item.reused_evidence_recipes)?`<p>${item.reused_evidence_recipes} document checks reused</p>`:''}${event.recorded?`<p class="au-learning-receipt">Recorded reuse ${recordButton('Details','learning-event',event.id)}</p>`:''}</section>`:''}<nav class="au-procedure-facets" aria-label="Procedure details">${facets.map(([id,label])=>`<button type="button" data-au-knowledge-facet="${id}" aria-pressed="${selected===id}">${label}</button>`).join('')}</nav><section class="au-procedure-facet" data-au-knowledge-facet-panel="${selected}" data-au-learning-reveal="${selected==='documents'?2:1}">${selected==='documents'?learningRecipesMarkup(version,event):selected==='process'?learningProcessMarkup(version):knowledgeFacetMarkup(version,selected,model.versions)}${selected==='changes' || requalification?learningDefinitionDiff(version,model.versions):''}</section>${selected!=='documents'?`<section class="au-learning-documents" data-au-learning-reveal="2"><h3>Recorded document checklist</h3>${learningRecipesMarkup(version,event)}</section>`:''}${use?receipts:''}${!use?`<details class="au-learning-proof" data-au-learning-proof><summary>Details</summary><section class="au-learning-qualification" data-au-learning-reveal="3"><h3>Recorded qualification</h3><ul>${checks.map((check,index)=>`<li data-au-learning-check="${index}"><span class="au-learning-check-symbol" aria-hidden="true">✓</span>${h(learningChecks[typeof check==='string'?check:check.id] || words(typeof check==='string'?check:check.label || check.id))}</li>`).join('') || '<li>No qualification checks recorded.</li>'}</ul>${Number.isSafeInteger(version.qualification?.regression_cases)?`<p>${version.qualification.regression_cases} checked rule combinations · ${h(memory.status)}</p>`:''}</section><footer class="au-learning-seal" data-au-learning-reveal="10"><p>Saved after the recorded checks passed.</p><details class="au-learning-identity" data-au-disclosure="knowledge-identity:${h(identity)}"><summary>Details</summary><p>Exact version record <code>${h(version.knowledge_sha256 || 'unavailable')}</code></p>${requalification?'':lineageMarkup(version,model.versions)}</details></footer></details>`:''}${!use?`<details class="au-learning-provenance"><summary>Source and receiving cases</summary><section class="au-procedure-provenance">${learningClaimLink(sourceId,event.source_claim_title || event.claim_title)}${receiving.map(row=>`<article>${learningClaimLink(row.claim_id,model.events.find(e=>e.kind==='knowledge.used'&&e.claim_id===row.claim_id)?.claim_title)}</article>`).join('')}${!receiving.length?'<p>No receiving case is recorded for this version.</p>':''}</section></details>`:''}</article>`;
   }
   function knowledgeNowMarkup(model, event) {
     if (!event) return `<div class="au-now" data-au-now-id=""><span class="au-now-label">Now</span> ${roleBadge('casepath')} <span data-au-now-copy>has no selected recorded event.</span><span data-au-now-result>No result is available.</span></div>`;
@@ -1811,26 +1821,54 @@
     const families=[...DOMAINS.map(row=>({id:row.id,label:procedureScope({family:row.id})})),...new Set(model.events.filter(event=>!event.refused&&!DOMAINS.some(row=>row.id===event.family)).map(event=>event.family))].map(row=>typeof row==='string'?{id:row,label:words(row)}:row);
     const lanes=[...families,{id:'refused',label:'Not saved'}];
     const totals=model.totals, initialStage=position?.stage ?? 10;
-    return `<section class="au-quiet-knowledge au-learning" data-au-learning><header class="au-work-head"><div><p class="au-learning-label" data-au-learning-label>${h(learningLabel(model,claims,false))}</p><h1 class="au-page-heading" tabindex="-1">How this was learned</h1><p>See which steps were saved, checked again and reused.</p></div><div><span class="au-read-state" data-au-knowledge-read-label></span>${button('Retry','data-au-knowledge-retry hidden')}<button type="button" class="au-link" data-au-library-return>Back to the library</button>${recordButton('History','knowledge-index')}</div></header><div class="au-learning-transport" role="group" aria-label="Learning replay controls"><button type="button" data-au-learning-play${!model.events.length?' disabled':''}>Play</button><button type="button" data-au-learning-end${!model.events.length?' disabled':''}>Final view</button><label><span>Replay position</span><input type="range" data-au-learning-scrub min="0" max="${Math.max(0,model.events.length-1)}" value="${Math.max(0,model.events.indexOf(selected))}" aria-label="Recorded learning event"${!model.events.length?' disabled':''}></label><p data-au-learning-position-label>${selected?h(learningEventLabel(selected)):model.events.length?'Exact version unavailable':'No recorded events'}</p></div><div class="au-learning-focus" role="region" aria-label="Selected recorded knowledge" tabindex="0" data-au-learning-focus data-au-learning-stage="${initialStage}">${pin&&!pinned?`<article class="au-learning-unavailable">${knowledgeNowMarkup(model,null)}<h2>This exact saved version is unavailable.</h2><p>The recorded learning history is still available.</p>${button('Open the library','data-au-learning-end')}</article>`:knowledgeLearningFocus(model,selected,facet)}</div><section class="au-learning-timeline" style="--au-learning-days:${Math.max(1,days.length)}" aria-label="Recorded learning timeline"><div class="au-learning-dates"><span>Versions and reuses</span>${days.map(day=>`<span>${h(day==='unordered'?'Unordered':new Date(day+'T00:00:00Z').toLocaleDateString('en-GB',{timeZone:'UTC',day:'numeric',month:'short'}))}</span>`).join('')}</div>${lanes.map(lane=>`<section class="au-learning-lane" data-au-learning-lane="${h(lane.id)}"><h2>${h(lane.label)}</h2><div class="au-learning-track">${days.map(day=>`<div class="au-learning-day" data-au-learning-day="${h(day)}"><span class="au-learning-mobile-date">${h(day==='unordered'?'Unordered':day.slice(5))}</span>${model.events.map((event,index)=>({event,index})).filter(({event,index})=>(lane.id==='refused'?event.refused:!event.refused&&event.family===lane.id)&&learningDay(event)===day&&(!event.reuseGroup||event.reuseGroup[0]===index)).map(({event,index})=>`<button type="button" class="au-learning-node" data-au-learning-event="${index}" data-au-learning-event-id="${h(event.id)}"${learningPinAttributes(event.versionRecord || event.item)} aria-current="${selected===event?'step':'false'}" aria-label="${h(`${learningEventLabel(event)}. ${learningTimelineProcedure(event)}. ${learningTime(event)}.`)}"><span>${h(event.kind==='knowledge.used'?`${event.reuseGroup?.length || 1} ${event.reuseGroup?.length===1?'reuse':'reuses'}`:event.refused?'×':`v${event.item.version || '?'}`)}</span><span class="au-learning-node-text">${h(event.kind==='knowledge.used'?'':event.refused?'Not saved':String(event.item.change_reason || '').startsWith('Requalified ')?'Rechecked':event.item.parent_knowledge_sha256?'Updated':'Saved')}</span></button>`).join('')}</div>`).join('')}${!model.events.some(event=>lane.id==='refused'?event.refused:!event.refused&&event.family===lane.id)?'<p class="au-learning-no-events">No recorded events</p>':''}</div></section>`).join('')}</section><p class="au-learning-disclosure">Replay shows saved records. Playback does not change them.</p><p class="au-learning-totals">${h(totals.recorded_uses ?? model.uses.length)} recorded uses · ${h(totals.receiving_claims ?? 0)} receiving claims · ${h(totals.avoided_rule_compilations ?? 0)} times reused instead of rebuilding</p><p class="au-learning-announcement" data-au-learning-announcement></p></section>`;
+    return `<section class="au-quiet-knowledge au-learning" data-au-learning><header class="au-work-head"><div><p class="au-learning-label" data-au-learning-label>${h(learningLabel(model,claims,false))}</p><h1 class="au-page-heading" tabindex="-1">How this was learned</h1><p>See which steps were saved, checked again and reused.</p></div><div><span class="au-read-state" data-au-knowledge-read-label></span>${button('Retry','data-au-knowledge-retry hidden')}<button type="button" class="au-link" data-au-library-return>Back to the library</button>${recordButton('History','knowledge-index')}</div></header><div class="au-learning-transport" role="group" aria-label="Learning replay controls"><button type="button" data-au-learning-play${!model.events.length?' disabled':''}>Play</button><button type="button" data-au-learning-end${!model.events.length?' disabled':''}>Final view</button><label><span>Replay position</span><input type="range" data-au-learning-scrub min="0" max="${Math.max(0,model.events.length-1)}" value="${Math.max(0,model.events.indexOf(selected))}" aria-label="Recorded learning event"${!model.events.length?' disabled':''}></label><p data-au-learning-position-label>${selected?h(learningEventLabel(selected)):model.events.length?'Exact version unavailable':'No recorded events'}</p></div><div class="au-learning-focus" role="region" aria-label="Selected recorded knowledge" tabindex="0" data-au-learning-focus data-au-learning-stage="${initialStage}">${pin&&!pinned?`<article class="au-learning-unavailable">${knowledgeNowMarkup(model,null)}<h2>This exact saved version is unavailable.</h2><p>The recorded learning history is still available.</p>${button('Open the library','data-au-learning-end')}</article>`:knowledgeLearningFocus(model,selected,facet)}</div><section class="au-learning-timeline" style="--au-learning-days:${Math.max(1,days.length)}" aria-label="Recorded learning timeline"><div class="au-learning-dates"><span>Versions and reuses</span>${days.map(day=>`<span>${h(day==='unordered'?'Unordered':new Date(day+'T00:00:00Z').toLocaleDateString('en-GB',{timeZone:'UTC',day:'numeric',month:'short'}))}</span>`).join('')}</div>${lanes.map(lane=>`<section class="au-learning-lane" data-au-learning-lane="${h(lane.id)}"><h2>${h(lane.label)}</h2><div class="au-learning-track">${days.map(day=>`<div class="au-learning-day" data-au-learning-day="${h(day)}"><span class="au-learning-mobile-date">${h(day==='unordered'?'Unordered':day.slice(5))}</span>${model.events.map((event,index)=>({event,index})).filter(({event,index})=>(lane.id==='refused'?event.refused:!event.refused&&event.family===lane.id)&&learningDay(event)===day&&(!event.reuseGroup||event.reuseGroup[0]===index)).map(({event,index})=>`<button type="button" class="au-learning-node" data-au-learning-event="${index}" data-au-learning-event-id="${h(event.id)}"${learningPinAttributes(event.versionRecord || event.item)} aria-current="${selected===event?'step':'false'}" aria-label="${h(`${learningEventLabel(event)}. ${learningTimelineProcedure(event)}. ${learningTime(event)}.`)}"><span>${h(event.kind==='knowledge.used'?`${event.reuseGroup?.length || 1} ${event.reuseGroup?.length===1?'reuse':'reuses'}`:event.refused?'×':`v${event.item.version || '?'}`)}</span><span class="au-learning-node-text">${h(event.kind==='knowledge.used'?'':event.refused?'Not saved':String(event.item.change_reason || '').startsWith('Requalified ')?'Rechecked':event.item.parent_knowledge_sha256?'Updated':'Saved')}</span></button>`).join('')}</div>`).join('')}${!model.events.some(event=>lane.id==='refused'?event.refused:!event.refused&&event.family===lane.id)?'<p class="au-learning-no-events">No recorded events</p>':''}</div></section>`).join('')}</section><p class="au-learning-disclosure">Replay shows saved records. Playback does not change them.</p><p class="au-learning-totals">${h(totals.recorded_uses ?? model.uses.length)} recorded uses · ${h(totals.receiving_claims ?? 0)} receiving cases · ${h(totals.avoided_rule_compilations ?? 0)} times reused instead of rebuilding</p><p class="au-learning-announcement" data-au-learning-announcement></p></section>`;
   }
   function collectionRows(claims, scope = 'all') {
     return list(claims).filter(claim => scope === 'all' || (scope === 'originals' ? claim.origin === 'canonical_original' : claim.origin !== 'canonical_original'));
   }
-  function collectionFilters(rows) {
-    return [...new Set(['all','not_started','working','deferred','investigation_complete',...rows.map(claim => statusFilter(claim.status,claim)).filter(status => status && !active(status))])];
+  // Rows per lexicon status, before the status filter narrows them.
+  function caseStatusCounts(rows) {
+    const counts = Object.fromEntries(language.caseStatuses.map(row => [row.id,0]));
+    for (const claim of list(rows)) counts[caseStatus(claim)]++;
+    return counts;
   }
-  function collectionCounts(rows, scope) {
-    return [['In progress',rows.filter(claim => active(claim.status)).length],['Deferred',rows.filter(claim => statusFilter(claim.status,claim) === 'deferred').length],['Assessment complete',rows.filter(claim => statusFilter(claim.status,claim) === 'investigation_complete').length]];
+  const domainLabel = claim => DOMAINS.find(row => row.id === domainOf(claim))?.label || '';
+  // One quiet line of recorded intake metadata; unrecorded fields are omitted.
+  function caseFactsLine(claim) {
+    return language.caseFacts({domain:domainLabel(claim),language:claim?.language,attachments:claim?.attachment_count,mediaTypes:claim?.attachment_media_types,channel:claim?.channel,received:claim?.received_at});
   }
-  function matchingClaims(claims, {search = '', filter = 'all', domain = 'all', scope = 'all'} = {}) {
-    const terms = search.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  const searchTerms = value => String(value || '').trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  // A term matches the row's own fields, or the API's browsing search over the
+  // full original message and file names (`searchMatches`: term -> claim IDs).
+  function matchingClaims(claims, {search = '', filter = 'all', domain = 'all', scope = 'all', searchMatches = null} = {}) {
+    const terms = searchTerms(search), wanted = caseFilter(filter);
     // Catalog order stays as recorded; demonstration cases are marked, not promoted.
-    return collectionRows(claims,scope).filter(claim => (domain === 'all' || domainOf(claim) === domain) && (filter === 'all' || filter === 'working' && active(claim.status) || statusFilter(claim.status,claim) === statusFilter(filter)) && terms.every(term => [claim.claim_id,claim.title,originalText(claim),claim.language,claim.channel,claimStatusLabel(claim.status,claim),claim.phase,claim.phase_summary,claim.outcome?.summary,claim.outcome?.reason,claimConstraint(claim),claim.browse_metadata?.family_id].filter(Boolean).join(' ').toLocaleLowerCase().includes(term)));
+    return collectionRows(claims,scope).filter(claim => {
+      if (domain !== 'all' && domainOf(claim) !== domain || wanted !== 'all' && caseStatus(claim) !== wanted) return false;
+      if (!terms.length) return true;
+      const own = [claim.claim_id,claim.title,originalText(claim),claim.language,claim.channel,claimStatusLabel(claim.status,claim),claim.phase,claim.phase_summary,claim.outcome?.summary,claim.outcome?.reason,claimConstraint(claim),claim.browse_metadata?.family_id,caseFactsLine(claim),...list(claim.attachment_media_types)].filter(Boolean).join(' ').toLocaleLowerCase();
+      return terms.every(term => own.includes(term) || searchMatches?.get?.(term)?.has(claim.claim_id) === true);
+    });
   }
   function claimConstraint(claim) {
     const outcome = claim.outcome;
-    const missing = list(outcome?.missing_evidence).map(item => item.label || words(item.document_type)).filter(Boolean);
-    return outcome?.reason || (missing.length ? `Evidence needed: ${missing.join('; ')}` : '') || list(outcome?.authority_limits)[0] || outcome?.next_action || '';
+    const missing = list(outcome?.missing_evidence).map(item => item.label || language.documentTitle(item)).filter(Boolean);
+    return outcome?.reason || (missing.length ? `Missing: ${missing.join('; ')}.` : '') || list(outcome?.authority_limits)[0] || outcome?.next_action || '';
+  }
+  // One state line per row, in the shared lexicon: the recorded constraint
+  // when work stopped short, the recorded next action when it is complete.
+  function caseStateLine(claim) {
+    const id = caseStatus(claim), label = language.caseStatusLabel(id);
+    const detail = id === 'not_started' ? '' : id === 'working' ? text(claim.phase_summary) : id === 'investigation_complete' ? text(claim.outcome?.next_action) : id === 'stopped' ? [stopReason(claim),claimConstraint(claim)].filter(Boolean).join(' ') : claimConstraint(claim);
+    return {id,label,detail:detail.trim()};
+  }
+  // A salutation is greeting, not content; the excerpt begins after it.
+  const SALUTATION = /^\s*(?:dear\b[^\n]{0,60}|hello\b[^\n]{0,30}|hi\b[^\n]{0,30}|good (?:morning|afternoon|evening)\b[^\n]{0,30}|to whom it may concern\b[^\n]{0,10}|gr(?:ü|ue)ezi\b[^\n]{0,30}|guten (?:tag|morgen|abend)\b[^\n]{0,30}|sehr geehrte[^\n]{0,60}|liebe[rs]?\b[^\n]{0,40}|hallo\b[^\n]{0,30}|bonjour\b[^\n]{0,30}|buongiorno\b[^\n]{0,30})\s*\n/iu;
+  // The excerpt keeps whole words: a 240-character preview is a cut of a longer message.
+  function caseExcerpt(source) {
+    const value = text(source), clipped = value.length >= 240 ? value.slice(0,240).replace(/\s+\S*$/,'') : value;
+    const body = clipped.replace(SALUTATION,'').replace(/\s+/g,' ').trim();
+    return body && clipped !== value ? body + '…' : body;
   }
   function collectionPage(claims, options = {}, pageSize = 20) {
     const size = Number.isSafeInteger(pageSize) && pageSize > 0 ? Math.min(pageSize,50) : 20;
@@ -1855,20 +1893,47 @@
     // The quiet marker names a case's place in the sequence the Demonstration plays.
     const roster = list(claims).length ? demoRoster(claims) : {cases:[]}, position = id => roster.cases.findIndex(row => row.claim_id === id);
     return visible.map(claim => {
-      const constraint = messagePreview(originalText(claim)) || list(claim.outcome?.unresolved_facts).find(fact => fact.summary)?.summary || claimConstraint(claim) || claim.deferral?.reason || claim.outcome?.summary;
-      const label = caseLabel(claim.claim_id,claim), place = position(claim.claim_id), state = claim.status && !['not_started','not_run'].includes(claim.status) ? `<span class="au-claim-state">${h(claimStatusLabel(claim.status,claim))}</span>` : '';
-      const marker = place >= 0 ? `<span class="au-claim-demo" data-au-demo-position="${place+1}">In demonstration · ${String(place+1).padStart(2,'0')}</span>` : '';
-      return `<article class="au-claim-row au-identity-claim-row" data-au-claim-row="${h(claim.claim_id)}"><button type="button" class="au-claim-open" data-au-claim="${h(claim.claim_id)}" title="${h(claim.title || 'Untitled claim')}"><strong>${h(label.primary)}</strong>${label.secondary ? `<span class="au-case-subject">${h(label.secondary)}</span>` : ''}${constraint ? `<span class="au-claim-constraint">${h(constraint)}</span>` : ''}</button>${state}${marker}</article>`;
-    }).join('') || '<p class="au-empty">No cases match this search.</p>';
+      const id = claim.claim_id, label = caseLabel(id,claim), place = position(id), facts = caseFactsLine(claim), state = caseStateLine(claim);
+      const excerpt = caseExcerpt(originalText(claim)) || list(claim.outcome?.unresolved_facts).find(fact => fact.summary)?.summary || claim.deferral?.reason || claim.outcome?.summary || '';
+      const marker = place >= 0 ? `<p class="au-claim-demo" data-au-demo-position="${place+1}">In demonstration · ${String(place+1).padStart(2,'0')}</p>` : '';
+      return `<article class="au-claim-row au-identity-claim-row" data-au-claim-row="${h(id)}" data-au-case-status="${state.id}"><h2 class="au-claim-title"><button type="button" class="au-claim-open" data-au-claim="${h(id)}"${excerpt ? ` aria-describedby="ex-${h(id)}"` : ''}>${h(label.primary)}</button></h2>${label.secondary ? `<p class="au-case-subject">${h(label.secondary)}</p>` : ''}${facts ? `<p class="au-case-facts">${facts.split(' · ').map(part => `<span>${h(part)}</span>`).join(' · ')}</p>` : ''}<p class="au-claim-state"><span class="au-claim-status-word">${h(state.label)}</span>${state.detail ? `<span class="au-claim-state-detail"> · ${h(state.detail)}</span>` : ''}</p>${excerpt ? `<p class="au-claim-excerpt" id="ex-${h(id)}">${h(excerpt)}</p>` : ''}${marker}</article>`;
+    }).join('') || (options.searchState === 'pending' && searchTerms(options.search).length ? '<p class="au-empty">Searching the full messages and files…</p>' : '<p class="au-empty">No cases match this search.</p>');
   }
 
   function domainMarkup(claims, domain = 'all') {
     return `<nav class="au-domain-browse" aria-label="Case domains"><button type="button" data-au-domain="all" aria-pressed="${domain === 'all'}">All cases</button>${DOMAINS.map(item => `<button type="button" data-au-domain="${item.id}" aria-pressed="${domain === item.id}">${h(item.label)}</button>`).join('')}</nav>`;
   }
+  // An empty Added scope says so and offers the one way to add a case.
+  function addedEmptyMarkup(readOnly = false) {
+    return `<p class="au-empty" data-au-added-empty>No added cases yet.${readOnly ? '' : ' <button type="button" class="au-link" data-au-nav="intake">New case</button>'}</p>`;
+  }
+  // The scope toggle reads like a domain filter, with its own count.
+  function scopeMarkup(claims, scope) {
+    const target = scope === 'originals' ? 'added' : 'originals', count = collectionRows(claims,target).length;
+    return `<div class="au-collection-scope"><button type="button" data-au-collection-scope="${target}">${target === 'added' ? 'Added' : 'Original cases'} <span data-au-scope-count>(${count})</span></button></div>`;
+  }
+  // One quiet status line, shown once any case in scope has moved past Not
+  // started. Each item filters; the pressed item or "All statuses" clears it.
+  function statusLineMarkup(scoped, counted, filter = 'all') {
+    const wanted = caseFilter(filter), counts = caseStatusCounts(counted);
+    if (wanted === 'all' && !list(scoped).some(claim => caseStatus(claim) !== 'not_started')) return '';
+    const items = language.caseStatuses.filter(row => row.id !== 'not_started' && counts[row.id] || row.id === wanted);
+    if (!items.length) return '';
+    return `<nav class="au-case-filter" aria-label="Case status">${items.map((row,index) => `${index ? '<span class="au-case-filter-separator" aria-hidden="true">·</span>' : ''}<button type="button" data-au-filter="${row.id}" aria-pressed="${wanted === row.id}">${counts[row.id]} ${h(row.label.toLocaleLowerCase('en'))}</button>`).join('')}${wanted !== 'all' ? '<button type="button" class="au-case-filter-clear" data-au-filter="all" aria-pressed="false">All statuses</button>' : ''}</nav>`;
+  }
+  function collectionCountText(options, matching, total) {
+    const refined = searchTerms(options.search).length || caseFilter(options.filter || 'all') !== 'all' || (options.domain || 'all') !== 'all';
+    if (!refined) return '';
+    const note = searchTerms(options.search).length && options.searchState === 'failed' ? ' · titles and excerpts only' : '';
+    return `${matching} of ${total}${note}`;
+  }
 
   function collectionMarkup(claims, options = {}) {
-    const {search = '',domain = 'all',scope = 'originals'} = options, filter = statusFilter(options.filter || 'all'), rows = collectionRows(claims,scope), page = collectionPage(rows,{...options,scope,filter});
-    return `<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><h1 class="au-page-heading" tabindex="-1">Cases</h1><p class="au-lead">${scope === 'added' ? 'Added cases' : '150 fictional cases'}</p></div></header><div class="au-collection-tools"><label for="auClaimSearch">Search cases<input id="auClaimSearch" type="search" data-au-claim-search value="${h(search)}" placeholder="Message, title or case ID" autocomplete="off"></label></div><div class="au-collection-filter-row">${scope==='originals'?domainMarkup(rows,domain):''}<nav class="au-case-filter" aria-label="Case status"${filter==='all'?' hidden':''}>${['all','not_started','working','deferred','investigation_complete'].map(value=>`<button type="button" data-au-filter="${value}" aria-pressed="${filter===value}">${h(value==='all'?'All statuses':value==='working'?'In progress':value==='investigation_complete'?'Assessment complete':statusLabel(value))}</button>`).join('')}</nav><button type="button" data-au-collection-scope="${scope==='originals'?'added':'originals'}">${scope==='originals'?'Added cases':'Original cases'}</button></div><div class="au-claim-list" data-au-claims>${claimsMarkup(rows,{...options,scope,filter,page:page.page})}</div>${paginationMarkup(page)}</section>`;
+    const {search = '',domain = 'all',scope = 'originals'} = options, filter = caseFilter(options.filter || 'all'), rows = collectionRows(claims,scope), page = collectionPage(rows,{...options,scope,filter});
+    const counted = matchingClaims(rows,{...options,scope,filter:'all'});
+    const emptyAdded = scope === 'added' && !rows.length;
+    const listMarkup = emptyAdded ? addedEmptyMarkup(options.readOnly) : claimsMarkup(rows,{...options,scope,filter,page:page.page});
+    return `<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><h1 class="au-page-heading" tabindex="-1">Cases</h1><p class="au-lead">${scope === 'added' ? 'Added cases' : '150 fictional cases'}</p></div></header><div class="au-collection-tools"><label for="auClaimSearch"><span class="au-search-label">Search cases</span><input id="auClaimSearch" type="search" data-au-claim-search value="${h(search)}" placeholder="Message, title, file or case ID" autocomplete="off" aria-describedby="auCollectionCount"></label><p class="au-collection-count" id="auCollectionCount" data-au-collection-count>${h(collectionCountText(options,page.total,rows.length))}</p></div><div class="au-collection-filter-row">${scope==='originals'?domainMarkup(rows,domain):''}${scopeMarkup(claims,scope)}</div><div data-au-status-line>${statusLineMarkup(rows,counted,filter)}</div><div class="au-claim-list" data-au-claims>${listMarkup}</div>${emptyAdded ? paginationMarkup(page).replace('<nav ','<nav hidden ') : paginationMarkup(page)}</section>`;
   }
 
   function liveAvailability(status) {
@@ -2815,10 +2880,11 @@
     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
     let motion = null, keyboard = false, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0, claimRenderComplete = false, renderedClaimId = null;
     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map(), starts = new Map();
-    const collection = {search:'',filter:'all',domain:'all',scope:'originals',page:1};
+    const collection = {search:'',filter:'all',domain:'all',scope:'originals',page:1,opener:null};
+    const originalTitle = typeof doc?.title === 'string' && doc.title ? doc.title : 'CasePath';
     container.classList.add('au-workspace');
     container.removeAttribute('data-au-keyboard');
-    container.innerHTML = `<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Follow the documents</span></a>${publicReadOnly ? '' : '<button type="button" class="au-header-new" data-au-nav="intake" aria-label="New claim">New<span class="au-header-new-noun"> claim</span> <span aria-hidden="true">↗</span></button>'}<span class="au-access-label" data-au-public-access${publicReadOnly ? '' : ' hidden'}>View only</span><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav><div class="au-case-return" data-au-case-return hidden></div></header><${mainTag} class="au-main"><div class="au-global-status"></div><p class="au-visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-au-announcement></p><div data-au-role-legend hidden>${roleExplanationMarkup()}</div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog><dialog class="au-record-dialog" aria-labelledby="auRecordTitle"><header class="au-dialog-header"><h2 id="auRecordTitle">Details</h2><button type="button" class="au-secondary" data-au-close-record>Close</button></header><div data-au-record-content></div></dialog>`;
+    container.innerHTML = `<div class="au-shell au-identity-shell"><a class="au-skip-link" href="#auMain" data-au-skip>Skip to main content</a><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Follow the documents</span></a>${publicReadOnly ? '' : '<button type="button" class="au-header-new" data-au-nav="intake" aria-label="New case">New<span class="au-header-new-noun"> case</span></button>'}<span class="au-access-label" data-au-public-access${publicReadOnly ? '' : ' hidden'}>View only</span><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav><div class="au-case-return" data-au-case-return hidden></div></header><${mainTag} class="au-main" id="auMain" tabindex="-1"><div class="au-global-status"></div><p class="au-visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-au-announcement></p><div data-au-role-legend hidden>${roleExplanationMarkup()}</div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog><dialog class="au-record-dialog" aria-labelledby="auRecordTitle"><header class="au-dialog-header"><h2 id="auRecordTitle">Details</h2><button type="button" class="au-secondary" data-au-close-record>Close</button></header><div data-au-record-content></div></dialog>`;
     const host = container.querySelector('[data-au-view]'), globalStatus = container.querySelector('.au-global-status'), dialog = container.querySelector('.au-source-dialog'), recordDialog = container.querySelector('.au-record-dialog');
     function announceRecorded(message) { const live=container.querySelector('[data-au-announcement]');if(live)live.textContent=message; }
     function notice(message, error = false, category = null) {
@@ -2850,7 +2916,7 @@
         catch (_) { showWork(false); }
       } else if (fragment.startsWith('#autonomous/demonstration')) { const params = new URLSearchParams(fragment.split('?')[1] || ''); showDemonstration(false,demoCollection(params.get('collection')),operationRoutePreference(fragment,root.location?.search)); }
       else if (fragment.startsWith('#autonomous/cases?') || fragment.startsWith('#autonomous/work?')) {
-        const params = new URLSearchParams(fragment.split('?')[1]); collection.search = params.get('q') || ''; collection.filter = statusFilter(params.get('status') || 'all'); collection.domain = params.get('domain') || 'all'; collection.scope = params.get('scope') === 'added' ? 'added' : 'originals'; collection.page = Number(params.get('page') || 1); showWork(false);
+        const params = new URLSearchParams(fragment.split('?')[1]); collection.search = params.get('q') || ''; collection.filter = caseFilter(params.get('filter') || params.get('status') || 'all'); collection.domain = params.get('domain') || 'all'; collection.scope = params.get('scope') === 'added' ? 'added' : 'originals'; collection.page = Number(params.get('page') || 1); showWork(false);
       } else if (['#autonomous/new','#autonomous/intake'].includes(fragment)) showIntake(false);
       else { collection.search = ''; collection.filter = 'all'; collection.domain = 'all'; collection.scope = 'originals'; collection.page = 1; showWork(false); }
     }
@@ -3039,6 +3105,40 @@
     }
     function schedule() { cancelPoll(); if (!disposed && !doc.hidden && view === 'claim' && openingId && presentationMode !== 'replay') timer = root.setTimeout(current ? poll : () => loadOpenedClaim(openingId,epoch), current && !active(current.status) && !pendingStart && !pendingArrival && !pendingControl && !connectionFailed ? 20000 : 1600); }
     function focusTitle() { if (!doc.hidden) host.querySelector('h1')?.focus({preventScroll:true}); }
+    // Every route settles the same way: the tab title names the place, a
+    // forward arrival starts at the top with focus on its heading, and a
+    // return to Cases restores the reader's place and the row they opened.
+    function routeTitle(label) { const title = label ? `${label} — CasePath` : originalTitle; if (!disposed && doc && doc.title !== title) doc.title = title; }
+    function routeSettled(name, label, {top = true, focus = true} = {}) {
+      if (disposed || view !== name) return;
+      routeTitle(label);
+      if (top) root.scrollTo?.({top:0,left:0,behavior:'instant'});
+      if (focus) focusTitle();
+    }
+    function collectionTitle() { return `${collection.scope === 'added' ? 'Added cases' : 'Cases'}${collection.page > 1 ? ` · page ${collection.page}` : ''}`; }
+    // A page or filter change lands on the list heading and says what it shows.
+    function collectionSettled() {
+      const page = collectionPage(claims,collectionView());
+      routeSettled('work',collectionTitle());
+      announceRecorded(`${page.total} ${page.total === 1 ? 'case' : 'cases'}, page ${page.page} of ${page.pages}`);
+    }
+    function restoreCollectionPlace() {
+      host.scrollTop = collection.scrollTop; const main = container.querySelector('.au-main'); if (main) { main.scrollTop = collection.mainTop; main.scrollLeft = collection.mainLeft; }
+      root.scrollTo?.({left:collection.scrollX,top:collection.scrollY,behavior:'instant'});
+    }
+    // Returning to Cases focuses the row that was opened, once it is shown.
+    function returnToOpener() {
+      const id = collection.opener;
+      if (!id || doc.hidden || view !== 'work') return false;
+      const row = [...host.querySelectorAll('[data-au-claims] [data-au-claim]')].find(element => element.dataset?.auClaim === id);
+      if (!row) return false;
+      collection.opener = null; row.focus?.({preventScroll:true});
+      return true;
+    }
+    function caseTitle(id, state = null) {
+      const label = caseLabel(id,state || catalogRow(claims,id)).primary || 'Untitled case', position = tour?.cases?.[tour.index]?.claim_id === id ? tour.index : -1;
+      return position >= 0 ? `Demonstration ${position+1}/${tour.cases.length} · ${label}` : label;
+    }
     function focusPanel(element) {
       const panel = element?.closest?.('[data-au-panel]');
       return panel?.dataset?.auPanel ? panel : null;
@@ -3236,7 +3336,7 @@
       if (view === 'work') { const main = container.querySelector('.au-main'); collection.scrollTop = host.scrollTop || 0; collection.mainTop = main?.scrollTop || 0; collection.mainLeft = main?.scrollLeft || 0; collection.scrollX = root.scrollX || 0; collection.scrollY = root.scrollY || 0; }
       preserveClaimView();
     }
-    function setView(name) { const legend=container.querySelector('[data-au-role-legend]'); if(legend)legend.hidden=name!=='claim' || !demoSession; if (name !== 'claim') { tour = null; for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute); } view = name; renderedClaimId = null; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); measureChrome(); observeChrome(); }
+    function setView(name) { if (name !== view) announceRecorded(''); const legend=container.querySelector('[data-au-role-legend]'); if(legend)legend.hidden=name!=='claim' || !demoSession; if (name !== 'claim') { tour = null; for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute); } view = name; renderedClaimId = null; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); measureChrome(); observeChrome(); }
     function revealStepAnswer(node) {
       const answer = host.querySelector?.('[data-au-stage-step-detail]'), bounds = answer?.getBoundingClientRect?.(), height = root.innerHeight;
       if (!bounds || !Number.isFinite(height)) return;
@@ -3304,6 +3404,7 @@
     function renderClaim(changes = null, navigation = false) {
       const displayedState = operationPeek?.state || current, displayedProjection = operationPeek?.projection || projection, displayedTrace = operationPeek?.trace || operationTrace;
       if (!current || view !== 'claim') return;
+      routeTitle(caseTitle(current.claim_id,current));
       if (inspectionHold && pausedPresentation && host.querySelector('[data-au-release-opening]')) return;
       if (doc.hidden) { claimRenderComplete = false; return; }
       evidenceContext = evidenceSelection(current,selected,evidenceContext);
@@ -3522,7 +3623,7 @@
       } catch (error) {
         if (!disposed && token === epoch && !pendingRoute() && view === 'claim' && read === claimRead) {
           freshClaim = false; synchronizeAuthority('failed'); notice(current ? `Refresh failed: ${error.message} Saved work remains visible.` : error.message,true);
-          if (!current) host.innerHTML = (catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id)) + button('Retry opening claim',`data-au-claim="${h(id)}"`);
+          if (!current) host.innerHTML = (catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id)) + button('Retry opening case',`data-au-claim="${h(id)}"`);
           if (error.transientAdvance || !error.status || error.status >= 500) schedule();
         }
       }
@@ -3539,6 +3640,7 @@
       return true;
     }
     async function openClaim(id, writeHistory = true, preferences = {}) {
+      const arriving = view !== 'claim' || openingId !== id;
       chosenNode = typeof preferences.node === 'string' && preferences.node ? preferences.node : null;
       if (preferences.mode === 'replay') preferences = {...preferences,collection:replayCollection(id,preferences.collection)};
       if (!preferences.demo && tour?.cases[tour.index]?.claim_id !== id) tour = null;
@@ -3547,6 +3649,9 @@
       leaveView(Boolean(preferences.demo && demoSession?.mode === 'operations' && !doc.hidden),(preferences.mode || 'saved') === 'saved' && id === options.savedSnapshot?.claim_id && !doc.hidden); route(claimFragment(id,preferences),writeHistory);
       operationPeek = null; host.removeAttribute?.('data-au-inspection-operation'); cancelStageMotion(); epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); operationTrace = null; factTokenOperation = null; factTokenAnimation?.cancel(); factToken?.remove?.(); attentionMarker?.remove?.(); attentionPosition = null; current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo || presentationMode === 'replay' ? 'demonstration' : 'work'); notice('');
       claimRenderComplete = false; detail = preferences.detail || 'step';
+      // A newly opened case starts at its top, never at the list's scroll position.
+      if (arriving && !doc.hidden) root.scrollTo?.({top:0,left:0,behavior:'instant'});
+      routeTitle(caseTitle(id));
       for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute);
       if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
       let opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
@@ -3608,7 +3713,7 @@
     function railClaims() {
       const queue = container.querySelector('[data-au-recent-claims]');
       if (!queue) return;
-      queue.innerHTML = claims.slice(0,6).map(claim => `<button type="button" class="au-recent-claim" data-au-claim="${h(claim.claim_id)}"${current?.claim_id === claim.claim_id && view === 'claim' ? ' aria-current="page"' : ''}><strong>${h(claim.title || 'Untitled claim')}</strong><span data-tone="${tone(claim.status)}">${h(claimStatusLabel(claim.status,claim))}</span></button>`).join('') || '<p class="au-empty">No saved claims yet.</p>';
+      queue.innerHTML = claims.slice(0,6).map(claim => `<button type="button" class="au-recent-claim" data-au-claim="${h(claim.claim_id)}"${current?.claim_id === claim.claim_id && view === 'claim' ? ' aria-current="page"' : ''}><strong>${h(claim.title || 'Untitled case')}</strong><span data-tone="${tone(claim.status)}">${h(claimStatusLabel(claim.status,claim))}</span></button>`).join('') || '<p class="au-empty">No saved cases yet.</p>';
     }
     function rememberClaim(state, origin) {
       const index = claims.findIndex(row => row.claim_id === state.claim_id);
@@ -3619,28 +3724,75 @@
       } else claims.unshift(summary);
       railClaims();
     }
+    // Rendering options: the reader's refinements plus the API's browsing
+    // search results. Neither is part of any record.
+    const collectionView = () => ({...collection,searchMatches,searchState:collectionSearch.state,readOnly:publicReadOnly});
+    // A background refresh never moves focus. A control it replaces keeps
+    // focus on its replacement.
+    function keepCollectionFocus(update) {
+      const active = doc.activeElement, inside = Boolean(active && host.contains?.(active));
+      const attr = inside ? ['data-au-claim','data-au-filter','data-au-page','data-au-collection-scope','data-au-domain','data-au-nav'].find(name => active.hasAttribute?.(name)) : null, value = attr ? active.getAttribute(attr) : null;
+      update();
+      if (attr && !active.isConnected && focusEligible(active)) [...host.querySelectorAll(`[${attr}]`)].find(element => element.getAttribute(attr) === value)?.focus?.({preventScroll:true});
+    }
     function refreshCollection() {
       if (view !== 'work') return;
-      const previousPage = collection.page, page = collectionPage(claims,collection); collection.page = page.page;
+      const options = collectionView(), previousPage = collection.page, page = collectionPage(claims,options); collection.page = page.page;
       if (previousPage !== page.page && !pendingRoute()) rememberCollectionRoute();
-      const output = host.querySelector('[data-au-claims]'); if (output) output.innerHTML = claimsMarkup(claims,collection);
-      const pagination = host.querySelector('[data-au-pagination]'); if (pagination) { const holder = doc.createElement?.('div'); if (holder) { holder.innerHTML = paginationMarkup(page); pagination.replaceWith(holder.firstElementChild); } }
-      for (const control of host.querySelectorAll('[data-au-filter]')) control.setAttribute('aria-pressed',String(control.dataset.auFilter === collection.filter));
-      const scoped = collectionRows(claims,collection.scope);
-      const count = host.querySelector('[data-au-collection-count]'); if (count) count.textContent = `${matchingClaims(scoped,collection).length} of ${scoped.length}`;
-      const summary = host.querySelector('.au-collection-summary');
-      if (summary) summary.innerHTML = collectionCounts(scoped,collection.scope).map(([label,count]) => `<span><strong>${count}</strong> ${h(label)}</span>`).join('');
-      for (const control of host.querySelectorAll('[data-au-collection-scope]')) {
-        control.setAttribute('aria-pressed',String(collection.scope === control.dataset.auCollectionScope));
-        const number = control.querySelector('span'); if (number) number.textContent = String(collectionRows(claims,control.dataset.auCollectionScope).length);
-      }
+      const scoped = collectionRows(claims,collection.scope), emptyAdded = collection.scope === 'added' && !scoped.length;
+      keepCollectionFocus(() => {
+        const output = host.querySelector('[data-au-claims]');
+        if (output) { const markup = emptyAdded ? addedEmptyMarkup(publicReadOnly) : claimsMarkup(claims,options); if (output.auRows !== markup) { output.innerHTML = markup; output.auRows = markup; } }
+        const pagination = host.querySelector('[data-au-pagination]'); if (pagination) { const holder = doc.createElement?.('div'); if (holder) { holder.innerHTML = paginationMarkup(page); if (emptyAdded) holder.firstElementChild.hidden = true; pagination.replaceWith(holder.firstElementChild); } }
+        const line = host.querySelector('[data-au-status-line]'); if (line) { const markup = statusLineMarkup(scoped,matchingClaims(scoped,{...options,filter:'all'}),collection.filter); if (line.auLine !== markup) { line.innerHTML = markup; line.auLine = markup; } }
+      });
+      const count = host.querySelector('[data-au-collection-count]'); if (count) count.textContent = collectionCountText(options,page.total,scoped.length);
+      for (const control of host.querySelectorAll('[data-au-collection-scope]')) { const number = control.querySelector('[data-au-scope-count]'); if (number) number.textContent = `(${collectionRows(claims,control.dataset.auCollectionScope).length})`; }
       for (const control of host.querySelectorAll('[data-au-domain]')) {
         const id = control.dataset.auDomain, count = id === 'all' ? scoped.length : scoped.filter(claim => domainOf(claim) === id).length;
         control.setAttribute('aria-pressed',String(collection.domain === id)); control.disabled = id !== 'all' && !count;
-        const number = control.querySelector('strong'); if (number) number.textContent = String(count);
       }
-      const filter = host.querySelector('[data-au-claim-filter]');
-      if (filter) filter.innerHTML = collectionFilters(scoped).map(value => `<option value="${h(value)}"${collection.filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : value === 'investigation_complete' ? 'Assessment complete' : statusLabel(value))}</option>`).join('');
+      // A return that arrived before its rows finishes on the opened row,
+      // unless the reader has already moved focus.
+      const focused = doc.activeElement;
+      if (collection.opener && (!focused || focused === doc.body || focused === host.querySelector('h1')) && returnToOpener() && collection.scrollTop !== undefined) restoreCollectionPlace();
+      routeTitle(collectionTitle());
+    }
+    // Collection search: each uncached term is also asked of the API, which
+    // reads the full original message, the file names and language names.
+    // Results are browsing hints for this collection identity only.
+    const searchMatches = new Map(), collectionSearch = {state:'',timer:0,read:0,identity:null};
+    function queueCollectionSearch(immediate = false) {
+      root.clearTimeout(collectionSearch.timer); collectionSearch.timer = 0;
+      const missing = searchTerms(collection.search).filter(term => !searchMatches.has(term));
+      if (!missing.length) { collectionSearch.read++; collectionSearch.state = ''; return; }
+      collectionSearch.state = 'pending';
+      const run = () => readCollectionSearch(missing);
+      if (immediate) run(); else collectionSearch.timer = root.setTimeout(run,250);
+    }
+    async function readCollectionSearch(terms) {
+      const read = ++collectionSearch.read, generation = readGeneration;
+      let failed = false;
+      try {
+        const results = await Promise.all(terms.map(term => request(`/claims?q=${encodeURIComponent(term)}&limit=500`,{},true)));
+        if (disposed || read !== collectionSearch.read) return;
+        if (generation !== readGeneration) throw new Error('The collection was read again during the search.');
+        results.forEach((data,index) => {
+          if (!Array.isArray(data?.claims) || Number.isSafeInteger(data.total) && data.total > data.claims.length) throw new Error('The collection search is incomplete.');
+          if (searchMatches.size >= 48) searchMatches.delete(searchMatches.keys().next().value);
+          searchMatches.set(terms[index],new Set(data.claims.map(row => row?.claim_id).filter(id => typeof id === 'string')));
+        });
+      } catch (_) { failed = true; }
+      if (disposed || read !== collectionSearch.read) return;
+      collectionSearch.state = failed ? 'failed' : '';
+      refreshCollection();
+      if (view === 'work' && searchTerms(collection.search).length) { const page = collectionPage(claims,collectionView()); announceRecorded(`${page.total} ${page.total === 1 ? 'case matches' : 'cases match'} “${collection.search.trim()}”.`); }
+    }
+    // Search results belong to one collection read; a changed catalog asks again.
+    function resetCollectionSearch(identity) {
+      if (identity === collectionSearch.identity) return;
+      collectionSearch.identity = identity; searchMatches.clear();
+      if (view === 'work' && searchTerms(collection.search).length) queueCollectionSearch(true);
     }
     function canWarmReads(token = epoch, generation = readGeneration, ticket = warmTicket) {
       const selectedOperation = view === 'claim' && (demoSession || pausedPresentation)?.mode === 'operations' && !operationTrace?.finished;
@@ -3740,7 +3892,7 @@
       });
       if (fromCache) { for (const [id,row] of remembered) if (!claims.some(claim => claim.claim_id === id)) claims.push(row); }
       else if (current && !claims.some(row => row.claim_id === current.claim_id) && remembered.has(current.claim_id)) claims.unshift(remembered.get(current.claim_id));
-      claimsLoaded = true; railClaims(); refreshCollection(); refreshDemonstration(); refreshCaseKnowledge(); warmKnowledge(token); primeClaimReads(token);
+      claimsLoaded = true; resetCollectionSearch(isHash(data.collection_sha256) ? data.collection_sha256 : `${rows.length}:${rows.map(row => `${row.claim_id}:${row.revision ?? ''}`).join(',')}`); railClaims(); refreshCollection(); refreshDemonstration(); refreshCaseKnowledge(); warmKnowledge(token); primeClaimReads(token);
     }
     async function serviceStatus(token, force = false) {
       const generation = readGeneration;
@@ -3770,7 +3922,7 @@
         ['provider_outcome_pending','A provider outcome is pending, so new autonomous work cannot start yet.'],
         ['provider_cost_bound_exceeded','A recorded provider cost exceeded its bound, so new autonomous work cannot start.']
       ]).get(status.limits.autonomous_reason) || 'Autonomous inference is unavailable for new work.' : '';
-      if (service) service.textContent = !writable(status) ? 'This workspace is view only.' : !status.enabled ? 'Autonomous work is disabled.' : !status.provider_ready ? 'Inference is unavailable. New packets are saved with a named deferral.' : allowanceMessage ? `${allowanceMessage} You can still save a new claim; autonomous work will have a named deferral.` : 'Local evidence acquisition and document preparation are available. External dispatch is not configured.';
+      if (service) service.textContent = !writable(status) ? 'This workspace is view only.' : !status.enabled ? 'Autonomous work is disabled.' : !status.provider_ready ? 'Inference is unavailable. New packets are saved with a named deferral.' : allowanceMessage ? `${allowanceMessage} You can still save a new case; autonomous work will have a named deferral.` : 'Local evidence acquisition and document preparation are available. External dispatch is not configured.';
       if (view === 'intake' && !busy && !pendingIntake) idleIntakeSubmit(host.querySelector('[data-au-intake]'));
       if (view === 'intake' && !status.enabled && !pendingIntake) { const submit = host.querySelector('button[type="submit"]'); if (submit) submit.disabled = true; }
     }
@@ -3778,7 +3930,7 @@
       const params = new URLSearchParams();
       if (collection.scope === 'added') params.set('scope','added');
       if (collection.search) params.set('q',collection.search);
-      if (collection.filter !== 'all') params.set('status',collection.filter);
+      if (collection.filter !== 'all') params.set('filter',collection.filter);
       if (collection.domain !== 'all') params.set('domain',collection.domain);
       if (collection.page > 1) params.set('page',String(collection.page));
       return '#autonomous/cases' + (params.size ? '?' + params : '');
@@ -3816,7 +3968,7 @@
         // Direct entry reads the catalog once, so an unrun workspace never
         // opens a replay frame or requests a history that does not exist.
         enterDemonstrationView(writeHistory); writeHistory = false;
-        host.innerHTML = readSkeletonMarkup('demonstration','Demonstration');
+        host.innerHTML = readSkeletonMarkup('demonstration','Demonstration'); routeSettled('demonstration','Demonstration');
         const token = epoch;
         try { await loadClaims(token); } catch (_) { /* An unreadable catalog keeps the verified opening path. */ }
         if (disposed || token !== epoch || pendingRoute() || view !== 'demonstration') return;
@@ -3824,7 +3976,7 @@
       const roster = requested ? {collection:requested,cases:collectionRoster(requested,claims)} : demoRoster(claims);
       if (!roster.collection) {
         enterDemonstrationView(writeHistory);
-        host.innerHTML = demonstrationMarkup(claims,status,'reference'); focusTitle(); interact(host);
+        host.innerHTML = demonstrationMarkup(claims,status,'reference'); interact(host); routeSettled('demonstration','Demonstration');
         return;
       }
       const chosen = claimFragment(roster.cases[0].claim_id,{mode:'replay',collection:roster.collection,operations,through:0,detail:'step'});
@@ -4706,12 +4858,26 @@
         if (!disposed && token === epoch) notice(`${error.message}${pendingStart ? ' Response unconfirmed; retry uses the same request.' : ''}`,true);
       } finally { busy = false; synchronizeAuthority(); routeChanged(); }
     }
-    async function showWork(writeHistory = true) {
+    async function showWork(writeHistory = true, fresh = false) {
+      const from = view;
       stopPresentation(); leaveView(); route(collectionFragment(),writeHistory);
       epoch++; const token = epoch; cancelPoll(); setView('work'); nav('work'); current = null; notice('');
-      host.innerHTML = collectionMarkup(claims,collection); interact(host);
-      if (collection.scrollTop !== undefined) { host.scrollTop = collection.scrollTop; const main = container.querySelector('.au-main'); if (main) { main.scrollTop = collection.mainTop; main.scrollLeft = collection.mainLeft; } root.scrollTo?.({left:collection.scrollX,top:collection.scrollY,behavior:'instant'}); }
-      if (!claimsLoaded) { const output = host.querySelector('[data-au-claims]'); if (output) output.innerHTML = ''; }
+      if (fresh) { collection.scrollTop = undefined; collection.opener = null; }
+      const options = collectionView();
+      host.innerHTML = collectionMarkup(claims,options); interact(host);
+      // The list shows rows only from a loaded catalog; refreshes compare against what is shown.
+      const output = host.querySelector('[data-au-claims]');
+      if (output) { const rows = !claimsLoaded ? '' : collection.scope === 'added' && !collectionRows(claims,'added').length ? addedEmptyMarkup(publicReadOnly) : claimsMarkup(claims,options); output.innerHTML = rows; output.auRows = rows; }
+      // Returning from an opened case keeps the reader's place and focuses
+      // that row; Cancel from New case keeps the place and its opener. Any
+      // other arrival starts at the top on the list heading.
+      const place = !fresh && collection.scrollTop !== undefined && (from === 'claim' || from === 'intake');
+      if (place) restoreCollectionPlace();
+      routeTitle(collectionTitle());
+      if (place && from === 'claim' && (returnToOpener() || collection.opener && !claimsLoaded)) { /* the opened row has focus, or will once rows arrive */ }
+      else if (place && from === 'intake') { if (!doc.hidden) container.querySelector('.au-header-new')?.focus?.({preventScroll:true}); }
+      else routeSettled('work',collectionTitle());
+      if (searchTerms(collection.search).length) queueCollectionSearch(true);
       const results = await Promise.allSettled([serviceStatus(token),loadClaims(token)]);
       if (!disposed && token === epoch) for (const result of results) if (result.status === 'rejected') notice(result.reason.message,true);
     }
@@ -4720,7 +4886,7 @@
       if (view === 'intake' && host.querySelector('[data-au-intake]')) { route('#autonomous/new',writeHistory); return; }
       stopPresentation(); leaveView(); route('#autonomous/new',writeHistory);
       epoch++; const token = epoch; cancelPoll(); setView('intake'); nav('intake'); current = null; notice('');
-      host.innerHTML = `<div class="au-intake-layout au-identity-intake"><section><p class="au-eyebrow">New claim</p><h1 class="au-page-heading" tabindex="-1">Start with the source.</h1><p class="au-lead">Add the original message and files. CasePath reads them and records what it finds.</p><p class="au-meta" data-au-service>Checking service availability…</p><form class="au-intake" data-au-intake><div class="au-examples" data-au-examples hidden><label for="auExample">Try a fictional claim</label><select id="auExample" data-au-example><option value="">Choose a fictional example</option></select></div><label for="auTitle">Claim title</label><input id="auTitle" name="title" required maxlength="300" autocomplete="off" placeholder="A short name for this claim"><label for="auMessage">Incoming message</label><textarea id="auMessage" name="message" required maxlength="100000" rows="7" placeholder="Paste the original message"></textarea><label class="au-upload" for="auFiles">Supporting files <span>Optional · original files stay available for inspection</span></label><input id="auFiles" name="files" type="file" multiple><div class="au-intake-controls"><button class="au-primary" type="submit">Start checking <span aria-hidden="true">↗</span></button><button type="button" class="au-secondary" data-au-nav="work">Cancel</button></div><p class="au-form-status"></p></form></section></div>`;
+      host.innerHTML = `<div class="au-intake-layout au-identity-intake"><section><p class="au-eyebrow">New case</p><h1 class="au-page-heading" tabindex="-1">Start with the source.</h1><p class="au-lead">Add the original message and files. CasePath reads them and records what it finds.</p><p class="au-meta" data-au-service>Checking service availability…</p><form class="au-intake" data-au-intake><div class="au-examples" data-au-examples hidden><label for="auExample">Try a fictional case</label><select id="auExample" data-au-example><option value="">Choose a fictional example</option></select></div><label for="auTitle">Case title</label><input id="auTitle" name="title" required maxlength="300" autocomplete="off" placeholder="A short name for this case"><label for="auMessage">Incoming message</label><textarea id="auMessage" name="message" required maxlength="100000" rows="7" placeholder="Paste the original message"></textarea><label class="au-upload" for="auFiles">Supporting files <span>Optional · original files stay available for inspection</span></label><input id="auFiles" name="files" type="file" multiple><div class="au-intake-controls"><button class="au-primary" type="submit">Start checking <span aria-hidden="true">↗</span></button><button type="button" class="au-secondary" data-au-nav="work">Cancel</button></div><p class="au-form-status"></p></form></section></div>`;
       if (intakeForm) host.querySelector('[data-au-intake]')?.replaceWith?.(intakeForm);
       else intakeForm = host.querySelector('[data-au-intake]');
       if (pendingIntake && intakeForm) {
@@ -4755,7 +4921,6 @@
     function change(event) {
       if (event.target.hasAttribute?.('data-au-operation-scrub')) return;
       const select = event.target;
-      if (select.matches?.('[data-au-claim-filter]') && view === 'work') { collection.filter = select.value; refreshCollection(); rememberCollectionRoute(); return; }
       if (!select.matches?.('[data-au-example]') || view !== 'intake' || busy || pendingIntake || select.disabled || !/^\d+$/.test(select.value)) return;
       const packet = examples?.[Number(select.value)], form = host.querySelector('[data-au-intake]');
       if (!packet || !form) return;
@@ -4829,7 +4994,19 @@
     const PIN_UNAVAILABLE = 'This exact saved knowledge version is not available in this record.';
     const knowledgePinKey = pin => pin ? [pin.knowledge_id,pin.version,pin.knowledge_sha256,pin.definition_sha256,pin.claim_id].map(value => value ?? '').join('|') : '';
     let renderedLibraryPin = null;
+    // The tab names the shown procedure and exact version, when one is pinned.
+    function knowledgeTitle(data, pin) {
+      const versions = knowledgeLearningModel(data).versions, exact = pin?.version != null && pin.version !== '';
+      // An exact pin names its version only when it is shown; a domain entry names its current version.
+      const version = !pin ? null : exact ? versions.find(item => knowledgePinMatches(item,pin)) : versions.filter(item => String(item.knowledge_id || '') === String(pin.knowledge_id)).sort((a,b) => Number(b.version)-Number(a.version))[0];
+      const place = version ? `${procedureLabel(version)}${version.version ? ` v${version.version}` : ''}` : pin?.knowledge_id ? procedureLabel({knowledge_id:pin.knowledge_id}) : knowledgeMode === 'learning' ? 'How this was learned' : '';
+      return place ? `Knowledge · ${place}` : 'Knowledge';
+    }
     function renderKnowledge(data, pin, initial = false, preference = null) {
+      try { return renderKnowledgeView(data,pin,initial,preference); }
+      finally { if (view === 'knowledge') routeTitle(knowledgeTitle(data,knowledgePin)); }
+    }
+    function renderKnowledgeView(data, pin, initial = false, preference = null) {
       if (knowledgeMode === 'learning' && knowledgeLearningModel(data).events.length) return renderLearning(data,pin,initial,preference);
       // With nothing recorded to replay, the address names the library it shows.
       if (knowledgeMode === 'learning' && view === 'knowledge' && root.history?.replaceState && root.location) {
@@ -4939,7 +5116,7 @@
       };
       cancelPoll(); setView('knowledge'); nav('knowledge'); current = null;
       if (knowledgeCache) { renderKnowledge(knowledgeCache.value,pin,true,preference); synchronizeKnowledgeRead('refreshing'); notice(''); }
-      else { host.innerHTML = readSkeletonMarkup('knowledge') + button('Retry','data-au-knowledge-retry hidden'); interact(host); focusTitle(); notice(''); }
+      else { host.innerHTML = readSkeletonMarkup('knowledge') + button('Retry','data-au-knowledge-retry hidden'); interact(host); routeSettled('knowledge',pin?.knowledge_id ? `Knowledge · ${procedureLabel({knowledge_id:pin.knowledge_id})}` : 'Knowledge'); notice(''); }
       sessionRestore?.then(() => {
         if (!disposed && (awaitingFresh || freshReadFailed) && token === epoch && read === knowledgeRead && generation === readGeneration && !pendingRoute() && view === 'knowledge' && knowledgeCache && !host.querySelector('[data-au-knowledge-identity]')) {
           reconcileKnowledge(knowledgeCache.value); synchronizeKnowledgeRead(freshReadFailed ? 'failed' : 'refreshing');
@@ -4962,7 +5139,7 @@
       const submit = form?.querySelector('button[type="submit"]');
       if (!submit) return;
       if (publicReadOnly) { submit.disabled = true; submit.textContent = 'Public workspace · read-only'; return; }
-      submit.textContent = status?.enabled === true && (status.provider_ready === false || status.limits?.autonomous_can_start === false) ? 'Save claim' : 'Start checking ↗';
+      submit.textContent = status?.enabled === true && (status.provider_ready === false || status.limits?.autonomous_can_start === false) ? 'Save case' : 'Start checking ↗';
       submit.disabled = !status?.enabled || !writable(status);
     }
     function lockForm(form, lock, retry = false) {
@@ -5133,13 +5310,16 @@
       const returning = recordReturn; recordReturn = null; restoreRecordFocus(returning);
     }
     function click(event) {
+      // The skip link moves focus to the page heading; the hash router never sees it.
+      const skip = event.target.closest?.('[data-au-skip]');
+      if (skip?.hasAttribute?.('data-au-skip') && container.contains(skip)) { event.preventDefault?.(); (host.querySelector('h1') || container.querySelector('.au-main'))?.focus?.(); return; }
       const target = event.target.closest('button,[data-au-nav]'); if (!target || !container.contains(target)) return;
       if(view==='knowledge' && !target.hasAttribute('data-au-learning-play'))pauseLearning();
       if(target.hasAttribute('data-au-learning-play')){if(learningState?.playing)pauseLearning();else playLearning();}
       else if(target.hasAttribute('data-au-learning-event')){selectLearning(Number(target.dataset.auLearningEvent),10,true,true,false);}
       else if(target.hasAttribute('data-au-learning-end') || target.hasAttribute('data-au-library-return')){if(busy)return;const event=learningState?.model.events[learningState.index],family=event && !event.refused ? libraryFamily(event.versionRecord || event.item) || event.family : '';showKnowledge(true,DOMAINS.some(row=>row.id===family)?{knowledge_id:`procedure.${family}`}:null);}
       else if(target.hasAttribute('data-au-learning-open')){if(busy)return;const data=renderedKnowledge || knowledgeCache?.value;if(!data)return;const model=knowledgeLearningModel(data),family=target.dataset.auLearningOpen,identity=target.dataset.auLearningVersion,event=family?model.events.find(row=>row.kind==='knowledge.published'&&!row.refused&&row.versionRecord&&`${row.versionRecord.knowledge_id || row.versionRecord.version_id}:${row.versionRecord.version || row.versionRecord.version_id}`===identity) || model.events.find(row=>row.family===family):null;showKnowledge(true,null,event?{view:'learning',event:event.id,stage:10}:{view:'learning',play:true});}
-      else if(target.hasAttribute('data-au-library-jump')){const family=target.dataset.auLibraryJump,entry=markLibraryEntry(family);if(!entry)return;knowledgePin=renderedLibraryPin={knowledge_id:`procedure.${family}`};const fragment=`#autonomous/knowledge?knowledge=${key(`procedure.${family}`)}`;if(root.history?.replaceState&&root.location){root.history.replaceState(null,'',root.location.pathname+root.location.search+fragment);routedFragment=fragment;}focusLibraryEntry(entry,reduced?.matches?'instant':'smooth');}
+      else if(target.hasAttribute('data-au-library-jump')){const family=target.dataset.auLibraryJump,entry=markLibraryEntry(family);if(!entry)return;knowledgePin=renderedLibraryPin={knowledge_id:`procedure.${family}`};if(renderedKnowledge)routeTitle(knowledgeTitle(renderedKnowledge,knowledgePin));const fragment=`#autonomous/knowledge?knowledge=${key(`procedure.${family}`)}`;if(root.history?.replaceState&&root.location){root.history.replaceState(null,'',root.location.pathname+root.location.search+fragment);routedFragment=fragment;}focusLibraryEntry(entry,reduced?.matches?'instant':'smooth');}
       else if(target.hasAttribute('data-au-knowledge-retry')){showKnowledge(false,knowledgePin,knowledgeMode==='learning'?{view:'learning',event:learningState?.model.events[learningState.index]?.id,stage:learningState?.stage,facet:knowledgeFacet,complete:learningState?.complete}:null);}
       else if (target.hasAttribute('data-au-close-record')) closeRecord();
       else if (target.hasAttribute('data-au-return-case')) { if (!busy && lastCaseContext) openClaim(lastCaseContext.claim_id,true,{...lastCaseContext,detail:target.dataset.auReturnCase}); }
@@ -5147,10 +5327,10 @@
       else if (target.hasAttribute('data-au-inspect')) openRecord(target);
       else if (target.hasAttribute('data-au-demo-case')) { const id = target.dataset.auDemoCase; recordReturn = null; recordDialog.close(); stopPresentation(); demoMode = 'replay'; const collection = demoCollection(target.dataset.auDemoCollection) || 'reference', filtered = collectionRoster(collection,claims), cases = filtered.some(row => row.claim_id === id) ? filtered : demoCases(collection), index = cases.findIndex(row => row.claim_id === id); if (index >= 0) { const operations=openingPreferences.operations || operationRoutePreference(root.location?.hash,root.location?.search); demoSession = tourSession(collection,cases,index,operations,target.dataset.auDemoSaved === 'true'); openPresentationCase(demoSession); } }
       else if (target.hasAttribute('data-au-demo-skip')) skipTourCase();
-      else if (target.hasAttribute('data-au-filter')) { collection.filter = target.dataset.auFilter; collection.page = 1; refreshCollection(); rememberCollectionRoute(true); for (const control of host.querySelectorAll('[data-au-filter]')) control.setAttribute('aria-pressed',String(control.dataset.auFilter === collection.filter)); }
-      else if (target.hasAttribute('data-au-page')) { if (view === 'work' && !target.disabled) { collection.page = Number(target.dataset.auPage); refreshCollection(); rememberCollectionRoute(true); host.querySelector('[data-au-claims]')?.scrollIntoView?.({block:'start',behavior:'instant'}); } }
+      else if (target.hasAttribute('data-au-filter')) { if (view !== 'work') return; const chosen = caseFilter(target.dataset.auFilter); collection.filter = target.getAttribute?.('aria-pressed') === 'true' ? 'all' : chosen; collection.page = 1; refreshCollection(); rememberCollectionRoute(true); collectionSettled(); }
+      else if (target.hasAttribute('data-au-page')) { if (view === 'work' && !target.disabled) { collection.page = Number(target.dataset.auPage); refreshCollection(); rememberCollectionRoute(true); collectionSettled(); } }
       else if (target.hasAttribute('data-au-nav')) { if (busy) return; target.dataset.auNav === 'knowledge' ? showKnowledge() : target.dataset.auNav === 'intake' ? showIntake() : target.dataset.auNav === 'demonstration' ? showDemonstration() : showWork(); }
-      else if (target.hasAttribute('data-au-claim')) { if (!busy) openClaim(target.dataset.auClaim); }
+      else if (target.hasAttribute('data-au-claim')) { if (!busy) { if (view === 'work') collection.opener = target.dataset.auClaim; openClaim(target.dataset.auClaim); } }
       else if (target.hasAttribute('data-au-demo-mode')) { demoMode = !publicReadOnly && target.dataset.auDemoMode === 'live' ? 'live' : 'replay'; refreshDemonstration(); route(`#autonomous/demonstration?mode=${demoMode}`); }
       else if (target.hasAttribute('data-au-demo-play')) beginPresentation();
       else if (target.hasAttribute('data-au-inspection-clear')) { operationPeek = null; host.removeAttribute?.('data-au-inspection-operation'); renderClaim(); }
@@ -5159,8 +5339,8 @@
       else if (target.hasAttribute('data-au-demo-resume')) resumePresentation();
       else if (target.hasAttribute('data-au-start')) { if (target.getAttribute?.('aria-disabled') !== 'true') startOriginal(target); }
       else if (target.hasAttribute('data-au-refresh-claim')) { if (!busy && current) { pauseInspection(); if (presentationMode === 'replay') openClaim(current.claim_id,true,{mode:'replay',through:replayRecord.through_seq,detail,node:selected,...evidenceContext}); else { freshClaim = false; synchronizeAuthority('refreshing'); disconnected = true; cancelPoll(); serviceStatus(epoch,true).catch(() => {}); poll(); } } }
-      else if (target.hasAttribute('data-au-collection-scope')) { if (busy) return; collection.scope = target.dataset.auCollectionScope === 'added' ? 'added' : 'originals'; collection.domain = 'all'; collection.search = ''; collection.filter = 'all'; collection.page = 1; showWork(); }
-      else if (target.hasAttribute('data-au-domain')) { collection.domain = target.dataset.auDomain; collection.page = 1; refreshCollection(); rememberCollectionRoute(true); }
+      else if (target.hasAttribute('data-au-collection-scope')) { if (busy) return; collection.scope = target.dataset.auCollectionScope === 'added' ? 'added' : 'originals'; collection.domain = 'all'; collection.search = ''; collection.filter = 'all'; collection.page = 1; showWork(true,true); }
+      else if (target.hasAttribute('data-au-domain')) { if (view !== 'work') return; collection.domain = target.dataset.auDomain; collection.page = 1; refreshCollection(); rememberCollectionRoute(true); collectionSettled(); }
       else if (target.hasAttribute('data-au-pause')) controlWork(target,'pause');
       else if (target.hasAttribute('data-au-resume')) controlWork(target,'resume');
       else if (target.hasAttribute('data-au-refresh-claims')) { const token = epoch; loadClaims(token,true).catch(error => { if (!disposed && token === epoch) notice(error.message,true); }); }
@@ -5245,7 +5425,7 @@
         if (operationPeek) { host.setAttribute('data-au-inspection-operation',operationPeek.trace.current.id); renderClaim(); }
         return;
       }
-      if (view === 'work' && event.target.matches?.('[data-au-claim-search]')) { collection.search = event.target.value; collection.page = 1; refreshCollection(); rememberCollectionRoute(); }
+      if (view === 'work' && event.target.matches?.('[data-au-claim-search]')) { collection.search = event.target.value; collection.page = 1; queueCollectionSearch(); refreshCollection(); rememberCollectionRoute(); routeTitle(collectionTitle()); }
     }
     function restoreSourceFocus(returning) {
       if (!returning) return;
@@ -5386,7 +5566,7 @@
       drawEdges(); positionOperationAttention();
     }
     const resize = root.ResizeObserver ? new root.ResizeObserver(resized) : null; resize?.observe(host); root.addEventListener?.('resize',resized);
-    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),savedSnapshotReady:savedSnapshotLoad=Promise.resolve().then(loadSavedSnapshot),refresh:poll,destroy() { if (disposed) return; disposed = true; discardKnowledgeOpening(); cancelLearning(); packetLoadController?.abort(); savedSnapshotController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();chromeObserver?.disconnect();if (chromeFrame) root.cancelAnimationFrame?.(chromeFrame);root.removeEventListener?.('scroll',chromeScroll);for (const type of ['wheel','touchmove']) doc.removeEventListener?.(type,scrollIntentEvent);for (const [name] of CHROME) doc.documentElement?.style?.removeProperty?.(`--au-${name}-height`);container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',focusInput); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
+    const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,recordedPacketReady:Promise.resolve().then(loadRecordedPacket),savedSnapshotReady:savedSnapshotLoad=Promise.resolve().then(loadSavedSnapshot),refresh:poll,destroy() { if (disposed) return; disposed = true; root.clearTimeout(collectionSearch.timer); collectionSearch.read++; if (doc && doc.title !== originalTitle) doc.title = originalTitle; discardKnowledgeOpening(); cancelLearning(); packetLoadController?.abort(); savedSnapshotController?.abort(); cancelStageMotion(); epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);container.removeEventListener('wheel',sourceWheel);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();chromeObserver?.disconnect();if (chromeFrame) root.cancelAnimationFrame?.(chromeFrame);root.removeEventListener?.('scroll',chromeScroll);for (const type of ['wheel','touchmove']) doc.removeEventListener?.(type,scrollIntentEvent);for (const [name] of CHROME) doc.documentElement?.style?.removeProperty?.(`--au-${name}-height`);container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',focusInput); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
     mounts.set(container,controller); activeMount = controller;
     sessionRestore = restoreReadCache();
     if (options.recordedPacket) packetAcquisition = {promise:controller.recordedPacketReady.then(ready => { if (!ready) throw new Error('The recorded packet asset is unavailable.'); return recordedPacket; })};

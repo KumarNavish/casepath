@@ -1426,9 +1426,9 @@ test('reference native: exact nine actual accepted assessments retain graph docu
  assert.equal(fixture.profile_sha256,referenceV2Sha256);
  assert.deepEqual(await page.evaluate(()=>window.CasePathAutonomous.REFERENCE_DEMO_CASES.map(row=>row.claim_id)),referenceIds);
  await page.locator('[data-au-filter="investigation_complete"]').click();
- assert.equal(await page.locator('[data-au-filter="investigation_complete"]').innerText(),'Assessment complete');
+ assert.equal(await page.locator('[data-au-filter="investigation_complete"]').innerText(),'9 assessment complete');
  assert.deepEqual(sorted(await page.locator('[data-au-claim-row]').evaluateAll(rows=>rows.map(row=>row.dataset.auClaimRow))),sorted(referenceIds));
- await page.locator('[data-au-filter="deferred"]').click();assert.equal(await page.locator('[data-au-claim-row]').count(),0);
+ assert.equal(await page.locator('[data-au-filter="more_evidence"]').count(),0,'no reference assessment is counted as needing more evidence');
  await page.locator('[data-au-filter="all"]').click();
  for(const id of referenceIds){
   await open(page,id);await title(page,id);const record=await visibleRecord(page),expected=fixture.snapshots[id];
@@ -1658,14 +1658,14 @@ test('Investigation complete groups completed codes without changing the raw cla
   const page = await fixturePage(t, {completeStatuses: true});
   await page.locator('[data-au-collection-scope="added"]').click();
   await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 9), 'Added case statuses did not render');
-  const filter=page.locator('[data-au-filter="investigation_complete"]');assert.equal(await filter.innerText(),'Investigation complete');assert.equal(await page.locator('select').count(),0);await filter.click();
+  const filter=page.locator('[data-au-filter="investigation_complete"]');assert.match(await filter.innerText(),/^\d+ assessment complete$/);assert.equal(await page.locator('select').count(),0);await filter.click();
   assert.deepEqual(sorted(await page.locator('[data-au-claim-row]').evaluateAll(rows => rows.map(row => row.dataset.auClaimRow))), sorted(completeStatusIds));
-  assert.deepEqual(await page.locator('[data-au-claim-row] > .au-claim-state').allTextContents(), ['Investigation complete', 'Investigation complete', 'Investigation complete']);
+  assert.deepEqual(await page.locator('[data-au-claim-row] .au-claim-status-word').allTextContents(), ['Assessment complete', 'Assessment complete', 'Assessment complete']);
   for (const [index, status] of ['completed', 'complete', 'resolved'].entries()) {
     const id = completeStatusIds[index], expected = await page.evaluate(id => window.__fixture.envelopes[id].state.outcome, id);
     await open(page, id);
     await title(page, id);
-    assert.equal((await page.locator('[data-au-claim-status]').innerText()).replace(/\.$/,''), 'Investigation complete');
+    assert.equal((await page.locator('[data-au-claim-status]').innerText()).replace(/\.$/,''), 'Assessment complete');
     const saved = (await visibleRecord(page));
     assert.equal(saved.state.status, status);
     assert.deepEqual(saved.state.outcome, expected);

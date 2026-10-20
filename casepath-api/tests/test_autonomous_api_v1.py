@@ -47,3 +47,38 @@ def test_intake_api_headers_idempotency_saved_events_and_source_readback(tmp_pat
         assert resumed.json()['status'] == 'running' and resumed.json()['deferral'] is None
         assert client.post(f'{prefix}/claims/{claim_id}/resume', json=command, headers=headers).json() == resumed.json()
     service.shutdown()
+
+
+def test_collection_search_reads_full_messages_files_and_language_names_without_exposing_them(tmp_path):
+    from casepath_api.autonomous_corpus_v1 import CanonicalCorpus
+    corpus = CanonicalCorpus()
+    store = AutonomousStore(tmp_path / 'claims.sqlite3')
+    service = AutonomousController(store, corpus._corpus.static_policy())
+    service.submit = lambda claim: None
+    app = FastAPI()
+    app.include_router(create_autonomous_router(lambda: service, corpus_getter=lambda: corpus))
+    prefix = '/api/claim-loops/v1/autonomous'
+    ids = lambda query: {row['claim_id'] for row in client.get(prefix + '/claims', params={'q': query, 'limit': 500}).json()['claims']}
+    with TestClient(app) as client:
+        everything = client.get(prefix + '/claims', params={'limit': 500}).json()['claims']
+        assert len(everything) == 150
+        # The phrase sits beyond the 240-character preview, so only the full message finds it.
+        row = next(r for r in everything if r['claim_id'] == 'clm_5a25bfdab3e98a61')
+        assert 'vacant possession' not in row['source_preview'].casefold()
+        assert 'clm_5a25bfdab3e98a61' in ids('vacant possession')
+        attached = {r['claim_id'] for r in everything if r['attachment_count']}
+        assert len(attached) == 45 and ids('pdf') | ids('jpeg') == attached
+        assert len(ids('German')) == 75 and ids('German') == {r['claim_id'] for r in everything if r['language'] == 'de-CH'}
+        assert ids('Swiss Standard German') == ids('German') and len(ids('English')) == 75
+        for query in ('', 'vacant possession', 'pdf', 'German'):
+            for result in client.get(prefix + '/claims', params={'q': query, 'limit': 500}).json()['claims']:
+                assert 'search_text' not in result
+                assert result['attachment_media_types'] == [
+                    a['media_type'] for a in corpus.preview_state(result['claim_id'])['original_binding']['intake']['attachments']]
+        for cid in corpus.ids:
+            state = corpus.preview_state(cid)
+            assert not {'search_text', 'attachment_media_types'}.intersection(state)
+            snapshot = client.get(f'{prefix}/claims/{cid}/snapshot').json()
+            assert snapshot['state']['state_sha256'] == state['state_sha256'] and 'search_text' not in snapshot['state']
+        assert store.list() == []
+    service.shutdown()

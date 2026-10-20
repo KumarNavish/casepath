@@ -508,3 +508,21 @@ test('fact labels name the subject without field identifiers',()=>{
   assert.equal(language.factLabel({fact_id:'fact:landlord_knowledge_evidence',label:'INTERNAL_FACT_FIELD'}),'Landlord notice and repair status');
   assert.equal(language.factLabel({fact_id:'unknown'}),'Recorded fact');
 });
+
+test('one case status lexicon names every lifecycle bucket and counts only what is present',()=>{
+  assert.deepEqual(language.caseStatuses.map(row => row.label),['Not started','Working','More evidence needed','Assessment complete','Stopped']);
+  for (const row of language.caseStatuses) { shortCopy(row.label); assert.equal(language.caseStatusLabel(row.id),row.label); }
+  assert.equal(language.caseStatusLabel('deferred'),'Status not recorded','a recorded code is not a lexicon status');
+  assert.equal(language.caseStatusSummary({not_started:141,working:2,more_evidence:3,investigation_complete:4,stopped:0}),'141 not started · 2 working · 3 more evidence needed · 4 assessment complete');
+  assert.equal(language.caseStatusSummary({}),'');
+});
+
+test('case facts read as one quiet line and leave unrecorded fields out',()=>{
+  assert.equal(language.caseFacts({domain:'Lease termination',language:'de-CH',attachments:2,mediaTypes:['application/pdf','image/jpeg'],channel:'email',received:'2025-10-22T12:00:00+02:00'}),'Lease termination · German · 2 files (PDF, JPEG) · email · 22 Oct 2025');
+  assert.equal(language.caseFacts({language:'en',attachments:0,channel:'phone_note',received:'2025-01-12T23:30:00-05:00'}),'English · Message only · phone note · 12 Jan 2025','the recorded calendar date is kept across time zones');
+  assert.equal(language.caseFacts({attachments:2,mediaTypes:['application/pdf','application/pdf']}),'2 files (PDF)');
+  assert.equal(language.caseFacts({attachments:2,mediaTypes:['application/pdf']}),'2 files','types are named only when every file has one');
+  assert.equal(language.caseFacts({attachments:1,mediaTypes:['application/x-unknown']}),'1 file');
+  assert.equal(language.caseFacts({}),'');assert.equal(language.caseFacts({received:'not a date',channel:'carrier pigeon'}),'');
+  assert.equal(language.receivedDate('2026-05-09'),'9 May 2026');
+});

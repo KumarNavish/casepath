@@ -25,11 +25,17 @@ feed. It moves through eight states in place:
 
 ## Visual system
 
-- Background: true white.
-- Text: near-black `#15171a`; secondary text: cool gray.
-- Active reasoning: restrained burgundy `#8f1924`.
-- Received or expert-reviewed: restrained green.
-- Rules: one-pixel cool-gray hairlines.
+The PNGs predate the shipped colours. The product now uses the
+forest/mineral/vermilion identity recorded in `design/evidence-path/README.md`
+(Identity and interaction); read the colour notes below in its place, and the
+images for structure only.
+
+- Background: mineral `#EFF1EC`; sources and documents on paper `#FFFFFC`.
+- Text: forest `#183D35`; secondary text: muted green-gray `#576D65`.
+- Active reasoning and the selected junction: vermilion `#BC3E2A`.
+- Received or expert-reviewed: restrained green `#315E49`.
+- Rules: one-pixel `#BDC9BD` hairlines; input boundaries `#73857A`.
+- Focus: a separate 3 px `#164F88` ring.
 - Icons: code-native 1.5px line icons with consistent optical size.
 - Typography: plain UI sans serif; compact labels; no marketing display copy.
 - Containers: open canvas, source rail, document surface, and one local plan.

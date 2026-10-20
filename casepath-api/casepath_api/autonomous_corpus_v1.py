@@ -30,6 +30,8 @@ _SUBMISSION_FIELDS = frozenset({"canton", "channel", "claim_id", "language", "re
 _MESSAGE_FIELDS = frozenset({
     "attachment_ids", "body", "from_role", "message_id", "raw_file", "sent_at", "subject", "to_role",
 })
+# Readable names for the recorded submission language, searchable only.
+_LANGUAGE_NAMES = {"en": ("English",), "de-CH": ("German", "Swiss Standard German")}
 
 
 def _seal(value, key):
@@ -72,7 +74,7 @@ class CanonicalCorpus:
         self._ids = tuple(sorted(self._bindings))
         if len(self._ids) != 150 or any(not _CLAIM_ID.fullmatch(cid) for cid in self._ids):
             raise WorkspaceCorpusError("canonical original claim identities differ")
-        self._states, self._sources, self._summaries = {}, {}, []
+        self._states, self._sources, self._summaries, self._search = {}, {}, [], {}
         # The existing reader is a pure extraction cache. Deliberately avoid its
         # constructor, which creates journal/source directories for a real store.
         self._reader = AutonomousStore.__new__(AutonomousStore)
@@ -184,11 +186,30 @@ class CanonicalCorpus:
             "received_at": submission["received_at"], "language": submission["language"],
             "channel": submission["channel"], "source_count": len(sources),
             "attachment_count": len(attachments), "claim_binding_sha256": binding["binding_sha256"],
+            "attachment_media_types": [row["media_type"] for row in original_files[1:]],
         })
+        # Browsing text only: the full original message, the attached file
+        # names and media types, and readable language names. It is held
+        # beside the state, never inside it, a binding or an engine packet.
+        self._search[claim_id] = "\n".join([
+            message["body"],
+            *(f"{row['file_name']} {row['media_type']}" for row in original_files[1:]),
+            *_LANGUAGE_NAMES.get(submission["language"], ()),
+        ])
 
     def preview_state(self, claim_id):
         self._require(claim_id)
         return deepcopy(self._states[claim_id])
+
+    def search_text(self, claim_id):
+        """Browsing projection for collection search; never state or evidence."""
+        self._require(claim_id)
+        return self._search[claim_id]
+
+    def search_texts(self):
+        """Every original's search text under one identity check, for one query."""
+        self._guard()
+        return dict(self._search)
 
     def summary_rows(self):
         self._guard()

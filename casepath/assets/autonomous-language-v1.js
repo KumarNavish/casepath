@@ -453,6 +453,40 @@
       tabs,details:value};
   }
 
+  // One lexicon for where a case stands. Rows, status filters and the case
+  // header all use these words; the recorded status code stays in the record.
+  const caseStatuses = Object.freeze([
+    ['not_started','Not started'], ['working','Working'], ['more_evidence','More evidence needed'],
+    ['investigation_complete','Assessment complete'], ['stopped','Stopped']
+  ].map(([id,label]) => Object.freeze({id,label})));
+  function caseStatusLabel(id) { return caseStatuses.find(row => row.id === id)?.label || 'Status not recorded'; }
+  // "2 working · 3 more evidence needed": counted statuses in lexicon order.
+  function caseStatusSummary(counts = {}) {
+    return caseStatuses.filter(row => count(counts[row.id])).map(row => `${counts[row.id]} ${row.label.toLocaleLowerCase('en')}`).join(' · ');
+  }
+  const mediaTypeNames = Object.freeze({'application/pdf':'PDF','image/jpeg':'JPEG','image/png':'PNG','image/heic':'HEIC',
+    'text/plain':'text','message/rfc822':'email file','application/vnd.openxmlformats-officedocument.wordprocessingml.document':'Word'});
+  const mediaTypeName = value => mediaTypeNames[text(value).split(';')[0].trim().toLowerCase()] || '';
+  const languageNames = Object.freeze({en:'English',de:'German',fr:'French',it:'Italian'});
+  const channelNames = Object.freeze({email:'email',portal:'portal',chat:'chat',phone_note:'phone note',letter:'letter'});
+  // A received_at keeps its own calendar date; no time zone conversion moves it.
+  function receivedDate(value) {
+    const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(text(value));
+    if (!match) return '';
+    const date = new Date(Date.UTC(Number(match[1]),Number(match[2])-1,Number(match[3])));
+    return Number.isNaN(date.getTime()) ? '' : new Intl.DateTimeFormat('en-GB',{timeZone:'UTC',day:'numeric',month:'short',year:'numeric'}).format(date);
+  }
+  // One quiet line of recorded intake metadata, e.g.
+  // "Lease termination · German · 2 files (PDF, JPEG) · email · 22 Oct 2025".
+  // Unrecorded fields are left out rather than guessed.
+  function caseFacts({domain = '', language: code = '', attachments = null, mediaTypes = null, channel = '', received = ''} = {}) {
+    const files = count(attachments);
+    const types = [...new Set(list(mediaTypes).map(mediaTypeName).filter(Boolean))];
+    const known = Array.isArray(mediaTypes) && mediaTypes.length === files && types.length;
+    const fileText = files === null ? '' : files === 0 ? 'Message only' : `${files} file${files === 1 ? '' : 's'}${known ? ` (${types.join(', ')})` : ''}`;
+    const languageText = languageNames[text(code).split('-')[0].toLowerCase()] || '';
+    return [text(domain), languageText, fileText, channelNames[text(channel)] || '', receivedDate(received)].filter(Boolean).join(' · ');
+  }
   function refusalReason(reason) {
     return ({
       'knowledge candidate is not bound to a verified sufficient supporting file':'A checked supporting document was not linked to these steps.',
@@ -460,5 +494,6 @@
     })[text(reason)] || 'These steps were not saved. Open Details for the recorded reason.';
   }
   return Object.freeze({conditionClause,refusalReason,roles,copy,tabs,stepLabels,documentLabels,plainLabel,stepLabel,documentTitle,factLabel,draftStatus,issueText,
+    caseStatuses,caseStatusLabel,caseStatusSummary,caseFacts,receivedDate,
     provenancePresentation,operationPresentation,outcomePresentation,knowledgePresentation,modeLine,eventPresentation});
 });

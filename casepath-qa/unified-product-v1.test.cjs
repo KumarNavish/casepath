@@ -76,9 +76,9 @@ test('preview boundaries keep whole original words and the complete source searc
  const prefix='Whole source sentence. '.repeat(10),boundaryWord='BoundaryWordMustStayWhole',message=`${prefix}${boundaryWord} The source continues beyond the preview.`,row={...original(),source_preview:{text:message}},expected=prefix.trimEnd()+'…';row.source_descriptors[0].sha256=sha(message);
  assert.ok(prefix.length<240&&prefix.length+boundaryWord.length>240,'the boundary falls inside a source word');
  const before=JSON.stringify(row),cases=ui.claimsMarkup([row]),catalog=ui.catalogPreviewMarkup(row,row.claim_id);
- assert.equal(cases.match(/class="au-claim-constraint">([^<]*)<\/span>/)[1],expected);assert.equal(catalog.match(/<pre class="au-original-message">([^<]*)<\/pre>/)[1],expected);assert.doesNotMatch(cases+catalog,/BoundaryWord|The source continues beyond the preview/);
+ assert.equal(cases.match(/<p class="au-claim-excerpt" id="ex-[^"]+">([^<]*)<\/p>/)[1],expected);assert.equal(catalog.match(/<pre class="au-original-message">([^<]*)<\/pre>/)[1],expected);assert.doesNotMatch(cases+catalog,/BoundaryWord|The source continues beyond the preview/);
  assert.deepEqual(ui.matchingClaims([row],{search:'source continues beyond'}).map(item=>item.claim_id),[row.claim_id],'clipping the reading excerpt cannot clip full-source search');assert.equal(ui.contextualRecord(row,{},[],'claim').state.source_preview.text,message);assert.equal(row.source_descriptors[0].sha256,sha(message));assert.equal(JSON.stringify(row),before);
- const short={...row,source_preview:{text:'The complete short original message.'}};assert.match(ui.claimsMarkup([short]),/>The complete short original message\.<\/span>/);assert.match(ui.catalogPreviewMarkup(short,short.claim_id),/>The complete short original message\.<\/pre>/);
+ const short={...row,source_preview:{text:'The complete short original message.'}};assert.match(ui.claimsMarkup([short]),/>The complete short original message\.<\/p>/);assert.match(ui.catalogPreviewMarkup(short,short.claim_id),/>The complete short original message\.<\/pre>/);
 });
 test('demonstration selection is exactly nine canonical identities with three per domain',()=>{
  assert.equal(ui.DEMO_CASES.length,9);assert.equal(new Set(ui.DEMO_CASES.map(x=>x.claim_id)).size,9);
@@ -115,26 +115,26 @@ test('replay binds prefix provenance and same-revision heads without confusing a
 });
 test('original collection and added intakes retain separate explicit identities',()=>{
  const rows=[{...original(),origin:'canonical_original'},{...original(),claim_id:'added',origin:'native_intake',title:'A native intake',mode:'saved',revision:1,status:'completed'}];
- const html=ui.collectionMarkup(rows);assert.match(html,/data-au-claim="clm_original"/);assert.doesNotMatch(html,/data-au-claim="added"/);assert.equal([...html.matchAll(/data-au-claim="/g)].length,1);assert.match(html,/<p class="au-lead">150 fictional cases<\/p>/);assert.match(html,/data-au-collection-scope="added">Added cases<\/button>/);assert.doesNotMatch(html,/data-au-collection-scope="originals"/);
- const added=ui.collectionMarkup(rows,{scope:'added'});assert.match(added,/data-au-claim="added"/);assert.doesNotMatch(added,/data-au-claim="clm_original"/);assert.match(added,/<p class="au-lead">Added cases<\/p>/);assert.match(added,/data-au-collection-scope="originals">Original cases<\/button>/);assert.doesNotMatch(added,/data-au-collection-scope="added"/);assert.equal([...added.matchAll(/data-au-claim="/g)].length,1);
+ const html=ui.collectionMarkup(rows);assert.match(html,/data-au-claim="clm_original"/);assert.doesNotMatch(html,/data-au-claim="added"/);assert.equal([...html.matchAll(/data-au-claim="/g)].length,1);assert.match(html,/<p class="au-lead">150 fictional cases<\/p>/);assert.match(html,/data-au-collection-scope="added">Added <span data-au-scope-count>\(1\)<\/span><\/button>/);assert.doesNotMatch(html,/data-au-collection-scope="originals"/);
+ const added=ui.collectionMarkup(rows,{scope:'added'});assert.match(added,/data-au-claim="added"/);assert.doesNotMatch(added,/data-au-claim="clm_original"/);assert.match(added,/<p class="au-lead">Added cases<\/p>/);assert.match(added,/data-au-collection-scope="originals">Original cases <span data-au-scope-count>\(1\)<\/span><\/button>/);assert.doesNotMatch(added,/data-au-collection-scope="added"/);assert.equal([...added.matchAll(/data-au-claim="/g)].length,1);
  assert.deepEqual(ui.matchingClaims(rows,{scope:'originals'}).map(row=>row.claim_id),['clm_original']);assert.deepEqual(ui.matchingClaims(rows,{scope:'added'}).map(row=>row.claim_id),['added']);
 });
 test('handling completion labels do not rewrite lifecycle codes or recorded legal outcomes',()=>{
  const rows=['completed','complete','resolved'].map((status,index)=>({...original(),origin:'canonical_original',claim_id:`done_${index}`,status,revision:1,mode:'saved',outcome:{summary:'No settlement has been recorded.'}}));const before=JSON.stringify(rows);
- const html=ui.collectionMarkup(rows);assert.equal([...html.matchAll(/class="au-claim-state">Checks complete</g)].length,3);assert.doesNotMatch(html,/>Resolved</);assert.equal(ui.matchingClaims(rows,{filter:'investigation_complete'}).length,3);assert.equal(ui.matchingClaims(rows,{search:'checks complete'}).length,3);
+ const html=ui.collectionMarkup(rows);assert.equal([...html.matchAll(/<span class="au-claim-status-word">Assessment complete</g)].length,3);assert.doesNotMatch(html,/>Resolved<|Checks complete/);assert.equal(ui.matchingClaims(rows,{filter:'investigation_complete'}).length,3);assert.equal(ui.matchingClaims(rows,{search:'assessment complete'}).length,3);
  assert.match(ui.workMarkup(rows[2],{},null,[],'activity'),/No settlement has been recorded\./);assert.deepEqual(ui.contextualRecord(rows[2],{},[],'claim').state.outcome,rows[2].outcome);assert.equal(JSON.stringify(rows),before);
 });
 test('execution failure remains separate from an accepted evidence deferral in claim and itinerary labels',()=>{
  const failed={...original(),claim_id:ui.DEMO_CASES[4].claim_id,revision:11,mode:'saved',status:'deferred',phase:'deferred',outcome:null,deferral:{code:'verification_deferred',reason:'interpretation citation is not an exact claim source span',details:{error_type:'ValueError',workflow_id:'saved-workflow'}}};
  const evidence={...failed,deferral:null,outcome:{status:'deferred',summary:'A received source leaves the question unresolved.',missing_evidence:[],unresolved_facts:[{fact_id:'condition:notice_authority',summary:'Which notice governs remains unresolved.'}]}};
  const before=JSON.stringify([failed,evidence]);
- for(const [claim,label]of [[failed,'Execution failed'],[evidence,'More evidence needed']]) {
+ for(const [claim,label]of [[failed,'Stopped'],[evidence,'More evidence needed']]) {
   assert.match(ui.workMarkup(claim,{},null,[]),new RegExp(`data-au-claim-status>${label}\\.<\\/span>`));
-  assert.match(ui.claimsMarkup([claim]),new RegExp(`>${label}</span>`));
+  assert.match(ui.claimsMarkup([claim]),new RegExp(`<span class="au-claim-status-word">${label}</span>`));
   assert.match(ui.demoItineraryMarkup([claim],null,null,ui.DEMO_CASES),new RegExp(`>${label}</span>`),'the explicit legacy itinerary retains the recorded execution label');
  }
- const failedHtml=ui.workMarkup(failed,{},null,[]);assert.match(failedHtml,/data-au-claim-status>Execution failed\.<\/span> Work stopped\. Open Details for the recorded reason\.<button type="button" class="au-link au-record-link" data-au-inspect="outcome" data-au-record-id="">Details<\/button>/);assert.deepEqual(ui.contextualRecord(failed,{},[],'outcome').deferral,failed.deferral,'the exact recorded failure reason stays one Details control away');
- assert.match(ui.claimsMarkup([{...failed,deferral:undefined}]),/>Execution stopped<\/span>/,'queue summaries do not infer the failure code they omit');
+ const failedHtml=ui.workMarkup(failed,{},null,[]);assert.match(failedHtml,/data-au-claim-status>Stopped\.<\/span> Execution failed\. Open Details for the recorded reason\.<button type="button" class="au-link au-record-link" data-au-inspect="outcome" data-au-record-id="">Details<\/button>/);assert.deepEqual(ui.contextualRecord(failed,{},[],'outcome').deferral,failed.deferral,'the exact recorded failure reason stays one Details control away');
+ assert.match(ui.claimsMarkup([{...failed,deferral:undefined}]),/<span class="au-claim-status-word">Stopped<\/span><\/p>/,'queue summaries do not infer the failure code they omit');
  assert.equal(ui.replayCanAdvance(failed),false);
  assert.equal(ui.replayCanAdvance({...failed,status:'completed'}),false,'a completed code without an accepted outcome cannot finish the replay');
  assert.equal(ui.replayCanAdvance(evidence),true);
@@ -154,7 +154,7 @@ test('execution failure remains separate from an accepted evidence deferral in c
 test('completed steps and actions remain local to a running investigation',()=>{
  const s={...original(),revision:1,mode:'saved',status:'running',graph:{claim_id:'clm_original',nodes:[{node_id:'first',title:'Check original source'}],edges:[]},evaluation:{nodes:[{node_id:'first',execution_state:'completed'}]},actions:[{action_id:'source-check',title:'Source checked',status:'completed'}]};
  const html=ui.workMarkup(s,{},'first',[]);assert.match(html,/data-au-claim-status>Working\.<\/span>/);assert.match(html,/class="au-node-state">Completed</);assert.deepEqual(ui.contextualRecord(s,{},[],'action','0').result,s.actions[0]);assert.ok(ui.workMarkup(s,{},'first',[],'activity').includes(`data-au-inspect="action" data-au-record-id="${ui.actionRows(s)[0].instanceId}"`));assert.doesNotMatch(html,/Checks complete/);
- assert.match(ui.collectionMarkup([{...s,origin:'canonical_original',status:'completed'}]),/class="au-claim-state">Checks complete</);assert.equal(s.status,'running');assert.equal(s.actions[0].status,'completed');
+ assert.match(ui.collectionMarkup([{...s,origin:'canonical_original',status:'completed'}]),/<span class="au-claim-status-word">Assessment complete</);assert.equal(s.status,'running');assert.equal(s.actions[0].status,'completed');
 });
 
 test('one contextual record resolves exact accepted objects without expanding a competing copy into every view',()=>{
@@ -219,7 +219,7 @@ test('unstarted Cases and canonical demo rows show original identity and message
  for(const roster of [ui.REFERENCE_DEMO_CASES,ui.DEMO_CASES]){
  const rows=roster.map((demo,index)=>({...original(),claim_id:demo.claim_id,title:`Exact original title ${index}`,source_preview:{text:`Exact original message ${index}`}})),before=JSON.stringify(rows),cases=ui.claimsMarkup(rows),demo=ui.demoItineraryMarkup(rows,null,null,roster);
  for(const [index,row] of rows.entries()){assert.ok(cases.includes(`data-au-claim="${row.claim_id}"`));assert.ok(cases.includes(row.source_preview.text));assert.ok(demo.includes(`data-au-claim="${row.claim_id}"`));assert.ok(demo.includes(row.title));}
- assert.doesNotMatch(cases,/class="au-claim-state"|>Not started<|>Not run<|>Received</);assert.doesNotMatch(demo,/class="au-status"|>Not started<|>Not run<|>Status not loaded</);assert.equal(JSON.stringify(rows),before);assert.equal(ui.matchingClaims(rows,{filter:'not_started'}).length,9,'the recorded status remains available for exact filtering');
+ assert.equal([...cases.matchAll(/<p class="au-claim-state"><span class="au-claim-status-word">Not started<\/span><\/p>/g)].length,rows.length,'each unprocessed row says Not started as text');assert.doesNotMatch(cases,/class="au-status"|>Not run<|>Received</);assert.doesNotMatch(demo,/class="au-status"|>Not started<|>Not run<|>Status not loaded</);assert.equal(JSON.stringify(rows),before);assert.equal(ui.matchingClaims(rows,{filter:'not_started'}).length,9,'the recorded status remains available for exact filtering');
  }
 });
 

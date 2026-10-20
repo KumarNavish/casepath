@@ -609,7 +609,7 @@ for(const width of [541,600,700])test(`a returning case shares the brand row wit
  const page=await fixturePage(t,{width});
  await open(page,robin);await page.locator('.au-identity-header [data-au-nav="work"]').click();await page.locator('[data-au-claim-row]').first().waitFor();
  const header=await page.evaluate(()=>{const element=document.querySelector('.au-identity-header'),box=item=>element.querySelector(item).getBoundingClientRect().toJSON();return {height:element.getBoundingClientRect().height,brand:box('.au-brand'),nav:box('.au-nav'),back:box('.au-case-return-compact'),returnHidden:element.querySelector('[data-au-case-return]').hidden,label:element.querySelector('.au-case-return-compact').getAttribute('aria-label'),newLabel:element.querySelector('.au-header-new')?.getAttribute('aria-label')};});
- assert.equal(header.returnHidden,false);assert.match(header.label,/^Back to case: /);assert.equal(header.newLabel,'New claim');
+ assert.equal(header.returnHidden,false);assert.match(header.label,/^Back to case: /);assert.equal(header.newLabel,'New case');
  assert.ok(header.height<=64.5,`one header row: ${JSON.stringify(header)}`);
  for(const part of ['nav','back'])assert.ok(header[part].top<header.brand.bottom && header[part].bottom>header.brand.top,`${part} sits on the brand row`);
 });
