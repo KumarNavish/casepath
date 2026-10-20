@@ -2752,6 +2752,59 @@ test('pause and hide after the8000ms outcome hold preserve the finished case and
  }
 });
 
+function tourSkipFixture(t,{holdNext=false}={}) {
+ const f=operationOpeningDOM(),first=completedItineraryFixture(ui.REFERENCE_DEMO_CASES[0].claim_id,1),next=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[1].claim_id),opening=deferredRead(),future=deferredRead(),timers=[];
+ const timeout=globalThis.setTimeout;globalThis.setTimeout=(fn,ms,...args)=>{if(ms===8000){const handle=timeout(()=>{},60000);timers.push({fn,handle});return handle;}return timeout(fn,ms,...args);};
+ const api=fakeApi({handle:async path=>{if(path.includes(first.id)){if(path.includes('/snapshot?'))return response(first.snapshot);if(path.endsWith('/replay?through_seq=0'))return response(first.zero);if(path.includes('/operations?'))return new Response(first.body);}if(path.includes(next.id)){if(path.includes('/snapshot?'))return response(next.snapshot);if(path.includes('/operations?'))return pendingOperationResponse(next.binding);if(path.endsWith('/replay?through_seq=0'))return holdNext?opening.promise:response(next.zero);}if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;}});
+ const controller=ui.mount(f.container,{fetch:api.fetch});
+ t.after(async()=>{controller.destroy();opening.resolve(response(next.zero));future.resolve(response({}));for(const timer of timers)clearTimeout(timer.handle);globalThis.setTimeout=timeout;await settle();});
+ return {f,first,next,opening,timers,controller,skip:()=>f.listeners.get('click')({target:control(f,'data-au-demo-skip')}),nextShown:()=>f.host.innerHTML.includes(`data-au-planned-process="${next.head.state_sha256}"`)};
+}
+
+test('a second Skip while the next case is preparing skips that case instead of stopping the tour',async t=>{
+ const tour=tourSkipFixture(t,{holdNext:true});
+ await settle();await tour.controller.showDemonstration();await waitFor(()=>tour.timers.length===1);
+ tour.skip();await settle();await settle();assert.ok(tour.f.host.innerHTML.includes(tour.first.head.state_sha256),'the next opening is still preparing');
+ tour.skip();await settle();tour.opening.resolve(response(tour.next.zero));
+ await waitFor(tour.nextShown);assert.doesNotMatch(tour.f.status.textContent,/stopped|unavailable/);
+});
+
+test('Skip after Pause during a result hold advances at once without a fresh hold',async t=>{
+ const tour=tourSkipFixture(t);
+ await settle();await tour.controller.showDemonstration();await waitFor(()=>tour.timers.length===1);
+ tour.f.listeners.get('click')({target:control(tour.f,'data-au-demo-stop')});await settle();
+ tour.skip();await waitFor(tour.nextShown);assert.equal(tour.timers.length,1,'the paused hold is not restarted after Skip');
+});
+
+test('Skip in a Saved history tour keeps saved replay for the next case',async t=>{
+ const first=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[0].claim_id),next=operationOpeningFixture(ui.REFERENCE_DEMO_CASES[1].claim_id),f=operationOpeningDOM(),future=deferredRead();
+ const api=fakeApi({handle:async path=>{const native=path.includes(first.id)?first:path.includes(next.id)?next:null;if(native){if(path.endsWith('/replay?through_seq=0'))return response(native.zero);if(path.includes('/snapshot?'))return response(native.snapshot);if(path.endsWith('/replay?through_seq=4'))return response(native.replay);if(path.includes('/operations?'))return pendingOperationResponse(native.binding);}if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;}});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();future.resolve(response({}));});await settle();
+ const choice=control(f,'data-au-demo-case',first.id);Object.assign(choice.dataset,{auDemoCollection:'reference',auDemoSaved:'true'});f.listeners.get('click')({target:choice});
+ await waitFor(()=>f.host.innerHTML.includes(first.zero.state.state_sha256));
+ f.listeners.get('click')({target:control(f,'data-au-demo-skip')});
+ await waitFor(()=>api.calls.some(row=>row.path.endsWith(`/claims/${next.id}/replay?through_seq=0`)));for(let turn=0;turn<5;turn++)await settle();
+ assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,0,'a saved-history tour never switches to an operations run on Skip');
+});
+
+test('reduced motion stops a replay tour at each recorded result and Skip advances',async t=>{
+ t.mock.timers.enable({apis:['setTimeout']});
+ const originalMatch=globalThis.matchMedia;globalThis.matchMedia=query=>({matches:query==='(prefers-reduced-motion: reduce)',addEventListener(){},removeEventListener(){}});t.after(()=>{globalThis.matchMedia=originalMatch;});
+ const f=dom(),id=ui.DEMO_CASES[0].claim_id,next=ui.DEMO_CASES[1].claim_id;
+ const zero=claim_id=>({claim_id,title:'Original source packet',message:'Original customer message.',revision:0,state_sha256:sha(`${claim_id}:0`),status:'not_started',mode:'unprocessed',phase:'not_run',graph:null,evaluation:null,outcome:null,deferral:null,facts:[],obligations:[],actions:[],acquired_sources:[],source_descriptors:[]});
+ const head=state({claim_id:id,title:'Original source packet',revision:1,state_sha256:sha(`${id}:1`),last_event_sha256:sha('event:1'),graph:{...state().graph,claim_id:id},status:'deferred',phase:'deferred',outcome:{status:'deferred',summary:'The supplied source leaves a question unresolved.',missing_evidence:[],unresolved_facts:[]},actions:[]});
+ const envelope=(claim_id,seq)=>{const s=claim_id===id&&seq?head:zero(claim_id),current_revision=claim_id===id?1:0;return {state:s,projection:{revision:seq,state_sha256:s.state_sha256},events:seq?[{seq:1,kind:'outcome.recorded',revision:1,state_sha256:s.state_sha256,event_sha256:sha('event:1'),payload:{}}]:[],cursor_sha256:seq?sha('event:1'):null,mode:'replay',replay_only:true,through_seq:seq,current_revision,current_state_sha256:current_revision?head.state_sha256:s.state_sha256,current_event_sha256:current_revision?sha('event:1'):null,provenance:seq?{event_sha256:sha('event:1')}:{}};};
+ const api=fakeApi({handle:async path=>{if(path.endsWith('/claims'))return response({claims:[{...head,origin:'canonical_original'}]});const replay=path.match(/\/claims\/([^/]+)\/replay\?through_seq=(\d+)$/);if(replay)return response(envelope(replay[1],Number(replay[2])));}});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ await controller.showDemonstration(true,'legacy');
+ for(let tick=0;tick<4;tick++){t.mock.timers.tick(4100);await settle();}
+ assert.match(f.host.innerHTML,new RegExp(`data-au-revision="1" data-au-state-sha="${head.state_sha256}"`));
+ const reads=()=>api.calls.filter(call=>call.path.includes(`/claims/${next}/replay?`)).length;
+ assert.equal(reads(),0,'reduced motion never opens the next case on its own');
+ f.listeners.get('click')({target:control(f,'data-au-demo-skip')});await settle();await settle();
+ assert.equal(reads(),1,'Skip still advances the roster');
+});
+
 test('Cases cold click can finish packet acquisition inside its original300ms choice',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),head=deferredRead();let assetSignal;
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')||path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});

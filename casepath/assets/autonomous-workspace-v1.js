@@ -3451,7 +3451,7 @@
     // A tour is one roster played in order. Its session owns the exact cases,
     // so a sequence never mixes selected originals with reference assessments.
     function tourSession(collection, cases, index, operations, saved = false) {
-      tour = {collection,cases,index,operations};
+      tour = {collection,cases,index,operations,saved};
       return {mode:collection === 'selected' || saved ? 'replay' : 'operations',collection,cases,index,operations,useRecorded:operations === 'recorded'};
     }
     const sessionCases = session => session?.cases || demoCases(session?.collection);
@@ -3474,7 +3474,7 @@
       }
       stopPresentation();
       if (next >= shown.cases.length) { finishTour(shown,true); return; }
-      demoSession = tourSession(shown.collection,shown.cases,next,operations);
+      demoSession = tourSession(shown.collection,shown.cases,next,operations,shown.saved);
       openPresentationCase(demoSession,true);
     }
     // The tour ends at the knowledge its cases saved or reused. Without any,
@@ -3744,6 +3744,7 @@
       let remaining = 8000;
       while (remaining > 0 && !session.skip && !reduced?.matches) {
         if (!await operationGate(session,token)) return false;
+        if (session.skip) break;
         const started = Date.now();
         await new Promise(resolve => { session.operationWake = resolve; demoTimer = root.setTimeout(resolve,remaining); });
         if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; session.operationWake = null;
@@ -3975,7 +3976,8 @@
           const opening = await presentationOpening(session,id);
           if (session.mode === 'operations' && token === epoch && generation === readGeneration && (demoSession === session || pausedPresentation === session)) {
             if (!await operationGate(session,token)) return;
-            if (session.skip || reduced?.matches) { stopPresentation(); renderClaim(); return; }
+            // Skip during this opening skips the case being opened; only Skip to result stops here.
+            if (session.skip && !session.skipCase || reduced?.matches) { stopPresentation(); renderClaim(); return; }
           }
           if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
           if (session.collection !== 'selected' && !opening.referenceReady) {
@@ -4268,6 +4270,8 @@
       if (session.failure) { presentationFailed(session,session.failure); return; }
       if (replayRecord.through_seq >= replayRecord.current_revision) {
         if (!replayCanAdvance(current)) { stopPresentation(); renderClaim(); notice('This recorded investigation has no settled operational outcome. Replay stopped at its saved head.',true); return; }
+        // Reduced motion stops at each result like an operations case; Skip advances.
+        if (reduced?.matches) { stopPresentation(); renderClaim(); return; }
         const next = sessionCases(session)[session.index+1];
         if (next) presentationOpening(session,next.claim_id);
         const remaining = session.mode === 'operations' ? 0 : Math.max(0,4000 - (Date.now() - session.displayedAt));
