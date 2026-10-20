@@ -92,7 +92,7 @@
     fictional:'Fictional case', fixedRules:'fixed rules',
     noRealWorldAction:'No real-world action. Playback shows saved records and changes nothing.',
     analysisUnavailable:'Analysis is not available in this workspace. Original sources are viewable.',
-    notRunHere:'Not run in this workspace', noHistories:'No recorded histories in this workspace yet.',
+    notRunHere:'Not started', noHistories:'No recorded histories in this workspace yet.',
     procedureNotRun:'Procedure for this domain · not run for this case',
     intakeNotChecked:'Intake not checked', notCheckedYet:'Not checked yet',
     candidateFiles:'Attached files, not yet checked against these items',
@@ -455,11 +455,15 @@
 
   // One lexicon for where a case stands. Rows, status filters and the case
   // header all use these words; the recorded status code stays in the record.
+  // Received is waiting to be checked, not yet Working. Deferred is an
+  // assessment that stopped short without naming a missing document, kept
+  // apart from Stopped (execution failed, paused or could not proceed). A
+  // code this lexicon does not know reads as Status unknown, never as a guess.
   const caseStatuses = Object.freeze([
-    ['not_started','Not started'], ['working','Working'], ['more_evidence','More evidence needed'],
-    ['investigation_complete','Assessment complete'], ['stopped','Stopped']
+    ['not_started','Not started'], ['received','Received'], ['working','Working'], ['more_evidence','More evidence needed'],
+    ['deferred','Deferred'], ['investigation_complete','Assessment complete'], ['stopped','Stopped'], ['unknown','Status unknown']
   ].map(([id,label]) => Object.freeze({id,label})));
-  function caseStatusLabel(id) { return caseStatuses.find(row => row.id === id)?.label || 'Status not recorded'; }
+  function caseStatusLabel(id) { return caseStatuses.find(row => row.id === id)?.label || 'Status unknown'; }
   // "2 working · 3 more evidence needed": counted statuses in lexicon order.
   function caseStatusSummary(counts = {}) {
     return caseStatuses.filter(row => count(counts[row.id])).map(row => `${counts[row.id]} ${row.label.toLocaleLowerCase('en')}`).join(' · ');

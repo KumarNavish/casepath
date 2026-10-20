@@ -31,10 +31,10 @@ forest/mineral/vermilion identity recorded in `design/evidence-path/README.md`
 images for structure only.
 
 - Background: mineral `#EFF1EC`; sources and documents on paper `#FFFFFC`.
-- Text: forest `#183D35`; secondary text: muted green-gray `#576D65`.
+- Text: forest `#183D35`; secondary text: muted green-gray `#465E54`.
 - Active reasoning and the selected junction: vermilion `#BC3E2A`.
 - Received or expert-reviewed: restrained green `#315E49`.
-- Rules: one-pixel `#BDC9BD` hairlines; input boundaries `#73857A`.
+- Rules: one-pixel `#73857A` hairlines and input boundaries.
 - Focus: a separate 3 px `#164F88` ring.
 - Icons: code-native 1.5px line icons with consistent optical size.
 - Typography: plain UI sans serif; compact labels; no marketing display copy.

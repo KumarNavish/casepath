@@ -510,10 +510,12 @@ test('fact labels name the subject without field identifiers',()=>{
 });
 
 test('one case status lexicon names every lifecycle bucket and counts only what is present',()=>{
-  assert.deepEqual(language.caseStatuses.map(row => row.label),['Not started','Working','More evidence needed','Assessment complete','Stopped']);
+  // P7 review: Received is not yet Working, a no-gap deferral stays Deferred
+  // (ade555a) apart from Stopped, and an unknown code is explicit.
+  assert.deepEqual(language.caseStatuses.map(row => row.label),['Not started','Received','Working','More evidence needed','Deferred','Assessment complete','Stopped','Status unknown']);
   for (const row of language.caseStatuses) { shortCopy(row.label); assert.equal(language.caseStatusLabel(row.id),row.label); }
-  assert.equal(language.caseStatusLabel('deferred'),'Status not recorded','a recorded code is not a lexicon status');
-  assert.equal(language.caseStatusSummary({not_started:141,working:2,more_evidence:3,investigation_complete:4,stopped:0}),'141 not started · 2 working · 3 more evidence needed · 4 assessment complete');
+  assert.equal(language.caseStatusLabel('investigating'),'Status unknown','a recorded code is not a lexicon status and is never guessed');
+  assert.equal(language.caseStatusSummary({not_started:141,received:1,working:2,more_evidence:3,deferred:1,investigation_complete:4,stopped:0}),'141 not started · 1 received · 2 working · 3 more evidence needed · 1 deferred · 4 assessment complete');
   assert.equal(language.caseStatusSummary({}),'');
 });
 

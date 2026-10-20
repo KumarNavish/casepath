@@ -106,7 +106,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 /* Autonomous work owns its identity. Reviewed workspaces retain their styles. */
 
 /* Quiet work: one reading surface, direct objects, native contextual inspection. */
-.au-workspace { --au-ink:#183d35; --au-muted:#576d65; --au-line:#bdc9bd; --au-accent:#bc3e2a; --au-green:#315e49; --au-amber:#80633c; --au-paper:#fffffc; --au-field:#eff1ec; --au-wash:#e1e8db; color:var(--au-ink); background:var(--au-field); font:400 16px/1.55 'CasePath Instrument',Arial,sans-serif; font-synthesis:none; min-height:100dvh; width:100%; min-width:0; overflow-wrap:anywhere; }
+.au-workspace { --au-ink:#183d35; --au-muted:#465e54; --au-line:#73857a; --au-accent:#bc3e2a; --au-green:#315e49; --au-amber:#80633c; --au-paper:#fffffc; --au-field:#eff1ec; --au-wash:#e1e8db; color:var(--au-ink); background:var(--au-field); font:400 16px/1.55 'CasePath Instrument',Arial,sans-serif; font-synthesis:none; min-height:100dvh; width:100%; min-width:0; overflow-wrap:anywhere; }
 .au-workspace *, .au-workspace *::before, .au-workspace *::after { box-sizing:border-box; }
 .au-workspace [hidden] { display:none !important; }
 .au-workspace :is(h1,h2,h3,h4,p,ul,ol,dl,blockquote) { margin:0; }
@@ -382,9 +382,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-collection-count { margin:0; color:var(--au-muted); font-size:16px; white-space:nowrap; }
 .au-workspace .au-collection-count:empty { display:none; }
 /* One quiet status line; each count filters the list. */
-.au-workspace .au-case-filter { gap:2px 10px; margin:4px 0 12px; }
-.au-workspace .au-case-filter-separator { color:var(--au-muted); }
-.au-workspace .au-case-filter .au-case-filter-clear { margin-left:14px; }
+.au-workspace .au-case-filter { gap:2px 24px; margin:4px 0 12px; }
 .au-workspace .au-claim-list { border-bottom:1px solid var(--au-line); }
 /* A row is a title, one metadata line, one state line and the message
    excerpt. The title button names the case; the whole row opens it. */
@@ -396,11 +394,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-claim-row > p { max-width:85ch; margin:2px 0 0; }
 .au-workspace .au-claim-row > .au-case-subject { color:var(--au-muted); font-size:15px; }
 .au-workspace .au-case-facts { color:var(--au-muted); font-size:15px; line-height:1.5; }
-.au-workspace .au-case-facts > span { white-space:nowrap; }
+/* Each fact draws its separator before itself; at a line start the
+   separator falls outside the clipped edge, so no line ends or begins with a
+   dangling dot. Text only, so the clip never cuts a focus ring. */
+.au-workspace :is(.au-case-facts,.au-demo-case-facts) { display:flex; flex-wrap:wrap; column-gap:.9em; overflow:hidden; }
+.au-workspace :is(.au-case-facts,.au-demo-case-facts) > span { margin-left:-.9em; white-space:nowrap; }
+.au-workspace :is(.au-case-facts,.au-demo-case-facts) > span::before { content:'·'; content:'·' / ''; display:inline-block; width:.9em; text-align:center; }
 .au-workspace .au-claim-row > .au-claim-state { margin-top:6px; color:var(--au-ink); font-size:16px; line-height:1.5; }
 .au-workspace .au-claim-state-detail { color:var(--au-muted); }
 .au-workspace .au-claim-row > .au-claim-excerpt { display:-webkit-box; margin-top:4px; overflow:hidden; color:var(--au-muted); font-size:16px; line-height:1.55; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; }
 .au-workspace .au-claim-row > .au-claim-demo { margin-top:6px; color:var(--au-muted); font-size:15px; }
+.au-workspace .au-claim-row > .au-claim-match { margin-top:6px; color:var(--au-muted); font-size:15px; line-height:1.5; overflow-wrap:anywhere; }
+.au-workspace .au-claim-match-text { color:var(--au-ink); }
+.au-workspace .au-claim-match mark { background:#e5eeb5; color:var(--au-ink); }
 .au-workspace .au-pagination { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:16px 24px; margin-top:16px; color:var(--au-muted); font-size:16px; }
 .au-workspace .au-pagination button { min-height:40px; font-size:16px; }
 .au-workspace .au-catalog-preview { max-width:1120px; margin:0 auto; }
@@ -904,7 +910,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 @keyframes au-learning-node-appear { from { opacity:0; } to { opacity:1; } }
 
 /* Recorded roles remain readable without colour or motion. */
-.au-workspace { --au-muted:#465e54; --au-line:#73857a; }
 .au-workspace :is(button,a,input,select,textarea,summary,[tabindex]):focus-visible { outline:3px solid #164f88!important; outline-offset:3px; scroll-margin:20px; }
 .au-workspace :is(button,input,select,textarea,summary) { font-size:max(16px,1em); }
 .au-workspace :is(button,summary) { min-height:24px; }

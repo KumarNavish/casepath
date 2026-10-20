@@ -100,7 +100,8 @@ test('completed reference assessments filter with completed assessments while ex
  const ordinary={claim_id:'ordinary',origin:'canonical_original',status:'deferred',policy_id:'casepath.autonomous/1',outcome:{status:'deferred'}},wrongPolicy={...ordinary,claim_id:'old-policy',outcome:reference[0].outcome};
  const rows=[...reference,ordinary,wrongPolicy],before=JSON.stringify(rows);
  assert.deepEqual(ui.matchingClaims(rows,{filter:'investigation_complete'}).map(row=>row.claim_id),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id));
- assert.deepEqual(ui.matchingClaims(rows,{filter:'deferred'}).map(row=>row.claim_id),['ordinary','old-policy']);
+ // A recorded deferral whose draft does not rule out a document gap needs more evidence; Deferred is kept for a no-gap draft.
+ assert.deepEqual(ui.matchingClaims(rows,{filter:'more_evidence'}).map(row=>row.claim_id),['ordinary','old-policy']);assert.deepEqual(ui.matchingClaims(rows,{filter:'deferred'}).map(row=>row.claim_id),[]);
  assert.match(ui.collectionMarkup(rows,{filter:'investigation_complete'}),/data-au-filter="investigation_complete" aria-pressed="true">9 assessment complete<\/button>/);assert.equal(JSON.stringify(rows),before);
 });
 
@@ -1444,16 +1445,16 @@ test('the default Work collection uses saved statuses and explicit New claim nav
  assert.match(f.container.innerHTML,/<header class="au-identity-header"/);assert.doesNotMatch(f.container.innerHTML,/class="au-rail"/);assert.match(f.container.innerHTML,/data-au-nav="work"/);assert.match(f.container.innerHTML,/data-au-nav="intake" aria-label="New case">New<span class="au-header-new-noun"> case<\/span><\/button>/);assert.doesNotMatch(f.container.innerHTML,/↗/);
  assert.match(f.host.innerHTML,/class="au-collection(?:\s[^"]*)?"/);assert.doesNotMatch(f.host.innerHTML,/<form[^>]*data-au-intake/);
  const html=ui.claimsMarkup(claimRows),word=id=>html.match(new RegExp(`data-au-claim-row="${id}"[\\s\\S]*?<span class="au-claim-status-word">([^<]+)<`))[1];assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);
- // One lexicon (P7): a deferral without an outcome and a failure both read Stopped; queued work reads Working.
- assert.deepEqual(['claim-a','claim-b','claim-c','claim-d','claim-e'].map(word),['Stopped','Working','Assessment complete','Stopped','Working']);assert.doesNotMatch(html,/Execution stopped|Checks complete|>Queued<|class="au-status"/);
+ // One lexicon (P7, review): a deferral without an outcome and a failure both read Stopped; queued work has not started running, so it reads Received.
+ assert.deepEqual(['claim-a','claim-b','claim-c','claim-d','claim-e'].map(word),['Stopped','Working','Assessment complete','Stopped','Received']);assert.doesNotMatch(html,/Execution stopped|Checks complete|>Queued<|class="au-status"/);
  await newClaim(f);assert.match(f.host.innerHTML,/<form[^>]*data-au-intake/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('search and filters select only matching saved claims and preserve original statuses',()=>{
  const before=JSON.stringify(claimRows),ids=options=>[...ui.claimsMarkup(claimRows,options).matchAll(/data-au-claim="([^"]+)"/g)].map(match=>match[1]);
- assert.deepEqual(ids({filter:'working'}),['claim-b','claim-e']);assert.deepEqual(ids({filter:'stopped'}),['claim-a','claim-d']);assert.deepEqual(ids({filter:'investigation_complete'}),['claim-c']);assert.deepEqual(ids({filter:'more_evidence'}),[]);
+ assert.deepEqual(ids({filter:'working'}),['claim-b']);assert.deepEqual(ids({filter:'received'}),['claim-e']);assert.deepEqual(ids({filter:'stopped'}),['claim-a','claim-d']);assert.deepEqual(ids({filter:'investigation_complete'}),['claim-c']);assert.deepEqual(ids({filter:'more_evidence'}),[]);assert.deepEqual(ids({filter:'deferred'}),[]);
  // Recorded codes in older links resolve to their lexicon status.
- assert.deepEqual(ids({filter:'resolved'}),['claim-c']);assert.deepEqual(ids({filter:'failed'}),['claim-a','claim-d']);assert.deepEqual(ids({filter:'queued'}),['claim-b','claim-e']);
+ assert.deepEqual(ids({filter:'resolved'}),['claim-c']);assert.deepEqual(ids({filter:'failed'}),['claim-a','claim-d']);assert.deepEqual(ids({filter:'queued'}),['claim-e']);
  assert.deepEqual(ids({search:'RECEIPT'}),['claim-a']);assert.deepEqual(ids({filter:'working',search:'policy'}),['claim-b']);assert.deepEqual(ids({filter:'stopped',search:'policy'}),[]);
  const collection=ui.collectionMarkup(claimRows,{filter:'working',search:'policy'});assert.equal([...collection.matchAll(/data-au-claim="/g)].length,1);assert.match(collection,/data-au-filter="working" aria-pressed="true">1 working<\/button>/,'status counts follow the current search');assert.match(collection,/data-au-collection-count>1 of 5</);assert.deepEqual(ui.matchingClaims(claimRows,{filter:'stopped'}).map(row=>row.claim_id),['claim-a','claim-d']);
  assert.equal(JSON.stringify(claimRows),before);assert.doesNotMatch(ui.claimsMarkup([]),/data-au-claim="/);
@@ -1466,10 +1467,10 @@ test('collection rows name the case in an h2 and read as metadata, one state lin
  const complete={origin:'canonical_original',claim_id:'clm_complete',title:'Rent increase without reasons',status:'deferred',revision:9,policy_id:'casepath.bounded-reference-assessment/1.0.0',attachment_count:1,attachment_media_types:['application/pdf'],browse_metadata:{domain:'rent_increase_dispute'},source_preview:'Hello\nThe form had no reason.',outcome:{status:'deferred',assessment_status:'complete',next_action:'Inspect the recorded assessment and its cited sources.',reference_provenance:{mode:'deterministic_reference',synthetic:true}}};
  const rows=[deferred,unprocessed,complete],before=JSON.stringify(rows),html=ui.claimsMarkup(rows),row=id=>html.match(new RegExp(`<article[^>]*data-au-claim-row="${id}"[\\s\\S]*?</article>`))[0];
  const meta=id=>row(id).match(/<p class="au-case-facts">([\s\S]*?)<\/p>/)[1];
- assert.equal(meta('clm_deferred'),'<span>Lease termination</span> · <span>German</span> · <span>2 files (PDF, JPEG)</span> · <span>email</span> · <span>22 Oct 2025</span>','each fact stays whole when the line wraps');
- assert.match(row('clm_deferred'),/<p class="au-claim-state"><span class="au-claim-status-word">More evidence needed<\/span><span class="au-claim-state-detail"> · Missing: Termination notice; Proof of delivery\.<\/span><\/p>/,'a deferred row shows its recorded constraint');
- assert.equal(meta('clm_unprocessed').replace(/<\/?span>/g,''),'Defects and repairs · English · Message only · phone note · 12 Jan 2025','an unprocessed row shows its language and attachment count');assert.match(row('clm_unprocessed'),/<\/p><p class="au-claim-state"><span class="au-claim-status-word">Not started<\/span><\/p>/);
- assert.match(row('clm_complete'),/<span>Rent increases<\/span> · <span>1 file \(PDF\)<\/span><\/p><p class="au-claim-state"><span class="au-claim-status-word">Assessment complete<\/span><span class="au-claim-state-detail"> · Inspect the recorded assessment and its cited sources\.<\/span>/,'a complete row shows its recorded next action');
+ assert.equal(meta('clm_deferred'),'<span>Lease termination</span><span>German</span><span>2 files (PDF, JPEG)</span><span>email</span><span>22 Oct 2025</span>','each fact stays whole when the line wraps; the stylesheet draws separators that never dangle (P7 review)');
+ assert.match(row('clm_deferred'),/<p class="au-claim-state"><span class="au-claim-status-word">More evidence needed<\/span><span class="au-claim-state-detail">&nbsp;·&nbsp;Missing: Termination notice; Proof of delivery\.<\/span><\/p>/,'a deferred row shows its recorded constraint');
+ assert.deepEqual([...meta('clm_unprocessed').matchAll(/<span>([^<]*)<\/span>/g)].map(match=>match[1]),['Defects and repairs','English','Message only','phone note','12 Jan 2025'],'an unprocessed row shows its language and attachment count');assert.match(row('clm_unprocessed'),/<\/p><p class="au-claim-state"><span class="au-claim-status-word">Not started<\/span><\/p>/);
+ assert.match(row('clm_complete'),/<span>Rent increases<\/span><span>1 file \(PDF\)<\/span><\/p><p class="au-claim-state"><span class="au-claim-status-word">Assessment complete<\/span><span class="au-claim-state-detail">&nbsp;·&nbsp;Inspect the recorded assessment and its cited sources\.<\/span>/,'a complete row shows its recorded next action');
  assert.match(row('clm_unprocessed'),/<p class="au-claim-excerpt" id="ex-clm_unprocessed">As I understand it: the corner of the bedroom is black\.<\/p>/,'the salutation is not part of the excerpt');
  assert.match(row('clm_deferred'),/id="ex-clm_deferred">Die Kündigung kam an meinen Mann\.<\/p>/);assert.match(row('clm_complete'),/id="ex-clm_complete">The form had no reason\.<\/p>/);
  for(const claim of rows){
@@ -1498,6 +1499,39 @@ test('the status line appears once a case moves past Not started and its counts 
  routing.external('#autonomous/cases?status=deferred');await settle();assert.deepEqual(ids(),['clm_gap','clm_gap2'],'an older status= link still resolves');
  assert.equal(live===undefined || live===null || typeof live==='object',true);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
+// P7 review: Received is not Working, a no-gap deferral stays Deferred, an
+// unknown code is explicit, and a match the row cannot show says where it is.
+test('rows name received, deferred and unknown states honestly and explain matches the row cannot show',()=>{
+ const base={origin:'canonical_original',title:'Case',source_preview:'Short preview.'};
+ const rows=[
+  {...base,claim_id:'clm_received',status:'received',phase_summary:'New documents arrived'},
+  {...base,claim_id:'clm_nogap',status:'deferred',outcome:{status:'deferred',missing_evidence:[],request_draft:{status:'prepared_not_sent',body:'No document gap.'},reason:'Open facts remain.'}},
+  {...base,claim_id:'clm_unknown',status:'archived_elsewhere'},
+  {...base,claim_id:'clm_paused',status:'deferred',deferral:{code:'paused',reason:'Paused by the handler.'}}
+ ],before=JSON.stringify(rows);
+ const html=ui.claimsMarkup(rows),word=id=>html.match(new RegExp(`data-au-claim-row="${id}"[\\s\\S]*?<span class="au-claim-status-word">([^<]+)<`))[1];
+ assert.deepEqual(rows.map(row=>word(row.claim_id)),['Received','Deferred','Status unknown','Stopped']);
+ assert.match(html,/data-au-claim-row="clm_received"[\s\S]*?Received<\/span><span class="au-claim-state-detail">&nbsp;·&nbsp;New documents arrived<\/span>/);
+ assert.match(html,/data-au-claim-row="clm_nogap"[\s\S]*?Deferred<\/span><span class="au-claim-state-detail">&nbsp;·&nbsp;Open facts remain\.<\/span>/);
+ assert.match(html,/data-au-claim-row="clm_unknown"[\s\S]*?Status unknown<\/span><span class="au-claim-state-detail">&nbsp;·&nbsp;Recorded status: Archived elsewhere\.<\/span>/);
+ assert.match(html,/data-au-claim-row="clm_paused"[\s\S]*?Stopped<\/span><span class="au-claim-state-detail">&nbsp;·&nbsp;Paused\.<\/span>/);
+ const line=ui.collectionMarkup(rows).match(/<nav class="au-case-filter" aria-label="Case status">[\s\S]*?<\/nav>/)[0];
+ assert.deepEqual([...line.matchAll(/data-au-filter="([^"]+)" aria-pressed="false">([^<]+)</g)].map(match=>[match[1],match[2]]),[['received','1 received'],['deferred','1 deferred'],['stopped','1 stopped'],['unknown','1 status unknown']]);
+ assert.doesNotMatch(line,/·/,'no separator glyph is left dangling where a narrow line wraps');
+ assert.deepEqual(ui.matchingClaims(rows,{filter:'deferred'}).map(row=>row.claim_id),['clm_nogap']);assert.deepEqual(ui.matchingClaims(rows,{filter:'stopped'}).map(row=>row.claim_id),['clm_paused']);
+ const found=[{...base,claim_id:'clm_a',title:'Renovation notice'},{...base,claim_id:'clm_b',title:'Heating'}];
+ const searchMatches=new Map([['possession',new Map([['clm_a',{field:'message',text:'…asked for vacant possession by <March>…'}]])],['renovation',new Map([['clm_a',null]])],['lease',new Map([['clm_b',{field:'file_name',text:'Lease_2025.pdf'}]])]]);
+ const message=ui.claimsMarkup(found,{search:'possession',searchMatches});
+ assert.match(message,/aria-describedby="ex-clm_a match-clm_a"/);
+ assert.match(message,/<p class="au-claim-match" id="match-clm_a" data-au-search-hint="message">Found in the full message: <span class="au-claim-match-text">“…asked for vacant <mark>possession<\/mark> by &lt;March&gt;…”<\/span><\/p>/);
+ assert.match(ui.claimsMarkup(found,{search:'lease',searchMatches}),/data-au-search-hint="file_name">Found in an attached file name: <span class="au-claim-match-text"><mark>Lease<\/mark>_2025\.pdf<\/span>/);
+ assert.doesNotMatch(ui.claimsMarkup(found,{search:'renovation',searchMatches}),/au-claim-match|match-clm/,'a visible title match needs no hint');
+ const count=options=>ui.collectionMarkup(found,options).match(/data-au-collection-count>([^<]*)</)[1];
+ assert.equal(count({search:'possession',searchState:'pending',searchMatches:new Map()}),'Searching…','rows still waiting on the full-text read are not counted as misses');
+ assert.equal(count({search:'possession renovation',searchState:'pending',searchMatches:new Map([['possession',searchMatches.get('possession')]])}),'1 of 2','once every row is decided the count is exact even while another term is read');
+ assert.equal(count({search:'possession',searchState:'failed',searchMatches:new Map()}),'0 of 2 · titles and excerpts only');
+ assert.equal(JSON.stringify(rows),before);
+});
 test('collection search asks the API for terms the rows lack and counts against the scope',async t=>{
  t.mock.timers.enable({apis:['setTimeout']});
  const rows=[{origin:'canonical_original',claim_id:'clm_vacant',title:'Renovation notice',status:'not_started',source_preview:'Short preview.'},{origin:'canonical_original',claim_id:'clm_other',title:'Heating',status:'not_started',source_preview:'Cold rooms.'}];
@@ -1506,7 +1540,7 @@ test('collection search asks the API for terms the rows lack and counts against 
  const query=f.host.querySelector;f.host.querySelector=selector=>({'[data-au-claim-search]':search,'[data-au-collection-count]':count,'[data-au-claims]':list})[selector]||query(selector);
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  search.value='possession';f.listeners.get('input')({target:search});
- assert.match(list.innerHTML,/Searching the full messages and files…/,'no false empty result while the full-message search runs');assert.equal(count.textContent,'0 of 2');assert.deepEqual(searched,[]);
+ assert.match(list.innerHTML,/Searching the full messages and files…/,'no false empty result while the full-message search runs');assert.equal(count.textContent,'Searching…','no provisional 0 of 2 while the full-message search runs (P7 review)');assert.deepEqual(searched,[]);
  t.mock.timers.tick(250);await settle();await settle();
  assert.deepEqual(searched,['possession'],'one browsing request per uncached term');assert.match(list.innerHTML,/data-au-claim="clm_vacant"/);assert.doesNotMatch(list.innerHTML,/data-au-claim="clm_other"/);assert.equal(count.textContent,'1 of 2');
  search.value='possession renovation';f.listeners.get('input')({target:search});assert.equal(count.textContent,'1 of 2','a cached term and a title match show at once');t.mock.timers.tick(250);await settle();await settle();
@@ -1527,14 +1561,46 @@ test('each view names itself in the document title',async t=>{
  await controller.openClaim('claim-a');assert.equal(title(),'Original incoming claim — CasePath');
  navClick(f,'knowledge');await settle();assert.equal(title(),'Knowledge — CasePath');
  navClick(f,'work');await settle();assert.equal(title(),'Cases · page 2 — CasePath');
+ await controller.openClaim('claim-a');await newClaim(f);assert.equal(title(),'New case — CasePath','New case names itself instead of keeping the case title (P7 review)');
  controller.destroy();assert.equal(title(),'CasePath');assert.equal(routing.listeners.size,0);
+});
+// P7 review: the page's own first route keeps natural focus order, so the
+// first Tab reaches the skip link; main is not a click-focus target.
+test('the first route leaves focus alone, the skip link lands on the heading and main takes no stray focus',async t=>{
+ routingFixture(t,'#autonomous/cases');const f=dom(),doc=f.container.ownerDocument;
+ const api=fakeApi({handle:claimsHandler(claimRows)}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();
+ assert.equal(doc.activeElement,null,'loading the page does not move focus past the skip link');
+ assert.match(f.container.innerHTML,/^<div class="au-shell au-identity-shell"><a class="au-skip-link" href="#auMain" data-au-skip>Skip to main content<\/a>/);
+ assert.match(f.container.innerHTML,/class="au-main" id="auMain">/);assert.doesNotMatch(f.container.innerHTML,/id="auMain" tabindex/);
+ const skip={closest(){return this;},hasAttribute:name=>name==='data-au-skip'};let prevented=false;f.listeners.get('click')({target:skip,preventDefault(){prevented=true;}});
+ assert.equal(prevented,true);assert.equal(doc.activeElement,f.host.querySelector('h1'));
+ doc.activeElement=null;f.listeners.get('click')({target:control(f,'data-au-page','2')});assert.equal(doc.activeElement,f.host.querySelector('h1'),'a page change is navigation and focuses the list heading');
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+// P7 review: the opened row is the return target only on a direct return.
+test('a row opened from Cases is focused only on a direct return; a detour lands at the top on the heading',async t=>{
+ routingFixture(t,'#autonomous/cases');const f=dom(),doc=f.container.ownerDocument,scrollCalls=[];
+ const prior=Object.fromEntries(['scrollX','scrollY','scrollTo'].map(name=>[name,globalThis[name]]));Object.assign(globalThis,{scrollX:0,scrollY:0,scrollTo(options){scrollCalls.push(options);globalThis.scrollX=options.left;globalThis.scrollY=options.top;}});t.after(()=>Object.assign(globalThis,prior));
+ const row={dataset:{auClaim:'claim-a'},isConnected:true,focus(){doc.activeElement=row;}},all=f.host.querySelectorAll;f.host.querySelectorAll=selector=>selector==='[data-au-claims] [data-au-claim]'?[row]:all(selector);
+ const api=fakeApi({handle:claimsHandler(claimRows)}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ const heading=f.host.querySelector('h1'),open=async()=>{globalThis.scrollY=900;f.listeners.get('click')({target:control(f,'data-au-claim','claim-a')});await settle();await settle();};
+ await open();navClick(f,'work');await settle();await settle();
+ assert.equal(doc.activeElement,row,'a direct return focuses the opened row');assert.deepEqual(scrollCalls.at(-1),{left:0,top:900,behavior:'instant'});
+ for(const detour of ['knowledge','demonstration']){
+  await open();navClick(f,detour);await settle();await settle();navClick(f,'work');await settle();await settle();await settle();
+  assert.equal(doc.activeElement,heading,`after ${detour} Cases lands on its heading`);assert.deepEqual(scrollCalls.at(-1),{top:0,left:0,behavior:'instant'},`after ${detour} Cases lands at the top`);
+ }
+ await open();await controller.openClaim('claim-b');navClick(f,'work');await settle();await settle();
+ assert.equal(doc.activeElement,heading,'returning from a different case does not focus the earlier row');assert.deepEqual(scrollCalls.at(-1),{top:0,left:0,behavior:'instant'});
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 test('typing a collection search updates results without replacing the focused native search input',async t=>{
  const f=dom(),search=control(f,'data-au-claim-search'),filter=control(f,'data-au-claim-filter'),count={textContent:''},rows={innerHTML:''};search.value='';filter.value='all';
  search.matches=selector=>selector==='[data-au-claim-search]';filter.matches=selector=>selector==='[data-au-claim-filter]';
  const query=f.host.querySelector;f.host.querySelector=selector=>({'[data-au-claim-search]':search,'[data-au-claim-filter]':filter,'[data-au-collection-count]':count,'[data-au-claims]':rows})[selector]||query(selector);
  const api=fakeApi({handle:claimsHandler(claimRows)}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
- const shell=f.host.innerHTML;search.focus();search.value='receipt';f.listeners.get('input')({target:search});assert.equal(f.host.innerHTML,shell);assert.equal(f.container.ownerDocument.activeElement,search);assert.match(rows.innerHTML,/Notice needs a receipt/);assert.doesNotMatch(rows.innerHTML,/Policy investigation/);assert.equal(count.textContent,'1 of 5');
+ const shell=f.host.innerHTML;search.focus();search.value='receipt';f.listeners.get('input')({target:search});assert.equal(f.host.innerHTML,shell);assert.equal(f.container.ownerDocument.activeElement,search);assert.match(rows.innerHTML,/Notice needs a receipt/);assert.doesNotMatch(rows.innerHTML,/Policy investigation/);assert.equal(count.textContent,'Searching…','other full messages may still match (P7 review)');
+ await waitFor(()=>count.textContent==='1 of 5');
  f.listeners.get('click')({target:control(f,'data-au-filter','working')});assert.equal(f.host.innerHTML,shell);assert.doesNotMatch(rows.innerHTML,/data-au-claim="/);assert.equal(count.textContent,'0 of 5');assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
@@ -1908,7 +1974,7 @@ test('delayed claim collections preserve verified revisions without rejecting ge
   {name:'a delayed older current row',row:{claim_id:'claim-a',title:'Old collection title',status:'running',revision:3,state_sha256:hash('a')},expectedStatus:'More evidence needed'},
   {name:'a missing current row',row:null,expectedStatus:'More evidence needed'},
   {name:'a conflicting identity at the verified revision',row:{claim_id:'claim-a',title:'Conflicting collection title',status:'running',revision:4,state_sha256:hash('9')},expectedStatus:'More evidence needed'},
-  {name:'a genuinely newer collection row',row:{claim_id:'claim-a',title:'Newer collection title',status:'queued',revision:5,state_sha256:hash('5')},expectedStatus:'Working'}
+  {name:'a genuinely newer collection row',row:{claim_id:'claim-a',title:'Newer collection title',status:'queued',revision:5,state_sha256:hash('5')},expectedStatus:'Received'}
  ])await t.test(example.name,async child=>{
   routingFixture(child,'#autonomous/claim/claim-a?detail=activity');const f=dom(),queue={innerHTML:''},query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-recent-claims]'?queue:query(selector);
   let saved=state(),projection={},finishList;const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?new Promise(resolve=>{finishList=resolve;}):path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256,...projection}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});child.after(()=>controller.destroy());await waitFor(()=>f.host.innerHTML.includes('data-au-revision="3"')&&Boolean(finishList));
@@ -2255,16 +2321,16 @@ test('a writable demonstration with nine unrun originals shows an honest overvie
  const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:catalog,total:catalog.length}):path.endsWith('/status')?response({enabled:true,provider_ready:false,reference_ready:false,read_only:false,writable:true,limits:null}):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();
  const html=f.host.innerHTML;
- assert.match(html,/data-au-demo-overview/);assert.match(html,/No recorded histories in this workspace yet\./);assert.equal((html.match(/Not run in this workspace/g)||[]).length,9);
+ assert.match(html,/data-au-demo-overview/);assert.match(html,/No recorded histories in this workspace yet\./);assert.equal((html.match(/<span class="au-demo-case-state">Not started<\/span>/g)||[]).length,9,'the Demonstration uses the Cases lexicon (P7 review)');assert.doesNotMatch(html,/Not run in this workspace|No attachments/);
  assert.deepEqual([...html.matchAll(/data-au-demo-case="([^"]+)"/g)].map(row=>row[1]),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id));
  for(const row of ui.REFERENCE_DEMO_CASES)assert.ok(html.includes(`href="#autonomous/claim/${row.claim_id}"`),`${row.claim_id} links to its original intake`);
- assert.match(html,/Defects and repairs · English · No attachments/);assert.match(html,/Defects and repairs · German · 1 attachment</);assert.match(html,/Rent increases · English · 2 attachments</);
+ assert.match(html,/<span>Defects and repairs<\/span><span>English<\/span><span>Message only<\/span><\/span>/);assert.match(html,/<span>Defects and repairs<\/span><span>German<\/span><span>1 file<\/span><\/span>/);assert.match(html,/<span>Rent increases<\/span><span>English<\/span><span>2 files<\/span><\/span>/);
  assert.doesNotMatch(html,/Replay|data-au-operation-scrub|data-au-demo-play|data-au-node=|data-au-release-plan|Procedure outline/);
  assert.equal(api.calls.filter(row=>/\/replay\?|\/operations\?|\/snapshot\?/.test(row.path)).length,0,'an unrun workspace requests no history');
  assert.equal(routing.hash,'#autonomous/demonstration');assert.equal(api.calls.filter(row=>row.init.method&&row.init.method!=='GET').length,0);
  assert.equal(ui.rosterUnrun(catalog),true);assert.equal(ui.rosterUnrun(catalog.slice(1)),false,'a missing roster row is unknown, not unrun');
  const mixed=catalog.map((row,index)=>index===2?{...row,revision:48,mode:'saved'}:row);assert.equal(ui.rosterUnrun(mixed),false);
- const overview=ui.demonstrationOverviewMarkup(mixed);assert.match(overview,/1 of 9 cases have a saved history/);assert.match(overview,/Saved result · revision 48/);assert.equal((overview.match(/Not run in this workspace/g)||[]).length,8);
+ const overview=ui.demonstrationOverviewMarkup(mixed);assert.match(overview,/1 of 9 cases have a saved history/);assert.match(overview,/Saved result · revision 48/);assert.equal((overview.match(/>Not started</g)||[]).length,8);
 });
 
 test('an unrun reference outline is named as not run and has no transport',()=>{
@@ -2307,14 +2373,14 @@ test('Choose case lists both rosters by provenance and offers a saved history on
  const visible=html=>html.replace(/<[^>]+>/g,' ');
  const unrun=ui.demoPickerMarkup(demoCatalog());
  assert.doesNotMatch(unrun,/Saved history/);assert.doesNotMatch(visible(unrun),/legacy|Earlier recordings/i);
- assert.equal((unrun.match(/Not run in this workspace/g)||[]).length,18);assert.equal((unrun.match(/>Original sources</g)||[]).length,18);
+ assert.equal((unrun.match(/>Not started</g)||[]).length,18);assert.equal((unrun.match(/>Original sources</g)||[]).length,18);
  for(const row of [...ui.DEMO_CASES,...ui.REFERENCE_DEMO_CASES])assert.ok(unrun.includes(`href="#autonomous/claim/${row.claim_id}"`));
  assert.doesNotMatch(unrun,/data-au-demo-case=/,'an unrun case cannot start a replay');
  const reference=ui.demoPickerMarkup(demoCatalog({reference:1}),'reference');
  assert.match(reference,/<h3>Reference assessments · fixed rules · fictional supplements<\/h3>[\s\S]*<h3>Selected originals<\/h3>/);
  const roster=id=>reference.slice(reference.indexOf(`data-au-demo-roster="${id}"`)).split('</section>')[0];
  assert.equal((roster('reference').match(/data-au-demo-saved="true">Saved history</g)||[]).length,9);
- assert.equal((roster('selected').match(/Not run in this workspace/g)||[]).length,8);assert.match(roster('selected'),/data-au-demo-pick="clm_7dbd7c7d1c4ddf90" data-au-demo-pick-state="other_history"[\s\S]*?Fixed-rule history only/);
+ assert.equal((roster('selected').match(/>Not started</g)||[]).length,8);assert.match(roster('selected'),/data-au-demo-pick="clm_7dbd7c7d1c4ddf90" data-au-demo-pick-state="other_history"[\s\S]*?Fixed-rule history only/);
  const selected=ui.demoPickerMarkup(demoCatalog({selected:9,reference:1}),'selected');assert.match(selected,/<h3>Selected originals<\/h3>[\s\S]*<h3>Reference assessments/);
  assert.ok(ui.DEMO_CASES.every(row=>selected.includes(`data-au-demo-case="${row.claim_id}" data-au-demo-collection="selected" data-au-demo-saved="true"`)));
  assert.doesNotMatch(visible(selected),/legacy|Earlier recordings/i);
@@ -3488,11 +3554,11 @@ test('outcome markup leads with recorded sentences, names open facts and the dra
  assert.match(html,/data-au-draft-status="no_gap">No document gap identified<\/p>/);
  assert.doesNotMatch(html,/<details|Some facts still need proof|More evidence needed|Waiting for proof/);
  const header=ui.workMarkup(saved,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0];
- assert.match(header,/data-au-claim-status>Stopped\.<\/span> Open: Rent arrears, Tenancy extension, Family home and 2 more\./,'with no document gap the status is Stopped, not More evidence needed, and the explanation names the open facts');
+ assert.match(header,/data-au-claim-status>Deferred\.<\/span> Open: Rent arrears, Tenancy extension, Family home and 2 more\./,'with no document gap the status stays Deferred (ade555a, restored in the P7 review), not More evidence needed or Stopped, and the explanation names the open facts');
  // The no-gap line follows the recorded empty missing list, not the draft's wording.
  const reworded=structuredClone(saved);reworded.outcome.request_draft.body='Keine weitere Dokumentlücke.';
  assert.match(ui.outcomeSummaryMarkup(reworded),/data-au-draft-status="no_gap">No document gap identified<\/p>/);
- assert.match(ui.workMarkup(reworded,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0],/data-au-claim-status>Stopped\.<\/span> Open: Rent arrears/);
+ assert.match(ui.workMarkup(reworded,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0],/data-au-claim-status>Deferred\.<\/span> Open: Rent arrears/);
  // A prepared request stays readable in place: its subject and body are one disclosure away, never only in JSON.
  const gap=structuredClone(saved);Object.assign(gap.outcome,{missing_evidence:[{document_type:'termination_notice',label:'Termination notice'}],request_draft:{status:'prepared_not_sent',subject:'Evidence needed for the active claim process',body:'- Termination notice: required for the form check.'}});
  const drafted=ui.outcomeSummaryMarkup(gap);
