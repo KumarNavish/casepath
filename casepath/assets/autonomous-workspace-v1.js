@@ -991,7 +991,7 @@
   // The full checklist reads causally: each row states its recorded route and
   // the step it belongs to, and that step's name selects it. A sufficient
   // review is said once ("Supplied") instead of beside a contradicting route.
-  const DOCUMENT_ROUTE_COPY = {needed_now:['Needed now','because of'],needed_later:['Needed later','waiting on'],held_behind_question:['May be needed','depends on'],held_not_reviewed:['Needs checking','for'],optional:['Optional','for'],not_needed:['Not required','',' does not need it'],established:['Established','for'],satisfied:['Established','for']};
+  const DOCUMENT_ROUTE_COPY = {needed_now:['Missing','needed now for'],needed_later:['Needed later','waiting on'],held_behind_question:['May be needed','depends on'],held_not_reviewed:['Needs checking','for'],optional:['Optional','for'],not_needed:['Not needed','',' does not need it'],established:['Established','for'],satisfied:['Established','for']};
   const SUPPLIED_ROUTES = ['established','satisfied','held_behind_question','needed_later','optional'];
   function documentRouteGroup(route, review) {
     if (route === 'needed_now') return 'now';
@@ -1004,8 +1004,8 @@
   }
   function documentCountLine(groups) {
     const count = group => groups.filter(row => row === group).length;
-    const extras = [['checking','to check'],['optional','optional'],['not_needed','not required'],['other','without a recorded route']].filter(([group]) => count(group)).map(([group,label]) => `${count(group)} ${label}`);
-    return [`${count('now')} needed now`,`${count('waiting')} waiting on a step`,...count('maybe') ? [`${count('maybe')} may be needed`] : [],`${count('supplied')} supplied`,...extras].join(' · ');
+    const extras = [['checking','to check'],['optional','optional'],['not_needed','not needed'],['other','without a recorded route']].filter(([group]) => count(group)).map(([group,label]) => `${count(group)} ${label}`);
+    return [`${count('supplied')} of ${groups.length-count('not_needed')} received`,`${count('now')} missing`,`${count('waiting')} waiting on a step`,...count('maybe') ? [`${count('maybe')} may be needed`] : [],...extras].join(' · ');
   }
   function documentChecklistMarkup(state, rows, documents, context = {}) {
     const nodes = list(state.graph?.nodes), groups = [];
@@ -1014,7 +1014,7 @@
       const requiring = requiringNodeIds(obligation,doc).find(id => nodes.some(node => node.node_id === id)), fact = list(obligation.required_fact_ids).find(id => list(state.facts).some(row => row.fact_id === id));
       const supplied = review === 'sufficient' && SUPPLIED_ROUTES.includes(route), group = documentRouteGroup(route,review), label = name(obligation) || name(doc) || words(obligation.document_type);
       groups.push(group);
-      const [state_, connector, suffix = ''] = supplied ? ['Supplied','sufficient for'] : DOCUMENT_ROUTE_COPY[route] || [statusLabel(route),'for'];
+      const [state_, connector, suffix = ''] = supplied ? ['Received','sufficient for'] : DOCUMENT_ROUTE_COPY[route] || [statusLabel(route),'for'];
       const stepName = requiring ? name(nodes.find(node => node.node_id === requiring)) : '';
       // The connector travels inside the step control, so a narrow line never ends on a dangling
       // "depends on"; on phones the control takes its own line under the route.
@@ -1321,7 +1321,9 @@
   }
   function claimHeadingMarkup(state, extraClass = '') {
     const featured = featuredCase(state.claim_id);
-    return `<h1 class="au-page-heading ${extraClass}" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(featured?.label || state.title || 'Untitled case')}</h1>`;
+    // A featured case keeps its short label; the customer's own subject line says what they asked.
+    const asked = featured && state.title && state.title !== featured.label ? `<p class="au-case-asks" data-au-case-asks><span>Customer asks</span> ${h(state.title)}</p>` : '';
+    return `<h1 class="au-page-heading ${extraClass}" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(featured?.label || state.title || 'Untitled case')}</h1>${asked}`;
   }
 
   function readSkeletonMarkup(kind, title = '', claimId = '') {
@@ -1339,15 +1341,15 @@
   function recordedResultLabel(operation, state) {
     if (!operation) return 'No result recorded yet.';
     const result = operation.result || operation.payload?.result || {};
-    if (operation.kind === 'fact.extract') return result.verification_required === false ? 'Checked in the document.' : 'Needs a document check.';
+    if (operation.kind === 'fact.extract') return result.verification_required === false ? 'Confirmed.' : 'To be confirmed.';
     if (operation.kind === 'decision') return language.outcomePresentation({...state,outcome:result}).summary;
-    if (result.assessment === 'sufficient') return 'Supported by documents.';
+    if (result.assessment === 'sufficient') return 'Confirmed by the document.';
     if (result.assessment === 'insufficient') return 'More proof is needed.';
-    if (['false','excluded'].includes(result.activation)) return 'This path was ruled out.';
-    if (['true','active'].includes(result.activation)) return 'This path applies.';
-    if (result.activation === 'unresolved') return 'This path stays open.';
+    if (['false','excluded'].includes(result.activation)) return 'This step does not apply.';
+    if (['true','active'].includes(result.activation)) return 'This step applies.';
+    if (result.activation === 'unresolved') return 'Still open.';
     if (['knowledge.add','knowledge.published'].includes(operation.kind)) return language.knowledgePresentation(operation.payload?.knowledge || result,operation).label;
-    return 'Recorded in History.';
+    return '';
   }
   function boundDisplayReceipt(head, binding) {
     if (!head || !binding) return null;
@@ -1365,11 +1367,14 @@
     return display && display.binding===binding && state?.claim_id===binding.claim_id && state?.run_id===binding.run_id &&
       list(trace.rows).includes(operation) ? {state,receipt:display.receipt} : {state};
   }
-  function nowSentence(shown) {
+  function nowSentence(shown, quoted = false) {
     const action = shown.action;
     const title = shown.document && (shown.document.split(/\s+/u).length<=7 ? `“${shown.document}”` : 'the selected document');
-    const method = shown.how==='Fixed rules' ? 'using fixed rules' : shown.how.startsWith('AI model: ') ? `using ${shown.how.slice('AI model: '.length)}` : '';
-    return `${action}${title ? ` in ${title}` : ''}${method ? ` ${method}` : ''}.`;
+    // The header already names fixed rules; a recorded model stays named here.
+    const method = shown.how.startsWith('AI model: ') ? `using ${shown.how.slice('AI model: '.length)}` : '';
+    // Opening, reading and checking take the document as their object; finding names where.
+    const joiner = !quoted && /\b(?:opens|reads|checks)$/u.test(action) ? ' ' : ' in ';
+    return `${action}${title ? `${joiner}${title}` : ''}${method ? ` ${method}` : ''}.`;
   }
   // Origin and provenance come from the record, never from the route.
   function claimOrigin(state, origin = state?.origin) {
@@ -1407,7 +1412,9 @@
     const checked = trace?.finished && state.outcome ? [...list(trace.rows)].reverse().find(row => row.kind === 'decision') : null;
     const actor = checked ? language.operationPresentation(checked,operationDisplayContext(state,trace,checked)) : null;
     const shown = actor ? {roleId:actor.roleId,past:actor.label.charAt(0).toLowerCase()+actor.label.slice(1)} : event ? language.eventPresentation(event) : {roleId:'casepath',past:`saved revision ${state.revision}`};
-    const result = state.outcome && (trace?.finished || referenceAssessmentComplete(state)) ? `${language.outcomePresentation(state).label}.` : '';
+    const outcome = state.outcome && (trace?.finished || referenceAssessmentComplete(state)) ? language.outcomePresentation(state) : null;
+    // The result stays named after its moment passes: the recorded finding, then the checks.
+    const result = outcome ? [plainOutcomeLabel(outcome),`${outcome.label}.`].filter(Boolean).join(' ') : '';
     const at = event ? event.timestamp : state.updated_at;
     const time = at && Number.isFinite(Date.parse(at)) ? ` · <time datetime="${h(at)}">${h(dateLabel(at))}</time>` : '';
     return `<div class="au-now au-last" data-au-now-id="${h(checked?.id || event?.event_sha256 || state.last_event_sha256 || '')}" data-au-now-kind="last"><span class="au-now-label">Last:</span> ${roleBadge(shown.roleId)} <span data-au-now-copy>${h(shown.past)}${time}.</span> <span data-au-now-result>${h(result)}</span> ${checked || event ? recordButton('Details',checked ? 'operation' : 'event',checked ? checked.id : event.seq) : ''}</div>`;
@@ -1423,7 +1430,7 @@
     const id = operation?.id || operation?.event_sha256 || '';
     const literal = operation?.kind==='fact.extract' && operation.source && list(trace?.rows).includes(operation) ? stageFactSpan(operation,true) : null;
     const action=shown.action;
-    const recorded = literal ? `${h(action)}: <q data-au-recorded-quote data-au-now-fact="${h(operation.id)}" data-au-source-artifact="${h(literal.artifact_id)}" data-au-source-start-char="${literal.start_char}" data-au-source-end-char="${literal.end_char}">${h(literal.quote)}</q>${h(nowSentence(shown).slice(action.length))}` : h(operation ? nowSentence(shown) : 'has no recorded action yet.');
+    const recorded = literal ? `${h(action)} <q data-au-recorded-quote data-au-now-fact="${h(operation.id)}" data-au-source-artifact="${h(literal.artifact_id)}" data-au-source-start-char="${literal.start_char}" data-au-source-end-char="${literal.end_char}">${h(literal.quote)}</q>${h(nowSentence(shown,true).slice(action.length))}` : h(operation ? nowSentence(shown) : 'has no recorded action yet.');
     return `<div class="au-now" data-au-now-id="${h(id)}"><span class="au-now-label">Now</span> ${roleBadge(shown.roleId)} <span data-au-now-copy>${recorded}</span> <span data-au-now-result>${h(recordedResultLabel(operation,state))}</span> ${operation ? recordButton('Details',trace?.current ? 'operation' : 'event',trace?.current ? operation.id : operation.seq) : ''}</div>`;
   }
   function stepRole(node, state, trace) {
@@ -1457,17 +1464,30 @@
     const shown = labels.slice(0,3), more = labels.length - shown.length;
     return `${shown.join(', ')}${more > 0 ? ` and ${more} more` : ''}`;
   }
+  // The finding named by the recorded legal predicates, in plain words; none when none was recorded.
+  function plainOutcomeLabel(shown) { return shown.findings.length ? shown.summary : ''; }
+  // Received, missing and not-needed counts read from the recorded document routes.
+  function documentTally(state) {
+    const documents = new Map(list(state.evaluation?.documents).map(doc => [doc.document_type,doc]));
+    const rows = list(state.obligations).concat(list(state.evaluation?.documents).filter(doc => !list(state.obligations).some(item => item.document_type === doc.document_type)));
+    const groups = rows.map(row => { const doc = documents.get(row.document_type) || {}; return documentRouteGroup(doc.route_state || row.status || 'pending',doc.review_state); });
+    const count = group => groups.filter(row => row === group).length;
+    return {groups,received:count('supplied'),missing:count('now'),notNeeded:count('not_needed'),needed:groups.length-count('not_needed')};
+  }
   function outcomeSummaryMarkup(state, outcome = state.outcome) {
-    const shown = language.outcomePresentation({...state,outcome}), recorded = shown.recorded, citations = openableCitations(state,outcome || {});
-    const lead = recorded.summary ? `<p class="au-outcome-summary" data-au-outcome-recorded>${recordedSentenceMarkup(recorded.summary,shown.openItems)}</p>`
+    const shown = language.outcomePresentation({...state,outcome}), recorded = shown.recorded, citations = openableCitations(state,outcome || {}), plain = plainOutcomeLabel(shown);
+    // Plain words first; the recorded sentence, with its legal reasoning, follows unchanged.
+    const lead = recorded.summary ? `${plain ? `<p class="au-outcome-plain" data-au-outcome-plain>${h(plain)}</p>` : ''}<p class="au-outcome-summary" data-au-outcome-recorded${plain ? ' data-au-outcome-basis' : ''}>${recordedSentenceMarkup(recorded.summary,shown.openItems)}</p>`
       : `<p class="au-outcome-summary">${h(shown.summary || shown.label)}</p>${shown.openItems ? `<p class="au-outcome-open">${h(shown.openItems)}</p>` : ''}${shown.support && !shown.findings.length ? `<p>${h(shown.support)}</p>` : ''}`;
     // The outcome's citations support its recorded summary, so they follow it.
     const cited = recorded.summary && citations.length ? `<p class="au-outcome-cited au-outcome-row" data-au-outcome-cited><span class="au-outcome-key">Cited</span> <span class="au-outcome-value">${outcomeCiteMarkup(state,citations,'summary')}</span></p>` : '';
     const issues = recorded.issueRows.length ? `<ul class="au-outcome-issues" aria-label="Recorded issue">${recorded.issueRows.map(issue => { const own = openableCitations(state,issue); return `<li data-au-outcome-issue>${h(issue.text)}${own.length ? ` ${outcomeCiteMarkup(state,own,'issue')}` : ''}</li>`; }).join('')}</ul>` : '';
     const open = recorded.openFacts.length ? `<p class="au-outcome-facts au-outcome-row" data-au-outcome-open-facts><span class="au-outcome-key">Open</span> <span class="au-outcome-value">${recorded.openFacts.map(label => `<span class="au-outcome-fact">${h(label)}</span>`).join('<span aria-hidden="true">&nbsp;· </span>')}</span></p>` : '';
     const missing = recorded.missing.length ? `<p class="au-outcome-missing au-outcome-row" data-au-outcome-missing><span class="au-outcome-key">Needs</span> <span class="au-outcome-value">${recorded.missing.map(row => `<button type="button" class="au-link" data-au-detail="documents"${row.document_type ? ` data-au-outcome-document="${h(row.document_type)}"` : ''}>${h(row.label)}</button>`).join('<span aria-hidden="true">&nbsp;· </span>')}</span></p>` : '';
-    const next = recorded.nextAction || shown.nextAction;
-    return `${lead}${cited}${issues}${open}${missing}${next ? `<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next</span> <span class="au-outcome-value">${h(next)}</span></p>` : ''}${outcomeDraftMarkup(recorded.draft)}${recorded.limits.length ? `<p class="au-outcome-limit" data-au-outcome-limit>${h(recorded.limits.join(' '))}</p>` : ''}`;
+    // A next step is shown only when the record states one.
+    const next = recorded.nextAction, tally = documentTally(state), noGap = recorded.draft.status === 'no_gap';
+    const documents = tally.groups.length ? `<p class="au-outcome-documents au-outcome-row" data-au-outcome-documents><span class="au-outcome-key">Documents</span> <span class="au-outcome-value"><button type="button" class="au-link" data-au-detail="documents">${tally.received} of ${tally.needed} received</button>${tally.missing ? ` · ${tally.missing} missing` : ''}${tally.notNeeded ? ` · ${tally.notNeeded} not needed` : ''}${noGap ? ' · no document gap identified' : ''}</span></p>` : '';
+    return `${lead}${cited}${issues}${open}${missing}${documents}${next ? `<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next</span> <span class="au-outcome-value">${h(next)}</span></p>` : ''}${noGap && documents ? '' : outcomeDraftMarkup(recorded.draft)}${recorded.limits.length ? `<p class="au-outcome-limit" data-au-outcome-limit>${h(recorded.limits.join(' '))}</p>` : ''}`;
   }
   // Start stays focusable while unavailable, so its reason is announced
   // with it. aria-disabled blocks the action in the click handler.
@@ -1496,7 +1516,7 @@
     const panels = [['step','Steps'],['documents','Documents'],['knowledge','Knowledge'],['sources','Sources'],['activity','History']];
     const chosen = panels.some(([id]) => id === detail) ? detail : 'step', publicationFocus = presentation.attention && (!presentation.inspectionHold || presentation.attention.retained) && formingPublication(state,events,presentation.attention), forming = chosen === 'step' && (formingWork(state,presentation) || Boolean(publicationFocus) || Boolean(presentation.operations));
     const body = chosen === 'step' ? forming ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,presentation.attention,false,presentation.operations,presentation.chosenNode) + (!state.graph && !presentation.operations ? intakeMarkup(state,projection) : '') : !state.graph ? openingContentMarkup(state,projection) + intakeMarkup(state,projection) : referenceAssessmentComplete(state) ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,undefined,true,null,presentation.chosenNode) : formingKnowledgeMarkup(state,presentation.knowledge,true) + inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Document checklist</h2>${state.graph ? obligationMarkup(state,selected,undefined,context) + unassignedSourcesMarkup(state) : intakeMarkup(state,projection)}${canWrite && state.revision > 0 ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events,{claims:presentation.claims,knowledge:presentation.knowledge}) : chosen === 'sources' ? sourcesMarkup(state,!canWrite,projection) : `${operationHistoryMarkup(presentation.operations)}${activityMarkup(state,events,projection)}${presentation.replay ? recordButton('Playback details','replay') : ''}`;
-    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"${stageView ? ' data-au-stage-view="true"' : ''}><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p>${claimHeadingMarkup(state)}<p class="au-reference-mode" data-au-operation-mode>${h(claimModeLine(state,{...presentation,events}))}</p><p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${failure ? recordButton('Details','outcome') : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' Assessment only; no external action taken.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? startControlMarkup(presentation.availability,presentation.pendingStart) : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' && presentation.replay?.current_revision === 0 ? `<a class="au-link" href="#autonomous/claim/${key(state.claim_id)}" data-au-original-intake>Original intake</a>` : ''}${presentation.mode === 'replay' ? recordButton(transportTrace?.savedFallback || transportTrace?.replayUnavailable ? 'Replay choices' : 'Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}"${chosen === 'activity' ? ' aria-controls="auPanel-activity"' : ''}>History</button></div></header>${presentation.tour ? demoTransportMarkup(presentation.tour,presentation) : ''}${nowMarkup(state,events,presentation)}${presentation.mode === 'replay' && resultReached(state,presentation) ? knowledgePayoffMarkup(state,presentation.knowledge) : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}"${chosen === id ? ` aria-controls="auPanel-${id}"` : ''}>${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${!stageView && chosen === 'step' && !active(state.status) && state.outcome?.summary ? `<div class="au-assessment-conclusion">${outcomeSummaryMarkup(state)}${legalBasisMarkup(state)}</div>` : !stageView && chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div>${stageView && !trace?.unrun ? transport : ''}</div></section></section>`;
+    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"${stageView ? ' data-au-stage-view="true"' : ''}><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p>${claimHeadingMarkup(state)}<p class="au-reference-mode" data-au-operation-mode>${h(claimModeLine(state,{...presentation,events}))}</p><p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${failure ? recordButton('Details','outcome') : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' Assessment only; no external action taken.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? startControlMarkup(presentation.availability,presentation.pendingStart) : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' && presentation.replay?.current_revision === 0 ? `<a class="au-link" href="#autonomous/claim/${key(state.claim_id)}" data-au-original-intake>Original intake</a>` : ''}${presentation.mode === 'replay' ? recordButton(transportTrace?.savedFallback || transportTrace?.replayUnavailable ? 'Replay choices' : 'Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}"${chosen === 'activity' ? ' aria-controls="auPanel-activity"' : ''}>History</button></div></header>${presentation.tour ? demoTransportMarkup(presentation.tour,presentation,stageView ? stagePlaceLabel(state,trace) : '') : ''}${nowMarkup(state,events,presentation)}${presentation.mode === 'replay' && resultReached(state,presentation) ? knowledgePayoffMarkup(state,presentation.knowledge) : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}"${chosen === id ? ` aria-controls="auPanel-${id}"` : ''}>${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${!stageView && chosen === 'step' && !active(state.status) && state.outcome?.summary ? `<div class="au-assessment-conclusion">${outcomeSummaryMarkup(state)}${legalBasisMarkup(state)}</div>` : !stageView && chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div>${stageView && !trace?.unrun ? transport : ''}</div></section></section>`;
   }
 
   function replayIdentityMarkup(record) {
@@ -2295,13 +2315,22 @@
   // names it as not run; otherwise its recording date waits for the head.
   // One compact row while a roster plays: position, domain, Pause, Skip and
   // the next case. Real buttons; the row itself never animates.
-  function demoTransportMarkup(tour, presentation = {}) {
+  // The step a recorded operation is bound to, by its place in the drawn process;
+  // once the result is reached, how many steps the evaluation records as done.
+  function stagePlaceLabel(state, trace) {
+    const graph = trace && !trace.unrun ? operationStageGraph(trace,state) : null, nodes = graph ? layoutGraph(graph).rows.flat() : [];
+    if (!nodes.length) return '';
+    if (trace.finished) { const done = nodes.filter(node => list(state.evaluation?.nodes).some(row => row.node_id === node.node_id && DONE_NODE_STATES.includes(row.execution_state))).length; return done ? `${done} of ${nodes.length} steps done` : ''; }
+    const at = trace.current ? nodes.findIndex(node => node.node_id === operationNodeId(trace.current,graph,state,trace)) : -1;
+    return at < 0 ? '' : `Step ${at+1} of ${nodes.length}`;
+  }
+  function demoTransportMarkup(tour, presentation = {}, place = '') {
     const row = tour?.cases?.[tour.index];
     if (!row) return '';
     const total = tour.cases.length, position = tour.index + 1, next = tour.cases[tour.index+1], domain = DOMAINS.find(item => item.id === row.domain)?.label || '';
     const separator = '<span class="au-demo-separator" aria-hidden="true">·</span>';
     const toggle = presentation.playing ? '<button type="button" class="au-demo-control" data-au-demo-stop>Pause</button>' : presentation.paused ? '<button type="button" class="au-demo-control" data-au-demo-resume>Resume</button>' : '';
-    return `<div class="au-demo-transport" role="group" aria-label="${h(`${DEMO_COLLECTIONS[tour.collection] || 'Demonstration'} · case ${position} of ${total}`)}" data-au-demo-transport data-au-demo-collection="${h(tour.collection)}" data-au-demo-position="${position}"><span class="au-demo-position">${position}/${total}</span>${separator}<span class="au-demo-domain">${h(domain)}</span>${toggle ? separator + toggle : ''}${separator}<button type="button" class="au-demo-control" data-au-demo-skip aria-describedby="auDemoNext">Skip</button>${separator}<span class="au-demo-next" id="auDemoNext">Next: ${h(next ? caseLabel(next.claim_id).primary : 'Knowledge')}</span></div>`;
+    return `<div class="au-demo-transport" role="group" aria-label="${h(`${DEMO_COLLECTIONS[tour.collection] || 'Demonstration'} · case ${position} of ${total}`)}" data-au-demo-transport data-au-demo-collection="${h(tour.collection)}" data-au-demo-position="${position}"><span class="au-demo-position">${position}/${total}</span>${separator}<span class="au-demo-domain">${h(domain)}</span>${place ? `${separator}<span class="au-demo-step" data-au-demo-step>${h(place)}</span>` : ''}${toggle ? separator + toggle : ''}${separator}<button type="button" class="au-demo-control" data-au-demo-skip aria-describedby="auDemoNext">Skip</button>${separator}<span class="au-demo-next" id="auDemoNext">Next: ${h(next ? caseLabel(next.claim_id).primary : 'Knowledge')}</span></div>`;
   }
   function resultReached(state, presentation = {}) {
     const trace = presentation.operations, replay = presentation.replay;
@@ -2463,7 +2492,7 @@
   function stageNodeContents(node, state, trace, working, map = false, plannedGraph = null, reuse = null) {
     const graph = plannedGraph || working?.graph || state.graph, rows = list(trace?.rows);
     const facts = [...(trace?.dockedFacts?.values() || [])].filter(row => row.node === node.node_id && (row.observed || list(state.facts).some(fact => fact.fact_id === row.operation.object.id)));
-    const chips = facts.map(row => { const span = stageFactSpan(row.operation,true); return `<button type="button" class="au-stage-fact" data-au-fact-state="${row.operation.result.verification_required === false && list(state.facts).some(fact => fact.fact_id === row.operation.object.id) ? 'accepted' : 'observed'}" data-au-stage-fact="${h(row.operation.object.id)}" data-au-current-fact="${trace?.current?.id === row.operation.id}" data-au-fact-operation="${h(row.operation.id)}" data-au-dock-phase="${trace?.finished ? 'landed' : trace?.dockPhases?.get(row.operation.id) || 'landed'}" data-au-fact-start-char="${span.start_char}" data-au-fact-end-char="${span.end_char}" data-au-inspect="operation" data-au-record-id="${h(row.operation.id)}" ><span>${h(span.quote)}</span></button>`; }).join('');
+    const chips = facts.map(row => { const span = stageFactSpan(row.operation,true); return `<button type="button" class="au-stage-fact" data-au-fact-state="${row.operation.result.verification_required === false && list(state.facts).some(fact => fact.fact_id === row.operation.object.id) ? 'accepted' : 'observed'}" data-au-stage-fact="${h(row.operation.object.id)}" data-au-current-fact="${trace?.current?.id === row.operation.id}"${!trace?.finished && trace?.recentLanding === row.operation.id ? ' data-au-landed-recent' : ''} data-au-fact-operation="${h(row.operation.id)}" data-au-dock-phase="${trace?.finished ? 'landed' : trace?.dockPhases?.get(row.operation.id) || 'landed'}" data-au-fact-start-char="${span.start_char}" data-au-fact-end-char="${span.end_char}" data-au-inspect="operation" data-au-record-id="${h(row.operation.id)}" ><span>${h(span.quote)}</span></button>`; }).join('');
     const accepted = new Map(list(state.evaluation?.documents).map(row => [row.document_type,row]));
     const observed = trace && stageDocumentIndex(rows);
     const activeRequirements = !plannedGraph && (trace ? [...observed.requirements.values()].reverse().filter(row => row.result.activation === 'true' && list(row.result.active_node_ids).includes(node.node_id) && list(node.document_types).includes(row.object.id)) : list(state.obligations).filter(row => requiringNodeIds(row,accepted.get(row.document_type)).includes(node.node_id))) || [];
@@ -2477,7 +2506,7 @@
       const source = checked && citation && (trace?.sources.get(citation.artifact_id) || list(state.acquired_sources).find(row => row.artifact_id === citation.artifact_id));
       const preview = citation && stageFactSpan(check || {source:citation,object:{id:type}},true);
       const dockPhase = trace?.finished ? 'landed' : trace?.dockPhases?.get(check?.id) || 'landed';
-      return `<div class="au-stage-slot" data-au-document="${h(type)}" data-au-stage-document="${h(type)}" data-au-document-active="${!requirement.planned}" data-au-document-planned="${Boolean(requirement.planned)}" data-au-recipe-known="${Boolean(reuse && list(reuse.recipes).some(recipe=>recipe.document_type===type))}" data-au-document-supported="${Boolean(source)}" data-au-document-checked="${Boolean(source) && dockPhase === 'landed'}" data-au-document-focused="${trace?.current?.object.id === type || trace?.current?.object.id === `fact:${type}`}"${requirement.id ? ` data-au-working-document="${h(type)}" data-au-operation-id="${h(requirement.id)}" data-au-working-graph-sha="${h(requirement.result.graph_sha256)}" data-au-working-evaluation-sha="${h(requirement.result.evaluation_sha256)}"` : ''}>${map && source ? '' : `<span>${h(label)}</span>`}<div class="au-stage-landing">${source ? `<button type="button" class="au-stage-thumbnail" data-au-dock-phase="${dockPhase}" data-au-source="${h(source.artifact_id)}" data-au-source-origin="${check ? `operation:${h(check.id)}` : `requirement:${h(requirementIdentity(obligation))}`}" data-au-citation="${h(JSON.stringify(citation))}"${check ? ` data-au-check-operation="${h(check.id)}"` : ''} aria-label="${h(operationSourceTitle(source))} · Supported by documents"><span class="au-stage-source-name">${h(operationSourceTitle(source))}</span>${map ? '' : `<span class="au-stage-paper" aria-hidden="true">${h(preview.quote)}</span>`}<span class="au-stage-source-check" aria-hidden="true">✓</span></button>` : ''}</div></div>`;
+      return `<div class="au-stage-slot" data-au-document="${h(type)}" data-au-stage-document="${h(type)}" data-au-document-active="${!requirement.planned}" data-au-document-planned="${Boolean(requirement.planned)}" data-au-recipe-known="${Boolean(reuse && list(reuse.recipes).some(recipe=>recipe.document_type===type))}" data-au-document-supported="${Boolean(source)}" data-au-document-checked="${Boolean(source) && dockPhase === 'landed'}" data-au-document-focused="${trace?.current?.object.id === type || trace?.current?.object.id === `fact:${type}`}"${check && !trace?.finished && trace?.recentLanding === check.id && dockPhase === 'landed' ? ' data-au-landed-recent' : ''}${requirement.id ? ` data-au-working-document="${h(type)}" data-au-operation-id="${h(requirement.id)}" data-au-working-graph-sha="${h(requirement.result.graph_sha256)}" data-au-working-evaluation-sha="${h(requirement.result.evaluation_sha256)}"` : ''}>${map && source ? '' : `<span>${h(label)}</span>`}<div class="au-stage-landing">${source ? `<button type="button" class="au-stage-thumbnail" data-au-dock-phase="${dockPhase}" data-au-source="${h(source.artifact_id)}" data-au-source-origin="${check ? `operation:${h(check.id)}` : `requirement:${h(requirementIdentity(obligation))}`}" data-au-citation="${h(JSON.stringify(citation))}"${check ? ` data-au-check-operation="${h(check.id)}"` : ''} aria-label="${h(operationSourceTitle(source))} · Supported by documents"><span class="au-stage-source-name">${h(operationSourceTitle(source))}</span>${map ? '' : `<span class="au-stage-paper" aria-hidden="true">${h(preview.quote)}</span>`}<span class="au-stage-source-check" aria-hidden="true">✓</span></button>` : ''}</div></div>`;
     }).join('');
     return chips+(slots?`<div class="au-stage-documents">${slots}</div>`:'');
   }
@@ -3478,6 +3507,7 @@
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); interactionMotion = null;
       const priorSourcePane = host.querySelector('.au-operation-passage');
       const focused = doc.activeElement, focusKey = focusToken(focused), sources = sourceControls(host), objects = renderedClaimId === current.claim_id ? formingObjects(host) : new Map();
+      const edgeStates = new Map([...objects].filter(([identity]) => identity.startsWith('edge:')).map(([identity,edge]) => [identity.slice(5),edge.getAttribute('data-state')]));
       const previous = claimViews.get(current.claim_id);
       const sameClaim = renderedClaimId === current.claim_id;
       const open = new Set(sameClaim ? [...host.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure) : previous?.open || []);
@@ -3516,10 +3546,20 @@
       if (navigation || !priorViewport && !host.querySelector('[data-au-forming="true"]')) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
       fitActiveStage(); syncGraphViewport();
       positionOperationSource();
-      drawEdges(navigation);
+      drawEdges(navigation); fillEdges(edgeStates); followStage();
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open || recordDialog.open,reducedMotion:reduced?.matches,keyboard,inspecting:inspectionHold,activeElement:doc.activeElement,selected});
       synchronizeAuthority(); synchronizeRecord(); rememberLastCase(); positionOperationAttention();
       claimRenderComplete = true; renderedClaimId = current.claim_id;
+    }
+    // A connection the recorded evaluation newly opens draws from its step to the next.
+    function fillEdges(before) {
+      if (!demoSession || reduced?.matches || doc.hidden || inspectionHold) return;
+      for (const edge of host.querySelectorAll('.au-operation-stage [data-au-edge][data-state=true]')) {
+        const prior = before.get(edge.dataset.auEdge);
+        if (!prior || prior === 'true' || !edge.animate || !edge.getTotalLength) continue;
+        const length = edge.getTotalLength();
+        edge.animate([{strokeDasharray:`${length} ${length}`,strokeDashoffset:length},{strokeDasharray:`${length} ${length}`,strokeDashoffset:0}],{duration:900,easing:'cubic-bezier(.2,.65,.3,1)'});
+      }
     }
     function setGraphExpanded(expanded) {
       const viewport = host.querySelector('[data-au-graph-pan]'), control = host.querySelector('[data-au-expand-process]');
@@ -4121,6 +4161,7 @@
         const source=pane.closest('.au-stage-source'), layout=host.querySelector('.au-stage-layout'), step=host.querySelector('[data-au-stage-active=true]');
         const narrow=(root.innerWidth || 1280)<=700, target=narrow&&step?step:layout;
         if(source && target && source.parentElement!==target)target.prepend?.(source);
+        pointSourceAtStep(pane);
         const id=operationTrace?.current?.id;
         if(narrow && source && id!==mobileFollowId && demoSession && !inspectionHold && !operationPeek && !reduced?.matches && !operationTrace?.finished){
           mobileFollowId=id;
@@ -4128,12 +4169,46 @@
         }
         return;
       }
+      pointSourceAtStep(pane);
       const operation = (operationPeek?.trace || operationTrace)?.current, mark = pane.querySelector('[data-au-operation-span]');
       if (mark && mark.dataset.auOperationSpan === operation?.id) {
         const frame = pane.getBoundingClientRect(), bounds = mark.getBoundingClientRect(), body = pane.querySelector('[data-au-source-body-anchor]'), floor = body ? pane.scrollTop+body.getBoundingClientRect().top-frame.top-28 : 0, top = pane.scrollTop + bounds.top-frame.top-Math.max(28,(frame.height-bounds.height)/2);
         const target = Math.max(0,Math.min(pane.scrollHeight-pane.clientHeight,Math.max(floor,top))); stageScrollTarget = {pane,top:target};
         pane.scrollTo?.({top:target,behavior:operationPeek || inspectionHold || reduced?.matches ? 'instant' : 'smooth'});
       } else if (operation?.kind === 'source.open') { const body = pane.querySelector('[data-au-operation-read-context]'); const top = body ? pane.scrollTop+body.getBoundingClientRect().top-pane.getBoundingClientRect().top-30 : 0; pane.scrollTo?.({top:Math.max(0,top),behavior:'instant'}); }
+    }
+    // On wide screens the open passage sits above the step it feeds and points at it.
+    function pointSourceAtStep(pane) {
+      const source = pane.closest('.au-stage-source'), step = host.querySelector('.au-operation-stage [data-au-stage-active=true] > .au-node') || host.querySelector('.au-operation-stage [data-au-stage-active=true]');
+      if (!source) return;
+      const parent = source.parentElement;
+      if (!step || !parent || (root.innerWidth || 1280) <= 700) { source.style.marginLeft = ''; source.removeAttribute('data-au-pointing'); return; }
+      const box = parent.getBoundingClientRect(), width = source.offsetWidth, center = step.getBoundingClientRect().left + step.getBoundingClientRect().width/2;
+      const left = Math.max(0,Math.min(box.width-width,center-box.left-width/2));
+      source.style.marginLeft = `${Math.round(left)}px`; source.style.marginRight = 'auto';
+      source.style.setProperty('--au-pointer',`${Math.round(Math.max(18,Math.min(width-18,center-box.left-left)))}px`);
+      source.setAttribute('data-au-pointing','true');
+    }
+    // While a case plays, the page keeps the cited passage, the active step and
+    // what it produces in view; at the result, the recorded outcome comes into view.
+    let followedId = null;
+    function followStage() {
+      const stage = host.querySelector('.au-operation-stage');
+      if (!stage || !demoSession || operationPeek || inspectionHold || keyboard || doc.hidden || detail !== 'step' || (root.innerWidth || 1280) <= 700) return;
+      const map = stage.dataset.auStagePhase === 'map', id = map ? `map:${current?.claim_id}` : operationTrace?.current?.id;
+      if (!id || id === followedId) return;
+      const step = stage.querySelector('[data-au-stage-active=true]');
+      const target = map ? stage.querySelector('[data-au-stage-outcome]') : step && (step.querySelector('[data-au-current-fact=true],[data-au-document-focused=true]') || step);
+      const keep = map ? stage.querySelector('.au-stage-process') : stage.querySelector('.au-stage-source') || step;
+      if (!target || !keep) return;
+      followedId = id;
+      const covered = Number.parseFloat(root.getComputedStyle?.(doc.documentElement)?.scrollPaddingTop) || 0, height = root.innerHeight, margin = 16;
+      const bounds = target.getBoundingClientRect(), top = Math.min(keep.getBoundingClientRect().top,bounds.top);
+      let delta = bounds.bottom > height-margin ? Math.min(bounds.bottom-height+margin,top-covered-margin) : top < covered ? top-covered-margin : 0;
+      // The outcome's plain result and recorded sentence always come into view.
+      const lead = map && (target.querySelector('[data-au-outcome-recorded]') || target).getBoundingClientRect();
+      if (lead) delta = Math.max(delta,lead.bottom-height+margin);
+      if (Math.abs(delta) > 4) root.scrollBy?.({top:delta,behavior:reduced?.matches ? 'instant' : 'smooth'});
     }
     function cancelStageRead() {
       stageScrollCancel?.(); stageScrollCancel = null;
@@ -4206,7 +4281,7 @@
         const bend = Math.max(32,Math.min(100,Math.abs(next.x-origin.x)*.25));
         for (let step=1; step<=8; step++) { const t=step/8, u=1-t; const point={x:u*u*u*origin.x+3*u*u*t*(origin.x+bend)+3*u*t*t*(next.x-bend)+t*t*t*next.x,y:u*u*u*origin.y+3*u*u*t*(origin.y-24)+3*u*t*t*(next.y-24)+t*t*t*next.y}; flight.push({transform:transform(point),opacity:1,offset:.18+.82*t}); }
         factTokenAnimation = factToken.animate(flight,{duration:operationChoreographyTiming(operation,ownerTrace).transfer,easing:'cubic-bezier(.18,.7,.25,1)',fill:'none'});
-        const token = factToken; factTokenAnimation.onfinish = () => { token.remove(); if (operationTrace !== ownerTrace || ownerTrace.current !== operation) { complete(); return; } ownerTrace.dockPhases.set(operation.id,'landed'); if (dock.isConnected) { dock.dataset.auDockPhase='landed'; dock.style.opacity=''; dock.removeAttribute('data-au-fact-docking'); const slot=dock.closest('[data-au-stage-document]'); if (slot) slot.dataset.auDocumentChecked='true'; } complete(); };
+        const token = factToken; factTokenAnimation.onfinish = () => { token.remove(); if (operationTrace !== ownerTrace || ownerTrace.current !== operation) { complete(); return; } ownerTrace.dockPhases.set(operation.id,'landed'); ownerTrace.recentLanding = operation.id; if (dock.isConnected) { dock.dataset.auDockPhase='landed'; dock.style.opacity=''; dock.removeAttribute('data-au-fact-docking'); const slot=dock.closest('[data-au-stage-document]'); if (slot) slot.dataset.auDocumentChecked='true'; for (const earlier of host.querySelectorAll('[data-au-landed-recent]')) earlier.removeAttribute('data-au-landed-recent'); (slot || dock).setAttribute('data-au-landed-recent',''); } complete(); };
         node.dataset.auOperationId = operation.id; attentionPosition = next;
       };
       if (factTokenAnimation?.playState === 'running') return;

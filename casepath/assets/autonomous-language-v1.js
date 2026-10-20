@@ -200,12 +200,12 @@
   }
 
   const operations = Object.freeze({
-    'source.open':['casepath','Opened a document','opens a document'],
-    'span.read':['reader','Read a passage','reads a passage'],
-    'phrase.match':['reader','Looked for source wording','looks for source wording'],
-    'fact.extract':['reader','Found a possible fact','finds a possible fact'],
-    'verification.check':['checker','Checked it in the document','checks it in the document'],
-    'document.check':['checker','Checked it in the document','checks it in the document'],
+    'source.open':['casepath','Opened a document','opens'],
+    'span.read':['reader','Read a passage','reads'],
+    'phrase.match':['reader','Looked for source wording','looks for wording in'],
+    'fact.extract':['reader','Found a possible fact','finds'],
+    'verification.check':['checker','Checked it in the document','checks'],
+    'document.check':['checker','Checked it in the document','checks'],
     'process.inspect':['rulebook','Checked the steps','checks the steps'],
     'condition.evaluate':['rulebook','Checked a condition','checks a condition'],
     'node.evaluate':['rulebook','Checked a step','checks a step'],
@@ -215,7 +215,7 @@
     'branch.drop':['rulebook','Ruled out this path','rules out this path'],
     'document.require':['rulebook','Listed a needed document','lists a needed document'],
     'step.complete':['rulebook','Completed this step','completes this step'],
-    'decision':['rulebook','Reached a result','shows the recorded result'],
+    'decision':['rulebook','Reached a result','reaches the result'],
     'knowledge.used':['memory','Reused the exact version','reuses the exact version'],
     'knowledge.reuse':['memory','Reused the exact version','reuses the exact version'],
     'knowledge.add':['memory','Checked whether to save it','checks whether to save it'],
@@ -240,7 +240,7 @@
         progressing:['Applied rules to confirmed wording','applies rules to confirmed wording'],
         learning:['Checked procedures for reuse','checks procedures for reuse']})[phase];
     }
-    if (operation.kind === 'fact.extract' && roleId === 'checker') { label='Checked it in the document'; action='checks it in the document'; }
+    if (operation.kind === 'fact.extract' && roleId === 'checker') { label='Checked it in the document'; action='confirms'; }
     if (['branch.activate','branch.evaluate'].includes(operation.kind) && operation.result?.activation === 'unresolved') {
       label='Kept this path open'; action='keeps this path open';
     }

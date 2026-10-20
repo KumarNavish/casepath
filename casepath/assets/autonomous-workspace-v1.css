@@ -1395,3 +1395,47 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 .au-workspace .au-similar-cases .au-case-link .au-case-label { text-decoration:underline; text-underline-offset:4px; }
 .au-workspace .au-library-status[data-au-library-status=unavailable] { color:var(--au-amber); }
 .au-workspace .au-library-entry:is(:focus,:focus-visible) { outline:none!important; }
+
+/* Where the replay is and what fed what. Existing colours only; no motion under reduced motion.
+   The step being worked on keeps its pale band and gains a thin green rule; other steps step back to muted ink. */
+.au-workspace .au-operation-stage[data-au-stage-phase=source] .au-stage-step[data-au-stage-active=true] > .au-node { box-shadow:inset 2px 0 0 var(--au-green); }
+.au-workspace .au-operation-stage[data-au-stage-phase=source]:has([data-au-stage-active=true]) .au-stage-step[data-au-stage-active=false] :is(.au-node,.au-stage-fact,.au-stage-slot) { color:var(--au-muted); }
+.au-workspace .au-operation-stage :is(.au-node,.au-stage-fact,.au-stage-slot) { transition:color .2s ease,background-color .2s ease,border-color .2s ease; }
+/* The words just read and what they produced share the passage's green tint: a fact, or a document box ticked as received. */
+.au-workspace .au-stage-fact[data-au-landed-recent] { border-color:var(--au-green); background:rgb(116 155 99 / 25%); }
+.au-workspace .au-stage-slot:is([data-au-document-focused=true],[data-au-landed-recent]) { border-color:var(--au-green); }
+.au-workspace .au-stage-slot[data-au-landed-recent] { background:rgb(116 155 99 / 25%); }
+/* Progress: the step's place in the transport row, and a gentle pulse on the role at work. */
+.au-workspace .au-demo-step { color:var(--au-ink); }
+@media (prefers-reduced-motion:no-preference) {
+  .au-workspace [data-au-operation-presentation=playing] .au-quiet-claim > .au-now:not(.au-last) .au-role-shape,
+  .au-workspace [data-au-operation-presentation=playing] .au-stage-step[data-au-stage-active=true] .au-step-role .au-role-shape { animation:au-role-at-work 1.6s ease-in-out infinite; }
+}
+@keyframes au-role-at-work { 50% { opacity:.3; } }
+/* Outcome: the recorded finding in plain words first; the recorded sentence follows as its basis. */
+.au-workspace .au-stage-outcome > .au-outcome-plain { margin-bottom:4px; }
+.au-workspace .au-outcome-summary[data-au-outcome-basis] { color:var(--au-muted); font-size:18px; line-height:1.5; }
+.au-workspace :is(.au-stage-outcome,.au-assessment-conclusion,.au-history-outcome) > .au-outcome-documents { max-width:78ch; margin:0 0 8px; font-size:16px; line-height:1.55; }
+.au-workspace .au-outcome-documents .au-link { min-height:32px; padding:2px 0; font-size:16px; }
+@media (min-width:1100px) {
+  .au-workspace .au-assessment-conclusion > .au-outcome-plain { grid-column:1; }
+  .au-workspace .au-assessment-conclusion > .au-outcome-documents { grid-column:2; }
+}
+/* While a case plays, the active step's facts and documents stay at full strength; the others recede (text stays above 4.5:1). */
+.au-workspace .au-operation-stage:has([data-au-stage-active=true]) .au-stage-step[data-au-stage-active=false] :is(.au-stage-fact,.au-stage-slot) { opacity:.75; transition:opacity .25s ease; }
+@media (forced-colors:active) { .au-workspace .au-operation-stage .au-stage-step :is(.au-stage-fact,.au-stage-slot) { opacity:1; } }
+
+/* Facts on the stage read as quoted words, not links; the underline returns on hover and focus. */
+.au-workspace .au-operation-stage .au-stage-fact, .au-workspace .au-operation-stage .au-stage-fact span { text-decoration:none; }
+.au-workspace .au-operation-stage .au-stage-fact:is(:hover,:focus-visible) span { text-decoration:underline; text-underline-offset:4px; }
+/* What the customer asked, under the case title. */
+.au-workspace .au-case-asks { margin:4px 0 0; color:var(--au-muted); font-size:18px; line-height:1.45; }
+.au-workspace .au-case-asks > span { color:var(--au-ink); }
+
+/* The open passage points at the step it feeds. */
+.au-workspace .au-stage-source[data-au-pointing] { margin-bottom:22px; }
+@media (prefers-reduced-motion:no-preference) { .au-workspace .au-stage-source[data-au-pointing] { transition:margin-left .35s cubic-bezier(.2,.65,.3,1); } }
+.au-workspace .au-stage-source[data-au-pointing] .au-operation-reading { position:relative; }
+.au-workspace .au-stage-source[data-au-pointing] .au-operation-reading::after { content:''; position:absolute; left:var(--au-pointer,50%); bottom:-8px; width:14px; height:14px; background:var(--au-paper); border-right:1px solid var(--au-line); border-bottom:1px solid var(--au-line); transform:translateX(-50%) rotate(45deg); }
+/* The words just read stand out from the passage around them. */
+.au-workspace .au-stage-source .au-operation-passage mark[data-au-operation-span] { background:rgb(116 155 99 / 30%); box-shadow:inset 0 -2px 0 var(--au-green); }
