@@ -1276,14 +1276,19 @@
   }
   function outcomeSummaryMarkup(state, outcome = state.outcome) {
     const shown = language.outcomePresentation({...state,outcome}), recorded = shown.recorded, citation = outcomeCitation(state,outcome || {});
-    const lead = recorded.summary ? `<p class="au-outcome-summary" data-au-outcome-recorded>${recordedSentenceMarkup(recorded.summary,shown.openItems)}</p>`
+    // Only a fixed-rule reference outcome is template-authored. A model's own
+    // summary and issues stay behind Recorded wording, off the primary canvas.
+    const fixedRule = outcome?.reference_provenance?.mode === 'deterministic_reference';
+    const lead = fixedRule && recorded.summary ? `<p class="au-outcome-summary" data-au-outcome-recorded>${recordedSentenceMarkup(recorded.summary,shown.openItems)}</p>`
       : `<p class="au-outcome-summary">${h(shown.summary || shown.label)}</p>${shown.openItems ? `<p class="au-outcome-open">${h(shown.openItems)}</p>` : ''}${shown.support && !shown.findings.length ? `<p>${h(shown.support)}</p>` : ''}`;
     const cite = origin => citation ? `<button type="button" class="au-link au-outcome-cite" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="${h(origin)}">${h(sourceLabel(state,citation.artifact_id))}<span aria-hidden="true"> ↗</span></button>` : '';
     const issues = recorded.issues.length ? `<ul class="au-outcome-issues" aria-label="Recorded issue">${recorded.issues.map((issue,index) => `<li data-au-outcome-issue>${h(issue)}${index === 0 && citation ? ` ${cite('outcome:issue')}` : ''}</li>`).join('')}</ul>` : '';
+    const wording = !fixedRule && (recorded.summary || issues) ? `<details class="au-recorded-wording" data-au-disclosure="outcome-wording"><summary>Recorded wording</summary>${recorded.summary ? `<p>${h(recorded.summary)}</p>` : ''}${issues}</details>` : '';
     const open = recorded.openFacts.length ? `<p class="au-outcome-facts au-outcome-row" data-au-outcome-open-facts><span class="au-outcome-key">Open</span> <span class="au-outcome-value">${recorded.openFacts.map(label => `<span class="au-outcome-fact">${h(label)}</span>`).join('<span aria-hidden="true"> · </span>')}</span></p>` : '';
     const missing = recorded.missing.length ? `<p class="au-outcome-missing au-outcome-row" data-au-outcome-missing><span class="au-outcome-key">Needs</span> <span class="au-outcome-value">${recorded.missing.map(row => `<button type="button" class="au-link" data-au-detail="documents"${row.document_type ? ` data-au-outcome-document="${h(row.document_type)}"` : ''}>${h(row.label)}</button>`).join('<span aria-hidden="true"> · </span>')}</span></p>` : '';
-    const next = recorded.nextAction || shown.nextAction;
-    return `${lead}${issues}${open}${missing}${next ? `<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next</span> <span class="au-outcome-value">${h(next)}</span></p>` : ''}${recorded.draft.label ? `<p class="au-outcome-draft" data-au-draft-status="${h(recorded.draft.status)}">${h(recorded.draft.label)}</p>` : ''}${recorded.limits.length ? `<p class="au-outcome-limit" data-au-outcome-limit>${h(recorded.limits.join(' '))}</p>` : ''}`;
+    // A recorded next step names evidence only when the record lists some.
+    const next = (fixedRule || recorded.missing.length) && recorded.nextAction || shown.nextAction;
+    return `${lead}${fixedRule ? issues : ''}${open}${missing}${next ? `<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next</span> <span class="au-outcome-value">${h(next)}</span></p>` : ''}${recorded.draft.label ? `<p class="au-outcome-draft" data-au-draft-status="${h(recorded.draft.status)}">${h(recorded.draft.label)}</p>` : ''}${recorded.limits.length ? `<p class="au-outcome-limit" data-au-outcome-limit>${h(recorded.limits.join(' '))}</p>` : ''}${wording}`;
   }
   // Start stays focusable while unavailable, so its reason is announced
   // with it. aria-disabled blocks the action in the click handler.

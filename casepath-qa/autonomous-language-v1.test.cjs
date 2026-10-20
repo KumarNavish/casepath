@@ -480,16 +480,19 @@ test('recorded outcome fields lead and the draft line follows only its own recor
   assert.equal(view.recorded.summary,saved.outcome.summary);assert.deepEqual(view.recorded.issues,saved.outcome.issues);
   assert.deepEqual(view.recorded.openFacts,['Rent arrears','Tenancy extension','Family home','Retaliation concern','Termination received']);
   assert.equal(view.recorded.nextAction,saved.outcome.next_action);assert.deepEqual(view.recorded.missing,[]);assert.deepEqual(view.recorded.limits,[]);
-  assert.deepEqual(view.recorded.draft,{status:'no_gap',label:'No document gap identified'});
+  assert.deepEqual(view.recorded.draft,{status:'no_gap',label:'No active document gap identified'});
   assert.equal(view.summary,'Some facts still need proof.','the templated fallback is unchanged');assert.equal(JSON.stringify(saved),before);
   for(const state of recorded){
     const shown=language.outcomePresentation(state);
-    assert.deepEqual(shown.recorded.draft,{status:'draft',label:'Draft ready · not sent'});assert.deepEqual(shown.recorded.limits,state.outcome.authority_limits);
+    assert.deepEqual(shown.recorded.draft,{status:'',label:''},'a completed fixed-rule assessment drafted nothing to send');assert.deepEqual(shown.recorded.limits,state.outcome.authority_limits);
     assert.ok(shown.recorded.summary.includes(shown.openItems),'the recorded limit stays inside the recorded sentence');
   }
   const draft={status:'prepared_not_sent',body:'No additional active document gap was identified.'};
   assert.equal(language.draftStatus({missing_evidence:[{document_type:'lease_contract'}],request_draft:draft}).status,'draft','a listed missing document is never described as no gap');
   assert.equal(language.draftStatus({request_draft:draft}).status,'draft','an unrecorded missing list is not an empty one');
+  assert.deepEqual(language.draftStatus({summary:' Recorded summary. ',missing_evidence:[],request_draft:{status:'prepared_not_sent',body:'Recorded summary.'}}),{status:'',label:''},'a draft that repeats the summary is not a request');
+  assert.deepEqual(language.draftStatus({assessment_status:'complete',reference_provenance:{mode:'deterministic_reference'},missing_evidence:[],request_draft:{status:'prepared_not_sent',body:'Other wording.'}}),{status:'',label:''});
+  assert.equal(language.draftStatus({summary:'Recorded summary.',missing_evidence:[],request_draft:{status:'prepared_not_sent',body:'Please send the lease.'}}).label,'Draft ready · not sent');
   assert.deepEqual(language.draftStatus({}),{status:'',label:''});assert.deepEqual(language.draftStatus({request_draft:{status:'unexpected'}}),{status:'recorded',label:'Draft recorded'});
   assert.deepEqual(language.outcomePresentation({outcome:{issues:[{code:'source_discrepancy',reason:'Recorded discrepancy.'},'  ',null]}}).recorded.issues,['Recorded discrepancy.']);
 });

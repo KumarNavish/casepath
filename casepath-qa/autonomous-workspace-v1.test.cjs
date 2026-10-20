@@ -3396,22 +3396,30 @@ test('record dialog rows explain journal events and outcomes, and the mounted di
  assert.equal(f.recordDialog.open,true);assert.equal(f.recordBody.innerHTML,ui.RECORD_DIALOG_SKELETON);assert.ok(JSON.parse(f.recordPre.textContent).state);
 });
 
-test('outcome markup leads with recorded sentences, names open facts and the draft status, and keeps recorded limits visible',()=>{
+test('a model outcome leads with templated lines and keeps its recorded wording closed; a fixed-rule outcome leads with its recorded sentences',()=>{
  const saved=savedHistory(),before=JSON.stringify(saved),html=ui.outcomeSummaryMarkup(saved);
- assert.ok(html.startsWith(`<p class="au-outcome-summary" data-au-outcome-recorded>${escapeText(saved.outcome.summary)}</p>`),'the recorded summary leads');
- assert.ok(html.includes(`<li data-au-outcome-issue>${escapeText(saved.outcome.issues[0])} <button type="button" class="au-link au-outcome-cite" data-au-source="${saved.outcome.citations[0].artifact_id}"`),'the recorded issue carries its citation link');
+ assert.ok(!saved.outcome.reference_provenance,'the saved history is a model run');
+ assert.ok(html.startsWith('<p class="au-outcome-summary">Some facts still need proof.</p>'),'the templated summary leads a model outcome');
+ const wording=html.match(/<details class="au-recorded-wording" data-au-disclosure="outcome-wording"><summary>Recorded wording<\/summary>[\s\S]*<\/details>$/)?.[0];
+ assert.ok(wording,'the recorded summary and issues sit in one closed disclosure');assert.doesNotMatch(wording,/<details[^>]* open/);
+ assert.ok(wording.includes(`<p>${escapeText(saved.outcome.summary)}</p>`));
+ assert.ok(wording.includes(`<li data-au-outcome-issue>${escapeText(saved.outcome.issues[0])} <button type="button" class="au-link au-outcome-cite" data-au-source="${saved.outcome.citations[0].artifact_id}"`),'the recorded issue keeps its citation link');
+ const canvas=html.replace(wording,'');assert.ok(!canvas.includes(escapeText(saved.outcome.summary))&&!canvas.includes(escapeText(saved.outcome.issues[0])),'no model sentence is on the primary canvas');
  assert.match(html,/data-au-outcome-open-facts><span class="au-outcome-key">Open<\/span> <span class="au-outcome-value"><span class="au-outcome-fact">Rent arrears<\/span>/);
- assert.match(html,/<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next<\/span> <span class="au-outcome-value">Await the named evidence or an authorized external action\./);
- assert.match(html,/data-au-draft-status="no_gap">No document gap identified<\/p>/);
- assert.doesNotMatch(html,/<details|Some facts still need proof|More evidence needed|Waiting for proof/);
+ assert.match(html,/<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next<\/span> <span class="au-outcome-value">Waiting for proof of open facts\.<\/span>/,'without listed missing evidence the templated next step stays');
+ assert.doesNotMatch(html,/Await the named evidence/);
+ assert.match(html,/data-au-draft-status="no_gap">No active document gap identified<\/p>/,'the no-gap line keeps the recorded qualifier');
+ const missing=structuredClone(saved);missing.outcome.missing_evidence=[{document_type:'lease_contract'}];
+ assert.match(ui.outcomeSummaryMarkup(missing),/Next<\/span> <span class="au-outcome-value">Await the named evidence or an authorized external action\./,'a recorded next step that names listed evidence is shown');
  const header=ui.workMarkup(saved,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0];
  assert.match(header,/data-au-claim-status>Deferred\.<\/span> Open: Rent arrears, Tenancy extension, Family home and 2 more\./,'the status word stays recorded and the explanation names the open facts');
- // A recorded limit inside the summary stays visible and keeps its emphasis; limits stay one quiet line.
- const limited=structuredClone(saved);Object.assign(limited.outcome,{assessment_scope:'defect_removal_and_reduction_eligibility',summary:'The sources support eligibility until remedy. Repair, the reduction amount and any award remain undetermined.',authority_limits:['No repair, rent quantum or court outcome was performed.']});
- const visible=ui.outcomeSummaryMarkup(limited).replace(/<details[\s\S]*?<\/details>/g,'');
- assert.match(visible,/^<p class="au-outcome-summary" data-au-outcome-recorded>The sources support eligibility until remedy\. <span class="au-outcome-open">Repair, the reduction amount and any award remain undetermined\.<\/span><\/p>/);
+ // A fixed-rule (template-authored) outcome keeps its recorded sentence, emphasis, issues, next step and one quiet limit line.
+ const limited=structuredClone(saved);Object.assign(limited.outcome,{assessment_scope:'defect_removal_and_reduction_eligibility',reference_provenance:{mode:'deterministic_reference',synthetic:true},summary:'The sources support eligibility until remedy. Repair, the reduction amount and any award remain undetermined.',authority_limits:['No repair, rent quantum or court outcome was performed.']});
+ const visible=ui.outcomeSummaryMarkup(limited);assert.doesNotMatch(visible,/<details/);
+ assert.match(visible,/^<p class="au-outcome-summary" data-au-outcome-recorded>The sources support eligibility until remedy\. <span class="au-outcome-open">Repair, the reduction amount and any award remain undetermined\.<\/span><\/p><ul class="au-outcome-issues"/);
+ assert.match(visible,/Next<\/span> <span class="au-outcome-value">Await the named evidence/);
  assert.match(visible,/<p class="au-outcome-limit" data-au-outcome-limit>No repair, rent quantum or court outcome was performed\.<\/p>/);
- // Templated sentences remain only as the fallback for a record without its own sentence.
+ // Templated sentences remain the lead for a record without its own sentence.
  const bare=ui.outcomeSummaryMarkup({...saved,outcome:{status:'deferred',missing_evidence:[{document_type:'lease_contract'}],unresolved_facts:[]}});
  assert.match(bare,/^<p class="au-outcome-summary">More documents are needed\.<\/p>/);assert.match(bare,/Needs<\/span> <span class="au-outcome-value"><button type="button" class="au-link" data-au-detail="documents" data-au-outcome-document="lease_contract">Lease contract<\/button>/);
  assert.equal(JSON.stringify(saved),before);

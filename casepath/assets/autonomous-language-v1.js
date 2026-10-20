@@ -385,8 +385,8 @@
       unresolved || unknown || findings.some(row => row.status === 'unknown') ? 'Waiting for proof of open facts.' : '',
       limits ? "A person's go-ahead is needed before any real-world action." : ''].filter(Boolean).join(' ') || 'Review the case details.';
     const facts = list(state.facts);
-    // Recorded sentences lead. The templated summary and next action above
-    // remain the fallback for a record that has none of its own.
+    // Recorded sentences lead only for a fixed-rule outcome; otherwise the
+    // templated summary and next action above lead.
     const recorded = {summary:text(outcome.summary).trim() ? text(outcome.summary) : text(outcome.reason),
       issues:list(outcome.issues).map(issueText).filter(Boolean),
       openFacts:list(outcome.unresolved_facts).map(row => factLabel(facts.find(fact => fact.fact_id === row?.fact_id) || row)),
@@ -404,11 +404,14 @@
   }
   // The draft's own record decides its line: a prepared request is never
   // described as sent, and "no gap" needs both an empty missing list and the
-  // draft's recorded statement that no document gap was identified.
+  // draft's recorded statement that no document gap was identified. A
+  // completed fixed-rule assessment, or a draft that only repeats the
+  // summary, drafted nothing to send and gets no line.
   function draftStatus(outcome = {}) {
-    const draft = outcome?.request_draft;
+    const draft = outcome?.request_draft, body = text(draft?.body).trim();
     if (!draft || typeof draft !== 'object') return {status:'',label:''};
-    if (Array.isArray(outcome.missing_evidence) && !outcome.missing_evidence.length && /\bno\b[^.]*\bdocument gap\b/iu.test(text(draft.body))) return {status:'no_gap',label:'No document gap identified'};
+    if (outcome.reference_provenance?.mode === 'deterministic_reference' && outcome.assessment_status === 'complete' || body && body === text(outcome.summary).trim()) return {status:'',label:''};
+    if (Array.isArray(outcome.missing_evidence) && !outcome.missing_evidence.length && /\bno\b[^.]*\bdocument gap\b/iu.test(body)) return {status:'no_gap',label:'No active document gap identified'};
     return draft.status === 'prepared_not_sent' ? {status:'draft',label:'Draft ready · not sent'} : {status:'recorded',label:'Draft recorded'};
   }
 
