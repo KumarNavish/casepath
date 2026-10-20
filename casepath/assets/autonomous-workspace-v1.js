@@ -4755,7 +4755,7 @@
       }
       else if (target.hasAttribute('data-au-node') || target.hasAttribute('data-au-select')) {
         pauseInspection();
-        const id=target.dataset.auNode || target.dataset.auSelect;
+        const id=target.dataset.auNode || target.dataset.auSelect, fromAnswer=Boolean(target.closest?.('[data-au-stage-step-detail]'));
         if (!list(current?.graph?.nodes).some(node => node.node_id === id)) return;
         const changed=selected !== id; selected=id; chosenNode=id; if (operationPeek) operationPeek.node=id;
         if (target.dataset.auSelectDocument) {
@@ -4765,12 +4765,17 @@
         } else if (changed) evidenceContext={};
         setDetail('step',false,false); renderSelection(changed); rememberSelectionRoute();
         const node=[...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
-        node?.focus({preventScroll:true});
         // A step chosen on the settled map answers below it; bring that answer
         // into view when it starts beyond the visible screen (narrow layouts).
-        const answer = host.querySelector?.('[data-au-stage-step-detail]'), top = answer?.getBoundingClientRect?.().top;
-        // Focus follows the scroll, so the focused element stays on screen.
-        if (Number.isFinite(top) && top > (root.innerHeight || Infinity) - 96) { answer.scrollIntoView?.({block:'start',behavior:reduced?.matches ? 'instant' : 'smooth'}); answer.querySelector?.('.au-step-detail-title')?.focus({preventScroll:true}); }
+        const answer = host.querySelector?.('[data-au-stage-step-detail]'), title = answer?.querySelector?.('.au-step-detail-title'), top = answer?.getBoundingClientRect?.().top;
+        // Focus follows the scroll, so the focused element stays on screen. A
+        // link inside the answer keeps focus in the answer, not on a map node
+        // that may sit under the sticky header.
+        if (fromAnswer && title) title.focus();
+        else {
+          node?.focus({preventScroll:true});
+          if (Number.isFinite(top) && top > (root.innerHeight || Infinity) - 96) { answer.scrollIntoView?.({block:'start',behavior:reduced?.matches ? 'instant' : 'smooth'}); title?.focus({preventScroll:true}); }
+        }
       } else if (target.hasAttribute('data-au-source')) {
         let citation; try { citation = target.dataset.auCitation ? JSON.parse(target.dataset.auCitation) : null; } catch (_) { notice('The source reference is invalid.',true); return; }
         openSource(target.dataset.auSource,citation,target);

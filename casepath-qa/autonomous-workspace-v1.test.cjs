@@ -2907,9 +2907,19 @@ test('choosing a step whose answer starts below the screen moves focus with the 
  await controller.openClaim('claim-a');await settle();
  let scrolled=false;const title={focus(){f.container.ownerDocument.activeElement=this;}},answer={getBoundingClientRect:()=>({top:1600}),scrollIntoView(){scrolled=true;},querySelector:selector=>selector==='.au-step-detail-title'?title:null};
  const query=f.host.querySelector;f.host.querySelector=selector=>selector==='[data-au-stage-step-detail]'?answer:query(selector);
- focus.click(control(f,'data-au-node','branch'));
+ const node=control(f,'data-au-node','branch'),closest=node.closest;node.closest=function(selector){return selector==='[data-au-stage-step-detail]'?null:closest.call(this,selector);};
+ focus.click(node);
  assert.equal(scrolled,true);assert.equal(focus.active,title,'focus is not left on a node scrolled out of view');
  assert.match(ui.stepDetailMarkup(state(),'branch'),/<h3 class="au-step-detail-title" tabindex="-1">/);
+});
+
+test('a Requires or Leads to link inside the answer keeps focus on the new answer title, not on a map node under the sticky header',async t=>{
+ const f=dom(),focus=focusHarness(f),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch}),height=globalThis.innerHeight;globalThis.innerHeight=800;t.after(()=>{controller.destroy();globalThis.innerHeight=height;});await settle();
+ await controller.openClaim('claim-a');await settle();
+ let scrolled=false,titleFocus=null;const title={focus(options){titleFocus=options||{};f.container.ownerDocument.activeElement=this;}},answer={getBoundingClientRect:()=>({top:200}),scrollIntoView(){scrolled=true;},querySelector:selector=>selector==='.au-step-detail-title'?title:null};
+ const query=f.host.querySelector;f.host.querySelector=selector=>selector==='[data-au-stage-step-detail]'?answer:query(selector);
+ focus.click(control(f,'data-au-select','branch'));
+ assert.equal(focus.active,title,'focus stays in the answer');assert.equal(scrolled,false);assert.equal(titleFocus.preventScroll,undefined,'the title may scroll itself clear of the sticky header');
 });
 
 test('a mounted featured replay names a fictional case, says View only on the public site, and unhides the reading guide with its safety note',async t=>{
