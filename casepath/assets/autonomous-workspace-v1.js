@@ -3478,14 +3478,15 @@
       openPresentationCase(demoSession,true);
     }
     // The tour ends at the knowledge its cases saved or reused. Without any,
-    // the last case stays and says so; nothing is inferred from labels.
+    // the last case stays and says so; an unread index is never called empty.
     async function finishTour(finished, explicit = false) {
       const token = epoch, generation = readGeneration, ids = finished.cases.map(row => row.claim_id);
       stopPresentation();
-      let data = knowledgeCache?.value || null;
-      if (!data) { try { data = readKnowledge(await request('/knowledge')); } catch (_) { data = null; } }
+      let data = knowledgeCache?.value || null, unread = false;
+      if (!data) { try { data = readKnowledge(await request('/knowledge')); } catch (_) { unread = true; } }
       if (disposed || token !== epoch || generation !== readGeneration || pendingRoute() || view !== 'claim' || tour !== finished) return;
-      const payoff = data && tourKnowledgePayoff(data,ids);
+      if (unread) { tour = null; renderClaim(); notice('Demonstration finished. Knowledge could not be read.',true,'knowledge-load-failed'); globalStatus.insertAdjacentHTML?.('beforeend',' <button type="button" class="au-link" data-au-nav="knowledge">Open Knowledge</button>'); return; }
+      const payoff = tourKnowledgePayoff(data,ids);
       if (!payoff) { tour = null; renderClaim(); notice(explicit ? 'Demonstration finished. These cases saved or reused no knowledge.' : 'Recorded playback finished.'); return; }
       tour = null;
       await showKnowledge(true,payoff.pin);

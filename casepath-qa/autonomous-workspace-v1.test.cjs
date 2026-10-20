@@ -2805,6 +2805,21 @@ test('reduced motion stops a replay tour at each recorded result and Skip advanc
  assert.equal(reads(),1,'Skip still advances the roster');
 });
 
+test('Skip on the last case tells a failed Knowledge read apart from an index with no tour knowledge',async t=>{
+ for(const failing of [true,false]) {
+  const last=operationOpeningFixture(ui.REFERENCE_DEMO_CASES.at(-1).claim_id),f=operationOpeningDOM(),future=deferredRead();let html='';f.status.insertAdjacentHTML=(_position,markup)=>{html+=markup;};
+  const api=fakeApi({handle:async path=>{if(path.endsWith('/knowledge'))return failing?response({detail:'Service unavailable'},503):response({versions:[],uses:[],quarantined:[]});if(path.includes(last.id)){if(path.endsWith('/replay?through_seq=0'))return response(last.zero);if(path.includes('/snapshot?'))return response(last.snapshot);if(path.endsWith('/replay?through_seq=4'))return response(last.replay);}if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;}});
+  const controller=ui.mount(f.container,{fetch:api.fetch});
+  try {
+   await settle();const choice=control(f,'data-au-demo-case',last.id);Object.assign(choice.dataset,{auDemoCollection:'reference',auDemoSaved:'true'});f.listeners.get('click')({target:choice});
+   await waitFor(()=>f.host.innerHTML.includes(last.zero.state.state_sha256));f.listeners.get('click')({target:control(f,'data-au-demo-skip')});
+   await waitFor(()=>/^Demonstration finished/.test(f.status.textContent));
+   if(failing){assert.equal(f.status.textContent,'Demonstration finished. Knowledge could not be read.');assert.match(html,/data-au-nav="knowledge">Open Knowledge</,'Knowledge stays one click away');}
+   else {assert.equal(f.status.textContent,'Demonstration finished. These cases saved or reused no knowledge.');assert.doesNotMatch(html,/Open Knowledge/);}
+  } finally {controller.destroy();future.resolve(response({}));await settle();}
+ }
+});
+
 test('Cases cold click can finish packet acquisition inside its original300ms choice',async t=>{
  const f=operationOpeningDOM(),packet=recordedPacketFixture(),asset=deferredRead(),opening=deferredRead(),head=deferredRead();let assetSignal;
  const api=fakeApi({handle:async(path,init)=>path.endsWith('/recorded-prototype.json')?(assetSignal=init.signal,asset.promise):path.endsWith('/replay?through_seq=0')?opening.promise:path.includes('/snapshot?')||path.endsWith('/replay?through_seq=4')?head.promise:path.includes('/operations?')?pendingOperationResponse(packet.native.binding):null});
