@@ -1637,7 +1637,8 @@ function knowledgeFixture() {
  const f=dom();let html='',rows=[],history=null;
  Object.defineProperty(f.host,'innerHTML',{get:()=>html,set:value=>{
   html=value;history={tagName:'DETAILS',open:false,parentElement:f.host};rows=[...value.matchAll(/data-au-knowledge-identity="([^"]+)"/g)].map(match=>{
-   const row=control(f,'data-au-knowledge-identity',match[1]);row.parentElement=f.host;row.attributes={};row.setAttribute=(name,value)=>{row.attributes[name]=value;};row.scrollIntoView=options=>{row.scrollOptions=options;};return row;
+   const row=control(f,'data-au-knowledge-identity',match[1]);row.parentElement=f.host;row.attributes={};row.setAttribute=(name,value)=>{row.attributes[name]=value;};row.scrollIntoView=options=>{row.scrollOptions=options;};
+   const heading=control(f,'data-au-entry-heading',match[1]);row.heading=heading;row.querySelector=selector=>selector==='.au-library-entry-head h2'?heading:null;return row;
   });
  }});
  f.host.querySelectorAll=selector=>selector==='[data-au-knowledge-identity]'?rows:[];
@@ -1651,13 +1652,13 @@ test('Inspect reused knowledge navigates to and reveals the exact historical ver
  assert.match(f.host.innerHTML,/data-au-knowledge="procedure.one"[^>]*data-au-version="1"[^>]*data-au-knowledge-sha="1{64}"/);
  const trigger=control(f,'data-au-knowledge','procedure.one');trigger.dataset.auVersion='1';trigger.dataset.auKnowledgeSha=hash('1');f.listeners.get('click')({target:trigger});await waitFor(()=>f.versions.length===1);assert.match(f.host.innerHTML,/data-au-knowledge="procedure.one"[^>]*data-au-version="2"/,'the other version remains reachable in the procedure list');
  const historical=f.versions.find(row=>row.dataset.auKnowledgeIdentity==='procedure.one:1'),current=f.versions.find(row=>row.dataset.auKnowledgeIdentity==='procedure.one:2');
- assert.equal(routing.hash,`#autonomous/knowledge?knowledge=procedure.one&version=1&sha256=${hash('1')}`);assert.equal(historical.attributes['data-pinned'],'true');assert.equal(current,undefined,'a second version is not rendered as another competing record');assert.equal(f.historyDisclosure.open,false,'the exact historical version is the primary record, not a hidden history disclosure');assert.equal(f.container.ownerDocument.activeElement,historical);assert.deepEqual(historical.scrollOptions,{block:'start',behavior:'instant'});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.equal(routing.hash,`#autonomous/knowledge?knowledge=procedure.one&version=1&sha256=${hash('1')}`);assert.equal(historical.attributes['data-pinned'],'true');assert.equal(current,undefined,'a second version is not rendered as another competing record');assert.equal(f.historyDisclosure.open,false,'the exact historical version is the primary record, not a hidden history disclosure');assert.equal(f.container.ownerDocument.activeElement,historical.heading,'focus lands on the entry heading, not the whole entry');assert.deepEqual(historical.scrollOptions,{block:'start',behavior:'instant'});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('an unavailable pinned knowledge version or hash never selects the latest version as its replacement',async t=>{
  const routing=routingFixture(t,`#autonomous/knowledge?knowledge=procedure.one&version=1&sha256=${hash('9')}`),f=knowledgeFixture(),latest={knowledge_id:'procedure.one',version:2,title:'Latest procedure',knowledge_sha256:hash('2'),source_claim_id:'origin-two',qualification:{status:'qualified'}};
  const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response({versions:[latest],uses:[],quarantined:[]}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await waitFor(()=>f.status.textContent.includes('not available'));
- assert.match(f.status.textContent,/exact reused knowledge version is not available/);assert.equal(f.versions.length,0,'an unavailable exact pin cannot borrow the latest primary version');assert.match(f.host.innerHTML,/data-au-knowledge="procedure.one"[^>]*data-au-version="2"/,'the actual available version remains a deliberate list navigation');assert.equal(routing.pushes,0);assert.ok(routing.hash.includes('version=1'));
+ assert.equal(f.status.textContent,'This exact saved knowledge version is not available in this record.','the notice does not assume the pin came from a reuse');assert.equal(f.versions.length,0,'an unavailable exact pin cannot borrow the latest primary version');assert.match(f.host.innerHTML,/data-au-knowledge="procedure.one"[^>]*data-au-version="2"/,'the actual available version remains a deliberate list navigation');assert.equal(routing.pushes,0);assert.ok(routing.hash.includes('version=1'));
  routing.external(`#autonomous/knowledge?knowledge=procedure.one&version=2&sha256=${hash('9')}`);await waitFor(()=>api.calls.filter(call=>call.path.endsWith('/knowledge')).length===2&&f.status.textContent.includes('not available'));
  assert.equal(f.versions.length,0,'an unavailable exact pin cannot borrow the latest primary version');assert.match(f.host.innerHTML,/data-au-knowledge="procedure.one"[^>]*data-au-version="2"/,'the actual available version remains a deliberate list navigation');assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
@@ -2931,7 +2932,7 @@ test('an unavailable exact learning pin cannot be overridden by replay position 
  const data=learningFixtureData(),invalid={knowledge_id:data.versions[0].knowledge_id,version:1,knowledge_sha256:hash('9')},html=ui.knowledgeMarkup(data,[],invalid,'process',{index:1,stage:10});assert.doesNotMatch(html,/data-au-knowledge-identity|au-procedure-stage/);assert.match(html,/This exact saved version is unavailable/);
  const routing=routingFixture(t),f=knowledgeFixture(),shell={dataset:{}},originalQuery=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:originalQuery(selector);
  let count=0,finish;const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?++count===1?response(data):new Promise(resolve=>{finish=resolve;}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finish?.(response(data));controller.destroy();});await waitFor(()=>count===1);await settle();
- routing.external(`#autonomous/knowledge?view=learning&knowledge=${invalid.knowledge_id}&version=1&sha256=${invalid.knowledge_sha256}`);await waitFor(()=>Boolean(finish));assert.equal(f.versions.length,0);finish(response(structuredClone(data)));await settle();await settle();assert.equal(f.versions.length,0);assert.doesNotMatch(f.host.innerHTML,/data-au-knowledge-identity|au-procedure-stage/);assert.match(f.status.textContent,/exact reused knowledge version is not available/);assert.equal(shell.dataset.auLearningPosition,'-1');
+ routing.external(`#autonomous/knowledge?view=learning&knowledge=${invalid.knowledge_id}&version=1&sha256=${invalid.knowledge_sha256}`);await waitFor(()=>Boolean(finish));assert.equal(f.versions.length,0);finish(response(structuredClone(data)));await settle();await settle();assert.equal(f.versions.length,0);assert.doesNotMatch(f.host.innerHTML,/data-au-knowledge-identity|au-procedure-stage/);assert.equal(f.status.textContent,'This exact saved knowledge version is not available in this record.','the notice does not assume the pin came from a reuse');assert.equal(shell.dataset.auLearningPosition,'-1');
 });
 
 
@@ -2972,7 +2973,7 @@ test('Final view leaves the replay for the current library and How this was lear
 
 test('leaving an unavailable learning pin clears only that obsolete notice and a genuine refresh error returns with the next read',async t=>{
  const routing=routingFixture(t,'#autonomous/knowledge?view=learning&knowledge=procedure.lease_termination_dispute&version=999&sha256='+hash('0')),f=knowledgeFixture(),shell={dataset:{}},pane={firstElementChild:{},innerHTML:'',dataset:{},querySelectorAll:()=>[]},original=f.host.querySelector.bind(f.host);f.host.querySelector=selector=>selector==='[data-au-learning]'&&f.host.innerHTML.includes('data-au-learning')?shell:selector==='[data-au-learning-focus]'?pane:original(selector);
- const data=learningFixtureData();let reads=0;const api=fakeApi({handle:async path=>{if(path.endsWith('/knowledge')){if(++reads===1)return response(data);throw new Error('Native refresh unavailable');}return null;}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await waitFor(()=>f.status.textContent.includes('exact reused'));
+ const data=learningFixtureData();let reads=0;const api=fakeApi({handle:async path=>{if(path.endsWith('/knowledge')){if(++reads===1)return response(data);throw new Error('Native refresh unavailable');}return null;}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await waitFor(()=>f.status.textContent.includes('exact saved knowledge version'));
  assert.match(f.host.innerHTML,/Open the library/);assert.doesNotMatch(f.host.innerHTML.match(/<div class="au-learning-focus"[\s\S]*?<\/div>/)[0],/No recorded events/);f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.equal(f.status.textContent,'');assert.match(f.host.innerHTML,/data-au-library/);assert.match(f.host.innerHTML,/data-au-knowledge-identity="procedure.lease_termination_dispute:2"/,'the library shows the current version');assert.doesNotMatch(routing.hash,/version=999/);
  await waitFor(()=>f.status.textContent==='Could not load Knowledge. Try again.');
  routing.external('#autonomous/knowledge?view=learning&knowledge=procedure.lease_termination_dispute&version=999&sha256='+hash('9'));await waitFor(()=>f.status.textContent==='Could not load Knowledge. Try again.');assert.match(f.host.innerHTML,/This exact saved version is unavailable/);f.listeners.get('click')({target:control(f,'data-au-learning-end')});assert.equal(f.status.textContent,'','a new navigation starts a new read');await waitFor(()=>f.status.textContent==='Could not load Knowledge. Try again.');assert.match(f.host.innerHTML,/data-au-library/,'the genuine refresh failure is reported again over the saved library');
@@ -3496,6 +3497,50 @@ test('the Knowledge library reads each recorded entry top to bottom outside any 
  assert.equal(JSON.stringify(knowledge),before);
 });
 
+test('library limits describe only the reusable steps and supporting passages are labelled as the contributing case provenance',()=>{
+ const responses=recordedFixtureResponses(),knowledge=responses['/api/claim-loops/v1/autonomous/knowledge'],claims=responses['/api/claim-loops/v1/autonomous/claims'].claims;
+ const entry=libraryEntry(ui.knowledgeLibraryMarkup(knowledge,claims),'lease_termination_dispute'),version=knowledge.versions.find(row=>row.version===2);
+ const section=title=>{const start=entry.indexOf(`<h3>${title}</h3>`),end=entry.indexOf('<h3>',start+4);return entry.slice(start,end<0?undefined:end);};
+ const actions=section('Actions and limits'),passages=section('Supporting passages'),escape=value=>value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+ assert.doesNotMatch(entry,/Holds no personal case details|Takes no real-world action/,'no entry-wide privacy or action claim');
+ assert.match(actions,/<li>The steps, facts and document checks above hold no values or files from any case; this was checked before saving\.<\/li>/,'the recorded check is scoped to the reusable definition');
+ assert.match(actions,/<li>Reused only for a case verified as this domain under the same admitted rule version\.<\/li>/);assert.match(actions,/<li>Before saving, routing was checked for all 243 combinations of recorded condition values\.<\/li>/);
+ for(const limit of version.source_outcome.authority_limits){assert.ok(!actions.includes(escape(limit)),'one case outcome is not a limit of the procedure');assert.ok(passages.includes(`“${escape(limit)}”`),'the outcome limit stays visible, attributed to its case');}
+ assert.match(passages,/<p class="au-library-outcome" data-au-library-outcome><span class="au-meta">Recorded with the contributing case's outcome:<\/span> “/);
+ assert.match(passages,/<h3>Supporting passages<\/h3><p class="au-library-provenance" data-au-library-provenance>Provenance, not part of the reusable procedure: quoted from the documents of the contributing case, <cite>[^<]+<\/cite>\. They may show that case's names, addresses and other personal details\.<\/p><ul class="au-library-passages">/,'the provenance label precedes every quote');
+ const personal=version.source_evidence.flatMap(row=>row.citations).find(citation=>/Ivo Merin/.test(citation.quote));assert.ok(personal,'the fixture quote carries personal case details');assert.ok(passages.includes(escape(personal.quote)),'the personal quote is shown only under its provenance label');
+ const bare={...version,qualification:{status:'qualified'},source_outcome:null,rule_pack_sha256:undefined},minimal=ui.definitionMarkup(bare);
+ assert.doesNotMatch(minimal,/checked before saving|same admitted rule version|combinations of recorded condition values|data-au-library-outcome/,'limits are only claimed when the record carries them');assert.match(minimal,/A receiving case establishes its own facts and branch conditions from its own documents; reuse does not decide it\./);
+});
+
+test('library section headings share one size and spacing, and a focused entry draws no screen-high ring',()=>{
+ const css=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/autonomous-workspace-v1.css'),'utf8').replace(/\/\*[\s\S]*?\*\//g,'');
+ const rules=[...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(match=>({selector:match[1].trim(),body:match[2]}));
+ const body=selector=>rules.filter(rule=>rule.selector===selector).map(rule=>rule.body).join(';');
+ assert.match(body('.au-workspace .au-library-entry > section h3'),/font-size:18px/);assert.match(body('.au-workspace .au-procedure-definition h3, .au-workspace .au-procedure-provenance h3'),/font-size:18px/);
+ assert.match(body('.au-workspace .au-library :is(.au-procedure-definition,.au-library-entry) > section'),/margin-top:24px/,'Versions and cases keep the section spacing');
+ assert.match(body('.au-workspace .au-library-entry:is(:focus,:focus-visible)'),/outline:none!important/);assert.doesNotMatch(css,/\.au-library-entry:focus-visible\s*\{[^}]*outline:3px/);
+ const html=ui.knowledgeLibraryMarkup(recordedFixtureResponses()['/api/claim-loops/v1/autonomous/knowledge']);const entry=libraryEntry(html,'lease_termination_dispute');
+ for(const title of ['Versions','Contributing and receiving cases'])assert.match(entry,new RegExp(`</div><section(?: class="au-library-cases")?><h3>${title}</h3>|</section><section(?: class="au-library-cases")?><h3>${title}</h3>`),`${title} is a direct entry section`);
+ assert.match(entry,/<h2 id="au-library-lease_termination_dispute-title" tabindex="-1">Lease termination<\/h2>/,'the entry heading is the programmatic focus target');
+});
+
+test('every learned domain has one library entry bound to its exact current version',()=>{
+ const knowledge=recordedFixtureResponses()['/api/claim-loops/v1/autonomous/knowledge'],lease=knowledge.versions.find(row=>row.version===2);
+ const other=family=>({...structuredClone(lease),knowledge_id:`procedure.${family}`,family,category:family,version:1,knowledge_sha256:hash(family.length.toString(16)),parent_knowledge_sha256:null});
+ const data={...knowledge,versions:[...knowledge.versions,other('defect_mold_heating'),other('rent_increase_dispute')]},claims=[{claim_id:lease.source_claim_id,title:'Fictional contributing case',synthetic:true}],html=ui.knowledgeLibraryMarkup(data,claims);
+ assert.deepEqual([...html.matchAll(/data-au-knowledge-identity="([^"]+)"/g)].map(match=>match[1]),['procedure.defect_mold_heating:1','procedure.lease_termination_dispute:2','procedure.rent_increase_dispute:1'],'one entry per learned domain, each at its current qualified version');
+ assert.match(html,/<p class="au-learning-label">Procedure library(?: · Fictional cases)?<\/p><h1 class="au-page-heading" tabindex="-1">Knowledge<\/h1>/);assert.doesNotMatch(html,/Base procedure · admitted rule pack/);
+});
+
+test('a learning address with nothing recorded opens the library and says so in the address',async t=>{
+ const routing=routingFixture(t,'#autonomous/knowledge?view=learning'),f=knowledgeFixture();
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response({versions:[],uses:[],quarantined:[]}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());
+ await waitFor(()=>f.host.innerHTML.includes('data-au-library'));await settle();
+ assert.equal(routing.hash,'#autonomous/knowledge','view=learning is not left in the address of the library it shows');assert.equal(routing.pushes,0,'the correction replaces the entry instead of adding one');
+ assert.doesNotMatch(f.host.innerHTML,/data-au-learning-play|au-learning-lane/);
+});
+
 test('an exact library pin shows that version in its entry and an unavailable one borrows nothing',()=>{
  const knowledge=recordedFixtureResponses()['/api/claim-loops/v1/autonomous/knowledge'],first=knowledge.versions.find(row=>row.version===1);
  const pinned=libraryEntry(ui.knowledgeLibraryMarkup(knowledge,[],{knowledge_id:first.knowledge_id,version:1,knowledge_sha256:first.knowledge_sha256,claim_id:'auto_7373bbf206ab25bacf71b82e'}),'lease_termination_dispute');
@@ -3539,12 +3584,17 @@ test('a case names its domain procedure and similar cases for browsing only',()=
  const claims=[{claim_id:'clm_self',title:'This case',browse_metadata:{domain:'lease_termination_dispute',family_id:'ndg_same'}},family(1),family(2),{claim_id:'clm_other',title:'Other family',browse_metadata:{domain:'lease_termination_dispute',family_id:'ndg_other'}},{claim_id:'clm_source',title:'Source case',browse_metadata:{family_id:'ndg_other'}},{claim_id:'clm_receiver',title:'Receiving case',browse_metadata:{family_id:'ndg_other'}}];
  const self=state({claim_id:'clm_self',graph:null,knowledge_uses:[],knowledge_published:[]}),before=JSON.stringify({self,claims,knowledge});
  const html=ui.claimKnowledgeMarkup(self,[],{claims,knowledge});
- assert.match(html,/<p class="au-case-procedure" data-au-case-procedure="lease_termination_dispute"><button type="button" class="au-link" data-au-knowledge="procedure.lease_termination_dispute" data-au-knowledge-claim="clm_self">Lease termination<\/button> · version 2 qualified · whether it applies is checked when the case runs<\/p>/);
+ assert.match(html,/<p class="au-case-procedure" data-au-case-procedure="lease_termination_dispute" data-au-domain-source="browsing"><button type="button" class="au-link" data-au-knowledge="procedure.lease_termination_dispute" data-au-knowledge-claim="clm_self">Lease termination<\/button> · version 2 qualified · domain listed for browsing only · whether it applies is checked when the case runs<\/p>/);
  const similar=html.match(/<section class="au-similar-cases"[\s\S]*?<\/section>/)[0];assert.match(similar,/Similar cases · browsing only/);
  assert.deepEqual([...similar.matchAll(/data-au-claim="([^"]+)"/g)].map(match=>match[1]),['clm_family_1','clm_family_2','clm_source','clm_receiver'],'same scenario family first, then knowledge-linked cases, never this case');
  assert.doesNotMatch(similar,/data-au-source|data-au-citation|data-au-fact|data-au-document|data-au-inspect/,'browsing links carry no evidence');
  const many=[...claims,...Array.from({length:8},(_,index)=>family(index+3))];assert.equal(ui.similarCases(self,many,knowledge).length,6);assert.ok(ui.similarCases(self,many,knowledge).every(row=>row.reason==='family'));
- assert.match(ui.claimKnowledgeMarkup(self,[],{claims,knowledge:{versions:[],uses:[],quarantined:[]}}),/Lease termination<\/button> · base procedure · nothing learned yet/);
+ assert.match(ui.claimKnowledgeMarkup(self,[],{claims,knowledge:{versions:[],uses:[],quarantined:[]}}),/Lease termination<\/button> · base procedure · nothing learned yet · domain listed for browsing only · whether it applies is checked when the case runs<\/p>/,'an unstarted case keeps the hedge');
+ assert.match(ui.caseProcedureMarkup(self,{claims}),/Knowledge index not loaded · domain listed for browsing only · whether it applies is checked when the case runs<\/p>/);
+ const refused={versions:[],uses:[],quarantined:[],learning_replay:{events:[{kind:'knowledge.published',event_id:'evt-refused',family:'lease_termination_dispute',projection_status:'quarantined',qualification:{status:'quarantined'},at:'2026-10-01T00:00:00Z'}]}};
+ assert.match(ui.caseProcedureMarkup(self,{claims,knowledge:refused}),/· no qualified version · candidates were not saved · domain listed for browsing only · whether it applies is checked when the case runs<\/p>/,'a candidate state keeps the hedge');
+ const ran=state({claim_id:'clm_self',graph:{family:'lease_termination_dispute',nodes:[],edges:[]},knowledge_uses:[],knowledge_published:[]});
+ assert.match(ui.caseProcedureMarkup(ran,{claims,knowledge}),/data-au-case-procedure="lease_termination_dispute"><button[^>]*>Lease termination<\/button> · version 2 qualified · whether it applies is checked when the case runs<\/p>/,'a recorded process names its own domain without the browsing note');
  assert.equal(ui.claimKnowledgeMarkup(state({claim_id:'clm_alone',graph:null}),[],{claims:[],knowledge}).includes('au-similar-cases'),false,'no list is invented without a family or a shared version');
  assert.equal(JSON.stringify({self,claims,knowledge}),before);
 });

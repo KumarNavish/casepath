@@ -141,6 +141,7 @@ async function fixturePage(t,{width=1440,reducedMotion='no-preference'}={}){
     if(window.__throwWrites) throw new Error('Isolated fixture response was not confirmed');
     return {ok:false,status:405,json:async()=>({detail:'This fixture only permits saved GET responses.'})};
    }
+   if(window.__holdKnowledge && url===`${base}/knowledge`) await window.__holdKnowledge;
    let data=window.__responses[url];
    if(!data && url.includes('/events?')){
     const parsed=new URL(url,location.origin),id=parsed.pathname.split('/').at(-2),full=window.__responses[`${base}/claims/${id}/events?after=0`],after=Number(parsed.searchParams.get('after'));
@@ -366,11 +367,14 @@ test('receiving claims bind to their exact knowledge version, with id/version fa
  await page.evaluate(()=>window.__controller.showKnowledge());
  async function receiving(number){
   const version=knowledge.versions.find(row=>row.knowledge_id==='procedure.lease_termination_dispute' && row.version===number);
-  // The library opens the exact version inside its domain entry.
-  await page.evaluate(pin=>window.__controller.showKnowledge(true,pin),{knowledge_id:version.knowledge_id,version:number,knowledge_sha256:version.knowledge_sha256});
+  // A reader opens the exact version from the entry's Versions list; the
+  // version already shown is not a link.
+  const entry=page.locator('[data-au-library-entry="lease_termination_dispute"]');await entry.waitFor();
+  const opened=await entry.getAttribute('data-au-version')!==String(number);
+  if(opened) await entry.locator(`.au-library-versions [data-au-library-version="${number}"] button[data-au-knowledge="${version.knowledge_id}"][data-au-version="${number}"][data-au-knowledge-sha="${version.knowledge_sha256}"]`).click();
   const selected=page.locator(`[data-au-knowledge-identity="${version.knowledge_id}:${number}"]`);await selected.waitFor();
   assert.equal(await page.locator('[data-au-knowledge-identity]').count(),1,'one exact reusable procedure is open for reading');
-  assert.equal(await selected.getAttribute('data-pinned'),'true');
+  assert.equal(await selected.getAttribute('data-pinned'),opened?'true':null,'a followed version link pins its entry');
   assert.equal(await selected.locator(`.au-library-versions [aria-current="true"][data-au-library-version="${number}"]`).count(),1,'Versions marks the exact version shown');
   assert.equal(await selected.locator('details').count(),0,'the entry reads top to bottom without disclosures');
   const expected=await page.evaluate(()=>window.__responses[`${window.__base}/knowledge`]),record=await knowledgeHistoryRecord(page);
@@ -378,7 +382,9 @@ test('receiving claims bind to their exact knowledge version, with id/version fa
   assert.deepEqual(record.versions.find(row=>row.knowledge_id===version.knowledge_id && row.version===number && row.knowledge_sha256===version.knowledge_sha256),version);
   return selected.locator(`[data-au-library-cases="${number}"] [data-au-library-receiving] [data-au-claim]`).evaluateAll(nodes=>nodes.map(node=>node.dataset.auClaim));
  }
+ assert.equal(await page.locator('[data-au-library-entry="lease_termination_dispute"]').getAttribute('data-au-version'),'2','the library opens at the current version');
  assert.deepEqual(sorted(await receiving(1)),sorted([robin,'auto_571f85327c290a71cde37df8','auto_7373bbf206ab25bacf71b82e']));
+ assert.match(await page.evaluate(()=>location.hash),/knowledge=procedure\.lease_termination_dispute&version=1&sha256=/,'the click addresses the exact version');
  assert.deepEqual(sorted(await receiving(2)),sorted(['auto_764f712d3833988ce6ff6cfd','auto_80bf8f54f289f5e4a966e645']));
  const version=knowledge.versions.find(version=>version.version===2),identity=version.knowledge_id;
  const exact={knowledge_id:identity,version:2,knowledge_sha256:version.knowledge_sha256,claim_id:'hash-match'};
@@ -386,6 +392,22 @@ test('receiving claims bind to their exact knowledge version, with id/version fa
  await page.evaluate(uses=>{window.__responses[`${window.__base}/knowledge`].uses=uses;},variants);await page.evaluate(()=>window.__controller.showKnowledge());
  assert.deepEqual(sorted(await receiving(2)),sorted(['hash-match','legacy-absent-hash']));
  assert.deepEqual(await receiving(1),['legacy-other-version']);
+ await noWrites(page);
+});
+
+test('a fresh Knowledge read that changes the library keeps keyboard focus on the same control',async t=>{
+ const page=await fixturePage(t);
+ await page.evaluate(()=>window.__controller.showKnowledge());await page.locator('[data-au-library-entry="lease_termination_dispute"] .au-library-source').first().waitFor();
+ await page.locator('.au-identity-header [data-au-nav="work"]').click();await page.locator('[data-au-library]').waitFor({state:'detached'});
+ await page.evaluate(()=>{window.__holdKnowledge=new Promise(resolve=>{window.__releaseKnowledge=resolve;});const data=window.__responses[`${window.__base}/knowledge`];data.versions=data.versions.map(row=>row.knowledge_id==='procedure.lease_termination_dispute'&&row.version===2?{...row,created_at:'2026-10-08T09:00:00Z'}:row);});
+ await page.locator('.au-identity-header [data-au-nav="knowledge"]').click();
+ const control='[data-au-library-entry="lease_termination_dispute"] .au-library-source[data-au-source-origin="library:procedure.lease_termination_dispute:2:1"]';
+ await page.locator(control).waitFor();await page.locator(control).focus();await page.keyboard.press('Shift+Tab');await page.keyboard.press('Tab');
+ const before=await page.evaluateHandle(()=>document.activeElement);assert.equal(await before.evaluate(node=>node.dataset.auSourceOrigin),'library:procedure.lease_termination_dispute:2:1');
+ await page.evaluate(()=>window.__releaseKnowledge());
+ await page.waitForFunction(()=>document.querySelector('[data-au-view]')?.dataset.auReadState==='verified');
+ assert.equal(await before.evaluate(node=>node.isConnected),false,'the changed read repainted the library');
+ assert.deepEqual(await page.evaluate(()=>({origin:document.activeElement?.dataset.auSourceOrigin,source:document.activeElement?.dataset.auSource,connected:document.activeElement?.isConnected})),{origin:'library:procedure.lease_termination_dispute:2:1',source:await page.locator(control).getAttribute('data-au-source'),connected:true},'focus returns to the same passage link');
  await noWrites(page);
 });
 

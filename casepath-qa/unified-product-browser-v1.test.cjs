@@ -2883,7 +2883,7 @@ test('quiet work: background Knowledge warming stays read only, revalidates exac
     assert.deepEqual((await knowledgeDetails(page)).versions.find(row=>row.knowledge_id===version.knowledge_id&&row.version===version.version&&row.knowledge_sha256===version.knowledge_sha256),version);
     await page.evaluate(()=>{window.__fixture.holdKnowledge=false;for(const held of window.__fixture.held.splice(0))held.release();});await eventually(()=>currentReadState(page).then(read=>read==='verified'),'fresh Knowledge did not settle its exact pin');
     const invalid={...pin,knowledge_sha256:'0'.repeat(64)};await page.evaluate(pin=>{void window.__controller.showKnowledge(true,pin);},invalid);
-    await eventually(()=>page.locator('.au-global-status').textContent().then(text=>text.includes('exact reused knowledge version')),'the invalid pin was not surfaced');assert.equal(await page.locator('[data-au-knowledge-identity]').count(),0,'warmed content cannot substitute a different primary version for an invalid exact hash');
+    await eventually(()=>page.locator('.au-global-status').textContent().then(text=>text.includes('exact saved knowledge version')),'the invalid pin was not surfaced');assert.equal(await page.locator('[data-au-knowledge-identity]').count(),0,'warmed content cannot substitute a different primary version for an invalid exact hash');
   });
   await t.test('a failed warm read leaves Cases intact and explicit Knowledge navigation can recover',async t=>{
     const page=await fixturePage(t,{priorAssessment:'reassessed',knowledgeFailures:1});await eventually(async()=>(await calls(page,'/knowledge')).length===1,'the warm GET did not run');
