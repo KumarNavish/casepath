@@ -6,7 +6,7 @@ const ui = require('../casepath/assets/autonomous-workspace-v1.js');
 const sha = value => createHash('sha256').update(value).digest('hex');
 const hash = char => char.repeat(64);
 // The header names what is shown: a replay line never claims an unrun intake.
-const REPLAY_LINE = /class="au-reference-mode"[^>]*>Replay(?: · recorded \d{1,2} [A-Z][a-z]{2} \d{4})?(?: · fixed rules)?(?: · Fictional case)?(?: · View only)?<\/p>/;
+const REPLAY_LINE = /(?:class="au-reference-mode"[^>]*>Replay(?: · recorded \d{1,2} [A-Z][a-z]{2} \d{4})?(?: · fixed rules)?(?: · Fictional case)?(?: · View only)?<\/p>|class="au-demo-mode" data-au-operation-mode title="Replay(?: · recorded \d{1,2} [A-Z][a-z]{2} \d{4})?(?: · fixed rules)?(?: · Fictional case)?(?: · View only)?">Replay(?: · Fictional case)?<\/span>)/;
 const REPLAY_LINE_ALL = new RegExp(REPLAY_LINE.source,'g');
 function state(extra={}) {
   return {claim_id:'claim-a',title:'Original incoming claim',revision:3,state_sha256:hash('a'),status:'running',
@@ -1622,13 +1622,13 @@ test('the full checklist reads causally: one route line naming its step, one sup
  s.evaluation.documents=routes.map(([route_state,review_state],index)=>({document_type:`document-${index}`,route_state,review_state}));
  const before=JSON.stringify(s),html=ui.obligationMarkup(s,'branch'),row=index=>html.match(new RegExp(`<li[^>]*data-au-obligation="obligation:${index}"[\\s\\S]*?</li>`))[0];
  assert.match(html,/data-au-document-count>2 of 7 received · 2 missing · 1 waiting on a step · 1 may be needed · 1 to check · 1 not needed</,'the count follows the returned routes; a requirement held behind a question is counted as it reads, not as waiting on a step');
- assert.match(row(0),/<span class="au-document-route-label">Missing<\/span><span class="au-document-sep"> · <\/span><button type="button" class="au-link au-document-step" data-au-select="branch" data-au-select-document="document-0" data-au-select-obligation="obligation:0" data-au-select-fact="fact:notice" aria-label="needed now for Check separate service \(step for Evidence 0\)"><span class="au-document-connector">needed now for<\/span> <span class="au-document-step-name">Check separate service<\/span><\/button>/,'the connector travels inside the step control so a wrapped line never ends on it');
+ assert.match(row(0),/<span class="au-document-route-label">Missing<\/span><span class="au-document-sep"> · <\/span><button type="button" class="au-link au-document-step" data-au-select="branch" data-au-select-document="document-0" data-au-select-obligation="obligation:0" data-au-select-fact="fact:notice" aria-label="needed now for Separate service \(step for Evidence 0\)"><span class="au-document-connector">needed now for<\/span> <span class="au-document-step-name">Separate service<\/span><\/button>/,'the connector travels inside the step control so a wrapped line never ends on it');
  assert.match(row(0),/Source evidence is not yet established\./,'a missing review matters where the document is needed now');
  assert.match(row(1),/Supplied evidence is not sufficient\./);
  assert.match(row(2),/Needed later<\/span><span class="au-document-sep"> · <\/span><button[^>]*><span class="au-document-connector">waiting on<\/span> /);assert.doesNotMatch(row(2),/class="au-document-review"/,'a missing review adds nothing to a document still waiting on its step');
  assert.match(row(3),/May be needed<\/span><span class="au-document-sep"> · <\/span><button[^>]*><span class="au-document-connector">depends on<\/span> /);assert.match(row(3),/data-au-route-group="maybe"/);
  for(const index of [4,5]){assert.match(row(index),/data-au-review="sufficient"><span class="au-document-route-label">Received<\/span> <span aria-hidden="true">✓<\/span><span class="au-document-sep"> · <\/span><button[^>]*><span class="au-document-connector">sufficient for<\/span> /);assert.doesNotMatch(row(index),/May be needed|Established|class="au-document-review"/,'a sufficient review replaces the contradicting route');}
- assert.match(row(6),/Not needed<\/span><span class="au-document-sep"> · <\/span><button[^>]*aria-label="Check separate service does not need it \(step for Evidence 6\)"><span class="au-document-step-name">Check separate service<\/span> <span class="au-document-connector">does not need it<\/span><\/button>/);
+ assert.match(row(6),/Not needed<\/span><span class="au-document-sep"> · <\/span><button[^>]*aria-label="Separate service does not need it \(step for Evidence 6\)"><span class="au-document-step-name">Separate service<\/span> <span class="au-document-connector">does not need it<\/span><\/button>/);
  assert.match(row(7),/Needs checking<\/span><span class="au-document-sep"> · <\/span><button[^>]*><span class="au-document-connector">for<\/span> /);
  const chosen=ui.obligationMarkup(s,'branch',null,{obligation:'obligation:4'});assert.match(chosen,/<li class="au-obligation" data-au-obligation="obligation:4"[^>]*data-selected="true" aria-current="true">/,'the document in focus is marked as current, not recoloured');
  assert.doesNotMatch(html,/<button[^>]*class="au-document-open/,'the step name is the control, not the whole row');
@@ -3771,10 +3771,10 @@ test('the answer keeps model wording and issues behind Why while records remain 
 });
 
 
-test('the compact public tour retains exact fictional and view-only provenance in its mode disclosure',()=>{
+test('the compact public tour retains exact fictional and view-only provenance in its plain mode text',()=>{
  const saved=state({claim_id:ui.REFERENCE_DEMO_CASES[0].claim_id,policy_id:REFERENCE_POLICY}),tour={collection:'reference',cases:ui.REFERENCE_DEMO_CASES,index:0};
  const html=ui.workMarkup(saved,{},'branch',[],'step',{}, {mode:'replay',readOnly:true,tour,playing:true});
- assert.match(html,/<summary>Replay · Fictional case<\/summary><p class="au-reference-mode" data-au-operation-mode>Replay · Fictional case · View only<\/p>/);
+ assert.match(html,/<span class="au-demo-mode" data-au-operation-mode title="Replay · Fictional case · View only">Replay · Fictional case<\/span>/);
  assert.equal((html.match(/data-au-inspect="demo"/g)||[]).length,1);
  assert.equal((html.match(/data-au-detail="activity"/g)||[]).length,1);
  assert.doesNotMatch(html,/data-au-operation-scrub|data-au-operation-skip/);
@@ -3829,4 +3829,16 @@ test('W2 Draft request is available only for recorded missing documents with a r
  assert.match(html,/data-au-outcome-missing[\s\S]*data-au-open-outcome-draft>Draft request<\/button>/);assert.match(html,/data-au-disclosure="outcome-draft"/);assert.ok(html.includes(saved.outcome.request_draft.body));
  for(const outcome of [{...saved.outcome,missing_evidence:[]},{...saved.outcome,request_draft:{status:'prepared_not_sent'}},{...saved.outcome,request_draft:{status:'sent',body:'Already sent'}}])assert.doesNotMatch(ui.outcomeSummaryMarkup({...saved,outcome}),/data-au-open-outcome-draft/);
  assert.equal(JSON.stringify(saved),before);
+});
+
+test('W2.5 Documents step links use the same recorded labels as all nine reference maps',()=>{
+ for(const row of ui.REFERENCE_DEMO_CASES){
+  const plan=ui.releaseOperationProcess(row.claim_id),saved={...plan,obligations:plan.graph.nodes.flatMap(node=>node.document_types.map(document_type=>({node_id:node.node_id,document_type})))},before=JSON.stringify(saved);
+  const map=ui.graphMarkup(saved,null,{}, {stage:{state:saved,trace:null}}),documents=ui.obligationMarkup(saved,null);
+  for(const node of plan.graph.nodes){
+   const title=map.match(new RegExp(`data-au-node="${node.node_id}"[\\s\\S]*?<strong class="au-node-title">([^<]+)</strong>`))?.[1];assert.ok(title);
+   for(const type of node.document_types)assert.ok(documents.includes(`<span class="au-document-step-name">${title}</span>`),`${row.claim_id}: ${type} links to ${title}`);
+  }
+  assert.equal(JSON.stringify(saved),before);
+ }
 });

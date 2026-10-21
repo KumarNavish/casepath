@@ -1,0 +1,94 @@
+{
+  "base_commit": "0e45bf5f44c22d7796968eb838ac7b97669587bd",
+  "planner_request": "https://github.com/KumarNavish/casepath/pull/21#issuecomment-6310972539",
+  "planner_protocol": "https://github.com/KumarNavish/casepath/pull/21#issuecomment-6311044971",
+  "source_manifest_sha256": "f9731f5846df6f6b63dcdb0b40156bd18ebe9e5cd2fdbaaf4bb14677bf871094",
+  "source_files": 1723,
+  "sealed_bundle": true,
+  "capture_asset_overrides": false,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "focused_tests": {
+    "unit_product_entry": {
+      "tests": 436,
+      "pass": 436,
+      "fail": 0,
+      "skipped": 0
+    },
+    "desktop_browser_identity": {
+      "tests": 28,
+      "pass": 28,
+      "fail": 0,
+      "skipped": 0
+    },
+    "total": 464,
+    "excluded_phone_tests": 7
+  },
+  "diagnostic_run": {
+    "browser_tests": 35,
+    "pass": 35,
+    "phone_tests_inadvertently_included": 7,
+    "reason": "The Node test-name pattern did not exclude descendants of the matching file; final run used test-skip-pattern."
+  },
+  "commands": {
+    "unit_product_entry": "PYTHONDONTWRITEBYTECODE=1 node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/autonomous-language-v1.test.cjs casepath-qa/sites-autonomous-entry.test.cjs casepath-qa/unified-product-v1.test.cjs",
+    "desktop_browser_identity": "PLAYWRIGHT_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' PYTHONDONTWRITEBYTECODE=1 node --test --test-reporter=tap --test-skip-pattern='390px|320px|541px|600px|700px|manual graph focus' casepath-qa/autonomous-evidence-identity-v2.test.cjs",
+    "overlaps": "BASE=http://127.0.0.1:4180 PLAYWRIGHT_CHROMIUM='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' node design-plans/tools/check_overlaps.mjs design-plans/w25-20261021/after",
+    "story": "BASE=http://127.0.0.1:4180 PLAYWRIGHT_CHROMIUM='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' node design-plans/tools/check_w25_story.mjs design-plans/w25-20261021/story"
+  },
+  "overlaps": {
+    "demo-3s": 0,
+    "demo-7s": 0,
+    "demo-11s": 0,
+    "demo-15s": 0,
+    "demo-19s": 0,
+    "demo-24s": 0,
+    "demo-30s": 0,
+    "claim-rent": 0,
+    "claim-heating": 0,
+    "claim-docs": 0,
+    "knowledge": 0,
+    "cases": 0
+  },
+  "story_check": "story/story.json",
+  "browser_execution": "serial",
+  "full_suite": "not run; W5 gate",
+  "provider_calls": 0,
+  "hosted_writes": 0,
+  "deployment": false,
+  "assets": {
+    "autonomous-workspace-v1.js": "2b854a44707197a1389c029c1c6a46b9444b884d683528f8a173338366550b4e",
+    "autonomous-workspace-v1.css": "c93704472b454d97b5f3187d4486570c4430867191ffdda9d23b2da9f5e977f4"
+  },
+  "screenshots": {
+    "after/cases.png": "0d79e3099c80b098c4e98db51901980c24a5b7e153fb7edfc88ebe5794cdd58d",
+    "after/claim-docs.png": "1da5d29286dede8d0c9e24042522f0d578dfe45fc032ed9ab5984e5cae34d259",
+    "after/claim-heating.png": "496ac65740c77fd3fcf2a4b3b7464cb5c42a57f4fe1eebec100b9a536f3ed569",
+    "after/claim-rent.png": "532d6c86084b7d09be87ab7a661a038dca144e3231df061495dd47ac6c4d3ea5",
+    "after/demo-03s.png": "332368b3a2bbbcebfcaa8ef1a0643cf3178c97cb75ff2584c0c0412f81a77393",
+    "after/demo-07s.png": "5afaf3b9e261e15c40c498138b9df38b7b666cd1ec6283cb76cd9d9c3a5ae5bf",
+    "after/demo-11s.png": "4eb4865d6120cee956f6cbc77332a49eda30a7b5dbb7f10d493460a33ae6c676",
+    "after/demo-15s.png": "9e9d729a3f30482ae6499d21de27db54c917bab9b4e36292779a815e61ae10cb",
+    "after/demo-19s.png": "198c68ccfb5e2e38cc3090f3510d983c7abc214d6e0dc85caa77d7a155ce469f",
+    "after/demo-24s.png": "198c68ccfb5e2e38cc3090f3510d983c7abc214d6e0dc85caa77d7a155ce469f",
+    "after/demo-30s.png": "933cb72156aae929954227ce4cd8d50eb17cec5315b08ee4c664ec0cb0370b3e",
+    "after/knowledge.png": "d413a9d81968f2162479f182fe97c0b398d476efa57e7b81aa7e6b96b8bf6b5f",
+    "before/cases.png": "218b63092729b02973a5e71d532c83c2f1fc716056a9ac64513bdd9a61375e10",
+    "before/claim-docs.png": "8aed4923b3925a634d808d16f88fdba36e6a550d07af6378981838c58ccb0eb1",
+    "before/claim-heating.png": "4b6c9bbf1317b91b2494326d61a63d6f7e4770bd15185a2dd2d465ced70b7ea5",
+    "before/claim-rent.png": "da876a28585ae8c9f5f1e91cfab00d3ba31d7657e1fccaebb88cb785f6f1df90",
+    "before/demo-03s.png": "c1c5fd7025ec7eb8bfbab2e5129b8d58678994b735df7c8c5abb3454462aa6f6",
+    "before/demo-07s.png": "3dbae20c7ce6b2c6668a88fb6db68dec1d20c153d3695465a71cec3ae0d86fe5",
+    "before/demo-11s.png": "253eb825c7c90e1ebf6ef974f49dd129b3812022f7af602aecedc67da0a5ed4c",
+    "before/demo-15s.png": "15875b9f5a6cd491382b0f205ac7012cea79dc06912ccb5e2b3347b9613171ea",
+    "before/demo-19s.png": "edfbb155c800eaf44135a804383022cf3627e79841db7670e56efccf55202d8e",
+    "before/demo-24s.png": "edfbb155c800eaf44135a804383022cf3627e79841db7670e56efccf55202d8e",
+    "before/demo-30s.png": "ed448325e01a3b6d4ae66333c2f5497e3e0f2999fcc5c9cc987af115bfe8e408",
+    "before/knowledge.png": "09815efce029cee833dcd52d1b41e9956c90daddde26517bb1bbc728b29884a3",
+    "story/answer.png": "198c68ccfb5e2e38cc3090f3510d983c7abc214d6e0dc85caa77d7a155ce469f",
+    "story/handoff.png": "e73411ac720943719736369b53f840877d7ab0996ae52c3e128869f32eabcc57",
+    "story/work.png": "30e7362a557b12b6ff570cf8b1ad265fc68f3448e5f83c6e0f27f1c029f35e30"
+  }
+}
