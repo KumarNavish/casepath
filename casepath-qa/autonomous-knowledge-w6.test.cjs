@@ -26,3 +26,16 @@ test('next-action symbols reflect only explicitly recorded document needs',()=>{
  assert.match(ui.deskNextStepMarkup({outcome:{missing_evidence:[{label:'Notice'}]}}),/data-status="missing".*aria-hidden="true">!/);
  assert.doesNotMatch(ui.deskNextStepMarkup({outcome:{}}),/data-status="clear"|✓/);
 });
+test('learning attribution follows exact, dated publication and reuse events only',()=>{
+ for(const entry of ui.knowledgeLibrary(data)){const v=entry.current,lineage=ui.checklistLearning(v,data);assert.equal(lineage.source,v.source_claim_id);assert.equal(lineage.later.length,2);assert.ok(!lineage.later.includes(lineage.source));const html=ui.libraryEntryMarkup(entry,data);assert.match(html,/Learned from “/);assert.match(html,/reused in 2 later cases/);assert.match(html,/<summary>Sources<\/summary>/);}
+ const shuffled=structuredClone(data);shuffled.learning_replay.events.reverse();for(const entry of ui.knowledgeLibrary(shuffled))assert.deepEqual(ui.checklistLearning(entry.current,shuffled),ui.checklistLearning(ui.knowledgeLibrary(data).find(e=>e.family===entry.family).current,data));
+ const noOrder={...data,learning_replay:{events:[]}};assert.equal(ui.checklistLearning(data.versions[0],noOrder),null);
+});
+test('learning copy handles zero and one later case without guessing order',()=>{
+ for(const count of [0,1]){
+  const copy=structuredClone(data),version=ui.knowledgeLibrary(copy)[0].current,uses=copy.learning_replay.events.filter(e=>e.kind==='knowledge.used'&&e.knowledge_id===version.knowledge_id&&e.claim_id!==version.source_claim_id),keep=new Set(uses.slice(0,count).map(e=>e.claim_id));
+  copy.learning_replay.events=copy.learning_replay.events.filter(e=>e.kind!=='knowledge.used'||e.knowledge_id!==version.knowledge_id||keep.has(e.claim_id));
+  const revised={...copy},entry=ui.knowledgeLibrary(revised)[0],html=ui.libraryEntryMarkup(entry,revised),line=html.match(/class="au-checklist-learned">(.*?)<\/p>/)[1];
+  if(count===0)assert.doesNotMatch(line,/reused in/);else assert.match(line,/reused in 1 later case$/);
+ }
+});

@@ -1776,3 +1776,5 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 @media (min-width:701px) {
  .au-workspace [data-au-checklist-library] :is(.au-learning-label,.au-library-status) { color:var(--au-muted); }
 }
+
+.au-workspace .au-checklist-learned { margin:8px 0; color:var(--au-muted); font-size:16px; line-height:1.5; }
