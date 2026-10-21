@@ -1,0 +1,777 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "overrides": false,
+  "errors": [],
+  "writes": [],
+  "frames": {
+    "work": {
+      "overlaps": []
+    },
+    "answer": {
+      "overlaps": []
+    }
+  },
+  "cues": {
+    "runs": [
+      {
+        "name": "reading",
+        "id": "op_1715b98c5f009b94cad03526c1c661be",
+        "kind": "fact.extract",
+        "start": 17749,
+        "duration": 450,
+        "finished": 18204.399999976158
+      },
+      {
+        "name": "thread",
+        "id": "op_1715b98c5f009b94cad03526c1c661be",
+        "kind": "fact.extract",
+        "start": 18206.100000023842,
+        "duration": 600,
+        "finished": 18821.399999976158
+      },
+      {
+        "name": "landing",
+        "id": "op_1715b98c5f009b94cad03526c1c661be",
+        "kind": "fact.extract",
+        "start": 18821.600000023842,
+        "duration": 250,
+        "finished": 19548.100000023842
+      },
+      {
+        "name": "node-build",
+        "id": "op_1715b98c5f009b94cad03526c1c661be",
+        "kind": "fact.extract",
+        "start": 19548.19999998808,
+        "duration": 200,
+        "finished": 19738.30000001192
+      },
+      {
+        "name": "node-arrival",
+        "id": "op_1715b98c5f009b94cad03526c1c661be",
+        "kind": "fact.extract",
+        "start": 19738.5,
+        "duration": 200,
+        "finished": 19937.5
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_1715b98c5f009b94cad03526c1c661be",
+        "kind": "fact.extract",
+        "start": 19937.69999998808,
+        "duration": 400,
+        "finished": 20354.399999976158
+      },
+      {
+        "name": "reading",
+        "id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+        "kind": "fact.extract",
+        "start": 20660.399999976158,
+        "duration": 450,
+        "finished": 21121
+      },
+      {
+        "name": "thread",
+        "id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+        "kind": "fact.extract",
+        "start": 21121.600000023842,
+        "duration": 600,
+        "finished": 21720.899999976158
+      },
+      {
+        "name": "landing",
+        "id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+        "kind": "fact.extract",
+        "start": 21721.19999998808,
+        "duration": 250,
+        "finished": 21987.69999998808
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+        "kind": "fact.extract",
+        "start": 21988,
+        "duration": 400,
+        "finished": 22404.399999976158
+      },
+      {
+        "name": "reading",
+        "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "kind": "fact.extract",
+        "start": 22713.399999976158,
+        "duration": 450,
+        "finished": 23171.19999998808
+      },
+      {
+        "name": "thread",
+        "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "kind": "fact.extract",
+        "start": 23171.399999976158,
+        "duration": 600,
+        "finished": 23787.600000023842
+      },
+      {
+        "name": "landing",
+        "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "kind": "fact.extract",
+        "start": 23787.69999998808,
+        "duration": 250,
+        "finished": 24037.899999976158
+      },
+      {
+        "name": "node-build",
+        "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "kind": "fact.extract",
+        "start": 24038.100000023842,
+        "duration": 200,
+        "finished": 24238.19999998808
+      },
+      {
+        "name": "node-arrival",
+        "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "kind": "fact.extract",
+        "start": 24238.5,
+        "duration": 200,
+        "finished": 24438.19999998808
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "kind": "fact.extract",
+        "start": 24438.399999976158,
+        "duration": 400,
+        "finished": 24854.19999998808
+      },
+      {
+        "name": "reading",
+        "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "kind": "fact.extract",
+        "start": 25160.600000023842,
+        "duration": 450,
+        "finished": 25621.100000023842
+      },
+      {
+        "name": "thread",
+        "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "kind": "fact.extract",
+        "start": 25621.399999976158,
+        "duration": 600,
+        "finished": 26238
+      },
+      {
+        "name": "landing",
+        "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "kind": "fact.extract",
+        "start": 26238.19999998808,
+        "duration": 250,
+        "finished": 26488.19999998808
+      },
+      {
+        "name": "node-build",
+        "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "kind": "fact.extract",
+        "start": 26488.69999998808,
+        "duration": 200,
+        "finished": 26704.600000023842
+      },
+      {
+        "name": "node-arrival",
+        "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "kind": "fact.extract",
+        "start": 26704.80000001192,
+        "duration": 200,
+        "finished": 26921.100000023842
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "kind": "fact.extract",
+        "start": 26921.30000001192,
+        "duration": 400,
+        "finished": 27321.399999976158
+      },
+      {
+        "name": "reading",
+        "id": "op_4f935af1785d232600fc72be1eebcab3",
+        "kind": "fact.extract",
+        "start": 27627.80000001192,
+        "duration": 450,
+        "finished": 28087.899999976158
+      },
+      {
+        "name": "thread",
+        "id": "op_4f935af1785d232600fc72be1eebcab3",
+        "kind": "fact.extract",
+        "start": 28088.100000023842,
+        "duration": 600,
+        "finished": 28704.399999976158
+      },
+      {
+        "name": "landing",
+        "id": "op_4f935af1785d232600fc72be1eebcab3",
+        "kind": "fact.extract",
+        "start": 28704.600000023842,
+        "duration": 250,
+        "finished": 28954.100000023842
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_4f935af1785d232600fc72be1eebcab3",
+        "kind": "fact.extract",
+        "start": 28954.19999998808,
+        "duration": 400,
+        "finished": 29370.399999976158
+      },
+      {
+        "name": "reading",
+        "id": "op_a677aec77b40589e0d0580e3dc6d5677",
+        "kind": "fact.extract",
+        "start": 29677,
+        "duration": 450,
+        "finished": 30137.5
+      },
+      {
+        "name": "thread",
+        "id": "op_a677aec77b40589e0d0580e3dc6d5677",
+        "kind": "fact.extract",
+        "start": 30137.69999998808,
+        "duration": 600,
+        "finished": 30737
+      },
+      {
+        "name": "landing",
+        "id": "op_a677aec77b40589e0d0580e3dc6d5677",
+        "kind": "fact.extract",
+        "start": 30737.19999998808,
+        "duration": 250,
+        "finished": 31004.5
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_a677aec77b40589e0d0580e3dc6d5677",
+        "kind": "fact.extract",
+        "start": 31004.600000023842,
+        "duration": 400,
+        "finished": 31404.5
+      },
+      {
+        "name": "reading",
+        "id": "op_14f9eb670b91d7289150ef3a51717af4",
+        "kind": "fact.extract",
+        "start": 31710,
+        "duration": 450,
+        "finished": 32171.19999998808
+      },
+      {
+        "name": "thread",
+        "id": "op_14f9eb670b91d7289150ef3a51717af4",
+        "kind": "fact.extract",
+        "start": 32171.399999976158,
+        "duration": 600,
+        "finished": 32770.60000002384
+      },
+      {
+        "name": "landing",
+        "id": "op_14f9eb670b91d7289150ef3a51717af4",
+        "kind": "fact.extract",
+        "start": 32770.60000002384,
+        "duration": 250,
+        "finished": 33021
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_14f9eb670b91d7289150ef3a51717af4",
+        "kind": "fact.extract",
+        "start": 33021.10000002384,
+        "duration": 400,
+        "finished": 33421.10000002384
+      },
+      {
+        "name": "reading",
+        "id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "kind": "fact.extract",
+        "start": 33727.69999998808,
+        "duration": 450,
+        "finished": 34187
+      },
+      {
+        "name": "thread",
+        "id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "kind": "fact.extract",
+        "start": 34187.19999998808,
+        "duration": 600,
+        "finished": 34804.10000002384
+      },
+      {
+        "name": "landing",
+        "id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "kind": "fact.extract",
+        "start": 34804.19999998808,
+        "duration": 250,
+        "finished": 35071
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "kind": "fact.extract",
+        "start": 35071,
+        "duration": 400,
+        "finished": 35471
+      },
+      {
+        "name": "reuse",
+        "id": "op_f0e15625981679023d118fe0fd330a2a",
+        "kind": "knowledge.reuse",
+        "start": 35784,
+        "duration": 300,
+        "finished": 36070.60000002384
+      },
+      {
+        "name": "reading",
+        "id": "op_239fff8e940e09cd50d910cbaff753b7",
+        "kind": "document.check",
+        "start": 37744.60000002384,
+        "duration": 450,
+        "finished": 38203.89999997616
+      },
+      {
+        "name": "thread",
+        "id": "op_239fff8e940e09cd50d910cbaff753b7",
+        "kind": "document.check",
+        "start": 38204.39999997616,
+        "duration": 600,
+        "finished": 38804
+      },
+      {
+        "name": "landing",
+        "id": "op_239fff8e940e09cd50d910cbaff753b7",
+        "kind": "document.check",
+        "start": 38804,
+        "duration": 250,
+        "finished": 39070.89999997616
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_239fff8e940e09cd50d910cbaff753b7",
+        "kind": "document.check",
+        "start": 39071,
+        "duration": 400,
+        "finished": 39486.80000001192
+      },
+      {
+        "name": "reading",
+        "id": "op_1b4045f495bd7c43aee1c82408feaba3",
+        "kind": "document.check",
+        "start": 39813.69999998808,
+        "duration": 450,
+        "finished": 40287.5
+      },
+      {
+        "name": "thread",
+        "id": "op_1b4045f495bd7c43aee1c82408feaba3",
+        "kind": "document.check",
+        "start": 40287.80000001192,
+        "duration": 600,
+        "finished": 40904.10000002384
+      },
+      {
+        "name": "landing",
+        "id": "op_1b4045f495bd7c43aee1c82408feaba3",
+        "kind": "document.check",
+        "start": 40904.19999998808,
+        "duration": 250,
+        "finished": 41154.10000002384
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_1b4045f495bd7c43aee1c82408feaba3",
+        "kind": "document.check",
+        "start": 41154.19999998808,
+        "duration": 400,
+        "finished": 41570.60000002384
+      },
+      {
+        "name": "reading",
+        "id": "op_96acd4eb60e2706174feaa5552f164f8",
+        "kind": "document.check",
+        "start": 41898.39999997616,
+        "duration": 450,
+        "finished": 42370.69999998808
+      },
+      {
+        "name": "thread",
+        "id": "op_96acd4eb60e2706174feaa5552f164f8",
+        "kind": "document.check",
+        "start": 42370.89999997616,
+        "duration": 600,
+        "finished": 42987
+      },
+      {
+        "name": "landing",
+        "id": "op_96acd4eb60e2706174feaa5552f164f8",
+        "kind": "document.check",
+        "start": 42987.19999998808,
+        "duration": 250,
+        "finished": 43253.80000001192
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_96acd4eb60e2706174feaa5552f164f8",
+        "kind": "document.check",
+        "start": 43254,
+        "duration": 400,
+        "finished": 43669.89999997616
+      },
+      {
+        "name": "reading",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "kind": "step.complete",
+        "start": 43997.5,
+        "duration": 450,
+        "finished": 44453.5
+      },
+      {
+        "name": "thread",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "kind": "step.complete",
+        "start": 44453.69999998808,
+        "duration": 600,
+        "finished": 45070.5
+      },
+      {
+        "name": "landing",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "kind": "step.complete",
+        "start": 45070.60000002384,
+        "duration": 250,
+        "finished": 45337.30000001192
+      },
+      {
+        "name": "node-build",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "kind": "step.complete",
+        "start": 45337.60000002384,
+        "duration": 200,
+        "finished": 45552.89999997616
+      },
+      {
+        "name": "node-arrival",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "kind": "step.complete",
+        "start": 45553,
+        "duration": 200,
+        "finished": 45770.60000002384
+      },
+      {
+        "name": "completion",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "kind": "step.complete",
+        "start": 45770.69999998808,
+        "duration": 300,
+        "finished": 46087.19999998808
+      },
+      {
+        "name": "connector",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "kind": "step.complete",
+        "start": 46087.30000001192,
+        "duration": 600,
+        "finished": 46687.30000001192
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "kind": "step.complete",
+        "start": 46687.5,
+        "duration": 400,
+        "finished": 47087.10000002384
+      },
+      {
+        "name": "reading",
+        "id": "op_ba68a476ea8289e87f3074c010784f55",
+        "kind": "step.complete",
+        "start": 47415.89999997616,
+        "duration": 450,
+        "finished": 47887.10000002384
+      },
+      {
+        "name": "thread",
+        "id": "op_ba68a476ea8289e87f3074c010784f55",
+        "kind": "step.complete",
+        "start": 47887.30000001192,
+        "duration": 600,
+        "finished": 48486.69999998808
+      },
+      {
+        "name": "landing",
+        "id": "op_ba68a476ea8289e87f3074c010784f55",
+        "kind": "step.complete",
+        "start": 48486.89999997616,
+        "duration": 250,
+        "finished": 48753.10000002384
+      },
+      {
+        "name": "completion",
+        "id": "op_ba68a476ea8289e87f3074c010784f55",
+        "kind": "step.complete",
+        "start": 48753.39999997616,
+        "duration": 300,
+        "finished": 49053.80000001192
+      },
+      {
+        "name": "connector",
+        "id": "op_ba68a476ea8289e87f3074c010784f55",
+        "kind": "step.complete",
+        "start": 49054.10000002384,
+        "duration": 600,
+        "finished": 49653.5
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_ba68a476ea8289e87f3074c010784f55",
+        "kind": "step.complete",
+        "start": 49653.60000002384,
+        "duration": 400,
+        "finished": 50070.10000002384
+      },
+      {
+        "name": "reading",
+        "id": "op_a63efa92ca7029d17a2bd137f122033c",
+        "kind": "step.complete",
+        "start": 50399.5,
+        "duration": 450,
+        "finished": 50869.69999998808
+      },
+      {
+        "name": "thread",
+        "id": "op_a63efa92ca7029d17a2bd137f122033c",
+        "kind": "step.complete",
+        "start": 50870,
+        "duration": 600,
+        "finished": 51470.30000001192
+      },
+      {
+        "name": "landing",
+        "id": "op_a63efa92ca7029d17a2bd137f122033c",
+        "kind": "step.complete",
+        "start": 51470.39999997616,
+        "duration": 250,
+        "finished": 51736.10000002384
+      },
+      {
+        "name": "completion",
+        "id": "op_a63efa92ca7029d17a2bd137f122033c",
+        "kind": "step.complete",
+        "start": 51736.19999998808,
+        "duration": 300,
+        "finished": 52036.30000001192
+      },
+      {
+        "name": "connector",
+        "id": "op_a63efa92ca7029d17a2bd137f122033c",
+        "kind": "step.complete",
+        "start": 52036.5,
+        "duration": 600,
+        "finished": 52636.89999997616
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_a63efa92ca7029d17a2bd137f122033c",
+        "kind": "step.complete",
+        "start": 52637,
+        "duration": 400,
+        "finished": 53053.19999998808
+      },
+      {
+        "name": "reading",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "kind": "step.complete",
+        "start": 53388.10000002384,
+        "duration": 450,
+        "finished": 53853.19999998808
+      },
+      {
+        "name": "thread",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "kind": "step.complete",
+        "start": 53853.39999997616,
+        "duration": 600,
+        "finished": 54453.60000002384
+      },
+      {
+        "name": "landing",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "kind": "step.complete",
+        "start": 54453.80000001192,
+        "duration": 250,
+        "finished": 54720
+      },
+      {
+        "name": "node-build",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "kind": "step.complete",
+        "start": 54720.10000002384,
+        "duration": 200,
+        "finished": 54936.89999997616
+      },
+      {
+        "name": "node-arrival",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "kind": "step.complete",
+        "start": 54937,
+        "duration": 200,
+        "finished": 55152.5
+      },
+      {
+        "name": "completion",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "kind": "step.complete",
+        "start": 55152.60000002384,
+        "duration": 300,
+        "finished": 55453.19999998808
+      },
+      {
+        "name": "connector",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "kind": "step.complete",
+        "start": 55453.39999997616,
+        "duration": 600,
+        "finished": 56053.5
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "kind": "step.complete",
+        "start": 56053.60000002384,
+        "duration": 400,
+        "finished": 56453.39999997616
+      },
+      {
+        "name": "reading",
+        "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "kind": "step.complete",
+        "start": 56784.39999997616,
+        "duration": 450,
+        "finished": 57253.39999997616
+      },
+      {
+        "name": "thread",
+        "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "kind": "step.complete",
+        "start": 57253.69999998808,
+        "duration": 600,
+        "finished": 57853.10000002384
+      },
+      {
+        "name": "landing",
+        "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "kind": "step.complete",
+        "start": 57853.19999998808,
+        "duration": 250,
+        "finished": 58102.89999997616
+      },
+      {
+        "name": "completion",
+        "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "kind": "step.complete",
+        "start": 58103,
+        "duration": 300,
+        "finished": 58403.39999997616
+      },
+      {
+        "name": "connector",
+        "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "kind": "step.complete",
+        "start": 58403.39999997616,
+        "duration": 600,
+        "finished": 59003.19999998808
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "kind": "step.complete",
+        "start": 59003.30000001192,
+        "duration": 400,
+        "finished": 59403
+      },
+      {
+        "name": "reading",
+        "id": "op_193bef006745abf6a81e5adde872cadc",
+        "kind": "step.complete",
+        "start": 59738.69999998808,
+        "duration": 450,
+        "finished": 60203.19999998808
+      },
+      {
+        "name": "thread",
+        "id": "op_193bef006745abf6a81e5adde872cadc",
+        "kind": "step.complete",
+        "start": 60203.5,
+        "duration": 600,
+        "finished": 60819.80000001192
+      },
+      {
+        "name": "landing",
+        "id": "op_193bef006745abf6a81e5adde872cadc",
+        "kind": "step.complete",
+        "start": 60819.89999997616,
+        "duration": 250,
+        "finished": 61086.69999998808
+      },
+      {
+        "name": "node-build",
+        "id": "op_193bef006745abf6a81e5adde872cadc",
+        "kind": "step.complete",
+        "start": 61086.80000001192,
+        "duration": 200,
+        "finished": 61286
+      },
+      {
+        "name": "node-arrival",
+        "id": "op_193bef006745abf6a81e5adde872cadc",
+        "kind": "step.complete",
+        "start": 61286.10000002384,
+        "duration": 200,
+        "finished": 61486.30000001192
+      },
+      {
+        "name": "completion",
+        "id": "op_193bef006745abf6a81e5adde872cadc",
+        "kind": "step.complete",
+        "start": 61486.5,
+        "duration": 300,
+        "finished": 61803
+      },
+      {
+        "name": "connector",
+        "id": "op_193bef006745abf6a81e5adde872cadc",
+        "kind": "step.complete",
+        "start": 61803.10000002384,
+        "duration": 600,
+        "finished": 62403.19999998808
+      },
+      {
+        "name": "thread-fade",
+        "id": "op_193bef006745abf6a81e5adde872cadc",
+        "kind": "step.complete",
+        "start": 62403.5,
+        "duration": 400,
+        "finished": 62819.5
+      },
+      {
+        "name": "answer",
+        "id": "op_568943696026415fa063d190086424ee",
+        "kind": "decision",
+        "start": 63145.39999997616,
+        "duration": 400,
+        "finished": 63552.89999997616
+      }
+    ],
+    "maxConcurrent": 1,
+    "textCrossings": []
+  },
+  "pauseResumeSkip": true,
+  "passed": true
+}

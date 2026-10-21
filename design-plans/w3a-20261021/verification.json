@@ -1,0 +1,44 @@
+{
+  "status": "ready_for_planner_review",
+  "branch": "codex/casepath-ui-w3a-20261021",
+  "approved_base": "8856ca71e250273f0f9bc7ae502561370ad389f6",
+  "implementation_commit": "dcb64e7d2441db8bfcc62e9e8f44b9ba615c119d",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "focused_tests": 449,
+  "desktop_tests": 28,
+  "phone_tests_excluded": 7,
+  "case_count": 9,
+  "every_completed_step_has_cited_passage": true,
+  "max_concurrent_cues": 1,
+  "cue_count": 94,
+  "text_crossings": 0,
+  "overlaps": 0,
+  "video_duration_seconds": 69.48,
+  "served_assets_sha256": {
+    "autonomous-workspace-v1.js": "6983352c561ad0dd32092a3919fe7026ffa48685a8f2d8b9af79ae8c5709a0fe",
+    "autonomous-workspace-v1.css": "701e5fc70a3d2397bad58b61cbf9f0d903710fe75d2b271195f80f52cc0d1ee3"
+  },
+  "source_manifest_sha256": "a20aefa3eb6bfcca59523c0c2207db80d1c599fed1445c2566e034f66e4dd8db",
+  "source_file_count": 1725,
+  "paid_inference_calls": 0,
+  "hosted_writes": 0,
+  "deployment": false,
+  "original_nine_rerun": false,
+  "merge_requires_user_visual_go": true,
+  "hashes": {
+    "seal.log": "0d937a63c0373e03feb62e5558af2afa0fe170fea21ac603711c0448099d40ca",
+    "rent-step-selected.png": "07c2766ba6bf694cfaaff8efaa41feeac653b38853e00a6551379eab8eae11ba",
+    "mid-work-thread.png": "c2915c733c4900c5a60c0db54f2d81c28d232614fe14431203605d155ad372a4",
+    "desktop.tap": "9065d75a902488de77c1c53aedf36f209134a242279fb0af2f150d701b0bc594",
+    "case1.mp4": "739bf1c0f17d82669682355cc9d68738f7d41591c5d29f2f0cf7cacf58b7c1b2",
+    "focused.tap": "ce23413d75070df2dffee7ba6efe564f9000d92f2e9a6c4997a66ae54dcb4c7a",
+    "case4-answer.png": "25ece0dca9cf03eab3a2bcb2fe5972e37a8fb7b200c4901bad6a82017d3a4322",
+    "case1-answer-motion.png": "9979fb29519410ee05991c56ae1482e60633809ee3ca37e209add4ba8b0def13",
+    "case1-answer.png": "465f98ed683437e0135c9ef87b9f14b2088afc22a07383c52c546b3889e7d800",
+    "verification-receipt.json": "c0460691e5a5b7dd963e992931b6ff7bd8409607561800900e9da1e6154d197e",
+    "motion-receipt.json": "0159f684e238acc5f4267e330d032a807235a6d30875d7ea87b0fddb5e24627e"
+  }
+}
