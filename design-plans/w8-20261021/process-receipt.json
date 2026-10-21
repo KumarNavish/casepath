@@ -1,0 +1,122 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "errors": [],
+  "writes": [],
+  "staticPrefix": false,
+  "overrides": false,
+  "case": "clm_314f2d309fea25e6",
+  "completedProcessFoldIns": true,
+  "cases": [
+    {
+      "id": "clm_314f2d309fea25e6",
+      "node": "dh_scope",
+      "columns": [
+        "facts",
+        "law",
+        "evidence"
+      ]
+    },
+    {
+      "id": "clm_4a07dbbbd859a3ce",
+      "node": "dh_scope",
+      "columns": [
+        "facts",
+        "law",
+        "evidence"
+      ]
+    },
+    {
+      "id": "clm_95d08975bc575592",
+      "node": "dh_scope",
+      "columns": [
+        "facts",
+        "law",
+        "evidence"
+      ]
+    },
+    {
+      "id": "clm_0f4f13b1e3e1328c",
+      "node": "lt_form",
+      "columns": [
+        "facts",
+        "law",
+        "evidence"
+      ]
+    },
+    {
+      "id": "clm_393285577dcb12c4",
+      "node": "lt_form",
+      "columns": [
+        "facts",
+        "law",
+        "evidence"
+      ]
+    },
+    {
+      "id": "clm_4a53299cfe619303",
+      "node": "lt_form",
+      "columns": [
+        "facts",
+        "law",
+        "evidence"
+      ]
+    },
+    {
+      "id": "clm_2c55cdd816b1d0e8",
+      "node": "ri_form",
+      "columns": [
+        "facts",
+        "law",
+        "evidence"
+      ]
+    },
+    {
+      "id": "clm_543f08f2415b2a33",
+      "node": "ri_form",
+      "columns": [
+        "facts",
+        "law",
+        "evidence"
+      ]
+    },
+    {
+      "id": "clm_7dbd7c7d1c4ddf90",
+      "node": "ri_form",
+      "columns": [
+        "facts",
+        "law",
+        "evidence"
+      ]
+    }
+  ],
+  "frames": {
+    "case1-process": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "case4-process": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "claim-reader": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "source-checker": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "document-finder": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "result-checker": {
+      "overlaps": [],
+      "overflow": false
+    }
+  },
+  "passed": true
+}
