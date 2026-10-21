@@ -1,0 +1,87 @@
+{
+  "status": "NS1b_ready_for_planner",
+  "implementation_commit": "fb91742ba2f3f1df67d6f3e19a4c872566ff5a2d",
+  "base": "c230a466de27cea989c2febb2855b39ac7ebcc14",
+  "focused_tests": 483,
+  "desktop_browser_checks": 28,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "source_file_count": 1733,
+  "source_manifest_sha256": "f7ba6d77dcd8f9c64c71f673776489b7333c0714c6db1c0e81247c5b799081f1",
+  "served_assets": {
+    "autonomous-workspace-v1.js": "e2542ddf98cc1d6b0274f347c0e859f80c6976832a1a10ea61118fcfdbec58c5",
+    "autonomous-workspace-v1.css": "a9aeb8af0ae3b542ce2ceceb29d0826189de907f187e9f3be84ddc5f2987919e",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "max_simultaneous_animations": 1,
+  "motion_violations": [],
+  "frame_checks": {
+    "state1-ready": {
+      "overlaps": [],
+      "horizontalOverflow": false
+    },
+    "state2-source-opened": {
+      "overlaps": [],
+      "horizontalOverflow": false
+    },
+    "state3-exact-passage": {
+      "overlaps": [],
+      "horizontalOverflow": false
+    },
+    "state4-source-fact": {
+      "overlaps": [],
+      "horizontalOverflow": false
+    },
+    "state5-process-decision": {
+      "overlaps": [],
+      "horizontalOverflow": false
+    }
+  },
+  "cue_events": 81,
+  "frames": {
+    "state1-ready-fidelity": 3.55,
+    "state3-exact-passage-fidelity": 5.37,
+    "state2-source-opened-fidelity": 4.47,
+    "state4-source-fact-fidelity": 5.38,
+    "state5-process-decision-fidelity": 5.23
+  },
+  "reduced_motion": true,
+  "paid_inference": 0,
+  "hosted_writes": 0,
+  "deployment": false,
+  "hashes": {
+    "seal.log": "199e67ed1e1d092596e2b1e9bb8abadb639503a16463857cbc9ebeac7a9d3223",
+    "state3-exact-passage.png": "966ad6894ff6483eb7ecd894f11af8354b1629552f865aef4cd7a543f5ef4060",
+    "state1-ready-fidelity.json": "66815b7970435eafbb361185380c176221486f52e8aa906dbe753335c720e3ef",
+    "desktop.tap": "bd7cc2764c01f50fb1d919c94ef6dc733a138449d9c8034199a23dd202ef309e",
+    "state5-process-decision-diff.png": "e8e300f09b2cfd90d4c3c4587b6d7b5f68f21de2c36c5f0de1ef5cb328089ae5",
+    "focused.tap": "c300625806e15ee8b7152d636ef40560d1a6f57fe0b4a7e07bc3761e5ffdc6a8",
+    "state5-process-decision-overlay.png": "47c65990eb08626afe2e77d41272b617820ec35e20023295cb2a0f6270bab243",
+    "state3-exact-passage-fidelity.json": "b060bab4398f0b0abd187fb06702f15f5811dd5693a7b62c216b786564c1ed20",
+    "state5-process-decision-side.png": "e9a69104586384fa6bb72e1480f075830f0001d0998b65941cdd930f7f4522b7",
+    "state2-source-opened.png": "ad8452b9aeac52e48d6c710761686ba9830931a0c44e7c0e0f3918d5926456eb",
+    "state1-ready-diff.png": "1d2f6b2eed5ebe41d0e1a0d0be9f7c4fc5615861f7ba24fe0a54330633ab6fce",
+    "state2-source-opened-diff.png": "21d7edccef9c1067bbf516cb3064dcc4609cdaf547d26e23fda9db4ab8ce782a",
+    "state3-exact-passage-diff.png": "51edcdd0f057d8d38aa8a05fdacb860efa01b9653e8a9346c6e41dd1762411f1",
+    "reduced-receipt.json": "978a5cd90f07f5802b22c81cf0884be0936def273375c6da10e938108dc3070b",
+    "state1-ready.png": "11ee46840ef29f35b9d1bf965097cc8f3f4c705bf2dc9bb547e75cc1242b6736",
+    "first-two-nodes.mp4": "5b34be6d9219b78be24b91eb7d75915861239a237c414f83ce9ad998e186c428",
+    "motion-receipt.json": "81b8560e15abf97337ce9d639a5041511bd7ee5b2c86f5f4cfc26d0367244241",
+    "state4-source-fact-side.png": "8def401bafb15c75f7698fe5dad32b698929b3f6c9abe90488195b3ca16f1d7f",
+    "state5-process-decision.png": "ee37bd1c0684b381016720e3a0cdd7317297c77069b9737e295e3ae660b5aad8",
+    "state4-source-fact-overlay.png": "ef828340ef92a7359dbd35dba66243cfa6ab441fe7a9c1569f2c559cd360d787",
+    "state3-exact-passage-overlay.png": "87b8389a28c1d181faae4b35f219ed2ea4a7985313ff6ddb20440d3b7237735a",
+    "state1-ready-overlay.png": "5c8e6cff8561e7b59292826c5aaa4c72af291c1f8ac0b0189a1e6eef63f51890",
+    "state4-source-fact-diff.png": "1d93e5dfb74cd7af356958f990af74810c242d79eac12b1d49d51c4bcc6a39c0",
+    "state2-source-opened-fidelity.json": "734661695a0c0c62af667a9888b408c590e8193524e0f0c5c451b957e18eb528",
+    "state4-source-fact-fidelity.json": "ab88b476550a108e7c9253f6597f285eae31577e58b155b7767ca4fa7a5d2d3d",
+    "state4-source-fact.png": "0b3bf26fe79c6bfa53b10f3b8bb83be49b500ef76969168d61523178d7fcf50a",
+    "state2-source-opened-side.png": "04a6544098bde7a55401e7702d6e03ff1ce3cf3c17b38eacfecc4042b1b53b8d",
+    "state3-exact-passage-side.png": "afb78b8949966a24cb013ad5d44b1803e1b3470a579f5bf7948a09aa808db38b",
+    "state5-process-decision-fidelity.json": "1f4ca90c954617a23237273babe35b30a5533a1348b316cb1f3db1319660277c",
+    "state1-ready-side.png": "4512b83aa6474f730172eab48bd522a44b8c96e869b4422df69432575c38e49a",
+    "state2-source-opened-overlay.png": "bbbc1c324a4d1d9c3ab070b5551ad63b6c3f4f149686236dd66cd1b726cdcb1e"
+  }
+}
