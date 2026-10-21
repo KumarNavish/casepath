@@ -5520,7 +5520,9 @@
     function focusLibraryEntry(entry, behavior = 'instant') {
       const heading = entry.querySelector?.('.au-library-entry-head h2') || entry;
       if (heading === entry) entry.setAttribute('tabindex','-1');
-      heading.focus({preventScroll:true}); entry.scrollIntoView?.({block:'start',behavior});
+      heading.focus({preventScroll:true});
+      if(host.querySelector('[data-au-checklist-library]'))root.scrollTo?.({top:0,left:0,behavior:'instant'});
+      else entry.scrollIntoView?.({block:'start',behavior});
     }
     // A refreshed library keeps keyboard focus on the same control.
     const libraryFocusSignature = element => [element.tagName,...[...(element.attributes || [])].filter(attr => attr.name === 'id' || attr.name.startsWith('data-au-')).map(attr => `${attr.name}=${attr.value}`).sort()].join('&');
