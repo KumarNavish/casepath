@@ -2,7 +2,7 @@
   "status": "W8_browser_evidence_complete_strict_gate_pending_review_commit",
   "implementation_commit": "8412ab7d0e7e712f1f6584a8357a5389bfe1d52f",
   "base_commit": "1b61d1a8f342eaab678a8953c2b757828bc7ab16",
-  "source_manifest_sha256": "b3fe9ba171e23101dc939bd00b0b1d5ca698cb68a8335bb8a7cf24508fadfdd7",
+  "source_manifest_sha256": "7695257a02af1ede69496ecbe422d9611cadd7ca28c88fb2ead669d4e2412b59",
   "source_files": 1734,
   "focused_tests": 526,
   "existing_browser_tests": 35,
@@ -102,8 +102,8 @@
     "original-not-run.png": "6ce379a0e934e3a70538cd0d04c344b85bcd4c540fab2eb9fbbcd791669be9a6",
     "process-receipt.json": "30106f50761d235ac1af807f5fe0853a8e03ac55a702876225cf7c3beb3c8839",
     "reduced-receipt.json": "978a5cd90f07f5802b22c81cf0884be0936def273375c6da10e938108dc3070b",
-    "repair-assets.json": "17f3db389fd3cbb83e2f23ea3684c02b5fd4a290534e62ab75b998db7859796f",
-    "repair-seal.log": "501bfd84b9bdff2a9cce94f7c67b8e2b404a925c67902f85d6dd081a418cc2f7",
+    "repair-assets.json": "f5d7724eb153b2fb84a8300ebea093e35031e7b83030488d9a2387060a9eea81",
+    "repair-seal.log": "493a4b3c9f479741eed0964f2909754886c247bd3d5a72035ae728809cc7a491",
     "result-checker.png": "493ca353fdf6dca3f9df53436742df302ebe89667dfac850bbcb4a771840068a",
     "seal.log": "52bc239b49e0e51f2e32625e51905d3ee5dd871fd22c42e38f68004e29ba3a74",
     "served-assets.json": "2e39274c1dff19ab5c25fd24f2aee70f54fd34119e38afeb3a22e6e4ec86fb96",
@@ -145,5 +145,6 @@
     "review_commit": "5a8563d0069c5bf04978b48265331c374370f918",
     "status": "seven_export_fixture_path_failures_observed_run_continues",
     "diagnosis": "Product gate TMPDIR is inside Git; private export output guard correctly rejects it. Fixture repair ce3a0c3 allocates outside Git, preserving all production guards and assertions."
-  }
+  },
+  "repair_build_commit": "42b181eac6bb32f4c528543c642576936b2c3ca3"
 }
