@@ -1,0 +1,245 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "overrides": false,
+  "fixtureSha256": "1d718c6737ddf2bfca6c5a31ca439617f4d66fdb07b1d9a03881303d9fc1636c",
+  "cases": [
+    {
+      "id": "clm_314f2d309fea25e6",
+      "stateSha256": "f4f0809162a2124c04160858087a87c114ba7efb2d9e547a37d2c4088c3b2161",
+      "counts": {
+        "documents": "3",
+        "facts": "24",
+        "rules": "692",
+        "met": "6/6"
+      },
+      "legalLabels": 5
+    },
+    {
+      "id": "clm_4a07dbbbd859a3ce",
+      "stateSha256": "63c6b089a81f6448ee283e56aefe82bb7a986091331ae3ead2573034622637ac",
+      "counts": {
+        "documents": "3",
+        "facts": "24",
+        "rules": "692",
+        "met": "6/6"
+      },
+      "legalLabels": 5
+    },
+    {
+      "id": "clm_95d08975bc575592",
+      "stateSha256": "8247f08a14bfe92df24e603be0cf85f2d2d32e77bc04e2f43d2010a3b29dbed2",
+      "counts": {
+        "documents": "3",
+        "facts": "24",
+        "rules": "692",
+        "met": "6/6"
+      },
+      "legalLabels": 5
+    },
+    {
+      "id": "clm_0f4f13b1e3e1328c",
+      "stateSha256": "23f5734f9e9dc504d5cd8952068d3d3b437bdfaf2c0021671071902f11ada8c8",
+      "counts": {
+        "documents": "3",
+        "facts": "21",
+        "rules": "148",
+        "met": "2/2"
+      },
+      "legalLabels": 5
+    },
+    {
+      "id": "clm_393285577dcb12c4",
+      "stateSha256": "b7654c1a69c74032059fadc2ac1834b5c1888484b4c50cfc6a0b64a6c995156c",
+      "counts": {
+        "documents": "3",
+        "facts": "21",
+        "rules": "148",
+        "met": "2/2"
+      },
+      "legalLabels": 5
+    },
+    {
+      "id": "clm_4a53299cfe619303",
+      "stateSha256": "083f38f68e92934dc65247977e8938ba7070696e3c665cafdd6c9a2f80a3ea58",
+      "counts": {
+        "documents": "3",
+        "facts": "21",
+        "rules": "148",
+        "met": "2/2"
+      },
+      "legalLabels": 5
+    },
+    {
+      "id": "clm_2c55cdd816b1d0e8",
+      "stateSha256": "b1ecfc21c1ec1179154de506cc036b06cd2d6cde1a7e61455f4e605871eb8c6e",
+      "counts": {
+        "documents": "3",
+        "facts": "24",
+        "rules": "248",
+        "met": "3/3"
+      },
+      "legalLabels": 6
+    },
+    {
+      "id": "clm_543f08f2415b2a33",
+      "stateSha256": "953e96dfd84ae74f227576098c3c0b62f2236b536fc84f5aee78c98b30685d5c",
+      "counts": {
+        "documents": "3",
+        "facts": "24",
+        "rules": "248",
+        "met": "3/3"
+      },
+      "legalLabels": 6
+    },
+    {
+      "id": "clm_7dbd7c7d1c4ddf90",
+      "stateSha256": "283f3d0624c8b8d39d28ca49972448d2a6f33bd2f8d96de8a1627d339bc86501",
+      "counts": {
+        "documents": "3",
+        "facts": "24",
+        "rules": "248",
+        "met": "3/3"
+      },
+      "legalLabels": 6
+    }
+  ],
+  "frames": {
+    "case1-answer": {
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "whiteSurfaces": [
+        {
+          "selector": "au-workspace",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-identity-header",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-desk-footer",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-desk-answer",
+          "color": "rgb(255, 255, 255)"
+        }
+      ]
+    },
+    "case4-answer": {
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "whiteSurfaces": [
+        {
+          "selector": "au-workspace",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-identity-header",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-desk-footer",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-desk-answer",
+          "color": "rgb(255, 255, 255)"
+        }
+      ]
+    },
+    "local-draft-copy": {
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "whiteSurfaces": [
+        {
+          "selector": "au-workspace",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-identity-header",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-desk-footer",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-desk-answer",
+          "color": "rgb(255, 255, 255)"
+        }
+      ]
+    },
+    "rent-step-selected": {
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "whiteSurfaces": [
+        {
+          "selector": "au-workspace",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-identity-header",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-desk-footer",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-desk-source",
+          "color": "rgb(255, 255, 255)"
+        }
+      ]
+    },
+    "case-identities": {
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "whiteSurfaces": [
+        {
+          "selector": "au-workspace",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-identity-header",
+          "color": "rgb(255, 255, 255)"
+        }
+      ]
+    },
+    "legal-tests-met": {
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "whiteSurfaces": [
+        {
+          "selector": "au-workspace",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "au-identity-header",
+          "color": "rgb(255, 255, 255)"
+        }
+      ]
+    }
+  },
+  "interactions": {
+    "localDraftPersists": true,
+    "storageFailurePreservesEdits": true,
+    "copy": true,
+    "download": true,
+    "originalRetained": true,
+    "otherCaseIsolated": true,
+    "failedLegalExactPassage": true,
+    "sourceViewer": true,
+    "selectedDocumentReload": true,
+    "backForward": true,
+    "caseIdentities": true,
+    "supportedLegalCue": true,
+    "reducedMotionStill": true
+  },
+  "errors": [],
+  "writes": [],
+  "passed": true
+}
