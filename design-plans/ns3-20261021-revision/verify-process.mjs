@@ -28,5 +28,5 @@ try{
  await p.locator('[data-au-ns-zoom="1"]').click();assert.equal(await p.locator('.au-ns-page').getAttribute('data-zoom'),'15');await p.locator('.au-ns-source-bottom [data-au-source]').click();await p.locator('.au-source-dialog[open]').waitFor();await p.locator('.au-source-dialog').getByText(/Synthetic demonstration document/).waitFor({timeout:30000});await p.keyboard.press('Escape');
  await p.locator('[data-au-ns-reasoning]').click();assert.equal(await p.locator('.au-desk-why').getAttribute('open'),'');
  await p.locator('[data-au-ns-help]').click();await p.locator('.au-record-dialog[open]').waitFor();assert.match(await p.locator('.au-record-dialog').innerText(),/Each role names work/);await p.keyboard.press('Escape');await p.locator('[data-au-ns-search]').click();await p.locator('[data-au-claim-search]').waitFor();assert.equal(await p.locator('[data-au-claim-search]').evaluate(el=>document.activeElement===el),true);assert.deepEqual(report.errors,[]);assert.deepEqual(report.writes,[]);report.passed=true;
-}finally{fs.writeFileSync(import.meta.dirname+'/process-receipt.json',JSON.stringify(report,null,2));await browser.close();}
+}finally{fs.writeFileSync(import.meta.dirname+'/process-receipt.json',JSON.stringify(report,null,2));await p.unrouteAll({behavior:'ignoreErrors'});await browser.close();}
 console.log(JSON.stringify(report,null,2));
