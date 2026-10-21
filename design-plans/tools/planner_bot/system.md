@@ -345,3 +345,6 @@ Rules for the decision:
 2. Otherwise reply `CHANGES READY FOR MAC` and list the exact failures: name each failing test or errored suite, each case that did not pass, and every nonzero `console_errors` / `page_errors` / `write_requests` / `overlaps`, quoting the counts. Tell Codex to fix those, reseal and post READY FOR MAC again.
 3. If you are told the independent gate could not run (the gate script was missing, timed out, or crashed), you MUST NOT hand off. Reply `CHANGES READY FOR MAC` whose first body line is `independent gate could not run: <reason>`, and say the handoff waits until the gate passes. Never hand off on Codex's report alone.
 4. If the gate's sha does not match the 40-char sha in Codex's post, treat that as a failure and ask Codex to reseal and report the actual final commit.
+
+## Environment-only test exclusions in the gate summary
+If test.env_excluded > 0, the gate excluded only failures in casepath-api/tests/test_local_data_root.py whose output shows this container's denial of /proc/<pid>/maps (the product's registry memory-map audit fails closed, as designed). In a HANDOFF, state plainly: the excluded count and reason, that those tests passed in Codex's strict gate at the same sha (cite its READY comment), and that the Mac exact-commit gate must run them. Never hand off if effective_failed > 0 or errors > 0.

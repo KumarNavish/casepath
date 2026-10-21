@@ -344,14 +344,24 @@ def gate_summary_clean(summary):
         b = summary.get("browser", {})
     except AttributeError:
         return False
-    test_ok = t.get("exit") == 0 and t.get("failed", 1) == 0 and t.get("errors", 1) == 0
+    def n(value):  # the gate lists console errors, page errors and writes; counts are ints
+        if isinstance(value, (list, tuple)):
+            return len(value)
+        return value if isinstance(value, int) and not isinstance(value, bool) else 1
+
+    # effective_* exclude only environment-only failures the gate matched by exact signature
+    test_ok = (
+        t.get("effective_exit", t.get("exit")) == 0
+        and t.get("effective_failed", t.get("failed", 1)) == 0
+        and t.get("errors", 1) == 0
+    )
     browser_ok = (
         b.get("cases_total") is not None
         and b.get("cases_passed") == b.get("cases_total")
-        and b.get("console_errors", 1) == 0
-        and b.get("page_errors", 1) == 0
-        and b.get("write_requests", 1) == 0
-        and b.get("overlaps", 1) == 0
+        and n(b.get("console_errors", 1)) == 0
+        and n(b.get("page_errors", 1)) == 0
+        and n(b.get("write_requests", 1)) == 0
+        and n(b.get("overlaps", 1)) == 0
         and not b.get("failures")
     )
     return bool(test_ok and browser_ok)
