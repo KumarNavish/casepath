@@ -1,11 +1,11 @@
 {
   "status": "W8_final_browser_evidence_complete_owner_fix_integrated_strict_gate_pending",
   "recorded_at": "2026-10-21T15:26:17.310930+00:00",
-  "build_commit": "5d85ff43facd9ea426ea2d89257000562be8558d",
+  "build_commit": "20b02c304108e22b0c2713ccd385d3cdede2021a",
   "ui_refinement_commit": "dfb594e3f69a3f76e5d0c9f749f51986042e9dda",
   "playback_focus_commit": "8412ab7d0e7e712f1f6584a8357a5389bfe1d52f",
   "planner_approval": "https://github.com/KumarNavish/casepath/pull/21#issuecomment-6319227767",
-  "source_manifest_sha256": "61cd6299d0b014cd93c207208cb6a4b49d875f9cab8425a34d38e3fa1fe5d2e6",
+  "source_manifest_sha256": "93cd6ee3472dc670a7b2b012a623c3e14925e15e2b2d6bdecdb371c70b72d0e5",
   "source_files": 1734,
   "fixture_sha256": "1d718c6737ddf2bfca6c5a31ca439617f4d66fdb07b1d9a03881303d9fc1636c",
   "focused_tests": {
@@ -195,7 +195,7 @@
   "original_nine_rerun": false,
   "deployment": false,
   "hashes": {
-    "README.md": "4f715174e0c99ae5792dd2f6b697b3e354d788f9aeb6449ee6bee08d99a3f01f",
+    "README.md": "0c6f1b30231dbea115710eadad817c84166c1865d600e7fd596be0053dfde964",
     "acceptance-receipt.json": "bb101e997eb549e0793ad4cade08ffddb1c9d746ec5cd08096b6ae63bd10ecae",
     "browser-all.tap": "5e6899f823029ffa1ac47fbad5aea731073c51ac9e7feb45f0ca47e1bc08f1f4",
     "case1-memory.png": "ecda1d8cc7c849a4e9b6ab0784f7244938d460aef5af7e2029e3184a0496115d",
@@ -255,6 +255,7 @@
     "memory-receipt.json": "4822e43543ea20df8fb1ef75fb7352e605aaecd55e6f18704e94c8a83b2e7771",
     "motion-receipt.json": "ec03d12efd3721bcb153044d918f859d9958102cf562f837cf11e919f048629b",
     "original-not-run.png": "6ce379a0e934e3a70538cd0d04c344b85bcd4c540fab2eb9fbbcd791669be9a6",
+    "owner-seal.log": "5fdd5041d515e78e4d8f529b083fdc76dde58200fcf1915dcf0ea1e0df807ba0",
     "owner-startup-invocation-error.log": "7c9a1b80d024e39489effae7c0877104c32c11819cd6c5afe35b85c15dc79503",
     "owner-startup-test.log": "1504ddc94dc53e29af3961459213d7e4f61602547b6416e60f2ea1cf1d01225d",
     "process-receipt.json": "30106f50761d235ac1af807f5fe0853a8e03ac55a702876225cf7c3beb3c8839",
@@ -280,5 +281,6 @@
     "failed": 0,
     "invocation_repair": "The isolated interpreter initially lacked the explicit API source path. The corrected launcher-style sys.path entry passed; both invocation logs are retained."
   },
-  "browser_build_commit": "5d85ff43facd9ea426ea2d89257000562be8558d"
+  "browser_build_commit": "5d85ff43facd9ea426ea2d89257000562be8558d",
+  "browser_assets_unchanged_after_owner_integration": true
 }

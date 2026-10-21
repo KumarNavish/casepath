@@ -42,7 +42,10 @@ stopped after that deterministic ownership blocker was identified.
 
 The ten skips require one unavailable frozen independent-transition packet and
 nine unavailable saved native source-binding runs. No frontend suite was
-skipped. A final strict pass is still required before READY FOR MAC. The planner
+skipped. The owner correction passes its targeted check and the updated source is sealed.
+A final strict pass is still required before READY FOR MAC. The completed gate
+will be bound to its frozen SHA, full counts and log digest in that PR #21 post;
+this evidence package is not recommitted after the gate. The planner
 then runs its independent gate at that exact SHA; source stays frozen during it.
 
 ## Reproduction
