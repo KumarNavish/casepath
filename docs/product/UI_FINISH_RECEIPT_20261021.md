@@ -39,6 +39,13 @@ pytest prints skip reasons, and a missing browser dependency fails this command.
 The gate now registers all nine frontend suites, including Cases, desk,
 Knowledge and north-star coverage.
 
+Export tests allocate their synthetic output in a private temporary directory
+outside Git. The product launcher keeps its TMPDIR inside the checkout, which
+made seven export tests hit the intended destination guard before exercising
+their assertions. The fixture repair preserves that guard and all assertions;
+all 26 export tests pass under the launcher's original temporary-directory
+conditions. The strict gate is rerun against the repaired source.
+
 Browser scripts `verify-process.mjs`, `verify-memory.mjs`,
 `verify-acceptance.mjs`, `verify-motion.mjs` and `verify-reduced.mjs` run against
 the owned GET-only preview on 4180. Final proof uses built assets without

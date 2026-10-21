@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import runpy
 import sqlite3
+import tempfile
 from types import SimpleNamespace
 
 import pytest
@@ -19,6 +20,16 @@ export = runpy.run_path(str(Path(__file__).parents[1] / 'tools/export_read_seed.
 COMMIT = 'a' * 40
 READ_BODY = json.dumps({'baton': None, 'requests': [
     {'type': 'execute', 'stmt': {'sql': 'SELECT 1', 'args': [], 'want_rows': True}}, {'type': 'close'}]}).encode()
+
+
+@pytest.fixture
+def tmp_path():
+    # The product gate keeps TMPDIR inside its checkout. Export fixtures need
+    # a private directory outside Git so the real destination guard is tested.
+    with tempfile.TemporaryDirectory(
+        prefix='casepath-export-tests-', dir=Path('/tmp').resolve()
+    ) as directory:
+        yield Path(directory)
 
 
 class ObservedHrana(MockHrana):
