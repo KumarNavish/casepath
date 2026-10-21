@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1728,
+  "file_count": 1730,
   "files": [
     {
       "executable": false,
@@ -8968,6 +8968,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-qa/autonomous-knowledge-w6.test.cjs",
+      "sha256": "e336113166bb3d6fdc9d5a822ef86f3cac9d9e8c0b6c989dba3d2b8f6189cd38",
+      "size_bytes": 2955
+    },
+    {
+      "executable": false,
       "path": "casepath-qa/autonomous-language-v1.test.cjs",
       "sha256": "ed828defb7847e37cb580f9c392a0336d584680dae6ff8cddfe5073422b66427",
       "size_bytes": 42997
@@ -9199,6 +9205,12 @@
       "path": "casepath-qa/fixtures/desk-v3.json.gz",
       "sha256": "1d718c6737ddf2bfca6c5a31ca439617f4d66fdb07b1d9a03881303d9fc1636c",
       "size_bytes": 4072150
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/fixtures/knowledge-w6.json.gz",
+      "sha256": "b4afc7efbc1d0f6c7d3dc82afee28a3f20e54f9e1bb52d10e006036f2203a540",
+      "size_bytes": 13579
     },
     {
       "executable": false,
@@ -9491,14 +9503,14 @@
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.css",
-      "sha256": "5bfd536614fe33620e5e2945f42482d825e23d81f4904f87c736d0727b1f9cbf",
-      "size_bytes": 318823
+      "sha256": "6c90f4c13829f57603c64f7118f841e86635e523262d58097407da840b0bb458",
+      "size_bytes": 321381
     },
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.js",
-      "sha256": "3108517880545a36ff9d663b5b158df0b37af63d71fe32f87fa3b33c3d41e1fe",
-      "size_bytes": 733802
+      "sha256": "786e72a9abb455f067b12e06ed013b1c7eb6321e9300a7b6c52d90723f641aff",
+      "size_bytes": 736695
     },
     {
       "executable": false,
@@ -9695,7 +9707,7 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "9f0773cc2147f7534a82ee42a89c632a684450177ff09e511d8ff0be8447dd7e",
+      "sha256": "27f1139f02c047cc19f7530fb851f708a3a26b071fd924c3b971ce224feadaa3",
       "size_bytes": 25593
     },
     {
