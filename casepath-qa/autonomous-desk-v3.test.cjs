@@ -4,7 +4,7 @@ const {gunzipSync}=require('node:zlib');
 const ui=require('../casepath/assets/autonomous-workspace-v1.js');
 const fixture=JSON.parse(gunzipSync(fs.readFileSync(path.join(__dirname,'fixtures/desk-v3.json.gz'))));
 for(const item of fixture.cases)test(`desk counters and legal labels follow the actual trace: ${item.id}`,()=>{
- const state=item.envelope.state,frames=item.trace.trim().split('\n').map(JSON.parse),all=frames.filter(r=>r.type==='operation');
+ const state=item.envelope.state;assert.ok(ui.deskRequest(state.message));assert.ok(state.message.includes(ui.deskRequest(state.message)));const frames=item.trace.trim().split('\n').map(JSON.parse),all=frames.filter(r=>r.type==='operation');
  const groups=new Map(state.source_descriptors.map(s=>[s.artifact_id,`${s.role}:${s.file_name}`]));
  for(const size of [0,1,Math.floor(all.length/2),all.length]){
   const rows=all.slice(0,size),model=ui.deskOperationModel(state,{binding:frames[0],headState:state,rows});
@@ -17,7 +17,12 @@ for(const item of fixture.cases)test(`desk counters and legal labels follow the 
  const sources=new Map(all.filter(r=>r.kind==='source.open').map(r=>[r.object.id,r.result])),trace={binding:frames[0],headState:state,rows:all,sources,finished:true,verifiedResult:true};
  const html=ui.agentDeskMarkup(state,{},null,[],{},{operations:trace});
  for(const legal of state.outcome.legal_predicates){assert.ok(ui.DESK_LEGAL_TESTS[legal.predicate_id],`explicit glossary entry: ${legal.predicate_id}`);assert.ok(html.includes(ui.deskLegalLabel(legal.predicate_id).replace(/&/g,'&amp;')));}
- for(const step of state.graph.nodes)assert.ok(html.includes(`data-au-desk-select="${step.node_id}"`));
+ for(const step of state.graph.nodes){
+  assert.ok(html.includes(`data-au-desk-select="${step.node_id}"`));
+  const selected=ui.agentDeskMarkup(state,{},step.node_id,[],{},{operations:trace,chosenNode:step.node_id});
+  assert.ok(selected.includes('data-au-desk-quote='),`${step.node_id} shows its cited passage`);
+ }
+ const model=ui.deskOperationModel(state,trace);for(const operation of all)assert.equal(model.operationNodes.get(operation.id)||null,ui.operationNodeId(operation,state.graph,state,trace),`${operation.id} keeps the source/cause destination`);
  for(const doc of state.graph.nodes.flatMap(n=>n.document_types||[]))assert.ok(html.includes(`data-au-desk-document-select="${doc}"`));
  assert.ok(html.includes(ui.deskLegalStatus(state.outcome.legal_predicates).label));
  assert.equal((html.match(/All cases are fictional\./g)||[]).length,1);

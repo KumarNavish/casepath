@@ -1708,3 +1708,8 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 }
 
 @media (min-width:701px) { .au-workspace .au-desk-requirements { margin-bottom:12px; } }
+
+@media (min-width:701px) {
+ .au-workspace .au-desk-node-label[aria-pressed=true] { text-decoration:underline; text-underline-offset:4px; }
+ .au-workspace [data-au-desk-file-selected=true] button { color:var(--au-ink); }
+}
