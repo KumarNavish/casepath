@@ -116,3 +116,41 @@ after startup completed. Earlier diagnostic logs remain in the owned runtime.
 | Legal tests, answer and unsent draft | 72.649 s | [Answer](draft-rest.png) |
 | Verified checklist reuse | 87.349 s | [Learning](memory-notice-rest.png) |
 | Nine recorded cases | 95.749 s | [Cases](wordmark-rest.png) |
+
+## W9b capture protocol
+
+W9a was approved at `a9e8725` in planner comment 6325303636. Its followups are
+applied here: the closing case shell crossfades to **Cases · Knowledge**, with
+Cases active and no case-specific sources. The closing wordmark has at least
+32 px of clear space above and below. Capture leaves the visible control on
+**Pause** at every frame. **Watch this case** is hidden during playback, and
+**Skip to answer** is hidden when the answer or case list is on screen.
+
+The receipt's Next legitimate action already requires W9 approval before READY
+FOR MAC. The presentation verifier also samples `document.getAnimations()` on
+every observed frame of the full live run, in addition to every capture sample.
+
+`capture_film.mjs` requires a committed recorder, clean product source and an
+exact matching served deployment. It reads the sealed static build and frozen
+recorded GET fixtures; it rejects writes, external requests and unrecorded API
+reads. Chromium runs at 1440×900 with deviceScaleFactor 2, UTC and en-GB. The
+receipt records the browser version, asset hashes and fixture hashes.
+
+```sh
+node design-plans/w9-20261021/capture_film.mjs \
+  --out /durable/path/outside/the/repository
+node design-plans/w9-20261021/capture_film.mjs \
+  --verify /durable/path/outside/the/repository/film-receipt.json
+```
+
+Every raw PNG has a sequential index and the exact clock time `n × 1000/60`.
+The frame index hashes every PNG, and the independent repeat compares every
+60th frame. The only edits are half-second fades from/to white within the
+existing duration. All outputs are H.264 High, yuv420p, CRF 16, 60 fps, with no
+audio. The projector version fits the complete 16:10 picture inside 1920×1080
+with 96 px white side bars; it does not crop or stretch it. The master and raw
+frames stay outside Git. The 24-frame contact sheet is decoded from the final
+16:10 MP4, including its permitted fades.
+
+`--probe` checks 120 frames and all three encodes without creating deliverables
+in the repository. The complete film and its receipts follow the sealed capture.

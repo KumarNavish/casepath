@@ -2058,14 +2058,14 @@ html[data-casepath-presentation] .au-ns-work { position:relative; }
 .au-workspace .au-executive-ink { position:absolute; inset:0; z-index:1; pointer-events:none; mix-blend-mode:multiply; }
 .au-workspace .au-executive-ink > i { position:absolute; background:#dfb9c3; border-radius:2px; }
 .au-workspace .au-executive-cursor { pointer-events:none; }
-.au-workspace .au-executive-cases { max-width:1180px; margin:0 auto; }
+.au-workspace .au-executive-cases { max-width:1180px; margin:4px auto 0; }
 .au-workspace .au-executive-cases .au-claim-list { margin-top:12px; }
-.au-workspace .au-executive-wordmark { margin:15px auto 0; text-align:center; font:650 30px/1.3 Mulish,sans-serif; letter-spacing:-1px; color:#171717; }
+.au-workspace .au-executive-wordmark { margin:32px auto; text-align:center; font:650 30px/1.3 Mulish,sans-serif; letter-spacing:-1px; color:#171717; }
 html[data-casepath-presentation] .au-ns-paper { position:relative; }
 .au-workspace .au-executive-documents { display:flex; justify-content:space-between; gap:12px; margin:25px 27px; padding:12px 0; width:208px; border:0; border-top:1px solid #e7e7e7; background:white; color:#444; font:400 13px/1.5 Mulish,sans-serif; }
 .au-workspace .au-executive-documents span { color:#777; }
 .au-workspace .au-executive-cases .au-page-heading { font-size:26px; }
-.au-workspace .au-executive-cases .au-request-row { padding:7px 0; grid-template-columns:minmax(0,1fr) 170px 120px; }
+.au-workspace .au-executive-cases .au-request-row { padding:5px 0; grid-template-columns:minmax(0,1fr) 170px 120px; }
 .au-workspace .au-executive-cases .au-claim-title { font-size:14.5px; }
 .au-workspace .au-executive-cases .au-claim-open { min-height:21px; }
 .au-workspace .au-executive-cases .au-request-row > p { font-size:12.5px; line-height:18px; margin:0; }
@@ -2075,3 +2075,11 @@ html[data-casepath-presentation] .au-ns-canvas { padding-bottom:8px; }
 html[data-casepath-presentation] .au-ns-completed-canvas { padding-bottom:8px; }
 html[data-casepath-presentation] .au-ns-memory { min-height:699px; }
 html[data-casepath-presentation] .au-ns-source-bottom > p { display:none; }
+html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) { font-family:Mulish,sans-serif; }
+html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-identity-header { height:75px; min-height:75px; padding:0 27px; gap:0; flex-wrap:nowrap; background:white; border-color:#ebebee; }
+html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-brand { font:700 25px Mulish,sans-serif; width:235px; letter-spacing:normal; }
+html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-nav { margin-left:0; order:1; }
+html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-nav [data-au-nav=demonstration] { display:none; }
+html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-nav [aria-current=page] { color:#82072a; border-color:#82072a; }
+html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-header-new { order:2; margin-left:auto; }
+html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-access-label { order:3; margin-left:auto; }

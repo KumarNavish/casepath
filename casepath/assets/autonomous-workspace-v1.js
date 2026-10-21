@@ -5214,8 +5214,8 @@
         detail=viewName&&viewName!=='cases'?viewName:'step';chosenNode=null;deskSelection=null;evidenceContext={};
         if(viewName==='cases'){
           const records=sessionCases(session).map(row=>catalogRow(claims,row.claim_id)).filter(Boolean);
-          host.innerHTML=northStarCompletedMarkup(current,trace,'step',opts)+transport();
-          select('.au-ns-completed-canvas').innerHTML=`<section class="au-executive-cases"><h1 class="au-page-heading" tabindex="-1">Cases</h1><div class="au-claim-list" data-au-claims>${claimsMarkup(records,{scope:'originals',page:1,pageSize:9})}</div><div class="au-executive-wordmark" aria-hidden="true">CasePath</div></section>`;
+          host.innerHTML=`<section class="au-executive-cases"><h1 class="au-page-heading" tabindex="-1">Cases</h1><div class="au-claim-list" data-au-claims>${claimsMarkup(records,{scope:'originals',page:1,pageSize:9})}</div><div class="au-executive-wordmark" aria-hidden="true">CasePath</div></section>${transport()}`;
+          nav('work');
         }else{
           const cacheKey=[record.state.claim_id,viewName||op?.id||'customer',Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id))].join(':');
           if(!markupCache.has(cacheKey))markupCache.set(cacheKey,viewName?northStarCompletedMarkup(current,trace,detail,opts):northStarMarkup(current,trace,opts));
@@ -5261,7 +5261,19 @@
         if(transition&&(last!==b.index||force)&&b.index>0){
           render(story.beats[b.index-1].end-.001);
           const canvas=frameNodes.canvas||select('.au-executive-cases');
-          if(canvas){const rect=canvas.getBoundingClientRect();outgoing=canvas.cloneNode(true);outgoing.classList.add('au-executive-transition');outgoing.setAttribute('aria-hidden','true');outgoing.style.cssText+=`;position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;height:${rect.height}px;margin:0;box-sizing:border-box;z-index:3;background:white;pointer-events:none;`;for(const node of [outgoing,...outgoing.querySelectorAll('*')])for(const attr of [...node.attributes])if(attr.name.startsWith('data-au-')||attr.name==='id')node.removeAttribute(attr.name);}
+          if(canvas){
+            outgoing=doc.createElement('div');outgoing.className='au-executive-transition';outgoing.setAttribute('aria-hidden','true');outgoing.style.cssText='position:fixed;inset:0;z-index:3;pointer-events:none;';
+            const header=container.querySelector('.au-identity-header'),layers=b.act==='cases'?[canvas,select('.au-ns-sources'),header]:[canvas];
+            for(const element of layers.filter(Boolean)){
+              const rect=element.getBoundingClientRect(),clone=element.cloneNode(true);
+              // Cases leaves the case shell. Preserve its actual outgoing header
+              // styles while the normal Cases navigation fades into the same bar.
+              if(element===header){const originals=[element,...element.querySelectorAll('*')],copies=[clone,...clone.querySelectorAll('*')];originals.forEach((node,i)=>{const style=root.getComputedStyle(node);for(const key of ['display','font','color','height','min-height','width','gap','flex','flex-shrink','align-items','justify-content','padding','margin','border','letter-spacing'])copies[i].style.setProperty(key,style.getPropertyValue(key));});}
+              clone.style.cssText+=`;position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;height:${rect.height}px;margin:0;box-sizing:border-box;background:white;pointer-events:none;`;
+              for(const node of [clone,...clone.querySelectorAll('*')])for(const attr of [...node.attributes])if(attr.name.startsWith('data-au-')||attr.name==='id')node.removeAttribute(attr.name);
+              outgoing.appendChild(clone);
+            }
+          }
         }
         rendering=true;
         try{
@@ -5302,29 +5314,32 @@
             const wordmark=select('.au-executive-wordmark');opacity(wordmark,phase==='wordmark'?p:phase==='wordmark-rest'?1:0);
           }
           if(['completed','documents','case-list'].includes(phase))opacity(n.canvas||select('.au-executive-cases'),p);
-          if(transition){const fade=reduced?.matches?1:P.ease(sample.progress);opacity(n.canvas||select('.au-executive-cases'),fade);opacity(transitionLayer,1-fade);}
+          const header=container.querySelector('.au-identity-header');opacity(header,1);
+          if(transition){const fade=reduced?.matches?1:P.ease(sample.progress);opacity(n.canvas||select('.au-executive-cases'),fade);opacity(transitionLayer,1-fade);if(b.act==='cases')opacity(header,fade);}
+          all('[data-au-operation-skip]').forEach(el=>el.hidden=['answer','cases'].includes(b.view));
+          all('[data-au-desk-watch]').forEach(el=>el.hidden=!clock.paused);
           if(sample.at>=story.duration){clock.pause();waiting=false;pausedPresentation=session;demoSession=null;syncControls();}
         }finally{rendering=false;}
       }
-      function syncControls(){for(const el of all('[data-au-demo-stop],[data-au-demo-resume]')){el.removeAttribute('data-au-demo-stop');el.removeAttribute('data-au-demo-resume');el.setAttribute(clock.paused?'data-au-demo-resume':'data-au-demo-stop','');el.textContent=clock.paused?'Resume':'Pause';}}
+      function syncControls(){for(const el of all('[data-au-demo-stop],[data-au-demo-resume]')){el.removeAttribute('data-au-demo-stop');el.removeAttribute('data-au-demo-resume');el.setAttribute(clock.paused?'data-au-demo-resume':'data-au-demo-stop','');el.textContent=clock.paused?'Resume':'Pause';}all('[data-au-desk-watch]').forEach(el=>el.hidden=!clock.paused);}
       const controller={
         render:()=>render(clock.now(),true),transportMarkup:transport,
         start(){waiting=false;clock.seek(0);render(0,true);clock.resume();syncControls();select('[data-au-demo-stop]')?.focus({preventScroll:true});},
         pause(){pauseDeadline=null;freezeDeadline=null;clock.pause();syncControls();},
         freezeAt(at){if(!Number.isFinite(at)||at<clock.now()||at>story.duration)throw new RangeError('Freeze time must be within the remaining demonstration.');freezeDeadline=at;waiting=false;clock.resume();syncControls();},
-        advanceTo(at){waiting=false;clock.stepTo(at);syncControls();return {time:clock.now(),act:story.at(at).beat.act,phase:story.at(at).beat.phase};},
+        advanceTo(at){const wasWaiting=waiting;waiting=false;clock.stepTo(at);if(wasWaiting)render(at,true);syncControls();return {time:clock.now(),act:story.at(at).beat.act,phase:story.at(at).beat.phase};},
         pauseAt(at){if(!Number.isFinite(at)||at<clock.now()||at>story.duration)throw new RangeError('Pause time must be within the remaining demonstration.');pauseDeadline=at;waiting=false;clock.resume();syncControls();},
         resume(){waiting=false;if(clock.now()>=story.duration)clock.seek(0);render(clock.now(),true);clock.resume();syncControls();},
         skip(){waiting=false;clock.seek(story.acts.find(a=>a.id==='decision').start);clock.resume();syncControls();},
         seek(at){waiting=false;pauseDeadline=null;freezeDeadline=null;clock.seek(at);syncControls();return {time:clock.now(),act:story.at(at).beat.act,phase:story.at(at).beat.phase};},
-        dispose(){disposedStory=true;clock.cancel();scope.removeAttribute('data-casepath-presentation');if(root.CasepathPresentation?.active===controller)delete root.CasepathPresentation.active;},
+        dispose(){disposedStory=true;clock.cancel();scope.removeAttribute('data-casepath-presentation');container.querySelector('.au-identity-header')?.style.removeProperty('opacity');if(root.CasepathPresentation?.active===controller)delete root.CasepathPresentation.active;},
         get manifest(){return {duration:story.duration,acts:story.acts,beats:story.beats.map(({record,op,...beat})=>({...beat,claim:record.state.claim_id,operation:op?.id||null,seq:op?.seq||null})),claims:[main.state.claim_id,later.state.claim_id],stateHashes:[main.state.state_sha256,later.state.state_sha256]};},
         get diagnostics(){return {drawTimings:drawTimings.slice(),cachedViews:markupCache.size};},
         get time(){return clock.now();},get paused(){return clock.paused;},get externallyDriven(){return clock.externallyDriven;}
       };
       session.executiveController=controller;P.active=controller;
       clock.onFrame(at=>{if(freezeDeadline!==null&&at>=freezeDeadline){const deadline=freezeDeadline;freezeDeadline=null;clock.stepTo(deadline);syncControls();return;}if(pauseDeadline!==null&&at>=pauseDeadline){const deadline=pauseDeadline;pauseDeadline=null;clock.seek(deadline);syncControls();return;}render(at);});render(0,true);
-      if(present){waiting=false;clock.resume();}
+      if(present){waiting=false;render(0,true);clock.resume();syncControls();}
     }
 
     async function startOperations(session, token) {
