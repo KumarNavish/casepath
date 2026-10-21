@@ -1,0 +1,20 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{gunzipSync}=require('node:zlib');
+const ui=require('../casepath/assets/autonomous-workspace-v1.js'),fixture=JSON.parse(gunzipSync(fs.readFileSync(path.join(__dirname,'fixtures/desk-v3.json.gz'))));
+test('role table uses recorded kind and stage; unknown operations retain the previous role',()=>{
+ for(const [kind,role]of Object.entries({'verification.check':'checker','document.check':'finder','decision':'result','answer':'result','condition.evaluate':'builder','node.evaluate':'builder','dependency.evaluate':'builder','process.inspect':'builder','document.require':'builder','step.complete':'builder','knowledge.reuse':'builder'}))assert.equal(ui.northStarRole({kind}),role);
+ for(const kind of ['source.open','span.read','phrase.match','fact.extract']){assert.equal(ui.northStarRole({kind,stage:'interpret_reference'}),'reader');assert.equal(ui.northStarRole({kind,stage:'verify_reference'}),'checker');assert.equal(ui.northStarRole({kind,actor:'Reader'}),'reader');}
+ assert.equal(ui.northStarRole({kind:'future.kind',actor:'Reader'},'finder'),'finder');assert.equal(ui.northStarRole({kind:'unknown'}),null);
+});
+for(const c of fixture.cases)test(`north-star plans and exact locators remain bound to recorded operations: ${c.id}`,()=>{
+ const state=c.envelope.state,rows=c.trace.trim().split('\n').map(JSON.parse).filter(f=>f.type==='operation'),model=ui.northStarPlanModel(state,rows),byId=new Map(rows.map(o=>[o.id,o])),sources=new Map();
+ let role=null,pins=0;
+ for(const o of rows){if(o.kind==='source.open')sources.set(o.object.id,{...state.source_descriptors.find(s=>s.artifact_id===o.object.id),...o.result});role=ui.northStarRole(o,role);if(o.source){const pin=ui.northStarPin(o,sources);assert.ok(pin);assert.equal(pin.quote,Array.from(sources.get(pin.artifact_id).text).slice(pin.start_char,pin.end_char).join(''));assert.equal(ui.northStarPin({...o,source:{...pin,start_char:pin.start_char+1}},sources),null);assert.equal(ui.northStarPin({...o,source:{...pin,text_sha256:'0'.repeat(64)}},sources),null);pins++;}else assert.equal(ui.northStarPin(o,sources),null);}
+ assert.equal(role,'result');assert.ok(pins>20);
+ for(const node of state.graph.nodes){const plan=model.plans.get(node.node_id),complete=rows.find(o=>o.kind==='step.complete'&&o.object.id===node.node_id&&o.result.status==='completed');assert.ok(plan.length);assert.equal(plan.at(-1).operation.id,complete.id);assert.equal(plan.at(-1).label,'Form process decision');let seq=0;for(const r of plan){assert.equal(r.operation,byId.get(r.operation.id));assert.equal(model.links.get(r.operation.id),node.node_id);assert.ok(r.operation.seq>seq&&r.operation.seq<=complete.seq);seq=r.operation.seq;assert.ok(['source.open','span.read','verification.check','document.check','step.complete'].includes(r.operation.kind));}}
+ const html=ui.northStarMarkup(state,{headState:state,rows:[],sources:new Map(),nsReady:true,nsCatalogue:model},{});assert.match(html,/Watch the analysis/);assert.doesNotMatch(html,/UI fixture|Reading now|Wants:|files read|facts found|checks run|steps done|From the customer/);assert.doesNotMatch(html,/data-au-ns-node=/);
+});
+test('unlinked and ambiguous source reads cannot be attributed to a node',()=>{
+ const state={graph:{nodes:[{node_id:'a',document_types:['a']},{node_id:'b',document_types:['b']}]}},source={artifact_id:'s',file_name:'Source.txt'},open={id:'open',seq:1,kind:'source.open',object:{id:'s'},cause_ids:[],result:{}},rows=[open,...['a','b'].map((id,i)=>({id,seq:i+2,kind:'verification.check',object:{id:'fact:'+id,type:'fact'},input:{document_type:id},cause_ids:['open'],source:{artifact_id:'s'}}))];state.source_descriptors=[source];const model=ui.northStarPlanModel(state,rows);assert.equal(model.links.has('open'),false);assert.equal(model.plans.get('a').length,1);assert.equal(model.plans.get('b').length,1);
+});
+test('unknown process IDs preserve their exact recorded label',()=>assert.equal(ui.northStarQuestion({node_id:'future',label:'Recorded question?'}),'Recorded question?'));

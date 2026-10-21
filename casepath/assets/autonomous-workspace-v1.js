@@ -1489,6 +1489,91 @@
     return `<div class="au-start-control"><button type="button" class="au-primary" data-au-start aria-describedby="auStartReason"${ready ? '' : ' aria-disabled="true"'}>${pending ? 'Retry start' : 'Start checking'}</button><p class="au-start-reason" id="auStartReason" data-au-start-availability>${h(availability?.reason || 'Checking live execution availability…')}</p></div>`;
   }
   const DESK_RULE_KINDS = new Set(['condition.evaluate','node.evaluate','dependency.evaluate','process.inspect','document.require']);
+  const NS_QUESTIONS = Object.freeze({
+    dh_intake:'What defect is reported?',dh_scope:'What are the tenancy terms?',dh_notice:'Did the landlord know?',dh_cause:'What caused the defect?',dh_evidence:'Is the defect supported?',dh_response:'Are repair and rent reduction supported?',
+    lt_intake:'What notice was received?',lt_form:'Is the termination notice valid?',ri_intake:'What increase was received?',ri_form:'What notice rules apply?',ri_reason:'Is the rent increase valid?'
+  });
+  const northStarQuestion = node => NS_QUESTIONS[node?.node_id] || node?.label || node?.title || node?.node_id || '';
+  const NS_ROLES = Object.freeze([
+    ['reader','Claim reader'],['checker','Source checker'],['builder','Process builder'],['finder','Document finder'],['result','Result checker']
+  ]);
+  // The historical stream has stage, not actor. A declared actor takes
+  // precedence where present; unknown kinds retain the last recorded role.
+  const NS_ROLE_KINDS = Object.freeze({
+    'verification.check':'checker','document.check':'finder','decision':'result','answer':'result',
+    'condition.evaluate':'builder','node.evaluate':'builder','dependency.evaluate':'builder',
+    'process.inspect':'builder','document.require':'builder','step.complete':'builder','knowledge.reuse':'builder'
+  });
+  function northStarRole(operation, previous = null) {
+    if (!operation) return previous;
+    if (NS_ROLE_KINDS[operation.kind]) return NS_ROLE_KINDS[operation.kind];
+    if (['source.open','span.read','phrase.match','fact.extract'].includes(operation.kind)) {
+      const actor=String(operation.actor?.role || operation.actor || '').toLowerCase();
+      if (actor==='checker' || operation.stage==='verify_reference') return 'checker';
+      if (['rulebook','memory'].includes(actor) || operation.stage==='native_execution' && Array.isArray(operation.input?.rule_refs)) return 'builder';
+      if (actor==='reader' || ['interpret_reference','native_execution'].includes(operation.stage)) return 'reader';
+    }
+    return previous;
+  }
+  function northStarIcon(kind) {
+    const paths={reader:'M7 2h7l5 5v15H5V2h2m7 0v6h5M8 12h8M8 16h8',checker:'m12 2 9 4v7c0 5-9 9-9 9S3 18 3 13V6l9-4m-4 10 3 3 5-6',builder:'M9 2h6v5H9zM2 17h6v5H2zm14 0h6v5h-6zM9 17h6v5H9zm3-10v6M5 17v-4h14v4m-7-4v4',finder:'M2 7V4h7l3 3h10v15H2V7h20',result:'M22 11a10 10 0 1 1-5-8M7 11l4 4L22 3',message:'M3 3h18v15h-7l-4 4v-4H3V3m4 5h10M7 12h7',file:'M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8',check:'m4 12 5 5L20 6'};
+    return `<svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[kind]||paths.file}"/></svg>`;
+  }
+  function northStarTabsMarkup(role) {
+    return NS_ROLES.map(([id,label])=>`<span data-au-ns-role="${id}"${id===role?' aria-current="step"':''}>${northStarIcon(id)}${label}</span>`).join('');
+  }
+  // A plan can use an ancestor only when its recorded causal descendants
+  // identify exactly one node. Shared or unlinked reads stay in the Work log.
+  function northStarPlanModel(state, rows) {
+    const graph=state.graph, nodes=list(graph?.nodes), trace={rows}, links=new Map(), children=new Map();
+    for (const op of rows) {
+      const id=operationNodeId(op,graph,state,trace); if(id)links.set(op.id,id);
+      for(const cause of list(op.cause_ids)){if(!children.has(cause))children.set(cause,[]);children.get(cause).push(op.id);}
+    }
+    const destinations=new Map();
+    for(const op of [...rows].reverse()) {
+      const own=new Set(links.has(op.id)?[links.get(op.id)]:[]);
+      for(const child of children.get(op.id)||[])for(const id of destinations.get(child)||[])own.add(id);
+      destinations.set(op.id,own);
+      if(!links.has(op.id) && ['source.open','span.read','verification.check'].includes(op.kind) && own.size===1)links.set(op.id,[...own][0]);
+    }
+    const label=op=>{
+      const source=list(state.source_descriptors).find(row=>row.artifact_id===(op.source?.artifact_id||op.object?.id));
+      if(['source.open','span.read'].includes(op.kind)&&source)return `Read ${deskFileLabel(source)}`;
+      if(op.kind==='verification.check'&&source)return `Check ${deskFileLabel(source)}`;
+      if(op.kind==='document.check'){const document=list(graph?.document_catalog).find(row=>row.document_type===op.object.id);return document?.label?`Verify ${document.label}`:null;}
+      if(op.kind==='step.complete'&&op.result?.status==='completed')return 'Form process decision';
+      return null;
+    };
+    return {links,plans:new Map(nodes.map(node=>{const completion=rows.find(op=>op.kind==='step.complete'&&op.object.id===node.node_id&&op.result?.status==='completed');return [node.node_id,rows.filter(op=>links.get(op.id)===node.node_id&&(!completion||op.seq<=completion.seq)&&label(op)).map(op=>({operation:op,label:label(op)}))];}))};
+  }
+  function northStarPin(operation, sources) {
+    const pin=operation?.source, source=pin&&sources?.get(pin.artifact_id), chars=source&&sourceCharacters(source);
+    return pin&&chars&&pin.offset_unit==='unicode_code_point'&&Number.isSafeInteger(pin.start_char)&&Number.isSafeInteger(pin.end_char)&&pin.start_char>=0&&pin.end_char>pin.start_char&&pin.end_char<=chars.length&&source.sha256===pin.sha256&&source.text_sha256===pin.text_sha256&&chars.slice(pin.start_char,pin.end_char).join('')===pin.quote?pin:null;
+  }
+  function northStarModel(state, trace) {
+    const head=trace.headState||state,rows=list(trace.rows),op=trace.current, catalogue=trace.nsCatalogue||northStarPlanModel(head,rows),nodes=list(head.graph?.nodes);
+    let role=null;for(const row of rows){role=northStarRole(row,role);if(row===op)break;}
+    const linked=op&&catalogue.links.get(op.id),last=rows.findLast(row=>catalogue.links.has(row.id));
+    const nodeId=linked||last&&catalogue.links.get(last.id),node=nodes.find(row=>row.node_id===nodeId);
+    const evaluated=new Set(rows.filter(row=>row.kind==='node.evaluate').map(row=>row.object.id));
+    const done=new Set(rows.filter(row=>row.kind==='step.complete'&&row.result?.status==='completed').map(row=>row.object.id));
+    const pin=trace.nsInspectionSource?null:northStarPin(op,trace.sources),source=trace.sources?.get(trace.nsInspectionSource||pin?.artifact_id|| (op?.kind==='source.open'?op.object.id:trace.displaySource?.artifact_id));
+    const seen=new Set(),facts=rows.filter(row=>row.kind==='fact.extract'&&catalogue.links.get(row.id)===nodeId&&northStarPin(row,trace.sources)).filter(row=>{const identity=`${row.object.id}:${row.source.artifact_id}:${row.source.start_char}:${row.source.end_char}`;if(seen.has(identity))return false;seen.add(identity);return true;});
+    const plans=catalogue.plans.get(nodeId)||[],through=op?.seq||rows.at(-1)?.seq||0;
+    return {head,rows,op,catalogue,nodes,nodeId,node,evaluated,done,role,pin,source,facts,plans,through};
+  }
+  function northStarMarkup(state, trace, presentation) {
+    const m=northStarModel(state,trace),ready=Boolean(trace.nsReady),files=deskOperationModel(state,trace).files,index=REFERENCE_DEMO_CASES.findIndex(row=>row.claim_id===state.claim_id),roster=presentation.tour?.cases||REFERENCE_DEMO_CASES;
+    const active=m.source?.artifact_id,sourceRows=files.map(file=>`<li${file.ids.includes(active)?' aria-current="true"':''}><span>${northStarIcon(file.source.role==='customer_message'?'message':'file')}</span><button type="button" data-au-source="${h(file.ids.at(-1))}" title="${h(file.source.file_name)}">${h(deskFileLabel(file.source))}${file.source.received_at?`<small>Received ${h(file.source.received_at)}</small>`:''}</button></li>`).join('');
+    const spine=ready?'':m.nodes.map((node,i)=>{const done=m.done.has(node.node_id),building=!done&&m.evaluated.has(node.node_id)&&node.node_id===m.nodeId;return `<li data-au-ns-node="${h(node.node_id)}" data-state="${done?'done':building?'building':'waiting'}"><span class="au-ns-circle" aria-hidden="true">${done?northStarIcon('check'):''}</span><span class="au-ns-node-label" title="${h(node.label||node.title||node.node_id)}">${h(northStarQuestion(node))}</span>${i<m.nodes.length-1?'<svg class="au-ns-arrow" viewBox="0 0 70 16" aria-hidden="true"><path d="M1 8h66m-6-5 6 5-6 5"/></svg>':''}</li>`;}).join('');
+    const chars=m.source&&sourceCharacters(m.source),pin=m.pin,sourceText=chars?(pin?`${h(chars.slice(0,pin.start_char).join(''))}<mark data-au-ns-quote data-start="${pin.start_char}" data-end="${pin.end_char}">${h(pin.quote)}</mark>${h(chars.slice(pin.end_char).join(''))}`:h(chars.join(''))):'';
+    const opened=[...new Map([...trace.sources.values()].map(source=>[source.file_name||source.artifact_id,source])).values()],sourceIndex=opened.findIndex(source=>source.artifact_id===m.source?.artifact_id);
+    const paper=m.source?`<section class="au-ns-paper" data-au-ns-paper><header><div class="au-ns-source-nav"><button type="button" aria-label="Previous source" data-au-ns-source="${h(opened[sourceIndex-1]?.artifact_id||'')}"${sourceIndex>0?'':' disabled'}>←</button><button type="button" aria-label="Next source" data-au-ns-source="${h(opened[sourceIndex+1]?.artifact_id||'')}"${sourceIndex<opened.length-1?'':' disabled'}>→</button></div><button type="button" class="au-link" data-au-source="${h(m.source.artifact_id)}"${pin?` data-au-citation="${h(JSON.stringify(pin))}"`:''}>Open full source</button></header><div class="au-ns-source-scroll" tabindex="0" aria-label="Opened source"><pre>${sourceText}</pre></div></section>`:'';
+    const facts=m.facts.map((fact,i)=>`${i?'<span class="au-ns-plus" aria-hidden="true">+</span>':''}<button type="button" class="au-ns-fact" data-au-ns-fact="${h(fact.id)}" data-au-source="${h(fact.source.artifact_id)}" data-au-citation="${h(JSON.stringify(fact.source))}">${northStarIcon('file')}<span>${h(fact.result?.label||fact.result?.summary||fact.source.quote)}</span></button>`).join('');
+    const activePlan=m.plans.find(row=>row.operation.seq===m.through),plan=m.node&&m.plans.length?`<aside class="au-ns-plan" data-au-ns-plan><h2 title="${h(m.node.label||m.node.title||m.node.node_id)}">Building “${h(northStarQuestion(m.node))}”</h2><ol>${m.plans.map(row=>{const done=row.operation.seq<m.through||row.operation.seq===m.through&&m.op?.kind==='step.complete',active=!done&&row===activePlan;return `<li data-au-ns-plan-row="${h(row.operation.id)}" data-state="${done?'done':active?'active':'waiting'}"><span class="au-ns-plan-status" aria-hidden="true">${done?northStarIcon('check'):''}</span><span>${h(row.label)}</span>${active?'<i class="au-ns-plan-progress" aria-hidden="true"></i>':''}</li>`;}).join('')}</ol></aside>`:'';
+    return `<section class="au-agent-desk au-northstar" data-au-agent-desk data-au-ns data-au-ns-role-active="${h(ready?'':m.role||'')}" data-au-ns-operation="${h(m.op?.id||'')}" data-au-ns-state="${ready?'ready':pin?'selected':m.source?'source':'building'}"><aside class="au-ns-sources"><h1 data-au-claim-title tabindex="-1">${h(caseLabel(state.claim_id,state.title).primary)}</h1><h2>Sources <span>${files.length}</span></h2><ul>${sourceRows}</ul></aside><div class="au-ns-canvas"><ol class="au-ns-spine" aria-label="Recorded process">${spine}</ol><div class="au-ns-work"><div class="au-ns-reading">${ready?`<div class="au-ns-ready">${button('Watch the analysis','data-au-ns-start')}</div>`:paper}<div class="au-ns-facts" aria-label="Source facts">${ready?'':facts}</div>${!ready&&m.facts.length?'<svg class="au-ns-fact-connector" viewBox="0 0 671 110" aria-hidden="true"><path d="M448 75H610V5m-5 6 5-6 5 6"/><circle cx="610" cy="75" r="6"/></svg>':''}</div><div class="au-ns-right">${ready?'':plan}<div class="au-ns-log">${m.role&&!ready?`<p><span class="au-ns-role-badge">${northStarIcon(m.role)}</span>${h(NS_ROLES.find(row=>row[0]===m.role)?.[1])}</p>`:''}<button type="button" data-au-detail="activity">${northStarIcon('file')}Work log <span aria-hidden="true">›</span></button></div></div></div></div><footer class="au-ns-footer"><span>Case ${index+1} of ${roster.length}</span><span>All cases are fictional. View-only replay.</span><div>${ready?'':`${button(presentation.playing?'Pause':'Resume',presentation.playing?'data-au-demo-stop':'data-au-demo-resume')}${button('Skip to answer','data-au-operation-skip')}`}</div></footer></section>`;
+  }
   function deskFileLabel(source) {
     if (source.role === 'customer_message') return 'Customer’s message';
     return String(source.file_name || '').replace(/\.[a-z0-9]+$/iu,'').replace(/^\d+[-_ ]*/u,'').replace(/_\d{4}-\d{2}-\d{2}.*$/u,'').replace(/[-_]+/gu,' ').replace(/\bpacket\b/giu,'documents').replace(/\brecord\b/giu,'details').replace(/^./u,c => c.toUpperCase()) || 'Source';
@@ -1580,6 +1665,7 @@
     }).join('')}</ul></section>`;
   }
   function agentDeskMarkup(state, projection, selected, events, context, presentation) {
+    if (presentation.operations?.northStar && !presentation.operations.finished) return northStarMarkup(state,presentation.operations,presentation);
     const trace=presentation.operations,model=deskOperationModel(state,trace),finished=Boolean(state.outcome&&(!trace||trace.finished)),tour=presentation.tour;
     const index=REFERENCE_DEMO_CASES.findIndex(row=>row.claim_id===state.claim_id),roster=tour?.single?REFERENCE_DEMO_CASES:tour?.cases||REFERENCE_DEMO_CASES;
     const selection=presentation.deskSelection,selectedNode=presentation.chosenNode,selectedDocument=selection?.document || (selectedNode?context?.document:null),inspecting=Boolean(selectedNode||selectedDocument||selection);
@@ -2266,6 +2352,27 @@
       const row = queue.shift(); if (!row) return {done:true}; bytes -= row.size;
       return {done:false,value:row.frame};
     }});
+  }
+  async function checkedNorthStarRecording(buffer, session, active) {
+    // Future plan rows are admitted only after the complete source and journal
+    // chain passes the same checks as the replay. This never issues a new read.
+    const frames=[],trace={rows:[],sources:new Map(),bytes:0,pinnedJournal:session.verifiedJournal||[],journal:[],frameHashes:[],headState:session.verifiedHeadState};
+    let state=session.operationOpeningAnchor.state,result=false;
+    for await(const frame of buffer) {
+      if(!active())return null;
+      if(frame.contract!==OPERATIONS_CONTRACT||result)throw new Error('The recorded plan contains an unsupported frame.');
+      frames.push(frame);
+      if(frame.type!=='result')trace.frameHashes.push(await digest(canonicalJSON(frame)));
+      if(frame.type==='binding'){if(trace.binding)throw new Error('Repeated plan binding.');trace.binding=checkedOperationBinding(frame,{...session.replayHead,...session.operationBinding},session.verifiedReplayStart);}
+      else if(frame.type==='operation')await checkedOperation(frame,trace,state);
+      else if(frame.type==='checkpoint')state=(await checkedOperationCheckpoint(frame,trace)).state;
+      else if(frame.type==='result'){
+        if(!trace.binding||state.state_sha256!==session.replayHead.state_sha256||frame.state_sha256!==state.state_sha256||frame.current_event_sha256!==session.replayHead.event_sha256||frame.operation_count!==trace.rows.length||frame.operation_chain_sha256!==trace.rows.at(-1)?.operation_sha256||frame.exact_output_verified!==true||frame.trace_sha256!==await digest(canonicalJSON(trace.frameHashes)))throw new Error('The recorded plan differs from its saved case.');
+        result=true;
+      }else throw new Error('The recorded plan contains an unknown frame.');
+    }
+    if(!result)throw new Error('The recorded plan has no verified ending.');
+    return {frames,catalogue:northStarPlanModel(session.verifiedHeadState,trace.rows)};
   }
   async function operationFrameYield(budget, runtime, active, gate) {
     if (!active()) return false;
@@ -3143,7 +3250,7 @@
     const originalScrollRestoration = (() => { try { const value = root.history?.scrollRestoration; if (typeof value === 'string') root.history.scrollRestoration = 'manual'; return typeof value === 'string' ? value : null; } catch (_) { return null; } })();
     container.classList.add('au-workspace');
     container.removeAttribute('data-au-keyboard');
-    container.innerHTML = `<div class="au-shell au-identity-shell"><a class="au-skip-link" href="#auMain" data-au-skip>Skip to main content</a><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Follow the documents</span></a>${publicReadOnly ? '' : '<button type="button" class="au-header-new" data-au-nav="intake" aria-label="New case">New<span class="au-header-new-noun"> case</span></button>'}<span class="au-access-label" data-au-public-access${publicReadOnly ? '' : ' hidden'}>View only</span><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav><div class="au-case-return" data-au-case-return hidden></div></header><${mainTag} class="au-main" id="auMain"><div class="au-global-status"></div><p class="au-visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-au-announcement></p><div class="au-body" data-au-view data-au-view-state="work"></div><div data-au-role-legend hidden>${roleExplanationMarkup()}</div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog><dialog class="au-record-dialog" aria-labelledby="auRecordTitle"><header class="au-dialog-header"><h2 id="auRecordTitle">Details</h2><button type="button" class="au-secondary" data-au-close-record>Close</button></header><div data-au-record-content></div></dialog>`;
+    container.innerHTML = `<div class="au-shell au-identity-shell"><a class="au-skip-link" href="#auMain" data-au-skip>Skip to main content</a><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath</a><div class="au-ns-tabs" aria-label="Agent roles"></div>${publicReadOnly ? '' : '<button type="button" class="au-header-new" data-au-nav="intake" aria-label="New case">New<span class="au-header-new-noun"> case</span></button>'}<span class="au-access-label" data-au-public-access${publicReadOnly ? '' : ' hidden'}>View only</span><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav><div class="au-case-return" data-au-case-return hidden></div></header><${mainTag} class="au-main" id="auMain"><div class="au-global-status"></div><p class="au-visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-au-announcement></p><div class="au-body" data-au-view data-au-view-state="work"></div><div data-au-role-legend hidden>${roleExplanationMarkup()}</div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog><dialog class="au-record-dialog" aria-labelledby="auRecordTitle"><header class="au-dialog-header"><h2 id="auRecordTitle">Details</h2><button type="button" class="au-secondary" data-au-close-record>Close</button></header><div data-au-record-content></div></dialog>`;
     const host = container.querySelector('[data-au-view]'), globalStatus = container.querySelector('.au-global-status'), dialog = container.querySelector('.au-source-dialog'), recordDialog = container.querySelector('.au-record-dialog');
     function announceRecorded(message) { const live=container.querySelector('[data-au-announcement]');if(live)live.textContent=message; }
     function notice(message, error = false, category = null) {
@@ -3732,6 +3839,7 @@
       const cueReuse = recordedReuseMoment(displayedState,reuseOperation && displayedTrace ? {...displayedTrace,current:reuseOperation,finished:false} : displayedTrace,knowledgeCache?.value || {});
       if (cueReuse && !operationPeek) displayedTrace.cueReuse = {operation:reuseOperation.id,pin:cueReuse.pin};
       host.innerHTML = workMarkup(displayedState,displayedProjection,operationPeek?.node || selected,operationPeek?.events || history,detail,evidenceContext,{desk:(root.innerWidth || 0)>700,deskSelection,mode:presentationMode,readOnly:publicReadOnly,chosenNode:operationPeek ? null : chosenNode,origin:claims.find(row => row.claim_id === displayedState.claim_id)?.origin,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),operations:displayedTrace,transportOperations:operationTrace,inspectionIndex:operationPeek?.index,operationOpening:(demoSession || pausedPresentation)?.mode === 'operations',playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,storyPhase:operationPeek ? '' : (demoSession || pausedPresentation)?.storyPhase,tour:activeTour(),claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
+      const ns=host.querySelector('[data-au-ns]'),tabs=container.querySelector('.au-ns-tabs');if(tabs)tabs.innerHTML=ns?northStarTabsMarkup(ns.dataset.auNsRoleActive):'';
       const handoff = host.querySelector('[data-au-story-handoff]'), answer = host.querySelector('[data-au-stage-outcome]');
       if (handoff && answer) answer.append?.(handoff);
       const now = host.querySelector('[data-au-now-id]'), nowId = now?.dataset.auNowId;
@@ -4442,8 +4550,39 @@
       fallback=root.setTimeout(() => { const top=stageScrollTarget?.pane === pane ? stageScrollTarget.top : pane.scrollTop; pane.scrollTo?.({top,behavior:'instant'}); root.clearTimeout(quiet); quiet=root.setTimeout(finish,0); },1200);
       stageScrollCancel=clear;
     }
+    function positionNorthStar(desk, animate = true) {
+      const trace=operationTrace,op=trace?.current,mark=desk.querySelector('[data-au-ns-quote]'),pane=desk.querySelector('.au-ns-source-scroll');
+      if(mark&&pane){const a=mark.getBoundingClientRect(),b=pane.getBoundingClientRect();pane.scrollTop=Math.max(0,pane.scrollTop+a.top-b.top-220);}
+      if(!op||!trace?.northStar||trace.nsReady)return;
+      if(stageChoreography?.operation===op&&!stageChoreography.cancelled&&!stageChoreography.complete)return;
+      cancelStageRead();
+      const model=northStarModel(current,trace),fact=desk.querySelector(`[data-au-ns-fact="${op.id}"]`),plan=desk.querySelector('[data-au-ns-plan]');
+      const cursor=mark&&model.pin?doc.createElement('div'):null;
+      if(cursor){
+        cursor.className='au-ns-cursor';cursor.setAttribute('data-au-cue-artifact','ns-cursor');cursor.setAttribute('aria-hidden','true');cursor.innerHTML=`<svg viewBox="0 0 26 34" class="au-ns-pointer"><path d="M2 2 24 21 12 22 7 32Z"/></svg><span class="au-ns-role-badge">${northStarIcon(model.role)}</span>`;desk.appendChild(cursor);
+        const area=desk.getBoundingClientRect(),clip=pane.getBoundingClientRect(),rect=[...mark.getClientRects()].filter(r=>r.top>=clip.top&&r.bottom<=clip.bottom).at(-1);
+        if(rect){cursor.style.left=`${Math.min(rect.right-area.left+3,clip.right-area.left-62)}px`;cursor.style.top=`${rect.bottom-area.top+3}px`;}else cursor.remove();
+      }
+      const canAnimate=animate&&!reduced?.matches&&!doc.hidden&&!inspectionHold&&Boolean(demoSession);
+      if(!canAnimate)return;
+      trace.nsCues ||= new Set();if(trace.nsCues.has(op.id))return;
+      const job={operation:op,cancelled:false,complete:false};job.promise=new Promise(resolve=>job.resolve=resolve);stageChoreography=job;
+      const valid=()=>!job.cancelled&&!disposed&&!doc.hidden&&!inspectionHold&&!reduced?.matches&&operationTrace===trace&&trace.current===op&&Boolean(demoSession);
+      if(mark)mark.dataset.arrived='false';if(fact)fact.style.visibility='hidden';
+      const run=async(el,frames,duration,name)=>{if(!el?.animate||!valid())return;host.dataset.auCueActive=name;host.dataset.auCueOperation=op.id;host.dataset.auCueKind=op.kind;const a=el.animate(frames,{duration,easing:'cubic-bezier(.2,.65,.3,1)'});stageReadAnimations.push(a);try{await a.finished;}catch(_){};host.removeAttribute('data-au-cue-active');};
+      void(async()=>{try{
+        if(op.kind==='source.open')await run(desk.querySelector('[data-au-ns-paper]'),[{opacity:0},{opacity:1}],200,'source-open');
+        if(cursor?.isConnected&&model.pin){await run(cursor,[{transform:'translate(-90px,-55px)',opacity:0},{transform:'translate(0,0)',opacity:1}],550,'cursor');if(valid()){mark.dataset.arrived='true';await run(mark,[{backgroundColor:'transparent'},{backgroundColor:'#DFB9C3'}],250,'highlight');}}
+        if(fact&&valid()){fact.style.visibility='visible';await run(fact,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],300,'fact');}
+        const connector=desk.querySelector('.au-ns-fact-connector');
+        if(fact||op.kind==='step.complete')await run(connector,[{opacity:0,transform:'scaleX(0)'},{opacity:1,transform:'scaleX(1)'}],400,'connector');
+        if(op.kind==='step.complete'){await run(plan?.querySelector('li:last-child .au-ns-plan-status'),[{transform:'scale(.5)'},{transform:'scale(1)'}],200,'plan-tick');await run(plan,[{opacity:1},{opacity:.35}],400,'plan-recede');if(valid())plan?.setAttribute('data-complete','true');}
+        if(valid())trace.nsCues.add(op.id);
+      }finally{if(mark)mark.dataset.arrived='true';if(fact)fact.style.visibility='';host.removeAttribute('data-au-cue-active');job.complete=true;job.resolve();}})();
+    }
     function positionDesk(animate = true) {
       const desk=host.querySelector('[data-au-agent-desk]');if(!desk)return;
+      if(desk.hasAttribute('data-au-ns')){positionNorthStar(desk,animate);return;}
       const trace=operationPeek?.trace||operationTrace||deskRecords.get(current?.state_sha256),mark=desk.querySelector('[data-au-desk-quote]'),pane=desk.querySelector('.au-desk-source-scroll');
       const op=trace?.finished?list(trace.rows).findLast(row=>row.kind==='decision'):trace?.current;
       const shown=mark&&list(trace?.rows).find(row=>row.id===mark.dataset.auDeskQuote),model=trace&&deskOperationModel(current,trace),nodeId=shown&&model.operationNodes.get(shown.id)||op&&model?.operationNodes.get(op.id),node=[...desk.querySelectorAll('[data-au-desk-requirement]')].find(el=>el.dataset.auDeskRequirement===nodeId),label=node?.querySelector('.au-desk-node-label');
@@ -4795,8 +4934,15 @@
         };
         if (delivery?.buffer) { prepared.resultAvailable = resultAvailable; trace.buffer = delivery.buffer; if (trace.buffer.result) resultAvailable(trace.buffer.result); }
         else trace.buffer = bufferedOperations(response,operationController.signal,resultAvailable);
+        let presentationFrames=trace.buffer;
+        if((root.innerWidth||0)>700){
+          const recording=await checkedNorthStarRecording(trace.buffer,session,()=>operationActive(session,token)&&operationTrace===trace);
+          if(!recording)return;
+          trace.northStar=true;trace.nsCatalogue=recording.catalogue;presentationFrames=recording.frames;
+          if(!session.nsStarted&&!session.skip){trace.nsReady=true;renderClaim();await new Promise(resolve=>{session.nsStartResolve=resolve;session.operationController.signal.addEventListener('abort',resolve,{once:true});});if(!operationActive(session,token))return;trace.nsReady=false;}
+        }
         const frameBudget = {started:root.performance?.now?.() ?? Date.now()};
-        for await (const frame of trace.buffer) {
+        for await (const frame of presentationFrames) {
           if (!await operationGate(session,token)) return;
           if (frame.contract !== OPERATIONS_CONTRACT) throw new Error('The operation stream contract is unavailable.');
           if (frame.type !== 'result') {
@@ -4819,7 +4965,8 @@
             if (!await operationGate(session,token)) return;
             applyWorkingOperation(operation,operationTrace,current);
             const graph = operationStageGraph(operationTrace,current), dockingNode = operationNodeId(operation,graph,current,operationTrace);
-            const show = operationAttention(operation,operationTrace) && !(operation.kind === 'decision' && (root.innerWidth || 0) > 700);
+            const firstEvaluation=trace.northStar&&operation.kind==='node.evaluate'&&list(trace.headState?.graph?.nodes).some(node=>node.node_id===operation.object.id)&&!trace.rows.slice(0,-1).some(row=>row.kind==='node.evaluate'&&row.object.id===operation.object.id);
+            const show = (operationAttention(operation,operationTrace)||trace.northStar&&operation.kind==='source.open'||firstEvaluation) && !(operation.kind === 'decision' && (root.innerWidth || 0) > 700);
             if (show && ['fact.extract','document.check'].includes(operation.kind)) { operationTrace.dockPhases ||= new Map(); operationTrace.dockPhases.set(operation.id,'read'); }
             if (operation.kind === 'fact.extract' && operation.source && dockingNode) {
               operationTrace.dockedFacts ||= new Map(); operationTrace.dockedFacts.set(operation.object.id,{operation,node:dockingNode,observed:true});
@@ -4935,6 +5082,7 @@
       return true;
     }
     function resumePresentation() {
+      if(operationTrace)delete operationTrace.nsInspectionSource;
       const session = pausedPresentation;
       if (!session || disposed || pendingRoute() || doc.hidden || dialog.open || recordDialog.open || view !== 'claim') return;
       if (!current && session.releasePlan && openingId === session.claimId) {
@@ -5894,6 +6042,8 @@
       else if(target.hasAttribute('data-au-desk-select')||target.hasAttribute('data-au-desk-document-select')||target.hasAttribute('data-au-desk-file-select')||target.hasAttribute('data-au-desk-predicate-source')) selectDesk(target);
       else if(target.hasAttribute('data-au-desk-result')){deskSelection=null;chosenNode=null;evidenceContext={};renderClaim();route(claimFragment(current.claim_id,{mode:presentationMode,collection:openingPreferences.collection,operations:openingPreferences.operations,through:replayRecord?.through_seq}));}
       else if(target.hasAttribute('data-au-desk-retry')){if(current)ensureDeskRecord(current,epoch);}
+      else if(target.hasAttribute('data-au-ns-source')){if(operationTrace?.sources.has(target.dataset.auNsSource)){pausePresentation();operationTrace.nsInspectionSource=target.dataset.auNsSource;renderClaim();}}
+      else if(target.hasAttribute('data-au-ns-start')){const session=demoSession||pausedPresentation;if(session){session.nsStarted=true;session.nsStartResolve?.();session.nsStartResolve=null;}}
       else if(target.hasAttribute('data-au-desk-watch')){if(current){const row=REFERENCE_DEMO_CASES.find(row=>row.claim_id===current.claim_id);if(row){stopPresentation();tour=null;demoSession={mode:'operations',collection:'reference',cases:[row],index:0,operations:openingPreferences.operations,single:true};openPresentationCase(demoSession);}}}
       else if (target.hasAttribute('data-au-inspect')) openRecord(target);
       else if (target.hasAttribute('data-au-demo-case')) { const id = target.dataset.auDemoCase; recordReturn = null; recordDialog.close(); stopPresentation(); demoMode = 'replay'; const collection = demoCollection(target.dataset.auDemoCollection) || 'reference', filtered = collectionRoster(collection,claims), cases = filtered.some(row => row.claim_id === id) ? filtered : demoCases(collection), index = cases.findIndex(row => row.claim_id === id); if (index >= 0) { const operations=openingPreferences.operations || operationRoutePreference(root.location?.hash,root.location?.search); demoSession = tourSession(collection,cases,index,operations,target.dataset.auDemoSaved === 'true'); openPresentationCase(demoSession); } }
@@ -6151,5 +6301,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {checklistLearning,knowledgeChecklistMarkup,checklistCases,isDeskChecklist,deskNextStepMarkup,caseListStatus,requestRowMarkup,DESK_STEPS,DESK_LEGAL_TESTS,deskLegalLabel,deskLegalStatus,deskStepLabel,deskRequest,deskLaw,agentDeskMarkup,deskOperationModel,deskFileLabel,deskDraftBinding,checkedDeskDraft,caseProcedureMarkup,similarCases,similarCasesMarkup,caseDomain,knowledgeLibraryMarkup,knowledgeLibrary,libraryEntryMarkup,definitionMarkup,baseOutlineMarkup,conditionSentence,libraryStepsMarkup,RECORD_DIALOG_SKELETON,recordExplanation,recordPassageMarkup,outcomeSummaryMarkup,stepDetailMarkup,demoRoster,collectionRoster,demoCollection,DEMO_COLLECTIONS,caseLabel,demoPickerMarkup,demoTransportMarkup,resultReached,knowledgePayoff,knowledgePayoffMarkup,tourKnowledgePayoff,learningChangeSummary,learningFrameStart,learningProcessMarkup,recordedReuseMoment,recordedReuseMomentMarkup,knowledgeLearningModel,knowledgeLearningFocus,knowledgePinMatches,learningEventLabel,learningTime,checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,operationCues,completedStepFraction,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,roleBadge,boundDisplayReceipt,operationDisplayContext,knowledgeNowMarkup,nowMarkup,outcomeSummaryMarkup,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,demonstrationOverviewMarkup,learningLabel,claimModeLine,rosterUnrun,startControlMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {NS_QUESTIONS,northStarQuestion,northStarTabsMarkup,NS_ROLES,NS_ROLE_KINDS,northStarRole,northStarPlanModel,northStarPin,northStarModel,northStarMarkup,checklistLearning,knowledgeChecklistMarkup,checklistCases,isDeskChecklist,deskNextStepMarkup,caseListStatus,requestRowMarkup,DESK_STEPS,DESK_LEGAL_TESTS,deskLegalLabel,deskLegalStatus,deskStepLabel,deskRequest,deskLaw,agentDeskMarkup,deskOperationModel,deskFileLabel,deskDraftBinding,checkedDeskDraft,caseProcedureMarkup,similarCases,similarCasesMarkup,caseDomain,knowledgeLibraryMarkup,knowledgeLibrary,libraryEntryMarkup,definitionMarkup,baseOutlineMarkup,conditionSentence,libraryStepsMarkup,RECORD_DIALOG_SKELETON,recordExplanation,recordPassageMarkup,outcomeSummaryMarkup,stepDetailMarkup,demoRoster,collectionRoster,demoCollection,DEMO_COLLECTIONS,caseLabel,demoPickerMarkup,demoTransportMarkup,resultReached,knowledgePayoff,knowledgePayoffMarkup,tourKnowledgePayoff,learningChangeSummary,learningFrameStart,learningProcessMarkup,recordedReuseMoment,recordedReuseMomentMarkup,knowledgeLearningModel,knowledgeLearningFocus,knowledgePinMatches,learningEventLabel,learningTime,checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,operationCues,completedStepFraction,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,roleBadge,boundDisplayReceipt,operationDisplayContext,knowledgeNowMarkup,nowMarkup,outcomeSummaryMarkup,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,demonstrationOverviewMarkup,learningLabel,claimModeLine,rosterUnrun,startControlMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });
