@@ -1746,3 +1746,33 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace .au-request-row > .au-request-identity { grid-column:1/-1; color:var(--au-muted); font-size:14px; margin:3px 0 0; }
  .au-workspace .au-request-row > .au-request-met { grid-column:1; color:var(--au-green); font-size:14px; margin-top:5px; }
 }
+
+/* A single domain checklist keeps steps, documents and legal tests together. */
+@media (min-width:701px) {
+ .au-workspace .au-desk-next[data-status=clear] { display:flex; gap:9px; align-items:baseline; }
+ .au-workspace .au-desk-next-cue { color:var(--au-green); font-weight:500; }
+ .au-workspace .au-desk-next[data-status=missing] .au-desk-next-cue { color:var(--au-amber); }
+ .au-workspace [data-au-checklist-library] .au-library-layout { grid-template-columns:220px minmax(0,1fr); gap:30px; }
+ .au-workspace [data-au-checklist-library] .au-library-entry:not([data-pinned=true]) { display:none; }
+ .au-workspace [data-au-checklist-library] .au-library-entry { border-bottom:0; scroll-margin-top:calc(var(--au-header-height,64px) + 18px); }
+ .au-workspace [data-au-checklist-library] .au-library-index button[aria-current=true] { border-left-color:var(--au-ink); }
+ .au-workspace .au-checklist-note { margin:18px 0 24px; color:var(--au-muted); font-size:15px; line-height:1.5; }
+ .au-workspace .au-checklist-columns { display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:24px; }
+ .au-workspace .au-knowledge-checklist h3 { margin:0 0 14px; font-size:16px; font-weight:550; }
+ .au-workspace .au-checklist-columns ol { margin:0; padding-left:22px; }
+ .au-workspace .au-checklist-columns ul { list-style:none; margin:0; padding:0; }
+ .au-workspace .au-checklist-columns li { margin:0 0 14px; font-size:15.5px; line-height:1.5; }
+ .au-workspace .au-checklist-columns li::marker { color:var(--au-muted); }
+ .au-workspace .au-checklist-columns .au-desk-law { margin-top:4px; color:var(--au-muted); font-size:14px; }
+ .au-workspace .au-checklist-cases { margin-top:20px; padding-top:20px; border-top:1px solid var(--au-desk-hair,#e5e7eb); }
+ .au-workspace .au-checklist-cases ul { list-style:none; margin:0; padding:0; }
+ .au-workspace .au-checklist-cases li { margin:7px 0; }
+ .au-workspace .au-checklist-cases button { display:inline; padding:0; min-height:0; border:0; background:none; color:var(--au-ink); font:inherit; text-align:left; text-decoration:underline; text-underline-offset:3px; }
+ .au-workspace .au-checklist-records { margin-top:24px; padding-top:16px; border-top:1px solid var(--au-desk-hair,#e5e7eb); }
+ .au-workspace .au-checklist-records > summary { width:fit-content; color:var(--au-muted); cursor:pointer; font-size:15px; }
+ .au-workspace .au-checklist-records > section { margin-top:24px; }
+}
+
+@media (min-width:701px) {
+ .au-workspace [data-au-checklist-library] :is(.au-learning-label,.au-library-status) { color:var(--au-muted); }
+}
