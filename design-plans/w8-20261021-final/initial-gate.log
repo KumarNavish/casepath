@@ -1,0 +1,597 @@
+Using Python 3.13.9 environment at: .runtime/casepath-dev-v2/venv
+Resolved 59 packages in 317ms
+Checked 59 packages in 1ms
+........................................................................ [  2%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 12%]
+........................................................................ [ 15%]
+........................................................................ [ 17%]
+........................................................................ [ 20%]
+........................................................................ [ 22%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+........................................................................ [ 30%]
+........................................................................ [ 32%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 40%]
+.................s.sssssssss............................................ [ 42%]
+........................................................................ [ 45%]
+........................................................................ [ 47%]
+........................................................................ [ 50%]
+.....................................FFFFFF................F............ [ 52%]
+........................................................................ [ 55%]
+........................................................................ [ 57%]
+........................................................................ [ 60%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 67%]
+........................................................................ [ 70%]
+........................................................................ [ 72%]
+........................................................................ [ 75%]
+........................................................................ [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 82%]
+................................................F....................... [ 85%]
+........................................................................ [ 87%]
+........................................................................ [ 90%]
+..........................................................FF............ [ 92%]
+........................................................................ [ 95%]
+........................................................................ [ 97%]
+..................................................................       [100%]
+=================================== FAILURES ===================================
+_____ test_exact_native_export_is_small_select_only_and_never_initializes ______
+
+native = (<casepath_api.autonomous_store_v1.AutonomousStore object at 0x10eb26a40>, <test_hosted_read_seed_export_v1.ObservedHr...9972f73f038a5063afb4de448a995cc296f4e300c7', '2a3670e68e4ac514caa333b84ebc988ae0148c09274e92a03e23076fb0628734', ...)])
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_exact_native_export_is_sm0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10ea9c210>
+
+    def test_exact_native_export_is_small_select_only_and_never_initializes(native, tmp_path, monkeypatch):
+        local, server, rows = native
+        output = tmp_path / 'private-package/hosted-read-seed-v1.json'
+        output.parent.mkdir(mode=0o700)
+        monkeypatch.setattr(export['HostedAutonomousStore'], '__init__', lambda *a, **k: pytest.fail('store init'))
+>       receipt = export['export_seed'](server.connection, deployment_commit=COMMIT, output=output)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_read_seed_export_v1.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/tools/export_read_seed.py:373: in export_seed
+    output = _output_path(output)
+             ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+output = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp...st-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_exact_native_export_is_sm0/private-package/hosted-read-seed-v1.json')
+
+    def _output_path(output):
+        output = Path(output)
+        if '..' in output.parts:
+            raise Refused('Seed output must not contain parent traversal.')
+        output = output.absolute()
+        if output.is_symlink() or output.exists():
+            raise Refused('Seed output must be a new private file; overwrite is refused.')
+        if not output.parent.is_dir():
+            raise Refused('Seed output requires an existing private upload directory.')
+        # Mac adds this private artifact only to a temporary official upload
+        # archive/source copy after canonical source verification and sealing.
+        for parent in (output.parent, *output.parents):
+            if parent.is_symlink():
+                raise Refused('Seed output ancestors must not be symlinks.')
+            marker = parent / '.git'
+            if marker.is_file() or marker.is_dir() and (marker / 'HEAD').is_file():
+>               raise Refused('Seed output must remain outside every Git checkout.')
+E               <run_path>.Refused: Seed output must remain outside every Git checkout.
+
+casepath-api/tools/export_read_seed.py:362: Refused
+____________ test_failed_slice_never_retries_or_publishes[timeout] _____________
+
+native = (<casepath_api.autonomous_store_v1.AutonomousStore object at 0x10eac9440>, <test_hosted_read_seed_export_v1.ObservedHr...feecbb2f8c5de19060cdb9613f97af123db4daee5c', 'b2d941e9ba9662fa59b192def1bb68cff9a41caf7b84253a8ba713a884945905', ...)])
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_failed_slice_never_retrie0')
+failure = 'timeout'
+
+    @pytest.mark.parametrize('failure', ['timeout', 'missing_result'])
+    def test_failed_slice_never_retries_or_publishes(native, tmp_path, failure):
+        _, server, _ = native
+        output = tmp_path / 'never-published.json'
+        server.fail_next(failure, sql_prefix='SELECT typeof(event_json)')
+        with pytest.raises(HostedStorageError):
+>           export['export_seed'](server.connection, deployment_commit=COMMIT, output=output)
+
+casepath-api/tests/test_hosted_read_seed_export_v1.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/tools/export_read_seed.py:373: in export_seed
+    output = _output_path(output)
+             ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+output = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_failed_slice_never_retrie0/never-published.json')
+
+    def _output_path(output):
+        output = Path(output)
+        if '..' in output.parts:
+            raise Refused('Seed output must not contain parent traversal.')
+        output = output.absolute()
+        if output.is_symlink() or output.exists():
+            raise Refused('Seed output must be a new private file; overwrite is refused.')
+        if not output.parent.is_dir():
+            raise Refused('Seed output requires an existing private upload directory.')
+        # Mac adds this private artifact only to a temporary official upload
+        # archive/source copy after canonical source verification and sealing.
+        for parent in (output.parent, *output.parents):
+            if parent.is_symlink():
+                raise Refused('Seed output ancestors must not be symlinks.')
+            marker = parent / '.git'
+            if marker.is_file() or marker.is_dir() and (marker / 'HEAD').is_file():
+>               raise Refused('Seed output must remain outside every Git checkout.')
+E               <run_path>.Refused: Seed output must remain outside every Git checkout.
+
+casepath-api/tools/export_read_seed.py:362: Refused
+_________ test_failed_slice_never_retries_or_publishes[missing_result] _________
+
+native = (<casepath_api.autonomous_store_v1.AutonomousStore object at 0x10eac9860>, <test_hosted_read_seed_export_v1.ObservedHr...99a0abf18204f3775d93c5bb3896ac598a5ab5a0f0', 'adf3a41bc99150c2f48249d9202cc95a15d930ad77e5b185ff7bf32ec5d86ec1', ...)])
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_failed_slice_never_retrie1')
+failure = 'missing_result'
+
+    @pytest.mark.parametrize('failure', ['timeout', 'missing_result'])
+    def test_failed_slice_never_retries_or_publishes(native, tmp_path, failure):
+        _, server, _ = native
+        output = tmp_path / 'never-published.json'
+        server.fail_next(failure, sql_prefix='SELECT typeof(event_json)')
+        with pytest.raises(HostedStorageError):
+>           export['export_seed'](server.connection, deployment_commit=COMMIT, output=output)
+
+casepath-api/tests/test_hosted_read_seed_export_v1.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/tools/export_read_seed.py:373: in export_seed
+    output = _output_path(output)
+             ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+output = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_failed_slice_never_retrie1/never-published.json')
+
+    def _output_path(output):
+        output = Path(output)
+        if '..' in output.parts:
+            raise Refused('Seed output must not contain parent traversal.')
+        output = output.absolute()
+        if output.is_symlink() or output.exists():
+            raise Refused('Seed output must be a new private file; overwrite is refused.')
+        if not output.parent.is_dir():
+            raise Refused('Seed output requires an existing private upload directory.')
+        # Mac adds this private artifact only to a temporary official upload
+        # archive/source copy after canonical source verification and sealing.
+        for parent in (output.parent, *output.parents):
+            if parent.is_symlink():
+                raise Refused('Seed output ancestors must not be symlinks.')
+            marker = parent / '.git'
+            if marker.is_file() or marker.is_dir() and (marker / 'HEAD').is_file():
+>               raise Refused('Seed output must remain outside every Git checkout.')
+E               <run_path>.Refused: Seed output must remain outside every Git checkout.
+
+casepath-api/tools/export_read_seed.py:362: Refused
+_______ test_mutation_before_final_atomic_proof_never_publishes[old_row] _______
+
+native = (<casepath_api.autonomous_store_v1.AutonomousStore object at 0x10eac9d30>, <test_hosted_read_seed_export_v1.ObservedHr...1a3c53d5d940595337ff8584a097b377baaf306412', '7fde3f58c96b8e891bb6a7cb74b4efb998de73fcbf53ea16196d9c9d3acb177b', ...)])
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_mutation_before_final_ato0')
+mutation = 'old_row'
+
+    @pytest.mark.parametrize('mutation', ['old_row', 'extra_chunk', 'schema'])
+    def test_mutation_before_final_atomic_proof_never_publishes(native, tmp_path, mutation):
+        _, server, _ = native
+        output = tmp_path / 'never-published.json'
+        mutated = []
+    
+        def change(request):
+            if mutated or not any('substr(CAST(content AS BLOB)' in item.get('stmt', {}).get('sql', '')
+                                  for item in request['requests']):
+                return
+            mutated.append(True)
+            with sqlite3.connect(server.path) as target:
+                if mutation == 'old_row':
+                    target.execute("UPDATE claim_loop_events SET created_at=created_at||' ' WHERE sequence=1")
+                elif mutation == 'extra_chunk':
+                    digest = target.execute('SELECT sha256 FROM autonomous_source_chunks ORDER BY sha256 LIMIT 1').fetchone()[0]
+                    target.execute('INSERT INTO autonomous_source_chunks VALUES (?,?,?)', (digest, 99, b'extra'))
+                else:
+                    target.execute('CREATE INDEX fixture_schema_change ON claim_loop_events(created_at)')
+        server.after = change
+        with pytest.raises(AutonomousStoreError):
+            export['export_seed'](server.connection, deployment_commit=COMMIT, output=output)
+>       assert mutated and not output.exists()
+E       assert ([])
+
+casepath-api/tests/test_hosted_read_seed_export_v1.py:129: AssertionError
+_____ test_mutation_before_final_atomic_proof_never_publishes[extra_chunk] _____
+
+native = (<casepath_api.autonomous_store_v1.AutonomousStore object at 0x10eaca200>, <test_hosted_read_seed_export_v1.ObservedHr...f615bce7e56b5a82905ebadfe5d1ae10b398f31ba7', '5b7b2a2ad11eee731bc650331a3ef08968e147f0e4c39dcf32be43f45c592a2e', ...)])
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_mutation_before_final_ato1')
+mutation = 'extra_chunk'
+
+    @pytest.mark.parametrize('mutation', ['old_row', 'extra_chunk', 'schema'])
+    def test_mutation_before_final_atomic_proof_never_publishes(native, tmp_path, mutation):
+        _, server, _ = native
+        output = tmp_path / 'never-published.json'
+        mutated = []
+    
+        def change(request):
+            if mutated or not any('substr(CAST(content AS BLOB)' in item.get('stmt', {}).get('sql', '')
+                                  for item in request['requests']):
+                return
+            mutated.append(True)
+            with sqlite3.connect(server.path) as target:
+                if mutation == 'old_row':
+                    target.execute("UPDATE claim_loop_events SET created_at=created_at||' ' WHERE sequence=1")
+                elif mutation == 'extra_chunk':
+                    digest = target.execute('SELECT sha256 FROM autonomous_source_chunks ORDER BY sha256 LIMIT 1').fetchone()[0]
+                    target.execute('INSERT INTO autonomous_source_chunks VALUES (?,?,?)', (digest, 99, b'extra'))
+                else:
+                    target.execute('CREATE INDEX fixture_schema_change ON claim_loop_events(created_at)')
+        server.after = change
+        with pytest.raises(AutonomousStoreError):
+            export['export_seed'](server.connection, deployment_commit=COMMIT, output=output)
+>       assert mutated and not output.exists()
+E       assert ([])
+
+casepath-api/tests/test_hosted_read_seed_export_v1.py:129: AssertionError
+_______ test_mutation_before_final_atomic_proof_never_publishes[schema] ________
+
+native = (<casepath_api.autonomous_store_v1.AutonomousStore object at 0x10eaca6d0>, <test_hosted_read_seed_export_v1.ObservedHr...33d7dddcb0a74d98f88d232316c69615919d5ef704', 'bd3f49900af9406b8cde9220349545fd9c23ae7580ebd5c286e770ba6aa1b4bf', ...)])
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_mutation_before_final_ato2')
+mutation = 'schema'
+
+    @pytest.mark.parametrize('mutation', ['old_row', 'extra_chunk', 'schema'])
+    def test_mutation_before_final_atomic_proof_never_publishes(native, tmp_path, mutation):
+        _, server, _ = native
+        output = tmp_path / 'never-published.json'
+        mutated = []
+    
+        def change(request):
+            if mutated or not any('substr(CAST(content AS BLOB)' in item.get('stmt', {}).get('sql', '')
+                                  for item in request['requests']):
+                return
+            mutated.append(True)
+            with sqlite3.connect(server.path) as target:
+                if mutation == 'old_row':
+                    target.execute("UPDATE claim_loop_events SET created_at=created_at||' ' WHERE sequence=1")
+                elif mutation == 'extra_chunk':
+                    digest = target.execute('SELECT sha256 FROM autonomous_source_chunks ORDER BY sha256 LIMIT 1').fetchone()[0]
+                    target.execute('INSERT INTO autonomous_source_chunks VALUES (?,?,?)', (digest, 99, b'extra'))
+                else:
+                    target.execute('CREATE INDEX fixture_schema_change ON claim_loop_events(created_at)')
+        server.after = change
+        with pytest.raises(AutonomousStoreError):
+            export['export_seed'](server.connection, deployment_commit=COMMIT, output=output)
+>       assert mutated and not output.exists()
+E       assert ([])
+
+casepath-api/tests/test_hosted_read_seed_export_v1.py:129: AssertionError
+______ test_elapsed_budget_rechecked_after_final_proof_before_publication ______
+
+native = (<casepath_api.autonomous_store_v1.AutonomousStore object at 0x10f95e780>, <test_hosted_read_seed_export_v1.ObservedHr...e4a3d532ea5bc7c7aeecccb050fec3c5a4d985237e', '7bf3d5de59c4a575e227b8f50a0e95b9016b4a03aa2b5dad69c15a3bbac35f56', ...)])
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_elapsed_budget_rechecked_0')
+
+    def test_elapsed_budget_rechecked_after_final_proof_before_publication(native, tmp_path):
+        _, server, _ = native
+        output = tmp_path / 'never.json'
+    
+        def expired():
+            raise HostedStorageError('fixed elapsed budget expired')
+    
+        with pytest.raises(HostedStorageError, match='expired'):
+>           export['export_seed'](server.connection, deployment_commit=COMMIT, output=output, check_budget=expired)
+
+casepath-api/tests/test_hosted_read_seed_export_v1.py:255: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/tools/export_read_seed.py:373: in export_seed
+    output = _output_path(output)
+             ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+output = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_elapsed_budget_rechecked_0/never.json')
+
+    def _output_path(output):
+        output = Path(output)
+        if '..' in output.parts:
+            raise Refused('Seed output must not contain parent traversal.')
+        output = output.absolute()
+        if output.is_symlink() or output.exists():
+            raise Refused('Seed output must be a new private file; overwrite is refused.')
+        if not output.parent.is_dir():
+            raise Refused('Seed output requires an existing private upload directory.')
+        # Mac adds this private artifact only to a temporary official upload
+        # archive/source copy after canonical source verification and sealing.
+        for parent in (output.parent, *output.parents):
+            if parent.is_symlink():
+                raise Refused('Seed output ancestors must not be symlinks.')
+            marker = parent / '.git'
+            if marker.is_file() or marker.is_dir() and (marker / 'HEAD').is_file():
+>               raise Refused('Seed output must remain outside every Git checkout.')
+E               <run_path>.Refused: Seed output must remain outside every Git checkout.
+
+casepath-api/tools/export_read_seed.py:362: Refused
+_ test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readiness _
+
+saved_runtime = (<hosted_hrana_fixture.MockHrana object at 0x112887f70>, TursoDatabase(credential=<redacted>), <casepath_api.hosted_st...intake', ...}}], 'claim_id': 'auto_e4f9bf31f47b4988aa829172', 'contract': 'casepath.autonomous-claim/1.0.0', ...}, ...)
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_public_startup_verifies_k0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10ea1ce50>
+
+    def test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readiness(saved_runtime, tmp_path, monkeypatch):
+        server, database, store, corpus, pending, completed, original, provider_calls = saved_runtime
+        controllers, warmed = [], []
+        construct = hosted_app_v1.HostedAutonomousController
+        learning_view = AutonomousKnowledge.learning_view
+        def controller(*args, **kwargs):
+            value = construct(*args, **kwargs)
+            controllers.append(value)
+            return value
+        def warm(knowledge):
+            value = controllers[-1]
+            assert knowledge is value.knowledge
+            assert value._closed and value.model is None and value.store._read_only
+            before = rows(server.path)
+            baseline = len(server.requests)
+            result = learning_view(knowledge)
+            calls = server.requests[baseline:]
+            assert calls and rows(server.path) == before
+            assert all(item['type'] in ('execute', 'close', 'batch')
+                       for call in calls for item in call['requests'])
+            assert all(re.match(r'\s*(SELECT|BEGIN|COMMIT)\b', command, re.I)
+                       for command in statements(calls))
+            warmed.append(result)
+            return result
+        def forbidden_model(*args, **kwargs):
+            pytest.fail('read-only warmup constructed a provider model')
+        def forbidden_discovery(*args, **kwargs):
+            pytest.fail('read-only startup entered claim discovery or summary reads')
+        monkeypatch.setattr(hosted_app_v1, 'HostedAutonomousController', controller)
+        monkeypatch.setattr(AutonomousKnowledge, 'learning_view', warm)
+        monkeypatch.setattr(hosted_model_v1, 'HostedModel', forbidden_model)
+        for target, name in ((HostedAutonomousStore, 'list'), (HostedAutonomousStore, '_read_summaries'),
+                             (construct, 'resume'), (construct, 'wake_pending')):
+            monkeypatch.setattr(target, name, forbidden_discovery)
+        env = {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
+               'CASEPATH_SOURCE_COMMIT': 'a' * 40}
+        app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'warm')
+        before = rows(server.path)
+>       with TestClient(app) as client:
+             ^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_public_hosted_read_only_v1.py:206: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:694: in __enter__
+    portal.call(self.wait_startup)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:729: in wait_startup
+    await receive()
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:720: in receive
+    self.task.result()
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:710: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:151: in __call__
+    await self.app(scope, receive, send)
+casepath-api/casepath_api/hosted_proxy_v1.py:28: in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/hosted_proxy_v1.py:74: in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py:49: in __call__
+    await self.app(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:725: in app
+    await self.lifespan(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:694: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/routing.py:134: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:571: in __aenter__
+    await self._router.startup()
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:673: in startup
+    handler()
+casepath-api/casepath_api/hosted_app_v1.py:74: in startup
+    ReadTimedJSONResponse(jsonable_encoder(route.endpoint(**arguments)))
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_api_v1.py:233: in claims
+    return invoke(read)
+           ^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_api_v1.py:100: in invoke
+    return fn(service_getter())
+           ^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_api_v1.py:198: in read
+    for row in service.store.list_summaries():
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_store_v1.py:984: in list_summaries
+    return self._read_summaries(statuses=statuses)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (<casepath_api.hosted_storage_v1.HostedAutonomousStore object at 0x10f64cf30>,)
+kwargs = {'statuses': None}
+
+    def forbidden_discovery(*args, **kwargs):
+>       pytest.fail('read-only startup entered claim discovery or summary reads')
+E       Failed: read-only startup entered claim discovery or summary reads
+
+casepath-api/tests/test_public_hosted_read_only_v1.py:195: Failed
+____________ test_curated_static_build_has_exact_runtime_inventory _____________
+
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-5t5wd01z/tmp/pytest-of-kumar0002/pytest-0/test_curated_static_build_has_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10f741320>
+
+    def test_curated_static_build_has_exact_runtime_inventory(
+        tmp_path: Path,
+        monkeypatch,
+    ) -> None:
+        output = tmp_path / static_site.OUTPUT_DIRECTORY_NAME
+        monkeypatch.setattr(static_site, "DEFAULT_OUTPUT", output)
+        payload = static_site.build_static_site(output, {})
+    
+        assert payload["source_commit"] == "unknown"
+        assert payload["alignment_eligible"] is False
+        files, directories = static_site.inventory(output)
+        expected_files = {
+            "assets/autonomous-demo-packets.json",
+            "assets/autonomous-recorded-heating-v1.json",
+            "assets/autonomous-saved-history-v1.json",
+            "assets/autonomous-language-v1.js",
+            "assets/autonomous-workspace-v1.js", "assets/autonomous-workspace-v1.css", "assets/autonomous-entry-v1.js",
+            "_headers", "index.html", "corpus.html", "method.html", "research.html",
+            "release.json", "deployment.json",
+            "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json",
+            "assets/method-guide.css", "assets/method-guide-data.json",
+            "assets/research-evidence.css", "assets/paired-study-evidence.json",
+            "assets/native-study-evidence.json",
+            "assets/claims-workspace-v1.css", "assets/claims-workspace-v1.js",
+            "assets/claims-workspace-presentation-v1.js",
+            "assets/claims-workspace-presentation-v1.css",
+            "assets/agent-work-v1.js", "assets/agent-work-v1.css",
+            "assets/causal-process-v1.js", "assets/causal-process-v1.css",
+            "assets/process-evidence-v2.css", "assets/process-evidence-v2.js",
+            "assets/agent-claim-v2.js", "assets/agent-desk-v2.js",
+            "assets/agent-native-v2.css",
+            "assets/agent-work-motion-v3.js",
+            "assets/fonts/Merriweather-Light.ttf", "assets/fonts/Merriweather-OFL.txt",
+            "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+            "assets/fonts/Open_Sans-OFL.txt",
+        }
+>       assert files == static_site.PUBLIC_INVENTORY == expected_files
+E       AssertionError: assert frozenset({'_...v1.css', ...}) == {'_headers', ...-v1.css', ...}
+E         
+E         Extra items in the left set:
+E         'assets/fonts/Mulish.ttf'
+E         'assets/fonts/Mulish-OFL.txt'
+E         Use -v to get more diff
+
+casepath/tools/test_build_deployment_identity.py:110: AssertionError
+________ test_curated_asset_allowlist_is_the_recursive_runtime_closure _________
+
+    def test_curated_asset_allowlist_is_the_recursive_runtime_closure() -> None:
+        discovered = {
+            match.group("path")
+            for entry_point in static_site.PUBLIC_ROOT_FILES
+            if entry_point.endswith(".html")
+            for match in ASSET_REFERENCE.finditer(
+                (static_site.SOURCE_ROOT / entry_point).read_text(encoding="utf-8")
+            )
+        }
+        pending = list(discovered)
+        scanned: set[str] = set()
+        while pending:
+            relative_path = pending.pop()
+            if relative_path in scanned:
+                continue
+            scanned.add(relative_path)
+            if not relative_path.endswith((".js", ".css")):
+                continue
+            source = static_site.SOURCE_ROOT / relative_path
+            source_text = source.read_text(encoding="utf-8")
+            nested = {
+                match.group("path")
+                for match in ASSET_REFERENCE.finditer(source_text)
+            }
+            if relative_path.endswith(".css"):
+                nested.update(
+                    (source.parent / match.group("path")).resolve().relative_to(
+                        static_site.SOURCE_ROOT.resolve()
+                    ).as_posix()
+                    for match in CSS_FONT_REFERENCE.finditer(source_text)
+                )
+            pending.extend(sorted(nested - discovered))
+            discovered.update(nested)
+    
+>       assert discovered == set(static_site.PUBLIC_ASSETS)
+E       AssertionError: assert {'assets/agen...k-v1.js', ...} == {'assets/agen...k-v1.js', ...}
+E         
+E         Extra items in the right set:
+E         'assets/fonts/Mulish-OFL.txt'
+E         Use -v to get more diff
+
+casepath/tools/test_build_deployment_identity.py:182: AssertionError
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+casepath-api/casepath_api/app.py:424
+  /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/casepath-api/casepath_api/app.py:424: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+  /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+casepath-api/casepath_api/app.py:444
+  /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021/casepath-api/casepath_api/app.py:444: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+tests/test_workspace_claim_loop_v1.py::test_workspace_sigkill_after_durable_artifact_recovers_without_redispatch
+  /Users/kumar0002/.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/multiprocessing/popen_fork.py:67: DeprecationWarning: This process (pid=15850) is multi-threaded, use of fork() may lead to deadlocks in the child.
+    self.pid = os.fork()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v1.py:605: frozen independent-transition packet is not available
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:457: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:548: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:559: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:579: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:592: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:610: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:636: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:646: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:696: saved native source-binding run is unavailable
+10 failed, 2854 passed, 10 skipped, 10 warnings in 3543.61s (0:59:03)
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

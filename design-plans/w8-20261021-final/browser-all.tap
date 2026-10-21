@@ -1,0 +1,221 @@
+TAP version 13
+# Subtest: all nine recorded claims retain their complete actual DAG, edge applicability and unprocessed states
+    # Subtest: Fictional claim · Robin & Sami
+    ok 1 - Fictional claim · Robin & Sami
+      ---
+      duration_ms: 12.065791
+      type: 'test'
+      ...
+    # Subtest: Fictional intake · Robin and Sami’s family-home termination
+    ok 2 - Fictional intake · Robin and Sami’s family-home termination
+      ---
+      duration_ms: 0.700667
+      type: 'test'
+      ...
+    # Subtest: Fictional claim · Maya’s tenancy
+    ok 3 - Fictional claim · Maya’s tenancy
+      ---
+      duration_ms: 2.721291
+      type: 'test'
+      ...
+    # Subtest: Fictional claim · Ivo & Ada
+    ok 4 - Fictional claim · Ivo & Ada
+      ---
+      duration_ms: 3.304292
+      type: 'test'
+      ...
+    # Subtest: Fictional claim · Nila & Teo
+    ok 5 - Fictional claim · Nila & Teo
+      ---
+      duration_ms: 5.510583
+      type: 'test'
+      ...
+    # Subtest: Fictional claim · Rhea & Noel
+    ok 6 - Fictional claim · Rhea & Noel
+      ---
+      duration_ms: 2.238917
+      type: 'test'
+      ...
+    # Subtest: Fictional intake · Maya’s tenancy termination
+    ok 7 - Fictional intake · Maya’s tenancy termination
+      ---
+      duration_ms: 1.829
+      type: 'test'
+      ...
+    # Subtest: Fictional intake · Maya’s tenancy termination
+    ok 8 - Fictional intake · Maya’s tenancy termination
+      ---
+      duration_ms: 0.3525
+      type: 'test'
+      ...
+    # Subtest: Fictional intake · Maya’s tenancy termination
+    ok 9 - Fictional intake · Maya’s tenancy termination
+      ---
+      duration_ms: 0.455291
+      type: 'test'
+      ...
+    1..9
+ok 1 - all nine recorded claims retain their complete actual DAG, edge applicability and unprocessed states
+  ---
+  duration_ms: 733.368458
+  type: 'test'
+  ...
+# Subtest: an excluded incoming route remains excluded when its shared target still applies
+ok 2 - an excluded incoming route remains excluded when its shared target still applies
+  ---
+  duration_ms: 0.78375
+  type: 'test'
+  ...
+# Subtest: every recorded source and all 73 cited spans verify against original and extracted identities
+ok 3 - every recorded source and all 73 cited spans verify against original and extracted identities
+  ---
+  duration_ms: 20.624334
+  type: 'test'
+  ...
+# Subtest: family-home applicability does not establish separate spouse service or advance its requirement
+ok 4 - family-home applicability does not establish separate spouse service or advance its requirement
+  ---
+  duration_ms: 32.113958
+  type: 'test'
+  ...
+# Subtest: shared document timing preserves its process-wide route without declaring a blocked selected step executable
+ok 5 - shared document timing preserves its process-wide route without declaring a blocked selected step executable
+  ---
+  duration_ms: 5.642792
+  type: 'test'
+  ...
+# Subtest: zero recorded active gaps still expose held requirements, questions and the exact saved draft
+ok 6 - zero recorded active gaps still expose held requirements, questions and the exact saved draft
+  ---
+  duration_ms: 2236.988708
+  type: 'test'
+  ...
+# Subtest: Documents opens an unassigned received JPEG through the verified original source viewer
+ok 7 - Documents opens an unassigned received JPEG through the verified original source viewer
+  ---
+  duration_ms: 2325.308667
+  type: 'test'
+  ...
+# Subtest: the production browser draws all nine saved graphs without demo substitution, stage reports or initial motion
+ok 8 - the production browser draws all nine saved graphs without demo substitution, stage reports or initial motion
+  ---
+  duration_ms: 6265.414541
+  type: 'test'
+  ...
+# Subtest: manual graph focus survives saved refresh and return navigation instead of reverting to the verified default
+ok 9 - manual graph focus survives saved refresh and return navigation instead of reverting to the verified default
+  ---
+  duration_ms: 2740.414375
+  type: 'test'
+  ...
+# Subtest: fact selection exposes only its exact original passage and source inspection verifies it with focus return
+ok 10 - fact selection exposes only its exact original passage and source inspection verifies it with focus return
+  ---
+  duration_ms: 2419.029709
+  type: 'test'
+  ...
+# Subtest: receiving claims bind to their exact knowledge version, with id/version fallback only for an absent hash
+ok 11 - receiving claims bind to their exact knowledge version, with id/version fallback only for an absent hash
+  ---
+  duration_ms: 2301.322208
+  type: 'test'
+  ...
+# Subtest: a fresh Knowledge read that changes the library keeps keyboard focus on the same control
+ok 12 - a fresh Knowledge read that changes the library keeps keyboard focus on the same control
+  ---
+  duration_ms: 1887.413
+  type: 'test'
+  ...
+# Subtest: repeated logical action IDs retain the exact saved receipt, drawer and return focus when a later run appends an assessment
+ok 13 - repeated logical action IDs retain the exact saved receipt, drawer and return focus when a later run appends an assessment
+  ---
+  duration_ms: 2517.461834
+  type: 'test'
+  ...
+# Subtest: native intake and arrival drafts keep their FileList and DOM identity through connected evidence navigation
+ok 14 - native intake and arrival drafts keep their FileList and DOM identity through connected evidence navigation
+  ---
+  duration_ms: 3029.763208
+  type: 'test'
+  ...
+# Subtest: fresh changes remain still for reduced motion, hidden views and reconnect history
+ok 15 - fresh changes remain still for reduced motion, hidden views and reconnect history
+  ---
+  duration_ms: 1967.108458
+  type: 'test'
+  ...
+# Subtest: Documents read as a causal checklist whose route and review never share a line at 1440px
+ok 16 - Documents read as a causal checklist whose route and review never share a line at 1440px
+  ---
+  duration_ms: 2372.602375
+  type: 'test'
+  ...
+# Subtest: Documents read as a causal checklist whose route and review never share a line at 390px
+ok 17 - Documents read as a causal checklist whose route and review never share a line at 390px
+  ---
+  duration_ms: 2568.445916
+  type: 'test'
+  ...
+# Subtest: Open all steps wraps the complete process without sideways panning and every edge ends on its step
+ok 18 - Open all steps wraps the complete process without sideways panning and every edge ends on its step
+  ---
+  duration_ms: 2210.261959
+  type: 'test'
+  ...
+# Subtest: the step frame is a keyboard stop only while it scrolls at 1440px
+ok 19 - the step frame is a keyboard stop only while it scrolls at 1440px
+  ---
+  duration_ms: 1256.716292
+  type: 'test'
+  ...
+# Subtest: the step frame is a keyboard stop only while it scrolls at 390px
+ok 20 - the step frame is a keyboard stop only while it scrolls at 390px
+  ---
+  duration_ms: 1292.5115
+  type: 'test'
+  ...
+# Subtest: Open all steps brings the whole process and the chosen step into view below the sticky header
+ok 21 - Open all steps brings the whole process and the chosen step into view below the sticky header
+  ---
+  duration_ms: 1290.024584
+  type: 'test'
+  ...
+# Subtest: a single-column process keeps its edges in the left gutter at 320px
+ok 22 - a single-column process keeps its edges in the left gutter at 320px
+  ---
+  duration_ms: 1287.516875
+  type: 'test'
+  ...
+# Subtest: Cases navigation stays on one header row after returning from a case at 541px
+ok 23 - Cases navigation stays on one header row after returning from a case at 541px
+  ---
+  duration_ms: 1294.952875
+  type: 'test'
+  ...
+# Subtest: Cases navigation stays on one header row after returning from a case at 600px
+ok 24 - Cases navigation stays on one header row after returning from a case at 600px
+  ---
+  duration_ms: 1378.423667
+  type: 'test'
+  ...
+# Subtest: Cases navigation stays on one header row after returning from a case at 700px
+ok 25 - Cases navigation stays on one header row after returning from a case at 700px
+  ---
+  duration_ms: 1747.354583
+  type: 'test'
+  ...
+# Subtest: Draft request opens the exact recorded unsent letter without changing its record or writing
+ok 26 - Draft request opens the exact recorded unsent letter without changing its record or writing
+  ---
+  duration_ms: 1438.856333
+  type: 'test'
+  ...
+1..26
+# tests 35
+# suites 0
+# pass 35
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 51124.179417

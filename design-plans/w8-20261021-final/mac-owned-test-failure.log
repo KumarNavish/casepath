@@ -1,0 +1,135 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readiness _
+
+saved_runtime = (<hosted_hrana_fixture.MockHrana object at 0x10c36a3c0>, TursoDatabase(credential=<redacted>), <casepath_api.hosted_st...intake', ...}}], 'claim_id': 'auto_e4f9bf31f47b4988aa829172', 'contract': 'casepath.autonomous-claim/1.0.0', ...}, ...)
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/w8-mac-owned-diagnostic-sbo73fj8/tmp/pytest-of-kumar0002/pytest-0/test_public_startup_verifies_k0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10cf0ce90>
+
+    def test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readiness(saved_runtime, tmp_path, monkeypatch):
+        server, database, store, corpus, pending, completed, original, provider_calls = saved_runtime
+        controllers, warmed = [], []
+        construct = hosted_app_v1.HostedAutonomousController
+        learning_view = AutonomousKnowledge.learning_view
+        def controller(*args, **kwargs):
+            value = construct(*args, **kwargs)
+            controllers.append(value)
+            return value
+        def warm(knowledge):
+            value = controllers[-1]
+            assert knowledge is value.knowledge
+            assert value._closed and value.model is None and value.store._read_only
+            before = rows(server.path)
+            baseline = len(server.requests)
+            result = learning_view(knowledge)
+            calls = server.requests[baseline:]
+            assert calls and rows(server.path) == before
+            assert all(item['type'] in ('execute', 'close', 'batch')
+                       for call in calls for item in call['requests'])
+            assert all(re.match(r'\s*(SELECT|BEGIN|COMMIT)\b', command, re.I)
+                       for command in statements(calls))
+            warmed.append(result)
+            return result
+        def forbidden_model(*args, **kwargs):
+            pytest.fail('read-only warmup constructed a provider model')
+        def forbidden_discovery(*args, **kwargs):
+            pytest.fail('read-only startup entered claim discovery or summary reads')
+        monkeypatch.setattr(hosted_app_v1, 'HostedAutonomousController', controller)
+        monkeypatch.setattr(AutonomousKnowledge, 'learning_view', warm)
+        monkeypatch.setattr(hosted_model_v1, 'HostedModel', forbidden_model)
+        for target, name in ((HostedAutonomousStore, 'list'), (HostedAutonomousStore, '_read_summaries'),
+                             (construct, 'resume'), (construct, 'wake_pending')):
+            monkeypatch.setattr(target, name, forbidden_discovery)
+        env = {'CASEPATH_SITE_ORIGIN': ORIGIN, 'CASEPATH_PROXY_TOKEN': TOKEN,
+               'CASEPATH_SOURCE_COMMIT': 'a' * 40}
+        app = hosted_app_v1.create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'warm')
+        before = rows(server.path)
+>       with TestClient(app) as client:
+             ^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_public_hosted_read_only_v1.py:206: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:694: in __enter__
+    portal.call(self.wait_startup)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:729: in wait_startup
+    await receive()
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:720: in receive
+    self.task.result()
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:710: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:151: in __call__
+    await self.app(scope, receive, send)
+casepath-api/casepath_api/hosted_proxy_v1.py:28: in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/hosted_proxy_v1.py:74: in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py:49: in __call__
+    await self.app(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:725: in app
+    await self.lifespan(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:694: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/routing.py:134: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:571: in __aenter__
+    await self._router.startup()
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:673: in startup
+    handler()
+casepath-api/casepath_api/hosted_app_v1.py:74: in startup
+    ReadTimedJSONResponse(jsonable_encoder(route.endpoint(**arguments)))
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_api_v1.py:233: in claims
+    return invoke(read)
+           ^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_api_v1.py:100: in invoke
+    return fn(service_getter())
+           ^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_api_v1.py:198: in read
+    for row in service.store.list_summaries():
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/casepath_api/autonomous_store_v1.py:984: in list_summaries
+    return self._read_summaries(statuses=statuses)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (<casepath_api.hosted_storage_v1.HostedAutonomousStore object at 0x10cf3a350>,)
+kwargs = {'statuses': None}
+
+    def forbidden_discovery(*args, **kwargs):
+>       pytest.fail('read-only startup entered claim discovery or summary reads')
+E       Failed: read-only startup entered claim discovery or summary reads
+
+casepath-api/tests/test_public_hosted_read_only_v1.py:195: Failed
+1 failed in 11.56s

@@ -1,0 +1,269 @@
+{
+  "status": "W8_final_browser_evidence_complete_strict_gate_blocked_on_owner_integration",
+  "recorded_at": "2026-10-21T15:26:17.310930+00:00",
+  "build_commit": "5d85ff43facd9ea426ea2d89257000562be8558d",
+  "ui_refinement_commit": "dfb594e3f69a3f76e5d0c9f749f51986042e9dda",
+  "playback_focus_commit": "8412ab7d0e7e712f1f6584a8357a5389bfe1d52f",
+  "planner_approval": "https://github.com/KumarNavish/casepath/pull/21#issuecomment-6319227767",
+  "source_manifest_sha256": "61cd6299d0b014cd93c207208cb6a4b49d875f9cab8425a34d38e3fa1fe5d2e6",
+  "source_files": 1734,
+  "fixture_sha256": "1d718c6737ddf2bfca6c5a31ca439617f4d66fdb07b1d9a03881303d9fc1636c",
+  "focused_tests": {
+    "passed": 528,
+    "failed": 0,
+    "skipped": 0
+  },
+  "existing_browser_tests": {
+    "passed": 35,
+    "failed": 0,
+    "skipped": 0
+  },
+  "export_fixture_tests": {
+    "passed": 26,
+    "failed": 0
+  },
+  "static_build_tests": {
+    "passed": 16,
+    "failed": 0
+  },
+  "browser_receipts": {
+    "process": {
+      "passed": true,
+      "cases": 9,
+      "overrides": false,
+      "errors": [],
+      "writes": []
+    },
+    "memory": {
+      "passed": true,
+      "cases": 9,
+      "overrides": false,
+      "errors": [],
+      "writes": []
+    },
+    "acceptance": {
+      "passed": true,
+      "cases": 9,
+      "overrides": false,
+      "errors": [],
+      "writes": []
+    },
+    "motion": {
+      "passed": true,
+      "cases": 0,
+      "overrides": false,
+      "errors": [],
+      "writes": []
+    },
+    "reduced": {
+      "passed": true,
+      "cases": 0,
+      "overrides": false,
+      "errors": [],
+      "writes": []
+    }
+  },
+  "all_nine_process": true,
+  "all_nine_memory": true,
+  "all_nine_acceptance": true,
+  "catalog": 150,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "served_assets_verified": true,
+  "overrides": false,
+  "memory_geometry": {
+    "all_recorded_nodes_checked": 33,
+    "bounds_y": [
+      180,
+      763
+    ],
+    "level_rule_width_px": 1,
+    "selected_node_alignment": true
+  },
+  "source_checker_one_heading_per_source": true,
+  "customer_request_verbatim_only": true,
+  "motion": {
+    "maximum_concurrent_animations": 1,
+    "violations": [],
+    "video": "decision-building.webm",
+    "source_pins_exact": true,
+    "acceptance_after_plan_recedes": true
+  },
+  "reduced_motion": true,
+  "fidelity_mean_difference_pct": {
+    "fidelity-case1-memory": 4.51,
+    "fidelity-case1-process": 6.1,
+    "fidelity-case4-memory": 4.25,
+    "fidelity-case4-process": 6.02,
+    "fidelity-state1-ready": 3.53,
+    "fidelity-state2-source-opened": 4.42,
+    "fidelity-state3-exact-passage": 5.01,
+    "fidelity-state4-source-fact": 5.32,
+    "fidelity-state5-process-decision": 5.21
+  },
+  "strict_gate": {
+    "status": "blocked_awaiting_owner_authored_test_integration",
+    "ready_for_mac": false,
+    "independent_planner_gate_started": false,
+    "protected_file": "casepath-api/tests/test_public_hosted_read_only_v1.py",
+    "protected_file_changed": false,
+    "owner_fix": "4c46f43bdfd32c4fe965d0b9593b65d84a0c8c33",
+    "integration_permission_request": "https://github.com/KumarNavish/casepath/pull/21#issuecomment-6319184839",
+    "next": "After explicit owner permission, integrate the exact owner correction, check it, reseal and finish the full strict gate at the frozen review head before READY FOR MAC."
+  },
+  "initial_full_gate": {
+    "review_commit": "5a8563d0069c5bf04978b48265331c374370f918",
+    "validation_checkout": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-ns3-seal-clone-20261021",
+    "command": [
+      "./bin/casepath",
+      "test"
+    ],
+    "environment": {
+      "CASEPATH_REQUIRE_FRONTEND_SUITES": "1",
+      "CASEPATH_NODE": "/usr/local/bin/node",
+      "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/casepath-qa/node_modules",
+      "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    },
+    "started_at": "2026-10-21T14:14:47.027913+00:00",
+    "finished_at": "2026-10-21T15:14:25.821638+00:00",
+    "exit_code": 1,
+    "log_sha256": "a2598df9410858b5714e18dee65ba3a8d070e325ae9ac606d4ca61b10a6664d9",
+    "passed": 2854,
+    "failed": 10,
+    "skipped": 10,
+    "warnings": 10,
+    "duration_seconds": 3543.61,
+    "frontend_suites_skipped": 0
+  },
+  "initial_failures": {
+    "export_fixture_path": {
+      "count": 7,
+      "repair": "ce3a0c302a45a0e7bc1d1f40f10e335946c8a3c0",
+      "focused_passed": 26
+    },
+    "font_packaging": {
+      "count": 2,
+      "repair": "5d85ff43facd9ea426ea2d89257000562be8558d",
+      "focused_passed": 16
+    },
+    "mac_owned_startup_contract": {
+      "count": 1,
+      "status": "unchanged_pending_integration_permission",
+      "diagnostic": "mac-owned-test-failure.log"
+    }
+  },
+  "interrupted_duplicate_gate": {
+    "review_commit": "aa54ce16b671027af5e930e656c8e8439bcf5924",
+    "validation_checkout": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w8-final-gate-20261021",
+    "command": [
+      "./bin/casepath",
+      "test"
+    ],
+    "environment": {
+      "CASEPATH_REQUIRE_FRONTEND_SUITES": "1",
+      "CASEPATH_NODE": "/usr/local/bin/node",
+      "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/casepath-qa/node_modules",
+      "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    },
+    "started_at": "2026-10-21T14:54:28.673458+00:00",
+    "finished_at": "2026-10-21T14:59:09.050799+00:00",
+    "exit_code": 2,
+    "log_sha256": "cc008ea7eb6d42ee7f64504cef0e3074627d0d842c7f4eb472ca5a49b251c53a",
+    "reason": "Stopped only the owned redundant gate after independently reproducing the Mac-owned blocker; no pass claimed."
+  },
+  "skip_reasons": {
+    "unavailable_frozen_independent_transition_packet": 1,
+    "unavailable_saved_native_source_binding_run": 9
+  },
+  "deliberate_limits": [
+    "NS4/state 7 omitted: recorded DAGs contain no alternatives with consequences.",
+    "No Before/Now comparison: no recorded step-specific outcome change.",
+    "Actual source content replaces illustrative concept text; absent fields and unsupported reviewer badges are omitted.",
+    "Full-source DOM checks normalize HTML CRLF to LF only; source data is unchanged."
+  ],
+  "paid_inference": 0,
+  "hosted_writes": 0,
+  "original_nine_rerun": false,
+  "deployment": false,
+  "hashes": {
+    "README.md": "d9245025e445a30276b71f90c1c61be1f655b9d5ad43e502e366ac413d8b4366",
+    "acceptance-receipt.json": "bb101e997eb549e0793ad4cade08ffddb1c9d746ec5cd08096b6ae63bd10ecae",
+    "browser-all.tap": "5e6899f823029ffa1ac47fbad5aea731073c51ac9e7feb45f0ca47e1bc08f1f4",
+    "case1-memory.png": "ecda1d8cc7c849a4e9b6ab0784f7244938d460aef5af7e2029e3184a0496115d",
+    "case1-process.png": "792da3454d28dbc861c0c679a34012a433c9f0974d91e2dbe3a672bc7eae4737",
+    "case4-memory.png": "339aa4f24e71420a163198f215295dd4aa75134bf1367f82be1274513571b814",
+    "case4-process.png": "b14ec460a81477429aeddb07ad59650988add04e2c5dd0cd02722a93b387014b",
+    "cases.png": "bdef262c5d50455feedd76e58c3115f5ca6003ca05ea6cb070838c9783b2ac26",
+    "claim-reader.png": "f682205e90723dc1d8bf926742f78b19ac49aa94cefd1f12667cecdb0affaffa",
+    "decision-building.webm": "300c6f0eda30a844e93370578c29f6da7e0329cc59b76a97fd9b0241bd4a7668",
+    "document-finder.png": "631a79af347e95376004d79fbbfd23e42347684b1d91aa5bc8a839b95c0c6a50",
+    "empty-search.png": "27552276d024e3abbfc3e00caad70b81ea4222e93057a4c25fe672d9ed8bde39",
+    "export-fixture-tests.log": "a0e367e1bd04ed1aed118e12abc37c32508ae741744328138fb9c0fe690638a5",
+    "fidelity-case1-memory-diff.png": "dfb3ae400a6c128394ed384c60591ebb816d47b003cdc7b8ce5a14c2eced98ad",
+    "fidelity-case1-memory-overlay.png": "16bfd268fd907aa4d518191e979aecdc18cf2fd96fa1af6555b19c0adf98cade",
+    "fidelity-case1-memory-side.png": "3d6889abb544178e8db57742b90652f8be5c0e565ba62ddee2f76b333c2dc672",
+    "fidelity-case1-memory.json": "e71bde49299541318514e4910336e066f81326c0d3d9da4fb148e3a60f4c64d6",
+    "fidelity-case1-process-diff.png": "973059fffca53eb2247bcdf43ca71831934436d1ebbe071ddc7f50d9f00274b3",
+    "fidelity-case1-process-overlay.png": "f937e46a256b1c6efc9dc38d8aea139469eb1a626ab093b2d6b6008c5d6d39eb",
+    "fidelity-case1-process-side.png": "e68a2ee0dafd419e10b9e243078c02324c28c4827138c5babd5700b261e4cb6a",
+    "fidelity-case1-process.json": "4e0941b551a14d52d47098d177684fefa775ff25707383df40ec9caae593b9b8",
+    "fidelity-case4-memory-diff.png": "644509be1f75a32a29cd13ad8cb39c0efc9986fae1ed929fb93dbb4453f23760",
+    "fidelity-case4-memory-overlay.png": "e00219f87d24be4ba62c47affe32fffddb03c1050fc4c79e4f5c4aa46d9e989f",
+    "fidelity-case4-memory-side.png": "338fc93cd2e739dafe567b951f61fa2ddaa882b6d50e14e191bb743a538b957b",
+    "fidelity-case4-memory.json": "66a99577b50a5b2f1248663b890de615622ee9a695b65eb831420e4bc945b23f",
+    "fidelity-case4-process-diff.png": "9924e68f5ebedfcada5571a8523c20c550fe230dfd301f67c6e9d45a8b768412",
+    "fidelity-case4-process-overlay.png": "d17ba361e19251824900d0203e7ceca37d56bd089c86efa07be0cb84b807cfab",
+    "fidelity-case4-process-side.png": "337555ccef5f77896ccb403636ce8e5c421c976c5de566651bcb888146c401f5",
+    "fidelity-case4-process.json": "741d59f7b2822077b4080ee26bdd441f1f32c713f3e7821611e75b38b4b7dbee",
+    "fidelity-state1-ready-diff.png": "81f4708e51aa6a03edff3c58694e5de1147daa256d4fdb19fd7b43ba4c3f565f",
+    "fidelity-state1-ready-overlay.png": "a59bfe397db2d7ae71828f7fc225565c58dcd715b1e3cf262e6cb00d8aa7481f",
+    "fidelity-state1-ready-side.png": "4ddaf86c222531420a1b498c9ec7aaaaebbd67e5bb3d1903f10bff12833a4f04",
+    "fidelity-state1-ready.json": "e43a0239c6f3048d2422d5757a64ee97abc0726a22ad6159ddb24989a64df121",
+    "fidelity-state2-source-opened-diff.png": "cb09b8e984d8d2a48ba0620746a59c487e422cffc83453a2130ad5a899cf5cfc",
+    "fidelity-state2-source-opened-overlay.png": "f83dd5e9a473a36af49b4193c4f32ff14d1c3e7f090076e6fa8927bcf9608c9b",
+    "fidelity-state2-source-opened-side.png": "ca83838a247d1c7df51892f3502a8ebce6b5960436585fd8640dd69e7936037e",
+    "fidelity-state2-source-opened.json": "937ee7723b5e42b8e68b5c25438a66ad6b933af51416b38533bcaea91bbf0c30",
+    "fidelity-state3-exact-passage-diff.png": "3c98b26ae9a1fefed11f0166398223719c850e7f4791006b3ebd056ce4d4c001",
+    "fidelity-state3-exact-passage-overlay.png": "b337084f5c76a7ed429a0315e0641e616329ced827a4533266064eab63a7c3a7",
+    "fidelity-state3-exact-passage-side.png": "a915cc39a5ddd486035d1ef963262c564c6482e7edb17c66371c986ecadaf8c6",
+    "fidelity-state3-exact-passage.json": "cfc2ce38b9251d815910e873575f005b4ef27aa0a0664e15a30f146a12c4ac7d",
+    "fidelity-state4-source-fact-diff.png": "7e88c82e40f6e2a4f88f795aa6997805d9aec35647e2b740298072054ac82b38",
+    "fidelity-state4-source-fact-overlay.png": "bc32baf9b424cf3a2ac34131c87529f499df5895b559a3334c3c9c0dd800ce2c",
+    "fidelity-state4-source-fact-side.png": "7628c352b73320d73059a6adabe70a2daafcd0eb14533f8b64d24919760d5855",
+    "fidelity-state4-source-fact.json": "7ce6e2ba0650f838fcda51ba83ee2db18bb262194ee9c92aaa56d925699acdb7",
+    "fidelity-state5-process-decision-diff.png": "24f07ff9654c83c6d2d06656c9c44c52acb9d080f7c68aea3bb8215b8830e616",
+    "fidelity-state5-process-decision-overlay.png": "41ecfe3b85c040d34bedad714c1457b430194f7a9fbd82c4720d30a24d9739ec",
+    "fidelity-state5-process-decision-side.png": "3d1c03534e8012e652e4b5c49b66b2de874b9d51d9227b9045c8b612e2bca976",
+    "fidelity-state5-process-decision.json": "cb3569c583e7c71b44f690f3f17c0424f14acf21931a9865ca1364c73b8902e9",
+    "focused.tap": "7c08189c80dc5f6f0227879b7008af7bf9163175984c70144c9ea03d14ac8bc7",
+    "initial-gate.json": "7d49fed921b42711ebb902344360e785c6907ea6da7b5bd5dc0fef72fe35e0c3",
+    "initial-gate.log": "a2598df9410858b5714e18dee65ba3a8d070e325ae9ac606d4ca61b10a6664d9",
+    "interrupted-gate.json": "68a35b1c7aa2a0b4f024354cf08a8e8959801b53d3fc37e3758f430acc1c29ae",
+    "interrupted-gate.log": "cc008ea7eb6d42ee7f64504cef0e3074627d0d842c7f4eb472ca5a49b251c53a",
+    "knowledge-checklist.png": "ff4470929fecb28295c5617de7a516f23f1c9c48c0c4b6ebb3886712ab905063",
+    "local-draft.png": "919b1bf7400ce3e7e89223a8cc41f9186cbcc9bbaf16c3149f1bb90374c7127f",
+    "mac-owned-test-failure.log": "f402bb47fd0acc9816f8db29d3042bf102f18463494959b48cf57e430320226a",
+    "memory-receipt.json": "4822e43543ea20df8fb1ef75fb7352e605aaecd55e6f18704e94c8a83b2e7771",
+    "motion-receipt.json": "ec03d12efd3721bcb153044d918f859d9958102cf562f837cf11e919f048629b",
+    "original-not-run.png": "6ce379a0e934e3a70538cd0d04c344b85bcd4c540fab2eb9fbbcd791669be9a6",
+    "process-receipt.json": "30106f50761d235ac1af807f5fe0853a8e03ac55a702876225cf7c3beb3c8839",
+    "reduced-receipt.json": "978a5cd90f07f5802b22c81cf0884be0936def273375c6da10e938108dc3070b",
+    "result-checker.png": "6da9945272248192c141fb08335ea423dc8daf726963457562a45efda5aff0e4",
+    "seal.log": "6f6df027b88b211d2ced406d1cee2325f2f240441b7a155d24b9f4b16f35a4e1",
+    "served-assets.json": "2a76afb635105145846d6bcfe09d837e032b3705fdfcc4b63bc5bfde2a28a0e6",
+    "source-checker.png": "923dae87df3cf48f7db326029647fc4d82dfc9b1bbf0a8adb62c194b02261238",
+    "state1-ready.png": "d4938fbef9a6625d9f6235264e3910d73daa5d74b7b6786205634e092decb777",
+    "state2-source-opened.png": "1b2863af08b57f6c4a55b6250d166a696cdb95d3ff500a8cedd108c87265c9b3",
+    "state3-exact-passage.png": "4c40badd57393668889f7316ab73417a2e4c34137bfee137214bac32ecd9880e",
+    "state4-source-fact.png": "0280a60d3b8f5f3a6cb80e20ab98ade1320b69e16eaa4cf5ff93aef2a77ff57d",
+    "state5-process-decision.png": "7fb064fe49ca52ea58a18901e1b1b83e35262bd18431236edf336d8ecc905264",
+    "static-build-tests.log": "623a0e98a6f67837dce5f63253be59bae8eaaf24a6a05d6121e25706188b3145",
+    "verify-acceptance.mjs": "f22bf2dda20b76e8b13d6fff6d59367ad7a3ce0e50a57b409569a89617b8ce64",
+    "verify-memory.mjs": "78c060f29a2234d7719d09450dc271d2a7d4e5ddcfb5c8536a19bb34280bd45a",
+    "verify-motion.mjs": "06ea43ef211b0ab3071dfb30ed7005e43390144cfc3302dea2aaf7cdbee39d11",
+    "verify-process.mjs": "bb318df284df2bbb8223453101d3b0f32d30b893d6df18662c7ebdd541298fe6",
+    "verify-reduced.mjs": "49ae488a0547b029462e88f3e482be666f5febb06c1d26b80778ff79f9ee41d3"
+  }
+}
