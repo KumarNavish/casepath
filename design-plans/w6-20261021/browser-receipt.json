@@ -1,4 +1,5 @@
 {
+  "followupOnly": false,
   "viewport": {
     "width": 1440,
     "height": 900
@@ -41,7 +42,8 @@
   "frames": {
     "defect_mold_heating": {
       "overlaps": [],
-      "horizontalOverflow": false
+      "horizontalOverflow": false,
+      "freshKnowledge": true
     },
     "next-action-and-law-order": {
       "overlaps": [],
@@ -49,9 +51,23 @@
     },
     "lease_termination_dispute": {
       "overlaps": [],
-      "horizontalOverflow": false
+      "horizontalOverflow": false,
+      "freshKnowledge": true
     },
     "rent_increase_dispute": {
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "freshKnowledge": true
+    },
+    "completed-desk-verified": {
+      "overlaps": [],
+      "horizontalOverflow": false
+    },
+    "failed-load": {
+      "overlaps": [],
+      "horizontalOverflow": false
+    },
+    "letter-to-customer": {
       "overlaps": [],
       "horizontalOverflow": false
     },
@@ -70,8 +86,18 @@
   },
   "errors": [],
   "writes": [],
+  "completedDeskAdmission": true,
+  "allNineTotalsMatchDemonstration": true,
+  "completedDeskRetry": true,
   "cleanCasesHeader": true,
   "singleDraftStatus": true,
+  "nonCaseHeaders": [
+    "Cases",
+    "Knowledge",
+    "History",
+    "New case",
+    "Learning"
+  ],
   "missingDocumentFixture": true,
   "exactSourceInspection": true,
   "reloadAndBack": true,

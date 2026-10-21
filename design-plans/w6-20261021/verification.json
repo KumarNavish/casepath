@@ -2,21 +2,21 @@
   "status": "ready_for_planner_review",
   "branch": "codex/casepath-ui-w6-20261021",
   "approved_base": "352a55355afb7922cd382411984e43e707a3ab44",
-  "implementation_commit": "441f02c179fa095eac788f0d8d2b826763021f2f",
+  "implementation_commit": "cb4daf1fe7a80852b229c937fbd952f8b5e7d6ef",
   "viewport": {
     "width": 1440,
     "height": 900
   },
-  "focused_tests": 468,
+  "focused_tests": 470,
   "domains": 3,
   "case_links_verified": 9,
   "page_errors": 0,
   "write_requests": 0,
   "served_assets_sha256": {
-    "autonomous-workspace-v1.js": "e0ac7ee5aa6de684374de929812c5c8a296315cc767dfd7fe7520bf0a4691aa2",
-    "autonomous-workspace-v1.css": "6c90f4c13829f57603c64f7118f841e86635e523262d58097407da840b0bb458"
+    "autonomous-workspace-v1.js": "06074c7b6c11bbfdfec6eaf4602f76b074bff25f2ecbfb21cd4275c7fe8a1ffe",
+    "autonomous-workspace-v1.css": "d87df5c1a2f0d3917bf2115e2a94c6294c309bbaa68b4a048f25f5415cac8171"
   },
-  "source_manifest_sha256": "8e437df0ecfeaef2d5808d36d0b3df6577a9966298e2d9c1eb2a676fca707493",
+  "source_manifest_sha256": "efede74d3cde7b05bcc2104d155dbcd719ce605487879bc9e6e2fcb336776cb4",
   "source_file_count": 1730,
   "paid_inference_calls": 0,
   "hosted_writes": 0,
@@ -24,19 +24,26 @@
   "original_nine_rerun": false,
   "planner_followup_closed": 6314538426,
   "hashes": {
-    "seal.log": "3a058e7f82e2937332a52480d7d005a2cb4a1f563cc0b2c2ef4cd2a97fde6f94",
-    "browser-receipt.json": "702231708dd1100ef9e4f21d629908c54925c61e28532b50e51d4413a3fcc141",
-    "draft-one-line.png": "c9e799d051bbb29e6c5c8f727da85966ed2a5ead626eeca17fe8649522d4970c",
-    "focused.tap": "1ae2ea34e089c46ed2d4b0ae418233ac30743c743575324a66ad562edcbeea3d",
-    "defect_mold_heating.png": "025066b8785a7ea1d45804a0d259fd57e2b49323afc578b2a82a68a31ac5e810",
-    "rent_increase_dispute.png": "b9a7e21563dc5a8b301a7214193a520b4f65642bad4aed15db588662b0bd9852",
-    "lease_termination_dispute.png": "d8fcf6191b078f2a3365ddb488679c929399dca1e520de7b65eec1634f642dca",
-    "next-action-and-law-order.png": "8b4bc07b17c3f604402e268501f3f8482e70c793d9c986a656a82c4865dcb1d4",
-    "missing-document-fixture.png": "8bc816e77123eb866fbf650b33f197623070bbfb967cc6c3e2fdc32e8a939088",
+    "seal.log": "09bc0f62cce8d73f88bfb2e5d467ddef742735493fc3707f04aed2828a17793e",
+    "browser-receipt.json": "e02054732aa25e08ceda8497d64589302150edbe747b9fe2060308f5f2879f0c",
+    "draft-one-line.png": "52f796974b029cfc1effb1e9956f0caa9ab868f46e7bfc82a8f793612354701c",
+    "focused.tap": "a086c004257061f12d929236c495209f8ca5e3b2dd1eca85d508d540f1fe96cd",
+    "defect_mold_heating.png": "b6c6dda31748886eac83e0801c271df9700d8e9afc4ebbe44be6cef12780d29f",
+    "rent_increase_dispute.png": "e1a012199e1080a1053d82951c965625bbd4834d983801e5588919f0622f4733",
+    "lease_termination_dispute.png": "a47385fdfc37dda4bed623521f6c81ce8510b1708549d73f31b3f99b146fa471",
+    "next-action-and-law-order.png": "9f56b460d757b17b04c689743a07494830db90e2e98f2ecbceb8adb5df74f1d1",
+    "letter-to-customer.png": "18e8f053e07b05f25642a88436f4888c26b0e7c289e20da0b656bb06f808928c",
+    "missing-document-fixture.png": "b6c6dda31748886eac83e0801c271df9700d8e9afc4ebbe44be6cef12780d29f",
+    "completed-desk-verified.png": "9f56b460d757b17b04c689743a07494830db90e2e98f2ecbceb8adb5df74f1d1",
+    "failed-load.png": "f26948cd0246e3d7e2c4146b0bd9ea08eac3de8f9b4f5f7fa6f374ff9734c044",
     "cases-clean-header.png": "23c66cbc49296763bc7f6af428245a074629c9bf800862f6f5e173dcdd0e828a"
   },
   "planner_followups_closed": [
     6314538426,
-    6314756996
-  ]
+    6314756996,
+    6314907292,
+    6314937719
+  ],
+  "all_nine_saved_totals_match_demonstration": true,
+  "completed_loading_and_failure_never_show_partial_result": true
 }
