@@ -1892,9 +1892,9 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace .au-ns-source-bottom > button { border:1px solid #d6d6d7; border-radius:5px; background:white; padding:10px; color:#141516; font:400 14px Mulish,sans-serif; }
  .au-workspace .au-ns-source-bottom > .au-link { border:0; color:#4c4b4d; text-decoration:underline; }
  .au-workspace .au-ns-completed-canvas { min-width:0; padding:28px 26px 20px 32px; }
- .au-workspace .au-ns-completed-spine { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); align-content:start; row-gap:64px; min-height:250px; }
+ .au-workspace .au-ns-completed-spine { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); align-content:start; row-gap:64px; min-height:104px; }
  .au-workspace .au-ns-completed-spine li { position:relative; min-width:0; }
- .au-workspace .au-ns-completed-spine li > button { position:relative; display:flex; flex-direction:column; gap:6px; width:129px; min-height:86px; border:1.5px solid #d6d6d7; border-radius:4px; padding:8px 10px; background:#fff; color:#141516; text-align:left; font:500 13.5px/1.35 Mulish,sans-serif; }
+ .au-workspace .au-ns-completed-spine li > button { position:relative; display:flex; flex-direction:column; gap:6px; width:129px; min-height:104px; height:104px; border:1.5px solid #d6d6d7; border-radius:4px; padding:8px 10px; background:#fff; color:#141516; text-align:left; font:500 13.5px/1.35 Mulish,sans-serif; }
  .au-workspace .au-ns-completed-spine li[data-state=done] > button { border-color:#82072a; }
  .au-workspace .au-ns-completed-spine li[data-selected=true] > button { box-shadow:0 0 0 1px #82072a; }
  .au-workspace .au-ns-completed-spine strong { font-size:14px; align-self:flex-start; }
@@ -1903,8 +1903,8 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace .au-ns-completed-spine li[data-decisive=true] .au-ns-node-badge { font-size:18px; background:white; color:#82072a; }
  .au-workspace .au-ns-edge { position:absolute; left:129px; top:30px; width:calc(100% - 129px); height:16px; fill:none; stroke:#a6a5a7; stroke-width:1.5; stroke-dasharray:5 4; }
  .au-workspace .au-ns-edge[data-taken=true] { stroke:#82072a; stroke-dasharray:none; }
- .au-workspace .au-ns-local { display:flex; gap:28px; align-items:center; }
- .au-workspace .au-ns-chain { display:flex; min-width:0; flex:1; border:1px solid #acacac; border-radius:6px; padding:10px 0; }
+ .au-workspace .au-ns-local { display:flex; gap:28px; align-items:center; margin-top:28px; }
+ .au-workspace .au-ns-chain { position:relative; display:flex; min-width:0; flex:1; border:1px solid #acacac; border-radius:6px; padding:10px 0; }
  .au-workspace .au-ns-chain:empty { display:none; }
  .au-workspace .au-ns-chain-column { position:relative; display:flex; flex-direction:column; flex:1 1 0; min-width:0; gap:12px; border:0; border-right:1px solid #d6d6d7; border-radius:0; background:#fff; color:#141516; padding:0 28px 0 12px; text-align:left; font:400 13.5px/1.4 Mulish,sans-serif; }
  .au-workspace .au-ns-chain-column:last-child { border-right:0; }
@@ -1924,7 +1924,7 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace .au-ns-passages button > span { display:block; color:#82072a; font-size:12px; margin-bottom:4px; }
  .au-workspace .au-ns-passages q { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
  .au-workspace .au-ns-passages q:before,.au-workspace .au-ns-passages q:after { content:none; }
- .au-workspace .au-ns-page { min-width:0; overflow:auto; padding:18px; border:1px solid #d6d6d7; box-shadow:0 2px 6px #00000018; scrollbar-width:thin; }
+ .au-workspace .au-ns-page { min-width:0; overflow:hidden; padding:18px; border:1px solid #d6d6d7; box-shadow:0 2px 6px #00000018; scrollbar-width:thin; }
  .au-workspace .au-ns-page h3 { margin:0 0 20px; font-size:14px; font-weight:600; text-align:center; }
  .au-workspace .au-ns-page pre { margin:0; white-space:pre-wrap; overflow-wrap:anywhere; font:400 var(--au-ns-page-font,14px)/1.6 Mulish,sans-serif; color:#2c2b2c; }
  .au-workspace .au-ns-page mark { background:#fef6c5; color:inherit; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
@@ -1954,3 +1954,69 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 }
 
 @media (min-width:701px) { .au-workspace .au-ns-completed-spine li[data-selected=true] .au-ns-node-badge { font-size:0; background:#fff; border:4px solid #82072a; box-sizing:border-box; } }
+
+/* Checklist reuse is a recorded connection, never an invented reviewer edit. */
+@media (min-width:701px) {
+ .au-workspace .au-ns-memory { display:grid; grid-template-columns:280px minmax(0,1fr); gap:20px 26px; min-height:735px; grid-template-rows:auto 1fr auto; }
+ .au-workspace .au-ns-memory > header { grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; margin-bottom:0; }
+ .au-workspace .au-ns-memory > header p { margin:0; color:#4c4b4d; font-size:14px; }
+ .au-workspace .au-ns-memory-spine { list-style:none; margin:0; padding:0; }
+ .au-workspace .au-ns-memory-spine li { display:flex; gap:22px; align-items:center; position:relative; min-height:72px; }
+ .au-workspace .au-ns-memory-spine li:not(:last-child):before { content:''; position:absolute; top:36px; left:15px; height:72px; border-left:1px solid #b3b3b7; }
+ .au-workspace .au-ns-memory-spine li > span { position:relative; display:grid; place-items:center; border:1px solid #b3b3b7; border-radius:50%; width:30px; height:30px; flex:none; color:#61636b; background:white; font-size:13px; }
+ .au-workspace .au-ns-memory-spine button { position:relative; border:1px solid #d6d6d7; border-radius:6px; padding:10px 12px; background:white; color:#4c4b4d; text-align:left; font:400 14px/1.4 Mulish,sans-serif; min-height:40px; }
+ .au-workspace .au-ns-memory-spine button:before { content:''; position:absolute; left:-23px; top:50%; width:22px; border-top:1px solid #b3b3b7; }
+ .au-workspace .au-ns-memory-spine [data-selected=true] > span { color:#82072a; border-color:#82072a; font-weight:700; }
+ .au-workspace .au-ns-memory-spine [data-selected=true] button { border:1.5px solid #82072a; color:#141516; font-weight:700; }
+ .au-workspace .au-ns-memory-main { min-width:0; padding-top:80px; }
+ .au-workspace .au-ns-memory-comparison { display:grid; grid-template-columns:minmax(0,1fr) 36px minmax(0,1.2fr); gap:14px; align-items:center; }
+ .au-workspace .au-ns-memory-comparison h2 { font-size:12px; font-weight:500; margin:0 0 8px; color:#4c4b4d; }
+ .au-workspace .au-ns-memory-comparison blockquote { margin:0; padding:14px; font-size:14px; line-height:1.5; border-radius:7px; }
+ .au-workspace .au-ns-memory-before blockquote { border:1px dashed #c2c3c3; color:#4c4b4d; }
+ .au-workspace .au-ns-memory-now h2 { color:#82072a; }
+ .au-workspace .au-ns-memory-now blockquote { border:1.5px solid #82072a; font-weight:600; }
+ .au-workspace .au-ns-memory-arrow { color:#82072a; font-size:32px; }
+ .au-workspace .au-ns-memory-same { grid-column:1/-1; margin:0; font-size:12.5px; color:#61636b; }
+ .au-workspace .au-ns-memory-chain { margin-top:28px; }
+ .au-workspace .au-ns-memory-chain > p { margin:0 0 10px; color:#1f5530; font-size:13px; }
+ .au-workspace .au-ns-memory-cards { display:grid; grid-template-columns:minmax(0,1.15fr) 20px minmax(0,1fr) 20px minmax(0,1fr); gap:10px; }
+ .au-workspace .au-ns-memory-cards article { border:1px solid #9cac9c; border-radius:7px; overflow:hidden; }
+ .au-workspace .au-ns-memory-cards h3 { margin:0; border-bottom:1px solid #d6d6d7; padding:12px; font-size:13px; font-weight:600; }
+ .au-workspace .au-ns-memory-cards article > div { padding:14px 12px; font-size:13px; line-height:1.5; }
+ .au-workspace .au-ns-memory-cards strong { font-size:13px; font-weight:600; }
+ .au-workspace .au-ns-memory-cards article:last-child strong { color:#1f5530; }
+ .au-workspace .au-ns-memory-cards blockquote { margin:14px 0; border:1px solid #9cac9c; border-radius:4px; padding:8px; max-height:118px; overflow:auto; font-size:12.5px; }
+ .au-workspace .au-ns-memory-cards ul { list-style:none; padding:0; margin:0 0 14px; }
+ .au-workspace .au-ns-memory-cards li + li { margin-top:12px; }
+ .au-workspace .au-ns-memory-cards small { display:block; color:#61636b; font-size:11.5px; margin-top:3px; }
+ .au-workspace .au-ns-memory-card-arrow { align-self:center; font-size:24px; color:#4c4b4d; }
+ .au-workspace .au-ns-memory footer { grid-column:1/-1; align-self:end; padding:16px; background:#f6f6f7; color:#61636b; font-size:13px; }
+ .au-workspace:has([data-au-checklist-library]) { font-family:Mulish,sans-serif; color:#141516; }
+ .au-workspace:has([data-au-checklist-library]) .au-identity-header { min-height:75px; background:white; border-color:#ebebee; }
+ .au-workspace:has([data-au-checklist-library]) .au-brand { font:700 25px Mulish,sans-serif; }
+ .au-workspace:has([data-au-checklist-library]) .au-nav [data-au-nav=demonstration] { display:none; }
+ .au-workspace:has([data-au-checklist-library]) .au-nav button[aria-current=page] { color:#82072a; border-color:#82072a; }
+ .au-workspace .au-knowledge-checklist .au-checklist-note { color:#4c4b4d; }
+}
+
+@media (min-width:701px) {
+ .au-workspace .au-ns-memory :is(h2,h3),.au-workspace:has([data-au-checklist-library]) :is(h1,h2,h3,h4) { font-family:Mulish,sans-serif; letter-spacing:normal; }
+ .au-workspace .au-ns-memory-scope { grid-column:1/-1; color:#61636b; font-size:12.5px; }
+ .au-workspace .au-ns-memory-comparison:not(:has(.au-ns-memory-before)) .au-ns-memory-now { grid-column:1/-1; }
+}
+
+@media (min-width:701px) {
+ .au-workspace:has([data-au-checklist-library]) .au-identity-header { padding:0 27px; gap:0; flex-wrap:nowrap; }
+ .au-workspace:has([data-au-checklist-library]) .au-brand { width:235px; letter-spacing:normal; }
+ .au-workspace:has([data-au-checklist-library]) .au-nav { margin-left:0; order:1; }
+ .au-workspace:has([data-au-checklist-library]) .au-header-new { order:2; margin-left:auto; }
+ .au-workspace:has([data-au-checklist-library]) .au-access-label { order:3; margin-left:auto; }
+}
+
+@media (min-width:701px) {
+ .au-workspace .au-ns-chain:not(:empty):before { content:''; position:absolute; top:-7px; left:calc(var(--au-ns-notch,64px) - 6px); width:12px; height:12px; background:white; border-top:1px solid #acacac; border-left:1px solid #acacac; transform:rotate(45deg); }
+ .au-workspace .au-ns-failed-test { color:#82072a; }
+ .au-workspace .au-ns-page pre { overflow:auto; scrollbar-width:thin; }
+ .au-workspace .au-ns-passage-group h3 { margin:8px 10px 4px; color:#82072a; font:400 12.5px/1.5 Mulish,sans-serif; letter-spacing:normal; }
+ .au-workspace .au-ns-passage-group + .au-ns-passage-group { margin-top:14px; }
+}
