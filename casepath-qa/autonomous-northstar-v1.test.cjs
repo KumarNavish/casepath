@@ -18,3 +18,7 @@ test('unlinked and ambiguous source reads cannot be attributed to a node',()=>{
  const state={graph:{nodes:[{node_id:'a',document_types:['a']},{node_id:'b',document_types:['b']}]}},source={artifact_id:'s',file_name:'Source.txt'},open={id:'open',seq:1,kind:'source.open',object:{id:'s'},cause_ids:[],result:{}},rows=[open,...['a','b'].map((id,i)=>({id,seq:i+2,kind:'verification.check',object:{id:'fact:'+id,type:'fact'},input:{document_type:id},cause_ids:['open'],source:{artifact_id:'s'}}))];state.source_descriptors=[source];const model=ui.northStarPlanModel(state,rows);assert.equal(model.links.has('open'),false);assert.equal(model.plans.get('a').length,1);assert.equal(model.plans.get('b').length,1);
 });
 test('unknown process IDs preserve their exact recorded label',()=>assert.equal(ui.northStarQuestion({node_id:'future',label:'Recorded question?'}),'Recorded question?'));
+test('a completion stays visually pending until its plan has receded',()=>{
+ const c=fixture.cases[0],state=c.envelope.state,rows=c.trace.trim().split('\n').map(JSON.parse).filter(f=>f.type==='operation'),op=rows.find(o=>o.kind==='step.complete'),prefix=rows.filter(o=>o.seq<=op.seq),trace={headState:state,rows:prefix,current:op,sources:new Map(),nsCatalogue:ui.northStarPlanModel(state,rows),nsPendingCompletion:op.id};
+ assert.equal(ui.northStarModel(state,trace).done.has(op.object.id),false);assert.equal(ui.northStarModel(state,{...trace,nsPendingCompletion:null}).done.has(op.object.id),true);
+});
