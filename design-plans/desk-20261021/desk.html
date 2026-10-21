@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>CasePath · Agent desk</title>
+<link rel="stylesheet" href="/assets/autonomous-workspace-v1.css">
+<style>
+:root{--ink:#183d35;--muted:#465e54;--line:#73857a;--hair:#c9d2c8;--green:#315e49;--amber:#80633c;--paper:#fffffc;--field:#eff1ec;--wash:#e1e8db;--ease:cubic-bezier(.2,.65,.3,1)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--field);color:var(--ink);font:400 16px/1.5 'CasePath Instrument',Arial,sans-serif;-webkit-font-smoothing:antialiased}
+header.top{height:64px;display:flex;align-items:center;gap:24px;padding:0 36px;border-bottom:1px solid var(--line)}
+.brand{font-weight:600;font-size:22px;letter-spacing:-.02em}.tag{color:var(--muted)}.nav{margin-left:auto;display:flex;gap:28px;color:var(--muted)}.nav b{font-weight:400;color:var(--ink);box-shadow:inset 0 -2px 0 var(--ink);padding-bottom:6px}
+.case{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;padding:26px 36px 20px;border-bottom:1px solid var(--hair)}
+.eyebrow{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.case h1{margin:6px 0 4px;font-size:27px;font-weight:500;letter-spacing:-.01em}
+.asks{color:var(--muted);font-size:17px}.asks q{color:var(--ink)}
+.tally{display:flex;gap:34px}.metric{min-width:96px}.metric .n{font-size:36px;line-height:1;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.02em}.metric .l{margin-top:6px;font-size:12.5px;color:var(--muted)}
+.metric.bump .n{color:var(--green)}
+main{display:grid;grid-template-columns:300px minmax(0,1fr) 400px;gap:40px;padding:24px 36px 0;position:relative}
+.col h2{margin:0 0 14px;font-size:12.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.files{list-style:none;margin:0;padding:0}.files li{display:grid;grid-template-columns:18px 1fr;gap:10px;align-items:start;padding:9px 0;border-top:1px solid var(--hair);color:var(--muted);transition:color .3s}
+.files li:last-child{border-bottom:1px solid var(--hair)}
+.dot{width:12px;height:12px;margin-top:5px;border-radius:50%;border:1.5px solid var(--line);display:block}
+.files li.reading{color:var(--ink)}.files li.reading .dot{border-color:var(--green);background:var(--green);animation:breath 1.6s ease-in-out infinite}
+.files li.read{color:var(--ink)}.files li.read .dot{border:0;background:none;margin-top:1px;width:auto;height:auto;color:var(--green)}
+.files li.read .dot::before{content:'✓';font-size:15px}
+@keyframes breath{50%{opacity:.35}}
+.role{display:flex;align-items:baseline;gap:10px;min-height:32px;font-size:20px}.badge{font-size:14px;border:1px solid var(--green);color:var(--green);border-radius:3px;padding:1px 8px;position:relative;top:-2px}
+.role .what{transition:opacity .25s}
+.source{margin-top:14px;background:var(--paper);border:1px solid var(--line);height:430px;position:relative;display:flex;flex-direction:column}.source .scroll{overflow:hidden;padding:0 26px 22px;flex:1;position:relative}
+.source .name{font-size:13px;color:var(--muted);padding:16px 26px 10px}
+.source .text{white-space:pre-wrap;font-size:17px;line-height:1.75;transition:opacity .25s}
+mark{background:linear-gradient(90deg,rgb(116 155 99/.24) 50%,transparent 50%) right/200% 100% no-repeat;color:inherit;box-shadow:inset 0 -2px 0 transparent;transition:background-position .55s var(--ease),box-shadow .3s .45s}
+mark.on{background-position:left;box-shadow:inset 0 -2px 0 var(--green)}
+.landing{margin-top:14px;min-height:52px;font-size:16px;color:var(--muted);opacity:0;transform:translateY(6px);transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.landing.on{opacity:1;transform:none}.landing b{color:var(--ink);font-weight:500}
+.file h3{display:flex;justify-content:space-between;margin:0 0 6px;font-size:15px;font-weight:500}.file h3 span{color:var(--muted);font-weight:400;font-variant-numeric:tabular-nums}
+.file ul{list-style:none;margin:0 0 22px;padding:0}.file li{display:grid;grid-template-columns:18px 1fr auto;gap:10px;padding:7px 0;border-top:1px solid var(--hair);font-size:15.5px;color:var(--muted);transition:background-color .8s,color .3s}
+.file li .st{font-size:13.5px;color:var(--muted)}
+.file li.done{color:var(--ink)}.file li.done .g::before{content:'✓';color:var(--green)}
+.file li.ev{color:var(--ink)}.file li.ev .g::before{content:'•';color:var(--green)}
+.file li.recv .st{color:var(--green)}
+.file li.glow{background-color:rgb(116 155 99/.22)}
+.g{width:18px}
+.answer{display:none;margin-top:14px;background:var(--paper);border:1px solid var(--line);padding:30px 34px;min-height:430px;opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease),transform .4s var(--ease);position:relative}
+.answer.on{display:block;opacity:1;transform:none}.desk-result .source,.desk-result .landing{display:none}.answer::before{content:'';position:absolute;left:-1px;top:-1px;width:3px;height:0;background:var(--green);transition:height .5s .2s var(--ease)}.answer.on::before{height:calc(100% + 2px)}
+.answer .k{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.answer .lead{margin:14px 0 18px;font-size:25px;line-height:1.4;letter-spacing:-.01em}.answer .open{margin:0 0 22px;padding-left:14px;border-left:2px solid var(--amber);color:var(--amber);font-size:17px}.answer .facts{display:flex;gap:28px;margin:0 0 24px;font-size:15px;color:var(--muted)}.answer .facts b{display:block;font-size:22px;color:var(--ink);font-weight:500}
+.answer .actions{display:flex;gap:14px;align-items:center;font-size:15px;color:var(--muted)}.btn{border:1px solid var(--ink);padding:8px 16px;color:var(--ink);border-radius:2px;background:var(--paper)}
+.reuse{font-size:14px;color:var(--green);opacity:0;transition:opacity .4s;margin:-8px 0 14px}.reuse.on{opacity:1}
+svg.thread{position:absolute;inset:0;pointer-events:none;overflow:visible}
+svg.thread path{fill:none;stroke:var(--green);stroke-width:1.5;stroke-linecap:round}
+svg.thread circle{fill:var(--green)}
+footer{position:fixed;left:0;right:0;bottom:0;height:46px;display:flex;align-items:center;gap:10px;padding:0 36px;border-top:1px solid var(--hair);background:var(--field);font-size:13.5px;color:var(--muted)}
+footer .pip{width:26px;height:3px;background:var(--hair)}footer .pip.done{background:var(--green)}footer .pip.now{background:var(--ink)}
+footer .prog{flex:1;height:2px;background:var(--hair);margin-left:18px;position:relative}footer .prog i{position:absolute;left:0;top:0;bottom:0;background:var(--green);width:0;transition:width .6s var(--ease)}
+</style></head><body>
+<header class="top"><span class="brand">CasePath</span><span class="tag">Follow the documents</span><nav class="nav"><span>Cases</span><b>Demonstration</b><span>Knowledge</span></nav></header>
+<section class="case"><div><div class="eyebrow" id="eyebrow"></div><h1 id="title"></h1><div class="asks">Customer asks <q id="asks"></q></div></div>
+<div class="tally"><div class="metric" id="m-docs"><div class="n">0</div><div class="l">documents read</div></div><div class="metric" id="m-facts"><div class="n">0</div><div class="l">facts found in the text</div></div><div class="metric" id="m-rules"><div class="n">0</div><div class="l">rule checks run</div></div><div class="metric" id="m-steps"><div class="n">0/0</div><div class="l">requirements met</div></div></div></section>
+<main id="main"><svg class="thread" id="thread"></svg>
+<section class="col"><h2>Case file</h2><ul class="files" id="files"></ul></section>
+<section class="col"><h2>Agent at work</h2><div class="role"><span class="badge" id="badge">CasePath</span><span class="what" id="what">opens the case</span></div>
+<div class="source"><div class="name" id="srcname"></div><div class="scroll" id="srcscroll"><div class="text" id="srctext"></div></div></div><div class="landing" id="landing"></div><div class="answer" id="answer"></div></section>
+<section class="col file"><h2>Handler's file</h2><div class="reuse" id="reuse"></div>
+<h3>Requirements <span id="stepcount"></span></h3><ul id="steps"></ul>
+<h3>Documents <span id="doccount"></span></h3><ul id="docs"></ul></section></main>
+<footer><span id="pos"></span><span id="pips" style="display:flex;gap:6px"></span><span class="prog"><i id="prog"></i></span></footer>
+<script>
+const API='/api/claim-loops/v1/autonomous', ROSTER=['clm_314f2d309fea25e6','clm_4a07dbbbd859a3ce','clm_95d08975bc575592','clm_0f4f13b1e3e1328c','clm_393285577dcb12c4','clm_4a53299cfe619303','clm_2c55cdd816b1d0e8','clm_543f08f2415b2a33','clm_7dbd7c7d1c4ddf90'];
+const DOMAIN={defect_mold_heating:'Defects and repairs',lease_termination_dispute:'Lease termination',rent_increase_dispute:'Rent increases',lease_termination:'Lease termination',rent_increase:'Rent increases'};
+const $=id=>document.getElementById(id), h=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])), sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches, SPEED=+(new URLSearchParams(location.search).get('speed')||1);
+const wait=ms=>sleep(reduced?Math.min(ms,400):ms/SPEED);
+// Labels are the recorded names; file names lose only their numeric prefix and extension.
+const fileLabel=n=>String(n||'').replace(/\.[a-z0-9]+$/i,'').replace(/^\d+[-_ ]*/,'').replace(/_\d{4}-\d{2}-\d{2}.*$/,'').replace(/[-_]+/g,' ').replace(/^./,c=>c.toUpperCase());
+function count(id,v){const el=$(id),n=el.querySelector('.n');if(n.textContent!==String(v)){n.textContent=v;el.classList.add('bump');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('bump'),500);}}
+async function load(id){const state=(await (await fetch(`${API}/claims/${id}`)).json()).state;const raw=await (await fetch(`${API}/claims/${id}/operations?mode=live`)).text();
+  return {state,ops:raw.split('\n').filter(Boolean).map(l=>JSON.parse(l)).filter(r=>r.type==='operation')};}
+function thread(fromEl,toEl,range){const svg=$('thread'),m=$('main').getBoundingClientRect();if(!fromEl||!toEl||reduced){svg.innerHTML='';return;}
+  const rs=fromEl.getClientRects(),a=rs.length?rs[rs.length-1]:fromEl.getBoundingClientRect(),b=toEl.getBoundingClientRect(),x1=a.right-m.left,y1=a.bottom-m.top,x2=b.left-m.left+4,y2=b.top+b.height/2-m.top;
+  const d=`M${x1},${y1} C${x1+120},${y1+40} ${x2-140},${y2} ${x2},${y2}`;svg.innerHTML=`<path d="${d}"/><circle cx="${x1}" cy="${y1}" r="3"/><circle cx="${x2}" cy="${y2}" r="0"/>`;
+  const p=svg.querySelector('path'),L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;
+  p.animate([{strokeDashoffset:L},{strokeDashoffset:0}],{duration:650/SPEED,easing:'cubic-bezier(.2,.65,.3,1)',fill:'forwards'}).onfinish=()=>svg.querySelector('circle:last-child')?.setAttribute('r','3');}
+function clearThread(){const p=$('thread').querySelector('path');if(p)p.animate([{opacity:1},{opacity:0}],{duration:500,fill:'forwards'});$('thread').querySelectorAll('circle').forEach(c=>c.animate([{opacity:1},{opacity:0}],{duration:500,fill:'forwards'}));}
+function role(r,what){$('badge').textContent=r;$('what').textContent=what;}
+function showSource(op,quote){const text=op.result?.text||'',name=fileLabel(op.result?.file_name);$('srcname').textContent=name;const box=$('srctext');
+  if(!quote){box.textContent=text.replace(/^Synthetic demonstration document \(fictional\)\n/,'');$('srcscroll').scrollTop=0;return null;}
+  const at=text.indexOf(quote);if(at<0){box.textContent=text;return null;}
+  box.innerHTML=h(text.slice(0,at)).replace(/^Synthetic demonstration document \(fictional\)\n/,'')+`<mark>${h(quote)}</mark>`+h(text.slice(at+quote.length));
+  const mk=box.querySelector('mark');$('srcscroll').scrollTop=Math.max(0,mk.offsetTop-90);requestAnimationFrame(()=>requestAnimationFrame(()=>mk.classList.add('on')));return mk;}
+async function playCase(i){
+  const id=ROSTER[i],{state,ops}=await load(id),g=state.graph||{},nodes=g.nodes||[],obl=state.obligations||[],texts=new Map();
+  $('eyebrow').textContent=`Case ${i+1} of ${ROSTER.length} · ${DOMAIN[g.family]||''}`;$('title').textContent=state.title?'' :'';$('title').textContent=caseTitle(state);$('asks').textContent=state.title||'';
+  $('pos').textContent=`Case ${i+1} of ${ROSTER.length}`;$('pips').innerHTML=ROSTER.map((_,k)=>`<span class="pip ${k<i?'done':k===i?'now':''}"></span>`).join('');
+  const groups=new Map();for(const s of state.source_descriptors||[]){const k=s.role+'|'+s.file_name;if(!groups.has(k))groups.set(k,{...s,ids:[]});groups.get(k).ids.push(s.artifact_id);}const files=[...groups.values()];
+  $('files').innerHTML=files.map(s=>`<li data-role="${h(s.role)}" data-a="${h(s.ids.join(' '))}"><span class="dot"></span><span>${h(s.role==='customer_message'?'Customer message':fileLabel(s.file_name))}</span></li>`).join('');
+  $('steps').innerHTML=nodes.map(n=>`<li data-n="${h(n.node_id)}"><span class="g"></span><span>${h(n.label)}</span><span class="st"></span></li>`).join('');
+  $('docs').innerHTML=obl.map(o=>`<li data-d="${h(o.document_type)}"><span class="g"></span><span>${h(o.label)}</span><span class="st">Needed</span></li>`).join('');
+  document.body.classList.remove('desk-result');$('answer').className='answer';$('answer').innerHTML='';$('reuse').className='reuse';$('landing').className='landing';$('srctext').textContent='';$('srcname').textContent='';
+  let docs=0,facts=0,rules=0,met=0;const total=nodes.length;count('m-docs',0);count('m-facts',0);count('m-rules',0);count('m-steps',`0/${total}`);$('stepcount').textContent=`0 of ${total}`;$('doccount').textContent=`0 of ${obl.length} received`;
+  const ruleKinds=new Set(['condition.evaluate','node.evaluate','dependency.evaluate','process.inspect','document.require']);let recv=0,current=null;
+  role('CasePath','receives the customer message');const cm=document.querySelector('.files li[data-role=customer_message]');if(cm){cm.className='read';count('m-docs',1);}await wait(1400);
+  for(const op of ops){
+    if(ruleKinds.has(op.kind)){rules++;if(rules%7===0){count('m-rules',rules);await wait(40);}continue;}
+    count('m-rules',rules);
+    if(op.kind==='source.open'){texts.set(op.object.id,op);const li=document.querySelector(`.files li[data-a~="${op.object.id}"]`);
+      if(current&&current!==li){current.className='read';docs=document.querySelectorAll('.files li.read').length;count('m-docs',docs);}
+      if(li&&li.className!=='read'){li.className='reading';current=li;role('CasePath',`opens ${fileLabel(op.result?.file_name)}`);showSource(op,null);clearThread();await wait(1100);} continue;}
+    if(op.kind==='fact.extract'&&op.source){const src=texts.get(op.source.artifact_id);if(!src)continue;const checker=op.result?.verification_required===false;
+      const li=document.querySelector(`.files li[data-a~="${op.source.artifact_id}"]`);if(li&&li.className!=='read'){if(current&&current!==li){current.className='read';docs=document.querySelectorAll('.files li.read').length;count('m-docs',docs);}li.className='reading';current=li;}
+      const mk=showSource(src,op.source.quote);const docType=op.input?.document_type;const node=nodes.find(n=>(n.document_types||[]).includes(docType));
+      const target=node&&document.querySelector(`#steps li[data-n="${node.node_id}"]`);
+      role(checker?'Checker':'Reader',checker?'confirms these words in the document':'finds these words');if(!checker){facts++;count('m-facts',facts);}
+      const reqLabel=node?.label||(obl.find(o=>o.document_type===docType)||{}).label;$('landing').innerHTML=reqLabel?`${checker?'Confirmed for':'Evidence for'} <b>${h(reqLabel)}</b>`:'';$('landing').className=reqLabel?'landing on':'landing';
+      await wait(500);if(mk&&target){thread(mk,target);if(!target.classList.contains('done'))target.classList.add('ev');}
+      await wait(2300);clearThread();$('landing').className='landing';await wait(250);continue;}
+    if(op.kind==='document.check'&&op.result?.assessment==='sufficient'){const d=document.querySelector(`#docs li[data-d="${op.object.id}"]`);if(d&&!d.classList.contains('recv')){
+      const src=texts.get(op.source?.artifact_id);const mk=src?showSource(src,op.source.quote):null;role('Checker','accepts this document');
+      await wait(400);if(mk)thread(mk,d);d.classList.add('recv','done','glow');d.querySelector('.st').textContent='Received ✓';recv++;$('doccount').textContent=`${recv} of ${obl.length} received`;
+      await wait(1500);d.classList.remove('glow');clearThread();await wait(250);}continue;}
+    if(op.kind==='step.complete'){const s=document.querySelector(`#steps li[data-n="${op.object.id}"]`);if(s&&!s.classList.contains('done')){s.classList.remove('ev');s.classList.add('done','glow');met++;count('m-steps',`${met}/${total}`);$('stepcount').textContent=`${met} of ${total}`;
+      role('Rulebook',`completes “${(nodes.find(n=>n.node_id===op.object.id)||{}).label||''}”`);$('prog').style.width=`${(i+met/total)/ROSTER.length*100}%`;await wait(1100);s.classList.remove('glow');}continue;}
+    if(op.kind==='knowledge.reuse'){const v=op.input?.version,n=op.result?.reused_evidence_recipes;$('reuse').textContent=`Memory reused ${DOMAIN[g.family]||'a procedure'} · version ${v}${n?` · ${n} known document checks`:''}`;$('reuse').className='reuse on';role('Memory',`reuses what earlier cases learned`);await wait(1500);continue;}
+    if(op.kind==='decision'){if(current){current.className='read';current=null;}docs=document.querySelectorAll('.files li.read').length;count('m-docs',docs);const o=state.outcome||{},open=(o.summary||'').split(/(?<=\.)\s+/);
+      role('Rulebook','reaches the result');const lead=open[0]||o.title||'',rest=open.slice(1).join(' ');
+      clearThread();$('answer').innerHTML=`<div class="k">Result for the handler</div><p class="lead">${h(lead)}</p>${rest?`<p class="open">Still open · ${h(rest)}</p>`:''}<div class="facts"><span><b>${met} of ${total}</b>requirements met</span><span><b>${recv} of ${obl.length}</b>documents received</span><span><b>${facts}</b>facts, each with its source</span></div><div class="actions">${o.request_draft?'<span class="btn">Open draft letter</span><span>Draft, not sent · a person decides</span>':'<span>No letter needed</span>'}</div>`;
+      document.body.classList.add('desk-result');$('answer').className='answer on';$('prog').style.width=`${(i+1)/ROSTER.length*100}%`;await wait(7000);continue;}
+  }
+}
+const words=s=>String(s||'').replace(/_/g,' ');
+const LABELS={clm_314f2d309fea25e6:'Repeated heating failure and reported repair calls',clm_4a07dbbbd859a3ce:'Heating resets and an uncertain onset date',clm_95d08975bc575592:'Cold mornings and a requested service assessment',clm_0f4f13b1e3e1328c:'An emailed termination and uncertain paper service',clm_393285577dcb12c4:'An unsigned notice and the issuer question',clm_4a53299cfe619303:'Email notice and the complete service record',clm_2c55cdd816b1d0e8:'A blank reason field and a later market email',clm_543f08f2415b2a33:'Rent amounts with an uncertain notification date',clm_7dbd7c7d1c4ddf90:'An increase form and the later email chronology'};
+function caseTitle(state){return LABELS[state.claim_id]||state.title||state.claim_id}
+(async()=>{const start=+(new URLSearchParams(location.search).get('case')||0);for(let i=start;i<ROSTER.length;i++){await playCase(i);}})();
+</script></body></html>
