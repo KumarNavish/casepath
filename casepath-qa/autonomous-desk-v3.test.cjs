@@ -18,6 +18,8 @@ for(const item of fixture.cases)test(`desk counters and legal labels follow the 
  const html=ui.agentDeskMarkup(state,{},null,[],{},{operations:trace});
  for(const legal of state.outcome.legal_predicates){assert.ok(ui.DESK_LEGAL_TESTS[legal.predicate_id],`explicit glossary entry: ${legal.predicate_id}`);assert.ok(html.includes(ui.deskLegalLabel(legal.predicate_id).replace(/&/g,'&amp;')));}
  for(const step of state.graph.nodes){
+  assert.ok(ui.DESK_STEPS[step.node_id],`explicit step glossary entry: ${step.node_id}`);
+  assert.ok(html.includes(step.label),`reasoning retains recorded label: ${step.node_id}`);
   assert.ok(html.includes(`data-au-desk-select="${step.node_id}"`));
   const selected=ui.agentDeskMarkup(state,{},step.node_id,[],{},{operations:trace,chosenNode:step.node_id});
   assert.ok(selected.includes('data-au-desk-quote='),`${step.node_id} shows its cited passage`);
@@ -25,6 +27,8 @@ for(const item of fixture.cases)test(`desk counters and legal labels follow the 
  const model=ui.deskOperationModel(state,trace);for(const operation of all)assert.equal(model.operationNodes.get(operation.id)||null,ui.operationNodeId(operation,state.graph,state,trace),`${operation.id} keeps the source/cause destination`);
  for(const doc of state.graph.nodes.flatMap(n=>n.document_types||[]))assert.ok(html.includes(`data-au-desk-document-select="${doc}"`));
  assert.ok(html.includes(ui.deskLegalStatus(state.outcome.legal_predicates).label));
+ const caveat=state.outcome.summary.slice(state.outcome.summary.match(/^.*?[.!?](?=\s|$)/u)[0].length).trim();
+ assert.ok(html.includes(`Still open: ${caveat}`), 'recorded unresolved sentence remains in the answer');
  assert.equal((html.match(/All cases are fictional\./g)||[]).length,1);
  const before=JSON.stringify(state);const binding=ui.deskDraftBinding(state);assert.equal(binding.body,state.outcome.request_draft.body);assert.equal(JSON.stringify(state),before);
 });
@@ -39,4 +43,9 @@ test('local draft copies reject a different case or original and invalid stored 
  assert.equal(ui.checkedDeskDraft(entry,entry.binding).body,'My changes');
  for(const changed of [{binding:'different'}, {contract:'other'}, {subject:'x'.repeat(501)}, {body:'x'.repeat(50001)}, {saved_at:'not a date'}])assert.equal(ui.checkedDeskDraft({...entry,...changed},entry.binding),null);
  assert.equal(ui.deskDraftBinding({claim_id:'not-sent',outcome:{request_draft:{status:'sent',body:'No editable draft'}}}),null);
+});
+
+test('unknown step labels use only mechanical paraphrases',()=>{
+ assert.equal(ui.deskStepLabel({node_id:'new_step',label:'Assess notification context'}),'Check notification context');
+ assert.equal(ui.deskStepLabel({node_id:'new_step'}),'New step');
 });

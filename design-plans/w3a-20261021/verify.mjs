@@ -41,6 +41,13 @@ try{
   const actual=await p.locator('[data-au-desk-metric]').evaluateAll(els=>Object.fromEntries(els.map(e=>[e.dataset.auDeskMetric,e.querySelector('.au-desk-number').textContent])));assert.deepEqual(actual,expected);
   const legal=await p.locator('[data-au-legal-label]').evaluateAll(els=>els.map(e=>({id:e.dataset.auLegalLabel,label:e.textContent})));for(const row of legal)assert.equal(row.label,ui.deskLegalLabel(row.id));
   assert.equal(await p.locator('[data-au-desk-file-state=read]').count(),4);assert.equal(await p.locator('.au-desk-test-status').innerText(),ui.deskLegalStatus(state.outcome.legal_predicates).label);
+  const caveat=state.outcome.summary.slice(state.outcome.summary.match(/^.*?[.!?](?=\s|$)/u)[0].length).trim();
+  assert.ok((await p.locator('.au-desk-open').innerText()).includes(caveat));
+  await p.locator('.au-desk-why summary').click();
+  assert.deepEqual(await p.locator('.au-desk-recorded-steps li').allTextContents(),state.graph.nodes.map(n=>n.label));
+  await p.locator('.au-desk-why summary').click();
+  const alignment=await p.locator('.au-desk-test-status + .au-desk-tests li').evaluateAll(rows=>rows.map(row=>{const [icon,label,law]=[...row.children],r=el=>el.getBoundingClientRect(),text=document.createRange();text.selectNodeContents(label);return {gap:text.getBoundingClientRect().left-r(icon).right,lawRight:r(law).right,rowRight:r(row).right};}));
+  for(const row of alignment){assert.ok(row.gap>=0&&row.gap<=12,'failed label follows its icon');assert.ok(Math.abs(row.lawRight-row.rowRight)<2,'law aligns right');}
   report.cases.push({id:row.id,stateSha256:state.state_sha256,counts:actual,legalLabels:legal.length});console.log('Verified case',i+1);
   if(i===0||i===3)await frame(p,`case${i+1}-answer`);
  }
