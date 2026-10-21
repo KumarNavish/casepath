@@ -1957,8 +1957,8 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 
 /* Checklist reuse is a recorded connection, never an invented reviewer edit. */
 @media (min-width:701px) {
- .au-workspace .au-ns-memory { display:grid; grid-template-columns:280px minmax(0,1fr); gap:20px 26px; min-height:735px; grid-template-rows:auto 1fr auto; }
- .au-workspace .au-ns-memory > header { grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; margin-bottom:0; }
+ .au-workspace .au-ns-memory { position:relative; display:grid; grid-template-columns:280px minmax(0,1fr); gap:20px 26px; min-height:735px; grid-template-rows:auto 1fr auto; }
+ .au-workspace .au-ns-memory > header { grid-column:1/-1; display:flex; align-items:center; justify-content:flex-end; margin-bottom:0; }
  .au-workspace .au-ns-memory > header p { margin:0; color:#4c4b4d; font-size:14px; }
  .au-workspace .au-ns-memory-spine { list-style:none; margin:0; padding:0; }
  .au-workspace .au-ns-memory-spine li { display:flex; gap:22px; align-items:center; position:relative; min-height:72px; }
@@ -1968,24 +1968,16 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace .au-ns-memory-spine button:before { content:''; position:absolute; left:-23px; top:50%; width:22px; border-top:1px solid #b3b3b7; }
  .au-workspace .au-ns-memory-spine [data-selected=true] > span { color:#82072a; border-color:#82072a; font-weight:700; }
  .au-workspace .au-ns-memory-spine [data-selected=true] button { border:1.5px solid #82072a; color:#141516; font-weight:700; }
- .au-workspace .au-ns-memory-main { min-width:0; padding-top:80px; }
- .au-workspace .au-ns-memory-comparison { display:grid; grid-template-columns:minmax(0,1fr) 36px minmax(0,1.2fr); gap:14px; align-items:center; }
- .au-workspace .au-ns-memory-comparison h2 { font-size:12px; font-weight:500; margin:0 0 8px; color:#4c4b4d; }
- .au-workspace .au-ns-memory-comparison blockquote { margin:0; padding:14px; font-size:14px; line-height:1.5; border-radius:7px; }
- .au-workspace .au-ns-memory-before blockquote { border:1px dashed #c2c3c3; color:#4c4b4d; }
- .au-workspace .au-ns-memory-now h2 { color:#82072a; }
- .au-workspace .au-ns-memory-now blockquote { border:1.5px solid #82072a; font-weight:600; }
- .au-workspace .au-ns-memory-arrow { color:#82072a; font-size:32px; }
- .au-workspace .au-ns-memory-same { grid-column:1/-1; margin:0; font-size:12.5px; color:#61636b; }
- .au-workspace .au-ns-memory-chain { margin-top:28px; }
+ .au-workspace .au-ns-memory-main { min-width:0; padding-top:16px; }
+ .au-workspace .au-ns-memory-chain { margin-top:0; }
  .au-workspace .au-ns-memory-chain > p { margin:0 0 10px; color:#1f5530; font-size:13px; }
- .au-workspace .au-ns-memory-cards { display:grid; grid-template-columns:minmax(0,1.15fr) 20px minmax(0,1fr) 20px minmax(0,1fr); gap:10px; }
+ .au-workspace .au-ns-memory-cards { display:grid; grid-template-columns:minmax(0,1.4fr) 20px minmax(0,1fr) 20px minmax(0,1fr); gap:10px; }
  .au-workspace .au-ns-memory-cards article { border:1px solid #9cac9c; border-radius:7px; overflow:hidden; }
  .au-workspace .au-ns-memory-cards h3 { margin:0; border-bottom:1px solid #d6d6d7; padding:12px; font-size:13px; font-weight:600; }
  .au-workspace .au-ns-memory-cards article > div { padding:14px 12px; font-size:13px; line-height:1.5; }
  .au-workspace .au-ns-memory-cards strong { font-size:13px; font-weight:600; }
  .au-workspace .au-ns-memory-cards article:last-child strong { color:#1f5530; }
- .au-workspace .au-ns-memory-cards blockquote { margin:14px 0; border:1px solid #9cac9c; border-radius:4px; padding:8px; max-height:118px; overflow:auto; font-size:12.5px; }
+ .au-workspace .au-ns-memory-cards blockquote { margin:14px 0; border:1px solid #2e6b35; border-radius:4px; padding:8px; font-size:12.5px; white-space:pre-wrap; overflow-wrap:anywhere; }
  .au-workspace .au-ns-memory-cards ul { list-style:none; padding:0; margin:0 0 14px; }
  .au-workspace .au-ns-memory-cards li + li { margin-top:12px; }
  .au-workspace .au-ns-memory-cards small { display:block; color:#61636b; font-size:11.5px; margin-top:3px; }
@@ -2001,8 +1993,6 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 
 @media (min-width:701px) {
  .au-workspace .au-ns-memory :is(h2,h3),.au-workspace:has([data-au-checklist-library]) :is(h1,h2,h3,h4) { font-family:Mulish,sans-serif; letter-spacing:normal; }
- .au-workspace .au-ns-memory-scope { grid-column:1/-1; color:#61636b; font-size:12.5px; }
- .au-workspace .au-ns-memory-comparison:not(:has(.au-ns-memory-before)) .au-ns-memory-now { grid-column:1/-1; }
 }
 
 @media (min-width:701px) {
@@ -2019,4 +2009,18 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace .au-ns-page pre { overflow:auto; scrollbar-width:thin; }
  .au-workspace .au-ns-passage-group h3 { margin:8px 10px 4px; color:#82072a; font:400 12.5px/1.5 Mulish,sans-serif; letter-spacing:normal; }
  .au-workspace .au-ns-passage-group + .au-ns-passage-group { margin-top:14px; }
+}
+
+@media (min-width:701px) {
+ .au-workspace .au-ns-memory-link { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; }
+ .au-workspace .au-ns-memory-link path { fill:none; stroke:#82072a; stroke-width:1px; }
+ .au-workspace .au-ns-reader-source { padding:18px 0; border-bottom:1px solid #ebebee; }
+ .au-workspace .au-ns-reader-source h3 { margin:0 0 12px; font-size:15px; }
+ .au-workspace .au-ns-reader-source h3 button { display:flex; gap:16px; align-items:center; padding:0; border:0; background:white; text-align:left; font:600 15px/1.5 Mulish,sans-serif; }
+ .au-workspace .au-ns-reader-source h3 svg { width:25px; height:25px; flex:none; }
+ .au-workspace .au-ns-reader-source ul { margin:0; padding:0 0 0 40px; list-style:none; }
+ .au-workspace .au-ns-reader-source li button { display:flex; gap:10px; width:100%; text-align:left; padding:8px 0; border:0; background:white; color:#4c4b4d; font:400 14px/1.5 Mulish,sans-serif; }
+ .au-workspace .au-ns-reader-source li button span:first-child { color:#2e6b35; }
+ .au-workspace .au-ns-reader-source li button span:last-child { margin-left:auto; }
+ .au-workspace .au-ns-reader-source p { margin:0 0 0 40px; color:#61636b; font-size:13px; }
 }
