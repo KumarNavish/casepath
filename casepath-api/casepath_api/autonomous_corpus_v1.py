@@ -13,6 +13,7 @@ from hashlib import sha256
 import re
 from threading import RLock
 
+from .autonomous_browse_v1 import customer_request
 from .autonomous_store_v1 import AutonomousStore, CONTRACT, SOURCE_CONTRACT
 from .autonomous_taxonomy_v1 import DOMAIN_LABELS, TAXONOMY
 from .workspace_corpus import (
@@ -277,6 +278,7 @@ class CanonicalCorpus:
             row["browse_metadata"] = {"domain": taxonomy["domain"], "family_id": taxonomy["family_id"],
                                       "domain_label": DOMAIN_LABELS[taxonomy["domain"]], "browsing_only": True}
             row["source_preview"] = self._states[row["claim_id"]]["message"][:240]
+            row["customer_request"] = customer_request(self._states[row["claim_id"]]["message"])
         return rows
 
     def artifact(self, claim_id, artifact_id):

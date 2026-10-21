@@ -218,7 +218,7 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
                 full = corpus.search_texts() if corpus is not None else {}
                 def searchable(row):
                     text = ' '.join(str(row.get(k, '')) for k in
-                                    ('claim_id', 'title', 'source_preview', 'channel'))
+                                    ('claim_id', 'title', 'source_preview', 'customer_request', 'channel'))
                     return (text + ' ' + full.get(row['claim_id'], '')).casefold()
                 values = [r for r, text in ((r, searchable(r)) for r in values)
                           if all(term in text for term in terms)]

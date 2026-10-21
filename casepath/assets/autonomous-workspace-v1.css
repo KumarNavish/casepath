@@ -1718,3 +1718,17 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace .au-desk-why h3 { margin:20px 0 10px; font-size:16px; font-weight:500; }
  .au-workspace .au-desk-recorded-steps { padding-left:22px; line-height:1.6; }
 }
+
+/* The customer's request is the focal point; domain and status support scanning. */
+@media (min-width:701px) {
+ .au-workspace .au-request-row { display:grid; grid-template-columns:minmax(0,1fr) 170px 150px; column-gap:28px; padding:17px 0; align-items:baseline; }
+ .au-workspace .au-request-row .au-claim-title { min-width:0; font-size:17px; font-weight:500; }
+ .au-workspace .au-request-row .au-claim-open { display:block; min-height:28px; }
+ .au-workspace .au-request-row [data-au-customer-request] { display:block; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+ .au-workspace .au-request-row > .au-request-domain { color:var(--au-muted); font-size:15px; }
+ .au-workspace .au-request-row > .au-claim-state { margin:0; font-size:15px; }
+ .au-workspace .au-request-row > .au-request-failed { grid-column:1; color:var(--au-amber); font-size:14px; margin-top:5px; }
+ .au-workspace .au-request-failed > span { margin-right:4px; }
+ .au-workspace .au-request-row > .au-claim-match { grid-column:1/-1; }
+ .au-workspace .au-request-row:hover .au-claim-open { color:var(--au-ink); text-decoration:underline; text-underline-offset:4px; }
+}

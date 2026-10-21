@@ -112,7 +112,7 @@ def test_packet_uses_original_native_sources_and_has_no_admission(public, canoni
         assert packet["sources"] == state["source_descriptors"]
         assert packet["original_binding"] == state["original_binding"]
         assert packet["initial_state_sha256"] == state["state_sha256"]
-        assert not {"browse_metadata", "browsing_only", "source_preview", "domain", "domain_label", "family_id"}.intersection(
+        assert not {"browse_metadata", "browsing_only", "source_preview", "customer_request", "domain", "domain_label", "family_id"}.intersection(
             _public_keys(packet) | _public_keys(state))
         assert set(packet["source_bytes"]) == {row["artifact_id"] for row in packet["sources"]}
         for descriptor in packet["sources"]:
@@ -321,7 +321,8 @@ def test_browsing_taxonomy_and_short_source_preview_are_summary_only(canonical):
         assert isinstance(row["source_preview"], str)
         assert row["source_preview"] == state["message"][:240]
         assert len(row["source_preview"]) <= 240
-        assert not {"browse_metadata", "browsing_only", "source_preview", "domain", "domain_label", "family_id"}.intersection(
+        assert row["customer_request"] and row["customer_request"] in state["message"]
+        assert not {"browse_metadata", "browsing_only", "source_preview", "customer_request", "domain", "domain_label", "family_id"}.intersection(
             _public_keys(state))
         assert row["state_sha256"] == state["state_sha256"]
     rows[0]["browse_metadata"]["domain"] = "caller rewrite"

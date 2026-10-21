@@ -23,6 +23,7 @@ from threading import RLock
 import unicodedata
 from urllib.parse import quote
 
+from .autonomous_browse_v1 import customer_request
 from .hosted_read_timing_v1 import read_lock
 
 from .causal_process_v1 import evaluate, seal_graph, validate_graph
@@ -989,10 +990,11 @@ class AutonomousStore:
         return self._validated_states(rows)
 
     def _read_summaries(self, *, statuses=None):
-        return [deepcopy({key: state.get(key) for key in
+        return [deepcopy({"customer_request": customer_request(state.get("message")),
+                         **{key: state.get(key) for key in
                     ("claim_id", "title", "status", "phase", "phase_summary", "revision", "state_sha256",
                      "updated_at", "outcome", "run_id", "policy_id", "source_roster_sha256", "last_event_sha256",
-                     "corpus_id")}) for state in self._validated_summary_states()
+                     "corpus_id")}}) for state in self._validated_summary_states()
                 if statuses is None or state["status"] in statuses]
 
     def _validated_states(self, rows, *, source_page_chunks=None, source_verifier=None):
