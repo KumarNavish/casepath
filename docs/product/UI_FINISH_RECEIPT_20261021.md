@@ -17,7 +17,7 @@ is presented when the record does not support it.
 ## Evidence and reproduction
 
 The authoritative result for this source is the adjacent W8 evidence package:
-[`design-plans/w8-20261021-final/verification.json`](../../design-plans/w8-20261021-final/verification.json).
+[`design-plans/w8-20261021-mac-r1/verification.json`](../../design-plans/w8-20261021-mac-r1/verification.json).
 It records the implementation commit, sealed source manifest, served asset
 hashes, completed gate counts, browser receipts and failures. A missing or
 failed receipt is not a pass. Review frames and fidelity comparisons are in
@@ -106,6 +106,45 @@ alternatives with consequences. No decision editor or illustrative fork is
 invented. No Before/Now comparison appears because no recorded reuse changed a
 step-specific outcome. Missing spaces already present in source
 text stay byte-exact. Final W8 evidence reports these as deliberate limits.
+
+## Final live-canvas correction
+
+Planner changes 6321748940 and binding answer 6321925670 are included in this
+revision. The dashed 1.5px #C4C5C6 ring and #9C9BA0 label follow the same current
+recorded node as the plan title. Source-pinned, node-bound fact extractions join
+the source's Read row; shared/unlinked work stays out. Rows sort by their first
+operation and their status and 2px progress bar follow completed recorded
+operations. Every sequence in all nine streams is checked for row state,
+progress and ring/title agreement.
+
+Recorded fact labels remain whole, with equal-height cards allowing three lines.
+Only unlabelled quotes use the planner-approved three-line ellipsis. Their full
+verbatim text remains in the DOM and hover title and in the source highlight.
+The dotted connector appears after the last card arrives and begins at its right
+edge. The source, fact and accepted-node frames are captured at rest.
+
+## Frames beside their concepts
+
+The side-by-side images below contain the concept on the left and the product on
+the right. They preserve recorded content instead of illustrative concept copy.
+State 7 remains omitted because the record has no alternatives with consequences.
+
+| State | Concept beside product | Deliberate difference |
+| --- | --- | --- |
+| 1 · Ready | ![Concept and ready state](../../design-plans/w8-20261021-mac-r1/fidelity-state1-ready-side.png) | Read-only Watch the analysis action. |
+| 2 · Source opened | ![Concept and opened source](../../design-plans/w8-20261021-mac-r1/fidelity-state2-source-opened-side.png) | Only recorded source fields. |
+| 3 · Exact passage | ![Concept and exact passage](../../design-plans/w8-20261021-mac-r1/fidelity-state3-exact-passage-side.png) | Exact source offsets; no fact connector yet. |
+| 4 · Fact | ![Concept and source fact](../../design-plans/w8-20261021-mac-r1/fidelity-state4-source-fact-side.png) | Full recorded label; connector starts at the card. |
+| 5 · Node accepted | ![Concept and accepted process node](../../design-plans/w8-20261021-mac-r1/fidelity-state5-process-decision-side.png) | Recorded process and operations. |
+| 6 · Process, case 1 | ![Concept and case 1 process](../../design-plans/w8-20261021-mac-r1/fidelity-case1-process-side.png) | Actual linear DAG and exact source passage. |
+| 6 · Process, case 4 | ![Concept and case 4 process](../../design-plans/w8-20261021-mac-r1/fidelity-case4-process-side.png) | Actual decisive legal test. |
+| 8 · Checklist, case 1 | ![Concept and case 1 checklist reuse](../../design-plans/w8-20261021-mac-r1/fidelity-case1-memory-side.png) | Recorded checklist reuse; no unsupported Before/Now. |
+| 8 · Checklist, case 4 | ![Concept and case 4 checklist reuse](../../design-plans/w8-20261021-mac-r1/fidelity-case4-memory-side.png) | Recorded checklist reuse; no expert-review claim. |
+
+The revision's `verification.json` records per-case overlap counts for live
+selection/fact frames, every completed process node, every memory node and role
+views. Counts are admitted only from completed browser receipts; missing or
+failed checks are never counted as zero.
 
 ## Owner correction integrated unchanged
 

@@ -11,7 +11,7 @@ for(const c of fixture.cases)test(`north-star plans and exact locators remain bo
  let role=null,pins=0;
  for(const o of rows){if(o.kind==='source.open')sources.set(o.object.id,{...state.source_descriptors.find(s=>s.artifact_id===o.object.id),...o.result});role=ui.northStarRole(o,role);if(o.source){const pin=ui.northStarPin(o,sources);assert.ok(pin);assert.equal(pin.quote,Array.from(sources.get(pin.artifact_id).text).slice(pin.start_char,pin.end_char).join(''));assert.equal(ui.northStarPin({...o,source:{...pin,start_char:pin.start_char+1}},sources),null);assert.equal(ui.northStarPin({...o,source:{...pin,text_sha256:'0'.repeat(64)}},sources),null);pins++;}else assert.equal(ui.northStarPin(o,sources),null);}
  assert.equal(role,'result');assert.ok(pins>20);
- for(const node of state.graph.nodes){const plan=model.plans.get(node.node_id),complete=rows.find(o=>o.kind==='step.complete'&&o.object.id===node.node_id&&o.result.status==='completed');assert.ok(plan.length);assert.equal(plan.at(-1).operation.id,complete.id);assert.equal(plan.at(-1).label,'Form process decision');let seq=0;for(const r of plan){assert.equal(r.operation,byId.get(r.operation.id));assert.equal(model.links.get(r.operation.id),node.node_id);assert.ok(r.operation.seq>seq&&r.operation.seq<=complete.seq);seq=r.operation.seq;assert.ok(['source.open','span.read','verification.check','document.check','step.complete'].includes(r.operation.kind));}}
+ for(const node of state.graph.nodes){const plan=model.plans.get(node.node_id),complete=rows.find(o=>o.kind==='step.complete'&&o.object.id===node.node_id&&o.result.status==='completed');assert.ok(plan.length);assert.equal(plan.at(-1).operation.id,complete.id);assert.equal(plan.at(-1).label,'Form process decision');let seq=0;for(const r of plan){assert.equal(r.operation,byId.get(r.operation.id));assert.equal(model.links.get(r.operation.id),node.node_id);assert.ok(r.operation.seq>seq&&r.operation.seq<=complete.seq);seq=r.operation.seq;assert.ok(['source.open','span.read','fact.extract','verification.check','document.check','step.complete'].includes(r.operation.kind));}}
  const html=ui.northStarMarkup(state,{headState:state,rows:[],sources:new Map(),nsReady:true,nsCatalogue:model},{});assert.match(html,/Watch the analysis/);assert.doesNotMatch(html,/UI fixture|Reading now|Wants:|files read|facts found|checks run|steps done|From the customer/);assert.doesNotMatch(html,/data-au-ns-node=/);
 });
 test('unlinked and ambiguous source reads cannot be attributed to a node',()=>{
@@ -31,8 +31,15 @@ for(const c of fixture.cases)test(`completed process keeps columns and exact pas
  }
  const d=ui.northStarCompletedModel(state,trace);if(d.decisive.length)assert.equal(d.nodeId,d.decisive[0].node_id);
 });
-test('consecutive repeated plan labels merge without dropping recorded operations',()=>{const plan=[{label:'Read source',operation:{id:'a'}},{label:'Read source',operation:{id:'b'}},{label:'Check source',operation:{id:'c'}},{label:'Read source',operation:{id:'d'}}],groups=ui.northStarPlanGroups(plan);assert.deepEqual(groups.map(g=>g.operations.map(o=>o.id)),[['a','b'],['c'],['d']]);assert.equal(plan.length,4);});
-test('fact labels clamp only at whole words',()=>{assert.equal(ui.northStarClampWords('one two three four five',11,s=>s.length),'one two three four…');assert.equal(ui.northStarClampWords('short label',20,s=>s.length),'short label');});
+test('one source Read row retains interleaved operations and rows sort by first seq',()=>{const plan=[{label:'Read source',operation:{id:'a',seq:1}},{label:'Read source',operation:{id:'b',seq:2}},{label:'Check source',operation:{id:'c',seq:3}},{label:'Read source',operation:{id:'d',seq:4}}],groups=ui.northStarPlanGroups(plan);assert.deepEqual(groups.map(g=>g.operations.map(o=>o.id)),[['a','b','d'],['c']]);assert.equal(plan.length,4);});
+for(const c of fixture.cases)test(`first node-bound extraction is visibly building and its read plan is active: ${c.id}`,()=>{
+ const state=c.envelope.state,all=completedTrace(c),catalogue=ui.northStarPlanModel(state,all.rows),op=all.rows.find(o=>o.kind==='fact.extract'&&catalogue.links.has(o.id)),rows=all.rows.filter(o=>o.seq<=op.seq),trace={...all,rows,current:op,nsCatalogue:catalogue},nodeId=catalogue.links.get(op.id);
+ assert.ok(!rows.some(o=>o.kind==='node.evaluate'&&o.object.id===nodeId));
+ const html=ui.northStarMarkup(state,trace,{playing:true});assert.ok(html.includes(`data-au-ns-node="${nodeId}" data-state="building"`));
+ const active=[...html.matchAll(/<li data-au-ns-plan-row="[^"]+" data-au-ns-plan-operations="([^"]+)" data-state="active"[^>]*>/g)].filter(match=>decodeMarkup(match[1]).includes(op.id));assert.equal(active.length,1);assert.match(html,/au-ns-plan-progress/);
+ const fact=state.facts.find(f=>f.fact_id===op.object.id);assert.ok(fact?.label);assert.ok(html.includes(fact.label));assert.ok(!html.includes(fact.label.split(' ').slice(0,2).join(' ')+'…'));
+ const readGroup=ui.northStarPlanGroups(catalogue.plans.get(nodeId)).find(g=>g.operations.some(o=>o.id===op.id)),later=all.rows.find(o=>o.seq>readGroup.operations.at(-1).seq&&catalogue.links.get(o.id)===nodeId);if(later){const after=ui.northStarMarkup(state,{...all,rows:all.rows.filter(o=>o.seq<=later.seq),current:later,nsCatalogue:catalogue},{});assert.match(after,/data-au-ns-plan-operations="[^"]+" data-state="done"><span class="au-ns-plan-status"[^>]*><svg/);}
+});
 test('a source header cited by the original locator is never hidden',()=>{const source={text:'Synthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-03-01\n\nBody'},pin={start_char:0,end_char:9};const preview=ui.northStarSourcePreview(source,pin);assert.equal(preview.offset,0);assert.equal(preview.date,null);assert.equal(preview.before+source.text.slice(0,9)+preview.after,source.text);});
 test('an unrelated passage cannot replace the selected node evidence',()=>{const c=fixture.cases[0],trace=completedTrace(c),state=c.envelope.state,baseline=ui.northStarCompletedModel(state,trace,'dh_scope'),other=trace.rows.find(o=>o.source&&ui.operationNodeId(o,state.graph,state,trace)==='dh_notice');assert.ok(other);const selected=ui.northStarCompletedModel(state,trace,'dh_scope',{operation:other.id});assert.equal(selected.operation.id,baseline.operation.id);});
 test('only node-bound missing evidence and references enter the local chain',()=>{const c=fixture.cases[0],state=structuredClone(c.envelope.state),trace=completedTrace(c);state.outcome.missing_evidence=[{label:'Current lease',node_ids:['dh_scope'],document_type:'new_doc'},{label:'Other',node_ids:['dh_notice'],document_type:'another'}];state.knowledge_uses=[{knowledge_id:'local',node_id:'dh_scope',version:1},{knowledge_id:'whole-procedure',version:2}];const m=ui.northStarCompletedModel(state,trace,'dh_scope');assert.deepEqual(m.missing.map(g=>g.label),['Current lease']);assert.deepEqual(m.references.map(r=>r.knowledge_id),['local']);assert.deepEqual(m.columns.map(c=>c.id),['facts','law','evidence','missing','reference']);});
@@ -66,4 +73,25 @@ test('Claim reader quotes a request only when it exists verbatim in the recorded
   const ids=state.source_descriptors.filter(s=>s.role==='customer_message').map(s=>s.artifact_id);assert.ok(state.acquired_sources.some(s=>ids.includes(s.artifact_id)&&s.text.includes(request)));
   const altered=structuredClone(state);altered.message='My specific request is: an invented remedy.';const rejected=ui.northStarCompletedMarkup(altered,trace,'sources',{});assert.doesNotMatch(rejected,/data-au-ns-request/);assert.match(rejected,/No facts from this source\./);
  }
+});
+
+for(const c of fixture.cases)test(`every recorded seq drives plan progress and matching spine/title: ${c.id}`,()=>{
+ const state=c.envelope.state,all=completedTrace(c),catalogue=ui.northStarPlanModel(state,all.rows),prefix=[],done=new Set();let nodeId=null;
+ for(const op of all.rows){
+  prefix.push(op);nodeId=catalogue.links.get(op.id)||nodeId;
+  const groups=ui.northStarPlanGroups(catalogue.plans.get(nodeId)||[]);
+  for(const group of groups){
+   const seqs=group.operations.map(o=>o.seq),before=seqs.filter(seq=>seq<op.seq).length;
+   for(const finished of [false,true]){const n=before+(finished&&seqs.includes(op.seq)?1:0),actual=ui.northStarPlanProgress(group,op.seq,finished);assert.equal(actual.state,n===seqs.length?'done':op.seq>=seqs[0]?'active':'waiting');assert.equal(actual.percent,100*n/seqs.length);assert.equal(actual.completed,n);}
+  }
+  const html=ui.northStarMarkup(state,{...all,rows:prefix,current:op,nsCatalogue:catalogue,nsPendingCompletion:op.kind==='step.complete'?op.id:null},{playing:true}),rings=[...html.matchAll(/data-au-ns-node="([^"]+)" data-state="building"/g)].map(m=>m[1]),node=state.graph.nodes.find(n=>n.node_id===nodeId);
+  const rendered=[...html.matchAll(/<li data-au-ns-plan-row="([^"]+)"[^>]*data-state="([^"]+)"[^>]*>([\s\S]*?)<\/li>/g)];assert.equal(rendered.length,groups.length);
+  for(const row of rendered){const group=groups.find(g=>g.operations.at(-1).id===row[1]),seqs=group.operations.map(o=>o.seq),completed=seqs.filter(seq=>seq<op.seq).length,want=completed===seqs.length?'done':op.seq>=seqs[0]?'active':'waiting';assert.equal(row[2],want,`row at seq ${op.seq}`);if(want==='active'){const bar=+row[3].match(/--au-plan-progress:([0-9.]+)%/)[1];assert.equal(bar,100*completed/seqs.length);}}
+  assert.deepEqual(rings,node&&!done.has(nodeId)?[nodeId]:[],`seq ${op.seq}`);
+  if(rings.length)assert.ok(html.includes(`Building “${ui.northStarQuestion(node)}”`),`title/ring at seq ${op.seq}`);
+  if(op.kind==='step.complete'&&op.result.status==='completed')done.add(op.object.id);
+ }
+});
+test('unlabelled fact quotes retain the exact full DOM text and hover title',()=>{
+ for(const c of fixture.cases){const state=c.envelope.state;for(const op of completedTrace(c).rows.filter(o=>o.kind==='fact.extract'&&o.source&&!state.facts.some(f=>f.fact_id===o.object.id))){const html=ui.northStarFactCopy(state,op),quoted=html.match(/data-au-ns-fact-quote>([\s\S]*?)<\/span>/),title=html.match(/title="([^"]+)"/);assert.equal(decodeMarkup(quoted[1]),op.source.quote);assert.equal(decodeMarkup(title[1]),op.source.quote);}}
 });
