@@ -1422,7 +1422,7 @@
     const id = operation?.id || operation?.event_sha256 || '';
     const action = ({'source.open':'opens this document','span.read':'reads the marked words','phrase.match':'finds matching wording','fact.extract':'finds a possible fact','verification.check':'checks this fact','document.check':'checks this document','knowledge.reuse':'reuses saved steps','knowledge.used':'reuses saved steps','decision':'records the result'})[operation?.kind] || shown.action;
     const recorded = h(operation ? `${action}.` : 'has no recorded action yet.');
-    return `<div class="au-now" data-au-now-id="${h(id)}"><span class="au-now-label">Now</span> ${roleBadge(shown.roleId)} <span data-au-now-copy>${recorded}</span> <span data-au-now-result>${h(recordedResultLabel(operation,state))}</span> ${operation ? recordButton('Details',trace?.current ? 'operation' : 'event',trace?.current ? operation.id : operation.seq) : ''}</div>`;
+    return `<div class="au-now" data-au-now-id="${h(id)}"><span class="au-now-label">Now</span> ${roleBadge(shown.roleId)}${trace?.current ? `<span class="au-working-dot" data-au-working-dot="${h(trace.current.id)}" aria-hidden="true"></span>` : ''} <span data-au-now-copy>${recorded}</span> <span data-au-now-result>${h(recordedResultLabel(operation,state))}</span> ${operation ? recordButton('Details',trace?.current ? 'operation' : 'event',trace?.current ? operation.id : operation.seq) : ''}</div>`;
   }
   function stepRole(node, state, trace) {
     const operation = !trace?.finished && trace?.current?.object && operationNodeId(trace.current,operationStageGraph(trace,state),state,trace) === node.node_id ? trace.current : null;
@@ -1510,7 +1510,7 @@
     const chosen = panels.some(([id]) => id === detail) ? detail : 'step', publicationFocus = presentation.attention && (!presentation.inspectionHold || presentation.attention.retained) && formingPublication(state,events,presentation.attention), forming = chosen === 'step' && (formingWork(state,presentation) || Boolean(publicationFocus) || Boolean(presentation.operations));
     const body = chosen === 'step' ? forming ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,presentation.attention,false,presentation.operations,presentation.chosenNode) + (!state.graph && !presentation.operations ? intakeMarkup(state,projection) : '') : !state.graph ? openingContentMarkup(state,projection) + intakeMarkup(state,projection) : referenceAssessmentComplete(state) ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,undefined,true,null,presentation.chosenNode) : formingKnowledgeMarkup(state,presentation.knowledge,true) + inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Document checklist</h2>${state.graph ? obligationMarkup(state,selected,undefined,context) + unassignedSourcesMarkup(state) : intakeMarkup(state,projection)}${canWrite && state.revision > 0 ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events,{claims:presentation.claims,knowledge:presentation.knowledge}) : chosen === 'sources' ? sourcesMarkup(state,!canWrite,projection) : `${operationHistoryMarkup(presentation.operations)}${activityMarkup(state,events,projection)}${presentation.replay ? recordButton('Playback details','replay') : ''}`;
     const constraintMarkup = `<p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${failure ? recordButton('Details','outcome') : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' Assessment only; no external action taken.' : ''} <span class="au-read-state" data-au-read-state-label></span></p>`;
-    return `<section class="au-quiet-claim" data-au-tour="${Boolean(presentation.tour)}" data-au-story="${h(presentation.storyPhase || 'work')}" data-au-playing="${Boolean(presentation.playing)}" data-au-operation-count="${operationCount}" data-au-operation-position="${operationIndex}" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"${stageView ? ' data-au-stage-view="true"' : ''}><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p>${claimHeadingMarkup(state,'',presentation.storyPhase === 'opening' ? presentation.tour : null)}${presentation.tour ? '' : `<details class="au-claim-meta" data-au-disclosure="claim-meta"><summary>${['featured','canonical_original'].includes(claimOrigin(state,presentation.origin)) ? 'Fictional case' : 'Case details'}</summary><p class="au-reference-mode" data-au-operation-mode>${h(claimModeLine(state,{...presentation,events}))}</p>${state.outcome && !failure ? constraintMarkup : ''}</details>`}${state.outcome || presentation.tour || failure ? '' : constraintMarkup}</div>${presentation.tour ? '' : `<div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? startControlMarkup(presentation.availability,presentation.pendingStart) : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' && presentation.replay?.current_revision === 0 ? `<a class="au-link" href="#autonomous/claim/${key(state.claim_id)}" data-au-original-intake>Original intake</a>` : ''}${presentation.mode === 'replay' ? recordButton(transportTrace?.savedFallback || transportTrace?.replayUnavailable ? 'Replay choices' : 'Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}"${chosen === 'activity' ? ' aria-controls="auPanel-activity"' : ''}>History</button></div>`}</header>${presentation.tour ? demoTransportMarkup(presentation.tour,{...presentation,modeLine:claimModeLine(state,{...presentation,events})},stageView ? stagePlaceLabel(state,trace) : '') : ''}${presentation.storyPhase === 'handoff' && presentation.tour?.cases[presentation.tour.index+1] ? `<p class="au-story-handoff" data-au-story-handoff>Next case: ${h(caseLabel(presentation.tour.cases[presentation.tour.index+1].claim_id).primary)}</p>` : ''}${failure ? constraintMarkup : ''}${!stageView || trace?.current && !trace.finished ? nowMarkup(state,events,presentation) : ''}${!stageView && presentation.mode === 'replay' && resultReached(state,presentation) ? knowledgePayoffMarkup(state,presentation.knowledge) : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}"${chosen === id ? ` aria-controls="auPanel-${id}"` : ''}>${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${!stageView && chosen === 'step' && !active(state.status) && state.outcome?.summary ? `<div class="au-assessment-conclusion">${outcomeSummaryMarkup(state,state.outcome,legalBasisMarkup(state))}</div>` : !stageView && chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div>${stageView && !trace?.unrun ? transport : ''}</div></section></section>`;
+    return `<section class="au-quiet-claim" data-au-tour="${Boolean(presentation.tour)}" data-au-story="${h(presentation.storyPhase || 'work')}" data-au-playing="${Boolean(presentation.playing)}" data-au-operation-count="${operationCount}" data-au-operation-position="${operationIndex}" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"${stageView ? ' data-au-stage-view="true"' : ''}><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button></p>${claimHeadingMarkup(state,'',presentation.storyPhase === 'opening' ? presentation.tour : null)}${presentation.tour ? '' : `<details class="au-claim-meta" data-au-disclosure="claim-meta"><summary>${['featured','canonical_original'].includes(claimOrigin(state,presentation.origin)) ? 'Fictional case' : 'Case details'}</summary><p class="au-reference-mode" data-au-operation-mode>${h(claimModeLine(state,{...presentation,events}))}</p>${state.outcome && !failure ? constraintMarkup : ''}</details>`}${state.outcome || presentation.tour || failure ? '' : constraintMarkup}</div>${presentation.tour ? '' : `<div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? startControlMarkup(presentation.availability,presentation.pendingStart) : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' && presentation.replay?.current_revision === 0 ? `<a class="au-link" href="#autonomous/claim/${key(state.claim_id)}" data-au-original-intake>Original intake</a>` : ''}${presentation.mode === 'replay' ? recordButton(transportTrace?.savedFallback || transportTrace?.replayUnavailable ? 'Replay choices' : 'Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}"${chosen === 'activity' ? ' aria-controls="auPanel-activity"' : ''}>History</button></div>`}</header>${presentation.tour ? demoTransportMarkup(presentation.tour,{...presentation,modeLine:claimModeLine(state,{...presentation,events}),progress:completedStepFraction(state)},stageView ? stagePlaceLabel(state,trace) : '') : ''}${presentation.storyPhase === 'handoff' && presentation.tour?.cases[presentation.tour.index+1] ? `<p class="au-story-handoff" data-au-story-handoff>Next case: ${h(caseLabel(presentation.tour.cases[presentation.tour.index+1].claim_id).primary)}</p>` : ''}${failure ? constraintMarkup : ''}${!stageView || trace?.current && !trace.finished ? nowMarkup(state,events,presentation) : ''}${!stageView && presentation.mode === 'replay' && resultReached(state,presentation) ? knowledgePayoffMarkup(state,presentation.knowledge) : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}"${chosen === id ? ` aria-controls="auPanel-${id}"` : ''}>${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${!stageView && chosen === 'step' && !active(state.status) && state.outcome?.summary ? `<div class="au-assessment-conclusion">${outcomeSummaryMarkup(state,state.outcome,legalBasisMarkup(state))}</div>` : !stageView && chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div>${stageView && !trace?.unrun ? transport : ''}</div></section></section>`;
   }
 
   function replayIdentityMarkup(record) {
@@ -2324,7 +2324,7 @@
     const total = tour.cases.length, position = tour.index + 1, next = tour.cases[tour.index+1], domain = DOMAINS.find(item => item.id === row.domain)?.label || '';
     const separator = '<span class="au-demo-separator" aria-hidden="true">·</span>';
     const toggle = presentation.playing ? '<button type="button" class="au-demo-control" data-au-demo-stop>Pause</button>' : presentation.paused ? '<button type="button" class="au-demo-control" data-au-demo-resume>Resume</button>' : '';
-    return `<div class="au-demo-transport" role="group" aria-label="${h(`${DEMO_COLLECTIONS[tour.collection] || 'Demonstration'} · case ${position} of ${total}`)}" data-au-demo-transport data-au-demo-collection="${h(tour.collection)}" data-au-demo-position="${position}"><span class="au-demo-position">${position}/${total}</span>${separator}<span class="au-demo-domain">${h(domain)}</span>${place ? `${separator}<span class="au-demo-step" data-au-demo-step>${h(place)}</span>` : ''}${toggle ? separator + toggle : ''}${separator}<button type="button" class="au-demo-control" data-au-demo-skip aria-describedby="auDemoNext">Skip</button>${separator}<span class="au-demo-next" id="auDemoNext">Next: ${h(next ? caseLabel(next.claim_id).primary : 'Knowledge')}</span><span class="au-demo-utilities"><button type="button" class="au-demo-control" data-au-inspect="demo">${presentation.operations?.savedFallback || presentation.operations?.replayUnavailable ? 'Replay choices' : 'Choose case'}</button><button type="button" class="au-demo-control" data-au-detail="activity">History</button>${presentation.modeLine ? `<span class="au-demo-mode" data-au-operation-mode title="${h(presentation.modeLine)}">${h(presentation.modeLine.startsWith('Original intake') ? 'Not started' : presentation.modeLine.split(' · ')[0])}${presentation.modeLine.includes('Fictional case') ? ' · Fictional case' : ''}</span>` : ''}</span></div>`;
+    return `<div class="au-demo-transport" role="group" aria-label="${h(`${DEMO_COLLECTIONS[tour.collection] || 'Demonstration'} · case ${position} of ${total}`)}" data-au-demo-transport data-au-demo-collection="${h(tour.collection)}" data-au-demo-position="${position}"><span class="au-demo-position">${position}/${total}</span>${separator}<span class="au-demo-domain">${h(domain)}</span>${place ? `${separator}<span class="au-demo-step" data-au-demo-step>${h(place)}</span>` : ''}${toggle ? separator + toggle : ''}${separator}<button type="button" class="au-demo-control" data-au-demo-skip aria-describedby="auDemoNext">Skip</button>${separator}<span class="au-demo-next" id="auDemoNext">Next: ${h(next ? caseLabel(next.claim_id).primary : 'Knowledge')}</span><span class="au-demo-utilities"><button type="button" class="au-demo-control" data-au-inspect="demo">${presentation.operations?.savedFallback || presentation.operations?.replayUnavailable ? 'Replay choices' : 'Choose case'}</button><button type="button" class="au-demo-control" data-au-detail="activity">History</button>${presentation.modeLine ? `<span class="au-demo-mode" data-au-operation-mode title="${h(presentation.modeLine)}">${h(presentation.modeLine.startsWith('Original intake') ? 'Not started' : presentation.modeLine.split(' · ')[0])}${presentation.modeLine.includes('Fictional case') ? ' · Fictional case' : ''}</span>` : ''}</span><span class="au-demo-progress" aria-hidden="true"><span data-au-progress style="transform:scaleX(${Math.max(0,Math.min(1,presentation.progress || 0))})"></span></span></div>`;
   }
   function resultReached(state, presentation = {}) {
     const trace = presentation.operations, replay = presentation.replay;
@@ -2409,6 +2409,35 @@
   function operationChoreographyTiming(operation,trace) {
     return trace?.openingConsequenceId === operation?.id ? {read:360,transfer:300} : {read:Math.min(1000,operationReadDuration(operation)),transfer:600};
   }
+  // Cues carry the identity of an already checked operation. A cited excerpt may
+  // show a smaller part of an ancestor read, but cannot claim an unrelated read.
+  function operationCues(operation, trace, {reducedMotion = false} = {}) {
+    if (reducedMotion || !operation?.id || !list(trace?.rows).some(row => row.id === operation.id && row.kind === operation.kind)) return [];
+    const cue = (name, trigger = operation) => ({name,kind:trigger.kind,operation_id:trigger.id});
+    if (operation.kind === 'span.read' && operation.source?.quote) return [cue('reading')];
+    if (operation.kind === 'fact.extract' && operation.source?.quote) {
+      const rows = new Map(trace.rows.map(row => [row.id,row])), seen = new Set(), pending = [...list(operation.cause_ids)];
+      let read = null;
+      while (pending.length) {
+        const id = pending.shift(); if (seen.has(id)) continue; seen.add(id);
+        const row = rows.get(id); if (!row) continue;
+        const pin = row.source, source = operation.source;
+        if (row.kind === 'span.read' && pin && pin.artifact_id === source.artifact_id && pin.sha256 === source.sha256 && pin.text_sha256 === source.text_sha256 && pin.start_char <= source.start_char && pin.end_char >= source.end_char) { read = row; break; }
+        pending.push(...list(row.cause_ids));
+      }
+      return [...(read ? [cue('reading',read)] : []),cue('thread'),cue('landing')];
+    }
+    if (operation.kind === 'verification.check' && operation.result?.accepted === true && operation.object?.type === 'fact') return [cue('confirmation')];
+    if (operation.kind === 'document.check' && operation.result?.assessment === 'sufficient' && operation.source) return [cue('document')];
+    if (operation.kind === 'step.complete' && operation.result?.status === 'completed') return [cue('completion'),cue('connector'),cue('progress')];
+    if (operation.kind === 'decision' && operation.result?.summary) return [cue('answer')];
+    if (operation.kind === 'knowledge.reuse' && Number.isSafeInteger(operation.input?.version)) return [cue('reuse')];
+    return [];
+  }
+  function completedStepFraction(state) {
+    const nodes = list(state.graph?.nodes);
+    return nodes.length ? nodes.filter(node => list(state.evaluation?.nodes).some(row => row.node_id === node.node_id && DONE_NODE_STATES.includes(row.execution_state))).length / nodes.length : 0;
+  }
   function operationReading(trace) {
     const operation = trace?.current;
     if (!operation) return null;
@@ -2486,7 +2515,7 @@
   function stageNodeContents(node, state, trace, working, map = false, plannedGraph = null, reuse = null) {
     const graph = plannedGraph || working?.graph || state.graph, rows = list(trace?.rows);
     const facts = [...(trace?.dockedFacts?.values() || [])].filter(row => row.node === node.node_id && (row.observed || list(state.facts).some(fact => fact.fact_id === row.operation.object.id)));
-    const chips = facts.map(row => { const span = stageFactSpan(row.operation,true); return `<button type="button" class="au-stage-fact" data-au-full-quote="${h(span.quote)}" data-au-fact-state="${row.operation.result.verification_required === false && list(state.facts).some(fact => fact.fact_id === row.operation.object.id) ? 'accepted' : 'observed'}" data-au-stage-fact="${h(row.operation.object.id)}" data-au-current-fact="${trace?.current?.id === row.operation.id}"${!trace?.finished && trace?.recentLanding === row.operation.id ? ' data-au-landed-recent' : ''} data-au-fact-operation="${h(row.operation.id)}" data-au-dock-phase="${trace?.finished ? 'landed' : trace?.dockPhases?.get(row.operation.id) || 'landed'}" data-au-fact-start-char="${span.start_char}" data-au-fact-end-char="${span.end_char}" data-au-inspect="operation" data-au-record-id="${h(row.operation.id)}" ><span>${h(span.quote)}</span></button>`; }).join('');
+    const chips = facts.map(row => { const span = stageFactSpan(row.operation,true); return `<button type="button" class="au-stage-fact" data-au-full-quote="${h(span.quote)}" data-au-fact-state="${row.operation.result.verification_required === false && list(state.facts).some(fact => fact.fact_id === row.operation.object.id) ? 'accepted' : 'observed'}" data-au-stage-fact="${h(row.operation.object.id)}" data-au-current-fact="${trace?.current?.id === row.operation.id}"${trace?.recentFact === row.operation.object.id ? ' data-au-landed-recent' : ''}${trace?.confirmedFacts?.has(row.operation.object.id) ? ' data-au-fact-confirmed="true"' : ''} data-au-fact-operation="${h(row.operation.id)}" data-au-dock-phase="${trace?.finished ? 'landed' : trace?.dockPhases?.get(row.operation.id) || 'landed'}" data-au-fact-start-char="${span.start_char}" data-au-fact-end-char="${span.end_char}" data-au-inspect="operation" data-au-record-id="${h(row.operation.id)}" ><span>${h(span.quote)}</span></button>`; }).join('');
     const accepted = new Map(list(state.evaluation?.documents).map(row => [row.document_type,row]));
     const observed = trace && stageDocumentIndex(rows);
     const activeRequirements = !plannedGraph && (trace ? [...observed.requirements.values()].reverse().filter(row => row.result.activation === 'true' && list(row.result.active_node_ids).includes(node.node_id) && list(node.document_types).includes(row.object.id)) : list(state.obligations).filter(row => requiringNodeIds(row,accepted.get(row.document_type)).includes(node.node_id))) || [];
@@ -2500,7 +2529,7 @@
       const source = checked && citation && (trace?.sources.get(citation.artifact_id) || list(state.acquired_sources).find(row => row.artifact_id === citation.artifact_id));
       const preview = citation && stageFactSpan(check || {source:citation,object:{id:type}},true);
       const dockPhase = trace?.finished ? 'landed' : trace?.dockPhases?.get(check?.id) || 'landed';
-      return `<div class="au-stage-slot" data-au-document="${h(type)}" data-au-stage-document="${h(type)}" data-au-document-active="${!requirement.planned}" data-au-document-planned="${Boolean(requirement.planned)}" data-au-recipe-known="${Boolean(reuse && list(reuse.recipes).some(recipe=>recipe.document_type===type))}" data-au-document-supported="${Boolean(source)}" data-au-document-checked="${Boolean(source) && dockPhase === 'landed'}" data-au-document-focused="${trace?.current?.object.id === type || trace?.current?.object.id === `fact:${type}`}"${check && !trace?.finished && trace?.recentLanding === check.id && dockPhase === 'landed' ? ' data-au-landed-recent' : ''}${requirement.id ? ` data-au-working-document="${h(type)}" data-au-operation-id="${h(requirement.id)}" data-au-working-graph-sha="${h(requirement.result.graph_sha256)}" data-au-working-evaluation-sha="${h(requirement.result.evaluation_sha256)}"` : ''}>${source ? '' : `<span>${h(label)}${requirement.planned ? '' : doc?.review_state === 'missing' ? ' — missing' : ' — to check'}</span>`}<div class="au-stage-landing">${source ? `<button type="button" class="au-stage-thumbnail" data-au-dock-phase="${dockPhase}" data-au-source="${h(source.artifact_id)}" data-au-source-origin="${check ? `operation:${h(check.id)}` : `requirement:${h(requirementIdentity(obligation))}`}" data-au-citation="${h(JSON.stringify(citation))}"${check ? ` data-au-check-operation="${h(check.id)}"` : ''} aria-label="${h(operationSourceTitle(source))} · Supported by documents"><span class="au-stage-source-name">${h(operationSourceTitle(source))}</span><span class="au-stage-source-check">Received ✓</span></button>` : ''}</div></div>`;
+      return `<div class="au-stage-slot" data-au-document="${h(type)}" data-au-stage-document="${h(type)}" data-au-document-active="${!requirement.planned}" data-au-document-planned="${Boolean(requirement.planned)}" data-au-recipe-known="${Boolean(reuse && list(reuse.recipes).some(recipe=>recipe.document_type===type))}" data-au-document-supported="${Boolean(source)}" data-au-document-checked="${Boolean(source) && dockPhase === 'landed'}" data-au-document-focused="${trace?.current?.object.id === type || trace?.current?.object.id === `fact:${type}`}"${check && !trace?.finished && trace?.recentLanding === check.id && dockPhase === 'landed' ? ' data-au-landed-recent' : ''}${requirement.id ? ` data-au-working-document="${h(type)}" data-au-operation-id="${h(requirement.id)}" data-au-working-graph-sha="${h(requirement.result.graph_sha256)}" data-au-working-evaluation-sha="${h(requirement.result.evaluation_sha256)}"` : ''}>${source ? '' : `<span>${h(label)}${requirement.planned ? '' : doc?.review_state === 'missing' ? ' — missing' : ' — to check'}</span>${requirement.planned ? '' : '<span class="au-stage-source-check au-document-needed">Needed</span>'}`}<div class="au-stage-landing">${source ? `<button type="button" class="au-stage-thumbnail" data-au-dock-phase="${dockPhase}" data-au-source="${h(source.artifact_id)}" data-au-source-origin="${check ? `operation:${h(check.id)}` : `requirement:${h(requirementIdentity(obligation))}`}" data-au-citation="${h(JSON.stringify(citation))}"${check ? ` data-au-check-operation="${h(check.id)}"` : ''} aria-label="${h(operationSourceTitle(source))} · Supported by documents"><span class="au-stage-source-name">${h(operationSourceTitle(source))}</span><span class="au-stage-source-check">Received ✓</span></button>` : ''}</div></div>`;
     }).join('');
     return chips+(slots?`<div class="au-stage-documents">${slots}</div>`:'');
   }
@@ -2522,7 +2551,7 @@
     return `<div class="au-stage-knowledge-moment" data-au-knowledge-moment="${h(moment.event.event_sha256)}" data-au-knowledge-use="${h(moment.pin.knowledge_sha256)}"><p>Procedure reused · ${knowledgeLink(moment.pin,`Version ${moment.use.version}`)} · ${list(moment.recipes).length} known document checks${Number.isSafeInteger(moment.use.avoided_rule_compilations)?` · ${moment.use.avoided_rule_compilations===1?'Reused once instead of rebuilding':`Reused ${moment.use.avoided_rule_compilations} times instead of rebuilding`}`:''} · ${recordButton('Reuse receipt','event',String(moment.event.seq))}</p></div>`;
   }
   function operationStageMarkup(state, projection, selected, trace, settled = false, knowledge = {}, inspection = {}) {
-    const reuseMoment=recordedReuseMoment(state,trace,knowledge);
+    const reuseMoment=recordedReuseMoment(state,trace,knowledge), retainedReuse=trace?.cueReuse;
     const workingState = workingProcessState(trace), actual = workingState?.graph?.family !== 'incoming_packet' ? workingState : null;
     const availablePlan = trace?.plannedProcess || trace?.releasePlan;
     const planned = !settled && !trace?.finished && (!actual?.graph && (!state.graph || state.graph.family === 'incoming_packet' || state === trace?.releasePlan)) && availablePlan?.claim_id === state.claim_id ? availablePlan : null;
@@ -2541,7 +2570,7 @@
     const planAttributes = planned?.release ? ` data-au-release-plan="${h(planned.release.artifact_sha256)}" data-au-release-profile-sha="${h(planned.release.profile_sha256)}" data-au-release-catalog-sha="${h(planned.release.catalog_sha256)}" data-au-release-rule-pack-sha="${h(planned.release.rule_pack_sha256)}" data-au-release-authority="none"` : planned ? ` data-au-planned-process="${h(planned.head_state_sha256)}" data-au-planned-head-revision="${planned.head_revision}" data-au-planned-graph-sha="${h(graph.graph_sha256)}" data-au-planned-rule-pack-sha="${h(planned.rule_pack_sha256)}" data-au-planned-knowledge="${h(planned.procedure?.knowledge_id || '')}" data-au-planned-version="${planned.procedure?.version || ''}" data-au-planned-definition-sha="${h(planned.procedure?.definition_sha256 || '')}" data-au-planned-authority="none"` : '';
     const planLabel = planned?.release ? trace?.unrun ? h(language.copy.procedureNotRun) : 'Procedure outline' : planned?.procedure ? knowledgeLink(planned.procedure,`${procedureLabel(planned.procedure)} · Version ${planned.procedure.version}`) : 'Recorded procedure · planned steps';
 
-    return `<section class="au-forming-work au-operation-stage" data-au-stage-phase="${map ? 'map' : 'source'}" data-au-forming="${!map}"${prefixIdentity}><div class="au-forming-layout au-stage-layout">${!map && sourceView ? `<div class="au-forming-reading au-stage-source au-stage-unbound-source">${sourceView}</div>` : ''}${graph ? `<section class="au-forming-process au-evidence-process au-stage-process" aria-label="${planned?.release ? 'Procedure outline' : planned ? 'Planned recorded process' : 'Case process'}"${planAttributes}${scope}>${trace?.unrun ? `<p class="au-stage-plan-label">${planLabel}</p>` : ''}${graphMarkup(process,currentNode,working ? {} : projection,{overview:true,working,stage:{state,trace,map,planned:Boolean(planned),reuse:reuseMoment,excerpt:''}})}</section>` : ''}</div>${map && outcome?.summary ? `<div class="au-stage-outcome" data-au-stage-outcome>${outcomeSummaryMarkup(state,outcome,legalBasisMarkup({...state,outcome})+(use ? `<p class="au-stage-reuse">Reused procedure · ${knowledgeLink(use,`${procedureLabel(use)} · Version ${use.version || use.version_id}`,state.claim_id)}. This case still needed its own proof.</p>` : '')+(!use ? knowledgePayoffMarkup(state,knowledge) : ''))}</div>` : ''}${map && inspection.chosen && inspection.chosen === currentNode && list(state.graph?.nodes).some(row => row.node_id === currentNode) ? `<section class="au-stage-step-detail" data-au-stage-step-detail="${h(currentNode)}" aria-label="Selected step">${stepDetailMarkup(state,currentNode,projection,inspection.context || {})}<p class="au-stage-step-back"><button type="button" class="au-link" data-au-back-process>Back to the steps</button></p></section>` : ''}</section>`;
+    return `<section class="au-forming-work au-operation-stage" data-au-stage-phase="${map ? 'map' : 'source'}" data-au-forming="${!map}"${prefixIdentity}><div class="au-forming-layout au-stage-layout">${!map && sourceView ? `<div class="au-forming-reading au-stage-source au-stage-unbound-source">${sourceView}</div>` : ''}${graph ? `<section class="au-forming-process au-evidence-process au-stage-process" aria-label="${planned?.release ? 'Procedure outline' : planned ? 'Planned recorded process' : 'Case process'}"${planAttributes}${scope}>${retainedReuse ? `<p class="au-reuse-cue" data-au-reuse-cue="${h(retainedReuse.operation)}">Reused · ${h(procedureLabel(retainedReuse.pin))} v${retainedReuse.pin.version}</p>` : ''}${trace?.unrun ? `<p class="au-stage-plan-label">${planLabel}</p>` : ''}${graphMarkup(process,currentNode,working ? {} : projection,{overview:true,working,stage:{state,trace,map,planned:Boolean(planned),reuse:reuseMoment,excerpt:''}})}</section>` : ''}</div>${map && outcome?.summary ? `<div class="au-stage-outcome" data-au-stage-outcome><span class="au-answer-rule" aria-hidden="true"></span>${outcomeSummaryMarkup(state,outcome,legalBasisMarkup({...state,outcome})+(use ? `<p class="au-stage-reuse">Reused procedure · ${knowledgeLink(use,`${procedureLabel(use)} · Version ${use.version || use.version_id}`,state.claim_id)}. This case still needed its own proof.</p>` : '')+(!use ? knowledgePayoffMarkup(state,knowledge) : ''))}</div>` : ''}${map && inspection.chosen && inspection.chosen === currentNode && list(state.graph?.nodes).some(row => row.node_id === currentNode) ? `<section class="au-stage-step-detail" data-au-stage-step-detail="${h(currentNode)}" aria-label="Selected step">${stepDetailMarkup(state,currentNode,projection,inspection.context || {})}<p class="au-stage-step-back"><button type="button" class="au-link" data-au-back-process>Back to the steps</button></p></section>` : ''}</section>`;
   }
   function operationRoutePreference(fragment = '', search = '') {
     const query = fragment.includes('?') ? fragment.slice(fragment.indexOf('?')+1) : '';
@@ -2561,6 +2590,8 @@
     // The source acquisition, scans, phrase matches and evaluation machinery
     // remain in the verified native stream. One consequence owns one visible
     // excerpt read: the first actual fact, sufficient source check or outcome.
+    if (operation.kind === 'step.complete') return operation.result?.status === 'completed';
+    if (operation.kind === 'verification.check') return operation.result?.accepted === true && Boolean(trace.dockedFacts?.has(operation.object?.id));
     if (!['fact.extract','document.check','decision','knowledge.reuse'].includes(operation.kind)) return false;
     if (operation.kind === 'fact.extract' && !operation.source) return false;
     if (operation.kind === 'document.check' && (!operation.source || operation.result.assessment !== 'sufficient')) return false;
@@ -3510,6 +3541,9 @@
       const arrival = sameClaim && host.querySelector('[data-au-arrival]') || arrivalForms.get(current.claim_id), focusInArrival = arrival?.contains?.(focused);
       // Moving the original node keeps native FileList, entered text and retry state.
       arrival?.remove?.();
+      const reuseOperation = displayedTrace?.finished && displayedTrace.verifiedResult ? list(displayedTrace.rows).findLast(row => row.kind === 'knowledge.reuse') : displayedTrace?.current;
+      const cueReuse = recordedReuseMoment(displayedState,reuseOperation && displayedTrace ? {...displayedTrace,current:reuseOperation,finished:false} : displayedTrace,knowledgeCache?.value || {});
+      if (cueReuse && !operationPeek) displayedTrace.cueReuse = {operation:reuseOperation.id,pin:cueReuse.pin};
       host.innerHTML = workMarkup(displayedState,displayedProjection,operationPeek?.node || selected,operationPeek?.events || history,detail,evidenceContext,{mode:presentationMode,readOnly:publicReadOnly,chosenNode:operationPeek ? null : chosenNode,origin:claims.find(row => row.claim_id === displayedState.claim_id)?.origin,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),operations:displayedTrace,transportOperations:operationTrace,inspectionIndex:operationPeek?.index,operationOpening:(demoSession || pausedPresentation)?.mode === 'operations',playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,storyPhase:operationPeek ? '' : (demoSession || pausedPresentation)?.storyPhase,tour:activeTour(),claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
       const handoff = host.querySelector('[data-au-story-handoff]'), answer = host.querySelector('[data-au-stage-outcome]');
       if (handoff && answer) answer.append?.(handoff);
@@ -4192,12 +4226,14 @@
       if (Math.abs(delta) > 4) root.scrollBy?.({top:delta,behavior:'instant'});
     }
     function cancelStageRead() {
+      stageChoreography?.finalize?.();
       stageScrollCancel?.(); stageScrollCancel = null;
       if (stageMotionTimer) root.clearTimeout(stageMotionTimer); stageMotionTimer = null;
       if (factTokenAnimation?.playState === 'running') factTokenOperation = null;
       attentionAnimation?.cancel(); factTokenAnimation?.cancel(); factToken?.remove?.(); attentionMarker?.remove?.();
       for (const animation of stageReadAnimations) animation.cancel(); stageReadAnimations = [];
-      for (const trail of host.querySelectorAll('[data-au-read-trail]')) trail.remove();
+      for (const trail of host.querySelectorAll('[data-au-read-trail],[data-au-cue-artifact]')) trail.remove();
+      host.removeAttribute?.('data-au-cue-active');
       for (const chip of host.querySelectorAll('[data-au-fact-docking]')) { chip.style.opacity = ''; chip.removeAttribute('data-au-fact-docking'); }
       if (stageChoreography && !stageChoreography.complete) { stageChoreography.cancelled=true; stageChoreography.resolve(); }
     }
@@ -4216,7 +4252,106 @@
       fallback=root.setTimeout(() => { const top=stageScrollTarget?.pane === pane ? stageScrollTarget.top : pane.scrollTop; pane.scrollTo?.({top,behavior:'instant'}); root.clearTimeout(quiet); quiet=root.setTimeout(finish,0); },1200);
       stageScrollCancel=clear;
     }
+    function positionDesktopCues(animate = true) {
+      const trace = operationTrace, operation = trace?.finished && trace.verifiedResult ? list(trace.rows).findLast(row => row.kind === 'decision') : trace?.current;
+      if (!trace || !operation || detail !== 'step' || doc.hidden || inspectionHold || !demoSession || trace.cueTransition) return;
+      if (operation.kind === 'decision' && !trace.finished) return;
+      if (stageChoreography?.operation === operation && !stageChoreography.cancelled && !stageChoreography.complete) return;
+      cancelStageRead();
+      const canvas = host.querySelector('[data-au-canvas]'), mark = host.querySelector('[data-au-operation-span]');
+      const fact = [...host.querySelectorAll('[data-au-stage-fact]')].find(el => el.dataset.auStageFact === operation.object.id);
+      const document = [...host.querySelectorAll('[data-au-check-operation]')].find(el => el.dataset.auCheckOperation === operation.id);
+      const node = [...host.querySelectorAll('[data-au-node]')].find(el => el.dataset.auNode === operation.object.id);
+      const answer = host.querySelector('[data-au-stage-outcome]'), reuse = host.querySelector('[data-au-reuse-cue]');
+      const dock = operation.kind === 'document.check' ? document : fact;
+      const land = () => {
+        if (!dock || !['fact.extract','document.check'].includes(operation.kind)) return;
+        trace.dockPhases ||= new Map(); trace.dockPhases.set(operation.id,'landed'); dock.dataset.auDockPhase='landed';
+        if (operation.kind === 'fact.extract') {
+          trace.recentFact = operation.object.id;
+          for (const prior of host.querySelectorAll('.au-stage-fact[data-au-landed-recent]')) prior.removeAttribute('data-au-landed-recent');
+          fact.setAttribute('data-au-landed-recent','');
+        } else {
+          document.closest('[data-au-stage-document]')?.setAttribute('data-au-document-checked','true');
+          const label = document.querySelector('.au-stage-source-check'); if (label) label.textContent='Received ✓';
+        }
+      };
+      const cues = operationCues(operation,trace,{reducedMotion:Boolean(reduced?.matches || !animate)});
+      const ready = operation.kind === 'step.complete' ? node?.dataset.auNodeState === 'done' : operation.kind === 'knowledge.reuse' ? Boolean(reuse) : true;
+      trace.cuePresented ||= new Set();
+      if (!cues.length || !ready || trace.cuePresented.has(operation.id)) { land(); if (stageChoreography?.operation === operation) { stageChoreography.complete=true; stageChoreography.resolve(); } return; }
+      trace.cuePresented.add(operation.id);
+      const job = {operation,complete:false,cancelled:false,finalize:land}; job.promise=new Promise(resolve => { job.resolve=resolve; }); stageChoreography=job;
+      const valid = () => !job.cancelled && !disposed && operationTrace === trace && (trace.current === operation || trace.finished && operation.kind === 'decision') && !doc.hidden && !inspectionHold && !reduced?.matches;
+      const run = async (element,frames,duration,cue) => {
+        if (!element?.animate || !valid()) return false;
+        host.dataset.auCueActive=cue.name; host.dataset.auCueOperation=cue.operation_id; host.dataset.auCueKind=cue.kind;
+        const animation=element.animate(frames,{duration,easing:'cubic-bezier(.2,.65,.3,1)',fill:'none'}); stageReadAnimations.push(animation);
+        try { await animation.finished; } catch (_) { return false; }
+        return valid();
+      };
+      const svgElement = tag => doc.createElementNS('http://www.w3.org/2000/svg',tag);
+      // Batch geometry reads once before adding the thread. Its vertical leg
+      // uses the gutter beside the step, never the title's text rectangle.
+      const area=canvas?.getBoundingClientRect(), sourceRects=mark ? [...mark.getClientRects()] : [], source=sourceRects.at(-1), destination=fact?.getBoundingClientRect();
+      const targetNode=fact?.closest('.au-stage-step')?.querySelector('[data-au-node]')?.getBoundingClientRect();
+      const sourceCard=mark?.closest('.au-stage-source')?.getBoundingClientRect();
+      let thread = null, threadPath = null;
+      const createThread = () => {
+        if (!area || !source || !destination || !targetNode || !sourceCard) return;
+        const x=source.left+source.width/2-area.left, y=source.bottom-area.top, lane=sourceCard.bottom-area.top+20, gutter=targetNode.left-area.left-4, endX=destination.left-area.left, endY=destination.top+destination.height/2-area.top;
+        thread=svgElement('svg'); thread.setAttribute('class','au-cue-thread'); thread.setAttribute('viewBox',`0 0 ${area.width} ${area.height}`); thread.setAttribute('aria-hidden','true'); thread.setAttribute('data-au-cue-artifact','thread'); thread.dataset.auCuePhase='drawing';
+        threadPath=svgElement('path'); threadPath.setAttribute('pathLength','1'); threadPath.setAttribute('d',`M${x} ${y} C${x} ${lane},${gutter} ${lane},${gutter} ${lane} L${gutter} ${endY-6} Q${gutter} ${endY},${endX} ${endY}`); thread.appendChild(threadPath); canvas.appendChild(thread);
+      };
+      void (async () => {
+        try {
+          for (const cue of cues) {
+            if (!valid()) break;
+            if (cue.name === 'reading' && mark) {
+              await run(mark,[{backgroundSize:'0% 100%'},{backgroundSize:'100% 100%'}],450,cue);
+              mark.dataset.auPhraseLocked=cue.operation_id;
+            } else if (cue.name === 'thread' && fact) {
+              createThread(); if (threadPath) await run(threadPath,[{strokeDashoffset:1},{strokeDashoffset:0}],500,cue);
+              if (thread) thread.dataset.auCuePhase='held';
+            } else if (cue.name === 'landing' && fact) {
+              land(); await run(fact,[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],220,cue);
+              if (thread) { thread.dataset.auCuePhase='fading'; await run(thread,[{opacity:1},{opacity:0}],600,cue); thread.remove(); }
+            } else if (cue.name === 'confirmation' && fact) {
+              trace.confirmedFacts ||= new Set(); trace.confirmedFacts.add(operation.object.id); fact.dataset.auFactConfirmed='true';
+            } else if (cue.name === 'document' && document) {
+              land(); const matching=host.querySelector(`[data-au-stage-fact="fact:${operation.object.id}"]`); if (matching) { trace.confirmedFacts ||= new Set(); trace.confirmedFacts.add(`fact:${operation.object.id}`); matching.dataset.auFactConfirmed='true'; }
+              await run(document,[{backgroundColor:'#e1e8db'},{backgroundColor:'transparent'}],800,cue);
+            } else if (cue.name === 'completion' && node) {
+              const junction=node.querySelector('[data-au-junction]');
+              if (junction) {
+                const tick=svgElement('svg'), path=svgElement('path'); tick.setAttribute('viewBox','0 0 16 16'); tick.setAttribute('class','au-cue-check'); path.setAttribute('d','M3 8 L6.5 11.5 L13 4'); path.setAttribute('pathLength','1'); tick.appendChild(path); junction.replaceChildren(tick);
+                await run(path,[{strokeDashoffset:1},{strokeDashoffset:0}],300,cue);
+              }
+            } else if (cue.name === 'connector') {
+              for (const path of host.querySelectorAll(`[data-au-edge-source="${operation.object.id}"][data-state=true]`)) {
+                path.setAttribute('pathLength','1'); await run(path,[{strokeDasharray:1,strokeDashoffset:1},{strokeDasharray:1,strokeDashoffset:0}],600,cue);
+              }
+            } else if (cue.name === 'progress') {
+              const progress=host.querySelector('[data-au-progress]'), next=completedStepFraction(current), previous=trace.cueProgress || 0;
+              if (next > previous) await run(progress,[{transform:`scaleX(${previous})`},{transform:`scaleX(${next})`}],400,cue); trace.cueProgress=next;
+            } else if (cue.name === 'answer' && answer) {
+              if (!trace.answerTransitioned) await run(answer,[{opacity:0},{opacity:1}],300,cue);
+              const rule=answer.querySelector('.au-answer-rule');
+              await run(rule,[{transform:'scaleY(0)'},{transform:'scaleY(1)'}],400,cue);
+            } else if (cue.name === 'reuse' && reuse) await run(reuse,[{opacity:0},{opacity:1}],300,cue);
+          }
+          host.removeAttribute('data-au-cue-active');
+          // One finite breath fills only the remaining dwell; it never competes
+          // with a source/step cue and is cancelled when this operation changes.
+          const dot=host.querySelector('[data-au-working-dot]');
+          if (valid() && dot && trace.current === operation) {
+            const breath=dot.animate([{opacity:.35},{opacity:1},{opacity:.35}],{duration:2400,easing:'ease-in-out',iterations:1}); stageReadAnimations.push(breath);
+          }
+        } finally { land(); thread?.remove(); job.complete=true; job.resolve(); }
+      })();
+    }
     function positionOperationAttention(animate = true, sourceReady = false, pending = null) {
+      if ((root.innerWidth || 0) > 700) { positionDesktopCues(animate); return; }
       if (!sourceReady) cancelStageRead();
       const ownerTrace=operationTrace, operation = ownerTrace?.current, canvas = host.querySelector('[data-au-canvas]');
       if (!operation || !canvas || detail !== 'step' || doc.hidden || reduced?.matches || operationTrace.finished || inspectionHold || host.querySelector('.au-operation-stage[data-au-stage-phase=map]')) { attentionMarker?.remove?.(); return; }
@@ -4282,7 +4417,7 @@
     async function operationPresentationGate(session,token,operation) {
       while (operationActive(session,token) && operationTrace?.current === operation && !session.skip && !reduced?.matches) {
         if (!await operationGate(session,token)) return false;
-        if (!operationReading(operationTrace)?.active) break;
+        if ((root.innerWidth || 0) <= 700 && !operationReading(operationTrace)?.active) break;
         if (!stageChoreography || stageChoreography.operation !== operation || stageChoreography.cancelled) { positionOperationSource(); positionOperationAttention(); }
         const choreography=stageChoreography; if (!choreography || choreography.operation !== operation) break;
         await choreography.promise; if (choreography.complete) break;
@@ -4462,7 +4597,7 @@
             if (!await operationGate(session,token)) return;
             applyWorkingOperation(operation,operationTrace,current);
             const graph = operationStageGraph(operationTrace,current), dockingNode = operationNodeId(operation,graph,current,operationTrace);
-            const show = operationAttention(operation,operationTrace);
+            const show = operationAttention(operation,operationTrace) && !(operation.kind === 'decision' && (root.innerWidth || 0) > 700);
             if (show && ['fact.extract','document.check'].includes(operation.kind)) { operationTrace.dockPhases ||= new Map(); operationTrace.dockPhases.set(operation.id,'read'); }
             if (operation.kind === 'fact.extract' && operation.source && dockingNode) {
               operationTrace.dockedFacts ||= new Map(); operationTrace.dockedFacts.set(operation.object.id,{operation,node:dockingNode,observed:true});
@@ -4477,7 +4612,7 @@
               const nodeId = dockingNode;
               if (nodeId && list(graph?.nodes).some(node => node.node_id === nodeId)) { selected = nodeId; evidenceContext = evidenceSelection(current,selected); }
               detail = 'step'; renderClaim();
-              if(operation.kind!=='knowledge.reuse' && !await operationPresentationGate(session,token,operation)) return;
+              if (!await operationPresentationGate(session,token,operation)) return;
             }
           } else if (frame.type === 'checkpoint') {
             const incoming = await checkedOperationCheckpoint(frame,operationTrace);
@@ -4494,7 +4629,18 @@
             if (!operationActive(session,token) || operationTrace !== trace) return;
             if (!operationTrace.binding || current.revision !== session.replayHead.revision || current.state_sha256 !== session.replayHead.state_sha256 ||
                 frame.state_sha256 !== current.state_sha256 || frame.operation_count !== operationTrace.rows.length || frame.operation_chain_sha256 !== operationTrace.rows.at(-1)?.operation_sha256 || frame.exact_output_verified !== true || frame.trace_sha256 !== traceHash) throw new Error('The operation result differs from its pinned saved result.');
-            operationTrace.finished = true; operationTrace.verifiedResult = true; operationTrace.current = null; session.storyPhase = 'answer'; selected = preferredNode(current,selected,history); renderClaim();
+            const revealAnswer = () => { trace.finished = true; trace.verifiedResult = true; trace.current = null; session.storyPhase = 'answer'; selected = preferredNode(current,selected,history); renderClaim(); };
+            cancelStageMotion();
+            if ((root.innerWidth || 0) > 700 && !reduced?.matches && !session.skip && !doc.hidden && doc.startViewTransition && host.querySelector('.au-stage-source')) {
+              trace.cueTransition = true; trace.answerTransitioned = true;
+              const decision = trace.rows.findLast(row => row.kind === 'decision');
+              host.dataset.auCueActive='answer-crossfade'; host.dataset.auCueOperation=decision.id; host.dataset.auCueKind=decision.kind;
+              const transition = doc.startViewTransition(revealAnswer);
+              try { await transition.finished; } catch (_) { /* The verified result remains rendered if the browser cancels a snapshot. */ }
+              host.removeAttribute('data-au-cue-active'); trace.cueTransition = false;
+              if (!operationActive(session,token) || operationTrace !== trace) return;
+              positionOperationAttention();
+            } else revealAnswer();
             // Skip in the tour finishes this case unpresented, then advances like
             // a finished case, reusing the next opening this session prefetched.
             const next = sessionCases(session)[session.index+1], advancing = () => session.skipCase || !session.skip && !reduced?.matches;
@@ -5704,9 +5850,14 @@
       if (node) revealGraphNode(sourceStep?.querySelector('.au-stage-source') || node,true);
       positionOperationSource();
     }
+    let cueViewport = `${root.innerWidth}:${root.innerHeight}`;
     function resized() {
       syncGraphViewport();
-      if (host.querySelector('.au-operation-stage')) { cancelStageMotion();fitActiveStage();centerActiveOperation();drawEdges();return; }
+      if (host.querySelector('.au-operation-stage')) {
+        const nextViewport=`${root.innerWidth}:${root.innerHeight}`;
+        if ((root.innerWidth || 0) <= 700 || cueViewport !== nextViewport) cancelStageMotion();
+        cueViewport=nextViewport; fitActiveStage();centerActiveOperation();drawEdges();return;
+      }
       const area=host.querySelector('.au-graph-viewport')?.getBoundingClientRect?.();
       if (!host.querySelector('[data-au-forming="true"]') && area && graphViewportWidth !== null && area.width !== graphViewportWidth) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
       drawEdges(); positionOperationAttention();
@@ -5721,5 +5872,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {caseProcedureMarkup,similarCases,similarCasesMarkup,caseDomain,knowledgeLibraryMarkup,knowledgeLibrary,libraryEntryMarkup,definitionMarkup,baseOutlineMarkup,conditionSentence,libraryStepsMarkup,RECORD_DIALOG_SKELETON,recordExplanation,recordPassageMarkup,outcomeSummaryMarkup,stepDetailMarkup,demoRoster,collectionRoster,demoCollection,DEMO_COLLECTIONS,caseLabel,demoPickerMarkup,demoTransportMarkup,resultReached,knowledgePayoff,knowledgePayoffMarkup,tourKnowledgePayoff,learningChangeSummary,learningFrameStart,learningProcessMarkup,recordedReuseMoment,recordedReuseMomentMarkup,knowledgeLearningModel,knowledgeLearningFocus,knowledgePinMatches,learningEventLabel,learningTime,checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,roleBadge,boundDisplayReceipt,operationDisplayContext,knowledgeNowMarkup,nowMarkup,outcomeSummaryMarkup,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,demonstrationOverviewMarkup,learningLabel,claimModeLine,rosterUnrun,startControlMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {caseProcedureMarkup,similarCases,similarCasesMarkup,caseDomain,knowledgeLibraryMarkup,knowledgeLibrary,libraryEntryMarkup,definitionMarkup,baseOutlineMarkup,conditionSentence,libraryStepsMarkup,RECORD_DIALOG_SKELETON,recordExplanation,recordPassageMarkup,outcomeSummaryMarkup,stepDetailMarkup,demoRoster,collectionRoster,demoCollection,DEMO_COLLECTIONS,caseLabel,demoPickerMarkup,demoTransportMarkup,resultReached,knowledgePayoff,knowledgePayoffMarkup,tourKnowledgePayoff,learningChangeSummary,learningFrameStart,learningProcessMarkup,recordedReuseMoment,recordedReuseMomentMarkup,knowledgeLearningModel,knowledgeLearningFocus,knowledgePinMatches,learningEventLabel,learningTime,checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,operationCues,completedStepFraction,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,roleBadge,boundDisplayReceipt,operationDisplayContext,knowledgeNowMarkup,nowMarkup,outcomeSummaryMarkup,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,demonstrationOverviewMarkup,learningLabel,claimModeLine,rosterUnrun,startControlMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });

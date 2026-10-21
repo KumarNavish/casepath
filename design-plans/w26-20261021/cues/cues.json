@@ -1,0 +1,881 @@
+{
+  "status": "passed",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "frames": {
+    "fact-landing": [
+      {
+        "index": 0,
+        "time": 5675
+      },
+      {
+        "index": 1,
+        "time": 5795.600000023842
+      },
+      {
+        "index": 2,
+        "time": 5915.899999976158
+      },
+      {
+        "index": 3,
+        "time": 6037.199999988079
+      },
+      {
+        "index": 4,
+        "time": 6160.399999976158
+      },
+      {
+        "index": 5,
+        "time": 6313.899999976158
+      },
+      {
+        "index": 6,
+        "time": 6397.5
+      },
+      {
+        "index": 7,
+        "time": 6516
+      }
+    ],
+    "step-completion": [
+      {
+        "index": 0,
+        "time": 26805.30000001192
+      },
+      {
+        "index": 1,
+        "time": 26921.100000023842
+      },
+      {
+        "index": 2,
+        "time": 27041.30000001192
+      },
+      {
+        "index": 3,
+        "time": 27161.399999976158
+      },
+      {
+        "index": 4,
+        "time": 27281.30000001192
+      },
+      {
+        "index": 5,
+        "time": 27400.80000001192
+      },
+      {
+        "index": 6,
+        "time": 27523.399999976158
+      },
+      {
+        "index": 7,
+        "time": 27640.399999976158
+      }
+    ],
+    "answer-arrival": [
+      {
+        "index": 0,
+        "time": 36041
+      },
+      {
+        "index": 1,
+        "time": 36161.69999998808
+      },
+      {
+        "index": 2,
+        "time": 36280.80000001192
+      },
+      {
+        "index": 3,
+        "time": 36400.89999997616
+      },
+      {
+        "index": 4,
+        "time": 36521.5
+      },
+      {
+        "index": 5,
+        "time": 36640.89999997616
+      },
+      {
+        "index": 6,
+        "time": 36760
+      },
+      {
+        "index": 7,
+        "time": 36882.60000002384
+      }
+    ]
+  },
+  "cues": {
+    "runs": [
+      {
+        "name": "reading",
+        "kind": "span.read",
+        "id": "op_5d5611ac1f3ea11cd0a38a5cdc543447",
+        "time": 4730.899999976158,
+        "duration": 450,
+        "target": "",
+        "finished": 5155.600000023842
+      },
+      {
+        "name": "thread",
+        "kind": "fact.extract",
+        "id": "op_1715b98c5f009b94cad03526c1c661be",
+        "time": 5165.399999976158,
+        "duration": 500,
+        "target": "",
+        "finished": 5672.5
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_1715b98c5f009b94cad03526c1c661be",
+        "time": 5672.699999988079,
+        "duration": 220,
+        "target": "au-stage-fact",
+        "finished": 5922.5
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_1715b98c5f009b94cad03526c1c661be",
+        "time": 5922.699999988079,
+        "duration": 600,
+        "target": "au-cue-thread",
+        "finished": 6522
+      },
+      {
+        "name": "reading",
+        "kind": "span.read",
+        "id": "op_5d5611ac1f3ea11cd0a38a5cdc543447",
+        "time": 6831.5,
+        "duration": 450,
+        "target": "",
+        "finished": 7288.5
+      },
+      {
+        "name": "thread",
+        "kind": "fact.extract",
+        "id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+        "time": 7303.899999976158,
+        "duration": 500,
+        "target": "",
+        "finished": 7789.100000023842
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+        "time": 7789.300000011921,
+        "duration": 220,
+        "target": "au-stage-fact",
+        "finished": 8039.100000023842
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+        "time": 8039.300000011921,
+        "duration": 600,
+        "target": "au-cue-thread",
+        "finished": 8655.699999988079
+      },
+      {
+        "name": "reading",
+        "kind": "span.read",
+        "id": "op_930d99ab94f2ad62bfc4e7d23b6fdcc1",
+        "time": 8963.100000023842,
+        "duration": 450,
+        "target": "",
+        "finished": 9422.300000011921
+      },
+      {
+        "name": "thread",
+        "kind": "fact.extract",
+        "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "time": 9435.399999976158,
+        "duration": 500,
+        "target": "",
+        "finished": 9922.300000011921
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "time": 9922.5,
+        "duration": 220,
+        "target": "au-stage-fact",
+        "finished": 10155.699999988079
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+        "time": 10155.699999988079,
+        "duration": 600,
+        "target": "au-cue-thread",
+        "finished": 10772.399999976158
+      },
+      {
+        "name": "reading",
+        "kind": "span.read",
+        "id": "op_ecb0c4c19b3afbe30d6ede18421f04b6",
+        "time": 11079.300000011921,
+        "duration": 450,
+        "target": "",
+        "finished": 11554.699999988079
+      },
+      {
+        "name": "thread",
+        "kind": "fact.extract",
+        "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "time": 11558.899999976158,
+        "duration": 500,
+        "target": "",
+        "finished": 12055.600000023842
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "time": 12055.699999988079,
+        "duration": 220,
+        "target": "au-stage-fact",
+        "finished": 12288.899999976158
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+        "time": 12289,
+        "duration": 600,
+        "target": "au-cue-thread",
+        "finished": 12905.600000023842
+      },
+      {
+        "name": "reading",
+        "kind": "span.read",
+        "id": "op_d36af4e380d8a68ad6e1ec7b02bc0cd9",
+        "time": 13213.100000023842,
+        "duration": 450,
+        "target": "",
+        "finished": 13671.300000011921
+      },
+      {
+        "name": "thread",
+        "kind": "fact.extract",
+        "id": "op_4f935af1785d232600fc72be1eebcab3",
+        "time": 13694.300000011921,
+        "duration": 500,
+        "target": "",
+        "finished": 14171.199999988079
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_4f935af1785d232600fc72be1eebcab3",
+        "time": 14171.399999976158,
+        "duration": 220,
+        "target": "au-stage-fact",
+        "finished": 14421.600000023842
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_4f935af1785d232600fc72be1eebcab3",
+        "time": 14421.699999988079,
+        "duration": 600,
+        "target": "au-cue-thread",
+        "finished": 15038.800000011921
+      },
+      {
+        "name": "reading",
+        "kind": "span.read",
+        "id": "op_930d99ab94f2ad62bfc4e7d23b6fdcc1",
+        "time": 15345.899999976158,
+        "duration": 450,
+        "target": "",
+        "finished": 15805
+      },
+      {
+        "name": "thread",
+        "kind": "fact.extract",
+        "id": "op_a677aec77b40589e0d0580e3dc6d5677",
+        "time": 15830.699999988079,
+        "duration": 500,
+        "target": "",
+        "finished": 16305.399999976158
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_a677aec77b40589e0d0580e3dc6d5677",
+        "time": 16305.5,
+        "duration": 220,
+        "target": "au-stage-fact",
+        "finished": 16555.5
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_a677aec77b40589e0d0580e3dc6d5677",
+        "time": 16555.5,
+        "duration": 600,
+        "target": "au-cue-thread",
+        "finished": 17154.80000001192
+      },
+      {
+        "name": "reading",
+        "kind": "span.read",
+        "id": "op_ecb0c4c19b3afbe30d6ede18421f04b6",
+        "time": 17460.899999976158,
+        "duration": 450,
+        "target": "",
+        "finished": 17938.600000023842
+      },
+      {
+        "name": "thread",
+        "kind": "fact.extract",
+        "id": "op_14f9eb670b91d7289150ef3a51717af4",
+        "time": 17953.100000023842,
+        "duration": 500,
+        "target": "",
+        "finished": 18438.399999976158
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_14f9eb670b91d7289150ef3a51717af4",
+        "time": 18438.5,
+        "duration": 220,
+        "target": "au-stage-fact",
+        "finished": 18671.30000001192
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_14f9eb670b91d7289150ef3a51717af4",
+        "time": 18671.399999976158,
+        "duration": 600,
+        "target": "au-cue-thread",
+        "finished": 19272
+      },
+      {
+        "name": "reading",
+        "kind": "span.read",
+        "id": "op_58e5f136dde59590d0efee4696030147",
+        "time": 19578.19999998808,
+        "duration": 450,
+        "target": "",
+        "finished": 20038.69999998808
+      },
+      {
+        "name": "thread",
+        "kind": "fact.extract",
+        "id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "time": 20063.600000023842,
+        "duration": 500,
+        "target": "",
+        "finished": 20538.5
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "time": 20538.69999998808,
+        "duration": 220,
+        "target": "au-stage-fact",
+        "finished": 20788.5
+      },
+      {
+        "name": "landing",
+        "kind": "fact.extract",
+        "id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "time": 20788.69999998808,
+        "duration": 600,
+        "target": "au-cue-thread",
+        "finished": 21405.30000001192
+      },
+      {
+        "name": "reuse",
+        "kind": "knowledge.reuse",
+        "id": "op_f0e15625981679023d118fe0fd330a2a",
+        "time": 22137.19999998808,
+        "duration": 300,
+        "target": "au-reuse-cue",
+        "finished": 22455.30000001192
+      },
+      {
+        "name": "document",
+        "kind": "document.check",
+        "id": "op_239fff8e940e09cd50d910cbaff753b7",
+        "time": 23384.899999976158,
+        "duration": 800,
+        "target": "au-stage-thumbnail",
+        "finished": 24204.5
+      },
+      {
+        "name": "document",
+        "kind": "document.check",
+        "id": "op_1b4045f495bd7c43aee1c82408feaba3",
+        "time": 24526.30000001192,
+        "duration": 800,
+        "target": "au-stage-thumbnail",
+        "finished": 25321
+      },
+      {
+        "name": "document",
+        "kind": "document.check",
+        "id": "op_96acd4eb60e2706174feaa5552f164f8",
+        "time": 25642.399999976158,
+        "duration": 800,
+        "target": "au-stage-thumbnail",
+        "finished": 26455.100000023842
+      },
+      {
+        "name": "completion",
+        "kind": "step.complete",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "time": 26798.399999976158,
+        "duration": 300,
+        "target": "",
+        "finished": 27088.399999976158
+      },
+      {
+        "name": "connector",
+        "kind": "step.complete",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "time": 27088.5,
+        "duration": 600,
+        "target": "",
+        "finished": 27688.19999998808
+      },
+      {
+        "name": "progress",
+        "kind": "step.complete",
+        "id": "op_78ab34b7521d5c694813a76224b5975a",
+        "time": 27688.399999976158,
+        "duration": 400,
+        "target": "",
+        "finished": 28121.600000023842
+      },
+      {
+        "name": "completion",
+        "kind": "step.complete",
+        "id": "op_ba68a476ea8289e87f3074c010784f55",
+        "time": 28443.399999976158,
+        "duration": 300,
+        "target": "",
+        "finished": 28754.30000001192
+      },
+      {
+        "name": "connector",
+        "kind": "step.complete",
+        "id": "op_ba68a476ea8289e87f3074c010784f55",
+        "time": 28754.399999976158,
+        "duration": 600,
+        "target": "",
+        "finished": 29371.5
+      },
+      {
+        "name": "progress",
+        "kind": "step.complete",
+        "id": "op_ba68a476ea8289e87f3074c010784f55",
+        "time": 29371.69999998808,
+        "duration": 400,
+        "target": "",
+        "finished": 29787.899999976158
+      },
+      {
+        "name": "completion",
+        "kind": "step.complete",
+        "id": "op_a63efa92ca7029d17a2bd137f122033c",
+        "time": 30110.30000001192,
+        "duration": 300,
+        "target": "",
+        "finished": 30403.899999976158
+      },
+      {
+        "name": "connector",
+        "kind": "step.complete",
+        "id": "op_a63efa92ca7029d17a2bd137f122033c",
+        "time": 30404,
+        "duration": 600,
+        "target": "",
+        "finished": 31021.5
+      },
+      {
+        "name": "progress",
+        "kind": "step.complete",
+        "id": "op_a63efa92ca7029d17a2bd137f122033c",
+        "time": 31021.600000023842,
+        "duration": 400,
+        "target": "",
+        "finished": 31421.5
+      },
+      {
+        "name": "completion",
+        "kind": "step.complete",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "time": 31745.69999998808,
+        "duration": 300,
+        "target": "",
+        "finished": 32038.100000023842
+      },
+      {
+        "name": "connector",
+        "kind": "step.complete",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "time": 32038.30000001192,
+        "duration": 600,
+        "target": "",
+        "finished": 32638.100000023842
+      },
+      {
+        "name": "progress",
+        "kind": "step.complete",
+        "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "time": 32638.30000001192,
+        "duration": 400,
+        "target": "",
+        "finished": 33037.60000002384
+      },
+      {
+        "name": "completion",
+        "kind": "step.complete",
+        "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "time": 33364.80000001192,
+        "duration": 300,
+        "target": "",
+        "finished": 33654.69999998808
+      },
+      {
+        "name": "connector",
+        "kind": "step.complete",
+        "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "time": 33654.69999998808,
+        "duration": 600,
+        "target": "",
+        "finished": 34254.69999998808
+      },
+      {
+        "name": "progress",
+        "kind": "step.complete",
+        "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "time": 34254.80000001192,
+        "duration": 400,
+        "target": "",
+        "finished": 34654.5
+      },
+      {
+        "name": "completion",
+        "kind": "step.complete",
+        "id": "op_193bef006745abf6a81e5adde872cadc",
+        "time": 34981.39999997616,
+        "duration": 300,
+        "target": "",
+        "finished": 35271.39999997616
+      },
+      {
+        "name": "progress",
+        "kind": "step.complete",
+        "id": "op_193bef006745abf6a81e5adde872cadc",
+        "time": 35271.5,
+        "duration": 400,
+        "target": "",
+        "finished": 35687.89999997616
+      },
+      {
+        "name": "answer-crossfade",
+        "kind": "decision",
+        "id": "op_568943696026415fa063d190086424ee",
+        "duration": 300,
+        "target": "native-view-transition",
+        "time": 36024.19999998808,
+        "finished": 36339.5
+      },
+      {
+        "name": "answer",
+        "kind": "decision",
+        "id": "op_568943696026415fa063d190086424ee",
+        "time": 36340.19999998808,
+        "duration": 400,
+        "target": "au-answer-rule",
+        "finished": 36771.30000001192
+      }
+    ],
+    "maxConcurrent": 1,
+    "threadSamples": 8,
+    "threadTitleHits": [],
+    "needed": [
+      "tenancy_terms_evidence",
+      "landlord_knowledge_evidence",
+      "objective_defect_observation"
+    ],
+    "received": [
+      "tenancy_terms_evidence",
+      "objective_defect_observation",
+      "landlord_knowledge_evidence"
+    ]
+  },
+  "contrast": [
+    {
+      "text": "1/9·Defects and repairs·6 of 6 steps done·Pause·Skip·Next: Heating res",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Reported defect",
+      "fontSize": 18,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Relevant tenancy terms",
+      "fontSize": 18,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "CHF1800",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "ordinary residential lease",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Tenancy details",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Received ✓",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Landlord knowledge",
+      "fontSize": 18,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "three heating-failure reports",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "received the first report on2025-02-01",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "no lasting repair has yet occurred",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Landlord knowledge and repair status",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Received ✓",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Supported cause",
+      "fontSize": 18,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Objective defect evidence",
+      "fontSize": 18,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "15.8C",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Heating is inadequate",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "outside ordinary small tenant maintenance.",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Heating service report",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Received ✓",
+      "fontSize": 15,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        239,
+        241,
+        236
+      ],
+      "ratio": 6.176074848353738
+    },
+    {
+      "text": "Repair and rent reduction eligibility",
+      "fontSize": 18,
+      "opacity": 1,
+      "foreground": "rgb(70, 94, 84)",
+      "background": [
+        225,
+        232,
+        219
+      ],
+      "ratio": 5.608612537429172
+    }
+  ],
+  "recordedOperations": 2472,
+  "reducedMotionCues": 0,
+  "errors": [],
+  "writes": []
+}

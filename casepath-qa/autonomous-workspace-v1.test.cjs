@@ -2811,6 +2811,10 @@ test('a settled filled document slot has one source card while active delivery k
  const settled=ui.stageNodeContents(node,state,trace,null,true),active=ui.stageNodeContents(node,state,{...trace,finished:false},null,false),slot=settled.slice(settled.indexOf('<div class="au-stage-slot"'));
  assert.equal((slot.match(/class="au-stage-thumbnail"/g)||[]).length,1);assert.equal((slot.match(/class="au-stage-source-name"/g)||[]).length,1);assert.match(slot,/data-au-document-checked="true"/);assert.match(slot,/data-au-check-operation="actual-check"/);assert.ok(slot.includes('data-au-citation="'+JSON.stringify(pin).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;')+'"'));assert.match(slot,/Supported by documents/);assert.doesNotMatch(slot,/au-stage-paper|<span>Separate notice<\/span>/);assert.match(settled,/data-au-stage-fact="fact:notice"/);
  assert.doesNotMatch(active,/<span>Separate notice<\/span>|au-stage-paper/);assert.equal(ui.operationRecord(trace,'operation',check.id).source,pin);
+ const needed=ui.stageNodeContents(node,state,{...trace,finished:false,rows:[required]},null,false);
+ assert.match(needed,/au-document-needed\">Needed/);assert.doesNotMatch(needed,/Received/);
+ assert.doesNotMatch(ui.stageNodeContents(node,state,{...trace,rows:[]},null,false),/Needed|Received/,'a planned conditional document makes no active demand');
+ assert.match(slot,/Received ✓/);assert.doesNotMatch(slot,/Needed/);
 });
 
 test('an uncited knowledge consequence cannot bring retained source context above the map while exact History and cited inspection remain available',()=>{
@@ -3841,4 +3845,42 @@ test('W2.5 Documents step links use the same recorded labels as all nine referen
   }
   assert.equal(JSON.stringify(saved),before);
  }
+});
+
+test('W2.6 cues bind only to their recorded operation and a source-matched read ancestor',()=>{
+ const pin={artifact_id:'source',sha256:hash('a'),text_sha256:hash('b'),start_char:10,end_char:20,quote:'exact text'};
+ const read={id:'read-1',kind:'span.read',source:{...pin,start_char:0,end_char:40}},match={id:'match-1',kind:'phrase.match',cause_ids:['read-1']};
+ const operations=[
+  {id:'fact-1',kind:'fact.extract',source:pin,cause_ids:['match-1'],object:{type:'fact',id:'fact-1'}},
+  {id:'verify-1',kind:'verification.check',object:{type:'fact',id:'fact-1'},result:{accepted:true}},
+  {id:'doc-1',kind:'document.check',source:pin,result:{assessment:'sufficient'}},
+  {id:'step-1',kind:'step.complete',result:{status:'completed'}},
+  {id:'answer-1',kind:'decision',result:{summary:'Recorded answer'}},
+  {id:'reuse-1',kind:'knowledge.reuse',input:{version:1}}
+ ];
+ const trace={rows:[read,match,...operations]},before=JSON.stringify(trace);
+ assert.deepEqual(ui.operationCues(operations[0],trace),[
+  {name:'reading',kind:'span.read',operation_id:'read-1'},
+  {name:'thread',kind:'fact.extract',operation_id:'fact-1'},
+  {name:'landing',kind:'fact.extract',operation_id:'fact-1'}
+ ]);
+ assert.deepEqual(operations.slice(1).map(operation=>ui.operationCues(operation,trace).map(cue=>cue.name)),[['confirmation'],['document'],['completion','connector','progress'],['answer'],['reuse']]);
+ for(const operation of [read,...operations]){
+  assert.deepEqual(ui.operationCues(operation,trace,{reducedMotion:true}),[]);
+  for(const cue of ui.operationCues(operation,trace))assert.ok(trace.rows.some(row=>row.id===cue.operation_id && row.kind===cue.kind));
+ }
+ const wrong={rows:[{...read,source:{...read.source,sha256:hash('c')}},match,...operations]};
+ assert.deepEqual(ui.operationCues(operations[0],wrong).map(cue=>cue.name),['thread','landing'],'another source identity cannot trigger the read sweep');
+ assert.deepEqual(ui.operationCues({...operations[0],id:'unrecorded'},trace),[]);
+ assert.deepEqual(ui.operationCues({...operations[1],result:{accepted:false}},trace),[]);
+ assert.deepEqual(ui.operationCues({...operations[2],result:{assessment:'insufficient'}},trace),[]);
+ assert.deepEqual(ui.operationCues({...operations[3],result:{status:'proposed'}},trace),[]);
+ assert.equal(JSON.stringify(trace),before);
+});
+
+test('W2.6 progress reads accepted completed steps, never replay position or observed facts',()=>{
+ const saved=state({graph:{nodes:[{node_id:'first'},{node_id:'second'},{node_id:'third'}]},evaluation:{nodes:[{node_id:'first',execution_state:'completed'},{node_id:'second',execution_state:'blocked'},{node_id:'unrelated',execution_state:'completed'}]}});
+ assert.equal(ui.completedStepFraction(saved),1/3);
+ assert.equal(ui.completedStepFraction({...saved,evaluation:{nodes:[]}}),0);
+ assert.equal(ui.completedStepFraction({...saved,graph:null}),0);
 });

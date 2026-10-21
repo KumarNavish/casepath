@@ -1514,7 +1514,7 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
   .au-workspace .au-quiet-claim[data-au-story=handoff] > .au-evidence-canvas { display:block; }
   .au-workspace .au-quiet-claim:is([data-au-story=answer],[data-au-story=handoff]) .au-operation-stage { display:flex; flex-direction:column; gap:24px; }
   .au-workspace .au-quiet-claim:is([data-au-story=answer],[data-au-story=handoff])[data-au-playing] .au-stage-layout { display:flex; }
-  .au-workspace .au-quiet-claim:is([data-au-story=answer],[data-au-story=handoff])[data-au-playing=true] .au-stage-layout { opacity:.75; }
+  .au-workspace .au-quiet-claim:is([data-au-story=answer],[data-au-story=handoff])[data-au-playing=true] .au-stage-layout { opacity:1; }
   .au-workspace .au-quiet-claim:is([data-au-story=answer],[data-au-story=handoff]) .au-stage-outcome { order:-1; width:100%; max-width:none; margin:24px 0 0; padding:16px; border:1px solid var(--au-line); background:var(--au-paper); }
   .au-workspace .au-stage-outcome > .au-outcome-plain { font-size:18px; line-height:1.5; margin-bottom:16px; }
   .au-workspace .au-stage-outcome :is(.au-outcome-row,.au-outcome-key,.au-outcome-row .au-link,.au-outcome-why > summary) { font-size:15px; }
@@ -1527,4 +1527,35 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
   .au-workspace .au-documents { max-width:none; margin:0; }
   /* A closed disclosure's body takes no layout space. */
   .au-workspace details:not([open]) > :not(summary) { display:none; }
+}
+
+/* W2.6: one recorded cue owns desktop motion; the resting layout stays calm. */
+@media (min-width:701px) {
+  .au-workspace .au-working-dot { display:inline-block; width:6px; height:6px; margin:0 4px 2px 8px; border-radius:50%; background:var(--au-green); }
+  .au-workspace .au-quiet-claim > .au-demo-transport { position:relative; inset:auto; }
+  .au-workspace .au-demo-progress { position:absolute; inset:auto 0 -1px; height:2px; pointer-events:none; }
+  .au-workspace .au-demo-progress > span { display:block; height:2px; background:var(--au-green); transform-origin:left; }
+  .au-workspace .au-stage-source .au-operation-passage mark[data-au-operation-span] { background-color:transparent; background-image:linear-gradient(var(--au-wash),var(--au-wash)); background-size:100% 100%; background-repeat:no-repeat; box-shadow:inset 0 -2px 0 var(--au-green); }
+  .au-workspace .au-stage-fact:is([data-au-current-fact=true],[data-au-landed-recent]) { border-left-color:transparent; }
+  .au-workspace .au-stage-fact[data-au-landed-recent]::before { content:''; position:absolute; left:-2px; top:2px; bottom:2px; width:2px; border:1px solid var(--au-green); background:transparent; }
+  .au-workspace .au-stage-fact[data-au-landed-recent]:is([data-au-fact-state=accepted],[data-au-fact-confirmed=true])::before { background:var(--au-green); }
+  .au-workspace .au-document-needed { display:block; }
+  .au-workspace .au-stage-slot[data-au-document-checked=true] .au-stage-source-check { color:var(--au-green); }
+  .au-workspace .au-cue-thread { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; z-index:2; }
+  .au-workspace .au-cue-thread path { fill:none; stroke:var(--au-green); stroke-width:1px; stroke-dasharray:1; stroke-dashoffset:0; vector-effect:non-scaling-stroke; }
+  .au-workspace .au-cue-check { width:16px; height:16px; overflow:visible; }
+  .au-workspace .au-cue-check path { fill:none; stroke:var(--au-green); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; }
+  .au-workspace .au-stage-outcome { position:relative; }
+  .au-workspace .au-answer-rule { position:absolute; inset:0 auto 0 0; width:2px; background:var(--au-green); transform-origin:top; }
+  .au-workspace .au-reuse-cue { margin:0 0 16px; color:var(--au-muted); font-size:15px; line-height:24px; }
+  .au-workspace .au-quiet-claim:is([data-au-story=answer],[data-au-story=handoff])[data-au-playing=true] .au-stage-layout :is(.au-node,.au-stage-fact,.au-stage-slot,.au-stage-source-check) { color:var(--au-muted); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .au-workspace .au-working-dot { opacity:1; }
+}
+
+@media (min-width:701px) and (prefers-reduced-motion:no-preference) {
+  .au-workspace [data-au-tour=true] :is(.au-stage-source,[data-au-stage-outcome]) { view-transition-name:au-source-answer; }
+  ::view-transition-group(root), ::view-transition-old(root), ::view-transition-new(root) { animation:none; }
+  ::view-transition-group(au-source-answer), ::view-transition-old(au-source-answer), ::view-transition-new(au-source-answer) { animation-duration:300ms; animation-timing-function:cubic-bezier(.2,.65,.3,1); }
 }
