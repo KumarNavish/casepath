@@ -34,8 +34,9 @@ checks account only for HTML CRLF normalization.
 2,854 passed, ten failed, ten skipped, ten warnings. Seven failures were export
 fixtures placed inside Git; two were Mulish packaging assertions. Both groups
 are repaired and their focused tests pass. One failure is the Mac-owned hosted
-startup test; its owner-authored correction is `4c46f43`, awaiting permission
-to integrate unchanged. `mac-owned-test-failure.log` is the independent
+startup test; its owner-authored correction is `4c46f43`, now integrated unchanged
+with `git cherry-pick -x` as `1122d7b` under planner permission 6320266952.
+The targeted startup check is captured in `owner-startup-test.log`. `mac-owned-test-failure.log` is the independent
 reproduction. `interrupted-gate.json` and its log retain the duplicate rerun
 stopped after that deterministic ownership blocker was identified.
 

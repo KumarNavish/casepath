@@ -66,7 +66,7 @@ checklist reuse. Reload and Back/Forward retain the selected step and passage.
 A browser-local draft copy is edited, saved, reloaded, copied and downloaded;
 its recorded original remains unchanged. A storage failure retains unsaved
 edits. The 150-case catalog and unrun originals are inspected without starting
-them. Port 4173 and the Mac-owned hosted-read-only test are untouched.
+them. Port 4173 is untouched. The Mac-owned test changes only through the exact owner commit described below.
 
 ## Mac review closure map
 
@@ -106,6 +106,17 @@ alternatives with consequences. No decision editor or illustrative fork is
 invented. No Before/Now comparison appears because no recorded reuse changed a
 step-specific outcome. Missing spaces already present in source
 text stay byte-exact. Final W8 evidence reports these as deliberate limits.
+
+## Owner correction integrated unchanged
+
+Planner comment 6320266952 authorizes the Mac owner's commit
+`4c46f43bdfd32c4fe965d0b9593b65d84a0c8c33`, integrated unchanged with
+`git cherry-pick -x` as `1122d7b14ec64e90c5d0bdec11d759e7fbb3c94a`.
+The author and message are retained. This corrects the stale hosted-startup
+test contract to require passive warmup on a closed, model-free, read-only
+controller. SQL is limited to SELECT/BEGIN/COMMIT, database rows stay unchanged,
+and every saved claim is covered. Claim discovery, resume and wake remain
+forbidden. No additional protected-test or hosted-startup edit is included.
 
 ## Next legitimate action
 

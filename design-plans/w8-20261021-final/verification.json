@@ -1,5 +1,5 @@
 {
-  "status": "W8_final_browser_evidence_complete_strict_gate_blocked_on_owner_integration",
+  "status": "W8_final_browser_evidence_complete_owner_fix_integrated_strict_gate_pending",
   "recorded_at": "2026-10-21T15:26:17.310930+00:00",
   "build_commit": "5d85ff43facd9ea426ea2d89257000562be8558d",
   "ui_refinement_commit": "dfb594e3f69a3f76e5d0c9f749f51986042e9dda",
@@ -104,14 +104,19 @@
     "fidelity-state5-process-decision": 5.21
   },
   "strict_gate": {
-    "status": "blocked_awaiting_owner_authored_test_integration",
+    "status": "pending_complete_run_at_sealed_review_head",
     "ready_for_mac": false,
     "independent_planner_gate_started": false,
     "protected_file": "casepath-api/tests/test_public_hosted_read_only_v1.py",
-    "protected_file_changed": false,
+    "protected_file_changed": "exact owner-authored commit only",
     "owner_fix": "4c46f43bdfd32c4fe965d0b9593b65d84a0c8c33",
-    "integration_permission_request": "https://github.com/KumarNavish/casepath/pull/21#issuecomment-6319184839",
-    "next": "After explicit owner permission, integrate the exact owner correction, check it, reseal and finish the full strict gate at the frozen review head before READY FOR MAC."
+    "integrated_as": "1122d7b14ec64e90c5d0bdec11d759e7fbb3c94a",
+    "permission": "https://github.com/KumarNavish/casepath/pull/21#issuecomment-6320266952",
+    "authoritative_final_result": "READY FOR MAC on PR21 gives frozen 40-character SHA, full counts and SHA256 of the completed strict-gate log. The source is not recommitted after that gate.",
+    "local_gate_receipts": [
+      ".runtime/w8-sealed-final-gate.json",
+      ".runtime/w8-sealed-final-gate.log"
+    ]
   },
   "initial_full_gate": {
     "review_commit": "5a8563d0069c5bf04978b48265331c374370f918",
@@ -150,8 +155,10 @@
     },
     "mac_owned_startup_contract": {
       "count": 1,
-      "status": "unchanged_pending_integration_permission",
-      "diagnostic": "mac-owned-test-failure.log"
+      "status": "owner correction integrated unchanged; targeted startup check passed",
+      "diagnostic": "mac-owned-test-failure.log",
+      "repair": "1122d7b14ec64e90c5d0bdec11d759e7fbb3c94a",
+      "focused_passed": 1
     }
   },
   "interrupted_duplicate_gate": {
@@ -188,7 +195,7 @@
   "original_nine_rerun": false,
   "deployment": false,
   "hashes": {
-    "README.md": "d9245025e445a30276b71f90c1c61be1f655b9d5ad43e502e366ac413d8b4366",
+    "README.md": "4f715174e0c99ae5792dd2f6b697b3e354d788f9aeb6449ee6bee08d99a3f01f",
     "acceptance-receipt.json": "bb101e997eb549e0793ad4cade08ffddb1c9d746ec5cd08096b6ae63bd10ecae",
     "browser-all.tap": "5e6899f823029ffa1ac47fbad5aea731073c51ac9e7feb45f0ca47e1bc08f1f4",
     "case1-memory.png": "ecda1d8cc7c849a4e9b6ab0784f7244938d460aef5af7e2029e3184a0496115d",
@@ -248,6 +255,8 @@
     "memory-receipt.json": "4822e43543ea20df8fb1ef75fb7352e605aaecd55e6f18704e94c8a83b2e7771",
     "motion-receipt.json": "ec03d12efd3721bcb153044d918f859d9958102cf562f837cf11e919f048629b",
     "original-not-run.png": "6ce379a0e934e3a70538cd0d04c344b85bcd4c540fab2eb9fbbcd791669be9a6",
+    "owner-startup-invocation-error.log": "7c9a1b80d024e39489effae7c0877104c32c11819cd6c5afe35b85c15dc79503",
+    "owner-startup-test.log": "1504ddc94dc53e29af3961459213d7e4f61602547b6416e60f2ea1cf1d01225d",
     "process-receipt.json": "30106f50761d235ac1af807f5fe0853a8e03ac55a702876225cf7c3beb3c8839",
     "reduced-receipt.json": "978a5cd90f07f5802b22c81cf0884be0936def273375c6da10e938108dc3070b",
     "result-checker.png": "6da9945272248192c141fb08335ea423dc8daf726963457562a45efda5aff0e4",
@@ -265,5 +274,11 @@
     "verify-motion.mjs": "06ea43ef211b0ab3071dfb30ed7005e43390144cfc3302dea2aaf7cdbee39d11",
     "verify-process.mjs": "bb318df284df2bbb8223453101d3b0f32d30b893d6df18662c7ebdd541298fe6",
     "verify-reduced.mjs": "49ae488a0547b029462e88f3e482be666f5febb06c1d26b80778ff79f9ee41d3"
-  }
+  },
+  "owner_startup_test": {
+    "passed": 1,
+    "failed": 0,
+    "invocation_repair": "The isolated interpreter initially lacked the explicit API source path. The corrected launcher-style sys.path entry passed; both invocation logs are retained."
+  },
+  "browser_build_commit": "5d85ff43facd9ea426ea2d89257000562be8558d"
 }

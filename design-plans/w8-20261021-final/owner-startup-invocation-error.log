@@ -1,0 +1,15 @@
+ERROR: found no collectors for /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/casepath-api/tests/test_public_hosted_read_only_v1.py::test_public_startup_verifies_knowledge_after_readonly_shutdown_before_readiness
+
+
+==================================== ERRORS ====================================
+__________ ERROR collecting tests/test_public_hosted_read_only_v1.py ___________
+ImportError while importing test module '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/casepath-api/tests/test_public_hosted_read_only_v1.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../../../.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+casepath-api/tests/test_public_hosted_read_only_v1.py:9: in <module>
+    from casepath_api import hosted_app_v1, hosted_lease_v1, hosted_model_v1
+E   ModuleNotFoundError: No module named 'casepath_api'
+1 error in 0.81s
