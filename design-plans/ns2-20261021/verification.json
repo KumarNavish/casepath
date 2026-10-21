@@ -1,0 +1,65 @@
+{
+  "status": "NS2_ready_for_planner",
+  "implementation_commit": "310e09dfade3329fb689d9ada750c4b9fd6c21e4",
+  "base": "a6a9f39e79a08bb2057e54c48a921b427b4d78c6",
+  "focused_tests": 497,
+  "desktop_browser_checks": 28,
+  "all_nine_completed_process_checks": true,
+  "reduced_motion": true,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "source_manifest_sha256": "b1a09981abc8c0b3c0861fcd2267770d5113f91cabf36c68d412892cf9d17071",
+  "source_file_count": 1733,
+  "served_assets": {
+    "autonomous-workspace-v1.js": "ad5b471daa0b28c27d0ac85ca4c08cba7f6e405aedb50536659d8d45514c5356",
+    "autonomous-workspace-v1.css": "67fefe5826409e0e90afe843e363182a7c3444ebdc571dc2a7a67a83ed910723",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "frames": {
+    "case1-process": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "case4-process": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "document-finder": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "result-checker": {
+      "overlaps": [],
+      "overflow": false
+    }
+  },
+  "fidelity": {
+    "concept02-case1": 5.88,
+    "concept02-case4": 5.93
+  },
+  "paid_inference": 0,
+  "hosted_writes": 0,
+  "deployment": false,
+  "hashes": {
+    "browser-receipt.json": "01172527811169b66e22c341d3ce34545a36ba73fcedf4136d93f02e1dbf2c14",
+    "case1-process.png": "f9050b225e1a4933b114878e21c1061f87960cd8a37d7dcb06cf9654489f81ec",
+    "case4-process.png": "4c98e6291145e222f4a09e393828e2ad28618f20c48b08fdc5ede97cd4d2c08f",
+    "concept02-case1-diff.png": "9e5a16b8649011a0c41d3e406843afe0efedc794f45fbd3d01115ded78a02d9f",
+    "concept02-case1-fidelity.json": "1ffca58bcb2bc2e1a1154a1d169ae2e53634ddca65cc3dd7f53b0235dcf561e1",
+    "concept02-case1-overlay.png": "1ec22ccfa34bc453a17c71e8d6e0fe6de5ef40cb6a37ec53db4c1983b2a592c8",
+    "concept02-case1-side.png": "b402ede5db4c6f92909b704c70cb0dd3fefad0044ad25086396d40ecf0279868",
+    "concept02-case4-diff.png": "8b49d8c5b0d75597a8a50b559a0d5b086c9ede2bd87258efaad2193437b8b695",
+    "concept02-case4-fidelity.json": "b08c52bac537c3b7d5fc72e2200c22d4d447fd9ec511b151f5dd9f429e190cc6",
+    "concept02-case4-overlay.png": "13c4c27fa34bab5b5d2ae34be042ab4a153b561836eafca10cb6f98309bf4bca",
+    "concept02-case4-side.png": "88cae2e77caf6dfae55e485db271e97b585a5ff38d67428f923946808a90a7f9",
+    "desktop.tap": "22ba62f1c58f8453dcad51e86e4c5c053fd37293438128cd303a8744afe59ba8",
+    "document-finder.png": "6059c9236ab655dde19d95faf9325647e7cfa1f39643571626c3e0c1c73fae3b",
+    "focused.tap": "2f61c409f830818e375e8c04ecd7bec403bdd02e56b153b565d5c78b94081271",
+    "reduced-receipt.json": "978a5cd90f07f5802b22c81cf0884be0936def273375c6da10e938108dc3070b",
+    "result-checker.png": "6afd6b68d0865aa3b47c2a3b70b4ee956d4a60e3fc9053074626ddcb7e6b551a",
+    "seal.log": "b1d198cb3b8dceec37441115c23005d62b6c885dc15a6bc410549ae9b5c5588d",
+    "served-assets.json": "47f1d3b7bd098d8e87635dc316fe24d08178000a17ddc8e392c06ba3e865a887"
+  }
+}
