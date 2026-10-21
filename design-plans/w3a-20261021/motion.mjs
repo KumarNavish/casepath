@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import {audit} from '../tools/desktop_overlap_audit.mjs';
 const {chromium}=createRequire(new URL('../../casepath-qa/package.json',import.meta.url))('playwright');
 const here=path.dirname(fileURLToPath(import.meta.url)),base=process.env.BASE||'http://127.0.0.1:4180';
-const fixture=JSON.parse(gunzipSync(fs.readFileSync(path.join(here,'desk-fixtures.json.gz'))));
+const fixture=JSON.parse(gunzipSync(fs.readFileSync(path.resolve(here,'../../casepath-qa/fixtures/desk-v3.json.gz'))));
 const first=fixture.cases[0],operations=new Map(first.trace.trim().split('\n').map(JSON.parse).filter(r=>r.type==='operation').map(r=>[r.id,r]));
 const report={viewport:{width:1440,height:900},overrides:process.env.OVERRIDES==='1',errors:[],writes:[],frames:{}};
 const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});

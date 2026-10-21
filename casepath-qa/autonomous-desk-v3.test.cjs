@@ -2,7 +2,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {gunzipSync}=require('node:zlib');
 const ui=require('../casepath/assets/autonomous-workspace-v1.js');
-const fixture=JSON.parse(gunzipSync(fs.readFileSync(path.join(__dirname,'../design-plans/w3a-20261021/desk-fixtures.json.gz'))));
+const fixture=JSON.parse(gunzipSync(fs.readFileSync(path.join(__dirname,'fixtures/desk-v3.json.gz'))));
 for(const item of fixture.cases)test(`desk counters and legal labels follow the actual trace: ${item.id}`,()=>{
  const state=item.envelope.state,frames=item.trace.trim().split('\n').map(JSON.parse),all=frames.filter(r=>r.type==='operation');
  const groups=new Map(state.source_descriptors.map(s=>[s.artifact_id,`${s.role}:${s.file_name}`]));

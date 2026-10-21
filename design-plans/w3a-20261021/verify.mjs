@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 const require=createRequire(new URL('../../casepath-qa/package.json',import.meta.url));
 const {chromium}=require('playwright'),ui=require('../casepath/assets/autonomous-workspace-v1.js');
 const here=path.dirname(fileURLToPath(import.meta.url)),base=process.env.BASE||'http://127.0.0.1:4180',api='/api/claim-loops/v1/autonomous';
-const fixturePath=path.join(here,'desk-fixtures.json.gz');
+const fixturePath=path.resolve(here,'../../casepath-qa/fixtures/desk-v3.json.gz');
 if(process.argv.includes('--capture-fixtures')){
  const cases=[];
  for(const row of ui.REFERENCE_DEMO_CASES){
