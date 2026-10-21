@@ -32,6 +32,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -41,7 +42,7 @@ PR = int(os.environ.get("STEER_PR", "21"))
 MODEL = "claude-opus-5-5"
 # claude-opus-5-5 list price, USD per MTok. Cache writes cost ~1.25x input.
 PRICE_IN, PRICE_OUT, PRICE_CACHE_READ, CACHE_WRITE_MULT = 4.0, 20.0, 0.20, 1.25
-BUDGET_USD = float(os.environ.get("STEER_BUDGET_USD", "15"))
+BUDGET_USD = float(os.environ.get("STEER_BUDGET_USD", "25"))
 POLL_S = 30
 MAX_TOKENS = 64000
 EFFORT = "max"
@@ -293,6 +294,95 @@ def attachments(body):
     return images, docs
 
 
+# ------------------------------------------------------------------- cold-viewer test
+VIDEO_EXT = (".mp4", ".webm", ".mov")
+COLD_FRAMES = 24
+COLD_PROMPT = (
+    "You are a senior insurance executive with no technical background. You are watching a silent "
+    "product video with no narration. Below are frames from it, in order, with their times. Using only "
+    "what you see, answer in at most 8 short sentences: 1) What does this product do? 2) How does it "
+    "reach its results? 3) Why would it be valuable to your company? 4) What, if anything, was confusing "
+    "or unclear? Do not guess beyond the frames."
+)
+
+
+def video_links(body):
+    """(sha, path) of videos linked from the post: blob/raw links, or bare paths paired with the post's sha."""
+    repo = re.escape(REPO)
+    links = [
+        (sha, re.split(r"[?#]", path)[0])
+        for sha, path in re.findall(
+            r"(?:github\.com/%s/(?:blob|raw)|raw\.githubusercontent\.com/%s)/([0-9a-f]{7,40})/([^\s)\]<>\"']+)"
+            % (repo, repo),
+            body,
+        )
+    ]
+    links = [(sha, path) for sha, path in links if path.lower().endswith(VIDEO_EXT)]
+    shas = re.findall(r"\b([0-9a-f]{40})\b", body)
+    if not links and shas:
+        for path in re.findall(r"`?((?:design-plans|docs)/[^\s`)\]<>\"']+\.(?:mp4|webm|mov))`?", body):
+            links.append((shas[0], path))
+    return links
+
+
+def sample_frames(video, n=COLD_FRAMES, width=960):
+    """n evenly spaced JPEG frames from video bytes via ffmpeg, as [(seconds, bytes)]."""
+    with tempfile.TemporaryDirectory() as d:
+        src = Path(d) / "film"
+        src.write_bytes(video)
+        probe = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", str(src)],
+            capture_output=True, text=True, timeout=60,
+        )
+        try:
+            duration = float(probe.stdout.strip())
+        except ValueError:
+            return []
+        frames = []
+        for i in range(n):
+            t = duration * (i + 0.5) / n
+            out = Path(d) / f"f{i:02d}.jpg"
+            subprocess.run(
+                ["ffmpeg", "-v", "error", "-ss", f"{t:.3f}", "-i", str(src), "-frames:v", "1",
+                 "-vf", f"scale={width}:-2", "-q:v", "3", str(out)],
+                capture_output=True, timeout=60,
+            )
+            if out.exists():
+                frames.append((t, out.read_bytes()))
+        return frames
+
+
+def cold_viewer(client, frames):
+    """A fresh call with no CasePath context: what does a first-time executive understand?"""
+    content = []
+    for t, data in frames:
+        content.append({"type": "text", "text": f"t={t:.1f}s"})
+        content.append({"type": "image", "source": {"type": "base64", "media_type": "image/jpeg",
+                                                    "data": base64.b64encode(data).decode()}})
+    content.append({"type": "text", "text": COLD_PROMPT})
+    msg = client.messages.create(model=MODEL, max_tokens=4000, output_config={"effort": "low"},
+                                 messages=[{"role": "user", "content": content}])
+    text = "".join(b.text for b in msg.content if b.type == "text").strip()
+    return text, usage_cost(msg.usage)
+
+
+def cold_view_report(client, body):
+    """Returns (report or None, cost). Never raises; a failure is reported to the reviewer."""
+    links = video_links(body)
+    if not links:
+        return None, 0.0
+    sha, path = links[0]
+    try:
+        frames = sample_frames(fetch_file(sha, path))
+        if not frames:
+            return f"[cold-viewer test could not run: no frames decoded from {path}]", 0.0
+        text, cost = cold_viewer(client, frames)
+        log(f"cold viewer on {path}: {len(frames)} frames, cost=${cost:.4f}")
+        return f"Film: {path} at {sha[:7]}, {len(frames)} evenly spaced frames.\n{text}", cost
+    except Exception as e:
+        return f"[cold-viewer test could not run: {e}]", 0.0
+
+
 # ---------------------------------------------------------------------------- gate
 def run_gate(sha, outdir):
     """Run the independent gate at the sealed sha.
@@ -395,7 +485,7 @@ def northstar_blocks():
     return blocks
 
 
-def build_input(c, thread, rounds, final_payload=None):
+def build_input(c, thread, rounds, final_payload=None, cold=None):
     body = c["body"]
     key = item_key(body)
     ctx = "\n\n".join(
@@ -427,6 +517,14 @@ def build_input(c, thread, rounds, final_payload=None):
                 "You must not hand off. Reply CHANGES READY FOR MAC and make the first body line "
                 f"'independent gate could not run: {final_payload.get('reason')}'.\n"
             )
+    if cold is not None:
+        text += (
+            "\n=== COLD-VIEWER TEST (a fresh model with no CasePath context saw only these film frames) ===\n"
+            + cold
+            + "\nJudge W9 by the user's standard: did this viewer correctly get what CasePath does, how its "
+            "intelligence works (source, fact, law, step, documents, answer; learned checklists; a person "
+            "decides) and why it is valuable? Name each miss and the product change that would fix it.\n"
+        )
     if rounds >= 2:
         text += (
             "\nThis item has had two change rounds. Approve now unless a blocker breaks honesty, "
@@ -510,8 +608,10 @@ def review(client, c, thread, changes, dry=False):
                 }
             log(f"gate for {sha[:12]} (comment {c['id']}): ran={final_payload['ran']} passed={final_payload.get('passed')} reason={reason}")
 
-    content = build_input(c, thread, rounds, final_payload)
+    cold, cold_cost = cold_view_report(client, body) if not dry else (None, 0.0)
+    content = build_input(c, thread, rounds, final_payload, cold)
     reply, cost, stop, served = call_model(client, content)
+    cost += cold_cost
     reply = ensure_prefix(reply)
     verdict = verdict_of(reply)
 

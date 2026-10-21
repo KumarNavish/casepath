@@ -601,3 +601,52 @@ class TestCallModel(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestColdViewer(unittest.TestCase):
+    SHA = "0123456789abcdef0123456789abcdef01234567"
+
+    def test_video_links_from_blob_raw_and_bare_paths(self):
+        blob = f"https://github.com/{steer.REPO}/blob/{self.SHA}/design-plans/w9/film.mp4"
+        raw = f"https://raw.githubusercontent.com/{steer.REPO}/{self.SHA}/design-plans/w9/film.webm?raw=true"
+        self.assertEqual(steer.video_links(f"CODEX W9 READY [f]({blob})"), [(self.SHA, "design-plans/w9/film.mp4")])
+        self.assertEqual(steer.video_links(f"CODEX W9 READY ![f]({raw})"), [(self.SHA, "design-plans/w9/film.webm")])
+        self.assertEqual(steer.video_links(f"CODEX W9 READY {self.SHA} `design-plans/w9/film.mp4`"),
+                         [(self.SHA, "design-plans/w9/film.mp4")])
+        self.assertEqual(steer.video_links("CODEX NS2 READY frame.png only"), [])
+
+    @unittest.skipUnless(steer.shutil_which("ffmpeg") if hasattr(steer, "shutil_which") else __import__("shutil").which("ffmpeg"), "ffmpeg missing")
+    def test_sample_frames_evenly_spaced(self):
+        import subprocess, tempfile, os
+        with tempfile.TemporaryDirectory() as d:
+            clip = os.path.join(d, "c.mp4")
+            subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc=duration=4:size=320x200:rate=30",
+                            "-pix_fmt", "yuv420p", clip], check=True)
+            frames = steer.sample_frames(open(clip, "rb").read(), n=4, width=160)
+        self.assertEqual(len(frames), 4)
+        self.assertAlmostEqual(frames[0][0], 0.5, places=1)
+        self.assertTrue(all(data[:2] == b"\xff\xd8" for _, data in frames))
+
+    def test_cold_report_runs_and_never_raises(self):
+        body = f"CODEX W9 READY {self.SHA} `design-plans/w9/film.mp4`"
+        with mock.patch.object(steer, "fetch_file", return_value=b"video"), \
+             mock.patch.object(steer, "sample_frames", return_value=[(1.0, b"\xff\xd8x")]), \
+             mock.patch.object(steer, "cold_viewer", return_value=("It handles claims.", 0.05)), \
+             mock.patch.object(steer, "log"):
+            report, cost = steer.cold_view_report(object(), body)
+        self.assertIn("It handles claims.", report)
+        self.assertEqual(cost, 0.05)
+        with mock.patch.object(steer, "fetch_file", side_effect=RuntimeError("404")):
+            report, cost = steer.cold_view_report(object(), body)
+        self.assertIn("could not run", report)
+        self.assertEqual(cost, 0.0)
+        self.assertEqual(steer.cold_view_report(object(), "CODEX NS3 READY no film"), (None, 0.0))
+
+    def test_build_input_includes_cold_report(self):
+        c = {"id": 1, "created_at": "2026-10-21T20:00:00Z", "body": "CODEX W9 READY"}
+        with mock.patch.object(steer, "attachments", return_value=([], [])), \
+             mock.patch.object(steer, "northstar_blocks", return_value=[]):
+            content = steer.build_input(c, [c], 0, None, cold="Viewer: it answers tenant claims.")
+        text = "".join(b.get("text", "") for b in content if b["type"] == "text")
+        self.assertIn("COLD-VIEWER TEST", text)
+        self.assertIn("it answers tenant claims", text)
