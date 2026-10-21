@@ -1,0 +1,213 @@
+{
+  "sourceSha256": {
+    "A": "fa7c82d59e0a89ba6fb524958b9b81ed27672503b985702639acdd383760a38a",
+    "B": "44890a4601a9ca7e704fd266ccb9180e321269aa31ee0cb8c3cbfecab5966284",
+    "C": "244901f8c5dcd8a28215514607aeb702aa9547cd04675625dec445c3540e6fa4"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "frames": {
+    "A-work": {
+      "snapshot": {
+        "case": 1,
+        "frame": "work",
+        "operation": "op_75f89e342fcc893670e3e06211fdb690",
+        "position": 73,
+        "operationCount": 824,
+        "counts": {
+          "files": 3,
+          "facts": 14,
+          "rules": 6,
+          "steps": 0,
+          "total": 6
+        },
+        "sourceCommit": null,
+        "stateSha": "f4f0809162a2124c04160858087a87c114ba7efb2d9e547a37d2c4088c3b2161"
+      },
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "thread": 1,
+      "resultBottom": null
+    },
+    "A-case1-result": {
+      "snapshot": {
+        "case": 1,
+        "frame": "result",
+        "operation": "",
+        "position": 823,
+        "operationCount": 824,
+        "counts": {
+          "files": 3,
+          "facts": 24,
+          "rules": 692,
+          "steps": 6,
+          "total": 6
+        },
+        "sourceCommit": null,
+        "stateSha": "f4f0809162a2124c04160858087a87c114ba7efb2d9e547a37d2c4088c3b2161"
+      },
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "thread": 0,
+      "resultBottom": 755
+    },
+    "A-case4-result": {
+      "snapshot": {
+        "case": 4,
+        "frame": "result",
+        "operation": "",
+        "position": 298,
+        "operationCount": 299,
+        "counts": {
+          "files": 3,
+          "facts": 21,
+          "rules": 148,
+          "steps": 2,
+          "total": 2
+        },
+        "sourceCommit": null,
+        "stateSha": "23f5734f9e9dc504d5cd8952068d3d3b437bdfaf2c0021671071902f11ada8c8"
+      },
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "thread": 0,
+      "resultBottom": 722.40625
+    },
+    "B-work": {
+      "snapshot": {
+        "case": 1,
+        "frame": "work",
+        "operation": "op_75f89e342fcc893670e3e06211fdb690",
+        "position": 73,
+        "operationCount": 824,
+        "counts": {
+          "files": 3,
+          "facts": 14,
+          "rules": 6,
+          "steps": 0,
+          "total": 6
+        },
+        "sourceCommit": null,
+        "stateSha": "f4f0809162a2124c04160858087a87c114ba7efb2d9e547a37d2c4088c3b2161"
+      },
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "thread": 1,
+      "resultBottom": null
+    },
+    "B-case1-result": {
+      "snapshot": {
+        "case": 1,
+        "frame": "result",
+        "operation": "",
+        "position": 823,
+        "operationCount": 824,
+        "counts": {
+          "files": 3,
+          "facts": 24,
+          "rules": 692,
+          "steps": 6,
+          "total": 6
+        },
+        "sourceCommit": null,
+        "stateSha": "f4f0809162a2124c04160858087a87c114ba7efb2d9e547a37d2c4088c3b2161"
+      },
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "thread": 0,
+      "resultBottom": 834.59375
+    },
+    "B-case4-result": {
+      "snapshot": {
+        "case": 4,
+        "frame": "result",
+        "operation": "",
+        "position": 298,
+        "operationCount": 299,
+        "counts": {
+          "files": 3,
+          "facts": 21,
+          "rules": 148,
+          "steps": 2,
+          "total": 2
+        },
+        "sourceCommit": null,
+        "stateSha": "23f5734f9e9dc504d5cd8952068d3d3b437bdfaf2c0021671071902f11ada8c8"
+      },
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "thread": 0,
+      "resultBottom": 802
+    },
+    "C-work": {
+      "snapshot": {
+        "case": 1,
+        "frame": "work",
+        "operation": "op_75f89e342fcc893670e3e06211fdb690",
+        "position": 73,
+        "operationCount": 824,
+        "counts": {
+          "files": 3,
+          "facts": 14,
+          "rules": 6,
+          "steps": 0,
+          "total": 6
+        },
+        "sourceCommit": null,
+        "stateSha": "f4f0809162a2124c04160858087a87c114ba7efb2d9e547a37d2c4088c3b2161"
+      },
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "thread": 1,
+      "resultBottom": null
+    },
+    "C-case1-result": {
+      "snapshot": {
+        "case": 1,
+        "frame": "result",
+        "operation": "",
+        "position": 823,
+        "operationCount": 824,
+        "counts": {
+          "files": 3,
+          "facts": 24,
+          "rules": 692,
+          "steps": 6,
+          "total": 6
+        },
+        "sourceCommit": null,
+        "stateSha": "f4f0809162a2124c04160858087a87c114ba7efb2d9e547a37d2c4088c3b2161"
+      },
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "thread": 0,
+      "resultBottom": 834.765625
+    },
+    "C-case4-result": {
+      "snapshot": {
+        "case": 4,
+        "frame": "result",
+        "operation": "",
+        "position": 298,
+        "operationCount": 299,
+        "counts": {
+          "files": 3,
+          "facts": 21,
+          "rules": 148,
+          "steps": 2,
+          "total": 2
+        },
+        "sourceCommit": null,
+        "stateSha": "23f5734f9e9dc504d5cd8952068d3d3b437bdfaf2c0021671071902f11ada8c8"
+      },
+      "overlaps": [],
+      "horizontalOverflow": false,
+      "thread": 0,
+      "resultBottom": 797.859375
+    }
+  },
+  "errors": [],
+  "writes": []
+}
