@@ -616,3 +616,17 @@ for(const width of [541,600,700])test(`a returning case shares the brand row wit
  assert.ok(header.height<=64.5,`one header row: ${JSON.stringify(header)}`);
  for(const part of ['nav','back'])assert.ok(header[part].top<header.brand.bottom && header[part].bottom>header.brand.top,`${part} sits on the brand row`);
 });
+
+test('Draft request opens the exact recorded unsent letter without changing its record or writing',async t=>{
+ const page=await fixturePage(t),original=saved(robin).outcome.request_draft;
+ await open(page,robin);
+ const link=page.locator('[data-au-open-outcome-draft]');await link.waitFor();
+ assert.equal(await page.locator('[data-au-disclosure=outcome-why]').getAttribute('open'),null);
+ await link.click();
+ assert.ok(await page.locator('[data-au-disclosure=outcome-draft]').getAttribute('open')!==null);
+ assert.equal(await page.locator('[data-au-disclosure=outcome-draft] .au-draft-body').textContent(),original.body);
+ assert.match(await page.locator('[data-au-disclosure=outcome-draft] summary').innerText(),/not sent/);
+ assert.equal(await page.locator('[data-au-disclosure=outcome-draft] summary').evaluate(e=>e===document.activeElement),true);
+ assert.deepEqual(await page.evaluate(id=>window.__responses[`${window.__base}/claims/${id}`].state.outcome.request_draft,robin),original);
+ await noWrites(page);
+});

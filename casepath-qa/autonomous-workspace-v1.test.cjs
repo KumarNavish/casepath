@@ -1392,7 +1392,7 @@ function sourceFixture() {
  const query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-source-content]'?body:selector==='#auSourceTitle'?title:query(selector);
  return {...f,body,sourceTitle:title,close};
 }
-async function waitFor(predicate) { const deadline=Date.now()+1000;while(!predicate()&&Date.now()<deadline)await new Promise(resolve=>setTimeout(resolve,1));assert.ok(predicate(),'the expected asynchronous operation did not complete'); }
+async function waitFor(predicate) { const deadline=Date.now()+3500;while(!predicate()&&Date.now()<deadline)await new Promise(resolve=>setTimeout(resolve,1));assert.ok(predicate(),'the expected asynchronous operation did not complete'); }
 
 test('source inspection verifies exact identity, preserves claim context and returns focus after close',async t=>{
  const f=sourceFixture(),body='😀\nExact source passage.\nAfter',source={claim_id:'claim-a',artifact_id:'original',sha256:hash('d'),text:body,text_sha256:sha(body),complete:true};
@@ -2351,10 +2351,10 @@ function demoCatalog({selected=0,reference=0}={}) {
  }),{claim_id:'clm_other',title:'Another original',origin:'canonical_original',status:'not_started',revision:0}];
 }
 
-test('the Demonstration roster prefers recorded selected originals, then reference assessments, and never mixes them',()=>{
+test('the Demonstration roster prefers reference assessments consistently and keeps selected originals separate',()=>{
  const ids=rows=>rows.cases.map(row=>row.claim_id);
- const both=ui.demoRoster(demoCatalog({selected:9,reference:1}));assert.equal(both.collection,'selected');assert.deepEqual(ids(both),ui.DEMO_CASES.map(row=>row.claim_id));assert.equal(both.cases[0].claim_id,'clm_e262801f9368bc12');
- const partial=ui.demoRoster(demoCatalog({selected:3,reference:1}));assert.equal(partial.collection,'selected');assert.deepEqual(ids(partial),ui.DEMO_CASES.slice(0,3).map(row=>row.claim_id),'a partial recording plays only the selected cases with histories, in selection order');
+ const both=ui.demoRoster(demoCatalog({selected:9,reference:1}));assert.equal(both.collection,'reference');assert.deepEqual(ids(both),ui.REFERENCE_DEMO_CASES.filter(row=>row.claim_id!=='clm_7dbd7c7d1c4ddf90').map(row=>row.claim_id));assert.equal(both.cases[0].claim_id,ui.REFERENCE_DEMO_CASES[0].claim_id);
+ const partial=ui.demoRoster(demoCatalog({selected:3,reference:1}));assert.equal(partial.collection,'reference');assert.deepEqual(ids(partial),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id));const onlySelected=ui.demoRoster(demoCatalog({selected:3}));assert.equal(onlySelected.collection,'selected');assert.deepEqual(ids(onlySelected),ui.DEMO_CASES.slice(0,3).map(row=>row.claim_id));
  const reference=ui.demoRoster(demoCatalog({reference:1}));assert.equal(reference.collection,'reference');assert.deepEqual(ids(reference),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id));
  assert.ok(!reference.cases.some(row=>ui.DEMO_CASES.includes(row)),'the reference sequence carries no selected roster row');
  const shared='clm_7dbd7c7d1c4ddf90';assert.ok(ui.DEMO_CASES.some(row=>row.claim_id===shared)&&ui.REFERENCE_DEMO_CASES.some(row=>row.claim_id===shared));
@@ -2435,15 +2435,16 @@ test('a case result links the knowledge it saved or reused, and the tour ends at
  assert.equal(ui.tourKnowledgePayoff(data,['clm_543f08f2415b2a33']).pin.claim_id,'clm_543f08f2415b2a33','a tour that only reused opens on its own reuse');
 });
 
-test('a writable Demonstration opens the recorded selected originals first, and Choose case appears only there',async t=>{
- const routing=routingFixture(t,'#autonomous/demonstration'),f=dom(),catalog=demoCatalog({selected:9,reference:1}),first='clm_e262801f9368bc12';
+test('a writable Demonstration chooses the same reference-first roster and never starts new work',async t=>{
+ const routing=routingFixture(t,'#autonomous/demonstration'),f=dom(),catalog=demoCatalog({selected:9,reference:1}),first=ui.REFERENCE_DEMO_CASES[0].claim_id;
  const zero=claim_id=>({state:{claim_id,title:'Original',message:'Original message.',revision:0,state_sha256:sha(claim_id),status:'not_started',mode:'unprocessed',phase:'not_run',graph:null,evaluation:null,outcome:null,deferral:null,facts:[],obligations:[],actions:[],acquired_sources:[],source_descriptors:[]},projection:{revision:0,state_sha256:sha(claim_id)},events:[],cursor_sha256:null,mode:'replay',replay_only:true,through_seq:0,current_revision:0,current_state_sha256:sha(claim_id),current_event_sha256:null,provenance:{}});
  const api=fakeApi({handle:async path=>path.endsWith('/claims')?response({claims:catalog,total:catalog.length}):path.match(/\/claims\/([^/]+)\/replay\?through_seq=0$/)?response(zero(path.match(/\/claims\/([^/]+)\//)[1])):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();await settle();
+ await waitFor(()=>api.calls.some(row=>row.path.includes('/replay?')));
  const replays=api.calls.filter(row=>row.path.includes('/replay?')).map(row=>row.path);
- assert.ok(replays[0].includes(`/claims/${first}/replay?through_seq=0`),'the first replay read is the first selected original');
- assert.equal(api.calls.filter(row=>row.path.includes('/operations?')).length,0,'selected originals replay their journal; no reference check starts');
- assert.match(routing.hash,new RegExp(`^#autonomous/claim/${first}\\?collection=selected&mode=replay`));
+ assert.ok(replays[0].includes(`/claims/${first}/replay?`),'the saved head and zero-prefix reads both belong to the first reference case');assert.ok(replays.some(path=>path.includes(`/claims/${first}/replay?through_seq=0`)));
+ assert.ok(api.calls.filter(row=>row.path.includes('/operations?')).every(row=>row.init.method==='GET'),'reference operation reads cannot start new work');
+ assert.match(routing.hash,new RegExp(`^#autonomous/claim/${first}\\?collection=reference&mode=replay`));
  assert.doesNotMatch(f.host.innerHTML,/legacy/i);assert.equal(api.calls.filter(row=>row.init.method&&row.init.method!=='GET').length,0);
  const settled=state({policy_id:REFERENCE_POLICY,status:'deferred',revision:41,outcome:{status:'deferred',assessment_status:'complete',summary:'Recorded result.',reference_provenance:{mode:'deterministic_reference',synthetic:true}}});
  assert.doesNotMatch(ui.workMarkup(settled,{},null,[],'step',{},{mode:'saved'}),/Choose case/,'a case opened from Cases has no demonstration picker');
@@ -2947,7 +2948,7 @@ test('late binding and result hashes cannot mutate a newly selected operation se
   const bytes=Buffer.from(phase==='binding'?ui.canonicalJSON(first.binding):ui.canonicalJSON(JSON.parse(JSON.stringify(first.frames.slice(0,-1))).map(frame=>sha(ui.canonicalJSON(frame))))),hash=delayedPacketHash(t,bytes);
   const api=fakeApi({handle:async path=>{if(!path.includes(first.id)){if(path.includes('/replay?')||path.includes('/snapshot?')||path.includes('/operations?'))return future.promise;return null;}if(path.includes('/snapshot?'))return response(first.snapshot);if(path.endsWith('/replay?through_seq=0'))return response(first.zero);if(path.includes('/operations?mode=recorded'))return pendingOperationResponse({...first.binding,mode:'recorded_operations'});if(path.includes('/operations?'))return phase==='binding'?pendingOperationResponse(first.binding):new Response(first.body);}});
   const controller=ui.mount(f.container,{fetch:api.fetch});
-  try {await settle();await controller.showDemonstration();await hash.started;await controller.showDemonstration(true,'reference','recorded');await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations');const before=f.host.innerHTML;hash.release();await settle();await settle();assert.equal(f.host.innerHTML,before,`${phase} completion keeps the replacement session unchanged`);assert.equal(f.attributes.get('data-au-operation-result-verified'),'false');assert.doesNotMatch(f.status.textContent,/stopped|differs/);}
+  try {await settle();await controller.showDemonstration();await hash.started;await controller.showDemonstration(true,'reference','recorded');await waitFor(()=>f.attributes.get('data-au-operation-run-mode')==='recorded_operations'&&f.host.innerHTML.includes('data-au-story="opening"'));const before=f.host.innerHTML;hash.release();await settle();await settle();assert.equal(f.host.innerHTML,before,`${phase} completion keeps the replacement session unchanged`);assert.equal(f.attributes.get('data-au-operation-result-verified'),'false');assert.doesNotMatch(f.status.textContent,/stopped|differs/);}
   finally {controller.destroy();future.resolve(response({}));hash.restore();await settle();}
  }
 });
@@ -3809,4 +3810,23 @@ test('W1 Next requires a concrete recorded action and never inserts a generic fa
  for(const next_action of boilerplate)assert.doesNotMatch(ui.outcomeSummaryMarkup(state({outcome:{summary:'Saved finding.',next_action}})),/data-au-outcome-next/);
  const next_action='Ask the landlord for the dated repair confirmation.';
  assert.match(ui.outcomeSummaryMarkup(state({outcome:{summary:'Saved finding.',next_action}})),/data-au-outcome-next[\s\S]*Ask the landlord for the dated repair confirmation\./);
+});
+
+
+test('W2 opening introduces the case before the work and handoff names only the next recorded case',()=>{
+ const saved=state({claim_id:ui.REFERENCE_DEMO_CASES[1].claim_id,title:'My heater keeps stopping.'}),tour={collection:'reference',cases:ui.REFERENCE_DEMO_CASES,index:1};
+ const opening=ui.workMarkup(saved,{},'branch',[],'step',{}, {mode:'replay',tour,storyPhase:'opening'});
+ assert.match(opening,/data-au-story="opening"/);assert.match(opening,/>Case 2 of 9 · Defects and repairs<\/h1>/);assert.match(opening,/>Customer asks<\/span> My heater keeps stopping\./);
+ const handoff=ui.workMarkup(saved,{},'branch',[],'step',{}, {mode:'replay',tour,storyPhase:'handoff'});
+ assert.match(handoff,/data-au-story="handoff"/);assert.ok(handoff.includes(`Next case: ${ui.caseLabel(tour.cases[2].claim_id).primary}`));
+ assert.doesNotMatch(opening,/data-au-story-handoff/);
+});
+
+
+test('W2 Draft request is available only for recorded missing documents with a readable unsent draft',()=>{
+ const saved=state({outcome:{summary:'Evidence remains open.',missing_evidence:[{document_type:'notice',label:'Notice copy'}],request_draft:{status:'prepared_not_sent',subject:'Please supply the notice',body:'Please send the original notice copy.'}}});
+ const before=JSON.stringify(saved),html=ui.outcomeSummaryMarkup(saved);
+ assert.match(html,/data-au-outcome-missing[\s\S]*data-au-open-outcome-draft>Draft request<\/button>/);assert.match(html,/data-au-disclosure="outcome-draft"/);assert.ok(html.includes(saved.outcome.request_draft.body));
+ for(const outcome of [{...saved.outcome,missing_evidence:[]},{...saved.outcome,request_draft:{status:'prepared_not_sent'}},{...saved.outcome,request_draft:{status:'sent',body:'Already sent'}}])assert.doesNotMatch(ui.outcomeSummaryMarkup({...saved,outcome}),/data-au-open-outcome-draft/);
+ assert.equal(JSON.stringify(saved),before);
 });

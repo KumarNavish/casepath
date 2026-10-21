@@ -1,0 +1,54 @@
+{
+  "base_commit": "6c80f3ef0a1404fb0699b886b812c3a08a63db29",
+  "planner_parallel_permission": "https://github.com/KumarNavish/casepath/pull/21#issuecomment-6303119662",
+  "source_manifest_sha256": "0a50c19a45fd1274af89bb3726f6460cdcc56d272c5893d44b77ff147c4cadd7",
+  "source_files": 1723,
+  "focused_tests": {
+    "unit_product": {
+      "tests": 427,
+      "pass": 427,
+      "fail": 0,
+      "skipped": 0
+    },
+    "browser_identity": {
+      "tests": 35,
+      "pass": 35,
+      "fail": 0,
+      "skipped": 0
+    },
+    "total": 462
+  },
+  "commands": {
+    "unit_product": "PYTHONDONTWRITEBYTECODE=1 node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/autonomous-language-v1.test.cjs casepath-qa/unified-product-v1.test.cjs",
+    "browser_identity": "PLAYWRIGHT_EXECUTABLE_PATH=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome PYTHONDONTWRITEBYTECODE=1 node --test --test-reporter=tap casepath-qa/autonomous-evidence-identity-v2.test.cjs",
+    "story": "BASE=http://127.0.0.1:4180 PLAYWRIGHT_EXECUTABLE_PATH=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome node design-plans/tools/check_w2.mjs design-plans/w2-20261021/checks"
+  },
+  "story_checks": "checks/checks.json",
+  "visual_count": {
+    "before": 48,
+    "after": 28,
+    "reduction_percent": 41.67
+  },
+  "browser_execution": "serial",
+  "full_suite": "not run; W5 gate",
+  "provider_calls": 0,
+  "hosted_writes": 0,
+  "deployment": false,
+  "assets": {
+    "autonomous-workspace-v1.js": "e7aa2fe3b161f32f56eeaf63e9bec7b447da2e837d1aaea666a0377a4a6609cf",
+    "autonomous-workspace-v1.css": "fcefdadf5aaf6bcc8a621667f9b9da84b97551a003fc8543b5162d64ff253217",
+    "autonomous-language-v1.js": "4445ae6594dc4d753607d94355f86569a45f875735b044b8ac9308725947eb54"
+  },
+  "screenshots": {
+    "checks/1440-answer.png": "edfbb155c800eaf44135a804383022cf3627e79841db7670e56efccf55202d8e",
+    "checks/1440-handoff.png": "804897644aa2b79a41c54614c74c09fbd7be9a9ae2f69e14c893b3488cd14186",
+    "checks/1440-opening.png": "025bfd3ee690dce6ead49140c9e8c0168f9c23757897ca67675401c7a72137e4",
+    "checks/1440-work.png": "40fefb69dfa337613cbfa8b49827b5cc4142d0c72b1a0b228a3d19f06956725a",
+    "checks/390-answer.png": "27320718f89f8e72a5f19f8f410c0a7b368b1012c3e992c0fb2dab3077351cd4",
+    "checks/390-handoff.png": "4edaf559ce70603a335433992e6009c7f382532bc9470ff25f64b2cfb224fa4e",
+    "checks/390-opening.png": "712e8bd204bca38d2c9b11fd8cf6e32c44ec4bcee87d77a5d4b2c9b6328bcbe1",
+    "checks/390-work.png": "90488cc432752c2db8a60127543207b150648f92dcf75b1f748c63dc60f4c2b2",
+    "checks/matched-heating.png": "c17b10295e46caa16779a70c418188da107551c030b80825450a1a8d97d7de2c",
+    "diagnostics/answer-below-fold-before-fix.png": "8dd47b67d5eba105a0a61f2fc37230f6bffbac1987c2627fd071d89a6e62917f"
+  }
+}

@@ -1,0 +1,49 @@
+Artifact documents prepared [('bedroom-corner-2026-07-27.jpg', 216571), ('defect-timeline.pdf', 3621), ('delivery-receipt.pdf', 2081), ('later-claim-email.eml', 797), ('later-lease-agreement.pdf', 3521), ('later-management-reply.eml', 556), ('later-notification-email.eml', 622), ('lease-agreement.pdf', 7762), ('management-reply.eml', 591), ('notification-email.eml', 589), ('pages/art_delivery/page-1.png', 52502), ('pages/art_later_lease/page-1.png', 74817), ('pages/art_later_lease/page-2.png', 39479), ('pages/art_lease/page-1.png', 95983), ('pages/art_lease/page-2.png', 68811), ('pages/art_lease/page-3.png', 55880), ('pages/art_lease/page-4.png', 40753), ('pages/art_lease/page-5.png', 31039), ('pages/art_lease/page-6.png', 21899), ('pages/art_timeline/page-1.png', 78440), ('pages/art_timeline/page-2.png', 51149), ('pages/art_window_notice/page-1.png', 52220), ('window-corner-2026-08-08.jpg', 290375), ('window-replacement-notice.pdf', 1911)]
+{
+  "images": [
+    {
+      "dimensions": [
+        1448,
+        1086
+      ],
+      "output": "casepath-api/artifacts/bedroom-corner-2026-07-27.jpg",
+      "output_sha256": "b8de375c0a951e3970f4b4a392b5af348ea35b30f5750974fa1d9411da179860",
+      "role": "flagship bedroom corner",
+      "source": "casepath-api/source-assets/flagship-bedroom-corner.png",
+      "source_sha256": "70645bf156c85d3d6f8117aaa94fe359f3e685c5576173bc0037dd3452dfd65e",
+      "transformation": "RGB JPEG quality 92, 4:4:4 subsampling, metadata removed"
+    },
+    {
+      "dimensions": [
+        1448,
+        1086
+      ],
+      "output": "casepath-api/artifacts/window-corner-2026-08-08.jpg",
+      "output_sha256": "ff16af84a7dffa53305de336bc6cebeb80cb1c8b1544a3303d29caa92f8d5e9f",
+      "role": "later window condensation",
+      "source": "casepath-api/source-assets/later-window-condensation.png",
+      "source_sha256": "ab2e71da9706f8dcf54a65fae5d6dbab65f4790c708b0f05996b75e80a0fbff8",
+      "transformation": "RGB JPEG quality 92, 4:4:4 subsampling, metadata removed"
+    }
+  ],
+  "status": "prepared"
+}
+{"file_count": 40, "output": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w2-20261021/casepath-public", "release_id": "casepath-v20-reference-20260811", "source_commit": "6c80f3ef0a1404fb0699b886b812c3a08a63db29"}
+{
+  "artifact_files": 25,
+  "leakage_scan": "passed",
+  "model_visible_artifacts": 24,
+  "release_id": "casepath-v20-reference-20260811",
+  "source_commit": "6c80f3ef0a1404fb0699b886b812c3a08a63db29",
+  "source_files": 1723,
+  "status": "verified"
+}
+{
+  "artifact_files": 25,
+  "leakage_scan": "passed",
+  "model_visible_artifacts": 24,
+  "release_id": "casepath-v20-reference-20260811",
+  "source_commit": "6c80f3ef0a1404fb0699b886b812c3a08a63db29",
+  "source_files": 1723,
+  "status": "verified"
+}
