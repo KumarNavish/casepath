@@ -1,4 +1,4 @@
-# W9a — the recorded demonstration
+# W9 — recorded demonstration and executive film
 
 Stacked on approved W8 `58512a88b454fd57afbfe044d673d61cc27fa709`.
 This change stays local and recorded: no inference, provider call, original-nine
@@ -10,8 +10,9 @@ hands-free. Normal entry waits for **Watch the analysis** and then runs the same
 story. Pause, source inspection and Skip to answer remain available. The first
 message and its request are the exact saved customer source. Supporting passages,
 facts, completed nodes and checklist reuse come from admitted operations.
-The header and source rail stay in place through all six acts. The final case
-list uses the same recorded rows inside that shell.
+The header and source rail stay anchored during source work. The closing Cases
+act crossfades to the normal Cases · Knowledge header and a full-width list of
+the same nine recorded cases.
 
 Both complete recordings pass the existing source, journal, checkpoint and final
 state checks before the presentation clock starts. The clock creates no CSS or
@@ -74,11 +75,12 @@ fixture remains unchanged. No response headers or credentials are stored.
 The fixture SHA-256 is
 `374b583fd0341a4701274e11f77d474ff92f3c15f2bd59383da7c666c0e57a80`.
 
-W9b will produce the continuous film after W9a approval. The final full strict
-gate and READY FOR MAC follow W9 approval on a sealed W8+W9 source.
+W9a is planner approved. The W9b film below awaits the planner’s cold-viewer
+review. The final full strict gate and READY FOR MAC follow W9 approval on one
+sealed W8+W9 source.
 
 
-## Served-build result
+## W9a served-build result (historical)
 
 Product source: `17a086ce2c3e4c02d164d397e8a6aadfcdfc8766`.
 The [receipt](presentation-receipt.json) binds the served deployment, five served
@@ -163,7 +165,7 @@ frames stay outside Git. The 24-frame contact sheet is decoded from the final
 16:10 MP4, including its permitted fades.
 
 `--probe` checks 120 frames and all three encodes without creating deliverables
-in the repository. The complete film and its receipts follow the sealed capture.
+in the repository. The complete film and its receipts are below.
 
 `verify_film_live.mjs` compares one actual live mid-motion frame per act with
 the raw film frame at the exact same clock time and DPR 2. It reports both PNG
@@ -175,3 +177,53 @@ animations on every observed browser frame.
 The W8 motion and reduced-motion verifiers enter the existing single-case
 **Watch this case** route. The default Demonstration now runs W9; its separate
 verifier covers the executive presentation. Their existing W8 assertions remain.
+
+## W9b film and verification
+
+Captured product and tool revision: `e9da0ed8dd1737b01d370bb13b9bb4edfd3e8ca4`.
+Source-manifest SHA-256: `232f3154d359e76df2d8b9eaf455134c4b395d45c4a9575dde0003d380770a46`.
+Later evidence commits change no product assets.
+
+- [1920×1200 film](casepath-executive-1920x1200.mp4): 13.44 MB.
+- [1920×1080 projector film](casepath-executive-1920x1080.mp4): 12.14 MB.
+- [24-frame contact sheet](contact-sheet.png), decoded from the final 16:10 MP4.
+- [Capture receipt](film-receipt.json), [every frame](frame-index.jsonl),
+  [independent repeat](w9b-proof/repeat-receipt.json),
+  [live comparison](w9b-proof/film-live/live-film-receipt.json), and
+  [encoded timestamps](w9b-proof/encoded-timing.json).
+
+All 5,745 frame indices have clock `n × 1000/60`, Pause visible and zero native
+animations. An independent fresh-browser repeat screenshots all 5,745 frames
+and matches all 96 sampled PNG checksums exactly. Each MP4 has 5,745 unique
+presentation timestamps at `n/60`, 60 fps, 95.75 seconds and no audio. The only
+edits are the two permitted half-second white fades. The master and raw frames
+remain in the durable sibling film directory outside Git.
+
+At the exact same mid-motion times, 6/6 live/film PNGs are byte-identical.
+Maximum mean absolute RGB difference is 0 on the 0–255 scale;
+maximum individual channel difference is 0. The receipt records every
+comparison. The separate full live run observed 5,745
+frames with zero native animations; p95 16.7 ms,
+p99 16.8 ms and maximum 33.2 ms between frames.
+These timing measurements describe this host.
+
+The unchanged product assets also pass the [71 focused tests](w9b-proof/w9b-focused.tap)
+and [revised served-build proof](w9b-proof/presentation/presentation-receipt.json):
+all 13 geometry views, all 5,745 clock samples, Pause/Resume, exact-source
+inspection and all six reduced-motion states. The closing Cases navigation is
+active, case source rails are absent, and wordmark clearance is 32 px above and
+33.8125 px below. All browser cleanup completed.
+
+The first hardware-renderer candidate failed sparse checksum comparison at
+frame 480. Repeating the intervening rendering history fixed that diagnostic,
+but a full repeat still differed at frame 1140. Both rejected receipts are in
+[w9b-proof/diagnostics](w9b-proof/diagnostics); the original film and raw images
+remain outside Git. The delivered film uses the fixed software renderer and the
+complete independent repeat described above. The first live-image assertion
+tried to format entire differing PNG buffers and was terminated; reporting now
+uses bounded hashes and measured pixel differences. An initial source verification
+command omitted the source-commit environment; the corrected verification passed.
+
+Planner cold-viewer approval is pending. W9 approval must precede the final
+sealed W8+W9 full strict gate, complete browser walk and READY FOR MAC. No
+inference, original-nine run, hosted write, merge or deployment occurred.
