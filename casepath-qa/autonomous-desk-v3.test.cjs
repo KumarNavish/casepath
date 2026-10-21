@@ -16,6 +16,8 @@ for(const item of fixture.cases)test(`desk counters and legal labels follow the 
  const unknown=ui.deskOperationModel(state);assert.equal(unknown.counts.documents,null);assert.equal(unknown.counts.facts,null);assert.equal(unknown.counts.rules,null);
  const sources=new Map(all.filter(r=>r.kind==='source.open').map(r=>[r.object.id,r.result])),trace={binding:frames[0],headState:state,rows:all,sources,finished:true,verifiedResult:true};
  const html=ui.agentDeskMarkup(state,{},null,[],{},{operations:trace});
+ assert.ok(html.includes('Nothing missing — answer can go to the customer after your review.'));
+ assert.ok(html.indexOf('Nothing missing — answer can go to the customer after your review.') < html.indexOf('data-au-desk-answer'), 'the next step leads the completed desk');
  for(const legal of state.outcome.legal_predicates){assert.ok(ui.DESK_LEGAL_TESTS[legal.predicate_id],`explicit glossary entry: ${legal.predicate_id}`);assert.ok(html.includes(ui.deskLegalLabel(legal.predicate_id).replace(/&/g,'&amp;')));}
  for(const step of state.graph.nodes){
   assert.ok(ui.DESK_STEPS[step.node_id],`explicit step glossary entry: ${step.node_id}`);
@@ -48,4 +50,13 @@ test('local draft copies reject a different case or original and invalid stored 
 test('unknown step labels use only mechanical paraphrases',()=>{
  assert.equal(ui.deskStepLabel({node_id:'new_step',label:'Assess notification context'}),'Check notification context');
  assert.equal(ui.deskStepLabel({node_id:'new_step'}),'New step');
+});
+
+test('next step uses recorded gaps, recipients and graph nodes without inventing them',()=>{
+ const state={graph:{nodes:[{node_id:'lt_form',label:'Assess whether the termination notice is valid'}]},outcome:{missing_evidence:[{document_type:'notice',label:'Termination notice',node_ids:['lt_form'],requested_from:'the customer'}]}};
+ const before=JSON.stringify(state),html=ui.deskNextStepMarkup(state);
+ assert.match(html,/Ask the customer\./);assert.match(html,/data-au-desk-document-select="notice"/);assert.match(html,/data-au-desk-select="lt_form"/);assert.match(html,/Check whether the termination notice is valid/);assert.equal(JSON.stringify(state),before);
+ const unknown=ui.deskNextStepMarkup({outcome:{missing_evidence:[{label:'Delivery proof',node_ids:['not-recorded']}]}});
+ assert.match(unknown,/Who to ask is not recorded/);assert.match(unknown,/step requiring this document is not recorded/);assert.doesNotMatch(unknown,/data-au-desk-select|Nothing missing/);
+ assert.match(ui.deskNextStepMarkup({outcome:{}}),/document needs.*not been recorded/);assert.doesNotMatch(ui.deskNextStepMarkup({outcome:{}}),/Nothing missing/);
 });
