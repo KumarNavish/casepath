@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1734,
+  "file_count": 1738,
   "files": [
     {
       "executable": false,
@@ -8441,8 +8441,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_frontend_node_suites_v1.py",
-      "sha256": "47aabfd4a96e29f241be61a43909d8a9cd93b667e3ca0cf19677d4c9a39fb9fd",
-      "size_bytes": 4888
+      "sha256": "f6e44af53342402ae12787751dc4fe3eb27b8852e32b378c7c59a751cda92e8d",
+      "size_bytes": 4999
     },
     {
       "executable": false,
@@ -8986,6 +8986,18 @@
     },
     {
       "executable": false,
+      "path": "casepath-qa/autonomous-presentation-browser-v1.test.cjs",
+      "sha256": "cdf5e6fc8cf402a1cbff0ae73ed8b3f520426467c9a2b80a5c2e78b417ec0485",
+      "size_bytes": 5901
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/autonomous-presentation-v1.test.cjs",
+      "sha256": "4cc647570323e8a686b70823fe57617bf77a99382f1f4e21541f4b116acc0dee",
+      "size_bytes": 5315
+    },
+    {
+      "executable": false,
       "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
       "sha256": "7867efde6412d121951b564a441906024cf1342d6b5f3c8e3ffea6a02af0ad9a",
       "size_bytes": 638545
@@ -9217,6 +9229,12 @@
       "path": "casepath-qa/fixtures/knowledge-w6.json.gz",
       "sha256": "b4afc7efbc1d0f6c7d3dc82afee28a3f20e54f9e1bb52d10e006036f2203a540",
       "size_bytes": 13579
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/fixtures/presentation-v1.json.gz",
+      "sha256": "374b583fd0341a4701274e11f77d474ff92f3c15f2bd59383da7c666c0e57a80",
+      "size_bytes": 2471745
     },
     {
       "executable": false,
@@ -9496,6 +9514,12 @@
     },
     {
       "executable": false,
+      "path": "casepath/assets/autonomous-presentation-v1.js",
+      "sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+      "size_bytes": 7473
+    },
+    {
+      "executable": false,
       "path": "casepath/assets/autonomous-recorded-heating-v1.json",
       "sha256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
       "size_bytes": 523167
@@ -9509,14 +9533,14 @@
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.css",
-      "sha256": "ac4d2d4917fd03c8f76d96b9daee91d586fde16de5dc44ebc07f272c4354ff04",
-      "size_bytes": 347877
+      "sha256": "79ecbb267b702aeeebab23867a92d30a9a0654ff84475eb1553ac2a2275f8792",
+      "size_bytes": 350776
     },
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.js",
-      "sha256": "82b6e825a10a2ceb3805b53854037c294be06b545fff26dfa937e61a39b41866",
-      "size_bytes": 792957
+      "sha256": "6a85fd8245b3fb892e6a206ea678e7bb81852a24fef611df1e913a9e6d3bfb1d",
+      "size_bytes": 819702
     },
     {
       "executable": false,
@@ -9725,8 +9749,8 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "e40e18832830b0788347b9be9a4075911347240db6eeca36ea101aa2a0165f5b",
-      "size_bytes": 25651
+      "sha256": "2517b8f3077b00bfc21a861f7a83c38d8c1a9f1cb25afaa522e02fe6ba27ff9d",
+      "size_bytes": 25792
     },
     {
       "executable": false,
@@ -9935,8 +9959,8 @@
     {
       "executable": false,
       "path": "casepath/tools/build_static_site.py",
-      "sha256": "6affd694a65605a803d7847995a404534eca85c3537a1adbc94535827d349753",
-      "size_bytes": 10037
+      "sha256": "d598844e7f4308b4dc1ff7d320b13656272759f87971542a1a6eea86a4ce8c21",
+      "size_bytes": 10125
     },
     {
       "executable": false,
@@ -10277,8 +10301,8 @@
     {
       "executable": false,
       "path": "docs/product/UI_FINISH_RECEIPT_20261021.md",
-      "sha256": "d3faa69e3b40b9d36f60c5340dcbefb447e82b974ece6851c716c04d60edebea",
-      "size_bytes": 12324
+      "sha256": "bc7f966e6fc94d594a4a9214a7ab5312bbcfeee036e201c64f95d494d995b8e6",
+      "size_bytes": 14399
     },
     {
       "executable": false,

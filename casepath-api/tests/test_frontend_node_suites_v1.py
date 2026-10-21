@@ -34,6 +34,8 @@ SUITES = (
     ("autonomous-cases-v4.test.cjs", False),
     ("autonomous-knowledge-w6.test.cjs", False),
     ("autonomous-northstar-v1.test.cjs", False),
+    ("autonomous-presentation-v1.test.cjs", False),
+    ("autonomous-presentation-browser-v1.test.cjs", True),
 )
 
 PLAYWRIGHT_PROBE = """

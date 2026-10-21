@@ -6,7 +6,9 @@ W1–W6 and NS1a/NS1b/NS2/NS3 are planner approved. NS3 is PR #33 at
 `1b61d1a`; W8 includes the final refinements from planner comment 6319227767. W7 was cancelled and is excluded. The
 Mac integration owner retains merge and release authority. This receipt
 admits no hosted write, deployment, inference or original-nine rerun.
-The original nine allowance is already consumed.
+The Mac integration owner runs the approved nine-original allowance after handoff,
+per [MAC_COMPLETION_HANDOFF_20261019.md](MAC_COMPLETION_HANDOFF_20261019.md).
+Before any call, the Mac integration owner checks the ledger to confirm this allowance is still available. This receipt grants no new allowance or retry.
 
 The visual target is the three approved concepts in `design/northstar`,
 with the planner's final glossary and geometry. Desktop evidence is captured
@@ -129,17 +131,17 @@ The side-by-side images below contain the concept on the left and the product on
 the right. They preserve recorded content instead of illustrative concept copy.
 State 7 remains omitted because the record has no alternatives with consequences.
 
-| State | Concept beside product | Deliberate difference |
-| --- | --- | --- |
-| 1 · Ready | ![Concept and ready state](../../design-plans/w8-20261021-mac-r1/fidelity-state1-ready-side.png) | Read-only Watch the analysis action. |
-| 2 · Source opened | ![Concept and opened source](../../design-plans/w8-20261021-mac-r1/fidelity-state2-source-opened-side.png) | Only recorded source fields. |
-| 3 · Exact passage | ![Concept and exact passage](../../design-plans/w8-20261021-mac-r1/fidelity-state3-exact-passage-side.png) | Exact source offsets; no fact connector yet. |
-| 4 · Fact | ![Concept and source fact](../../design-plans/w8-20261021-mac-r1/fidelity-state4-source-fact-side.png) | Full recorded label; connector starts at the card. |
-| 5 · Node accepted | ![Concept and accepted process node](../../design-plans/w8-20261021-mac-r1/fidelity-state5-process-decision-side.png) | Recorded process and operations. |
-| 6 · Process, case 1 | ![Concept and case 1 process](../../design-plans/w8-20261021-mac-r1/fidelity-case1-process-side.png) | Actual linear DAG and exact source passage. |
-| 6 · Process, case 4 | ![Concept and case 4 process](../../design-plans/w8-20261021-mac-r1/fidelity-case4-process-side.png) | Actual decisive legal test. |
-| 8 · Checklist, case 1 | ![Concept and case 1 checklist reuse](../../design-plans/w8-20261021-mac-r1/fidelity-case1-memory-side.png) | Recorded checklist reuse; no unsupported Before/Now. |
-| 8 · Checklist, case 4 | ![Concept and case 4 checklist reuse](../../design-plans/w8-20261021-mac-r1/fidelity-case4-memory-side.png) | Recorded checklist reuse; no expert-review claim. |
+| State | Concept beside product | Overlay / mean difference | Matched | Deliberate | Pending |
+| --- | --- | --- | --- | --- | --- |
+| 1 · Ready | ![Concept and ready state](../../design-plans/w8-20261021-mac-r1/fidelity-state1-ready-side.png) | [Overlay](../../design-plans/w8-20261021-mac-r1/fidelity-state1-ready-overlay.png) · 3.53% | Shell, type, palette and overview geometry | Read-only Watch the analysis action. | None in W8; W9 presentation review follows. |
+| 2 · Source opened | ![Concept and opened source](../../design-plans/w8-20261021-mac-r1/fidelity-state2-source-opened-side.png) | [Overlay](../../design-plans/w8-20261021-mac-r1/fidelity-state2-source-opened-overlay.png) · 4.43% | Shell, type, palette and overview geometry | Only recorded source fields. | None in W8; W9 presentation review follows. |
+| 3 · Exact passage | ![Concept and exact passage](../../design-plans/w8-20261021-mac-r1/fidelity-state3-exact-passage-side.png) | [Overlay](../../design-plans/w8-20261021-mac-r1/fidelity-state3-exact-passage-overlay.png) · 5.31% | Shell, type, palette and overview geometry | Exact source offsets; no fact connector yet. | None in W8; W9 presentation review follows. |
+| 4 · Fact | ![Concept and source fact](../../design-plans/w8-20261021-mac-r1/fidelity-state4-source-fact-side.png) | [Overlay](../../design-plans/w8-20261021-mac-r1/fidelity-state4-source-fact-overlay.png) · 5.41% | Shell, type, palette and overview geometry | Full recorded label; connector starts at the card. | None in W8; W9 presentation review follows. |
+| 5 · Node accepted | ![Concept and accepted process node](../../design-plans/w8-20261021-mac-r1/fidelity-state5-process-decision-side.png) | [Overlay](../../design-plans/w8-20261021-mac-r1/fidelity-state5-process-decision-overlay.png) · 5.37% | Shell, type, palette and overview geometry | Recorded process and operations. | None in W8; W9 presentation review follows. |
+| 6 · Process, case 1 | ![Concept and case 1 process](../../design-plans/w8-20261021-mac-r1/fidelity-case1-process-side.png) | [Overlay](../../design-plans/w8-20261021-mac-r1/fidelity-case1-process-overlay.png) · 6.1% | Shell, type, palette and overview geometry | Actual linear DAG and exact source passage. | None in W8; W9 presentation review follows. |
+| 6 · Process, case 4 | ![Concept and case 4 process](../../design-plans/w8-20261021-mac-r1/fidelity-case4-process-side.png) | [Overlay](../../design-plans/w8-20261021-mac-r1/fidelity-case4-process-overlay.png) · 6.02% | Shell, type, palette and overview geometry | Actual decisive legal test. | None in W8; W9 presentation review follows. |
+| 8 · Checklist, case 1 | ![Concept and case 1 checklist reuse](../../design-plans/w8-20261021-mac-r1/fidelity-case1-memory-side.png) | [Overlay](../../design-plans/w8-20261021-mac-r1/fidelity-case1-memory-overlay.png) · 4.51% | Shell, type, palette and overview geometry | Recorded checklist reuse; no unsupported Before/Now. | None in W8; W9 presentation review follows. |
+| 8 · Checklist, case 4 | ![Concept and case 4 checklist reuse](../../design-plans/w8-20261021-mac-r1/fidelity-case4-memory-side.png) | [Overlay](../../design-plans/w8-20261021-mac-r1/fidelity-case4-memory-overlay.png) · 4.25% | Shell, type, palette and overview geometry | Recorded checklist reuse; no expert-review claim. | None in W8; W9 presentation review follows. |
 
 The revision's `verification.json` records per-case overlap counts for live
 selection/fact frames, every completed process node, every memory node and role
@@ -175,7 +177,8 @@ forbidden. No additional protected-test or hosted-startup edit is included.
 
 ## Next legitimate action
 
-Only after the strict gate and browser receipts pass and the planner accepts
-W8, the Mac owner can review the full stack for integration. READY FOR MAC is
+After W9 product direction and film are approved, run the full strict gate on
+one sealed W8+W9 commit and post READY FOR MAC. Only then can the Mac owner
+review the full stack for integration. READY FOR MAC is
 a source handoff, not a release or evidence of public deployment. Release
 requires separately authorized source-aligned frontend/API verification.

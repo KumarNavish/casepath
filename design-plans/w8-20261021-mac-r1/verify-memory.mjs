@@ -24,5 +24,16 @@ try{
  await p.goto('http://127.0.0.1:4180/#autonomous/claim/'+fixture.cases[0].id+'?detail=knowledge&node=dh_scope',{waitUntil:'networkidle'});await p.locator('[data-au-ns-memory]').waitFor();const quote=await p.locator('.au-ns-memory-source blockquote').textContent();await p.locator('.au-ns-memory-source [data-au-source]').click();await p.locator('.au-source-dialog[open]').waitFor();await p.locator('.au-source-dialog').getByText(/Synthetic demonstration document/).waitFor();assert.ok((await p.locator('.au-source-dialog').innerText()).includes(quote));await p.keyboard.press('Escape');
  assert.equal(await p.locator('.au-ns-memory-cards [data-au-knowledge]').evaluate(el=>getComputedStyle(el).textDecorationLine),'underline');assert.doesNotMatch(await p.locator('[data-au-ns-memory]').innerText(),/Earlier checklist/);await p.locator('.au-ns-memory-cards [data-au-knowledge]').click();await p.locator('[data-au-checklist-library]').waitFor({timeout:30000});await p.waitForFunction(()=>document.querySelector('[data-au-knowledge-read-label]')?.textContent==='');await snap('knowledge-checklist');assert.match(await p.locator('[data-au-checklist-library]').innerText(),/Each case still needs its own evidence/);await p.goBack();await p.locator('[data-au-ns-memory]').waitFor({timeout:90000});assert.equal(await p.locator('[data-au-ns-memory]').getAttribute('data-au-ns-memory-node'),'dh_scope');await p.goForward();await p.locator('[data-au-checklist-library]').waitFor();await p.goBack();await p.locator('[data-au-ns-memory]').waitFor({timeout:90000});
  await p.locator('.au-ns-memory header [data-au-detail=documents]').click();await p.locator('[data-au-ns-documents]').waitFor();await p.locator('.au-ns-secondary [data-au-detail=knowledge]').click();await p.locator('[data-au-ns-memory]').waitFor();await p.locator('.au-ns-memory-cards [data-au-detail=answer]').click();await p.locator('[data-au-desk-answer]').waitFor();assert.deepEqual(report.errors,[]);assert.deepEqual(report.writes,[]);report.passed=true;
-}finally{fs.writeFileSync(outDir+'/memory-receipt.json',JSON.stringify(report,null,2));await p.unrouteAll({behavior:'ignoreErrors'});await browser.close();}
+}catch(error){report.failure=String(error.stack||error);console.error(error);}
+finally{
+ report.cleanup=[];
+ for(const [name,close]of [['page',()=>p.close()],['context',()=>p.context().close()],['browser',()=>browser.close()]]){
+  let timer;const started=Date.now();
+  try{const result=await Promise.race([Promise.resolve().then(close).then(()=>({closed:true})),new Promise(resolve=>{timer=setTimeout(()=>resolve({timedOut:true}),10000);})]);report.cleanup.push({name,...result,elapsedMs:Date.now()-started});}
+  catch(error){report.cleanup.push({name,error:String(error.message)});}
+  finally{clearTimeout(timer);}
+ }
+ fs.writeFileSync(outDir+'/memory-receipt.json',JSON.stringify(report,null,2));
+}
 console.log(JSON.stringify(report,null,2));
+process.exit(report.passed?0:1);

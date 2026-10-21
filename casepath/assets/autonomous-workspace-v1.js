@@ -5,6 +5,7 @@
   else root.CasePathAutonomous = api;
 })(typeof globalThis === 'object' ? globalThis : this, function (root) {
   'use strict';
+  const presentationClock = root.CasepathPresentation || (typeof require === 'function' ? require('./autonomous-presentation-v1.js') : null);
   const language = root.CasepathLanguage || (typeof require === 'function' ? require('./autonomous-language-v1.js') : null);
   if (!language) throw new Error('autonomous-language-v1.js must load before autonomous-workspace-v1.js');
   const plain = (value, fallback = 'Recorded item') => language?.plainLabel(value,fallback) || fallback;
@@ -2466,7 +2467,7 @@
   async function checkedNorthStarRecording(buffer, session, active) {
     // Future plan rows are admitted only after the complete source and journal
     // chain passes the same checks as the replay. This never issues a new read.
-    const frames=[],trace={rows:[],sources:new Map(),bytes:0,pinnedJournal:session.verifiedJournal||[],journal:[],frameHashes:[],headState:session.verifiedHeadState};
+    const frames=[],checkpoints=[session.operationOpeningAnchor],trace={rows:[],sources:new Map(),bytes:0,pinnedJournal:session.verifiedJournal||[],journal:[],frameHashes:[],headState:session.verifiedHeadState};
     let state=session.operationOpeningAnchor.state,result=false;
     for await(const frame of buffer) {
       if(!active())return null;
@@ -2475,14 +2476,14 @@
       if(frame.type!=='result')trace.frameHashes.push(await digest(canonicalJSON(frame)));
       if(frame.type==='binding'){if(trace.binding)throw new Error('Repeated plan binding.');trace.binding=checkedOperationBinding(frame,{...session.replayHead,...session.operationBinding},session.verifiedReplayStart);}
       else if(frame.type==='operation')await checkedOperation(frame,trace,state);
-      else if(frame.type==='checkpoint')state=(await checkedOperationCheckpoint(frame,trace)).state;
+      else if(frame.type==='checkpoint'){const incoming=await checkedOperationCheckpoint(frame,trace);state=incoming.state;checkpoints.push({after_operation:trace.rows.length,state,projection:incoming.projection,events:incoming.accepted.events,replay:incoming.replay});}
       else if(frame.type==='result'){
         if(!trace.binding||state.state_sha256!==session.replayHead.state_sha256||frame.state_sha256!==state.state_sha256||frame.current_event_sha256!==session.replayHead.event_sha256||frame.operation_count!==trace.rows.length||frame.operation_chain_sha256!==trace.rows.at(-1)?.operation_sha256||frame.exact_output_verified!==true||frame.trace_sha256!==await digest(canonicalJSON(trace.frameHashes)))throw new Error('The recorded plan differs from its saved case.');
         result=true;
       }else throw new Error('The recorded plan contains an unknown frame.');
     }
     if(!result)throw new Error('The recorded plan has no verified ending.');
-    return {frames,catalogue:northStarPlanModel(session.verifiedHeadState,trace.rows)};
+    return {frames,trace,checkpoints,state,catalogue:northStarPlanModel(session.verifiedHeadState,trace.rows)};
   }
   async function operationFrameYield(budget, runtime, active, gate) {
     if (!active()) return false;
@@ -3386,7 +3387,7 @@
       if (/[?&]collection=legacy(?=&|$)/.test(fragment) && root.history?.replaceState) { fragment = fragment.replace(/([?&]collection=)legacy(?=&|$)/,'$1selected'); root.history.replaceState(null,'',root.location.pathname + root.location.search + fragment); }
       if (knowledgeOpening && fragment !== knowledgeOpening.fragment) discardKnowledgeOpening();
       if (fragment === routedFragment) return;
-      if (!fragment && readOnlyAccess()) { showDemonstration(false,null,operationRoutePreference(fragment,root.location?.search)); return; }
+      if (!fragment && (readOnlyAccess() || new URLSearchParams(root.location?.search||'').get('present')==='1')) { showDemonstration(false,null,operationRoutePreference(fragment,root.location?.search)); return; }
       if (fragment === '#autonomous/knowledge') showKnowledge(false);
       else if (fragment.startsWith('#autonomous/knowledge?')) { const params = new URLSearchParams(fragment.slice(fragment.indexOf('?')+1)), learning = params.get('view') === 'learning' || params.has('event'); showKnowledge(false,params.get('knowledge')?{knowledge_id:params.get('knowledge'),version:params.get('version') || null,knowledge_sha256:params.get('sha256'),definition_sha256:params.get('definition'),claim_id:params.get('claim')}:null,{view:learning ? 'learning' : 'library',event:params.get('event'),stage:Number(params.get('stage')??10),facet:params.get('facet'),complete:params.get('complete')==='1'}); }
       else if (fragment.startsWith('#autonomous/claim/')) {
@@ -3923,6 +3924,8 @@
       deskRecordReads.set(identity,promise);
     }
     function renderClaim(changes = null, navigation = false) {
+      const executive=(demoSession||pausedPresentation)?.executiveController;
+      if(executive&&!inspectionHold){executive.render();return;}
       const displayedState = operationPeek?.state || current, displayedProjection = operationPeek?.projection || projection, displayedTrace = operationPeek?.trace || operationTrace || deskRecords.get(current?.state_sha256);
       if (!current || view !== 'claim') return;
       routeTitle(caseTitle(current.claim_id,current));
@@ -3981,6 +3984,7 @@
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open || recordDialog.open,reducedMotion:reduced?.matches || Boolean(operationTrace),keyboard,inspecting:inspectionHold,activeElement:doc.activeElement,selected});
       synchronizeAuthority(); synchronizeRecord(); rememberLastCase(); positionOperationAttention();
       if(host.querySelector('[data-au-agent-desk]')){const legend=container.querySelector('[data-au-role-legend]');if(legend)legend.hidden=true;}
+      if(executive&&inspectionHold&&!host.querySelector('.au-executive-transport'))host.insertAdjacentHTML('beforeend',executive.transportMarkup());
       claimRenderComplete = true; renderedClaimId = current.claim_id;
       if (presentationMode==='saved' && host.querySelector('[data-au-agent-desk]')) ensureDeskRecord(current,epoch);
     }
@@ -4513,6 +4517,7 @@
       route(chosen,writeHistory);
       if (!writeHistory && root.history?.replaceState && root.location?.hash !== chosen) { root.history.replaceState(null,'',root.location.pathname + root.location.search + chosen); routedFragment = chosen; }
       demoSession = tourSession(roster.collection,roster.cases,0,operations);
+      if(roster.collection==='reference'&&(root.innerWidth||0)>700&&presentationClock){demoSession.executive=true;demoSession.operations='recorded';demoSession.useRecorded=true;}
       await openPresentationCase(demoSession,writeHistory);
     }
     // A tour is one roster played in order. Its session owns the exact cases,
@@ -4563,6 +4568,7 @@
     }
     function stopPresentation() {
       const session = demoSession || pausedPresentation;
+      session?.executiveController?.dispose();
       cancelNextOperationOpening(session);
       if (session?.operationPreparation) cancelPreparedOperationReads(session.operationPreparation);
       session?.operationChoiceController?.abort(); session?.operationController?.abort(); session?.operationWake?.();
@@ -4685,6 +4691,7 @@
         factLink.querySelector('circle').setAttribute('cx',end);factLink.querySelector('circle').setAttribute('cy',y);
         factLink.style.visibility='';
       }
+      if(trace?.executive)return;
       if(!op||!trace?.northStar||trace.nsReady)return;
       if(stageChoreography?.operation===op&&!stageChoreography.cancelled&&!stageChoreography.complete)return;
       cancelStageRead();
@@ -4778,7 +4785,7 @@
         const chain=desk.querySelector('.au-ns-chain'),node=desk.querySelector('.au-ns-completed-spine [aria-pressed=true]');
         if(chain&&node){const a=node.getBoundingClientRect(),b=chain.getBoundingClientRect();chain.style.setProperty('--au-ns-notch',`${a.left+a.width/2-b.left}px`);}
         const preview=desk.querySelector('[data-au-ns-preview]'),page=desk.querySelector('.au-ns-page'),pane=page?.querySelector('pre'),mark=desk.querySelector('[data-au-ns-page-pin]');
-        if(preview)preview.style.height=`${Math.max(260,Math.floor(root.innerHeight-preview.getBoundingClientRect().top-64))}px`;
+        if(preview)preview.style.height=`${Math.max(260,Math.floor(root.innerHeight-preview.getBoundingClientRect().top-(operationTrace?.executive?104:64)))}px`;
         if(pane&&page){const style=root.getComputedStyle(pane),line=parseFloat(style.lineHeight),bottom=parseFloat(root.getComputedStyle(page).paddingBottom);pane.style.height=`${Math.max(line,Math.floor((page.getBoundingClientRect().bottom-bottom-pane.getBoundingClientRect().top)/line)*line)}px`;if(mark){const a=mark.getBoundingClientRect(),b=pane.getBoundingClientRect();pane.scrollTop=Math.max(0,Math.floor((pane.scrollTop+a.top-b.top)/line-2)*line);}}
         const passage=desk.querySelector('[data-au-ns-passage][aria-pressed=true]'),list=desk.querySelector('.au-ns-passages');if(passage&&list)list.scrollTop=Math.max(0,passage.offsetTop-list.offsetTop-10);return;
       }
@@ -4995,6 +5002,7 @@
     function skipOperations() {
       const session = demoSession?.mode === 'operations' ? demoSession : pausedPresentation?.mode === 'operations' ? pausedPresentation : null;
       if (!session) return;
+      if(session.executiveController){inspectionHold=false;pausedPresentation=null;demoSession=session;session.executiveController.skip();return;}
       operationPeek = null; host.removeAttribute?.('data-au-inspection-operation'); inspectionHold = false; pausedPresentation = null; demoSession = session; session.skip = true;
       if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; session.operationWake?.();
       cancelStageMotion(); attentionMarker?.remove?.(); const pane = host.querySelector('.au-operation-passage'); pane?.scrollTo?.({top:pane.scrollTop,behavior:'instant'});
@@ -5103,6 +5111,222 @@
       }
       return operationGate(session,token);
     }
+    // Admit both complete recordings before starting the clock. Every frame
+    // below is a view of those checked prefixes, never a simulated operation.
+    async function startExecutivePresentation(session, token, main) {
+      const active=()=>operationActive(session,token);
+      const next=sessionCases(session)[1];
+      if(!next)throw new Error('The demonstration needs a later recorded case.');
+      const opening=await nextOperationOpening(session,next.claim_id);
+      if(!active())return;
+      const later=await checkedNorthStarRecording(opening.operationBuffer,opening,active);
+      if(!later||!active())return;
+      if(!knowledgeCache){const value=readKnowledge(await request('/knowledge'));if(!active())return;knowledgeCache={value};}
+      if(!claimsLoaded){await loadClaims(token);if(!active())return;}
+      await doc.fonts?.ready;
+      if(!active())return;
+      cancelStageMotion();
+      const P=presentationClock, beats=[];
+      const add=(act,phase,duration,record=main,op=null,extra={})=>beats.push({act,phase,duration,record,op,...extra});
+      const motion=(act,phase,ms,record,op,extra={})=>add(act,phase,act==='process'?Math.max(ms/4,250):ms,record,op,{motion:true,...extra});
+      const hold=(act,phase,record,op,extra={})=>add(act,phase,900,record,op,extra);
+      const rows=main.trace.rows, completed=rows.filter(op=>op.kind==='step.complete'&&op.result?.status==='completed'&&main.state.graph.nodes.some(n=>n.node_id===op.object.id));
+      const firstOpen=rows.find(op=>op.kind==='source.open'),requestOp=rows.find(op=>op.kind==='phrase.match'&&op.result?.matched&&northStarPin(op,main.trace.sources));
+      const firstFact=rows.find(op=>op.kind==='fact.extract'&&northStarPin(op,main.trace.sources));
+      if(!firstOpen||!requestOp||!firstFact||completed.length<2)throw new Error('The recorded demonstration lacks its source-to-step chain.');
+      const reading=(act,record,op,{fact=false,document=false}={})=>{
+        motion(act,'camera-in',700,record,op);motion(act,'cursor',550,record,op);motion(act,'highlight',250,record,op);hold(act,'passage-rest',record,op);
+        if(fact){motion(act,'fact',350,record,op);motion(act,'connector',400,record,op);hold(act,'fact-rest',record,op);}
+        if(document){motion(act,'document',300,record,op);hold(act,'document-rest',record,op);}
+        motion(act,'plan-tick',300,record,op);motion(act,'camera-out',700,record,op);
+      };
+      const complete=(act,op)=>{
+        reading(act,main,op);motion(act,'combine',400,main,op);motion(act,'plan-recede',400,main,op);motion(act,'node-accepted',300,main,op);hold(act,'node-rest',main,op);
+      };
+      add('customer','ready',1500,main);
+      motion('customer','customer-cursor',550,main);motion('customer','customer-highlight',250,main);hold('customer','customer-rest',main);
+      motion('customer','source-open',400,main,firstOpen);
+      motion('customer','cursor',550,main,requestOp);motion('customer','highlight',250,main,requestOp);hold('customer','passage-rest',main,requestOp);
+      reading('customer',main,firstFact,{fact:true});
+      const secondFact=rows.find(op=>op.seq>firstFact.seq&&op.seq<completed[0].seq&&op.kind==='fact.extract'&&main.catalogue.links.get(op.id)===main.catalogue.links.get(firstFact.id)&&northStarPin(op,main.trace.sources));
+      if(secondFact)reading('reading',main,secondFact,{fact:true});
+      const documents=rows.filter(op=>op.kind==='document.check'&&op.source&&op.seq<completed[0].seq).filter((op,i,all)=>all.findIndex(x=>x.object.id===op.object.id)===i);
+      for(const op of documents)reading('reading',main,op,{document:true});
+      for(const op of completed.slice(0,2))complete('reading',op);
+      for(const op of completed.slice(2))complete('process',op);
+      // The completed view and all legal tests are the existing product views.
+      motion('decision','completed',400,main,null,{view:'step'});hold('decision','overview',main,null,{view:'step'});
+      const finalTrace={...main.trace,headState:main.state,finished:true,verifiedResult:true},decisive=northStarCompletedModel(main.state,finalTrace);
+      for(const column of decisive.columns){motion('decision','chain',400,main,null,{view:'step',column:column.id});hold('decision','chain-rest',main,null,{view:'step',column:column.id});}
+      motion('decision','documents',400,main,null,{view:'documents'});hold('decision','documents-rest',main,null,{view:'documents'});
+      const tests=list(main.state.outcome?.legal_predicates);
+      for(let i=0;i<tests.length;i++){motion('decision','legal-test',350,main,null,{view:'answer',test:i});hold('decision','legal-test-rest',main,null,{view:'answer',test:i});}
+      motion('decision','answer',400,main,null,{view:'answer',test:tests.length});hold('decision','answer-rest',main,null,{view:'answer',test:tests.length});
+      motion('decision','draft',400,main,null,{view:'answer',test:tests.length});add('decision','draft-rest',1800,main,null,{view:'answer',test:tests.length});
+      const memory=northStarMemoryModel(later.state,{...later.trace,headState:later.state,finished:true,verifiedResult:true},knowledgeCache.value);
+      if(!memory)throw new Error('The later recording has no verified checklist reuse.');
+      motion('learning','memory-open',400,later,null,{view:'knowledge'});hold('learning','memory-overview',later,null,{view:'knowledge'});
+      for(let card=0;card<3;card++){motion('learning','memory-card',700,later,null,{view:'knowledge',card});add('learning','memory-card-rest',2700,later,null,{view:'knowledge',card});}
+      motion('learning','memory-notice',400,later,null,{view:'knowledge'});add('learning','memory-notice-rest',2400,later,null,{view:'knowledge'});
+      motion('cases','case-list',400,main,null,{view:'cases'});
+      for(let row=0;row<9;row++)motion('cases','case-row',250,main,null,{view:'cases',row});
+      add('cases','case-list-rest',2700,main,null,{view:'cases'});motion('cases','wordmark',400,main,null,{view:'cases'});add('cases','wordmark-rest',2250,main,null,{view:'cases'});
+      const staged=[];for(const beat of beats){if(staged.length&&staged.at(-1).act!==beat.act)staged.push({...beat,phase:'act-transition',nextPhase:beat.phase,duration:400,motion:true});staged.push(beat);}
+      const story=P.timeline(staged),clock=P.createClock(root,{reducedMotion:Boolean(reduced?.matches)});
+      clock.seek(0);
+      let last=-1,disposedStory=false,waiting=true,frameNodes={},rendering=false,transitionLayer=null,pauseDeadline=null,freezeDeadline=null;
+      const markupCache=new Map(),drawTimings=[];
+      const present=new URLSearchParams(root.location?.search||'').get('present')==='1';
+      const scope=doc.documentElement;scope.setAttribute('data-casepath-presentation','');
+      const atRecord=(record,op)=>{
+        const through=op?.seq??0,checkpoint=record.checkpoints.findLast(row=>row.after_operation<=through)||record.checkpoints[0];
+        const prefix=record.trace.rows.filter(row=>row.seq<=through),opened=new Set(prefix.filter(row=>row.kind==='source.open').map(row=>row.object.id));
+        const sources=new Map([...record.trace.sources].filter(([id])=>opened.has(id)));
+        return {state:checkpoint.state,projection:checkpoint.projection,replay:checkpoint.replay,events:checkpoint.events||[],trace:{...record.trace,rows:prefix,sources,headState:record.state,current:op,northStar:true,executive:true,nsCatalogue:record.catalogue,finished:false,verifiedResult:false,nsCues:new Set(),displaySource:op?{artifact_id:op.source?.artifact_id||op.object.id}:null}};
+      };
+      const transport=()=>`<footer class="au-executive-transport"><span data-au-film-speed></span><span>All cases are fictional.</span><div>${button(waiting?'Watch the analysis':clock.paused?'Resume':'Pause',waiting?'data-au-ns-start':clock.paused?'data-au-demo-resume':'data-au-demo-stop')}${waiting?'':button('Skip to answer','data-au-operation-skip')}</div></footer>`;
+      const opacity=(element,value)=>{if(element)element.style.opacity=String(value);};
+      const select=(selector)=>host.querySelector(selector),all=(selector)=>[...host.querySelectorAll(selector)].filter(el=>!el.closest('.au-executive-transition'));
+      function draw(beat) {
+        const drawStarted=root.performance.now();
+        const heldTransport=select('.au-executive-transport'),heldWaiting=Boolean(heldTransport?.querySelector('[data-au-ns-start]')),heldFocus=heldTransport?.contains(doc.activeElement)?doc.activeElement:null;
+        const record=beat.record,viewName=beat.view;
+        let shown;
+        if(viewName){shown={state:record.state,projection:record.checkpoints.at(-1).projection,replay:record.checkpoints.at(-1).replay,events:record.trace.journal,trace:{...record.trace,headState:record.state,northStar:true,executive:true,finished:true,verifiedResult:true,current:null}};}
+        else shown=atRecord(record,beat.op);
+        current=shown.state;projection=shown.projection;history=shown.events;replayRecord=shown.replay||replayRecord;operationTrace=shown.trace;session.claimId=current.claim_id;
+        const trace=operationTrace,op=beat.op,phase=beat.nextPhase||beat.phase,completion=op?.kind==='step.complete';
+        if(completion&&!['node-accepted','node-rest'].includes(phase))trace.nsPendingCompletion=op.id;
+        if(['plan-tick','camera-out','combine','plan-recede','node-accepted','node-rest','fact-rest','document-rest'].includes(phase)&&op)trace.nsCues.add(op.id);
+        const customerScene=phase==='ready'||phase.startsWith('customer-');
+        trace.nsReady=false;
+        let customerPin=null;
+        if(customerScene){
+          const customer=list(record.state.acquired_sources).find(source=>source.role==='customer_message'),request=deskRequest(record.state.message);
+          if(!customer||typeof customer.text!=='string')throw new Error('The saved customer message is unavailable.');
+          const index=customer.text.indexOf(request);
+          if(!request||index<0)throw new Error('The actual customer request is not in its saved source.');
+          const start=Array.from(customer.text.slice(0,index)).length;
+          customerPin={artifact_id:customer.artifact_id,sha256:customer.sha256,text_sha256:customer.text_sha256,offset_unit:'unicode_code_point',start_char:start,end_char:start+Array.from(request).length,quote:request};
+          trace.sources.set(customer.artifact_id,customer);trace.displaySource={artifact_id:customer.artifact_id};
+        }
+        const opts={playing:!clock.paused,paused:clock.paused,tour:{cases:sessionCases(session)},knowledge:knowledgeCache.value};
+        detail=viewName&&viewName!=='cases'?viewName:'step';chosenNode=null;deskSelection=null;evidenceContext={};
+        if(viewName==='cases'){
+          const records=sessionCases(session).map(row=>catalogRow(claims,row.claim_id)).filter(Boolean);
+          host.innerHTML=northStarCompletedMarkup(current,trace,'step',opts)+transport();
+          select('.au-ns-completed-canvas').innerHTML=`<section class="au-executive-cases"><h1 class="au-page-heading" tabindex="-1">Cases</h1><div class="au-claim-list" data-au-claims>${claimsMarkup(records,{scope:'originals',page:1,pageSize:9})}</div><div class="au-executive-wordmark" aria-hidden="true">CasePath</div></section>`;
+        }else{
+          const cacheKey=[record.state.claim_id,viewName||op?.id||'customer',Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id))].join(':');
+          if(!markupCache.has(cacheKey))markupCache.set(cacheKey,viewName?northStarCompletedMarkup(current,trace,detail,opts):northStarMarkup(current,trace,opts));
+          host.innerHTML=markupCache.get(cacheKey)+transport();
+        }
+        if(heldTransport&&heldWaiting===waiting){select('.au-executive-transport')?.replaceWith(heldTransport);heldFocus?.focus({preventScroll:true});}
+        if(customerPin){const pre=select('.au-ns-source-scroll pre'),source=trace.sources.get(customerPin.artifact_id),chars=Array.from(source.text);pre.innerHTML=h(chars.slice(0,customerPin.start_char).join(''))+`<mark data-au-ns-quote data-start="${customerPin.start_char}" data-end="${customerPin.end_char}">${h(customerPin.quote)}</mark>`+h(chars.slice(customerPin.end_char).join(''));pre.closest('[data-au-ns-paper]').dataset.auCustomerSource=customerPin.artifact_id;}
+        all('.au-ns-footer').forEach(el=>el.remove());
+        if(!viewName){const count=new Set(trace.rows.filter(op=>op.kind==='document.check'&&op.source&&op.result?.assessment==='sufficient'&&(op.id!==beat.op?.id||!['camera-in','cursor','highlight','passage-rest'].includes(phase))).map(op=>op.object.id)).size;select('.au-ns-sources')?.insertAdjacentHTML('beforeend',`<button type="button" class="au-executive-documents" data-au-detail="documents">Documents <span>${count} checked</span></button>`);}
+        const ns=select('[data-au-ns]'),tabs=container.querySelector('.au-ns-tabs');if(tabs)tabs.innerHTML=ns?northStarTabsMarkup(ns.dataset.auNsRoleActive,Boolean(viewName)):'';
+        positionDesk(false);
+        host.dataset.auPresentationAct=beat.act;host.dataset.auPresentationPhase=phase;host.dataset.auCurrentOperation=op?.id||'';host.dataset.auCueActive=phase;host.dataset.auCueOperation=op?.id||'';host.dataset.auCueKind=op?.kind||'';
+        host.dataset.auOperationRunMode='recorded_operations';host.dataset.auOperationResultVerified=String(Boolean(viewName));
+        const speed=select('[data-au-film-speed]');if(speed)speed.textContent=beat.act==='process'?'4×':'';
+        frameNodes={desk:ns,paper:select('[data-au-ns-paper]'),mark:select('[data-au-ns-quote]'),fact:op&&select(`[data-au-ns-fact="${op.id}"]`),link:select('.au-ns-fact-connector'),plan:select('[data-au-ns-plan]'),canvas:select('.au-ns-canvas,.au-ns-completed-canvas'),work:select('.au-ns-work')};
+        const {mark,paper}=frameNodes;
+        if(mark){
+          mark.dataset.arrived=['ready','cursor','camera-in','source-open'].includes(phase.replace(/^customer-/,''))?'false':'true';
+          // Background highlights are fixed rectangles; only their opacity moves.
+          mark.style.background='transparent';
+          const pane=select('.au-ns-source-scroll'),layer=paper||ns,area=layer.getBoundingClientRect(),clip=pane.getBoundingClientRect();
+          const rects=[...mark.getClientRects()].filter(r=>r.bottom>clip.top&&r.top<clip.bottom);
+          const ink=doc.createElement('div');ink.className='au-executive-ink';ink.setAttribute('aria-hidden','true');
+          for(const rect of rects){const piece=doc.createElement('i');piece.style.cssText=`left:${rect.left-area.left}px;top:${Math.max(rect.top,clip.top)-area.top}px;width:${rect.width}px;height:${Math.min(rect.bottom,clip.bottom)-Math.max(rect.top,clip.top)}px`;ink.appendChild(piece);}
+          layer.appendChild(ink);frameNodes.ink=ink;
+          const rect=rects.at(-1);
+          if(rect){const pointer=doc.createElement('div');pointer.className='au-ns-cursor au-executive-cursor';pointer.setAttribute('aria-hidden','true');pointer.innerHTML=`<svg viewBox="0 0 26 34" class="au-ns-pointer"><path d="M2 2 24 21 12 22 7 32Z"/></svg>`;pointer.style.left=`${rect.right-area.left+2}px`;pointer.style.top=`${Math.min(rect.bottom,clip.bottom)-area.top+2}px`;layer.appendChild(pointer);frameNodes.pointer=pointer;}
+        }
+        if(viewName==='answer'){
+          // Keep the same recorded legal-test controls, including supported tests.
+          const answer=select('[data-au-desk-answer]'),why=answer?.querySelector('.au-desk-why'),tests=why?.querySelector('.au-desk-tests');
+          answer?.querySelector(':scope > .au-desk-tests')?.remove();
+          if(tests)answer.querySelector('.au-desk-lead').before(tests.cloneNode(true));
+        }
+        for(const el of all('[data-au-demo-stop],[data-au-demo-resume]')){el.textContent=clock.paused?'Resume':'Pause';}
+        routeTitle(viewName==='cases'?'Cases':caseTitle(current.claim_id,current));
+        drawTimings.push({beat:beat.index,phase:beat.phase,milliseconds:root.performance.now()-drawStarted});
+      }
+      function render(at=clock.now(),force=false) {
+        if(disposedStory||rendering||inspectionHold)return;
+        const sample=story.at(at),b=sample.beat,transition=b.phase==='act-transition';
+        let outgoing=null;
+        if(transition&&(last!==b.index||force)&&b.index>0){
+          render(story.beats[b.index-1].end-.001);
+          const canvas=frameNodes.canvas||select('.au-executive-cases');
+          if(canvas){const rect=canvas.getBoundingClientRect();outgoing=canvas.cloneNode(true);outgoing.classList.add('au-executive-transition');outgoing.setAttribute('aria-hidden','true');outgoing.style.cssText+=`;position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;height:${rect.height}px;margin:0;box-sizing:border-box;z-index:3;background:white;pointer-events:none;`;for(const node of [outgoing,...outgoing.querySelectorAll('*')])for(const attr of [...node.attributes])if(attr.name.startsWith('data-au-')||attr.name==='id')node.removeAttribute(attr.name);}
+        }
+        rendering=true;
+        try{
+          const phase=(b.nextPhase||b.phase).replace(/^customer-/,''),p=reduced?.matches?1:transition?0:P.ease(sample.progress);
+          if(last!==b.index||force){draw(b);last=b.index;transitionLayer=outgoing;if(outgoing)host.appendChild(outgoing);}
+          host.dataset.auPresentationTime=String(sample.at);host.dataset.auPresentationBeat=String(b.index);
+          const n=frameNodes,preFact=['camera-in','cursor','highlight','passage-rest'].includes(phase),postFact=['connector','fact-rest','plan-tick','camera-out','combine','plan-recede','node-accepted','node-rest','document','document-rest'].includes(phase);
+          if(n.fact){opacity(n.fact,preFact?0:phase==='fact'?p:1);n.fact.style.transform=phase==='fact'?`translateY(${12*(1-p)}px)`:'none';}
+          if(n.link){n.link.style.visibility='visible';opacity(n.link,preFact||phase==='fact'?0:phase==='connector'||phase==='combine'?p:1);n.link.style.transform=phase==='connector'||phase==='combine'?`scaleX(${p})`:'none';}
+          opacity(n.ink,['ready','camera-in','cursor','source-open'].includes(phase)?0:phase==='highlight'?p:1);
+          if(n.pointer){opacity(n.pointer,phase==='ready'||phase==='camera-in'||phase==='source-open'?0:phase==='cursor'?p:1);n.pointer.style.transform=phase==='cursor'?`translate(${-72*(1-p)}px,${-40*(1-p)}px)`:'none';}
+          if(phase==='source-open')opacity(n.paper,p);
+          if(phase==='document')opacity(select('.au-executive-documents span'),p);
+          if(phase==='plan-tick'){const tick=select('[data-au-ns-plan-current] .au-ns-plan-status');if(tick)tick.style.transform=`scale(${.8+.2*p})`;}
+          if(phase==='plan-recede')opacity(n.plan,1-.4*p);
+          if(['node-accepted','node-rest'].includes(phase))opacity(n.plan,.6);
+          if(phase==='node-accepted'){
+            const node=all('[data-au-ns-node]').find(el=>el.dataset.auNsNode===b.op.object.id)?.querySelector('.au-ns-circle');if(node)node.style.transform=`scale(${.8+.2*p})`;
+          }
+          // The source grows inside its surrounding whitespace; the rail, plan
+          // and fact cards stay in place, with the source overlays in its layer.
+          if(n.paper){const scale=phase==='camera-in'?1+.025*p:phase==='camera-out'?1+.025*(1-p):['cursor','highlight','passage-rest','fact','connector','fact-rest','document','document-rest','plan-tick'].includes(phase)?1.025:1;n.paper.style.transform=`scale(${scale})`;n.paper.style.transformOrigin='50% 50%';}
+          if(b.phase==='ready'){all('.au-ns-sources li').forEach((el,i)=>opacity(el,reduced?.matches||i===0?1:Math.max(0,Math.min(1,(sample.elapsed-(i-1)*400)/250))));}
+          if(b.column){for(const column of all('[data-au-ns-chain]'))opacity(column,column.dataset.auNsChain===b.column?phase==='chain'?.6+.4*p:1:.6);}
+          if(b.view==='answer'){
+            const tests=all('[data-au-desk-answer] > .au-desk-tests > li');tests.forEach((el,i)=>opacity(el,i<b.test?1:i===b.test?(phase==='legal-test'?p:1):0));
+            const afterTests=['answer','answer-rest','draft','draft-rest'].includes(phase);opacity(select('.au-desk-test-status'),afterTests?1:0);opacity(select('.au-desk-next'),afterTests?1:0);opacity(select('.au-desk-lead'),afterTests?(phase==='answer'?p:1):0);opacity(select('.au-desk-open'),afterTests?1:0);opacity(select('.au-desk-actions'),phase==='draft'?p:phase==='draft-rest'?1:0);opacity(select('.au-desk-why'),phase==='draft-rest'?1:0);
+          }
+          if(b.view==='knowledge'){
+            const cards=all('.au-ns-memory-cards > article'),arrows=all('.au-ns-memory-card-arrow');
+            cards.forEach((el,i)=>opacity(el,b.card===undefined?1:i===b.card?(phase==='memory-card'?.6+.4*p:1):.6));arrows.forEach(el=>opacity(el,.6));
+            if(phase==='memory-open')opacity(n.canvas,p);
+            if(phase==='memory-notice')opacity(select('.au-ns-memory footer'),p);
+          }
+          if(b.view==='cases'){
+            const items=all('.au-claim-list > *'),row=b.row;
+            items.forEach((el,i)=>opacity(el,phase==='case-row'?i<row?1:i===row?p:0:phase==='case-list'?0:1));
+            const wordmark=select('.au-executive-wordmark');opacity(wordmark,phase==='wordmark'?p:phase==='wordmark-rest'?1:0);
+          }
+          if(['completed','documents','case-list'].includes(phase))opacity(n.canvas||select('.au-executive-cases'),p);
+          if(transition){const fade=reduced?.matches?1:P.ease(sample.progress);opacity(n.canvas||select('.au-executive-cases'),fade);opacity(transitionLayer,1-fade);}
+          if(sample.at>=story.duration){clock.pause();waiting=false;pausedPresentation=session;demoSession=null;syncControls();}
+        }finally{rendering=false;}
+      }
+      function syncControls(){for(const el of all('[data-au-demo-stop],[data-au-demo-resume]')){el.removeAttribute('data-au-demo-stop');el.removeAttribute('data-au-demo-resume');el.setAttribute(clock.paused?'data-au-demo-resume':'data-au-demo-stop','');el.textContent=clock.paused?'Resume':'Pause';}}
+      const controller={
+        render:()=>render(clock.now(),true),transportMarkup:transport,
+        start(){waiting=false;clock.seek(0);render(0,true);clock.resume();syncControls();select('[data-au-demo-stop]')?.focus({preventScroll:true});},
+        pause(){pauseDeadline=null;freezeDeadline=null;clock.pause();syncControls();},
+        freezeAt(at){if(!Number.isFinite(at)||at<clock.now()||at>story.duration)throw new RangeError('Freeze time must be within the remaining demonstration.');freezeDeadline=at;waiting=false;clock.resume();syncControls();},
+        advanceTo(at){waiting=false;clock.stepTo(at);syncControls();return {time:clock.now(),act:story.at(at).beat.act,phase:story.at(at).beat.phase};},
+        pauseAt(at){if(!Number.isFinite(at)||at<clock.now()||at>story.duration)throw new RangeError('Pause time must be within the remaining demonstration.');pauseDeadline=at;waiting=false;clock.resume();syncControls();},
+        resume(){waiting=false;if(clock.now()>=story.duration)clock.seek(0);render(clock.now(),true);clock.resume();syncControls();},
+        skip(){waiting=false;clock.seek(story.acts.find(a=>a.id==='decision').start);clock.resume();syncControls();},
+        seek(at){waiting=false;pauseDeadline=null;freezeDeadline=null;clock.seek(at);syncControls();return {time:clock.now(),act:story.at(at).beat.act,phase:story.at(at).beat.phase};},
+        dispose(){disposedStory=true;clock.cancel();scope.removeAttribute('data-casepath-presentation');if(root.CasepathPresentation?.active===controller)delete root.CasepathPresentation.active;},
+        get manifest(){return {duration:story.duration,acts:story.acts,beats:story.beats.map(({record,op,...beat})=>({...beat,claim:record.state.claim_id,operation:op?.id||null,seq:op?.seq||null})),claims:[main.state.claim_id,later.state.claim_id],stateHashes:[main.state.state_sha256,later.state.state_sha256]};},
+        get diagnostics(){return {drawTimings:drawTimings.slice(),cachedViews:markupCache.size};},
+        get time(){return clock.now();},get paused(){return clock.paused;},get externallyDriven(){return clock.externallyDriven;}
+      };
+      session.executiveController=controller;P.active=controller;
+      clock.onFrame(at=>{if(freezeDeadline!==null&&at>=freezeDeadline){const deadline=freezeDeadline;freezeDeadline=null;clock.stepTo(deadline);syncControls();return;}if(pauseDeadline!==null&&at>=pauseDeadline){const deadline=pauseDeadline;pauseDeadline=null;clock.seek(deadline);syncControls();return;}render(at);});render(0,true);
+      if(present){waiting=false;clock.resume();}
+    }
+
     async function startOperations(session, token) {
       if (!operationActive(session,token) || session.operationStarted) return;
       const prepared = session.operationPreparation?.claimId === session.claimId && !session.operationPreparation.controller.signal.aborted && session.operationPreparation.recorded === Boolean(session.useRecorded) ? session.operationPreparation : null;
@@ -5140,6 +5364,7 @@
           const recording=await checkedNorthStarRecording(trace.buffer,session,()=>operationActive(session,token)&&operationTrace===trace);
           if(!recording)return;
           trace.northStar=true;trace.nsCatalogue=recording.catalogue;presentationFrames=recording.frames;
+          if(session.executive){await startExecutivePresentation(session,token,recording);return;}
           if(!session.nsStarted&&!session.skip){trace.nsReady=true;renderClaim();await new Promise(resolve=>{session.nsStartResolve=resolve;session.operationController.signal.addEventListener('abort',resolve,{once:true});});if(!operationActive(session,token))return;trace.nsReady=false;}
         }
         const frameBudget = {started:root.performance?.now?.() ?? Date.now()};
@@ -5262,6 +5487,7 @@
     }
     function pausePresentation() {
       if (!demoSession) return false;
+      if(demoSession.executiveController){const session=demoSession;pausedPresentation=session;demoSession=null;session.executiveController.pause();return true;}
       if (demoSession.mode === 'replay' && !demoSession.replayHead) { inspectionHold = true; return false; }
       pausedPresentation = demoSession.mode === 'operations' ? demoSession : {...demoSession,preparing:null};
       if (demoTimer) root.clearTimeout(demoTimer);
@@ -5286,6 +5512,7 @@
     function resumePresentation() {
       if(operationTrace)delete operationTrace.nsInspectionSource;
       const session = pausedPresentation;
+      if(session?.executiveController){if(doc.hidden||dialog.open||recordDialog.open)return;inspectionHold=false;pausedPresentation=null;demoSession=session;session.executiveController.resume();return;}
       if (!session || disposed || pendingRoute() || doc.hidden || dialog.open || recordDialog.open || view !== 'claim') return;
       if (!current && session.releasePlan && openingId === session.claimId) {
         inspectionHold = false; pausedPresentation = null; demoSession = session;
@@ -6263,7 +6490,7 @@
       else if(target.hasAttribute('data-au-ns-reasoning')){setDetail('answer');const why=host.querySelector('.au-desk-why');if(why){why.open=true;why.querySelector('summary')?.focus();}}
       else if(target.hasAttribute('data-au-ns-chain'))openNorthStarChain(target);
       else if(target.hasAttribute('data-au-ns-source')){if(operationTrace?.sources.has(target.dataset.auNsSource)){pausePresentation();operationTrace.nsInspectionSource=target.dataset.auNsSource;renderClaim();}}
-      else if(target.hasAttribute('data-au-ns-start')){const session=demoSession||pausedPresentation;if(session){session.nsStarted=true;session.nsStartResolve?.();session.nsStartResolve=null;}}
+      else if(target.hasAttribute('data-au-ns-start')){const session=demoSession||pausedPresentation;if(session){session.nsStarted=true;if(session.executiveController){session.executiveController.start();return;}session.nsStartResolve?.();session.nsStartResolve=null;}}
       else if(target.hasAttribute('data-au-desk-watch')){if(current){const row=REFERENCE_DEMO_CASES.find(row=>row.claim_id===current.claim_id);if(row){stopPresentation();tour=null;demoSession={mode:'operations',collection:'reference',cases:[row],index:0,operations:openingPreferences.operations,single:true};openPresentationCase(demoSession);}}}
       else if (target.hasAttribute('data-au-inspect')) openRecord(target);
       else if (target.hasAttribute('data-au-demo-case')) { const id = target.dataset.auDemoCase; recordReturn = null; recordDialog.close(); stopPresentation(); demoMode = 'replay'; const collection = demoCollection(target.dataset.auDemoCollection) || 'reference', filtered = collectionRoster(collection,claims), cases = filtered.some(row => row.claim_id === id) ? filtered : demoCases(collection), index = cases.findIndex(row => row.claim_id === id); if (index >= 0) { const operations=openingPreferences.operations || operationRoutePreference(root.location?.hash,root.location?.search); demoSession = tourSession(collection,cases,index,operations,target.dataset.auDemoSaved === 'true'); openPresentationCase(demoSession); } }
@@ -6389,6 +6616,7 @@
       if (doc.hidden) { if (!recordedPacket) packetLoadController?.abort(); savedSnapshotController?.abort(); cancelNextOperationOpening(demoSession || pausedPresentation); }
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel();
       if (doc.hidden) {
+        if(demoSession?.executiveController){demoSession.executiveVisibilityPause=true;demoSession.executiveController.pause();}
         cancelWarmReads();
         if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null;
         if (demoSession?.mode === 'operations') { cancelStageMotion(); const pane = host.querySelector('.au-operation-passage'); pane?.scrollTo?.({top:pane.scrollTop,behavior:'instant'}); demoSession.operationWake?.(); }
@@ -6399,6 +6627,7 @@
         if (presentationMode !== 'replay') synchronizeAuthority('refreshing');
         return;
       }
+      if(demoSession?.executiveController&&demoSession.executiveVisibilityPause){demoSession.executiveVisibilityPause=false;demoSession.executiveController.resume();}
       if (demoSession?.mode === 'replay' && !demoSession.replayHead && !demoSession.preparing && !pendingRoute()) { openPresentationCase(demoSession); return; }
       if (view === 'claim') {
         if (presentationMode === 'replay') {
@@ -6433,7 +6662,7 @@
       if (target && container.contains(target)) pauseInspection();
     }
     function sourceWheel(event) { if (event.isTrusted && event.target?.closest?.('.au-operation-stage')) { pauseInspection(); attentionMarker?.remove?.(); } }
-    function motionPreference() { if (reduced?.matches) { if(view==='knowledge' && learningState){pauseLearning();selectLearning(learningState.index,10,true,false);}  skipOperations(); motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
+    function motionPreference() { const executive=(demoSession||pausedPresentation)?.executiveController;if(executive){executive.render();return;}if (reduced?.matches) { if(view==='knowledge' && learningState){pauseLearning();selectLearning(learningState.index,10,true,false);}  skipOperations(); motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
     doc.addEventListener('keydown',keyboardInput);container.addEventListener('pointerdown',pointerInput);reduced?.addEventListener?.('change',motionPreference);
     container.addEventListener('wheel',sourceWheel,{passive:true});
     function geometryEvent(event) { if (event.target?.matches?.('.au-operation-passage')) { if (host.querySelector('.au-operation-stage')) return; if (!doc.hidden && !inspectionHold) { positionOperationAttention(false); drawEdges(); } return; } if (event.type === 'toggle') { drawEdges(); if (event.target?.open) interact(event.target.querySelector(':scope > :not(summary)')); } else if (event.target?.hasAttribute?.('data-au-graph-pan')) drawEdges(); }
