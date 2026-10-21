@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1730,
+  "file_count": 1733,
   "files": [
     {
       "executable": false,
@@ -8980,6 +8980,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-qa/autonomous-northstar-v1.test.cjs",
+      "sha256": "28312b8dc5a4cbf5f182848073d50125deaff78f29ebc3d67504432f99b9a595",
+      "size_bytes": 4132
+    },
+    {
+      "executable": false,
       "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
       "sha256": "69fd45c32484399f691787d6fcb7ebcf8d3c2ff5df48e949f8c7de0c8b147d75",
       "size_bytes": 617613
@@ -9503,14 +9509,14 @@
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.css",
-      "sha256": "45bdb1cd408fc072d7995dce9702569f112c849e4d465bb9d1c5bf586500cdd3",
-      "size_bytes": 321613
+      "sha256": "a9aeb8af0ae3b542ce2ceceb29d0826189de907f187e9f3be84ddc5f2987919e",
+      "size_bytes": 332043
     },
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.js",
-      "sha256": "830465a376dee88ac6d0af5c38683ee7ca33744146b8a773e2d7e7b43c86882f",
-      "size_bytes": 738127
+      "sha256": "16660ca1367e14731b18a58f1e6bf11174893baf2e60ff35208c1e8529306491",
+      "size_bytes": 758171
     },
     {
       "executable": false,
@@ -9628,6 +9634,18 @@
     },
     {
       "executable": false,
+      "path": "casepath/assets/fonts/Mulish-OFL.txt",
+      "sha256": "097e9ac414d9251c8580c073a13f8899798c66db746de60662148789ca693f19",
+      "size_bytes": 4385
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/fonts/Mulish.ttf",
+      "sha256": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac",
+      "size_bytes": 211988
+    },
+    {
+      "executable": false,
       "path": "casepath/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
       "sha256": "13744bbc079f0f492e4fb3b14a15d242b8d9600faacd423d58cdf937fea7ce6b",
       "size_bytes": 529700
@@ -9707,7 +9725,7 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "6ce6058c2dca77d2d67ca7bbfe85abda423f53990e4e93e55ca68524dd749b47",
+      "sha256": "7a33a2e6d282b76230c7f460cbb6e4e454d26a76cafa5e74cad089e3d848dd75",
       "size_bytes": 25593
     },
     {
@@ -9917,8 +9935,8 @@
     {
       "executable": false,
       "path": "casepath/tools/build_static_site.py",
-      "sha256": "576654935aace0a9361e42daed4b11f52ea531b203e299d34a4c6ef2fb731318",
-      "size_bytes": 9961
+      "sha256": "6affd694a65605a803d7847995a404534eca85c3537a1adbc94535827d349753",
+      "size_bytes": 10037
     },
     {
       "executable": false,

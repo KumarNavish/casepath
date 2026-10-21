@@ -1,0 +1,135 @@
+# North star build spec, 21 October 2026
+
+The user confirmed that `design/northstar/01-decision-building.png`,
+`02-completed-process.png` and `03-reviewed-memory-payoff.png` are exactly what
+they want. Build them to match: layout, proportions, palette, type, icons and
+motion. Fill them with recorded data only.
+
+Geometry below is measured on the 1586×992 concepts and scaled ×0.908 to
+1440×900. It is approximate. The overlay decides (`design-plans/tools/fidelity.mjs`).
+
+## Tokens (sampled from the PNGs)
+
+| Token | Value | Use |
+|---|---|---|
+| `--bg` | `#FFFFFF` | page, top bar, cards, documents |
+| `--ink` | `#141516` | titles, node labels, done rings, checks |
+| `--ink-doc` | `#2C2B2C` | document body text |
+| `--ink-2` | `#4C4B4D` | inactive tabs, rail labels, plan rows, fact cards |
+| `--ghost` | `#9C9BA0` | label of the node being built |
+| `--ghost-ring` | `#C4C5C6` | dashed ring of the node being built |
+| `--line` | `#EBEBEE` | hairlines: under the top bar, rail edge, rail rows |
+| `--border` | `#D6D6D7` | cards, plan, fact cards, waiting nodes, branch boxes |
+| `--crimson` | `#82072A` | active tab and underline, active source bar, cursor, hexagon, plan title and progress, connector, done-node borders/badges/edges, Edit decision, Documents box, selected node |
+| `--crimson-tint` | `#DFB9C3` | selected exact passage |
+| `--crimson-track` | `#EFDEE3` | plan progress track |
+| `--crimson-wash` | `#F6EFF0` | active source row |
+| `--green` | `#2E6B35` | received checks, reviewed shields |
+| `--green-ink` | `#1F5530` | `Retrieved 1 …`, `Edited by reviewer`, result headline |
+| `--yellow` | `#FEF6C5` | cited line in the completed source preview |
+| `--notice` | `#F6F6F7` / text `#61636B` | memory notice bar (03) |
+
+Type: Mulish (OFL, bundled locally). It is closest to the concepts' Avenir-like
+sans, with a double-storey a and a single-storey g. Fall back to Instrument Sans.
+
+Sizes at 1440: wordmark 25 (01 regular; 02 bold with the crimson mark), tab 15.5,
+rail label 14.5, node label 15.5, document body 16.5/24.5, header field 15,
+plan title 16.5, plan row 14.5, fact card 14, chain heading 13.5, chain body 13.5,
+dates 12.5.
+
+Icons: 1.5px line icons, about 22px in the tabs and 30px in the rail, drawn in
+the text colour of their row. One set only.
+
+## Shell (all three)
+
+- **Top bar:** 75px high, white, 1px `--line` underneath.
+  - Wordmark at x 27.
+  - Five tabs with icon and label: `Claim reader` · `Source checker` · `Process builder` · `Document finder` · `Result checker`. They start at about x 280 / 459 / 652 / 855 / 1056.
+  - Active tab: `--crimson` label (600 weight in 02) and a 3px `--crimson` underline across the tab, sitting on the bar's bottom edge.
+  - Right edge (02): search → case search; help → the existing How-to-read guide. There is no settings icon, because no settings exist.
+- **Sources rail:** 262px wide with a 1px `--line` right edge.
+  - Optional case line at top (03: `<case title> · <case id>`), then `Sources <n>`.
+  - Rows about 75px high with `--line` separators inset 27–235. A media icon at x 27, the label at x 75, and `Received <dd.mm.yyyy>` under the label only when recorded.
+  - Active row: 5px `--crimson` bar at x 0, plus a `--crimson-wash` fill in the completed view.
+  - Rail bottom, read-only demo only, muted 13px: `Case <n> of 9 · Pause · Skip to answer`, then `All cases are fictional.`.
+- **No text nav on case views.** The wordmark returns to Cases. On Cases and Knowledge pages the same bar shows `Cases · Knowledge` where the tabs sit.
+
+## 01, live decision building (states 1–5)
+
+- **Spine,** y ≈ 132.
+  - 40px rings, 1.5px, about 182px apart, with long thin `--ink-2` arrows between. The label sits under each ring.
+  - Done: `--ink` ring with a check.
+  - Being built: dashed `--ghost-ring` ring with a `--ghost` label.
+  - Waiting: solid `--border` ring with an `--ink-2` label.
+  - Labels are the recorded process questions (see Data).
+- **Source card,** x 298–969, y 234–727, 1px `--border`, radius 6.
+  - Toolbar row 59px: ← → step to the previous/next source; ⋮ opens `Open full source`. No reply icons (they would be fake controls).
+  - Recorded header fields (From / To / Date / Subject) in a two-column grid with a hairline below, then the body.
+- **Highlight:** the recorded span gets a `--crimson-tint` rectangle with 6px side padding. It appears only after the cursor arrives.
+- **Cursor:** a crimson arrow pointer whose tip lands at the span's end, plus a 40px crimson hexagon with the active role's white icon, offset down and right.
+- **Fact cards:** about 191×71 at y 762, 1px `--border`, radius 6. Each card has the source-type icon and two lines of `--ink-2`, joined by `+`. A dotted `--crimson` connector runs right to a small hollow junction ring, then up with an arrowhead.
+- **Plan,** x 1013–1311, y 262–569, 1px `--border`, radius 8.
+  - Title `Building “<question>”` in `--crimson`, with a hairline below.
+  - Rows 60px: check (done), crimson spinner arc plus a 2px `--crimson` progress bar on `--crimson-track` (active), hollow ring (waiting).
+- **Bottom right:** a 36px crimson hexagon with the role name, and `Work log ›` as a 199×49 bordered button that opens History.
+
+## 02, completed process (state 6)
+
+- **Nodes:** 129×76 boxes, radius 4, about 186px apart, with a second row about 146px lower and a dashed return connector.
+  - Number (bold) at top left, recorded question below.
+  - Done: 1.5px `--crimson` border and a 16px crimson check badge, with solid crimson arrows.
+  - Not reached: `--border` with dashed `#A6A5A7` arrows.
+  - Selected: crimson border with a ring badge.
+- **`Edit decision`** (pencil, crimson) sits left of the selected node on a crimson rule. It appears only under the NS4 conditions; otherwise omit it.
+- **Branches:** recorded forks as 100×50 boxes. The taken branch has a crimson border and ring, then a crimson arrow down to the resulting step box.
+- **Local chain strip,** x 288–1142, 1px `#ACACAC`, five columns split by hairlines: `Source facts` (green checks) · `Law` · `Current evidence` · `Evidence still needed` · `Relevant reference case`, each with a line icon and `›`. A crimson rule runs to the `Documents <n> missing ›` box (crimson border, folder icon).
+- **Source preview** at the bottom (y 643–869):
+  - Left: dated lines (dates in crimson), with the cited line on `--yellow`.
+  - Right: a page render with a shadow and the same line on `--yellow`.
+  - Controls: expand, +, −, `<page> of <pages>`.
+  - `Open full source` stays at the rail bottom.
+
+## 03, reviewed memory payoff (state 8)
+
+- **Vertical spine:** 30px numbered rings (`#B3B3B7`) on a thin line, each with a rounded question box. The selected node has a crimson ring and number, and a larger box with a crimson border and bold text.
+- **BEFORE → NOW:**
+  - BEFORE: dashed `#C2C3C3` box, muted text.
+  - A crimson arrow.
+  - NOW: crimson border, bold. `Edited by reviewer` with a green shield, only if recorded.
+  - Missing items below, each with a crimson ⊗ and `<item> · missing`.
+- **Memory chain:** `Retrieved 1 expert-reviewed case` in `--green-ink`, only if recorded; otherwise the faithful recorded label. Then three cards with green-grey `#9CAC9C` borders:
+  - the source card, with the cited line boxed in green;
+  - the memory card, with a green shield;
+  - the `Result` card, with a green headline.
+
+  An up arrow runs from the memory card to NOW.
+- **Notice bar:** `--notice`, 58px, shield icon: `This case used reviewed memory. Qualified review is still required.` (only when true).
+- **Top-right:** `Open documents ↗`. `+ Add source` appears only where adding a source works.
+
+## Data (recorded only)
+
+- **Process questions:** use a planner-approved glossary keyed by recorded step ID, like the legal-test glossary.
+  - Each question must be answered by that step's own recorded outcome, e.g. "Check what the landlord knew" → "Did the landlord know?".
+  - The recorded label stays one hover/click away.
+  - List the glossary in the NS1 READY post for review. Unknown IDs fall back to the recorded label.
+- **Role tabs:** one tested table from recorded actor/kind to the five roles. An unknown kind keeps the previous role.
+- **Plan rows:** only recorded operations linked to the node, labelled by template from kind + recorded source label, ending with `Form process decision`.
+- **Fact cards:** recorded fact short label, or the recorded quote clamped to 2 lines.
+- **Forks, branches and chain columns:** recorded DAG and recorded fields only. A column with no recorded content is omitted, not invented.
+- **Case per concept:** pick the recorded case that best fits each concept (for example a mould or heating case for 02 and 03), and say which.
+
+## Deliberate differences (allowed, list them in each READY)
+
+- State 1 button `Watch the analysis` (a replay, not a live run).
+- No reply/reply-all or settings icons.
+- Demo transport at the rail bottom.
+- Recorded content instead of the concept's illustrative text.
+
+## Fidelity gate (every READY)
+
+For each concept state, post three things:
+- the 1440×900 frame;
+- `node design-plans/tools/fidelity.mjs <concept> <frame> <out>` side-by-side and overlay images;
+- the printed mean difference.
+
+Then list every visible deviation as matched / deliberate (with reason) / pending.

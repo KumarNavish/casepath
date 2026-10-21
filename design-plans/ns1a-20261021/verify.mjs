@@ -1,0 +1,34 @@
+import {createRequire} from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
+import {gunzipSync} from 'node:zlib';
+import assert from 'node:assert/strict';
+import {audit} from '../tools/desktop_overlap_audit.mjs';
+const require=createRequire(new URL('../../casepath-qa/package.json',import.meta.url)),{chromium}=require('playwright'),ui=require('../casepath/assets/autonomous-workspace-v1.js');
+const root=path.resolve(import.meta.dirname,'../..'),fixture=JSON.parse(gunzipSync(fs.readFileSync(root+'/casepath-qa/fixtures/desk-v3.json.gz'))),row=fixture.cases[0],state=row.envelope.state;
+const report={viewport:{width:1440,height:900},errors:[],writes:[],staticPrefix:true,overrides:process.env.OVERRIDES==='1',case:row.id,operationSeq:168};
+const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}),p=await browser.newPage({viewport:report.viewport});p.on('pageerror',e=>report.errors.push(e.message));
+await p.route('**/*',r=>{const q=r.request(),u=new URL(q.url()),id=u.pathname.match(/\/claims\/([^/]+)\/operations$/)?.[1];if(!['GET','HEAD'].includes(q.method())){report.writes.push(q.method()+' '+u.pathname);return r.abort();}if(id){const c=fixture.cases.find(c=>c.id===id);if(c)return r.fulfill({body:c.trace,contentType:'application/x-ndjson'});}const asset=u.pathname.split('/').pop();if(report.overrides&&['autonomous-workspace-v1.js','autonomous-workspace-v1.css','Mulish.ttf'].includes(asset))return r.fulfill({path:root+'/casepath/assets/'+(asset==='Mulish.ttf'?'fonts/':'')+asset,contentType:asset.endsWith('.css')?'text/css':asset.endsWith('.js')?'text/javascript':'font/ttf'});return r.continue();});
+try{
+ await p.goto('http://127.0.0.1:4180/#autonomous/demonstration',{waitUntil:'networkidle'});
+ await p.locator('[data-au-ns-start]').waitFor({timeout:90000});await p.evaluate(()=>document.fonts.ready);assert.ok(await p.evaluate(()=>[...document.fonts].some(font=>font.family==='Mulish'&&font.status==='loaded')),'Mulish must load from the sealed package');
+ assert.equal(await p.locator('.au-ns-spine li').count(),0);assert.equal(await p.locator('.au-ns-sources li').count(),4);assert.doesNotMatch(await p.locator('body').innerText(),/UI fixture · no saved case has been changed/);
+ await p.screenshot({path:import.meta.dirname+'/state1-ready.png'});report.readyMounted=true;
+ // Deterministic static review of a real immutable prefix, with app timers
+ // destroyed before the component frame. Live motion is the NS1b gate.
+ const rows=row.trace.trim().split('\n').map(JSON.parse).filter(f=>f.type==='operation'),prefix=rows.filter(o=>o.seq<=168),sources=new Map();for(const o of prefix)if(o.kind==='source.open')sources.set(o.object.id,{...state.source_descriptors.find(s=>s.artifact_id===o.object.id),...o.result});
+ const trace={headState:state,rows:prefix,current:prefix.at(-1),sources,nsCatalogue:ui.northStarPlanModel(state,rows)},m=ui.northStarModel(state,trace);
+ const html=ui.northStarMarkup(state,trace,{paused:true}),tabs=ui.northStarTabsMarkup(m.role);
+ await p.evaluate(({html,tabs})=>{const workspace=document.querySelector('.au-workspace');window.CasePathAutonomous.destroy();workspace.innerHTML='<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath</a><div class="au-ns-tabs">'+tabs+'</div></header><main class="au-main">'+html+'</main></div>';},{html,tabs});
+ await p.evaluate(()=>document.fonts.ready);
+ await p.evaluate(()=>{const mark=document.querySelector('[data-au-ns-quote]'),pane=document.querySelector('.au-ns-source-scroll'),r=mark.getBoundingClientRect(),b=pane.getBoundingClientRect();pane.scrollTop=Math.max(0,pane.scrollTop+r.top-b.top-220);const active=document.querySelector('.au-ns-plan [data-state=active]');if(active)active.parentElement.scrollTop=Math.max(0,active.offsetTop-active.parentElement.offsetTop-130);});
+ // The static cursor uses the same exact pinned end point as the live renderer.
+ await p.evaluate(()=>{const desk=document.querySelector('[data-au-ns]'),mark=desk.querySelector('[data-au-ns-quote]'),pane=desk.querySelector('.au-ns-source-scroll'),a=desk.getBoundingClientRect(),clip=pane.getBoundingClientRect(),r=[...mark.getClientRects()].filter(r=>r.top>=clip.top&&r.bottom<=clip.bottom).at(-1);if(!r)throw Error('No visible recorded locator');const c=document.createElement('div');c.className='au-ns-cursor';c.setAttribute('aria-hidden','true');c.innerHTML='<svg viewBox="0 0 26 34" class="au-ns-pointer"><path d="M2 2 24 21 12 22 7 32Z"/></svg>'+desk.querySelector('.au-ns-role-badge').outerHTML;c.style.left=Math.min(r.right-a.left+3,clip.right-a.left-62)+'px';c.style.top=r.bottom-a.top+3+'px';desk.append(c);});
+ assert.equal(await p.locator('[data-au-ns-quote]').textContent(),m.pin.quote);assert.equal(await p.locator('[data-au-ns-fact]').count(),2);assert.equal(await p.locator('.au-ns-cursor').count(),1);
+ await p.screenshot({path:import.meta.dirname+'/state4-recorded-facts.png'});
+ report.cursorTextOverlaps=await p.evaluate(()=>{const badge=document.querySelector('.au-ns-cursor .au-ns-role-badge').getBoundingClientRect(),pane=document.querySelector('.au-ns-source-scroll'),walker=document.createTreeWalker(pane,NodeFilter.SHOW_TEXT),hits=[];while(walker.nextNode()){const n=walker.currentNode;if(!n.textContent.trim())continue;const range=document.createRange();range.selectNodeContents(n);for(const r of range.getClientRects())if(Math.min(r.right,badge.right)-Math.max(r.left,badge.left)>1&&Math.min(r.bottom,badge.bottom)-Math.max(r.top,badge.top)>1)hits.push(n.textContent.slice(0,50));}return hits;});
+ // A role cursor is an intentional overlay on the paper; text is checked above
+ // using actual line rectangles rather than the full preformatted block.
+ report.overlaps=(await p.evaluate(audit)).filter(hit=>!hit.some(value=>typeof value==='string'&&value.startsWith('au-ns-role-badge ')));assert.deepEqual(report.cursorTextOverlaps,[]);report.geometry=await p.evaluate(()=>Object.fromEntries(['.au-identity-header','.au-ns-sources','.au-ns-paper','.au-ns-plan','.au-ns-facts'].map(s=>{const r=document.querySelector(s).getBoundingClientRect();return [s,{x:r.x,y:r.y,width:r.width,height:r.height}]})));report.horizontalOverflow=await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth);report.font=await p.locator('[data-au-ns]').evaluate(e=>getComputedStyle(e).fontFamily);report.planRows=m.plans.map(r=>({id:r.operation.id,seq:r.operation.seq,label:r.label}));assert.deepEqual(report.errors,[]);assert.deepEqual(report.writes,[]);assert.equal(report.horizontalOverflow,false);assert.deepEqual(report.overlaps,[]);report.passed=true;
+}finally{fs.writeFileSync(import.meta.dirname+'/browser-receipt.json',JSON.stringify(report,null,2));await browser.close();}
+console.log(JSON.stringify(report,null,2));

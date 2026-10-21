@@ -1,0 +1,36 @@
+{
+  "status": "NS1a_ready_for_planner",
+  "implementation_commit": "8c8f93d0b013935c32961c872f5de74b58c2dfab",
+  "base": "aa5df676f25c72dbd2908d257b4ba56edf0c38fa",
+  "focused_tests": 482,
+  "desktop_browser_checks": 28,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "source_file_count": 1733,
+  "source_manifest_sha256": "b361ab840f9e1bc27a4493dbca20179837da7f4fe81020a939f49d1073c827d9",
+  "served_assets": {
+    "autonomous-workspace-v1.js": "16660ca1367e14731b18a58f1e6bf11174893baf2e60ff35208c1e8529306491",
+    "autonomous-workspace-v1.css": "a9aeb8af0ae3b542ce2ceceb29d0826189de907f187e9f3be84ddc5f2987919e",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "mean_difference_pct": 5.43,
+  "static_prefix": true,
+  "motion_gate": "NS1b pending",
+  "paid_inference": 0,
+  "hosted_writes": 0,
+  "deployment": false,
+  "hashes": {
+    "seal.log": "34b34a68ca65b453fc410f5c7c4754403105c7964dfaad06ecf529deb5cfa4a6",
+    "browser-receipt.json": "d310c9ec25ab5170fbf46e2aee5afd7ce1c228db46fb71fb4654a9f64f4dc91a",
+    "desktop.tap": "6b7417ffc3c5a20fb430c60f9cbcc376cba192966f3a842706bf39953ed1de02",
+    "focused.tap": "7dba54d54eeb7409a1da2bb241186dbcad9e56de30a7b584dad5697280ab3fa1",
+    "fidelity.json": "b37d19733b3122b0181a3c5f3b794d3b8092d3e9d4536e8a2d929b26d9e717b2",
+    "state4-recorded-facts.png": "9d844ae3df0193e2587d9774075ad753b79f26501d24622a514e498ed5d6ff23",
+    "concept01-overlay.png": "85fb64b95d283787a5a545069128aa630d488cfe0e4d36f00c37ade69dec7a23",
+    "state1-ready.png": "11ee46840ef29f35b9d1bf965097cc8f3f4c705bf2dc9bb547e75cc1242b6736",
+    "concept01-side.png": "6277abff8353630d7f6f07533aea1026b6a91137cb6c38e5f5a7811ae6c3f2cb",
+    "concept01-diff.png": "bf9b751054505672c993a29a928cf3b91d94e3e47c8355e331378bb5707c1f1a"
+  }
+}

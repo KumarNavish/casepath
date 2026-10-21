@@ -1,0 +1,82 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "errors": [],
+  "writes": [],
+  "staticPrefix": true,
+  "overrides": false,
+  "case": "clm_314f2d309fea25e6",
+  "operationSeq": 168,
+  "readyMounted": true,
+  "cursorTextOverlaps": [],
+  "overlaps": [],
+  "geometry": {
+    ".au-identity-header": {
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 75
+    },
+    ".au-ns-sources": {
+      "x": 0,
+      "y": 75,
+      "width": 262,
+      "height": 825
+    },
+    ".au-ns-paper": {
+      "x": 298,
+      "y": 234,
+      "width": 671,
+      "height": 493
+    },
+    ".au-ns-plan": {
+      "x": 1013,
+      "y": 262,
+      "width": 298,
+      "height": 336.5
+    },
+    ".au-ns-facts": {
+      "x": 298,
+      "y": 761,
+      "width": 671,
+      "height": 76
+    }
+  },
+  "horizontalOverflow": false,
+  "font": "Mulish, sans-serif",
+  "planRows": [
+    {
+      "id": "op_6e11ab90e676e08f7e072552c7f13321",
+      "seq": 49,
+      "label": "Read Customer and tenancy clarification"
+    },
+    {
+      "id": "op_46549f9d7cc9839f9005c9b4f47437fd",
+      "seq": 54,
+      "label": "Read Customer and tenancy clarification"
+    },
+    {
+      "id": "op_067fa4988789de89d5190b403e1e8b54",
+      "seq": 58,
+      "label": "Read Customer and tenancy clarification"
+    },
+    {
+      "id": "op_fd2f7f52483fdbf2ca0f6eed0ecfdb8b",
+      "seq": 65,
+      "label": "Read Customer and tenancy clarification"
+    },
+    {
+      "id": "op_239fff8e940e09cd50d910cbaff753b7",
+      "seq": 168,
+      "label": "Verify Relevant tenancy terms"
+    },
+    {
+      "id": "op_ba68a476ea8289e87f3074c010784f55",
+      "seq": 429,
+      "label": "Form process decision"
+    }
+  ],
+  "passed": true
+}
