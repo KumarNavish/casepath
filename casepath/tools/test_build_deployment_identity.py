@@ -106,10 +106,11 @@ def test_curated_static_build_has_exact_runtime_inventory(
         "assets/fonts/Merriweather-Light.ttf", "assets/fonts/Merriweather-OFL.txt",
         "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
         "assets/fonts/Open_Sans-OFL.txt",
+        "assets/fonts/Mulish.ttf", "assets/fonts/Mulish-OFL.txt",
     }
     assert files == static_site.PUBLIC_INVENTORY == expected_files
     assert directories == static_site.PUBLIC_DIRECTORIES == {"assets", "assets/fonts"}
-    assert len(files) == 40
+    assert len(files) == 42
     assert {"corpus.html", "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json"} <= files
     assert {"method.html", "assets/method-guide.css",
             "assets/method-guide-data.json"} <= files
@@ -192,11 +193,13 @@ def test_curated_asset_allowlist_is_the_recursive_runtime_closure() -> None:
         "assets/fonts/Merriweather-Light.ttf", "assets/fonts/Merriweather-OFL.txt",
         "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
         "assets/fonts/Open_Sans-OFL.txt",
+        "assets/fonts/Mulish.ttf", "assets/fonts/Mulish-OFL.txt",
     } <= discovered
 
     index = (static_site.SOURCE_ROOT / "index.html").read_text(encoding="utf-8")
     for license_path in (
         "assets/fonts/Merriweather-OFL.txt", "assets/fonts/Open_Sans-OFL.txt",
+        "assets/fonts/Mulish-OFL.txt",
     ):
         assert f'<link rel="license" href="{license_path}">' in index
     font_styles = (static_site.SOURCE_ROOT / "assets/agent-native-v2.css").read_text(

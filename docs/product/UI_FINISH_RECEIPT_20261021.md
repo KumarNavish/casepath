@@ -46,6 +46,13 @@ their assertions. The fixture repair preserves that guard and all assertions;
 all 26 export tests pass under the launcher's original temporary-directory
 conditions. The strict gate is rerun against the repaired source.
 
+The static inventory also includes the approved Mulish font and its OFL file,
+with a license link in the page head. All 16 static-build checks pass. The first
+strict run is preserved in the evidence package: 2,854 passed, ten failed and
+ten skipped. Seven failures were the export fixture placement, two were font
+packaging assertions, and one is the separately owned hosted-startup test. The
+ten skips require unavailable historical packets; no frontend suite was skipped.
+
 Browser scripts `verify-process.mjs`, `verify-memory.mjs`,
 `verify-acceptance.mjs`, `verify-motion.mjs` and `verify-reduced.mjs` run against
 the owned GET-only preview on 4180. Final proof uses built assets without
