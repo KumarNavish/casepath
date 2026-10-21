@@ -3539,7 +3539,7 @@ test('record dialog reaches every passage a record cites and titles an action by
  assert.equal(JSON.stringify(s),before);
 });
 
-test('outcome leads with three plain rows and preserves exact recorded sentences and citations inside Why',()=>{
+test('outcome omits generic Next while preserving exact recorded sentences and citations inside Why',()=>{
  const saved=savedHistory(),before=JSON.stringify(saved),html=ui.outcomeSummaryMarkup(saved);
  assert.ok(html.includes(`<p class="au-outcome-summary" data-au-outcome-recorded>${escapeText(saved.outcome.summary)}</p><p class="au-outcome-cited au-outcome-row" data-au-outcome-cited><span class="au-outcome-key">Cited</span> <span class="au-outcome-value"><button type="button" class="au-link au-outcome-cite" data-au-outcome-cite="summary" data-au-source="${saved.outcome.citations[0].artifact_id}"`),'the outcome citation follows the recorded summary it supports');
  // A recorded issue is never given the outcome's citation; it links only a citation of its own.
@@ -3550,9 +3550,9 @@ test('outcome leads with three plain rows and preserves exact recorded sentences
  assert.match(linked,/<li data-au-outcome-issue>An issue with its own passage\. <button type="button" class="au-link au-outcome-cite" data-au-outcome-cite="issue"/);assert.match(linked,/<li data-au-outcome-issue>An issue without one\.<\/li>/);
  assert.match(html,/data-au-outcome-open-facts><span class="au-outcome-key">Open<\/span> <span class="au-outcome-value"><span class="au-outcome-fact">Rent arrears<\/span>/);
  assert.match(html,/Rent arrears<\/span><span aria-hidden="true">&nbsp;· <\/span><span class="au-outcome-fact">Tenancy extension<\/span>/,'the separator stays with the preceding fact so no line starts with a dot');
- assert.match(html,/<p class="au-outcome-next au-outcome-row" data-au-outcome-next><span class="au-outcome-key">Next<\/span> <span class="au-outcome-value">Waiting for proof of open facts\.<\/span><\/p>/);
+ assert.doesNotMatch(html,/data-au-outcome-next/);assert.ok(html.includes(`<p data-au-recorded-next>${escapeText(saved.outcome.next_action)}</p>`));
  assert.match(html,/data-au-outcome-documents>[\s\S]*1 of 11 received<\/button> · no active document gap identified<\/span><\/p>/);
- assert.match(html,/<details class="au-outcome-why" data-au-disclosure="outcome-why"><summary>Why<\/summary>/);assert.ok(html.indexOf('data-au-outcome-next')<html.indexOf('data-au-outcome-recorded'));assert.equal((html.split('<details')[0].match(/<p /g)||[]).length,3);
+ assert.match(html,/<details class="au-outcome-why" data-au-disclosure="outcome-why"><summary>Why<\/summary>/);assert.equal((html.split('<details')[0].match(/<p /g)||[]).length,2);
  const header=ui.workMarkup(saved,{},null,[]).match(/<header[\s\S]*?<\/header>/)[0];
  assert.match(header,/data-au-claim-status>Deferred\.<\/span> Open: Rent arrears, Tenancy extension, Family home and 2 more\./,'with no document gap the status stays Deferred (ade555a, restored in the P7 review), not More evidence needed or Stopped, and the explanation names the open facts');
  // The no-gap line follows the recorded empty missing list, not the draft's wording.
@@ -3761,7 +3761,7 @@ test('short replay actions identify the visible document without duplicating the
 
 test('the answer keeps model wording and issues behind Why while records remain exact',()=>{
  const saved=savedHistory(),before=JSON.stringify(saved),html=ui.outcomeSummaryMarkup(saved),primary=html.split('<details class="au-outcome-why"')[0];
- assert.equal((primary.match(/<p /g)||[]).length,3);
+ assert.equal((primary.match(/<p /g)||[]).length,2);
  assert.ok(!primary.includes(escapeText(saved.outcome.summary)));
  for(const issue of saved.outcome.issues)assert.ok(!primary.includes(escapeText(issue)));
  assert.ok(html.includes(escapeText(saved.outcome.summary)));
@@ -3785,4 +3785,28 @@ test('a completed case keeps its status in Case details instead of repeating it 
  assert.match(header,/<details class="au-claim-meta"[\s\S]*data-au-claim-status>Deferred/);
  assert.doesNotMatch(header.replace(/<details[\s\S]*?<\/details>/g,''),/Deferred|revision|data-au-claim-status/);
  assert.deepEqual(ui.contextualRecord(saved,{},[],'outcome').outcome,saved.outcome);
+});
+
+
+test('W1 stage step and document labels are mechanically derived from every recorded name across the nine reference catalogs',()=>{
+ const escaped=value=>value.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+ for(const row of ui.REFERENCE_DEMO_CASES){
+  const plan=ui.releaseOperationProcess(row.claim_id),before=JSON.stringify(plan),html=ui.releaseProcedurePreview(plan,'recorded');
+  for(const node of plan.graph.nodes){
+   const titles=[...html.matchAll(/<strong class="au-node-title">([^<]+)<\/strong>/g)].map(match=>decodedSurface(match[1]));
+   assert.ok(titles.some(title=>node.label.toLowerCase().endsWith(title.toLowerCase()) && /^(?:(?:check|read|capture|establish|assess|record)(?: the)? )?$/i.test(node.label.slice(0,node.label.length-title.length))),`${row.claim_id}: ${node.node_id} must derive from ${node.label}`);
+   for(const type of node.document_types){const document=plan.graph.document_catalog.find(item=>item.document_type===type);assert.ok(html.includes(`<span>${escaped(document.label)}</span>`),`${row.claim_id}: ${type} must display its recorded document name`);}
+  }
+  assert.equal(JSON.stringify(plan),before);
+ }
+ const saved=state({graph:{nodes:[{node_id:'ri_form',label:'Check how the notice arrived'},{node_id:'ri_reason',label:'Check if the increase notice is valid'}],edges:[]}});
+ const html=ui.graphMarkup(saved,null,{}, {stage:{state:saved,trace:null}});
+ assert.match(html,/>How the notice arrived<\/strong>/);assert.match(html,/>If the increase notice is valid<\/strong>/);assert.doesNotMatch(html,/>Notice validity<|>Stated reason</);
+});
+
+test('W1 Next requires a concrete recorded action and never inserts a generic fallback',()=>{
+ const boilerplate=['','Inspect the recorded assessment and its cited sources.','Inspect the recorded historical synthetic assessment; any real action needs its own current authority.','Await the named evidence or an authorized external action. New supporting files trigger reassessment.'];
+ for(const next_action of boilerplate)assert.doesNotMatch(ui.outcomeSummaryMarkup(state({outcome:{summary:'Saved finding.',next_action}})),/data-au-outcome-next/);
+ const next_action='Ask the landlord for the dated repair confirmation.';
+ assert.match(ui.outcomeSummaryMarkup(state({outcome:{summary:'Saved finding.',next_action}})),/data-au-outcome-next[\s\S]*Ask the landlord for the dated repair confirmation\./);
 });

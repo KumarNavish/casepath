@@ -19,7 +19,7 @@ try {
       return route.continue();
     });
     await page.addInitScript(()=>{
-      window.w1={samples:0,tokens:0,maxTokenWidth:0,maxTokenHeight:0,maxChipHeight:0,minHeadingClearance:Infinity,overflow:0,maxAnimations:0,duplicateControls:0,upcomingContent:0};
+      window.w1={samples:0,tokens:0,maxTokenWidth:0,maxTokenHeight:0,maxChipHeight:0,minHeadingClearance:Infinity,overflow:0,maxAnimations:0,duplicateControls:0,upcomingContent:0,minChipWidthRatio:1,maxNowLeftDelta:0,maxNowLinkOverflow:0,nowAfterTransport:true};
       setInterval(()=>{
         const stage=document.querySelector('.au-operation-stage'), title=document.querySelector('[data-au-claim-title]');
         if (!stage || !title || stage.dataset.auStagePhase!=='source') return;
@@ -31,7 +31,9 @@ try {
         for(const selector of ['[data-au-demo-stop]','[data-au-demo-skip]','[data-au-inspect=demo]','[data-au-detail=activity]']) m.duplicateControls=Math.max(m.duplicateControls,Math.max(0,[...document.querySelectorAll(selector)].filter(visible).length-1));
         m.upcomingContent=Math.max(m.upcomingContent,[...document.querySelectorAll('.au-stage-step:not([data-au-stage-active=true]):not([data-au-stage-complete=true]) .au-stage-fact,.au-stage-step:not([data-au-stage-active=true]):not([data-au-stage-complete=true]) .au-stage-documents')].filter(visible).length);
         m.overflow=Math.max(m.overflow,document.documentElement.scrollWidth-innerWidth);
-        for(const chip of document.querySelectorAll('.au-stage-fact'))m.maxChipHeight=Math.max(m.maxChipHeight,chip.getBoundingClientRect().height);
+        for(const chip of document.querySelectorAll('.au-stage-fact')){const rect=chip.getBoundingClientRect();m.maxChipHeight=Math.max(m.maxChipHeight,rect.height);if(rect.width)m.minChipWidthRatio=Math.min(m.minChipWidthRatio,rect.width/chip.parentElement.getBoundingClientRect().width);}
+        const now=document.querySelector('.au-quiet-claim > .au-now'),transport=document.querySelector('.au-quiet-claim > .au-demo-transport');
+        if(now&&transport){const r=now.getBoundingClientRect(),link=now.querySelector('.au-record-link')?.getBoundingClientRect();if(link)m.maxNowLinkOverflow=Math.max(m.maxNowLinkOverflow,r.top-link.top,link.bottom-r.bottom,r.left-link.left,link.right-r.right);m.maxNowLeftDelta=Math.max(m.maxNowLeftDelta,Math.abs(now.getBoundingClientRect().left-transport.getBoundingClientRect().left));m.nowAfterTransport&&=Boolean(transport.compareDocumentPosition(now)&Node.DOCUMENT_POSITION_FOLLOWING);}
         for(const token of document.querySelectorAll('.au-operation-fact-token')) {
           m.tokens++; m.maxTokenWidth=Math.max(m.maxTokenWidth,token.offsetWidth);m.maxTokenHeight=Math.max(m.maxTokenHeight,token.offsetHeight);
         }
@@ -42,14 +44,14 @@ try {
     const metrics=await page.evaluate(()=>window.w1);
     const why=page.locator('.au-stage-outcome > details.au-outcome-why');await why.waitFor();
     assert.equal(await why.getAttribute('open'),null,'supporting answer detail starts closed');
-    assert.equal(await page.locator('.au-stage-outcome > p').count(),3,'exactly three primary answer rows');
+    assert.equal(await page.locator('.au-stage-outcome > p').count(),2,'no invented Next action for the reference record');
     await why.locator('summary').click();assert.ok(await why.locator('[data-au-outcome-recorded]').isVisible(),'the full recorded answer remains one click away');
     await why.locator('summary').click();
     await page.screenshot({path:`${out}/w1-${width}-result.png`});
     fs.writeFileSync(`${out}/metrics-${width}.json`,JSON.stringify({width,metrics,errors,writes},null,2)+'\n');
     assert.ok(metrics.samples>0);assert.ok(metrics.tokens>0,'recorded source-to-fact transfers were exercised');
     assert.ok(metrics.maxTokenWidth<=16 && metrics.maxTokenHeight<=2,JSON.stringify(metrics));
-    assert.ok(metrics.maxChipHeight<=45,'fact chips stay compact');
+    assert.ok(metrics.maxChipHeight<=45,'fact chips stay compact');assert.ok(metrics.minChipWidthRatio>=0.99,'chips use the whole step column');assert.ok(metrics.maxNowLeftDelta<=1,'Now aligns with the left edge of transport');assert.equal(metrics.nowAfterTransport,true);assert.ok(metrics.maxNowLinkOverflow<=1,'Details stays inside Now');
     if(width===1440) assert.ok(metrics.minHeadingClearance>=-1,`case title remains visible: ${JSON.stringify(metrics)}`);
     assert.equal(metrics.maxAnimations,1,'the passage and transfer never animate concurrently');assert.equal(metrics.duplicateControls,0);assert.equal(metrics.upcomingContent,0);assert.equal(metrics.overflow,0);assert.deepEqual(errors,[]);assert.deepEqual(writes,[]);
     results.push({width,metrics,errors,writes});await page.close();

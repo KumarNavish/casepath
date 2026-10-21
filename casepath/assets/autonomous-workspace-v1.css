@@ -1432,7 +1432,7 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 /* The words just read stand out from the passage around them. */
 .au-workspace .au-stage-source .au-operation-passage mark[data-au-operation-span] { background:rgb(116 155 99 / 30%); box-shadow:inset 0 -2px 0 var(--au-green); }
 
-/* W1: three header rows; the action sits with the passage it describes. */
+/* W1: three header rows; the recorded action follows the transport. */
 .au-workspace [data-au-tour=true] > .au-work-head :is(.au-eyebrow,.au-work-controls,.au-claim-constraint) { display:none; }
 .au-workspace [data-au-tour=true] > .au-work-head { display:block; margin-bottom:10px; }
 .au-workspace .au-claim-meta { color:var(--au-muted); margin-top:6px; }
@@ -1441,9 +1441,9 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 .au-workspace .au-demo-next { flex:1 1 100px; max-width:180px; min-width:0; overflow:hidden; text-overflow:ellipsis; }
 .au-workspace .au-demo-mode { margin-left:auto; color:var(--au-muted); white-space:nowrap; }
 .au-workspace .au-demo-control { min-height:44px; }
-.au-workspace .au-stage-source > .au-now { display:block; position:static; margin:0 0 8px; padding:0; border:0; background:transparent; line-height:1.45; }
-.au-workspace .au-stage-source > .au-now :is([data-au-now-copy],[data-au-now-result]) { display:inline; margin:0; }
-.au-workspace .au-stage-source > .au-now .au-record-link { margin-left:8px; }
+.au-workspace .au-quiet-claim[data-au-stage-view] > .au-now { display:block; position:static; height:auto; overflow:visible; margin:0 0 8px; padding:0; border:0; background:transparent; line-height:1.45; }
+.au-workspace .au-quiet-claim[data-au-stage-view] > .au-now :is([data-au-now-copy],[data-au-now-result]) { display:inline; margin:0; }
+.au-workspace .au-quiet-claim[data-au-stage-view] > .au-now .au-record-link { position:static; margin-left:8px; padding:0; min-height:44px; background:none; }
 .au-workspace .au-stage-step[data-au-stage-active=false][data-au-stage-complete=false] > :is(.au-stage-fact,.au-stage-documents) { display:none; }
 /* Document identity and its check are a single line, without nested boxes. */
 .au-workspace .au-stage-slot { padding:0; border:0; border-radius:0; background:transparent; }
@@ -1454,9 +1454,9 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 .au-workspace .au-outcome-why { margin-top:8px; }
 .au-workspace .au-outcome-why > summary { cursor:pointer; color:var(--au-muted); width:fit-content; min-height:44px; }
 .au-workspace .au-outcome-why > :not(summary) { margin:8px 0; }
-.au-workspace .au-stage-fact { position:relative; }
+.au-workspace .au-stage-fact { position:relative; margin-left:0; width:100%; max-width:100%; }
 .au-workspace .au-stage-fact:is(:hover,:focus-visible)::after { content:attr(data-au-full-quote); position:absolute; z-index:20; left:0; top:100%; width:max-content; max-width:min(300px,calc(100vw - 48px)); padding:6px 8px; background:var(--au-paper); color:var(--au-ink); border:1px solid var(--au-line); white-space:normal; font:inherit; }
 @media (max-width:700px) {
   .au-workspace .au-demo-mode { flex-basis:100%; white-space:normal; margin-left:0; }
-  .au-workspace .au-stage-source > .au-now { font-size:16px; }
+  .au-workspace .au-quiet-claim[data-au-stage-view] > .au-now { font-size:16px; }
 }

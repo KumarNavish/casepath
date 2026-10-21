@@ -1,0 +1,49 @@
+{
+  "base_commit": "20809e3f58a9d25277676600200366852342c80b",
+  "planner_review": "https://github.com/KumarNavish/casepath/pull/21#issuecomment-6303119662",
+  "source_manifest_sha256": "0c6f6ccb3c0e5db28715b2bcf7e7a640f1e0023750b3110699fbc7fff0923749",
+  "source_files": 1723,
+  "focused_tests": {
+    "unit_product": 433,
+    "browser_identity": 34,
+    "total": 467,
+    "failed": 0,
+    "skipped": 0
+  },
+  "visual_count": {
+    "before": 48,
+    "after": 28,
+    "reduction_percent": 41.67
+  },
+  "live_checks": "checks/checks.json",
+  "access_checks": "checks/access.json",
+  "final_browser_commands": "serial, all exited 0",
+  "full_suite": "not run; W5 gate",
+  "provider_calls": 0,
+  "hosted_writes": 0,
+  "deployment": false,
+  "preliminary_failure": "One phone capture under overlapping browser checks showed a saved-result fallback. In-page reason not recovered; cause unconfirmed. Retained diagnostics/overlapping-capture-fallback.png. Subsequent captures and final serial runs passed with a new notice-failure guard.",
+  "assets": {
+    "autonomous-workspace-v1.js": "d2adab69e6963dddf416372f806ad7c2ab96c6298705b6fd3bae620d38baca30",
+    "autonomous-workspace-v1.css": "453f08584aaac6b7d79ced54af084c25c6a95b71903fc8e7d2fc036d2b5c694c",
+    "autonomous-language-v1.js": "4445ae6594dc4d753607d94355f86569a45f875735b044b8ac9308725947eb54"
+  },
+  "screenshots": {
+    "exact-source.png": "c929db36e71adf1ff29adf0c236a9422433a791aed29566f5f2c9eb29fdc94c9",
+    "checks/focused-quote.png": "a00187364438a78909d71028c23176c41362e59921450d27c4d0c58ec425dfd3",
+    "checks/w1-390-result.png": "8bd6f5bb4cfb17012077dd4328f5db7e1d4e8c2ede8ccf4b4d372442b502bddc",
+    "checks/reduced-motion-phone.png": "446daf539ec4c11194fc547cc63d04e5d62ef4d9f34671d77f45ba530a9df308",
+    "checks/w1-1440-result.png": "bdd212ac819cdc2856030a9fc5e1f081210d8805701c827fbd390643cec2b79b",
+    "diagnostics/overlapping-capture-fallback.png": "bc11fe90e7b519f02f7a0b30910926cbd8ccc0b61c2ea0a204e257abc5cd194c",
+    "after/mobile-demo-12s.png": "b49cc36db9a22e9c6691d6a64560b3eecce33883b0c61b1ffe5b08b4dcc99334",
+    "after/claim-docs.png": "b37f78a793d25c5167275ada118908d2d6a2e9880597b7220f684e95b70ea789",
+    "after/claim.png": "da876a28585ae8c9f5f1e91cfab00d3ba31d7657e1fccaebb88cb785f6f1df90",
+    "after/demo-10s.png": "253eb825c7c90e1ebf6ef974f49dd129b3812022f7af602aecedc67da0a5ed4c",
+    "after/demo-06s.png": "fc1ccdda8217b4b962ec35eb74370b72836332f53780e3be19dc390051b2d7d0",
+    "after/claim-heating.png": "041860c6d18431b901096e84bb39aa1449352d26c30277f2df7c3b277a2f5b18",
+    "after/demo-12s.png": "4fa08dd13db560aa1b92117252beb4550657349f2364bee50f048cd7d4559a97",
+    "after/demo-24s.png": "9a057cad359af4c31a1794a93f4a2b9d0b85a6886623a46bdf2c81727e9cc512",
+    "after/demo-18s.png": "9a057cad359af4c31a1794a93f4a2b9d0b85a6886623a46bdf2c81727e9cc512",
+    "after/demo-matched-heating.png": "c17b10295e46caa16779a70c418188da107551c030b80825450a1a8d97d7de2c"
+  }
+}

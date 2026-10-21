@@ -1,5 +1,7 @@
 # W1 — simpler recorded work
 
+Updated by the [21 October planner revision](../w1-20261021-revision/README.md). The evidence below records the original W1 submission.
+
 Base: `a59cff2bbdd8e4a339e574ad18d64f2e52710feb` (`claude/casepath-cues-prototype`). Target: `claude/casepath-agents-20261019`. Worker: `codex/casepath-ui-w1-20261020`, isolated Mac clone, task `01a15ae9-3851-79b2-9d1b-af0b75f25a86`.
 
 Implements W1 and [planner Addendum 1](https://github.com/KumarNavish/casepath/pull/21#issuecomment-6301459970). The original colours, typography, page background and hairlines remain.
