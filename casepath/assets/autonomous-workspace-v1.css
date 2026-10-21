@@ -1952,3 +1952,5 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace .au-ns-header-tools button { display:grid; place-items:center; padding:8px; background:white; color:#141516; border:0; }
  .au-workspace:has([data-au-ns-completed]) .au-brand { font-weight:700; }
 }
+
+@media (min-width:701px) { .au-workspace .au-ns-completed-spine li[data-selected=true] .au-ns-node-badge { font-size:0; background:#fff; border:4px solid #82072a; box-sizing:border-box; } }
