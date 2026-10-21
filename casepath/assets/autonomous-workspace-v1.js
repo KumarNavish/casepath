@@ -1572,11 +1572,11 @@
     const missing=state.outcome?.missing_evidence;
     if (!Array.isArray(missing)) return '<p class="au-desk-next" data-au-desk-next>Check the document needs before sharing the answer; they have not been recorded.</p>';
     if (!missing.length) return '<p class="au-desk-next" data-au-desk-next data-status="clear"><span class="au-desk-next-cue" aria-hidden="true">✓</span><span>Nothing missing — answer can go to the customer after your review.</span></p>';
-    const nodes=list(state.graph?.nodes);
+    const nodes=layoutGraph(state.graph).nodes;
     return `<section class="au-desk-next" data-au-desk-next data-status="missing"><p><span class="au-desk-next-cue" aria-hidden="true">!</span> Request the missing documents before reviewing the answer.</p><ul>${missing.map(gap=>{
       const type=text(gap.document_type),steps=list(gap.node_ids).map(id=>nodes.find(node=>node.node_id===id)).filter(Boolean);
       const recipient=typeof gap.requested_from==='string'?gap.requested_from.trim():'';
-      return `<li>${type?button(language.documentTitle(gap),`data-au-desk-document-select="${h(type)}"`):h(language.documentTitle(gap))}<span>${recipient?`Ask ${h(recipient)}.`:'Who to ask is not recorded.'}</span><span>${steps.length?`Needed for ${steps.map(step=>button(deskStepLabel(step),`data-au-desk-select="${h(step.node_id)}"`)).join(', ')}.`:'The step requiring this document is not recorded.'}</span></li>`;
+      return `<li>Request: ${type?button(language.documentTitle(gap),`data-au-desk-document-select="${h(type)}"`):h(language.documentTitle(gap))}${steps.length?steps.map(step=>`<span>Needed for step ${nodes.indexOf(step)+1}: ${button(deskStepLabel(step),`data-au-desk-select="${h(step.node_id)}"`)}</span>`).join(''):'<span>The step requiring this document is not on file.</span>'}<span>Why: ${h(text(gap.reason)||'The reason is not on file.')}</span><span>${recipient?`Ask ${h(recipient)}.`:'Who to ask is not on file.'}</span></li>`;
     }).join('')}</ul></section>`;
   }
   function agentDeskMarkup(state, projection, selected, events, context, presentation) {
@@ -3425,7 +3425,7 @@
     }
     function renderCaseReturn() {
       const navigation = container.querySelector('[data-au-case-return]'); if (!navigation) return;
-      navigation.hidden = !lastCaseContext || !['work','knowledge'].includes(view);
+      navigation.hidden = !lastCaseContext || view !== 'knowledge';
       if (!lastCaseContext) { navigation.innerHTML = ''; return; }
       // Phones show one line, "← case", inside the brand row; wider screens name the case and its views.
       navigation.innerHTML = `<button type="button" class="au-link au-case-return-compact" data-au-return-case="step" aria-label="Back to case: ${h(lastCaseContext.label)}"><span aria-hidden="true">←</span> <span class="au-case-return-name">${h(lastCaseContext.label)}</span></button><span class="au-case-return-label">${h(lastCaseContext.label)}</span><button type="button" class="au-link" data-au-return-case="step">Steps</button><button type="button" class="au-link" data-au-return-case="documents">Documents</button>`;
@@ -5784,7 +5784,7 @@
     function renderDeskDraft() {
       if(!deskDraft||!recordDialog.open)return;
       const d=deskDraft,body=recordDialog.querySelector('[data-au-record-content]'),value=d.value;
-      body.innerHTML=`<section class="au-desk-draft"><p>Not sent — you decide</p><p data-au-draft-status role="status">${h(d.message|| (d.saved?'Saved on this device.':'Original draft.'))}</p>${d.editing?`<label>Subject<input data-au-draft-subject maxlength="500" value="${h(value.subject)}"></label><label>Letter<textarea data-au-draft-body maxlength="50000">${h(value.body)}</textarea></label>`:`<h3>${h(value.subject)}</h3><pre class="au-record-body">${h(value.body)}</pre>`}<div class="au-desk-draft-actions">${button(d.editing?'Save on this device':'Edit a copy',d.editing?'data-au-draft-save':'data-au-draft-edit')}${button('Copy text','data-au-draft-copy')}${button('Download letter','data-au-draft-download')}${d.saved?button('View original','data-au-draft-original'):''}</div></section>`;
+      body.innerHTML=`<section class="au-desk-draft"><p data-au-draft-status role="status">${h(d.message|| (d.saved?'Your copy, saved on this device.':'Original draft.'))} Not sent — you decide.</p>${d.editing?`<label>Subject<input data-au-draft-subject maxlength="500" value="${h(value.subject)}"></label><label>Letter<textarea data-au-draft-body maxlength="50000">${h(value.body)}</textarea></label>`:`<h3>${h(value.subject)}</h3><pre class="au-record-body">${h(value.body)}</pre>`}<div class="au-desk-draft-actions">${button(d.editing?'Save on this device':'Edit a copy',d.editing?'data-au-draft-save':'data-au-draft-edit')}${button('Copy text','data-au-draft-copy')}${button('Download letter','data-au-draft-download')}${d.saved?button('View original','data-au-draft-original'):''}</div></section>`;
     }
     async function openDeskDraft(target) {
       const binding=deskDraftBinding(current);if(!binding)return;
@@ -5803,7 +5803,7 @@
       if(target.hasAttribute('data-au-draft-original')){d.value={subject:d.binding.subject,body:d.binding.body};d.editing=false;d.message='Original draft.';renderDeskDraft();return;}
       if(target.hasAttribute('data-au-draft-save')){
         const entry={contract:'casepath.local-draft/1',binding:d.hash,...value,saved_at:new Date().toISOString()};if(!checkedDeskDraft(entry,d.hash))return;
-        try{root.localStorage.setItem(d.key,JSON.stringify(entry));d.value=value;d.saved=true;d.editing=false;d.message='Saved on this device.';renderDeskDraft();}catch(_){recordDialog.querySelector('[data-au-draft-status]').textContent='Could not save. Your edits are still here.';}return;
+        try{root.localStorage.setItem(d.key,JSON.stringify(entry));d.value=value;d.saved=true;d.editing=false;d.message='Your copy, saved on this device.';renderDeskDraft();}catch(_){recordDialog.querySelector('[data-au-draft-status]').textContent='Could not save. Your edits are still here.';}return;
       }
       const content=`${value.subject}\n\n${value.body}`;
       if(target.hasAttribute('data-au-draft-copy')){try{await root.navigator.clipboard.writeText(content);if(deskDraft===d&&recordDialog.open)recordDialog.querySelector('[data-au-draft-status]').textContent='Copied.';}catch(_){if(deskDraft===d&&recordDialog.open)recordDialog.querySelector('[data-au-draft-status]').textContent='Could not copy. You can download the letter.';}return;}

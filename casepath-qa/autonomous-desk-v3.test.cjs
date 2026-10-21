@@ -53,10 +53,10 @@ test('unknown step labels use only mechanical paraphrases',()=>{
 });
 
 test('next step uses recorded gaps, recipients and graph nodes without inventing them',()=>{
- const state={graph:{nodes:[{node_id:'lt_form',label:'Assess whether the termination notice is valid'}]},outcome:{missing_evidence:[{document_type:'notice',label:'Termination notice',node_ids:['lt_form'],requested_from:'the customer'}]}};
+ const state={graph:{nodes:[{node_id:'lt_form',label:'Assess whether the termination notice is valid'}]},outcome:{missing_evidence:[{document_type:'notice',label:'Termination notice',node_ids:['lt_form'],requested_from:'the customer',reason:'Check the required notice form.'}]}};
  const before=JSON.stringify(state),html=ui.deskNextStepMarkup(state);
- assert.match(html,/Ask the customer\./);assert.match(html,/data-au-desk-document-select="notice"/);assert.match(html,/data-au-desk-select="lt_form"/);assert.match(html,/Check whether the termination notice is valid/);assert.equal(JSON.stringify(state),before);
+ assert.match(html,/Request: /);assert.match(html,/Needed for step 1:/);assert.match(html,/Why: Check the required notice form/);assert.match(html,/Ask the customer\./);assert.match(html,/data-au-desk-document-select="notice"/);assert.match(html,/data-au-desk-select="lt_form"/);assert.match(html,/Check whether the termination notice is valid/);assert.equal(JSON.stringify(state),before);
  const unknown=ui.deskNextStepMarkup({outcome:{missing_evidence:[{label:'Delivery proof',node_ids:['not-recorded']}]}});
- assert.match(unknown,/Who to ask is not recorded/);assert.match(unknown,/step requiring this document is not recorded/);assert.doesNotMatch(unknown,/data-au-desk-select|Nothing missing/);
+ assert.match(unknown,/Who to ask is not on file/);assert.match(unknown,/step requiring this document is not on file/);assert.doesNotMatch(unknown,/data-au-desk-select|Nothing missing/);
  assert.match(ui.deskNextStepMarkup({outcome:{}}),/document needs.*not been recorded/);assert.doesNotMatch(ui.deskNextStepMarkup({outcome:{}}),/Nothing missing/);
 });
