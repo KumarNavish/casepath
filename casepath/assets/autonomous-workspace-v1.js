@@ -1494,7 +1494,8 @@
     return String(source.file_name || '').replace(/\.[a-z0-9]+$/iu,'').replace(/^\d+[-_ ]*/u,'').replace(/_\d{4}-\d{2}-\d{2}.*$/u,'').replace(/[-_]+/gu,' ').replace(/\bpacket\b/giu,'documents').replace(/\brecord\b/giu,'details').replace(/^./u,c => c.toUpperCase()) || 'Source';
   }
   function deskRequest(message) {
-    return String(message || '').match(/(?:specifically asking for|specific request is|meine Bitte|bitte konkret um|request is)\s*:\s*([^;\n.]+)/iu)?.[1]?.trim() || '';
+    const value=String(message || '');
+    return (value.match(/(?:specifically asking for|specific request is|meine Bitte|bitte konkret um|request is|Mein Anliegen ist|Als Nächstes brauche ich|Jetzt benötige ich|Ich ersuche um)\s*:\s*([^;\n.]+)/iu)?.[1] || value.match(/(?:for the request|für)\s*[“«"]([^”»"]+)[”»"]/iu)?.[1] || '').trim();
   }
   function deskLaw(refs) {
     const codes=new Map();for(const ref of list(refs)){const [code,article]=String(ref).split(':');if(!codes.has(code))codes.set(code,new Set());if(article)codes.get(code).add(article);}
