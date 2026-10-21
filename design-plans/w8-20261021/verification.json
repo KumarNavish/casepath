@@ -46,7 +46,7 @@
   },
   "strict_gate": {
     "status": "pending_final_review_commit",
-    "authoritative_result": "CODEX W8 READY / READY FOR MAC on PR #21 plus local gate-final.json and gate-final.log",
+    "authoritative_result": "CODEX W8 READY / READY FOR MAC on PR #21 plus local gate-repaired.json and gate-repaired.log",
     "reason": "The evidence commit is frozen before the strict gate; no evidence-only commit after the gate."
   },
   "deliberate_limits": [
@@ -57,14 +57,15 @@
   ],
   "repairs_during_verification": [
     "Updated three obsolete narrow-header assertions to the approved current navigation; all 35 browser checks then passed.",
-    "Adjusted full-source DOM assertion for HTML CRLF normalization; all nine cases then passed."
+    "Adjusted full-source DOM assertion for HTML CRLF normalization; all nine cases then passed.",
+    "Corrected private export fixture placement outside Git; all 26 tests pass under the original launcher TMPDIR conditions."
   ],
   "paid_inference": 0,
   "hosted_writes": 0,
   "original_nine_rerun": false,
   "deployment": false,
   "hashes": {
-    "README.md": "e5d5bc8a449e6ddb478173e9492ad96693f20092ed0ea3a89c3909d6007947c3",
+    "README.md": "0d31d25470d81a4acfd73e2dfa1b6adfe3546bcdf50d716354ccb6eddcadfe65",
     "acceptance-receipt.json": "bb101e997eb549e0793ad4cade08ffddb1c9d746ec5cd08096b6ae63bd10ecae",
     "browser-all.tap": "4cb2c281b12573eb44789bd1766356b057e7cb18ba8e4d9b8b8f9ca3ee87387c",
     "case1-memory-comparison-diff.png": "a58eca5dd94b542a8dd3439c37d2991a39f0e18b0c0d15da90ddeba4fcce1b9e",
@@ -92,6 +93,7 @@
     "decision-building.webm": "25d2fc72697ecb235621e66a269f4c2f3228fecb61415f8428d80717060fbf19",
     "document-finder.png": "cf703b17b4661f716a9e1a60a1246caa14b798af83fd334a969995891923cd87",
     "empty-search.png": "27552276d024e3abbfc3e00caad70b81ea4222e93057a4c25fe672d9ed8bde39",
+    "export-fixture-repair.log": "a0e367e1bd04ed1aed118e12abc37c32508ae741744328138fb9c0fe690638a5",
     "focused.tap": "f583e9a1b9a4566e1b9c483812d0b7bc3ec251df7823040d954988d75deca1fb",
     "knowledge-checklist.png": "ff4470929fecb28295c5617de7a516f23f1c9c48c0c4b6ebb3886712ab905063",
     "local-draft.png": "ad303c0cc0f691648327029e13ceab3dcab8496d4b4220f13e8dbff2e3246ff3",
@@ -100,6 +102,8 @@
     "original-not-run.png": "6ce379a0e934e3a70538cd0d04c344b85bcd4c540fab2eb9fbbcd791669be9a6",
     "process-receipt.json": "30106f50761d235ac1af807f5fe0853a8e03ac55a702876225cf7c3beb3c8839",
     "reduced-receipt.json": "978a5cd90f07f5802b22c81cf0884be0936def273375c6da10e938108dc3070b",
+    "repair-assets.json": "17f3db389fd3cbb83e2f23ea3684c02b5fd4a290534e62ab75b998db7859796f",
+    "repair-seal.log": "501bfd84b9bdff2a9cce94f7c67b8e2b404a925c67902f85d6dd081a418cc2f7",
     "result-checker.png": "493ca353fdf6dca3f9df53436742df302ebe89667dfac850bbcb4a771840068a",
     "seal.log": "52bc239b49e0e51f2e32625e51905d3ee5dd871fd22c42e38f68004e29ba3a74",
     "served-assets.json": "2e39274c1dff19ab5c25fd24f2aee70f54fd34119e38afeb3a22e6e4ec86fb96",
@@ -134,5 +138,12 @@
     "verify-motion.mjs": "06ea43ef211b0ab3071dfb30ed7005e43390144cfc3302dea2aaf7cdbee39d11",
     "verify-process.mjs": "cf7075374fd53a7ee66c45434203e08a71a06365f63bbea2c9376af9ac17af62",
     "verify-reduced.mjs": "49ae488a0547b029462e88f3e482be666f5febb06c1d26b80778ff79f9ee41d3"
+  },
+  "gate_fixture_commit": "ce3a0c302a45a0e7bc1d1f40f10e335946c8a3c0",
+  "export_fixture_tests": 26,
+  "initial_gate": {
+    "review_commit": "5a8563d0069c5bf04978b48265331c374370f918",
+    "status": "seven_export_fixture_path_failures_observed_run_continues",
+    "diagnosis": "Product gate TMPDIR is inside Git; private export output guard correctly rejects it. Fixture repair ce3a0c3 allocates outside Git, preserving all production guards and assertions."
   }
 }
