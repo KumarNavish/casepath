@@ -20,7 +20,7 @@ if(cue==='cursor'&&mark?.dataset.arrived!=='false')d.violations.push('highlight 
 });
 try{
  report.deployment=await(await fetch('http://127.0.0.1:4180/deployment.json')).json();
- await p.goto('http://127.0.0.1:4180/#autonomous/demonstration',{waitUntil:'networkidle'});await p.locator('[data-au-ns-start]').waitFor({timeout:90000});await p.evaluate(()=>document.fonts.ready);
+ await p.goto('http://127.0.0.1:4180/#autonomous/claim/'+row.id,{waitUntil:'networkidle'});await p.locator('[data-au-desk-watch]').waitFor({timeout:90000});await p.locator('[data-au-desk-watch]').click();await p.locator('[data-au-ns-start]').waitFor({timeout:90000});await p.evaluate(()=>document.fonts.ready);
  await frame('state1-ready');await p.locator('[data-au-ns-start]').click();
  await p.waitForSelector('[data-au-ns-paper]');await p.waitForFunction(()=>document.querySelector('[data-au-view]')?.dataset.auCueActive!=='source-open');await frame('state2-source-opened');console.log('Source opened');
  await p.waitForFunction(()=>document.querySelector('[data-au-view]')?.dataset.auCueActive==='passage-rest',{},{timeout:90000});await frame('state3-exact-passage');console.log('Exact passage');

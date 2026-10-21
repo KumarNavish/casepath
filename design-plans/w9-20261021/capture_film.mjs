@@ -1,7 +1,7 @@
 // Record the actual sealed product at explicit 1/60-second clock times.
 // Usage: node capture_film.mjs --out /durable/path/outside/the/repository
 // --probe checks the complete pipeline on 120 frames without publishing files.
-// --verify /path/to/film-receipt.json repeats every 60th raw frame independently.
+// --verify repeats every frame and checks every 60th PNG independently.
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
@@ -24,10 +24,17 @@ const origin=process.env.CASEPATH_CAPTURE_ORIGIN||'http://127.0.0.1:4180';
 assert.ok(['127.0.0.1','localhost'].includes(new URL(origin).hostname),'Capture is local only.');
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const git=(...argv)=>execFileSync('git',argv,{cwd:root,encoding:'utf8'}).trim();
-const sourceCommit=git('rev-parse','HEAD');
+const verifierCommit=git('rev-parse','HEAD');
+const original=verifyPath?JSON.parse(fs.readFileSync(verifyPath,'utf8')):null;
+const sourceCommit=original?.sourceCommit||verifierCommit;
+if(original){
+  assert.equal(original.passed,true);
+  git('merge-base','--is-ancestor',sourceCommit,verifierCommit);
+  assert.equal(git('diff','--name-only',sourceCommit,verifierCommit,'--','casepath','casepath-api','casepath-qa','docs','examples'),'','A repeat must use the same product source.');
+}
 assert.equal(git('diff','--name-only','HEAD','--','casepath','casepath-api','casepath-qa','docs','examples'),'','Seal product changes before capture.');
 assert.equal(git('status','--porcelain','--untracked-files=all','--','casepath','casepath-api','casepath-qa','docs','examples'),'','Include all product source in the seal.');
-assert.equal(fs.readFileSync(import.meta.filename,'utf8'),execFileSync('git',['show',sourceCommit+':design-plans/w9-20261021/capture_film.mjs'],{cwd:root,encoding:'utf8'}),'Commit the recorder before capture.');
+assert.equal(fs.readFileSync(import.meta.filename,'utf8'),execFileSync('git',['show',verifierCommit+':design-plans/w9-20261021/capture_film.mjs'],{cwd:root,encoding:'utf8'}),'Commit the recorder before capture.');
 const deployment=await(await fetch(origin+'/deployment.json')).json();
 assert.equal(deployment.source_commit,sourceCommit,'Serve the exact capture commit.');
 const wirePath=root+'/casepath-qa/fixtures/presentation-v1.json.gz';
@@ -39,7 +46,7 @@ for(const name of ['autonomous-workspace-v1.js','autonomous-workspace-v1.css','a
   const response=await fetch(origin+'/assets/'+name);assert.equal(response.status,200);
   const bytes=Buffer.from(await response.arrayBuffer());assert.deepEqual(bytes,fs.readFileSync(root+'/casepath/assets/'+name));assets[name]=sha(bytes);
 }
-const report={sourceCommit,deployment,assets,sourceManifestSha256:sha(fs.readFileSync(root+'/casepath/source-manifest.json')),fixtures:{responses:sha(fs.readFileSync(wirePath)),operations:sha(fs.readFileSync(tracePath))},viewport:{width:1440,height:900},deviceScaleFactor:2,fps:60,probe,errors:[],writes:[],missingReads:[],checksums:[],cleanup:[]};
+const report={sourceCommit,verifierCommit,deployment,assets,sourceManifestSha256:sha(fs.readFileSync(root+'/casepath/source-manifest.json')),fixtures:{responses:sha(fs.readFileSync(wirePath)),operations:sha(fs.readFileSync(tracePath))},viewport:{width:1440,height:900},deviceScaleFactor:2,fps:60,probe,errors:[],writes:[],missingReads:[],checksums:[],cleanup:[]};
 const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
 const context=await browser.newContext({viewport:report.viewport,deviceScaleFactor:2,serviceWorkers:'block',reducedMotion:'no-preference',timezoneId:'UTC',locale:'en-GB'});
 const page=await context.newPage();report.browserVersion=browser.version();
@@ -89,8 +96,19 @@ try{
   await open();report.timeline=await page.evaluate(()=>CasepathPresentation.active.manifest);
   const total=report.timeline.duration*60/1000;assert.ok(Number.isInteger(total));
   if(verifyPath){
-    const original=JSON.parse(fs.readFileSync(verifyPath,'utf8'));assert.equal(original.sourceCommit,sourceCommit);assert.deepEqual(original.assets,assets);assert.deepEqual(original.fixtures,report.fixtures);
-    for(const expected of original.checksums){await sample(expected.n);const actual=sha(await page.screenshot({type:'png'}));assert.equal(actual,expected.sha256,'independent repeat at frame '+expected.n);report.checksums.push({n:expected.n,time:expected.time,sha256:actual});}
+    assert.equal(original.sourceCommit,sourceCommit);assert.deepEqual(original.assets,assets);assert.deepEqual(original.fixtures,report.fixtures);assert.equal(original.sourceManifestSha256,report.sourceManifestSha256);assert.equal(original.browserVersion,report.browserVersion);
+    const expectedByFrame=new Map(original.checksums.map(row=>[row.n,row]));
+    // Repeat the original render history as well as its clock values. Jumping
+    // directly between checksum samples changes Chromium's text rasterization.
+    // Screenshot every frame, just as capture does; keep only sampled hashes.
+    report.replayedFrames=0;
+    for(let n=0;n<original.frameCount;n++){
+      await sample(n);const bytes=await page.screenshot({type:'png'});report.replayedFrames++;
+      const expected=expectedByFrame.get(n);
+      if(expected){const actual=sha(bytes);assert.equal(actual,expected.sha256,'independent repeat at frame '+n);report.checksums.push({n,time:expected.time,sha256:actual});}
+      if(n%300===0)console.log(JSON.stringify({replayed:n+1,total:original.frameCount,verifiedSamples:report.checksums.length}));
+    }
+    assert.equal(report.checksums.length,original.checksums.length);assert.deepEqual(report.errors,[]);assert.deepEqual(report.writes,[]);assert.deepEqual(report.missingReads,[]);
     report.verifiedSamples=report.checksums.length;report.passed=true;
   }else{
     fs.mkdirSync(out,{recursive:true});assert.equal(fs.existsSync(out+'/frame-index.jsonl'),false,'Use a fresh output directory; preserve prior capture receipts.');

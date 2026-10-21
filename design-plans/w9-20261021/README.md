@@ -144,8 +144,13 @@ node design-plans/w9-20261021/capture_film.mjs \
 ```
 
 Every raw PNG has a sequential index and the exact clock time `n × 1000/60`.
-The frame index hashes every PNG, and the independent repeat compares every
-60th frame. The only edits are half-second fades from/to white within the
+The frame index hashes every PNG. The independent repeat renders and screenshots
+all 5,745 frames in order, comparing every 60th PNG byte for byte. It must repeat
+the full rendering history: a sparse jump between checksum times can change
+Chromium text rasterization despite identical DOM, geometry and clock values.
+Evidence-only verifier commits may follow the capture commit; verification checks
+ancestry, unchanged product source, source-manifest hash, served deployment,
+assets, fixtures and browser version against the original film receipt. The only edits are half-second fades from/to white within the
 existing duration. All outputs are H.264 High, yuv420p, CRF 16, 60 fps, with no
 audio. The projector version fits the complete 16:10 picture inside 1920×1080
 with 96 px white side bars; it does not crop or stretch it. The master and raw
@@ -154,3 +159,14 @@ frames stay outside Git. The 24-frame contact sheet is decoded from the final
 
 `--probe` checks 120 frames and all three encodes without creating deliverables
 in the repository. The complete film and its receipts follow the sealed capture.
+
+`verify_film_live.mjs` compares one actual live mid-motion frame per act with
+the raw film frame at the exact same clock time and DPR 2. It reports both PNG
+hashes, mean absolute RGB difference on the 0–255 scale, and maximum channel
+difference. A one-level channel rounding bound is explicit; non-identical images
+are never reported as identical. Its separate complete live run samples native
+animations on every observed browser frame.
+
+The W8 motion and reduced-motion verifiers enter the existing single-case
+**Watch this case** route. The default Demonstration now runs W9; its separate
+verifier covers the executive presentation. Their existing W8 assertions remain.
