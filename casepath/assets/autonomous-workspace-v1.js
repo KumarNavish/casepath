@@ -620,7 +620,7 @@
     const {chars,start,end} = span, focus = options.focus && options.focus.start >= start && options.focus.end <= end && options.focus.end > options.focus.start ? options.focus : null;
     const window = passageWindow(chars,start,end), slice = (a,b) => h(chars.slice(a,b).join(''));
     const cited = focus ? `<span class="au-record-cited">${slice(start,focus.start)}</span><mark data-au-record-mark>${slice(focus.start,focus.end)}</mark><span class="au-record-cited">${slice(focus.end,end)}</span>` : `<mark data-au-record-mark>${slice(start,end)}</mark>`;
-    return `<figure class="au-record-passage" data-au-record-passage data-au-passage-verified="true" data-au-source-start-char="${start}" data-au-source-end-char="${end}">${caption}<blockquote><p>${window.clippedLeft ? '…' : ''}${slice(window.left,start)}${cited}${slice(end,window.right)}${window.clippedRight ? '…' : ''}</p></blockquote>${open}</figure>`;
+    return `<figure class="au-record-passage" data-au-record-passage data-au-passage-verified="true" data-au-source-start-char="${start}" data-au-source-end-char="${end}">${caption}<blockquote><p>${window.clippedLeft ? '…' : ''}${slice(window.left,start)}<span class="au-sr-only">Cited passage: </span>${cited}<span class="au-sr-only"> End of cited passage.</span>${slice(end,window.right)}${window.clippedRight ? '…' : ''}</p></blockquote>${open}</figure>`;
   }
   function citationLocator(state, trace, citation) {
     if (!citation?.artifact_id) return '';
@@ -1254,7 +1254,7 @@
       const control = current ? '' : row.fact ? `data-au-fact-select="${h(row.fact.fact_id)}" data-au-fact-state="${h(row.fact.verdict || row.fact.status || '')}"${documentSelect}` : documentSelect.trim();
       // The selected subject's recorded reason is the answer, so it is shown, not folded.
       const reason = current && row.fact && (text(row.fact.summary).trim() || text(row.fact.reason).trim() || subjectState(state,row) === 'open') ? `<p class="au-fact-summary">${h(factCaseText(row.fact))}</p>` : '';
-      return `<li ${attributes}>${control ? `<button type="button" class="au-link au-subject-select" ${control}>${copy}</button>` : copy}${reason}</li>`;
+      return `<li ${attributes}${control ? '' : ' tabindex="-1"'}>${control ? `<button type="button" class="au-link au-subject-select" ${control}>${copy}</button>` : copy}${reason}</li>`;
     }).join('');
     const subjects = rows.length ? `<section class="au-step-subjects${r.fact ? ' au-reading-fact' : ''}"${r.fact ? ` data-au-fact="${h(r.fact.fact_id)}"` : ''} aria-label="What this step established and what is open"><ul class="au-subject-lines">${lines}</ul></section>` : '';
     // The outcome's legal basis belongs to the step that records the result.
@@ -2359,7 +2359,7 @@
   function demonstrationOverviewMarkup(claims) {
     const rows = REFERENCE_DEMO_CASES.map((row,index) => ({row,index,claim:catalogRow(claims,row.claim_id)}));
     const recorded = rows.filter(({claim}) => claim?.revision > 0).length;
-    return `<section class="au-demonstration au-demo-overview" data-au-demo-overview><header class="au-collection-head"><div><p class="au-eyebrow">Demonstration · three domains</p><h1 class="au-page-heading" tabindex="-1">Nine original cases</h1><p class="au-lead">${recorded ? `${recorded} of 9 cases have a saved history in this workspace.` : h(language.copy.noHistories)}</p></div></header><ol class="au-demo-cases" aria-label="Nine original cases">${rows.map(({row,index,claim}) => {
+    return `<section class="au-demonstration au-demo-overview" data-au-demo-overview><header class="au-collection-head"><div><p class="au-eyebrow">Demonstration · three domains</p><h1 class="au-page-heading" tabindex="-1">Nine original cases</h1><p class="au-lead">${recorded ? `${recorded} of 9 cases ${recorded === 1 ? 'has' : 'have'} a saved history in this workspace.` : h(language.copy.noHistories)}</p></div></header><ol class="au-demo-cases" aria-label="Nine original cases">${rows.map(({row,index,claim}) => {
       const domain = DOMAINS.find(item => item.id === row.domain)?.label || 'Other', stateLabel = !claim ? 'Not in this workspace' : claim.revision > 0 ? `Saved result · revision ${claim.revision}` : language.copy.notRunHere;
       const label = caseLabel(row.claim_id,claim);
       return `<li class="au-demo-case" data-au-demo-case="${h(row.claim_id)}" data-au-demo-state="${!claim ? 'unknown' : claim.revision > 0 ? 'saved' : 'not_run'}"><span class="au-demo-order" aria-hidden="true">${String(index+1).padStart(2,'0')}</span><div class="au-demo-case-copy"><strong>${h(label.primary)}</strong>${label.secondary ? `<span class="au-case-subject">${h(label.secondary)}</span>` : ''}<span class="au-demo-case-facts">${factsMarkup(language.caseFacts({domain,language:claim?.language,attachments:claim?.attachment_count,mediaTypes:claim?.attachment_media_types,channel:claim?.channel,received:claim?.received_at}))}</span></div><span class="au-demo-case-state">${h(stateLabel)}</span>${claim ? `<a class="au-demo-intake-link" href="#autonomous/claim/${key(row.claim_id)}" aria-label="${h(`Original intake: ${label.primary}`)}">Original intake</a>` : ''}</li>`;
@@ -3618,14 +3618,19 @@
     function focusToken(element) {
       if (!element || !host.contains(element)) return null;
       const panel = focusPanel(element)?.dataset.auPanel || null;
-      for (const attr of ['data-au-ns-memory-select','data-au-ns-passage','data-au-ns-chain','data-au-ns-zoom','data-au-ns-reasoning','data-au-ns-source','data-au-ns-start','data-au-operation-scrub','data-au-inspection-clear','data-au-demo-stop','data-au-demo-resume','data-au-operation-skip','data-au-inspect','data-au-start','data-au-node-previous','data-au-node-next','data-au-node','data-au-select','data-au-fact-select','data-au-document-select','data-au-source','data-au-knowledge','data-au-nav','data-au-pause','data-au-resume','data-au-graph-pan','data-au-expand-process','data-au-claim-title','data-au-inspector-heading','data-au-back-process','data-au-detail','data-au-add-files']) if (element.hasAttribute(attr)) return {attr,value:element.getAttribute(attr),citation:element.getAttribute('data-au-citation'),origin:element.getAttribute('data-au-source-origin'),obligation:element.getAttribute('data-au-obligation-select') || element.getAttribute('data-au-select-obligation'),version:element.getAttribute('data-au-version'),knowledgeSha:element.getAttribute('data-au-knowledge-sha'),definitionSha:element.getAttribute('data-au-definition-sha'),recordId:element.getAttribute('data-au-record-id'),panel};
+      for (const attr of ['data-au-desk-select','data-au-demo-skip','data-au-ns-memory-select','data-au-ns-passage','data-au-ns-chain','data-au-ns-zoom','data-au-ns-reasoning','data-au-ns-source','data-au-ns-start','data-au-operation-scrub','data-au-inspection-clear','data-au-demo-stop','data-au-demo-resume','data-au-operation-skip','data-au-inspect','data-au-start','data-au-node-previous','data-au-node-next','data-au-node','data-au-select','data-au-fact-select','data-au-document-select','data-au-source','data-au-knowledge','data-au-nav','data-au-pause','data-au-resume','data-au-graph-pan','data-au-expand-process','data-au-claim-title','data-au-inspector-heading','data-au-back-process','data-au-detail','data-au-add-files']) if (element.hasAttribute(attr)) return {attr,value:element.getAttribute(attr),citation:element.getAttribute('data-au-citation'),origin:element.getAttribute('data-au-source-origin'),obligation:element.getAttribute('data-au-obligation-select') || element.getAttribute('data-au-select-obligation'),version:element.getAttribute('data-au-version'),knowledgeSha:element.getAttribute('data-au-knowledge-sha'),definitionSha:element.getAttribute('data-au-definition-sha'),recordId:element.getAttribute('data-au-record-id'),panel};
       const details = element.matches('summary') ? element.parentElement : null;
       return details?.hasAttribute('data-au-disclosure') ? {disclosure:details.dataset.auDisclosure,panel} : null;
     }
     function focusTarget(token) {
       if (!token) return null;
       if (token.disclosure) return [...host.querySelectorAll('[data-au-disclosure]')].find(el => el.dataset.auDisclosure === token.disclosure && focusEligible(el.querySelector('summary'),token))?.querySelector('summary');
-      return [...host.querySelectorAll(`[${token.attr}]`)].find(el => el.getAttribute(token.attr) === token.value && el.getAttribute('data-au-record-id') === (token.recordId ?? null) && el.getAttribute('data-au-citation') === token.citation && el.getAttribute('data-au-source-origin') === token.origin && (el.getAttribute('data-au-obligation-select') || el.getAttribute('data-au-select-obligation')) === token.obligation && el.getAttribute('data-au-version') === token.version && el.getAttribute('data-au-knowledge-sha') === token.knowledgeSha && el.getAttribute('data-au-definition-sha') === token.definitionSha && focusEligible(el,token));
+      // Pause and Resume are one control, even when their label changes.
+      if (['data-au-demo-stop','data-au-demo-resume'].includes(token.attr)) return [...host.querySelectorAll('[data-au-demo-stop],[data-au-demo-resume],[data-au-demo-skip]')][0];
+      const found = [...host.querySelectorAll(`[${token.attr}]`)].find(el => el.getAttribute(token.attr) === token.value && el.getAttribute('data-au-record-id') === (token.recordId ?? null) && el.getAttribute('data-au-citation') === token.citation && el.getAttribute('data-au-source-origin') === token.origin && (el.getAttribute('data-au-obligation-select') || el.getAttribute('data-au-select-obligation')) === token.obligation && el.getAttribute('data-au-version') === token.version && el.getAttribute('data-au-knowledge-sha') === token.knowledgeSha && el.getAttribute('data-au-definition-sha') === token.definitionSha && focusEligible(el,token));
+      if (found || !['data-au-fact-select','data-au-document-select'].includes(token.attr)) return found;
+      // The chosen subject becomes a current line instead of a button.
+      return [...host.querySelectorAll('.au-subject[tabindex="-1"]')].find(el => el.dataset.auSubject === token.value || token.obligation && el.dataset.auObligation === token.obligation);
     }
     function rememberLastCase() {
       if (!current || view !== 'claim') return;
@@ -4500,7 +4505,7 @@
     // A tour is one roster played in order. Its session owns the exact cases,
     // so a sequence never mixes selected originals with reference assessments.
     function tourSession(collection, cases, index, operations, saved = false) {
-      tour = {collection,cases,index,operations};
+      tour = {collection,cases,index,operations,saved};
       return {mode:collection === 'selected' || saved ? 'replay' : 'operations',collection,cases,index,operations,useRecorded:operations === 'recorded'};
     }
     const sessionCases = session => session?.cases || demoCases(session?.collection);
@@ -4523,7 +4528,7 @@
       }
       stopPresentation();
       if (next >= shown.cases.length) { finishTour(shown,true); return; }
-      demoSession = tourSession(shown.collection,shown.cases,next,operations);
+      demoSession = tourSession(shown.collection,shown.cases,next,operations,shown.saved);
       openPresentationCase(demoSession,true);
     }
     // The tour ends at the knowledge its cases saved or reused. Without any,
@@ -4531,11 +4536,14 @@
     async function finishTour(finished, explicit = false) {
       const token = epoch, generation = readGeneration, ids = finished.cases.map(row => row.claim_id);
       stopPresentation();
-      let data = knowledgeCache?.value || null;
-      if (!data) { try { data = readKnowledge(await request('/knowledge')); } catch (_) { data = null; } }
+      let data = knowledgeCache?.value || null, unread = false;
+      if (!data) { try { data = readKnowledge(await request('/knowledge')); } catch (_) { unread = true; } }
       if (disposed || token !== epoch || generation !== readGeneration || pendingRoute() || view !== 'claim' || tour !== finished) return;
-      const payoff = data && tourKnowledgePayoff(data,ids);
-      if (!payoff) { tour = null; renderClaim(); notice(explicit ? 'Demonstration finished. These cases saved or reused no knowledge.' : 'Recorded playback finished.'); return; }
+      // When the transport leaves, keep its reader at the case title.
+      const endTour = () => { const held = host.contains(doc.activeElement); tour = null; renderClaim(); if (held && !host.contains(doc.activeElement)) focusTitle(); };
+      if (unread) { endTour(); notice('Demonstration finished. Knowledge could not be read.',true,'knowledge-load-failed'); globalStatus.insertAdjacentHTML?.('beforeend',' <button type="button" class="au-link" data-au-nav="knowledge">Open Knowledge</button>'); return; }
+      const payoff = tourKnowledgePayoff(data,ids);
+      if (!payoff) { endTour(); notice(explicit ? 'Demonstration finished. These cases saved or reused no knowledge.' : 'Recorded playback finished.'); return; }
       tour = null;
       await showKnowledge(true,payoff.pin);
       if (!disposed && view === 'knowledge') announceRecorded(`Demonstration finished. ${payoff.announcement}`);
@@ -5029,6 +5037,7 @@
       let remaining = duration;
       while (remaining > 0 && !session.skip && !reduced?.matches) {
         if (!await operationGate(session,token)) return false;
+        if (session.skip) break;
         const started = Date.now();
         await new Promise(resolve => { session.operationWake = resolve; demoTimer = root.setTimeout(resolve,remaining); });
         if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; session.operationWake = null;
@@ -5158,7 +5167,7 @@
               if (!session.skipCase && !await operationOutcomeHold(session,token)) return;
               if (!advancing()) { stopPresentation(); renderClaim(); primeClaimReads(token); return; }
               if (!session.skipCase) { session.storyPhase = 'handoff'; renderClaim(); if (!await operationOutcomeHold(session,token,600)) return; }
-              session.skip = false; session.skipCase = false;
+              session.skipAdvance = session.skipCase; session.skip = false; session.skipCase = false;
               session.operationStarted = false; session.operationOpeningAnchor = null; session.previousAttempts = []; session.useRecorded = session.operations === 'recorded'; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null; session.verifiedHeadState = null; session.verifiedJournal = null; session.operationBinding = null; session.plannedProcess = null;
               await openPresentationCase(session,true,session.index+1); return;
             }
@@ -5298,7 +5307,7 @@
           const opening = await presentationOpening(session,id);
           if (session.mode === 'operations' && token === epoch && generation === readGeneration && (demoSession === session || pausedPresentation === session)) {
             if (!await operationGate(session,token)) return;
-            if (session.skip || reduced?.matches) { stopPresentation(); renderClaim(); return; }
+            if (session.skip && !session.skipCase || reduced?.matches) { stopPresentation(); renderClaim(); return; }
           }
           if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
           if (session.collection !== 'selected' && !opening.referenceReady) {
@@ -5323,6 +5332,10 @@
       }
       if (session.verifiedOpening?.operationPreparation?.recorded) { session.operations = 'recorded'; session.useRecorded = true; }
       if (session.nextOperationOpening?.id === id) session.nextOperationOpening = null;
+      // One Skip during natural handoff opens the named next case; a second
+      // Skip after an explicit advance is consumed by that next case.
+      if (session.skipCase && !session.skipAdvance) session.skip = session.skipCase = false;
+      session.skipAdvance = false;
       session.index = index; session.claimId = id; session.startAttempted = false; session.storyPhase = 'work';
       if (session.cases && tour?.cases === session.cases) tour.index = index;
       await openClaim(id,writeHistory,{mode:session.mode === 'operations' ? 'replay' : session.mode,collection:session.collection || 'reference',operations:session.operations,through:0,detail:'step',demo:true});
@@ -5590,6 +5603,7 @@
       if (!replayActive(session,token) || doc.hidden || dialog.open || recordDialog.open || inspectionHold || session.preparing) return;
       if (session.failure) { presentationFailed(session,session.failure); return; }
       if (replayRecord.through_seq >= replayRecord.current_revision) {
+        if (reduced?.matches) { stopPresentation(); renderClaim(); return; }
         if (!replayCanAdvance(current)) { stopPresentation(); renderClaim(); notice('This recorded investigation has no settled operational outcome. Replay stopped at its saved head.',true); return; }
         const next = sessionCases(session)[session.index+1];
         if (next) presentationOpening(session,next.claim_id);
@@ -6266,7 +6280,7 @@
       }
       else if (target.hasAttribute('data-au-node') || target.hasAttribute('data-au-select')) {
         pauseInspection();
-        const id=target.dataset.auNode || target.dataset.auSelect;
+        const id=target.dataset.auNode || target.dataset.auSelect, fromAnswer=Boolean(target.closest?.('[data-au-stage-step-detail]'));
         if (!list(current?.graph?.nodes).some(node => node.node_id === id)) return;
         const changed=selected !== id; selected=id; chosenNode=id; if (operationPeek) operationPeek.node=id;
         if (target.dataset.auSelectDocument) {
@@ -6276,6 +6290,10 @@
         } else if (changed) evidenceContext={};
         setDetail('step',false,false); renderSelection(changed); rememberSelectionRoute();
         const node=[...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
+        if (fromAnswer) {
+          host.querySelector('[data-au-stage-step-detail]')?.querySelector('[data-au-step-detail-heading]')?.focus();
+          return;
+        }
         node?.focus({preventScroll:true});
         // A step chosen on the settled map answers below the recorded result.
         // When that answer is not fully in view it is scrolled in; if the

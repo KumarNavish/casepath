@@ -438,7 +438,7 @@ test('refusal labels explain the recorded cause while unknown reasons remain in 
 });
 
 test('the mode line names original intake, saved result, replay, live and view only; added cases are never fictional',()=>{
-  const at='2026-10-19T21:18:51.039329+00:00',rules={mode:'deterministic_reference'};
+  const at='2026-10-19T21:18:51.039329+00:00',rules={mode:'deterministic_reference'},day=new Intl.DateTimeFormat('en',{dateStyle:'medium'}).format(new Date(at));
   const lines={
     original:language.modeLine({revision:0,presentation:'saved',origin:'canonical_original'}),
     saved:language.modeLine({revision:39,presentation:'saved',origin:'canonical_original'}),
@@ -450,11 +450,15 @@ test('the mode line names original intake, saved result, replay, live and view o
   };
   assert.equal(lines.original,'Original intake · not run · Fictional case');
   assert.equal(lines.saved,'Saved result · revision 39 · Fictional case');
-  assert.equal(lines.replay,'Replay · recorded 19 Oct 2026 · fixed rules · Fictional case');
-  assert.equal(lines.replayModel,'Replay · recorded 19 Oct 2026 · Fictional case','only a fixed-rule history says fixed rules');
+  assert.equal(lines.replay,`Replay · recorded ${day} · fixed rules · Fictional case`);
+  assert.equal(lines.replayModel,`Replay · recorded ${day} · Fictional case`,'only a fixed-rule history says fixed rules');
   assert.equal(lines.live,'Live · Fictional case');
   assert.equal(lines.added,'Saved result · revision 4');
-  assert.equal(lines.viewOnly,'Replay · recorded 19 Oct 2026 · fixed rules · Fictional case · View only');
+  assert.equal(lines.viewOnly,`Replay · recorded ${day} · fixed rules · Fictional case · View only`);
+  // The header day is the viewer's local day in the 'Last:' format, even near midnight UTC; a pinned zone keeps this check exact on a UTC host.
+  const tz=process.env.TZ;process.env.TZ='Europe/Zurich';
+  try{assert.equal(language.modeLine({revision:39,presentation:'replay',recordedAt:'2026-10-12T22:30:00Z'}),'Replay · recorded Oct 13, 2026');}
+  finally{if(tz===undefined)delete process.env.TZ;else process.env.TZ=tz;}
   assert.equal(new Set(Object.values(lines)).size,Object.keys(lines).length);
   for(const presentation of ['saved','replay','live'])for(const revision of [0,1,48])for(const readOnly of [false,true]){
     const line=language.modeLine({revision,presentation,provenance:rules,origin:'native_intake',recordedAt:at,readOnly});

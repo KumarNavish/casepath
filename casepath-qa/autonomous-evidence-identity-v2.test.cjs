@@ -608,13 +608,14 @@ test('a single-column process keeps its edges in the left gutter at 320px',async
  }
 });
 
-for(const width of [541,600,700])test(`a returning case shares the brand row with the navigation at ${width}px`,async t=>{
+for(const width of [541,600,700])test(`Cases navigation stays on one header row after returning from a case at ${width}px`,async t=>{
  const page=await fixturePage(t,{width});
  await open(page,robin);await page.locator('.au-identity-header [data-au-nav="work"]').click();await page.locator('[data-au-claim-row]').first().waitFor();
- const header=await page.evaluate(()=>{const element=document.querySelector('.au-identity-header'),box=item=>element.querySelector(item).getBoundingClientRect().toJSON();return {height:element.getBoundingClientRect().height,brand:box('.au-brand'),nav:box('.au-nav'),back:box('.au-case-return-compact'),returnHidden:element.querySelector('[data-au-case-return]').hidden,label:element.querySelector('.au-case-return-compact').getAttribute('aria-label'),newLabel:element.querySelector('.au-header-new')?.getAttribute('aria-label')};});
- assert.equal(header.returnHidden,false);assert.match(header.label,/^Back to case: /);assert.equal(header.newLabel,'New case');
- assert.ok(header.height<=64.5,`one header row: ${JSON.stringify(header)}`);
- for(const part of ['nav','back'])assert.ok(header[part].top<header.brand.bottom && header[part].bottom>header.brand.top,`${part} sits on the brand row`);
+ const header=await page.evaluate(()=>{const element=document.querySelector('.au-identity-header'),box=item=>element.querySelector(item).getBoundingClientRect().toJSON();return {height:element.getBoundingClientRect().height,brand:box('.au-brand'),nav:box('.au-nav'),create:box('.au-header-new'),returnHidden:element.querySelector('[data-au-case-return]').hidden,navLabels:[...element.querySelectorAll('.au-nav [data-au-nav]')].map(e=>e.textContent.trim()),newLabel:element.querySelector('.au-header-new')?.getAttribute('aria-label'),overflow:document.documentElement.scrollWidth>innerWidth};});
+ assert.equal(header.returnHidden,true,'the approved Cases header omits the redundant return row');assert.deepEqual(header.navLabels,['Cases','Demonstration','Knowledge']);assert.equal(header.newLabel,'New case');
+ assert.ok(header.height<=64.5,`one header row: ${JSON.stringify(header)}`);assert.equal(header.overflow,false);
+ for(const part of ['nav','create'])assert.ok(header[part].top<header.brand.bottom && header[part].bottom>header.brand.top,`${part} sits on the brand row`);
+ await page.locator('.au-identity-header [data-au-nav="knowledge"]').click();await page.locator('[data-au-knowledge]').first().waitFor();
 });
 
 test('Draft request opens the exact recorded unsent letter without changing its record or writing',async t=>{

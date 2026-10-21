@@ -30,6 +30,10 @@ SUITES = (
     ("sites-autonomous-entry.test.cjs", False),
     ("autonomous-evidence-identity-v2.test.cjs", True),
     ("unified-product-v1.test.cjs", False),
+    ("autonomous-desk-v3.test.cjs", False),
+    ("autonomous-cases-v4.test.cjs", False),
+    ("autonomous-knowledge-w6.test.cjs", False),
+    ("autonomous-northstar-v1.test.cjs", False),
 )
 
 PLAYWRIGHT_PROBE = """
