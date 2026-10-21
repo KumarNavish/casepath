@@ -1542,7 +1542,7 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
   .au-workspace .au-document-needed { display:block; }
   .au-workspace .au-stage-slot[data-au-document-checked=true] .au-stage-source-check { color:var(--au-green); }
   .au-workspace .au-cue-thread { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; z-index:2; }
-  .au-workspace .au-cue-thread path { fill:none; stroke:var(--au-green); stroke-width:1px; stroke-dasharray:1; stroke-dashoffset:0; vector-effect:non-scaling-stroke; }
+  .au-workspace .au-cue-thread path { fill:none; stroke:var(--au-green); stroke-width:1.5px; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:0; vector-effect:non-scaling-stroke; }
   .au-workspace .au-cue-check { width:16px; height:16px; overflow:visible; }
   .au-workspace .au-cue-check path { fill:none; stroke:var(--au-green); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; }
   .au-workspace .au-stage-outcome { position:relative; }
@@ -1554,8 +1554,11 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
   .au-workspace .au-working-dot { opacity:1; }
 }
 
-@media (min-width:701px) and (prefers-reduced-motion:no-preference) {
-  .au-workspace [data-au-tour=true] :is(.au-stage-source,[data-au-stage-outcome]) { view-transition-name:au-source-answer; }
-  ::view-transition-group(root), ::view-transition-old(root), ::view-transition-new(root) { animation:none; }
-  ::view-transition-group(au-source-answer), ::view-transition-old(au-source-answer), ::view-transition-new(au-source-answer) { animation-duration:300ms; animation-timing-function:cubic-bezier(.2,.65,.3,1); }
+/* W2.7: quiet two-line content and precise thread endpoints. */
+@media (min-width:701px) {
+  .au-workspace .au-stage-fact span, .au-workspace .au-stage-source-name { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; max-height:48px; white-space:normal; overflow:hidden; text-overflow:clip; overflow-wrap:anywhere; }
+  .au-workspace .au-stage-thumbnail { width:100%; max-width:100%; position:relative; }
+  .au-workspace .au-stage-thumbnail:is(:hover,:focus-visible)::after { content:attr(data-au-full-quote); position:absolute; z-index:20; left:0; top:100%; width:max-content; max-width:300px; padding:6px 8px; background:var(--au-paper); color:var(--au-ink); border:1px solid var(--au-line); white-space:normal; font:inherit; }
+  .au-workspace .au-operation-stage .au-stage-fact, .au-workspace .au-stage-slot { padding-right:0; }
+  .au-workspace .au-thread-endpoint { fill:var(--au-green); }
 }

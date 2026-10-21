@@ -3884,3 +3884,20 @@ test('W2.6 progress reads accepted completed steps, never replay position or obs
  assert.equal(ui.completedStepFraction({...saved,evaluation:{nodes:[]}}),0);
  assert.equal(ui.completedStepFraction({...saved,graph:null}),0);
 });
+
+test('W2.7 Now names the exact bounded fact and its recorded source without promoting a provisional finding',()=>{
+ const saved=state(),pin={artifact_id:'terms',start_char:0,end_char:54,quote:'Current monthly net rent is CHF1800; fixed heating.'},source={artifact_id:'terms',file_name:'tenancy-terms.txt',text:pin.quote},fact={id:'bounded-fact',kind:'fact.extract',object:{type:'fact',id:'fact:tenancy_terms_evidence'},source:pin,result:{verification_required:true},cause_ids:[]},trace={rows:[fact],current:fact,sources:new Map([['terms',source]])};
+ const provisional=decodedSurface(ui.nowMarkup(saved,[],{operations:trace}));
+ assert.match(provisional,/finds “CHF1800”/);assert.doesNotMatch(provisional,/confirms/);
+ const check={...fact,id:'recorded-check',kind:'document.check',object:{type:'document',id:'tenancy_terms_evidence'},result:{assessment:'sufficient'}};
+ const confirmed=decodedSurface(ui.nowMarkup(saved,[],{operations:{...trace,current:check,rows:[fact,check]}}));
+ assert.match(confirmed,/confirms “CHF1800” in Tenancy details/);assert.match(confirmed,/data-au-working-dot/);
+ const unknown={...check,result:{assessment:'insufficient'}};assert.doesNotMatch(decodedSurface(ui.nowMarkup(saved,[],{operations:{...trace,current:unknown,rows:[fact,unknown]}})),/confirms/);
+});
+
+test('W2.7 a non-reading operation retains the last exact highlight and source identity',()=>{
+ const text='Current monthly net rent is CHF1800.',pin={artifact_id:'terms',start_char:28,end_char:35,quote:'CHF1800'},source={artifact_id:'terms',file_name:'tenancy-terms.txt',text},fact={id:'fact',kind:'fact.extract',object:{type:'fact',id:'fact:tenancy_terms'},source:pin,result:{}},step={id:'step',kind:'step.complete',object:{type:'step',id:'check'},source:{...pin,start_char:0,end_char:text.length,quote:text},result:{status:'completed'}},trace={rows:[fact,step],current:step,sources:new Map([['terms',source]]),keepReadHighlight:true,highlightReading:{artifact_id:'terms',pin,id:fact.id}};
+ assert.equal(ui.operationReading(trace).pin,pin);assert.equal(ui.operationReading(trace).id,fact.id);
+ const html=ui.operationReadingMarkup(trace,true);assert.match(html,/data-au-operation-span="fact"[^>]*>CHF1800<\/mark>/);assert.match(html,/data-au-source-origin="operation:fact"/);
+ const inspect={...trace,inspection:true};assert.notEqual(ui.operationReading(inspect).pin,pin,'inspection shows its selected operation, not a retained presentation highlight');
+});

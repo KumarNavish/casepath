@@ -1421,7 +1421,11 @@
     const shown = {...original,document:cited?original.document:'',...(reuse?{action:`reuses ${procedureLabel(reuse.use)} version ${reuse.use.version}`}:{})};
     const id = operation?.id || operation?.event_sha256 || '';
     const action = ({'source.open':'opens this document','span.read':'reads the marked words','phrase.match':'finds matching wording','fact.extract':'finds a possible fact','verification.check':'checks this fact','document.check':'checks this document','knowledge.reuse':'reuses saved steps','knowledge.used':'reuses saved steps','decision':'records the result'})[operation?.kind] || shown.action;
-    const recorded = h(operation ? `${action}.` : 'has no recorded action yet.');
+    const quote = cited && operation.source?.quote && stageFactSpan(operation,true)?.quote;
+    const checked = operation?.kind === 'document.check' && operation.result?.assessment === 'sufficient' || operation?.kind === 'verification.check' && operation.result?.accepted === true || operation?.kind === 'fact.extract' && operation.result?.verification_required === false;
+    const source = cited && (trace?.sources?.get(operation.source.artifact_id) || list(state.source_descriptors).find(row => row.artifact_id === operation.source.artifact_id));
+    const exactAction = quote && ['fact.extract','document.check','verification.check'].includes(operation.kind) ? `${checked ? 'confirms' : operation.kind === 'fact.extract' ? 'finds' : 'checks'} “${quote}”${source && checked ? ` in ${operationSourceTitle(source)}` : ''}` : action;
+    const recorded = h(operation ? `${exactAction}.` : 'has no recorded action yet.');
     return `<div class="au-now" data-au-now-id="${h(id)}"><span class="au-now-label">Now</span> ${roleBadge(shown.roleId)}${trace?.current ? `<span class="au-working-dot" data-au-working-dot="${h(trace.current.id)}" aria-hidden="true"></span>` : ''} <span data-au-now-copy>${recorded}</span> <span data-au-now-result>${h(recordedResultLabel(operation,state))}</span> ${operation ? recordButton('Details',trace?.current ? 'operation' : 'event',trace?.current ? operation.id : operation.seq) : ''}</div>`;
   }
   function stepRole(node, state, trace) {
@@ -2441,6 +2445,10 @@
   function operationReading(trace) {
     const operation = trace?.current;
     if (!operation) return null;
+    if (trace.keepReadHighlight && trace.highlightReading && !trace.inspection && !['fact.extract','document.check','verification.check','span.read','phrase.match','source.open','decision'].includes(operation.kind)) {
+      const retained=trace.highlightReading, source=trace.sources.get(retained.artifact_id);
+      if (source) return {...retained,source,chars:sourceCharacters(source),active:true,retained:true};
+    }
     const cause = trace.rows.find(row => row.id === operation.cause_ids?.at(-1)), currentPin = operation.source || (operation.kind === 'phrase.match' ? cause?.source : null);
     const reading = currentPin ? {artifact_id:currentPin.artifact_id,pin:currentPin,id:operation.id} : operation.kind === 'source.open' ? {artifact_id:operation.object.id,id:operation.id} : trace.displaySource;
     const source = trace.sources.get(reading?.artifact_id), chars = source && sourceCharacters(source);
@@ -2529,7 +2537,7 @@
       const source = checked && citation && (trace?.sources.get(citation.artifact_id) || list(state.acquired_sources).find(row => row.artifact_id === citation.artifact_id));
       const preview = citation && stageFactSpan(check || {source:citation,object:{id:type}},true);
       const dockPhase = trace?.finished ? 'landed' : trace?.dockPhases?.get(check?.id) || 'landed';
-      return `<div class="au-stage-slot" data-au-document="${h(type)}" data-au-stage-document="${h(type)}" data-au-document-active="${!requirement.planned}" data-au-document-planned="${Boolean(requirement.planned)}" data-au-recipe-known="${Boolean(reuse && list(reuse.recipes).some(recipe=>recipe.document_type===type))}" data-au-document-supported="${Boolean(source)}" data-au-document-checked="${Boolean(source) && dockPhase === 'landed'}" data-au-document-focused="${trace?.current?.object.id === type || trace?.current?.object.id === `fact:${type}`}"${check && !trace?.finished && trace?.recentLanding === check.id && dockPhase === 'landed' ? ' data-au-landed-recent' : ''}${requirement.id ? ` data-au-working-document="${h(type)}" data-au-operation-id="${h(requirement.id)}" data-au-working-graph-sha="${h(requirement.result.graph_sha256)}" data-au-working-evaluation-sha="${h(requirement.result.evaluation_sha256)}"` : ''}>${source ? '' : `<span>${h(label)}${requirement.planned ? '' : doc?.review_state === 'missing' ? ' — missing' : ' — to check'}</span>${requirement.planned ? '' : '<span class="au-stage-source-check au-document-needed">Needed</span>'}`}<div class="au-stage-landing">${source ? `<button type="button" class="au-stage-thumbnail" data-au-dock-phase="${dockPhase}" data-au-source="${h(source.artifact_id)}" data-au-source-origin="${check ? `operation:${h(check.id)}` : `requirement:${h(requirementIdentity(obligation))}`}" data-au-citation="${h(JSON.stringify(citation))}"${check ? ` data-au-check-operation="${h(check.id)}"` : ''} aria-label="${h(operationSourceTitle(source))} · Supported by documents"><span class="au-stage-source-name">${h(operationSourceTitle(source))}</span><span class="au-stage-source-check">Received ✓</span></button>` : ''}</div></div>`;
+      return `<div class="au-stage-slot" data-au-document="${h(type)}" data-au-stage-document="${h(type)}" data-au-document-active="${!requirement.planned}" data-au-document-planned="${Boolean(requirement.planned)}" data-au-recipe-known="${Boolean(reuse && list(reuse.recipes).some(recipe=>recipe.document_type===type))}" data-au-document-supported="${Boolean(source)}" data-au-document-checked="${Boolean(source) && dockPhase === 'landed'}" data-au-document-focused="${trace?.current?.object.id === type || trace?.current?.object.id === `fact:${type}`}"${check && !trace?.finished && trace?.recentLanding === check.id && dockPhase === 'landed' ? ' data-au-landed-recent' : ''}${requirement.id ? ` data-au-working-document="${h(type)}" data-au-operation-id="${h(requirement.id)}" data-au-working-graph-sha="${h(requirement.result.graph_sha256)}" data-au-working-evaluation-sha="${h(requirement.result.evaluation_sha256)}"` : ''}>${source ? '' : `<span>${h(label)}${requirement.planned ? '' : doc?.review_state === 'missing' ? ' — missing' : ' — to check'}</span>${requirement.planned ? '' : '<span class="au-stage-source-check au-document-needed">Needed</span>'}`}<div class="au-stage-landing">${source ? `<button type="button" class="au-stage-thumbnail" data-au-dock-phase="${dockPhase}" data-au-source="${h(source.artifact_id)}" data-au-full-quote="${h(operationSourceTitle(source))}" data-au-source-origin="${check ? `operation:${h(check.id)}` : `requirement:${h(requirementIdentity(obligation))}`}" data-au-citation="${h(JSON.stringify(citation))}"${check ? ` data-au-check-operation="${h(check.id)}"` : ''} aria-label="${h(operationSourceTitle(source))} · Supported by documents"><span class="au-stage-source-name">${h(operationSourceTitle(source))}</span><span class="au-stage-source-check">Received ✓</span></button>` : ''}</div></div>`;
     }).join('');
     return chips+(slots?`<div class="au-stage-documents">${slots}</div>`:'');
   }
@@ -2650,7 +2658,7 @@
     const objectLabel = plain(operation.object.label,'') || name(list(trace.working?.graph?.nodes).find(row => row.node_id === operation.object.id)) || name(list(trace.working?.graph?.document_catalog).find(row => row.document_type === operation.object.id)) || name(list(trace.state?.graph?.nodes).find(row => row.node_id === operation.object.id)) || name(list(trace.state?.facts).find(row => row.fact_id === operation.object.id)) || name(list(trace.state?.obligations).find(row => row.obligation_id === operation.object.id || row.document_type === operation.object.id)) || name(list(trace.state?.graph?.document_catalog).find(row => row.document_type === operation.object.id)) || '';
     const summary = plain(language.operationPresentation(operation,{state:trace.state}).recordedResult,'Result recorded') || (typeof operation.result?.matched === 'boolean' ? operation.result.matched ? 'Phrase found' : 'Phrase absent' : '');
     const sourceHTML = value => h(value).replace(/\r/g,'&#13;');
-    const inkPin = pin ? stage && reading?.active ? stageFactSpan({...operation,source:pin},operation.kind === 'fact.extract' || operation.kind === 'document.check') : pin : stage && operation.kind === 'source.open' && source ? sourceBodySpan(source) : null;
+    const inkPin = pin ? reading?.retained ? pin : stage && reading?.active ? stageFactSpan({...operation,source:pin},operation.kind === 'fact.extract' || operation.kind === 'document.check') : pin : stage && operation.kind === 'source.open' && source ? sourceBodySpan(source) : null;
     const body = stage && source && sourceBodySpan(source);
     const section = (start,end) => body && body.start_char >= start && body.start_char < end ? `${sourceHTML(chars.slice(start,body.start_char).join(''))}<span data-au-source-body-anchor></span>${sourceHTML(chars.slice(body.start_char,end).join(''))}` : sourceHTML(chars.slice(start,end).join(''));
     const passage = chars ? inkPin ? `${section(0,inkPin.start_char)}<${reading.active ? 'mark' : 'span'} ${reading.active ? 'data-au-operation-span' : 'data-au-operation-read-context'}="${h(reading.id)}" data-au-operation-start-char="${inkPin.start_char}" data-au-operation-end-char="${inkPin.end_char}">${section(inkPin.start_char,inkPin.end_char)}</${reading.active ? 'mark' : 'span'}>${section(inkPin.end_char,chars.length)}` : section(0,chars.length) : '';
@@ -4299,9 +4307,9 @@
       let thread = null, threadPath = null;
       const createThread = () => {
         if (!area || !source || !destination || !targetNode || !sourceCard) return;
-        const x=source.left+source.width/2-area.left, y=source.bottom-area.top, lane=sourceCard.bottom-area.top+20, gutter=targetNode.left-area.left-4, endX=destination.left-area.left, endY=destination.top+destination.height/2-area.top;
+        const x=source.left+source.width/2-area.left, y=source.bottom-area.top-2, lane=sourceCard.bottom-area.top+20, gutter=targetNode.left-area.left-4, endX=destination.left-area.left+1, endY=destination.top+12-area.top;
         thread=svgElement('svg'); thread.setAttribute('class','au-cue-thread'); thread.setAttribute('viewBox',`0 0 ${area.width} ${area.height}`); thread.setAttribute('aria-hidden','true'); thread.setAttribute('data-au-cue-artifact','thread'); thread.dataset.auCuePhase='drawing';
-        threadPath=svgElement('path'); threadPath.setAttribute('pathLength','1'); threadPath.setAttribute('d',`M${x} ${y} C${x} ${lane},${gutter} ${lane},${gutter} ${lane} L${gutter} ${endY-6} Q${gutter} ${endY},${endX} ${endY}`); thread.appendChild(threadPath); canvas.appendChild(thread);
+        threadPath=svgElement('path'); threadPath.setAttribute('pathLength','1'); threadPath.setAttribute('d',`M${x} ${y} C${x} ${lane},${gutter} ${lane},${gutter} ${lane} L${gutter} ${endY-6} Q${gutter} ${endY},${endX} ${endY}`); thread.appendChild(threadPath); for (const [cx,cy] of [[x,y],[endX,endY]]) { const dot=svgElement('circle');dot.setAttribute('cx',cx);dot.setAttribute('cy',cy);dot.setAttribute('r','2');dot.setAttribute('class','au-thread-endpoint');thread.appendChild(dot); } canvas.appendChild(thread);
       };
       void (async () => {
         try {
@@ -4549,7 +4557,7 @@
       const operationController = session.operationController;
       if (!session.operationOpeningAnchor || session.operationOpeningAnchor.state.claim_id !== session.claimId) session.operationOpeningAnchor = {after_operation:0,state:current,projection,events:history,revision:current.revision,state_sha256:current.state_sha256,event_sha256:current.last_event_sha256,anchor:'verified_opening'};
       const previousAttempts = session.previousAttempts || [], previousCurrent = operationTrace?.current, previousSources = operationTrace?.sources, previousDisplaySource = operationTrace?.displaySource;
-      operationTrace = {binding:null,openingBinding:session.openingBinding,buffer:session.operationBuffer,recorded:Boolean(session.useRecorded || session.recorded),releasePlan:session.releasePlan,rows:[],bytes:previousAttempts.reduce((sum,attempt) => sum+attempt.bytes,0),sources:new Map(previousSources || []),current:previousCurrent || null,previousCurrent,displaySource:previousDisplaySource,journal:[],pinnedJournal:session.verifiedJournal || [],headState:session.verifiedHeadState,transportState:null,finished:false,frameHashes:[],visibleResults:new Map(),checkpoints:[session.operationOpeningAnchor],previousAttempts};
+      operationTrace = {binding:null,openingBinding:session.openingBinding,buffer:session.operationBuffer,recorded:Boolean(session.useRecorded || session.recorded),releasePlan:session.releasePlan,rows:[],bytes:previousAttempts.reduce((sum,attempt) => sum+attempt.bytes,0),sources:new Map(previousSources || []),current:previousCurrent || null,previousCurrent,displaySource:previousDisplaySource,journal:[],pinnedJournal:session.verifiedJournal || [],headState:session.verifiedHeadState,transportState:null,finished:false,keepReadHighlight:(root.innerWidth || 0)>700,frameHashes:[],visibleResults:new Map(),checkpoints:[session.operationOpeningAnchor],previousAttempts};
       const trace = operationTrace;
       try {
         if ((!session.referenceReady && !await verifyReferenceHead(session,prepared)) || !session.verifiedReplayStart) throw new Error('No current completed reference assessment is available.');
@@ -4607,7 +4615,7 @@
               operationTrace.current = operation; operationTrace.inkRetired = false;
               if (['fact.extract','document.check'].includes(operation.kind)) operationTrace.openingConsequenceId ||= operation.id;
               const sourceCause = operationTrace.rows.find(row => row.id === operation.cause_ids.at(-1)), pin = operation.source || (operation.kind === 'phrase.match' ? sourceCause?.source : null);
-              if (pin) operationTrace.displaySource = {artifact_id:pin.artifact_id,pin,id:operation.id};
+              if (pin) { operationTrace.displaySource = {artifact_id:pin.artifact_id,pin,id:operation.id}; if (['fact.extract','document.check','verification.check','span.read','phrase.match'].includes(operation.kind)) operationTrace.highlightReading = {artifact_id:pin.artifact_id,pin:stageFactSpan(operation,true),id:operation.id}; }
               else if (operation.kind === 'source.open') operationTrace.displaySource = {artifact_id:operation.object.id,id:operation.id};
               const nodeId = dockingNode;
               if (nodeId && list(graph?.nodes).some(node => node.node_id === nodeId)) { selected = nodeId; evidenceContext = evidenceSelection(current,selected); }
@@ -4631,13 +4639,29 @@
                 frame.state_sha256 !== current.state_sha256 || frame.operation_count !== operationTrace.rows.length || frame.operation_chain_sha256 !== operationTrace.rows.at(-1)?.operation_sha256 || frame.exact_output_verified !== true || frame.trace_sha256 !== traceHash) throw new Error('The operation result differs from its pinned saved result.');
             const revealAnswer = () => { trace.finished = true; trace.verifiedResult = true; trace.current = null; session.storyPhase = 'answer'; selected = preferredNode(current,selected,history); renderClaim(); };
             cancelStageMotion();
-            if ((root.innerWidth || 0) > 700 && !reduced?.matches && !session.skip && !doc.hidden && doc.startViewTransition && host.querySelector('.au-stage-source')) {
+            if ((root.innerWidth || 0) > 700 && !reduced?.matches && !session.skip && !doc.hidden && host.querySelector('.au-stage-source')) {
               trace.cueTransition = true; trace.answerTransitioned = true;
-              const decision = trace.rows.findLast(row => row.kind === 'decision');
-              host.dataset.auCueActive='answer-crossfade'; host.dataset.auCueOperation=decision.id; host.dataset.auCueKind=decision.kind;
-              const transition = doc.startViewTransition(revealAnswer);
-              try { await transition.finished; } catch (_) { /* The verified result remains rendered if the browser cancels a snapshot. */ }
-              host.removeAttribute('data-au-cue-active'); trace.cueTransition = false;
+              const decision = trace.rows.findLast(row => row.kind === 'decision'), source = host.querySelector('.au-stage-source');
+              const sourceBox=source.getBoundingClientRect(), measure=doc.createElement('div');
+              measure.className='au-quiet-claim';measure.dataset.auStory='answer';
+              measure.style.cssText=`position:fixed;left:-10000px;top:0;width:${sourceBox.width}px;visibility:hidden;pointer-events:none`;
+              measure.innerHTML=`<div class="au-stage-outcome">${outcomeSummaryMarkup(current,current.outcome)}</div>`;host.appendChild(measure);
+              const surfaceHeight=Math.max(sourceBox.height,measure.firstElementChild.getBoundingClientRect().height);measure.remove();
+              source.style.height=`${surfaceHeight}px`;source.style.boxSizing='border-box';
+              const fade = async (element,from,to,duration,name) => {
+                if (!element?.animate || doc.hidden || reduced?.matches) return;
+                host.dataset.auCueActive=name;host.dataset.auCueOperation=decision.id;host.dataset.auCueKind=decision.kind;
+                const animation=element.animate([{opacity:from},{opacity:to}],{duration,easing:'cubic-bezier(.2,.65,.3,1)',fill:'forwards'});stageReadAnimations.push(animation);
+                try { await animation.finished; } catch (_) { /* Cancellation settles the verified answer without more motion. */ }
+              };
+              await fade(source,1,0,180,'answer-out');
+              if (!operationActive(session,token) || operationTrace !== trace) return;
+              revealAnswer();
+              const answer=host.querySelector('[data-au-stage-outcome]');
+              if (answer) { answer.style.opacity='0';answer.style.height=`${surfaceHeight}px`;answer.style.boxSizing='border-box'; }
+              await fade(answer,0,1,240,'answer-in');
+              if (answer) answer.style.opacity='';
+              host.removeAttribute('data-au-cue-active');trace.cueTransition=false;
               if (!operationActive(session,token) || operationTrace !== trace) return;
               positionOperationAttention();
             } else revealAnswer();
