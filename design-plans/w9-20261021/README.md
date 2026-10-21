@@ -76,3 +76,43 @@ The fixture SHA-256 is
 
 W9b will produce the continuous film after W9a approval. The final full strict
 gate and READY FOR MAC follow W9 approval on a sealed W8+W9 source.
+
+
+## Served-build result
+
+Product source: `17a086ce2c3e4c02d164d397e8a6aadfcdfc8766`.
+The [receipt](presentation-receipt.json) binds the served deployment, five served
+assets and unchanged operation fixture. The source manifest is
+`7359e21421e429826a3bf21d9cf9e0ee353fcddb60b34a4e014ea0aedd64401a`.
+Adding this evidence changes no product or manifest-covered source.
+
+- All 5,745 clock samples passed; `document.getAnimations()` stayed empty.
+- All 13 rendered views passed clipping and unintended-overlap checks.
+- Each act's live frame and capture frame matched byte for byte: mean pixel
+  difference 0. Pause/Resume and exact-source inspection passed.
+- All six reduced-motion checks reached the same instant state while preserving
+  the timeline. Page, context and browser closed normally within the 10 s bounds.
+- The full live run measured p50 16.7 ms, p95/p99 16.8 ms and maximum 16.8 ms
+  between observed animation frames; no interval exceeded 34 ms. This is a
+  measurement on this host, not a guarantee for every machine.
+- [71 focused tests](w9-focused-final.tap), [353 workspace tests](w9-workspace-final.tap)
+  and [35 browser regressions](w9-browser-regressions-final.tap) passed.
+  [Source verification](w9-built-head.log) and [prepare](w9-prepare.log) passed.
+
+The first fixture-only attempt lacked browser warm-read responses; those are now
+recorded in the fixture. The first fixed-shell ending overlapped the transport;
+its excess margins were removed and the geometry check now passes. An initial
+seal command lacked its required source-commit environment; the prescribed
+sealing sequence then verified. The first served-proof attempt ran before the
+preview was listening and failed to fetch; the successful receipt above was run
+after startup completed. Earlier diagnostic logs remain in the owned runtime.
+
+| View | Clock time | Rendered proof |
+| --- | ---: | --- |
+| Actual customer message | 0.000 s | [Customer](customer-message.png) |
+| Exact passage and extracted fact | 9.349 s | [Source and fact](fact-rest.png) |
+| First node accepted | 34.999 s | [Accepted node](node-rest.png) |
+| Completed process | 56.799 s | [Decision](completed.png) |
+| Legal tests, answer and unsent draft | 72.649 s | [Answer](draft-rest.png) |
+| Verified checklist reuse | 87.349 s | [Learning](memory-notice-rest.png) |
+| Nine recorded cases | 95.749 s | [Cases](wordmark-rest.png) |
