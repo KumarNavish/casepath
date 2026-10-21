@@ -106,7 +106,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 /* Autonomous work owns its identity. Reviewed workspaces retain their styles. */
 
 /* Quiet work: one reading surface, direct objects, native contextual inspection. */
-.au-workspace { --au-ink:#183d35; --au-muted:#465e54; --au-line:#73857a; --au-accent:#bc3e2a; --au-green:#315e49; --au-amber:#80633c; --au-paper:#fffffc; --au-field:#eff1ec; --au-wash:#e1e8db; color:var(--au-ink); background:var(--au-field); font:400 16px/1.55 'CasePath Instrument',Arial,sans-serif; font-synthesis:none; min-height:100dvh; width:100%; min-width:0; overflow-wrap:anywhere; }
+.au-workspace { --au-ink:#202123; --au-muted:#62666d; --au-line:#d4d7db; --au-accent:#4b6279; --au-green:#39745b; --au-amber:#8b672c; --au-paper:#fff; --au-field:#fff; --au-wash:#fff; color:var(--au-ink); background:var(--au-field); font:400 16px/1.55 'CasePath Instrument',Arial,sans-serif; font-synthesis:none; min-height:100dvh; width:100%; min-width:0; overflow-wrap:anywhere; }
 .au-workspace *, .au-workspace *::before, .au-workspace *::after { box-sizing:border-box; }
 .au-workspace [hidden] { display:none !important; }
 .au-workspace :is(h1,h2,h3,h4,p,ul,ol,dl,blockquote) { margin:0; }
@@ -153,7 +153,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-empty { max-width:70ch; padding:14px 0; color:var(--au-muted); font-size:16px; }
 .au-workspace :is(.au-primary,.au-secondary,.au-link) { display:inline-flex; justify-content:center; align-items:center; gap:8px; max-width:100%; min-height:42px; border:1px solid var(--au-line); padding:9px 14px; color:var(--au-ink); background:transparent; font-size:16px; line-height:1.4; text-align:left; text-decoration:none; }
 .au-workspace .au-primary { border-color:var(--au-ink); background:var(--au-ink); color:var(--au-paper); }
-.au-workspace .au-primary:hover { background:#295748; }
+.au-workspace .au-primary:hover { background:#404144; }
 .au-workspace .au-secondary:hover { background:var(--au-wash); }
 .au-workspace .au-link { border:0; padding:8px 0; text-decoration:underline; text-underline-offset:4px; }
 .au-workspace .au-status { color:var(--au-muted); font-size:16px; }
@@ -503,7 +503,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-mode-choice button { min-height:36px; border:0; padding:4px 0; background:transparent; color:var(--au-muted); font-size:16px; }
 .au-workspace .au-mode-choice button[aria-pressed=true] { color:var(--au-ink); text-decoration:underline; text-underline-offset:4px; }
 .au-workspace dialog { width:min(900px,calc(100% - 56px)); max-height:calc(100dvh - 56px); border:1px solid var(--au-line); border-radius:0; padding:0; color:var(--au-ink); background:var(--au-paper); overflow:auto; overscroll-behavior:contain; }
-.au-workspace dialog::backdrop { background:rgb(24 61 53 / .35); }
+.au-workspace dialog::backdrop { background:rgb(0 0 0 / .22); }
 .au-workspace :is(.au-source-dialog-header,.au-record-dialog-header,.au-dialog-header) { position:sticky; top:0; z-index:4; display:flex; align-items:center; justify-content:space-between; gap:20px; min-height:68px; padding:16px 24px; background:var(--au-paper); border-bottom:1px solid var(--au-line); }
 .au-workspace :is(.au-source-dialog-header,.au-record-dialog-header,.au-dialog-header) h2 { min-width:0; font-size:22px; }
 .au-workspace :is(.au-source-dialog-header,.au-record-dialog-header,.au-dialog-header) button { flex-shrink:0; }
@@ -765,7 +765,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning .au-work-head > div:last-child { display:flex; align-items:center; flex-wrap:wrap; gap:8px 20px; }
 .au-workspace .au-learning-transport { display:flex; align-items:center; flex-wrap:wrap; gap:10px 20px; margin:8px 0 4px; }
 .au-workspace .au-learning-transport > button { padding:7px 16px; border:1px solid #78917c; border-radius:4px; background:var(--au-paper); }
-.au-workspace .au-learning-transport > button:first-child { color:#fff; background:#24563c; border-color:#24563c; }
+.au-workspace .au-learning-transport > button:first-child { color:#fff; background:var(--au-ink); border-color:var(--au-ink); }
 .au-workspace .au-learning-transport > label { display:flex; flex:1; min-width:270px; align-items:center; gap:12px; }
 .au-workspace .au-learning-transport input { min-height:44px; flex:1; min-width:90px; height:40px; accent-color:#24563c; }
 .au-workspace .au-learning-transport > p { min-width:170px; }
@@ -786,7 +786,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning-record > .au-learning-documents { display:block; margin-top:20px; }
 .au-workspace .au-learning-process-map > p { margin:0 0 8px; }
 .au-workspace .au-learning-process-map ol { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; list-style:none; padding:0; }
-.au-workspace .au-learning-process-map li { min-width:0; padding:6px 10px; background:#f1f5ee; border-left:2px solid #8da88f; }
+.au-workspace .au-learning-process-map li { min-width:0; padding:6px 10px; background:var(--au-paper); border-left:2px solid #8da88f; }
 .au-workspace .au-learning-process-map h3 { font-size:16px; line-height:1.15; font-weight:500; margin:0; }
 .au-workspace .au-learning-process-map h3 span { line-height:1.15; }
 .au-workspace .au-learning-process-map li p { margin:2px 0 0; font-size:16px; line-height:1.15; }
@@ -827,7 +827,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning-track::before { content:''; position:absolute; top:22px; left:0; right:0; height:1px; background:#73857a; }
 .au-workspace .au-learning-day { position:relative; display:flex; flex-wrap:nowrap; align-items:start; gap:4px; min-width:0; }
 .au-workspace .au-learning-node { position:relative; flex:none; min-width:40px; padding:4px; border:1px solid #73857a; border-radius:4px; background:var(--au-paper); color:#3f5045; }
-.au-workspace .au-learning-node[aria-current=step] { border-color:#24563c; background:#e6efe5; color:#1e4a32; box-shadow:0 0 0 1px #24563c; }
+.au-workspace .au-learning-node[aria-current=step] { border-color:var(--au-ink); background:var(--au-paper); color:var(--au-ink); box-shadow:0 0 0 1px var(--au-ink); }
 .au-workspace .au-learning-node-text,.au-workspace .au-learning-mobile-date { display:none; }
 .au-workspace .au-learning-lane[data-au-learning-lane=refused] .au-learning-node { color:#70412e; border-color:#926b56; }
 .au-workspace .au-learning-no-events { position:absolute; top:10px; left:0; background:var(--au-field); }
@@ -856,7 +856,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-requalification ul { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; list-style:none; padding:0; }
 .au-workspace .au-learning[data-au-learning-playing=true] .au-learning-requalification p { margin:4px 0; }
 /* Demo reuse is an in-place cue; evidence checks retain their existing authority. */
-.au-workspace .au-stage-knowledge-moment { margin:0 0 10px; padding:6px 10px; border:0; border-left:2px solid #76967b; border-radius:0; background:#f1f5ee; }
+.au-workspace .au-stage-knowledge-moment { margin:0 0 10px; padding:6px 10px; border:0; border-left:2px solid #76967b; border-radius:0; background:var(--au-paper); }
 .au-workspace .au-stage-knowledge-moment p { margin:0; }
 .au-workspace .au-stage-knowledge-moment :is(p,button,li,span) { font-size:18px; }
 .au-workspace .au-stage-slot[data-au-recipe-known=true] > span::after { content:' · Known requirement'; color:#24563c; }
@@ -915,13 +915,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace :is(button,input,select,textarea,summary) { font-size:max(16px,1em); }
 .au-workspace :is(button,summary) { min-height:24px; }
 .au-workspace :is(.au-meta,.au-eyebrow,.au-reading-label,.au-record-context,.au-access-label,.au-node-condition,.au-node-state,.au-node-relation,.au-event-list time,.au-claim-state,.au-read-state,.au-source-list,.au-document-review,.au-chain,.au-reuse-record,.au-knowledge-change) { font-size:16px; }
-.au-workspace .au-role-badge { display:inline-flex!important; align-items:center; gap:6px; width:max-content; max-width:100%; margin:0 6px 0 0; padding:2px 7px; border:1px solid currentColor; border-radius:4px; background:#edf1ed; color:#254b3f; font-size:16px!important; line-height:1.4!important; font-weight:600; vertical-align:middle; white-space:nowrap; }
+.au-workspace .au-role-badge { display:inline-flex!important; align-items:center; gap:6px; width:max-content; max-width:100%; margin:0 6px 0 0; padding:2px 7px; border:1px solid currentColor; border-radius:4px; background:var(--au-paper); color:var(--au-muted); font-size:16px!important; line-height:1.4!important; font-weight:600; vertical-align:middle; white-space:nowrap; }
 .au-workspace .au-role-shape { display:inline-block!important; flex:none; width:9px; height:9px; margin:0!important; background:currentColor; }
 .au-workspace [data-au-role=reader] { background:var(--au-paper); color:var(--au-ink); border-radius:14px; }
 .au-workspace [data-au-role=reader] .au-role-shape { border-radius:50%; }
-.au-workspace [data-au-role=checker] { background:#e5f3e9; color:#245c39; }
+.au-workspace [data-au-role=checker] { background:var(--au-paper); color:var(--au-muted); }
 .au-workspace [data-au-role=checker] .au-role-shape { transform:rotate(45deg); width:8px; height:8px; }
-.au-workspace [data-au-role=rulebook] { background:#f9edcf; color:#684300; border-radius:0; }
+.au-workspace [data-au-role=rulebook] { background:var(--au-paper); color:var(--au-muted); border-radius:0; }
 .au-workspace [data-au-role=rulebook] .au-role-shape { height:10px; width:8px; border:1px solid currentColor; background:repeating-linear-gradient(to bottom,currentColor 0 1px,transparent 1px 3px); }
 .au-workspace [data-au-role=memory] { background:var(--au-wash); color:var(--au-green); border-radius:4px 12px 4px 12px; }
 .au-workspace [data-au-role=memory] .au-role-shape { border-radius:50%; width:10px; height:10px; border:2px solid currentColor; background:transparent; }
@@ -1563,7 +1563,7 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 /* Agent desk: recorded customer sources, evidence and the process they support. */
 @media (min-width:701px) {
   .au-workspace .au-main:has(.au-agent-desk) { max-width:none; padding:0 0 46px; }
-  .au-workspace .au-agent-desk { color:var(--au-ink); --au-desk-hair:#cdd6cc; }
+  .au-workspace .au-agent-desk { color:var(--au-ink); --au-desk-hair:#e5e7eb; }
   .au-workspace .au-desk-case { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:28px; align-items:end; padding:24px 36px 20px; border-bottom:1px solid var(--au-desk-hair); }
   .au-workspace .au-desk-eyebrow { margin:0; color:var(--au-muted); font-size:12.5px; line-height:1.5; letter-spacing:.08em; text-transform:uppercase; }
   .au-workspace .au-desk-case .au-page-heading { margin:6px 0; font-size:26px; line-height:1.35; font-weight:500; }
@@ -1645,3 +1645,66 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 .au-workspace .au-desk-draft input, .au-workspace .au-desk-draft textarea { display:block; width:100%; margin-top:6px; padding:10px; border:1px solid var(--au-line); background:var(--au-paper); color:var(--au-ink); font:inherit; }
 .au-workspace .au-desk-draft textarea { min-height:220px; resize:vertical; }
 .au-workspace .au-desk-draft-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+
+/* W3-A: three type roles and simple, consistent states. */
+@media (min-width:701px) {
+ .au-workspace .au-desk-grid { grid-template-columns:250px minmax(0,1fr) 405px; }
+ .au-workspace .au-desk-column { padding:18px 28px 65px; }
+ .au-workspace .au-desk-case { padding:24px 36px 20px; }
+ .au-workspace .au-desk-case .au-page-heading { font-size:26px; }
+ .au-workspace :is(.au-desk-eyebrow,.au-desk-column h2,.au-desk-metric-label,.au-desk-controls,.au-desk-file-meta,.au-desk-source-name,.au-desk-node-evidence,.au-desk-law,.au-desk-reuse,.au-desk-footer,.au-desk-inspect) { font-size:13.5px; letter-spacing:0; text-transform:none; }
+ .au-workspace :is(.au-desk-asks,.au-desk-role,.au-desk-files button,.au-desk-source-text,.au-desk-landing,.au-desk-handler .au-desk-node-label,.au-desk-lead,.au-desk-open,.au-desk-actions,.au-desk-tests li,.au-desk-why) { font-size:16px; }
+ .au-workspace .au-desk-role .au-role-badge { font-size:13.5px!important; }
+ .au-workspace .au-desk-role { min-height:29px; }
+ .au-workspace .au-desk-number { font-size:26px; }
+ .au-workspace .au-desk-metric { flex:none; }
+ .au-workspace .au-desk-tally { gap:25px; position:relative; }
+ .au-workspace [data-au-desk-trace-status] { position:absolute; top:100%; right:0; margin-top:4px; font-size:13.5px; }
+ .au-workspace .au-desk-source { height:365px; }
+ .au-workspace .au-desk-source-text { line-height:1.7; }
+ .au-workspace .au-desk-landing span { display:block; font-size:13.5px; margin-top:3px; }
+ .au-workspace .au-desk-answer { padding:22px 26px; }
+ .au-workspace .au-desk-answer h2 { color:var(--au-ink); font-size:16px; font-weight:500; }
+ .au-workspace .au-desk-test-status { font-size:16px; line-height:1.5; color:var(--au-green); }
+ .au-workspace .au-desk-test-status[data-status=open] { color:var(--au-amber); }
+ .au-workspace .au-desk-lead { line-height:1.5; margin:16px 0; }
+ .au-workspace .au-desk-test-status + .au-desk-tests { margin-top:12px; }
+ .au-workspace .au-desk-tests button { font:inherit; padding:0; text-align:left; white-space:normal; }
+ .au-workspace .au-desk-junction { border-style:solid; }
+ .au-workspace [data-au-desk-active=true] .au-desk-junction { color:var(--au-green); }
+ .au-workspace .au-desk-draft .au-record-body { white-space:pre-wrap; font:inherit; }
+ .au-workspace .au-desk-draft-actions button { padding:8px 12px; background:var(--au-paper); border:1px solid var(--au-line); }
+}
+
+@media (min-width:701px) {
+ .au-workspace .au-desk-inspect button { padding:0; min-height:24px; border:0; background:none; font:inherit; text-decoration:underline; text-underline-offset:3px; }
+}
+
+/* White canvas, neutral hierarchy; color signals evidence and unresolved work. */
+@media (min-width:701px) {
+ .au-workspace .au-desk-column h2 { color:var(--au-ink); font-weight:550; margin-bottom:18px; }
+ .au-workspace .au-desk-files li { padding:12px 0; column-gap:10px; }
+ .au-workspace .au-desk-files li:first-child { border-top:0; padding-top:0; padding-bottom:20px; }
+ .au-workspace .au-desk-files li:last-child { border-bottom:0; }
+ .au-workspace .au-desk-files button { line-height:1.45; }
+ .au-workspace .au-desk-file-meta { margin-top:4px; }
+ .au-workspace [data-au-desk-file-selected=true] button { text-decoration:underline; text-underline-offset:4px; }
+ .au-workspace .au-desk-node-label { font-weight:500; }
+ .au-workspace .au-desk-node-evidence { margin-top:6px; column-gap:8px; }
+ .au-workspace .au-desk-node-evidence [data-au-desk-received=true] { color:var(--au-muted); }
+ .au-workspace .au-desk-law { display:block; width:100%; }
+ .au-workspace .au-desk-tests .au-desk-law { width:auto; }
+ .au-workspace .au-desk-reuse { color:var(--au-muted); margin:0 0 20px; }
+ .au-workspace .au-desk-answer { border-color:var(--au-desk-hair); border-left:1px solid var(--au-desk-hair); }
+ .au-workspace .au-desk-answer h2 { font-size:20px; margin-bottom:14px; }
+ .au-workspace .au-desk-role .au-role-badge { border-color:var(--au-line); color:var(--au-muted); font-weight:400; }
+ .au-workspace .au-desk-source { border-color:var(--au-desk-hair); }
+ .au-workspace .au-desk-source-name { color:var(--au-ink); }
+ .au-workspace .au-desk-junction { width:16px; height:16px; left:-1px; font-size:11px; box-shadow:none!important; }
+ .au-workspace [data-au-desk-admitted=false] .au-desk-node-label { color:var(--au-muted); font-weight:400; }
+ .au-workspace .au-desk-inspect { border-top:1px solid var(--au-desk-hair); padding-top:14px; gap:18px; }
+ .au-workspace .au-desk-inspect button { color:var(--au-muted); }
+ .au-workspace .au-desk-draft h3 { font-size:16px; margin:16px 0; }
+}
+
+@media (min-width:701px) { .au-workspace .au-desk-requirements { margin-bottom:12px; } }

@@ -1490,8 +1490,8 @@
   }
   const DESK_RULE_KINDS = new Set(['condition.evaluate','node.evaluate','dependency.evaluate','process.inspect','document.require']);
   function deskFileLabel(source) {
-    if (source.role === 'customer_message') return 'Customer message';
-    return String(source.file_name || '').replace(/\.[a-z0-9]+$/iu,'').replace(/^\d+[-_ ]*/u,'').replace(/_\d{4}-\d{2}-\d{2}.*$/u,'').replace(/[-_]+/gu,' ').replace(/^./u,c => c.toUpperCase()) || 'Recorded source';
+    if (source.role === 'customer_message') return 'Customer’s message';
+    return String(source.file_name || '').replace(/\.[a-z0-9]+$/iu,'').replace(/^\d+[-_ ]*/u,'').replace(/_\d{4}-\d{2}-\d{2}.*$/u,'').replace(/[-_]+/gu,' ').replace(/\bpacket\b/giu,'documents').replace(/\brecord\b/giu,'details').replace(/^./u,c => c.toUpperCase()) || 'Source';
   }
   function deskRequest(message) {
     return String(message || '').match(/(?:specifically asking for|specific request is|meine Bitte|bitte konkret um|request is)\s*:\s*([^;\n.]+)/iu)?.[1]?.trim() || '';
@@ -1543,40 +1543,61 @@
     if (!value || value.contract!=='casepath.local-draft/1' || value.binding!==binding || typeof value.subject!=='string' || value.subject.length>500 || typeof value.body!=='string' || value.body.length>50000 || !Number.isFinite(Date.parse(value.saved_at))) return null;
     return {subject:value.subject,body:value.body,saved_at:value.saved_at};
   }
+  const DESK_LEGAL_TESTS = Object.freeze({
+    residential_tenancy_scope:'It is a residential tenancy',
+    objective_use_impairment:'The defect really impairs use of the flat',
+    outside_small_tenant_maintenance_and_no_tenant_cause:'Not a minor tenant repair, and not caused by the tenant',
+    landlord_first_knowledge:'The landlord knew about the defect',
+    continuing_defect_without_remedy:'The defect continues without a lasting repair',
+    canton_approved_form:'Notice given on the canton-approved form',
+    complete_channel_archive:'Every delivery channel is on file',
+    issuer_authority_and_received_packet:'Sent by someone authorised, complete notice received',
+    issuer_authority_and_complete_packet:'Sent by someone authorised, complete form received',
+    contemporaneous_substantive_reasons:'Reasons given with the increase',
+    ordinary_non269c_tenancy:'Ordinary lease, no staged rent',
+    later_email_is_not_original_reasons:'A later email cannot supply the missing reasons'
+  });
+  const deskLegalLabel = id => DESK_LEGAL_TESTS[id] || words(id);
+  const DESK_STEPS = Object.freeze({
+    dh_intake:'Read the reported problem',dh_scope:'Check the tenancy terms',dh_notice:'Check when the landlord knew',dh_cause:'Check who caused the defect',dh_evidence:'Check how the defect affects use',dh_response:'Check the available remedies',
+    lt_intake:'Read the termination documents',lt_form:'Check whether the notice is valid',
+    ri_intake:'Read the rent increase documents',ri_form:'Check how the increase was notified',ri_reason:'Check whether the increase is valid'
+  });
+  const deskStepLabel = node => DESK_STEPS[node?.node_id] || String(node?.label || node?.title || words(node?.node_id)).replace(/^Capture /u,'Read ').replace(/^Establish /u,'Check ').replace(/^Assess /u,'Check ').replace(/^Record /u,'Explain ').replace(/\bpacket\b/giu,'documents').replace(/\bassessment\b/giu,'answer');
+  function deskLegalStatus(predicates) {
+    const total=predicates.length,failed=predicates.filter(row=>row.status==='failed'),open=predicates.filter(row=>!['failed','supported'].includes(row.status));
+    return {failed,open,label:failed.length?`${failed.length} of ${total} legal tests not met`:open.length?`${open.length} of ${total} legal tests still open`:total?`All ${total} legal tests met`:'No legal tests available'};
+  }
   function agentDeskMarkup(state, projection, selected, events, context, presentation) {
-    const trace=presentation.operations, model=deskOperationModel(state,trace), current=trace?.current, finished=Boolean(state.outcome && (!trace || trace.finished)), tour=presentation.tour;
-    const index=tour?.index ?? Math.max(0,REFERENCE_DEMO_CASES.findIndex(row=>row.claim_id===state.claim_id)), roster=tour?.cases || REFERENCE_DEMO_CASES;
-    const selectedNode=presentation.chosenNode, selectedDocument=context?.document;
-    const relevant=selectedDocument ? list(trace?.rows).findLast(row=>row.kind==='document.check' && row.object.id===selectedDocument && row.source) : selectedNode ? model.evidence.get(selectedNode) : null;
-    const operation=relevant || current, read=operation?.source, source=read && trace?.sources?.get(read.artifact_id) || (operation?.kind==='source.open' && trace?.sources?.get(operation.object.id));
-    const nodeId=operation && model.operationNodes.get(operation.id), requirement=model.nodes.find(node=>node.node_id===nodeId);
-    const result=finished && !selectedNode && !selectedDocument;
-    const currentFile=model.fileById.get(read?.artifact_id || (operation?.kind==='source.open' ? operation.object.id : null));
-    const opening=!trace?.binding && !finished, unknown='—', counts=model.counts;
-    const metric=(id,value,label)=>`<div class="au-desk-metric" data-au-desk-metric="${id}"><span class="au-desk-number">${value ?? unknown}</span><span class="au-desk-metric-label">${label}</span></div>`;
-    const controls=tour ? `${button(presentation.playing?'Pause':'Resume',presentation.playing?'data-au-demo-stop':'data-au-demo-resume')} ${button('Skip','data-au-demo-skip')} ${recordButton('Choose case','demo')}` : `${button('Watch the recorded work','data-au-desk-watch')} ${recordButton('Choose case','demo')}`;
-    const docLabel=type=>(list(model.graph?.document_catalog).find(row=>row.document_type===type)||model.documents.find(row=>row.document_type===type))?.label || words(type);
-    const files=model.files.map(file=>{const active=!finished&&currentFile===file.key,status=active?'reading':model.read.has(file.key)?'read':file.source.role==='customer_message'?'received':'waiting',facts=model.factFiles.get(file.key)||0;return `<li data-au-desk-file="${h(file.key)}" data-au-desk-file-state="${status}"><span class="au-desk-file-dot" aria-hidden="true">${status==='read'?'✓':''}</span><button type="button" class="au-link" data-au-desk-file-select="${h(file.ids.at(-1))}" title="${h(file.source.file_name)}">${h(deskFileLabel(file.source))}</button><span class="au-desk-file-meta">${facts?`${facts} fact${facts===1?'':'s'} used`:file.source.role==='customer_message'?'Request received':status==='read'?'Read':status==='reading'?'Reading':'Not yet read'}</span></li>`;}).join('');
-    const requirements=model.nodes.map(node=>{const done=model.met.has(node.node_id),active=!done&&nodeId===node.node_id,admitted=model.activated.has(node.node_id);return `<li data-au-desk-requirement="${h(node.node_id)}" data-au-desk-done="${done}" data-au-desk-active="${active}" data-au-desk-admitted="${admitted}"><span class="au-desk-edge"></span><span class="au-desk-junction" aria-hidden="true">${done?'✓':''}</span><button type="button" class="au-link au-desk-node-label" data-au-desk-select="${h(node.node_id)}" aria-pressed="${selectedNode===node.node_id}">${h(node.label || node.title || node.node_id)}</button><div class="au-desk-node-evidence">${list(node.document_types).map(type=>`<button type="button" class="au-link" data-au-desk-document-select="${h(type)}" data-au-desk-received="${model.received.has(type)}">${h(docLabel(type))} · ${model.received.has(type)?'received ✓':model.required.has(type)?'needed':'to check'}</button>`).join('')}<span class="au-desk-law">${h(deskLaw([...(model.laws.get(node.node_id)||[])]))}</span></div></li>`;}).join('');
-    const shown=language.operationPresentation(operation,{state}),role=result?'rulebook':operation?shown.roleId:'casepath',predicate=operation?.kind==='fact.extract'&&Array.isArray(operation.input?.rule_refs),checker=operation?.result?.verification_required===false;
-    const action=result?'delivers the result':selectedNode||selectedDocument?'shows the cited passage':operation?.kind==='fact.extract'?checker?'confirms it word for word':predicate?'tests the law against the text':'finds a fact in the text':operation?.kind==='document.check'?'accepts the document':operation?.kind==='step.complete'?`completes “${requirement?.label || 'this step'}”`:operation?.kind==='knowledge.reuse'?'reuses what earlier cases learned':operation?.kind==='source.open'?`opens ${deskFileLabel(source||{})}`:opening?'receives the customer’s request':shown.action||'checks the recorded work';
-    const factLabel=list(model.head.facts).find(row=>row.fact_id===operation?.object?.id)?.label || (operation?.input?.document_type?docLabel(operation.input.document_type):words(operation?.object?.id || ''));
-    const landing=operation?.kind==='fact.extract'?`${checker?'Confirmed':predicate?'Legal test':'Found'} · <strong>${h(predicate?words(operation.object.id):factLabel)}${predicate?` (${h(deskLaw(operation.input.rule_refs))})`:''}</strong>${requirement?`<br><span>feeds the step “${h(requirement.label)}”</span>`:''}`:operation?.kind==='document.check'?`Accepted · <strong>${h(docLabel(operation.object.id))}</strong>`:'';
-    const chars=source && sourceCharacters(source), pin=read && chars && chars.slice(read.start_char,read.end_char).join('')===read.quote ? read : null;
-    const sourceText=chars ? pin ? `${h(chars.slice(0,pin.start_char).join(''))}<mark data-au-desk-quote="${h(operation.id)}" data-au-operation-start-char="${pin.start_char}" data-au-operation-end-char="${pin.end_char}">${h(pin.quote)}</mark>${h(chars.slice(pin.end_char).join(''))}` : h(source.text) : h(opening ? state.message || 'Opening the recorded case file…' : selectedNode || selectedDocument ? 'No cited source is recorded for this selection.' : state.message || 'The next recorded source will appear here.');
-    const sourceCard=`<section class="au-desk-source" data-au-desk-source><button type="button" class="au-desk-source-name" ${source?`data-au-source="${h(source.artifact_id)}"${pin?` data-au-citation="${h(JSON.stringify(pin))}" data-au-source-origin="operation:${h(operation.id)}"`:''}`:'disabled'}>${h(source?deskFileLabel(source):opening?'Customer message':'Recorded case')}</button><div class="au-desk-source-scroll" tabindex="0" aria-label="Recorded source text"><pre class="au-desk-source-text">${sourceText}</pre></div></section>`;
-    const outcome=language.outcomePresentation(state), recorded=outcome.recorded, summary=recorded.summary, lead=summary.match(/^.*?[.!?](?=\s|$)/u)?.[0] || summary || outcome.summary;
-    const open=[outcome.openItems,...recorded.openFacts,...recorded.missing.map(row=>row.label),...recorded.limits].filter(Boolean);
-    const factRows=list(trace?.rows).filter(row=>row.kind==='fact.extract'&&row.result?.verification_required!==false&&row.source);
-    const predicates=list(state.outcome?.legal_predicates).map((row,index)=>({...row,index})).sort((a,b)=>(a.status==='failed'?0:a.status==='supported'?2:1)-(b.status==='failed'?0:b.status==='supported'?2:1)||a.index-b.index);
-    const tests=predicates.length?`<p class="au-desk-eyebrow">Legal tests</p><ul class="au-desk-tests">${predicates.map(row=>`<li data-au-desk-predicate="${h(row.predicate_id)}" data-status="${h(row.status)}"><span aria-hidden="true">${row.status==='supported'?'✓':row.status==='failed'?'✕':'○'}</span><span>${h(words(row.predicate_id))}${row.status==='failed'?' — not met':row.status==='supported'?'':' — still open'}</span><span class="au-desk-law">${h(deskLaw(row.rule_refs))}</span></li>`).join('')}</ul>`:'';
-    const why=`<details class="au-desk-why" data-au-disclosure="outcome-why"><summary>Why</summary><p>${h(summary)}</p>${outcomeCiteMarkup(state,openableCitations(state,state.outcome),'summary')}<ul>${factRows.map(row=>`<li><button type="button" class="au-link" data-au-source="${h(row.source.artifact_id)}" data-au-citation="${h(JSON.stringify(row.source))}" data-au-source-origin="operation:${h(row.id)}">${h(stageFactSpan(row,true)?.quote || row.source.quote)}</button></li>`).join('')}</ul>${recordButton('Full recorded result','outcome')}</details>`;
-    const answer=`<section class="au-desk-answer" data-au-desk-answer><p class="au-desk-eyebrow">Result for the handler</p><p class="au-desk-lead">${h(lead)}</p>${tests}${open.length?`<p class="au-desk-open">Still open · ${h([...new Set(open)].join(' '))}</p>`:''}<div class="au-desk-actions">${deskDraftBinding(state)?`${button('Open draft letter','data-au-desk-draft')}<span>Draft, not sent · a person decides</span>`:'<span>No draft letter recorded.</span>'}</div>${why}</section>`;
-    const reuse=model.reuse, reuseLine=reuse?`<p class="au-desk-reuse" data-au-desk-reuse="${h(reuse.id)}">Built on ${h(procedureLabel({family:model.graph?.family}))} v${reuse.input.version}, learned from earlier cases${Number.isSafeInteger(reuse.result?.reused_evidence_recipes)?` · ${reuse.result.reused_evidence_recipes} document checks reused`:''}</p>`:'';
-    return `<section class="au-agent-desk" data-au-agent-desk data-au-tour="${Boolean(tour)}" data-au-story="${h(presentation.storyPhase || 'work')}" data-au-playing="${Boolean(presentation.playing)}" data-au-revision="${state.revision}" data-au-state-sha="${h(state.state_sha256)}"><header class="au-desk-case"><div><p class="au-desk-eyebrow">Case ${index+1} of ${roster.length} · ${h(DOMAINS.find(row=>row.id===model.graph?.family)?.label || procedureLabel({family:model.graph?.family}))}</p><h1 class="au-page-heading" data-au-claim-title tabindex="-1">${h(caseLabel(state.claim_id,state.title).primary)}</h1><p class="au-desk-asks">${deskRequest(model.head.message)?`Asks for <q>${h(deskRequest(model.head.message))}</q>`:`Subject <q>${h(model.head.title)}</q>`}</p><div class="au-desk-controls">${controls}<button type="button" class="au-link" data-au-detail="activity">History</button><span>${tour?'Replay · ':''}Fictional case</span></div></div><div class="au-desk-tally" data-au-desk-trace-status>${metric('documents',counts.documents,'files read')}${metric('facts',counts.facts,'facts found in the text')}${metric('rules',counts.rules,'rule checks run')}${metric('met',`${counts.met}/${counts.total}`,'steps complete')}</div></header><div class="au-desk-grid"><section class="au-desk-column"><h2>From the customer</h2><ul class="au-desk-files">${files}</ul></section><section class="au-desk-column au-desk-centre"><h2>Reading now</h2><div class="au-desk-role" data-au-now-id="${h(operation?.id || '')}">${roleBadge(role)}<span data-au-now-copy>${h(action)}</span></div>${result?answer:sourceCard}${!result&&landing?`<p class="au-desk-landing">${landing}</p>`:''}${finished&&(selectedNode||selectedDocument)?button('Back to the result','data-au-desk-result'):''}</section><section class="au-desk-column au-desk-handler"><h2>Process <span>${counts.met} of ${counts.total} steps</span></h2>${reuseLine}<ol class="au-desk-requirements">${requirements}</ol>${finished?`<nav class="au-desk-inspect" aria-label="Case views">${['documents','knowledge','sources'].map(id=>button(words(id),`data-au-detail="${id}"`)).join('')}</nav>`:''}</section></div><footer class="au-desk-footer" data-au-demo-position="${index+1}"><span>Case ${index+1} of ${roster.length}</span><span class="au-desk-pips" aria-hidden="true">${roster.map((_,i)=>`<i data-state="${i<index?'done':i===index?'now':'waiting'}"></i>`).join('')}</span><span class="au-desk-progress"><i style="transform:scaleX(${(index+(counts.total?counts.met/counts.total:0))/roster.length})"></i></span></footer></section>`;
+    const trace=presentation.operations,model=deskOperationModel(state,trace),finished=Boolean(state.outcome&&(!trace||trace.finished)),tour=presentation.tour;
+    const index=REFERENCE_DEMO_CASES.findIndex(row=>row.claim_id===state.claim_id),roster=tour?.single?REFERENCE_DEMO_CASES:tour?.cases||REFERENCE_DEMO_CASES;
+    const selection=presentation.deskSelection,selectedNode=presentation.chosenNode,selectedDocument=selection?.document || (selectedNode?context?.document:null),inspecting=Boolean(selectedNode||selectedDocument||selection);
+    const rows=list(trace?.rows),file=selection?.artifact_id&&model.files.find(row=>row.ids.includes(selection.artifact_id));
+    const relevant=selection?.operation?rows.find(row=>row.id===selection.operation):file?rows.findLast(row=>row.source&&file.ids.includes(row.source.artifact_id))||rows.findLast(row=>row.kind==='source.open'&&file.ids.includes(row.object.id)):selectedDocument?rows.findLast(row=>row.kind==='document.check'&&row.object.id===selectedDocument&&row.source)||rows.findLast(row=>row.kind==='fact.extract'&&row.input?.document_type===selectedDocument&&row.source):selectedNode?model.evidence.get(selectedNode):null;
+    const operation=inspecting?relevant:trace?.current,read=operation?.source,source=read&&trace?.sources?.get(read.artifact_id)||(operation?.kind==='source.open'&&trace?.sources?.get(operation.object.id)),nodeId=operation&&model.operationNodes.get(operation.id),node=model.nodes.find(row=>row.node_id===nodeId);
+    const result=finished&&!inspecting,counts=model.counts,currentFile=model.fileById.get(read?.artifact_id||operation?.object?.id),docLabel=type=>(list(model.graph?.document_catalog).find(row=>row.document_type===type)||model.documents.find(row=>row.document_type===type))?.label||words(type);
+    const metric=(id,value,label)=>`<div class="au-desk-metric" data-au-desk-metric="${id}"><span class="au-desk-number">${value??'—'}</span><span class="au-desk-metric-label">${label}</span></div>`;
+    const transport=presentation.playing||presentation.paused?`${button(presentation.playing?'Pause':'Resume',presentation.playing?'data-au-demo-stop':'data-au-demo-resume')} ${button('Skip to answer','data-au-operation-skip')}`:finished?button('Watch this case','data-au-desk-watch'):'';
+    const files=model.files.map(file=>{const customer=file.source.role==='customer_message',active=!finished&&currentFile===file.key,status=customer?'read':active?'reading':model.read.has(file.key)?'read':'waiting',facts=model.factFiles.get(file.key)||0;return `<li data-au-desk-file="${h(file.key)}" data-au-desk-file-state="${status}" data-au-desk-file-selected="${Boolean(selection?.artifact_id&&file.ids.includes(selection.artifact_id))}"><span class="au-desk-file-dot" aria-hidden="true">${status==='read'?'✓':''}</span><button type="button" class="au-link" data-au-desk-file-select="${h(file.ids.at(-1))}" title="${h(file.source.file_name)}">${h(customer?'Customer’s message':deskFileLabel(file.source))}</button><span class="au-desk-file-meta">${customer?'Their request':facts?`${facts} fact${facts===1?'':'s'}`:status==='reading'?'Reading':status==='read'?'Read':'Waiting'}</span></li>`;}).join('');
+    const steps=model.nodes.map((step,i)=>{const done=model.met.has(step.node_id),active=!done&&nodeId===step.node_id;return `<li data-au-desk-requirement="${h(step.node_id)}" data-au-desk-done="${done}" data-au-desk-active="${active}" data-au-desk-admitted="${model.activated.has(step.node_id)}"><span class="au-desk-edge"></span><span class="au-desk-junction" aria-hidden="true">${done?'✓':active?'•':''}</span><button type="button" class="au-link au-desk-node-label" data-au-desk-select="${h(step.node_id)}" aria-pressed="${selectedNode===step.node_id}">${h(deskStepLabel(step))}</button><div class="au-desk-node-evidence">${list(step.document_types).map(type=>`<button type="button" class="au-link" data-au-desk-document-select="${h(type)}" data-au-desk-received="${model.received.has(type)}">${h(docLabel(type))}${model.received.has(type)?' — received ✓':model.required.has(type)?' — needed':''}</button>`).join('')}<span class="au-desk-law">${h(deskLaw([...(model.laws.get(step.node_id)||[])]))}</span></div></li>`;}).join('');
+    const predicate=operation?.kind==='fact.extract'&&Array.isArray(operation.input?.rule_refs),checker=operation?.result?.verification_required===false,role=result?'rulebook':operation?.kind==='fact.extract'?checker?'checker':'reader':operation?.kind==='document.check'?'checker':operation?.kind==='step.complete'?'rulebook':operation?.kind==='knowledge.reuse'?'memory':'casepath';
+    const action=result?'writes the answer':inspecting?(source?`opens ${deskFileLabel(source)}`:'reads the customer’s message'):operation?.kind==='fact.extract'?checker?'confirms the wording':predicate?'checks it against the law':'finds a fact':operation?.kind==='document.check'?`accepts ${docLabel(operation.object.id)}`:operation?.kind==='step.complete'?'completes a step':operation?.kind==='knowledge.reuse'?'uses an earlier checklist':operation?.kind==='source.open'?`opens ${deskFileLabel(source||{})}`:'reads the customer’s message';
+    const predicateState=finished?list(state.outcome?.legal_predicates).find(row=>row.predicate_id===operation?.object?.id)?.status:null;
+    const caption=predicate?`${predicateState==='supported'?'Meets':predicateState==='failed'?'Does not meet':'Checks'} → <strong data-au-legal-label="${h(operation.object.id)}">${h(deskLegalLabel(operation.object.id))}</strong> (${h(deskLaw(operation.input.rule_refs))})`:operation?.input?.document_type||operation?.kind==='document.check'?`Proves → <strong>${h(docLabel(operation.input?.document_type||operation.object.id))}</strong>`:'';
+    const landing=caption?`${caption}${node?`<span>for step ${model.nodes.indexOf(node)+1}: ${h(deskStepLabel(node))}</span>`:''}`:'';
+    const chars=source&&sourceCharacters(source),pin=read&&chars&&chars.slice(read.start_char,read.end_char).join('')===read.quote?read:null;
+    const sourceText=chars?pin?`${h(chars.slice(0,pin.start_char).join(''))}<mark data-au-desk-quote="${h(operation.id)}" data-au-operation-start-char="${pin.start_char}" data-au-operation-end-char="${pin.end_char}">${h(pin.quote)}</mark>${h(chars.slice(pin.end_char).join(''))}`:h(source.text):h(file?.source.role==='customer_message'||!inspecting?model.head.message||'Opening the case…':'No source is cited for this step.');
+    const sourceCard=`<section class="au-desk-source" data-au-desk-source><button type="button" class="au-desk-source-name" ${source?`data-au-source="${h(source.artifact_id)}"${pin?` data-au-citation="${h(JSON.stringify(pin))}" data-au-source-origin="operation:${h(operation.id)}"`:''}`:'disabled'}>${h(source?deskFileLabel(source):file?.source.role==='customer_message'||!inspecting?'Customer’s message':'Source')}</button><div class="au-desk-source-scroll" tabindex="0" aria-label="Source text"><pre class="au-desk-source-text">${sourceText}</pre></div></section>`;
+    const outcome=language.outcomePresentation(state),recorded=outcome.recorded,summary=recorded.summary,lead=summary.match(/^.*?[.!?](?=\s|$)/u)?.[0]||summary||outcome.summary,open=[outcome.openItems,...recorded.openFacts,...recorded.missing.map(row=>row.label)].filter(Boolean);
+    const predicates=list(state.outcome?.legal_predicates),legal=deskLegalStatus(predicates),testRow=row=>`<li data-au-desk-predicate="${h(row.predicate_id)}" data-status="${h(row.status)}"><span aria-hidden="true">${row.status==='supported'?'✓':row.status==='failed'?'✕':'○'}</span><button type="button" class="au-link" data-au-desk-predicate-source="${h(row.predicate_id)}" data-au-legal-label="${h(row.predicate_id)}">${h(deskLegalLabel(row.predicate_id))}</button><span class="au-desk-law">${h(deskLaw(row.rule_refs))}</span></li>`;
+    const tests=`<p class="au-desk-test-status" data-status="${legal.failed.length||legal.open.length?'open':'met'}">${h(legal.label)}</p>${legal.failed.length||legal.open.length?`<ul class="au-desk-tests">${[...legal.failed,...legal.open].map(testRow).join('')}</ul>`:''}`;
+    const why=`<details class="au-desk-why" data-au-disclosure="outcome-why"><summary>Show the reasoning</summary><ul class="au-desk-tests">${predicates.map(testRow).join('')}</ul><p>${h(summary)}</p>${outcomeCiteMarkup(state,openableCitations(state,state.outcome),'summary')}${recorded.limits.map(line=>`<p>${h(line)}</p>`).join('')}${recordButton('Full details','outcome')}</details>`;
+    const answer=`<section class="au-desk-answer" data-au-desk-answer><h2>Answer</h2>${tests}<p class="au-desk-lead">${h(lead)}</p>${open.length?`<p class="au-desk-open">Still open: ${h([...new Set(open)].join(' '))}</p>`:''}<div class="au-desk-actions">${deskDraftBinding(state)?`${button('Open draft letter','data-au-desk-draft')}<span>Not sent — you decide</span>`:'<span>No draft letter is available.</span>'}</div>${why}</section>`;
+    const reuse=model.reuse?`<p class="au-desk-reuse" data-au-desk-reuse="${h(model.reuse.id)}">Uses the ${h((DOMAINS.find(row=>row.id===model.graph?.family)?.label||procedureLabel({family:model.graph?.family})).toLowerCase())} checklist learned from earlier cases</p>`:'';
+    return `<section class="au-agent-desk" data-au-agent-desk data-au-tour="${Boolean(tour)}" data-au-story="${h(presentation.storyPhase||'work')}" data-au-playing="${Boolean(presentation.playing)}" data-au-revision="${state.revision}" data-au-state-sha="${h(state.state_sha256)}"><header class="au-desk-case"><div><h1 class="au-page-heading" data-au-claim-title tabindex="-1">${h(caseLabel(state.claim_id,state.title).primary.replace(/\brecord\b/giu,'documents'))}</h1><p class="au-desk-asks">Wants: <q>${h(deskRequest(model.head.message)||model.head.title)}</q></p><div class="au-desk-controls">${transport}${recordButton('Choose case','demo')}<button type="button" class="au-link" data-au-detail="activity">History</button></div></div><div class="au-desk-tally">${metric('documents',counts.documents,'files read')}${metric('facts',counts.facts,'facts found')}${metric('rules',counts.rules,'checks run')}${metric('met',`${counts.met}/${counts.total}`,'steps done')}<p data-au-desk-trace-status hidden></p></div></header><div class="au-desk-grid"><section class="au-desk-column"><h2>From the customer</h2><ul class="au-desk-files">${files}</ul></section><section class="au-desk-column au-desk-centre"><h2>${result?'For your review':'Reading now'}</h2><div class="au-desk-role" ${result?'hidden':''} data-au-now-id="${h(operation?.id||'')}">${roleBadge(role)}<span data-au-now-copy>${h(action)}</span></div>${result?answer:sourceCard}${!result&&landing?`<p class="au-desk-landing">${landing}</p>`:''}${finished&&inspecting?button('Back to the answer','data-au-desk-result'):''}</section><section class="au-desk-column au-desk-handler"><h2>Steps</h2>${reuse}<ol class="au-desk-requirements">${steps}</ol>${finished?`<nav class="au-desk-inspect" aria-label="Case views">${['documents','knowledge','sources'].map(id=>button(words(id),`data-au-detail="${id}"`)).join('')}</nav>`:''}</section></div><footer class="au-desk-footer" data-au-demo-position="${index+1}"><span>Case ${index+1} of ${roster.length}</span><span class="au-desk-pips" aria-hidden="true">${roster.map((_,i)=>`<i data-state="${i<index?'done':i===index?'now':'waiting'}"></i>`).join('')}</span><span class="au-desk-progress"><i style="transform:scaleX(${(index+(counts.total?counts.met/counts.total:0))/roster.length})"></i></span><span>All cases are fictional.</span></footer></section>`;
   }
   function workMarkup(state, projection, selected, events, detail = 'step', context = {}, presentation = {}) {
-    if (presentation.desk && detail==='step' && (state.outcome || presentation.operations?.headState?.graph)) return agentDeskMarkup(state,projection,selected,events,context,presentation);
+    if (presentation.desk && detail==='step' && (presentation.operations?.headState?.graph || state.outcome && REFERENCE_DEMO_CASES.some(row=>row.claim_id===state.claim_id))) return agentDeskMarkup(state,projection,selected,events,context,presentation);
     if (!presentation.operations && presentation.operationOpening) presentation = {...presentation,operations:{opening:true,rows:[],sources:new Map()}};
     const reference = referenceExecution(state), availability = claimAvailability(presentation.status || null,state,projection);
     const canWrite = !presentation.readOnly && presentation.writable !== false && writable(presentation.status) && presentation.mode !== 'replay';
@@ -1909,7 +1930,7 @@
     if (!event) return `<div class="au-now" data-au-now-id=""><span class="au-now-label">Now</span> ${roleBadge('casepath')} <span data-au-now-copy>has no selected recorded event.</span><span data-au-now-result>No result is available.</span></div>`;
     const version=event.versionRecord || event.item, shown=language.knowledgePresentation(version,event), used=event.kind==='knowledge.used';
     const known=['saved','reused','not_saved'].includes(shown.status), role=known?'memory':'casepath', number=version.version || event.item.version;
-    const action=!known?'shows this saved version. Its method was not recorded.':shown.status==='not_saved'?'does not save these steps after checking them with fixed rules.':used?`reuses the document checks reused from version ${number || 'unknown'} using fixed rules.`:shown.label==='Rechecked'?`rechecks version ${number || 'unknown'} and its document checks reused using fixed rules.`:`saves version ${number || 'unknown'} and its document checks reused using fixed rules.`;
+    const action=!known?'shows this saved version. Its method was not recorded.':shown.status==='not_saved'?'does not save these steps after checking them with fixed rules.':used?`reuses the known document checks from version ${number || 'unknown'} using fixed rules.`:shown.label==='Rechecked'?`rechecks version ${number || 'unknown'} and its known document checks using fixed rules.`:`saves version ${number || 'unknown'} and its known document checks using fixed rules.`;
     const result=shown.status==='not_saved'?'The recorded checks did not pass.':used?'This case still needed its own proof.':shown.status==='saved'?'The recorded checks passed.':'Read the original record in Details.';
     return `<div class="au-now" data-au-now-id="${h(event.id)}"><span class="au-now-label">Now</span> ${roleBadge(role)} <span data-au-now-copy>${h(action)}</span> <span data-au-now-result>${h(result)}</span> ${event.recorded?recordButton('Details','learning-event',event.id):''}</div>`;
   }
@@ -2636,7 +2657,7 @@
   }
   function recordedReuseMomentMarkup(moment) {
     if(!moment)return '';
-    return `<div class="au-stage-knowledge-moment" data-au-knowledge-moment="${h(moment.event.event_sha256)}" data-au-knowledge-use="${h(moment.pin.knowledge_sha256)}"><p>Procedure reused · ${knowledgeLink(moment.pin,`Version ${moment.use.version}`)} · ${list(moment.recipes).length} document checks reused${Number.isSafeInteger(moment.use.avoided_rule_compilations)?` · ${moment.use.avoided_rule_compilations===1?'Reused once instead of rebuilding':`Reused ${moment.use.avoided_rule_compilations} times instead of rebuilding`}`:''} · ${recordButton('Reuse receipt','event',String(moment.event.seq))}</p></div>`;
+    return `<div class="au-stage-knowledge-moment" data-au-knowledge-moment="${h(moment.event.event_sha256)}" data-au-knowledge-use="${h(moment.pin.knowledge_sha256)}"><p>Procedure reused · ${knowledgeLink(moment.pin,`Version ${moment.use.version}`)} · ${list(moment.recipes).length} known document checks${Number.isSafeInteger(moment.use.avoided_rule_compilations)?` · ${moment.use.avoided_rule_compilations===1?'Reused once instead of rebuilding':`Reused ${moment.use.avoided_rule_compilations} times instead of rebuilding`}`:''} · ${recordButton('Reuse receipt','event',String(moment.event.seq))}</p></div>`;
   }
   function operationStageMarkup(state, projection, selected, trace, settled = false, knowledge = {}, inspection = {}) {
     const reuseMoment=recordedReuseMoment(state,trace,knowledge), retainedReuse=trace?.cueReuse;
@@ -3605,6 +3626,7 @@
     function refreshCaseKnowledge() {
       if (view === 'claim' && detail === 'knowledge' && current && !demoSession && !operationPeek && host.querySelector('[data-au-case-knowledge]')) renderClaim();
     }
+    let deskSelection = null, deskDraft = null;
     const deskRecords = new Map(), deskRecordReads = new Map();
     async function ensureDeskRecord(state, token) {
       if (!state.outcome || !REFERENCE_DEMO_CASES.some(row=>row.claim_id===state.claim_id) || deskRecords.has(state.state_sha256) || deskRecordReads.has(state.state_sha256)) return;
@@ -3623,20 +3645,21 @@
         const trace={rows:[],sources:new Map(),bytes:0,pinnedJournal:verification.verifiedJournal,journal:[],headState:state,plannedProcess:verification.plannedProcess,frameHashes:[],state:opening.state};let prefix=opening.state;
         for await (const frame of operationFrames(response,controller.signal)) {
           if (!valid()) { controller.abort();return; }
+          if(frame.contract!==OPERATIONS_CONTRACT || trace.verifiedResult)throw new Error('The source history could not be verified.');
           if (frame.type!=='result') trace.frameHashes.push(await digest(canonicalJSON(frame)));
-          if (frame.type==='binding') trace.binding=checkedOperationBinding(frame,{...head,...verification.operationBinding},verification.verifiedReplayStart);
+          if (frame.type==='binding') {if(trace.binding)throw new Error('Repeated source binding.');trace.binding=checkedOperationBinding(frame,{...head,...verification.operationBinding},verification.verifiedReplayStart);}
           else if (frame.type==='operation') await checkedOperation(frame,trace,prefix);
           else if (frame.type==='checkpoint') prefix=(await checkedOperationCheckpoint(frame,trace)).state;
           else if (frame.type==='result') {
-            if (prefix.state_sha256!==identity || frame.state_sha256!==identity || frame.operation_count!==trace.rows.length || frame.operation_chain_sha256!==trace.rows.at(-1)?.operation_sha256 || frame.exact_output_verified!==true || frame.trace_sha256!==await digest(canonicalJSON(trace.frameHashes))) throw new Error('The recorded desk differs from its saved result.');
+            if (!trace.binding || prefix.state_sha256!==identity || frame.current_event_sha256!==state.last_event_sha256 || frame.state_sha256!==identity || frame.operation_count!==trace.rows.length || frame.operation_chain_sha256!==trace.rows.at(-1)?.operation_sha256 || frame.exact_output_verified!==true || frame.trace_sha256!==await digest(canonicalJSON(trace.frameHashes))) throw new Error('The recorded desk differs from its saved result.');
             trace.finished=true;trace.verifiedResult=true;trace.state=state;trace.current=null;
-          }
+          } else throw new Error('The source history contains an unsupported frame.');
         }
         if (!trace.verifiedResult) throw new Error('The recorded desk has no verified final result.');
         if (!valid()) return;
         deskRecords.set(identity,trace);while(deskRecords.size>9)deskRecords.delete(deskRecords.keys().next().value);
         renderClaim();
-      })().catch(error=>{if(valid()){host.querySelector('[data-au-desk-trace-status]')?.replaceChildren(doc.createTextNode('Operation counts unavailable. The saved assessment remains visible.'));}}).finally(()=>{controllers.delete(controller);});
+      })().catch(error=>{if(valid()){const status=host.querySelector('[data-au-desk-trace-status]');if(status){status.hidden=false;status.innerHTML='Counts could not load. '+button('Retry','data-au-desk-retry');}}}).finally(()=>{controllers.delete(controller);deskRecordReads.delete(identity);});
       deskRecordReads.set(identity,promise);
     }
     function renderClaim(changes = null, navigation = false) {
@@ -3666,7 +3689,7 @@
       const reuseOperation = displayedTrace?.finished && displayedTrace.verifiedResult ? list(displayedTrace.rows).findLast(row => row.kind === 'knowledge.reuse') : displayedTrace?.current;
       const cueReuse = recordedReuseMoment(displayedState,reuseOperation && displayedTrace ? {...displayedTrace,current:reuseOperation,finished:false} : displayedTrace,knowledgeCache?.value || {});
       if (cueReuse && !operationPeek) displayedTrace.cueReuse = {operation:reuseOperation.id,pin:cueReuse.pin};
-      host.innerHTML = workMarkup(displayedState,displayedProjection,operationPeek?.node || selected,operationPeek?.events || history,detail,evidenceContext,{desk:(root.innerWidth || 0)>700,mode:presentationMode,readOnly:publicReadOnly,chosenNode:operationPeek ? null : chosenNode,origin:claims.find(row => row.claim_id === displayedState.claim_id)?.origin,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),operations:displayedTrace,transportOperations:operationTrace,inspectionIndex:operationPeek?.index,operationOpening:(demoSession || pausedPresentation)?.mode === 'operations',playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,storyPhase:operationPeek ? '' : (demoSession || pausedPresentation)?.storyPhase,tour:activeTour(),claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
+      host.innerHTML = workMarkup(displayedState,displayedProjection,operationPeek?.node || selected,operationPeek?.events || history,detail,evidenceContext,{desk:(root.innerWidth || 0)>700,deskSelection,mode:presentationMode,readOnly:publicReadOnly,chosenNode:operationPeek ? null : chosenNode,origin:claims.find(row => row.claim_id === displayedState.claim_id)?.origin,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),operations:displayedTrace,transportOperations:operationTrace,inspectionIndex:operationPeek?.index,operationOpening:(demoSession || pausedPresentation)?.mode === 'operations',playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,storyPhase:operationPeek ? '' : (demoSession || pausedPresentation)?.storyPhase,tour:activeTour(),claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
       const handoff = host.querySelector('[data-au-story-handoff]'), answer = host.querySelector('[data-au-stage-outcome]');
       if (handoff && answer) answer.append?.(handoff);
       const now = host.querySelector('[data-au-now-id]'), nowId = now?.dataset.auNowId;
@@ -3692,6 +3715,7 @@
       drawEdges(navigation); followStage();
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open || recordDialog.open,reducedMotion:reduced?.matches || Boolean(operationTrace),keyboard,inspecting:inspectionHold,activeElement:doc.activeElement,selected});
       synchronizeAuthority(); synchronizeRecord(); rememberLastCase(); positionOperationAttention();
+      if(host.querySelector('[data-au-agent-desk]')){const legend=container.querySelector('[data-au-role-legend]');if(legend)legend.hidden=true;}
       claimRenderComplete = true; renderedClaimId = current.claim_id;
       if (presentationMode==='saved' && host.querySelector('[data-au-agent-desk]')) ensureDeskRecord(current,epoch);
     }
@@ -3877,6 +3901,7 @@
     }
     async function openClaim(id, writeHistory = true, preferences = {}) {
       const arriving = view !== 'claim' || openingId !== id;
+      deskSelection = null;
       chosenNode = typeof preferences.node === 'string' && preferences.node ? preferences.node : null;
       if (preferences.mode === 'replay') preferences = {...preferences,collection:replayCollection(id,preferences.collection)};
       if (!preferences.demo && tour?.cases[tour.index]?.claim_id !== id) tour = null;
@@ -4375,6 +4400,37 @@
       fallback=root.setTimeout(() => { const top=stageScrollTarget?.pane === pane ? stageScrollTarget.top : pane.scrollTop; pane.scrollTo?.({top,behavior:'instant'}); root.clearTimeout(quiet); quiet=root.setTimeout(finish,0); },1200);
       stageScrollCancel=clear;
     }
+    function positionDesk(animate = true) {
+      const desk=host.querySelector('[data-au-agent-desk]');if(!desk)return;
+      const trace=operationPeek?.trace||operationTrace||deskRecords.get(current?.state_sha256),mark=desk.querySelector('[data-au-desk-quote]'),pane=desk.querySelector('.au-desk-source-scroll');
+      const op=trace?.finished?list(trace.rows).findLast(row=>row.kind==='decision'):trace?.current;
+      const shown=mark&&list(trace?.rows).find(row=>row.id===mark.dataset.auDeskQuote),model=trace&&deskOperationModel(current,trace),nodeId=shown&&model.operationNodes.get(shown.id)||op&&model?.operationNodes.get(op.id),node=[...desk.querySelectorAll('[data-au-desk-requirement]')].find(el=>el.dataset.auDeskRequirement===nodeId),label=node?.querySelector('.au-desk-node-label');
+      if(mark&&pane){const r=mark.getBoundingClientRect(),p=pane.getBoundingClientRect();pane.scrollTop=Math.max(0,pane.scrollTop+r.top-p.top-20);}
+      if(stageChoreography&&stageChoreography.operation===op&&!stageChoreography.cancelled&&!stageChoreography.complete)return;
+      cancelStageRead();
+      const svgElement=tag=>doc.createElementNS('http://www.w3.org/2000/svg',tag),grid=desk.querySelector('.au-desk-grid');
+      const draw=()=>{
+        if(!mark||!label||!pane||reduced?.matches)return null;
+        const area=grid.getBoundingClientRect(),clip=pane.getBoundingClientRect(),rects=[...mark.getClientRects()].filter(r=>r.bottom>clip.top+3&&r.bottom<clip.bottom-3),a=rects.at(-1),b=label.getBoundingClientRect(),card=mark.closest('[data-au-desk-source]').getBoundingClientRect();if(!a)return null;
+        const junction=node.querySelector('.au-desk-junction').getBoundingClientRect();
+        const x=a.right-area.left,y=a.bottom-area.top+2,tx=junction.left-area.left-3,ty=junction.top-area.top+junction.height/2,svg=svgElement('svg'),path=svgElement('path');svg.setAttribute('class','au-desk-thread');svg.setAttribute('data-au-cue-artifact','desk-thread');svg.setAttribute('aria-hidden','true');svg.setAttribute('viewBox',`0 0 ${area.width} ${area.height}`);path.setAttribute('pathLength','1');path.setAttribute('d',`M${x} ${y} L${card.right-area.left+10} ${y} C${card.right-area.left+28} ${y},${tx-24} ${ty},${tx} ${ty}`);svg.appendChild(path);
+        for(const [cx,cy]of [[x,y],[tx,ty]]){const c=svgElement('circle');c.setAttribute('cx',cx);c.setAttribute('cy',cy);c.setAttribute('r','3');svg.appendChild(c);}grid.appendChild(svg);return {svg,path};
+      };
+      if(!op||!demoSession||inspectionHold||doc.hidden||reduced?.matches||!animate){if(!doc.hidden&&!reduced?.matches)draw();return;}
+      trace.deskCues ||= new Set();if(trace.deskCues.has(op.id))return;
+      const job={operation:op,complete:false,cancelled:false};job.promise=new Promise(resolve=>job.resolve=resolve);stageChoreography=job;
+      const valid=()=>!job.cancelled&&!disposed&&!doc.hidden&&!inspectionHold&&!reduced?.matches&&operationTrace===trace&&demoSession&&(trace.current===op||trace.finished&&op.kind==='decision');
+      const run=async(el,frames,duration,name)=>{if(!el?.animate||!valid())return;host.dataset.auCueActive=name;host.dataset.auCueOperation=op.id;host.dataset.auCueKind=op.kind;const animation=el.animate(frames,{duration,easing:'cubic-bezier(.2,.65,.3,1)'});stageReadAnimations.push(animation);try{await animation.finished;}catch(_){};};
+      void(async()=>{let thread=null;try{
+        if(mark&&shown){await run(mark,[{backgroundSize:'0% 100%'},{backgroundSize:'100% 100%'}],450,'reading');if(valid()){thread=draw();await run(thread?.path,[{strokeDashoffset:1},{strokeDashoffset:0}],600,'thread');await run(desk.querySelector('.au-desk-landing'),[{opacity:0,transform:'translateY(5px)'},{opacity:1,transform:'translateY(0)'}],250,'landing');}}
+        if(node&&model.activated.has(nodeId)){trace.deskBuiltNodes ||= new Set();if(!trace.deskBuiltNodes.has(nodeId)){await run(node.querySelector('.au-desk-node-label'),[{opacity:.4,transform:'translateX(4px)'},{opacity:1,transform:'translateX(0)'}],200,'node-build');await run(node.querySelector('.au-desk-junction'),[{transform:'scale(.5)'},{transform:'scale(1)'}],200,'node-arrival');if(valid())trace.deskBuiltNodes.add(nodeId);}}
+        if(op.kind==='step.complete'&&node){await run(node.querySelector('.au-desk-junction'),[{transform:'scale(.4)'},{transform:'scale(1.12)'},{transform:'scale(1)'}],300,'completion');await run(node.querySelector('.au-desk-edge'),[{transform:'scaleY(0)'},{transform:'scaleY(1)'}],600,'connector');}
+        if(op.kind==='knowledge.reuse')await run(desk.querySelector('.au-desk-reuse'),[{opacity:0},{opacity:1}],300,'reuse');
+        if(op.kind==='decision')await run(desk.querySelector('[data-au-desk-answer]'),[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],400,'answer');
+        if(thread)await run(thread.svg,[{opacity:1},{opacity:0}],400,'thread-fade');
+        if(valid())trace.deskCues.add(op.id);
+      }finally{thread?.svg.remove();host.removeAttribute('data-au-cue-active');job.complete=true;job.resolve();}})();
+    }
     function positionDesktopCues(animate = true) {
       const trace = operationTrace, operation = trace?.finished && trace.verifiedResult ? list(trace.rows).findLast(row => row.kind === 'decision') : trace?.current;
       if (!trace || !operation || detail !== 'step' || doc.hidden || inspectionHold || !demoSession || trace.cueTransition) return;
@@ -4474,6 +4530,7 @@
       })();
     }
     function positionOperationAttention(animate = true, sourceReady = false, pending = null) {
+      if(host.querySelector('[data-au-agent-desk]')){positionDesk(animate);return;}
       if ((root.innerWidth || 0) > 700) { positionDesktopCues(animate); return; }
       if (!sourceReady) cancelStageRead();
       const ownerTrace=operationTrace, operation = ownerTrace?.current, canvas = host.querySelector('[data-au-canvas]');
@@ -4752,7 +4809,7 @@
             if (!operationActive(session,token) || operationTrace !== trace) return;
             if (!operationTrace.binding || current.revision !== session.replayHead.revision || current.state_sha256 !== session.replayHead.state_sha256 ||
                 frame.state_sha256 !== current.state_sha256 || frame.operation_count !== operationTrace.rows.length || frame.operation_chain_sha256 !== operationTrace.rows.at(-1)?.operation_sha256 || frame.exact_output_verified !== true || frame.trace_sha256 !== traceHash) throw new Error('The operation result differs from its pinned saved result.');
-            const revealAnswer = () => { trace.finished = true; trace.verifiedResult = true; trace.current = null; session.storyPhase = 'answer'; selected = preferredNode(current,selected,history); renderClaim(); };
+            const revealAnswer = () => { trace.finished = true; trace.verifiedResult = true; trace.current = null; deskRecords.set(current.state_sha256,trace); session.storyPhase = 'answer'; selected = preferredNode(current,selected,history); renderClaim(); };
             cancelStageMotion();
             if ((root.innerWidth || 0) > 700 && !reduced?.matches && !session.skip && !doc.hidden && doc.startViewTransition && host.querySelector('.au-stage-source')) {
               trace.cueTransition = true; trace.answerTransitioned = true;
@@ -4764,6 +4821,10 @@
               if (!operationActive(session,token) || operationTrace !== trace) return;
               positionOperationAttention();
             } else revealAnswer();
+            if(host.querySelector('[data-au-agent-desk]') && !session.skip && !reduced?.matches){
+              const decision=trace.rows.findLast(row=>row.kind==='decision');
+              if(decision && !await operationPresentationGate(session,token,decision))return;
+            }
             // Skip in the tour finishes this case unpresented, then advances like
             // a finished case, reusing the next opening this session prefetched.
             const next = sessionCases(session)[session.index+1], advancing = () => session.skipCase || !session.skip && !reduced?.matches;
@@ -4804,6 +4865,7 @@
     }
     function syncReplayGuide() {
       const legend = container.querySelector('[data-au-role-legend]');
+      if(host.querySelector('[data-au-agent-desk]')){if(legend)legend.hidden=true;return;}
       const recorded = replayRecord?.current_revision > 0 || operationTrace?.binding?.current_revision > 0;
       if (legend) legend.hidden = !(presentationMode === 'replay' && recorded && (pausedPresentation || operationPeek));
     }
@@ -5671,6 +5733,48 @@
       if (disposed || token !== epoch || view !== 'knowledge') return;
       return openSource(id,citation,trigger,saved);
     }
+    function selectDesk(target) {
+      if(!current)return;pauseInspection();
+      const trace=operationTrace||deskRecords.get(current.state_sha256),model=deskOperationModel(current,trace);
+      deskSelection=null;chosenNode=null;evidenceContext={};detail='step';
+      if(target.hasAttribute('data-au-desk-select')){chosenNode=selected=target.dataset.auDeskSelect;}
+      else if(target.hasAttribute('data-au-desk-document-select')){const document=target.dataset.auDeskDocumentSelect;const node=model.nodes.find(row=>list(row.document_types).includes(document));if(node)chosenNode=selected=node.node_id;deskSelection={document};evidenceContext={document};}
+      else if(target.hasAttribute('data-au-desk-file-select')){deskSelection={artifact_id:target.dataset.auDeskFileSelect};}
+      else if(target.hasAttribute('data-au-desk-predicate-source')){const id=target.dataset.auDeskPredicateSource,operation=list(trace?.rows).findLast(row=>row.kind==='fact.extract'&&row.object.id===id&&row.source);if(operation)deskSelection={operation:operation.id};}
+      renderClaim();
+      // Step/document selections survive reload. File peeks leave the saved
+      // case route at its answer, so they cannot turn into an unrelated step.
+      route(claimFragment(current.claim_id,{mode:presentationMode,collection:openingPreferences.collection,operations:openingPreferences.operations,through:replayRecord?.through_seq,detail:'step',node:chosenNode,...(chosenNode?evidenceContext:{})}));
+      host.querySelector('[data-au-desk-source] .au-desk-source-name')?.focus({preventScroll:true});
+    }
+    function renderDeskDraft() {
+      if(!deskDraft||!recordDialog.open)return;
+      const d=deskDraft,body=recordDialog.querySelector('[data-au-record-content]'),value=d.value;
+      body.innerHTML=`<section class="au-desk-draft"><p>Not sent — you decide</p><p data-au-draft-status role="status">${h(d.message|| (d.saved?'Saved on this device.':'Original draft.'))}</p>${d.editing?`<label>Subject<input data-au-draft-subject maxlength="500" value="${h(value.subject)}"></label><label>Letter<textarea data-au-draft-body maxlength="50000">${h(value.body)}</textarea></label>`:`<h3>${h(value.subject)}</h3><pre class="au-record-body">${h(value.body)}</pre>`}<div class="au-desk-draft-actions">${button(d.editing?'Save on this device':'Edit a copy',d.editing?'data-au-draft-save':'data-au-draft-edit')}${button('Copy text','data-au-draft-copy')}${button('Download letter','data-au-draft-download')}${d.saved?button('View original','data-au-draft-original'):''}</div></section>`;
+    }
+    async function openDeskDraft(target) {
+      const binding=deskDraftBinding(current);if(!binding)return;
+      pauseInspection();const token=epoch,claim=current.claim_id;recordSelection=null;recordReturn={element:target,token:focusToken(target)};recordExplained=null;
+      recordDialog.querySelector('#auRecordTitle').textContent='Draft letter';recordDialog.querySelector('[data-au-record-content]').textContent='Opening the letter…';recordDialog.showModal();
+      const hash=await digest(canonicalJSON({api:apiIdentity,draft:binding}));
+      if(disposed||token!==epoch||current?.claim_id!==claim||!recordDialog.open)return;
+      const key=`casepath.local-draft.v1:${hash}`;let saved=null,message='';
+      try{const raw=root.localStorage.getItem(key);if(raw)saved=checkedDeskDraft(JSON.parse(raw),hash);}catch(_){message='Your saved copy could not be opened.';}
+      deskDraft={binding,hash,key,saved:Boolean(saved),value:saved||{subject:binding.subject,body:binding.body},message,editing:false};renderDeskDraft();
+    }
+    async function deskDraftAction(target) {
+      const d=deskDraft;if(!d||!recordDialog.open)return;
+      const value=d.editing?{subject:recordDialog.querySelector('[data-au-draft-subject]').value,body:recordDialog.querySelector('[data-au-draft-body]').value}:d.value;
+      if(target.hasAttribute('data-au-draft-edit')){d.editing=true;d.message='Your copy. Save it on this device.';renderDeskDraft();recordDialog.querySelector('[data-au-draft-body]')?.focus();return;}
+      if(target.hasAttribute('data-au-draft-original')){d.value={subject:d.binding.subject,body:d.binding.body};d.editing=false;d.message='Original draft.';renderDeskDraft();return;}
+      if(target.hasAttribute('data-au-draft-save')){
+        const entry={contract:'casepath.local-draft/1',binding:d.hash,...value,saved_at:new Date().toISOString()};if(!checkedDeskDraft(entry,d.hash))return;
+        try{root.localStorage.setItem(d.key,JSON.stringify(entry));d.value=value;d.saved=true;d.editing=false;d.message='Saved on this device.';renderDeskDraft();}catch(_){recordDialog.querySelector('[data-au-draft-status]').textContent='Could not save. Your edits are still here.';}return;
+      }
+      const content=`${value.subject}\n\n${value.body}`;
+      if(target.hasAttribute('data-au-draft-copy')){try{await root.navigator.clipboard.writeText(content);if(deskDraft===d&&recordDialog.open)recordDialog.querySelector('[data-au-draft-status]').textContent='Copied.';}catch(_){if(deskDraft===d&&recordDialog.open)recordDialog.querySelector('[data-au-draft-status]').textContent='Could not copy. You can download the letter.';}return;}
+      if(target.hasAttribute('data-au-draft-download')){const url=root.URL.createObjectURL(new root.Blob([content],{type:'text/plain;charset=utf-8'})),link=doc.createElement('a');link.href=url;link.download=`casepath-${d.binding.claim_id}-draft.txt`;doc.body.appendChild(link);link.click();link.remove();root.setTimeout(()=>root.URL.revokeObjectURL(url),1000);}
+    }
     function synchronizeRecord(opening = false) {
       if (!recordSelection || !opening && !recordDialog.open) return;
       const {kind,id} = recordSelection, body = recordDialog.querySelector('[data-au-record-content]');
@@ -5697,7 +5801,7 @@
       const start = Number(target.dataset?.auFactStartChar), end = Number(target.dataset?.auFactEndChar);
       recordSelection = {kind:target.dataset.auInspect,id:target.dataset.auRecordId || '',passageFirst:Boolean(chip || step),focus:chip && Number.isSafeInteger(start) && Number.isSafeInteger(end) ? {start,end} : null,generic:Boolean(step) || !label || label.length > 80 || /^(?:Details|Technical record|Inspect)$/u.test(label)};
       recordReturn = {element:target,token:focusToken(target)}; recordExplained = null;
-      recordDialog.querySelector('#auRecordTitle').textContent = recordSelection.kind === 'demo' ? 'Recorded investigations' : label || 'Details';
+      recordDialog.querySelector('#auRecordTitle').textContent = recordSelection.kind === 'demo' ? 'Choose a case' : label || 'Details';
       synchronizeRecord(true); recordDialog.showModal();
     }
     function restoreRecordFocus(returning) {
@@ -5710,6 +5814,7 @@
     }
     function closedRecord() {
       if (recordDialog.open) return;
+      deskDraft=null;
       const explain = recordDialog.querySelector('[data-au-record-explain]'); if (explain) { explain.innerHTML = ''; recordExplained = null; }
       const returning = recordReturn; recordReturn = null; restoreRecordFocus(returning);
     }
@@ -5739,6 +5844,12 @@
         const draft = host.querySelector('[data-au-disclosure=outcome-draft]');
         if (draft) { const why = draft.closest('[data-au-disclosure=outcome-why]'); if (why) why.open = true; draft.open = true; draft.querySelector('summary')?.focus(); draft.scrollIntoView?.({block:'nearest',behavior:'instant'}); }
       }
+      else if(target.hasAttribute('data-au-desk-draft')) openDeskDraft(target);
+      else if(['edit','save','original','copy','download'].some(action=>target.hasAttribute(`data-au-draft-${action}`))) deskDraftAction(target);
+      else if(target.hasAttribute('data-au-desk-select')||target.hasAttribute('data-au-desk-document-select')||target.hasAttribute('data-au-desk-file-select')||target.hasAttribute('data-au-desk-predicate-source')) selectDesk(target);
+      else if(target.hasAttribute('data-au-desk-result')){deskSelection=null;chosenNode=null;evidenceContext={};renderClaim();route(claimFragment(current.claim_id,{mode:presentationMode,collection:openingPreferences.collection,operations:openingPreferences.operations,through:replayRecord?.through_seq}));}
+      else if(target.hasAttribute('data-au-desk-retry')){if(current)ensureDeskRecord(current,epoch);}
+      else if(target.hasAttribute('data-au-desk-watch')){if(current){const row=REFERENCE_DEMO_CASES.find(row=>row.claim_id===current.claim_id);if(row){stopPresentation();tour=null;demoSession={mode:'operations',collection:'reference',cases:[row],index:0,operations:openingPreferences.operations,single:true};openPresentationCase(demoSession);}}}
       else if (target.hasAttribute('data-au-inspect')) openRecord(target);
       else if (target.hasAttribute('data-au-demo-case')) { const id = target.dataset.auDemoCase; recordReturn = null; recordDialog.close(); stopPresentation(); demoMode = 'replay'; const collection = demoCollection(target.dataset.auDemoCollection) || 'reference', filtered = collectionRoster(collection,claims), cases = filtered.some(row => row.claim_id === id) ? filtered : demoCases(collection), index = cases.findIndex(row => row.claim_id === id); if (index >= 0) { const operations=openingPreferences.operations || operationRoutePreference(root.location?.hash,root.location?.search); demoSession = tourSession(collection,cases,index,operations,target.dataset.auDemoSaved === 'true'); openPresentationCase(demoSession); } }
       else if (target.hasAttribute('data-au-demo-skip')) skipTourCase();
@@ -5995,5 +6106,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {deskRequest,deskLaw,agentDeskMarkup,deskOperationModel,deskFileLabel,deskDraftBinding,checkedDeskDraft,caseProcedureMarkup,similarCases,similarCasesMarkup,caseDomain,knowledgeLibraryMarkup,knowledgeLibrary,libraryEntryMarkup,definitionMarkup,baseOutlineMarkup,conditionSentence,libraryStepsMarkup,RECORD_DIALOG_SKELETON,recordExplanation,recordPassageMarkup,outcomeSummaryMarkup,stepDetailMarkup,demoRoster,collectionRoster,demoCollection,DEMO_COLLECTIONS,caseLabel,demoPickerMarkup,demoTransportMarkup,resultReached,knowledgePayoff,knowledgePayoffMarkup,tourKnowledgePayoff,learningChangeSummary,learningFrameStart,learningProcessMarkup,recordedReuseMoment,recordedReuseMomentMarkup,knowledgeLearningModel,knowledgeLearningFocus,knowledgePinMatches,learningEventLabel,learningTime,checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,operationCues,completedStepFraction,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,roleBadge,boundDisplayReceipt,operationDisplayContext,knowledgeNowMarkup,nowMarkup,outcomeSummaryMarkup,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,demonstrationOverviewMarkup,learningLabel,claimModeLine,rosterUnrun,startControlMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {DESK_LEGAL_TESTS,deskLegalLabel,deskLegalStatus,deskStepLabel,deskRequest,deskLaw,agentDeskMarkup,deskOperationModel,deskFileLabel,deskDraftBinding,checkedDeskDraft,caseProcedureMarkup,similarCases,similarCasesMarkup,caseDomain,knowledgeLibraryMarkup,knowledgeLibrary,libraryEntryMarkup,definitionMarkup,baseOutlineMarkup,conditionSentence,libraryStepsMarkup,RECORD_DIALOG_SKELETON,recordExplanation,recordPassageMarkup,outcomeSummaryMarkup,stepDetailMarkup,demoRoster,collectionRoster,demoCollection,DEMO_COLLECTIONS,caseLabel,demoPickerMarkup,demoTransportMarkup,resultReached,knowledgePayoff,knowledgePayoffMarkup,tourKnowledgePayoff,learningChangeSummary,learningFrameStart,learningProcessMarkup,recordedReuseMoment,recordedReuseMomentMarkup,knowledgeLearningModel,knowledgeLearningFocus,knowledgePinMatches,learningEventLabel,learningTime,checkedSavedSnapshotAsset,checkedRecordedPacket,decodeRecordedSession,checkedAtomicOperationHead,RELEASE_PROCEDURE_OUTLINE,releaseOperationProcess,releaseOpeningMatches,releaseHeadMatches,releaseProcedurePreview,operationFrameYield,claimFragment,operationRoutePreference,plannedOperationProcess,operationStageGraph,operationReadDuration,operationChoreographyTiming,operationCues,completedStepFraction,bufferedOperationCount,operationInspection,sourceBodySpan,operationReading,stageFactSpan,stageFactText,operationStageMarkup,stageNodeContents,operationAttention,operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationRecord,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,roleBadge,boundDisplayReceipt,operationDisplayContext,knowledgeNowMarkup,nowMarkup,outcomeSummaryMarkup,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,workingOperationScope,applyWorkingOperation,workingProcessState,workingReadiness,operationNodeId,operationRelationship,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,demonstrationOverviewMarkup,learningLabel,claimModeLine,rosterUnrun,startControlMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });
