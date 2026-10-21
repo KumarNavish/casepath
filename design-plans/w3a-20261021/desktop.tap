@@ -3,169 +3,169 @@ TAP version 13
     # Subtest: Fictional claim · Robin & Sami
     ok 1 - Fictional claim · Robin & Sami
       ---
-      duration_ms: 39.797917
+      duration_ms: 9.956083
       type: 'test'
       ...
     # Subtest: Fictional intake · Robin and Sami’s family-home termination
     ok 2 - Fictional intake · Robin and Sami’s family-home termination
       ---
-      duration_ms: 4.345625
+      duration_ms: 0.713625
       type: 'test'
       ...
     # Subtest: Fictional claim · Maya’s tenancy
     ok 3 - Fictional claim · Maya’s tenancy
       ---
-      duration_ms: 8.959917
+      duration_ms: 6.137334
       type: 'test'
       ...
     # Subtest: Fictional claim · Ivo & Ada
     ok 4 - Fictional claim · Ivo & Ada
       ---
-      duration_ms: 3.0045
+      duration_ms: 1.949708
       type: 'test'
       ...
     # Subtest: Fictional claim · Nila & Teo
     ok 5 - Fictional claim · Nila & Teo
       ---
-      duration_ms: 2.82975
+      duration_ms: 3.035875
       type: 'test'
       ...
     # Subtest: Fictional claim · Rhea & Noel
     ok 6 - Fictional claim · Rhea & Noel
       ---
-      duration_ms: 6.195833
+      duration_ms: 1.997416
       type: 'test'
       ...
     # Subtest: Fictional intake · Maya’s tenancy termination
     ok 7 - Fictional intake · Maya’s tenancy termination
       ---
-      duration_ms: 2.837125
+      duration_ms: 2.118084
       type: 'test'
       ...
     # Subtest: Fictional intake · Maya’s tenancy termination
     ok 8 - Fictional intake · Maya’s tenancy termination
       ---
-      duration_ms: 0.569917
+      duration_ms: 1.519792
       type: 'test'
       ...
     # Subtest: Fictional intake · Maya’s tenancy termination
     ok 9 - Fictional intake · Maya’s tenancy termination
       ---
-      duration_ms: 0.427584
+      duration_ms: 0.470333
       type: 'test'
       ...
     1..9
 ok 1 - all nine recorded claims retain their complete actual DAG, edge applicability and unprocessed states
   ---
-  duration_ms: 2365.613167
+  duration_ms: 1673.055875
   type: 'test'
   ...
 # Subtest: an excluded incoming route remains excluded when its shared target still applies
 ok 2 - an excluded incoming route remains excluded when its shared target still applies
   ---
-  duration_ms: 1.182292
+  duration_ms: 0.5195
   type: 'test'
   ...
 # Subtest: every recorded source and all 73 cited spans verify against original and extracted identities
 ok 3 - every recorded source and all 73 cited spans verify against original and extracted identities
   ---
-  duration_ms: 29.374833
+  duration_ms: 15.548166
   type: 'test'
   ...
 # Subtest: family-home applicability does not establish separate spouse service or advance its requirement
 ok 4 - family-home applicability does not establish separate spouse service or advance its requirement
   ---
-  duration_ms: 102.4465
+  duration_ms: 49.139375
   type: 'test'
   ...
 # Subtest: shared document timing preserves its process-wide route without declaring a blocked selected step executable
 ok 5 - shared document timing preserves its process-wide route without declaring a blocked selected step executable
   ---
-  duration_ms: 9.328959
+  duration_ms: 4.069833
   type: 'test'
   ...
 # Subtest: zero recorded active gaps still expose held requirements, questions and the exact saved draft
 ok 6 - zero recorded active gaps still expose held requirements, questions and the exact saved draft
   ---
-  duration_ms: 4868.70075
+  duration_ms: 2483.958375
   type: 'test'
   ...
 # Subtest: Documents opens an unassigned received JPEG through the verified original source viewer
 ok 7 - Documents opens an unassigned received JPEG through the verified original source viewer
   ---
-  duration_ms: 3712.852584
+  duration_ms: 1969.163375
   type: 'test'
   ...
 # Subtest: the production browser draws all nine saved graphs without demo substitution, stage reports or initial motion
 ok 8 - the production browser draws all nine saved graphs without demo substitution, stage reports or initial motion
   ---
-  duration_ms: 11142.975667
+  duration_ms: 5897.394791
   type: 'test'
   ...
 # Subtest: fact selection exposes only its exact original passage and source inspection verifies it with focus return
 ok 9 - fact selection exposes only its exact original passage and source inspection verifies it with focus return
   ---
-  duration_ms: 3431.398125
+  duration_ms: 2286.894
   type: 'test'
   ...
 # Subtest: receiving claims bind to their exact knowledge version, with id/version fallback only for an absent hash
 ok 10 - receiving claims bind to their exact knowledge version, with id/version fallback only for an absent hash
   ---
-  duration_ms: 2634.752666
+  duration_ms: 2178.559875
   type: 'test'
   ...
 # Subtest: a fresh Knowledge read that changes the library keeps keyboard focus on the same control
 ok 11 - a fresh Knowledge read that changes the library keeps keyboard focus on the same control
   ---
-  duration_ms: 1701.62075
+  duration_ms: 1673.3655
   type: 'test'
   ...
 # Subtest: repeated logical action IDs retain the exact saved receipt, drawer and return focus when a later run appends an assessment
 ok 12 - repeated logical action IDs retain the exact saved receipt, drawer and return focus when a later run appends an assessment
   ---
-  duration_ms: 3673.008
+  duration_ms: 2476.140917
   type: 'test'
   ...
 # Subtest: native intake and arrival drafts keep their FileList and DOM identity through connected evidence navigation
 ok 13 - native intake and arrival drafts keep their FileList and DOM identity through connected evidence navigation
   ---
-  duration_ms: 2225.490958
+  duration_ms: 3274.743625
   type: 'test'
   ...
 # Subtest: fresh changes remain still for reduced motion, hidden views and reconnect history
 ok 14 - fresh changes remain still for reduced motion, hidden views and reconnect history
   ---
-  duration_ms: 1420.273
+  duration_ms: 1729.680125
   type: 'test'
   ...
 # Subtest: Documents read as a causal checklist whose route and review never share a line at 1440px
 ok 15 - Documents read as a causal checklist whose route and review never share a line at 1440px
   ---
-  duration_ms: 2576.608875
+  duration_ms: 2589.116041
   type: 'test'
   ...
 # Subtest: Open all steps wraps the complete process without sideways panning and every edge ends on its step
 ok 16 - Open all steps wraps the complete process without sideways panning and every edge ends on its step
   ---
-  duration_ms: 2821.015083
+  duration_ms: 2807.419166
   type: 'test'
   ...
 # Subtest: the step frame is a keyboard stop only while it scrolls at 1440px
 ok 17 - the step frame is a keyboard stop only while it scrolls at 1440px
   ---
-  duration_ms: 1793.957083
+  duration_ms: 1514.561792
   type: 'test'
   ...
 # Subtest: Open all steps brings the whole process and the chosen step into view below the sticky header
 ok 18 - Open all steps brings the whole process and the chosen step into view below the sticky header
   ---
-  duration_ms: 1905.551042
+  duration_ms: 1541.961542
   type: 'test'
   ...
 # Subtest: Draft request opens the exact recorded unsent letter without changing its record or writing
 ok 19 - Draft request opens the exact recorded unsent letter without changing its record or writing
   ---
-  duration_ms: 2352.346375
+  duration_ms: 1381.188458
   type: 'test'
   ...
 1..19
@@ -176,4 +176,4 @@ ok 19 - Draft request opens the exact recorded unsent letter without changing it
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 56262.949083
+# duration_ms 37256.0815

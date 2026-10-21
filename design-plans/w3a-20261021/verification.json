@@ -2,12 +2,12 @@
   "status": "ready_for_planner_review",
   "branch": "codex/casepath-ui-w3a-20261021",
   "approved_base": "8856ca71e250273f0f9bc7ae502561370ad389f6",
-  "implementation_commit": "dcb64e7d2441db8bfcc62e9e8f44b9ba615c119d",
+  "implementation_commit": "ac37f6af965723f4971d707f258c93822790c129",
   "viewport": {
     "width": 1440,
     "height": 900
   },
-  "focused_tests": 449,
+  "focused_tests": 450,
   "desktop_tests": 28,
   "phone_tests_excluded": 7,
   "case_count": 9,
@@ -16,12 +16,12 @@
   "cue_count": 94,
   "text_crossings": 0,
   "overlaps": 0,
-  "video_duration_seconds": 69.48,
+  "video_duration_seconds": 73.08,
   "served_assets_sha256": {
-    "autonomous-workspace-v1.js": "6983352c561ad0dd32092a3919fe7026ffa48685a8f2d8b9af79ae8c5709a0fe",
-    "autonomous-workspace-v1.css": "701e5fc70a3d2397bad58b61cbf9f0d903710fe75d2b271195f80f52cc0d1ee3"
+    "autonomous-workspace-v1.js": "3f6f0192b8c681b6e6e91ba742741270402f786e19ff47db8fcf3f6894b86e06",
+    "autonomous-workspace-v1.css": "58ddaca12648a1d69ae947eaa946fea7535a52cd1bd528b90835617d951c1d71"
   },
-  "source_manifest_sha256": "a20aefa3eb6bfcca59523c0c2207db80d1c599fed1445c2566e034f66e4dd8db",
+  "source_manifest_sha256": "769d71af5c167dc0eff8c9b69ffdb616b87a1bd7f822c500521a3d1cbfc28e06",
   "source_file_count": 1725,
   "paid_inference_calls": 0,
   "hosted_writes": 0,
@@ -29,16 +29,21 @@
   "original_nine_rerun": false,
   "merge_requires_user_visual_go": true,
   "hashes": {
-    "seal.log": "0d937a63c0373e03feb62e5558af2afa0fe170fea21ac603711c0448099d40ca",
-    "rent-step-selected.png": "07c2766ba6bf694cfaaff8efaa41feeac653b38853e00a6551379eab8eae11ba",
-    "mid-work-thread.png": "c2915c733c4900c5a60c0db54f2d81c28d232614fe14431203605d155ad372a4",
-    "desktop.tap": "9065d75a902488de77c1c53aedf36f209134a242279fb0af2f150d701b0bc594",
-    "case1.mp4": "739bf1c0f17d82669682355cc9d68738f7d41591c5d29f2f0cf7cacf58b7c1b2",
-    "focused.tap": "ce23413d75070df2dffee7ba6efe564f9000d92f2e9a6c4997a66ae54dcb4c7a",
-    "case4-answer.png": "25ece0dca9cf03eab3a2bcb2fe5972e37a8fb7b200c4901bad6a82017d3a4322",
-    "case1-answer-motion.png": "9979fb29519410ee05991c56ae1482e60633809ee3ca37e209add4ba8b0def13",
-    "case1-answer.png": "465f98ed683437e0135c9ef87b9f14b2088afc22a07383c52c546b3889e7d800",
+    "seal.log": "dd2196f6140485cd426928e77152425aa55394bec74906b4182aa443046da57d",
+    "rent-step-selected.png": "06c23b2781d0fa0b599983b6137641c483ab3c9f40ed480ebda397c978b61e5e",
+    "mid-work-thread.png": "d421886571c17d3d986e26106dd04530446ebc581ca975b0d658e201f88bf54e",
+    "desktop.tap": "6a95c1235a5b5cb29530f4f165eb280f96ee22cdb93ee39948e70c0f841db28e",
+    "case1.mp4": "8865ae1b4b560418bb0c46332f68418ab28900bd519a8052be834eb4f6190569",
+    "focused.tap": "8bfd3380a934066c6e20d1d6ff66a024e4f9659358626fba85af81ffae85b35c",
+    "case4-answer.png": "807594396cbf13404db9661ed65bdda5198550bcd6a92ac8421dbb33d0aab010",
+    "case1-answer-motion.png": "b7f2e4c917e1327469aa5a55aad9df41b00824dfc98c17fc93d87113824de306",
+    "case1-answer.png": "a144cc4288b1d6b042f5932b399f4ae254bc7b8977e157eb4b416ee253460302",
     "verification-receipt.json": "c0460691e5a5b7dd963e992931b6ff7bd8409607561800900e9da1e6154d197e",
-    "motion-receipt.json": "0159f684e238acc5f4267e330d032a807235a6d30875d7ea87b0fddb5e24627e"
-  }
+    "motion-receipt.json": "c880343f9cedeeeca731db4b80c62581e4e3deb2a95f98a341b98837d0fbb401"
+  },
+  "user_visual_approval": "Approved in this chat on 2026-10-21",
+  "planner_revision_request": 6313995076,
+  "recorded_step_labels_preserved": true,
+  "unresolved_sentence_visible": true,
+  "failed_test_alignment_verified": true
 }

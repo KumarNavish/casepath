@@ -24,10 +24,14 @@ The new pure tests check prefix and final counters against the captured traces, 
 
 Early checks found draft-event routing errors, overlapping idle pulses, lines crossing node symbols, unbound step inspections and missing German request variants. These were repaired before the final captures. The backend journal, stored outcome, original draft and source content remain unchanged. Local draft edits are keyed by API identity, case and original draft; they save only on the device.
 
-No paid inference, hosted writes, deployment or original-nine rerun occurred. The Mac-owned public read-only test is untouched. Full-product acceptance remains W8. W3-A merge awaits Navish’s visual go.
+No paid inference, hosted writes, deployment or original-nine rerun occurred. The Mac-owned public read-only test is untouched. Full-product acceptance remains W8. Navish approved the visual direction in this chat on 21 October 2026. Integration remains with the Mac owner.
 
 ## Reproduce
 
 With the owned deterministic preview running, use `node design-plans/w3a-20261021/verify.mjs` and `node design-plans/w3a-20261021/motion.mjs`. They use GET-only captured operation responses, and inspect the actual product controller and sealed static assets. Set `OVERRIDES=1` only for working-source development. The final receipts have overrides disabled.
 
 Review handoff follows planner comments 6313172839 and 6313206178. Use only `design-plans/tools/wait_for_planner.sh` for review waits; continue to W4 after W3-A READY while the planner reviews, with any change request taking priority.
+
+## Planner review revision
+
+Closes comment 6313995076: all family step names retain their recorded meaning, Show the reasoning lists the original step labels, failed-test labels sit beside their icons with the articles aligned right, and the full recorded unresolved sentence appears in amber before the draft action. All four frames and the film were regenerated against the sealed assets. The revision passes 450 focused tests and 28 desktop browser tests.
