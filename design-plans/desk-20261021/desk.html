@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>CasePath · Agent desk</title>
+<link rel="stylesheet" href="/assets/autonomous-workspace-v1.css">
+<style>
+:root{--ink:#183d35;--muted:#465e54;--soft:#5d7268;--line:#73857a;--hair:#cdd6cc;--green:#315e49;--amber:#80633c;--paper:#fffffc;--field:#eff1ec;--wash:#e1e8db;--ease:cubic-bezier(.2,.65,.3,1)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--field);color:var(--ink);font:400 16px/1.5 'CasePath Instrument',Arial,sans-serif;-webkit-font-smoothing:antialiased}
+header.top{height:64px;display:flex;align-items:center;gap:24px;padding:0 36px;border-bottom:1px solid var(--line)}
+.brand{font-weight:600;font-size:22px;letter-spacing:-.02em}.tag{color:var(--muted)}.nav{margin-left:auto;display:flex;gap:28px;color:var(--muted)}.nav b{font-weight:400;color:var(--ink);box-shadow:inset 0 -2px 0 var(--ink);padding-bottom:6px}
+.case{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;padding:24px 36px 20px;border-bottom:1px solid var(--hair)}
+.eyebrow,.col h2{font-size:12.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.case h1{margin:6px 0 6px;font-size:26px;font-weight:500;letter-spacing:-.01em}
+.asks{font-size:17px;color:var(--muted);max-width:760px}.asks q{color:var(--ink)}
+.tally{display:flex;gap:34px}.metric .n{font-size:34px;line-height:1;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.02em;transition:color .4s}.metric .l{margin-top:6px;font-size:12.5px;color:var(--muted)}.metric.bump .n{color:var(--green)}
+main{display:grid;grid-template-columns:270px minmax(0,1fr) 430px;position:relative;min-height:calc(100vh - 64px - 132px - 46px)}
+.col{padding:22px 32px 70px}.col+.col{border-left:1px solid var(--hair)}.col:first-child{padding-left:36px}.col:last-child{padding-right:36px}
+.col h2{margin:0 0 14px;display:flex;justify-content:space-between}.col h2 span{text-transform:none;letter-spacing:0;font-weight:400}
+/* From the customer */
+.files{list-style:none;margin:0;padding:0}.files li{display:grid;grid-template-columns:20px 1fr;column-gap:10px;padding:10px 0;border-top:1px solid var(--hair)}.files li:last-child{border-bottom:1px solid var(--hair)}
+.files .nm{font-size:15.5px;color:var(--soft);transition:color .3s}.files .mt{grid-column:2;font-size:13px;color:var(--muted);min-height:0}
+.st-dot{width:12px;height:12px;margin-top:5px;border-radius:50%;border:1.5px solid var(--line)}
+.files li.reading .nm,.files li.read .nm{color:var(--ink)}.files li.reading .st-dot{border-color:var(--green);background:var(--green);animation:breath 1.6s ease-in-out infinite}
+.files li.read .st-dot{border:0;width:auto;height:auto;margin-top:0;color:var(--green)}.files li.read .st-dot::before{content:'✓'}
+@keyframes breath{50%{opacity:.35}}
+/* Reading now */
+.role{display:flex;align-items:baseline;gap:10px;min-height:30px;font-size:19px}.badge{font-size:13.5px;border:1px solid var(--green);color:var(--green);border-radius:3px;padding:1px 8px;position:relative;top:-2px;white-space:nowrap}
+.doc{margin-top:14px;background:var(--paper);border:1px solid var(--line);height:400px;display:flex;flex-direction:column}
+.doc .name{font-size:13px;color:var(--muted);padding:14px 24px 8px;border-bottom:1px solid var(--hair)}.doc .scroll{overflow:hidden;padding:14px 24px 20px;flex:1;position:relative}
+.doc .text{white-space:pre-wrap;font-size:16.5px;line-height:1.75}
+mark{background:linear-gradient(90deg,rgb(116 155 99/.24) 50%,transparent 50%) right/200% 100% no-repeat;color:inherit;transition:background-position .55s var(--ease),box-shadow .3s .45s}mark.on{background-position:left;box-shadow:inset 0 -2px 0 var(--green)}
+.found{margin-top:14px;min-height:48px;font-size:16px;color:var(--muted);opacity:0;transform:translateY(6px);transition:opacity .3s var(--ease),transform .3s var(--ease)}.found.on{opacity:1;transform:none}.found b{color:var(--ink);font-weight:500}
+/* Process graph */
+.reuse{font-size:13.5px;color:var(--green);margin:-6px 0 12px;min-height:20px;opacity:0;transition:opacity .4s}.reuse.on{opacity:1}
+.graph{position:relative;list-style:none;margin:0;padding:0}
+.node{position:relative;padding:0 0 18px 34px;opacity:.32;transition:opacity .5s var(--ease)}
+.node .c{border-style:dashed}.node.in{opacity:1}.node.in .c{border-style:solid;animation:pop .5s var(--ease)}@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.15)}100%{transform:none}}
+.node::before{content:'';position:absolute;left:6px;top:20px;bottom:-2px;width:1.5px;background:var(--hair)}
+.node:last-child::before{display:none}
+.node .fill{position:absolute;left:6px;top:20px;width:1.5px;height:0;background:var(--green);transition:height .6s var(--ease)}
+.node.done .fill{height:calc(100% - 18px)}.node:last-child .fill{display:none}
+.node .c{position:absolute;left:0;top:4px;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line);background:var(--field);display:grid;place-items:center;font-size:10px;color:var(--paper);transition:all .35s var(--ease)}
+.node.active .c{border-color:var(--green);box-shadow:0 0 0 4px rgb(116 155 99/.22);animation:ring 1.8s ease-in-out infinite}
+@keyframes ring{50%{box-shadow:0 0 0 7px rgb(116 155 99/.08)}}
+.node.done .c{background:var(--green);border-color:var(--green);animation:none;box-shadow:none}.node.done .c::before{content:'✓'}
+.node .lb{font-size:16px;line-height:1.4;color:var(--soft);transition:color .3s}.node.active .lb,.node.done .lb{color:var(--ink)}
+.node .ev{margin-top:4px;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13.5px;color:var(--muted)}
+.ev span{opacity:0;transition:opacity .4s var(--ease)}.ev span.in{opacity:1}.ev .ok{color:var(--green)}.ev .law{font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.node.glow .lb{background:rgb(116 155 99/.2);transition:background .8s}
+/* Result */
+.result{display:none;margin-top:14px;background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--green);padding:26px 30px;opacity:0;transform:translateY(8px);transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.result.on{display:block;opacity:1;transform:none}.desk-result .doc,.desk-result .found{display:none}
+.result .lead{margin:10px 0 20px;font-size:22px;line-height:1.42;letter-spacing:-.01em}
+.tests{list-style:none;margin:0 0 18px;padding:0}.tests li{display:grid;grid-template-columns:20px 1fr auto;gap:10px;padding:7px 0;border-top:1px solid var(--hair);font-size:15.5px}
+.tests .y{color:var(--green)}.tests .n{color:var(--amber)}.tests .r{color:var(--muted);font-size:13.5px;font-variant-numeric:tabular-nums}
+.open{margin:0 0 20px;padding-left:12px;border-left:2px solid var(--amber);color:var(--amber);font-size:16px}
+.actions{display:flex;gap:14px;align-items:center;font-size:14.5px;color:var(--muted)}.btn{border:1px solid var(--ink);padding:8px 16px;color:var(--ink);border-radius:2px;background:var(--paper)}
+svg.thread{position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:2}svg.thread path{fill:none;stroke:var(--green);stroke-width:1.5;stroke-linecap:round}svg.thread circle{fill:var(--green)}
+footer{position:fixed;left:0;right:0;bottom:0;height:46px;display:flex;align-items:center;gap:10px;padding:0 36px;border-top:1px solid var(--hair);background:var(--field);font-size:13.5px;color:var(--muted);z-index:3}
+footer .pip{width:26px;height:3px;background:var(--hair)}footer .pip.done{background:var(--green)}footer .pip.now{background:var(--ink)}
+footer .prog{flex:1;height:2px;background:var(--hair);margin-left:18px;position:relative}footer .prog i{position:absolute;left:0;top:0;bottom:0;background:var(--green);width:0;transition:width .6s var(--ease)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style></head><body>
+<header class="top"><span class="brand">CasePath</span><span class="tag">Follow the documents</span><nav class="nav"><span>Cases</span><b>Demonstration</b><span>Knowledge</span></nav></header>
+<section class="case"><div><div class="eyebrow" id="eyebrow"></div><h1 id="title"></h1><div class="asks" id="asks"></div></div>
+<div class="tally"><div class="metric" id="m-docs"><div class="n">0</div><div class="l">files read</div></div><div class="metric" id="m-facts"><div class="n">0</div><div class="l">facts found in the text</div></div><div class="metric" id="m-rules"><div class="n">0</div><div class="l">rule checks run</div></div><div class="metric" id="m-steps"><div class="n">0/0</div><div class="l">steps complete</div></div></div></section>
+<main id="main"><svg class="thread" id="thread"></svg>
+<section class="col"><h2>From the customer</h2><ul class="files" id="files"></ul></section>
+<section class="col"><h2>Reading now</h2><div class="role"><span class="badge" id="badge">CasePath</span><span id="what"></span></div>
+<div class="doc"><div class="name" id="docname"></div><div class="scroll" id="scroll"><div class="text" id="text"></div></div></div><div class="found" id="found"></div><div class="result" id="result"></div></section>
+<section class="col"><h2>Process <span id="stepcount"></span></h2><div class="reuse" id="reuse"></div><ol class="graph" id="graph"></ol></section></main>
+<footer><span id="pos"></span><span id="pips" style="display:flex;gap:6px"></span><span class="prog"><i id="prog"></i></span></footer>
+<script>
+const API='/api/claim-loops/v1/autonomous';
+const ROSTER=['clm_314f2d309fea25e6','clm_4a07dbbbd859a3ce','clm_95d08975bc575592','clm_0f4f13b1e3e1328c','clm_393285577dcb12c4','clm_4a53299cfe619303','clm_2c55cdd816b1d0e8','clm_543f08f2415b2a33','clm_7dbd7c7d1c4ddf90'];
+const LABELS={clm_314f2d309fea25e6:'Repeated heating failure and reported repair calls',clm_4a07dbbbd859a3ce:'Heating resets and an uncertain onset date',clm_95d08975bc575592:'Cold mornings and a requested service assessment',clm_0f4f13b1e3e1328c:'An emailed termination and uncertain paper service',clm_393285577dcb12c4:'An unsigned notice and the issuer question',clm_4a53299cfe619303:'Email notice and the complete service record',clm_2c55cdd816b1d0e8:'A blank reason field and a later market email',clm_543f08f2415b2a33:'Rent amounts with an uncertain notification date',clm_7dbd7c7d1c4ddf90:'An increase form and the later email chronology'};
+const DOMAIN={defect_mold_heating:'Defects and repairs',lease_termination_dispute:'Lease termination',rent_increase_dispute:'Rent increases'};
+const $=id=>document.getElementById(id),h=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const q=new URLSearchParams(location.search),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,SPEED=+(q.get('speed')||1);
+const wait=ms=>sleep(reduced?Math.min(ms,300):ms/SPEED);
+// Mechanical labels only: recorded names lose numeric prefixes, extensions and underscores.
+const fileLabel=n=>String(n||'').replace(/\.[a-z0-9]+$/i,'').replace(/^\d+[-_ ]*/,'').replace(/[-_]+/g,' ').replace(/^./,c=>c.toUpperCase());
+const words=s=>String(s||'').replace(/_/g,' ').replace(/^./,c=>c.toUpperCase());
+const law=refs=>{const by=new Map();for(const r of refs||[]){const [code,art]=String(r).split(':');if(!by.has(code))by.set(code,[]);if(!by.get(code).includes(art))by.get(code).push(art);}return [...by].map(([c,a])=>`${c} ${a.join(' · ')}`).join('  ');};
+// The customer's own request, quoted verbatim from the recorded message.
+function request(msg){const m=String(msg||'').match(/(?:specifically asking for|specific request is|meine Bitte|bitte konkret um|request is)\s*:\s*([^;\n.]+)/i);return m?m[1].trim():'';}
+function bump(id,v){const el=$(id),n=el.querySelector('.n');if(n.textContent!==String(v)){n.textContent=v;el.classList.add('bump');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('bump'),550);}}
+async function load(id){const state=(await (await fetch(`${API}/claims/${id}`)).json()).state;const raw=await (await fetch(`${API}/claims/${id}/operations?mode=live`)).text();return {state,ops:raw.split('\n').filter(Boolean).map(l=>JSON.parse(l)).filter(r=>r.type==='operation')};}
+function thread(from,to){const svg=$('thread');if(!from||!to||reduced){svg.innerHTML='';return;}const m=$('main').getBoundingClientRect(),rs=from.getClientRects(),a=rs[rs.length-1]||from.getBoundingClientRect(),b=to.getBoundingClientRect();
+  const x1=a.right-m.left,y1=a.bottom-m.top,x2=b.left-m.left-6,y2=b.top+10-m.top,d=`M${x1},${y1} C${x1+110},${y1+30} ${x2-120},${y2} ${x2},${y2}`;
+  svg.innerHTML=`<path d="${d}"/><circle cx="${x1}" cy="${y1}" r="3"/><circle cx="${x2}" cy="${y2}" r="0"/>`;const p=svg.querySelector('path'),L=p.getTotalLength();p.style.strokeDasharray=L;
+  p.animate([{strokeDashoffset:L},{strokeDashoffset:0}],{duration:650/SPEED,easing:'cubic-bezier(.2,.65,.3,1)',fill:'forwards'}).onfinish=()=>svg.lastElementChild?.setAttribute('r','3');}
+function unthread(){for(const el of $('thread').children)el.animate([{opacity:1},{opacity:0}],{duration:450,fill:'forwards'});}
+function role(r,t){$('badge').textContent=r;$('what').textContent=t;}
+function show(src,quote){const text=(src.result?.text||'').replace(/^Synthetic demonstration document \(fictional\)\n/,'');$('docname').textContent=fileLabel(src.result?.file_name);
+  if(!quote){$('text').textContent=text;$('scroll').scrollTop=0;return null;}const at=text.indexOf(quote);if(at<0){$('text').textContent=text;return null;}
+  $('text').innerHTML=h(text.slice(0,at))+`<mark>${h(quote)}</mark>`+h(text.slice(at+quote.length));const mk=$('text').querySelector('mark');$('scroll').scrollTop=Math.max(0,mk.offsetTop-70);requestAnimationFrame(()=>requestAnimationFrame(()=>mk.classList.add('on')));return mk;}
+async function playCase(i){
+  const id=ROSTER[i],{state,ops}=await load(id),g=state.graph||{},nodes=g.nodes||[],o=state.outcome||{},preds=o.legal_predicates||[],texts=new Map();
+  const docLabel=t=>((g.document_catalog||[]).find(d=>d.document_type===t)||(state.obligations||[]).find(d=>d.document_type===t)||{}).label||words(t);
+  const factLabel=fid=>((state.facts||[]).find(f=>f.fact_id===fid)||{}).label||'';
+  const predByQuote=new Map();for(const p of preds)for(const c of p.citations||[])predByQuote.set(c.quote,p);
+  const docFactByQuote=new Map();for(const op of ops)if(op.kind==='fact.extract'&&op.input?.document_type&&op.source?.quote&&!docFactByQuote.has(op.source.quote))docFactByQuote.set(op.source.quote,op.input.document_type);
+  $('eyebrow').textContent=`Case ${i+1} of ${ROSTER.length} · ${DOMAIN[g.family]||''}`;$('title').textContent=LABELS[id]||state.title;
+  const ask=request(state.message);$('asks').innerHTML=ask?`Asks for <q>${h(ask)}</q>`:`Subject <q>${h(state.title)}</q>`;
+  $('pos').textContent=`Case ${i+1} of ${ROSTER.length}`;$('pips').innerHTML=ROSTER.map((_,k)=>`<span class="pip ${k<i?'done':k===i?'now':''}"></span>`).join('');
+  const groups=new Map();for(const s of state.source_descriptors||[]){const k=s.role+'|'+s.file_name;if(!groups.has(k))groups.set(k,{...s,ids:[]});groups.get(k).ids.push(s.artifact_id);}
+  $('files').innerHTML=[...groups.values()].map(s=>`<li data-role="${h(s.role)}" data-a="${h(s.ids.join(' '))}" data-facts="0"><span class="st-dot"></span><span class="nm">${h(s.role==='customer_message'?'Customer message':fileLabel(s.file_name))}</span><span class="mt"></span></li>`).join('');
+  $('graph').innerHTML=nodes.map(n=>`<li class="node" data-n="${h(n.node_id)}"><span class="fill"></span><span class="c"></span><div class="lb">${h(n.label)}</div><div class="ev">${(n.document_types||[]).map(t=>`<span class="in" data-d="${h(t)}">${h(docLabel(t))} · needed</span>`).join('')}<span class="law"></span></div></li>`).join('');
+  document.body.classList.remove('desk-result');$('result').className='result';$('reuse').className='reuse';$('found').className='found';$('text').textContent='';$('docname').textContent='';$('thread').innerHTML='';
+  let facts=0,rules=0,done=0,current=null;const total=nodes.length,read=()=>document.querySelectorAll('.files li.read').length;
+  ['m-docs','m-facts','m-rules'].forEach(k=>bump(k,0));bump('m-steps',`0/${total}`);$('stepcount').textContent=`0 of ${total} steps`;
+  const cm=document.querySelector('.files li[data-role=customer_message]');role('CasePath','receives the customer’s request');if(cm){cm.className='read';cm.querySelector('.mt').textContent='Request received';bump('m-docs',read());}await wait(1500);
+  const ruleKinds=new Set(['condition.evaluate','dependency.evaluate','process.inspect','document.require']);
+  const fileFor=a=>document.querySelector(`.files li[data-a~="${a}"]`),nodeEl=nid=>document.querySelector(`.node[data-n="${nid}"]`);
+  const setReading=li=>{if(!li||li===current||li.className==='read')return;if(current){current.className='read';bump('m-docs',read());}li.className='reading';current=li;};
+  for(const op of ops){
+    if(op.kind==='node.evaluate'){rules++;const el=nodeEl(op.object.id);if(el&&!el.classList.contains('in')&&op.result?.activation==='true'){el.classList.add('in');await wait(260);}continue;}
+    if(ruleKinds.has(op.kind)){rules++;if(rules%9===0){bump('m-rules',rules);await wait(30);}continue;}
+    bump('m-rules',rules);
+    if(op.kind==='source.open'){texts.set(op.object.id,op);const li=fileFor(op.object.id);if(li&&li.className!=='read'&&li!==current){setReading(li);role('CasePath',`opens ${fileLabel(op.result?.file_name)}`);show(op,null);unthread();$('found').className='found';await wait(1000);}continue;}
+    if(op.kind==='fact.extract'&&op.source){const src=texts.get(op.source.artifact_id);if(!src)continue;const checker=op.result?.verification_required===false,li=fileFor(op.source.artifact_id);setReading(li);
+      const pred=Array.isArray(op.input?.rule_refs),t=op.input?.document_type;const quoteDoc=pred?(docFactByQuote.get(op.source.quote)):t;
+      const node=nodes.find(n=>(n.document_types||[]).includes(quoteDoc))||(pred?nodes.find(n=>n.terminal)||nodes[nodes.length-1]:null);const mk=show(src,op.source.quote),el=node&&nodeEl(node.node_id);
+      const short=q=>{const x=String(q||'').trim();return x.length>90?x.slice(0,88).replace(/\s+\S*$/,'')+'…':x;};const label=pred?`${words(op.object.id)} (${law(op.input.rule_refs)})`:(factLabel(op.object.id)||(t?docLabel(t):'')||`“${short(op.source.quote)}”`);
+      if(el)el.classList.add('in','active');role(checker?'Checker':'Reader',checker?'confirms it word for word':pred?'tests the law against the text':'finds a fact in the text');
+      if(!checker){facts++;bump('m-facts',facts);if(li){li.dataset.facts=+li.dataset.facts+1;li.querySelector('.mt').textContent=`${li.dataset.facts} fact${li.dataset.facts==1?'':'s'} used`;}}
+      $('found').innerHTML=`${checker?'Confirmed':pred?'Legal test':'Found'} · <b>${h(label)}</b>${node?`<br><span style="font-size:14.5px">feeds the step “${h(node.label)}”</span>`:''}`;$('found').className='found on';
+      await wait(450);if(mk&&el)thread(mk,el.querySelector('.lb'));
+      const p=pred?{rule_refs:op.input.rule_refs}:predByQuote.get(op.source.quote);if(el&&p){const lw=el.querySelector('.law');const refs=new Set((lw.dataset.r||'').split(',').filter(Boolean));(p.rule_refs||[]).forEach(r=>refs.add(r));lw.dataset.r=[...refs].join(',');lw.textContent=law([...refs]);lw.classList.add('in');}
+      await wait(2300);unthread();$('found').className='found';await wait(200);continue;}
+    if(op.kind==='document.check'&&op.result?.assessment==='sufficient'){const s=document.querySelector(`.ev span[data-d="${op.object.id}"]`);if(s&&!s.classList.contains('ok')){const src=texts.get(op.source?.artifact_id),mk=src?show(src,op.source.quote):null;
+      role('Checker','accepts the document');const el=s.closest('.node');await wait(350);if(mk)thread(mk,s);s.textContent=`${docLabel(op.object.id)} · received ✓`;s.classList.add('ok');el?.classList.add('glow');await wait(1400);el?.classList.remove('glow');unthread();await wait(200);}continue;}
+    if(op.kind==='step.complete'){const el=nodeEl(op.object.id);if(el&&!el.classList.contains('done')){el.classList.add('in');el.classList.remove('active');el.classList.add('done');done++;bump('m-steps',`${done}/${total}`);$('stepcount').textContent=`${done} of ${total} steps`;
+      role('Rulebook',`completes “${(nodes.find(n=>n.node_id===op.object.id)||{}).label||''}”`);$('prog').style.width=`${(i+done/total)/ROSTER.length*100}%`;await wait(1000);}continue;}
+    if(op.kind==='knowledge.reuse'){$('reuse').textContent=`Built on ${DOMAIN[g.family]||'a procedure'} v${op.input?.version}, learned from earlier cases${op.result?.reused_evidence_recipes?` · ${op.result.reused_evidence_recipes} document checks reused`:''}`;$('reuse').className='reuse on';role('Memory','reuses what earlier cases learned');await wait(1500);continue;}
+    if(op.kind==='decision'){if(current){current.className='read';current=null;}bump('m-docs',read());unthread();role('Rulebook','delivers the result');
+      const sentences=(o.summary||'').split(/(?<=\.)\s+/),lead=sentences[0]||'',rest=sentences.slice(1).join(' ');
+      const tests=[...preds].sort((x,y)=>(x.status==='supported')-(y.status==='supported')).map(p=>`<li><span class="${p.status==='supported'?'y':'n'}">${p.status==='supported'?'✓':'✕'}</span><span>${h(words(p.predicate_id))}${p.status==='supported'?'':' — not met'}</span><span class="r">${h(law(p.rule_refs))}</span></li>`).join('');
+      $('result').innerHTML=`<div class="eyebrow">Result for the handler</div><p class="lead">${h(lead)}</p>${tests?`<div class="eyebrow" style="margin-bottom:6px">Legal tests</div><ul class="tests">${tests}</ul>`:''}${rest?`<p class="open">Still open · ${h(rest)}</p>`:''}<div class="actions">${o.request_draft?'<span class="btn">Open draft letter</span><span>Draft, not sent · a person decides</span>':''}</div>`;
+      document.body.classList.add('desk-result');$('result').className='result on';$('prog').style.width=`${(i+1)/ROSTER.length*100}%`;await wait(+(q.get('hold')||8000));continue;}
+  }
+}
+(async()=>{for(let i=+(q.get('case')||0);i<ROSTER.length;i++)await playCase(i);})();
+</script></body></html>

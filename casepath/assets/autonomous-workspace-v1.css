@@ -1559,3 +1559,89 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
   ::view-transition-group(root), ::view-transition-old(root), ::view-transition-new(root) { animation:none; }
   ::view-transition-group(au-source-answer), ::view-transition-old(au-source-answer), ::view-transition-new(au-source-answer) { animation-duration:300ms; animation-timing-function:cubic-bezier(.2,.65,.3,1); }
 }
+
+/* Agent desk: recorded customer sources, evidence and the process they support. */
+@media (min-width:701px) {
+  .au-workspace .au-main:has(.au-agent-desk) { max-width:none; padding:0 0 46px; }
+  .au-workspace .au-agent-desk { color:var(--au-ink); --au-desk-hair:#cdd6cc; }
+  .au-workspace .au-desk-case { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:28px; align-items:end; padding:24px 36px 20px; border-bottom:1px solid var(--au-desk-hair); }
+  .au-workspace .au-desk-eyebrow { margin:0; color:var(--au-muted); font-size:12.5px; line-height:1.5; letter-spacing:.08em; text-transform:uppercase; }
+  .au-workspace .au-desk-case .au-page-heading { margin:6px 0; font-size:26px; line-height:1.35; font-weight:500; }
+  .au-workspace .au-desk-asks { margin:0; color:var(--au-muted); font-size:17px; }
+  .au-workspace .au-desk-asks q { color:var(--au-ink); }
+  .au-workspace .au-desk-controls { display:flex; align-items:baseline; gap:14px; margin-top:10px; color:var(--au-muted); font-size:14px; }
+  .au-workspace .au-desk-controls button { min-height:24px; padding:0; border:0; background:none; font:inherit; color:inherit; text-decoration:underline; text-underline-offset:3px; }
+  .au-workspace .au-desk-tally { display:flex; gap:28px; padding-bottom:3px; }
+  .au-workspace .au-desk-number { display:block; font-size:34px; line-height:1; font-weight:500; font-variant-numeric:tabular-nums; }
+  .au-workspace .au-desk-metric-label { display:block; margin-top:6px; font-size:12.5px; line-height:1.5; color:var(--au-muted); }
+  .au-workspace .au-desk-grid { display:grid; grid-template-columns:270px minmax(0,1fr) 430px; position:relative; min-height:590px; }
+  .au-workspace .au-desk-column { min-width:0; padding:22px 32px 70px; }
+  .au-workspace .au-desk-column + .au-desk-column { border-left:1px solid var(--au-desk-hair); }
+  .au-workspace .au-desk-column:first-child { padding-left:36px; }
+  .au-workspace .au-desk-column:last-child { padding-right:36px; }
+  .au-workspace .au-desk-column h2 { display:flex; justify-content:space-between; margin:0 0 14px; color:var(--au-muted); font-size:12.5px; line-height:1.5; font-weight:500; letter-spacing:.08em; text-transform:uppercase; }
+  .au-workspace .au-desk-column h2 span { text-transform:none; letter-spacing:0; font-weight:400; }
+  .au-workspace .au-desk-files, .au-workspace .au-desk-requirements { list-style:none; padding:0; margin:0 0 22px; }
+  .au-workspace .au-desk-files li { display:grid; grid-template-columns:20px minmax(0,1fr); column-gap:10px; padding:10px 0; border-top:1px solid var(--au-desk-hair); color:var(--au-muted); }
+  .au-workspace .au-desk-files li:last-child { border-bottom:1px solid var(--au-desk-hair); }
+  .au-workspace .au-desk-files button { white-space:normal; overflow-wrap:anywhere; text-align:left; padding:0; min-height:0; font-size:15.5px; color:inherit; text-decoration:none; }
+  .au-workspace .au-desk-file-meta { grid-column:2; font-size:13px; color:var(--au-muted); }
+  .au-workspace .au-desk-file-dot { width:12px; height:12px; margin-top:5px; border:1.5px solid var(--au-line); border-radius:50%; color:var(--au-green); }
+  .au-workspace [data-au-desk-file-state=reading], .au-workspace [data-au-desk-file-state=read] { color:var(--au-ink); }
+  .au-workspace [data-au-desk-file-state=reading] .au-desk-file-dot { border-color:var(--au-green); background:var(--au-green); }
+  .au-workspace [data-au-desk-file-state=read] .au-desk-file-dot { border:0; border-radius:0; width:auto; height:auto; margin-top:0; }
+  .au-workspace .au-desk-role { display:flex; align-items:baseline; gap:10px; min-height:30px; font-size:19px; line-height:1.5; }
+  .au-workspace .au-desk-role .au-role-badge { flex:none; font-size:13.5px!important; }
+  .au-workspace .au-desk-source { display:flex; flex-direction:column; height:400px; margin-top:14px; background:var(--au-paper); border:1px solid var(--au-line); }
+  .au-workspace .au-desk-source-name { flex:none; padding:14px 24px 8px; border:0; border-bottom:1px solid var(--au-desk-hair); background:transparent; color:var(--au-muted); font:inherit; font-size:13px; text-align:left; }
+  .au-workspace .au-desk-source-scroll { flex:1; min-height:0; overflow:auto; padding:14px 24px 20px; scrollbar-width:thin; scroll-behavior:auto; }
+  .au-workspace .au-desk-source-text { margin:0; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--au-ink); font:inherit; font-size:16.5px; line-height:1.75; }
+  .au-workspace .au-desk-source-text mark { color:inherit; background:linear-gradient(var(--au-wash),var(--au-wash)) no-repeat; background-size:100% 100%; box-shadow:inset 0 -2px 0 var(--au-green); }
+  .au-workspace .au-desk-landing { margin:14px 0 0; min-height:48px; color:var(--au-muted); font-size:16px; }
+  .au-workspace .au-desk-landing span { font-size:14.5px; }
+  .au-workspace .au-desk-landing strong { color:var(--au-ink); font-weight:500; }
+  .au-workspace .au-desk-requirements li { position:relative; padding:0 0 18px 34px; color:var(--au-muted); }
+  .au-workspace .au-desk-requirements li::before { content:''; position:absolute; left:6px; top:20px; bottom:-2px; width:1.5px; background:var(--au-desk-hair); }
+  .au-workspace .au-desk-requirements li:last-child::before, .au-workspace .au-desk-requirements li:last-child .au-desk-edge { display:none; }
+  .au-workspace .au-desk-edge { position:absolute; left:6px; top:20px; width:1.5px; height:calc(100% - 18px); background:var(--au-green); transform:scaleY(0); transform-origin:top; }
+  .au-workspace [data-au-desk-done=true] .au-desk-edge { transform:scaleY(1); }
+  .au-workspace .au-desk-junction { position:absolute; left:0; top:4px; width:14px; height:14px; border:1.5px dashed var(--au-line); border-radius:50%; background:var(--au-field); display:grid; place-items:center; font-size:10px; line-height:1; color:var(--au-paper); }
+  .au-workspace [data-au-desk-admitted=true] .au-desk-junction { border-style:solid; }
+  .au-workspace [data-au-desk-active=true] .au-desk-junction { border-color:var(--au-green); box-shadow:0 0 0 4px rgb(116 155 99 / .22); }
+  .au-workspace [data-au-desk-done=true] .au-desk-junction { border-color:var(--au-green); background:var(--au-green); }
+  .au-workspace .au-desk-handler li button { padding:0; min-height:0; color:inherit; font:inherit; text-align:left; text-decoration:none; white-space:normal; }
+  .au-workspace .au-desk-handler li button:is(:hover,:focus-visible), .au-workspace .au-desk-files button:is(:hover,:focus-visible) { text-decoration:underline; text-underline-offset:3px; }
+  .au-workspace .au-desk-handler .au-desk-node-label { font-size:16px; line-height:1.4; }
+  .au-workspace [data-au-desk-done=true] .au-desk-node-label, .au-workspace [data-au-desk-active=true] .au-desk-node-label { color:var(--au-ink); }
+  .au-workspace .au-desk-node-evidence { margin-top:4px; display:flex; flex-wrap:wrap; gap:4px 14px; font-size:13.5px; line-height:1.5; }
+  .au-workspace .au-desk-node-evidence [data-au-desk-received=true] { color:var(--au-green); }
+  .au-workspace .au-desk-law { color:var(--au-muted); font-size:13.5px; font-variant-numeric:tabular-nums; }
+  .au-workspace .au-desk-reuse { font-size:13.5px; line-height:1.5; color:var(--au-green); margin:-6px 0 12px; }
+  .au-workspace .au-desk-answer { position:relative; margin-top:14px; padding:26px 30px; border:1px solid var(--au-line); border-left:3px solid var(--au-green); background:var(--au-paper); }
+  .au-workspace .au-desk-lead { margin:10px 0 20px; font-size:22px; line-height:1.42; }
+  .au-workspace .au-desk-tests { list-style:none; padding:0; margin:6px 0 18px; }
+  .au-workspace .au-desk-tests li { display:grid; grid-template-columns:20px minmax(0,1fr) auto; gap:10px; padding:7px 0; border-top:1px solid var(--au-desk-hair); font-size:15.5px; }
+  .au-workspace .au-desk-tests li > :first-child { color:var(--au-amber); }
+  .au-workspace .au-desk-tests [data-status=supported] > :first-child { color:var(--au-green); }
+  .au-workspace .au-desk-open { margin:0 0 20px; padding-left:12px; border-left:2px solid var(--au-amber); color:var(--au-amber); font-size:16px; line-height:1.5; }
+  .au-workspace .au-desk-actions { display:flex; align-items:center; gap:14px; color:var(--au-muted); font-size:14.5px; }
+  .au-workspace .au-desk-actions button { flex:none; padding:8px 16px; min-height:40px; border:1px solid var(--au-ink); background:var(--au-paper); border-radius:2px; font:inherit; color:var(--au-ink); }
+  .au-workspace .au-desk-why { margin-top:16px; font-size:15px; }
+  .au-workspace .au-desk-why summary { width:fit-content; cursor:pointer; color:var(--au-muted); }
+  .au-workspace .au-desk-why ul { max-height:220px; overflow:auto; }
+  .au-workspace .au-desk-inspect { display:flex; gap:18px; flex-wrap:wrap; font-size:14px; }
+  .au-workspace .au-desk-footer { position:fixed; z-index:8; inset:auto 0 0; height:46px; display:flex; align-items:center; gap:10px; padding:0 36px; border-top:1px solid var(--au-desk-hair); background:var(--au-field); color:var(--au-muted); font-size:13.5px; }
+  .au-workspace .au-desk-pips { display:flex; gap:6px; }
+  .au-workspace .au-desk-pips i { width:26px; height:3px; background:var(--au-desk-hair); }
+  .au-workspace .au-desk-pips [data-state=done] { background:var(--au-green); }
+  .au-workspace .au-desk-pips [data-state=now] { background:var(--au-ink); }
+  .au-workspace .au-desk-progress { flex:1; height:2px; margin-left:18px; background:var(--au-desk-hair); }
+  .au-workspace .au-desk-progress i { display:block; height:2px; background:var(--au-green); transform-origin:left; }
+  .au-workspace .au-desk-thread { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; z-index:2; }
+  .au-workspace .au-desk-thread path { fill:none; stroke:var(--au-green); stroke-width:1.5px; stroke-linecap:round; stroke-dasharray:1; }
+  .au-workspace .au-desk-thread circle { fill:var(--au-green); }
+}
+.au-workspace .au-desk-draft label { display:block; margin:16px 0; }
+.au-workspace .au-desk-draft input, .au-workspace .au-desk-draft textarea { display:block; width:100%; margin-top:6px; padding:10px; border:1px solid var(--au-line); background:var(--au-paper); color:var(--au-ink); font:inherit; }
+.au-workspace .au-desk-draft textarea { min-height:220px; resize:vertical; }
+.au-workspace .au-desk-draft-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
