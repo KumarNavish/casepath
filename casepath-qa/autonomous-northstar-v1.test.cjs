@@ -48,3 +48,22 @@ test('preview whitespace remains identical to the immutable source, including it
 test('Source checker lists each accepted exact passage once and retains its source identity',()=>{for(const c of fixture.cases){const trace=completedTrace(c),pins=new Map();for(const o of trace.rows){const p=o.kind==='verification.check'&&o.result.accepted&&ui.northStarPin(o,trace.sources);if(p)pins.set(`${p.artifact_id}:${p.start_char}:${p.end_char}`,p);}const html=ui.northStarCompletedMarkup(c.envelope.state,trace,'verified',{});assert.equal((html.match(/data-au-ns-verified=/g)||[]).length,pins.size);for(const p of pins.values())assert.ok(html.includes(`data-au-source="${p.artifact_id}"`));}});
 
 test('Claim reader exposes only established facts with exact source locators',()=>{for(const c of fixture.cases){const state=c.envelope.state,trace=completedTrace(c),html=ui.northStarCompletedMarkup(state,trace,'sources',{});assert.doesNotMatch(html.slice(html.indexOf('data-au-ns-source-view')),/<h2>Sources/);const established=state.facts.filter(f=>['established','supported'].includes(f.status||f.verdict)&&f.citations?.length);assert.equal((html.match(/data-au-ns-reader-fact=/g)||[]).length,established.length);for(const f of established){assert.ok(html.includes(`data-au-ns-reader-fact="${f.fact_id}"`));assert.ok(html.includes(f.short_label||f.label||f.fact_id));}for(const f of state.facts.filter(f=>f.status==='unresolved'))assert.ok(!html.includes(`data-au-ns-reader-fact="${f.fact_id}"`));}});
+
+const decodeMarkup=value=>value.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+test('Source checker groups all exact passages beneath one heading for each source',()=>{
+ for(const c of fixture.cases){
+  const trace=completedTrace(c),model=ui.deskOperationModel(c.envelope.state,trace),html=ui.northStarCompletedMarkup(c.envelope.state,trace,'verified',{});
+  const groups=[...html.matchAll(/<section class="au-ns-reader-source" data-au-ns-verified-source="([^"]+)">([\s\S]*?)<\/section>/g)];assert.ok(groups.length);
+  const names=groups.map(g=>decodeMarkup(g[2].match(/<h3>([\s\S]*?)<\/h3>/)[1].replace(/<[^>]*>/g,'')));assert.equal(new Set(names).size,groups.length);
+  for(const [,id,body]of groups){const file=model.files.find(f=>f.ids.includes(id));assert.ok(file);assert.equal((body.match(/<h3>/g)||[]).length,1);for(const passage of body.matchAll(/data-au-ns-verified="[^"]+" data-au-source="([^"]+)" data-au-citation="([^"]+)"/g)){assert.ok(file.ids.includes(passage[1]));const pin=JSON.parse(decodeMarkup(passage[2]));assert.ok(trace.sources.get(pin.artifact_id).text.includes(pin.quote));}}
+ }
+});
+
+test('Claim reader quotes a request only when it exists verbatim in the recorded message source',()=>{
+ for(const c of fixture.cases){
+  const state=c.envelope.state,trace=completedTrace(c),html=ui.northStarCompletedMarkup(state,trace,'sources',{});
+  const quoted=html.match(/<p class="au-ns-reader-request">Wants: "<span data-au-ns-request>([\s\S]*?)<\/span>"<\/p>/);assert.ok(quoted);const request=decodeMarkup(quoted[1]);assert.equal(request,ui.deskRequest(state.message));
+  const ids=state.source_descriptors.filter(s=>s.role==='customer_message').map(s=>s.artifact_id);assert.ok(state.acquired_sources.some(s=>ids.includes(s.artifact_id)&&s.text.includes(request)));
+  const altered=structuredClone(state);altered.message='My specific request is: an invented remedy.';const rejected=ui.northStarCompletedMarkup(altered,trace,'sources',{});assert.doesNotMatch(rejected,/data-au-ns-request/);assert.match(rejected,/No facts from this source\./);
+ }
+});

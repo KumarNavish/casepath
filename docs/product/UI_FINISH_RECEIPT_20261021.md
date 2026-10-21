@@ -2,8 +2,8 @@
 
 ## Scope and ownership
 
-W1–W6 and NS1a/NS1b/NS2 are planner approved. NS3 is PR #33 at
-`1b61d1a`; W8 follows that source. W7 was cancelled and is excluded. The
+W1–W6 and NS1a/NS1b/NS2/NS3 are planner approved. NS3 is PR #33 at
+`1b61d1a`; W8 includes the final refinements from planner comment 6319227767. W7 was cancelled and is excluded. The
 Mac integration owner retains merge and release authority. This receipt
 admits no hosted write, deployment, inference or original-nine rerun.
 The original nine allowance is already consumed.
@@ -17,7 +17,7 @@ is presented when the record does not support it.
 ## Evidence and reproduction
 
 The authoritative result for this source is the adjacent W8 evidence package:
-[`design-plans/w8-20261021/verification.json`](../../design-plans/w8-20261021/verification.json).
+[`design-plans/w8-20261021-final/verification.json`](../../design-plans/w8-20261021-final/verification.json).
 It records the implementation commit, sealed source manifest, served asset
 hashes, completed gate counts, browser receipts and failures. A missing or
 failed receipt is not a pass. Review frames and fidelity comparisons are in
@@ -92,7 +92,7 @@ States 1–5 are captured from real recorded playback: ready, source opened,
 exact span selected, fact linked and process node accepted. Motion is serial,
 source-pinned and disabled for reduced motion. State 6 is the completed
 selected-step process. State 8 connects the selected step to its exact source, the earlier checklist
-and the actual reuse result. Claim reader exposes established source facts.
+and the actual reuse result. The memory cards align with the selected node within the content bounds, joined by one level rule. Claim reader exposes established source facts and quotes the request only when it exists verbatim in the recorded message. Source checker groups verified passages under one heading per source.
 
 State 7 / optional NS4 is omitted: the nine inspected DAGs contain no recorded
 alternatives with consequences. No decision editor or illustrative fork is

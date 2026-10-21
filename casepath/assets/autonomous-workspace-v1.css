@@ -2026,3 +2026,10 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 }
 /* Keep keyboard focus visible inside the compact playback rail. */
 .au-workspace .au-demo-control:focus-visible { outline-offset:-3px; }
+
+@media (min-width:701px) {
+ .au-workspace .au-ns-memory-cards [data-au-knowledge] { border:0; padding:8px 0; background:transparent; text-decoration:underline; text-underline-offset:4px; }
+ .au-workspace .au-ns-reader-source .au-ns-verified-row { border:0; padding:8px 0; gap:10px; }
+ .au-workspace .au-ns-reader-source .au-ns-verified-row q { margin:0; flex:1; }
+ .au-workspace .au-ns-reader-source .au-ns-reader-request { color:#4c4b4d; font-size:14px; line-height:1.5; }
+}
