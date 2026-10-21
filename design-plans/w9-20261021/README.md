@@ -134,7 +134,12 @@ every observed frame of the full live run, in addition to every capture sample.
 exact matching served deployment. It reads the sealed static build and frozen
 recorded GET fixtures; it rejects writes, external requests and unrecorded API
 reads. Chromium runs at 1440×900 with deviceScaleFactor 2, UTC and en-GB. The
-receipt records the browser version, asset hashes and fixture hashes.
+receipt records the browser version, asset hashes and fixture hashes. The film
+and its live comparison use an explicit software renderer (`--disable-gpu`,
+`--disable-gpu-rasterization`, `--disable-lcd-text`). Hardware-rendered diagnostics
+produced a second checksum mismatch even with the full render history; their
+receipts remain outside the accepted film evidence. The software configuration
+is tested in fresh browser processes and bound into capture/repeat receipts.
 
 ```sh
 node design-plans/w9-20261021/capture_film.mjs \

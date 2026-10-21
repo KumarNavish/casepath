@@ -46,8 +46,9 @@ for(const name of ['autonomous-workspace-v1.js','autonomous-workspace-v1.css','a
   const response=await fetch(origin+'/assets/'+name);assert.equal(response.status,200);
   const bytes=Buffer.from(await response.arrayBuffer());assert.deepEqual(bytes,fs.readFileSync(root+'/casepath/assets/'+name));assets[name]=sha(bytes);
 }
-const report={sourceCommit,verifierCommit,deployment,assets,sourceManifestSha256:sha(fs.readFileSync(root+'/casepath/source-manifest.json')),fixtures:{responses:sha(fs.readFileSync(wirePath)),operations:sha(fs.readFileSync(tracePath))},viewport:{width:1440,height:900},deviceScaleFactor:2,fps:60,probe,errors:[],writes:[],missingReads:[],checksums:[],cleanup:[]};
-const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
+const rendererArgs=['--disable-gpu','--disable-gpu-rasterization','--disable-lcd-text'];
+const report={sourceCommit,verifierCommit,rendererArgs,deployment,assets,sourceManifestSha256:sha(fs.readFileSync(root+'/casepath/source-manifest.json')),fixtures:{responses:sha(fs.readFileSync(wirePath)),operations:sha(fs.readFileSync(tracePath))},viewport:{width:1440,height:900},deviceScaleFactor:2,fps:60,probe,errors:[],writes:[],missingReads:[],checksums:[],cleanup:[]};
+const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',args:rendererArgs});
 const context=await browser.newContext({viewport:report.viewport,deviceScaleFactor:2,serviceWorkers:'block',reducedMotion:'no-preference',timezoneId:'UTC',locale:'en-GB'});
 const page=await context.newPage();report.browserVersion=browser.version();
 page.on('pageerror',e=>report.errors.push(e.message));
@@ -96,7 +97,7 @@ try{
   await open();report.timeline=await page.evaluate(()=>CasepathPresentation.active.manifest);
   const total=report.timeline.duration*60/1000;assert.ok(Number.isInteger(total));
   if(verifyPath){
-    assert.equal(original.sourceCommit,sourceCommit);assert.deepEqual(original.assets,assets);assert.deepEqual(original.fixtures,report.fixtures);assert.equal(original.sourceManifestSha256,report.sourceManifestSha256);assert.equal(original.browserVersion,report.browserVersion);
+    assert.equal(original.sourceCommit,sourceCommit);assert.deepEqual(original.assets,assets);assert.deepEqual(original.fixtures,report.fixtures);assert.equal(original.sourceManifestSha256,report.sourceManifestSha256);assert.equal(original.browserVersion,report.browserVersion);assert.deepEqual(original.rendererArgs,rendererArgs);
     const expectedByFrame=new Map(original.checksums.map(row=>[row.n,row]));
     // Repeat the original render history as well as its clock values. Jumping
     // directly between checksum samples changes Chromium's text rasterization.
@@ -105,7 +106,7 @@ try{
     for(let n=0;n<original.frameCount;n++){
       await sample(n);const bytes=await page.screenshot({type:'png'});report.replayedFrames++;
       const expected=expectedByFrame.get(n);
-      if(expected){const actual=sha(bytes);assert.equal(actual,expected.sha256,'independent repeat at frame '+n);report.checksums.push({n,time:expected.time,sha256:actual});}
+      if(expected){const actual=sha(bytes);if(actual!==expected.sha256){fs.mkdirSync(out,{recursive:true});fs.writeFileSync(out+'/mismatch-'+n+'.png',bytes);}assert.equal(actual,expected.sha256,'independent repeat at frame '+n);report.checksums.push({n,time:expected.time,sha256:actual});}
       if(n%300===0)console.log(JSON.stringify({replayed:n+1,total:original.frameCount,verifiedSamples:report.checksums.length}));
     }
     assert.equal(report.checksums.length,original.checksums.length);assert.deepEqual(report.errors,[]);assert.deepEqual(report.writes,[]);assert.deepEqual(report.missingReads,[]);
