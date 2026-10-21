@@ -146,6 +146,22 @@ selection/fact frames, every completed process node, every memory node and role
 views. Counts are admitted only from completed browser receipts; missing or
 failed checks are never counted as zero.
 
+### Nine-case overlap audit
+
+| Case | Live checks / overlaps | Process and role checks / overlaps | Memory checks / overlaps | Total overlaps |
+| --- | --- | --- | --- | --- |
+| 1 · `clm_314f2d309fea25e6` | 3 / 0 | 10 / 0 | 6 / 0 | 0 |
+| 2 · `clm_4a07dbbbd859a3ce` | 3 / 0 | 10 / 0 | 6 / 0 | 0 |
+| 3 · `clm_95d08975bc575592` | 3 / 0 | 10 / 0 | 6 / 0 | 0 |
+| 4 · `clm_0f4f13b1e3e1328c` | 3 / 0 | 6 / 0 | 2 / 0 | 0 |
+| 5 · `clm_393285577dcb12c4` | 3 / 0 | 6 / 0 | 2 / 0 | 0 |
+| 6 · `clm_4a53299cfe619303` | 3 / 0 | 6 / 0 | 2 / 0 | 0 |
+| 7 · `clm_2c55cdd816b1d0e8` | 3 / 0 | 7 / 0 | 3 / 0 | 0 |
+| 8 · `clm_543f08f2415b2a33` | 3 / 0 | 7 / 0 | 3 / 0 | 0 |
+| 9 · `clm_7dbd7c7d1c4ddf90` | 3 / 0 | 7 / 0 | 3 / 0 | 0 |
+
+All 129 checks completed at 1440 × 900 using built assets. The generic box audit excludes the role cursor’s coarse box; a separate motion check verifies that its badge does not cover source text. Every source pin is checked against the recorded offsets and quote.
+
 ## Owner correction integrated unchanged
 
 Planner comment 6320266952 authorizes the Mac owner's commit
