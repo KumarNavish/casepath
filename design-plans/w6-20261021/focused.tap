@@ -2,2826 +2,2826 @@ TAP version 13
 # Subtest: request row opens the recorded answer without changing it: clm_314f2d309fea25e6
 ok 1 - request row opens the recorded answer without changing it: clm_314f2d309fea25e6
   ---
-  duration_ms: 15.09775
+  duration_ms: 11.553208
   type: 'test'
   ...
 # Subtest: request row opens the recorded answer without changing it: clm_4a07dbbbd859a3ce
 ok 2 - request row opens the recorded answer without changing it: clm_4a07dbbbd859a3ce
   ---
-  duration_ms: 8.651625
+  duration_ms: 8.228625
   type: 'test'
   ...
 # Subtest: request row opens the recorded answer without changing it: clm_95d08975bc575592
 ok 3 - request row opens the recorded answer without changing it: clm_95d08975bc575592
   ---
-  duration_ms: 8.299958
+  duration_ms: 11.546584
   type: 'test'
   ...
 # Subtest: request row opens the recorded answer without changing it: clm_0f4f13b1e3e1328c
 ok 4 - request row opens the recorded answer without changing it: clm_0f4f13b1e3e1328c
   ---
-  duration_ms: 8.06925
+  duration_ms: 3.993542
   type: 'test'
   ...
 # Subtest: request row opens the recorded answer without changing it: clm_393285577dcb12c4
 ok 5 - request row opens the recorded answer without changing it: clm_393285577dcb12c4
   ---
-  duration_ms: 8.542792
+  duration_ms: 14.835459
   type: 'test'
   ...
 # Subtest: request row opens the recorded answer without changing it: clm_4a53299cfe619303
 ok 6 - request row opens the recorded answer without changing it: clm_4a53299cfe619303
   ---
-  duration_ms: 5.548625
+  duration_ms: 5.933375
   type: 'test'
   ...
 # Subtest: request row opens the recorded answer without changing it: clm_2c55cdd816b1d0e8
 ok 7 - request row opens the recorded answer without changing it: clm_2c55cdd816b1d0e8
   ---
-  duration_ms: 10.534458
+  duration_ms: 6.682167
   type: 'test'
   ...
 # Subtest: request row opens the recorded answer without changing it: clm_543f08f2415b2a33
 ok 8 - request row opens the recorded answer without changing it: clm_543f08f2415b2a33
   ---
-  duration_ms: 14.186333
+  duration_ms: 8.476875
   type: 'test'
   ...
 # Subtest: request row opens the recorded answer without changing it: clm_7dbd7c7d1c4ddf90
 ok 9 - request row opens the recorded answer without changing it: clm_7dbd7c7d1c4ddf90
   ---
-  duration_ms: 9.388125
+  duration_ms: 10.824083
   type: 'test'
   ...
 # Subtest: missing documents take priority and unknown states do not become ready
 ok 10 - missing documents take priority and unknown states do not become ready
   ---
-  duration_ms: 1.066625
+  duration_ms: 3.519792
   type: 'test'
   ...
 # Subtest: absent requests retain the recorded title without inventing a quotation
 ok 11 - absent requests retain the recorded title without inventing a quotation
   ---
-  duration_ms: 0.948833
+  duration_ms: 0.746666
   type: 'test'
   ...
 # Subtest: unlabelled rows retain recorded identity and date, never infer a customer name
 ok 12 - unlabelled rows retain recorded identity and date, never infer a customer name
   ---
-  duration_ms: 125.191333
+  duration_ms: 40.631416
   type: 'test'
   ...
 # Subtest: desk counters and legal labels follow the actual trace: clm_314f2d309fea25e6
 ok 13 - desk counters and legal labels follow the actual trace: clm_314f2d309fea25e6
   ---
-  duration_ms: 81.168834
+  duration_ms: 112.582667
   type: 'test'
   ...
 # Subtest: desk counters and legal labels follow the actual trace: clm_4a07dbbbd859a3ce
 ok 14 - desk counters and legal labels follow the actual trace: clm_4a07dbbbd859a3ce
   ---
-  duration_ms: 44.235458
+  duration_ms: 67.087292
   type: 'test'
   ...
 # Subtest: desk counters and legal labels follow the actual trace: clm_95d08975bc575592
 ok 15 - desk counters and legal labels follow the actual trace: clm_95d08975bc575592
   ---
-  duration_ms: 36.968167
+  duration_ms: 43.194666
   type: 'test'
   ...
 # Subtest: desk counters and legal labels follow the actual trace: clm_0f4f13b1e3e1328c
 ok 16 - desk counters and legal labels follow the actual trace: clm_0f4f13b1e3e1328c
   ---
-  duration_ms: 17.689416
+  duration_ms: 13.781833
   type: 'test'
   ...
 # Subtest: desk counters and legal labels follow the actual trace: clm_393285577dcb12c4
 ok 17 - desk counters and legal labels follow the actual trace: clm_393285577dcb12c4
   ---
-  duration_ms: 12.101916
+  duration_ms: 15.281542
   type: 'test'
   ...
 # Subtest: desk counters and legal labels follow the actual trace: clm_4a53299cfe619303
 ok 18 - desk counters and legal labels follow the actual trace: clm_4a53299cfe619303
   ---
-  duration_ms: 11.310584
+  duration_ms: 12.556791
   type: 'test'
   ...
 # Subtest: desk counters and legal labels follow the actual trace: clm_2c55cdd816b1d0e8
 ok 19 - desk counters and legal labels follow the actual trace: clm_2c55cdd816b1d0e8
   ---
-  duration_ms: 19.927875
+  duration_ms: 18.592
   type: 'test'
   ...
 # Subtest: desk counters and legal labels follow the actual trace: clm_543f08f2415b2a33
 ok 20 - desk counters and legal labels follow the actual trace: clm_543f08f2415b2a33
   ---
-  duration_ms: 20.228292
+  duration_ms: 17.238541
   type: 'test'
   ...
 # Subtest: desk counters and legal labels follow the actual trace: clm_7dbd7c7d1c4ddf90
 ok 21 - desk counters and legal labels follow the actual trace: clm_7dbd7c7d1c4ddf90
   ---
-  duration_ms: 24.399916
+  duration_ms: 16.83125
   type: 'test'
   ...
 # Subtest: legal status keeps missing and unresolved tests distinct from met tests
 ok 22 - legal status keeps missing and unresolved tests distinct from met tests
   ---
-  duration_ms: 0.332458
+  duration_ms: 0.174458
   type: 'test'
   ...
 # Subtest: local draft copies reject a different case or original and invalid stored values
 ok 23 - local draft copies reject a different case or original and invalid stored values
   ---
-  duration_ms: 0.1735
+  duration_ms: 0.155542
   type: 'test'
   ...
 # Subtest: unknown step labels use only mechanical paraphrases
 ok 24 - unknown step labels use only mechanical paraphrases
   ---
-  duration_ms: 0.905166
+  duration_ms: 0.243791
   type: 'test'
   ...
 # Subtest: next step uses recorded gaps, recipients and graph nodes without inventing them
 ok 25 - next step uses recorded gaps, recipients and graph nodes without inventing them
   ---
-  duration_ms: 2.076584
+  duration_ms: 0.903834
   type: 'test'
   ...
 # Subtest: domain checklist preserves recorded definitions and deduplicates actual uses: defect_mold_heating
 ok 26 - domain checklist preserves recorded definitions and deduplicates actual uses: defect_mold_heating
   ---
-  duration_ms: 21.943208
+  duration_ms: 41.275417
   type: 'test'
   ...
 # Subtest: domain checklist preserves recorded definitions and deduplicates actual uses: lease_termination_dispute
 ok 27 - domain checklist preserves recorded definitions and deduplicates actual uses: lease_termination_dispute
   ---
-  duration_ms: 0.456375
+  duration_ms: 0.52825
   type: 'test'
   ...
 # Subtest: domain checklist preserves recorded definitions and deduplicates actual uses: rent_increase_dispute
 ok 28 - domain checklist preserves recorded definitions and deduplicates actual uses: rent_increase_dispute
   ---
-  duration_ms: 0.339208
+  duration_ms: 1.674625
   type: 'test'
   ...
 # Subtest: article labels sort naturally without changing their record
 ok 29 - article labels sort naturally without changing their record
   ---
-  duration_ms: 0.538792
+  duration_ms: 1.122375
   type: 'test'
   ...
 # Subtest: next-action symbols reflect only explicitly recorded document needs
 ok 30 - next-action symbols reflect only explicitly recorded document needs
   ---
-  duration_ms: 0.702417
+  duration_ms: 0.713708
   type: 'test'
   ...
 # Subtest: learning attribution follows exact, dated publication and reuse events only
 ok 31 - learning attribution follows exact, dated publication and reuse events only
   ---
-  duration_ms: 11.292958
+  duration_ms: 66.996625
   type: 'test'
   ...
 # Subtest: learning copy handles zero and one later case without guessing order
 ok 32 - learning copy handles zero and one later case without guessing order
   ---
-  duration_ms: 3.781417
+  duration_ms: 5.093
   type: 'test'
   ...
 # Subtest: UMD and CommonJS expose the same frozen, side-effect-free API
 ok 33 - UMD and CommonJS expose the same frozen, side-effect-free API
   ---
-  duration_ms: 6.01325
+  duration_ms: 3.225
   type: 'test'
   ...
 # Subtest: roles describe source proposals, source checks, fixed rules and checked reuse
 ok 34 - roles describe source proposals, source checks, fixed rules and checked reuse
   ---
-  duration_ms: 0.81975
+  duration_ms: 1.165791
   type: 'test'
   ...
 # Subtest: only a completed recorded provider call supplies the exact model label
 ok 35 - only a completed recorded provider call supplies the exact model label
   ---
-  duration_ms: 3.487708
+  duration_ms: 3.887208
   type: 'test'
   ...
 # Subtest: missing, rejected, unmatched and incomplete call receipts cannot claim AI use
 ok 36 - missing, rejected, unmatched and incomplete call receipts cannot claim AI use
   ---
-  duration_ms: 45.474583
+  duration_ms: 39.41375
   type: 'test'
   ...
 # Subtest: the actual reference packet proves fixed rules and zero provider calls
 ok 37 - the actual reference packet proves fixed rules and zero provider calls
   ---
-  duration_ms: 3.019167
+  duration_ms: 1.752709
   type: 'test'
   ...
 # Subtest: reference labels require numeric zero calls in the matching actual workflow receipts
 ok 38 - reference labels require numeric zero calls in the matching actual workflow receipts
   ---
-  duration_ms: 62.270375
+  duration_ms: 48.12025
   type: 'test'
   ...
 # Subtest: operation role mapping, unknown fallback and phase events preserve the recorded distinction
 ok 39 - operation role mapping, unknown fallback and phase events preserve the recorded distinction
   ---
-  duration_ms: 1.182666
+  duration_ms: 0.593791
   type: 'test'
   ...
 # Subtest: all admitted stable step and document IDs have plain display labels
 ok 40 - all admitted stable step and document IDs have plain display labels
   ---
-  duration_ms: 0.909708
+  duration_ms: 0.378042
   type: 'test'
   ...
 # Subtest: document titles are separate from original filenames and exact recorded wording
 ok 41 - document titles are separate from original filenames and exact recorded wording
   ---
-  duration_ms: 2.251625
+  duration_ms: 1.651083
   type: 'test'
   ...
 # Subtest: source-less Memory, decisions and paths never inherit a selected document title
 ok 42 - source-less Memory, decisions and paths never inherit a selected document title
   ---
-  duration_ms: 0.524542
+  duration_ms: 0.419417
   type: 'test'
   ...
 # Subtest: outcome summaries follow only recorded checks, open facts, gaps and authority limits
 ok 43 - outcome summaries follow only recorded checks, open facts, gaps and authority limits
   ---
-  duration_ms: 31.927375
+  duration_ms: 31.582458
   type: 'test'
   ...
 # Subtest: outcome next actions separate complete document checks from authority to act
 ok 44 - outcome next actions separate complete document checks from authority to act
   ---
-  duration_ms: 8.748833
+  duration_ms: 7.639208
   type: 'test'
   ...
 # Subtest: outcome next actions retain every combination of recorded wait causes
     # Subtest: outcome: cause mask 0
     ok 1 - outcome: cause mask 0
       ---
-      duration_ms: 0.576333
+      duration_ms: 0.160458
       type: 'test'
       ...
     # Subtest: outcome: cause mask 1
     ok 2 - outcome: cause mask 1
       ---
-      duration_ms: 0.25475
+      duration_ms: 0.048583
       type: 'test'
       ...
     # Subtest: outcome: cause mask 2
     ok 3 - outcome: cause mask 2
       ---
-      duration_ms: 0.273125
+      duration_ms: 0.096041
       type: 'test'
       ...
     # Subtest: outcome: cause mask 3
     ok 4 - outcome: cause mask 3
       ---
-      duration_ms: 0.157208
+      duration_ms: 0.0515
       type: 'test'
       ...
     # Subtest: outcome: cause mask 4
     ok 5 - outcome: cause mask 4
       ---
-      duration_ms: 0.043083
+      duration_ms: 0.063917
       type: 'test'
       ...
     # Subtest: outcome: cause mask 5
     ok 6 - outcome: cause mask 5
       ---
-      duration_ms: 0.048
+      duration_ms: 0.066333
       type: 'test'
       ...
     # Subtest: outcome: cause mask 6
     ok 7 - outcome: cause mask 6
       ---
-      duration_ms: 0.054333
+      duration_ms: 0.057458
       type: 'test'
       ...
     # Subtest: outcome: cause mask 7
     ok 8 - outcome: cause mask 7
       ---
-      duration_ms: 0.061375
+      duration_ms: 0.050875
       type: 'test'
       ...
     # Subtest: outcome: cause mask 8
     ok 9 - outcome: cause mask 8
       ---
-      duration_ms: 0.092125
+      duration_ms: 0.039333
       type: 'test'
       ...
     # Subtest: outcome: cause mask 9
     ok 10 - outcome: cause mask 9
       ---
-      duration_ms: 0.074916
+      duration_ms: 0.052125
       type: 'test'
       ...
     # Subtest: outcome: cause mask 10
     ok 11 - outcome: cause mask 10
       ---
-      duration_ms: 0.059084
+      duration_ms: 0.054625
       type: 'test'
       ...
     # Subtest: outcome: cause mask 11
     ok 12 - outcome: cause mask 11
       ---
-      duration_ms: 0.049833
+      duration_ms: 0.044083
       type: 'test'
       ...
     # Subtest: outcome: cause mask 12
     ok 13 - outcome: cause mask 12
       ---
-      duration_ms: 0.033542
+      duration_ms: 0.032
       type: 'test'
       ...
     # Subtest: outcome: cause mask 13
     ok 14 - outcome: cause mask 13
       ---
-      duration_ms: 0.099
+      duration_ms: 0.032375
       type: 'test'
       ...
     # Subtest: outcome: cause mask 14
     ok 15 - outcome: cause mask 14
       ---
-      duration_ms: 0.1015
+      duration_ms: 0.032833
       type: 'test'
       ...
     # Subtest: outcome: cause mask 15
     ok 16 - outcome: cause mask 15
       ---
-      duration_ms: 0.084375
+      duration_ms: 0.03975
       type: 'test'
       ...
     # Subtest: deferral: cause mask 0
     ok 17 - deferral: cause mask 0
       ---
-      duration_ms: 0.072167
+      duration_ms: 0.034792
       type: 'test'
       ...
     # Subtest: deferral: cause mask 1
     ok 18 - deferral: cause mask 1
       ---
-      duration_ms: 0.065875
+      duration_ms: 0.0305
       type: 'test'
       ...
     # Subtest: deferral: cause mask 2
     ok 19 - deferral: cause mask 2
       ---
-      duration_ms: 0.039375
+      duration_ms: 0.032542
       type: 'test'
       ...
     # Subtest: deferral: cause mask 3
     ok 20 - deferral: cause mask 3
       ---
-      duration_ms: 0.103417
+      duration_ms: 0.032375
       type: 'test'
       ...
     # Subtest: deferral: cause mask 4
     ok 21 - deferral: cause mask 4
       ---
-      duration_ms: 0.03725
+      duration_ms: 0.063959
       type: 'test'
       ...
     # Subtest: deferral: cause mask 5
     ok 22 - deferral: cause mask 5
       ---
-      duration_ms: 0.029833
+      duration_ms: 0.028291
       type: 'test'
       ...
     # Subtest: deferral: cause mask 6
     ok 23 - deferral: cause mask 6
       ---
-      duration_ms: 0.032666
+      duration_ms: 0.032958
       type: 'test'
       ...
     # Subtest: deferral: cause mask 7
     ok 24 - deferral: cause mask 7
       ---
-      duration_ms: 0.040291
+      duration_ms: 0.048916
       type: 'test'
       ...
     # Subtest: deferral: cause mask 8
     ok 25 - deferral: cause mask 8
       ---
-      duration_ms: 0.029208
+      duration_ms: 0.2395
       type: 'test'
       ...
     # Subtest: deferral: cause mask 9
     ok 26 - deferral: cause mask 9
       ---
-      duration_ms: 0.029208
+      duration_ms: 0.198334
       type: 'test'
       ...
     # Subtest: deferral: cause mask 10
     ok 27 - deferral: cause mask 10
       ---
-      duration_ms: 0.030208
+      duration_ms: 0.119542
       type: 'test'
       ...
     # Subtest: deferral: cause mask 11
     ok 28 - deferral: cause mask 11
       ---
-      duration_ms: 0.032584
+      duration_ms: 0.061375
       type: 'test'
       ...
     # Subtest: deferral: cause mask 12
     ok 29 - deferral: cause mask 12
       ---
-      duration_ms: 0.033417
+      duration_ms: 0.089416
       type: 'test'
       ...
     # Subtest: deferral: cause mask 13
     ok 30 - deferral: cause mask 13
       ---
-      duration_ms: 0.037875
+      duration_ms: 0.10925
       type: 'test'
       ...
     # Subtest: deferral: cause mask 14
     ok 31 - deferral: cause mask 14
       ---
-      duration_ms: 0.034708
+      duration_ms: 0.041917
       type: 'test'
       ...
     # Subtest: deferral: cause mask 15
     ok 32 - deferral: cause mask 15
       ---
-      duration_ms: 0.041833
+      duration_ms: 0.169958
       type: 'test'
       ...
     1..32
 ok 45 - outcome next actions retain every combination of recorded wait causes
   ---
-  duration_ms: 4.040916
+  duration_ms: 5.358417
   type: 'test'
   ...
 # Subtest: outcome next actions retain unknown checks without inventing document or authority gaps
     # Subtest: unit predicate status unknown (string)
     ok 1 - unit predicate status unknown (string)
       ---
-      duration_ms: 0.066959
+      duration_ms: 0.34925
       type: 'test'
       ...
     # Subtest: unit predicate status pending (string)
     ok 2 - unit predicate status pending (string)
       ---
-      duration_ms: 0.03825
+      duration_ms: 0.159208
       type: 'test'
       ...
     # Subtest: unit predicate status true (string)
     ok 3 - unit predicate status true (string)
       ---
-      duration_ms: 0.027542
+      duration_ms: 0.129625
       type: 'test'
       ...
     # Subtest: unit predicate status false (string)
     ok 4 - unit predicate status false (string)
       ---
-      duration_ms: 0.032042
+      duration_ms: 0.145458
       type: 'test'
       ...
     # Subtest: unit predicate status true (boolean)
     ok 5 - unit predicate status true (boolean)
       ---
-      duration_ms: 0.03025
+      duration_ms: 0.095875
       type: 'test'
       ...
     # Subtest: unit predicate status false (boolean)
     ok 6 - unit predicate status false (boolean)
       ---
-      duration_ms: 0.026375
+      duration_ms: 0.089375
       type: 'test'
       ...
     # Subtest: unit predicate status null (object)
     ok 7 - unit predicate status null (object)
       ---
-      duration_ms: 0.032167
+      duration_ms: 0.15
       type: 'test'
       ...
     # Subtest: unit predicate status undefined (undefined)
     ok 8 - unit predicate status undefined (undefined)
       ---
-      duration_ms: 0.028208
+      duration_ms: 0.106334
       type: 'test'
       ...
     # Subtest: unit predicate status unexpected (string)
     ok 9 - unit predicate status unexpected (string)
       ---
-      duration_ms: 0.039875
+      duration_ms: 0.142625
       type: 'test'
       ...
     1..9
 ok 46 - outcome next actions retain unknown checks without inventing document or authority gaps
   ---
-  duration_ms: 0.649084
+  duration_ms: 2.716959
   type: 'test'
   ...
 # Subtest: outcome next actions stay neutral when no result or wait cause is recorded
 ok 47 - outcome next actions stay neutral when no result or wait cause is recorded
   ---
-  duration_ms: 0.116458
+  duration_ms: 0.47575
   type: 'test'
   ...
 # Subtest: official form and original reasons findings preserve supported, failed and unknown meanings
 ok 48 - official form and original reasons findings preserve supported, failed and unknown meanings
   ---
-  duration_ms: 0.44275
+  duration_ms: 1.5815
   type: 'test'
   ...
 # Subtest: every declared legal predicate has distinct supported, failed and unknown display findings
 ok 49 - every declared legal predicate has distinct supported, failed and unknown display findings
   ---
-  duration_ms: 8.881833
+  duration_ms: 5.591292
   type: 'test'
   ...
 # Subtest: repair eligibility needs every recorded defect check and never implies work was performed
 ok 50 - repair eligibility needs every recorded defect check and never implies work was performed
   ---
-  duration_ms: 33.273
+  duration_ms: 49.217625
   type: 'test'
   ...
 # Subtest: knowledge reports rule combinations separately from reuse and preserves actual rejection reasons
 ok 51 - knowledge reports rule combinations separately from reuse and preserves actual rejection reasons
   ---
-  duration_ms: 0.957291
+  duration_ms: 0.519459
   type: 'test'
   ...
 # Subtest: all fixed display strings avoid restricted terms and stay within twenty words
 ok 52 - all fixed display strings avoid restricted terms and stay within twenty words
   ---
-  duration_ms: 0.780209
+  duration_ms: 0.238916
   type: 'test'
   ...
 # Subtest: every actual operation in the committed replay has short display copy and preserves its record
 ok 53 - every actual operation in the committed replay has short display copy and preserves its record
   ---
-  duration_ms: 94.588333
+  duration_ms: 109.706542
   type: 'test'
   ...
 # Subtest: settled defect limits stay visible only when the exact recorded scope and sentence support them
 ok 54 - settled defect limits stay visible only when the exact recorded scope and sentence support them
   ---
-  duration_ms: 24.078958
+  duration_ms: 24.119625
   type: 'test'
   ...
 # Subtest: refusal labels explain the recorded cause while unknown reasons remain in Details
 ok 55 - refusal labels explain the recorded cause while unknown reasons remain in Details
   ---
-  duration_ms: 0.068125
+  duration_ms: 0.066125
   type: 'test'
   ...
 # Subtest: the mode line names original intake, saved result, replay, live and view only; added cases are never fictional
 ok 56 - the mode line names original intake, saved result, replay, live and view only; added cases are never fictional
   ---
-  duration_ms: 16.369292
+  duration_ms: 8.598167
   type: 'test'
   ...
 # Subtest: saved journal events read as past-tense work by the recorded role
 ok 57 - saved journal events read as past-tense work by the recorded role
   ---
-  duration_ms: 0.476
+  duration_ms: 0.2075
   type: 'test'
   ...
 # Subtest: recorded outcome fields lead and the draft line follows only its own record
 ok 58 - recorded outcome fields lead and the draft line follows only its own record
   ---
-  duration_ms: 3.454
+  duration_ms: 1.432833
   type: 'test'
   ...
 # Subtest: fact labels name the subject without field identifiers
 ok 59 - fact labels name the subject without field identifiers
   ---
-  duration_ms: 1.1215
+  duration_ms: 0.118
   type: 'test'
   ...
 # Subtest: one case status lexicon names every lifecycle bucket and counts only what is present
 ok 60 - one case status lexicon names every lifecycle bucket and counts only what is present
   ---
-  duration_ms: 0.510333
+  duration_ms: 0.13475
   type: 'test'
   ...
 # Subtest: case facts read as one quiet line and leave unrecorded fields out
 ok 61 - case facts read as one quiet line and leave unrecorded fields out
   ---
-  duration_ms: 1.215291
+  duration_ms: 0.496833
   type: 'test'
   ...
 # Subtest: reference intake stays a source inspection and completed assessment retains external deferral
 ok 62 - reference intake stays a source inspection and completed assessment retains external deferral
   ---
-  duration_ms: 17.023167
+  duration_ms: 15.836042
   type: 'test'
   ...
 # Subtest: an unrun original says not checked, links attached files as candidates and explains an unavailable Start
 ok 63 - an unrun original says not checked, links attached files as candidates and explains an unavailable Start
   ---
-  duration_ms: 5.36475
+  duration_ms: 8.837625
   type: 'test'
   ...
 # Subtest: reference demonstration has the exact new nine and legacy history remains separate
 ok 64 - reference demonstration has the exact new nine and legacy history remains separate
   ---
-  duration_ms: 1.347667
+  duration_ms: 1.636292
   type: 'test'
   ...
 # Subtest: reference policy identifies the accepted execution before context supplies its historical date
 ok 65 - reference policy identifies the accepted execution before context supplies its historical date
   ---
-  duration_ms: 2.689167
+  duration_ms: 3.624625
   type: 'test'
   ...
 # Subtest: reference source labels require the exact recorded pin and later uploads retain prior assessment freshness
 ok 66 - reference source labels require the exact recorded pin and later uploads retain prior assessment freshness
   ---
-  duration_ms: 0.990666
+  duration_ms: 2.51175
   type: 'test'
   ...
 # Subtest: completed reference assessments filter with completed assessments while external and ordinary deferred states stay exact
 ok 67 - completed reference assessments filter with completed assessments while external and ordinary deferred states stay exact
   ---
-  duration_ms: 6.131625
+  duration_ms: 2.5385
   type: 'test'
   ...
 # Subtest: pinned synthetic source excerpts show the actual body while the full acquired bytes remain exact
 ok 68 - pinned synthetic source excerpts show the actual body while the full acquired bytes remain exact
   ---
-  duration_ms: 2.041375
+  duration_ms: 1.302208
   type: 'test'
   ...
 # Subtest: current regenerated documents stay in Sources and exact earlier documents remain in History
 ok 69 - current regenerated documents stay in Sources and exact earlier documents remain in History
   ---
-  duration_ms: 3.396083
+  duration_ms: 1.076375
   type: 'test'
   ...
 # Subtest: a current reassessment does not treat its superseded documents as new evidence
 ok 70 - a current reassessment does not treat its superseded documents as new evidence
   ---
-  duration_ms: 2.391833
+  duration_ms: 2.535709
   type: 'test'
   ...
 # Subtest: a reassessment replay start must bind to the accepted run, source selection and prepared prefix
 ok 71 - a reassessment replay start must bind to the accepted run, source selection and prepared prefix
   ---
-  duration_ms: 5.91375
+  duration_ms: 14.261208
   type: 'test'
   ...
 # Subtest: actual DAG topology determines rank and branches independently of input order
 ok 72 - actual DAG topology determines rank and branches independently of input order
   ---
-  duration_ms: 1.405
+  duration_ms: 3.003792
   type: 'test'
   ...
 # Subtest: claim identity fails closed across claims, invalid revision and graph ownership
 ok 73 - claim identity fails closed across claims, invalid revision and graph ownership
   ---
-  duration_ms: 0.229417
+  duration_ms: 2.280042
   type: 'test'
   ...
 # Subtest: initial and reconnect history settle without animation; a fresh matching saved event can animate
 ok 74 - initial and reconnect history settle without animation; a fresh matching saved event can animate
   ---
-  duration_ms: 0.156791
+  duration_ms: 0.181541
   type: 'test'
   ...
 # Subtest: event cursors cannot hide missing/duplicate sequences or a different resulting saved state
 ok 75 - event cursors cannot hide missing/duplicate sequences or a different resulting saved state
   ---
-  duration_ms: 0.202958
+  duration_ms: 0.209958
   type: 'test'
   ...
 # Subtest: saved snapshot assets pin exact bytes publication identity native commands full history and state
 ok 76 - saved snapshot assets pin exact bytes publication identity native commands full history and state
   ---
-  duration_ms: 24.349709
+  duration_ms: 49.314875
   type: 'test'
   ...
 # Subtest: saved snapshot assets reject resealed partial forked aliased commands source text and citation bodies
 ok 77 - saved snapshot assets reject resealed partial forked aliased commands source text and citation bodies
   ---
-  duration_ms: 14.410209
+  duration_ms: 14.272666
   type: 'test'
   ...
 # Subtest: saved read copies retain exact accepted source spans receipts and rejected historical provider quotes without admitting them as facts
 ok 78 - saved read copies retain exact accepted source spans receipts and rejected historical provider quotes without admitting them as facts
   ---
-  duration_ms: 2.1875
+  duration_ms: 1.7295
   type: 'test'
   ...
 # Subtest: saved read validation rejects unbound cursors projections sources text and accepted citations even with otherwise intact records
 ok 79 - saved read validation rejects unbound cursors projections sources text and accepted citations even with otherwise intact records
   ---
-  duration_ms: 7.422
+  duration_ms: 6.453333
   type: 'test'
   ...
 # Subtest: motion targets describe actual persisted node/document changes only
 ok 80 - motion targets describe actual persisted node/document changes only
   ---
-  duration_ms: 0.355292
+  duration_ms: 0.995375
   type: 'test'
   ...
 # Subtest: a matching accepted atomic interpretation may focus its cited process while remembered inspection wins
 ok 81 - a matching accepted atomic interpretation may focus its cited process while remembered inspection wins
   ---
-  duration_ms: 1.112375
+  duration_ms: 1.106291
   type: 'test'
   ...
 # Subtest: unbound interpretation events cannot direct accepted-event or preferred process focus
 ok 82 - unbound interpretation events cannot direct accepted-event or preferred process focus
   ---
-  duration_ms: 0.284375
+  duration_ms: 0.731708
   type: 'test'
   ...
 # Subtest: consequential focus requires a same-claim accepted event and an actual changed fact or requirement
 ok 83 - consequential focus requires a same-claim accepted event and an actual changed fact or requirement
   ---
-  duration_ms: 0.502417
+  duration_ms: 0.986625
   type: 'test'
   ...
 # Subtest: replay gives readable dwell to accepted content changes while routine prefixes remain brief
 ok 84 - replay gives readable dwell to accepted content changes while routine prefixes remain brief
   ---
-  duration_ms: 0.135084
+  duration_ms: 0.186042
   type: 'test'
   ...
 # Subtest: selected decision joins its own facts and exact contextual authority and action records
 ok 85 - selected decision joins its own facts and exact contextual authority and action records
   ---
-  duration_ms: 0.503875
+  duration_ms: 0.537167
   type: 'test'
   ...
 # Subtest: case facts show the accepted account and unique reason once while keeping raw verdicts and unknown step states exact
 ok 86 - case facts show the accepted account and unique reason once while keeping raw verdicts and unknown step states exact
   ---
-  duration_ms: 2.093333
+  duration_ms: 2.388875
   type: 'test'
   ...
 # Subtest: alternate facts expose their recorded states as Other questions beside an established main fact without borrowing its verdict
 ok 87 - alternate facts expose their recorded states as Other questions beside an established main fact without borrowing its verdict
   ---
-  duration_ms: 0.9525
+  duration_ms: 1.712292
   type: 'test'
   ...
 # Subtest: document focus follows its exact obligation and required fact when a node has multiple requirements
 ok 88 - document focus follows its exact obligation and required fact when a node has multiple requirements
   ---
-  duration_ms: 0.967708
+  duration_ms: 2.444
   type: 'test'
   ...
 # Subtest: forming requirements wait for their actual requiring step, preserve own missing evidence and retire false routes
 ok 89 - forming requirements wait for their actual requiring step, preserve own missing evidence and retire false routes
   ---
-  duration_ms: 2.648291
+  duration_ms: 2.149917
   type: 'test'
   ...
 # Subtest: forming work keeps the whole accepted graph obligations and pinned knowledge together without an intermediate process
 ok 90 - forming work keeps the whole accepted graph obligations and pinned knowledge together without an intermediate process
   ---
-  duration_ms: 4.341958
+  duration_ms: 6.016291
   type: 'test'
   ...
 # Subtest: sufficient future source review stays inspectable without appearing as an active requirement
 ok 91 - sufficient future source review stays inspectable without appearing as an active requirement
   ---
-  duration_ms: 1.679333
+  duration_ms: 1.585
   type: 'test'
   ...
 # Subtest: forming mixed routes expose only reached requirements and never inherit checks from received sources or completed nodes
 ok 92 - forming mixed routes expose only reached requirements and never inherit checks from received sources or completed nodes
   ---
-  duration_ms: 3.388709
+  duration_ms: 6.142458
   type: 'test'
   ...
 # Subtest: forming assessed requirements list a source file once while all three exact cited passages remain inspectable
 ok 93 - forming assessed requirements list a source file once while all three exact cited passages remain inspectable
   ---
-  duration_ms: 3.6885
+  duration_ms: 2.418042
   type: 'test'
   ...
 # Subtest: forming connections join only the selected accepted fact exact source span and its requiring node and obligation
 ok 94 - forming connections join only the selected accepted fact exact source span and its requiring node and obligation
   ---
-  duration_ms: 7.246291
+  duration_ms: 5.529792
   type: 'test'
   ...
 # Subtest: forming publication remains central for a deferred live accepted publication followed by a phase without inventing an intermediate revision
 ok 95 - forming publication remains central for a deferred live accepted publication followed by a phase without inventing an intermediate revision
   ---
-  duration_ms: 10.147
+  duration_ms: 13.613167
   type: 'test'
   ...
 # Subtest: a multi-node requirement selects its genuinely reached node after an upstream-blocked sibling
 ok 96 - a multi-node requirement selects its genuinely reached node after an upstream-blocked sibling
   ---
-  duration_ms: 0.313084
+  duration_ms: 0.297709
   type: 'test'
   ...
 # Subtest: shared document types keep each obligation attached to its own reached requiring node
 ok 97 - shared document types keep each obligation attached to its own reached requiring node
   ---
-  duration_ms: 0.733417
+  duration_ms: 0.257291
   type: 'test'
   ...
 # Subtest: a reached obligation entrance animates only its exact identity when another visible obligation shares the document type
 ok 98 - a reached obligation entrance animates only its exact identity when another visible obligation shares the document type
   ---
-  duration_ms: 0.760792
+  duration_ms: 1.139917
   type: 'test'
   ...
 # Subtest: case-language conditions retain nested all any and not scope and the recorded three-valued route truth
 ok 99 - case-language conditions retain nested all any and not scope and the recorded three-valued route truth
   ---
-  duration_ms: 1.095875
+  duration_ms: 0.562458
   type: 'test'
   ...
 # Subtest: real conditional split and join labels preserve applied excluded and unresolved edge states without labelling a linear unconditional dependency
 ok 100 - real conditional split and join labels preserve applied excluded and unresolved edge states without labelling a linear unconditional dependency
   ---
-  duration_ms: 1.041291
+  duration_ms: 0.594084
   type: 'test'
   ...
 # Subtest: forming requirements retire only on recorded route exclusion while History and Documents retain exact earlier obligations
 ok 101 - forming requirements retire only on recorded route exclusion while History and Documents retain exact earlier obligations
   ---
-  duration_ms: 2.515125
+  duration_ms: 1.345084
   type: 'test'
   ...
 # Subtest: forming motion maps atomic interpretation and source review to exact changed objects without completing an unresolved decision
 ok 102 - forming motion maps atomic interpretation and source review to exact changed objects without completing an unresolved decision
   ---
-  duration_ms: 1.560708
+  duration_ms: 1.004667
   type: 'test'
   ...
 # Subtest: prior assessment labels survive new source acquisition and failed rereading without rewriting valid evidence
 ok 103 - prior assessment labels survive new source acquisition and failed rereading without rewriting valid evidence
   ---
-  duration_ms: 1.263042
+  duration_ms: 3.972416
   type: 'test'
   ...
 # Subtest: an accepted reassessment clears freshness only when its bound roster matches; historical prefixes use their own sources
 ok 104 - an accepted reassessment clears freshness only when its bound roster matches; historical prefixes use their own sources
   ---
-  duration_ms: 1.724916
+  duration_ms: 1.320583
   type: 'test'
   ...
 # Subtest: deferral and prepared request retain missing evidence and external authority boundary
 ok 105 - deferral and prepared request retain missing evidence and external authority boundary
   ---
-  duration_ms: 1.346958
+  duration_ms: 0.500833
   type: 'test'
   ...
 # Subtest: missing reviews do not hide received unassigned originals or infer their document type
 ok 106 - missing reviews do not hide received unassigned originals or infer their document type
   ---
-  duration_ms: 0.58275
+  duration_ms: 0.490167
   type: 'test'
   ...
 # Subtest: source extraction labels do not contradict a sufficient review for one document requirement
 ok 107 - source extraction labels do not contradict a sufficient review for one document requirement
   ---
-  duration_ms: 0.336417
+  duration_ms: 0.336833
   type: 'test'
   ...
 # Subtest: zero active gaps can leave requirements held by unresolved questions without rewriting the outcome or draft
 ok 108 - zero active gaps can leave requirements held by unresolved questions without rewriting the outcome or draft
   ---
-  duration_ms: 0.301667
+  duration_ms: 0.287459
   type: 'test'
   ...
 # Subtest: all displayed untrusted title, fact, source, outcome and knowledge text is escaped
 ok 109 - all displayed untrusted title, fact, source, outcome and knowledge text is escaped
   ---
-  duration_ms: 2.868959
+  duration_ms: 1.501917
   type: 'test'
   ...
 # Subtest: exact citations use Python Unicode codepoint offsets, source hash and entire text hash
 ok 110 - exact citations use Python Unicode codepoint offsets, source hash and entire text hash
   ---
-  duration_ms: 6.043209
+  duration_ms: 3.659417
   type: 'test'
   ...
 # Subtest: knowledge qualification and quarantine render recorded proofs rather than inferred learning quality
 ok 111 - knowledge qualification and quarantine render recorded proofs rather than inferred learning quality
   ---
-  duration_ms: 0.624458
+  duration_ms: 0.623334
   type: 'test'
   ...
 # Subtest: reconciliation and item rejection history preserve rejected provenance without presenting proposed quotes as accepted evidence
 ok 112 - reconciliation and item rejection history preserve rejected provenance without presenting proposed quotes as accepted evidence
   ---
-  duration_ms: 1.081041
+  duration_ms: 1.176417
   type: 'test'
   ...
 # Subtest: activity keeps one record entry while preserving repeated rejection provenance and distinct runs in exact receipts
 ok 113 - activity keeps one record entry while preserving repeated rejection provenance and distinct runs in exact receipts
   ---
-  duration_ms: 0.1955
+  duration_ms: 0.233459
   type: 'test'
   ...
 # Subtest: public read-only capability blocks forged forms and removes work controls while preserving inspection
 ok 114 - public read-only capability blocks forged forms and removes work controls while preserving inspection
   ---
-  duration_ms: 8.606833
+  duration_ms: 5.679667
   type: 'test'
   ...
 # Subtest: public entry capability prevents work before a status response arrives
 ok 115 - public entry capability prevents work before a status response arrives
   ---
-  duration_ms: 4.456375
+  duration_ms: 6.586917
   type: 'test'
   ...
 # Subtest: a read-only status arriving during file preparation is denied centrally without an uncertain write retry
 ok 116 - a read-only status arriving during file preparation is denied centrally without an uncertain write retry
   ---
-  duration_ms: 3.640542
+  duration_ms: 4.12925
   type: 'test'
   ...
 # Subtest: uncertain intake retries the identical payload/key with required mutation header and never auto-retries
 ok 117 - uncertain intake retries the identical payload/key with required mutation header and never auto-retries
   ---
-  duration_ms: 6.457333
+  duration_ms: 6.798708
   type: 'test'
   ...
 # Subtest: destroy aborts outstanding reads and stale responses cannot resurrect the view
 ok 118 - destroy aborts outstanding reads and stale responses cannot resurrect the view
   ---
-  duration_ms: 0.895417
+  duration_ms: 1.596583
   type: 'test'
   ...
 # Subtest: a late claim response cannot replace a more recently selected claim
 ok 119 - a late claim response cannot replace a more recently selected claim
   ---
-  duration_ms: 2.200917
+  duration_ms: 4.943792
   type: 'test'
   ...
 # Subtest: a known catalog claim paints its original preview immediately while its authoritative snapshot is held
 ok 120 - a known catalog claim paints its original preview immediately while its authoritative snapshot is held
   ---
-  duration_ms: 1.202125
+  duration_ms: 4.326958
   type: 'test'
   ...
 # Subtest: local file validation sends nothing and leaves the intake editable
 ok 121 - local file validation sends nothing and leaves the intake editable
   ---
-  duration_ms: 1.701833
+  duration_ms: 2.252041
   type: 'test'
   ...
 # Subtest: pause is an explicit guarded action and an uncertain response retains its exact key
 ok 122 - pause is an explicit guarded action and an uncertain response retains its exact key
   ---
-  duration_ms: 1.8755
+  duration_ms: 2.285125
   type: 'test'
   ...
 # Subtest: module destroy without a container supports the pagehide integration contract
 ok 123 - module destroy without a container supports the pagehide integration contract
   ---
-  duration_ms: 1.406791
+  duration_ms: 2.366791
   type: 'test'
   ...
 # Subtest: ready execution limits come only from the backend capability projection without changing sealed state
 ok 124 - ready execution limits come only from the backend capability projection without changing sealed state
   ---
-  duration_ms: 0.910291
+  duration_ms: 3.109459
   type: 'test'
   ...
 # Subtest: reuse exposes recorded applicability and avoided mechanical work without estimating savings
 ok 125 - reuse exposes recorded applicability and avoided mechanical work without estimating savings
   ---
-  duration_ms: 0.526458
+  duration_ms: 1.235917
   type: 'test'
   ...
 # Subtest: knowledge inspection connects reusable steps, required facts, obligations and recipe rules to immutable lineage
 ok 126 - knowledge inspection connects reusable steps, required facts, obligations and recipe rules to immutable lineage
   ---
-  duration_ms: 10.888875
+  duration_ms: 21.440917
   type: 'test'
   ...
 # Subtest: MIME fallbacks affect only blank types and never rewrite submitted bytes
 ok 127 - MIME fallbacks affect only blank types and never rewrite submitted bytes
   ---
-  duration_ms: 3.912
+  duration_ms: 7.870834
   type: 'test'
   ...
 # Subtest: readable MIME previews use the body of the same bound original while preserving wire bytes and PDF extraction
 ok 128 - readable MIME previews use the body of the same bound original while preserving wire bytes and PDF extraction
   ---
-  duration_ms: 0.565292
+  duration_ms: 1.567
   type: 'test'
   ...
 # Subtest: published procedure changes and an exact reused version remain distinct with stable ordinary names
 ok 129 - published procedure changes and an exact reused version remain distinct with stable ordinary names
   ---
-  duration_ms: 1.6275
+  duration_ms: 2.645417
   type: 'test'
   ...
 # Subtest: the claim envelope renders capability projection separately from the preserved state
 ok 130 - the claim envelope renders capability projection separately from the preserved state
   ---
-  duration_ms: 8.915292
+  duration_ms: 6.37025
   type: 'test'
   ...
 # Subtest: a claim renders one selected real process and keeps exact outcome authority in one contextual record
 ok 131 - a claim renders one selected real process and keeps exact outcome authority in one contextual record
   ---
-  duration_ms: 1.636667
+  duration_ms: 0.540833
   type: 'test'
   ...
 # Subtest: complete graph labels and operational rule text remain inspectable
 ok 132 - complete graph labels and operational rule text remain inspectable
   ---
-  duration_ms: 0.5705
+  duration_ms: 0.598875
   type: 'test'
   ...
 # Subtest: only an explicitly paused deferral offers guarded resume with one retained request identity
 ok 133 - only an explicitly paused deferral offers guarded resume with one retained request identity
   ---
-  duration_ms: 4.08325
+  duration_ms: 6.548708
   type: 'test'
   ...
 # Subtest: work progress uses persisted phases, admitted interpretation and actual action/knowledge counts
 ok 134 - work progress uses persisted phases, admitted interpretation and actual action/knowledge counts
   ---
-  duration_ms: 0.632709
+  duration_ms: 1.430292
   type: 'test'
   ...
 # Subtest: a new evidence workflow does not inherit the earlier pass completed interpretation
 ok 135 - a new evidence workflow does not inherit the earlier pass completed interpretation
   ---
-  duration_ms: 0.097792
+  duration_ms: 0.11625
   type: 'test'
   ...
 # Subtest: causal choreography requires a fresh matching accepted event and targets only actual changed dependencies
 ok 136 - causal choreography requires a fresh matching accepted event and targets only actual changed dependencies
   ---
-  duration_ms: 0.584375
+  duration_ms: 0.598375
   type: 'test'
   ...
 # Subtest: forming attention transfers from one accepted whole graph frame to its document list without competing node entrances
 ok 137 - forming attention transfers from one accepted whole graph frame to its document list without competing node entrances
   ---
-  duration_ms: 2.436459
+  duration_ms: 4.676542
   type: 'test'
   ...
 # Subtest: forming source review and qualification move only their exact new content and preserve active inspection
 ok 138 - forming source review and qualification move only their exact new content and preserve active inspection
   ---
-  duration_ms: 1.619959
+  duration_ms: 4.416917
   type: 'test'
   ...
 # Subtest: accepted action context selects its exact shared-step requirement and fact while explicit inspection retains authority
 ok 139 - accepted action context selects its exact shared-step requirement and fact while explicit inspection retains authority
   ---
-  duration_ms: 1.466792
+  duration_ms: 1.685208
   type: 'test'
   ...
 # Subtest: reduced motion, hidden views, modal inspection and keyboard mode consume changes without running animations
 ok 140 - reduced motion, hidden views, modal inspection and keyboard mode consume changes without running animations
   ---
-  duration_ms: 0.324584
+  duration_ms: 1.014542
   type: 'test'
   ...
 # Subtest: action and knowledge motion uses exact accepted event objects, settles after consumption, and retains qualification distinctions
 ok 141 - action and knowledge motion uses exact accepted event objects, settles after consumption, and retains qualification distinctions
   ---
-  duration_ms: 5.426541
+  duration_ms: 5.5425
   type: 'test'
   ...
 # Subtest: knowledge reuse and quarantine cannot be presented as newly learned qualified knowledge
 ok 142 - knowledge reuse and quarantine cannot be presented as newly learned qualified knowledge
   ---
-  duration_ms: 0.385916
+  duration_ms: 2.094625
   type: 'test'
   ...
 # Subtest: recorded knowledge reuse has a readable marker without implying new qualification
 ok 143 - recorded knowledge reuse has a readable marker without implying new qualification
   ---
-  duration_ms: 0.352292
+  duration_ms: 1.845291
   type: 'test'
   ...
 # Subtest: fictional assets require a same-origin hash-bound URL and exact bytes before use
 ok 144 - fictional assets require a same-origin hash-bound URL and exact bytes before use
   ---
-  duration_ms: 2.068625
+  duration_ms: 8.163167
   type: 'test'
   ...
 # Subtest: explicit fictional selection fills native files without submitting and cannot change uncertain intake
 ok 145 - explicit fictional selection fills native files without submitting and cannot change uncertain intake
   ---
-  duration_ms: 13.756667
+  duration_ms: 19.3015
   type: 'test'
   ...
 # Subtest: ready saved snapshot assets paint derivative work immediately while fresh GET stays independent
 ok 146 - ready saved snapshot assets paint derivative work immediately while fresh GET stays independent
   ---
-  duration_ms: 34.672375
+  duration_ms: 38.08875
   type: 'test'
   ...
 # Subtest: an immediate saved selection retains pending asset admission without waiting or moving focus
 ok 147 - an immediate saved selection retains pending asset admission without waiting or moving focus
   ---
-  duration_ms: 2.219625
+  duration_ms: 5.023709
   type: 'test'
   ...
 # Subtest: saved snapshot preload is public-only and an unavailable asset leaves ordinary GET opening intact
 ok 148 - saved snapshot preload is public-only and an unavailable asset leaves ordinary GET opening intact
   ---
-  duration_ms: 1.848416
+  duration_ms: 2.858833
   type: 'test'
   ...
 # Subtest: saved snapshot acquisition stops a stalled body after its owned fifteen second deadline
 ok 149 - saved snapshot acquisition stops a stalled body after its owned fifteen second deadline
   ---
-  duration_ms: 4.151958
+  duration_ms: 3.043584
   type: 'test'
   ...
 # Subtest: late saved snapshot admission cannot replace navigation work
 ok 150 - late saved snapshot admission cannot replace navigation work
   ---
-  duration_ms: 9.075792
+  duration_ms: 4.711
   type: 'test'
   ...
 # Subtest: late saved snapshot admission cannot replace replay work
 ok 151 - late saved snapshot admission cannot replace replay work
   ---
-  duration_ms: 3.272167
+  duration_ms: 4.109167
   type: 'test'
   ...
 # Subtest: late saved snapshot admission cannot replace inspection work
 ok 152 - late saved snapshot admission cannot replace inspection work
   ---
-  duration_ms: 5.170208
+  duration_ms: 5.320667
   type: 'test'
   ...
 # Subtest: late saved snapshot admission cannot replace hidden work
 ok 153 - late saved snapshot admission cannot replace hidden work
   ---
-  duration_ms: 2.847583
+  duration_ms: 4.786209
   type: 'test'
   ...
 # Subtest: late saved snapshot admission cannot replace fresh-first work
 ok 154 - late saved snapshot admission cannot replace fresh-first work
   ---
-  duration_ms: 3.292125
+  duration_ms: 5.745042
   type: 'test'
   ...
 # Subtest: Cases page, domain and search navigation retains URL state and Back while resetting changed refinements
 ok 155 - Cases page, domain and search navigation retains URL state and Back while resetting changed refinements
   ---
-  duration_ms: 4.993625
+  duration_ms: 4.900292
   type: 'test'
   ...
 # Subtest: recorded presentation retains failed-only history and advances only after an accepted outcome
 ok 156 - recorded presentation retains failed-only history and advances only after an accepted outcome
   ---
-  duration_ms: 21.207792
+  duration_ms: 23.210291
   type: 'test'
   ...
 # Subtest: recorded presentation retains partial-outcome-with-failure history and advances only after an accepted outcome
 ok 157 - recorded presentation retains partial-outcome-with-failure history and advances only after an accepted outcome
   ---
-  duration_ms: 12.904167
+  duration_ms: 9.458166
   type: 'test'
   ...
 # Subtest: recorded presentation retains failed-reconciliation history and advances only after an accepted outcome
 ok 158 - recorded presentation retains failed-reconciliation history and advances only after an accepted outcome
   ---
-  duration_ms: 14.885583
+  duration_ms: 13.875041
   type: 'test'
   ...
 # Subtest: recorded presentation retains evidence-deferred history and advances only after an accepted outcome
 ok 159 - recorded presentation retains evidence-deferred history and advances only after an accepted outcome
   ---
-  duration_ms: 13.331958
+  duration_ms: 10.001625
   type: 'test'
   ...
 # Subtest: recorded presentation retains failed-then-reconciled history and advances only after an accepted outcome
 ok 160 - recorded presentation retains failed-then-reconciled history and advances only after an accepted outcome
   ---
-  duration_ms: 25.384083
+  duration_ms: 13.397417
   type: 'test'
   ...
 # Subtest: initial deep links and duplicate browser history events read saved state once without adding entries
 ok 161 - initial deep links and duplicate browser history events read saved state once without adding entries
   ---
-  duration_ms: 4.536417
+  duration_ms: 2.157167
   type: 'test'
   ...
 # Subtest: internal Work, Knowledge and claim navigation adds only changed fragments and supports Back/Forward
 ok 162 - internal Work, Knowledge and claim navigation adds only changed fragments and supports Back/Forward
   ---
-  duration_ms: 8.569916
+  duration_ms: 4.305208
   type: 'test'
   ...
 # Subtest: a browser route change during an uncertain intake waits for its result and preserves the exact retry request
 ok 163 - a browser route change during an uncertain intake waits for its result and preserves the exact retry request
   ---
-  duration_ms: 1.42
+  duration_ms: 1.489084
   type: 'test'
   ...
 # Subtest: graph selection and return keep focus on its junction without moving the page at either width
 ok 164 - graph selection and return keep focus on its junction without moving the page at either width
   ---
-  duration_ms: 6.978291
+  duration_ms: 3.046625
   type: 'test'
   ...
 # Subtest: a focused claim title allows saved revisions to render during polling
 ok 165 - a focused claim title allows saved revisions to render during polling
   ---
-  duration_ms: 1.429459
+  duration_ms: 2.997209
   type: 'test'
   ...
 # Subtest: direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance
     # Subtest: sources
     ok 1 - sources
       ---
-      duration_ms: 1.666333
+      duration_ms: 1.458584
       type: 'test'
       ...
     # Subtest: documents
     ok 2 - documents
       ---
-      duration_ms: 2.206584
+      duration_ms: 1.469
       type: 'test'
       ...
     # Subtest: knowledge
     ok 3 - knowledge
       ---
-      duration_ms: 2.153125
+      duration_ms: 1.308167
       type: 'test'
       ...
     # Subtest: activity
     ok 4 - activity
       ---
-      duration_ms: 1.036083
+      duration_ms: 1.244625
       type: 'test'
       ...
     1..4
 ok 166 - direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance
   ---
-  duration_ms: 7.588875
+  duration_ms: 6.291958
   type: 'test'
   ...
 # Subtest: an accepted live requiring-step advance focuses its actual new requirement while manual inspection keeps its focus
     # Subtest: false
     ok 1 - false
       ---
-      duration_ms: 1.867667
+      duration_ms: 3.884416
       type: 'test'
       ...
     # Subtest: true
     ok 2 - true
       ---
-      duration_ms: 1.575959
+      duration_ms: 1.710792
       type: 'test'
       ...
     1..2
 ok 167 - an accepted live requiring-step advance focuses its actual new requirement while manual inspection keeps its focus
   ---
-  duration_ms: 3.722833
+  duration_ms: 6.145792
   type: 'test'
   ...
 # Subtest: unchanged verified polling and reconnect keep existing claim nodes while changed capabilities and revisions still render
 ok 168 - unchanged verified polling and reconnect keep existing claim nodes while changed capabilities and revisions still render
   ---
-  duration_ms: 2.183708
+  duration_ms: 2.316125
   type: 'test'
   ...
 # Subtest: a failed render is retried from saved state even if the next poll has the same revision
 ok 169 - a failed render is retried from saved state even if the next poll has the same revision
   ---
-  duration_ms: 4.198458
+  duration_ms: 1.060333
   type: 'test'
   ...
 # Subtest: present projection identities must bind to the same claim, revision and saved state
 ok 170 - present projection identities must bind to the same claim, revision and saved state
   ---
-  duration_ms: 0.909917
+  duration_ms: 0.489125
   type: 'test'
   ...
 # Subtest: an initial event/state revision mismatch keeps the claim private until a matching read arrives
 ok 171 - an initial event/state revision mismatch keeps the claim private until a matching read arrives
   ---
-  duration_ms: 5.4255
+  duration_ms: 2.662
   type: 'test'
   ...
 # Subtest: initial revision mismatch bounds immediate reads and retains automatic recovery plus explicit retry
 ok 172 - initial revision mismatch bounds immediate reads and retains automatic recovery plus explicit retry
   ---
-  duration_ms: 1.37025
+  duration_ms: 1.531417
   type: 'test'
   ...
 # Subtest: a mismatched refresh projection and a stale saved revision retain the last verified claim
 ok 173 - a mismatched refresh projection and a stale saved revision retain the last verified claim
   ---
-  duration_ms: 1.266125
+  duration_ms: 2.808667
   type: 'test'
   ...
 # Subtest: source inspection verifies exact identity, preserves claim context and returns focus after close
 ok 174 - source inspection verifies exact identity, preserves claim context and returns focus after close
   ---
-  duration_ms: 3.696
+  duration_ms: 2.273042
   type: 'test'
   ...
 # Subtest: a rejected citation opens its verified original without highlighting the invalid proposed quote
 ok 175 - a rejected citation opens its verified original without highlighting the invalid proposed quote
   ---
-  duration_ms: 4.058875
+  duration_ms: 2.791334
   type: 'test'
   ...
 # Subtest: an invalid source text never becomes cited evidence and a late source response cannot reopen another claim
 ok 176 - an invalid source text never becomes cited evidence and a late source response cannot reopen another claim
   ---
-  duration_ms: 3.4475
+  duration_ms: 2.873375
   type: 'test'
   ...
 # Subtest: the default Work collection uses saved statuses and explicit New claim navigation
 ok 177 - the default Work collection uses saved statuses and explicit New claim navigation
   ---
-  duration_ms: 1.379292
+  duration_ms: 1.040167
   type: 'test'
   ...
 # Subtest: search and filters select only matching saved claims and preserve original statuses
 ok 178 - search and filters select only matching saved claims and preserve original statuses
   ---
-  duration_ms: 0.5755
+  duration_ms: 0.6275
   type: 'test'
   ...
 # Subtest: collection rows name the case in an h2 and read as metadata, one state line and the excerpt without the salutation
 ok 179 - collection rows name the case in an h2 and read as metadata, one state line and the excerpt without the salutation
   ---
-  duration_ms: 2.087916
+  duration_ms: 2.571417
   type: 'test'
   ...
 # Subtest: the status line appears once a case moves past Not started and its counts filter through ?filter=
 ok 180 - the status line appears once a case moves past Not started and its counts filter through ?filter=
   ---
-  duration_ms: 3.12225
+  duration_ms: 2.051917
   type: 'test'
   ...
 # Subtest: rows name received, deferred and unknown states honestly and explain matches the row cannot show
 ok 181 - rows name received, deferred and unknown states honestly and explain matches the row cannot show
   ---
-  duration_ms: 2.800708
+  duration_ms: 1.331416
   type: 'test'
   ...
 # Subtest: collection search asks the API for terms the rows lack and counts against the scope
 ok 182 - collection search asks the API for terms the rows lack and counts against the scope
   ---
-  duration_ms: 2.555209
+  duration_ms: 1.315083
   type: 'test'
   ...
 # Subtest: an empty Added scope says so, offers New case and shows no pager
 ok 183 - an empty Added scope says so, offers New case and shows no pager
   ---
-  duration_ms: 0.810625
+  duration_ms: 0.213083
   type: 'test'
   ...
 # Subtest: each view names itself in the document title
 ok 184 - each view names itself in the document title
   ---
-  duration_ms: 4.328916
+  duration_ms: 3.759334
   type: 'test'
   ...
 # Subtest: the first route leaves focus alone, the skip link lands on the heading and main takes no stray focus
 ok 185 - the first route leaves focus alone, the skip link lands on the heading and main takes no stray focus
   ---
-  duration_ms: 2.604875
+  duration_ms: 0.867583
   type: 'test'
   ...
 # Subtest: a row opened from Cases is focused only on a direct return; a detour lands at the top on the heading
 ok 186 - a row opened from Cases is focused only on a direct return; a detour lands at the top on the heading
   ---
-  duration_ms: 12.033041
+  duration_ms: 6.841458
   type: 'test'
   ...
 # Subtest: typing a collection search updates results without replacing the focused native search input
 ok 187 - typing a collection search updates results without replacing the focused native search input
   ---
-  duration_ms: 251.394209
+  duration_ms: 252.159541
   type: 'test'
   ...
 # Subtest: each local view renders only its current purpose while retaining the same immutable selected claim
 ok 188 - each local view renders only its current purpose while retaining the same immutable selected claim
   ---
-  duration_ms: 0.876792
+  duration_ms: 2.062417
   type: 'test'
   ...
 # Subtest: the full checklist reads causally: one route line naming its step, one supplied line and a count by route
 ok 189 - the full checklist reads causally: one route line naming its step, one supplied line and a count by route
   ---
-  duration_ms: 1.394292
+  duration_ms: 1.704
   type: 'test'
   ...
 # Subtest: graph markup shows one evaluated state per step and is a keyboard stop only after it scrolls
 ok 190 - graph markup shows one evaluated state per step and is a keyboard stop only after it scrolls
   ---
-  duration_ms: 2.207333
+  duration_ms: 4.034042
   type: 'test'
   ...
 # Subtest: supported document routes stay distinct and evidence intake is reachable from current needs
 ok 191 - supported document routes stay distinct and evidence intake is reachable from current needs
   ---
-  duration_ms: 0.402916
+  duration_ms: 0.344666
   type: 'test'
   ...
 # Subtest: an editable New claim draft retains the native form, FileList and typed values through Work and Knowledge
 ok 192 - an editable New claim draft retains the native form, FileList and typed values through Work and Knowledge
   ---
-  duration_ms: 3.134917
+  duration_ms: 2.016625
   type: 'test'
   ...
 # Subtest: an uncertain New claim keeps its native files and exact retry payload through Work navigation
 ok 193 - an uncertain New claim keeps its native files and exact retry payload through Work navigation
   ---
-  duration_ms: 0.961667
+  duration_ms: 1.073875
   type: 'test'
   ...
 # Subtest: claim refresh preserves the selected Process scroll and native Sources FileList through separate focused views
 ok 194 - claim refresh preserves the selected Process scroll and native Sources FileList through separate focused views
   ---
-  duration_ms: 3.70325
+  duration_ms: 9.097416
   type: 'test'
   ...
 # Subtest: uncertain file arrivals retain their claim guard and retry key across details and other claims
 ok 195 - uncertain file arrivals retain their claim guard and retry key across details and other claims
   ---
-  duration_ms: 3.379709
+  duration_ms: 3.635833
   type: 'test'
   ...
 # Subtest: recorded actions distinguish the current accepted run from historical and unassociated results
 ok 196 - recorded actions distinguish the current accepted run from historical and unassociated results
   ---
-  duration_ms: 0.778417
+  duration_ms: 0.34975
   type: 'test'
   ...
 # Subtest: a branch inspector joins its own condition, evidence need, document and capability without borrowing sibling facts
 ok 197 - a branch inspector joins its own condition, evidence need, document and capability without borrowing sibling facts
   ---
-  duration_ms: 1.28725
+  duration_ms: 0.583042
   type: 'test'
   ...
 # Subtest: knowledge reuse retains the exact historical version, originating claim and applicability without proving current facts
 ok 198 - knowledge reuse retains the exact historical version, originating claim and applicability without proving current facts
   ---
-  duration_ms: 1.374333
+  duration_ms: 0.890125
   type: 'test'
   ...
 # Subtest: full public provenance, receipt checks and quarantine reasons remain inspectable and escaped
 ok 199 - full public provenance, receipt checks and quarantine reasons remain inspectable and escaped
   ---
-  duration_ms: 0.292875
+  duration_ms: 0.27625
   type: 'test'
   ...
 # Subtest: Inspect reused knowledge navigates to and reveals the exact historical version and hash
 ok 200 - Inspect reused knowledge navigates to and reveals the exact historical version and hash
   ---
-  duration_ms: 3.941292
+  duration_ms: 3.869083
   type: 'test'
   ...
 # Subtest: an unavailable pinned knowledge version or hash never selects the latest version as its replacement
 ok 201 - an unavailable pinned knowledge version or hash never selects the latest version as its replacement
   ---
-  duration_ms: 2.648833
+  duration_ms: 4.340042
   type: 'test'
   ...
 # Subtest: Cancel returns to the same Work search, status filter and scroll position without writing intake
 ok 202 - Cancel returns to the same Work search, status filter and scroll position without writing intake
   ---
-  duration_ms: 2.70925
+  duration_ms: 1.512375
   type: 'test'
   ...
 # Subtest: a mismatched polling event cursor never advances the displayed state or consumes the pending event
 ok 203 - a mismatched polling event cursor never advances the displayed state or consumes the pending event
   ---
-  duration_ms: 1.330041
+  duration_ms: 1.030916
   type: 'test'
   ...
 # Subtest: closing a source after a saved refresh focuses the replacement citation control in the same claim
 ok 204 - closing a source after a saved refresh focuses the replacement citation control in the same claim
   ---
-  duration_ms: 3.243
+  duration_ms: 2.633917
   type: 'test'
   ...
 # Subtest: missing or empty run identities never associate recorded actions with a current run
 ok 205 - missing or empty run identities never associate recorded actions with a current run
   ---
-  duration_ms: 0.261167
+  duration_ms: 0.233625
   type: 'test'
   ...
 # Subtest: a source dialog returns to its visible All documents origin after polling duplicates its citation in hidden This step
 ok 206 - a source dialog returns to its visible All documents origin after polling duplicates its citation in hidden This step
   ---
-  duration_ms: 4.462209
+  duration_ms: 4.973042
   type: 'test'
   ...
 # Subtest: a refreshed Why required summary retains its visible All documents focus despite a duplicated hidden disclosure
 ok 207 - a refreshed Why required summary retains its visible All documents focus despite a duplicated hidden disclosure
   ---
-  duration_ms: 1.824708
+  duration_ms: 2.234417
   type: 'test'
   ...
 # Subtest: actual reuse provenance remains exact in one contextual record without asserting current facts
 ok 208 - actual reuse provenance remains exact in one contextual record without asserting current facts
   ---
-  duration_ms: 1.071833
+  duration_ms: 0.494
   type: 'test'
   ...
 # Subtest: one outcome record preserves all verifier issues and deferral details without accepting their text as markup
 ok 209 - one outcome record preserves all verifier issues and deferral details without accepting their text as markup
   ---
-  duration_ms: 1.883834
+  duration_ms: 0.498125
   type: 'test'
   ...
 # Subtest: accepted changes leave hidden document contexts still
 ok 210 - accepted changes leave hidden document contexts still
   ---
-  duration_ms: 0.450166
+  duration_ms: 0.096208
   type: 'test'
   ...
 # Subtest: paused interpretation describes an unaccepted result instead of active reading
 ok 211 - paused interpretation describes an unaccepted result instead of active reading
   ---
-  duration_ms: 0.307375
+  duration_ms: 0.111167
   type: 'test'
   ...
 # Subtest: an exhausted authoritative call allowance is visible before intake while packet saving remains available
 ok 212 - an exhausted authoritative call allowance is visible before intake while packet saving remains available
   ---
-  duration_ms: 1.380959
+  duration_ms: 0.827083
   type: 'test'
   ...
 # Subtest: cost, pending and unknown allowance statuses keep distinct honest intake messages without disabling saving
 ok 213 - cost, pending and unknown allowance statuses keep distinct honest intake messages without disabling saving
   ---
-  duration_ms: 7.384834
+  duration_ms: 2.013125
   type: 'test'
   ...
 # Subtest: disabled service and unavailable provider keep precedence over allowance messages
 ok 214 - disabled service and unavailable provider keep precedence over allowance messages
   ---
-  duration_ms: 2.133166
+  duration_ms: 0.584209
   type: 'test'
   ...
 # Subtest: accepted refresh keeps History Case details exact and closing its drawer returns to the replacement inspection control
 ok 215 - accepted refresh keeps History Case details exact and closing its drawer returns to the replacement inspection control
   ---
-  duration_ms: 2.596584
+  duration_ms: 1.857292
   type: 'test'
   ...
 # Subtest: closed History keeps its snapshot quiet and reopening reads the newest exact case record
 ok 216 - closed History keeps its snapshot quiet and reopening reads the newest exact case record
   ---
-  duration_ms: 3.9365
+  duration_ms: 1.739333
   type: 'test'
   ...
 # Subtest: global Knowledge History opens the full exact DTO including versions uses quarantine and public extensions
 ok 217 - global Knowledge History opens the full exact DTO including versions uses quarantine and public extensions
   ---
-  duration_ms: 3.388542
+  duration_ms: 4.978542
   type: 'test'
   ...
 # Subtest: delayed claim collections preserve verified revisions without rejecting genuinely newer rows
     # Subtest: a delayed older current row
     ok 1 - a delayed older current row
       ---
-      duration_ms: 6.2305
+      duration_ms: 5.070875
       type: 'test'
       ...
     # Subtest: a missing current row
     ok 2 - a missing current row
       ---
-      duration_ms: 3.232208
+      duration_ms: 3.520833
       type: 'test'
       ...
     # Subtest: a conflicting identity at the verified revision
     ok 3 - a conflicting identity at the verified revision
       ---
-      duration_ms: 5.437334
+      duration_ms: 4.402583
       type: 'test'
       ...
     # Subtest: a genuinely newer collection row
     ok 4 - a genuinely newer collection row
       ---
-      duration_ms: 8.935917
+      duration_ms: 4.075709
       type: 'test'
       ...
     1..4
 ok 218 - delayed claim collections preserve verified revisions without rejecting genuinely newer rows
   ---
-  duration_ms: 25.011583
+  duration_ms: 17.981916
   type: 'test'
   ...
 # Subtest: idle intake labels distinguish saving a claim from available or unknown autonomous work
 ok 219 - idle intake labels distinguish saving a claim from available or unknown autonomous work
   ---
-  duration_ms: 10.3305
+  duration_ms: 2.648875
   type: 'test'
   ...
 # Subtest: an unresolved service status keeps intake disabled until authoritative readiness arrives
 ok 220 - an unresolved service status keeps intake disabled until authoritative readiness arrives
   ---
-  duration_ms: 1.241459
+  duration_ms: 0.665
   type: 'test'
   ...
 # Subtest: late status reads preserve Saving and exact Retry labels while retaining the same intake files and draft
 ok 221 - late status reads preserve Saving and exact Retry labels while retaining the same intake files and draft
   ---
-  duration_ms: 5.186208
+  duration_ms: 2.2325
   type: 'test'
   ...
 # Subtest: a late unavailable status cannot replace Saving while native source bytes are still being prepared
 ok 222 - a late unavailable status cannot replace Saving while native source bytes are still being prepared
   ---
-  duration_ms: 1.742667
+  duration_ms: 0.861333
   type: 'test'
   ...
 # Subtest: returning to intake updates its idle label and local validation restores that label without replacing draft files
 ok 223 - returning to intake updates its idle label and local validation restores that label without replacing draft files
   ---
-  duration_ms: 3.458292
+  duration_ms: 2.202916
   type: 'test'
   ...
 # Subtest: complete acquired packet may finish local SHA inside the original300ms immediate-click choice
 ok 224 - complete acquired packet may finish local SHA inside the original300ms immediate-click choice
   ---
-  duration_ms: 314.482375
+  duration_ms: 309.189875
   type: 'test'
   ...
 # Subtest: complete acquired packet missing the300ms choice cannot paint or splice into later verified Live
 ok 225 - complete acquired packet missing the300ms choice cannot paint or splice into later verified Live
   ---
-  duration_ms: 359.977292
+  duration_ms: 363.364666
   type: 'test'
   ...
 # Subtest: ready verified Live wins while a completely acquired packet still awaits local SHA
 ok 226 - ready verified Live wins while a completely acquired packet still awaits local SHA
   ---
-  duration_ms: 5.829709
+  duration_ms: 3.672458
   type: 'test'
   ...
 # Subtest: navigation and hidden ownership cancel acquired packet verification without late Recorded paint
 ok 227 - navigation and hidden ownership cancel acquired packet verification without late Recorded paint
   ---
-  duration_ms: 355.469041
+  duration_ms: 359.025333
   type: 'test'
   ...
 # Subtest: recorded packet selected codec preserves exact UTF8 numeric spellings escapes and CRLF without expanding other claims
 ok 228 - recorded packet selected codec preserves exact UTF8 numeric spellings escapes and CRLF without expanding other claims
   ---
-  duration_ms: 5.979041
+  duration_ms: 9.856584
   type: 'test'
   ...
 # Subtest: recorded packet codec rejects unbound assets invalid publication DAG roots expansion and raw hashes
 ok 229 - recorded packet codec rejects unbound assets invalid publication DAG roots expansion and raw hashes
   ---
-  duration_ms: 5.608625
+  duration_ms: 10.401083
   type: 'test'
   ...
 # Subtest: ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session
 ok 230 - ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session
   ---
-  duration_ms: 1813.203125
+  duration_ms: 1813.618958
   type: 'test'
   ...
 # Subtest: independently verified live opening wins before300ms and never consumes available recorded packet frames
 ok 231 - independently verified live opening wins before300ms and never consumes available recorded packet frames
   ---
-  duration_ms: 5.777417
+  duration_ms: 11.808083
   type: 'test'
   ...
 # Subtest: unfinished recorded asset never delays Cases or selected live work and cannot join a later opening
 ok 232 - unfinished recorded asset never delays Cases or selected live work and cannot join a later opening
   ---
-  duration_ms: 367.072542
+  duration_ms: 362.727041
   type: 'test'
   ...
 # Subtest: unusable recorded packet retains the existing live503 to recorded endpoint fallback
 ok 233 - unusable recorded packet retains the existing live503 to recorded endpoint fallback
   ---
-  duration_ms: 307.691541
+  duration_ms: 310.426625
   type: 'test'
   ...
 # Subtest: explicit Recorded route uses whole packet identity and retires release provenance before accepted opening paint
 ok 234 - explicit Recorded route uses whole packet identity and retires release provenance before accepted opening paint
   ---
-  duration_ms: 10.334459
+  duration_ms: 8.954458
   type: 'test'
   ...
 # Subtest: idle recorded packet owner cancels on hidden or leaving Cases while an available asset remains reusable
 ok 235 - idle recorded packet owner cancels on hidden or leaving Cases while an available asset remains reusable
   ---
-  duration_ms: 14.213292
+  duration_ms: 14.12675
   type: 'test'
   ...
 # Subtest: held recorded opening retires a mismatched release catalog without replacing the focused Pause context
 ok 236 - held recorded opening retires a mismatched release catalog without replacing the focused Pause context
   ---
-  duration_ms: 308.620625
+  duration_ms: 308.046916
   type: 'test'
   ...
 # Subtest: recorded opening decision preserves trusted pending Pause and route cancellation without repainting late work
 ok 237 - recorded opening decision preserves trusted pending Pause and route cancellation without repainting late work
   ---
-  duration_ms: 307.697834
+  duration_ms: 307.44675
   type: 'test'
   ...
 # Subtest: complete atomic operation heads retain real saved envelopes and pinned source history without replay provenance
 ok 238 - complete atomic operation heads retain real saved envelopes and pinned source history without replay provenance
   ---
-  duration_ms: 1.519417
+  duration_ms: 1.780916
   type: 'test'
   ...
 # Subtest: complete atomic operation heads reject partial forks stale identities and changed source or start bindings
 ok 239 - complete atomic operation heads reject partial forks stale identities and changed source or start bindings
   ---
-  duration_ms: 7.245208
+  duration_ms: 6.032083
   type: 'test'
   ...
 # Subtest: cold operation selection starts the pinned head hint and live transport before its opening read finishes
 ok 240 - cold operation selection starts the pinned head hint and live transport before its opening read finishes
   ---
-  duration_ms: 2.988583
+  duration_ms: 3.780333
   type: 'test'
   ...
 # Subtest: cold operation selection reuses one complete atomic head while showing only a release outline before any response
 ok 241 - cold operation selection reuses one complete atomic head while showing only a release outline before any response
   ---
-  duration_ms: 6.780375
+  duration_ms: 4.981958
   type: 'test'
   ...
 # Subtest: cold operation selection falls back once for a partial atomic head without admitting its state
 ok 242 - cold operation selection falls back once for a partial atomic head without admitting its state
   ---
-  duration_ms: 3.380375
+  duration_ms: 3.93625
   type: 'test'
   ...
 # Subtest: cold operation selection never starts a fallback head read from an invalid atomic response after navigation
 ok 243 - cold operation selection never starts a fallback head read from an invalid atomic response after navigation
   ---
-  duration_ms: 3.474
+  duration_ms: 3.078042
   type: 'test'
   ...
 # Subtest: cold operation selection refetches a stale catalog revision without consuming its hinted state
 ok 244 - cold operation selection refetches a stale catalog revision without consuming its hinted state
   ---
-  duration_ms: 4.49575
+  duration_ms: 3.775375
   type: 'test'
   ...
 # Subtest: cold operation selection aborts its early reader and ignores late opening and outline responses after navigation
 ok 245 - cold operation selection aborts its early reader and ignores late opening and outline responses after navigation
   ---
-  duration_ms: 3.431875
+  duration_ms: 4.099667
   type: 'test'
   ...
 # Subtest: cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback
 ok 246 - cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback
   ---
-  duration_ms: 31.468458
+  duration_ms: 29.195667
   type: 'test'
   ...
 # Subtest: selected operation priority cancels only idle reads and suppresses new warming until foreground navigation
 ok 247 - selected operation priority cancels only idle reads and suppresses new warming until foreground navigation
   ---
-  duration_ms: 5.138333
+  duration_ms: 3.232875
   type: 'test'
   ...
 # Subtest: selected operation priority leaves an explicit foreground Cases read intact and defers direct-entry collection warming
 ok 248 - selected operation priority leaves an explicit foreground Cases read intact and defers direct-entry collection warming
   ---
-  duration_ms: 5.789625
+  duration_ms: 2.033083
   type: 'test'
   ...
 # Subtest: a writable demonstration with nine unrun originals shows an honest overview and requests no history
 ok 249 - a writable demonstration with nine unrun originals shows an honest overview and requests no history
   ---
-  duration_ms: 3.033792
+  duration_ms: 2.188125
   type: 'test'
   ...
 # Subtest: an unrun reference outline is named as not run and has no transport
 ok 250 - an unrun reference outline is named as not run and has no transport
   ---
-  duration_ms: 1.752667
+  duration_ms: 1.16375
   type: 'test'
   ...
 # Subtest: the Demonstration roster prefers reference assessments consistently and keeps selected originals separate
 ok 251 - the Demonstration roster prefers reference assessments consistently and keeps selected originals separate
   ---
-  duration_ms: 0.756875
+  duration_ms: 1.092584
   type: 'test'
   ...
 # Subtest: Choose case lists both rosters by provenance and offers a saved history only when one is recorded
 ok 252 - Choose case lists both rosters by provenance and offers a saved history only when one is recorded
   ---
-  duration_ms: 1.360917
+  duration_ms: 1.481541
   type: 'test'
   ...
 # Subtest: one case label serves Cases, the Demonstration and Knowledge, and Cases keep catalog order
 ok 253 - one case label serves Cases, the Demonstration and Knowledge, and Cases keep catalog order
   ---
-  duration_ms: 2.72625
+  duration_ms: 3.292042
   type: 'test'
   ...
 # Subtest: the playing roster has one transport row with position, domain, Pause, Skip and the next case
 ok 254 - the playing roster has one transport row with position, domain, Pause, Skip and the next case
   ---
-  duration_ms: 0.849541
+  duration_ms: 0.400709
   type: 'test'
   ...
 # Subtest: a case result links the knowledge it saved or reused, and the tour ends at the last saved version with its receipts
 ok 255 - a case result links the knowledge it saved or reused, and the tour ends at the last saved version with its receipts
   ---
-  duration_ms: 2.259333
+  duration_ms: 1.005084
   type: 'test'
   ...
 # Subtest: a writable Demonstration chooses the same reference-first roster and never starts new work
 ok 256 - a writable Demonstration chooses the same reference-first roster and never starts new work
   ---
-  duration_ms: 12.943041
+  duration_ms: 6.153917
   type: 'test'
   ...
 # Subtest: a legacy collection link is accepted and shown by its provenance name
 ok 257 - a legacy collection link is accepted and shown by its provenance name
   ---
-  duration_ms: 1.307542
+  duration_ms: 1.284708
   type: 'test'
   ...
 # Subtest: selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends
 ok 258 - selected operation priority defers the direct-route idle catalog and Knowledge until the selected run ends
   ---
-  duration_ms: 4.995208
+  duration_ms: 3.519833
   type: 'test'
   ...
 # Subtest: release procedure outlines carry only the exact nine release catalogs and no accepted state identity
 ok 259 - release procedure outlines carry only the exact nine release catalogs and no accepted state identity
   ---
-  duration_ms: 1.083875
+  duration_ms: 1.798833
   type: 'test'
   ...
 # Subtest: release procedure reconciliation requires original binding profile catalog and exact active request source pins
 ok 260 - release procedure reconciliation requires original binding profile catalog and exact active request source pins
   ---
-  duration_ms: 23.23575
+  duration_ms: 5.267833
   type: 'test'
   ...
 # Subtest: release procedure opening retains trusted History detail and focus while a valid late opening arrives
 ok 261 - release procedure opening retains trusted History detail and focus while a valid late opening arrives
   ---
-  duration_ms: 2.684833
+  duration_ms: 2.81375
   type: 'test'
   ...
 # Subtest: release procedure pending Pause can Resume before any response and retires a mismatched outline while held
 ok 262 - release procedure pending Pause can Resume before any response and retires a mismatched outline while held
   ---
-  duration_ms: 1.386625
+  duration_ms: 2.154208
   type: 'test'
   ...
 # Subtest: operation source spans preserve Python codepoints, exact original/text hashes and provisional authority
 ok 263 - operation source spans preserve Python codepoints, exact original/text hashes and provisional authority
   ---
-  duration_ms: 7.9955
+  duration_ms: 3.368709
   type: 'test'
   ...
 # Subtest: compact operation checkpoints reconstruct only the exact pinned native journal and head
 ok 264 - compact operation checkpoints reconstruct only the exact pinned native journal and head
   ---
-  duration_ms: 1.84025
+  duration_ms: 1.381792
   type: 'test'
   ...
 # Subtest: NDJSON operations decode fragmented Unicode and cancel without consuming another frame
 ok 265 - NDJSON operations decode fragmented Unicode and cancel without consuming another frame
   ---
-  duration_ms: 3.208583
+  duration_ms: 1.663042
   type: 'test'
   ...
 # Subtest: wire draining completes before paused application consumption and abort prevents the next frame
 ok 266 - wire draining completes before paused application consumption and abort prevents the next frame
   ---
-  duration_ms: 1.452333
+  duration_ms: 1.019625
   type: 'test'
   ...
 # Subtest: recorded delivery retains the captured binding while each visible mode keeps its historical as-of qualifier
 ok 267 - recorded delivery retains the captured binding while each visible mode keeps its historical as-of qualifier
   ---
-  duration_ms: 3.945459
+  duration_ms: 2.723417
   type: 'test'
   ...
 # Subtest: operation delivery names existing procedure reuse and its recorded origin without changing saved knowledge
 ok 268 - operation delivery names existing procedure reuse and its recorded origin without changing saved knowledge
   ---
-  duration_ms: 0.696
+  duration_ms: 0.241375
   type: 'test'
   ...
 # Subtest: failed live operation records remain inspectable while recorded delivery opens and preserves same-ID attempts
 ok 269 - failed live operation records remain inspectable while recorded delivery opens and preserves same-ID attempts
   ---
-  duration_ms: 3.692958
+  duration_ms: 1.338833
   type: 'test'
   ...
 # Subtest: operation reading uses current case labels and source summaries without exposing raw routing or Boolean scalars
 ok 270 - operation reading uses current case labels and source summaries without exposing raw routing or Boolean scalars
   ---
-  duration_ms: 0.425875
+  duration_ms: 0.450875
   type: 'test'
   ...
 # Subtest: restarting Demonstration opens its own first case after inspection of another case
 ok 271 - restarting Demonstration opens its own first case after inspection of another case
   ---
-  duration_ms: 2.985583
+  duration_ms: 1.170041
   type: 'test'
   ...
 # Subtest: actual working graphs and applicability stay separately inspectable without advancing accepted execution
 ok 272 - actual working graphs and applicability stay separately inspectable without advancing accepted execution
   ---
-  duration_ms: 3.630417
+  duration_ms: 1.880291
   type: 'test'
   ...
 # Subtest: working evaluations cannot borrow a different graph, override condition scope, stage or target
 ok 273 - working evaluations cannot borrow a different graph, override condition scope, stage or target
   ---
-  duration_ms: 1.697584
+  duration_ms: 1.8455
   type: 'test'
   ...
 # Subtest: same working graph with a different actual override retains independent scope and provisional document targets
 ok 274 - same working graph with a different actual override retains independent scope and provisional document targets
   ---
-  duration_ms: 1.512459
+  duration_ms: 1.681334
   type: 'test'
   ...
 # Subtest: source-to-working-step relationships use exact observed fact/document pins rather than retained reading state
 ok 275 - source-to-working-step relationships use exact observed fact/document pins rather than retained reading state
   ---
-  duration_ms: 0.710084
+  duration_ms: 0.971584
   type: 'test'
   ...
 # Subtest: selected provisional readiness explains the actual blocker independently of applicability
 ok 276 - selected provisional readiness explains the actual blocker independently of applicability
   ---
-  duration_ms: 2.537125
+  duration_ms: 1.45875
   type: 'test'
   ...
 # Subtest: stage source context retires active ink on an unrelated operation while preserving exact historical span identity
 ok 277 - stage source context retires active ink on an unrelated operation while preserving exact historical span identity
   ---
-  duration_ms: 6.094875
+  duration_ms: 3.836541
   type: 'test'
   ...
 # Subtest: stage clauses retain Unicode offsets and match their factual meaning rather than a nearby convenient number
 ok 278 - stage clauses retain Unicode offsets and match their factual meaning rather than a nearby convenient number
   ---
-  duration_ms: 0.923917
+  duration_ms: 0.871875
   type: 'test'
   ...
 # Subtest: stage attention coalesces calculation churn and identical cited reads without dropping or reordering History
 ok 279 - stage attention coalesces calculation churn and identical cited reads without dropping or reordering History
   ---
-  duration_ms: 0.192125
+  duration_ms: 0.16225
   type: 'test'
   ...
 # Subtest: operation scrubbing uses only the preceding verified checkpoint and exact prior evaluation scope
 ok 280 - operation scrubbing uses only the preceding verified checkpoint and exact prior evaluation scope
   ---
-  duration_ms: 3.585125
+  duration_ms: 1.258542
   type: 'test'
   ...
 # Subtest: stage opening keeps a known original quiet and its complete map preserves accepted completion only on exact graph identity
 ok 281 - stage opening keeps a known original quiet and its complete map preserves accepted completion only on exact graph identity
   ---
-  duration_ms: 4.542416
+  duration_ms: 1.013167
   type: 'test'
   ...
 # Subtest: stage transport uses a bound total without granting access to future unverified operations
 ok 282 - stage transport uses a bound total without granting access to future unverified operations
   ---
-  duration_ms: 1.26675
+  duration_ms: 0.612916
   type: 'test'
   ...
 # Subtest: stage excerpts stay compact while full source inspection retains every original Unicode character and exact document labels
 ok 283 - stage excerpts stay compact while full source inspection retains every original Unicode character and exact document labels
   ---
-  duration_ms: 3.858583
+  duration_ms: 1.702167
   type: 'test'
   ...
 # Subtest: compact unknown findings use a short literal Unicode subspan while inspection preserves the complete native pin
 ok 284 - compact unknown findings use a short literal Unicode subspan while inspection preserves the complete native pin
   ---
-  duration_ms: 0.326334
+  duration_ms: 0.233792
   type: 'test'
   ...
 # Subtest: an actually checked stage document receives a named source card inside its existing requirement landing
 ok 285 - an actually checked stage document receives a named source card inside its existing requirement landing
   ---
-  duration_ms: 2.929958
+  duration_ms: 0.885208
   type: 'test'
   ...
 # Subtest: a stage fact lifts the same exact compact Unicode subspan that carries its source ink
 ok 286 - a stage fact lifts the same exact compact Unicode subspan that carries its source ink
   ---
-  duration_ms: 1.424375
+  duration_ms: 0.349584
   type: 'test'
   ...
 # Subtest: an early planned rail comes only from the complete current-run pinned catalog and carries no accepted prefix state
 ok 287 - an early planned rail comes only from the complete current-run pinned catalog and carries no accepted prefix state
   ---
-  duration_ms: 2.037125
+  duration_ms: 1.064292
   type: 'test'
   ...
 # Subtest: native cited reads stay inspectable without separate dwell before an actual consequence
 ok 288 - native cited reads stay inspectable without separate dwell before an actual consequence
   ---
-  duration_ms: 0.16475
+  duration_ms: 0.113416
   type: 'test'
   ...
 # Subtest: a cited decision retires source ink when the visible stage pulls back to its map and outcome
 ok 289 - a cited decision retires source ink when the visible stage pulls back to its map and outcome
   ---
-  duration_ms: 0.589125
+  duration_ms: 0.458958
   type: 'test'
   ...
 # Subtest: a real provisional document fact can dock as an observed quote on a planned node without accepted facts or requirements
 ok 290 - a real provisional document fact can dock as an observed quote on a planned node without accepted facts or requirements
   ---
-  duration_ms: 0.439
+  duration_ms: 0.37525
   type: 'test'
   ...
 # Subtest: stage document history follows the latest observed requirement and never borrows a future checked source
 ok 291 - stage document history follows the latest observed requirement and never borrows a future checked source
   ---
-  duration_ms: 0.521208
+  duration_ms: 0.447292
   type: 'test'
   ...
 # Subtest: observed source-context docking requires preceding native causal ancestry and one exact document destination
 ok 292 - observed source-context docking requires preceding native causal ancestry and one exact document destination
   ---
-  duration_ms: 0.3485
+  duration_ms: 0.395
   type: 'test'
   ...
 # Subtest: only distinct actual consequences own visible dwell and every source operation retains its exact history identity
 ok 293 - only distinct actual consequences own visible dwell and every source operation retains its exact history identity
   ---
-  duration_ms: 0.189584
+  duration_ms: 0.21775
   type: 'test'
   ...
 # Subtest: compact stage excerpts preserve exact Unicode display bounds inside the unchanged full native citation
 ok 294 - compact stage excerpts preserve exact Unicode display bounds inside the unchanged full native citation
   ---
-  duration_ms: 0.284125
+  duration_ms: 0.302125
   type: 'test'
   ...
 # Subtest: recorded operation delivery is an explicit retained URL preference and legacy through links keep their revision
 ok 295 - recorded operation delivery is an explicit retained URL preference and legacy through links keep their revision
   ---
-  duration_ms: 0.1095
+  duration_ms: 0.104833
   type: 'test'
   ...
 # Subtest: shared-source observations stay neutral when the one recorded document has multiple structural consumers
 ok 296 - shared-source observations stay neutral when the one recorded document has multiple structural consumers
   ---
-  duration_ms: 0.084167
+  duration_ms: 0.085375
   type: 'test'
   ...
 # Subtest: a pending observed handoff retains its phase through inspection and only actual accepted document support may fill a slot
 ok 297 - a pending observed handoff retains its phase through inspection and only actual accepted document support may fill a slot
   ---
-  duration_ms: 1.125584
+  duration_ms: 2.3735
   type: 'test'
   ...
 # Subtest: stage chips keep complete source phrases and bounded context starts at actual word and sentence boundaries
 ok 298 - stage chips keep complete source phrases and bounded context starts at actual word and sentence boundaries
   ---
-  duration_ms: 1.8725
+  duration_ms: 0.9745
   type: 'test'
   ...
 # Subtest: the same fact rereads changed source or meaning while verification-only repeats stay quiet
 ok 299 - the same fact rereads changed source or meaning while verification-only repeats stay quiet
   ---
-  duration_ms: 0.637833
+  duration_ms: 0.249291
   type: 'test'
   ...
 # Subtest: an excerpt context remains inside the actual cited body and excludes source metadata headers
 ok 300 - an excerpt context remains inside the actual cited body and excludes source metadata headers
   ---
-  duration_ms: 0.380708
+  duration_ms: 0.239458
   type: 'test'
   ...
 # Subtest: a settled filled document slot has one source card while active delivery keeps its source preview and complete native inspection pin
 ok 301 - a settled filled document slot has one source card while active delivery keeps its source preview and complete native inspection pin
   ---
-  duration_ms: 0.73625
+  duration_ms: 0.484709
   type: 'test'
   ...
 # Subtest: an uncited knowledge consequence cannot bring retained source context above the map while exact History and cited inspection remain available
 ok 302 - an uncited knowledge consequence cannot bring retained source context above the map while exact History and cited inspection remain available
   ---
-  duration_ms: 0.534625
+  duration_ms: 0.447833
   type: 'test'
   ...
 # Subtest: verified operation batches yield to a browser task at the time budget without changing native checks or order
 ok 303 - verified operation batches yield to a browser task at the time budget without changing native checks or order
   ---
-  duration_ms: 9.667667
+  duration_ms: 5.260875
   type: 'test'
   ...
 # Subtest: the browser-task fallback waits for pause inspection and visibility gates before resuming verified frames
 ok 304 - the browser-task fallback waits for pause inspection and visibility gates before resuming verified frames
   ---
-  duration_ms: 0.380542
+  duration_ms: 0.350375
   type: 'test'
   ...
 # Subtest: a yielded operation batch cannot continue after abort stale route or inspection-gate cancellation
 ok 305 - a yielded operation batch cannot continue after abort stale route or inspection-gate cancellation
   ---
-  duration_ms: 0.177
+  duration_ms: 0.121208
   type: 'test'
   ...
 # Subtest: release procedure embedded data regenerates exactly from policy profile and immutable source bytes
 ok 306 - release procedure embedded data regenerates exactly from policy profile and immutable source bytes
   ---
-  duration_ms: 467.505291
+  duration_ms: 144.226167
   type: 'test'
   ...
 # Subtest: direct autonomous routes acquire a same-origin packet behind the immediate map and retain the original300ms choice
 ok 307 - direct autonomous routes acquire a same-origin packet behind the immediate map and retain the original300ms choice
   ---
-  duration_ms: 302.184375
+  duration_ms: 306.123792
   type: 'test'
   ...
 # Subtest: current verified binding prefetches exactly one next opening snapshot and trace without painting its facts and cancels all owned reads on exit
 ok 308 - current verified binding prefetches exactly one next opening snapshot and trace without painting its facts and cancels all owned reads on exit
   ---
-  duration_ms: 2.449292
+  duration_ms: 5.823042
   type: 'test'
   ...
 # Subtest: a valid observed newer live opening prevents the300ms packet fallback from rolling the selected head back
 ok 309 - a valid observed newer live opening prevents the300ms packet fallback from rolling the selected head back
   ---
-  duration_ms: 355.079084
+  duration_ms: 355.625333
   type: 'test'
   ...
 # Subtest: completed outcome holds8000ms independently of a ready next case and reuses its824 to299 operation transport without a zero or stale count
 ok 310 - completed outcome holds8000ms independently of a ready next case and reuses its824 to299 operation transport without a zero or stale count
   ---
-  duration_ms: 4241.353375
+  duration_ms: 3890.660833
   type: 'test'
   ...
 # Subtest: first genuine consequence retains a real sweep and transfer while subsequent reads keep their full pacing
 ok 311 - first genuine consequence retains a real sweep and transfer while subsequent reads keep their full pacing
   ---
-  duration_ms: 0.89975
+  duration_ms: 0.483875
   type: 'test'
   ...
 # Subtest: pause and hide after the8000ms outcome hold preserve the finished case and resume the delayed next opening
 ok 312 - pause and hide after the8000ms outcome hold preserve the finished case and resume the delayed next opening
   ---
-  duration_ms: 4235.174
+  duration_ms: 4242.202292
   type: 'test'
   ...
 # Subtest: Cases cold click can finish packet acquisition inside its original300ms choice
 ok 313 - Cases cold click can finish packet acquisition inside its original300ms choice
   ---
-  duration_ms: 313.749917
+  duration_ms: 312.25825
   type: 'test'
   ...
 # Subtest: late binding and result hashes cannot mutate a newly selected operation session
 ok 314 - late binding and result hashes cannot mutate a newly selected operation session
   ---
-  duration_ms: 1523.961834
+  duration_ms: 1521.013083
   type: 'test'
   ...
 # Subtest: next-case prefetch retains the live503 to recorded trace fallback and cancels its bounded owner on exit
 ok 315 - next-case prefetch retains the live503 to recorded trace fallback and cancels its bounded owner on exit
   ---
-  duration_ms: 27.084625
+  duration_ms: 3.746541
   type: 'test'
   ...
 # Subtest: the300ms choice accepts verified Live before the cutoff and commits Recorded at the cutoff without a late splice
 ok 316 - the300ms choice accepts verified Live before the cutoff and commits Recorded at the cutoff without a late splice
   ---
-  duration_ms: 1563.124416
+  duration_ms: 1567.633625
   type: 'test'
   ...
 # Subtest: after the300ms Live preference an uncommitted opening accepts a fully verified packet acquired at600ms before Live at5s
 ok 317 - after the300ms Live preference an uncommitted opening accepts a fully verified packet acquired at600ms before Live at5s
   ---
-  duration_ms: 1515.01375
+  duration_ms: 1515.665292
   type: 'test'
   ...
 # Subtest: navigation settles the post300ms uncommitted choice even when both fetch candidates ignore abort
 ok 318 - navigation settles the post300ms uncommitted choice even when both fetch candidates ignore abort
   ---
-  duration_ms: 355.55875
+  duration_ms: 359.089125
   type: 'test'
   ...
 # Subtest: a newer Live head observed between packet readiness and commitment still prevents a recorded rollback
 ok 319 - a newer Live head observed between packet readiness and commitment still prevents a recorded rollback
   ---
-  duration_ms: 361.3415
+  duration_ms: 361.985625
   type: 'test'
   ...
 # Subtest: explicit Recorded keeps a600ms packet eligible after300ms while starting only owned Recorded endpoint reads
 ok 320 - explicit Recorded keeps a600ms packet eligible after300ms while starting only owned Recorded endpoint reads
   ---
-  duration_ms: 14.019458
+  duration_ms: 9.148458
   type: 'test'
   ...
 # Subtest: learning timeline uses persisted event identities, UTC chronology and later reuse without mutating records
 ok 321 - learning timeline uses persisted event identities, UTC chronology and later reuse without mutating records
   ---
-  duration_ms: 3.803708
+  duration_ms: 3.0205
   type: 'test'
   ...
 # Subtest: unavailable learning pins retain exact receipts and cannot borrow the latest process or fabricate timestamps
 ok 322 - unavailable learning pins retain exact receipts and cannot borrow the latest process or fabricate timestamps
   ---
-  duration_ms: 0.591666
+  duration_ms: 0.960667
   type: 'test'
   ...
 # Subtest: known recipe slots are marked from an exact pinned count without claiming checked receiving-case evidence
 ok 323 - known recipe slots are marked from an exact pinned count without claiming checked receiving-case evidence
   ---
-  duration_ms: 0.484125
+  duration_ms: 0.821458
   type: 'test'
   ...
 # Subtest: grouped uses retain every actual receipt and requalification keeps faithful default before/after definitions
 ok 324 - grouped uses retain every actual receipt and requalification keeps faithful default before/after definitions
   ---
-  duration_ms: 0.702459
+  duration_ms: 1.192334
   type: 'test'
   ...
 # Subtest: recorded learning refusals keep all exact reasons, source links and escaped candidate text
 ok 325 - recorded learning refusals keep all exact reasons, source links and escaped candidate text
   ---
-  duration_ms: 0.3815
+  duration_ms: 0.769041
   type: 'test'
   ...
 # Subtest: cold demo knowledge moment needs the accepted knowledge.used prefix and exact frozen procedure pin
 ok 326 - cold demo knowledge moment needs the accepted knowledge.used prefix and exact frozen procedure pin
   ---
-  duration_ms: 0.769084
+  duration_ms: 1.312833
   type: 'test'
   ...
 # Subtest: an unavailable exact learning pin cannot be overridden by replay position or a delayed warm-cache refresh
 ok 327 - an unavailable exact learning pin cannot be overridden by replay position or a delayed warm-cache refresh
   ---
-  duration_ms: 7.117708
+  duration_ms: 8.848708
   type: 'test'
   ...
 # Subtest: recorded learning gives sources process and documents deliberate holds and presents reuse receipts coherently
 ok 328 - recorded learning gives sources process and documents deliberate holds and presents reuse receipts coherently
   ---
-  duration_ms: 0.263375
+  duration_ms: 0.458
   type: 'test'
   ...
 # Subtest: playing an individual grouped receipt preserves that actual event instead of restarting at the first mint
 ok 329 - playing an individual grouped receipt preserves that actual event instead of restarting at the first mint
   ---
-  duration_ms: 0.170458
+  duration_ms: 0.446334
   type: 'test'
   ...
 # Subtest: learning summaries use ordinary recorded document labels while Changes retains the exact stored reason
 ok 330 - learning summaries use ordinary recorded document labels while Changes retains the exact stored reason
   ---
-  duration_ms: 0.514916
+  duration_ms: 0.923167
   type: 'test'
   ...
 # Subtest: Final view leaves the replay for the current library and How this was learned replays from the first event
 ok 331 - Final view leaves the replay for the current library and How this was learned replays from the first event
   ---
-  duration_ms: 7.526708
+  duration_ms: 11.343417
   type: 'test'
   ...
 # Subtest: leaving an unavailable learning pin clears only that obsolete notice and a genuine refresh error returns with the next read
 ok 332 - leaving an unavailable learning pin clears only that obsolete notice and a genuine refresh error returns with the next read
   ---
-  duration_ms: 8.851833
+  duration_ms: 7.939584
   type: 'test'
   ...
 # Subtest: a deferred successful Knowledge refresh keeps the library a reader returned to from an unavailable learning pin
 ok 333 - a deferred successful Knowledge refresh keeps the library a reader returned to from an unavailable learning pin
   ---
-  duration_ms: 3.866041
+  duration_ms: 3.381875
   type: 'test'
   ...
 # Subtest: a deferred successful Knowledge refresh respects a newer manual event stage and facet over its original explicit preference
 ok 334 - a deferred successful Knowledge refresh respects a newer manual event stage and facet over its original explicit preference
   ---
-  duration_ms: 7.35975
+  duration_ms: 4.542
   type: 'test'
   ...
 # Subtest: Knowledge Retry retains the completed final-view restart intent after a genuine refresh failure
 ok 335 - Knowledge Retry retains the completed final-view restart intent after a genuine refresh failure
   ---
-  duration_ms: 2.639875
+  duration_ms: 3.596875
   type: 'test'
   ...
 # Subtest: plain language audit checks names and whole words with exact Details and quotation exemptions
 ok 336 - plain language audit checks names and whole words with exact Details and quotation exemptions
   ---
-  duration_ms: 2.30525
+  duration_ms: 3.190709
   type: 'test'
   ...
 # Subtest: recorded roles render one stable Now line from the actual operation rather than view state or observations as accepted facts
 ok 337 - recorded roles render one stable Now line from the actual operation rather than view state or observations as accepted facts
   ---
-  duration_ms: 2.037417
+  duration_ms: 2.722833
   type: 'test'
   ...
 # Subtest: AI model labels in the Reader and Checker surface require the exact recorded provider receipt
 ok 338 - AI model labels in the Reader and Checker surface require the exact recorded provider receipt
   ---
-  duration_ms: 20.099041
+  duration_ms: 17.606625
   type: 'test'
   ...
 # Subtest: the case and Knowledge surfaces share one polite live region and preserve read-only source records
 ok 339 - the case and Knowledge surfaces share one polite live region and preserve read-only source records
   ---
-  duration_ms: 1.698917
+  duration_ms: 5.532209
   type: 'test'
   ...
 # Subtest: case tabs and recorded Knowledge copy stay short and plain including accessible names
 ok 340 - case tabs and recorded Knowledge copy stay short and plain including accessible names
   ---
-  duration_ms: 5.370708
+  duration_ms: 6.012125
   type: 'test'
   ...
 # Subtest: trusted keyboard inspection pauses a pending recorded opening without stealing focus
 ok 341 - trusted keyboard inspection pauses a pending recorded opening without stealing focus
   ---
-  duration_ms: 8.873167
+  duration_ms: 2.192125
   type: 'test'
   ...
 # Subtest: trusted focus inspection pauses a pending recorded opening without stealing focus
 ok 342 - trusted focus inspection pauses a pending recorded opening without stealing focus
   ---
-  duration_ms: 3.787625
+  duration_ms: 2.836791
   type: 'test'
   ...
 # Subtest: one recorded Now announcement includes role method action document and result once per actual saved event
 ok 343 - one recorded Now announcement includes role method action document and result once per actual saved event
   ---
-  duration_ms: 2.332667
+  duration_ms: 1.821333
   type: 'test'
   ...
 # Subtest: completed grouped Knowledge replay presents the finished transport without changing its representative recorded event
 ok 344 - completed grouped Knowledge replay presents the finished transport without changing its representative recorded event
   ---
-  duration_ms: 1.385875
+  duration_ms: 2.211584
   type: 'test'
   ...
 # Subtest: settled and exact Knowledge pins retain one recorded Memory Now with fixed rules and no visible shortened identifiers
 ok 345 - settled and exact Knowledge pins retain one recorded Memory Now with fixed rules and no visible shortened identifiers
   ---
-  duration_ms: 9.408958
+  duration_ms: 8.577166
   type: 'test'
   ...
 # Subtest: Knowledge announcements distinguish the recorded family and source case for the same version and action
 ok 346 - Knowledge announcements distinguish the recorded family and source case for the same version and action
   ---
-  duration_ms: 2.831166
+  duration_ms: 2.635708
   type: 'test'
   ...
 # Subtest: replay Now uses present actions while History keeps past actions and a pause preserves the exact recorded context
 ok 347 - replay Now uses present actions while History keeps past actions and a pause preserves the exact recorded context
   ---
-  duration_ms: 0.461375
+  duration_ms: 0.5005
   type: 'test'
   ...
 # Subtest: Knowledge Now uses present saves rechecks and reuses while its timeline keeps recorded past labels
 ok 348 - Knowledge Now uses present saves rechecks and reuses while its timeline keeps recorded past labels
   ---
-  duration_ms: 2.964375
+  duration_ms: 2.420875
   type: 'test'
   ...
 # Subtest: recorded operations HTTP429 shows a short saved-result notice and only an explicit replay choice retries the same recorded case
 ok 349 - recorded operations HTTP429 shows a short saved-result notice and only an explicit replay choice retries the same recorded case
   ---
-  duration_ms: 11.891167
+  duration_ms: 4.358208
   type: 'test'
   ...
 # Subtest: recorded HTTP429 with an unavailable saved result retains replay choices and exact diagnostics without inventing a saved head
 ok 350 - recorded HTTP429 with an unavailable saved result retains replay choices and exact diagnostics without inventing a saved head
   ---
-  duration_ms: 4.937792
+  duration_ms: 1.451583
   type: 'test'
   ...
 # Subtest: late recorded HTTP429 or its saved fallback cannot repaint a different view or restart canceled replay work
 ok 351 - late recorded HTTP429 or its saved fallback cannot repaint a different view or restart canceled replay work
   ---
-  duration_ms: 6.394417
+  duration_ms: 3.095125
   type: 'test'
   ...
 # Subtest: Knowledge fetch and body timeouts explain the unchanged deadline and keep explicit Retry
 ok 352 - Knowledge fetch and body timeouts explain the unchanged deadline and keep explicit Retry
   ---
-  duration_ms: 15.659208
+  duration_ms: 8.198625
   type: 'test'
   ...
 # Subtest: a selected Knowledge boot response uses normal validation once and Retry obtains a fresh GET
 ok 353 - a selected Knowledge boot response uses normal validation once and Retry obtains a fresh GET
   ---
-  duration_ms: 3.071458
+  duration_ms: 0.825458
   type: 'test'
   ...
 # Subtest: a changed route discards the unused Knowledge boot response and a late selected response cannot repaint Cases
 ok 354 - a changed route discards the unused Knowledge boot response and a late selected response cannot repaint Cases
   ---
-  duration_ms: 2.455417
+  duration_ms: 0.7375
   type: 'test'
   ...
 # Subtest: Knowledge renders before derivative cache serialization and the yielded copy retains its exact identity
 ok 355 - Knowledge renders before derivative cache serialization and the yielded copy retains its exact identity
   ---
-  duration_ms: 10.770791
+  duration_ms: 10.996541
   type: 'test'
   ...
 # Subtest: a Knowledge boot response from another API identity is aborted before a fresh scoped GET or persistence
 ok 356 - a Knowledge boot response from another API identity is aborted before a fresh scoped GET or persistence
   ---
-  duration_ms: 4.559625
+  duration_ms: 2.425416
   type: 'test'
   ...
 # Subtest: a public direct recorded reference route acquires immutable packet readiness before an explicit same-case picker choice
 ok 357 - a public direct recorded reference route acquires immutable packet readiness before an explicit same-case picker choice
   ---
-  duration_ms: 7.396416
+  duration_ms: 7.031292
   type: 'test'
   ...
 # Subtest: leaving a direct recorded opening cancels packet verification without late repaint
 ok 358 - leaving a direct recorded opening cancels packet verification without late repaint
   ---
-  duration_ms: 4.154792
+  duration_ms: 3.873375
   type: 'test'
   ...
 # Subtest: direct packet readiness excludes Knowledge private saved and unrelated routes
 ok 359 - direct packet readiness excludes Knowledge private saved and unrelated routes
   ---
-  duration_ms: 0.998125
+  duration_ms: 0.90025
   type: 'test'
   ...
 # Subtest: reused Knowledge time formatting preserves exact UTC labels boundaries and unavailable timestamps
 ok 360 - reused Knowledge time formatting preserves exact UTC labels boundaries and unavailable timestamps
   ---
-  duration_ms: 1.225209
+  duration_ms: 0.833458
   type: 'test'
   ...
 # Subtest: Knowledge timestamp formatting creates no formatter at startup or for unavailable time and reuses one for valid history
 ok 361 - Knowledge timestamp formatting creates no formatter at startup or for unavailable time and reuses one for valid history
   ---
-  duration_ms: 9.805875
+  duration_ms: 10.518917
   type: 'test'
   ...
 # Subtest: empty learning leaves every transport action plainly named and disabled
 ok 362 - empty learning leaves every transport action plainly named and disabled
   ---
-  duration_ms: 0.234375
+  duration_ms: 0.167083
   type: 'test'
   ...
 # Subtest: a cited measurement keeps its complete sentence across decimals and Unicode
 ok 363 - a cited measurement keeps its complete sentence across decimals and Unicode
   ---
-  duration_ms: 0.430833
+  duration_ms: 0.398541
   type: 'test'
   ...
 # Subtest: record dialog answers an operation with a What happened row and its exact cited passage while JSON stays in Technical record
 ok 364 - record dialog answers an operation with a What happened row and its exact cited passage while JSON stays in Technical record
   ---
-  duration_ms: 1.871291
+  duration_ms: 1.788625
   type: 'test'
   ...
 # Subtest: record dialog rows explain journal events and outcomes, and the mounted dialog keeps JSON behind Technical record
 ok 365 - record dialog rows explain journal events and outcomes, and the mounted dialog keeps JSON behind Technical record
   ---
-  duration_ms: 4.74275
+  duration_ms: 1.715541
   type: 'test'
   ...
 # Subtest: record dialog reaches every passage a record cites and titles an action by its step
 ok 366 - record dialog reaches every passage a record cites and titles an action by its step
   ---
-  duration_ms: 18.048667
+  duration_ms: 15.062375
   type: 'test'
   ...
 # Subtest: outcome omits generic Next while preserving exact recorded sentences and citations inside Why
 ok 367 - outcome omits generic Next while preserving exact recorded sentences and citations inside Why
   ---
-  duration_ms: 17.775167
+  duration_ms: 11.627208
   type: 'test'
   ...
 # Subtest: the selected step reads title, first cited passage, one status per subject, rule and the used version
 ok 368 - the selected step reads title, first cited passage, one status per subject, rule and the used version
   ---
-  duration_ms: 5.596458
+  duration_ms: 4.262042
   type: 'test'
   ...
 # Subtest: the selected step without a cited fact answers with its own recorded action, and only the result step carries the legal basis
 ok 369 - the selected step without a cited fact answers with its own recorded action, and only the result step carries the legal basis
   ---
-  duration_ms: 17.658375
+  duration_ms: 18.180625
   type: 'test'
   ...
 # Subtest: the Knowledge library reads each recorded entry top to bottom outside any disclosure
 ok 370 - the Knowledge library reads each recorded entry top to bottom outside any disclosure
   ---
-  duration_ms: 38.385333
+  duration_ms: 19.758292
   type: 'test'
   ...
 # Subtest: library limits describe only the reusable steps and supporting passages are labelled as the contributing case provenance
 ok 371 - library limits describe only the reusable steps and supporting passages are labelled as the contributing case provenance
   ---
-  duration_ms: 26.254292
+  duration_ms: 21.14125
   type: 'test'
   ...
 # Subtest: library section headings share one size and spacing, and a focused entry draws no screen-high ring
 ok 372 - library section headings share one size and spacing, and a focused entry draws no screen-high ring
   ---
-  duration_ms: 30.82775
+  duration_ms: 21.32475
   type: 'test'
   ...
 # Subtest: every learned domain has one library entry bound to its exact current version
 ok 373 - every learned domain has one library entry bound to its exact current version
   ---
-  duration_ms: 18.590875
+  duration_ms: 16.798458
   type: 'test'
   ...
 # Subtest: a learning address with nothing recorded opens the library and says so in the address
 ok 374 - a learning address with nothing recorded opens the library and says so in the address
   ---
-  duration_ms: 2.216041
+  duration_ms: 1.687541
   type: 'test'
   ...
 # Subtest: an exact library pin shows that version in its entry and an unavailable one borrows nothing
 ok 375 - an exact library pin shows that version in its entry and an unavailable one borrows nothing
   ---
-  duration_ms: 19.062792
+  duration_ms: 18.567583
   type: 'test'
   ...
 # Subtest: empty Knowledge lists the three base procedures without a replay transport, empty lanes or white boxes
 ok 376 - empty Knowledge lists the three base procedures without a replay transport, empty lanes or white boxes
   ---
-  duration_ms: 2.653541
+  duration_ms: 2.6925
   type: 'test'
   ...
 # Subtest: recorded branch conditions read as plain words and unknown flags keep their label
 ok 377 - recorded branch conditions read as plain words and unknown flags keep their label
   ---
-  duration_ms: 46.293125
+  duration_ms: 41.598042
   type: 'test'
   ...
 # Subtest: a case names its domain procedure and similar cases for browsing only
 ok 378 - a case names its domain procedure and similar cases for browsing only
   ---
-  duration_ms: 0.938
+  duration_ms: 1.028375
   type: 'test'
   ...
 # Subtest: an entry link without a version opens the library at that domain and marks the case that followed it
 ok 379 - an entry link without a version opens the library at that domain and marks the case that followed it
   ---
-  duration_ms: 1.475
+  duration_ms: 1.459916
   type: 'test'
   ...
 # Subtest: short replay actions identify the visible document without duplicating the exact quote
 ok 380 - short replay actions identify the visible document without duplicating the exact quote
   ---
-  duration_ms: 1.946542
+  duration_ms: 0.207291
   type: 'test'
   ...
 # Subtest: the answer keeps model wording and issues behind Why while records remain exact
 ok 381 - the answer keeps model wording and issues behind Why while records remain exact
   ---
-  duration_ms: 3.268709
+  duration_ms: 2.717041
   type: 'test'
   ...
 # Subtest: the compact public tour retains exact fictional and view-only provenance in its plain mode text
 ok 382 - the compact public tour retains exact fictional and view-only provenance in its plain mode text
   ---
-  duration_ms: 1.615333
+  duration_ms: 0.329375
   type: 'test'
   ...
 # Subtest: a completed case keeps its status in Case details instead of repeating it above the answer
 ok 383 - a completed case keeps its status in Case details instead of repeating it above the answer
   ---
-  duration_ms: 3.767416
+  duration_ms: 3.079584
   type: 'test'
   ...
 # Subtest: W1 stage step and document labels are mechanically derived from every recorded name across the nine reference catalogs
 ok 384 - W1 stage step and document labels are mechanically derived from every recorded name across the nine reference catalogs
   ---
-  duration_ms: 1.859667
+  duration_ms: 0.984291
   type: 'test'
   ...
 # Subtest: W1 Next requires a concrete recorded action and never inserts a generic fallback
 ok 385 - W1 Next requires a concrete recorded action and never inserts a generic fallback
   ---
-  duration_ms: 0.695625
+  duration_ms: 0.126292
   type: 'test'
   ...
 # Subtest: W2 opening introduces the case before the work and handoff names only the next recorded case
 ok 386 - W2 opening introduces the case before the work and handoff names only the next recorded case
   ---
-  duration_ms: 1.129042
+  duration_ms: 0.289
   type: 'test'
   ...
 # Subtest: W2 Draft request is available only for recorded missing documents with a readable unsent draft
 ok 387 - W2 Draft request is available only for recorded missing documents with a readable unsent draft
   ---
-  duration_ms: 0.844292
+  duration_ms: 0.172583
   type: 'test'
   ...
 # Subtest: W2.5 Documents step links use the same recorded labels as all nine reference maps
 ok 388 - W2.5 Documents step links use the same recorded labels as all nine reference maps
   ---
-  duration_ms: 2.73775
+  duration_ms: 1.164083
   type: 'test'
   ...
 # Subtest: W2.6 cues bind only to their recorded operation and a source-matched read ancestor
 ok 389 - W2.6 cues bind only to their recorded operation and a source-matched read ancestor
   ---
-  duration_ms: 0.550417
+  duration_ms: 0.365583
   type: 'test'
   ...
 # Subtest: W2.6 progress reads accepted completed steps, never replay position or observed facts
 ok 390 - W2.6 progress reads accepted completed steps, never replay position or observed facts
   ---
-  duration_ms: 0.077791
+  duration_ms: 0.055458
   type: 'test'
   ...
 # Subtest: Sites serves the autonomous entry with one preceding same-origin configuration (configured=false)
 ok 391 - Sites serves the autonomous entry with one preceding same-origin configuration (configured=false)
   ---
-  duration_ms: 48.0265
+  duration_ms: 73.68825
   type: 'test'
   ...
 # Subtest: Sites serves the autonomous entry with one preceding same-origin configuration (configured=true)
 ok 392 - Sites serves the autonomous entry with one preceding same-origin configuration (configured=true)
   ---
-  duration_ms: 2.099167
+  duration_ms: 19.3215
   type: 'test'
   ...
 # Subtest: public hosted index aliases always select passive autonomous inspection before legacy boot work
 ok 393 - public hosted index aliases always select passive autonomous inspection before legacy boot work
   ---
-  duration_ms: 10.668958
+  duration_ms: 23.21725
   type: 'test'
   ...
 # Subtest: Sites rejects an index without its executable workspace entry
 ok 394 - Sites rejects an index without its executable workspace entry
   ---
-  duration_ms: 0.854542
+  duration_ms: 1.675417
   type: 'test'
   ...
 # Subtest: autonomous entry preserves the cached controller on persisted pagehide and destroys a departing page
 ok 395 - autonomous entry preserves the cached controller on persisted pagehide and destroys a departing page
   ---
-  duration_ms: 30.450334
+  duration_ms: 27.996125
   type: 'test'
   ...
 # Subtest: the hosted opening preloads exact recorded bytes without waiting or enabling private replay data
 ok 396 - the hosted opening preloads exact recorded bytes without waiting or enabling private replay data
   ---
-  duration_ms: 15.2775
+  duration_ms: 9.631334
   type: 'test'
   ...
 # Subtest: public Knowledge opening starts one bounded GET before the workspace script is ready
 ok 397 - public Knowledge opening starts one bounded GET before the workspace script is ready
   ---
-  duration_ms: 0.621125
+  duration_ms: 0.770125
   type: 'test'
   ...
 # Subtest: Knowledge boot GET stays public and route-specific and aborts if workspace loading fails
 ok 398 - Knowledge boot GET stays public and route-specific and aborts if workspace loading fails
   ---
-  duration_ms: 1.837291
+  duration_ms: 8.526792
   type: 'test'
   ...
 # Subtest: revision zero requires an explicit source-bound unprocessed state and has no invented process
 ok 399 - revision zero requires an explicit source-bound unprocessed state and has no invented process
   ---
-  duration_ms: 8.130708
+  duration_ms: 9.533292
   type: 'test'
   ...
 # Subtest: atomic snapshots bind state, projection, events and journal cursor before display
 ok 400 - atomic snapshots bind state, projection, events and journal cursor before display
   ---
-  duration_ms: 0.434833
+  duration_ms: 1.153958
   type: 'test'
   ...
 # Subtest: the read cache retains at most three exact saved heads and the complete Knowledge DTO without altering source authority
 ok 401 - the read cache retains at most three exact saved heads and the complete Knowledge DTO without altering source authority
   ---
-  duration_ms: 12.073583
+  duration_ms: 16.41675
   type: 'test'
   ...
 # Subtest: read cache checksums API contract age and complete entry identities fail closed independently
 ok 402 - read cache checksums API contract age and complete entry identities fail closed independently
   ---
-  duration_ms: 8.481792
+  duration_ms: 17.288667
   type: 'test'
   ...
 # Subtest: read cache rejects duplicate or excess saved heads oversized storage and stale malformed Knowledge
 ok 403 - read cache rejects duplicate or excess saved heads oversized storage and stale malformed Knowledge
   ---
-  duration_ms: 80.984458
+  duration_ms: 36.758333
   type: 'test'
   ...
 # Subtest: full collection search and domain browsing use supplied presentation metadata only
 ok 404 - full collection search and domain browsing use supplied presentation metadata only
   ---
-  duration_ms: 29.713458
+  duration_ms: 25.941333
   type: 'test'
   ...
 # Subtest: collection pagination bounds each reading view while searching every original and resetting changed scopes
 ok 405 - collection pagination bounds each reading view while searching every original and resetting changed scopes
   ---
-  duration_ms: 11.894167
+  duration_ms: 2.872667
   type: 'test'
   ...
 # Subtest: catalog previews expose only the exact known original message before accepted state is available
 ok 406 - catalog previews expose only the exact known original message before accepted state is available
   ---
-  duration_ms: 0.904292
+  duration_ms: 1.206334
   type: 'test'
   ...
 # Subtest: preview boundaries keep whole original words and the complete source searchable and unchanged
 ok 407 - preview boundaries keep whole original words and the complete source searchable and unchanged
   ---
-  duration_ms: 8.98625
+  duration_ms: 1.502875
   type: 'test'
   ...
 # Subtest: demonstration selection is exactly nine canonical identities with three per domain
 ok 408 - demonstration selection is exactly nine canonical identities with three per domain
   ---
-  duration_ms: 1.194958
+  duration_ms: 0.701917
   type: 'test'
   ...
 # Subtest: read-only previews check original and derived hashes without admitting evidence
 ok 409 - read-only previews check original and derived hashes without admitting evidence
   ---
-  duration_ms: 11.457792
+  duration_ms: 5.992042
   type: 'test'
   ...
 # Subtest: later supporting files do not inherit the canonical original binding, while original previews must match it
 ok 410 - later supporting files do not inherit the canonical original binding, while original previews must match it
   ---
-  duration_ms: 2.346625
+  duration_ms: 5.245625
   type: 'test'
   ...
 # Subtest: replay binds prefix provenance and same-revision heads without confusing a legitimate later head
 ok 411 - replay binds prefix provenance and same-revision heads without confusing a legitimate later head
   ---
-  duration_ms: 1.754625
+  duration_ms: 1.824792
   type: 'test'
   ...
 # Subtest: original collection and added intakes retain separate explicit identities
 ok 412 - original collection and added intakes retain separate explicit identities
   ---
-  duration_ms: 0.387083
+  duration_ms: 0.905792
   type: 'test'
   ...
 # Subtest: handling completion labels do not rewrite lifecycle codes or recorded legal outcomes
 ok 413 - handling completion labels do not rewrite lifecycle codes or recorded legal outcomes
   ---
-  duration_ms: 2.433958
+  duration_ms: 2.640834
   type: 'test'
   ...
 # Subtest: execution failure remains separate from an accepted evidence deferral in claim and itinerary labels
 ok 414 - execution failure remains separate from an accepted evidence deferral in claim and itinerary labels
   ---
-  duration_ms: 3.464
+  duration_ms: 5.496625
   type: 'test'
   ...
 # Subtest: completed steps and actions remain local to a running investigation
 ok 415 - completed steps and actions remain local to a running investigation
   ---
-  duration_ms: 5.01325
+  duration_ms: 2.150375
   type: 'test'
   ...
 # Subtest: one contextual record resolves exact accepted objects without expanding a competing copy into every view
 ok 416 - one contextual record resolves exact accepted objects without expanding a competing copy into every view
   ---
-  duration_ms: 7.477958
+  duration_ms: 4.67425
   type: 'test'
   ...
 # Subtest: History owns Case details event action and playback controls while purpose views retain exact selections
 ok 417 - History owns Case details event action and playback controls while purpose views retain exact selections
   ---
-  duration_ms: 3.65025
+  duration_ms: 1.7195
   type: 'test'
   ...
 # Subtest: unstarted Cases and canonical demo rows show original identity and message without generic state badges
 ok 418 - unstarted Cases and canonical demo rows show original identity and message without generic state badges
   ---
-  duration_ms: 2.421667
+  duration_ms: 0.579666
   type: 'test'
   ...
 # Subtest: forming knowledge preserves accepted version use and origin without borrowing a later version or establishing current facts
 ok 419 - forming knowledge preserves accepted version use and origin without borrowing a later version or establishing current facts
   ---
-  duration_ms: 2.153667
+  duration_ms: 0.769542
   type: 'test'
   ...
 1..419
@@ -2832,4 +2832,4 @@ ok 419 - forming knowledge preserves accepted version use and origin without bor
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 23449.9645
+# duration_ms 20467.441458

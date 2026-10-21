@@ -2,7 +2,7 @@
   "status": "ready_for_planner_review",
   "branch": "codex/casepath-ui-w6-20261021",
   "approved_base": "352a55355afb7922cd382411984e43e707a3ab44",
-  "implementation_commit": "cb4daf1fe7a80852b229c937fbd952f8b5e7d6ef",
+  "implementation_commit": "1db666dba0e55eb24f517efa97bf5a200cd4d931",
   "viewport": {
     "width": 1440,
     "height": 900
@@ -13,10 +13,10 @@
   "page_errors": 0,
   "write_requests": 0,
   "served_assets_sha256": {
-    "autonomous-workspace-v1.js": "06074c7b6c11bbfdfec6eaf4602f76b074bff25f2ecbfb21cd4275c7fe8a1ffe",
-    "autonomous-workspace-v1.css": "d87df5c1a2f0d3917bf2115e2a94c6294c309bbaa68b4a048f25f5415cac8171"
+    "autonomous-workspace-v1.js": "830465a376dee88ac6d0af5c38683ee7ca33744146b8a773e2d7e7b43c86882f",
+    "autonomous-workspace-v1.css": "45bdb1cd408fc072d7995dce9702569f112c849e4d465bb9d1c5bf586500cdd3"
   },
-  "source_manifest_sha256": "efede74d3cde7b05bcc2104d155dbcd719ce605487879bc9e6e2fcb336776cb4",
+  "source_manifest_sha256": "49e2bc67ce773ad4b2e36e2246eff47588284dc9bcd10aae5f2cb8ca0b390829",
   "source_file_count": 1730,
   "paid_inference_calls": 0,
   "hosted_writes": 0,
@@ -24,26 +24,29 @@
   "original_nine_rerun": false,
   "planner_followup_closed": 6314538426,
   "hashes": {
-    "seal.log": "09bc0f62cce8d73f88bfb2e5d467ddef742735493fc3707f04aed2828a17793e",
-    "browser-receipt.json": "e02054732aa25e08ceda8497d64589302150edbe747b9fe2060308f5f2879f0c",
-    "draft-one-line.png": "52f796974b029cfc1effb1e9956f0caa9ab868f46e7bfc82a8f793612354701c",
-    "focused.tap": "a086c004257061f12d929236c495209f8ca5e3b2dd1eca85d508d540f1fe96cd",
-    "defect_mold_heating.png": "b6c6dda31748886eac83e0801c271df9700d8e9afc4ebbe44be6cef12780d29f",
-    "rent_increase_dispute.png": "e1a012199e1080a1053d82951c965625bbd4834d983801e5588919f0622f4733",
-    "lease_termination_dispute.png": "a47385fdfc37dda4bed623521f6c81ce8510b1708549d73f31b3f99b146fa471",
-    "next-action-and-law-order.png": "9f56b460d757b17b04c689743a07494830db90e2e98f2ecbceb8adb5df74f1d1",
-    "letter-to-customer.png": "18e8f053e07b05f25642a88436f4888c26b0e7c289e20da0b656bb06f808928c",
-    "missing-document-fixture.png": "b6c6dda31748886eac83e0801c271df9700d8e9afc4ebbe44be6cef12780d29f",
-    "completed-desk-verified.png": "9f56b460d757b17b04c689743a07494830db90e2e98f2ecbceb8adb5df74f1d1",
-    "failed-load.png": "f26948cd0246e3d7e2c4146b0bd9ea08eac3de8f9b4f5f7fa6f374ff9734c044",
+    "seal.log": "818b36b44694ae3d236b848a7f813b5feb55e15ee6ff45f572b167b2fa90dbfa",
+    "browser-receipt.json": "5d82866127c6124da03e19f11e648a04ff736fc47b774547808f43669048d7d7",
+    "draft-one-line.png": "eef39716a68ae949e678b3517934e6b550661715e273c8e06fb0ab004b1fb0d0",
+    "focused.tap": "f74659d14afff791a5881e0f8a287782be46b422b93ca3529178e28d11078985",
+    "defect_mold_heating.png": "c43244c84611c65d8eeadaedc53550970c200e48e2c12bc3c2d27a729aa7f84c",
+    "rent_increase_dispute.png": "c6143eeacc7aa0364f0626c7341432e7c4a8c4e64a427036185760c9d20379e1",
+    "lease_termination_dispute.png": "f13950d48848126552f8e9ac8d7b552c6803aab6d5773f8f549c594863597a49",
+    "next-action-and-law-order.png": "40557eeb42201659a0d2f2cfb63b3472697c616f31813809ee6830138ae440f2",
+    "letter-to-customer.png": "c07ef05ffacaa55f4f480487da58ef9e2c8e8dc5f93295457c7888080e2c993a",
+    "missing-document-fixture.png": "b11b42e51a47bf7236e0822cbc9ffb85f6b44c43226667794401ccdb3de14094",
+    "completed-desk-verified.png": "40557eeb42201659a0d2f2cfb63b3472697c616f31813809ee6830138ae440f2",
+    "failed-load.png": "8522d8da2467b66832b893ca7b21f656a37d334c0c966e22f797e758e4c6a1ed",
     "cases-clean-header.png": "23c66cbc49296763bc7f6af428245a074629c9bf800862f6f5e173dcdd0e828a"
   },
   "planner_followups_closed": [
     6314538426,
     6314756996,
     6314907292,
-    6314937719
+    6314937719,
+    6315169984
   ],
   "all_nine_saved_totals_match_demonstration": true,
-  "completed_loading_and_failure_never_show_partial_result": true
+  "completed_loading_and_failure_never_show_partial_result": true,
+  "failure_message_and_retry_on_screen": true,
+  "gap_fixture_isolated_from_app_refresh": true
 }
