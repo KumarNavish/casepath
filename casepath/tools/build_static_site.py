@@ -62,7 +62,8 @@ PUBLIC_ASSETS = (
     "assets/process-evidence-v2.js",
 )
 PUBLIC_ASSETS += ("assets/fonts/Merriweather-Light.ttf", "assets/fonts/Merriweather-OFL.txt",
-                  "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf", "assets/fonts/Open_Sans-OFL.txt")
+                  "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf", "assets/fonts/Open_Sans-OFL.txt",
+                  "assets/fonts/Mulish.ttf", "assets/fonts/Mulish-OFL.txt")
 GENERATED_FILES = ("deployment.json",)
 PUBLIC_INVENTORY = frozenset((*PUBLIC_ROOT_FILES, *PUBLIC_ASSETS, *GENERATED_FILES))
 PUBLIC_DIRECTORIES = frozenset({"assets", "assets/fonts"})
