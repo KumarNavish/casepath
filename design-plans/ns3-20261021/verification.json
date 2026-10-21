@@ -1,0 +1,95 @@
+{
+  "status": "NS3_ready_for_planner",
+  "implementation_commit": "8f060d0df6ec205dda745c5475436ec52b3b408b",
+  "base": "125af0f1e7c1d26e4c3c1d7d79e610cea57b33f2",
+  "focused_tests": 511,
+  "desktop_browser_checks": 28,
+  "all_nine_memory_checks": true,
+  "all_nine_process_checks": true,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "source_manifest_sha256": "e426f60a55332252306621f91c586915a20a18b689d725211f2eb31e242e2208",
+  "source_file_count": 1733,
+  "served_assets": {
+    "autonomous-workspace-v1.js": "7275cb698e04e4d127630a4636ce3edfc11393ac32068ee9edda008faa1e9560",
+    "autonomous-workspace-v1.css": "edeb76b1a9a3bf5dbaf3ff3309692cd6f5ad0442587e24034ee0dd9d73e0ebf8",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "frames": {
+    "case1-memory": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "case4-memory": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "knowledge-checklist": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "case1-process": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "case4-process": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "claim-reader": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "source-checker": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "document-finder": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "result-checker": {
+      "overlaps": [],
+      "overflow": false
+    }
+  },
+  "fidelity": {
+    "concept02-case4-fidelity": 6.03,
+    "concept03-case1-fidelity": 4.83,
+    "concept02-case1-fidelity": 6.11
+  },
+  "paid_inference": 0,
+  "hosted_writes": 0,
+  "deployment": false,
+  "hashes": {
+    "browser-receipt.json": "e557826924af21af62b4c8fe71f39c3f1a25bd5fee84f90eb3c0a948e5937de7",
+    "case1-memory.png": "98f2cc6de9200c0069ed5d6d0184d74fe2f712dac700a735ef8f6ba85d0424c4",
+    "case1-process.png": "a67ef68945fcd01cbbfabd594672ae52a9b0b9dc8156a560a6ea7f851dd388c9",
+    "case4-memory.png": "195c048ebe131cdfab54002c563e54bcbcf83d2fabd29481a959b88af7543b95",
+    "case4-process.png": "128807221ca3f1dd753996a0a5f8d74559ca6f02ab65704402ac2061208c8526",
+    "claim-reader.png": "0e8c6a419592b1e10aa61b26b2c9b6727617a6b3107ec1eeaeb39631aa692ae7",
+    "concept02-case1-diff.png": "10497307f697291af1e0a3a03e8eb58de031f45b807f0e5b996958e348085f62",
+    "concept02-case1-fidelity.json": "81a9fadfd1c30db25699749cbc399fffd4ac8018194f11cc61dc3aa9e4b67ed1",
+    "concept02-case1-overlay.png": "7fc6c9a651f92994df3e13db1850ea1db79c60abbd06b6e2d023dc08e6541d15",
+    "concept02-case1-side.png": "484f057c7fd52ec5dd3af6d2c3691f027b5cbd1d815e151eec527f27f992f287",
+    "concept02-case4-diff.png": "2659f416b416e2ca7e10dcdfdc3952389a82a4f31fce924128cb180cccc7484e",
+    "concept02-case4-fidelity.json": "89c2f065e695d3671b15a3dd4caa4f64f8f8fc08b3487d0729f5af2106f0e56c",
+    "concept02-case4-overlay.png": "0d587af195f02271d85705d4e6c35232416fc718b7c6f253b22977cf05bcac0d",
+    "concept02-case4-side.png": "1e05441c8f88dc9e0e0801d6441d7b3d0bdea3cd93e379e8d30bc92eb8bfc1be",
+    "concept03-case1-diff.png": "270497155a1c23c0ba3e47381f842b7e4eeb5a210aaf21f03afeab17e2ba3678",
+    "concept03-case1-fidelity.json": "fb38c4b0ad9aaa755a113453e5b06702cd4adc89c111c8a5631230790e604f4a",
+    "concept03-case1-overlay.png": "f31a4257a8131245a3ce213c0dda7a720f23f94d76d4d21dbf8a1fb80063cca5",
+    "concept03-case1-side.png": "757381ca0719b2c2794ebced08911381d4831d73e5caed6585b1c4199c58a99d",
+    "desktop.tap": "6272057f87f917ecbd73c9496abfefb96e99a6b96cd331ec030f776d769b5cbf",
+    "document-finder.png": "cf703b17b4661f716a9e1a60a1246caa14b798af83fd334a969995891923cd87",
+    "focused.tap": "14ed6c4fa1e4212895e2d35835e1d78dfd7547b901f93c0d710b2c46eeceb246",
+    "knowledge-checklist.png": "ff4470929fecb28295c5617de7a516f23f1c9c48c0c4b6ebb3886712ab905063",
+    "process-receipt.json": "30106f50761d235ac1af807f5fe0853a8e03ac55a702876225cf7c3beb3c8839",
+    "result-checker.png": "493ca353fdf6dca3f9df53436742df302ebe89667dfac850bbcb4a771840068a",
+    "seal.log": "e5a573b3dc931bb59467ac77e84f24376af477a1d0539ecc1a4da0bdfd91e308",
+    "served-assets.json": "a16e3aaa4cc65d2e154ae86d1d852bc291e0b1d584ce6c427c14616c55d97399",
+    "source-checker.png": "ea8a797fb740e4570f7bf932f1c60085011f09abbdb964af5975d00f39e1c163"
+  }
+}
