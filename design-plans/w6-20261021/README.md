@@ -8,12 +8,18 @@ Supporting passages, reusable-definition details, saved versions and provenance 
 
 Planner W5 follow-ups 6314538426 are included: CO article labels sort naturally in the desk and legal-basis display without changing recorded text, and the no-missing-documents instruction has a quiet green check. A recorded gap uses amber `!`; unknown document needs gain neither a check nor an all-clear claim.
 
+Planner follow-ups 6314756996 are also closed: Cases hides the previous-case return strip; saved drafts use one status line; the labelled missing-document fixture names the document, numbered step, reason and recipient availability. Switching Knowledge domains keeps the page heading visible.
+
 ## Review frames
 
 - [Defects and repairs](defect_mold_heating.png)
 - [Lease termination](lease_termination_dispute.png)
 - [Rent increases](rent_increase_dispute.png)
 - [Next-action cue and natural article order](next-action-and-law-order.png)
+
+- [Cases with a clean header](cases-clean-header.png)
+- [One-line saved draft status](draft-one-line.png)
+- [Missing-document UI fixture](missing-document-fixture.png)
 
 ## Verification
 
