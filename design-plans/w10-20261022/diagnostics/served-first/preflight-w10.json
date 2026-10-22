@@ -1,0 +1,22 @@
+{
+  "sourceCommit": "05b28a8e7f85c2e1b6e1fd95ec5af232ef011da3",
+  "pid": 78620,
+  "startedAt": "2026-10-22T20:43:15.685252+00:00",
+  "status": "failed",
+  "stages": [
+    {
+      "name": "process",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w8-20261021-mac-r1/verify-process.mjs"
+      ],
+      "startedAt": "2026-10-22T20:43:15.686083+00:00",
+      "status": "completed",
+      "pid": 78621,
+      "exitCode": 1,
+      "finishedAt": "2026-10-22T20:43:27.683661+00:00"
+    }
+  ],
+  "failure": "AssertionError('process')",
+  "finishedAt": "2026-10-22T20:43:27.684260+00:00"
+}

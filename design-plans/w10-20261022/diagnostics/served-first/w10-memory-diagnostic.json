@@ -1,0 +1,46 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "errors": [],
+  "writes": [],
+  "staticPrefix": false,
+  "overrides": false,
+  "case": "clm_314f2d309fea25e6",
+  "recordedMemory": true,
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "05b28a8e7f85c2e1b6e1fd95ec5af232ef011da3",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "cases": [],
+  "frames": {},
+  "overlapChecks": [],
+  "failure": "AssertionError [ERR_ASSERTION]: {\"case\":\"clm_314f2d309fea25e6\",\"node\":\"dh_intake\",\"top\":175,\"bottom\":569.25,\"height\":394.25,\"center\":195.796875,\"expectedTop\":175,\"path\":\"M280 92.796875H306\",\"stroke\":\"1px\"}\n    at file:///Users/kumar0002/Documents/Die%20Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-memory.mjs:23:1021",
+  "cleanup": [
+    {
+      "name": "page",
+      "closed": true,
+      "elapsedMs": 9
+    },
+    {
+      "name": "context",
+      "closed": true,
+      "elapsedMs": 0
+    },
+    {
+      "name": "browser",
+      "closed": true,
+      "elapsedMs": 573
+    }
+  ]
+}

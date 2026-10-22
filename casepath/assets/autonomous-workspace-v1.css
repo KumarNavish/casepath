@@ -2150,10 +2150,10 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
 }
 
 @media (min-width:701px) {
- .au-workspace .au-ns-memory-step { flex:1; min-width:0; padding:10px 0; }
+ .au-workspace .au-ns-memory-step { flex:1; min-width:0; padding:6px 0; }
  .au-workspace .au-ns-memory-spine li { align-items:flex-start; }
- .au-workspace .au-ns-memory-spine li > span { margin-top:20px; }
- .au-workspace .au-ns-memory-spine li:not(:last-child):before { top:38px; bottom:-20px; height:auto; }
+ .au-workspace .au-ns-memory-spine li > span { margin-top:16px; }
+ .au-workspace .au-ns-memory-spine li:not(:last-child):before { top:34px; bottom:-16px; height:auto; }
  .au-workspace .au-ns-memory-step > button { width:100%; }
  .au-workspace .au-ns-memory-target { border:1px solid #9cac9c; border-radius:4px; padding:7px 9px; font-size:12px; line-height:1.4; margin-top:8px; background:#f6f8f5; color:#1f5530; }
  .au-workspace [data-au-memory-origin] { display:block; margin-top:6px; color:#1f5530; font-size:12px; }

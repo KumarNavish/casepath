@@ -1,0 +1,169 @@
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(await p.locator('.au-ns-secondary').evaluate(el=>el.getBoundingClientRect().bottom<=innerHeight))
+
+    at file:///Users/kumar0002/Documents/Die%20Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-memory.mjs:24:251 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "errors": [],
+  "writes": [],
+  "staticPrefix": false,
+  "overrides": false,
+  "case": "clm_314f2d309fea25e6",
+  "recordedMemory": true,
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "05b28a8e7f85c2e1b6e1fd95ec5af232ef011da3",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "cases": [],
+  "frames": {},
+  "overlapChecks": [
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_intake",
+      "count": 0
+    },
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_scope",
+      "count": 0
+    },
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_notice",
+      "count": 0
+    },
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_cause",
+      "count": 0
+    },
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_evidence",
+      "count": 0
+    },
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_response",
+      "count": 0
+    }
+  ],
+  "geometry": [
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_intake",
+      "top": 175,
+      "bottom": 569.25,
+      "height": 394.25,
+      "minTop": 175,
+      "maxBottom": 791.34375,
+      "center": 195.796875,
+      "expectedTop": 175,
+      "path": "M280 92.796875H306",
+      "stroke": "1px"
+    },
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_scope",
+      "top": 175,
+      "bottom": 569.25,
+      "height": 394.25,
+      "minTop": 175,
+      "maxBottom": 791.34375,
+      "center": 267.796875,
+      "expectedTop": 175,
+      "path": "M280 164.796875H306",
+      "stroke": "1px"
+    },
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_notice",
+      "top": 197.0625,
+      "bottom": 591.3125,
+      "height": 394.25,
+      "minTop": 175,
+      "maxBottom": 791.34375,
+      "center": 394.1875,
+      "expectedTop": 197.0625,
+      "path": "M280 291.1875H306",
+      "stroke": "1px"
+    },
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_cause",
+      "top": 326.546875,
+      "bottom": 767.796875,
+      "height": 441.25,
+      "minTop": 175,
+      "maxBottom": 791.34375,
+      "center": 547.171875,
+      "expectedTop": 326.546875,
+      "path": "M280 444.171875H306",
+      "stroke": "1px"
+    },
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_evidence",
+      "top": 397.09375,
+      "bottom": 791.34375,
+      "height": 394.25,
+      "minTop": 175,
+      "maxBottom": 791.34375,
+      "center": 618.5625,
+      "expectedTop": 397.09375,
+      "path": "M280 515.5625H306",
+      "stroke": "1px"
+    },
+    {
+      "case": "clm_314f2d309fea25e6",
+      "node": "dh_response",
+      "top": 397.09375,
+      "bottom": 791.34375,
+      "height": 394.25,
+      "minTop": 175,
+      "maxBottom": 791.34375,
+      "center": 754.75,
+      "expectedTop": 397.09375,
+      "path": "M280 651.75H306",
+      "stroke": "1px"
+    }
+  ],
+  "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(await p.locator('.au-ns-secondary').evaluate(el=>el.getBoundingClientRect().bottom<=innerHeight))\n\n    at file:///Users/kumar0002/Documents/Die%20Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-memory.mjs:24:251",
+  "cleanup": [
+    {
+      "name": "page",
+      "closed": true,
+      "elapsedMs": 13
+    },
+    {
+      "name": "context",
+      "closed": true,
+      "elapsedMs": 0
+    },
+    {
+      "name": "browser",
+      "closed": true,
+      "elapsedMs": 774
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+Completed process 1
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  [
+    'facts',
+    'law',
+    'evidence',
++   'reference'
+  ]
+
+    at file:///Users/kumar0002/Documents/Die%20Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-process.mjs:22:1165 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [ 'facts', 'law', 'evidence', 'reference' ],
+  expected: [ 'facts', 'law', 'evidence' ],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.8.2

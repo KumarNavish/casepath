@@ -4879,7 +4879,9 @@
         if(selected&&source&&link&&main&&cards){
           main.style.transform='';
           const r=memory.getBoundingClientRect(),a=selected.getBoundingClientRect(),c=cards.getBoundingClientRect(),first=memory.querySelector('.au-ns-memory-spine button').getBoundingClientRect(),footer=memory.querySelector('footer').getBoundingClientRect();
-          const center=a.top+a.height/2,top=Math.max(first.top,Math.min(center-c.height/2,footer.top-24-c.height));
+          const caption=memory.querySelector('.au-ns-memory-chain > p').getBoundingClientRect(),header=memory.querySelector('header').getBoundingClientRect();
+          const minTop=Math.max(first.top,header.bottom+8+c.top-caption.top);
+          const center=a.top+a.height/2,top=Math.max(minTop,Math.min(center-c.height/2,footer.top-24-c.height));
           main.style.transform=`translateY(${top-c.top}px)`;
           const x=a.right-r.left,y=center-r.top,tx=source.getBoundingClientRect().left-r.left;
           link.setAttribute('viewBox',`0 0 ${r.width} ${r.height}`);link.querySelector('path').setAttribute('d',`M${x} ${y}H${tx}`);
