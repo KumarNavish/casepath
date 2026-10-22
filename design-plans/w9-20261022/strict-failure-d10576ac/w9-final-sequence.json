@@ -1,0 +1,25 @@
+{
+  "sourceCommit": "d10576ac7d10453c024386981007e4e4cedc46e1",
+  "wrapperPid": 50567,
+  "startedAt": "2026-10-22T08:51:53.757154+00:00",
+  "status": "failed",
+  "serialized": true,
+  "stages": [
+    {
+      "name": "strict",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/run_w9_sealed_gate.py"
+      ],
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/w9-final-strict-controller.log",
+      "status": "completed",
+      "startedAt": "2026-10-22T08:51:53.758179+00:00",
+      "pid": 50571,
+      "exitCode": 1,
+      "finishedAt": "2026-10-22T09:55:05.437779+00:00",
+      "logSha256": "01f1ff2677dd97aa45c825d2706503750ed29d8b0bb68ef82e359ebf38728a14"
+    }
+  ],
+  "failure": "AssertionError('strict failed; inspect original receipt and log')",
+  "finishedAt": "2026-10-22T09:55:05.443517+00:00"
+}

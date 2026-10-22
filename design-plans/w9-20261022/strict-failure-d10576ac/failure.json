@@ -1,0 +1,39 @@
+{
+  "status": "failed",
+  "sourceCommit": "d10576ac7d10453c024386981007e4e4cedc46e1",
+  "originalExecSession": 50888,
+  "processesConfirmedExited": [
+    50567,
+    50571,
+    50891,
+    50900,
+    51000
+  ],
+  "strictResult": {
+    "failed": 1,
+    "passed": 2865,
+    "skipped": 10,
+    "warnings": 10,
+    "seconds": 3728.25
+  },
+  "failure": "test_curated_static_build_has_exact_runtime_inventory omitted assets/autonomous-presentation-v1.js from its exact expected set and still expected42 instead of43 files. Production allowlist and recursive closure already include the asset.",
+  "browserWalkStarted": false,
+  "repairScope": "Add the real presentation asset to the exact inventory expectation and update its exact count; preserve every assertion and protected Mac test. Reseal and rerun all final gates on one new frozen commit.",
+  "originalValidationClone": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-sealed-gate-20261021",
+  "files": {
+    "w9-final-sequence.json": "ba93aa183941726907d198afc3dd0d9fb8a955c78c1262bdc82be40d77938597",
+    "w9-sealed-final-prepare.json": "bdc98736afea9dd8f33f5848ef9e1767e742d9526210d2af3fb6059087130638",
+    "w9-sealed-final-prepare.log": "4404c88687e7ccdad65a37ab212bde15f5eed73d52da05a77728a45ca9542de8",
+    "w9-sealed-final-gate.json": "98764175edcefcbda8cf029440299967b0289b0e93094a13bd57657c6c6f171c",
+    "w9-sealed-final-gate.log": "64ad61e9d3e499a63086cf0f99f2872dd7463b981334031ad008b2d2dd2d1f96",
+    "w9-final-strict-controller.log": "01f1ff2677dd97aa45c825d2706503750ed29d8b0bb68ef82e359ebf38728a14",
+    "w9-final-source-binding.json": "779554e8162ade1769ccdb8c0f8dab95c72e997264a7b6de7b059c1a515800b4",
+    "w9-final-owner-prepare.log": "f6716aa6ed814eb1603a8d84baeb1118f19490a6e8ab12ba1067e5de7812fcd9",
+    "w9-final-seal.log": "51baa6e4ec3be335e803ed641676092b761c89d3ca3ee8267bcd3a42759229e4",
+    "w9-final-frozen-sha": "d9bb062a131d2fe60e400a28f4e59662ea7cb051d6515d045cd99b64c2e4b660",
+    "run_w9_final_sequence.py": "2c77cc340f0eaf263ec40f3c4c4ef42716ff9752aa33e9ea030d172745afe2e5",
+    "run_w9_sealed_gate.py": "76a8da5615551a42c371e43ed473c3c2a4820230748223afe7a71fe0ccfdd62d",
+    "run_w9_final_walk.py": "0e251943571ea815a53d5c222e4b920a1409de04bb3f0fb7dfd8bdbd79c2fb1b"
+  },
+  "observedAt": "2026-10-22T09:58:36.459573+00:00"
+}

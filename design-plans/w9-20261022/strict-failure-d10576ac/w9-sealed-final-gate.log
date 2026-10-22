@@ -1,0 +1,152 @@
+Using Python 3.13.9 environment at: .runtime/casepath-dev-v2/venv
+Resolved 59 packages in 80ms
+Checked 59 packages in 2ms
+........................................................................ [  2%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 12%]
+........................................................................ [ 15%]
+........................................................................ [ 17%]
+........................................................................ [ 20%]
+........................................................................ [ 22%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+........................................................................ [ 30%]
+........................................................................ [ 32%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 40%]
+.................s.sssssssss............................................ [ 42%]
+........................................................................ [ 45%]
+........................................................................ [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 52%]
+........................................................................ [ 55%]
+........................................................................ [ 57%]
+........................................................................ [ 60%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 67%]
+........................................................................ [ 70%]
+........................................................................ [ 72%]
+........................................................................ [ 75%]
+........................................................................ [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 82%]
+........................................................................ [ 85%]
+........................................................................ [ 87%]
+........................................................................ [ 90%]
+............................................................F........... [ 92%]
+........................................................................ [ 95%]
+........................................................................ [ 97%]
+....................................................................     [100%]
+=================================== FAILURES ===================================
+____________ test_curated_static_build_has_exact_runtime_inventory _____________
+
+tmp_path = PosixPath('/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-sealed-gate-20261021/.runtime/casepath-dev-v2/tmp/casepath-product-test-s7s34oo2/tmp/pytest-of-kumar0002/pytest-0/test_curated_static_build_has_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x110095780>
+
+    def test_curated_static_build_has_exact_runtime_inventory(
+        tmp_path: Path,
+        monkeypatch,
+    ) -> None:
+        output = tmp_path / static_site.OUTPUT_DIRECTORY_NAME
+        monkeypatch.setattr(static_site, "DEFAULT_OUTPUT", output)
+        payload = static_site.build_static_site(output, {})
+    
+        assert payload["source_commit"] == "unknown"
+        assert payload["alignment_eligible"] is False
+        files, directories = static_site.inventory(output)
+        expected_files = {
+            "assets/autonomous-demo-packets.json",
+            "assets/autonomous-recorded-heating-v1.json",
+            "assets/autonomous-saved-history-v1.json",
+            "assets/autonomous-language-v1.js",
+            "assets/autonomous-workspace-v1.js", "assets/autonomous-workspace-v1.css", "assets/autonomous-entry-v1.js",
+            "_headers", "index.html", "corpus.html", "method.html", "research.html",
+            "release.json", "deployment.json",
+            "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json",
+            "assets/method-guide.css", "assets/method-guide-data.json",
+            "assets/research-evidence.css", "assets/paired-study-evidence.json",
+            "assets/native-study-evidence.json",
+            "assets/claims-workspace-v1.css", "assets/claims-workspace-v1.js",
+            "assets/claims-workspace-presentation-v1.js",
+            "assets/claims-workspace-presentation-v1.css",
+            "assets/agent-work-v1.js", "assets/agent-work-v1.css",
+            "assets/causal-process-v1.js", "assets/causal-process-v1.css",
+            "assets/process-evidence-v2.css", "assets/process-evidence-v2.js",
+            "assets/agent-claim-v2.js", "assets/agent-desk-v2.js",
+            "assets/agent-native-v2.css",
+            "assets/agent-work-motion-v3.js",
+            "assets/fonts/Merriweather-Light.ttf", "assets/fonts/Merriweather-OFL.txt",
+            "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+            "assets/fonts/Open_Sans-OFL.txt",
+            "assets/fonts/Mulish.ttf", "assets/fonts/Mulish-OFL.txt",
+        }
+>       assert files == static_site.PUBLIC_INVENTORY == expected_files
+E       AssertionError: assert frozenset({'_...v1.css', ...}) == {'_headers', ...-v1.css', ...}
+E         
+E         Extra items in the left set:
+E         'assets/autonomous-presentation-v1.js'
+E         Use -v to get more diff
+
+casepath/tools/test_build_deployment_identity.py:111: AssertionError
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+casepath-api/casepath_api/app.py:424
+  /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-sealed-gate-20261021/casepath-api/casepath_api/app.py:424: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+  /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-sealed-gate-20261021/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+casepath-api/casepath_api/app.py:444
+  /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-sealed-gate-20261021/casepath-api/casepath_api/app.py:444: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+tests/test_workspace_claim_loop_v1.py::test_workspace_sigkill_after_durable_artifact_recovers_without_redispatch
+  /Users/kumar0002/.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/multiprocessing/popen_fork.py:67: DeprecationWarning: This process (pid=51000) is multi-threaded, use of fork() may lead to deadlocks in the child.
+    self.pid = os.fork()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v1.py:605: frozen independent-transition packet is not available
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:457: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:548: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:559: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:579: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:592: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:610: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:636: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:646: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:696: saved native source-binding run is unavailable
+1 failed, 2865 passed, 10 skipped, 10 warnings in 3728.25s (1:02:08)
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

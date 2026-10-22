@@ -29,6 +29,16 @@ The final gate must include all eleven frontend suites and the protected
 Mac-owned test; the browser walk must complete all seven scripts in one clean run.
 The captured film's application assets must match the final served source.
 
+The first W9 final strict run at `d10576ac7d10453c024386981007e4e4cedc46e1`
+finished with 2,865 passed, ten historical-packet skips and one failure: the
+static-build test's exact expected inventory omitted the new presentation
+script and still expected 42 files. The runtime allowlist and recursive-closure
+test already included it. The correction adds that asset to the explicit set
+and updates the exact count to 43, retaining every assertion and the unchanged
+Mac-owned protected test. The [original failed run](../../design-plans/w9-20261022/strict-failure-d10576ac/failure.json)
+is preserved. Its controller stopped before any browser walk; all final gates
+must pass again on the corrected, sealed source.
+
 The earlier W8 package remains historical evidence at
 [`w8-20261021-mac-r1/verification.json`](../../design-plans/w8-20261021-mac-r1/verification.json),
 including its failures and subsequent corrections. Historical W1–NS3 and the

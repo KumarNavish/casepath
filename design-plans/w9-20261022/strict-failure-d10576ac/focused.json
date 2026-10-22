@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-q",
+    "-rs",
+    "-p",
+    "no:cacheprovider",
+    "casepath/tools/test_build_deployment_identity.py"
+  ],
+  "exit_code": 0,
+  "sourceBase": "d10576ac7d10453c024386981007e4e4cedc46e1",
+  "change": "Explicit static inventory adds autonomous-presentation-v1.js and exact count43",
+  "log_sha256": "18662ddc68c3aa76739a117d475e40cb06406815004ae33d7bed1c1d09b3d9be",
+  "completedAt": "2026-10-22T09:59:04.942689+00:00"
+}

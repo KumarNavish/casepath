@@ -87,6 +87,7 @@ def test_curated_static_build_has_exact_runtime_inventory(
         "assets/autonomous-recorded-heating-v1.json",
         "assets/autonomous-saved-history-v1.json",
         "assets/autonomous-language-v1.js",
+        "assets/autonomous-presentation-v1.js",
         "assets/autonomous-workspace-v1.js", "assets/autonomous-workspace-v1.css", "assets/autonomous-entry-v1.js",
         "_headers", "index.html", "corpus.html", "method.html", "research.html",
         "release.json", "deployment.json",
@@ -110,7 +111,7 @@ def test_curated_static_build_has_exact_runtime_inventory(
     }
     assert files == static_site.PUBLIC_INVENTORY == expected_files
     assert directories == static_site.PUBLIC_DIRECTORIES == {"assets", "assets/fonts"}
-    assert len(files) == 42
+    assert len(files) == 43
     assert {"corpus.html", "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json"} <= files
     assert {"method.html", "assets/method-guide.css",
             "assets/method-guide-data.json"} <= files
