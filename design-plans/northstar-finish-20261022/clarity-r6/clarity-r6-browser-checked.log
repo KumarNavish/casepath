@@ -1,0 +1,32 @@
+(node:11066) Warning: Failed to load the ES module: /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/clarity-r6-preview.cjs. Make sure to set "type": "module" in the nearest package.json file or use the .mjs extension.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/clarity-r6-preview.cjs:3
+import {createRequire} from 'node:module';
+^^^^^^
+
+SyntaxError: Cannot use import statement outside a module
+    at wrapSafe (node:internal/modules/cjs/loader:1866:18)
+    at Module._compile (node:internal/modules/cjs/loader:1908:20)
+    at Object..js (node:internal/modules/cjs/loader:2074:10)
+    at Module.load (node:internal/modules/cjs/loader:1656:32)
+    at Module._load (node:internal/modules/cjs/loader:1448:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47
+
+Node.js v26.8.2
+✖ .runtime/clarity-r6-preview.cjs (55.423ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 67.000416
+
+✖ failing tests:
+
+test at .runtime/clarity-r6-preview.cjs:1:1
+✖ .runtime/clarity-r6-preview.cjs (55.423ms)
+  'test failed'

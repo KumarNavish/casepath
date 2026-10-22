@@ -54,18 +54,23 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
     if(['source-swap','camera-in','cursor'].includes(beat.phase)&&+paper.querySelector('.au-executive-ink').style.opacity!==0)failures.push({n,reason:'highlight before cursor'});
    }
    active.advanceTo(m.beats.find(b=>b.phase==='answer-rest'&&b.act==='decision').start);
-   const tests=[...document.querySelectorAll('[data-au-desk-answer] > .au-desk-tests > li')].map(e=>({step:+e.dataset.auLegalStep,ring:e.querySelector('.au-executive-step')?.getBoundingClientRect().width}));
+   const tests=[...document.querySelectorAll('[data-au-desk-answer] > .au-desk-tests > li')].map(e=>({step:+e.dataset.auLegalStep,label:e.querySelector('.au-executive-step-label')?.textContent,ring:e.querySelector('.au-executive-step')?.getBoundingClientRect().width}));
+   const stepContext=document.querySelector('.au-executive-test-context').textContent;
+   active.advanceTo(m.beats.find(b=>b.phase==='source-check-rest').start);const sourceCheck={text:document.querySelector('.au-ns-role-purpose').textContent,role:document.querySelector('[data-au-ns]').dataset.auNsRoleActive,passages:document.querySelectorAll('[data-au-ns-verified]').length};
    active.advanceTo(m.beats.find(b=>b.phase==='draft-rest').start);const draft=document.querySelector('[data-au-recorded-draft]').textContent;
    active.advanceTo(m.beats.find(b=>b.phase==='law-rest').start);const law=document.querySelector('[data-au-ns-law-source]').textContent,publisher=document.querySelector('[data-au-law-article]').href;
    active.advanceTo(m.beats.find(b=>b.phase==='answer-rest'&&b.act==='learning').end-1);const laterResult=document.querySelector('.au-ns-initial-date').textContent+document.querySelector('.au-desk-lead').textContent;
    const later=m.beats.find(b=>b.phase==='later-case-rest');active.advanceTo(later.start+899);
    const railOnly=getComputedStyle(document.querySelector('.au-ns-completed-canvas')).opacity==='0',label=document.querySelector('.au-executive-later').textContent,title=document.querySelector('[data-au-claim-title]').textContent;
    active.advanceTo(m.beats.find(b=>b.phase==='memory-card-rest').start);
-   return {failures,checked,tests,draft,law,publisher,laterResult,laterDuration:later.duration,railOnly,label,title,sourceHeading:document.querySelector('.au-ns-memory-source h3').textContent,border:getComputedStyle(document.querySelector('.au-ns-memory-source blockquote')).borderTop};
+   return {failures,checked,tests,stepContext,sourceCheck,draft,law,publisher,laterResult,laterDuration:later.duration,railOnly,label,title,sourceHeading:document.querySelector('.au-ns-memory-source h3').textContent,border:getComputedStyle(document.querySelector('.au-ns-memory-source blockquote')).borderTop};
   },completions);
   assert.deepEqual(bindings.failures,[]);assert.ok(bindings.checked>900);
   assert.ok(proof.manifest.duration<90000);assert.match(bindings.draft,/Not sent — you decide/);assert.ok(bindings.draft.includes(recorded.cases[0].envelope.state.outcome.request_draft.body));assert.match(bindings.law,/publisher: Fedlex/);assert.match(bindings.publisher,/^https:\/\/www.fedlex.admin.ch\//);assert.match(bindings.laterResult,/2025-01-21/);assert.ok(bindings.laterResult.includes(recorded.cases[1].envelope.state.outcome.summary.split('. ')[0]+'.'));
-  assert.deepEqual(bindings.tests.map(t=>t.step),[2,3,3,5,5]);assert.ok(bindings.tests.every(t=>t.ring===20));
+  assert.deepEqual(bindings.tests.map(t=>t.step),[2,3,3,5,5]);assert.ok(bindings.tests.every(t=>t.ring===20&&t.label==='Step '+t.step));
+  assert.match(bindings.stepContext,/6 process steps · 5 legal tests/);assert.match(bindings.stepContext,/One step can contain several tests/);
+  assert.equal(bindings.sourceCheck.role,'checker');assert.ok(bindings.sourceCheck.passages>0);assert.match(bindings.sourceCheck.text,/matches quoted passages to received files/);
+  assert.ok(proof.manifest.acts.find(a=>a.id==='customer').end-proof.manifest.acts.find(a=>a.id==='customer').start<8000,'intake stops before repeated document reading');
   assert.equal(bindings.laterDuration,900);assert.equal(bindings.railOnly,true);assert.equal(bindings.label,'Later case');assert.ok(bindings.title.length);assert.equal(bindings.sourceHeading,'Later case source');assert.equal(bindings.border,'1px solid rgb(46, 107, 53)');
   assert.ok(proof.manifest.beats.filter(b=>b.phase==='source-swap').every(b=>b.duration===250));
   await page.evaluate(at=>CasepathPresentation.active.seek(at),proof.manifest.beats.find(b=>b.phase==='fact-rest').start);

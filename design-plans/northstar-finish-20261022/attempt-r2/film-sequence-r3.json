@@ -1,0 +1,28 @@
+{
+  "sourceCommit": "8fe6f519c37d27521294ed4da981920f7ca80116",
+  "wrapperPid": 14504,
+  "startedAt": "2026-10-22T14:59:37.242391+00:00",
+  "status": "failed",
+  "out": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-8fe6f519",
+  "serialized": true,
+  "stages": [
+    {
+      "name": "capture",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w9-20261021/capture_film.mjs",
+        "--out",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-8fe6f519"
+      ],
+      "status": "completed",
+      "startedAt": "2026-10-22T14:59:37.243112+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/film-r3-capture.log",
+      "pid": 14510,
+      "exitCode": 1,
+      "finishedAt": "2026-10-22T15:07:29.432814+00:00",
+      "logSha256": "d4aaea4790dae0211be9af94b613aafeff566e87834ec76ed54f947acf85f31c"
+    }
+  ],
+  "failure": "AssertionError('capture')",
+  "finishedAt": "2026-10-22T15:07:29.458148+00:00"
+}

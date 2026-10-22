@@ -1,0 +1,26 @@
+✖ the admitted six-act product uses one deterministic clock, preserves sources and handles pause (9585.59825ms)
+✔ a slow cold read keeps the north-star frame on landing and on opening a recorded case (8436.839791ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18894.144292
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-presentation-browser-v1.test.cjs:7:1
+✖ the admitted six-act product uses one deterministic clock, preserves sources and handles pause (9585.59825ms)
+  AssertionError [ERR_ASSERTION]: intake stops before repeated document reading
+      at TestContext.<anonymous> (/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-presentation-browser-v1.test.cjs:73:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

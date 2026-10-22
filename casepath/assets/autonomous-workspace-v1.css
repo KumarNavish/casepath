@@ -2065,7 +2065,7 @@ html[data-casepath-presentation] .au-ns-work { position:relative; }
 html[data-casepath-presentation] .au-ns-paper { position:relative; }
 .au-workspace .au-executive-documents { display:flex; justify-content:space-between; gap:12px; margin:25px 27px; padding:12px 0; width:208px; border:0; border-top:1px solid #e7e7e7; background:white; color:#444; font:400 13px/1.5 Mulish,sans-serif; }
 .au-workspace .au-executive-documents span { color:#777; }
-.au-workspace .au-desk-tests li[data-au-legal-step] { grid-template-columns:20px 20px minmax(0,1fr) auto; }
+.au-workspace .au-desk-tests li[data-au-legal-step] { grid-template-columns:60px 20px minmax(0,1fr) auto; }
 .au-workspace .au-desk-tests .au-executive-step { display:grid; place-items:center; width:20px; height:20px; border:1px solid #82072a; border-radius:50%; color:#82072a!important; font:400 12px/1 Mulish,sans-serif; }
 .au-workspace .au-desk-tests li[data-au-legal-step][data-status=supported] > :nth-child(2) { color:var(--au-green); }
 .au-workspace .au-executive-later { margin:0 27px 4px; color:#82072a; font:600 12px/1.5 Mulish,sans-serif; }
@@ -2122,3 +2122,7 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
  .au-workspace .au-executive-roster-heading { display:flex; align-items:baseline; justify-content:space-between; gap:24px; }
  .au-workspace .au-executive-roster-note { color:#61636b; font-size:13px; margin:0; }
 }
+
+.au-workspace .au-executive-step-label { display:flex; align-items:center; gap:6px; color:#61636b; font:400 12px/1.5 Mulish,sans-serif; }
+.au-workspace .au-executive-test-context { margin:12px 0; color:#61636b; font:400 13px/1.5 Mulish,sans-serif; }
+.au-workspace .au-ns-role-purpose { color:#61636b; font:400 14px/1.5 Mulish,sans-serif; margin:0 0 18px; }

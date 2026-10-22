@@ -1,0 +1,17 @@
+{"captured":1,"total":5337,"clockMilliseconds":0}
+{"captured":301,"total":5337,"clockMilliseconds":5000}
+{"captured":601,"total":5337,"clockMilliseconds":10000}
+{"captured":901,"total":5337,"clockMilliseconds":15000}
+{"captured":1201,"total":5337,"clockMilliseconds":20000}
+{"captured":1501,"total":5337,"clockMilliseconds":25000}
+{"captured":1801,"total":5337,"clockMilliseconds":30000}
+{"captured":2101,"total":5337,"clockMilliseconds":35000}
+{"captured":2401,"total":5337,"clockMilliseconds":40000}
+{"captured":2701,"total":5337,"clockMilliseconds":45000}
+{"captured":3001,"total":5337,"clockMilliseconds":50000}
+Error: ENOSPC: no space left on device, open '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-8fe6f519/frames/frame-003121.png'
+    at async open (node:internal/fs/promises:1387:25)
+    at async Object.writeFile (node:internal/fs/promises:2116:14)
+    at async Page.screenshot (/Users/kumar0002/Documents/Die Mobiliar/casepath-canonical/casepath-qa/node_modules/playwright-core/lib/client/page.js:476:7)
+    at async file:///Users/kumar0002/Documents/Die%20Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w9-20261021/capture_film.mjs:129:19
+{"sourceCommit":"8fe6f519c37d27521294ed4da981920f7ca80116","frameCount":5337,"out":"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-8fe6f519","failure":"Error: ENOSPC: no space left on device, open '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-8fe6f519/frames/frame-003121.png'\n    at async open (node:internal/fs/promises:1387:25)\n    at async Object.writeFile (node:internal/fs/promises:2116:14)\n    at async Page.screenshot (/Users/kumar0002/Documents/Die Mobiliar/casepath-canonical/casepath-qa/node_modules/playwright-core/lib/client/page.js:476:7)\n    at async file:///Users/kumar0002/Documents/Die%20Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w9-20261021/capture_film.mjs:129:19"}

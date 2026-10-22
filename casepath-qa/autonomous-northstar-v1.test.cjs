@@ -122,6 +122,8 @@ test('intake and law expose recorded provenance; draft uses the saved body witho
  const draft=ui.deskDraftReadMarkup(ui.deskDraftBinding(state));assert.ok(draft.includes(state.outcome.request_draft.body));assert.match(draft,/Not sent — you decide/);assert.doesNotMatch(draft,/data-au-draft-save/);
  assert.match(ui.northStarInitialDateMarkup(fixture.cases[1].envelope.state),/Ein genaues Anfangsdatum/);assert.equal(ui.northStarInitialDateMarkup(state),'');
  assert.match(ui.northStarTabsMarkup('reader'),/automated assistant; recorded work/);
+ assert.match(ui.northStarTabsMarkup('checker'),/Checks quoted passages against recorded sources/);
+ const checks=ui.northStarCompletedMarkup(state,trace,'verified',{});assert.match(checks,/matches quoted passages to received files/);assert.match(checks,/Qualified legal review is still required/);
 });
 
 test('completion evidence answers the question using only that completion’s recorded citations',()=>{

@@ -1,0 +1,16 @@
+{
+  "status": "focused tests passed; served proof, film, independent cold review and final gates pending",
+  "focusedTests": 88,
+  "browserTests": 2,
+  "browserHarness": "Exact committed test content plus four screenshot writes; root and fixture paths made absolute for .runtime copy.",
+  "retainedFailures": [
+    "Initial browser timing assertion used a nonexistent duration property; corrected to end minus start.",
+    "First scratch screenshot harness accidentally contained an ES module under .cjs; it never ran the product. Corrected harness passed."
+  ],
+  "sourceSha256": {
+    "casepath/assets/autonomous-workspace-v1.js": "b9ac2e20a8cfc9b0a24f31c928082a5f4be57a2995fc99fbf1a1f9a2cd287d25",
+    "casepath/assets/autonomous-workspace-v1.css": "3a77e218cc435eebe0303f13e334a97867ed91d63f196230e2bc5ad075141b58",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs": "d7bcc9c6e90a40b27e4af1760d6cb261d0d0b37a4f99efd1a8edb44b9a1e2461"
+  },
+  "visualReview": "Viewed source-check, answer, fact-rest and memory-notice frames. Labels fit; exact passages retained; no visible overlap. Formal served and fidelity checks pending."
+}
