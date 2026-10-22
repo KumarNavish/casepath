@@ -1,0 +1,83 @@
+{
+  "basis": "Recorded graph-node scopes; unknown IDs preserve their recorded labels. Original labels remain available on hover/click.",
+  "correction": "W10r5 cold review found the rent-increase form/reasons wording narrower than the actual recorded notification-context/validity nodes. W10r6 changes only visible questions, preserving IDs, predicate mapping, step numbers and outcomes.",
+  "entries": [
+    {
+      "node_id": "dh_intake",
+      "question": "What defect is reported?",
+      "recorded_labels": [
+        "Capture the reported defect"
+      ]
+    },
+    {
+      "node_id": "dh_scope",
+      "question": "Is it a residential tenancy?",
+      "recorded_labels": [
+        "Establish relevant tenancy terms"
+      ]
+    },
+    {
+      "node_id": "dh_notice",
+      "question": "Did the landlord know?",
+      "recorded_labels": [
+        "Establish landlord knowledge"
+      ]
+    },
+    {
+      "node_id": "dh_cause",
+      "question": "Is it outside the tenant’s responsibility?",
+      "recorded_labels": [
+        "Assess supported cause"
+      ]
+    },
+    {
+      "node_id": "dh_evidence",
+      "question": "Is the defect supported?",
+      "recorded_labels": [
+        "Assess objective defect evidence"
+      ]
+    },
+    {
+      "node_id": "dh_response",
+      "question": "Are repair and rent reduction supported?",
+      "recorded_labels": [
+        "Record repair and rent reduction eligibility"
+      ]
+    },
+    {
+      "node_id": "lt_intake",
+      "question": "What notice was received?",
+      "recorded_labels": [
+        "Capture the received termination packet"
+      ]
+    },
+    {
+      "node_id": "lt_form",
+      "question": "Is the notice in the required form?",
+      "recorded_labels": [
+        "Assess whether the termination notice is valid"
+      ]
+    },
+    {
+      "node_id": "ri_intake",
+      "question": "What increase was received?",
+      "recorded_labels": [
+        "Capture the original increase packet"
+      ]
+    },
+    {
+      "node_id": "ri_form",
+      "question": "What accompanied the original notice?",
+      "recorded_labels": [
+        "Assess notification context"
+      ]
+    },
+    {
+      "node_id": "ri_reason",
+      "question": "Is the increase notice valid?",
+      "recorded_labels": [
+        "Assess whether the increase notice is valid"
+      ]
+    }
+  ]
+}
