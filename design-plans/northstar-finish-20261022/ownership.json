@@ -1,0 +1,31 @@
+{
+  "task": "cold-landing and north-star completion",
+  "owner": "01a15ae9-3851-79b2-9d1b-af0b75f25a86",
+  "branch": "mac/casepath-cold-landing-20261022",
+  "base": "5ecbb5b767e4c410f99cd7ae29d75d72360a122c",
+  "handoff_comment": 6342169004,
+  "scope": [
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/index.html",
+    "casepath-qa",
+    "docs/product",
+    "design-plans",
+    "source seal"
+  ],
+  "exclusions": [
+    "primary integration checkout",
+    "Mac gate and capture",
+    "provider and ledger writes",
+    "hosted operations",
+    "reviewed-memory creation"
+  ],
+  "observed_jobs": {
+    "gate": 41375,
+    "film": 53362,
+    "preview4191": 43340,
+    "preview4180": 2601
+  },
+  "recorded_at": "2026-10-22T13:44:07.006233+00:00",
+  "next": "Inspect exact source data and render only recorded fields; consume existing Mac receipts."
+}

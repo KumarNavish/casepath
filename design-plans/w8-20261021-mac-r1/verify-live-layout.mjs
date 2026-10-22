@@ -1,3 +1,5 @@
+const proofOrigin=process.env.CASEPATH_PROOF_ORIGIN||'http://127.0.0.1:4180';
+if(!['127.0.0.1','localhost'].includes(new URL(proofOrigin).hostname))throw new Error('Proof origin must be local.');
 import {createRequire} from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -11,10 +13,10 @@ const report={viewport:{width:1440,height:900},errors:[],writes:[],staticPrefix:
 const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}),p=await browser.newPage({viewport:report.viewport});p.on('pageerror',e=>report.errors.push(e.message));p.on('console',e=>{if(e.type()==='error')report.errors.push('console: '+e.text());});
 await p.route('**/*',r=>{const q=r.request(),u=new URL(q.url()),id=u.pathname.match(/\/claims\/([^/]+)\/operations$/)?.[1];if(!['GET','HEAD'].includes(q.method())){report.writes.push(q.method()+' '+u.pathname);return r.abort();}if(id){const c=fixture.cases.find(c=>c.id===id);if(c)return r.fulfill({body:c.trace,contentType:'application/x-ndjson'});}const asset=u.pathname.split('/').pop();if(report.overrides&&['autonomous-workspace-v1.js','autonomous-workspace-v1.css','Mulish.ttf'].includes(asset))return r.fulfill({path:root+'/casepath/assets/'+(asset==='Mulish.ttf'?'fonts/':'')+asset,contentType:asset.endsWith('.css')?'text/css':asset.endsWith('.js')?'text/javascript':'font/ttf'});return r.continue();});
 try{
- report.deployment=await(await fetch('http://127.0.0.1:4180/deployment.json')).json();
+ report.deployment=await(await fetch(proofOrigin+'/deployment.json')).json();
  report.cases=[];
  for(const [i,c]of fixture.cases.entries()){
-  await p.goto('http://127.0.0.1:4180/#autonomous/claim/'+c.id,{waitUntil:'networkidle'});await p.locator('[data-au-desk-watch]').waitFor({timeout:90000});await p.locator('[data-au-desk-watch]').click();await p.locator('[data-au-ns-start]').waitFor({timeout:90000});await p.locator('[data-au-ns-start]').click();
+  await p.goto(proofOrigin+'/#autonomous/claim/'+c.id,{waitUntil:'networkidle'});await p.locator('[data-au-desk-watch]').waitFor({timeout:90000});await p.locator('[data-au-desk-watch]').click();await p.locator('[data-au-ns-start]').waitFor({timeout:90000});await p.locator('[data-au-ns-start]').click();
   const frames=[];
   for(const [name,cue]of [['selected','passage-rest'],['fact','fact-rest']]){
    await p.waitForFunction(cue=>document.querySelector('[data-au-view]')?.dataset.auCueActive===cue,cue,{timeout:90000});

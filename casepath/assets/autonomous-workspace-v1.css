@@ -2088,3 +2088,30 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-nav 
 html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-nav [aria-current=page] { color:#82072a; border-color:#82072a; }
 html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-header-new { order:2; margin-left:auto; }
 html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-access-label { order:3; margin-left:auto; }
+
+/* Keep the recorded envelope visible while its exact body scrolls. */
+@media (min-width: 1000px) {
+ .au-workspace .au-ns-paper { display:flex; flex-direction:column; }
+ .au-workspace .au-ns-paper > header { flex:0 0 59px; }
+ .au-workspace .au-ns-paper > .au-ns-source-fields { flex:none; margin:0 24px; padding:14px 0; row-gap:4px; }
+ .au-workspace .au-ns-source-fields dd { overflow-wrap:anywhere; min-width:0; }
+ .au-workspace .au-ns-source-scroll { flex:1; min-height:0; height:auto; padding:18px 24px; }
+ .au-workspace .au-ns-intake { margin:4px 27px 12px; font:400 13px/1.5 Mulish,sans-serif; color:#61636b; }
+ .au-workspace .au-ns-log p { flex-wrap:wrap; }
+ .au-workspace .au-ns-log p small { display:block; width:100%; font:400 12px/1.5 Mulish,sans-serif; color:#61636b; }
+ .au-workspace .au-ns-law-source { padding:20px 24px; margin-top:16px; border:1px solid #d6d6d7; border-radius:6px; max-height:400px; overflow:auto; }
+ .au-workspace .au-ns-law-source h2 { font-size:17px; margin:0 0 12px; }
+ .au-workspace .au-ns-law-source h3 { font-size:15px; }
+ .au-workspace .au-ns-law-source pre { white-space:pre-wrap; font:400 15px/1.6 Mulish,sans-serif; }
+ .au-workspace .au-ns-law-source p { font-size:13px; line-height:1.5; }
+ .au-workspace .au-ns-initial-date { margin-bottom:18px; padding:12px 18px; border-left:3px solid #82072a; background:#f6eff0; }
+ .au-workspace .au-ns-initial-date h3 { font-size:16px; margin:0 0 6px; }
+ .au-workspace .au-ns-initial-date blockquote { margin:0; font-size:15px; }
+ .au-workspace .au-ns-initial-date p { margin:8px 0 0; font-size:13px; }
+}
+@media (min-width:1000px) {
+ .au-workspace .au-ns-law-source article h3 { margin:14px 0 8px; }
+ .au-workspace .au-ns-law-source article pre { margin:0; }
+ .au-workspace .au-ns-initial-date p { line-height:1.5; }
+ .au-workspace .au-ns-view-content:has(.au-ns-initial-date) .au-desk-tests > li { padding-top:9px; padding-bottom:9px; }
+}

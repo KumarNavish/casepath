@@ -197,3 +197,9 @@ For each concept state, post three things:
 - the printed mean difference.
 
 Then list every visible deviation as matched / deliberate (with reason) / pending.
+
+## Current Mac completion boundary (22 October 2026)
+
+The Mac handoff [6342169004](https://github.com/KumarNavish/casepath/pull/21#issuecomment-6342169004) supersedes the historical quoted allowance above: the nine-original grant was consumed on 9 October, 18/18 calls. No remaining allowance or new spending is authorized. Codex owns the cold-landing and north-star UI continuation on `mac/casepath-cold-landing-20261022`; the Mac retains release.
+
+The handoff requests recorded intake and publisher provenance, clear automated-role and question labels, the actual unsent draft, and the later case's own result. “Checking” and “Decide: [recorded question]” are deliberate replacements for the generic Building/Form process decision labels. No recorded alternatives or human-reviewed memory change exists in the nine reference histories. Keep those differences explicit and ask about any local reviewer action in the READY post; do not invent one. See `design-plans/northstar-finish-20261022/REVIEW.md` and its source-bound final evidence.

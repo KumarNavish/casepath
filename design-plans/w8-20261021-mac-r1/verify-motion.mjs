@@ -1,3 +1,5 @@
+const proofOrigin=process.env.CASEPATH_PROOF_ORIGIN||'http://127.0.0.1:4180';
+if(!['127.0.0.1','localhost'].includes(new URL(proofOrigin).hostname))throw new Error('Proof origin must be local.');
 import {createRequire} from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -19,8 +21,8 @@ await p.addInitScript(()=>{
 if(cue==='cursor'&&mark?.dataset.arrived!=='false')d.violations.push('highlight before cursor arrival');if(animations>1)d.violations.push('parallel animations');}requestAnimationFrame(sample);}requestAnimationFrame(sample);
 });
 try{
- report.deployment=await(await fetch('http://127.0.0.1:4180/deployment.json')).json();
- await p.goto('http://127.0.0.1:4180/#autonomous/claim/'+row.id,{waitUntil:'networkidle'});await p.locator('[data-au-desk-watch]').waitFor({timeout:90000});await p.locator('[data-au-desk-watch]').click();await p.locator('[data-au-ns-start]').waitFor({timeout:90000});await p.evaluate(()=>document.fonts.ready);
+ report.deployment=await(await fetch(proofOrigin+'/deployment.json')).json();
+ await p.goto(proofOrigin+'/#autonomous/claim/'+row.id,{waitUntil:'networkidle'});await p.locator('[data-au-desk-watch]').waitFor({timeout:90000});await p.locator('[data-au-desk-watch]').click();await p.locator('[data-au-ns-start]').waitFor({timeout:90000});await p.evaluate(()=>document.fonts.ready);
  await frame('state1-ready');await p.locator('[data-au-ns-start]').click();
  await p.waitForSelector('[data-au-ns-paper]');await p.waitForFunction(()=>document.querySelector('[data-au-view]')?.dataset.auCueActive!=='source-open');await frame('state2-source-opened');console.log('Source opened');
  await p.waitForFunction(()=>document.querySelector('[data-au-view]')?.dataset.auCueActive==='passage-rest',{},{timeout:90000});await frame('state3-exact-passage');console.log('Exact passage');

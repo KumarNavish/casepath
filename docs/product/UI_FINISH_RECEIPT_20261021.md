@@ -1,3 +1,5 @@
+> Current continuation: the Mac's released W9 evidence below is historical. The cold-landing and north-star revision is tracked in [the completion review](../../design-plans/northstar-finish-20261022/REVIEW.md); its final receipts must pass before a new READY. No original-nine allowance remains.
+
 # CasePath UI finish receipt — W8 and W9
 
 ## Scope and ownership

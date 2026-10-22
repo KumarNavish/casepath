@@ -11,7 +11,7 @@ for(const c of fixture.cases)test(`north-star plans and exact locators remain bo
  let role=null,pins=0;
  for(const o of rows){if(o.kind==='source.open')sources.set(o.object.id,{...state.source_descriptors.find(s=>s.artifact_id===o.object.id),...o.result});role=ui.northStarRole(o,role);if(o.source){const pin=ui.northStarPin(o,sources);assert.ok(pin);assert.equal(pin.quote,Array.from(sources.get(pin.artifact_id).text).slice(pin.start_char,pin.end_char).join(''));assert.equal(ui.northStarPin({...o,source:{...pin,start_char:pin.start_char+1}},sources),null);assert.equal(ui.northStarPin({...o,source:{...pin,text_sha256:'0'.repeat(64)}},sources),null);pins++;}else assert.equal(ui.northStarPin(o,sources),null);}
  assert.equal(role,'result');assert.ok(pins>20);
- for(const node of state.graph.nodes){const plan=model.plans.get(node.node_id),complete=rows.find(o=>o.kind==='step.complete'&&o.object.id===node.node_id&&o.result.status==='completed');assert.ok(plan.length);assert.equal(plan.at(-1).operation.id,complete.id);assert.equal(plan.at(-1).label,'Form process decision');let seq=0;for(const r of plan){assert.equal(r.operation,byId.get(r.operation.id));assert.equal(model.links.get(r.operation.id),node.node_id);assert.ok(r.operation.seq>seq&&r.operation.seq<=complete.seq);seq=r.operation.seq;assert.ok(['source.open','span.read','fact.extract','verification.check','document.check','step.complete'].includes(r.operation.kind));}}
+ for(const node of state.graph.nodes){const plan=model.plans.get(node.node_id),complete=rows.find(o=>o.kind==='step.complete'&&o.object.id===node.node_id&&o.result.status==='completed');assert.ok(plan.length);assert.equal(plan.at(-1).operation.id,complete.id);assert.equal(plan.at(-1).label,`Decide: ${ui.northStarQuestion(node)}`);let seq=0;for(const r of plan){assert.equal(r.operation,byId.get(r.operation.id));assert.equal(model.links.get(r.operation.id),node.node_id);assert.ok(r.operation.seq>seq&&r.operation.seq<=complete.seq);seq=r.operation.seq;assert.ok(['source.open','span.read','fact.extract','verification.check','document.check','step.complete'].includes(r.operation.kind));}}
  const html=ui.northStarMarkup(state,{headState:state,rows:[],sources:new Map(),nsReady:true,nsCatalogue:model},{});assert.match(html,/Watch the analysis/);assert.doesNotMatch(html,/UI fixture|Reading now|Wants:|files read|facts found|checks run|steps done|From the customer/);assert.doesNotMatch(html,/data-au-ns-node=/);
 });
 test('unlinked and ambiguous source reads cannot be attributed to a node',()=>{
@@ -99,10 +99,27 @@ for(const c of fixture.cases)test(`every recorded seq drives plan progress and m
   const rendered=[...html.matchAll(/<li data-au-ns-plan-row="([^"]+)"[^>]*data-state="([^"]+)"[^>]*>([\s\S]*?)<\/li>/g)];assert.equal(rendered.length,groups.length);
   for(const row of rendered){const group=groups.find(g=>g.operations.at(-1).id===row[1]),seqs=group.operations.map(o=>o.seq),completed=seqs.filter(seq=>seq<op.seq).length,want=completed===seqs.length?'done':op.seq>=seqs[0]?'active':'waiting';assert.equal(row[2],want,`row at seq ${op.seq}`);if(want==='active'){const bar=+row[3].match(/--au-plan-progress:([0-9.]+)%/)[1];assert.equal(bar,100*completed/seqs.length);}}
   assert.deepEqual(rings,node&&!done.has(nodeId)?[nodeId]:[],`seq ${op.seq}`);
-  if(rings.length)assert.ok(html.includes(`Building “${ui.northStarQuestion(node)}”`),`title/ring at seq ${op.seq}`);
+  if(rings.length)assert.ok(html.includes(`Checking “${ui.northStarQuestion(node)}”`),`title/ring at seq ${op.seq}`);
   if(op.kind==='step.complete'&&op.result.status==='completed')done.add(op.object.id);
  }
 });
 test('unlabelled fact quotes retain the exact full DOM text and hover title',()=>{
  for(const c of fixture.cases){const state=c.envelope.state;for(const op of completedTrace(c).rows.filter(o=>o.kind==='fact.extract'&&o.source&&!state.facts.some(f=>f.fact_id===o.object.id))){const html=ui.northStarFactCopy(state,op),quoted=html.match(/data-au-ns-fact-quote>([\s\S]*?)<\/span>/),title=html.match(/title="([^"]+)"/);assert.equal(decodeMarkup(quoted[1]),op.source.quote);assert.equal(decodeMarkup(title[1]),op.source.quote);}}
+});
+
+test('customer envelope is formatted only from recorded fields, without losing Unicode source offsets',()=>{
+ const source={text:'Channel: phone_note\nTimestamp: 2025-02-20T13:00:00+01:00\nFrom: Zoë <zoe@example.test>\nTo: Intake\nSubject: Heat\n\nA 🏠 with no heat.'};
+ const start=Array.from(source.text.split('A 🏠')[0]).length,pin={start_char:start,end_char:start+3};
+ const p=ui.northStarSourcePreview(source,pin);assert.deepEqual(p.fields,[['From','Zoë <zoe@example.test>'],['To','Intake'],['Date','2025-02-20T13:00:00+01:00'],['Subject','Heat']]);assert.equal(p.channel,'phone_note');
+ assert.equal(p.before+Array.from(source.text).slice(pin.start_char,pin.end_char).join('')+p.after,'A 🏠 with no heat.');
+ const header=ui.northStarSourcePreview(source,{start_char:0,end_char:7});assert.equal(header.offset,0);assert.deepEqual(header.fields,[]);
+ assert.deepEqual(ui.northStarSourcePreview({text:'Hello\nFrom: a body quotation'}).fields,[]);
+});
+test('intake and law expose recorded provenance; draft uses the saved body without sending',()=>{
+ const c=fixture.cases[0],state=c.envelope.state,trace=completedTrace(c),m=ui.northStarCompletedModel(state,trace,'dh_scope');
+ assert.match(ui.northStarIntakeMarkup(state),/Received as phone note/);
+ const law=ui.northStarLawMarkup(state,m);assert.match(law,/publisher: Fedlex/);assert.match(law,/https:\/\/www.fedlex.admin.ch/);assert.match(law,/qualified legal review is still required/);
+ const draft=ui.deskDraftReadMarkup(ui.deskDraftBinding(state));assert.ok(draft.includes(state.outcome.request_draft.body));assert.match(draft,/Not sent — you decide/);assert.doesNotMatch(draft,/data-au-draft-save/);
+ assert.match(ui.northStarInitialDateMarkup(fixture.cases[1].envelope.state),/Ein genaues Anfangsdatum/);assert.equal(ui.northStarInitialDateMarkup(state),'');
+ assert.match(ui.northStarTabsMarkup('reader'),/automated assistant; recorded work/);
 });

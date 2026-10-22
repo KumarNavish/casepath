@@ -1,3 +1,5 @@
+const proofOrigin=process.env.CASEPATH_PROOF_ORIGIN||'http://127.0.0.1:4180';
+if(!['127.0.0.1','localhost'].includes(new URL(proofOrigin).hostname))throw new Error('Proof origin must be local.');
 import {createRequire} from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -15,7 +17,7 @@ async function snap(name){await p.evaluate(()=>document.fonts.ready);await p.scr
 async function waitRows(n){await p.waitForFunction(n=>document.querySelectorAll('.au-request-row').length===n,n);}
 async function role(name){await p.locator('.au-ns-tabs [data-au-ns-role='+name+']').click();}
 try{
- report.deployment=await(await fetch('http://127.0.0.1:4180/deployment.json')).json();
+ report.deployment=await(await fetch(proofOrigin+'/deployment.json')).json();
  const catalog=await(await fetch(base+api+'/claims')).json();assert.equal(catalog.total,150);assert.equal(catalog.claims.filter(c=>c.customer_request).length,150);report.catalog=150;
  await p.goto(base+'/#autonomous/work',{waitUntil:'networkidle'});await waitRows(20);assert.equal(await p.locator('[data-au-claim-row] .au-claim-status-word').first().innerText(),'Not started');await snap('cases');
  const unrun=catalog.claims.find(c=>c.revision===0);assert.ok(unrun);await p.locator('[data-au-claim="'+unrun.claim_id+'"]').click();await p.getByText('Original intake · not run',{exact:false}).first().waitFor({state:'attached'});assert.equal(await p.locator('[data-au-ns-completed]').count(),0);await p.getByText('Not started.',{exact:true}).waitFor();await snap('original-not-run');await p.goBack();await waitRows(20);

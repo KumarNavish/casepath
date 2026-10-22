@@ -15,7 +15,8 @@ const git=(...args)=>execFileSync('git',args,{cwd:root,encoding:'utf8'}).trim(),
 git('merge-base','--is-ancestor',head,verifierCommit);
 assert.equal(git('diff','--name-only',head,'--','casepath','casepath-api','casepath-qa','docs','examples'),'','Use unchanged captured product source.');
 assert.equal(git('status','--porcelain','--untracked-files=all','--','casepath','casepath-api','casepath-qa','docs','examples'),'','Use sealed product source.');
-const sha=bytes=>createHash('sha256').update(bytes).digest('hex'),origin='http://127.0.0.1:4180';
+const sha=bytes=>createHash('sha256').update(bytes).digest('hex'),origin=process.env.CASEPATH_CAPTURE_ORIGIN||'http://127.0.0.1:4180';
+assert.ok(['127.0.0.1','localhost'].includes(new URL(origin).hostname));
 const wireBytes=fs.readFileSync(root+'/casepath-qa/fixtures/presentation-v1.json.gz'),traceBytes=fs.readFileSync(root+'/casepath-qa/fixtures/desk-v3.json.gz');
 assert.equal(sha(wireBytes),film.fixtures.responses);assert.equal(sha(traceBytes),film.fixtures.operations);
 const wire=JSON.parse(gunzipSync(wireBytes)).responses,recorded=JSON.parse(gunzipSync(traceBytes));

@@ -1,0 +1,162 @@
+{
+  "source_base": "5ecbb5b767e4c410f99cd7ae29d75d72360a122c",
+  "cases": [
+    {
+      "claim": "clm_314f2d309fea25e6",
+      "nodes": 6,
+      "edges": 5,
+      "forks": [],
+      "conditions": [
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        }
+      ],
+      "state_sha256": "f4f0809162a2124c04160858087a87c114ba7efb2d9e547a37d2c4088c3b2161"
+    },
+    {
+      "claim": "clm_4a07dbbbd859a3ce",
+      "nodes": 6,
+      "edges": 5,
+      "forks": [],
+      "conditions": [
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        }
+      ],
+      "state_sha256": "63c6b089a81f6448ee283e56aefe82bb7a986091331ae3ead2573034622637ac"
+    },
+    {
+      "claim": "clm_95d08975bc575592",
+      "nodes": 6,
+      "edges": 5,
+      "forks": [],
+      "conditions": [
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        }
+      ],
+      "state_sha256": "8247f08a14bfe92df24e603be0cf85f2d2d32e77bc04e2f43d2010a3b29dbed2"
+    },
+    {
+      "claim": "clm_0f4f13b1e3e1328c",
+      "nodes": 2,
+      "edges": 1,
+      "forks": [],
+      "conditions": [
+        {
+          "const": "true"
+        }
+      ],
+      "state_sha256": "23f5734f9e9dc504d5cd8952068d3d3b437bdfaf2c0021671071902f11ada8c8"
+    },
+    {
+      "claim": "clm_393285577dcb12c4",
+      "nodes": 2,
+      "edges": 1,
+      "forks": [],
+      "conditions": [
+        {
+          "const": "true"
+        }
+      ],
+      "state_sha256": "b7654c1a69c74032059fadc2ac1834b5c1888484b4c50cfc6a0b64a6c995156c"
+    },
+    {
+      "claim": "clm_4a53299cfe619303",
+      "nodes": 2,
+      "edges": 1,
+      "forks": [],
+      "conditions": [
+        {
+          "const": "true"
+        }
+      ],
+      "state_sha256": "083f38f68e92934dc65247977e8938ba7070696e3c665cafdd6c9a2f80a3ea58"
+    },
+    {
+      "claim": "clm_2c55cdd816b1d0e8",
+      "nodes": 3,
+      "edges": 2,
+      "forks": [],
+      "conditions": [
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        }
+      ],
+      "state_sha256": "b1ecfc21c1ec1179154de506cc036b06cd2d6cde1a7e61455f4e605871eb8c6e"
+    },
+    {
+      "claim": "clm_543f08f2415b2a33",
+      "nodes": 3,
+      "edges": 2,
+      "forks": [],
+      "conditions": [
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        }
+      ],
+      "state_sha256": "953e96dfd84ae74f227576098c3c0b62f2236b536fc84f5aee78c98b30685d5c"
+    },
+    {
+      "claim": "clm_7dbd7c7d1c4ddf90",
+      "nodes": 3,
+      "edges": 2,
+      "forks": [],
+      "conditions": [
+        {
+          "const": "true"
+        },
+        {
+          "const": "true"
+        }
+      ],
+      "state_sha256": "283f3d0624c8b8d39d28ca49972448d2a6f33bd2f8d96de8a1627d339bc86501"
+    }
+  ],
+  "engine": "casepath-api/casepath_api/autonomous_reference_policy_v1.py:87-99",
+  "finding": "Recorded reference processes are constructed as adjacent node pairs; all nine DAGs contain no alternatives. No recorded fork, step correction or reviewed-memory change may be invented.",
+  "memory": "Existing verified checklist reuse only; no new human review recorded.",
+  "authority": "Local UI and deterministic validation only. Mac handoff confirms nine-original allowance consumed 9 October; no remaining allowance or spending."
+}
