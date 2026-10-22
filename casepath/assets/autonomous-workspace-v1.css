@@ -1856,6 +1856,7 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace .au-ns-cursor .au-ns-role-badge { margin-top:24px; }
  .au-workspace .au-ns-ready { height:493px; display:grid; place-items:center; }
  .au-workspace .au-ns-ready button { background:#82072a; color:#fff; border:0; border-radius:6px; padding:12px 20px; font-size:16px; }
+ .au-workspace [data-au-ns] .au-ns-opening { margin:24px; color:#4c4b4d; font-size:16px; }
  .au-workspace .au-ns-footer { position:absolute; left:27px; bottom:24px; width:208px; color:#61636b; font-size:13px; display:flex; flex-wrap:wrap; gap:8px; }
  .au-workspace .au-ns-footer > span:nth-child(2) { order:3; font-size:12px; }
  .au-workspace .au-ns-footer > div { display:flex; flex-wrap:wrap; gap:12px; }

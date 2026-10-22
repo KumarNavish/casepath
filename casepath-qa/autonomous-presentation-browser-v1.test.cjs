@@ -70,3 +70,44 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
  }catch(error){error.message+='\nMissing fixture reads: '+JSON.stringify(missing)+'\nPage errors: '+JSON.stringify(errors)+'\nUI: '+(await page.locator('body').innerText()).slice(-1000);throw error;}
  finally{for(const close of [()=>page.close(),()=>context.close(),()=>browser.close()]){let timer;await Promise.race([close(),new Promise(resolve=>{timer=setTimeout(resolve,10000);})]);clearTimeout(timer);}}
 });
+
+test('a slow cold read keeps the north-star frame on landing and on opening a recorded case',async()=>{
+ const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH||(fs.existsSync('/usr/bin/chromium')?'/usr/bin/chromium':chromium.executablePath())});
+ const context=await browser.newContext({viewport:{width:1440,height:900},serviceWorkers:'block'}),page=await context.newPage(),errors=[],writes=[];
+ page.on('pageerror',error=>errors.push(error.message));
+ await page.route('**/*',async route=>{
+  const request=route.request(),url=new URL(request.url()),key=url.pathname+url.search;
+  if(!['GET','HEAD'].includes(request.method())){writes.push(key);return route.abort();}
+  if(request.isNavigationRequest())return route.fulfill({contentType:'text/html',body:'<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0"><main id="workspace"></main></body></html>'});
+  if(/\/fonts\/[^/]+\.ttf$/.test(url.pathname))return route.fulfill({contentType:'font/ttf',path:path.join(root,'casepath/assets/fonts',path.basename(url.pathname))});
+  const id=url.pathname.match(/\/claims\/([^/]+)\/operations$/)?.[1],record=id&&recorded.cases.find(row=>row.id===id);
+  // A cold hosted read: the recorded operations arrive well after the verified head.
+  if(record){await new Promise(resolve=>setTimeout(resolve,1500));return route.fulfill({contentType:'application/x-ndjson',body:record.trace});}
+  if(wire[key])return route.fulfill({contentType:'application/json',body:JSON.stringify(wire[key])});
+  return route.fulfill({status:404,contentType:'application/json',body:JSON.stringify({detail:'No recorded fixture for '+key})});
+ });
+ const views=()=>page.evaluate(()=>window.views);
+ try{
+  await page.goto('http://localhost:41999/#autonomous/demonstration');
+  await page.addStyleTag({path:path.join(root,'casepath/assets/autonomous-workspace-v1.css')});
+  for(const asset of ['autonomous-language-v1.js','autonomous-presentation-v1.js','autonomous-workspace-v1.js'])await page.addScriptTag({path:path.join(root,'casepath/assets',asset)});
+  await page.evaluate(()=>{
+   // Every distinct case frame the visitor sees, in order; the text navigation must stay hidden on case views.
+   window.views=[];
+   const kind=()=>{const ns=document.querySelector('[data-au-ns]'),other=document.querySelector('[data-au-agent-desk]:not([data-au-ns]),[data-au-desk-loading]:not([data-au-ns]),.au-quiet-claim');
+    if(ns&&document.querySelector('.au-nav')?.getClientRects().length)return 'north-star with text navigation';
+    if(document.querySelector('[data-au-ns-state="opening"]'))window.sawOpening=true;
+    return ns?'north-star':other?'interim':'none';};
+   new MutationObserver(()=>{const k=kind();if(window.views.at(-1)!==k)window.views.push(k);}).observe(document.body,{childList:true,subtree:true,attributes:true});
+   window.product=CasePathAutonomous.mount(document.querySelector('#workspace'),{fetch:window.fetch.bind(window)});
+  });
+  await page.waitForFunction(()=>window.CasepathPresentation?.active,{},{timeout:45000});
+  assert.deepEqual((await views()).filter(k=>k!=='none'),['north-star'],'landing frames');assert.equal(await page.evaluate(()=>window.sawOpening),true,'the opening frame covered the cold read');
+  assert.equal(await page.locator('[data-au-ns-start]').count(),1);
+  await page.evaluate(()=>{window.views=[];window.sawOpening=false;location.hash='#autonomous/claim/clm_4a07dbbbd859a3ce';});
+  await page.locator('[data-au-ns-completed]').waitFor({timeout:45000});
+  assert.deepEqual((await views()).filter(k=>k!=='none'),['north-star'],'recorded case frames');assert.equal(await page.evaluate(()=>window.sawOpening),true,'the opening frame covered the recorded case read');
+  assert.deepEqual(writes,[]);assert.deepEqual(errors,[]);
+ }catch(error){error.message+='\nViews: '+JSON.stringify(await views().catch(()=>null))+'\nPage errors: '+JSON.stringify(errors)+'\nUI: '+(await page.locator('body').innerText()).slice(0,600);throw error;}
+ finally{for(const close of [()=>page.close(),()=>context.close(),()=>browser.close()]){let timer;await Promise.race([close(),new Promise(resolve=>{timer=setTimeout(resolve,10000);})]);clearTimeout(timer);}}
+});
