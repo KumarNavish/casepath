@@ -41,6 +41,7 @@ const wirePath=root+'/casepath-qa/fixtures/presentation-v1.json.gz';
 const tracePath=root+'/casepath-qa/fixtures/desk-v3.json.gz';
 const wire=JSON.parse(gunzipSync(fs.readFileSync(wirePath))).responses;
 const recorded=JSON.parse(gunzipSync(fs.readFileSync(tracePath)));
+const completions=new Map(recorded.cases.flatMap(c=>c.trace.trim().split('\n').map(JSON.parse).filter(o=>o.kind==='step.complete').map(o=>[o.id,o.source])));
 const assets={};
 for(const name of ['autonomous-workspace-v1.js','autonomous-workspace-v1.css','autonomous-presentation-v1.js','autonomous-language-v1.js','fonts/Mulish.ttf']){
   const response=await fetch(origin+'/assets/'+name);assert.equal(response.status,200);
@@ -76,12 +77,19 @@ async function sample(n){
     const active=CasepathPresentation.active,time=n*1000/60;active.advanceTo(time);
     const host=document.querySelector('[data-au-view]'),beat=active.manifest.beats[Number(host.dataset.auPresentationBeat)];
     const visible=selector=>[...document.querySelectorAll(selector)].filter(el=>!el.closest('.au-executive-transition')&&el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden');
-    return {n,time,renderedTime:Number(host.dataset.auPresentationTime),act:beat.act,phase:beat.phase,view:beat.view||null,animations:document.getAnimations().length,pause:visible('[data-au-demo-stop]').map(el=>el.textContent),resume:visible('[data-au-demo-resume]').length,watch:visible('[data-au-desk-watch]').length,skip:visible('[data-au-operation-skip]').length,speed:document.querySelector('[data-au-film-speed]')?.textContent};
+    const paper=host.querySelector('[data-au-ns-paper]'),mark=paper?.querySelector('[data-au-ns-quote]');
+    const sourceBinding=beat.act==='process'?{pin:JSON.parse(paper.querySelector('[data-au-citation]').dataset.auCitation),facts:visible('[data-au-ns-fact]').filter(el=>+getComputedStyle(el).opacity>0).map(el=>JSON.parse(el.dataset.auCitation)),quote:mark.textContent,start:+mark.dataset.start,end:+mark.dataset.end,highlight:+paper.querySelector('.au-executive-ink').style.opacity}:null;
+    return {n,time,renderedTime:Number(host.dataset.auPresentationTime),act:beat.act,phase:beat.phase,operation:beat.operation,sourceBinding,view:beat.view||null,animations:document.getAnimations().length,pause:visible('[data-au-demo-stop]').map(el=>el.textContent),resume:visible('[data-au-demo-resume]').length,watch:visible('[data-au-desk-watch]').length,skip:visible('[data-au-operation-skip]').length,speed:document.querySelector('[data-au-film-speed]')?.textContent};
   },n);
   assert.equal(state.renderedTime,state.time);assert.equal(state.animations,0,'native animation at '+n);
   assert.deepEqual(state.pause,['Pause'],'playing transport at '+n);assert.equal(state.resume,0);assert.equal(state.watch,0);
   assert.equal(state.speed,state.act==='process'?'4×':'');
   if(['answer','cases'].includes(state.view))assert.equal(state.skip,0);
+  if(state.sourceBinding){
+    const binding=state.sourceBinding;assert.deepEqual(binding.pin,binding.facts.at(-1)||completions.get(state.operation),'source/fact binding at '+n);
+    assert.equal(binding.quote,binding.pin.quote);assert.equal(binding.start,binding.pin.start_char);assert.equal(binding.end,binding.pin.end_char);
+    if(['source-swap','camera-in','cursor'].includes(state.phase))assert.equal(binding.highlight,0,'highlight before cursor at '+n);
+  }
   return state;
 }
 async function command(executable,argv,log){
@@ -119,7 +127,7 @@ try{
     for(let n=0;n<report.frameCount;n++){
       const state=await sample(n),filename=`${out}/frames/frame-${String(n).padStart(6,'0')}.png`;
       const bytes=await page.screenshot({type:'png',path:filename}),hash=sha(bytes);
-      const row={n:state.n,time:state.time,act:state.act,phase:state.phase,sha256:hash,animations:state.animations,transport:state.pause[0]};
+      const row={n:state.n,time:state.time,act:state.act,phase:state.phase,sha256:hash,animations:state.animations,transport:state.pause[0],sourceBinding:state.sourceBinding?{checked:true,artifact:state.sourceBinding.pin.artifact_id,start:state.sourceBinding.start,end:state.sourceBinding.end}:null};
       fs.writeSync(indexFd,JSON.stringify(row)+'\n');
       if(n%60===0)report.checksums.push({n,time:state.time,sha256:hash});
       if(n%300===0)console.log(JSON.stringify({captured:n+1,total:report.frameCount,clockMilliseconds:state.time}));

@@ -2064,6 +2064,10 @@ html[data-casepath-presentation] .au-ns-work { position:relative; }
 html[data-casepath-presentation] .au-ns-paper { position:relative; }
 .au-workspace .au-executive-documents { display:flex; justify-content:space-between; gap:12px; margin:25px 27px; padding:12px 0; width:208px; border:0; border-top:1px solid #e7e7e7; background:white; color:#444; font:400 13px/1.5 Mulish,sans-serif; }
 .au-workspace .au-executive-documents span { color:#777; }
+.au-workspace .au-desk-tests li[data-au-legal-step] { grid-template-columns:20px 20px minmax(0,1fr) auto; }
+.au-workspace .au-desk-tests .au-executive-step { display:grid; place-items:center; width:20px; height:20px; border:1px solid #82072a; border-radius:50%; color:#82072a!important; font:400 12px/1 Mulish,sans-serif; }
+.au-workspace .au-desk-tests li[data-au-legal-step][data-status=supported] > :nth-child(2) { color:var(--au-green); }
+.au-workspace .au-executive-later { margin:0 27px 4px; color:#82072a; font:600 12px/1.5 Mulish,sans-serif; }
 .au-workspace .au-executive-cases .au-page-heading { font-size:26px; }
 .au-workspace .au-executive-cases .au-request-row { padding:5px 0; grid-template-columns:minmax(0,1fr) 170px 120px; }
 .au-workspace .au-executive-cases .au-claim-title { font-size:14.5px; }

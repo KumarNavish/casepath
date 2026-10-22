@@ -1584,8 +1584,9 @@
     const nodeId=linked||last&&catalogue.links.get(last.id),node=nodes.find(row=>row.node_id===nodeId);
     const evaluated=new Set(rows.filter(row=>row.kind==='node.evaluate').map(row=>row.object.id));
     const done=new Set(rows.filter(row=>row.kind==='step.complete'&&row.result?.status==='completed'&&row.id!==trace.nsPendingCompletion).map(row=>row.object.id));
-    const pin=trace.nsInspectionSource?null:northStarPin(op,trace.sources),source=trace.sources?.get(trace.nsInspectionSource||pin?.artifact_id|| (op?.kind==='source.open'?op.object.id:trace.displaySource?.artifact_id));
     const seen=new Set(),facts=rows.filter(row=>row.kind==='fact.extract'&&catalogue.links.get(row.id)===nodeId&&northStarPin(row,trace.sources)).filter(row=>{const identity=`${row.object.id}:${row.source.artifact_id}:${row.source.start_char}:${row.source.end_char}`;if(seen.has(identity))return false;seen.add(identity);return true;});
+    const sourceOperation=trace.executive&&op?.kind==='step.complete'?(facts.at(-1)||op):op;
+    const pin=trace.nsInspectionSource?null:northStarPin(sourceOperation,trace.sources),source=trace.sources?.get(trace.nsInspectionSource||pin?.artifact_id|| (op?.kind==='source.open'?op.object.id:trace.displaySource?.artifact_id));
     const plans=catalogue.plans.get(nodeId)||[],through=op?.seq||rows.at(-1)?.seq||0;
     return {head,rows,op,catalogue,nodes,nodeId,node,evaluated,done,role,pin,source,facts,plans,through};
   }
@@ -5141,6 +5142,7 @@
         motion(act,'plan-tick',300,record,op);motion(act,'camera-out',700,record,op);
       };
       const complete=(act,op)=>{
+        if(act==='process')motion(act,'source-swap',250,main,op);
         reading(act,main,op);motion(act,'combine',400,main,op);motion(act,'plan-recede',400,main,op);motion(act,'node-accepted',300,main,op);hold(act,'node-rest',main,op);
       };
       add('customer','ready',1500,main);
@@ -5165,6 +5167,7 @@
       motion('decision','draft',400,main,null,{view:'answer',test:tests.length});add('decision','draft-rest',1800,main,null,{view:'answer',test:tests.length});
       const memory=northStarMemoryModel(later.state,{...later.trace,headState:later.state,finished:true,verifiedResult:true},knowledgeCache.value);
       if(!memory)throw new Error('The later recording has no verified checklist reuse.');
+      hold('learning','later-case-rest',later,null,{view:'knowledge'});
       motion('learning','memory-open',400,later,null,{view:'knowledge'});hold('learning','memory-overview',later,null,{view:'knowledge'});
       for(let card=0;card<3;card++){motion('learning','memory-card',700,later,null,{view:'knowledge',card});add('learning','memory-card-rest',2700,later,null,{view:'knowledge',card});}
       motion('learning','memory-notice',400,later,null,{view:'knowledge'});add('learning','memory-notice-rest',2400,later,null,{view:'knowledge'});
@@ -5248,7 +5251,19 @@
           // Keep the same recorded legal-test controls, including supported tests.
           const answer=select('[data-au-desk-answer]'),why=answer?.querySelector('.au-desk-why'),tests=why?.querySelector('.au-desk-tests');
           answer?.querySelector(':scope > .au-desk-tests')?.remove();
-          if(tests)answer.querySelector('.au-desk-lead').before(tests.cloneNode(true));
+          if(tests){
+            const model=northStarCompletedModel(current,trace),stepFor=id=>{
+              const nodes=model.desk.nodes.filter(node=>model.predicatesByNode.get(node.node_id).some(test=>test.predicate_id===id));
+              return nodes.length===1?model.desk.nodes.indexOf(nodes[0])+1:null;
+            };
+            const rows=[...tests.children].sort((a,b)=>(stepFor(a.dataset.auDeskPredicate)??Infinity)-(stepFor(b.dataset.auDeskPredicate)??Infinity));
+            for(const row of rows){const step=stepFor(row.dataset.auDeskPredicate);if(step){row.dataset.auLegalStep=String(step);row.insertAdjacentHTML('afterbegin',`<span class="au-executive-step" aria-label="Step ${step}">${step}</span>`);}tests.appendChild(row);}
+            answer.querySelector('.au-desk-lead').before(tests.cloneNode(true));
+          }
+        }
+        if(viewName==='knowledge'){
+          select('.au-ns-sources h1')?.insertAdjacentHTML('beforebegin','<p class="au-executive-later">Later case</p>');
+          const heading=select('.au-ns-memory-source h3');if(heading)heading.textContent='Later case source';
         }
         for(const el of all('[data-au-demo-stop],[data-au-demo-resume]')){el.textContent=clock.paused?'Resume':'Pause';}
         routeTitle(viewName==='cases'?'Cases':caseTitle(current.claim_id,current));
@@ -5256,16 +5271,17 @@
       }
       function render(at=clock.now(),force=false) {
         if(disposedStory||rendering||inspectionHold)return;
-        const sample=story.at(at),b=sample.beat,transition=b.phase==='act-transition';
+        const sample=story.at(at),b=sample.beat,transition=b.phase==='act-transition',sourceSwap=b.phase==='source-swap';
         let outgoing=null;
-        if(transition&&(last!==b.index||force)&&b.index>0){
+        if((transition||sourceSwap)&&(last!==b.index||force)&&b.index>0){
           render(story.beats[b.index-1].end-.001);
-          const canvas=frameNodes.canvas||select('.au-executive-cases');
+          const canvas=sourceSwap?frameNodes.paper:frameNodes.canvas||select('.au-executive-cases');
           if(canvas){
             outgoing=doc.createElement('div');outgoing.className='au-executive-transition';outgoing.setAttribute('aria-hidden','true');outgoing.style.cssText='position:fixed;inset:0;z-index:3;pointer-events:none;';
             const header=container.querySelector('.au-identity-header'),layers=b.act==='cases'?[canvas,select('.au-ns-sources'),header]:[canvas];
             for(const element of layers.filter(Boolean)){
               const rect=element.getBoundingClientRect(),clone=element.cloneNode(true);
+              if(sourceSwap)clone.querySelectorAll('.au-executive-ink,.au-executive-cursor').forEach(el=>el.remove());
               // Cases leaves the case shell. Preserve its actual outgoing header
               // styles while the normal Cases navigation fades into the same bar.
               if(element===header){const originals=[element,...element.querySelectorAll('*')],copies=[clone,...clone.querySelectorAll('*')];originals.forEach((node,i)=>{const style=root.getComputedStyle(node);for(const key of ['display','font','color','height','min-height','width','gap','flex','flex-shrink','align-items','justify-content','padding','margin','border','letter-spacing'])copies[i].style.setProperty(key,style.getPropertyValue(key));});}
@@ -5283,9 +5299,10 @@
           const n=frameNodes,preFact=['camera-in','cursor','highlight','passage-rest'].includes(phase),postFact=['connector','fact-rest','plan-tick','camera-out','combine','plan-recede','node-accepted','node-rest','document','document-rest'].includes(phase);
           if(n.fact){opacity(n.fact,preFact?0:phase==='fact'?p:1);n.fact.style.transform=phase==='fact'?`translateY(${12*(1-p)}px)`:'none';}
           if(n.link){n.link.style.visibility='visible';opacity(n.link,preFact||phase==='fact'?0:phase==='connector'||phase==='combine'?p:1);n.link.style.transform=phase==='connector'||phase==='combine'?`scaleX(${p})`:'none';}
-          opacity(n.ink,['ready','camera-in','cursor','source-open'].includes(phase)?0:phase==='highlight'?p:1);
-          if(n.pointer){opacity(n.pointer,phase==='ready'||phase==='camera-in'||phase==='source-open'?0:phase==='cursor'?p:1);n.pointer.style.transform=phase==='cursor'?`translate(${-72*(1-p)}px,${-40*(1-p)}px)`:'none';}
+          opacity(n.ink,['ready','camera-in','cursor','source-open','source-swap'].includes(phase)?0:phase==='highlight'?p:1);
+          if(n.pointer){opacity(n.pointer,phase==='ready'||phase==='camera-in'||phase==='source-open'||phase==='source-swap'?0:phase==='cursor'?p:1);n.pointer.style.transform=phase==='cursor'?`translate(${-72*(1-p)}px,${-40*(1-p)}px)`:'none';}
           if(phase==='source-open')opacity(n.paper,p);
+          if(sourceSwap){opacity(n.paper,p);opacity(transitionLayer,1-p);}
           if(phase==='document')opacity(select('.au-executive-documents span'),p);
           if(phase==='plan-tick'){const tick=select('[data-au-ns-plan-current] .au-ns-plan-status');if(tick)tick.style.transform=`scale(${.8+.2*p})`;}
           if(phase==='plan-recede')opacity(n.plan,1-.4*p);
@@ -5316,6 +5333,7 @@
           if(['completed','documents','case-list'].includes(phase))opacity(n.canvas||select('.au-executive-cases'),p);
           const header=container.querySelector('.au-identity-header');opacity(header,1);
           if(transition){const fade=reduced?.matches?1:P.ease(sample.progress);opacity(n.canvas||select('.au-executive-cases'),fade);opacity(transitionLayer,1-fade);if(b.act==='cases')opacity(header,fade);}
+          if(phase==='later-case-rest')opacity(n.canvas,0);
           all('[data-au-operation-skip]').forEach(el=>el.hidden=['answer','cases'].includes(b.view));
           all('[data-au-desk-watch]').forEach(el=>el.hidden=!clock.paused);
           if(sample.at>=story.duration){clock.pause();waiting=false;pausedPresentation=session;demoSession=null;syncControls();}

@@ -39,3 +39,5 @@ After source or documentation edits, follow the exact sealing commands in
 `./bin/casepath test` when release risk or handoff scope warrants the full
 suite, then inspect the working UI in an isolated local instance. Report what
 actually ran, all failures, and any remaining limit.
+
+Before any UI change, read docs/product/NORTHSTAR.md and pass its self-review checklist; record the result in the receipt.

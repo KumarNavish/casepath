@@ -37,6 +37,31 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   });
   for(const beat of proof.manifest.beats){if(beat.operation){const bound=recorded.cases.find(c=>c.id===beat.claim)?.trace.trim().split('\n').map(JSON.parse).find(row=>row.id===beat.operation);assert.ok(bound,'recorded operation '+beat.operation);assert.equal(bound.seq,beat.seq);}}
   assert.deepEqual(proof.failures,[]);assert.deepEqual(proof.manifest.acts.map(a=>a.id),['customer','reading','process','decision','learning','cases']);
+  const completions=Object.fromEntries(recorded.cases.flatMap(c=>c.trace.trim().split('\n').map(JSON.parse).filter(o=>o.kind==='step.complete').map(o=>[o.id,o.source])));
+  const bindings=await page.evaluate(completions=>{
+   const active=CasepathPresentation.active,m=active.manifest,failures=[];let checked=0;
+   const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+   for(let n=0;n<Math.ceil(m.duration*60/1000);n++){
+    const at=n*1000/60,beat=m.beats.find(b=>at>=b.start&&at<b.end);if(beat.act!=='process')continue;
+    active.advanceTo(at);checked++;
+    const paper=document.querySelector('[data-au-ns-paper]'),pin=JSON.parse(paper.querySelector('[data-au-citation]').dataset.auCitation),mark=paper.querySelector('[data-au-ns-quote]');
+    const facts=[...document.querySelectorAll('[data-au-ns-fact]')].filter(e=>!e.closest('.au-executive-transition')&&+getComputedStyle(e).opacity>0).map(e=>JSON.parse(e.dataset.auCitation));
+    if(!same(pin,facts.at(-1)||completions[beat.operation]))failures.push({n,reason:'source is not latest visible fact or completion'});
+    if(mark.textContent!==pin.quote||+mark.dataset.start!==pin.start_char||+mark.dataset.end!==pin.end_char)failures.push({n,reason:'wrong highlighted passage'});
+    if(['source-swap','camera-in','cursor'].includes(beat.phase)&&+paper.querySelector('.au-executive-ink').style.opacity!==0)failures.push({n,reason:'highlight before cursor'});
+   }
+   active.advanceTo(m.beats.find(b=>b.phase==='draft-rest').start);
+   const tests=[...document.querySelectorAll('[data-au-desk-answer] > .au-desk-tests > li')].map(e=>({step:+e.dataset.auLegalStep,ring:e.querySelector('.au-executive-step')?.getBoundingClientRect().width}));
+   const later=m.beats.find(b=>b.phase==='later-case-rest');active.advanceTo(later.start+899);
+   const railOnly=getComputedStyle(document.querySelector('.au-ns-completed-canvas')).opacity==='0',label=document.querySelector('.au-executive-later').textContent,title=document.querySelector('[data-au-claim-title]').textContent;
+   active.advanceTo(m.beats.find(b=>b.phase==='memory-card-rest').start);
+   return {failures,checked,tests,laterDuration:later.duration,railOnly,label,title,sourceHeading:document.querySelector('.au-ns-memory-source h3').textContent,border:getComputedStyle(document.querySelector('.au-ns-memory-source blockquote')).borderTop};
+  },completions);
+  assert.deepEqual(bindings.failures,[]);assert.ok(bindings.checked>900);
+  assert.deepEqual(bindings.tests.map(t=>t.step),[2,3,3,5,5]);assert.ok(bindings.tests.every(t=>t.ring===20));
+  assert.equal(bindings.laterDuration,900);assert.equal(bindings.railOnly,true);assert.equal(bindings.label,'Later case');assert.ok(bindings.title.length);assert.equal(bindings.sourceHeading,'Later case source');assert.equal(bindings.border,'1px solid rgb(46, 107, 53)');
+  assert.ok(proof.manifest.beats.filter(b=>b.phase==='source-swap').every(b=>b.duration===250));
+  await page.evaluate(at=>CasepathPresentation.active.seek(at),proof.manifest.beats.find(b=>b.phase==='fact-rest').start);
   const op=recorded.cases[0].trace.trim().split('\n').map(JSON.parse).find(row=>row.id===proof.factOperation);assert.deepEqual(proof.citation,op.source);
   await page.locator('[data-au-ns-fact]').first().click();await page.locator('dialog[open]').waitFor();assert.equal(await page.evaluate(()=>CasepathPresentation.active.paused),true);
   await page.keyboard.press('Escape');await page.locator('dialog[open]').waitFor({state:'detached'});await page.locator('[data-au-demo-resume]').click();
