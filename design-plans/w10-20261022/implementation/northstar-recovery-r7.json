@@ -1,0 +1,41 @@
+{
+  "sourceCommit": "fca07439577cdf99e54c678d0f14a4efbe7a0e20",
+  "wrapperPid": 68186,
+  "startedAt": "2026-10-22T20:19:56.412954+00:00",
+  "status": "failed",
+  "serialized": true,
+  "stages": [
+    {
+      "name": "preview",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/start_preview_r7.py"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022",
+      "status": "completed",
+      "startedAt": "2026-10-22T20:19:56.442047+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/recovery-r7-preview.log",
+      "pid": 68205,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T20:20:10.008249+00:00",
+      "logSha256": "2324e6c342de30f1fe4ff4b1d1e56ed4581f53d3d96b8cbc19ee3038c147e8bc"
+    },
+    {
+      "name": "preflight",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/run_preflight_r7.py"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022",
+      "status": "completed",
+      "startedAt": "2026-10-22T20:20:10.031415+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/recovery-r7-preflight.log",
+      "pid": 68515,
+      "exitCode": 1,
+      "finishedAt": "2026-10-22T20:21:18.761220+00:00",
+      "logSha256": "154aae8e3959024b91d7ae15b5ec75a48ae9b89f77ba715c03fb2fb17668ccaf"
+    }
+  ],
+  "failure": "AssertionError('preflight')",
+  "finishedAt": "2026-10-22T20:21:18.765042+00:00"
+}

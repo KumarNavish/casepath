@@ -1,0 +1,34 @@
+{
+  "sourceCommit": "fca07439577cdf99e54c678d0f14a4efbe7a0e20",
+  "pid": 68515,
+  "startedAt": "2026-10-22T20:20:10.080305+00:00",
+  "status": "failed",
+  "stages": [
+    {
+      "name": "process",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w8-20261021-mac-r1/verify-process.mjs"
+      ],
+      "startedAt": "2026-10-22T20:20:10.080590+00:00",
+      "status": "completed",
+      "pid": 68516,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T20:21:14.702493+00:00"
+    },
+    {
+      "name": "presentation",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w9-20261021/verify_presentation.mjs"
+      ],
+      "startedAt": "2026-10-22T20:21:14.703258+00:00",
+      "status": "completed",
+      "pid": 69025,
+      "exitCode": 1,
+      "finishedAt": "2026-10-22T20:21:18.752445+00:00"
+    }
+  ],
+  "failure": "AssertionError('presentation')",
+  "finishedAt": "2026-10-22T20:21:18.752987+00:00"
+}

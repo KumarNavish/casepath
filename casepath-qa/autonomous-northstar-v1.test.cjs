@@ -48,7 +48,7 @@ for(const c of fixture.cases)test(`first node-bound extraction is visibly buildi
  assert.ok(!rows.some(o=>o.kind==='node.evaluate'&&o.object.id===nodeId));
  const html=ui.northStarMarkup(state,trace,{playing:true});assert.ok(html.includes(`data-au-ns-node="${nodeId}" data-state="building"`));
  const active=[...html.matchAll(/<li data-au-ns-plan-row="[^"]+" data-au-ns-plan-operations="([^"]+)" data-state="active"[^>]*>/g)].filter(match=>decodeMarkup(match[1]).includes(op.id));assert.equal(active.length,1);assert.match(html,/au-ns-plan-progress/);
- const fact=state.facts.find(f=>f.fact_id===op.object.id);assert.ok(fact?.label);assert.ok(html.includes(fact.label));assert.ok(!html.includes(fact.label.split(' ').slice(0,2).join(' ')+'…'));
+ const fact=state.facts.find(f=>f.fact_id===op.object.id);assert.ok(fact?.label);assert.ok(html.includes(ui.NS_FACT_TYPES[op.input.document_type]));assert.ok(html.includes(`data-au-ns-fact-type="${op.input.document_type}"`));
  const readGroup=ui.northStarPlanGroups(catalogue.plans.get(nodeId)).find(g=>g.operations.some(o=>o.id===op.id)),later=all.rows.find(o=>o.seq>readGroup.operations.at(-1).seq&&catalogue.links.get(o.id)===nodeId);if(later){const after=ui.northStarMarkup(state,{...all,rows:all.rows.filter(o=>o.seq<=later.seq),current:later,nsCatalogue:catalogue},{});assert.match(after,/data-au-ns-plan-operations="[^"]+" data-state="done"><span class="au-ns-plan-status"[^>]*><svg/);}
 });
 test('a source header cited by the original locator is never hidden',()=>{const source={text:'Synthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-03-01\n\nBody'},pin={start_char:0,end_char:9};const preview=ui.northStarSourcePreview(source,pin);assert.equal(preview.offset,0);assert.equal(preview.date,null);assert.equal(preview.before+source.text.slice(0,9)+preview.after,source.text);});
@@ -56,7 +56,7 @@ test('an unrelated passage cannot replace the selected node evidence',()=>{const
 test('only node-bound missing evidence and references enter the local chain',()=>{const c=fixture.cases[0],state=structuredClone(c.envelope.state),trace=completedTrace(c);state.outcome.missing_evidence=[{label:'Current lease',node_ids:['dh_scope'],document_type:'new_doc'},{label:'Other',node_ids:['dh_notice'],document_type:'another'}];state.knowledge_uses=[{knowledge_id:'local',node_id:'dh_scope',version:1},{knowledge_id:'whole-procedure',version:2}];const m=ui.northStarCompletedModel(state,trace,'dh_scope');assert.deepEqual(m.missing.map(g=>g.label),['Current lease']);assert.deepEqual(m.references.map(r=>r.knowledge_id),['local']);assert.deepEqual(m.columns.map(c=>c.id),['facts','law','evidence','missing','reference']);});
 const knowledge=JSON.parse(gunzipSync(fs.readFileSync(path.join(__dirname,'fixtures/knowledge-w6.json.gz'))));
 for(const c of fixture.cases)test(`memory payoff uses the exact checklist and case-local evidence: ${c.id}`,()=>{
- const trace={...completedTrace(c),journal:c.envelope.events},state=c.envelope.state,m=ui.northStarMemoryModel(state,trace,knowledge),html=ui.northStarMemoryMarkup(state,trace,{knowledge});assert.ok(m);assert.equal(m.operation.input.receiving_claim_id,state.claim_id);assert.equal(m.reuse.pin.knowledge_sha256,m.operation.input.knowledge_sha256);assert.equal(m.recipes.length,m.operation.result.reused_evidence_recipes);const version=knowledge.versions.find(v=>v.knowledge_id===m.reuse.pin.knowledge_id&&v.version===m.reuse.pin.version);assert.equal(Boolean(m.earlierCase),Boolean(version.source_claim_id&&version.source_claim_id!==state.claim_id));assert.equal(html.includes('saved from an earlier case'),Boolean(m.earlierCase));assert.match(html,/3 document checks reused/);assert.match(html,/Facts come from this case only/);assert.match(html,/Qualified review is still required/);assert.doesNotMatch(html,/expert-reviewed|Edited by reviewer|reviewed memory|Before|Now ·|Recorded checklist reuse|Recorded effect|Used an earlier checklist/);
+ const trace={...completedTrace(c),journal:c.envelope.events},state=c.envelope.state,m=ui.northStarMemoryModel(state,trace,knowledge),html=ui.northStarMemoryMarkup(state,trace,{knowledge});assert.ok(m);assert.equal(m.operation.input.receiving_claim_id,state.claim_id);assert.equal(m.reuse.pin.knowledge_sha256,m.operation.input.knowledge_sha256);assert.equal(m.recipes.length,m.operation.result.reused_evidence_recipes);const version=knowledge.versions.find(v=>v.knowledge_id===m.reuse.pin.knowledge_id&&v.version===m.reuse.pin.version);assert.equal(Boolean(m.earlierCase),Boolean(version.source_claim_id&&version.source_claim_id!==state.claim_id));assert.equal(html.includes('saved from an earlier case'),Boolean(m.earlierCase));assert.match(html,/data-au-memory-count>3<\/span> document checks reused/);assert.match(html,/Facts come from this case only/);assert.match(html,/Qualified review is still required/);assert.doesNotMatch(html,/expert-reviewed|Edited by reviewer|reviewed memory|Before|Now ·|Recorded checklist reuse|Recorded effect|Used an earlier checklist/);
  for(const node of state.graph.nodes){const n=ui.northStarMemoryModel(state,trace,knowledge,node.node_id);assert.equal(n.local.nodeId,node.node_id);assert.ok(n.localRecipes.every(r=>n.recipes.includes(r)));if(node.document_types.length&&n.recipes.some(r=>node.document_types.includes(r.document_type)))assert.ok(n.localRecipes.every(r=>node.document_types.includes(r.document_type)));}
 });
 test('memory connections fail closed on an unverified trace or a mismatched identity',()=>{const c=fixture.cases[0],trace={...completedTrace(c),journal:c.envelope.events};assert.equal(ui.northStarMemoryModel(c.envelope.state,{...trace,verifiedResult:false},knowledge),null);const bad=structuredClone(trace);bad.rows.find(o=>o.kind==='knowledge.reuse').input.knowledge_sha256='0'.repeat(64);assert.equal(ui.northStarMemoryModel(c.envelope.state,bad,knowledge),null);});
@@ -103,10 +103,13 @@ for(const c of fixture.cases)test(`every recorded seq drives plan progress and m
   if(op.kind==='step.complete'&&op.result.status==='completed')done.add(op.object.id);
  }
 });
-test('unlabelled fact quotes retain the exact full DOM text and hover title',()=>{
- for(const c of fixture.cases){const state=c.envelope.state;for(const op of completedTrace(c).rows.filter(o=>o.kind==='fact.extract'&&o.source&&!state.facts.some(f=>f.fact_id===o.object.id))){const html=ui.northStarFactCopy(state,op),quoted=html.match(/data-au-ns-fact-quote>([\s\S]*?)<\/span>/),title=html.match(/title="([^"]+)"/);assert.equal(decodeMarkup(quoted[1]),op.source.quote);assert.equal(decodeMarkup(title[1]),op.source.quote);}}
+test('unknown fact types quote exact bytes instead of substituting a guessed summary',()=>{
+ const op={object:{id:'future_type'},input:{},result:{label:'Invented label'},source:{quote:'A 🏠 with its exact source text.'}};
+ const html=ui.northStarFactCopy({facts:[{fact_id:'future_type',label:'Untrusted shortcut'}]},op);
+ assert.equal(decodeMarkup(html.match(/data-au-ns-fact-quote>([\s\S]*?)<\/span>/)[1]),op.source.quote);
+ assert.equal(decodeMarkup(html.match(/title="([^"]+)"/)[1]),op.source.quote);
+ assert.doesNotMatch(html,/Invented label|Untrusted shortcut/);
 });
-
 test('customer envelope is formatted only from recorded fields, without losing Unicode source offsets',()=>{
  const source={text:'Channel: phone_note\nTimestamp: 2025-02-20T13:00:00+01:00\nFrom: Zoë <zoe@example.test>\nTo: Intake\nSubject: Heat\n\nA 🏠 with no heat.'};
  const start=Array.from(source.text.split('A 🏠')[0]).length,pin={start_char:start,end_char:start+3};
@@ -149,4 +152,24 @@ test('clarity labels distinguish document readiness, draft content and checklist
  assert.match(html,/Built from document checks in/);assert.match(html,/Reused for the same case type/);assert.match(html,/Reuse the checks. Recheck the facts/);
  assert.match(ui.deskNextStepMarkup(state),/Documents checked for this assessment. Review before replying/);
  const draft=ui.deskDraftReadMarkup(ui.deskDraftBinding(state));assert.match(draft,/Assessment draft/);assert.match(draft,/Review and complete this draft/);assert.ok(draft.includes(state.outcome.request_draft.body));
+});
+
+test('W10 showcase ranks original recorded fields and keeps absent gaps and forks absent',()=>{
+ const selected=ui.northStarShowcase(fixture.cases.map(c=>c.envelope.state),knowledge);
+ assert.equal(selected.claimId,'clm_543f08f2415b2a33');assert.equal(selected.candidates.length,9);
+ assert.ok(selected.candidates.every(c=>c.counts.missing===0&&c.counts.forks===0&&c.counts.excluded===0));
+ const c=fixture.cases[7],trace={...completedTrace(c),journal:c.envelope.events},m=ui.northStarCompletedModel(c.envelope.state,trace,null,null,knowledge);
+ assert.equal(m.nodeId,'ri_form');assert.equal(ui.northStarNodeVerdict(m,m.node),'failed');
+ assert.deepEqual(m.columns.map(c=>c.id),['facts','law','evidence','reference']);assert.equal(m.references[0].source_claim_id,fixture.cases[6].id);
+ assert.match(ui.northStarCompletedMarkup(c.envelope.state,trace,'step',{knowledge}),/Documents<br>0 missing/);
+});
+test('W10 reuse items map only through the reused graph hash to recorded document requests',()=>{
+ for(const c of fixture.cases){const trace={...completedTrace(c),journal:c.envelope.events},m=ui.northStarRecipeLinks(c.envelope.state,trace,knowledge);assert.equal(m.links.length,3);
+  for(const link of m.links){assert.equal(link.request.input.graph_sha256,m.operation.result.graph_sha256);assert.equal(link.request.result.graph_sha256,m.operation.result.graph_sha256);assert.ok(link.request.seq>m.operation.seq);assert.equal(link.recipe.document_type,link.request.object.id);assert.ok(link.nodes.every(n=>link.request.input.required_at_node_ids.includes(n.node_id)&&n.document_types.includes(link.recipe.document_type)));}
+  const bad=structuredClone(trace);bad.rows.find(o=>o.kind==='knowledge.reuse').result.graph_sha256='f'.repeat(64);assert.deepEqual(ui.northStarRecipeLinks(c.envelope.state,bad,knowledge).links,[]);
+ }
+});
+test('W10 glossary covers each recorded extraction type without borrowing case-specific values',()=>{
+ const found=new Set();for(const c of fixture.cases)for(const op of completedTrace(c).rows.filter(o=>o.kind==='fact.extract')){const key=op.input.document_type||op.object.id.replace(/^fact:/,'');found.add(key);assert.ok(ui.NS_FACT_TYPES[key],key);const html=ui.northStarFactCopy(c.envelope.state,op);assert.match(html,/data-au-ns-fact-type=/);assert.doesNotMatch(html,/data-au-ns-fact-quote/);}
+ assert.deepEqual([...found].sort(),Object.keys(ui.NS_FACT_TYPES).sort());
 });

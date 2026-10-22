@@ -1956,7 +1956,7 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace:has([data-au-ns-completed]) .au-brand { font-weight:700; }
 }
 
-@media (min-width:701px) { .au-workspace .au-ns-completed-spine li[data-selected=true] .au-ns-node-badge { font-size:0; background:#fff; border:4px solid #82072a; box-sizing:border-box; } }
+@media (min-width:701px) { .au-workspace .au-ns-completed-spine li[data-selected=true]:not([data-decisive=true]) .au-ns-node-badge { font-size:0; background:#fff; border:4px solid #82072a; box-sizing:border-box; } }
 
 /* Checklist reuse is a recorded connection, never an invented reviewer edit. */
 @media (min-width:701px) {
@@ -2135,3 +2135,34 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
 .au-workspace .au-ns-purpose > div { margin:30px 0; font:600 16px/1.4 Mulish,sans-serif; }
 .au-workspace .au-ns-purpose > div span { padding:0 12px; color:#82072a; }
 .au-workspace .au-ns-purpose small { color:#61636b; font:400 13px/1.5 Mulish,sans-serif; }
+
+/* W10: the cited bytes stay intact; context recedes behind the exact span. */
+@media (min-width:701px) {
+ .au-workspace .au-ns-source-scroll pre { font-size:17px; line-height:1.5; }
+ .au-workspace .au-ns-source-context,.au-workspace .au-ns-paper > .au-ns-source-fields { opacity:.45; }
+ .au-workspace .au-ns-source-scroll mark { font-size:17px; line-height:1.5; }
+ .au-workspace .au-ns-canvas { position:relative; }
+ .au-workspace .au-ns-fact-connector { z-index:1; }
+ .au-workspace .au-ns-fact-connector circle { stroke:#82072a; }
+ .au-workspace .au-ns-purpose > button { border:0; background:none; padding:12px 0; color:#82072a; text-decoration:underline; font:inherit; }
+ .au-workspace .au-ns-local { gap:18px; }
+ .au-workspace .au-ns-missing { flex-shrink:0; }
+}
+
+@media (min-width:701px) {
+ .au-workspace .au-ns-memory-step { flex:1; min-width:0; padding:10px 0; }
+ .au-workspace .au-ns-memory-spine li { align-items:flex-start; }
+ .au-workspace .au-ns-memory-spine li > span { margin-top:20px; }
+ .au-workspace .au-ns-memory-spine li:not(:last-child):before { top:38px; bottom:-20px; height:auto; }
+ .au-workspace .au-ns-memory-step > button { width:100%; }
+ .au-workspace .au-ns-memory-target { border:1px solid #9cac9c; border-radius:4px; padding:7px 9px; font-size:12px; line-height:1.4; margin-top:8px; background:#f6f8f5; color:#1f5530; }
+ .au-workspace [data-au-memory-origin] { display:block; margin-top:6px; color:#1f5530; font-size:12px; }
+ .au-workspace [data-au-memory-item] { border:1px solid #9cac9c; border-radius:4px; padding:7px 9px; background:white; }
+ .au-workspace [data-au-memory-item][data-landed=true] { color:#1f5530; }
+ .au-workspace [data-au-memory-count] { font-size:26px; display:block; }
+ .au-workspace .au-ns-memory-flight { position:absolute; z-index:4; pointer-events:none; box-sizing:border-box; border:1px solid #82072a; border-radius:4px; padding:7px 9px; color:#82072a; background:white; font:400 12px/1.4 Mulish,sans-serif; }
+}
+
+@media (min-width:701px) { .au-workspace .au-ns-source-scroll { padding-right:70px; } }
+
+@media (min-width:701px) { html[data-casepath-presentation] .au-ns-view-content:has([data-au-desk-answer]) { max-height:calc(100dvh - 200px); overflow:auto; scrollbar-width:thin; } }

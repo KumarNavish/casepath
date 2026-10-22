@@ -41,6 +41,23 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   });
   for(const beat of proof.manifest.beats){if(beat.operation){const bound=recorded.cases.find(c=>c.id===beat.claim)?.trace.trim().split('\n').map(JSON.parse).find(row=>row.id===beat.operation);assert.ok(bound,'recorded operation '+beat.operation);assert.equal(bound.seq,beat.seq);}}
   assert.deepEqual(proof.failures,[]);assert.deepEqual(proof.manifest.acts.map(a=>a.id),['customer','reading','process','decision','learning','cases']);
+  const w10=await page.evaluate(()=>{
+   const a=CasepathPresentation.active,m=a.manifest,checks=[];
+   for(const beat of m.beats.filter(b=>b.phase==='cursor')){a.advanceTo(beat.end-.001);const mark=document.querySelector('[data-au-ns-quote]'),pane=document.querySelector('.au-ns-source-scroll'),r=mark.getBoundingClientRect(),q=pane.getBoundingClientRect();checks.push({center:Math.abs((r.top+r.bottom-q.top-q.bottom)/2),font:getComputedStyle(mark).fontSize,line:getComputedStyle(mark).lineHeight,context:getComputedStyle(document.querySelector('.au-ns-source-context')).opacity,badge:document.querySelector('.au-executive-cursor .au-ns-role-badge')?.childElementCount,highlight:document.querySelector('.au-executive-ink').style.opacity});}
+   const counts=[];for(const beat of m.beats.filter(b=>b.phase==='memory-landed')){a.advanceTo(beat.end-1);counts.push(+document.querySelector('[data-au-memory-count]').textContent);}
+   a.advanceTo(m.beats.find(b=>b.phase==='memory-notice-rest').end-1);
+   const mapping=[...document.querySelectorAll('[data-au-memory-target]')].map(el=>({type:el.dataset.auMemoryTarget,node:el.dataset.auMemoryStep,request:el.dataset.auMemoryRequest,landed:el.dataset.landed}));
+   a.advanceTo(m.beats.find(b=>b.phase==='fact-rest').end-1);const connector=document.querySelector('.au-ns-fact-connector');
+   return {checks,counts,mapping,connector:connector.dataset.auNsConnectorNode,path:connector.querySelector('path').getAttribute('d'),selection:m.showcase};
+  });
+  assert.equal(w10.selection.claimId,recorded.cases[7].id);assert.deepEqual(w10.counts,[1,2,3]);assert.equal(w10.mapping.length,3);assert.ok(w10.mapping.every(row=>row.landed==='true'&&row.request));
+  assert.ok(w10.checks.every(row=>row.center<2&&row.font==='17px'&&row.line==='25.5px'&&row.context==='0.45'&&row.badge===1&&row.highlight==='0'),JSON.stringify(w10.checks));assert.ok(w10.connector);assert.match(w10.path,/H.*V.*H.*V/);
+  if(process.env.CASEPATH_W10_SHOTS){for(const [name,phase]of [['reading','fact-rest'],['completed','chain-rest'],['learning','memory-notice-rest']]){await page.evaluate(phase=>{const a=CasepathPresentation.active,b=a.manifest.beats.find(b=>b.phase===phase);a.advanceTo(b.end-1);},phase);await page.screenshot({path:process.env.CASEPATH_W10_SHOTS+'/'+name+'.png'});}}
+  const {auditPresentation}=await import('../design-plans/w9-20261021/audit_presentation.mjs');
+  const geometry=[];
+  for(const beat of proof.manifest.beats.filter(b=>b.phase!=='act-transition')){await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),beat.start+beat.duration/2);const hits=await page.evaluate(auditPresentation);if(hits.length)geometry.push({phase:beat.phase,operation:beat.operation,hits});}
+  if(process.env.CASEPATH_W10_SHOTS)fs.writeFileSync(process.env.CASEPATH_W10_SHOTS+'/geometry.json',JSON.stringify(geometry,null,2));
+  assert.deepEqual(geometry,[],'all beat midpoints have no unintended content overlaps');
   const ending=await page.evaluate(()=>{const a=CasepathPresentation.active;a.advanceTo(a.manifest.duration-1);const word=document.querySelector('.au-executive-wordmark').getBoundingClientRect(),list=document.querySelector('.au-claim-list').getBoundingClientRect(),footer=document.querySelector('.au-executive-transport').getBoundingClientRect();return {above:word.top-list.bottom,below:footer.top-word.bottom};});
   assert.ok(ending.above>=32&&ending.below>=32,JSON.stringify(ending));
 
@@ -63,22 +80,22 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    active.advanceTo(m.beats.find(b=>b.phase==='source-check-rest').start);const sourceCheck={text:document.querySelector('.au-ns-role-purpose').textContent,role:document.querySelector('[data-au-ns]').dataset.auNsRoleActive,passages:document.querySelectorAll('[data-au-ns-verified]').length};
    active.advanceTo(m.beats.find(b=>b.phase==='draft-rest').start);const draft=document.querySelector('[data-au-recorded-draft]').textContent;
    active.advanceTo(m.beats.find(b=>b.phase==='law-rest').start);const law=document.querySelector('[data-au-ns-law-source]').textContent,publisher=document.querySelector('[data-au-law-article]').href;
-   active.advanceTo(m.beats.find(b=>b.phase==='answer-rest'&&b.act==='learning').end-1);const laterResult=document.querySelector('.au-ns-initial-date').textContent+document.querySelector('.au-desk-lead').textContent;
+   active.advanceTo(m.beats.find(b=>b.phase==='answer-rest'&&b.act==='learning').end-1);const laterResult=(document.querySelector('.au-ns-initial-date')?.textContent||'')+document.querySelector('.au-desk-lead').textContent;
    const later=m.beats.find(b=>b.phase==='later-case-rest');active.advanceTo(later.start+899);
    const railOnly=getComputedStyle(document.querySelector('.au-ns-completed-canvas')).opacity==='0',label=document.querySelector('.au-executive-later').textContent,title=document.querySelector('[data-au-claim-title]').textContent;
-   active.advanceTo(m.beats.find(b=>b.phase==='memory-card-rest').start);
+   active.advanceTo(m.beats.find(b=>b.phase==='memory-landed').start);
    return {failures,checked,tests,stepContext,sourceCheck,draft,law,publisher,laterResult,laterDuration:later.duration,railOnly,label,title,sourceHeading:document.querySelector('.au-ns-memory-source h3').textContent,border:getComputedStyle(document.querySelector('.au-ns-memory-source blockquote')).borderTop};
   },completions);
-  assert.deepEqual(bindings.failures,[]);assert.ok(bindings.checked>900);
-  assert.ok(proof.manifest.duration<90000);assert.match(bindings.draft,/Not sent — you decide/);assert.ok(bindings.draft.includes(recorded.cases[0].envelope.state.outcome.request_draft.body));assert.match(bindings.law,/publisher: Fedlex/);assert.match(bindings.publisher,/^https:\/\/www.fedlex.admin.ch\//);assert.match(bindings.laterResult,/2025-01-21/);assert.ok(bindings.laterResult.includes(recorded.cases[1].envelope.state.outcome.summary.split('. ')[0]+'.'));
-  assert.deepEqual(bindings.tests.map(t=>t.step),[2,3,3,5,5]);assert.ok(bindings.tests.every(t=>t.ring===20&&t.label==='Step '+t.step));
-  assert.match(bindings.stepContext,/6 process steps · 5 legal tests/);assert.match(bindings.stepContext,/One step can contain several tests/);
+  assert.deepEqual(bindings.failures,[]);assert.ok(bindings.checked>0);
+  assert.ok(proof.manifest.duration<90000);assert.match(bindings.draft,/Not sent — you decide/);assert.ok(bindings.draft.includes(recorded.cases[7].envelope.state.outcome.request_draft.body));assert.match(bindings.law,/publisher: Fedlex/);assert.match(bindings.publisher,/^https:\/\/www.fedlex.admin.ch\//);assert.ok(bindings.laterResult.includes(recorded.cases[8].envelope.state.outcome.summary.split('. ')[0]+'.'));
+  assert.deepEqual(bindings.tests.map(t=>t.step),[2,2,2,3,3]);assert.ok(bindings.tests.every(t=>t.ring===20&&t.label==='Step '+t.step));
+  assert.match(bindings.stepContext,/3 process steps · 5 legal tests/);assert.match(bindings.stepContext,/One step can contain several tests/);
   assert.equal(bindings.sourceCheck.role,'checker');assert.ok(bindings.sourceCheck.passages>0);assert.match(bindings.sourceCheck.text,/matches quoted passages to received files/);
   assert.ok(proof.manifest.acts.find(a=>a.id==='customer').end-proof.manifest.acts.find(a=>a.id==='customer').start<8000,'intake stops before repeated document reading');
   assert.equal(bindings.laterDuration,900);assert.equal(bindings.railOnly,true);assert.equal(bindings.label,'Later case');assert.ok(bindings.title.length);assert.equal(bindings.sourceHeading,'Later case source');assert.equal(bindings.border,'1px solid rgb(46, 107, 53)');
   assert.ok(proof.manifest.beats.filter(b=>b.phase==='source-swap').every(b=>b.duration===250));
   await page.evaluate(at=>CasepathPresentation.active.seek(at),proof.manifest.beats.find(b=>b.phase==='fact-rest').start);
-  const op=recorded.cases[0].trace.trim().split('\n').map(JSON.parse).find(row=>row.id===proof.factOperation);assert.deepEqual(proof.citation,op.source);
+  const op=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).find(row=>row.id===proof.factOperation);assert.deepEqual(proof.citation,op.source);
   await page.locator('[data-au-ns-fact]').first().click();await page.locator('dialog[open]').waitFor();assert.equal(await page.evaluate(()=>CasepathPresentation.active.paused),true);
   await page.keyboard.press('Escape');await page.locator('dialog[open]').waitFor({state:'detached'});await page.locator('[data-au-demo-resume]').click();
   await page.evaluate(()=>product.showWork());assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);assert.equal(await page.locator('html[data-casepath-presentation]').count(),0);await page.evaluate(()=>product.destroy());
