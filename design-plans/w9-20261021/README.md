@@ -1,3 +1,8 @@
+> Historical W9 evidence from 21 October. The current W9b revision, user-authorized
+> self-review and fresh film are in [w9-20261022](../w9-20261022/README.md).
+> Planner approval statements below describe the earlier checkpoint; the direct
+> user authorization now requires self-review followed by every final gate.
+
 # W9 — recorded demonstration and executive film
 
 Stacked on approved W8 `58512a88b454fd57afbfe044d673d61cc27fa709`.

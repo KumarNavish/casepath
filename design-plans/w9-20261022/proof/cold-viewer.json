@@ -1,0 +1,138 @@
+{
+  "sourceCommit": "abd3c4897b69062566a3b1c8712366139901cdc9",
+  "recordedAt": "2026-10-22T08:38:26.713364+00:00",
+  "reviewer": "/root/cold_viewer_w9b",
+  "reviewType": "Fresh model reviewer; not human acceptance or operational validation",
+  "forkTurns": "none",
+  "prompt": "You are a nontechnical insurance executive watching a silent product video. View all 24 images in order, using view_image, at /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-film-master-20261022/abd3c489/contact/frame-01.png through frame-24.png. They are evenly spaced frames from the video. Do not inspect any code, documents, logs, receipts, or other task context. Make no changes. From these images alone, answer: What does it do? How does it reach results? Why is it valuable? What was unclear? Give your candid understanding, including any limits, without guessing missing details. State whether you viewed all 24 frames.",
+  "frames": [
+    {
+      "name": "frame-01.png",
+      "sha256": "0e2d7e0c7c60b2361dfd6a78d0855ccc87979d4d3a24a38a1f996ad1628b3931"
+    },
+    {
+      "name": "frame-02.png",
+      "sha256": "c494259eb6ce04b320cb00e675bfb65833c259e139685c58e9c51d4a86117494"
+    },
+    {
+      "name": "frame-03.png",
+      "sha256": "11e7e64cdc79e65b0c9657bce8cc3c6d51c9f74f3c7689d4aef7786804d27e75"
+    },
+    {
+      "name": "frame-04.png",
+      "sha256": "82d9a2013a473303f140305c4b9227789bfb22bf704079e79f6bab9a17889210"
+    },
+    {
+      "name": "frame-05.png",
+      "sha256": "92ac51ef8baa0a1a5e8c8b9e7f515329e90784b5df7739a119546a20bf307bd0"
+    },
+    {
+      "name": "frame-06.png",
+      "sha256": "efb7b76153784e6c9276cd4e7d3026e605230e7bc88ca49337a5bc06b9dd2d7e"
+    },
+    {
+      "name": "frame-07.png",
+      "sha256": "183d11e0d707b5c6dd527e2fda2caf9303a57a9904460c15c58f173669cb2776"
+    },
+    {
+      "name": "frame-08.png",
+      "sha256": "670624a11ab186d84bc9bfe5a919304504b4a7e2a1d4e22a1c3221b08fd593dd"
+    },
+    {
+      "name": "frame-09.png",
+      "sha256": "fb2f6aca7b076debfea92dace571aaef674df1f7f1c97ddcc12c20725fe74542"
+    },
+    {
+      "name": "frame-10.png",
+      "sha256": "5ee4b38c4853674d7e449a3cfd862605317294e502416790b0ddfee042147357"
+    },
+    {
+      "name": "frame-11.png",
+      "sha256": "d0cc83f4f5310d84f4e51484e3393de103685ede8a5f7c90c3beaae62e210e8f"
+    },
+    {
+      "name": "frame-12.png",
+      "sha256": "572d2883d74b50822d8599dab8aeec7569b9149225ee31bca7bb995ee2a69a5d"
+    },
+    {
+      "name": "frame-13.png",
+      "sha256": "57695ca29d174a42e7670c98f1bf093657ccd84fa289fc151b0daa88d2dac97c"
+    },
+    {
+      "name": "frame-14.png",
+      "sha256": "59801c7994cc6bdcc3d70373e1bbbd2d7a7506e5560efa3df28d9afa5ac82f02"
+    },
+    {
+      "name": "frame-15.png",
+      "sha256": "13dcf33a2f48d88b64bee7dee7a2d9af4ea49254617f47bc7dff4cc190ef8a45"
+    },
+    {
+      "name": "frame-16.png",
+      "sha256": "880d3323cd0aa09a8e134eb87d4f1de28f6548bf7d1eea649c58fb5e3e406e9b"
+    },
+    {
+      "name": "frame-17.png",
+      "sha256": "45aa4dbcb23f7642eaeeea8ce150b81d7cc6e7d98c374673168baea4ae208d9b"
+    },
+    {
+      "name": "frame-18.png",
+      "sha256": "57c20e4178a4cf5a1f180c2074bee610e509446b4c737391195444136e9f0fe1"
+    },
+    {
+      "name": "frame-19.png",
+      "sha256": "85aa5028000db65832bced61810aa34b407ed3006836e3dc5509660b75c898df"
+    },
+    {
+      "name": "frame-20.png",
+      "sha256": "83f277bdaca786f9e06c944fd3b6c5a4f8a3ae3996ce146b06b4c99f6e97d6c2"
+    },
+    {
+      "name": "frame-21.png",
+      "sha256": "7900670d455a25b38afa2411bb55dc931b412c84c7e7ea6da48ceac493ff2bad"
+    },
+    {
+      "name": "frame-22.png",
+      "sha256": "1b9fe291ab25a4fceeb768f5e111fa64ab041592347b4566350f3b6f6b3447ca"
+    },
+    {
+      "name": "frame-23.png",
+      "sha256": "feee556c4125b33bf204679fd9715bf03f9416b84843dfd261d2c68e5f9f247f"
+    },
+    {
+      "name": "frame-24.png",
+      "sha256": "9db31b881c011f63d07e5530ac12c77f131a401798ed5b24c700192e03e4157f"
+    }
+  ],
+  "actualResponse": "I viewed all 24 frames in order. My assessment is based only on those images.\n\n- **What does it do?** CasePath helps a case handler assess a customer’s legal issue and prepare a response. The example concerns faulty heating in a rented home. It concludes that the evidence supports repair and rent-reduction eligibility, while leaving the reduction amount and any award unresolved. A person reviews the answer and decides whether to send a draft letter.\n\n- **How does it reach results?** It reads the customer’s account and supporting documents, highlights passages, and works through specific questions: tenancy, landlord knowledge, responsibility and evidence of the defect. It connects findings to legal references and checks whether the necessary documents are present. A later case reuses the earlier checklist while taking its facts from its own documents.\n\n- **Why is it valuable?** I can see the potential to reduce document searching and repeated assessment work. A handler can inspect why a conclusion was reached and what remains unresolved. Reusing a checklist could make similar cases more consistent. The images do not establish actual time savings or accuracy.\n\n- **What was unclear?** I did not see how a case enters the system, where the legal sources come from, or how their correctness is checked. The five named roles could be automated assistants or sections a person operates; the frames do not settle that. “Building” and “Form process decision” describe activity without explaining the judgment being made. The repeated document passages demand substantial reading before the useful conclusion appears. The later-case sequence explains checklist reuse, but does not show that case’s substantive result or how its uncertain date affects the answer. I also did not see the draft letter itself.\n\nMy clearest takeaway is an evidence-linked legal case assistant with human review. The demonstration is explicitly fictional; I would still need evidence of performance on real cases before assessing operational readiness.",
+  "assessment": {
+    "whatItDoes": "Understood legal-case assessment, response preparation and human send decision.",
+    "howItWorks": "Understood highlighted source passages, facts and specific process questions, legal references, document checks, answer and later-case checklist reuse with separate facts.",
+    "whyValuable": "Understood less repeated searching, inspectable reasoning and consistency; no unsupported measured performance claim.",
+    "limitationsAndDisposition": [
+      {
+        "observation": "Intake route, legal-source provenance and validation were not explained.",
+        "disposition": "Outside the recorded six-act film scope; live interaction and sources are checked in the complete browser walk. No intake automation or independent legal correctness is claimed."
+      },
+      {
+        "observation": "Roles could be assistants or manually operated sections; Building and Form process decision remain broad.",
+        "disposition": "The role tabs and exact final-row label are mandated by the build specification. The viewer nevertheless understood the observable source-to-question-to-answer mechanism. Recorded replay does not establish a live autonomous run, so the receipt preserves this uncertainty rather than asserting inference."
+      },
+      {
+        "observation": "Repeated source passages require substantial reading.",
+        "disposition": "The film preserves verbatim evidence and minimum reading holds. The reviewer understood the conclusion without added narration or edited captions; this remains a usability limitation, not a measured comprehension or speed claim."
+      },
+      {
+        "observation": "The later case substantive result, uncertain-date consequence and draft letter body were not visible in the sampled frames.",
+        "disposition": "The learning act claims checklist reuse only, not an altered substantive outcome. The recorded draft is inspected by the full browser walk; the film shows its human review/send boundary. No missing result or letter is invented."
+      },
+      {
+        "observation": "Real-case accuracy and time savings were not established.",
+        "disposition": "Correct limitation of a fictional recorded demonstration; this work makes no operational readiness or performance claim."
+      }
+    ],
+    "requiredComprehensionMisses": [],
+    "pendingProductCorrections": [],
+    "passScope": "The three NORTHSTAR cinematic comprehension goals only. Full strict gate and complete browser walk remain separately required."
+  },
+  "passed": true
+}

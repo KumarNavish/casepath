@@ -1,0 +1,17 @@
+✔ the admitted six-act product uses one deterministic clock, preserves sources and handles pause (5797.60525ms)
+✔ pause freezes motion and reading holds, including a long interruption (1.731125ms)
+✔ capture seeks an absolute timeline at exact n times 1000/60, independent of host origin (0.601833ms)
+✔ reduced motion keeps reading holds and changes states instantly (0.141959ms)
+✔ a second visual change, layout properties and incompatible transforms are rejected (0.300708ms)
+✔ navigation or a removed element settles pending work without completion (0.148125ms)
+✔ recorded payload cannot override presentation timestamps or event kinds (0.084542ms)
+✔ timeline boundaries are deterministic and never borrow time from reading holds (0.202958ms)
+✔ external frame stepping freezes wall time without changing the user playing state (0.114625ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6349.706458
