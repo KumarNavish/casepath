@@ -1,0 +1,46 @@
+{
+  "sourceCommit": "250eea865277581ddd196f7ff3466ac897980297",
+  "pid": 81079,
+  "startedAt": "2026-10-22T20:52:27.152094+00:00",
+  "status": "failed",
+  "stages": [
+    {
+      "name": "process",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w8-20261021-mac-r1/verify-process.mjs"
+      ],
+      "startedAt": "2026-10-22T20:52:27.152434+00:00",
+      "status": "completed",
+      "pid": 81084,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T20:53:33.936876+00:00"
+    },
+    {
+      "name": "memory",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w8-20261021-mac-r1/verify-memory.mjs"
+      ],
+      "startedAt": "2026-10-22T20:53:33.937647+00:00",
+      "status": "completed",
+      "pid": 81464,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T20:54:19.307992+00:00"
+    },
+    {
+      "name": "presentation",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w9-20261021/verify_presentation.mjs"
+      ],
+      "startedAt": "2026-10-22T20:54:19.308930+00:00",
+      "status": "completed",
+      "pid": 81650,
+      "exitCode": 1,
+      "finishedAt": "2026-10-22T20:54:25.443642+00:00"
+    }
+  ],
+  "failure": "AssertionError('presentation')",
+  "finishedAt": "2026-10-22T20:54:25.444244+00:00"
+}

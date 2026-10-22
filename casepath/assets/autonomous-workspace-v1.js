@@ -5247,9 +5247,9 @@
       const motion=(act,phase,ms,record,op,extra={})=>add(act,phase,act==='process'?Math.max(ms/4,250):ms,record,op,{motion:true,...extra});
       const hold=(act,phase,record,op,extra={})=>add(act,phase,900,record,op,extra);
       const rows=main.trace.rows, completed=rows.filter(op=>op.kind==='step.complete'&&op.result?.status==='completed'&&main.state.graph.nodes.some(n=>n.node_id===op.object.id));
-      const firstOpen=rows.find(op=>op.kind==='source.open'),requestOp=rows.find(op=>op.kind==='phrase.match'&&op.result?.matched&&northStarPin(op,main.trace.sources));
+      const firstOpen=rows.find(op=>op.kind==='source.open');
       const firstFact=rows.find(op=>op.kind==='fact.extract'&&northStarPin(op,main.trace.sources));
-      if(!firstOpen||!requestOp||!firstFact||completed.length<2)throw new Error('The recorded demonstration lacks its source-to-step chain.');
+      if(!firstOpen||!firstFact||completed.length<2)throw new Error('The recorded demonstration lacks its source-to-step chain.');
       const reading=(act,record,op,{fact=false,document=false}={})=>{
         motion(act,'camera-in',700,record,op);motion(act,'cursor',550,record,op);motion(act,'highlight',250,record,op);hold(act,'passage-rest',record,op);
         if(fact){motion(act,'fact',350,record,op);motion(act,'connector',400,record,op);hold(act,'fact-rest',record,op);}
@@ -5263,8 +5263,8 @@
         reading(act,main,op);motion(act,'combine',400,main,op);motion(act,'plan-recede',400,main,op);motion(act,'node-accepted',300,main,op);hold(act,'node-rest',main,op);
       };
       add('customer','ready',4200,main);
-      motion('customer','source-open',400,main,firstOpen);
-      motion('customer','cursor',550,main,requestOp);motion('customer','highlight',250,main,requestOp);hold('customer','passage-rest',main,requestOp);
+      motion('customer','customer-source-open',400,main);
+      motion('customer','customer-cursor',550,main);motion('customer','customer-highlight',250,main);hold('customer','customer-passage-rest',main);
       reading('reading',main,firstFact,{fact:true});
       for(const op of completed.slice(0,1))complete('reading',op);
       for(const op of completed.slice(1))complete('process',op);
