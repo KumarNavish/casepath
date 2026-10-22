@@ -37,6 +37,9 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   });
   for(const beat of proof.manifest.beats){if(beat.operation){const bound=recorded.cases.find(c=>c.id===beat.claim)?.trace.trim().split('\n').map(JSON.parse).find(row=>row.id===beat.operation);assert.ok(bound,'recorded operation '+beat.operation);assert.equal(bound.seq,beat.seq);}}
   assert.deepEqual(proof.failures,[]);assert.deepEqual(proof.manifest.acts.map(a=>a.id),['customer','reading','process','decision','learning','cases']);
+  const ending=await page.evaluate(()=>{const a=CasepathPresentation.active;a.advanceTo(a.manifest.duration-1);const word=document.querySelector('.au-executive-wordmark').getBoundingClientRect(),list=document.querySelector('.au-claim-list').getBoundingClientRect(),footer=document.querySelector('.au-executive-transport').getBoundingClientRect();return {above:word.top-list.bottom,below:footer.top-word.bottom};});
+  assert.ok(ending.above>=32&&ending.below>=32,JSON.stringify(ending));
+
   const completions=Object.fromEntries(recorded.cases.flatMap(c=>c.trace.trim().split('\n').map(JSON.parse).filter(o=>o.kind==='step.complete').map(o=>[o.id,o.source])));
   const bindings=await page.evaluate(completions=>{
    const active=CasepathPresentation.active,m=active.manifest,failures=[];let checked=0;

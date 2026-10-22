@@ -5273,7 +5273,7 @@
         detail=viewName&&viewName!=='cases'?viewName:'step';chosenNode=null;deskSelection=null;evidenceContext={};
         if(viewName==='cases'){
           const records=sessionCases(session).map(row=>catalogRow(claims,row.claim_id)).filter(Boolean);
-          host.innerHTML=`<section class="au-executive-cases"><h1 class="au-page-heading" tabindex="-1">9 recorded examples</h1><p class="au-executive-roster-note">Fictional cases · open any case to inspect its steps and sources.</p><div class="au-claim-list" data-au-claims>${claimsMarkup(records,{scope:'originals',page:1,pageSize:9})}</div><div class="au-executive-wordmark" aria-hidden="true">CasePath</div></section>${transport()}`;
+          host.innerHTML=`<section class="au-executive-cases"><header class="au-executive-roster-heading"><h1 class="au-page-heading" tabindex="-1">9 recorded examples</h1><p class="au-executive-roster-note">Fictional cases · open any case to inspect its steps and sources.</p></header><div class="au-claim-list" data-au-claims>${claimsMarkup(records,{scope:'originals',page:1,pageSize:9})}</div><div class="au-executive-wordmark" aria-hidden="true">CasePath</div></section>${transport()}`;
           nav('work');
         }else{
           const cacheKey=[record.state.claim_id,viewName||op?.id||'customer',Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id))].join(':');

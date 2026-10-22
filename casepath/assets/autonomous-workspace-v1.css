@@ -2070,7 +2070,7 @@ html[data-casepath-presentation] .au-ns-paper { position:relative; }
 .au-workspace .au-desk-tests li[data-au-legal-step][data-status=supported] > :nth-child(2) { color:var(--au-green); }
 .au-workspace .au-executive-later { margin:0 27px 4px; color:#82072a; font:600 12px/1.5 Mulish,sans-serif; }
 .au-workspace .au-executive-cases .au-page-heading { font-size:26px; }
-.au-workspace .au-executive-cases .au-request-row { padding:5px 0; grid-template-columns:minmax(0,1fr) 170px 120px; }
+.au-workspace .au-executive-cases .au-request-row { padding:4px 0; grid-template-columns:minmax(0,1fr) 170px 120px; }
 .au-workspace .au-executive-cases .au-claim-title { font-size:14.5px; }
 .au-workspace .au-executive-cases .au-claim-open { min-height:21px; }
 .au-workspace .au-executive-cases .au-request-row > p { font-size:12.5px; line-height:18px; margin:0; }
@@ -2119,5 +2119,6 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
 @media (min-width:1100px) {
  .au-workspace .au-ns-context { margin:0 27px 8px; font:600 12px/1.5 Mulish,sans-serif; color:#82072a; }
  .au-workspace .au-ns-memory-cards [data-au-claim] { border:0; padding:0; background:none; color:#82072a; font:inherit; text-align:left; text-decoration:underline; text-underline-offset:3px; }
- .au-workspace .au-executive-roster-note { color:#61636b; font-size:13px; margin:8px 0; }
+ .au-workspace .au-executive-roster-heading { display:flex; align-items:baseline; justify-content:space-between; gap:24px; }
+ .au-workspace .au-executive-roster-note { color:#61636b; font-size:13px; margin:0; }
 }
