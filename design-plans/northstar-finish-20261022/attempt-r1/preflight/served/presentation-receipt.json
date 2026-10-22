@@ -1,0 +1,2651 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "errors": [],
+  "writes": [],
+  "frames": [
+    {
+      "name": "customer-message",
+      "at": 0,
+      "act": "customer",
+      "phase": "ready",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "request": "src_c8b880d7429b1879b9ae483029facd97",
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "mid-customer",
+      "at": 2675,
+      "act": "customer",
+      "phase": "customer-cursor",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "request": "src_c8b880d7429b1879b9ae483029facd97",
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "mid-reading",
+      "at": 11450,
+      "act": "reading",
+      "phase": "camera-in",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "mid-process",
+      "at": 21850,
+      "act": "process",
+      "phase": "source-swap",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "mid-decision",
+      "at": 37500,
+      "act": "decision",
+      "phase": "completed",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "mid-learning",
+      "at": 62650,
+      "act": "learning",
+      "phase": "later-case-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "mid-cases",
+      "at": 80750,
+      "act": "cases",
+      "phase": "case-list",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 9,
+      "overlaps": []
+    },
+    {
+      "name": "fact-rest",
+      "at": 10249,
+      "act": "customer",
+      "phase": "fact-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "node-rest",
+      "at": 21649,
+      "act": "reading",
+      "phase": "node-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "completed",
+      "at": 38099,
+      "act": "decision",
+      "phase": "completed",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "law-rest",
+      "at": 47499,
+      "act": "decision",
+      "phase": "law-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "draft-rest",
+      "at": 62449,
+      "act": "decision",
+      "phase": "draft-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "memory-notice-rest",
+      "at": 75349,
+      "act": "learning",
+      "phase": "memory-notice-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "wordmark-rest",
+      "at": 88949,
+      "act": "cases",
+      "phase": "wordmark-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 9,
+      "overlaps": []
+    },
+    {
+      "name": "process-source-1",
+      "at": 23699,
+      "act": "process",
+      "phase": "passage-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "process-source-2",
+      "at": 26749,
+      "act": "process",
+      "phase": "passage-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "process-source-3",
+      "at": 29799,
+      "act": "process",
+      "phase": "passage-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "process-source-4",
+      "at": 32849,
+      "act": "process",
+      "phase": "passage-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "process-source-5",
+      "at": 35899,
+      "act": "process",
+      "phase": "passage-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "later-case-rail",
+      "at": 63749,
+      "act": "learning",
+      "phase": "later-case-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    },
+    {
+      "name": "later-case-answer",
+      "at": 80549,
+      "act": "learning",
+      "phase": "answer-rest",
+      "animations": 0,
+      "overflow": false,
+      "clipped": [],
+      "rows": 0,
+      "overlaps": []
+    }
+  ],
+  "failures": [],
+  "sourceCommit": "9acbb4c3b07c9c89b1b38b532f0194a65d3655c9",
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "9acbb4c3b07c9c89b1b38b532f0194a65d3655c9",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "assets": {
+    "autonomous-workspace-v1.js": "0242fd547895938d6226c3290ca4765da41f11a4d0fa925f635018a8ef2f938e",
+    "autonomous-workspace-v1.css": "25660dc6e83ccc3b4f6bc1acc56fcc7d29d32d6132cb45558da6b4f5f0f59e13",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "operationFixture": {
+    "path": "casepath-qa/fixtures/desk-v3.json.gz",
+    "sha256": "1d718c6737ddf2bfca6c5a31ca439617f4d66fdb07b1d9a03881303d9fc1636c"
+  },
+  "manifest": {
+    "duration": 88950,
+    "acts": [
+      {
+        "id": "customer",
+        "start": 0,
+        "end": 11250
+      },
+      {
+        "id": "reading",
+        "start": 11250,
+        "end": 21650
+      },
+      {
+        "id": "process",
+        "start": 21650,
+        "end": 37300
+      },
+      {
+        "id": "decision",
+        "start": 37300,
+        "end": 62450
+      },
+      {
+        "id": "learning",
+        "start": 62450,
+        "end": 80550
+      },
+      {
+        "id": "cases",
+        "start": 80550,
+        "end": 88950
+      }
+    ],
+    "beats": [
+      {
+        "act": "customer",
+        "phase": "ready",
+        "duration": 2400,
+        "index": 0,
+        "start": 0,
+        "end": 2400,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 1,
+        "start": 2400,
+        "end": 2950,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 2,
+        "start": 2950,
+        "end": 3200,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-rest",
+        "duration": 900,
+        "index": 3,
+        "start": 3200,
+        "end": 4100,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "source-open",
+        "duration": 400,
+        "motion": true,
+        "index": 4,
+        "start": 4100,
+        "end": 4500,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_d5939b2d68c20a2636fe628befc35784",
+        "seq": 7
+      },
+      {
+        "act": "customer",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 5,
+        "start": 4500,
+        "end": 5050,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1b1fed6e2f9699e382b607e9c0f1596b",
+        "seq": 9
+      },
+      {
+        "act": "customer",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 6,
+        "start": 5050,
+        "end": 5300,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1b1fed6e2f9699e382b607e9c0f1596b",
+        "seq": 9
+      },
+      {
+        "act": "customer",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 7,
+        "start": 5300,
+        "end": 6200,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1b1fed6e2f9699e382b607e9c0f1596b",
+        "seq": 9
+      },
+      {
+        "act": "customer",
+        "phase": "camera-in",
+        "duration": 700,
+        "motion": true,
+        "index": 8,
+        "start": 6200,
+        "end": 6900,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "seq": 12
+      },
+      {
+        "act": "customer",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 9,
+        "start": 6900,
+        "end": 7450,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "seq": 12
+      },
+      {
+        "act": "customer",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 10,
+        "start": 7450,
+        "end": 7700,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "seq": 12
+      },
+      {
+        "act": "customer",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 11,
+        "start": 7700,
+        "end": 8600,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "seq": 12
+      },
+      {
+        "act": "customer",
+        "phase": "fact",
+        "duration": 350,
+        "motion": true,
+        "index": 12,
+        "start": 8600,
+        "end": 8950,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "seq": 12
+      },
+      {
+        "act": "customer",
+        "phase": "connector",
+        "duration": 400,
+        "motion": true,
+        "index": 13,
+        "start": 8950,
+        "end": 9350,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "seq": 12
+      },
+      {
+        "act": "customer",
+        "phase": "fact-rest",
+        "duration": 900,
+        "index": 14,
+        "start": 9350,
+        "end": 10250,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "seq": 12
+      },
+      {
+        "act": "customer",
+        "phase": "plan-tick",
+        "duration": 300,
+        "motion": true,
+        "index": 15,
+        "start": 10250,
+        "end": 10550,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "seq": 12
+      },
+      {
+        "act": "customer",
+        "phase": "camera-out",
+        "duration": 700,
+        "motion": true,
+        "index": 16,
+        "start": 10550,
+        "end": 11250,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_1715b98c5f009b94cad03526c1c661be",
+        "seq": 12
+      },
+      {
+        "act": "reading",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "nextPhase": "camera-in",
+        "index": 17,
+        "start": 11250,
+        "end": 11650,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+        "seq": 168
+      },
+      {
+        "act": "reading",
+        "phase": "camera-in",
+        "duration": 700,
+        "motion": true,
+        "index": 18,
+        "start": 11650,
+        "end": 12350,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+        "seq": 168
+      },
+      {
+        "act": "reading",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 19,
+        "start": 12350,
+        "end": 12900,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+        "seq": 168
+      },
+      {
+        "act": "reading",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 20,
+        "start": 12900,
+        "end": 13150,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+        "seq": 168
+      },
+      {
+        "act": "reading",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 21,
+        "start": 13150,
+        "end": 14050,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+        "seq": 168
+      },
+      {
+        "act": "reading",
+        "phase": "document",
+        "duration": 300,
+        "motion": true,
+        "index": 22,
+        "start": 14050,
+        "end": 14350,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+        "seq": 168
+      },
+      {
+        "act": "reading",
+        "phase": "document-rest",
+        "duration": 900,
+        "index": 23,
+        "start": 14350,
+        "end": 15250,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+        "seq": 168
+      },
+      {
+        "act": "reading",
+        "phase": "plan-tick",
+        "duration": 300,
+        "motion": true,
+        "index": 24,
+        "start": 15250,
+        "end": 15550,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+        "seq": 168
+      },
+      {
+        "act": "reading",
+        "phase": "camera-out",
+        "duration": 700,
+        "motion": true,
+        "index": 25,
+        "start": 15550,
+        "end": 16250,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+        "seq": 168
+      },
+      {
+        "act": "reading",
+        "phase": "camera-in",
+        "duration": 700,
+        "motion": true,
+        "index": 26,
+        "start": 16250,
+        "end": 16950,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_78ab34b7521d5c694813a76224b5975a",
+        "seq": 352
+      },
+      {
+        "act": "reading",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 27,
+        "start": 16950,
+        "end": 17500,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_78ab34b7521d5c694813a76224b5975a",
+        "seq": 352
+      },
+      {
+        "act": "reading",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 28,
+        "start": 17500,
+        "end": 17750,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_78ab34b7521d5c694813a76224b5975a",
+        "seq": 352
+      },
+      {
+        "act": "reading",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 29,
+        "start": 17750,
+        "end": 18650,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_78ab34b7521d5c694813a76224b5975a",
+        "seq": 352
+      },
+      {
+        "act": "reading",
+        "phase": "plan-tick",
+        "duration": 300,
+        "motion": true,
+        "index": 30,
+        "start": 18650,
+        "end": 18950,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_78ab34b7521d5c694813a76224b5975a",
+        "seq": 352
+      },
+      {
+        "act": "reading",
+        "phase": "camera-out",
+        "duration": 700,
+        "motion": true,
+        "index": 31,
+        "start": 18950,
+        "end": 19650,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_78ab34b7521d5c694813a76224b5975a",
+        "seq": 352
+      },
+      {
+        "act": "reading",
+        "phase": "combine",
+        "duration": 400,
+        "motion": true,
+        "index": 32,
+        "start": 19650,
+        "end": 20050,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_78ab34b7521d5c694813a76224b5975a",
+        "seq": 352
+      },
+      {
+        "act": "reading",
+        "phase": "plan-recede",
+        "duration": 400,
+        "motion": true,
+        "index": 33,
+        "start": 20050,
+        "end": 20450,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_78ab34b7521d5c694813a76224b5975a",
+        "seq": 352
+      },
+      {
+        "act": "reading",
+        "phase": "node-accepted",
+        "duration": 300,
+        "motion": true,
+        "index": 34,
+        "start": 20450,
+        "end": 20750,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_78ab34b7521d5c694813a76224b5975a",
+        "seq": 352
+      },
+      {
+        "act": "reading",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 35,
+        "start": 20750,
+        "end": 21650,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_78ab34b7521d5c694813a76224b5975a",
+        "seq": 352
+      },
+      {
+        "act": "process",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "nextPhase": "source-swap",
+        "index": 36,
+        "start": 21650,
+        "end": 22050,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_ba68a476ea8289e87f3074c010784f55",
+        "seq": 429
+      },
+      {
+        "act": "process",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 37,
+        "start": 22050,
+        "end": 22300,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_ba68a476ea8289e87f3074c010784f55",
+        "seq": 429
+      },
+      {
+        "act": "process",
+        "phase": "cursor",
+        "duration": 250,
+        "motion": true,
+        "index": 38,
+        "start": 22300,
+        "end": 22550,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_ba68a476ea8289e87f3074c010784f55",
+        "seq": 429
+      },
+      {
+        "act": "process",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 39,
+        "start": 22550,
+        "end": 22800,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_ba68a476ea8289e87f3074c010784f55",
+        "seq": 429
+      },
+      {
+        "act": "process",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 40,
+        "start": 22800,
+        "end": 23700,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_ba68a476ea8289e87f3074c010784f55",
+        "seq": 429
+      },
+      {
+        "act": "process",
+        "phase": "plan-recede",
+        "duration": 250,
+        "motion": true,
+        "index": 41,
+        "start": 23700,
+        "end": 23950,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_ba68a476ea8289e87f3074c010784f55",
+        "seq": 429
+      },
+      {
+        "act": "process",
+        "phase": "node-accepted",
+        "duration": 250,
+        "motion": true,
+        "index": 42,
+        "start": 23950,
+        "end": 24200,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_ba68a476ea8289e87f3074c010784f55",
+        "seq": 429
+      },
+      {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 43,
+        "start": 24200,
+        "end": 25100,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_ba68a476ea8289e87f3074c010784f55",
+        "seq": 429
+      },
+      {
+        "act": "process",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 44,
+        "start": 25100,
+        "end": 25350,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_a63efa92ca7029d17a2bd137f122033c",
+        "seq": 506
+      },
+      {
+        "act": "process",
+        "phase": "cursor",
+        "duration": 250,
+        "motion": true,
+        "index": 45,
+        "start": 25350,
+        "end": 25600,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_a63efa92ca7029d17a2bd137f122033c",
+        "seq": 506
+      },
+      {
+        "act": "process",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 46,
+        "start": 25600,
+        "end": 25850,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_a63efa92ca7029d17a2bd137f122033c",
+        "seq": 506
+      },
+      {
+        "act": "process",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 47,
+        "start": 25850,
+        "end": 26750,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_a63efa92ca7029d17a2bd137f122033c",
+        "seq": 506
+      },
+      {
+        "act": "process",
+        "phase": "plan-recede",
+        "duration": 250,
+        "motion": true,
+        "index": 48,
+        "start": 26750,
+        "end": 27000,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_a63efa92ca7029d17a2bd137f122033c",
+        "seq": 506
+      },
+      {
+        "act": "process",
+        "phase": "node-accepted",
+        "duration": 250,
+        "motion": true,
+        "index": 49,
+        "start": 27000,
+        "end": 27250,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_a63efa92ca7029d17a2bd137f122033c",
+        "seq": 506
+      },
+      {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 50,
+        "start": 27250,
+        "end": 28150,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_a63efa92ca7029d17a2bd137f122033c",
+        "seq": 506
+      },
+      {
+        "act": "process",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 51,
+        "start": 28150,
+        "end": 28400,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "seq": 583
+      },
+      {
+        "act": "process",
+        "phase": "cursor",
+        "duration": 250,
+        "motion": true,
+        "index": 52,
+        "start": 28400,
+        "end": 28650,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "seq": 583
+      },
+      {
+        "act": "process",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 53,
+        "start": 28650,
+        "end": 28900,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "seq": 583
+      },
+      {
+        "act": "process",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 54,
+        "start": 28900,
+        "end": 29800,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "seq": 583
+      },
+      {
+        "act": "process",
+        "phase": "plan-recede",
+        "duration": 250,
+        "motion": true,
+        "index": 55,
+        "start": 29800,
+        "end": 30050,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "seq": 583
+      },
+      {
+        "act": "process",
+        "phase": "node-accepted",
+        "duration": 250,
+        "motion": true,
+        "index": 56,
+        "start": 30050,
+        "end": 30300,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "seq": 583
+      },
+      {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 57,
+        "start": 30300,
+        "end": 31200,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+        "seq": 583
+      },
+      {
+        "act": "process",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 58,
+        "start": 31200,
+        "end": 31450,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "seq": 660
+      },
+      {
+        "act": "process",
+        "phase": "cursor",
+        "duration": 250,
+        "motion": true,
+        "index": 59,
+        "start": 31450,
+        "end": 31700,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "seq": 660
+      },
+      {
+        "act": "process",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 60,
+        "start": 31700,
+        "end": 31950,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "seq": 660
+      },
+      {
+        "act": "process",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 61,
+        "start": 31950,
+        "end": 32850,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "seq": 660
+      },
+      {
+        "act": "process",
+        "phase": "plan-recede",
+        "duration": 250,
+        "motion": true,
+        "index": 62,
+        "start": 32850,
+        "end": 33100,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "seq": 660
+      },
+      {
+        "act": "process",
+        "phase": "node-accepted",
+        "duration": 250,
+        "motion": true,
+        "index": 63,
+        "start": 33100,
+        "end": 33350,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "seq": 660
+      },
+      {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 64,
+        "start": 33350,
+        "end": 34250,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+        "seq": 660
+      },
+      {
+        "act": "process",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 65,
+        "start": 34250,
+        "end": 34500,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_193bef006745abf6a81e5adde872cadc",
+        "seq": 737
+      },
+      {
+        "act": "process",
+        "phase": "cursor",
+        "duration": 250,
+        "motion": true,
+        "index": 66,
+        "start": 34500,
+        "end": 34750,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_193bef006745abf6a81e5adde872cadc",
+        "seq": 737
+      },
+      {
+        "act": "process",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 67,
+        "start": 34750,
+        "end": 35000,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_193bef006745abf6a81e5adde872cadc",
+        "seq": 737
+      },
+      {
+        "act": "process",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 68,
+        "start": 35000,
+        "end": 35900,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_193bef006745abf6a81e5adde872cadc",
+        "seq": 737
+      },
+      {
+        "act": "process",
+        "phase": "plan-recede",
+        "duration": 250,
+        "motion": true,
+        "index": 69,
+        "start": 35900,
+        "end": 36150,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_193bef006745abf6a81e5adde872cadc",
+        "seq": 737
+      },
+      {
+        "act": "process",
+        "phase": "node-accepted",
+        "duration": 250,
+        "motion": true,
+        "index": 70,
+        "start": 36150,
+        "end": 36400,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_193bef006745abf6a81e5adde872cadc",
+        "seq": 737
+      },
+      {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 71,
+        "start": 36400,
+        "end": 37300,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": "op_193bef006745abf6a81e5adde872cadc",
+        "seq": 737
+      },
+      {
+        "act": "decision",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "nextPhase": "completed",
+        "index": 72,
+        "start": 37300,
+        "end": 37700,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "completed",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "index": 73,
+        "start": 37700,
+        "end": 38100,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "overview",
+        "duration": 900,
+        "view": "step",
+        "index": 74,
+        "start": 38100,
+        "end": 39000,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "facts",
+        "index": 75,
+        "start": 39000,
+        "end": 39400,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "facts",
+        "index": 76,
+        "start": 39400,
+        "end": 40300,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "law",
+        "index": 77,
+        "start": 40300,
+        "end": 40700,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "law",
+        "index": 78,
+        "start": 40700,
+        "end": 41600,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "evidence",
+        "index": 79,
+        "start": 41600,
+        "end": 42000,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "evidence",
+        "index": 80,
+        "start": 42000,
+        "end": 42900,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "law",
+        "duration": 400,
+        "motion": true,
+        "view": "law",
+        "index": 81,
+        "start": 42900,
+        "end": 43300,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "law-rest",
+        "duration": 4200,
+        "view": "law",
+        "index": 82,
+        "start": 43300,
+        "end": 47500,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "documents",
+        "duration": 400,
+        "motion": true,
+        "view": "documents",
+        "index": 83,
+        "start": 47500,
+        "end": 47900,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "documents-rest",
+        "duration": 900,
+        "view": "documents",
+        "index": 84,
+        "start": 47900,
+        "end": 48800,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 0,
+        "index": 85,
+        "start": 48800,
+        "end": 49150,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 0,
+        "index": 86,
+        "start": 49150,
+        "end": 50050,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 1,
+        "index": 87,
+        "start": 50050,
+        "end": 50400,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 1,
+        "index": 88,
+        "start": 50400,
+        "end": 51300,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 2,
+        "index": 89,
+        "start": 51300,
+        "end": 51650,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 2,
+        "index": 90,
+        "start": 51650,
+        "end": 52550,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 3,
+        "index": 91,
+        "start": 52550,
+        "end": 52900,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 3,
+        "index": 92,
+        "start": 52900,
+        "end": 53800,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 4,
+        "index": 93,
+        "start": 53800,
+        "end": 54150,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 4,
+        "index": 94,
+        "start": 54150,
+        "end": 55050,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "answer",
+        "duration": 400,
+        "motion": true,
+        "view": "answer",
+        "test": 5,
+        "index": 95,
+        "start": 55050,
+        "end": 55450,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "answer-rest",
+        "duration": 2400,
+        "view": "answer",
+        "test": 5,
+        "index": 96,
+        "start": 55450,
+        "end": 57850,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "draft",
+        "duration": 400,
+        "motion": true,
+        "view": "draft",
+        "index": 97,
+        "start": 57850,
+        "end": 58250,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "draft-rest",
+        "duration": 4200,
+        "view": "draft",
+        "index": 98,
+        "start": 58250,
+        "end": 62450,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "act-transition",
+        "duration": 400,
+        "view": "knowledge",
+        "nextPhase": "later-case-rest",
+        "motion": true,
+        "index": 99,
+        "start": 62450,
+        "end": 62850,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "later-case-rest",
+        "duration": 900,
+        "view": "knowledge",
+        "index": 100,
+        "start": 62850,
+        "end": 63750,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-open",
+        "duration": 400,
+        "motion": true,
+        "view": "knowledge",
+        "index": 101,
+        "start": 63750,
+        "end": 64150,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-overview",
+        "duration": 900,
+        "view": "knowledge",
+        "index": 102,
+        "start": 64150,
+        "end": 65050,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-card",
+        "duration": 700,
+        "motion": true,
+        "view": "knowledge",
+        "card": 0,
+        "index": 103,
+        "start": 65050,
+        "end": 65750,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-card-rest",
+        "duration": 1800,
+        "view": "knowledge",
+        "card": 0,
+        "index": 104,
+        "start": 65750,
+        "end": 67550,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-card",
+        "duration": 700,
+        "motion": true,
+        "view": "knowledge",
+        "card": 1,
+        "index": 105,
+        "start": 67550,
+        "end": 68250,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-card-rest",
+        "duration": 1800,
+        "view": "knowledge",
+        "card": 1,
+        "index": 106,
+        "start": 68250,
+        "end": 70050,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-card",
+        "duration": 700,
+        "motion": true,
+        "view": "knowledge",
+        "card": 2,
+        "index": 107,
+        "start": 70050,
+        "end": 70750,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-card-rest",
+        "duration": 1800,
+        "view": "knowledge",
+        "card": 2,
+        "index": 108,
+        "start": 70750,
+        "end": 72550,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-notice",
+        "duration": 400,
+        "motion": true,
+        "view": "knowledge",
+        "index": 109,
+        "start": 72550,
+        "end": 72950,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-notice-rest",
+        "duration": 2400,
+        "view": "knowledge",
+        "index": 110,
+        "start": 72950,
+        "end": 75350,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "answer",
+        "duration": 400,
+        "motion": true,
+        "view": "answer",
+        "test": 5,
+        "index": 111,
+        "start": 75350,
+        "end": 75750,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "answer-rest",
+        "duration": 4800,
+        "view": "answer",
+        "test": 5,
+        "index": 112,
+        "start": 75750,
+        "end": 80550,
+        "claim": "clm_4a07dbbbd859a3ce",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "view": "cases",
+        "nextPhase": "case-list",
+        "index": 113,
+        "start": 80550,
+        "end": 80950,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-list",
+        "duration": 400,
+        "motion": true,
+        "view": "cases",
+        "index": 114,
+        "start": 80950,
+        "end": 81350,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 0,
+        "index": 115,
+        "start": 81350,
+        "end": 81600,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 1,
+        "index": 116,
+        "start": 81600,
+        "end": 81850,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 2,
+        "index": 117,
+        "start": 81850,
+        "end": 82100,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 3,
+        "index": 118,
+        "start": 82100,
+        "end": 82350,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 4,
+        "index": 119,
+        "start": 82350,
+        "end": 82600,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 5,
+        "index": 120,
+        "start": 82600,
+        "end": 82850,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 6,
+        "index": 121,
+        "start": 82850,
+        "end": 83100,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 7,
+        "index": 122,
+        "start": 83100,
+        "end": 83350,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 8,
+        "index": 123,
+        "start": 83350,
+        "end": 83600,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-list-rest",
+        "duration": 2700,
+        "view": "cases",
+        "index": 124,
+        "start": 83600,
+        "end": 86300,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "wordmark",
+        "duration": 400,
+        "motion": true,
+        "view": "cases",
+        "index": 125,
+        "start": 86300,
+        "end": 86700,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "wordmark-rest",
+        "duration": 2250,
+        "view": "cases",
+        "index": 126,
+        "start": 86700,
+        "end": 88950,
+        "claim": "clm_314f2d309fea25e6",
+        "operation": null,
+        "seq": null
+      }
+    ],
+    "claims": [
+      "clm_314f2d309fea25e6",
+      "clm_4a07dbbbd859a3ce"
+    ],
+    "stateHashes": [
+      "f4f0809162a2124c04160858087a87c114ba7efb2d9e547a37d2c4088c3b2161",
+      "63c6b089a81f6448ee283e56aefe82bb7a986091331ae3ead2573034622637ac"
+    ]
+  },
+  "pauseResume": true,
+  "ending": {
+    "above": 32,
+    "below": 33.8125,
+    "sourceRails": 0,
+    "activeNavigation": "Cases"
+  },
+  "allFrames": {
+    "count": 5337,
+    "failures": []
+  },
+  "sourceInspection": true,
+  "liveCapture": [
+    {
+      "act": "customer",
+      "at": 2675,
+      "live": "778bb579e1c7ebb35fec14bcd7eb1cf6889dc300445163e0f8126df95c2368ff",
+      "capture": "778bb579e1c7ebb35fec14bcd7eb1cf6889dc300445163e0f8126df95c2368ff",
+      "meanPixelDifference": 0
+    },
+    {
+      "act": "reading",
+      "at": 12000,
+      "live": "6b640f422f4895aab55a915d16bb38fd11f6ddc1a8f93764c6484d0b18b046ef",
+      "capture": "6b640f422f4895aab55a915d16bb38fd11f6ddc1a8f93764c6484d0b18b046ef",
+      "meanPixelDifference": 0
+    },
+    {
+      "act": "process",
+      "at": 22175,
+      "live": "8bf285ef5569e879ebb762ecf75442e89ec24cc17cba193859888a2d76f58db8",
+      "capture": "8bf285ef5569e879ebb762ecf75442e89ec24cc17cba193859888a2d76f58db8",
+      "meanPixelDifference": 0
+    },
+    {
+      "act": "decision",
+      "at": 37900,
+      "live": "9838fbc11d1972390f4e9310c42a4bdd5475b338fc65b1155658ee99ddc2a1ba",
+      "capture": "9838fbc11d1972390f4e9310c42a4bdd5475b338fc65b1155658ee99ddc2a1ba",
+      "meanPixelDifference": 0
+    },
+    {
+      "act": "learning",
+      "at": 63950,
+      "live": "8c7c535f43b70fe2b9ca5a63763586bdb321abaeed7a91dcd94bf08217dd6c37",
+      "capture": "8c7c535f43b70fe2b9ca5a63763586bdb321abaeed7a91dcd94bf08217dd6c37",
+      "meanPixelDifference": 0
+    },
+    {
+      "act": "cases",
+      "at": 81150,
+      "live": "e37da68b0bdbec3fc6c8e3cbe009c79917c5f3a24cbc0ac1c3645014ae845d14",
+      "capture": "e37da68b0bdbec3fc6c8e3cbe009c79917c5f3a24cbc0ac1c3645014ae845d14",
+      "meanPixelDifference": 0
+    }
+  ],
+  "live": {
+    "frames": 5338,
+    "animations": 0,
+    "p50": 16.69999999999709,
+    "p95": 16.70000000001164,
+    "p99": 16.80000000000291,
+    "max": 16.80000000000291,
+    "longFrames": 0,
+    "draws": {
+      "drawTimings": [
+        {
+          "beat": 0,
+          "phase": "ready",
+          "milliseconds": 3.699999988079071
+        },
+        {
+          "beat": 0,
+          "phase": "ready",
+          "milliseconds": 2.099999964237213
+        },
+        {
+          "beat": 0,
+          "phase": "ready",
+          "milliseconds": 2.200000047683716
+        },
+        {
+          "beat": 1,
+          "phase": "customer-cursor",
+          "milliseconds": 4.699999988079071
+        },
+        {
+          "beat": 2,
+          "phase": "customer-highlight",
+          "milliseconds": 2.400000035762787
+        },
+        {
+          "beat": 3,
+          "phase": "customer-rest",
+          "milliseconds": 2.300000011920929
+        },
+        {
+          "beat": 4,
+          "phase": "source-open",
+          "milliseconds": 1
+        },
+        {
+          "beat": 5,
+          "phase": "cursor",
+          "milliseconds": 2.600000023841858
+        },
+        {
+          "beat": 6,
+          "phase": "highlight",
+          "milliseconds": 2.400000035762787
+        },
+        {
+          "beat": 7,
+          "phase": "passage-rest",
+          "milliseconds": 2.099999964237213
+        },
+        {
+          "beat": 8,
+          "phase": "camera-in",
+          "milliseconds": 3.399999976158142
+        },
+        {
+          "beat": 9,
+          "phase": "cursor",
+          "milliseconds": 2.699999988079071
+        },
+        {
+          "beat": 10,
+          "phase": "highlight",
+          "milliseconds": 2.5
+        },
+        {
+          "beat": 11,
+          "phase": "passage-rest",
+          "milliseconds": 2.5
+        },
+        {
+          "beat": 12,
+          "phase": "fact",
+          "milliseconds": 3.699999988079071
+        },
+        {
+          "beat": 13,
+          "phase": "connector",
+          "milliseconds": 2.800000011920929
+        },
+        {
+          "beat": 14,
+          "phase": "fact-rest",
+          "milliseconds": 5.100000023841858
+        },
+        {
+          "beat": 15,
+          "phase": "plan-tick",
+          "milliseconds": 3.5
+        },
+        {
+          "beat": 16,
+          "phase": "camera-out",
+          "milliseconds": 2.799999952316284
+        },
+        {
+          "beat": 17,
+          "phase": "act-transition",
+          "milliseconds": 3.799999952316284
+        },
+        {
+          "beat": 18,
+          "phase": "camera-in",
+          "milliseconds": 2.699999988079071
+        },
+        {
+          "beat": 19,
+          "phase": "cursor",
+          "milliseconds": 2.699999988079071
+        },
+        {
+          "beat": 20,
+          "phase": "highlight",
+          "milliseconds": 2.800000011920929
+        },
+        {
+          "beat": 21,
+          "phase": "passage-rest",
+          "milliseconds": 3.100000023841858
+        },
+        {
+          "beat": 22,
+          "phase": "document",
+          "milliseconds": 2.599999964237213
+        },
+        {
+          "beat": 23,
+          "phase": "document-rest",
+          "milliseconds": 3.5
+        },
+        {
+          "beat": 24,
+          "phase": "plan-tick",
+          "milliseconds": 2.800000011920929
+        },
+        {
+          "beat": 25,
+          "phase": "camera-out",
+          "milliseconds": 2.800000011920929
+        },
+        {
+          "beat": 26,
+          "phase": "camera-in",
+          "milliseconds": 3.099999964237213
+        },
+        {
+          "beat": 27,
+          "phase": "cursor",
+          "milliseconds": 4.399999976158142
+        },
+        {
+          "beat": 28,
+          "phase": "highlight",
+          "milliseconds": 10.199999988079071
+        },
+        {
+          "beat": 29,
+          "phase": "passage-rest",
+          "milliseconds": 6.399999976158142
+        },
+        {
+          "beat": 30,
+          "phase": "plan-tick",
+          "milliseconds": 6.199999988079071
+        },
+        {
+          "beat": 31,
+          "phase": "camera-out",
+          "milliseconds": 2.900000035762787
+        },
+        {
+          "beat": 32,
+          "phase": "combine",
+          "milliseconds": 2.5
+        },
+        {
+          "beat": 33,
+          "phase": "plan-recede",
+          "milliseconds": 3.199999988079071
+        },
+        {
+          "beat": 34,
+          "phase": "node-accepted",
+          "milliseconds": 3.599999964237213
+        },
+        {
+          "beat": 35,
+          "phase": "node-rest",
+          "milliseconds": 3
+        },
+        {
+          "beat": 36,
+          "phase": "act-transition",
+          "milliseconds": 4.199999988079071
+        },
+        {
+          "beat": 37,
+          "phase": "source-swap",
+          "milliseconds": 3.299999952316284
+        },
+        {
+          "beat": 38,
+          "phase": "cursor",
+          "milliseconds": 3.699999988079071
+        },
+        {
+          "beat": 39,
+          "phase": "highlight",
+          "milliseconds": 3.600000023841858
+        },
+        {
+          "beat": 40,
+          "phase": "passage-rest",
+          "milliseconds": 3.399999976158142
+        },
+        {
+          "beat": 41,
+          "phase": "plan-recede",
+          "milliseconds": 4.199999988079071
+        },
+        {
+          "beat": 42,
+          "phase": "node-accepted",
+          "milliseconds": 4.300000011920929
+        },
+        {
+          "beat": 43,
+          "phase": "node-rest",
+          "milliseconds": 3.5
+        },
+        {
+          "beat": 44,
+          "phase": "source-swap",
+          "milliseconds": 6.200000047683716
+        },
+        {
+          "beat": 45,
+          "phase": "cursor",
+          "milliseconds": 4.400000035762787
+        },
+        {
+          "beat": 46,
+          "phase": "highlight",
+          "milliseconds": 3.900000035762787
+        },
+        {
+          "beat": 47,
+          "phase": "passage-rest",
+          "milliseconds": 3.699999988079071
+        },
+        {
+          "beat": 48,
+          "phase": "plan-recede",
+          "milliseconds": 11.5
+        },
+        {
+          "beat": 49,
+          "phase": "node-accepted",
+          "milliseconds": 4.699999988079071
+        },
+        {
+          "beat": 50,
+          "phase": "node-rest",
+          "milliseconds": 3.899999976158142
+        },
+        {
+          "beat": 51,
+          "phase": "source-swap",
+          "milliseconds": 4.5
+        },
+        {
+          "beat": 52,
+          "phase": "cursor",
+          "milliseconds": 3.699999988079071
+        },
+        {
+          "beat": 53,
+          "phase": "highlight",
+          "milliseconds": 3.300000011920929
+        },
+        {
+          "beat": 54,
+          "phase": "passage-rest",
+          "milliseconds": 3.100000023841858
+        },
+        {
+          "beat": 55,
+          "phase": "plan-recede",
+          "milliseconds": 6.100000023841858
+        },
+        {
+          "beat": 56,
+          "phase": "node-accepted",
+          "milliseconds": 4
+        },
+        {
+          "beat": 57,
+          "phase": "node-rest",
+          "milliseconds": 3.300000011920929
+        },
+        {
+          "beat": 58,
+          "phase": "source-swap",
+          "milliseconds": 5.199999988079071
+        },
+        {
+          "beat": 59,
+          "phase": "cursor",
+          "milliseconds": 4.100000023841858
+        },
+        {
+          "beat": 60,
+          "phase": "highlight",
+          "milliseconds": 4
+        },
+        {
+          "beat": 61,
+          "phase": "passage-rest",
+          "milliseconds": 4.100000023841858
+        },
+        {
+          "beat": 62,
+          "phase": "plan-recede",
+          "milliseconds": 5
+        },
+        {
+          "beat": 63,
+          "phase": "node-accepted",
+          "milliseconds": 4.600000023841858
+        },
+        {
+          "beat": 64,
+          "phase": "node-rest",
+          "milliseconds": 3.600000023841858
+        },
+        {
+          "beat": 65,
+          "phase": "source-swap",
+          "milliseconds": 5.100000023841858
+        },
+        {
+          "beat": 66,
+          "phase": "cursor",
+          "milliseconds": 2.599999964237213
+        },
+        {
+          "beat": 67,
+          "phase": "highlight",
+          "milliseconds": 5.900000035762787
+        },
+        {
+          "beat": 68,
+          "phase": "passage-rest",
+          "milliseconds": 3.100000023841858
+        },
+        {
+          "beat": 69,
+          "phase": "plan-recede",
+          "milliseconds": 7.300000011920929
+        },
+        {
+          "beat": 70,
+          "phase": "node-accepted",
+          "milliseconds": 4.100000023841858
+        },
+        {
+          "beat": 71,
+          "phase": "node-rest",
+          "milliseconds": 2.899999976158142
+        },
+        {
+          "beat": 72,
+          "phase": "act-transition",
+          "milliseconds": 6.600000023841858
+        },
+        {
+          "beat": 73,
+          "phase": "completed",
+          "milliseconds": 3.099999964237213
+        },
+        {
+          "beat": 74,
+          "phase": "overview",
+          "milliseconds": 3.100000023841858
+        },
+        {
+          "beat": 75,
+          "phase": "chain",
+          "milliseconds": 3.199999988079071
+        },
+        {
+          "beat": 76,
+          "phase": "chain-rest",
+          "milliseconds": 3
+        },
+        {
+          "beat": 77,
+          "phase": "chain",
+          "milliseconds": 3.300000011920929
+        },
+        {
+          "beat": 78,
+          "phase": "chain-rest",
+          "milliseconds": 3
+        },
+        {
+          "beat": 79,
+          "phase": "chain",
+          "milliseconds": 8
+        },
+        {
+          "beat": 80,
+          "phase": "chain-rest",
+          "milliseconds": 3.599999964237213
+        },
+        {
+          "beat": 81,
+          "phase": "law",
+          "milliseconds": 6.800000011920929
+        },
+        {
+          "beat": 82,
+          "phase": "law-rest",
+          "milliseconds": 2.699999988079071
+        },
+        {
+          "beat": 83,
+          "phase": "documents",
+          "milliseconds": 5.5
+        },
+        {
+          "beat": 84,
+          "phase": "documents-rest",
+          "milliseconds": 0.5
+        },
+        {
+          "beat": 85,
+          "phase": "legal-test",
+          "milliseconds": 5
+        },
+        {
+          "beat": 86,
+          "phase": "legal-test-rest",
+          "milliseconds": 3.5
+        },
+        {
+          "beat": 87,
+          "phase": "legal-test",
+          "milliseconds": 1.800000011920929
+        },
+        {
+          "beat": 88,
+          "phase": "legal-test-rest",
+          "milliseconds": 2.700000047683716
+        },
+        {
+          "beat": 89,
+          "phase": "legal-test",
+          "milliseconds": 2.600000023841858
+        },
+        {
+          "beat": 90,
+          "phase": "legal-test-rest",
+          "milliseconds": 1.899999976158142
+        },
+        {
+          "beat": 91,
+          "phase": "legal-test",
+          "milliseconds": 2.099999964237213
+        },
+        {
+          "beat": 92,
+          "phase": "legal-test-rest",
+          "milliseconds": 2.199999988079071
+        },
+        {
+          "beat": 93,
+          "phase": "legal-test",
+          "milliseconds": 1.800000011920929
+        },
+        {
+          "beat": 94,
+          "phase": "legal-test-rest",
+          "milliseconds": 1.7999999523162842
+        },
+        {
+          "beat": 95,
+          "phase": "answer",
+          "milliseconds": 1.600000023841858
+        },
+        {
+          "beat": 96,
+          "phase": "answer-rest",
+          "milliseconds": 2.400000035762787
+        },
+        {
+          "beat": 97,
+          "phase": "draft",
+          "milliseconds": 3.599999964237213
+        },
+        {
+          "beat": 98,
+          "phase": "draft-rest",
+          "milliseconds": 0.3999999761581421
+        },
+        {
+          "beat": 99,
+          "phase": "act-transition",
+          "milliseconds": 17.30000001192093
+        },
+        {
+          "beat": 100,
+          "phase": "later-case-rest",
+          "milliseconds": 2.5
+        },
+        {
+          "beat": 101,
+          "phase": "memory-open",
+          "milliseconds": 2.5
+        },
+        {
+          "beat": 102,
+          "phase": "memory-overview",
+          "milliseconds": 2.300000011920929
+        },
+        {
+          "beat": 103,
+          "phase": "memory-card",
+          "milliseconds": 3.599999964237213
+        },
+        {
+          "beat": 104,
+          "phase": "memory-card-rest",
+          "milliseconds": 2.5
+        },
+        {
+          "beat": 105,
+          "phase": "memory-card",
+          "milliseconds": 3.199999988079071
+        },
+        {
+          "beat": 106,
+          "phase": "memory-card-rest",
+          "milliseconds": 2.599999964237213
+        },
+        {
+          "beat": 107,
+          "phase": "memory-card",
+          "milliseconds": 2.399999976158142
+        },
+        {
+          "beat": 108,
+          "phase": "memory-card-rest",
+          "milliseconds": 2.699999988079071
+        },
+        {
+          "beat": 109,
+          "phase": "memory-notice",
+          "milliseconds": 3.399999976158142
+        },
+        {
+          "beat": 110,
+          "phase": "memory-notice-rest",
+          "milliseconds": 2.800000011920929
+        },
+        {
+          "beat": 111,
+          "phase": "answer",
+          "milliseconds": 6.800000011920929
+        },
+        {
+          "beat": 112,
+          "phase": "answer-rest",
+          "milliseconds": 2.699999988079071
+        },
+        {
+          "beat": 113,
+          "phase": "act-transition",
+          "milliseconds": 0.699999988079071
+        },
+        {
+          "beat": 114,
+          "phase": "case-list",
+          "milliseconds": 0.5
+        },
+        {
+          "beat": 115,
+          "phase": "case-row",
+          "milliseconds": 0.5
+        },
+        {
+          "beat": 116,
+          "phase": "case-row",
+          "milliseconds": 0.40000003576278687
+        },
+        {
+          "beat": 117,
+          "phase": "case-row",
+          "milliseconds": 0.30000001192092896
+        },
+        {
+          "beat": 118,
+          "phase": "case-row",
+          "milliseconds": 0.3999999761581421
+        },
+        {
+          "beat": 119,
+          "phase": "case-row",
+          "milliseconds": 0.3999999761581421
+        },
+        {
+          "beat": 120,
+          "phase": "case-row",
+          "milliseconds": 0.3999999761581421
+        },
+        {
+          "beat": 121,
+          "phase": "case-row",
+          "milliseconds": 0.3999999761581421
+        },
+        {
+          "beat": 122,
+          "phase": "case-row",
+          "milliseconds": 0.3999999761581421
+        },
+        {
+          "beat": 123,
+          "phase": "case-row",
+          "milliseconds": 0.5
+        },
+        {
+          "beat": 124,
+          "phase": "case-list-rest",
+          "milliseconds": 0.40000003576278687
+        },
+        {
+          "beat": 125,
+          "phase": "wordmark",
+          "milliseconds": 0.8999999761581421
+        },
+        {
+          "beat": 126,
+          "phase": "wordmark-rest",
+          "milliseconds": 0.699999988079071
+        }
+      ],
+      "cachedViews": 32
+    }
+  },
+  "reduced": [
+    {
+      "act": "customer",
+      "instant": true
+    },
+    {
+      "act": "reading",
+      "instant": true
+    },
+    {
+      "act": "process",
+      "instant": true
+    },
+    {
+      "act": "decision",
+      "instant": true
+    },
+    {
+      "act": "learning",
+      "instant": true
+    },
+    {
+      "act": "cases",
+      "instant": true
+    }
+  ],
+  "passed": true,
+  "cleanup": [
+    {
+      "name": "page",
+      "status": "closed",
+      "ms": 11
+    },
+    {
+      "name": "context",
+      "status": "closed",
+      "ms": 29
+    },
+    {
+      "name": "browser",
+      "status": "closed",
+      "ms": 726
+    }
+  ]
+}

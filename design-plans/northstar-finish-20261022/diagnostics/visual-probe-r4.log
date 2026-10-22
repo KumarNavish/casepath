@@ -1,0 +1,13 @@
+duration 88950 errors []
+page.evaluate: ReferenceError: caseTitle is not defined
+    at northStarMemoryMarkup (<anonymous>:1780:836)
+    at northStarCompletedMarkup (<anonymous>:1822:172)
+    at draw (<anonymous>:5279:75)
+    at render (<anonymous>:5353:37)
+    at <anonymous>:5414:304
+    at sample (<anonymous>:66:41)
+    at Object.stepTo (<anonymous>:99:75)
+    at Object.advanceTo (<anonymous>:5403:68)
+    at eval (eval at evaluate (:291:30), <anonymous>:1:32)
+    at UtilityScript.evaluate (<anonymous>:293:16)
+    at /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/visual_probe_r4.cjs:7:419

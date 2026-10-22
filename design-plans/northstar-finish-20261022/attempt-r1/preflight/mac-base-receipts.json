@@ -1,0 +1,11 @@
+{
+  "time": "2026-10-22T14:01:09.414915+00:00",
+  "film_comparison": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-mac-release-20261022/fix-cold-landing/film-comparison.json",
+  "identical_frames": 5859,
+  "preview4191": {
+    "pid": 43340,
+    "command": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-mac-walk-20261022/.runtime/casepath-dev-v2/venv/bin/python -I -B -P -m uvicorn casepath_api.app:app --app-dir /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-mac-walk-20261022/.runtime/casepath-dev-v2/source-capsules/906584c5e05fa5ef8dfd1845fab15be7a2126cdcf0d9fd5350434fce40e29398/casepath-api --host 127.0.0.1 --port 4191 --no-access-log",
+    "action": "SIGTERM after capture completed, as Mac handoff requested"
+  },
+  "gate": "still running; do not duplicate"
+}

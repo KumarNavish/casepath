@@ -25,3 +25,13 @@ Continuation of Mac handoff [6342169004](https://github.com/KumarNavish/casepath
 Before READY, bind one sealed source commit to all three fidelity frames and overlays, recorded-trace and motion checks, a fresh 24-frame cold viewer, the complete strict gate including eleven frontend suites and the Mac-owned test, and a clean serial seven-script browser walk across all nine cases. Preserve failed evidence. Final results, hashes and source/evidence commit identities belong in this folder's final receipts.
 
 This is deterministic fictional demonstration evidence, not legal accuracy, real-case performance, human acceptance or deployment. The Mac retains integration and release. The Mac handoff says the nine-original allowance was consumed on 9 October (18/18 calls); no allowance remains and this work grants no spending. No provider, ledger or hosted writes are authorized.
+
+## Cold-viewer revision
+
+The first 88.95-second film passed capture, all 89 dense-repeat samples after all 5,337 frames, six exact live comparisons and full playback. Its cold viewer still found clarity misses. That film and its receipts are retained in `attempt-r1`; the verbatim review is in `diagnostics/cold-viewer-r1.json`.
+
+The revision adds the legal-protection case-review context and recorded intake channel, narrows document readiness to this assessment, labels the saved one-paragraph text as an assessment draft that a handler must review and complete, and names the actual case that supplied the checklist. Its recorded automated qualification is distinguished from human review. The closing list is explicitly nine fictional recorded examples.
+
+At a heating-step completion, the highlighted passage is selected by the question glossary's predicate, but only when an earlier extraction, that predicate's citation, the completion's own full citation and immutable source bytes all agree. The source and the visible fact card share that exact locator. This does not move or relabel an extraction operation or invent a new node link. The completed source view uses the same selection. Unknown or incomplete bindings retain the recorded fallback. The five selections are: tenancy scope → residential tenancy; landlord notice → first knowledge; cause → no tenant cause/small maintenance; objective evidence → use impairment; response → continuing defect without remedy. Other passages remain accessible.
+
+These recordings cannot demonstrate real-case accuracy, measured savings, policy coverage or a recorded human memory edit. The product makes none of those claims. The human-review and qualified-legal-review limits remain visible. No original data or API policy changed.

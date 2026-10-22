@@ -2115,3 +2115,9 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
  .au-workspace .au-ns-initial-date p { line-height:1.5; }
  .au-workspace .au-ns-view-content:has(.au-ns-initial-date) .au-desk-tests > li { padding-top:9px; padding-bottom:9px; }
 }
+
+@media (min-width:1100px) {
+ .au-workspace .au-ns-context { margin:0 27px 8px; font:600 12px/1.5 Mulish,sans-serif; color:#82072a; }
+ .au-workspace .au-ns-memory-cards [data-au-claim] { border:0; padding:0; background:none; color:#82072a; font:inherit; text-align:left; text-decoration:underline; text-underline-offset:3px; }
+ .au-workspace .au-executive-roster-note { color:#61636b; font-size:13px; margin:8px 0; }
+}

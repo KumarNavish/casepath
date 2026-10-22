@@ -225,3 +225,5 @@ contact sheet, cold-viewer answer, this receipt and deliberate differences.
 The Mac owner then reviews the full stack for integration and release under
 MAC_COMPLETION_HANDOFF_20261019.md. Public deployment still requires separately
 authorized source-aligned frontend/API verification.
+
+The north-star continuation retains the rejected first film and its exact cold-viewer response under `design-plans/northstar-finish-20261022/attempt-r1` and `diagnostics`. The revised source must pass a fresh cold review and its own strict gate and browser walk before READY. See that folder’s REVIEW.md for citation-selection rules and deliberate differences.

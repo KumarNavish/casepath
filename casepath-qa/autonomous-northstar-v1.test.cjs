@@ -56,7 +56,7 @@ test('an unrelated passage cannot replace the selected node evidence',()=>{const
 test('only node-bound missing evidence and references enter the local chain',()=>{const c=fixture.cases[0],state=structuredClone(c.envelope.state),trace=completedTrace(c);state.outcome.missing_evidence=[{label:'Current lease',node_ids:['dh_scope'],document_type:'new_doc'},{label:'Other',node_ids:['dh_notice'],document_type:'another'}];state.knowledge_uses=[{knowledge_id:'local',node_id:'dh_scope',version:1},{knowledge_id:'whole-procedure',version:2}];const m=ui.northStarCompletedModel(state,trace,'dh_scope');assert.deepEqual(m.missing.map(g=>g.label),['Current lease']);assert.deepEqual(m.references.map(r=>r.knowledge_id),['local']);assert.deepEqual(m.columns.map(c=>c.id),['facts','law','evidence','missing','reference']);});
 const knowledge=JSON.parse(gunzipSync(fs.readFileSync(path.join(__dirname,'fixtures/knowledge-w6.json.gz'))));
 for(const c of fixture.cases)test(`memory payoff uses the exact checklist and case-local evidence: ${c.id}`,()=>{
- const trace={...completedTrace(c),journal:c.envelope.events},state=c.envelope.state,m=ui.northStarMemoryModel(state,trace,knowledge),html=ui.northStarMemoryMarkup(state,trace,{knowledge});assert.ok(m);assert.equal(m.operation.input.receiving_claim_id,state.claim_id);assert.equal(m.reuse.pin.knowledge_sha256,m.operation.input.knowledge_sha256);assert.equal(m.recipes.length,m.operation.result.reused_evidence_recipes);const version=knowledge.versions.find(v=>v.knowledge_id===m.reuse.pin.knowledge_id&&v.version===m.reuse.pin.version);assert.equal(Boolean(m.earlierCase),Boolean(version.source_claim_id&&version.source_claim_id!==state.claim_id));assert.equal(html.includes('learned from earlier cases'),Boolean(m.earlierCase));assert.match(html,/3 document checks reused/);assert.match(html,/Facts come from this case only/);assert.match(html,/Qualified review is still required/);assert.doesNotMatch(html,/expert-reviewed|Edited by reviewer|reviewed memory|Before|Now ·|Recorded checklist reuse|Recorded effect|Used an earlier checklist/);
+ const trace={...completedTrace(c),journal:c.envelope.events},state=c.envelope.state,m=ui.northStarMemoryModel(state,trace,knowledge),html=ui.northStarMemoryMarkup(state,trace,{knowledge});assert.ok(m);assert.equal(m.operation.input.receiving_claim_id,state.claim_id);assert.equal(m.reuse.pin.knowledge_sha256,m.operation.input.knowledge_sha256);assert.equal(m.recipes.length,m.operation.result.reused_evidence_recipes);const version=knowledge.versions.find(v=>v.knowledge_id===m.reuse.pin.knowledge_id&&v.version===m.reuse.pin.version);assert.equal(Boolean(m.earlierCase),Boolean(version.source_claim_id&&version.source_claim_id!==state.claim_id));assert.equal(html.includes('saved from an earlier case'),Boolean(m.earlierCase));assert.match(html,/3 document checks reused/);assert.match(html,/Facts come from this case only/);assert.match(html,/Qualified review is still required/);assert.doesNotMatch(html,/expert-reviewed|Edited by reviewer|reviewed memory|Before|Now ·|Recorded checklist reuse|Recorded effect|Used an earlier checklist/);
  for(const node of state.graph.nodes){const n=ui.northStarMemoryModel(state,trace,knowledge,node.node_id);assert.equal(n.local.nodeId,node.node_id);assert.ok(n.localRecipes.every(r=>n.recipes.includes(r)));if(node.document_types.length&&n.recipes.some(r=>node.document_types.includes(r.document_type)))assert.ok(n.localRecipes.every(r=>node.document_types.includes(r.document_type)));}
 });
 test('memory connections fail closed on an unverified trace or a mismatched identity',()=>{const c=fixture.cases[0],trace={...completedTrace(c),journal:c.envelope.events};assert.equal(ui.northStarMemoryModel(c.envelope.state,{...trace,verifiedResult:false},knowledge),null);const bad=structuredClone(trace);bad.rows.find(o=>o.kind==='knowledge.reuse').input.knowledge_sha256='0'.repeat(64);assert.equal(ui.northStarMemoryModel(c.envelope.state,bad,knowledge),null);});
@@ -117,9 +117,33 @@ test('customer envelope is formatted only from recorded fields, without losing U
 });
 test('intake and law expose recorded provenance; draft uses the saved body without sending',()=>{
  const c=fixture.cases[0],state=c.envelope.state,trace=completedTrace(c),m=ui.northStarCompletedModel(state,trace,'dh_scope');
- assert.match(ui.northStarIntakeMarkup(state),/Received as phone note/);
- const law=ui.northStarLawMarkup(state,m);assert.match(law,/publisher: Fedlex/);assert.match(law,/https:\/\/www.fedlex.admin.ch/);assert.match(law,/qualified legal review is still required/);
+ assert.match(ui.northStarIntakeMarkup(state),/Customer intake · phone note/);
+ const law=ui.northStarLawMarkup(state,m);assert.match(law,/publisher: Fedlex/);assert.match(law,/https:\/\/www.fedlex.admin.ch/);assert.match(law,/Qualified legal review is still required/);
  const draft=ui.deskDraftReadMarkup(ui.deskDraftBinding(state));assert.ok(draft.includes(state.outcome.request_draft.body));assert.match(draft,/Not sent — you decide/);assert.doesNotMatch(draft,/data-au-draft-save/);
  assert.match(ui.northStarInitialDateMarkup(fixture.cases[1].envelope.state),/Ein genaues Anfangsdatum/);assert.equal(ui.northStarInitialDateMarkup(state),'');
  assert.match(ui.northStarTabsMarkup('reader'),/automated assistant; recorded work/);
+});
+
+test('completion evidence answers the question using only that completion’s recorded citations',()=>{
+ const expected={dh_scope:'residential_tenancy_scope',dh_notice:'landlord_first_knowledge',dh_cause:'outside_small_tenant_maintenance_and_no_tenant_cause',dh_evidence:'objective_use_impairment',dh_response:'continuing_defect_without_remedy'};
+ for(const c of fixture.cases.slice(0,3)){
+  const state=c.envelope.state,all=completedTrace(c),catalogue=ui.northStarPlanModel(state,all.rows);
+  for(const [node,predicate]of Object.entries(expected)){
+   const op=all.rows.find(row=>row.kind==='step.complete'&&row.object.id===node),trace={...all,executive:true,current:op,rows:all.rows.filter(row=>row.seq<=op.seq),nsCatalogue:catalogue},m=ui.northStarModel(state,trace);
+   assert.equal(m.facts.length,1);assert.equal(m.facts[0].object.id,predicate);
+   assert.ok(op.result.citations.some(p=>p.artifact_id===m.pin.artifact_id&&p.start_char===m.pin.start_char&&p.end_char===m.pin.end_char&&p.quote===m.pin.quote));
+   assert.deepEqual(m.pin,m.facts[0].source);assert.ok(m.facts[0].seq<op.seq);
+   assert.deepEqual(ui.northStarCompletedModel(state,all,node).pin,m.pin,'completed view uses the same cited evidence');
+   if(node==='dh_cause')assert.notEqual(m.pin.artifact_id,op.source.artifact_id,'do not show the default tenancy paragraph for cause');
+  }
+ }
+ const c=fixture.cases[0],state=c.envelope.state,all=completedTrace(c),op=structuredClone(all.rows.find(row=>row.kind==='step.complete'&&row.object.id==='dh_cause'));op.result.citations=[];
+ const m=ui.northStarModel(state,{...all,executive:true,current:op,rows:all.rows.filter(row=>row.seq<=op.seq),nsCatalogue:ui.northStarPlanModel(state,all.rows)});
+ assert.deepEqual(m.pin,op.source);assert.equal(m.facts.length,0,'do not invent a source connection without a completion citation');
+});
+test('clarity labels distinguish document readiness, draft content and checklist provenance',()=>{
+ const c=fixture.cases[1],state=c.envelope.state,trace={...completedTrace(c),journal:c.envelope.events},html=ui.northStarMemoryMarkup(state,trace,{knowledge}),m=ui.northStarMemoryModel(state,trace,knowledge);
+ assert.ok(html.includes(`data-au-claim="${m.earlierCase}"`));assert.match(html,/Automated checks passed. Human review is still required/);
+ assert.match(ui.deskNextStepMarkup(state),/Documents checked for this assessment. Review before replying/);
+ const draft=ui.deskDraftReadMarkup(ui.deskDraftBinding(state));assert.match(draft,/Assessment draft/);assert.match(draft,/Review and complete this draft/);assert.ok(draft.includes(state.outcome.request_draft.body));
 });
