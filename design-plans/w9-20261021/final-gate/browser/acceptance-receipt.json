@@ -1,0 +1,124 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "overrides": false,
+  "fast": false,
+  "errors": [],
+  "writes": [],
+  "cases": [
+    {
+      "id": "clm_314f2d309fea25e6",
+      "sources": 4,
+      "documents": 3,
+      "draft": true,
+      "reasoning": true,
+      "history": true
+    },
+    {
+      "id": "clm_4a07dbbbd859a3ce",
+      "sources": 4,
+      "documents": 3,
+      "draft": true,
+      "reasoning": true,
+      "history": true
+    },
+    {
+      "id": "clm_95d08975bc575592",
+      "sources": 4,
+      "documents": 3,
+      "draft": true,
+      "reasoning": true,
+      "history": true
+    },
+    {
+      "id": "clm_0f4f13b1e3e1328c",
+      "sources": 4,
+      "documents": 3,
+      "draft": true,
+      "reasoning": true,
+      "history": true
+    },
+    {
+      "id": "clm_393285577dcb12c4",
+      "sources": 4,
+      "documents": 3,
+      "draft": true,
+      "reasoning": true,
+      "history": true
+    },
+    {
+      "id": "clm_4a53299cfe619303",
+      "sources": 4,
+      "documents": 3,
+      "draft": true,
+      "reasoning": true,
+      "history": true
+    },
+    {
+      "id": "clm_2c55cdd816b1d0e8",
+      "sources": 4,
+      "documents": 3,
+      "draft": true,
+      "reasoning": true,
+      "history": true
+    },
+    {
+      "id": "clm_543f08f2415b2a33",
+      "sources": 4,
+      "documents": 3,
+      "draft": true,
+      "reasoning": true,
+      "history": true
+    },
+    {
+      "id": "clm_7dbd7c7d1c4ddf90",
+      "sources": 4,
+      "documents": 3,
+      "draft": true,
+      "reasoning": true,
+      "history": true
+    }
+  ],
+  "frames": {
+    "cases": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "original-not-run": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "empty-search": {
+      "overlaps": [],
+      "overflow": false
+    },
+    "local-draft": {
+      "overlaps": [],
+      "overflow": false
+    }
+  },
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "5f254a92d5b27487d635070d41c304947de0d6e9",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "catalog": 150,
+  "localDraft": {
+    "persistence": true,
+    "copy": true,
+    "download": true,
+    "originalUnchanged": true,
+    "storageFailurePreservesEdits": true
+  },
+  "passed": true
+}

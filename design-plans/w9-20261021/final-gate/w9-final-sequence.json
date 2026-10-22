@@ -1,0 +1,38 @@
+{
+  "sourceCommit": "5f254a92d5b27487d635070d41c304947de0d6e9",
+  "wrapperPid": 2904,
+  "startedAt": "2026-10-22T10:02:48.660357+00:00",
+  "status": "passed",
+  "serialized": true,
+  "stages": [
+    {
+      "name": "strict",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/run_w9_sealed_gate.py"
+      ],
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/w9-final-strict-controller.log",
+      "status": "completed",
+      "startedAt": "2026-10-22T10:02:48.661216+00:00",
+      "pid": 2910,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T11:14:04.919135+00:00",
+      "logSha256": "a287d2492af5651bc01819af2d649ab6af5feb1c7283bf2660114b10648aed8a"
+    },
+    {
+      "name": "walk",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/run_w9_final_walk.py"
+      ],
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/w9-final-walk-controller.log",
+      "status": "completed",
+      "startedAt": "2026-10-22T11:14:04.935705+00:00",
+      "pid": 59116,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T11:20:50.444103+00:00",
+      "logSha256": "e3c8139fc279226bd347c65f0bfc108214a342fb7afb7e086a12b25f869e0ba1"
+    }
+  ],
+  "finishedAt": "2026-10-22T11:20:50.449134+00:00"
+}

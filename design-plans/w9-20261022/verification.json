@@ -56,7 +56,15 @@
     "receipt": "proof/cold-viewer.json"
   },
   "finalHandoff": {
-    "status": "Requires separate full strict gate and one clean complete browser walk on the frozen source",
+    "status": "Full strict gate and complete serial browser walk passed",
+    "sourceCommit": "5f254a92d5b27487d635070d41c304947de0d6e9",
+    "strictPassed": 2866,
+    "strictSkipped": 10,
+    "browserScripts": 7,
+    "cases": 9,
+    "errors": 0,
+    "writes": 0,
+    "overlaps": 0,
     "receipt": "../w9-20261021/final-gate/verification.json"
   },
   "cleanup": "Capture, repeat, live and served-proof page/context/browser all closed",

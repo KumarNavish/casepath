@@ -1,0 +1,37 @@
+{
+  "checked_at": "2026-10-22T09:08:15.005572+00:00",
+  "frozen_source": "d10576ac7d10453c024386981007e4e4cedc46e1",
+  "sequence_exec_session": 50888,
+  "sequence_pid": 50567,
+  "strict_helper_pid": 50571,
+  "gate_pid": 50891,
+  "pytest_pid": 51000,
+  "pytest_parent_pid": 50900,
+  "observations": [
+    {
+      "at": "2026-10-22T09:06:07.578095+00:00",
+      "pass_indicators": 163,
+      "log_modified_at": "2026-10-22T09:06:02.823410+00:00",
+      "pytest_cpu_percent": 81.5,
+      "pytest_cpu_time": "10:25.41"
+    },
+    {
+      "at": "2026-10-22T09:07:09.319264+00:00",
+      "pass_indicators": 194,
+      "pytest_cpu_percent": 88.9,
+      "pytest_cpu_time": "11:16.95"
+    }
+  ],
+  "sampling": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/.runtime/w9-gate-liveness-sample-20261022-0906.txt",
+    "sha256": "e6c790bfa490d9defde99c574473b10816d4ec53238419d34e43184bfac826fa",
+    "duration_seconds": 1,
+    "observed_work": "Active Python/Pydantic validation, JSON encoding and SHA256 calls; no dominant blocked wait observed."
+  },
+  "prior_successful_gate_minutes": [
+    56.82036993333333,
+    68.07412023333333
+  ],
+  "conclusion": "Original test process is advancing normally. Printed pytest percentage counts test progress and only updates at completed output rows; it is not a time estimate. No failure reported. No restart, duplicate job or source change.",
+  "next": "Continue original sequence through strict gate and queued complete browser walk; admit READY only from successful final receipts."
+}

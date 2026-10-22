@@ -1,0 +1,33 @@
+{
+  "verifiedAt": "2026-10-22T10:02:48.254329+00:00",
+  "frozenSource": "5f254a92d5b27487d635070d41c304947de0d6e9",
+  "filmSource": "abd3c4897b69062566a3b1c8712366139901cdc9",
+  "applicationAssetsByteIdentical": true,
+  "applicationApiQaUnchangedSinceFilm": true,
+  "sourceManifestSha256": "4260de7d586ceb15f7c36a6e5a6fac217058124c801b5872cb17d2a7698dc3df",
+  "assets": {
+    "autonomous-workspace-v1.js": "dd4d28aa4d0b3500b6f9bdb4495fd2c601f5a3e06be71483f4cca32dc9816cd0",
+    "autonomous-workspace-v1.css": "b6f39778e476e1affda9f25f73022449b0f5b7096d6fff567046fa19822eb652",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "5f254a92d5b27487d635070d41c304947de0d6e9",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "previewPid": 2601,
+  "previewExecSession": 66890,
+  "ownerPrepareLogSha256": "dd900234cad924aa168a03270e168083d9b755a830d3f7c554d50d0f70a85c77",
+  "staticInventoryExpectationCorrected": true,
+  "priorFailedSource": "d10576ac7d10453c024386981007e4e4cedc46e1"
+}

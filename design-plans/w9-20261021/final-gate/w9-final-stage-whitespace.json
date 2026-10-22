@@ -1,0 +1,10 @@
+{
+  "check": "git diff --cached --check",
+  "result": "Two trailing-whitespace lines in preserved failed TAP output only",
+  "path": "design-plans/w9-20261022/proof/w9b-r2-presentation.tap",
+  "lines": [
+    25,
+    35
+  ],
+  "disposition": "Keep original diagnostic bytes. Require whitespace check on every other staged path; no source or test assertion exclusion."
+}

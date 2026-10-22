@@ -1,0 +1,36 @@
+{"review_commit": "5f254a92d5b27487d635070d41c304947de0d6e9", "wrapper_pid": 2910, "validation_checkout": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-sealed-gate-20261022-r1", "command": ["./bin/casepath", "prepare"], "environment": {"CASEPATH_REQUIRE_FRONTEND_SUITES": "1", "CASEPATH_NODE": "/usr/local/bin/node", "CASEPATH_UV": "/Users/kumar0002/.local/bin/uv", "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/casepath-qa/node_modules", "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"}, "started_at": "2026-10-22T10:02:48.894347+00:00", "status": "running", "pid": 2913}
+{"review_commit": "5f254a92d5b27487d635070d41c304947de0d6e9", "wrapper_pid": 2910, "validation_checkout": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-sealed-gate-20261022-r1", "command": ["./bin/casepath", "prepare"], "environment": {"CASEPATH_REQUIRE_FRONTEND_SUITES": "1", "CASEPATH_NODE": "/usr/local/bin/node", "CASEPATH_UV": "/Users/kumar0002/.local/bin/uv", "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/casepath-qa/node_modules", "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"}, "started_at": "2026-10-22T10:02:48.894347+00:00", "status": "completed", "pid": 2913, "exit_code": 0, "finished_at": "2026-10-22T10:03:53.065969+00:00", "log_sha256": "b3fee8d1d9f663776604ed2a501fa4f80c306e1d121a06620d52d9430db6365e"}
+ + sniffio==1.3.1
+ + sqlalchemy==2.0.43
+ + starlette==0.47.3
+ + tenacity==9.1.4
+ + tomli==2.4.1
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.2
+ + urllib3==2.7.0
+ + uuid-utils==0.17.0
+ + uvicorn==0.35.0
+ + uvloop==0.22.1
+ + watchfiles==1.1.1
+ + websockets==15.0.1
+ + xxhash==3.8.1
+ + zstandard==0.25.0
+/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-sealed-gate-20261022-r1/.runtime/casepath-dev-v2/source-capsules/4260de7d586ceb15f7c36a6e5a6fac217058124c801b5872cb17d2a7698dc3df
+{"review_commit": "5f254a92d5b27487d635070d41c304947de0d6e9", "wrapper_pid": 2910, "validation_checkout": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-sealed-gate-20261022-r1", "command": ["./bin/casepath", "test"], "environment": {"CASEPATH_REQUIRE_FRONTEND_SUITES": "1", "CASEPATH_NODE": "/usr/local/bin/node", "CASEPATH_UV": "/Users/kumar0002/.local/bin/uv", "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/casepath-qa/node_modules", "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"}, "started_at": "2026-10-22T10:03:53.077300+00:00", "status": "running", "pid": 3629}
+{"review_commit": "5f254a92d5b27487d635070d41c304947de0d6e9", "wrapper_pid": 2910, "validation_checkout": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w9-sealed-gate-20261022-r1", "command": ["./bin/casepath", "test"], "environment": {"CASEPATH_REQUIRE_FRONTEND_SUITES": "1", "CASEPATH_NODE": "/usr/local/bin/node", "CASEPATH_UV": "/Users/kumar0002/.local/bin/uv", "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-w26-20261021/casepath-qa/node_modules", "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"}, "started_at": "2026-10-22T10:03:53.077300+00:00", "status": "completed", "pid": 3629, "exit_code": 0, "finished_at": "2026-10-22T11:14:04.869760+00:00", "log_sha256": "c79a49a7465b8af82b6821a67438f87de0d2057bb21b0b125d7717dd49a6f335"}
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v1.py:605: frozen independent-transition packet is not available
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:457: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:548: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:559: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:579: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:592: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:610: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:636: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:646: saved native source-binding run is unavailable
+SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:696: saved native source-binding run is unavailable
+2866 passed, 10 skipped, 10 warnings in 4178.79s (1:09:38)
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+{"contract":"casepath.isolated-backend-static-test/1.0.0","external_network_activity_attested":false,"model_mode":"deterministic_reference","persistent_artifact_registry_used":false,"persistent_product_database_used":false,"provider_credential_names_present":[],"receipt_sha256":"3ff391ed794cec05ffdcd0b36f07c4bc5ae6f860729dde320136a35c2df7565d","targets":["casepath-api/tests","casepath/tools/test_build_deployment_identity.py","casepath/tools/test_casepath_release.py"]}

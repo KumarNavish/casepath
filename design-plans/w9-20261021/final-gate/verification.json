@@ -1,0 +1,94 @@
+{
+  "status": "passed",
+  "frozen_source_commit": "5f254a92d5b27487d635070d41c304947de0d6e9",
+  "captured_film_commit": "abd3c4897b69062566a3b1c8712366139901cdc9",
+  "prepared_at": "2026-10-22T11:21:08.432954+00:00",
+  "source_manifest_sha256": "4260de7d586ceb15f7c36a6e5a6fac217058124c801b5872cb17d2a7698dc3df",
+  "strict_gate": {
+    "passed": 2866,
+    "skipped": 10,
+    "warnings": 10,
+    "pytest_seconds": 4178.79,
+    "exit_code": 0,
+    "skip_reasons": [
+      "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v1.py:605: frozen independent-transition packet is not available",
+      "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:457: saved native source-binding run is unavailable",
+      "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:548: saved native source-binding run is unavailable",
+      "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:559: saved native source-binding run is unavailable",
+      "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:579: saved native source-binding run is unavailable",
+      "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:592: saved native source-binding run is unavailable",
+      "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:610: saved native source-binding run is unavailable",
+      "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:636: saved native source-binding run is unavailable",
+      "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:646: saved native source-binding run is unavailable",
+      "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:696: saved native source-binding run is unavailable"
+    ],
+    "all_eleven_frontend_suites_required_and_included": [
+      "autonomous-workspace-v1.test.cjs",
+      "autonomous-language-v1.test.cjs",
+      "sites-autonomous-entry.test.cjs",
+      "autonomous-evidence-identity-v2.test.cjs",
+      "unified-product-v1.test.cjs",
+      "autonomous-desk-v3.test.cjs",
+      "autonomous-cases-v4.test.cjs",
+      "autonomous-knowledge-w6.test.cjs",
+      "autonomous-northstar-v1.test.cjs",
+      "autonomous-presentation-v1.test.cjs",
+      "autonomous-presentation-browser-v1.test.cjs"
+    ],
+    "protected_mac_test": {
+      "path": "casepath-api/tests/test_public_hosted_read_only_v1.py",
+      "sha256": "e89ebef7b26649f80b19a118f7f6afe9570cb517f9617f0a95b6ec7bc02c744d",
+      "unchanged_from_owner_integration": "1122d7b14ec64e90c5d0bdec11d759e7fbb3c94a"
+    },
+    "isolated_test_attestation": {
+      "contract": "casepath.isolated-backend-static-test/1.0.0",
+      "external_network_activity_attested": false,
+      "model_mode": "deterministic_reference",
+      "persistent_artifact_registry_used": false,
+      "persistent_product_database_used": false,
+      "provider_credential_names_present": [],
+      "receipt_sha256": "3ff391ed794cec05ffdcd0b36f07c4bc5ae6f860729dde320136a35c2df7565d",
+      "targets": [
+        "casepath-api/tests",
+        "casepath/tools/test_build_deployment_identity.py",
+        "casepath/tools/test_casepath_release.py"
+      ]
+    },
+    "receipt": "w9-sealed-final-gate.json",
+    "log": "w9-sealed-final-gate.log"
+  },
+  "browser_walk": {
+    "scripts": [
+      "process",
+      "memory",
+      "acceptance",
+      "reduced",
+      "motion",
+      "live-layout",
+      "presentation"
+    ],
+    "cases": 9,
+    "console_errors": 0,
+    "writes": 0,
+    "overlaps": 0,
+    "overlap_checks": 129,
+    "presentation_geometry_views": 18,
+    "presentation_clock_samples": 5859,
+    "receipt": "browser/walk.json",
+    "cleanup": "All scripts exited0 after awaited browser closure. Memory and presentation additionally record all page/context/browser closures."
+  },
+  "film_assets_identical_to_frozen_source_and_served_build": {
+    "autonomous-workspace-v1.js": "dd4d28aa4d0b3500b6f9bdb4495fd2c601f5a3e06be71483f4cca32dc9816cd0",
+    "autonomous-workspace-v1.css": "b6f39778e476e1affda9f25f73022449b0f5b7096d6fff567046fa19822eb652",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "cold_viewer": "../../w9-20261022/proof/cold-viewer.json",
+  "fidelity": "../../w9-20261022/proof/fidelity/REVIEW.md",
+  "canonical_receipt": "../../../docs/product/UI_FINISH_RECEIPT_20261021.md",
+  "scope": "Deterministic local verification; no integration, release, product inference or allowance granted.",
+  "evidence_digest_sha256": "df59a5719954fdc0b7e0b171847b9ca06939c2a44a6d6cd47bdedcfe49906edc",
+  "evidence_digest_file": "SHA256SUMS",
+  "hashed_evidence_files": 195
+}

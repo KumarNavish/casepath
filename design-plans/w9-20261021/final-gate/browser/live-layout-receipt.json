@@ -1,0 +1,523 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "errors": [],
+  "writes": [],
+  "staticPrefix": false,
+  "overrides": false,
+  "case": "clm_314f2d309fea25e6",
+  "liveLayout": true,
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "5f254a92d5b27487d635070d41c304947de0d6e9",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "cases": [
+    {
+      "id": "clm_314f2d309fea25e6",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_1715b98c5f009b94cad03526c1c661be",
+          "node": "dh_scope",
+          "title": "Building “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 286.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_1715b98c5f009b94cad03526c1c661be",
+          "node": "dh_scope",
+          "title": "Building “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "11.11111111111111%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 286.5,
+          "lastCardX": 286.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unlabelled-quote",
+          "overlapCount": 0,
+          "fullQuote": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_4a07dbbbd859a3ce",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_5846d9183aaf7f4f51ccd5f147660dc1",
+          "node": "dh_scope",
+          "title": "Building “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 286.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_5846d9183aaf7f4f51ccd5f147660dc1",
+          "node": "dh_scope",
+          "title": "Building “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "11.11111111111111%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 286.5,
+          "lastCardX": 286.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unlabelled-quote",
+          "overlapCount": 0,
+          "fullQuote": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_95d08975bc575592",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_3d30f9e13eb94e18f1ee1bca99922a9a",
+          "node": "dh_scope",
+          "title": "Building “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 286.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_3d30f9e13eb94e18f1ee1bca99922a9a",
+          "node": "dh_scope",
+          "title": "Building “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "11.11111111111111%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 286.5,
+          "lastCardX": 286.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unlabelled-quote",
+          "overlapCount": 0,
+          "fullQuote": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_0f4f13b1e3e1328c",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_9e9742927fbe93326e40ca91fca44697",
+          "node": "lt_form",
+          "title": "Building “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 286.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_9e9742927fbe93326e40ca91fca44697",
+          "node": "lt_form",
+          "title": "Building “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "12.5%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 286.5,
+          "lastCardX": 286.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unlabelled-quote",
+          "overlapCount": 0,
+          "fullQuote": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_393285577dcb12c4",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_ce19d2515ba2eb4ee58b947c0f05c6b6",
+          "node": "lt_form",
+          "title": "Building “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 286.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_ce19d2515ba2eb4ee58b947c0f05c6b6",
+          "node": "lt_form",
+          "title": "Building “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "12.5%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 286.5,
+          "lastCardX": 286.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unlabelled-quote",
+          "overlapCount": 0,
+          "fullQuote": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_4a53299cfe619303",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_1bf277da5cd81137ff2dd5d5a5f1485e",
+          "node": "lt_form",
+          "title": "Building “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 286.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_1bf277da5cd81137ff2dd5d5a5f1485e",
+          "node": "lt_form",
+          "title": "Building “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "12.5%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 286.5,
+          "lastCardX": 286.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unlabelled-quote",
+          "overlapCount": 0,
+          "fullQuote": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_2c55cdd816b1d0e8",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_b3dfef33455eb07e3f004119783363bb",
+          "node": "ri_form",
+          "title": "Building “Is the increase on the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 286.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_b3dfef33455eb07e3f004119783363bb",
+          "node": "ri_form",
+          "title": "Building “Is the increase on the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "7.6923076923076925%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 286.5,
+          "lastCardX": 286.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unlabelled-quote",
+          "overlapCount": 0,
+          "fullQuote": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_543f08f2415b2a33",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_6746b263c89eb93156a176abf440a869",
+          "node": "ri_form",
+          "title": "Building “Is the increase on the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 286.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_6746b263c89eb93156a176abf440a869",
+          "node": "ri_form",
+          "title": "Building “Is the increase on the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "7.6923076923076925%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 286.5,
+          "lastCardX": 286.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unlabelled-quote",
+          "overlapCount": 0,
+          "fullQuote": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_7dbd7c7d1c4ddf90",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_5b1812743e3f12634d66102f463b1384",
+          "node": "ri_form",
+          "title": "Building “Is the increase on the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 286.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_5b1812743e3f12634d66102f463b1384",
+          "node": "ri_form",
+          "title": "Building “Is the increase on the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "7.6923076923076925%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 286.5,
+          "lastCardX": 286.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unlabelled-quote",
+          "overlapCount": 0,
+          "fullQuote": true
+        }
+      ],
+      "overlapCount": 0
+    }
+  ],
+  "passed": true
+}

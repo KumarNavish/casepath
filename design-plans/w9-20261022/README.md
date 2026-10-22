@@ -79,10 +79,12 @@ I viewed all 24 frames in order. My assessment is based only on those images.
 My clearest takeaway is an evidence-linked legal case assistant with human review. The demonstration is explicitly fictional; I would still need evidence of performance on real cases before assessing operational readiness.
 
 **Real function.** The final [strict gate and seven-script walk](../w9-20261021/final-gate/verification.json)
-must pass on one frozen W8+W9 source, including all eleven frontend suites,
-the Mac-owned protected test and all nine cases. This capture package is not a
-substitute for those receipts. A missing or failed final receipt is not a pass.
-The film asset hashes must match the final source and served build.
+passed on frozen source `5f254a92d5b27487d635070d41c304947de0d6e9`: **2,866 passed**, **10 historical-packet skips**,
+all eleven frontend suites and the unchanged Mac-owned protected test included.
+All seven browser scripts completed serially across all nine recorded cases, with
+zero console errors, writes or overlaps. The final source and served build retain
+the exact application assets captured in this film. The final receipts preserve
+all timings, skips, hashes, cleanup results and the deterministic test attestation.
 
 The Mac integration owner retains integration and release. No inference,
 original-nine run, provider or ledger writes, hosted writes, merge or deployment
