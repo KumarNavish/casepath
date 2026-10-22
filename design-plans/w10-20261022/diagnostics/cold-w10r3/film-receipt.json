@@ -1,0 +1,2329 @@
+{
+  "sourceCommit": "ff1c079656e66ac732f494f5bddd127ef120c55e",
+  "verifierCommit": "ff1c079656e66ac732f494f5bddd127ef120c55e",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--disable-gpu-rasterization",
+    "--disable-lcd-text"
+  ],
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "ff1c079656e66ac732f494f5bddd127ef120c55e",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "assets": {
+    "autonomous-workspace-v1.js": "80df49c20a8cd4d59b67bcd3f27fbeae5e825f6ccf56542c9873be74d7561ea4",
+    "autonomous-workspace-v1.css": "f222ea97798cbcabda0801b7bacb89dc008cc5b0367dbbf8c85fd3970b65c59f",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "sourceManifestSha256": "075cc6821a1f7ac2d8b252266983fbd7be7cb2af0272a4eb5dd968bab720f1f3",
+  "fixtures": {
+    "responses": "c577184294c6520baf7c6bfcf270e582f6c18666379bc680d0102e03d93265bc",
+    "operations": "1d718c6737ddf2bfca6c5a31ca439617f4d66fdb07b1d9a03881303d9fc1636c"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "deviceScaleFactor": 2,
+  "fps": 60,
+  "probe": false,
+  "errors": [],
+  "writes": [],
+  "missingReads": [],
+  "checksums": [
+    {
+      "n": 0,
+      "time": 0,
+      "sha256": "b91a22af88df284152c6c3b78c82235559af0af39326577e8f5326c37ee9f846"
+    },
+    {
+      "n": 60,
+      "time": 1000,
+      "sha256": "b91a22af88df284152c6c3b78c82235559af0af39326577e8f5326c37ee9f846"
+    },
+    {
+      "n": 120,
+      "time": 2000,
+      "sha256": "b91a22af88df284152c6c3b78c82235559af0af39326577e8f5326c37ee9f846"
+    },
+    {
+      "n": 180,
+      "time": 3000,
+      "sha256": "b91a22af88df284152c6c3b78c82235559af0af39326577e8f5326c37ee9f846"
+    },
+    {
+      "n": 240,
+      "time": 4000,
+      "sha256": "b91a22af88df284152c6c3b78c82235559af0af39326577e8f5326c37ee9f846"
+    },
+    {
+      "n": 300,
+      "time": 5000,
+      "sha256": "a6c2e359480b02fbcbcd734dfca55be95cca3e96c1cd3656a5f8e8c05cf627a5"
+    },
+    {
+      "n": 360,
+      "time": 6000,
+      "sha256": "7f95049b5fcd3d22ada0740d3aa33de8c52252f2d1e4b7ce3797726cd3d7f51b"
+    },
+    {
+      "n": 420,
+      "time": 7000,
+      "sha256": "7932e0ff76f4083b8a0bd0ce5fc546e7effe448fadd5bb4dd05f9a4827ed0748"
+    },
+    {
+      "n": 480,
+      "time": 8000,
+      "sha256": "1afd2c873e3ec8ddf49a0731e355216cad0a96da9d5528ec22d2bfa9786cc6de"
+    },
+    {
+      "n": 540,
+      "time": 9000,
+      "sha256": "3d2350710bb72d98885c96e8a914d85dee541bbaf7827d8e876697ab7dbf3e8c"
+    },
+    {
+      "n": 600,
+      "time": 10000,
+      "sha256": "58beed5ceeaa3ea7efa221a078488079271abb06e57e143a530f68ce626e5e09"
+    },
+    {
+      "n": 660,
+      "time": 11000,
+      "sha256": "f790a5d31dc9bc9f8f8c5bb5a84c0f64726fab2ececcf38d08f810e289d193d8"
+    },
+    {
+      "n": 720,
+      "time": 12000,
+      "sha256": "a496b274c94bc6fb707ecd9ed060145f7cb816862dd8552c8e436ecf2d225e30"
+    },
+    {
+      "n": 780,
+      "time": 13000,
+      "sha256": "297be10fa52085e21f468600b088edd02dc1df96d0f4ea2330f837a11804f56c"
+    },
+    {
+      "n": 840,
+      "time": 14000,
+      "sha256": "519bd36ef1b15476ded5e1c1fffb6e5d4f08bc18d86860adcdddc70d3fa6fca5"
+    },
+    {
+      "n": 900,
+      "time": 15000,
+      "sha256": "494e07c5f96fa60e18e6c2ac229e1228211d588c90409cbb7d851101470ee873"
+    },
+    {
+      "n": 960,
+      "time": 16000,
+      "sha256": "d2c6abf8ea7d197b17e59497adf1463e21a673fa389ea0c55eb8ca9c5a077734"
+    },
+    {
+      "n": 1020,
+      "time": 17000,
+      "sha256": "c02c6de39644ab9f5890ddf7ea84274215f57c066df1f7656fe689b03782af68"
+    },
+    {
+      "n": 1080,
+      "time": 18000,
+      "sha256": "359d30eb222d1596993f6e7d9ff37bd02e67cf6dae79c05150d463085d8bb546"
+    },
+    {
+      "n": 1140,
+      "time": 19000,
+      "sha256": "d0bcfde0a89a1a7267198947f49d4d205798d0d0dc2dd69fd3983187fb3136ee"
+    },
+    {
+      "n": 1200,
+      "time": 20000,
+      "sha256": "b7044fc91df8ee4aa20923e5ea187ce93f92c5ead578a32ca130a80bba7b6686"
+    },
+    {
+      "n": 1260,
+      "time": 21000,
+      "sha256": "49d2e44da488fed040e69a9f088a9a6ad5cc9ef0d4f11e4bf26b3cb1c0e48392"
+    },
+    {
+      "n": 1320,
+      "time": 22000,
+      "sha256": "0ef780761aa1ce9d9044e14412623932fbc23bd815390029d725ca08a54e6a28"
+    },
+    {
+      "n": 1380,
+      "time": 23000,
+      "sha256": "fe9857e1fb8f4cd95e49e41a6df90b6812af60520177a258fd1d8b44053fd8b2"
+    },
+    {
+      "n": 1440,
+      "time": 24000,
+      "sha256": "f388199520869f981a3bd096999d8d9c5594cca06dfe6a194927fa56f28d2f77"
+    },
+    {
+      "n": 1500,
+      "time": 25000,
+      "sha256": "29ffc8ff50636bee017d20b7b4a298d93e3864cc8041afcf940666a49214b564"
+    },
+    {
+      "n": 1560,
+      "time": 26000,
+      "sha256": "7237125de63841bcc68e7bddb05a97bc7744ddeb9807af6a35b2948a4b58df8a"
+    },
+    {
+      "n": 1620,
+      "time": 27000,
+      "sha256": "4305a3bffdfaea9d34b32db67ae05646f0196c96d78e944417a1af0b1fad81a6"
+    },
+    {
+      "n": 1680,
+      "time": 28000,
+      "sha256": "780194a4defcccb7e804e9b2dd24782b933722a3d3acc6857224002738fe0c68"
+    },
+    {
+      "n": 1740,
+      "time": 29000,
+      "sha256": "b5b691d97bf76c1ad5d5caa49eb1ed734c49e33477e3bcdee4b3f752ec246bbb"
+    },
+    {
+      "n": 1800,
+      "time": 30000,
+      "sha256": "9a0b6778a5d292aa0f8f937a4ce67865f586669923ea82d5da8a0c57bfb47670"
+    },
+    {
+      "n": 1860,
+      "time": 31000,
+      "sha256": "9a0b6778a5d292aa0f8f937a4ce67865f586669923ea82d5da8a0c57bfb47670"
+    },
+    {
+      "n": 1920,
+      "time": 32000,
+      "sha256": "9a0b6778a5d292aa0f8f937a4ce67865f586669923ea82d5da8a0c57bfb47670"
+    },
+    {
+      "n": 1980,
+      "time": 33000,
+      "sha256": "9a0b6778a5d292aa0f8f937a4ce67865f586669923ea82d5da8a0c57bfb47670"
+    },
+    {
+      "n": 2040,
+      "time": 34000,
+      "sha256": "19154a43c110fe1bc5c6418bbc46012912e8f4b833e53c9ce9a6efb1ac2b9495"
+    },
+    {
+      "n": 2100,
+      "time": 35000,
+      "sha256": "19154a43c110fe1bc5c6418bbc46012912e8f4b833e53c9ce9a6efb1ac2b9495"
+    },
+    {
+      "n": 2160,
+      "time": 36000,
+      "sha256": "19154a43c110fe1bc5c6418bbc46012912e8f4b833e53c9ce9a6efb1ac2b9495"
+    },
+    {
+      "n": 2220,
+      "time": 37000,
+      "sha256": "19154a43c110fe1bc5c6418bbc46012912e8f4b833e53c9ce9a6efb1ac2b9495"
+    },
+    {
+      "n": 2280,
+      "time": 38000,
+      "sha256": "392c8f419b33a9d83c153ea9888aef5e610f1703ee907fa6d01b5045bf9aa498"
+    },
+    {
+      "n": 2340,
+      "time": 39000,
+      "sha256": "7da27bbd213de18d71c00e157e82bdb5b56ac93fa230d62f808cbd9f74370768"
+    },
+    {
+      "n": 2400,
+      "time": 40000,
+      "sha256": "daf35b0971d8b9962682316f488865b6e9d8e5564fca29ea51dd83e0c3e0160f"
+    },
+    {
+      "n": 2460,
+      "time": 41000,
+      "sha256": "494489162057e65583f52887ee9cef46a370a12a7ca59745741aa5e40e834e62"
+    },
+    {
+      "n": 2520,
+      "time": 42000,
+      "sha256": "16bfdaf6ddf95c0263c272d21c8c2612a2dddad79a58128708f2b11d760e6dc6"
+    },
+    {
+      "n": 2580,
+      "time": 43000,
+      "sha256": "69ae1e81c34b7c4695b584e1a2287451d2c6a729c0649cab4fcd5b75da4cbd30"
+    },
+    {
+      "n": 2640,
+      "time": 44000,
+      "sha256": "bb11ba35a5bc6035e24fb6e9eaebfa09107d9978532a959f996b340e9411f567"
+    },
+    {
+      "n": 2700,
+      "time": 45000,
+      "sha256": "17113d06e1778944c7acbc7713acf7111436ae1f722acc3fdcc34e359a65f4fb"
+    },
+    {
+      "n": 2760,
+      "time": 46000,
+      "sha256": "356500825a46f082e35a39f38d5c6c086397678465952bcb700372f3b22820b1"
+    },
+    {
+      "n": 2820,
+      "time": 47000,
+      "sha256": "356500825a46f082e35a39f38d5c6c086397678465952bcb700372f3b22820b1"
+    },
+    {
+      "n": 2880,
+      "time": 48000,
+      "sha256": "356500825a46f082e35a39f38d5c6c086397678465952bcb700372f3b22820b1"
+    },
+    {
+      "n": 2940,
+      "time": 49000,
+      "sha256": "34bd4471a728ea40986653863f86fbf72b1647bff4dae66a312ecece6826f169"
+    },
+    {
+      "n": 3000,
+      "time": 50000,
+      "sha256": "34bd4471a728ea40986653863f86fbf72b1647bff4dae66a312ecece6826f169"
+    },
+    {
+      "n": 3060,
+      "time": 51000,
+      "sha256": "34bd4471a728ea40986653863f86fbf72b1647bff4dae66a312ecece6826f169"
+    },
+    {
+      "n": 3120,
+      "time": 52000,
+      "sha256": "34bd4471a728ea40986653863f86fbf72b1647bff4dae66a312ecece6826f169"
+    },
+    {
+      "n": 3180,
+      "time": 53000,
+      "sha256": "d4a4173ca57ed45c6f3ba4eeea0b3753817a3ebc42a8c480a393ddefa2c8f9e6"
+    },
+    {
+      "n": 3240,
+      "time": 54000,
+      "sha256": "32ff349ccd2d89d91786db14f079d4f05735fee6144c4177966a86bb21dbce0d"
+    },
+    {
+      "n": 3300,
+      "time": 55000,
+      "sha256": "e1a2535a5bc0cca1f111c66a41cfcd56fa8c38b73c8888190e8fb2b4f6fe1518"
+    },
+    {
+      "n": 3360,
+      "time": 56000,
+      "sha256": "3be35199575acf9f306c1519ac4995c9012e47e725e549627d979430fb579921"
+    },
+    {
+      "n": 3420,
+      "time": 57000,
+      "sha256": "a2da9c27d922c5bdd73925c9a7313478e5395c22ca4f329d78e0ee0ffb0d7bf0"
+    },
+    {
+      "n": 3480,
+      "time": 58000,
+      "sha256": "b121ca0eafdcc3bba1d49af4de6d6bc5443bc25fee65e63189b8cad48757ea5a"
+    },
+    {
+      "n": 3540,
+      "time": 59000,
+      "sha256": "447f9a14276b93837c9967d44250ee689bb5b5b1b178a0ed863f679f876d0f9a"
+    },
+    {
+      "n": 3600,
+      "time": 60000,
+      "sha256": "447f9a14276b93837c9967d44250ee689bb5b5b1b178a0ed863f679f876d0f9a"
+    },
+    {
+      "n": 3660,
+      "time": 61000,
+      "sha256": "e5a1b6b100e18cd105b6b926f6dc690cabddd2900652c0a98bfa837582bba676"
+    },
+    {
+      "n": 3720,
+      "time": 62000,
+      "sha256": "768c69a5402ffec06afdb29fdb438544f5cbf72f95cf19bba11435ba308acd11"
+    },
+    {
+      "n": 3780,
+      "time": 63000,
+      "sha256": "f9166489bcbf0a6d34dc6b3b2d8203cfc865d8222ab1b5740032121ebf21b9ce"
+    },
+    {
+      "n": 3840,
+      "time": 64000,
+      "sha256": "768c69a5402ffec06afdb29fdb438544f5cbf72f95cf19bba11435ba308acd11"
+    },
+    {
+      "n": 3900,
+      "time": 65000,
+      "sha256": "768c69a5402ffec06afdb29fdb438544f5cbf72f95cf19bba11435ba308acd11"
+    },
+    {
+      "n": 3960,
+      "time": 66000,
+      "sha256": "30bd05646d33baba4dd0712e927d840941aaf5667ad100d978504841ff8e42d6"
+    },
+    {
+      "n": 4020,
+      "time": 67000,
+      "sha256": "654aca9d117de82a1b69030423ace11143f661d2aaa2adc78000eb169dc3d37f"
+    },
+    {
+      "n": 4080,
+      "time": 68000,
+      "sha256": "654aca9d117de82a1b69030423ace11143f661d2aaa2adc78000eb169dc3d37f"
+    },
+    {
+      "n": 4140,
+      "time": 69000,
+      "sha256": "654aca9d117de82a1b69030423ace11143f661d2aaa2adc78000eb169dc3d37f"
+    },
+    {
+      "n": 4200,
+      "time": 70000,
+      "sha256": "654aca9d117de82a1b69030423ace11143f661d2aaa2adc78000eb169dc3d37f"
+    },
+    {
+      "n": 4260,
+      "time": 71000,
+      "sha256": "b11f12cf3297ae7e4dc9a5e43d02d2564d20f7c3f3661e9ab2a232bde6cc120b"
+    },
+    {
+      "n": 4320,
+      "time": 72000,
+      "sha256": "9453f0f110f3f26d2291f19f3d820720f20fbf94f52fe305c694b08a9a9ae40e"
+    },
+    {
+      "n": 4380,
+      "time": 73000,
+      "sha256": "c53f1bad99e50e76fef8d333d0f6434580ac23f5e05f96375da8a1c2776048bf"
+    },
+    {
+      "n": 4440,
+      "time": 74000,
+      "sha256": "8b50886ee254cffdc8f9b2b500a8ca7b961dafae2ca07cdaf3256b0028dceefa"
+    },
+    {
+      "n": 4500,
+      "time": 75000,
+      "sha256": "8b50886ee254cffdc8f9b2b500a8ca7b961dafae2ca07cdaf3256b0028dceefa"
+    },
+    {
+      "n": 4560,
+      "time": 76000,
+      "sha256": "8b50886ee254cffdc8f9b2b500a8ca7b961dafae2ca07cdaf3256b0028dceefa"
+    },
+    {
+      "n": 4620,
+      "time": 77000,
+      "sha256": "96fc49914cef195c0ae3eb5f30b097bbf9b423b83ba28a42497cb3725dc8e9cd"
+    },
+    {
+      "n": 4680,
+      "time": 78000,
+      "sha256": "3e574818a1281adff82dcaa5620f6aa622679c0fa8142a17acf812f2194eff45"
+    },
+    {
+      "n": 4740,
+      "time": 79000,
+      "sha256": "3e574818a1281adff82dcaa5620f6aa622679c0fa8142a17acf812f2194eff45"
+    }
+  ],
+  "cleanup": [
+    {
+      "name": "page",
+      "status": "closed"
+    },
+    {
+      "name": "context",
+      "status": "closed"
+    },
+    {
+      "name": "browser",
+      "status": "closed"
+    }
+  ],
+  "browserVersion": "155.0.8059.85",
+  "timeline": {
+    "showcase": {
+      "claimId": "clm_543f08f2415b2a33",
+      "candidates": [
+        {
+          "claimId": "clm_314f2d309fea25e6",
+          "stateHash": "f4f0809162a2124c04160858087a87c114ba7efb2d9e547a37d2c4088c3b2161",
+          "index": 0,
+          "counts": {
+            "failed": 0,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 0,
+            "tests": 5,
+            "steps": 6
+          },
+          "score": [
+            0,
+            0,
+            0,
+            0,
+            5,
+            6
+          ]
+        },
+        {
+          "claimId": "clm_4a07dbbbd859a3ce",
+          "stateHash": "63c6b089a81f6448ee283e56aefe82bb7a986091331ae3ead2573034622637ac",
+          "index": 1,
+          "counts": {
+            "failed": 0,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 6
+          },
+          "score": [
+            0,
+            0,
+            0,
+            1,
+            5,
+            6
+          ]
+        },
+        {
+          "claimId": "clm_95d08975bc575592",
+          "stateHash": "8247f08a14bfe92df24e603be0cf85f2d2d32e77bc04e2f43d2010a3b29dbed2",
+          "index": 2,
+          "counts": {
+            "failed": 0,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 6
+          },
+          "score": [
+            0,
+            0,
+            0,
+            1,
+            5,
+            6
+          ]
+        },
+        {
+          "claimId": "clm_0f4f13b1e3e1328c",
+          "stateHash": "23f5734f9e9dc504d5cd8952068d3d3b437bdfaf2c0021671071902f11ada8c8",
+          "index": 3,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 0,
+            "tests": 4,
+            "steps": 2
+          },
+          "score": [
+            1,
+            0,
+            0,
+            0,
+            4,
+            2
+          ]
+        },
+        {
+          "claimId": "clm_393285577dcb12c4",
+          "stateHash": "b7654c1a69c74032059fadc2ac1834b5c1888484b4c50cfc6a0b64a6c995156c",
+          "index": 4,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 4,
+            "steps": 2
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            4,
+            2
+          ]
+        },
+        {
+          "claimId": "clm_4a53299cfe619303",
+          "stateHash": "083f38f68e92934dc65247977e8938ba7070696e3c665cafdd6c9a2f80a3ea58",
+          "index": 5,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 4,
+            "steps": 2
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            4,
+            2
+          ]
+        },
+        {
+          "claimId": "clm_2c55cdd816b1d0e8",
+          "stateHash": "b1ecfc21c1ec1179154de506cc036b06cd2d6cde1a7e61455f4e605871eb8c6e",
+          "index": 6,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 0,
+            "tests": 5,
+            "steps": 3
+          },
+          "score": [
+            1,
+            0,
+            0,
+            0,
+            5,
+            3
+          ]
+        },
+        {
+          "claimId": "clm_543f08f2415b2a33",
+          "stateHash": "953e96dfd84ae74f227576098c3c0b62f2236b536fc84f5aee78c98b30685d5c",
+          "index": 7,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 3
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            5,
+            3
+          ]
+        },
+        {
+          "claimId": "clm_7dbd7c7d1c4ddf90",
+          "stateHash": "283f3d0624c8b8d39d28ca49972448d2a6f33bd2f8d96de8a1627d339bc86501",
+          "index": 8,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 3
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            5,
+            3
+          ]
+        }
+      ],
+      "rule": "Failed legal test; missing evidence; forks/excluded routes; recorded earlier-case checklist; legal-test count; step count; original roster order."
+    },
+    "duration": 79350,
+    "acts": [
+      {
+        "id": "customer",
+        "start": 0,
+        "end": 6300
+      },
+      {
+        "id": "reading",
+        "start": 6300,
+        "end": 15300
+      },
+      {
+        "id": "process",
+        "start": 15300,
+        "end": 21800
+      },
+      {
+        "id": "decision",
+        "start": 21800,
+        "end": 52850
+      },
+      {
+        "id": "learning",
+        "start": 52850,
+        "end": 70950
+      },
+      {
+        "id": "cases",
+        "start": 70950,
+        "end": 79350
+      }
+    ],
+    "beats": [
+      {
+        "act": "customer",
+        "phase": "ready",
+        "duration": 4200,
+        "index": 0,
+        "start": 0,
+        "end": 4200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-source-open",
+        "duration": 400,
+        "motion": true,
+        "index": 1,
+        "start": 4200,
+        "end": 4600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 2,
+        "start": 4600,
+        "end": 5150,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 3,
+        "start": 5150,
+        "end": 5400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-passage-rest",
+        "duration": 900,
+        "index": 4,
+        "start": 5400,
+        "end": 6300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "reading",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "nextPhase": "camera-in",
+        "index": 5,
+        "start": 6300,
+        "end": 6700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_6746b263c89eb93156a176abf440a869",
+        "seq": 30
+      },
+      {
+        "act": "reading",
+        "phase": "camera-in",
+        "duration": 700,
+        "motion": true,
+        "index": 6,
+        "start": 6700,
+        "end": 7400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_6746b263c89eb93156a176abf440a869",
+        "seq": 30
+      },
+      {
+        "act": "reading",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 7,
+        "start": 7400,
+        "end": 7950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_6746b263c89eb93156a176abf440a869",
+        "seq": 30
+      },
+      {
+        "act": "reading",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 8,
+        "start": 7950,
+        "end": 8200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_6746b263c89eb93156a176abf440a869",
+        "seq": 30
+      },
+      {
+        "act": "reading",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 9,
+        "start": 8200,
+        "end": 9100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_6746b263c89eb93156a176abf440a869",
+        "seq": 30
+      },
+      {
+        "act": "reading",
+        "phase": "fact",
+        "duration": 350,
+        "motion": true,
+        "index": 10,
+        "start": 9100,
+        "end": 9450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_6746b263c89eb93156a176abf440a869",
+        "seq": 30
+      },
+      {
+        "act": "reading",
+        "phase": "connector",
+        "duration": 400,
+        "motion": true,
+        "index": 11,
+        "start": 9450,
+        "end": 9850,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_6746b263c89eb93156a176abf440a869",
+        "seq": 30
+      },
+      {
+        "act": "reading",
+        "phase": "fact-rest",
+        "duration": 900,
+        "index": 12,
+        "start": 9850,
+        "end": 10750,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_6746b263c89eb93156a176abf440a869",
+        "seq": 30
+      },
+      {
+        "act": "reading",
+        "phase": "plan-tick",
+        "duration": 300,
+        "motion": true,
+        "index": 13,
+        "start": 10750,
+        "end": 11050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_6746b263c89eb93156a176abf440a869",
+        "seq": 30
+      },
+      {
+        "act": "reading",
+        "phase": "camera-out",
+        "duration": 700,
+        "motion": true,
+        "index": 14,
+        "start": 11050,
+        "end": 11750,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_6746b263c89eb93156a176abf440a869",
+        "seq": 30
+      },
+      {
+        "act": "reading",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 15,
+        "start": 11750,
+        "end": 12000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 16,
+        "start": 12000,
+        "end": 12550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 17,
+        "start": 12550,
+        "end": 12800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 18,
+        "start": 12800,
+        "end": 13700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "plan-recede",
+        "duration": 400,
+        "motion": true,
+        "index": 19,
+        "start": 13700,
+        "end": 14100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "node-accepted",
+        "duration": 300,
+        "motion": true,
+        "index": 20,
+        "start": 14100,
+        "end": 14400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 21,
+        "start": 14400,
+        "end": 15300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "process",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "nextPhase": "source-swap",
+        "index": 22,
+        "start": 15300,
+        "end": 15700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 23,
+        "start": 15700,
+        "end": 15950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "cursor",
+        "duration": 250,
+        "motion": true,
+        "index": 24,
+        "start": 15950,
+        "end": 16200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 25,
+        "start": 16200,
+        "end": 16450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 26,
+        "start": 16450,
+        "end": 17350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "plan-recede",
+        "duration": 250,
+        "motion": true,
+        "index": 27,
+        "start": 17350,
+        "end": 17600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "node-accepted",
+        "duration": 250,
+        "motion": true,
+        "index": 28,
+        "start": 17600,
+        "end": 17850,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 29,
+        "start": 17850,
+        "end": 18750,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 30,
+        "start": 18750,
+        "end": 19000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "cursor",
+        "duration": 250,
+        "motion": true,
+        "index": 31,
+        "start": 19000,
+        "end": 19250,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 32,
+        "start": 19250,
+        "end": 19500,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 33,
+        "start": 19500,
+        "end": 20400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "plan-recede",
+        "duration": 250,
+        "motion": true,
+        "index": 34,
+        "start": 20400,
+        "end": 20650,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "node-accepted",
+        "duration": 250,
+        "motion": true,
+        "index": 35,
+        "start": 20650,
+        "end": 20900,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 36,
+        "start": 20900,
+        "end": 21800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "decision",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "nextPhase": "completed",
+        "index": 37,
+        "start": 21800,
+        "end": 22200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "completed",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "index": 38,
+        "start": 22200,
+        "end": 22600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "overview",
+        "duration": 900,
+        "view": "step",
+        "index": 39,
+        "start": 22600,
+        "end": 23500,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "facts",
+        "index": 40,
+        "start": 23500,
+        "end": 23900,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "facts",
+        "index": 41,
+        "start": 23900,
+        "end": 24800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "law",
+        "index": 42,
+        "start": 24800,
+        "end": 25200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "law",
+        "index": 43,
+        "start": 25200,
+        "end": 26100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "evidence",
+        "index": 44,
+        "start": 26100,
+        "end": 26500,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "evidence",
+        "index": 45,
+        "start": 26500,
+        "end": 27400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "reference",
+        "index": 46,
+        "start": 27400,
+        "end": 27800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "reference",
+        "index": 47,
+        "start": 27800,
+        "end": 28700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "source-check",
+        "duration": 400,
+        "motion": true,
+        "view": "verified",
+        "index": 48,
+        "start": 28700,
+        "end": 29100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "source-check-rest",
+        "duration": 4200,
+        "view": "verified",
+        "index": 49,
+        "start": 29100,
+        "end": 33300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "law",
+        "duration": 400,
+        "motion": true,
+        "view": "law",
+        "index": 50,
+        "start": 33300,
+        "end": 33700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "law-rest",
+        "duration": 4200,
+        "view": "law",
+        "index": 51,
+        "start": 33700,
+        "end": 37900,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "documents",
+        "duration": 400,
+        "motion": true,
+        "view": "documents",
+        "index": 52,
+        "start": 37900,
+        "end": 38300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "documents-rest",
+        "duration": 900,
+        "view": "documents",
+        "index": 53,
+        "start": 38300,
+        "end": 39200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 0,
+        "index": 54,
+        "start": 39200,
+        "end": 39550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 0,
+        "index": 55,
+        "start": 39550,
+        "end": 40450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 1,
+        "index": 56,
+        "start": 40450,
+        "end": 40800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 1,
+        "index": 57,
+        "start": 40800,
+        "end": 41700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 2,
+        "index": 58,
+        "start": 41700,
+        "end": 42050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 2,
+        "index": 59,
+        "start": 42050,
+        "end": 42950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 3,
+        "index": 60,
+        "start": 42950,
+        "end": 43300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 3,
+        "index": 61,
+        "start": 43300,
+        "end": 44200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 4,
+        "index": 62,
+        "start": 44200,
+        "end": 44550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 4,
+        "index": 63,
+        "start": 44550,
+        "end": 45450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "answer",
+        "duration": 400,
+        "motion": true,
+        "view": "answer",
+        "test": 5,
+        "index": 64,
+        "start": 45450,
+        "end": 45850,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "answer-rest",
+        "duration": 2400,
+        "view": "answer",
+        "test": 5,
+        "index": 65,
+        "start": 45850,
+        "end": 48250,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "draft",
+        "duration": 400,
+        "motion": true,
+        "view": "draft",
+        "index": 66,
+        "start": 48250,
+        "end": 48650,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "draft-rest",
+        "duration": 4200,
+        "view": "draft",
+        "index": 67,
+        "start": 48650,
+        "end": 52850,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "act-transition",
+        "duration": 400,
+        "view": "knowledge",
+        "nextPhase": "later-case-rest",
+        "motion": true,
+        "index": 68,
+        "start": 52850,
+        "end": 53250,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "later-case-rest",
+        "duration": 900,
+        "view": "knowledge",
+        "index": 69,
+        "start": 53250,
+        "end": 54150,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-open",
+        "duration": 400,
+        "motion": true,
+        "view": "knowledge",
+        "index": 70,
+        "start": 54150,
+        "end": 54550,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-overview",
+        "duration": 900,
+        "view": "knowledge",
+        "index": 71,
+        "start": 54550,
+        "end": 55450,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-transfer",
+        "duration": 1000,
+        "motion": true,
+        "view": "knowledge",
+        "item": 0,
+        "index": 72,
+        "start": 55450,
+        "end": 56450,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-landed",
+        "duration": 1500,
+        "view": "knowledge",
+        "item": 0,
+        "index": 73,
+        "start": 56450,
+        "end": 57950,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-transfer",
+        "duration": 1000,
+        "motion": true,
+        "view": "knowledge",
+        "item": 1,
+        "index": 74,
+        "start": 57950,
+        "end": 58950,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-landed",
+        "duration": 1500,
+        "view": "knowledge",
+        "item": 1,
+        "index": 75,
+        "start": 58950,
+        "end": 60450,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-transfer",
+        "duration": 1000,
+        "motion": true,
+        "view": "knowledge",
+        "item": 2,
+        "index": 76,
+        "start": 60450,
+        "end": 61450,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-landed",
+        "duration": 1500,
+        "view": "knowledge",
+        "item": 2,
+        "index": 77,
+        "start": 61450,
+        "end": 62950,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-notice",
+        "duration": 400,
+        "motion": true,
+        "view": "knowledge",
+        "index": 78,
+        "start": 62950,
+        "end": 63350,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-notice-rest",
+        "duration": 2400,
+        "view": "knowledge",
+        "index": 79,
+        "start": 63350,
+        "end": 65750,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "answer",
+        "duration": 400,
+        "motion": true,
+        "view": "answer",
+        "test": 5,
+        "index": 80,
+        "start": 65750,
+        "end": 66150,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "answer-rest",
+        "duration": 4800,
+        "view": "answer",
+        "test": 5,
+        "index": 81,
+        "start": 66150,
+        "end": 70950,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "view": "cases",
+        "nextPhase": "case-list",
+        "index": 82,
+        "start": 70950,
+        "end": 71350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-list",
+        "duration": 400,
+        "motion": true,
+        "view": "cases",
+        "index": 83,
+        "start": 71350,
+        "end": 71750,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 0,
+        "index": 84,
+        "start": 71750,
+        "end": 72000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 1,
+        "index": 85,
+        "start": 72000,
+        "end": 72250,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 2,
+        "index": 86,
+        "start": 72250,
+        "end": 72500,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 3,
+        "index": 87,
+        "start": 72500,
+        "end": 72750,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 4,
+        "index": 88,
+        "start": 72750,
+        "end": 73000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 5,
+        "index": 89,
+        "start": 73000,
+        "end": 73250,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 6,
+        "index": 90,
+        "start": 73250,
+        "end": 73500,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 7,
+        "index": 91,
+        "start": 73500,
+        "end": 73750,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 8,
+        "index": 92,
+        "start": 73750,
+        "end": 74000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-list-rest",
+        "duration": 2700,
+        "view": "cases",
+        "index": 93,
+        "start": 74000,
+        "end": 76700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "wordmark",
+        "duration": 400,
+        "motion": true,
+        "view": "cases",
+        "index": 94,
+        "start": 76700,
+        "end": 77100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "wordmark-rest",
+        "duration": 2250,
+        "view": "cases",
+        "index": 95,
+        "start": 77100,
+        "end": 79350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      }
+    ],
+    "claims": [
+      "clm_543f08f2415b2a33",
+      "clm_7dbd7c7d1c4ddf90"
+    ],
+    "stateHashes": [
+      "953e96dfd84ae74f227576098c3c0b62f2236b536fc84f5aee78c98b30685d5c",
+      "283f3d0624c8b8d39d28ca49972448d2a6f33bd2f8d96de8a1627d339bc86501"
+    ]
+  },
+  "frameCount": 4761,
+  "duration": 79.35,
+  "framesDirectory": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-ff1c0796-w10r3/frames",
+  "startedAt": "2026-10-22T21:01:39.812Z",
+  "capturedAt": "2026-10-22T21:11:15.388Z",
+  "frameIndexSha256": "ff4684cf2b8488dc123b38d580d1063ea71c1eeef08e259af7af2e76967b6110",
+  "droppedIndices": 0,
+  "duplicateIndices": 0,
+  "encodes": [
+    {
+      "name": "master-2880x1800.mp4",
+      "width": 2880,
+      "height": 1800,
+      "bytes": 14426913,
+      "sha256": "a53aa26ea77ec90abca7520a943cf4049ab0b93caf927f23f38dc5ac3dea0494",
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640034",
+            "width": 2880,
+            "height": 1800,
+            "coded_width": 2880,
+            "coded_height": 1800,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 52,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 1218816,
+            "duration": "79.350000",
+            "bit_rate": "1448830",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "4761",
+            "extradata_size": 47,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc63.1.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-ff1c0796-w10r3/master-2880x1800.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "79.350000",
+          "size": "14426913",
+          "bit_rate": "1454509",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf63.1.102"
+          }
+        }
+      }
+    },
+    {
+      "name": "casepath-executive-1920x1200.mp4",
+      "width": 1920,
+      "height": 1200,
+      "bytes": 9116255,
+      "sha256": "0e1d46b0fd631ab96f639ce22ab877fe77767ec287675d01c513b3f806f1098e",
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640032",
+            "width": 1920,
+            "height": 1200,
+            "coded_width": 1920,
+            "coded_height": 1200,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 50,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 1218816,
+            "duration": "79.350000",
+            "bit_rate": "913435",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "4761",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc63.1.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-ff1c0796-w10r3/casepath-executive-1920x1200.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "79.350000",
+          "size": "9116255",
+          "bit_rate": "919093",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf63.1.102"
+          }
+        }
+      }
+    },
+    {
+      "name": "casepath-executive-1920x1080.mp4",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 8093796,
+      "sha256": "d9b0103159e0023d048bcd104ed330c526571d892ddaccbd94aa757c53399847",
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 1218816,
+            "duration": "79.350000",
+            "bit_rate": "810340",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "4761",
+            "extradata_size": 47,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc63.1.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-ff1c0796-w10r3/casepath-executive-1920x1080.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "79.350000",
+          "size": "8093796",
+          "bit_rate": "816009",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf63.1.102"
+          }
+        }
+      }
+    }
+  ],
+  "contactFrames": [
+    {
+      "n": 0,
+      "time": 0,
+      "act": "customer"
+    },
+    {
+      "n": 207,
+      "time": 3.45,
+      "act": "customer"
+    },
+    {
+      "n": 414,
+      "time": 6.9,
+      "act": "reading"
+    },
+    {
+      "n": 621,
+      "time": 10.35,
+      "act": "reading"
+    },
+    {
+      "n": 828,
+      "time": 13.8,
+      "act": "reading"
+    },
+    {
+      "n": 1035,
+      "time": 17.25,
+      "act": "process"
+    },
+    {
+      "n": 1242,
+      "time": 20.7,
+      "act": "process"
+    },
+    {
+      "n": 1449,
+      "time": 24.15,
+      "act": "decision"
+    },
+    {
+      "n": 1656,
+      "time": 27.6,
+      "act": "decision"
+    },
+    {
+      "n": 1863,
+      "time": 31.05,
+      "act": "decision"
+    },
+    {
+      "n": 2070,
+      "time": 34.5,
+      "act": "decision"
+    },
+    {
+      "n": 2277,
+      "time": 37.95,
+      "act": "decision"
+    },
+    {
+      "n": 2483,
+      "time": 41.38333333333333,
+      "act": "decision"
+    },
+    {
+      "n": 2690,
+      "time": 44.833333333333336,
+      "act": "decision"
+    },
+    {
+      "n": 2897,
+      "time": 48.28333333333333,
+      "act": "decision"
+    },
+    {
+      "n": 3104,
+      "time": 51.733333333333334,
+      "act": "decision"
+    },
+    {
+      "n": 3311,
+      "time": 55.18333333333333,
+      "act": "learning"
+    },
+    {
+      "n": 3518,
+      "time": 58.63333333333333,
+      "act": "learning"
+    },
+    {
+      "n": 3725,
+      "time": 62.083333333333336,
+      "act": "learning"
+    },
+    {
+      "n": 3932,
+      "time": 65.53333333333333,
+      "act": "learning"
+    },
+    {
+      "n": 4139,
+      "time": 68.98333333333333,
+      "act": "learning"
+    },
+    {
+      "n": 4346,
+      "time": 72.43333333333334,
+      "act": "cases"
+    },
+    {
+      "n": 4553,
+      "time": 75.88333333333334,
+      "act": "cases"
+    },
+    {
+      "n": 4760,
+      "time": 79.33333333333333,
+      "act": "cases"
+    }
+  ],
+  "passed": true
+}

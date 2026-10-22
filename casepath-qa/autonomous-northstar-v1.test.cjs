@@ -173,3 +173,20 @@ test('W10 glossary covers each recorded extraction type without borrowing case-s
  const found=new Set();for(const c of fixture.cases)for(const op of completedTrace(c).rows.filter(o=>o.kind==='fact.extract')){const key=op.input.document_type||op.object.id.replace(/^fact:/,'');found.add(key);assert.ok(ui.NS_FACT_TYPES[key],key);const html=ui.northStarFactCopy(c.envelope.state,op);assert.match(html,/data-au-ns-fact-type=/);assert.doesNotMatch(html,/data-au-ns-fact-quote/);}
  assert.deepEqual([...found].sort(),Object.keys(ui.NS_FACT_TYPES).sort());
 });
+
+test('W10 absence evidence and completed checks do not assert that reasons were supplied',()=>{
+ const c=fixture.cases[7],state=c.envelope.state,trace={...completedTrace(c),journal:c.envelope.events};
+ const before=JSON.stringify(state),documents=ui.northStarCompletedMarkup(state,trace,'documents',{knowledge}),completed=ui.northStarCompletedMarkup(state,trace,'step',{knowledge}),memory=ui.northStarMemoryMarkup(state,trace,{knowledge});
+ assert.ok(state.evaluation.documents.some(d=>d.label==='Reasons supplied with the increase notice'&&d.review_state==='sufficient'));
+ assert.match(documents,/>What accompanied the original notice<\/h3><p>Evidence received/);
+ assert.doesNotMatch(documents,/Reasons supplied with the increase notice/);
+ assert.match(memory,/What accompanied the original notice/);assert.doesNotMatch(memory,/Reasons supplied with the increase notice/);
+ assert.match(completed,/data-au-ns-node="ri_form"[\s\S]*?au-ns-test-verdict">Test not met/);
+ assert.match(completed,/data-au-ns-node="ri_reason"[\s\S]*?au-ns-test-verdict">Tests met/);
+ assert.match(completed,/An increase form with missing original reasons/);
+ const done=trace.rows.find(o=>o.kind==='step.complete'&&o.object.id==='ri_reason');
+ const live=ui.northStarMarkup(state,{...trace,current:done,rows:trace.rows.filter(o=>o.seq<=done.seq),nsCatalogue:ui.northStarPlanModel(state,trace.rows)},{});
+ assert.match(live,/Were reasons given with the increase\?<\/span><small class="au-ns-step-status">Checked/);
+ assert.match(ui.northStarCompletedMarkup(state,trace,'answer',{knowledge}),/Open assessment draft/);
+ assert.equal(JSON.stringify(state),before,'presentation leaves recorded evidence and outcomes untouched');
+});

@@ -2166,3 +2166,8 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
 @media (min-width:701px) { .au-workspace .au-ns-source-scroll { padding-right:70px; } }
 
 @media (min-width:701px) { html[data-casepath-presentation] .au-ns-view-content:has([data-au-desk-answer]) { max-height:calc(100dvh - 200px); overflow:auto; scrollbar-width:thin; } }
+
+/* Completion means a question was checked, not that its answer is yes. */
+.au-workspace .au-ns-spine .au-ns-step-status { position:absolute; top:42px; font:600 10px/1 Mulish,sans-serif; color:#61636b; }
+.au-workspace .au-ns-completed-spine .au-ns-test-verdict { position:absolute; top:calc(100% + 4px); left:0; white-space:nowrap; font:600 10px/1.3 Mulish,sans-serif; color:#61636b; }
+.au-workspace .au-ns-completed-spine li[data-decisive=true] .au-ns-test-verdict { color:#82072a; }

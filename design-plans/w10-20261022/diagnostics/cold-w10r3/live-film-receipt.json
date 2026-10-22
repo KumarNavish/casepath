@@ -1,0 +1,117 @@
+{
+  "sourceCommit": "ff1c079656e66ac732f494f5bddd127ef120c55e",
+  "verifierCommit": "ff1c079656e66ac732f494f5bddd127ef120c55e",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--disable-gpu-rasterization",
+    "--disable-lcd-text"
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "deviceScaleFactor": 2,
+  "comparisons": [
+    {
+      "act": "customer",
+      "n": 264,
+      "time": 4400,
+      "liveSha256": "003e84ed6a7fd57d604d5245022a931f3117d9e3624267cd4b6c127f13b5f0fe",
+      "filmFrameSha256": "003e84ed6a7fd57d604d5245022a931f3117d9e3624267cd4b6c127f13b5f0fe",
+      "byteIdentical": true,
+      "meanPixelDifference": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "act": "reading",
+      "n": 423,
+      "time": 7050,
+      "liveSha256": "823b064e70bce3333da58aed07c93592e20dc39e37bbf9c8c19867d96c3bacc8",
+      "filmFrameSha256": "823b064e70bce3333da58aed07c93592e20dc39e37bbf9c8c19867d96c3bacc8",
+      "byteIdentical": true,
+      "meanPixelDifference": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "act": "process",
+      "n": 950,
+      "time": 15833.333333333334,
+      "liveSha256": "fabe36debc2c1ad1094bbb5d0a4125b0d4519570be38379e12df549ce758c4cf",
+      "filmFrameSha256": "fabe36debc2c1ad1094bbb5d0a4125b0d4519570be38379e12df549ce758c4cf",
+      "byteIdentical": true,
+      "meanPixelDifference": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "act": "decision",
+      "n": 1344,
+      "time": 22400,
+      "liveSha256": "1b13e8f40dcf662a1b7917677e89a4ebd0c8c6bba9124ee5883f2a92fe9c4b75",
+      "filmFrameSha256": "1b13e8f40dcf662a1b7917677e89a4ebd0c8c6bba9124ee5883f2a92fe9c4b75",
+      "byteIdentical": true,
+      "meanPixelDifference": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "act": "learning",
+      "n": 3261,
+      "time": 54350,
+      "liveSha256": "77172de0d07fc7e653a9360a4849d9a37fcb177572ebdd78a432673f0a02a517",
+      "filmFrameSha256": "77172de0d07fc7e653a9360a4849d9a37fcb177572ebdd78a432673f0a02a517",
+      "byteIdentical": true,
+      "meanPixelDifference": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "act": "cases",
+      "n": 4293,
+      "time": 71550,
+      "liveSha256": "9b79eefddcf1c5839ed8bf07f4fc78ad97c3ad8bb5583678ea9775bdcc5e6e25",
+      "filmFrameSha256": "9b79eefddcf1c5839ed8bf07f4fc78ad97c3ad8bb5583678ea9775bdcc5e6e25",
+      "byteIdentical": true,
+      "meanPixelDifference": 0,
+      "maxChannelDifference": 0
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "missingReads": [],
+  "cleanup": [
+    {
+      "name": "page",
+      "status": "closed"
+    },
+    {
+      "name": "context",
+      "status": "closed"
+    },
+    {
+      "name": "browser",
+      "status": "closed"
+    }
+  ],
+  "browserVersion": "155.0.8059.85",
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "ff1c079656e66ac732f494f5bddd127ef120c55e",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "live": {
+    "observedFrames": 4758,
+    "maxNativeAnimations": 0,
+    "p50": 16.69999999999709,
+    "p95": 16.70000000001164,
+    "p99": 16.80000000000291,
+    "max": 33.399999999999636,
+    "intervalsOver34ms": 0
+  },
+  "passed": true
+}

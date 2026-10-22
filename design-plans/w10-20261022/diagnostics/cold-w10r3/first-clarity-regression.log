@@ -1,0 +1,675 @@
+TAP version 13
+# Subtest: role table uses recorded kind and stage; unknown operations retain the previous role
+ok 1 - role table uses recorded kind and stage; unknown operations retain the previous role
+  ---
+  duration_ms: 1.004625
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_314f2d309fea25e6
+ok 2 - north-star plans and exact locators remain bound to recorded operations: clm_314f2d309fea25e6
+  ---
+  duration_ms: 27.37025
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_4a07dbbbd859a3ce
+ok 3 - north-star plans and exact locators remain bound to recorded operations: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 26.597541
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_95d08975bc575592
+ok 4 - north-star plans and exact locators remain bound to recorded operations: clm_95d08975bc575592
+  ---
+  duration_ms: 28.88725
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_0f4f13b1e3e1328c
+ok 5 - north-star plans and exact locators remain bound to recorded operations: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 13.49825
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_393285577dcb12c4
+ok 6 - north-star plans and exact locators remain bound to recorded operations: clm_393285577dcb12c4
+  ---
+  duration_ms: 15.179459
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_4a53299cfe619303
+ok 7 - north-star plans and exact locators remain bound to recorded operations: clm_4a53299cfe619303
+  ---
+  duration_ms: 12.36125
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_2c55cdd816b1d0e8
+ok 8 - north-star plans and exact locators remain bound to recorded operations: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 38.37925
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_543f08f2415b2a33
+ok 9 - north-star plans and exact locators remain bound to recorded operations: clm_543f08f2415b2a33
+  ---
+  duration_ms: 45.395416
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_7dbd7c7d1c4ddf90
+ok 10 - north-star plans and exact locators remain bound to recorded operations: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 37.738791
+  type: 'test'
+  ...
+# Subtest: unlinked and ambiguous source reads cannot be attributed to a node
+ok 11 - unlinked and ambiguous source reads cannot be attributed to a node
+  ---
+  duration_ms: 0.293959
+  type: 'test'
+  ...
+# Subtest: unknown process IDs preserve their exact recorded label
+ok 12 - unknown process IDs preserve their exact recorded label
+  ---
+  duration_ms: 0.045542
+  type: 'test'
+  ...
+# Subtest: executive completion highlights the latest visible fact or its own recorded completion
+ok 13 - executive completion highlights the latest visible fact or its own recorded completion
+  ---
+  duration_ms: 120.679625
+  type: 'test'
+  ...
+# Subtest: a completion stays visually pending until its plan has receded
+ok 14 - a completion stays visually pending until its plan has receded
+  ---
+  duration_ms: 15.2505
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_314f2d309fea25e6
+ok 15 - completed process keeps columns and exact passages local: clm_314f2d309fea25e6
+  ---
+  duration_ms: 31.121834
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_4a07dbbbd859a3ce
+ok 16 - completed process keeps columns and exact passages local: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 18.821917
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_95d08975bc575592
+ok 17 - completed process keeps columns and exact passages local: clm_95d08975bc575592
+  ---
+  duration_ms: 18.845166
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_0f4f13b1e3e1328c
+ok 18 - completed process keeps columns and exact passages local: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 6.491
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_393285577dcb12c4
+ok 19 - completed process keeps columns and exact passages local: clm_393285577dcb12c4
+  ---
+  duration_ms: 6.367709
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_4a53299cfe619303
+ok 20 - completed process keeps columns and exact passages local: clm_4a53299cfe619303
+  ---
+  duration_ms: 6.832
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_2c55cdd816b1d0e8
+ok 21 - completed process keeps columns and exact passages local: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 9.497625
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_543f08f2415b2a33
+ok 22 - completed process keeps columns and exact passages local: clm_543f08f2415b2a33
+  ---
+  duration_ms: 8.915791
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_7dbd7c7d1c4ddf90
+ok 23 - completed process keeps columns and exact passages local: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 8.992208
+  type: 'test'
+  ...
+# Subtest: one source Read row retains interleaved operations and rows sort by first seq
+ok 24 - one source Read row retains interleaved operations and rows sort by first seq
+  ---
+  duration_ms: 0.147083
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_314f2d309fea25e6
+ok 25 - first node-bound extraction is visibly building and its read plan is active: clm_314f2d309fea25e6
+  ---
+  duration_ms: 15.886583
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_4a07dbbbd859a3ce
+ok 26 - first node-bound extraction is visibly building and its read plan is active: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 14.580958
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_95d08975bc575592
+ok 27 - first node-bound extraction is visibly building and its read plan is active: clm_95d08975bc575592
+  ---
+  duration_ms: 15.001542
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_0f4f13b1e3e1328c
+ok 28 - first node-bound extraction is visibly building and its read plan is active: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 6.825041
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_393285577dcb12c4
+ok 29 - first node-bound extraction is visibly building and its read plan is active: clm_393285577dcb12c4
+  ---
+  duration_ms: 7.703666
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_4a53299cfe619303
+ok 30 - first node-bound extraction is visibly building and its read plan is active: clm_4a53299cfe619303
+  ---
+  duration_ms: 7.039959
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_2c55cdd816b1d0e8
+ok 31 - first node-bound extraction is visibly building and its read plan is active: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 9.1905
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_543f08f2415b2a33
+ok 32 - first node-bound extraction is visibly building and its read plan is active: clm_543f08f2415b2a33
+  ---
+  duration_ms: 8.69175
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_7dbd7c7d1c4ddf90
+ok 33 - first node-bound extraction is visibly building and its read plan is active: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 9.082417
+  type: 'test'
+  ...
+# Subtest: a source header cited by the original locator is never hidden
+ok 34 - a source header cited by the original locator is never hidden
+  ---
+  duration_ms: 0.119833
+  type: 'test'
+  ...
+# Subtest: an unrelated passage cannot replace the selected node evidence
+ok 35 - an unrelated passage cannot replace the selected node evidence
+  ---
+  duration_ms: 15.016042
+  type: 'test'
+  ...
+# Subtest: only node-bound missing evidence and references enter the local chain
+ok 36 - only node-bound missing evidence and references enter the local chain
+  ---
+  duration_ms: 18.507625
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_314f2d309fea25e6
+ok 37 - memory payoff uses the exact checklist and case-local evidence: clm_314f2d309fea25e6
+  ---
+  duration_ms: 23.362333
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_4a07dbbbd859a3ce
+ok 38 - memory payoff uses the exact checklist and case-local evidence: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 21.526375
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_95d08975bc575592
+ok 39 - memory payoff uses the exact checklist and case-local evidence: clm_95d08975bc575592
+  ---
+  duration_ms: 19.470333
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_0f4f13b1e3e1328c
+ok 40 - memory payoff uses the exact checklist and case-local evidence: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 6.834916
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_393285577dcb12c4
+ok 41 - memory payoff uses the exact checklist and case-local evidence: clm_393285577dcb12c4
+  ---
+  duration_ms: 6.697541
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_4a53299cfe619303
+ok 42 - memory payoff uses the exact checklist and case-local evidence: clm_4a53299cfe619303
+  ---
+  duration_ms: 6.693
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_2c55cdd816b1d0e8
+ok 43 - memory payoff uses the exact checklist and case-local evidence: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 9.966166
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_543f08f2415b2a33
+ok 44 - memory payoff uses the exact checklist and case-local evidence: clm_543f08f2415b2a33
+  ---
+  duration_ms: 9.335625
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_7dbd7c7d1c4ddf90
+ok 45 - memory payoff uses the exact checklist and case-local evidence: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 9.412
+  type: 'test'
+  ...
+# Subtest: memory connections fail closed on an unverified trace or a mismatched identity
+ok 46 - memory connections fail closed on an unverified trace or a mismatched identity
+  ---
+  duration_ms: 22.048625
+  type: 'test'
+  ...
+# Subtest: whole-case wording changes never imply a changed step decision
+ok 47 - whole-case wording changes never imply a changed step decision
+  ---
+  duration_ms: 15.234959
+  type: 'test'
+  ...
+# Subtest: node marks separate failed and open legal tests from completed operations
+ok 48 - node marks separate failed and open legal tests from completed operations
+  ---
+  duration_ms: 10.602084
+  type: 'test'
+  ...
+# Subtest: preview whitespace remains identical to the immutable source, including its missing spaces
+ok 49 - preview whitespace remains identical to the immutable source, including its missing spaces
+  ---
+  duration_ms: 6.290291
+  type: 'test'
+  ...
+# Subtest: Source checker lists each accepted exact passage once and retains its source identity
+ok 50 - Source checker lists each accepted exact passage once and retains its source identity
+  ---
+  duration_ms: 100.800125
+  type: 'test'
+  ...
+# Subtest: Claim reader exposes only established facts with exact source locators
+ok 51 - Claim reader exposes only established facts with exact source locators
+  ---
+  duration_ms: 108.576084
+  type: 'test'
+  ...
+# Subtest: Source checker groups all exact passages beneath one heading for each source
+ok 52 - Source checker groups all exact passages beneath one heading for each source
+  ---
+  duration_ms: 105.949042
+  type: 'test'
+  ...
+# Subtest: Claim reader quotes a request only when it exists verbatim in the recorded message source
+ok 53 - Claim reader quotes a request only when it exists verbatim in the recorded message source
+  ---
+  duration_ms: 119.283959
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_314f2d309fea25e6
+ok 54 - every recorded seq drives plan progress and matching spine/title: clm_314f2d309fea25e6
+  ---
+  duration_ms: 407.526125
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_4a07dbbbd859a3ce
+ok 55 - every recorded seq drives plan progress and matching spine/title: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 512.399375
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_95d08975bc575592
+ok 56 - every recorded seq drives plan progress and matching spine/title: clm_95d08975bc575592
+  ---
+  duration_ms: 359.37175
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_0f4f13b1e3e1328c
+ok 57 - every recorded seq drives plan progress and matching spine/title: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 137.288334
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_393285577dcb12c4
+ok 58 - every recorded seq drives plan progress and matching spine/title: clm_393285577dcb12c4
+  ---
+  duration_ms: 139.998959
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_4a53299cfe619303
+ok 59 - every recorded seq drives plan progress and matching spine/title: clm_4a53299cfe619303
+  ---
+  duration_ms: 139.207542
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_2c55cdd816b1d0e8
+ok 60 - every recorded seq drives plan progress and matching spine/title: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 181.071791
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_543f08f2415b2a33
+ok 61 - every recorded seq drives plan progress and matching spine/title: clm_543f08f2415b2a33
+  ---
+  duration_ms: 176.588417
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_7dbd7c7d1c4ddf90
+ok 62 - every recorded seq drives plan progress and matching spine/title: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 200.278625
+  type: 'test'
+  ...
+# Subtest: unknown fact types quote exact bytes instead of substituting a guessed summary
+ok 63 - unknown fact types quote exact bytes instead of substituting a guessed summary
+  ---
+  duration_ms: 0.246666
+  type: 'test'
+  ...
+# Subtest: customer envelope is formatted only from recorded fields, without losing Unicode source offsets
+ok 64 - customer envelope is formatted only from recorded fields, without losing Unicode source offsets
+  ---
+  duration_ms: 0.430334
+  type: 'test'
+  ...
+# Subtest: intake and law expose recorded provenance; draft uses the saved body without sending
+ok 65 - intake and law expose recorded provenance; draft uses the saved body without sending
+  ---
+  duration_ms: 18.596083
+  type: 'test'
+  ...
+# Subtest: completion evidence answers the question using only that completion’s recorded citations
+ok 66 - completion evidence answers the question using only that completion’s recorded citations
+  ---
+  duration_ms: 86.781708
+  type: 'test'
+  ...
+# Subtest: clarity labels distinguish document readiness, draft content and checklist provenance
+ok 67 - clarity labels distinguish document readiness, draft content and checklist provenance
+  ---
+  duration_ms: 16.280667
+  type: 'test'
+  ...
+# Subtest: W10 showcase ranks original recorded fields and keeps absent gaps and forks absent
+ok 68 - W10 showcase ranks original recorded fields and keeps absent gaps and forks absent
+  ---
+  duration_ms: 9.807834
+  type: 'test'
+  ...
+# Subtest: W10 reuse items map only through the reused graph hash to recorded document requests
+ok 69 - W10 reuse items map only through the reused graph hash to recorded document requests
+  ---
+  duration_ms: 141.568042
+  type: 'test'
+  ...
+# Subtest: W10 glossary covers each recorded extraction type without borrowing case-specific values
+ok 70 - W10 glossary covers each recorded extraction type without borrowing case-specific values
+  ---
+  duration_ms: 85.775208
+  type: 'test'
+  ...
+# Subtest: W10 absence evidence and completed checks do not assert that reasons were supplied
+ok 71 - W10 absence evidence and completed checks do not assert that reasons were supplied
+  ---
+  duration_ms: 16.573208
+  type: 'test'
+  ...
+# Subtest: the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+not ok 72 - the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+  ---
+  duration_ms: 7185.1325
+  type: 'test'
+  location: '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-presentation-browser-v1.test.cjs:7:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    all beat midpoints have no unintended content overlaps
+    + actual - expected
+    
+    + [
+    +   {
+    +     hits: [
+    +       [
+    +         'au-ns-step-status Checked',
+    +         'au-ns-paper ←→Open full sourceDate25.11.2025I, Elin Ziegl',
+    +         44,
+    +         6
+    +       ]
+    +     ],
+    +     operation: 'op_4144e849b5327ced4f3f3b03562eeb87',
+    +     phase: 'cursor'
+    +   },
+    +   {
+    +     hits: [
+    +       [
+    +         'au-ns-step-status Checked',
+    +         'au-ns-paper ←→Open full sourceDate25.11.2025I, Elin Ziegl',
+    +         44,
+    +         6
+    +       ]
+    +     ],
+    +     operation: 'op_4144e849b5327ced4f3f3b03562eeb87',
+    +     phase: 'highlight'
+    +   },
+    +   {
+    +     hits: [
+    +       [
+    +         'au-ns-step-status Checked',
+    +         'au-ns-paper ←→Open full sourceDate25.11.2025I, Elin Ziegl',
+    +         44,
+    +         6
+    +       ]
+    +     ],
+    +     operation: 'op_4144e849b5327ced4f3f3b03562eeb87',
+    +     phase: 'passage-rest'
+    +   },
+    +   {
+    +     hits: [
+    +       [
+    +         'au-ns-step-status Checked',
+    +         'au-ns-paper ←→Open full sourceDate21.11.2025Email archive',
+    +         44,
+    +         6
+    +       ],
+    +       [
+    +         'au-ns-step-status Checked',
+    +         'au-ns-paper ←→Open full sourceDate21.11.2025Email archive',
+    +         44,
+    +         6
+    +       ]
+    +     ],
+    +     operation: 'op_5fd74b61e63c48f408b8a55d99300719',
+    +     phase: 'cursor'
+    +   },
+    +   {
+    +     hits: [
+    +       [
+    +         'au-ns-step-status Checked',
+    +         'au-ns-paper ←→Open full sourceDate21.11.2025Email archive',
+    +         44,
+    +         6
+    +       ],
+    +       [
+    +         'au-ns-step-status Checked',
+    +         'au-ns-paper ←→Open full sourceDate21.11.2025Email archive',
+    +         44,
+    +         6
+    +       ]
+    +     ],
+    +     operation: 'op_5fd74b61e63c48f408b8a55d99300719',
+    +     phase: 'highlight'
+    +   },
+    +   {
+    +     hits: [
+    +       [
+    +         'au-ns-step-status Checked',
+    +         'au-ns-paper ←→Open full sourceDate21.11.2025Email archive',
+    +         44,
+    +         6
+    +       ],
+    +       [
+    +         'au-ns-step-status Checked',
+    +         'au-ns-paper ←→Open full sourceDate21.11.2025Email archive',
+    +         44,
+    +         6
+    +       ]
+    +     ],
+    +     operation: 'op_5fd74b61e63c48f408b8a55d99300719',
+    +     phase: 'passage-rest'
+    +   }
+    + ]
+    - []
+    
+    Missing fixture reads: []
+    Page errors: []
+    UI:  question
+    
+    ✕ Not met: Notice given on the canton-approved form
+    
+    “Form, Aussteller und sämtliche Zustellwege prüfen und vorsorglich die Frist sichern”
+    
+    Lease termination
+    
+    Answer ready
+    
+    Email notice and the complete service record
+    
+    ✕ Not met: Notice given on the canton-approved form
+    
+    “Vollständigkeit des Formulars und Verhältnis zur späteren E-Mail prüfen und die Frist sichern”
+    
+    Rent increases
+    
+    Answer ready
+    
+    A blank reason field and a later market email
+    
+    ✕ Not met: Reasons given with the increase
+    
+    “Vollständigkeit des Formulars und Verhältnis zur späteren E-Mail prüfen und die Frist sichern”
+    
+    Rent increases
+    
+    Answer ready
+    
+    An increase form with missing original reasons
+    
+    ✕ Not met: Reasons given with the increase
+    
+    “check the form's completeness and its relationship to the later email, and preserve the deadline”
+    
+    Rent increases
+    
+    Answer ready
+    
+    An increase form and the later email chronology
+    
+    ✕ Not met: Reasons given with the increase
+    
+    CasePath
+    Recorded replay · All cases are fictional.
+    Pause
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0:
+      phase: 'cursor'
+      operation: 'op_4144e849b5327ced4f3f3b03562eeb87'
+      hits:
+        0:
+          0: 'au-ns-step-status Checked'
+          1: 'au-ns-paper ←→Open full sourceDate25.11.2025I, Elin Ziegl'
+          2: 44
+          3: 6
+    1:
+      phase: 'highlight'
+      operation: 'op_4144e849b5327ced4f3f3b03562eeb87'
+      hits:
+        0:
+          0: 'au-ns-step-status Checked'
+          1: 'au-ns-paper ←→Open full sourceDate25.11.2025I, Elin Ziegl'
+          2: 44
+          3: 6
+    2:
+      phase: 'passage-rest'
+      operation: 'op_4144e849b5327ced4f3f3b03562eeb87'
+      hits:
+        0:
+          0: 'au-ns-step-status Checked'
+          1: 'au-ns-paper ←→Open full sourceDate25.11.2025I, Elin Ziegl'
+          2: 44
+          3: 6
+    3:
+      phase: 'cursor'
+      operation: 'op_5fd74b61e63c48f408b8a55d99300719'
+      hits:
+        0:
+          0: 'au-ns-step-status Checked'
+          1: 'au-ns-paper ←→Open full sourceDate21.11.2025Email archive'
+          2: 44
+          3: 6
+        1:
+          0: 'au-ns-step-status Checked'
+          1: 'au-ns-paper ←→Open full sourceDate21.11.2025Email archive'
+          2: 44
+          3: 6
+    4:
+      phase: 'highlight'
+      operation: 'op_5fd74b61e63c48f408b8a55d99300719'
+      hits:
+        0:
+          0: 'au-ns-step-status Checked'
+          1: 'au-ns-paper ←→Open full sourceDate21.11.2025Email archive'
+          2: 44
+          3: 6
+        1:
+          0: 'au-ns-step-status Checked'
+          1: 'au-ns-paper ←→Open full sourceDate21.11.2025Email archive'
+          2: 44
+          3: 6
+    5:
+      phase: 'passage-rest'
+      operation: 'op_5fd74b61e63c48f408b8a55d99300719'
+      hits:
+        0:
+          0: 'au-ns-step-status Checked'
+          1: 'au-ns-paper ←→Open full sourceDate21.11.2025Email archive'
+          2: 44
+          3: 6
+        1:
+          0: 'au-ns-step-status Checked'
+          1: 'au-ns-paper ←→Open full sourceDate21.11.2025Email archive'
+          2: 44
+          3: 6
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-presentation-browser-v1.test.cjs:62:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: a slow cold read keeps the north-star frame on landing and on opening a recorded case
+ok 73 - a slow cold read keeps the north-star frame on landing and on opening a recorded case
+  ---
+  duration_ms: 8569.354542
+  type: 'test'
+  ...
+1..73
+# tests 73
+# suites 0
+# pass 72
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 16386.530833
