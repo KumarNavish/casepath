@@ -145,7 +145,8 @@ test('completion evidence answers the question using only that completion’s re
 });
 test('clarity labels distinguish document readiness, draft content and checklist provenance',()=>{
  const c=fixture.cases[1],state=c.envelope.state,trace={...completedTrace(c),journal:c.envelope.events},html=ui.northStarMemoryMarkup(state,trace,{knowledge}),m=ui.northStarMemoryModel(state,trace,knowledge);
- assert.ok(html.includes(`data-au-claim="${m.earlierCase}"`));assert.match(html,/Automated checks passed. Human review is still required/);
+ assert.ok(html.includes(`data-au-claim="${m.earlierCase}"`));assert.match(html,/Automated checks passed · 243 rule scenarios. Human review is still required/);
+ assert.match(html,/Built from document checks in/);assert.match(html,/Reused for the same case type/);assert.match(html,/Reuse the checks. Recheck the facts/);
  assert.match(ui.deskNextStepMarkup(state),/Documents checked for this assessment. Review before replying/);
  const draft=ui.deskDraftReadMarkup(ui.deskDraftBinding(state));assert.match(draft,/Assessment draft/);assert.match(draft,/Review and complete this draft/);assert.ok(draft.includes(state.outcome.request_draft.body));
 });

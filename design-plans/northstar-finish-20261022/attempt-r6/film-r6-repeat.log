@@ -1,0 +1,12 @@
+{"replayed":1,"total":5226,"verifiedSamples":1}
+{"replayed":301,"total":5226,"verifiedSamples":6}
+{"replayed":601,"total":5226,"verifiedSamples":11}
+{"replayed":901,"total":5226,"verifiedSamples":16}
+AssertionError [ERR_ASSERTION]: independent repeat at frame 1140
++ actual - expected
+
++ '3e108b7485098412240c65c71dd8abcb8f9d45c368a86faa7abda112604c481d'
+- '0a3bb58c05bdd612a593a43412b8cd4cf2652a3551520752048970cf0c8ad54d'
+
+    at file:///Users/kumar0002/Documents/Die%20Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w9-20261021/capture_film.mjs:117:166
+{"sourceCommit":"3224960069951dc37cdb8330f8d9a7ff6ad91dc8","out":"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-32249600-r6","failure":"AssertionError [ERR_ASSERTION]: independent repeat at frame 1140\n+ actual - expected\n\n+ '3e108b7485098412240c65c71dd8abcb8f9d45c368a86faa7abda112604c481d'\n- '0a3bb58c05bdd612a593a43412b8cd4cf2652a3551520752048970cf0c8ad54d'\n\n    at file:///Users/kumar0002/Documents/Die%20Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w9-20261021/capture_film.mjs:117:166"}

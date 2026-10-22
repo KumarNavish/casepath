@@ -1785,7 +1785,7 @@
     const source=local.pin?`<strong>${h(deskFileLabel(local.source))}</strong><blockquote>${h(local.pin.quote)}</blockquote><button type="button" class="au-link" data-au-source="${h(local.pin.artifact_id)}" data-au-citation="${h(JSON.stringify(local.pin))}">Open exact passage ↗</button>`:'<p>No exact source passage is recorded for this step.</p>';
     const recipes=m.localRecipes.map(recipe=>`<li>${h(list(state.graph?.document_catalog).find(row=>row.document_type===recipe.document_type)?.label||words(recipe.document_type))}</li>`).join('');
     const count=m.operation.result?.reused_evidence_recipes;
-    return `<section class="au-ns-memory" data-au-ns-memory data-au-ns-memory-node="${h(local.nodeId)}" data-au-ns-memory-operation="${h(m.operation.id)}"><header><button type="button" class="au-link" data-au-detail="documents">Open documents ↗</button></header><ol class="au-ns-memory-spine" aria-label="Recorded process">${spine}</ol><div class="au-ns-memory-main"><section class="au-ns-memory-chain" aria-label="Source, reused checklist and result"><p>Uses the ${h(domain)} checklist${m.earlierCase?' saved from an earlier case':''}</p><div class="au-ns-memory-cards"><article class="au-ns-memory-source"><h3>Source for this step</h3><div>${source}</div></article><span class="au-ns-memory-card-arrow" aria-hidden="true">→</span><article><h3>Checklist</h3><div>${m.earlierCase?`<p>Saved from ${button(caseLabel(m.earlierCase).primary,`data-au-claim="${h(m.earlierCase)}"`)}</p>`:""}${m.version?.family===state.graph?.family?'<p>Same recorded case type.</p>':''}<ul>${recipes}</ul>${m.version?.qualification?.status==="qualified"?"<p>Automated checks passed. Human review is still required.</p>":""}${knowledgeLink(m.reuse.pin,'Open checklist ↗')}</div></article><span class="au-ns-memory-card-arrow" aria-hidden="true">→</span><article><h3>Result</h3><div>${Number.isSafeInteger(count)?`<strong>${count} document check${count===1?'':'s'} reused</strong>`:''}<p>Facts come from this case only.</p><button type="button" class="au-link" data-au-detail="answer">Open result ↗</button></div></article></div></section></div><svg class="au-ns-memory-link" aria-hidden="true"><path/></svg><footer>This case reused a checklist. Qualified review is still required.</footer></section>`;
+    return `<section class="au-ns-memory" data-au-ns-memory data-au-ns-memory-node="${h(local.nodeId)}" data-au-ns-memory-operation="${h(m.operation.id)}"><header><button type="button" class="au-link" data-au-detail="documents">Open documents ↗</button></header><ol class="au-ns-memory-spine" aria-label="Recorded process">${spine}</ol><div class="au-ns-memory-main"><section class="au-ns-memory-chain" aria-label="Source, reused checklist and result"><p>Uses the ${h(domain)} checklist${m.earlierCase?' saved from an earlier case':''}</p><div class="au-ns-memory-cards"><article class="au-ns-memory-source"><h3>Source for this step</h3><div>${source}</div></article><span class="au-ns-memory-card-arrow" aria-hidden="true">→</span><article><h3>Checklist</h3><div>${m.earlierCase?`<p>Built from document checks in ${button(caseLabel(m.earlierCase).primary,`data-au-claim="${h(m.earlierCase)}"`)}</p>`:""}${m.version?.family===state.graph?.family?`<p>Reused for the same case type: ${h(domain)}.</p>`:''}<ul>${recipes}</ul>${m.version?.qualification?.status==="qualified"?`<p>Automated checks passed${Number.isSafeInteger(m.version.qualification.regression_cases)?` · ${m.version.qualification.regression_cases} rule scenarios`:""}. Human review is still required.</p>`:""}${knowledgeLink(m.reuse.pin,'Open checklist ↗')}</div></article><span class="au-ns-memory-card-arrow" aria-hidden="true">→</span><article><h3>Result</h3><div>${Number.isSafeInteger(count)?`<strong>${count} document check${count===1?'':'s'} reused</strong>`:''}<p>Facts come from this case only. Its documents and dates are checked afresh.</p><button type="button" class="au-link" data-au-detail="answer">Open result ↗</button></div></article></div></section></div><svg class="au-ns-memory-link" aria-hidden="true"><path/></svg><footer>Reuse the checks. Recheck the facts. Qualified review is still required.</footer></section>`;
   }
   function northStarMessageRequest(state, file, trace) {
     if(file.source.role!=='customer_message')return '';
@@ -5208,8 +5208,7 @@
         }
         reading(act,main,op);motion(act,'combine',400,main,op);motion(act,'plan-recede',400,main,op);motion(act,'node-accepted',300,main,op);hold(act,'node-rest',main,op);
       };
-      add('customer','ready',2400,main);
-      motion('customer','customer-cursor',550,main);motion('customer','customer-highlight',250,main);hold('customer','customer-rest',main);
+      add('customer','ready',4200,main);
       motion('customer','source-open',400,main,firstOpen);
       motion('customer','cursor',550,main,requestOp);motion('customer','highlight',250,main,requestOp);hold('customer','passage-rest',main,requestOp);
       reading('reading',main,firstFact,{fact:true});
@@ -5249,12 +5248,21 @@
         const sources=new Map([...record.trace.sources].filter(([id])=>opened.has(id)));
         return {state:checkpoint.state,projection:checkpoint.projection,replay:checkpoint.replay,events:checkpoint.events||[],trace:{...record.trace,rows:prefix,sources,headState:record.state,current:op,northStar:true,executive:true,nsCatalogue:record.catalogue,finished:false,verifiedResult:false,nsCues:new Set(),displaySource:op?{artifact_id:op.source?.artifact_id||op.object.id}:null}};
       };
-      const transport=()=>`<footer class="au-executive-transport"><span data-au-film-speed></span><span>All cases are fictional.</span><div>${button(waiting?'Watch the analysis':clock.paused?'Resume':'Pause',waiting?'data-au-ns-start':clock.paused?'data-au-demo-resume':'data-au-demo-stop')}${waiting?'':button('Skip to answer','data-au-operation-skip')}</div></footer>`;
+      const transport=()=>`<footer class="au-executive-transport"><span data-au-film-speed></span><span>Recorded replay · All cases are fictional.</span><div>${button(waiting?'Watch the analysis':clock.paused?'Resume':'Pause',waiting?'data-au-ns-start':clock.paused?'data-au-demo-resume':'data-au-demo-stop')}${waiting?'':button('Skip to answer','data-au-operation-skip')}</div></footer>`;
       const opacity=(element,value)=>{if(element)element.style.opacity=String(value);};
       const select=(selector)=>host.querySelector(selector),all=(selector)=>[...host.querySelectorAll(selector)].filter(el=>!el.closest('.au-executive-transition'));
       function draw(beat) {
         const drawStarted=root.performance.now();
         const heldTransport=select('.au-executive-transport'),heldWaiting=Boolean(heldTransport?.querySelector('[data-au-ns-start]')),heldFocus=heldTransport?.contains(doc.activeElement)?doc.activeElement:null;
+        // Keep the fixed playback controls connected while only the case scene
+        // changes. Detaching them on every beat can leave stale paint tiles.
+        const setScene=markup=>{
+          const template=doc.createElement('template');template.innerHTML=markup;
+          const keep=heldTransport&&heldWaiting===waiting;
+          if(keep)template.content.querySelector('.au-executive-transport')?.remove();
+          for(const child of [...host.childNodes])if(!keep||child!==heldTransport)child.remove();
+          host.insertBefore(template.content,keep?heldTransport:null);
+        };
         const record=beat.record,viewName=beat.view;
         let shown;
         if(viewName){shown={state:record.state,projection:record.checkpoints.at(-1).projection,replay:record.checkpoints.at(-1).replay,events:record.trace.journal,trace:{...record.trace,headState:record.state,northStar:true,executive:true,finished:true,verifiedResult:true,current:null}};}
@@ -5279,15 +5287,19 @@
         detail=viewName&&viewName!=='cases'?viewName:'step';chosenNode=null;deskSelection=null;evidenceContext={};
         if(viewName==='cases'){
           const records=sessionCases(session).map(row=>catalogRow(claims,row.claim_id)).filter(Boolean);
-          host.innerHTML=`<section class="au-executive-cases"><header class="au-executive-roster-heading"><h1 class="au-page-heading" tabindex="-1">9 recorded examples</h1><p class="au-executive-roster-note">Fictional cases · open any case to inspect its steps and sources.</p></header><div class="au-claim-list" data-au-claims>${claimsMarkup(records,{scope:'originals',page:1,pageSize:9})}</div><div class="au-executive-wordmark" aria-hidden="true">CasePath</div></section>${transport()}`;
+          setScene(`<section class="au-executive-cases"><header class="au-executive-roster-heading"><h1 class="au-page-heading" tabindex="-1">9 recorded examples</h1><p class="au-executive-roster-note">Fictional cases · open any case to inspect its steps and sources.</p></header><div class="au-claim-list" data-au-claims>${claimsMarkup(records,{scope:'originals',page:1,pageSize:9})}</div><div class="au-executive-wordmark" aria-hidden="true">CasePath</div></section>${transport()}`);
           nav('work');
         }else{
           const cacheKey=[record.state.claim_id,viewName||op?.id||'customer',Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id))].join(':');
           if(!markupCache.has(cacheKey))markupCache.set(cacheKey,viewName?northStarCompletedMarkup(current,trace,detail,opts):northStarMarkup(current,trace,opts));
-          host.innerHTML=markupCache.get(cacheKey)+transport();
+          setScene(markupCache.get(cacheKey)+transport());
         }
-        if(heldTransport&&heldWaiting===waiting){select('.au-executive-transport')?.replaceWith(heldTransport);heldFocus?.focus({preventScroll:true});}
+        if(heldFocus?.isConnected)heldFocus.focus({preventScroll:true});
         if(customerPin){const pre=select('.au-ns-source-scroll pre'),source=trace.sources.get(customerPin.artifact_id),preview=northStarSourcePreview(source,customerPin);pre.innerHTML=h(preview.before)+`<mark data-au-ns-quote data-start="${customerPin.start_char}" data-end="${customerPin.end_char}">${h(customerPin.quote)}</mark>`+h(preview.after);pre.closest('[data-au-ns-paper]').dataset.auCustomerSource=customerPin.artifact_id;}
+        if(phase==='ready'){
+          const paper=select('[data-au-ns-paper]');
+          paper.innerHTML='<section class="au-ns-purpose" data-au-ns-purpose><p>Recorded example · legal protection</p><h2>From customer documents<br>to a reviewable answer</h2><p>Automated assistants connect evidence, legal checks and a draft reply. You make the decision.</p><div aria-label="Assessment path">Documents <span>→</span> Facts <span>→</span> Law <span>→</span> Answer</div><small>This walkthrough replays completed work on fictional cases.</small></section>';
+        }
         all('.au-ns-footer').forEach(el=>el.remove());
         if(!viewName){const count=new Set(trace.rows.filter(op=>op.kind==='document.check'&&op.source&&op.result?.assessment==='sufficient'&&(op.id!==beat.op?.id||!['camera-in','cursor','highlight','passage-rest'].includes(phase))).map(op=>op.object.id)).size;select('.au-ns-sources')?.insertAdjacentHTML('beforeend',`<button type="button" class="au-executive-documents" data-au-detail="documents">Documents <span>${count} checked</span></button>`);}
         const ns=select('[data-au-ns]'),tabs=container.querySelector('.au-ns-tabs');if(tabs)tabs.innerHTML=ns?northStarTabsMarkup(ns.dataset.auNsRoleActive,Boolean(viewName)):'';
@@ -5327,9 +5339,10 @@
         if(record===later){
           if(viewName==='answer')select('[data-au-desk-answer] > .au-desk-tests')?.remove();
           select('.au-ns-sources h1')?.insertAdjacentHTML('beforebegin','<p class="au-executive-later">Later case</p>');
+          select('.au-ns-sources h1')?.insertAdjacentHTML('afterend',`<p class="au-ns-intake">Case ${sessionCases(session).findIndex(row=>row.claim_id===record.state.claim_id)+1} of ${sessionCases(session).length} · its own documents</p>`);
           const heading=select('.au-ns-memory-source h3');if(heading)heading.textContent='Later case source';
         }
-        for(const el of all('[data-au-demo-stop],[data-au-demo-resume]')){el.textContent=clock.paused?'Resume':'Pause';}
+        syncControls();
         routeTitle(viewName==='cases'?'Cases':caseTitle(current.claim_id,current));
         drawTimings.push({beat:beat.index,phase:beat.phase,milliseconds:root.performance.now()-drawStarted});
       }
@@ -5402,7 +5415,7 @@
           if(sample.at>=story.duration){clock.pause();waiting=false;pausedPresentation=session;demoSession=null;syncControls();}
         }finally{rendering=false;}
       }
-      function syncControls(){for(const el of all('[data-au-demo-stop],[data-au-demo-resume]')){el.removeAttribute('data-au-demo-stop');el.removeAttribute('data-au-demo-resume');el.setAttribute(clock.paused?'data-au-demo-resume':'data-au-demo-stop','');el.textContent=clock.paused?'Resume':'Pause';}all('[data-au-desk-watch]').forEach(el=>el.hidden=!clock.paused);}
+      function syncControls(){for(const el of all('[data-au-demo-stop],[data-au-demo-resume]')){const attribute=clock.paused?'data-au-demo-resume':'data-au-demo-stop',label=clock.paused?'Resume':'Pause';if(!el.hasAttribute(attribute)){el.removeAttribute(clock.paused?'data-au-demo-stop':'data-au-demo-resume');el.setAttribute(attribute,'');}if(el.textContent!==label)el.textContent=label;}all('[data-au-desk-watch]').forEach(el=>{if(el.hidden!==!clock.paused)el.hidden=!clock.paused;});}
       const controller={
         render:()=>render(clock.now(),true),transportMarkup:transport,
         start(){waiting=false;clock.seek(0);render(0,true);clock.resume();syncControls();select('[data-au-demo-stop]')?.focus({preventScroll:true});},

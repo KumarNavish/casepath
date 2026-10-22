@@ -1,0 +1,56 @@
+{
+  "sourceCommit": "3224960069951dc37cdb8330f8d9a7ff6ad91dc8",
+  "wrapperPid": 53152,
+  "startedAt": "2026-10-22T19:49:22.128628+00:00",
+  "status": "failed",
+  "serialized": true,
+  "stages": [
+    {
+      "name": "preview",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/start_preview_r6_recovery1.py"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022",
+      "status": "completed",
+      "startedAt": "2026-10-22T19:49:22.143303+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/recovery-r6-preview.log",
+      "pid": 53158,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T19:49:35.391402+00:00",
+      "logSha256": "44d299fb6e56eea48366ea2321281c962916ef02cd5972c31cc449e8450d73c0"
+    },
+    {
+      "name": "presentation",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w9-20261021/verify_presentation.mjs"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022",
+      "status": "completed",
+      "startedAt": "2026-10-22T19:49:35.419616+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/recovery-r6-presentation.log",
+      "pid": 53202,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T19:51:25.506033+00:00",
+      "logSha256": "3f9bd22a3f5cf3527120b8b45633bbc981dcd43d405941e22ef9313a5b44a810"
+    },
+    {
+      "name": "film",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/run_northstar_film_sequence_r6.py"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022",
+      "status": "completed",
+      "startedAt": "2026-10-22T19:51:25.555351+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/recovery-r6-film.log",
+      "pid": 54000,
+      "exitCode": 1,
+      "finishedAt": "2026-10-22T20:09:28.411473+00:00",
+      "logSha256": "8ff394cda482cc16bc624863c1a9d08c65b19ce8c8c891dc234b1830b2be5a80"
+    }
+  ],
+  "failure": "AssertionError('film')",
+  "finishedAt": "2026-10-22T20:09:28.421827+00:00"
+}

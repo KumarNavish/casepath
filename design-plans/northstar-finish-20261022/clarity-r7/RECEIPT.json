@@ -1,0 +1,22 @@
+{
+  "base": "3224960069951dc37cdb8330f8d9a7ff6ad91dc8",
+  "focused": {
+    "passed": 498,
+    "failed": 0
+  },
+  "browser": {
+    "passed": 2,
+    "failed": 0
+  },
+  "changes": [
+    "Purpose precedes documents in the product opening",
+    "Persistent recorded-replay label",
+    "Checklist origin,243 recorded rule scenarios and same-case-type reuse labels",
+    "Later case identified separately",
+    "Fixed transport remains connected and unchanged controls do not mutate each frame"
+  ],
+  "retainedFailure": "../attempt-r6",
+  "diagnostic": "Original transient footer mismatch did not recur through frame1200 in bounded replay. Stable DOM transport removes repeated detach and repaint; full independent repeat still required.",
+  "notReady": true,
+  "recordedAt": "2026-10-22T20:19:00.359828+00:00"
+}
