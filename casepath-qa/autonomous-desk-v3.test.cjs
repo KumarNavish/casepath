@@ -16,8 +16,8 @@ for(const item of fixture.cases)test(`desk counters and legal labels follow the 
  const unknown=ui.deskOperationModel(state);assert.equal(unknown.counts.documents,null);assert.equal(unknown.counts.facts,null);assert.equal(unknown.counts.rules,null);
  const sources=new Map(all.filter(r=>r.kind==='source.open').map(r=>[r.object.id,r.result])),trace={binding:frames[0],headState:state,rows:all,sources,finished:true,verifiedResult:true};
  const html=ui.agentDeskMarkup(state,{},null,[],{},{operations:trace});
- assert.ok(html.includes('Documents checked for this assessment. Review before replying.'));
- assert.ok(html.indexOf('Documents checked for this assessment. Review before replying.') < html.indexOf('data-au-desk-answer'), 'the next step leads the completed desk');
+ assert.ok(html.includes('Evidence files checked. Review the legal findings before replying.'));
+ assert.ok(html.indexOf('Evidence files checked. Review the legal findings before replying.') < html.indexOf('data-au-desk-answer'), 'the next step leads the completed desk');
  for(const legal of state.outcome.legal_predicates){assert.ok(ui.DESK_LEGAL_TESTS[legal.predicate_id],`explicit glossary entry: ${legal.predicate_id}`);assert.ok(html.includes(ui.deskLegalLabel(legal.predicate_id).replace(/&/g,'&amp;')));}
  for(const step of state.graph.nodes){
   assert.ok(ui.DESK_STEPS[step.node_id],`explicit step glossary entry: ${step.node_id}`);
