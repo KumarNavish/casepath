@@ -1,0 +1,496 @@
+TAP version 13
+# Subtest: role table uses recorded kind and stage; unknown operations retain the previous role
+ok 1 - role table uses recorded kind and stage; unknown operations retain the previous role
+  ---
+  duration_ms: 0.874
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_314f2d309fea25e6
+ok 2 - north-star plans and exact locators remain bound to recorded operations: clm_314f2d309fea25e6
+  ---
+  duration_ms: 29.18125
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_4a07dbbbd859a3ce
+ok 3 - north-star plans and exact locators remain bound to recorded operations: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 25.397708
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_95d08975bc575592
+ok 4 - north-star plans and exact locators remain bound to recorded operations: clm_95d08975bc575592
+  ---
+  duration_ms: 29.105791
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_0f4f13b1e3e1328c
+ok 5 - north-star plans and exact locators remain bound to recorded operations: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 13.518
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_393285577dcb12c4
+ok 6 - north-star plans and exact locators remain bound to recorded operations: clm_393285577dcb12c4
+  ---
+  duration_ms: 14.194458
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_4a53299cfe619303
+ok 7 - north-star plans and exact locators remain bound to recorded operations: clm_4a53299cfe619303
+  ---
+  duration_ms: 12.28925
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_2c55cdd816b1d0e8
+ok 8 - north-star plans and exact locators remain bound to recorded operations: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 37.686667
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_543f08f2415b2a33
+ok 9 - north-star plans and exact locators remain bound to recorded operations: clm_543f08f2415b2a33
+  ---
+  duration_ms: 36.422542
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_7dbd7c7d1c4ddf90
+ok 10 - north-star plans and exact locators remain bound to recorded operations: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 38.606375
+  type: 'test'
+  ...
+# Subtest: unlinked and ambiguous source reads cannot be attributed to a node
+ok 11 - unlinked and ambiguous source reads cannot be attributed to a node
+  ---
+  duration_ms: 0.32475
+  type: 'test'
+  ...
+# Subtest: unknown process IDs preserve their exact recorded label
+ok 12 - unknown process IDs preserve their exact recorded label
+  ---
+  duration_ms: 0.052292
+  type: 'test'
+  ...
+# Subtest: executive completion highlights the latest visible fact or its own recorded completion
+ok 13 - executive completion highlights the latest visible fact or its own recorded completion
+  ---
+  duration_ms: 117.278958
+  type: 'test'
+  ...
+# Subtest: a completion stays visually pending until its plan has receded
+ok 14 - a completion stays visually pending until its plan has receded
+  ---
+  duration_ms: 16.725625
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_314f2d309fea25e6
+ok 15 - completed process keeps columns and exact passages local: clm_314f2d309fea25e6
+  ---
+  duration_ms: 42.542792
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_4a07dbbbd859a3ce
+ok 16 - completed process keeps columns and exact passages local: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 21.039584
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_95d08975bc575592
+ok 17 - completed process keeps columns and exact passages local: clm_95d08975bc575592
+  ---
+  duration_ms: 19.547834
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_0f4f13b1e3e1328c
+ok 18 - completed process keeps columns and exact passages local: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 6.537875
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_393285577dcb12c4
+ok 19 - completed process keeps columns and exact passages local: clm_393285577dcb12c4
+  ---
+  duration_ms: 6.461875
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_4a53299cfe619303
+ok 20 - completed process keeps columns and exact passages local: clm_4a53299cfe619303
+  ---
+  duration_ms: 6.743042
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_2c55cdd816b1d0e8
+ok 21 - completed process keeps columns and exact passages local: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 9.23175
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_543f08f2415b2a33
+ok 22 - completed process keeps columns and exact passages local: clm_543f08f2415b2a33
+  ---
+  duration_ms: 9.457833
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_7dbd7c7d1c4ddf90
+ok 23 - completed process keeps columns and exact passages local: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 9.185083
+  type: 'test'
+  ...
+# Subtest: one source Read row retains interleaved operations and rows sort by first seq
+ok 24 - one source Read row retains interleaved operations and rows sort by first seq
+  ---
+  duration_ms: 0.138
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_314f2d309fea25e6
+ok 25 - first node-bound extraction is visibly building and its read plan is active: clm_314f2d309fea25e6
+  ---
+  duration_ms: 15.850833
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_4a07dbbbd859a3ce
+ok 26 - first node-bound extraction is visibly building and its read plan is active: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 15.803416
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_95d08975bc575592
+ok 27 - first node-bound extraction is visibly building and its read plan is active: clm_95d08975bc575592
+  ---
+  duration_ms: 15.257875
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_0f4f13b1e3e1328c
+ok 28 - first node-bound extraction is visibly building and its read plan is active: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 6.85825
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_393285577dcb12c4
+ok 29 - first node-bound extraction is visibly building and its read plan is active: clm_393285577dcb12c4
+  ---
+  duration_ms: 7.213916
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_4a53299cfe619303
+ok 30 - first node-bound extraction is visibly building and its read plan is active: clm_4a53299cfe619303
+  ---
+  duration_ms: 6.841167
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_2c55cdd816b1d0e8
+ok 31 - first node-bound extraction is visibly building and its read plan is active: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 10.14225
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_543f08f2415b2a33
+ok 32 - first node-bound extraction is visibly building and its read plan is active: clm_543f08f2415b2a33
+  ---
+  duration_ms: 9.921125
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_7dbd7c7d1c4ddf90
+ok 33 - first node-bound extraction is visibly building and its read plan is active: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 10.099958
+  type: 'test'
+  ...
+# Subtest: a source header cited by the original locator is never hidden
+ok 34 - a source header cited by the original locator is never hidden
+  ---
+  duration_ms: 0.136458
+  type: 'test'
+  ...
+# Subtest: an unrelated passage cannot replace the selected node evidence
+ok 35 - an unrelated passage cannot replace the selected node evidence
+  ---
+  duration_ms: 15.602917
+  type: 'test'
+  ...
+# Subtest: only node-bound missing evidence and references enter the local chain
+ok 36 - only node-bound missing evidence and references enter the local chain
+  ---
+  duration_ms: 18.692958
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_314f2d309fea25e6
+ok 37 - memory payoff uses the exact checklist and case-local evidence: clm_314f2d309fea25e6
+  ---
+  duration_ms: 28.793834
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_4a07dbbbd859a3ce
+ok 38 - memory payoff uses the exact checklist and case-local evidence: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 33.292625
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_95d08975bc575592
+ok 39 - memory payoff uses the exact checklist and case-local evidence: clm_95d08975bc575592
+  ---
+  duration_ms: 29.701916
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_0f4f13b1e3e1328c
+ok 40 - memory payoff uses the exact checklist and case-local evidence: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 14.342459
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_393285577dcb12c4
+ok 41 - memory payoff uses the exact checklist and case-local evidence: clm_393285577dcb12c4
+  ---
+  duration_ms: 8.312834
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_4a53299cfe619303
+ok 42 - memory payoff uses the exact checklist and case-local evidence: clm_4a53299cfe619303
+  ---
+  duration_ms: 7.78975
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_2c55cdd816b1d0e8
+ok 43 - memory payoff uses the exact checklist and case-local evidence: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 9.692625
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_543f08f2415b2a33
+ok 44 - memory payoff uses the exact checklist and case-local evidence: clm_543f08f2415b2a33
+  ---
+  duration_ms: 10.724583
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_7dbd7c7d1c4ddf90
+ok 45 - memory payoff uses the exact checklist and case-local evidence: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 10.851833
+  type: 'test'
+  ...
+# Subtest: memory connections fail closed on an unverified trace or a mismatched identity
+ok 46 - memory connections fail closed on an unverified trace or a mismatched identity
+  ---
+  duration_ms: 45.107166
+  type: 'test'
+  ...
+# Subtest: whole-case wording changes never imply a changed step decision
+ok 47 - whole-case wording changes never imply a changed step decision
+  ---
+  duration_ms: 19.604666
+  type: 'test'
+  ...
+# Subtest: node marks separate failed and open legal tests from completed operations
+ok 48 - node marks separate failed and open legal tests from completed operations
+  ---
+  duration_ms: 10.695042
+  type: 'test'
+  ...
+# Subtest: preview whitespace remains identical to the immutable source, including its missing spaces
+ok 49 - preview whitespace remains identical to the immutable source, including its missing spaces
+  ---
+  duration_ms: 6.065
+  type: 'test'
+  ...
+# Subtest: Source checker lists each accepted exact passage once and retains its source identity
+ok 50 - Source checker lists each accepted exact passage once and retains its source identity
+  ---
+  duration_ms: 109.561875
+  type: 'test'
+  ...
+# Subtest: Claim reader exposes only established facts with exact source locators
+ok 51 - Claim reader exposes only established facts with exact source locators
+  ---
+  duration_ms: 178.4985
+  type: 'test'
+  ...
+# Subtest: Source checker groups all exact passages beneath one heading for each source
+ok 52 - Source checker groups all exact passages beneath one heading for each source
+  ---
+  duration_ms: 104.15975
+  type: 'test'
+  ...
+# Subtest: Claim reader quotes a request only when it exists verbatim in the recorded message source
+ok 53 - Claim reader quotes a request only when it exists verbatim in the recorded message source
+  ---
+  duration_ms: 125.943042
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_314f2d309fea25e6
+ok 54 - every recorded seq drives plan progress and matching spine/title: clm_314f2d309fea25e6
+  ---
+  duration_ms: 375.934208
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_4a07dbbbd859a3ce
+ok 55 - every recorded seq drives plan progress and matching spine/title: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 346.386417
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_95d08975bc575592
+ok 56 - every recorded seq drives plan progress and matching spine/title: clm_95d08975bc575592
+  ---
+  duration_ms: 311.600542
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_0f4f13b1e3e1328c
+ok 57 - every recorded seq drives plan progress and matching spine/title: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 131.843292
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_393285577dcb12c4
+ok 58 - every recorded seq drives plan progress and matching spine/title: clm_393285577dcb12c4
+  ---
+  duration_ms: 144.080459
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_4a53299cfe619303
+ok 59 - every recorded seq drives plan progress and matching spine/title: clm_4a53299cfe619303
+  ---
+  duration_ms: 129.148375
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_2c55cdd816b1d0e8
+ok 60 - every recorded seq drives plan progress and matching spine/title: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 178.299167
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_543f08f2415b2a33
+ok 61 - every recorded seq drives plan progress and matching spine/title: clm_543f08f2415b2a33
+  ---
+  duration_ms: 211.455375
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_7dbd7c7d1c4ddf90
+ok 62 - every recorded seq drives plan progress and matching spine/title: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 204.296667
+  type: 'test'
+  ...
+# Subtest: unknown fact types quote exact bytes instead of substituting a guessed summary
+ok 63 - unknown fact types quote exact bytes instead of substituting a guessed summary
+  ---
+  duration_ms: 0.234291
+  type: 'test'
+  ...
+# Subtest: customer envelope is formatted only from recorded fields, without losing Unicode source offsets
+ok 64 - customer envelope is formatted only from recorded fields, without losing Unicode source offsets
+  ---
+  duration_ms: 0.3955
+  type: 'test'
+  ...
+# Subtest: intake and law expose recorded provenance; draft uses the saved body without sending
+ok 65 - intake and law expose recorded provenance; draft uses the saved body without sending
+  ---
+  duration_ms: 18.300708
+  type: 'test'
+  ...
+# Subtest: completion evidence answers the question using only that completion’s recorded citations
+ok 66 - completion evidence answers the question using only that completion’s recorded citations
+  ---
+  duration_ms: 75.5995
+  type: 'test'
+  ...
+# Subtest: clarity labels distinguish document readiness, draft content and checklist provenance
+ok 67 - clarity labels distinguish document readiness, draft content and checklist provenance
+  ---
+  duration_ms: 16.525416
+  type: 'test'
+  ...
+# Subtest: W10 showcase ranks original recorded fields and keeps absent gaps and forks absent
+ok 68 - W10 showcase ranks original recorded fields and keeps absent gaps and forks absent
+  ---
+  duration_ms: 9.438459
+  type: 'test'
+  ...
+# Subtest: W10 reuse items map only through the reused graph hash to recorded document requests
+ok 69 - W10 reuse items map only through the reused graph hash to recorded document requests
+  ---
+  duration_ms: 140.589458
+  type: 'test'
+  ...
+# Subtest: W10 glossary covers each recorded extraction type without borrowing case-specific values
+ok 70 - W10 glossary covers each recorded extraction type without borrowing case-specific values
+  ---
+  duration_ms: 91.08975
+  type: 'test'
+  ...
+# Subtest: W10 absence evidence and completed checks do not assert that reasons were supplied
+ok 71 - W10 absence evidence and completed checks do not assert that reasons were supplied
+  ---
+  duration_ms: 19.666666
+  type: 'test'
+  ...
+# Subtest: the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+ok 72 - the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+  ---
+  duration_ms: 6763.938709
+  type: 'test'
+  ...
+# Subtest: a slow cold read keeps the north-star frame on landing and on opening a recorded case
+ok 73 - a slow cold read keeps the north-star frame on landing and on opening a recorded case
+  ---
+  duration_ms: 8395.260875
+  type: 'test'
+  ...
+# Subtest: pause freezes motion and reading holds, including a long interruption
+ok 74 - pause freezes motion and reading holds, including a long interruption
+  ---
+  duration_ms: 1.451583
+  type: 'test'
+  ...
+# Subtest: capture seeks an absolute timeline at exact n times 1000/60, independent of host origin
+ok 75 - capture seeks an absolute timeline at exact n times 1000/60, independent of host origin
+  ---
+  duration_ms: 0.658709
+  type: 'test'
+  ...
+# Subtest: reduced motion keeps reading holds and changes states instantly
+ok 76 - reduced motion keeps reading holds and changes states instantly
+  ---
+  duration_ms: 0.150792
+  type: 'test'
+  ...
+# Subtest: a second visual change, layout properties and incompatible transforms are rejected
+ok 77 - a second visual change, layout properties and incompatible transforms are rejected
+  ---
+  duration_ms: 0.306625
+  type: 'test'
+  ...
+# Subtest: navigation or a removed element settles pending work without completion
+ok 78 - navigation or a removed element settles pending work without completion
+  ---
+  duration_ms: 0.165667
+  type: 'test'
+  ...
+# Subtest: recorded payload cannot override presentation timestamps or event kinds
+ok 79 - recorded payload cannot override presentation timestamps or event kinds
+  ---
+  duration_ms: 0.087333
+  type: 'test'
+  ...
+# Subtest: timeline boundaries are deterministic and never borrow time from reading holds
+ok 80 - timeline boundaries are deterministic and never borrow time from reading holds
+  ---
+  duration_ms: 0.197375
+  type: 'test'
+  ...
+# Subtest: external frame stepping freezes wall time without changing the user playing state
+ok 81 - external frame stepping freezes wall time without changing the user playing state
+  ---
+  duration_ms: 0.118666
+  type: 'test'
+  ...
+1..81
+# tests 81
+# suites 0
+# pass 81
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 15653.750541

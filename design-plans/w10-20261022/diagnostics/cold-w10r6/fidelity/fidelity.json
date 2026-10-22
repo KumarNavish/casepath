@@ -1,0 +1,102 @@
+{
+  "sourceCommit": "090d0b0bf00d4c793cea9182539e1a5c27bd0984",
+  "recordedAt": "2026-10-22T22:47:42.884780+00:00",
+  "comparisons": [
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/01-decision-building.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/served-proof-w10r6/fact-rest.png",
+      "mean_difference_pct": 4.65,
+      "state": "01",
+      "frame_sha256": "43f319b26a0ffd75a8b3defd24d752dddd608e8f417bab7698bf6e02529443af"
+    },
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/02-completed-process.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/served-proof-w10r6/completed.png",
+      "mean_difference_pct": 6.33,
+      "state": "02",
+      "frame_sha256": "acfb463e593c50f8419821017b68e9bc17f25d46565955ee18a3df384c040239"
+    },
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/03-reviewed-memory-payoff.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/served-proof-w10r6/memory-notice-rest.png",
+      "mean_difference_pct": 5.02,
+      "state": "03",
+      "frame_sha256": "1873977f63b83fb45430ef6b91f56d93eaef9cc9dd14e7b46a093a7d8bcb0807"
+    }
+  ],
+  "visualReview": {
+    "passed": true,
+    "reviewedAt": "2026-10-22T22:49:24.933800+00:00",
+    "reviewedFiles": [
+      "01-side.png",
+      "01-overlay.png",
+      "02-side.png",
+      "02-overlay.png",
+      "03-side.png",
+      "03-overlay.png"
+    ],
+    "matched": [
+      "White shell, Mulish, crimson/green palette, five roles and source rail.",
+      "Live source card, question spine, plan, exact tinted passage, travelling role badge and dotted fact-to-node connector.",
+      "Completed numbered nodes, failed crimson cross, four populated chain columns, Documents box and exact source preview.",
+      "Later-case vertical spine, source/checklist/result cards, mapped reused document checks and landing count."
+    ],
+    "deliberate": [
+      {
+        "difference": "Three process nodes and four chain columns; no forks or missing-document column.",
+        "reason": "The richest saved case has three nodes, a failed test and four populated chain columns, but no recorded missing evidence or forks."
+      },
+      {
+        "difference": "One short complete failed-test passage, centered with 45 percent surrounding context; role badge in the reserved right gutter.",
+        "reason": "W10 exact-byte readability and one change at a time; the selected extraction precedes the first completed step."
+      },
+      {
+        "difference": "Neutral numbers and Checked labels replace affirmative completed-question checks. Failed mapped legal tests retain the crimson cross and failure count; Documents adds Evidence files.",
+        "reason": "Two fresh cold reviews read a success check as an affirmative answer. Completion, evidence availability and legal findings are distinct recorded states."
+      },
+      {
+        "difference": "Source preview displays exact saved text instead of a fabricated rendered page.",
+        "reason": "No original page-render asset exists for this saved source."
+      },
+      {
+        "difference": "Three reused checks land on recorded document targets; no BEFORE/NOW or human-review badge.",
+        "reason": "These histories record checklist reuse and document requests, but no human-edited memory change."
+      },
+      {
+        "difference": "Memory cards align with selected step within the available viewport rather than the illustrative lower ten-step position.",
+        "reason": "The recorded case has three steps; all cards, targets and controls must remain visible."
+      }
+    ],
+    "pending": [],
+    "reviewedImages": [
+      "01-side.png",
+      "01-overlay.png",
+      "02-side.png",
+      "02-overlay.png",
+      "03-side.png",
+      "03-overlay.png"
+    ],
+    "r6ObservedDifferences": [
+      {
+        "status": "matched",
+        "detail": "Shell, Mulish, crimson palette, role tabs, source card, plan, travelling badge, dotted connector, completed chain and later-case memory chain retain the concept structure."
+      },
+      {
+        "status": "deliberate",
+        "detail": "The selected recorded case has three process nodes, four populated chain columns, no missing evidence and no forks. No illustrative node, gap or branch is invented."
+      },
+      {
+        "status": "deliberate",
+        "detail": "Notification-context and validity questions follow the recorded scopes, with original labels on hover. Numbered checked steps stay neutral; the mapped failed test alone carries the crimson cross. All question text remains visible."
+      },
+      {
+        "status": "deliberate",
+        "detail": "The exact failed-test passage is complete, 17px/1.5, with dimmed surrounding text and reserved cursor-badge gutter. Source preview shows recorded text rather than a fabricated page image."
+      },
+      {
+        "status": "deliberate",
+        "detail": "The later case displays three checklist items on their actual document/step targets, a count of items reused and a fresh-facts qualification. Cards use the available three-node space. No unrecorded human edit or BEFORE/NOW claim is shown."
+      }
+    ]
+  }
+}
