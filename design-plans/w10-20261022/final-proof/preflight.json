@@ -1,0 +1,45 @@
+{
+  "sourceCommit": "48ec153d869e39afa64c8f04e358b72e5dea255a",
+  "pid": 30593,
+  "startedAt": "2026-10-22T23:16:37.352611+00:00",
+  "status": "passed",
+  "stages": [
+    {
+      "name": "process",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w8-20261021-mac-r1/verify-process.mjs"
+      ],
+      "startedAt": "2026-10-22T23:16:37.353028+00:00",
+      "status": "completed",
+      "pid": 30596,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T23:17:39.020552+00:00"
+    },
+    {
+      "name": "memory",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w8-20261021-mac-r1/verify-memory.mjs"
+      ],
+      "startedAt": "2026-10-22T23:17:39.021214+00:00",
+      "status": "completed",
+      "pid": 33016,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T23:18:21.176022+00:00"
+    },
+    {
+      "name": "presentation",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w9-20261021/verify_presentation.mjs"
+      ],
+      "startedAt": "2026-10-22T23:18:21.176533+00:00",
+      "status": "completed",
+      "pid": 33200,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T23:20:14.377954+00:00"
+    }
+  ],
+  "finishedAt": "2026-10-22T23:20:14.378581+00:00"
+}

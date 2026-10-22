@@ -1,0 +1,69 @@
+{
+  "sourceCommit": "48ec153d869e39afa64c8f04e358b72e5dea255a",
+  "recordedAt": "2026-10-22T23:20:14.505166+00:00",
+  "comparisons": [
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/01-decision-building.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/served-proof-w10r7/fact-rest.png",
+      "mean_difference_pct": 4.65,
+      "state": "01",
+      "frame_sha256": "43f319b26a0ffd75a8b3defd24d752dddd608e8f417bab7698bf6e02529443af"
+    },
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/02-completed-process.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/served-proof-w10r7/completed.png",
+      "mean_difference_pct": 6.33,
+      "state": "02",
+      "frame_sha256": "cdff01c2c9c93347bbaf5b369254938ad7922299673907137a2d6708d1e3cfdf"
+    },
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/03-reviewed-memory-payoff.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/served-proof-w10r7/memory-notice-rest.png",
+      "mean_difference_pct": 5.02,
+      "state": "03",
+      "frame_sha256": "1873977f63b83fb45430ef6b91f56d93eaef9cc9dd14e7b46a093a7d8bcb0807"
+    }
+  ],
+  "visualReview": {
+    "passed": true,
+    "reviewedAt": "2026-10-22T23:21:14.679454+00:00",
+    "reviewedFiles": [
+      "01-side.png",
+      "01-overlay.png",
+      "02-side.png",
+      "02-overlay.png",
+      "03-side.png",
+      "03-overlay.png"
+    ],
+    "additionalFrame": ".runtime/served-proof-w10r7/completed.png",
+    "matched": [
+      "White shell, Mulish, five roles, source rail and crimson/green palette.",
+      "Live question spine, exact highlighted source card, plan, travelling role badge and dotted last-fact to junction to node connector.",
+      "Completed numbered nodes, crimson failed legal-test cross, populated chain columns, Documents box and source preview.",
+      "Later-case vertical spine and source/checklist/result chain, with mapped checklist items and explicit fresh-case facts."
+    ],
+    "deliberate": [
+      {
+        "difference": "Three recorded nodes, four populated columns; no fork or missing-evidence column.",
+        "reason": "The chosen saved case has no recorded branch or missing document; illustrative data is not invented."
+      },
+      {
+        "difference": "Neutral numbers/Checked; one legal test failed; Documents zero missing qualified by All files received.",
+        "reason": "Completion and available files are distinct from legal sufficiency. The new labels are legible and fit their existing spaces."
+      },
+      {
+        "difference": "Source span is centered with 45 percent surrounding text and a reserved badge gutter; source preview uses exact saved text.",
+        "reason": "W10 readability requires the full unchanged span. No original rendered-page asset exists."
+      },
+      {
+        "difference": "Three mapped checklist items, three-node viewport placement and no BEFORE/NOW or human-reviewed badge.",
+        "reason": "Recorded histories have recipe reuse and document requests but no human-edited memory change."
+      },
+      {
+        "difference": "Original notification-context and validity scopes replace illustrative question labels; long recorded plan rows scroll within the plan.",
+        "reason": "Display must preserve recorded node scope and operations while keeping source and evidence visible."
+      }
+    ],
+    "pending": []
+  }
+}

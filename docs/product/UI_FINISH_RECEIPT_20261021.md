@@ -1,4 +1,18 @@
-> Current continuation: the Mac's released W9 evidence below is historical. The cold-landing and north-star revision is tracked in [the completion review](../../design-plans/northstar-finish-20261022/REVIEW.md); its final receipts must pass before a new READY. No original-nine allowance remains.
+# Current UI finish receipt — W10
+
+W10 follows [PLANNER 6350440684](https://github.com/KumarNavish/casepath/pull/21#issuecomment-6350440684), the Mac handoff and the direct human instruction “Use self-review, then all final gates.” The existing writer owns `mac/casepath-cold-landing-20261022`; the Mac owner retains integration and release. This follow-up supersedes `5f254a9` for review without disturbing its release.
+
+The complete [W10 evidence and self-review](../../design-plans/w10-20261022/README.md) binds captured source `48ec153d869e39afa64c8f04e358b72e5dea255a` to the final tested source. W10 uses the richest recorded case, readable exact source spans, the neutral fact glossary, cursor/connector cues and recorded checklist transfers into the later case. The fresh cold review recognizes the learning effect. [Fidelity](../../design-plans/w10-20261022/final-proof/fidelity/fidelity.json) has no pending deviation. Neutral question-completion markers deliberately replace affirmative checkmarks after cold reviews found them misleading. The actual failed legal test retains its crimson cross.
+
+Final acceptance requires [the original final-gate verification](../../design-plans/w10-20261022/final-gate/verification.json): one sealed source, full strict gate, all eleven frontend suites, unchanged protected Mac-owned test, one complete serial seven-script browser walk through all nine cases, zero console errors, writes or overlaps, explicit cleanup and identical captured/served product assets. Missing or failed final receipts are not a pass. The final comment identifies the tested source SHA separately from its evidence-only commit.
+
+No provider, ledger or hosted writes, original-nine rerun, merge or deployment are authorized here. The original-nine grant was consumed on 9 October, 18/18 calls; no remaining allowance exists. The historical allowance wording below is retained as history and does not grant new spending:
+
+“Before any call, the Mac integration owner checks the ledger to confirm this allowance is still available. This receipt grants no new allowance or retry.”
+
+The W8/W9 receipt below is historical; current acceptance is defined by the W10 receipts above.
+
+---
 
 # CasePath UI finish receipt — W8 and W9
 
