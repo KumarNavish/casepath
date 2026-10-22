@@ -1,0 +1,527 @@
+TAP version 13
+# Subtest: role table uses recorded kind and stage; unknown operations retain the previous role
+ok 1 - role table uses recorded kind and stage; unknown operations retain the previous role
+  ---
+  duration_ms: 0.80875
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_314f2d309fea25e6
+ok 2 - north-star plans and exact locators remain bound to recorded operations: clm_314f2d309fea25e6
+  ---
+  duration_ms: 26.955791
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_4a07dbbbd859a3ce
+ok 3 - north-star plans and exact locators remain bound to recorded operations: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 24.345083
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_95d08975bc575592
+ok 4 - north-star plans and exact locators remain bound to recorded operations: clm_95d08975bc575592
+  ---
+  duration_ms: 26.419084
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_0f4f13b1e3e1328c
+ok 5 - north-star plans and exact locators remain bound to recorded operations: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 12.865042
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_393285577dcb12c4
+ok 6 - north-star plans and exact locators remain bound to recorded operations: clm_393285577dcb12c4
+  ---
+  duration_ms: 15.365625
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_4a53299cfe619303
+ok 7 - north-star plans and exact locators remain bound to recorded operations: clm_4a53299cfe619303
+  ---
+  duration_ms: 12.302708
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_2c55cdd816b1d0e8
+ok 8 - north-star plans and exact locators remain bound to recorded operations: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 38.222208
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_543f08f2415b2a33
+ok 9 - north-star plans and exact locators remain bound to recorded operations: clm_543f08f2415b2a33
+  ---
+  duration_ms: 37.280708
+  type: 'test'
+  ...
+# Subtest: north-star plans and exact locators remain bound to recorded operations: clm_7dbd7c7d1c4ddf90
+ok 10 - north-star plans and exact locators remain bound to recorded operations: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 34.11975
+  type: 'test'
+  ...
+# Subtest: unlinked and ambiguous source reads cannot be attributed to a node
+ok 11 - unlinked and ambiguous source reads cannot be attributed to a node
+  ---
+  duration_ms: 0.30775
+  type: 'test'
+  ...
+# Subtest: unknown process IDs preserve their exact recorded label
+ok 12 - unknown process IDs preserve their exact recorded label
+  ---
+  duration_ms: 0.045625
+  type: 'test'
+  ...
+# Subtest: executive completion highlights the latest visible fact or its own recorded completion
+ok 13 - executive completion highlights the latest visible fact or its own recorded completion
+  ---
+  duration_ms: 112.985792
+  type: 'test'
+  ...
+# Subtest: a completion stays visually pending until its plan has receded
+ok 14 - a completion stays visually pending until its plan has receded
+  ---
+  duration_ms: 16.813
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_314f2d309fea25e6
+ok 15 - completed process keeps columns and exact passages local: clm_314f2d309fea25e6
+  ---
+  duration_ms: 35.449209
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_4a07dbbbd859a3ce
+ok 16 - completed process keeps columns and exact passages local: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 20.669916
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_95d08975bc575592
+ok 17 - completed process keeps columns and exact passages local: clm_95d08975bc575592
+  ---
+  duration_ms: 19.834125
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_0f4f13b1e3e1328c
+ok 18 - completed process keeps columns and exact passages local: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 6.639292
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_393285577dcb12c4
+ok 19 - completed process keeps columns and exact passages local: clm_393285577dcb12c4
+  ---
+  duration_ms: 6.59775
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_4a53299cfe619303
+ok 20 - completed process keeps columns and exact passages local: clm_4a53299cfe619303
+  ---
+  duration_ms: 6.916667
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_2c55cdd816b1d0e8
+ok 21 - completed process keeps columns and exact passages local: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 10.031583
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_543f08f2415b2a33
+ok 22 - completed process keeps columns and exact passages local: clm_543f08f2415b2a33
+  ---
+  duration_ms: 9.850958
+  type: 'test'
+  ...
+# Subtest: completed process keeps columns and exact passages local: clm_7dbd7c7d1c4ddf90
+ok 23 - completed process keeps columns and exact passages local: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 9.487708
+  type: 'test'
+  ...
+# Subtest: one source Read row retains interleaved operations and rows sort by first seq
+ok 24 - one source Read row retains interleaved operations and rows sort by first seq
+  ---
+  duration_ms: 0.152708
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_314f2d309fea25e6
+ok 25 - first node-bound extraction is visibly building and its read plan is active: clm_314f2d309fea25e6
+  ---
+  duration_ms: 16.052209
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_4a07dbbbd859a3ce
+ok 26 - first node-bound extraction is visibly building and its read plan is active: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 16.420375
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_95d08975bc575592
+ok 27 - first node-bound extraction is visibly building and its read plan is active: clm_95d08975bc575592
+  ---
+  duration_ms: 15.515375
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_0f4f13b1e3e1328c
+ok 28 - first node-bound extraction is visibly building and its read plan is active: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 6.984125
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_393285577dcb12c4
+ok 29 - first node-bound extraction is visibly building and its read plan is active: clm_393285577dcb12c4
+  ---
+  duration_ms: 7.320375
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_4a53299cfe619303
+ok 30 - first node-bound extraction is visibly building and its read plan is active: clm_4a53299cfe619303
+  ---
+  duration_ms: 7.893
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_2c55cdd816b1d0e8
+ok 31 - first node-bound extraction is visibly building and its read plan is active: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 9.046042
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_543f08f2415b2a33
+ok 32 - first node-bound extraction is visibly building and its read plan is active: clm_543f08f2415b2a33
+  ---
+  duration_ms: 9.389625
+  type: 'test'
+  ...
+# Subtest: first node-bound extraction is visibly building and its read plan is active: clm_7dbd7c7d1c4ddf90
+ok 33 - first node-bound extraction is visibly building and its read plan is active: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 9.536375
+  type: 'test'
+  ...
+# Subtest: a source header cited by the original locator is never hidden
+ok 34 - a source header cited by the original locator is never hidden
+  ---
+  duration_ms: 0.136042
+  type: 'test'
+  ...
+# Subtest: an unrelated passage cannot replace the selected node evidence
+ok 35 - an unrelated passage cannot replace the selected node evidence
+  ---
+  duration_ms: 16.9315
+  type: 'test'
+  ...
+# Subtest: only node-bound missing evidence and references enter the local chain
+ok 36 - only node-bound missing evidence and references enter the local chain
+  ---
+  duration_ms: 25.302125
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_314f2d309fea25e6
+ok 37 - memory payoff uses the exact checklist and case-local evidence: clm_314f2d309fea25e6
+  ---
+  duration_ms: 36.970625
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_4a07dbbbd859a3ce
+ok 38 - memory payoff uses the exact checklist and case-local evidence: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 39.889666
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_95d08975bc575592
+ok 39 - memory payoff uses the exact checklist and case-local evidence: clm_95d08975bc575592
+  ---
+  duration_ms: 31.828292
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_0f4f13b1e3e1328c
+ok 40 - memory payoff uses the exact checklist and case-local evidence: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 7.804792
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_393285577dcb12c4
+ok 41 - memory payoff uses the exact checklist and case-local evidence: clm_393285577dcb12c4
+  ---
+  duration_ms: 7.837584
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_4a53299cfe619303
+ok 42 - memory payoff uses the exact checklist and case-local evidence: clm_4a53299cfe619303
+  ---
+  duration_ms: 9.042875
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_2c55cdd816b1d0e8
+ok 43 - memory payoff uses the exact checklist and case-local evidence: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 13.09
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_543f08f2415b2a33
+ok 44 - memory payoff uses the exact checklist and case-local evidence: clm_543f08f2415b2a33
+  ---
+  duration_ms: 11.014875
+  type: 'test'
+  ...
+# Subtest: memory payoff uses the exact checklist and case-local evidence: clm_7dbd7c7d1c4ddf90
+ok 45 - memory payoff uses the exact checklist and case-local evidence: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 10.768167
+  type: 'test'
+  ...
+# Subtest: memory connections fail closed on an unverified trace or a mismatched identity
+ok 46 - memory connections fail closed on an unverified trace or a mismatched identity
+  ---
+  duration_ms: 37.722291
+  type: 'test'
+  ...
+# Subtest: whole-case wording changes never imply a changed step decision
+ok 47 - whole-case wording changes never imply a changed step decision
+  ---
+  duration_ms: 23.112375
+  type: 'test'
+  ...
+# Subtest: node marks separate failed and open legal tests from completed operations
+not ok 48 - node marks separate failed and open legal tests from completed operations
+  ---
+  duration_ms: 9.040375
+  type: 'test'
+  location: '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-northstar-v1.test.cjs:64:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Legal test not met">✕/. Input:
+    
+    '<section class="au-agent-desk au-northstar au-ns-completed" data-au-agent-desk data-au-ns data-au-ns-completed data-au-ns-role-active="builder" data-au-ns-selected="lt_intake"><aside class="au-ns-sources"><p class="au-ns-context">Legal protection · case review</p><h1 data-au-claim-title tabindex="-1">An emailed termination and uncertain paper service</h1><h2>Sources <span>4</span></h2><ul><li><svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h18v15h-7l-4 4v-4H3V3m4 5h10M7 12h7"/></svg><button type="button" data-au-source="src_23f92324b0de5e7f486827361ba6a4b4">Customer’s message</button></li><li><svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8"/></svg><button type="button" data-au-source="src_6773fe78e05454274bd6e195781dee0d">Termination by email Taylor Miller</button></li><li aria-current="true"><svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8"/></svg><button type="button" data-au-source="src_b0416aadee21ef0f183f518a23e2d3d0">Sole documents and tenant clarification</button></li><li><svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8"/></svg><button type="button" data-au-source="src_92c11d41231a40d9f8e9b93661774e37">Issuer authority and complete channel archive</button></li></ul><div class="au-ns-source-bottom"><button type="button" data-au-source="src_b0416aadee21ef0f183f518a23e2d3d0" data-au-citation="{&quot;artifact_id&quot;:&quot;src_b0416aadee21ef0f183f518a23e2d3d0&quot;,&quot;end_char&quot;:393,&quot;offset_unit&quot;:&quot;unicode_code_point&quot;,&quot;quote&quot;:&quot;I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord&#39;s managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.&quot;,&quot;sha256&quot;:&quot;5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e&quot;,&quot;start_char&quot;:95,&quot;text_sha256&quot;:&quot;5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e&quot;}">Open full source ↗</button><button type="button" class="au-link" data-au-desk-watch>Watch this case</button><p>All cases are fictional.</p></div></aside><div class="au-ns-completed-canvas"><ol class="au-ns-completed-spine" aria-label="Completed process"><li data-au-ns-node="lt_intake" data-state="done" data-selected="true" data-decisive="false" data-au-ns-node-verdict="met"><button type="button" data-au-desk-select="lt_intake" aria-pressed="true" title="Capture the received termination packet"><strong>1</strong><span>What notice was received?</span><i class="au-ns-node-badge" aria-label="Process step checked"></i><small class="au-ns-test-verdict">Checked</small></button><svg class="au-ns-edge" data-taken="true" viewBox="0 0 70 16" aria-hidden="true"><path d="M0 8h66m-6-5 6 5-6 5"/></svg></li><li data-au-ns-node="lt_form" data-state="done" data-selected="false" data-decisive="true" data-au-ns-node-verdict="failed"><button type="button" data-au-desk-select="lt_form" aria-pressed="false" title="Assess whether the termination notice is valid"><strong>2</strong><span>Is the notice in the required form?</span><i class="au-ns-node-badge" aria-label="A mapped legal test failed">✕</i><small class="au-ns-test-verdict">1 test failed</small></button></li></ol><div class="au-ns-local"><div class="au-ns-chain" data-au-ns-chain-strip></div><button type="button" class="au-ns-missing" data-au-detail="documents"><svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7V4h7l3 3h10v15H2V7h20"/></svg><span>Documents<br>0 missing ›<small>Evidence files</small></span></button></div><p class="au-desk-next" data-au-desk-next data-status="clear"><span class="au-desk-next-cue" aria-hidden="true">✓</span><span>Evidence files checked. Review the legal findings before replying.</span></p><section class="au-ns-preview" data-au-ns-preview><div class="au-ns-passages" aria-label="Cited passages"><section class="au-ns-passage-group"><h3>Sole documents and tenant clarification</h3><button type="button" data-au-ns-passage="op_690bdc2f8f8a7944758d52bec27c0b73" aria-pressed="true"><q>I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord&#39;s managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.</q></button></section></div><div class="au-ns-page"><h3>Sole documents and tenant clarification</h3><dl class="au-ns-source-fields"><dt>Date</dt><dd>10.05.2026</dd></dl><pre tabindex="0" aria-label="Exact source text"><mark data-au-ns-page-pin>I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord&#39;s managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.</mark>\n' +
+      '\n' +
+      'I first received the actual termination email and its sole attached PDF on2026-05-08T10:30:00+02:00. The attachment is exactly Termination_by_email_Taylor-Miller_2026-05-08.pdf. My earlier awareness entry 2026-05-04 concerned the developing dispute, not receipt of the termination; I preserve that distinction. The sole PDF has one physical page and is the full attachment, not a cropped scan.\n' +
+      '\n' +
+      'My active request is an assessment of the received landlord notice&#39;s approved-form/nullity defect and preparation of a protective objection. I do not request a hardship extension, an own-use/motive decision or a court outcome. No communication has been sent and no challenge has been filed in this packet.\n' +
+      '</pre></div><div class="au-ns-page-controls"><button type="button" data-au-source="src_b0416aadee21ef0f183f518a23e2d3d0" data-au-citation="{&quot;artifact_id&quot;:&quot;src_b0416aadee21ef0f183f518a23e2d3d0&quot;,&quot;end_char&quot;:393,&quot;offset_unit&quot;:&quot;unicode_code_point&quot;,&quot;quote&quot;:&quot;I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord&#39;s managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.&quot;,&quot;sha256&quot;:&quot;5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e&quot;,&quot;start_char&quot;:95,&quot;text_sha256&quot;:&quot;5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e&quot;}" aria-label="Open full source">↗</button><button type="button" data-au-ns-zoom="1" aria-label="Enlarge source text">+</button><button type="button" data-au-ns-zoom="-1" aria-label="Reduce source text">−</button></div></section><nav class="au-ns-secondary"><button type="button" data-au-ns-reasoning>Show the reasoning</button><button type="button" data-au-detail="knowledge">Checklist</button><button type="button" data-au-detail="activity">History</button></nav></div></section>'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    <section class="au-agent-desk au-northstar au-ns-completed" data-au-agent-desk data-au-ns data-au-ns-completed data-au-ns-role-active="builder" data-au-ns-selected="lt_intake"><aside class="au-ns-sources"><p class="au-ns-context">Legal protection · case review</p><h1 data-au-claim-title tabindex="-1">An emailed termination and uncertain paper service</h1><h2>Sources <span>4</span></h2><ul><li><svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h18v15h-7l-4 4v-4H3V3m4 5h10M7 12h7"/></svg><button type="button" data-au-source="src_23f92324b0de5e7f486827361ba6a4b4">Customer’s message</button></li><li><svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8"/></svg><button type="button" data-au-source="src_6773fe78e05454274bd6e195781dee0d">Termination by email Taylor Miller</button></li><li aria-current="true"><svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8"/></svg><button type="button" data-au-source="src_b0416aadee21ef0f183f518a23e2d3d0">Sole documents and tenant clarification</button></li><li><svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8"/></svg><button type="button" data-au-source="src_92c11d41231a40d9f8e9b93661774e37">Issuer authority and complete channel archive</button></li></ul><div class="au-ns-source-bottom"><button type="button" data-au-source="src_b0416aadee21ef0f183f518a23e2d3d0" data-au-citation="{&quot;artifact_id&quot;:&quot;src_b0416aadee21ef0f183f518a23e2d3d0&quot;,&quot;end_char&quot;:393,&quot;offset_unit&quot;:&quot;unicode_code_point&quot;,&quot;quote&quot;:&quot;I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord&#39;s managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.&quot;,&quot;sha256&quot;:&quot;5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e&quot;,&quot;start_char&quot;:95,&quot;text_sha256&quot;:&quot;5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e&quot;}">Open full source ↗</button><button type="button" class="au-link" data-au-desk-watch>Watch this case</button><p>All cases are fictional.</p></div></aside><div class="au-ns-completed-canvas"><ol class="au-ns-completed-spine" aria-label="Completed process"><li data-au-ns-node="lt_intake" data-state="done" data-selected="true" data-decisive="false" data-au-ns-node-verdict="met"><button type="button" data-au-desk-select="lt_intake" aria-pressed="true" title="Capture the received termination packet"><strong>1</strong><span>What notice was received?</span><i class="au-ns-node-badge" aria-label="Process step checked"></i><small class="au-ns-test-verdict">Checked</small></button><svg class="au-ns-edge" data-taken="true" viewBox="0 0 70 16" aria-hidden="true"><path d="M0 8h66m-6-5 6 5-6 5"/></svg></li><li data-au-ns-node="lt_form" data-state="done" data-selected="false" data-decisive="true" data-au-ns-node-verdict="failed"><button type="button" data-au-desk-select="lt_form" aria-pressed="false" title="Assess whether the termination notice is valid"><strong>2</strong><span>Is the notice in the required form?</span><i class="au-ns-node-badge" aria-label="A mapped legal test failed">✕</i><small class="au-ns-test-verdict">1 test failed</small></button></li></ol><div class="au-ns-local"><div class="au-ns-chain" data-au-ns-chain-strip></div><button type="button" class="au-ns-missing" data-au-detail="documents"><svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7V4h7l3 3h10v15H2V7h20"/></svg><span>Documents<br>0 missing ›<small>Evidence files</small></span></button></div><p class="au-desk-next" data-au-desk-next data-status="clear"><span class="au-desk-next-cue" aria-hidden="true">✓</span><span>Evidence files checked. Review the legal findings before replying.</span></p><section class="au-ns-preview" data-au-ns-preview><div class="au-ns-passages" aria-label="Cited passages"><section class="au-ns-passage-group"><h3>Sole documents and tenant clarification</h3><button type="button" data-au-ns-passage="op_690bdc2f8f8a7944758d52bec27c0b73" aria-pressed="true"><q>I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord&#39;s managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.</q></button></section></div><div class="au-ns-page"><h3>Sole documents and tenant clarification</h3><dl class="au-ns-source-fields"><dt>Date</dt><dd>10.05.2026</dd></dl><pre tabindex="0" aria-label="Exact source text"><mark data-au-ns-page-pin>I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord&#39;s managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.</mark>
+    
+    I first received the actual termination email and its sole attached PDF on2026-05-08T10:30:00+02:00. The attachment is exactly Termination_by_email_Taylor-Miller_2026-05-08.pdf. My earlier awareness entry 2026-05-04 concerned the developing dispute, not receipt of the termination; I preserve that distinction. The sole PDF has one physical page and is the full attachment, not a cropped scan.
+    
+    My active request is an assessment of the received landlord notice&#39;s approved-form/nullity defect and preparation of a protective objection. I do not request a hardship extension, an own-use/motive decision or a court outcome. No communication has been sent and no challenge has been filed in this packet.
+    </pre></div><div class="au-ns-page-controls"><button type="button" data-au-source="src_b0416aadee21ef0f183f518a23e2d3d0" data-au-citation="{&quot;artifact_id&quot;:&quot;src_b0416aadee21ef0f183f518a23e2d3d0&quot;,&quot;end_char&quot;:393,&quot;offset_unit&quot;:&quot;unicode_code_point&quot;,&quot;quote&quot;:&quot;I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord&#39;s managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.&quot;,&quot;sha256&quot;:&quot;5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e&quot;,&quot;start_char&quot;:95,&quot;text_sha256&quot;:&quot;5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e&quot;}" aria-label="Open full source">↗</button><button type="button" data-au-ns-zoom="1" aria-label="Enlarge source text">+</button><button type="button" data-au-ns-zoom="-1" aria-label="Reduce source text">−</button></div></section><nav class="au-ns-secondary"><button type="button" data-au-ns-reasoning>Show the reasoning</button><button type="button" data-au-detail="knowledge">Checklist</button><button type="button" data-au-detail="activity">History</button></nav></div></section>
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-northstar-v1.test.cjs:64:460)
+    Test.runInAsyncScope (node:async_hooks:226:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: preview whitespace remains identical to the immutable source, including its missing spaces
+ok 49 - preview whitespace remains identical to the immutable source, including its missing spaces
+  ---
+  duration_ms: 6.042791
+  type: 'test'
+  ...
+# Subtest: Source checker lists each accepted exact passage once and retains its source identity
+ok 50 - Source checker lists each accepted exact passage once and retains its source identity
+  ---
+  duration_ms: 111.145958
+  type: 'test'
+  ...
+# Subtest: Claim reader exposes only established facts with exact source locators
+ok 51 - Claim reader exposes only established facts with exact source locators
+  ---
+  duration_ms: 186.476709
+  type: 'test'
+  ...
+# Subtest: Source checker groups all exact passages beneath one heading for each source
+ok 52 - Source checker groups all exact passages beneath one heading for each source
+  ---
+  duration_ms: 124.367041
+  type: 'test'
+  ...
+# Subtest: Claim reader quotes a request only when it exists verbatim in the recorded message source
+ok 53 - Claim reader quotes a request only when it exists verbatim in the recorded message source
+  ---
+  duration_ms: 135.13925
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_314f2d309fea25e6
+ok 54 - every recorded seq drives plan progress and matching spine/title: clm_314f2d309fea25e6
+  ---
+  duration_ms: 371.708375
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_4a07dbbbd859a3ce
+ok 55 - every recorded seq drives plan progress and matching spine/title: clm_4a07dbbbd859a3ce
+  ---
+  duration_ms: 351.218
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_95d08975bc575592
+ok 56 - every recorded seq drives plan progress and matching spine/title: clm_95d08975bc575592
+  ---
+  duration_ms: 323.367334
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_0f4f13b1e3e1328c
+ok 57 - every recorded seq drives plan progress and matching spine/title: clm_0f4f13b1e3e1328c
+  ---
+  duration_ms: 134.946417
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_393285577dcb12c4
+ok 58 - every recorded seq drives plan progress and matching spine/title: clm_393285577dcb12c4
+  ---
+  duration_ms: 152.312709
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_4a53299cfe619303
+ok 59 - every recorded seq drives plan progress and matching spine/title: clm_4a53299cfe619303
+  ---
+  duration_ms: 133.201042
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_2c55cdd816b1d0e8
+ok 60 - every recorded seq drives plan progress and matching spine/title: clm_2c55cdd816b1d0e8
+  ---
+  duration_ms: 183.559792
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_543f08f2415b2a33
+ok 61 - every recorded seq drives plan progress and matching spine/title: clm_543f08f2415b2a33
+  ---
+  duration_ms: 235.545
+  type: 'test'
+  ...
+# Subtest: every recorded seq drives plan progress and matching spine/title: clm_7dbd7c7d1c4ddf90
+ok 62 - every recorded seq drives plan progress and matching spine/title: clm_7dbd7c7d1c4ddf90
+  ---
+  duration_ms: 211.592334
+  type: 'test'
+  ...
+# Subtest: unknown fact types quote exact bytes instead of substituting a guessed summary
+ok 63 - unknown fact types quote exact bytes instead of substituting a guessed summary
+  ---
+  duration_ms: 0.240167
+  type: 'test'
+  ...
+# Subtest: customer envelope is formatted only from recorded fields, without losing Unicode source offsets
+ok 64 - customer envelope is formatted only from recorded fields, without losing Unicode source offsets
+  ---
+  duration_ms: 0.405416
+  type: 'test'
+  ...
+# Subtest: intake and law expose recorded provenance; draft uses the saved body without sending
+ok 65 - intake and law expose recorded provenance; draft uses the saved body without sending
+  ---
+  duration_ms: 16.8825
+  type: 'test'
+  ...
+# Subtest: completion evidence answers the question using only that completion’s recorded citations
+ok 66 - completion evidence answers the question using only that completion’s recorded citations
+  ---
+  duration_ms: 72.06525
+  type: 'test'
+  ...
+# Subtest: clarity labels distinguish document readiness, draft content and checklist provenance
+ok 67 - clarity labels distinguish document readiness, draft content and checklist provenance
+  ---
+  duration_ms: 17.69
+  type: 'test'
+  ...
+# Subtest: W10 showcase ranks original recorded fields and keeps absent gaps and forks absent
+ok 68 - W10 showcase ranks original recorded fields and keeps absent gaps and forks absent
+  ---
+  duration_ms: 10.070083
+  type: 'test'
+  ...
+# Subtest: W10 reuse items map only through the reused graph hash to recorded document requests
+ok 69 - W10 reuse items map only through the reused graph hash to recorded document requests
+  ---
+  duration_ms: 141.781917
+  type: 'test'
+  ...
+# Subtest: W10 glossary covers each recorded extraction type without borrowing case-specific values
+ok 70 - W10 glossary covers each recorded extraction type without borrowing case-specific values
+  ---
+  duration_ms: 84.563542
+  type: 'test'
+  ...
+# Subtest: W10 absence evidence and completed checks do not assert that reasons were supplied
+ok 71 - W10 absence evidence and completed checks do not assert that reasons were supplied
+  ---
+  duration_ms: 23.923875
+  type: 'test'
+  ...
+# Subtest: the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+not ok 72 - the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+  ---
+  duration_ms: 6806.137291
+  type: 'test'
+  location: '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-presentation-browser-v1.test.cjs:7:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'fact:tenancy_terms_evidence'
+    - 'contemporaneous_substantive_reasons'
+    
+    Missing fixture reads: []
+    Page errors: []
+    UI: ond to an attached letter.
+    
+    My active request is assessment of the original notice's missing-reasons/nullity ground and preparation of a protective objection. I do not seek a finding of excessive rent, a reference-rate calculation or a cost allocation decision. This packet confirmation clarifies the previously unknown notification date and basis; no challenge has been filed and no communication has been sent.
+    
+    The tenancy terms
+    +
+    Whether residential tenancy law applies
+    +
+    The rent increase notice received
+    +
+    Which rent rules apply
+    +
+    Reasons given with the original increase
+    Checking “Is the increase on the required form?”
+    Read mietzinserhoehung Formular Elin Ziegler
+    Read ordinary tenancy and original notification documents
+    Verify relevant ordinary tenancy terms
+    Verify received rent increase notice
+    Decide: Is the increase on the required form?
+    
+    Claim reader
+    Automated assistant · Reads received documents for facts.
+    
+    Work log
+    ›
+    Recorded replay · All cases are fictional.
+    Resume
+    Skip to answer
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'contemporaneous_substantive_reasons'
+  actual: 'fact:tenancy_terms_evidence'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-presentation-browser-v1.test.cjs:100:161)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: a slow cold read keeps the north-star frame on landing and on opening a recorded case
+ok 73 - a slow cold read keeps the north-star frame on landing and on opening a recorded case
+  ---
+  duration_ms: 8398.492959
+  type: 'test'
+  ...
+1..73
+# tests 73
+# suites 0
+# pass 71
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 15681.550625

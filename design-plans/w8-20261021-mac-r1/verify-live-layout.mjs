@@ -42,5 +42,13 @@ try{
   await p.locator('[data-au-demo-stop]').click();report.cases.push({id:c.id,frames,overlapCount:frames.reduce((n,f)=>n+f.overlapCount,0)});console.log('Live layout',i+1);
  }
  assert.deepEqual(report.errors,[]);assert.deepEqual(report.writes,[]);report.passed=true;
-}finally{fs.writeFileSync(outDir+'/live-layout-receipt.json',JSON.stringify(report,null,2));await p.unrouteAll({behavior:'ignoreErrors'});await browser.close();}
+}finally{
+ report.cleanup=[];
+ try{await p.unrouteAll({behavior:'ignoreErrors'});}catch(error){report.passed=false;report.cleanup.push({name:'routes',status:'failed',error:String(error)});}
+ for(const [name,close]of [['page',()=>p.close()],['context',()=>p.context().close()],['browser',()=>browser.close()]]){
+  const start=Date.now();try{await close();report.cleanup.push({name,status:'closed',ms:Date.now()-start});}catch(error){report.passed=false;report.cleanup.push({name,status:'failed',error:String(error)});}
+ }
+ fs.writeFileSync(outDir+'/live-layout-receipt.json',JSON.stringify(report,null,2));
+ if(report.cleanup.some(row=>row.status==='failed'))throw new Error('Browser cleanup failed; see original receipt');
+}
 console.log(JSON.stringify({passed:report.passed,cases:report.cases?.length}));

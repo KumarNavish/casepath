@@ -36,5 +36,13 @@ try{
  await p.locator('[data-au-demo-resume]').click();await p.locator('[data-au-demo-stop]').waitFor();await p.locator('[data-au-demo-stop]').click();assert.equal(await p.locator('[data-au-demo-resume]').count(),1);report.pauseResume=true;
  await p.locator('[data-au-detail=activity]').click();await p.waitForSelector('.au-activity');report.workLog=true;
  assert.deepEqual(report.errors,[]);assert.deepEqual(report.writes,[]);report.passed=true;
-}finally{const video=p.video();await p.unrouteAll({behavior:'ignoreErrors'});await p.close();report.video=await video.path();fs.writeFileSync(outDir+'/motion-receipt.json',JSON.stringify(report,null,2));await browser.close();}
+}finally{
+ const video=p.video();report.cleanup=[];
+ try{await p.unrouteAll({behavior:'ignoreErrors'});}catch(error){report.passed=false;report.cleanup.push({name:'routes',status:'failed',error:String(error)});}
+ for(const [name,close]of [['page',()=>p.close()],['context',()=>p.context().close()],['browser',()=>browser.close()]]){
+  const start=Date.now();try{await close();report.cleanup.push({name,status:'closed',ms:Date.now()-start});}catch(error){report.passed=false;report.cleanup.push({name,status:'failed',error:String(error)});}
+ }
+ report.video=await video.path();fs.writeFileSync(outDir+'/motion-receipt.json',JSON.stringify(report,null,2));
+ if(report.cleanup.some(row=>row.status==='failed'))throw new Error('Browser cleanup failed; see original receipt');
+}
 console.log(JSON.stringify({passed:report.passed,maxAnimations:report.motion?.maxAnimations,video:report.video}));

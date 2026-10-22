@@ -15,5 +15,13 @@ await p.route('**/*',r=>{const q=r.request(),u=new URL(q.url()),id=u.pathname.ma
 try{
  report.deployment=await(await fetch(proofOrigin+'/deployment.json')).json();
  await p.goto(proofOrigin+'/#autonomous/claim/'+row.id,{waitUntil:'networkidle'});await p.locator('[data-au-desk-watch]').waitFor({timeout:90000});await p.locator('[data-au-desk-watch]').click();await p.locator('[data-au-ns-start]').waitFor({timeout:90000});await p.locator('[data-au-ns-start]').click();await p.locator('[data-au-ns-completed]').waitFor({timeout:90000});await p.locator('.au-ns-tabs [data-au-ns-role=result]').click();await p.locator('[data-au-desk-answer]').waitFor();assert.equal(await p.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length),0);assert.equal(await p.locator('.au-ns-cursor').count(),0);assert.equal(await p.locator('.au-ns-tabs [aria-current]').getAttribute('data-au-ns-role'),'result');assert.deepEqual(report.errors,[]);assert.deepEqual(report.writes,[]);report.passed=true;
-}finally{fs.writeFileSync(outDir+'/reduced-receipt.json',JSON.stringify(report,null,2));await p.unrouteAll({behavior:'ignoreErrors'});await browser.close();}
+}finally{
+ report.cleanup=[];
+ try{await p.unrouteAll({behavior:'ignoreErrors'});}catch(error){report.passed=false;report.cleanup.push({name:'routes',status:'failed',error:String(error)});}
+ for(const [name,close]of [['page',()=>p.close()],['context',()=>p.context().close()],['browser',()=>browser.close()]]){
+  const start=Date.now();try{await close();report.cleanup.push({name,status:'closed',ms:Date.now()-start});}catch(error){report.passed=false;report.cleanup.push({name,status:'failed',error:String(error)});}
+ }
+ fs.writeFileSync(outDir+'/reduced-receipt.json',JSON.stringify(report,null,2));
+ if(report.cleanup.some(row=>row.status==='failed'))throw new Error('Browser cleanup failed; see original receipt');
+}
 console.log(JSON.stringify(report));

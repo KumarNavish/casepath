@@ -39,5 +39,13 @@ try{
  await p.evaluate(()=>{window.__copied=null;Object.defineProperty(navigator,'clipboard',{value:{writeText:async text=>window.__copied=text},configurable:true});});await p.locator('[data-au-draft-copy]').click();assert.equal(await p.evaluate(()=>window.__copied),'My local review\n\nA draft kept on this device.');const downloading=p.waitForEvent('download');await p.locator('[data-au-draft-download]').click();const download=await downloading;assert.equal(fs.readFileSync(await download.path(),'utf8'),'My local review\n\nA draft kept on this device.');await snap('local-draft');
  await p.locator('[data-au-draft-original]').click();assert.equal(await p.locator('.au-record-body').innerText(),fixture.cases[0].envelope.state.outcome.request_draft.body);await p.locator('[data-au-draft-edit]').click();await p.locator('[data-au-draft-body]').fill('Keep this unsaved edit.');await p.evaluate(()=>{window.__setItem=Storage.prototype.setItem;Storage.prototype.setItem=function(){throw new DOMException('Full','QuotaExceededError');};});await p.locator('[data-au-draft-save]').click();assert.equal(await p.locator('[data-au-draft-body]').inputValue(),'Keep this unsaved edit.');assert.match(await p.locator('[data-au-draft-status]').innerText(),/Could not save/);await p.evaluate(()=>Storage.prototype.setItem=window.__setItem);await p.keyboard.press('Escape');report.localDraft={persistence:true,copy:true,download:true,originalUnchanged:true,storageFailurePreservesEdits:true};
  assert.deepEqual(report.errors,[]);assert.deepEqual(report.writes,[]);report.passed=true;
-}catch(error){await p.screenshot({path:outDir+'/failure.png'});fs.writeFileSync(outDir+'/failure.txt',await p.locator('body').innerText());throw error;}finally{fs.writeFileSync(outDir+'/acceptance-receipt.json',JSON.stringify(report,null,2));await p.unrouteAll({behavior:'ignoreErrors'});await browser.close();}
+}catch(error){await p.screenshot({path:outDir+'/failure.png'});fs.writeFileSync(outDir+'/failure.txt',await p.locator('body').innerText());throw error;}finally{
+ report.cleanup=[];
+ try{await p.unrouteAll({behavior:'ignoreErrors'});}catch(error){report.passed=false;report.cleanup.push({name:'routes',status:'failed',error:String(error)});}
+ for(const [name,close]of [['page',()=>p.close()],['context',()=>p.context().close()],['browser',()=>browser.close()]]){
+  const start=Date.now();try{await close();report.cleanup.push({name,status:'closed',ms:Date.now()-start});}catch(error){report.passed=false;report.cleanup.push({name,status:'failed',error:String(error)});}
+ }
+ fs.writeFileSync(outDir+'/acceptance-receipt.json',JSON.stringify(report,null,2));
+ if(report.cleanup.some(row=>row.status==='failed'))throw new Error('Browser cleanup failed; see original receipt');
+}
 console.log(JSON.stringify(report,null,2));

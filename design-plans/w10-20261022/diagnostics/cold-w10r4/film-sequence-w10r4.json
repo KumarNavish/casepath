@@ -1,0 +1,63 @@
+{
+  "sourceCommit": "3892a5043edecbfb017108960a128666ada691d3",
+  "wrapperPid": 935,
+  "startedAt": "2026-10-22T21:41:31.821696+00:00",
+  "status": "passed",
+  "out": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-3892a504-w10r4",
+  "serialized": true,
+  "stages": [
+    {
+      "name": "capture",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w9-20261021/capture_film.mjs",
+        "--out",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-3892a504-w10r4"
+      ],
+      "status": "completed",
+      "startedAt": "2026-10-22T21:41:31.821930+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/film-w10r4-capture.log",
+      "pid": 938,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T21:55:35.188726+00:00",
+      "logSha256": "44000171c18296ef6d1dc2272c4990f06bd2c52b99e0d10b6494266f9b5711e3"
+    },
+    {
+      "name": "repeat",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w9-20261021/capture_film.mjs",
+        "--verify",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-3892a504-w10r4/film-receipt.json",
+        "--out",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-3892a504-w10r4"
+      ],
+      "status": "completed",
+      "startedAt": "2026-10-22T21:55:35.194866+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/film-w10r4-repeat.log",
+      "pid": 6361,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T22:04:55.326910+00:00",
+      "logSha256": "bb2bfe65e21941ce67ace90224d798ac56d2f9f7add01be0721a4a9f3746316d"
+    },
+    {
+      "name": "live",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w9-20261021/verify_film_live.mjs",
+        "--receipt",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-3892a504-w10r4/film-receipt.json",
+        "--out",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-film-20261022-3892a504-w10r4/live-proof"
+      ],
+      "status": "completed",
+      "startedAt": "2026-10-22T22:04:55.330748+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/film-w10r4-live.log",
+      "pid": 9767,
+      "exitCode": 0,
+      "finishedAt": "2026-10-22T22:06:22.710583+00:00",
+      "logSha256": "e16b931ce39915511cf9ea1af0be9b32c0e0d11062a57e1d39d64771ae9f6697"
+    }
+  ],
+  "finishedAt": "2026-10-22T22:06:22.713723+00:00"
+}

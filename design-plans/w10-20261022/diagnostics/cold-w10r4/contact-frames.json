@@ -1,0 +1,156 @@
+{
+  "frames": [
+    {
+      "n": 0,
+      "time": 0,
+      "act": "customer"
+    },
+    {
+      "n": 207,
+      "time": 3.45,
+      "act": "customer"
+    },
+    {
+      "n": 414,
+      "time": 6.9,
+      "act": "reading"
+    },
+    {
+      "n": 621,
+      "time": 10.35,
+      "act": "reading"
+    },
+    {
+      "n": 828,
+      "time": 13.8,
+      "act": "reading"
+    },
+    {
+      "n": 1035,
+      "time": 17.25,
+      "act": "process"
+    },
+    {
+      "n": 1242,
+      "time": 20.7,
+      "act": "process"
+    },
+    {
+      "n": 1449,
+      "time": 24.15,
+      "act": "decision"
+    },
+    {
+      "n": 1656,
+      "time": 27.6,
+      "act": "decision"
+    },
+    {
+      "n": 1863,
+      "time": 31.05,
+      "act": "decision"
+    },
+    {
+      "n": 2070,
+      "time": 34.5,
+      "act": "decision"
+    },
+    {
+      "n": 2277,
+      "time": 37.95,
+      "act": "decision"
+    },
+    {
+      "n": 2483,
+      "time": 41.38333333333333,
+      "act": "decision"
+    },
+    {
+      "n": 2690,
+      "time": 44.833333333333336,
+      "act": "decision"
+    },
+    {
+      "n": 2897,
+      "time": 48.28333333333333,
+      "act": "decision"
+    },
+    {
+      "n": 3104,
+      "time": 51.733333333333334,
+      "act": "decision"
+    },
+    {
+      "n": 3311,
+      "time": 55.18333333333333,
+      "act": "learning"
+    },
+    {
+      "n": 3518,
+      "time": 58.63333333333333,
+      "act": "learning"
+    },
+    {
+      "n": 3725,
+      "time": 62.083333333333336,
+      "act": "learning"
+    },
+    {
+      "n": 3932,
+      "time": 65.53333333333333,
+      "act": "learning"
+    },
+    {
+      "n": 4139,
+      "time": 68.98333333333333,
+      "act": "learning"
+    },
+    {
+      "n": 4346,
+      "time": 72.43333333333334,
+      "act": "cases"
+    },
+    {
+      "n": 4553,
+      "time": 75.88333333333334,
+      "act": "cases"
+    },
+    {
+      "n": 4760,
+      "time": 79.33333333333333,
+      "act": "cases"
+    }
+  ],
+  "acts": [
+    {
+      "id": "customer",
+      "start": 0,
+      "end": 6300
+    },
+    {
+      "id": "reading",
+      "start": 6300,
+      "end": 15300
+    },
+    {
+      "id": "process",
+      "start": 15300,
+      "end": 21800
+    },
+    {
+      "id": "decision",
+      "start": 21800,
+      "end": 52850
+    },
+    {
+      "id": "learning",
+      "start": 52850,
+      "end": 70950
+    },
+    {
+      "id": "cases",
+      "start": 70950,
+      "end": 79350
+    }
+  ]
+}

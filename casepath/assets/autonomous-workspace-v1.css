@@ -2171,3 +2171,7 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
 .au-workspace .au-ns-spine .au-ns-step-status { position:absolute; top:42px; font:600 10px/1 Mulish,sans-serif; color:#61636b; }
 .au-workspace .au-ns-completed-spine .au-ns-test-verdict { position:absolute; top:calc(100% + 4px); left:0; white-space:nowrap; font:600 10px/1.3 Mulish,sans-serif; color:#61636b; }
 .au-workspace .au-ns-completed-spine li[data-decisive=true] .au-ns-test-verdict { color:#82072a; }
+
+/* Process completion is not a yes answer to the recorded question. */
+.au-workspace .au-ns-completed-spine li:not([data-decisive=true]):not([data-selected=true]) .au-ns-node-badge { display:none; }
+.au-workspace .au-ns-missing small { display:block; font:400 11px/1.5 Mulish,sans-serif; color:#61636b; }
