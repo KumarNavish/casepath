@@ -4915,7 +4915,21 @@
         const preview=desk.querySelector('[data-au-ns-preview]'),page=desk.querySelector('.au-ns-page'),pane=page?.querySelector('pre'),mark=desk.querySelector('[data-au-ns-page-pin]');
         if(preview)preview.style.height=`${Math.max(260,Math.floor(root.innerHeight-preview.getBoundingClientRect().top-(operationTrace?.executive?104:64)))}px`;
         if(pane&&page){const style=root.getComputedStyle(pane),line=parseFloat(style.lineHeight),bottom=parseFloat(root.getComputedStyle(page).paddingBottom);pane.style.height=`${Math.max(line,Math.floor((page.getBoundingClientRect().bottom-bottom-pane.getBoundingClientRect().top)/line)*line)}px`;if(mark){const a=mark.getBoundingClientRect(),b=pane.getBoundingClientRect();pane.scrollTop=Math.max(0,Math.floor((pane.scrollTop+a.top-b.top)/line-2)*line);}}
-        const passage=desk.querySelector('[data-au-ns-passage][aria-pressed=true]'),list=desk.querySelector('.au-ns-passages');if(passage&&list)list.scrollTop=Math.max(0,passage.offsetTop-list.offsetTop-10);return;
+        const passage=desk.querySelector('[data-au-ns-passage][aria-pressed=true]'),list=desk.querySelector('.au-ns-passages');
+        if(passage&&list){
+          list.style.height='';
+          const heading=passage.closest('.au-ns-passage-group')?.querySelector('h3'),target=heading||passage;
+          list.scrollTop=Math.max(0,list.scrollTop+target.getBoundingClientRect().top-list.getBoundingClientRect().top-8);
+          // Leave the next source heading wholly below the scroll window if it
+          // cannot fit. Document excerpts may scroll; filenames stay intact.
+          const bounds=list.getBoundingClientRect();
+          for(const title of list.querySelectorAll('.au-ns-passage-group > h3')){
+            const box=title.getBoundingClientRect();
+            if(box.top>bounds.top&&box.top<bounds.bottom&&box.bottom>bounds.bottom)
+              list.style.height=`${Math.floor(box.top-bounds.top)}px`;
+          }
+        }
+        return;
       }
       if(desk.hasAttribute('data-au-ns')){positionNorthStar(desk,animate);return;}
       const trace=operationPeek?.trace||operationTrace||deskRecords.get(current?.state_sha256),mark=desk.querySelector('[data-au-desk-quote]'),pane=desk.querySelector('.au-desk-source-scroll');

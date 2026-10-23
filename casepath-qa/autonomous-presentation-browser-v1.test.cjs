@@ -86,7 +86,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   const clipped=await page.addStyleTag({content:'.au-workspace .au-ns-plan ol {max-height:30px;overflow:hidden}'});
   assert.equal((await page.evaluate(auditChecklistGeometry)).passed,false,'the audit detects a clipped checklist row');
   await clipped.evaluate(el=>el.remove());
-  for(const [phase,selector] of [['legal-test-rest','.au-desk-tests > li > button'],['wordmark-rest','.au-executive-cases .au-claim-title']]){
+  for(const [phase,selector] of [['legal-test-rest','.au-desk-tests > li > button'],['wordmark-rest','.au-executive-cases .au-claim-title'],['chain-rest','.au-ns-passage-group > h3']]){
    await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),proof.manifest.beats.find(b=>b.phase===phase).end-1);
    assert.equal((await page.evaluate(auditChecklistGeometry)).passed,true,'unmodified '+phase+' labels fit');
    const crop=await page.addStyleTag({content:selector+' {height:5px!important;min-height:0!important;overflow:hidden!important}'});
