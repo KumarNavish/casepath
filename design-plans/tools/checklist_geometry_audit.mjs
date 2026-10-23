@@ -11,7 +11,7 @@ export function auditChecklistGeometry(options = {}) {
     contract: 'casepath.checklist-geometry/1.0.0',
     passed: true,
     checked: { rows: 0, facts: 0, labels: 0, panels: 0, textFragments: 0 },
-    failures: [], totalFailures: 0, truncated: false
+    labelViews: {}, failures: [], totalFailures: 0, truncated: false
   };
   if (!root) return result;
   const excluded = '.au-executive-transition,.au-executive-ink,.au-ns-cursor,'
@@ -90,16 +90,48 @@ export function auditChecklistGeometry(options = {}) {
         owner, box, parent, boundary);
     }
   };
-  const selectors = {
-    rows: '.au-ns-plan ol > li',
-    facts: '.au-ns-fact',
-    labels: '.au-ns-plan h2,.au-ns-plan ol > li > span:not(.au-ns-plan-status),'
+  const strictLabels = '.au-ns-plan h2,.au-ns-plan ol > li > span:not(.au-ns-plan-status),'
       + '.au-ns-fact > span,.au-ns-node-label,.au-ns-step-status,.au-ns-log p,'
       + '.au-ns-log button,.au-ns-tabs [data-au-ns-role],'
       + '.au-ns-completed-spine [data-au-desk-select],'
       + '.au-ns-completed-spine .au-ns-test-verdict,'
       + '.au-ns-memory-spine [data-au-ns-memory-select],'
-      + '.au-ns-chain-column,.au-ns-memory-target,.au-executive-step-label',
+      + '.au-ns-chain-column,.au-ns-memory-target,.au-executive-step-label';
+  // Audit the other film views as text-bearing leaves, not whole scrollable
+  // sections. Their source/document bodies remain outside this label contract.
+  const filmLabels = '.au-desk-answer > h2,.au-desk-test-status,.au-executive-test-context,'
+    + '.au-desk-tests > li > button,.au-desk-tests > li > .au-desk-law,'
+    + '.au-desk-lead,.au-desk-open,.au-desk-actions > *,.au-desk-why > summary,'
+    + '.au-desk-next > p,.au-desk-next > ul > li,'
+    + '.au-executive-roster-heading > *, .au-executive-cases .au-claim-row > h2,'
+    + '.au-executive-cases .au-claim-row > p,.au-executive-wordmark,'
+    + '.au-ns-sources > h1,.au-ns-sources > h2,.au-ns-sources > p,'
+    + '.au-ns-sources > ul > li > button,.au-ns-source-bottom > *,'
+    + '.au-executive-documents,.au-ns-purpose > *,.au-ns-secondary button,'
+    + '.au-ns-source-fields dt,.au-ns-source-fields dd,.au-ns-paper > header button,'
+    + '.au-executive-transport > span,.au-executive-transport button,'
+    + '.au-ns-memory header button,.au-ns-memory footer,[data-au-memory-origin],'
+    + '.au-ns-memory-chain > p,.au-ns-memory-cards h3,.au-ns-memory-cards p,'
+    + '.au-ns-memory-cards li,.au-ns-memory-cards strong,.au-ns-memory-cards blockquote,'
+    + '.au-ns-memory-cards button,.au-ns-law-source h2,.au-ns-law-source h3,'
+    + '.au-ns-law-source > p,.au-ns-draft-content > p,.au-ns-draft-content > h3,'
+    + '.au-ns-initial-date > h3,.au-ns-initial-date > p,.au-ns-initial-date > blockquote';
+  const outsideScrollport = (element, box) => {
+    for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+      const css = style(parent), boundary = clipBox(parent);
+      const x = /^(?:auto|scroll)$/.test(css.overflowX)
+        && parent.scrollWidth > parent.clientWidth + tolerance;
+      const y = /^(?:auto|scroll)$/.test(css.overflowY)
+        && parent.scrollHeight > parent.clientHeight + tolerance;
+      if (x && (box.right <= boundary.left || box.left >= boundary.right)
+          || y && (box.bottom <= boundary.top || box.top >= boundary.bottom)) return true;
+    }
+    return false;
+  };
+  const selectors = {
+    rows: '.au-ns-plan ol > li',
+    facts: '.au-ns-fact',
+    labels: strictLabels + ',' + filmLabels,
     panels: '.au-ns-plan,.au-ns-paper,.au-ns-log,.au-ns-sources,'
       + '.au-ns-completed-spine,.au-ns-chain,.au-ns-missing,'
       + '.au-ns-memory-spine,.au-ns-memory-cards > article,'
@@ -112,7 +144,17 @@ export function auditChecklistGeometry(options = {}) {
       seen.add(element);
       const box = rect(element);
       if (box.width <= 0 || box.height <= 0) continue;
+      // A scrolled-away answer is not visible content. This exception never
+      // applies to checklist rows/facts or their original strict labels, and
+      // never forgives a partially clipped label or an overflow:hidden crop.
+      if (kind === 'labels' && !element.matches(strictLabels)
+          && outsideScrollport(element, box)) continue;
       result.checked[kind]++;
+      if (kind === 'labels') {
+        const view = document.querySelector('[data-au-presentation-act]')
+          ?.dataset.auPresentationAct || 'other';
+        result.labelViews[view] = (result.labelViews[view] || 0) + 1;
+      }
       const fragments = kind === 'labels' && style(element).display === 'inline'
         ? [...element.getClientRects()] : [box];
       units.push({ element, kind, fragments });

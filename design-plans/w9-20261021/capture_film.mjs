@@ -49,7 +49,7 @@ for(const name of ['autonomous-workspace-v1.js','autonomous-workspace-v1.css','a
   const bytes=Buffer.from(await response.arrayBuffer());assert.deepEqual(bytes,fs.readFileSync(root+'/casepath/assets/'+name));assets[name]=sha(bytes);
 }
 const rendererArgs=['--disable-gpu','--disable-gpu-rasterization','--disable-lcd-text'];
-const report={sourceCommit,verifierCommit,rendererArgs,deployment,assets,sourceManifestSha256:sha(fs.readFileSync(root+'/casepath/source-manifest.json')),fixtures:{responses:sha(fs.readFileSync(wirePath)),operations:sha(fs.readFileSync(tracePath))},viewport:{width:1440,height:900},deviceScaleFactor:2,fps:60,probe,geometry:{frames:0,rows:0,facts:0,labels:0,failures:[]},errors:[],writes:[],missingReads:[],checksums:[],cleanup:[]};
+const report={sourceCommit,verifierCommit,rendererArgs,deployment,assets,sourceManifestSha256:sha(fs.readFileSync(root+'/casepath/source-manifest.json')),fixtures:{responses:sha(fs.readFileSync(wirePath)),operations:sha(fs.readFileSync(tracePath))},viewport:{width:1440,height:900},deviceScaleFactor:2,fps:60,probe,geometry:{frames:0,rows:0,facts:0,labels:0,labelViews:{},failures:[]},errors:[],writes:[],missingReads:[],checksums:[],cleanup:[]};
 const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',args:rendererArgs});
 const context=await browser.newContext({viewport:report.viewport,deviceScaleFactor:2,serviceWorkers:'block',reducedMotion:'no-preference',timezoneId:'UTC',locale:'en-GB'});
 const page=await context.newPage();report.browserVersion=browser.version();
@@ -84,6 +84,7 @@ async function sample(n){
     return {n,time,geometry:window.auditChecklistGeometry(),renderedTime:Number(host.dataset.auPresentationTime),act:beat.act,phase:beat.phase,operation:beat.operation,sourceBinding,view:beat.view||null,animations:document.getAnimations().length,pause:visible('[data-au-demo-stop]').map(el=>el.textContent),resume:visible('[data-au-demo-resume]').length,watch:visible('[data-au-desk-watch]').length,skip:visible('[data-au-operation-skip]').length,speed:document.querySelector('[data-au-film-speed]')?.textContent};
   },n);
   report.geometry.frames++;for(const kind of ['rows','facts','labels'])report.geometry[kind]+=state.geometry.checked[kind];
+  for(const [act,labels] of Object.entries(state.geometry.labelViews))report.geometry.labelViews[act]=(report.geometry.labelViews[act]||0)+labels;
   if(!state.geometry.passed)report.geometry.failures.push({n,time:state.time,...state.geometry});
   assert.equal(state.geometry.passed,true,'unclipped film geometry at '+n+': '+JSON.stringify(state.geometry.failures));
   assert.equal(state.renderedTime,state.time);assert.equal(state.animations,0,'native animation at '+n);

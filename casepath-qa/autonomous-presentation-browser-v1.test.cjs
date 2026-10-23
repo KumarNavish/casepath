@@ -59,11 +59,12 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   const {auditChecklistGeometry}=await import('../design-plans/tools/checklist_geometry_audit.mjs');
   await page.evaluate(`window.auditChecklistGeometry=${auditChecklistGeometry.toString()}`);
   const everyFrame=await page.evaluate(()=>{
-   const active=CasepathPresentation.active,count=Math.ceil(active.manifest.duration*60/1000),failures=[];
+   const active=CasepathPresentation.active,count=Math.ceil(active.manifest.duration*60/1000),failures=[],labelViews={};
    let collapsedFrames=0,checkedRows=0,checkedFacts=0,checkedLabels=0;
    for(let n=0;n<count;n++){
     active.advanceTo(n*1000/60);
     const audit=window.auditChecklistGeometry();
+    for(const [act,labels] of Object.entries(audit.labelViews))labelViews[act]=(labelViews[act]||0)+labels;
     checkedRows+=audit.checked.rows;checkedFacts+=audit.checked.facts;checkedLabels+=audit.checked.labels;
     if(!audit.passed&&failures.length<40)failures.push({n,time:n*1000/60,...audit});
     const plan=document.querySelector('[data-au-ns-plan]');if(!plan)continue;
@@ -73,10 +74,11 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
     const summary=plan.querySelector('[data-au-ns-plan-summary]'),hidden=rows.filter(row=>row.hidden);
     if(!summary.hidden){collapsedFrames++;if(hidden.some(row=>row.dataset.state!=='done')||summary.textContent.replace(/\s+/g,' ').trim()!==`✓ ${hidden.length} done`)failures.push({n,reason:'summary must count exactly the collapsed completed rows'});}
    }
-   return {count,checkedRows,checkedFacts,checkedLabels,collapsedFrames,failures};
+   return {count,checkedRows,checkedFacts,checkedLabels,labelViews,collapsedFrames,failures};
   });
   if(process.env.CASEPATH_W11_DIAGNOSTICS)fs.writeFileSync(process.env.CASEPATH_W11_DIAGNOSTICS+'-every-frame.json',JSON.stringify(everyFrame,null,2));
   assert.equal(everyFrame.count,Math.ceil(proof.manifest.duration*60/1000));
+  assert.deepEqual(Object.keys(everyFrame.labelViews).sort(),proof.manifest.acts.map(act=>act.id).sort(),'labels are audited in all six film acts');
   assert.ok(everyFrame.checkedRows>0&&everyFrame.checkedFacts>0&&everyFrame.checkedLabels>0&&everyFrame.collapsedFrames>0);
   assert.deepEqual(everyFrame.failures,[],'every film frame has intact rows, facts and labels and only its current spinner');
   // Negative control: the old cropped list must fail the new audit.
@@ -84,6 +86,13 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   const clipped=await page.addStyleTag({content:'.au-workspace .au-ns-plan ol {max-height:30px;overflow:hidden}'});
   assert.equal((await page.evaluate(auditChecklistGeometry)).passed,false,'the audit detects a clipped checklist row');
   await clipped.evaluate(el=>el.remove());
+  for(const [phase,selector] of [['legal-test-rest','.au-desk-tests > li > button'],['wordmark-rest','.au-executive-cases .au-claim-title']]){
+   await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),proof.manifest.beats.find(b=>b.phase===phase).end-1);
+   assert.equal((await page.evaluate(auditChecklistGeometry)).passed,true,'unmodified '+phase+' labels fit');
+   const crop=await page.addStyleTag({content:selector+' {height:5px!important;min-height:0!important;overflow:hidden!important}'});
+   assert.equal((await page.evaluate(auditChecklistGeometry)).passed,false,'the audit detects a clipped '+phase+' label');
+   await crop.evaluate(el=>el.remove());
+  }
 
   const geometry=[];
   for(const beat of proof.manifest.beats.filter(b=>b.phase!=='act-transition')){await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),beat.start+beat.duration/2);const hits=await page.evaluate(auditPresentation);if(hits.length)geometry.push({phase:beat.phase,operation:beat.operation,hits});}
