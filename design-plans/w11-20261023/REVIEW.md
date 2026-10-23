@@ -1,6 +1,29 @@
-# W11: final UI handoff
+# W11: final UI and reliability handoff
 
-W11 follows the user's final item: fit every live checklist row, show a spinner only for the operation playing, recapture and complete the north-star checklist. It supersedes `60d4907ca5c975e288fa3c0973992abd31fcc594`. After the verified PR21 handoff, no further UI changes are permitted except defects the Mac owner reports on PR21. Release remains with the Mac owner.
+The superseding [PLANNER W11 instruction](https://github.com/KumarNavish/casepath/pull/21#issuecomment-6364491895), explicitly adopted by the user, puts hosted read reliability first and retains the checklist and north-star requirements. It supersedes `60d4907ca5c975e288fa3c0973992abd31fcc594`. After the verified PR21 handoff, no further changes are permitted except defects the Mac owner reports on PR21. Release remains with the Mac owner.
+
+## Recovery and completion on 23 October
+
+The ChatGPT Commander continuation recovered Codex thread `01a15ae9-3851-79b2-9d1b-af0b75f25a86` after its usage-limit stop. The original W11 UI checkout and unfinished reliability checkout remain preserved. The successor branch starts at `d6f42041a83bb27558fe931ea84b43b1b897254f` and carries the recovered reviewed patch. The earlier UI-only strict gate passed, but its final walk has no completed acceptance receipt; it is retained as interrupted evidence and is not substituted for this candidate's gate.
+
+With generated synthetic fixtures present, the recovered patch passed 188 focused backend tests and 365 frontend tests. Final acceptance still requires the complete strict gate on the newly sealed source and the serial browser walk. An added regression demonstrated that an unknown-case 404 incorrectly erased the healthy Knowledge fallback. Unknown-case HTTP 404 failures now evict only their exact cache key; HTTP 409/422 saved-state validation failures and other integrity/protocol failures still invalidate the entire cache. The original failing regression and the two integrity-failure regressions are retained; the corrected reliability and protected read-only suites pass all 34 tests. The changed workspace script's existing `sha256` query in `casepath/index.html` is updated to its exact content digest; the comparison admission permits only that digest substitution in the otherwise unchanged index.
+
+A separate fresh viewer again recognized the source-to-assessment flow, human review boundary and reuse of three checklist items with new case facts. Its remaining limits are retained: dense extracted source text, a subtle later-case transition, no demonstrated knowledge-approval lifecycle, and no measured accuracy or time savings. The recorded quotation bytes and approved presentation remain unchanged.
+
+The current user requested recovery and completion for a reliable demo. This continuation performs the Mac follow-up release only after the candidate's required gates pass, preserves the existing public read-only audience, and verifies aligned API/site identity and the required published read soak. It grants no inference, model runner, research rerun, provider call or new spending.
+
+## Hosted read reliability
+
+The immutable public Claims, Knowledge and JSON claim-history projections retry classified primary-storage ReadTimeout/connect failures and Hrana 5xx responses. There are at most three total attempts under one ten-second read budget, including database calls, lock waits and response encoding checks. The two possible inter-attempt waits use jittered 100/300 ms backoff; the requested 900 ms schedule entry never creates a fourth attempt. Each HTTP phase is capped at two seconds or one quarter of the remaining budget. The Sites proxy deadline is fourteen seconds. Existing HTTP connections remain pooled and reused.
+
+A retry runs the complete validated projection with fresh transactions. A transport guard admits only BEGIN, SELECT, COMMIT and stream close inside that read scope. It rejects writes, scripts and multiple statements before transport. Private writes and NDJSON operation streams have no retry or projection-cache path. A lost write acknowledgement remains uncertain and is never replayed.
+
+After transient attempts are exhausted, an app-local cache can return the last fully validated and encoded body for that exact endpoint, source commit and all validated path/query/cursor arguments. It is bounded to 64 entries, 16 MiB of bodies, 8 MiB per body and 4 KiB per key. The internal `X-CasePath-Read-Source` header distinguishes `primary` from `last-verified`; both remain `no-store`. Logs retain only endpoint templates and failure categories. Integrity/protocol failures remain fail-closed and invalidate the projection cache. No cached copy means the existing honest 503 response.
+
+The public UI retries an eligible failed JSON read once inside the original request owner and fifteen-second deadline. Cancellation, navigation, schema errors, rate limits, mutations and operation streams do not retry. After exhaustion, polling and visibility changes cannot restart a failed public history read; a calm Try again action remains available. Successful responses, including server fallback responses, keep the existing rendering.
+
+Focused MockHrana tests exercise recovery after a lost BEGIN response, persistent failure, exact cached projections, row neutrality, write exclusion, protocol failure, cache bounds and deadline-aware locks. Frontend tests cover one retry, shared owners, cancellation, a single deadline and terminal manual recovery. Original focused logs, including fixture-setup failures, are retained in the final evidence; successful focused checks do not replace the full sealed gate. The protected Mac-owned tests, including owner commit `4c46f43`'s row-neutral startup contract, remain unchanged.
+
 
 ## Change and evidence
 
@@ -31,11 +54,11 @@ Capture source: `f777df0e05895207668540dcb5c01bddd6f4b544`. The film is 88.05 se
 - [Final gate and walk](final-gate/verification.json)
 - [Canonical UI receipt](../../docs/product/UI_FINISH_RECEIPT_20261021.md)
 
-The final source adds this evidence/documentation, its source seal and a separately hashed live-layout verifier repair. Application, API, QA, fixtures, capture tools and served film assets remain byte-identical to the accepted capture. The final source binding records the capture and tested identities, changed paths, manifest digest, asset hashes and the sole verifier exception.
+The accepted UI capture and its proof remain unchanged. The final source also contains the reviewed hosted reliability implementation and frontend failure-path handling, so its JavaScript and API bytes are explicitly different. A separate source-bound comparator must replay all 5,283 frames and match every original frame-index digest, then pass six exact live comparisons and complete playback. It records the complete reviewed source delta, separate captured/final asset hashes and full cleanup. This establishes that the retained film still depicts the final source without rewriting the original capture receipt. The unchanged rendering assets, recorded fixtures, geometry audit and protected tests are checked independently. Any changed frame requires repair and, when the checklist presentation changes, recapture and renewed cold review.
 
 The first sealed source `fa2b8ca8c480dcf28fd0cd82f5fecef8922dd10a` passed 2,866 strict tests with ten historical skips. Its walk first stopped before browser launch because the continuation phase used an unsupported name. After correcting that runtime bookkeeping, the walk exposed an obsolete assertion: it expected the current group to keep spinning at fact-rest, after the operation had completed. W11 correctly makes a group with future operations wait, or marks a fully completed group done. The verifier now derives every row state and progress from the recorded group and exact current operation, checks one active row at passage-rest and zero at fact-rest, and safely handles a removed progress bar. Existing geometry, source/fact binding and zero-animation checks remain.
 
-Both failed attempts and the original strict result are retained in [superseded evidence](final-gate/superseded-fa2/). Final acceptance requires a new full strict gate and a fresh complete walk on the repaired, sealed source; the prior strict result is not substituted. The film and its cold/fidelity reviews remain valid because no product or capture byte changed.
+Both failed attempts and the original strict result are retained in [superseded evidence](final-gate/superseded-fa2/). Final acceptance requires a new full strict gate and a fresh complete walk on the repaired, sealed source; the prior strict result is not substituted. That verifier repair changed no product or capture byte. The later combined reliability source requires the independent visual comparison described above and another full strict gate and complete walk; neither earlier gate is substituted.
 
 ## Deliberate differences and limits
 
@@ -56,4 +79,4 @@ The user authorized W11 integration and PR21/PR36 coordination, not deployment o
 
 “Before any call, the Mac integration owner checks the ledger to confirm this allowance is still available. This receipt grants no new allowance or retry.”
 
-This is the final UI handoff after the final receipts pass. Subsequent UI work is limited to defects reported by the Mac owner on PR21.
+This is the final UI and reliability handoff after the final receipts pass. The Mac owner then performs one follow-up release and a published API/site read soak: at least 300 sequential Claims, Knowledge and history reads, with zero 503s required. This offline handoff does not claim that live soak has passed. Do not repeat the original-nine run. After handoff, further work is limited to defects reported by the Mac owner on PR21.

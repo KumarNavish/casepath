@@ -5,15 +5,16 @@ import re
 from threading import RLock
 
 from fastapi import FastAPI
-from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from .agent_work.store import WorkStore
 from .autonomous_api_v1 import create_autonomous_router
 from .autonomous_corpus_v1 import CanonicalCorpus
 from .hosted_lease_v1 import HostedAutonomousController, HostedWorkflowLease
-from .hosted_proxy_v1 import HostedReadTiming, ReadTimedJSONResponse, SitesProxyBoundary
+from .hosted_proxy_v1 import HostedReadTiming, SitesProxyBoundary
 from .hosted_read_seed_v1 import load_seed
+from .hosted_read_reliability_v1 import HostedReadReliability, PATHS as RELIABLE_READ_PATHS
+from .hosted_read_timing_v1 import read_lock
 from .hosted_storage_v1 import HostedAutonomousStore, HostedJournal, HostedSources, HostedStorageError, TursoDatabase
 from .workspace_corpus import PublicCorpus, default_workspace_corpus_root
 
@@ -30,11 +31,12 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
         database = TursoDatabase(env['CASEPATH_TURSO_URL'], env['TURSO_AUTH_TOKEN'], reuse_http=True)
     root = Path(runtime_directory or '/tmp/casepath-hosted').resolve()
     state, lock = {}, RLock()
+    reliability = HostedReadReliability(commit, ready=lambda: bool(state.get('ready')))
     api = FastAPI(title='CasePath', docs_url=None, redoc_url=None, openapi_url=None)
 
     def service():
         # This public composition only exposes saved, validated projections.
-        with lock:
+        with read_lock(lock):
             if not state:
                 raise HostedStorageError('Saved knowledge is not ready.')
             return state['controller']
@@ -66,15 +68,16 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
                     store.admit_read_seed(seed, deployment_commit=commit)
                 state.update(controller=controller, work=work, corpus=CanonicalCorpus(corpus))
                 # Run the same default read endpoints and response encoding once
-                # before readiness. Every later read still performs its own fresh
-                # journal/source validation; no response bytes are cached here.
+                # before readiness. Later reads still validate against primary;
+                # only exhausted transient failures can use a verified body.
                 for name, arguments in (('knowledge', {}),
                         ('claims', {'limit': 200, 'offset': 0, 'q': '', 'domain': ''})):
                     route = read_routes['/api/claim-loops/v1/autonomous/' + name]
-                    ReadTimedJSONResponse(jsonable_encoder(route.endpoint(**arguments)))
+                    route.endpoint(**arguments)
                 state['ready'] = True
             except BaseException:
                 state.clear()
+                reliability.clear()
                 for resource, method in ((controller, 'shutdown'), (work, 'close'),
                                          (database if owns_database else None, 'close')):
                     if resource is not None:
@@ -92,6 +95,7 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
                     state['work'].close()
             finally:
                 state.clear()
+                reliability.clear()
                 if owns_database:
                     database.close()
 
@@ -114,6 +118,10 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
                                      corpus_getter=lambda: state['corpus'],
                                      saved_work_getter=lambda: state['work'], read_only=True)
     read_routes = {route.path: route for route in router.routes if route.methods == {'GET'}}
+    for path, route in read_routes.items():
+        if path in RELIABLE_READ_PATHS:
+            route.endpoint = reliability.protect(route.endpoint, path)
+            route.dependant.call = route.endpoint
     api.include_router(router)
     api.add_event_handler('startup', startup)
     api.add_event_handler('shutdown', shutdown)

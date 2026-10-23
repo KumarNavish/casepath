@@ -3646,18 +3646,33 @@
       if (!readonly && (publicReadOnly || !status || !writable(status))) { const error = new Error(PUBLIC_READ_ONLY_MESSAGE); error.status = 403; return Promise.reject(error); }
       const identity = `${readGeneration}:${path}`;
       // A read whose owner was just cancelled is settling; a new reader starts its own.
-      if (readonly && inflightReads.has(identity) && !readOwners.get(identity)?.controller.signal.aborted) { if (!quiet && readOwners.has(identity)) readOwners.get(identity).foreground = true; return inflightReads.get(identity); }
+      if (readonly && inflightReads.has(identity) && !readOwners.get(identity)?.controller.signal.aborted) { if (!quiet && readOwners.has(identity)) { readOwners.get(identity).foreground = true; readOwners.get(identity).epoch = epoch; } return inflightReads.get(identity); }
       const opening = readonly && path === '/knowledge' && knowledgeOpening && root.location?.hash === knowledgeOpening.fragment ? knowledgeOpening : null;
       if (opening) knowledgeOpening = null;
       const controller = opening?.controller || new AbortController(); controllers.add(controller);
-      const owner = {controller,foreground:!quiet}; if (readonly) readOwners.set(identity,owner);
+      const owner = {controller,foreground:!quiet,epoch,generation:readGeneration}; if (readonly) readOwners.set(identity,owner);
       const timeout = opening?.timeout || root.setTimeout(() => controller.abort(new DOMException('No response within 15 seconds. Try again.','TimeoutError')),15000);
       const operation = (async () => {
         try {
-          const response = await (opening ? opening.response : fetcher(base + path,{...init,signal:controller.signal,headers:{Accept:'application/json',...(init.body ? {'Content-Type':'application/json','X-CasePath-Agent-Work':'1'} : {}),...init.headers},cache:'no-store'}));
-          const data = await response.json();
-          if (!response.ok) { const error = new Error(typeof data.detail === 'string' ? data.detail : data.detail?.message || data.message || `Request refused (${response.status}).`); error.status = response.status; throw error; }
-          return data;
+          // A 503 means the hosted read could not supply a saved projection.
+          // Retry this one JSON GET inside its existing deadline and owner;
+          // mutations, operation streams, invalid data and rate limits stay final.
+          for (let attempt = 0; ; attempt++) {
+            let transportFailure = false;
+            try {
+              let response, data;
+              try { response = await (opening && attempt === 0 ? opening.response : fetcher(base + path,{...init,signal:controller.signal,headers:{Accept:'application/json',...(init.body ? {'Content-Type':'application/json','X-CasePath-Agent-Work':'1'} : {}),...init.headers},cache:'no-store'})); }
+              catch (error) { transportFailure = ['TypeError','NetworkError'].includes(error.name); throw error; }
+              try { data = await response.json(); }
+              catch (error) { transportFailure = typeof response.json === 'function' && ['TypeError','NetworkError'].includes(error.name); if (response.status === 503) error.status = 503; throw error; }
+              if (!response.ok) { const error = new Error(typeof data.detail === 'string' ? data.detail : data.detail?.message || data.message || `Request refused (${response.status}).`); error.status = response.status; throw error; }
+              return data;
+            } catch (error) {
+              const retryable = readonly && /^(?:\/claims|\/knowledge|\/claims\/[^/?]+(?:\/(?:snapshot|events|replay))?)(?:\?|$)/.test(path);
+              const transient = error.status === 503 || transportFailure;
+              if (attempt || !retryable || !transient || !(publicReadOnly || readOnlyAccess(status)) || controller.signal.aborted || disposed || owner.epoch !== epoch || owner.generation !== readGeneration || pendingRoute()) throw error;
+            }
+          }
         } finally { root.clearTimeout(timeout); controllers.delete(controller); if (readOwners.get(identity) === owner) readOwners.delete(identity); }
       })();
       if (readonly) { inflightReads.set(identity,operation); const clear = () => { if (inflightReads.get(identity) === operation) inflightReads.delete(identity); }; operation.then(clear,clear); }
@@ -3682,7 +3697,7 @@
       if (disposed || token !== epoch || sourceToken !== sourceEpoch || !dialog.open) return null;
       clearNativeSource(); nativeSourceURL = root.URL.createObjectURL(new root.Blob([bytes],{type:descriptor.media_type})); return nativeSourceURL;
     }
-    function schedule() { cancelPoll(); if (!disposed && !doc.hidden && view === 'claim' && openingId && presentationMode !== 'replay') timer = root.setTimeout(current ? poll : () => loadOpenedClaim(openingId,epoch), current && !active(current.status) && !pendingStart && !pendingArrival && !pendingControl && !connectionFailed ? 20000 : 1600); }
+    function schedule() { cancelPoll(); if (!disposed && !doc.hidden && view === 'claim' && openingId && presentationMode !== 'replay' && !(connectionFailed && (publicReadOnly || readOnlyAccess(status)))) timer = root.setTimeout(current ? poll : () => loadOpenedClaim(openingId,epoch), current && !active(current.status) && !pendingStart && !pendingArrival && !pendingControl && !connectionFailed ? 20000 : 1600); }
     // The page's own first route keeps the document's natural focus order, so
     // the first Tab reaches the skip link. Later route changes focus the title.
     function focusTitle() { if (!doc.hidden && !pageArrival) host.querySelector('h1')?.focus({preventScroll:true}); }
@@ -4219,8 +4234,8 @@
         if (connectionFailed) notice('Connection restored. Showing saved work.'); else notice('');
         disconnected = false; connectionFailed = false;
         advanceLivePresentation();
-      } catch (error) { if (!disposed && token === epoch && !pendingRoute() && read === claimRead) { disconnected = true; connectionFailed = true; freshClaim = false; synchronizeAuthority('failed'); notice(`Updates paused: ${error.message} Saved work remains visible.`, true); } }
-      finally { if (polling === token) polling = null; if (!disposed && token === epoch && !pendingRoute() && view === 'claim') schedule(); }
+      } catch (error) { if (!disposed && token === epoch && !pendingRoute() && read === claimRead) { disconnected = true; connectionFailed = true; freshClaim = false; synchronizeAuthority('failed'); notice(publicReadOnly || readOnlyAccess(status) ? 'Could not refresh this case. Saved work remains visible.' : `Updates paused: ${error.message} Saved work remains visible.`, true); } }
+      finally { if (polling === token) polling = null; if (!disposed && token === epoch && !pendingRoute() && view === 'claim' && !(connectionFailed && (publicReadOnly || readOnlyAccess(status)))) schedule(); }
     }
     async function loadOpenedClaim(id, token, preferences = openingPreferences) {
       const read = ++claimRead;
@@ -4239,7 +4254,7 @@
         }
         verifiedAdvance(incoming);
         const initial = !current, changed = initial || current.state_sha256 !== incoming.state.state_sha256 || JSON.stringify(projection) !== JSON.stringify(incoming.projection);
-        current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; freshClaim = true;
+        current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; freshClaim = true; disconnected = false; connectionFailed = false;
         const previous = initial ? claimViews.get(id) : {selected,evidenceContext,detail};
         const initialPreferences = initial ? preferences : {};
         selected = preferredNode(current,initialPreferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,initialPreferences,previous);
@@ -4251,9 +4266,11 @@
         return current;
       } catch (error) {
         if (!disposed && token === epoch && !pendingRoute() && view === 'claim' && read === claimRead) {
-          freshClaim = false; synchronizeAuthority('failed'); notice(current ? `Refresh failed: ${error.message} Saved work remains visible.` : error.message,true);
-          if (!current) host.innerHTML = (catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id)) + button('Retry opening case',`data-au-claim="${h(id)}"`);
-          if (error.transientAdvance || !error.status || error.status >= 500) schedule();
+          const publicRead = publicReadOnly || readOnlyAccess(status);
+          if (publicRead) { connectionFailed = true; cancelPoll(); }
+          freshClaim = false; synchronizeAuthority('failed'); notice(publicRead ? current ? 'Could not refresh this case. Saved work remains visible.' : 'Could not load this case. Try again.' : current ? `Refresh failed: ${error.message} Saved work remains visible.` : error.message,true);
+          if (!current) host.innerHTML = (catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id)) + button(publicRead ? 'Try again' : 'Retry opening case',`data-au-claim="${h(id)}"`);
+          if (!publicRead && (error.transientAdvance || !error.status || error.status >= 500)) schedule();
         }
       }
     }
@@ -4496,6 +4513,11 @@
     function claimWarmIntent(event) {
       const target = event.target?.closest?.('[data-au-claim]');
       if (target && container.contains(target)) queueClaimWarm(target.dataset.auClaim,true);
+    }
+    function failedClaimsRead(error) {
+      notice(claimsLoaded ? 'Could not refresh cases. Saved work remains visible.' : 'Could not load cases. Try again.',true,'claims-load-failed');
+      noticeRecord = {message:error.message,status:error.status,operation:claimsLoaded?'refresh':'load'};
+      globalStatus.insertAdjacentHTML?.('beforeend',button('Try again','data-au-refresh-claims') + recordButton('Details','notice'));
     }
     async function loadClaims(token = epoch, force = false, quiet = false) {
       const read = ++claimsRead, generation = readGeneration, ticket = warmTicket;
@@ -6190,7 +6212,10 @@
       else { collection.opener = null; routeSettled('work',collectionTitle()); }
       if (searchTerms(collection.search).length) queueCollectionSearch(true);
       const results = await Promise.allSettled([serviceStatus(token),loadClaims(token)]);
-      if (!disposed && token === epoch) for (const result of results) if (result.status === 'rejected') notice(result.reason.message,true);
+      if (!disposed && token === epoch) for (const [index,result] of results.entries()) if (result.status === 'rejected') {
+        if (index === 1 && (publicReadOnly || readOnlyAccess(status))) failedClaimsRead(result.reason);
+        else notice(result.reason.message,true);
+      }
     }
     async function showIntake(writeHistory = true) {
       if (publicReadOnly) return showWork(writeHistory);
@@ -6240,7 +6265,7 @@
       catch (error) { form.querySelector('.au-form-status').textContent = error.message; }
     }
     function synchronizeKnowledgeRead(value = host.getAttribute?.('data-au-read-state') || 'verified') {
-      const retry=host.querySelector('[data-au-knowledge-retry]');if(retry)retry.hidden=value!=='failed';
+      const retry=host.querySelector('[data-au-knowledge-retry]');if(retry){retry.hidden=value!=='failed';if(value==='failed' && (publicReadOnly || readOnlyAccess(status)))retry.textContent='Try again';}
       host.setAttribute?.('data-au-read-state',value);
       const label = host.querySelector('[data-au-knowledge-read-label]');
       if (label) label.textContent = value === 'verified' ? '' : value === 'failed' ? 'Saved copy · refresh failed' : 'Saved copy · refreshing';
@@ -6733,7 +6758,7 @@
       else if (target.hasAttribute('data-au-domain')) { if (view !== 'work') return; collection.domain = target.dataset.auDomain; collection.page = 1; refreshCollection(); rememberCollectionRoute(true); collectionSettled(); }
       else if (target.hasAttribute('data-au-pause')) controlWork(target,'pause');
       else if (target.hasAttribute('data-au-resume')) controlWork(target,'resume');
-      else if (target.hasAttribute('data-au-refresh-claims')) { const token = epoch; loadClaims(token,true).catch(error => { if (!disposed && token === epoch) notice(error.message,true); }); }
+      else if (target.hasAttribute('data-au-refresh-claims')) { const token = epoch; notice(''); loadClaims(token,true).catch(error => { if (!disposed && token === epoch) { if (publicReadOnly || readOnlyAccess(status)) failedClaimsRead(error); else notice(error.message,true); } }); }
       else if (target.hasAttribute('data-au-knowledge')) { if (!busy) showKnowledge(true,{knowledge_id:target.dataset.auKnowledge,version:target.dataset.auVersion,knowledge_sha256:target.dataset.auKnowledgeSha,definition_sha256:target.dataset.auDefinitionSha,claim_id:target.dataset.auKnowledgeClaim}); }
       else if (target.hasAttribute('data-au-add-files')) { pauseInspection(); setDetail('sources',true); }
       else if (target.hasAttribute('data-au-expand-process')) {
@@ -6846,7 +6871,7 @@
         // A live presentation cannot dispatch a new case on visibility restore.
         if (demoSession?.mode === 'live') stopPresentation();
         cancelPoll(); freshClaim = false; statusAuthority = null;
-        if (presentationMode !== 'replay') synchronizeAuthority('refreshing');
+        if (presentationMode !== 'replay') synchronizeAuthority(connectionFailed && (publicReadOnly || readOnlyAccess(status)) ? 'failed' : 'refreshing');
         return;
       }
       if(demoSession?.executiveController&&demoSession.executiveVisibilityPause){demoSession.executiveVisibilityPause=false;demoSession.executiveController.resume();}
@@ -6861,7 +6886,7 @@
             // Resume one full reading interval; hidden time never causes catch-up.
             session.displayedAt = Date.now(); if (session.mode === 'operations') session.operationWake?.(); else startReplay(session,epoch);
           }
-        } else { disconnected = true; cancelPoll(); serviceStatus(epoch,true).catch(() => {}); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); }
+        } else { if (connectionFailed && (publicReadOnly || readOnlyAccess(status))) return; disconnected = true; cancelPoll(); serviceStatus(epoch,true).catch(() => {}); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); }
       }
     }
     function keyboardInput(event) {

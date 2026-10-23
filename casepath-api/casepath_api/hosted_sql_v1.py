@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import base64
 from dataclasses import dataclass
+from contextvars import ContextVar
 import json
 import logging
 import math
@@ -26,6 +27,42 @@ class HostedStorageError(RuntimeError):
 
 class HostedSQLFailure(HostedStorageError):
     """A received SQL error, distinct from an uncertain transport outcome."""
+
+
+class HostedReadTransient(HostedStorageError):
+    """A classified transport failure; only a guarded read may retry it."""
+
+
+class HostedReadDeadline(HostedReadTransient):
+    """The complete public read has exhausted its shared time allowance."""
+
+
+READ_ONLY_DEADLINE = ContextVar('casepath_read_only_deadline', default=None)
+
+
+class _HranaServerError(Exception):
+    pass
+
+
+def _guard_read_requests(requests):
+    """Reject writes before transport, including sequences and hidden statements."""
+    def statement(value):
+        sql = value.get('sql', '')
+        scrubbed = re.sub(r"'(?:''|[^'])*'|\"(?:\"\"|[^\"])*\"|`(?:``|[^`])*`|\[[^\]]*\]|--[^\n]*(?:\n|$)|/\*.*?\*/", ' ', sql, flags=re.S)
+        normalized = ' '.join(scrubbed.strip().rstrip(';').upper().split())
+        if ';' in scrubbed.strip().rstrip(';') or not (
+                normalized in {'BEGIN', 'BEGIN TRANSACTION', 'COMMIT', 'COMMIT TRANSACTION'}
+                or normalized.startswith('SELECT ')):
+            raise HostedStorageError('A retryable read cannot execute a write or script.')
+
+    for request in requests:
+        if request.get('type') == 'execute':
+            statement(request['stmt'])
+        elif request.get('type') == 'batch':
+            for step in request['batch']['steps']:
+                statement(step['stmt'])
+        elif request.get('type') != 'close':
+            raise HostedStorageError('A retryable read cannot execute a write or script.')
 
 
 MAX_BYTES = 32 * 1024 * 1024
@@ -181,13 +218,18 @@ class LibsqlConnection:
         if self._closed or self._poisoned:
             raise HostedStorageError('The persistent database connection is no longer usable.')
 
-    def _uncertain(self):
+    def _uncertain(self, error_type=HostedStorageError):
         self._poisoned = True
         self._cache.clear()
-        raise HostedStorageError('The persistent database operation is unconfirmed.') from None
+        raise error_type('The persistent database operation is unconfirmed.') from None
 
     def _send(self, requests, *, ending=False, close_http=False):
         self._usable()
+        read_deadline = READ_ONLY_DEADLINE.get()
+        if read_deadline is not None:
+            _guard_read_requests(requests)
+            if time.monotonic() >= read_deadline:
+                self._uncertain(HostedReadDeadline)
         if type(close_http) is not bool:
             raise HostedStorageError('The read transport close option must be a boolean.')
         payload = json.dumps({'baton': self._baton, 'requests': requests},
@@ -195,6 +237,13 @@ class LibsqlConnection:
         if len(payload) > MAX_BYTES:
             raise HostedStorageError('The persistent database request exceeds its size bound.')
         deadline = time.monotonic() + REQUEST_SECONDS
+        options = {}
+        if read_deadline is not None:
+            deadline = min(deadline, read_deadline)
+            # Divide the remaining allowance across the four blocking phases.
+            # An individual phase cannot consume the Sites 14 second budget.
+            phase_timeout = min(2.0, max(0.001, (deadline - time.monotonic()) / 4))
+            options['timeout'] = httpx.Timeout(phase_timeout)
         phase = 'request'
         operation = requests[0]['type']
         if operation == 'execute':
@@ -207,17 +256,23 @@ class LibsqlConnection:
         self._started = True
         try:
             with primary_request() as diagnostics, self._client.stream('POST', self._base + '/v2/pipeline',
-                    headers=headers, content=payload, **diagnostics) as response:
+                    headers=headers, content=payload, **diagnostics, **options) as response:
                 phase = 'http_status_and_encoding'
+                if 500 <= response.status_code <= 599:
+                    raise _HranaServerError()
                 if response.status_code != 200 or response.headers.get('content-encoding', 'identity') != 'identity':
                     raise ValueError('HTTP failure')
                 phase = 'response_body'
                 body = bytearray()
                 for chunk in response.iter_bytes():
+                    if time.monotonic() > deadline and read_deadline is not None:
+                        raise HostedReadDeadline()
                     if time.monotonic() > deadline or len(body) + len(chunk) > MAX_BYTES:
                         raise ValueError('response bound')
                     body.extend(chunk)
                 if time.monotonic() > deadline:
+                    if read_deadline is not None:
+                        raise HostedReadDeadline()
                     raise ValueError('response deadline')
             def invalid_constant(_):
                 raise ValueError('invalid JSON constant')
@@ -247,7 +302,10 @@ class LibsqlConnection:
             # Fixed phase labels and exception classes only: no SQL, parameters,
             # response bodies, endpoint URLs, batons, or credential values.
             _LOG.warning('hosted_database_failure operation=%s phase=%s category=%s', operation, phase, type(error).__name__)
-            self._uncertain()
+            category = (HostedReadDeadline if isinstance(error, HostedReadDeadline) else
+                        HostedReadTransient if isinstance(error, (httpx.ReadTimeout, httpx.ConnectTimeout,
+                            httpx.ConnectError, _HranaServerError)) else HostedStorageError)
+            self._uncertain(category)
         # A SQL error still rotates the baton. Save it before raising.
         self._baton = baton
         if base is not None:
@@ -436,6 +494,11 @@ class LibsqlConnection:
             self.execute('COMMIT')
 
     def rollback(self):
+        if READ_ONLY_DEADLINE.get() is not None:
+            # A closed read stream aborts its snapshot. Do not mask the original
+            # failure by rolling back a poisoned connection through the fence.
+            self.close()
+            return
         self._usable()
         if self._in_transaction:
             self.execute('ROLLBACK')

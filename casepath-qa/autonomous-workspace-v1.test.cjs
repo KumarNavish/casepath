@@ -762,7 +762,7 @@ test('a read-only status arriving during file preparation is denied centrally wi
 });
 
 test('uncertain intake retries the identical payload/key with required mutation header and never auto-retries',async t=>{
- const f=dom();let posts=0;const api=fakeApi({handle:async(path,init)=>{if(init.method==='POST'){posts++;if(posts===1)throw new Error('Connection lost');return response(state());}}});
+ const f=dom();let posts=0;const api=fakeApi({handle:async(path,init)=>{if(init.method==='POST'){posts++;if(posts===1)throw new TypeError('Connection lost');return response(state());}}});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
  await f.listeners.get('submit')({target:f.form,preventDefault(){}});
  assert.equal(posts,1);assert.match(f.message.textContent,/same request key/);assert.equal(f.fields.title.disabled,true);assert.equal(f.submit.disabled,false);
@@ -4060,4 +4060,115 @@ test('recorded citation boundaries stay perceivable with a high-contrast underli
  assert.match(css,/\.au-demo-control:focus-visible \{ outline-offset:-3px;/);
  const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/autonomous-workspace-v1.js'),'utf8');
  assert.match(source,/<span class="au-sr-only">Cited passage: <\/span>\$\{cited\}<span class="au-sr-only"> End of cited passage\.<\/span>/);
+});
+
+function hostedReadRoute(t,fragment='#autonomous/cases') {
+ const routing=routingFixture(t,fragment),before=globalThis.CASEPATH_PUBLIC_READ_ONLY;
+ globalThis.CASEPATH_PUBLIC_READ_ONLY=true;
+ t.after(()=>{if(before===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=before;});
+ return routing;
+}
+
+test('hosted Claims retries one unavailable projection inside the same request owner',async t=>{
+ hostedReadRoute(t);const f=dom();let reads=0;
+ const api=fakeApi({handle:async path=>path.endsWith('/claims')?response(++reads===1?{detail:'Saved work is temporarily unavailable.'}:{claims:[]},reads===1?503:200):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();
+ const requests=api.calls.filter(row=>row.path.endsWith('/claims'));
+ assert.equal(reads,2);assert.equal(requests[0].init.signal,requests[1].init.signal,'the retry shares the original deadline and cancellation');
+ assert.equal(f.status.textContent,'');assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
+});
+
+test('hosted Knowledge retries a transport failure once and accepts a server cached projection without another read',async t=>{
+ hostedReadRoute(t,'#autonomous/knowledge');const f=knowledgeFixture(),data=learningFixtureData();let reads=0;
+ const api=fakeApi({handle:async path=>{if(!path.endsWith('/knowledge'))return null;if(++reads===1)throw new TypeError('Failed to fetch');return {...response(data),headers:new Headers({'X-CasePath-Read-Cache':'fallback'})};}});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();
+ assert.equal(reads,2);assert.ok(f.versions.length);assert.equal(f.status.textContent,'');
+ await controller.showKnowledge();assert.equal(reads,3,'a successful server fallback is accepted in one request');assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
+});
+
+test('hosted claim history retries one unavailable snapshot without changing its source identity',async t=>{
+ hostedReadRoute(t);const f=dom(),saved=savedSnapshotAssetFixture().body;let reads=0;
+ const api=fakeApi({handle:async path=>path.includes('/claims/claim-a/snapshot?')?response(++reads===1?{detail:'Saved work is temporarily unavailable.'}:saved,reads===1?503:200):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ assert.equal(reads,2);assert.match(f.host.innerHTML,new RegExp(`data-au-revision="${saved.state.revision}" data-au-state-sha="${saved.state.state_sha256}"`));
+ assert.equal(f.status.textContent,'');assert.equal(api.calls.filter(row=>row.init.method==='POST').length,0);
+});
+
+test('hosted Claims exhausts its one retry then offers an explicit fresh Try again',async t=>{
+ hostedReadRoute(t);const f=dom();let reads=0,buttons='';f.status.insertAdjacentHTML=(_position,html)=>{buttons+=html;};
+ const api=fakeApi({handle:async path=>path.endsWith('/claims')?response(++reads<=2?{detail:'Saved work is temporarily unavailable.'}:{claims:[]},reads<=2?503:200):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();
+ assert.equal(reads,2);assert.equal(f.status.textContent,'Could not load cases. Try again.');assert.match(buttons,/data-au-refresh-claims[^>]*>Try again/);
+ for(let turn=0;turn<5;turn++)await settle();assert.equal(reads,2);
+ f.listeners.get('click')({target:control(f,'data-au-refresh-claims')});await settle();await settle();
+ assert.equal(reads,3);assert.equal(f.status.textContent,'');assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
+});
+
+test('hosted history exhaustion stops opening and visibility retries until Try again',async t=>{
+ hostedReadRoute(t);const f=dom(),saved=savedSnapshotAssetFixture().body,visibility=new Map(),scheduled=[];let reads=0;
+ f.container.ownerDocument.addEventListener=(type,fn)=>visibility.set(type,fn);f.container.ownerDocument.removeEventListener=type=>visibility.delete(type);
+ const originalTimeout=globalThis.setTimeout;globalThis.setTimeout=(callback,delay,...args)=>{if(delay===1600)scheduled.push(callback);return originalTimeout(callback,delay,...args);};t.after(()=>{globalThis.setTimeout=originalTimeout;});
+ const api=fakeApi({handle:async path=>path.includes('/claims/claim-a/snapshot?')?response(++reads<=2?{detail:'Saved work is temporarily unavailable.'}:saved,reads<=2?503:200):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ assert.equal(reads,2);assert.equal(scheduled.length,0);assert.equal(f.status.textContent,'Could not load this case. Try again.');assert.match(f.host.innerHTML,/data-au-claim="claim-a"[^>]*>Try again/);
+ f.container.ownerDocument.hidden=true;visibility.get('visibilitychange')?.();f.container.ownerDocument.hidden=false;visibility.get('visibilitychange')?.();await settle();assert.equal(reads,2,'visibility must not revive an exhausted automatic opening loop');
+ f.listeners.get('click')({target:control(f,'data-au-claim','claim-a')});await settle();await settle();assert.equal(reads,3);assert.equal(f.status.textContent,'');assert.match(f.host.innerHTML,/data-au-revision="3"/);
+ assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
+});
+
+test('hosted shared Knowledge readers have one retry budget and one deadline',async t=>{
+ hostedReadRoute(t,'#autonomous/knowledge');const f=knowledgeFixture(),first=deferredRead(),data=learningFixtureData();let reads=0;
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?(++reads===1?first.promise:response(data)):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();first.resolve(response(data));});await settle();
+ const secondReader=controller.showKnowledge();assert.equal(reads,1);first.resolve(response({detail:'Saved work is temporarily unavailable.'},503));await secondReader;await settle();
+ const requests=api.calls.filter(row=>row.path.endsWith('/knowledge'));assert.equal(reads,2);assert.equal(requests[0].init.signal,requests[1].init.signal);assert.ok(f.versions.length);assert.equal(f.status.textContent,'');
+});
+
+test('hosted navigation and destruction cancel a pending retry without repainting',async t=>{
+ const routing=hostedReadRoute(t,'#autonomous/knowledge');const f=knowledgeFixture(),first=deferredRead(),claims=deferredRead();let reads=0;
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?(reads++,first.promise):path.endsWith('/claims')?claims.promise:null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{controller.destroy();first.resolve(response({detail:'Closed'},503));claims.resolve(response({claims:[]}));});await settle();
+ routing.external('#autonomous/cases');await settle();const html=f.host.innerHTML;first.resolve(response({detail:'Saved work is temporarily unavailable.'},503));await settle();await settle();
+ assert.equal(reads,1);assert.equal(f.host.innerHTML,html);assert.doesNotMatch(f.status.textContent,/Could not load Knowledge/);controller.destroy();claims.resolve(response({claims:[]}));await settle();assert.equal(f.container.innerHTML,'');
+});
+
+test('hosted boot Knowledge reuses its first failed request then makes only one fresh GET',async t=>{
+ hostedReadRoute(t,'#autonomous/knowledge');const f=knowledgeFixture(),opening=new AbortController(),data=learningFixtureData();let reads=0;
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?(reads++,response(data)):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch,knowledgeOpening:{url:'/api/claim-loops/v1/autonomous/knowledge',fragment:globalThis.location.hash,controller:opening,timeout:setTimeout(()=>opening.abort(),15000),response:Promise.resolve(response({detail:'Saved work is temporarily unavailable.'},503))}});t.after(()=>controller.destroy());await settle();await settle();
+ assert.equal(reads,1,'the boot request is the first attempt, not an additional request');assert.equal(api.calls.find(row=>row.path.endsWith('/knowledge')).init.signal,opening.signal);assert.ok(f.versions.length);assert.equal(f.status.textContent,'');
+});
+
+test('hosted reads do not retry schema errors rate limits or nonprojection endpoints',async t=>{
+ hostedReadRoute(t,'#autonomous/knowledge');
+ for(const failure of ['schema','json','rate-limit']){
+  const f=knowledgeFixture();let reads=0;const api=fakeApi({handle:async path=>{if(!path.endsWith('/knowledge'))return null;reads++;return failure==='schema'?response({versions:'invalid'}):failure==='json'?{ok:true,status:200,json:async()=>{throw new SyntaxError('Invalid JSON');}}:response({detail:'Rate limit reached'},429);}});
+  const controller=ui.mount(f.container,{fetch:api.fetch});try{await settle();await settle();assert.equal(reads,1,failure);assert.equal(f.status.textContent,'Could not load Knowledge. Try again.');}finally{controller.destroy();globalThis.sessionStorage.removeItem('casepath.read-cache/1');}
+ }
+ const f=dom();let statusReads=0;const api=fakeApi({handle:async path=>path.endsWith('/status')?(statusReads++,response({detail:'Unavailable'},503)):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await controller.showWork();await settle();assert.equal(statusReads,1,'status is not an endpoint projection retry');assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
+});
+
+test('hosted invalid proxy 503 body still gets one bounded retry while successful invalid JSON does not',async t=>{
+ hostedReadRoute(t,'#autonomous/knowledge');const f=knowledgeFixture(),data=learningFixtureData();let reads=0;
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?(++reads===1?{ok:false,status:503,json:async()=>{throw new SyntaxError('Proxy returned HTML');}}:response(data)):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();assert.equal(reads,2);assert.ok(f.versions.length);assert.equal(f.status.textContent,'');
+});
+
+test('hosted Knowledge exhausted retries leave a calm explicit retry and preserve the saved copy',async t=>{
+ hostedReadRoute(t,'#autonomous/knowledge');const f=knowledgeFixture(),data=learningFixtureData();let reads=0;
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(++reads===2||reads===3?{detail:'Saved work is temporarily unavailable.'}:data,reads===2||reads===3?503:200):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();const saved=f.host.innerHTML;assert.ok(f.versions.length);
+ await controller.showKnowledge();assert.equal(reads,3);assert.equal(f.status.textContent,'Could not load Knowledge. Try again.');assert.equal(f.host.innerHTML,saved,'a failed refresh cannot discard the accepted Knowledge projection');
+ for(let turn=0;turn<5;turn++)await settle();assert.equal(reads,3);f.listeners.get('click')({target:control(f,'data-au-knowledge-retry')});await settle();await settle();assert.equal(reads,4);assert.equal(f.status.textContent,'');
+});
+
+test('hosted automatic retry keeps one fifteen-second deadline and never retries its timeout',async t=>{
+ hostedReadRoute(t,'#autonomous/knowledge');const f=knowledgeFixture(),data=learningFixtureData(),deadlines=new Map(),originalTimeout=globalThis.setTimeout;let reads=0,signal;
+ globalThis.setTimeout=(callback,delay,...args)=>{const handle=originalTimeout(delay===15000?()=>{}:callback,delay===15000?60000:delay,...args);if(delay===15000)deadlines.set(handle,callback);return handle;};
+ t.after(()=>{globalThis.setTimeout=originalTimeout;for(const handle of deadlines.keys())clearTimeout(handle);});
+ const api=fakeApi({handle:async(path,init)=>{if(!path.endsWith('/knowledge'))return null;if(++reads===1)return response({detail:'Saved work is temporarily unavailable.'},503);if(reads>2)return response(data);signal=init.signal;return new Promise((_,reject)=>signal.addEventListener('abort',()=>reject(signal.reason),{once:true}));}});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await settle();assert.equal(reads,2);assert.equal(deadlines.size,1,'the second attempt does not start a second deadline');
+ const [handle,expire]=[...deadlines][0];clearTimeout(handle);expire();await settle();await settle();assert.equal(reads,2);assert.equal(signal.reason.name,'TimeoutError');assert.equal(f.status.textContent,'Could not load Knowledge. Try again.');
+ await controller.showKnowledge();assert.equal(reads,3);assert.equal(f.status.textContent,'');assert.ok(f.versions.length);
 });

@@ -161,7 +161,7 @@ class HostedSources:
         self._cache, self._size, self._lock = OrderedDict(), 0, RLock()
 
     def _remember(self, digest, raw):
-        with self._lock:
+        with read_lock(self._lock):
             if digest not in self._cache:
                 self._cache[digest] = raw
                 self._size += len(raw)
@@ -285,7 +285,7 @@ class HostedSources:
 
     def read(self, digest):
         self._digests([digest])
-        with self._lock:
+        with read_lock(self._lock):
             cached = self._cache.get(digest)
             if cached is not None:
                 self._cache.move_to_end(digest)
@@ -295,7 +295,7 @@ class HostedSources:
     def read_many(self, digests, *, page_chunks=None):
         """Populate only missing byte-cache entries; this admits no evidence."""
         values = self._digests(digests)
-        with self._lock:
+        with read_lock(self._lock):
             missing = [digest for digest in values if digest not in self._cache]
             if missing:
                 self._fetch_many(missing, page_chunks=page_chunks)
@@ -349,7 +349,7 @@ class HostedSources:
         Retain the extraction cache; refresh original bytes before exposing a
         verified journal projection, including a recorded historical prefix.
         """
-        with self._lock:
+        with read_lock(self._lock):
             values = self._digests(digests)
             for digest in values:
                 cached = self._cache.pop(digest, None)
@@ -398,7 +398,7 @@ class HostedSources:
         admitted only by the successful journal post-validation hook.
         """
         values = self._digests(digests)
-        with self._lock:
+        with read_lock(self._lock):
             if not values:
                 return
             missing = [digest for digest in values if digest not in self._cache]
@@ -617,7 +617,7 @@ class HostedAutonomousStore(AutonomousStore):
         states = self._validated_states(rows, source_verifier=verify)
         # Admit only after _validated_states returned, using the certificate
         # returned by this call rather than a shared temporary source mode.
-        with self._source_store._lock:
+        with read_lock(self._source_store._lock):
             self._source_store._knowledge_schema = schemas[0]
         return states
 

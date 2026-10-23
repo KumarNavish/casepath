@@ -77,7 +77,16 @@ def measured(name):
 @contextmanager
 def read_lock(lock):
     with measured('lock'):
-        lock.acquire()
+        # Imported only when called: the transport also imports these timing
+        # helpers. Ordinary/private work retains its existing lock behavior.
+        from .hosted_sql_v1 import READ_ONLY_DEADLINE, HostedReadDeadline
+        deadline = READ_ONLY_DEADLINE.get()
+        if deadline is None:
+            lock.acquire()
+        else:
+            remaining = deadline - monotonic()
+            if remaining <= 0 or not lock.acquire(timeout=remaining):
+                raise HostedReadDeadline('The saved read lock deadline was exhausted.')
     try:
         yield
     finally:
