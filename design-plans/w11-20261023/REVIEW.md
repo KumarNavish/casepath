@@ -31,7 +31,11 @@ Capture source: `f777df0e05895207668540dcb5c01bddd6f4b544`. The film is 88.05 se
 - [Final gate and walk](final-gate/verification.json)
 - [Canonical UI receipt](../../docs/product/UI_FINISH_RECEIPT_20261021.md)
 
-The final source may add only this evidence/documentation and its source seal. Application, API, QA, fixtures, capture tools and served film assets must remain byte-identical to the accepted capture. The final source binding records the capture and tested identities, changed paths, manifest digest and asset hashes.
+The final source adds this evidence/documentation, its source seal and a separately hashed live-layout verifier repair. Application, API, QA, fixtures, capture tools and served film assets remain byte-identical to the accepted capture. The final source binding records the capture and tested identities, changed paths, manifest digest, asset hashes and the sole verifier exception.
+
+The first sealed source `fa2b8ca8c480dcf28fd0cd82f5fecef8922dd10a` passed 2,866 strict tests with ten historical skips. Its walk first stopped before browser launch because the continuation phase used an unsupported name. After correcting that runtime bookkeeping, the walk exposed an obsolete assertion: it expected the current group to keep spinning at fact-rest, after the operation had completed. W11 correctly makes a group with future operations wait, or marks a fully completed group done. The verifier now derives every row state and progress from the recorded group and exact current operation, checks one active row at passage-rest and zero at fact-rest, and safely handles a removed progress bar. Existing geometry, source/fact binding and zero-animation checks remain.
+
+Both failed attempts and the original strict result are retained in [superseded evidence](final-gate/superseded-fa2/). Final acceptance requires a new full strict gate and a fresh complete walk on the repaired, sealed source; the prior strict result is not substituted. The film and its cold/fidelity reviews remain valid because no product or capture byte changed.
 
 ## Deliberate differences and limits
 
