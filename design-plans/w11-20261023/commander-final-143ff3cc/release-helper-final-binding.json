@@ -1,0 +1,25 @@
+{
+  "source_commit": "143ff3ccf2068a2aeae51f47fef405269e131312",
+  "recorded_at": "2026-10-23T22:11:36.737359+00:00",
+  "helpers": {
+    "await_api.py": "4b647fdd4a7d3bbb3dde34b4233af78a3d7e9dae93bbe1ee4b222347ca166ab4",
+    "copy_sites_inputs.py": "12046a355fd898f2d13f060915267e7d54a5a01cc64617cddb4372d083778d10",
+    "deploy_api.py": "0ba6710843ca42a5c0e3e8cad49a02d9e68a531898e33705452552a17442af42",
+    "integrate_canonical.py": "09830e1bae11dd0ff1ad37572c3dea70fbf79aa5937d1d8c200a5bca3837ba27",
+    "prepare_public_archive_transfer_small.py": "14b3fbf702e28c26ccf4bf745ace3073d1ae4b0d80e8277d3bc7369ab101516a",
+    "published_soak.py": "ca553995b546c52f1fa326b634c6de04b70525b123ff46feded69f7e90b14918",
+    "readback.py": "0dadb40ac28eb7874225c0a1167bdc6d38e5f6f03e6f285d66f3fff700d09049",
+    "renew_seed.py": "7decd5158b0988a91513910b2d6df5889c1a323220cc10e097c41e56876b358e",
+    "run_after_gate.py": "cd7a1fb6fa620c49666fe81e25dd9e57d979887236097c16d0b626812dbe5275",
+    "run_api_release.py": "8707456a2465605a99cd13a097f77927e140671d519c98e9081fd0a53e4f256c",
+    "run_sites_workflow_finite.py": "2c2b95af300537b9e1a944a536b19f3c86e2cc7a0d127f0464ffe21d3ffc4787",
+    "update_api_env.py": "86870494777941da6f0f437fefa3d7c97bc90f67e1389b9071e74024d715a10a",
+    "verify_completed_gate.py": "9c9ba4b1a0d0f86bb0e98d3eb47196fd580d865181c4b8ad9373842ce9253f45",
+    "verify_published.mjs": "a05ff433fad77cae5d57ba46d4df4fd1705ceb7cba7d1dc4e6aa0d1ab6a4d41e",
+    "verify_readback.py": "ac98f428fbc626df7ecdfe3368440b1483662386f111701e27e8c782610286a9",
+    "verify_supplement.mjs": "d06cffeec4bdc822ac5adf9ec2a307d0d3cc8457a32f6518255c786dfad29dce"
+  },
+  "review": "Root reviewed and independently reviewed by demo_acceptance_review and desk_failure_review; no remaining concrete release-helper defect. Includes exact mobile roster/count checks.",
+  "prior_preparation_sha256": "d6d5227402855744217a44d5882d1ce78fab78a601952a13dfd6dceefa7a5e46",
+  "public_transport_helper_sha256": "8f3dac9cd6c9fd54f3da033c459f36a1dc42a4a5095aec64e3e178a58fbca0f8"
+}

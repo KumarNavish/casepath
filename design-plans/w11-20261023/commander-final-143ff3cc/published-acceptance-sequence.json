@@ -1,0 +1,114 @@
+{
+  "source_commit": "143ff3ccf2068a2aeae51f47fef405269e131312",
+  "status": "passed",
+  "started_at": "2026-10-23T23:21:38.274428+00:00",
+  "stages": [
+    {
+      "name": "soak",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-mobile-gate-20261023/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published_soak.py",
+        "--source",
+        "143ff3ccf2068a2aeae51f47fef405269e131312",
+        "--baseline",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/readback-before.json",
+        "--out",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-soak-143ff3cc"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-23T23:21:38.275920+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-soak-command.log",
+      "pid": 36916,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T23:25:06.910293+00:00",
+      "log_sha256": "c206c141eb2682f479d0e1761a0e2b4e7cf5b2779d8dcfb697774d6be9834ef2",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-soak-143ff3cc/summary.json",
+          "sha256": "d956bacf26ec4288223fcb10759d586694ddf8a0556c9192d1ab3627be6ac50d"
+        },
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-soak-143ff3cc/receipts.jsonl",
+          "sha256": "5a962a5ae10b8ea2a9aade55897259bc8bbcce1c0e18099487fc5dc3b6036e21"
+        }
+      ]
+    },
+    {
+      "name": "browser",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/verify_published.mjs",
+        "143ff3ccf2068a2aeae51f47fef405269e131312",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-browser-143ff3cc"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-23T23:25:06.945047+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-browser-command.log",
+      "pid": 38236,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T23:30:30.304057+00:00",
+      "log_sha256": "9ba749add734673068102b1ea74b7b349b972882fbfc998587bca81f7147f48a",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-browser-143ff3cc/summary.json",
+          "sha256": "bfeea8a006f9a34ea5deb5ed0585592d53067f219a85b718542a4a68e253d2d6"
+        },
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-browser-143ff3cc/published-verification.json",
+          "sha256": "5e7259670b804581ad260057134355888c2cc2c99f450e8f4c8ac6537e69f3fd"
+        }
+      ]
+    },
+    {
+      "name": "readback",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-mobile-gate-20261023/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/readback.py",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/readback-after.json",
+        "--require-primary"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-23T23:30:30.321107+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-readback-command.log",
+      "pid": 39815,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T23:30:34.347826+00:00",
+      "log_sha256": "0ae043feae87745bac324bc07d9cf031d9c864ac2b6294c04632d0ee4b72ed8f",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/readback-after.json",
+          "sha256": "d2c2f5fa241b74036020ad4ddfd156eec4fadb3ad3bc4c3bcf301cd6b1242108"
+        }
+      ]
+    },
+    {
+      "name": "verify_readback",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-mobile-gate-20261023/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/verify_readback.py",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release",
+        "143ff3ccf2068a2aeae51f47fef405269e131312"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-23T23:30:34.350446+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-verify_readback-command.log",
+      "pid": 39883,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T23:30:34.399784+00:00",
+      "log_sha256": "512b902ee8a3b946f31c6d593100c1905f1473d4ca8e6019e092831156c9c131",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/readback-verified.json",
+          "sha256": "0a88b1bbafd0f4a32acee21fdfc0cc9b2dd97a2c6d75114c7c083f18937d30ac"
+        }
+      ]
+    }
+  ],
+  "script_sha256": "6b02ba7fd8ab24214c30d5bbe1c315774b91a2d1f8b6e6e2be87d2465e751cab",
+  "helper_binding_sha256": "db52307488f50fc6fad11e17b5d8c4edc9a4d9d367c90c1462ab6b9d90152906",
+  "site_version_id": "appgprj_6ac8aab031988191b5c370f7a4dbf160~appgver_9523357bfbac8191a0a1c9e44e90b10e",
+  "site_version_number": 46,
+  "distribution_commit": "14aacce1a8be46bd125da7a777dac47fb89a7490",
+  "site_deployment_id": "appgdep_6adbebe9e07c8191b95c7e0b7ab0a06f",
+  "finished_at": "2026-10-23T23:30:34.401310+00:00"
+}

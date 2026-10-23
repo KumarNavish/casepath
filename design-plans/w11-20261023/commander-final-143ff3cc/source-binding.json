@@ -1,0 +1,51 @@
+{
+  "contract": "casepath.commander-source-binding/1",
+  "captureSourceCommit": "f777df0e05895207668540dcb5c01bddd6f4b544",
+  "baseSourceCommit": "d6f42041a83bb27558fe931ea84b43b1b897254f",
+  "inputSourceCommit": "b049588847f765dcab77b67363141b298e54f569",
+  "sourceCommit": "143ff3ccf2068a2aeae51f47fef405269e131312",
+  "sourceManifestSha256": "8a821eefa054ab955c2721a6080fa1f381c59e6e7259fd30cc187a449818b834",
+  "assets": {
+    "autonomous-workspace-v1.js": "573c2294692b4025549e687c0e21b959e14692365453519ed7a5ae4b8128e356",
+    "autonomous-workspace-v1.css": "184979997357aea000c973295563c46287bc562949de1382ee3b829a4866ee5a",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "protectedFiles": {
+    "casepath-api/tests/test_public_hosted_read_only_v1.py": "e89ebef7b26649f80b19a118f7f6afe9570cb517f9617f0a95b6ec7bc02c744d",
+    "casepath-api/tests/test_frontend_node_suites_v1.py": "f6e44af53342402ae12787751dc4fe3eb27b8852e32b378c7c59a751cda92e8d",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs": "27b7f113f00e6f03d2c5212a15e681c459152a3f4620b0fd0a7e4bf1baafcca7",
+    "bin/casepath": "08a6f75b8af06ed199dec4b1aa6ad4c52fafcb84d5a3972ff8fc832af5013b5b"
+  },
+  "changedPaths": [
+    "casepath-api/casepath_api/hosted_app_v1.py",
+    "casepath-api/casepath_api/hosted_read_reliability_v1.py",
+    "casepath-api/casepath_api/hosted_read_timing_v1.py",
+    "casepath-api/casepath_api/hosted_sql_v1.py",
+    "casepath-api/casepath_api/hosted_storage_v1.py",
+    "casepath-api/tests/test_hosted_read_reliability_v1.py",
+    "casepath-qa/autonomous-workspace-v1.test.cjs",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/index.html",
+    "casepath/source-manifest.json",
+    "design-plans/w11-20261023/REVIEW.md",
+    "docs/product/UI_FINISH_RECEIPT_20261021.md"
+  ],
+  "indexChange": "Only existing workspace script and stylesheet content digest queries differ from the original UI seal.",
+  "recordedAt": "2026-10-23T21:58:40.676593+00:00",
+  "candidateParent": "a6f90100d065e0ef876c47143bf5b396022e3c50",
+  "candidateChanges": [
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/index.html",
+    "casepath/source-manifest.json"
+  ],
+  "mobilePatch": {
+    "parent": "a6f90100d065e0ef876c47143bf5b396022e3c50",
+    "beforeCssSha256": "a528722c453d2200249d616ed8f836740bd01e57940fcbfa966c645400798bc6",
+    "afterCssSha256": "184979997357aea000c973295563c46287bc562949de1382ee3b829a4866ee5a",
+    "additionSha256": "7ee7ec9be99f4bd2c581d2154e3dc4a6d1e76d4d03d67874313ffa7311c1bdec",
+    "diffSha256": "dc8d8f17fef37a7c46269b888857f1c05f53559a597f145a98eefe5583dded32"
+  }
+}

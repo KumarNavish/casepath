@@ -1,0 +1,25 @@
+{
+  "source_commit": "143ff3ccf2068a2aeae51f47fef405269e131312",
+  "status": "passed",
+  "inspection": "Assistant visual inspection",
+  "inspected_at_utc": "2026-10-23T23:28:49.958513+00:00",
+  "scope": "Manual inspection of these two published screenshots, supplemented by the separate complete browser and mobile geometry checks.",
+  "screenshots": [
+    {
+      "kind": "desktop",
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-browser-143ff3cc/cold-a-desktop-1440x900-demo-clm_543f08f2415b2a33.png",
+      "sha256": "f8dc172359ba7b30b64161a79ea24967e9ee57bfe92bd677e35f48862e08a478",
+      "width": 1440,
+      "height": 900,
+      "observations": "Process steps, source list, evidence detail and document preview are legible. The selected cited passage and document highlight correspond; navigation and full-source controls are visible."
+    },
+    {
+      "kind": "mobile",
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/release/published-browser-143ff3cc/cold-b-mobile-390x844-demo-clm_543f08f2415b2a33.png",
+      "sha256": "a320d2d9a31c81706232dbd1a6fc81b814786bc9a48b34cceff578d2a952fae4",
+      "width": 390,
+      "height": 844,
+      "observations": "Long source names truncate within the name column. Each Received status occupies its own column without colliding with the filename. The navigation, case heading and visible document rows fit the viewport."
+    }
+  ]
+}

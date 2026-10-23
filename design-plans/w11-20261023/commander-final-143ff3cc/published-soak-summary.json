@@ -1,0 +1,122 @@
+{
+  "all_http_503_count": 0,
+  "contract": "casepath.published-read-soak/1",
+  "expected_soak_requests": 300,
+  "failure": null,
+  "finished_at": "2026-10-23T23:25:06.859319+00:00",
+  "last_verified_soak_count": 0,
+  "methods": [
+    "GET"
+  ],
+  "observed_soak_requests": 300,
+  "passed": true,
+  "provider_calls_initiated": 0,
+  "receipts_sha256": "5a962a5ae10b8ea2a9aade55897259bc8bbcce1c0e18099487fc5dc3b6036e21",
+  "response_bodies_persisted": false,
+  "routes": {
+    "api /claims/{claim_id}/snapshot": {
+      "latency_ms": {
+        "max": 1320.03,
+        "min": 526.014,
+        "p50": 708.231,
+        "p95": 1226.443,
+        "p99": 1307.084
+      },
+      "passed": 50,
+      "read_source_counts": {
+        "primary": 50
+      },
+      "requests": 50
+    },
+    "api /claims?limit=200": {
+      "latency_ms": {
+        "max": 1099.192,
+        "min": 566.963,
+        "p50": 621.634,
+        "p95": 778.834,
+        "p99": 975.23
+      },
+      "passed": 50,
+      "read_source_counts": {
+        "primary": 50
+      },
+      "requests": 50
+    },
+    "api /knowledge": {
+      "latency_ms": {
+        "max": 693.881,
+        "min": 359.24,
+        "p50": 394.6,
+        "p95": 600.076,
+        "p99": 653.37
+      },
+      "passed": 50,
+      "read_source_counts": {
+        "primary": 50
+      },
+      "requests": 50
+    },
+    "site /claims/{claim_id}/snapshot": {
+      "latency_ms": {
+        "max": 1420.465,
+        "min": 617.316,
+        "p50": 768.676,
+        "p95": 1319.565,
+        "p99": 1417.028
+      },
+      "passed": 50,
+      "read_source_counts": {
+        "primary": 50
+      },
+      "requests": 50
+    },
+    "site /claims?limit=200": {
+      "latency_ms": {
+        "max": 2288.666,
+        "min": 605.934,
+        "p50": 691.37,
+        "p95": 1221.489,
+        "p99": 2024.745
+      },
+      "passed": 50,
+      "read_source_counts": {
+        "primary": 50
+      },
+      "requests": 50
+    },
+    "site /knowledge": {
+      "latency_ms": {
+        "max": 1348.484,
+        "min": 388.062,
+        "p50": 467.932,
+        "p95": 572.054,
+        "p99": 985.939
+      },
+      "passed": 50,
+      "read_source_counts": {
+        "primary": 50
+      },
+      "requests": 50
+    }
+  },
+  "runner_retries": 0,
+  "saved_original_histories": [
+    "clm_0c5e7c7723a3c694",
+    "clm_2a9c260c26afaa34",
+    "clm_521c20913f4e0f9b",
+    "clm_7dbd7c7d1c4ddf90",
+    "clm_9a179a4481767d43",
+    "clm_c44ddc0914ba9298",
+    "clm_e262801f9368bc12",
+    "clm_ee29ac770b1bf7b9",
+    "clm_f69b1747447bc221"
+  ],
+  "script_sha256": "ca553995b546c52f1fa326b634c6de04b70525b123ff46feded69f7e90b14918",
+  "sequential": true,
+  "soak_http_503_count": 0,
+  "source_and_final_readbacks_passed": true,
+  "source_commit": "143ff3ccf2068a2aeae51f47fef405269e131312",
+  "started_at": "2026-10-23T23:21:38.435573+00:00",
+  "successful_soak_requests": 300,
+  "verification_requests": 7
+}

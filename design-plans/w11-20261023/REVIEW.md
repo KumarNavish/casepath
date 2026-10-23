@@ -80,3 +80,12 @@ The user authorized W11 integration and PR21/PR36 coordination, not deployment o
 “Before any call, the Mac integration owner checks the ledger to confirm this allowance is still available. This receipt grants no new allowance or retry.”
 
 This is the final UI and reliability handoff after the final receipts pass. The Mac owner then performs one follow-up release and a published API/site read soak: at least 300 sequential Claims, Knowledge and history reads, with zero 503s required. This offline handoff does not claim that live soak has passed. Do not repeat the original-nine run. After handoff, further work is limited to defects reported by the Mac owner on PR21.
+
+
+## Final Commander acceptance — source 143ff3cc
+
+The final tested and deployed source is **143ff3ccf2068a2aeae51f47fef405269e131312**. Its fresh strict gate passed 2,891 tests with exactly the ten historical skips, all eleven frontend suites mandatory, and no new skips, failures, errors or deselections. The 5,283-frame visual comparison, six exact live comparisons, seven-script nine-case browser walk, and mobile checks at 320, 390 and 700 pixels passed.
+
+The authorized Mac follow-up release completed on the existing API and public Site. Sites version **46** and the API identify the same application source. The published 300-read sequential soak returned zero 503s. The desktop/mobile walkthrough and full presentation passed. Final primary reads confirmed the collection, Knowledge and complete reported usage/budget state unchanged. The original nine workflows were not repeated.
+
+The [complete final evidence and presenter guide](commander-final-143ff3cc/README.md) supersede the earlier pending-acceptance statements above while preserving the earlier receipts and their original outcomes. This evidence-only child commit changes no sealed product file and is not the source deployed to the API or Site.

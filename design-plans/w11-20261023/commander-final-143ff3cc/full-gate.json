@@ -1,0 +1,141 @@
+{
+  "canonical_commit": "143ff3ccf2068a2aeae51f47fef405269e131312",
+  "verified_at": "2026-10-23T23:14:49.476317+00:00",
+  "candidate_parent": "a6f90100d065e0ef876c47143bf5b396022e3c50",
+  "fresh_complete_gate": true,
+  "strict_reused": false,
+  "visual_reused": false,
+  "command": "CASEPATH_REQUIRE_FRONTEND_SUITES=1 nice -n 10 ./bin/casepath test",
+  "host": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-mobile-gate-20261023",
+  "exit_code": 0,
+  "summary_line": "2891 passed, 10 skipped, 10 warnings",
+  "seconds": 3194.14,
+  "passed": 2891,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 10,
+  "deselected": 0,
+  "new_skips": 0,
+  "skip_reports": [
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v1.py:605: frozen independent-transition packet is not available",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:457: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:548: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:559: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:579: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:592: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:610: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:636: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:646: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:696: saved native source-binding run is unavailable"
+  ],
+  "frontend_suites_required": [
+    "autonomous-workspace-v1.test.cjs",
+    "autonomous-language-v1.test.cjs",
+    "sites-autonomous-entry.test.cjs",
+    "autonomous-evidence-identity-v2.test.cjs",
+    "unified-product-v1.test.cjs",
+    "autonomous-desk-v3.test.cjs",
+    "autonomous-cases-v4.test.cjs",
+    "autonomous-knowledge-w6.test.cjs",
+    "autonomous-northstar-v1.test.cjs",
+    "autonomous-presentation-v1.test.cjs",
+    "autonomous-presentation-browser-v1.test.cjs"
+  ],
+  "frontend_suites_mandatory": true,
+  "mac_cold_landing_test_included": true,
+  "manifest_sha256": "8a821eefa054ab955c2721a6080fa1f381c59e6e7259fd30cc187a449818b834",
+  "source_files": 1741,
+  "source_files_exact": true,
+  "source_clean_after": true,
+  "isolation": {
+    "contract": "casepath.isolated-backend-static-test/1.0.0",
+    "external_network_activity_attested": false,
+    "model_mode": "deterministic_reference",
+    "persistent_artifact_registry_used": false,
+    "persistent_product_database_used": false,
+    "provider_credential_names_present": [],
+    "receipt_sha256": "3ff391ed794cec05ffdcd0b36f07c4bc5ae6f860729dde320136a35c2df7565d",
+    "targets": [
+      "casepath-api/tests",
+      "casepath/tools/test_build_deployment_identity.py",
+      "casepath/tools/test_casepath_release.py"
+    ]
+  },
+  "visual": {
+    "frames": 5283,
+    "hashes_matched": 5283,
+    "geometry_failures": 0,
+    "live_png_comparisons": 6,
+    "errors": 0,
+    "writes": 0,
+    "missing_reads": 0
+  },
+  "walk": {
+    "cases": 9,
+    "scripts": [
+      "process",
+      "memory",
+      "acceptance",
+      "reduced",
+      "motion",
+      "live-layout",
+      "presentation"
+    ],
+    "errors": 0,
+    "writes": 0,
+    "overlaps": 0
+  },
+  "mobile": {
+    "widths": [
+      320,
+      390,
+      700
+    ],
+    "case_views": 27,
+    "document_rows": 81,
+    "overlaps": 0,
+    "errors": 0,
+    "writes": 0
+  },
+  "evidence": {
+    "sequence": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile-sequence.json",
+      "sha256": "e9e9d584dfec1efdaf8dcce1737068c0025b5510f103a996df3211bb94b7a87d"
+    },
+    "actual_command": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/gate-command.json",
+      "sha256": "ad2692dca8a32269e507b5f84fb080b55891a8c57a87719ca515bacaf4de42b8"
+    },
+    "final_verifier_binding": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/verifier-final-binding.json",
+      "sha256": "ce27612cf7fef03c516a08a7dcb6bd2c0e31c98eefc26d76435a173a340609d1"
+    },
+    "mobile": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile/focused/mobile-layout.json",
+      "sha256": "fd0006725c40953f89a4ccf5c6ce3017c5fe92962752686d279f31efbfaa371d"
+    },
+    "stages": [
+      {
+        "name": "visual",
+        "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile-visual.log",
+        "logSha256": "3b052c9999fad52da32a669dc662ea402eba0d61d3257deb68dca0b7e7127fca",
+        "receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-visual-20261023-143ff3cc/visual-equivalence.json",
+        "receiptSha256": "c5ab4dabc314d2c18a7b9c3a2fbdf1c1231263ddad51403b0602e2ca997f2508"
+      },
+      {
+        "name": "strict",
+        "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile-strict.log",
+        "logSha256": "8e353dd6236b2024516ce86f4ba85619089c6b19eac805906bbce6fcd8475ec1",
+        "receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile-strict-receipt.json",
+        "receiptSha256": "73188980f4b22dc83173eaa1a257c5161ef4a2b00de5f88ed24fd848ed47db17"
+      },
+      {
+        "name": "walk",
+        "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile-walk.log",
+        "logSha256": "668dd90e6e5baf781edc07764f1611e3141ec611c9d45e19dd75713a4069658a",
+        "receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-reliability-20261023/.runtime/commander-mobile-walk/walk.json",
+        "receiptSha256": "9ab74d4647492dcee5a1648f3c5948988bba87cafdc82f20c5cc218c6dc9ae7c"
+      }
+    ]
+  }
+}
