@@ -1,0 +1,648 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "errors": [],
+  "writes": [],
+  "staticPrefix": false,
+  "overrides": false,
+  "case": "clm_314f2d309fea25e6",
+  "liveLayout": true,
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "60d4907ca5c975e288fa3c0973992abd31fcc594",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "cases": [
+    {
+      "id": "clm_314f2d309fea25e6",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_1715b98c5f009b94cad03526c1c661be",
+          "node": "dh_scope",
+          "title": "Checking “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 322.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_1715b98c5f009b94cad03526c1c661be",
+          "node": "dh_scope",
+          "title": "Checking “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "11.11111111111111%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 322.5,
+          "lastCardX": 322.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "The tenancy terms",
+              "type": "tenancy_terms_evidence",
+              "citation": {
+                "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+                "end_char": 434,
+                "offset_unit": "unicode_code_point",
+                "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+                "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+                "start_char": 95,
+                "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+              },
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unknown-type-fallback-diagnostic",
+          "overlapCount": 0,
+          "fullQuote": true,
+          "temporaryDOMProbe": true,
+          "doesNotRepresentRecordedOperation": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_4a07dbbbd859a3ce",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_5846d9183aaf7f4f51ccd5f147660dc1",
+          "node": "dh_scope",
+          "title": "Checking “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 322.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_5846d9183aaf7f4f51ccd5f147660dc1",
+          "node": "dh_scope",
+          "title": "Checking “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "11.11111111111111%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 322.5,
+          "lastCardX": 322.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "The tenancy terms",
+              "type": "tenancy_terms_evidence",
+              "citation": {
+                "artifact_id": "src_5d8ceb740a1e48c3148d148dffd96bdf",
+                "end_char": 434,
+                "offset_unit": "unicode_code_point",
+                "quote": "I, Nina Steiner, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 48, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1650; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+                "sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0",
+                "start_char": 95,
+                "text_sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0"
+              },
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unknown-type-fallback-diagnostic",
+          "overlapCount": 0,
+          "fullQuote": true,
+          "temporaryDOMProbe": true,
+          "doesNotRepresentRecordedOperation": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_95d08975bc575592",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_3d30f9e13eb94e18f1ee1bca99922a9a",
+          "node": "dh_scope",
+          "title": "Checking “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 322.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_3d30f9e13eb94e18f1ee1bca99922a9a",
+          "node": "dh_scope",
+          "title": "Checking “Is it a residential tenancy?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "11.11111111111111%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 322.5,
+          "lastCardX": 322.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "The tenancy terms",
+              "type": "tenancy_terms_evidence",
+              "citation": {
+                "artifact_id": "src_d29e2ebfb060212c953ddb46c1a7ed94",
+                "end_char": 431,
+                "offset_unit": "unicode_code_point",
+                "quote": "I, Nina Frei, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 88, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1920; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+                "sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317",
+                "start_char": 95,
+                "text_sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317"
+              },
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unknown-type-fallback-diagnostic",
+          "overlapCount": 0,
+          "fullQuote": true,
+          "temporaryDOMProbe": true,
+          "doesNotRepresentRecordedOperation": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_0f4f13b1e3e1328c",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_9e9742927fbe93326e40ca91fca44697",
+          "node": "lt_form",
+          "title": "Checking “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 322.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_9e9742927fbe93326e40ca91fca44697",
+          "node": "lt_form",
+          "title": "Checking “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "12.5%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 322.5,
+          "lastCardX": 322.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "The tenancy terms",
+              "type": "tenancy_terms_evidence",
+              "citation": {
+                "artifact_id": "src_b0416aadee21ef0f183f518a23e2d3d0",
+                "end_char": 393,
+                "offset_unit": "unicode_code_point",
+                "quote": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+                "sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e",
+                "start_char": 95,
+                "text_sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e"
+              },
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unknown-type-fallback-diagnostic",
+          "overlapCount": 0,
+          "fullQuote": true,
+          "temporaryDOMProbe": true,
+          "doesNotRepresentRecordedOperation": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_393285577dcb12c4",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_ce19d2515ba2eb4ee58b947c0f05c6b6",
+          "node": "lt_form",
+          "title": "Checking “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 322.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_ce19d2515ba2eb4ee58b947c0f05c6b6",
+          "node": "lt_form",
+          "title": "Checking “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "12.5%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 322.5,
+          "lastCardX": 322.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "The tenancy terms",
+              "type": "tenancy_terms_evidence",
+              "citation": {
+                "artifact_id": "src_e65264b00881dccc76c70808609be6c5",
+                "end_char": 404,
+                "offset_unit": "unicode_code_point",
+                "quote": "I, Simon Steiner, rent the dwelling atZollikerstrasse 67, 8008 Zurich under an indefinite residential lease in canton Zurich. Limmat Verwaltungs GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+                "sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e",
+                "start_char": 95,
+                "text_sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e"
+              },
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unknown-type-fallback-diagnostic",
+          "overlapCount": 0,
+          "fullQuote": true,
+          "temporaryDOMProbe": true,
+          "doesNotRepresentRecordedOperation": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_4a53299cfe619303",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_1bf277da5cd81137ff2dd5d5a5f1485e",
+          "node": "lt_form",
+          "title": "Checking “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 322.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_1bf277da5cd81137ff2dd5d5a5f1485e",
+          "node": "lt_form",
+          "title": "Checking “Is the notice in the required form?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "12.5%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 322.5,
+          "lastCardX": 322.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "The tenancy terms",
+              "type": "tenancy_terms_evidence",
+              "citation": {
+                "artifact_id": "src_df3bf789ae620637c09bda3631df9c10",
+                "end_char": 401,
+                "offset_unit": "unicode_code_point",
+                "quote": "I, Lea Meier, rent the dwelling atZollikerstrasse 58, 8008 Zurich under an indefinite residential lease in canton Zurich. Riva Hausverwaltung GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+                "sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96",
+                "start_char": 95,
+                "text_sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96"
+              },
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unknown-type-fallback-diagnostic",
+          "overlapCount": 0,
+          "fullQuote": true,
+          "temporaryDOMProbe": true,
+          "doesNotRepresentRecordedOperation": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_2c55cdd816b1d0e8",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_b3dfef33455eb07e3f004119783363bb",
+          "node": "ri_form",
+          "title": "Checking “What accompanied the original notice?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 322.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_b3dfef33455eb07e3f004119783363bb",
+          "node": "ri_form",
+          "title": "Checking “What accompanied the original notice?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "7.6923076923076925%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 322.5,
+          "lastCardX": 322.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "The tenancy terms",
+              "type": "tenancy_terms_evidence",
+              "citation": {
+                "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+                "end_char": 502,
+                "offset_unit": "unicode_code_point",
+                "quote": "I, Noah Frei, rent the dwelling atBergstrasse 27, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+                "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+                "start_char": 95,
+                "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+              },
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unknown-type-fallback-diagnostic",
+          "overlapCount": 0,
+          "fullQuote": true,
+          "temporaryDOMProbe": true,
+          "doesNotRepresentRecordedOperation": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_543f08f2415b2a33",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_6746b263c89eb93156a176abf440a869",
+          "node": "ri_form",
+          "title": "Checking “What accompanied the original notice?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 322.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_6746b263c89eb93156a176abf440a869",
+          "node": "ri_form",
+          "title": "Checking “What accompanied the original notice?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "7.6923076923076925%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 322.5,
+          "lastCardX": 322.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "The tenancy terms",
+              "type": "tenancy_terms_evidence",
+              "citation": {
+                "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+                "end_char": 508,
+                "offset_unit": "unicode_code_point",
+                "quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+                "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+                "start_char": 95,
+                "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+              },
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unknown-type-fallback-diagnostic",
+          "overlapCount": 0,
+          "fullQuote": true,
+          "temporaryDOMProbe": true,
+          "doesNotRepresentRecordedOperation": true
+        }
+      ],
+      "overlapCount": 0
+    },
+    {
+      "id": "clm_7dbd7c7d1c4ddf90",
+      "frames": [
+        {
+          "name": "selected",
+          "overlapCount": 0,
+          "operation": "op_5b1812743e3f12634d66102f463b1384",
+          "node": "ri_form",
+          "title": "Checking “What accompanied the original notice?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "0%",
+          "visibleFacts": 0,
+          "connectorVisible": false,
+          "connectorX": 322.5,
+          "lastCardX": null,
+          "cards": [],
+          "animations": 0
+        },
+        {
+          "name": "fact",
+          "overlapCount": 0,
+          "operation": "op_5b1812743e3f12634d66102f463b1384",
+          "node": "ri_form",
+          "title": "Checking “What accompanied the original notice?”",
+          "dash": "2.5px, 2.5px",
+          "width": "1.5px",
+          "color": "rgb(196, 197, 198)",
+          "labelColor": "rgb(156, 155, 160)",
+          "planState": "active",
+          "progress": "7.6923076923076925%",
+          "visibleFacts": 1,
+          "connectorVisible": true,
+          "connectorX": 322.5,
+          "lastCardX": 322.5,
+          "cards": [
+            {
+              "height": 90,
+              "label": "The tenancy terms",
+              "type": "tenancy_terms_evidence",
+              "citation": {
+                "artifact_id": "src_7cc0cf1a55319c24ca61d6fab075aa4c",
+                "end_char": 506,
+                "offset_unit": "unicode_code_point",
+                "quote": "I, Drew Shaw, rent the dwelling atZollikerstrasse 11, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+                "sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4",
+                "start_char": 95,
+                "text_sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4"
+              },
+              "labelFits": true
+            }
+          ],
+          "animations": 0
+        },
+        {
+          "name": "unknown-type-fallback-diagnostic",
+          "overlapCount": 0,
+          "fullQuote": true,
+          "temporaryDOMProbe": true,
+          "doesNotRepresentRecordedOperation": true
+        }
+      ],
+      "overlapCount": 0
+    }
+  ],
+  "passed": true,
+  "cleanup": [
+    {
+      "name": "page",
+      "status": "closed",
+      "ms": 8
+    },
+    {
+      "name": "context",
+      "status": "closed",
+      "ms": 0
+    },
+    {
+      "name": "browser",
+      "status": "closed",
+      "ms": 568
+    }
+  ]
+}

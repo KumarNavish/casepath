@@ -1,0 +1,72 @@
+{
+  "sourceCommit": "60d4907ca5c975e288fa3c0973992abd31fcc594",
+  "wrapperPid": 42158,
+  "startedAt": "2026-10-22T23:51:26.927882+00:00",
+  "status": "failed",
+  "serialized": true,
+  "stages": [
+    {
+      "name": "strict",
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "10",
+        "./bin/casepath",
+        "test"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-gate-20261022-w10r7",
+      "environment": {
+        "HOME": "/Users/kumar0002",
+        "USER": "kumar0002",
+        "PATH": "/Users/kumar0002/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "CASEPATH_REQUIRE_FRONTEND_SUITES": "1",
+        "CASEPATH_NODE": "/usr/local/bin/node",
+        "CASEPATH_UV": "/Users/kumar0002/.local/bin/uv",
+        "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/casepath-canonical/casepath-qa/node_modules",
+        "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+      },
+      "status": "completed",
+      "startedAt": "2026-10-22T23:51:26.942565+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-w10r7-r2-strict.log",
+      "pid": 42163,
+      "exitCode": 0,
+      "finishedAt": "2026-10-23T00:43:45.242995+00:00",
+      "logSha256": "6dc0ddb0e4ef309b2f1d489913d35286ced6908e2f299605a9671067718668bf",
+      "counts": {
+        "passed": 2866,
+        "skipped": 10
+      }
+    },
+    {
+      "name": "walk",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/run_northstar_final_walk_w10r7.py"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022",
+      "environment": {
+        "HOME": "/Users/kumar0002",
+        "USER": "kumar0002",
+        "PATH": "/Users/kumar0002/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "CASEPATH_REQUIRE_FRONTEND_SUITES": "1",
+        "CASEPATH_NODE": "/usr/local/bin/node",
+        "CASEPATH_UV": "/Users/kumar0002/.local/bin/uv",
+        "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/casepath-canonical/casepath-qa/node_modules",
+        "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+      },
+      "status": "completed",
+      "startedAt": "2026-10-23T00:43:45.464561+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-w10r7-r2-walk.log",
+      "pid": 58628,
+      "exitCode": 1,
+      "finishedAt": "2026-10-23T00:45:32.269848+00:00",
+      "logSha256": "82af3b20c156aebccd9d2c9c298313951b29e127853bf8e85bf9f66e29c3e481"
+    }
+  ],
+  "failure": "AssertionError('walk')",
+  "finishedAt": "2026-10-23T00:45:32.273726+00:00"
+}

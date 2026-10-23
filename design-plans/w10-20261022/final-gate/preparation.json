@@ -1,0 +1,120 @@
+{
+  "captureSourceCommit": "48ec153d869e39afa64c8f04e358b72e5dea255a",
+  "startedAt": "2026-10-22T23:47:49.411808+00:00",
+  "pid": 40468,
+  "status": "passed",
+  "stages": [
+    {
+      "name": "package",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/package_w10r7_proof.py"
+      ],
+      "finishedAt": "2026-10-22T23:47:49.998011+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-preparation-w10r7-package.log",
+      "logSha256": "9bf5a149c7cf969db54d9bf0013829a13cc9448a34f393df4259b81a94c71002"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/write_w10r7_final_docs.py"
+      ],
+      "finishedAt": "2026-10-22T23:47:50.045922+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-preparation-w10r7-docs.log",
+      "logSha256": "214315cf28877faf78bdfb122b9658529ce5b4e6ee1922b382f5757ca673122c"
+    },
+    {
+      "name": "artifacts",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath-api/generate_artifacts.py"
+      ],
+      "finishedAt": "2026-10-22T23:47:53.111666+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-preparation-w10r7-artifacts.log",
+      "logSha256": "47663c264c5cc14b10971f66ba5f9d16d3d33b84fb2d0e2bc2dbf9caf0b6b33e"
+    },
+    {
+      "name": "photographs",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath-api/replace_photographic_evidence.py",
+        "."
+      ],
+      "finishedAt": "2026-10-22T23:47:53.336512+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-preparation-w10r7-photographs.log",
+      "logSha256": "436d8c99cacc285b9b4e4bc6d9ed91796efd803258628325d4fe550c634fac4e"
+    },
+    {
+      "name": "static",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath/tools/build_static_site.py",
+        "--require-known-commit"
+      ],
+      "finishedAt": "2026-10-22T23:47:53.874668+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-preparation-w10r7-static.log",
+      "logSha256": "0a5b8928504cc3b50fb6c6dab6adb1eabb4df08c29845833bc7dbdc4e56f88dd"
+    },
+    {
+      "name": "seal",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath/tools/casepath_release.py",
+        "generate"
+      ],
+      "finishedAt": "2026-10-22T23:48:02.879587+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-preparation-w10r7-seal.log",
+      "logSha256": "6fe6f8346d7ce4d70b22b9bd64012735737934168e83111083370a0bc18edaa4"
+    },
+    {
+      "name": "commit",
+      "command": [
+        "git",
+        "commit",
+        "-m",
+        "docs(ui): seal W10 film and north-star self-review for final verification"
+      ],
+      "finishedAt": "2026-10-22T23:48:04.487614+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-preparation-w10r7-commit.log",
+      "logSha256": "d94adc3e7e5c400c550afa03ffc3d456c228b3a641a7fe485fbc60f58fa96704"
+    },
+    {
+      "name": "prepare",
+      "command": [
+        "./bin/casepath",
+        "prepare"
+      ],
+      "finishedAt": "2026-10-22T23:48:23.802163+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-preparation-w10r7-prepare.log",
+      "logSha256": "fe8795fe1255f89ce2eda3849d2ef6fcf17f09104fb79b3e26141c296e3e304a"
+    },
+    {
+      "name": "preview",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/start_preview_w10final.py"
+      ],
+      "finishedAt": "2026-10-22T23:48:34.784686+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-preparation-w10r7-preview.log",
+      "logSha256": "7a9515fa92a48ff4b9d325dfed146cbeb49f5015315efdb227e0ac291177f1cf"
+    },
+    {
+      "name": "clone",
+      "command": [
+        "git",
+        "clone",
+        "--no-local",
+        "--no-hardlinks",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-gate-20261022-w10r7"
+      ],
+      "finishedAt": "2026-10-22T23:49:12.737415+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-preparation-w10r7-clone.log",
+      "logSha256": "cf2ac4a409a55e730adac422365f7868db912c9eefcdf5e20e3a4dfaabc456bb"
+    }
+  ],
+  "finalSourceCommit": "60d4907ca5c975e288fa3c0973992abd31fcc594",
+  "clone": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-gate-20261022-w10r7",
+  "finishedAt": "2026-10-22T23:49:15.280657+00:00"
+}

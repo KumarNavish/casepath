@@ -1,0 +1,17 @@
+{
+  "sourceCommit": "60d4907ca5c975e288fa3c0973992abd31fcc594",
+  "diagnosedAt": "2026-10-23T00:49:06.704950+00:00",
+  "strictPassed": true,
+  "failedWalk": ".runtime/northstar-final-walk-w10r7/walk.json",
+  "failure": "Acceptance uses literal 4180 for catalog and navigation, ignoring validated CASEPATH_PROOF_ORIGIN for those operations. The refused connection stopped before acceptance assertions.",
+  "repair": "Runtime module load adapter changes only base literal to existing proofOrigin. No source, fixture, assertion, covered asset or seal is edited. The adapter and executed verifier hash are retained with the new complete walk.",
+  "originalVerifierSha256": "4162766ef0955adc8c3c9f919d562026f18b4f0d572a9dd0f96008a8c28a1118",
+  "adapterSha256": "dc2fd5fc3cccc51fae60d06c6abac060943af6b5bd6c0f8e9af2f31c3c2874f2",
+  "priorPidsAbsent": [
+    42158,
+    42163,
+    58628,
+    59072
+  ],
+  "next": "Run one complete seven-script walk in a new receipt directory. Keep full strict result and original failed walk."
+}

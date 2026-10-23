@@ -1,0 +1,135 @@
+{
+  "review_commit": "60d4907ca5c975e288fa3c0973992abd31fcc594",
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "60d4907ca5c975e288fa3c0973992abd31fcc594",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "served_assets": {
+    "autonomous-workspace-v1.js": "ad2e1cf6dec6943e462805a71ec9c8b2525f4f4f6ec3f9d2c2fa65f0ade17077",
+    "autonomous-workspace-v1.css": "7ff6842615c6a9289a90431745e30f866b83f21539460c28925d37d19b89fc0d",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "started_at": "2026-10-23T00:49:12.847599+00:00",
+  "status": "passed",
+  "wrapper_pid": 60000,
+  "scripts": {
+    "process": {
+      "status": "completed",
+      "started_at": "2026-10-23T00:49:12.848877+00:00",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-process.mjs"
+      ],
+      "pid": 60006,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T00:50:12.332080+00:00",
+      "log_sha256": "646ab06846840b777c8dc500f1595e579e18252a30fdbaea34d387861b7e0159"
+    },
+    "memory": {
+      "status": "completed",
+      "started_at": "2026-10-23T00:50:12.340936+00:00",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-memory.mjs"
+      ],
+      "pid": 60246,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T00:50:54.342319+00:00",
+      "log_sha256": "f90554b136f4648e8aa96ea2a6512e40bbe229e3d2e22a137f03902942f21fcd"
+    },
+    "acceptance": {
+      "status": "completed",
+      "started_at": "2026-10-23T00:50:54.351294+00:00",
+      "command": [
+        "/usr/local/bin/node",
+        "--import",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w10-walk-origin-adapter.mjs",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-acceptance.mjs"
+      ],
+      "pid": 60423,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T00:51:30.665822+00:00",
+      "log_sha256": "5117c05c5377ba035a700ab7f7588e983971e2d6c3bffb86704a5a15b345b470"
+    },
+    "reduced": {
+      "status": "completed",
+      "started_at": "2026-10-23T00:51:30.675404+00:00",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-reduced.mjs"
+      ],
+      "pid": 60583,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T00:51:36.976794+00:00",
+      "log_sha256": "c9d0d30b4a54991814697775672e3d331086b51ab8335ec08e88e2a5b2a547a7"
+    },
+    "motion": {
+      "status": "completed",
+      "started_at": "2026-10-23T00:51:36.984814+00:00",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-motion.mjs"
+      ],
+      "pid": 60618,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T00:52:21.638943+00:00",
+      "log_sha256": "e156d4e9b5cca9eac1cac5b9b9ea6f2777d3f5ce76a02ce6878721e4eb0648ea"
+    },
+    "live-layout": {
+      "status": "completed",
+      "started_at": "2026-10-23T00:52:21.648919+00:00",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-live-layout.mjs"
+      ],
+      "pid": 60776,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T00:53:28.006843+00:00",
+      "log_sha256": "7a96398133744aeae293b1728b6c285cd0378f45016fd5a55372d07d6abbff3f"
+    },
+    "presentation": {
+      "status": "completed",
+      "started_at": "2026-10-23T00:53:28.014299+00:00",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w9-20261021/verify_presentation.mjs"
+      ],
+      "pid": 61053,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T00:55:20.587648+00:00",
+      "log_sha256": "30b0f1dd4df8ee3b7248d643706b57112d1977e178ebdfa242044124863e64d5"
+    }
+  },
+  "serialized": true,
+  "origin_adapter": {
+    "file": ".runtime/w10-walk-origin-adapter.mjs",
+    "sha256": "dc2fd5fc3cccc51fae60d06c6abac060943af6b5bd6c0f8e9af2f31c3c2874f2",
+    "scope": "Replace the single hardcoded acceptance base with its existing validated proofOrigin; no assertion changes."
+  },
+  "overlap_checks": 129,
+  "overlaps": 0,
+  "cases": 9,
+  "errors": 0,
+  "writes": 0,
+  "finished_at": "2026-10-23T00:55:20.596638+00:00",
+  "receipt_sha256": {
+    "acceptance-receipt.json": "03647f88d7e762c6b1cf3f8d4236ceb6aba4698df8b7d235148ff1179107ea88",
+    "live-layout-receipt.json": "5b6e3e8dedf7d129a9950b83bb44369bc8daaa9c0d876fce4947ef3acf33c844",
+    "memory-receipt.json": "c3b2f956baaea6fc186f7f5cb8fe0c25c6195fe144d36338b0469856cc1ca8d2",
+    "motion-receipt.json": "9e5517c8bec66e3ba64ccf9d391390213405814d12df6ec1bb3ad6a2831d1611",
+    "presentation-receipt.json": "9e4ff71febf6c0573ff5d84fe7c33fd5da15dc21ad64f11dd306a1c4f71fcd30",
+    "process-receipt.json": "c49012e692a1d9972489caf460c55ef9f2f947625aab1aa2df5612b5a995c705",
+    "reduced-receipt.json": "c9dbe666a5a1d3f40ad97288b11b20d7c7cd9621b5ed73f6c4f0a28219b0ec81"
+  }
+}

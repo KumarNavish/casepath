@@ -1,0 +1,11 @@
+{
+  "sourceCommit": "60d4907ca5c975e288fa3c0973992abd31fcc594",
+  "observedAt": "2026-10-22T23:50:46.285747+00:00",
+  "sequence": ".runtime/final-sequence-w10r7.json",
+  "log": ".runtime/final-w10r7-strict.log",
+  "exitCode": 1,
+  "testsCollected": false,
+  "walkStarted": false,
+  "rootCause": "Fresh git clone did not contain ignored casepath-api/artifacts/artifact-manifest.json. Test consumes complete sealed authority; explicit prepare must materialize deterministic artifacts first. Owner clone seal and artifact hash were valid.",
+  "repair": "Run ./bin/casepath prepare in the same fresh clone; verify artifact authority hash and clean exact source, then one unique serial retry. No product/test/seal change."
+}

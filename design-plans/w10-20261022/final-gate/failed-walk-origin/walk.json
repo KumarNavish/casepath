@@ -1,0 +1,72 @@
+{
+  "review_commit": "60d4907ca5c975e288fa3c0973992abd31fcc594",
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "60d4907ca5c975e288fa3c0973992abd31fcc594",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "served_assets": {
+    "autonomous-workspace-v1.js": "ad2e1cf6dec6943e462805a71ec9c8b2525f4f4f6ec3f9d2c2fa65f0ade17077",
+    "autonomous-workspace-v1.css": "7ff6842615c6a9289a90431745e30f866b83f21539460c28925d37d19b89fc0d",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "started_at": "2026-10-23T00:43:45.909238+00:00",
+  "status": "failed",
+  "wrapper_pid": 58628,
+  "scripts": {
+    "process": {
+      "status": "completed",
+      "started_at": "2026-10-23T00:43:45.910133+00:00",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-process.mjs"
+      ],
+      "pid": 58632,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T00:44:47.698472+00:00",
+      "log_sha256": "5cca52cf03a55adb4183155bbb52438e7b782f68ea221aaf9345ee3a2e4265e4"
+    },
+    "memory": {
+      "status": "completed",
+      "started_at": "2026-10-23T00:44:47.706889+00:00",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-memory.mjs"
+      ],
+      "pid": 58872,
+      "exit_code": 0,
+      "finished_at": "2026-10-23T00:45:30.283414+00:00",
+      "log_sha256": "3cb699dc5c17b53a3fc719433d5cc90675df85c3ca1299bb573254204df1e3d4"
+    },
+    "acceptance": {
+      "status": "completed",
+      "started_at": "2026-10-23T00:45:30.291767+00:00",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-acceptance.mjs"
+      ],
+      "pid": 59072,
+      "exit_code": 1,
+      "finished_at": "2026-10-23T00:45:32.249801+00:00",
+      "log_sha256": "1e29540d4c32cc969e2f626b83201682bec8c1b31691cdd727b08491ae30c625"
+    }
+  },
+  "serialized": true,
+  "failure": "AssertionError('acceptance')",
+  "finished_at": "2026-10-23T00:45:32.252561+00:00",
+  "receipt_sha256": {
+    "acceptance-receipt.json": "7a94b0e426cea3d3d2345ad96bc34d72e3c3de9f0ebab8675a2da9d3bbe6f5a0",
+    "memory-receipt.json": "3c3c4a50498606f1ad2b70be99107e7768f7c139886e33b9bc5cfb7ec57b1998",
+    "process-receipt.json": "685dc1305b51177fc63d6a9f99d2d3daeedaeb1bbdbf111e1824aab1b3433988"
+  }
+}

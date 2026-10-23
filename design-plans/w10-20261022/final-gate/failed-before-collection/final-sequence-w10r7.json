@@ -1,0 +1,41 @@
+{
+  "sourceCommit": "60d4907ca5c975e288fa3c0973992abd31fcc594",
+  "wrapperPid": 40893,
+  "startedAt": "2026-10-22T23:49:28.087035+00:00",
+  "status": "failed",
+  "serialized": true,
+  "stages": [
+    {
+      "name": "strict",
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "10",
+        "./bin/casepath",
+        "test"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-northstar-gate-20261022-w10r7",
+      "environment": {
+        "HOME": "/Users/kumar0002",
+        "USER": "kumar0002",
+        "PATH": "/Users/kumar0002/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "CASEPATH_REQUIRE_FRONTEND_SUITES": "1",
+        "CASEPATH_NODE": "/usr/local/bin/node",
+        "CASEPATH_UV": "/Users/kumar0002/.local/bin/uv",
+        "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/casepath-canonical/casepath-qa/node_modules",
+        "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+      },
+      "status": "completed",
+      "startedAt": "2026-10-22T23:49:28.102128+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/final-w10r7-strict.log",
+      "pid": 40901,
+      "exitCode": 1,
+      "finishedAt": "2026-10-22T23:49:29.261739+00:00",
+      "logSha256": "326d32300b88b6049fcd9fea96873685f7138b9d4193ac62cec690d0200b4ea0"
+    }
+  ],
+  "failure": "AssertionError('strict')",
+  "finishedAt": "2026-10-22T23:49:29.264332+00:00"
+}
