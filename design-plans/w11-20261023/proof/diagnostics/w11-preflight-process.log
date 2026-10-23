@@ -1,0 +1,24 @@
+Completed process 1
+Completed process 2
+Completed process 3
+Completed process 4
+Completed process 5
+Completed process 6
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+2 !== 1
+
+    at file:///Users/kumar0002/Documents/Die%20Mobiliar/.work/casepath-codex-northstar-20261022/design-plans/w8-20261021-mac-r1/verify-process.mjs:23:1056 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 2,
+  expected: 1,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.8.2

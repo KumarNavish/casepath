@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+ok 1 - the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+  ---
+  duration_ms: 15083.006167
+  type: 'test'
+  ...
+# Subtest: a slow cold read keeps the north-star frame on landing and on opening a recorded case
+ok 2 - a slow cold read keeps the north-star frame on landing and on opening a recorded case
+  ---
+  duration_ms: 8679.102417
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 24234.340875

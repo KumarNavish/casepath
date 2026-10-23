@@ -1,0 +1,48 @@
+{
+  "sourceCommit": "c8431ad4a1f1e6b38461a60f56710f900fbd1c17",
+  "wrapperPid": 45505,
+  "startedAt": "2026-10-23T09:29:01.389041+00:00",
+  "status": "failed",
+  "out": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w11-film-20261023-c8431ad4-r2",
+  "serialized": true,
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "c8431ad4a1f1e6b38461a60f56710f900fbd1c17",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "assets": {
+    "autonomous-workspace-v1.js": "f75164b9838977f71e9089cb2bcab13aed753cc56a8c9cd5b70dcd0b5fb7ceed",
+    "autonomous-workspace-v1.css": "a528722c453d2200249d616ed8f836740bd01e57940fcbfa966c645400798bc6",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "stages": [
+    {
+      "name": "capture",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w9-20261021/capture_film.mjs",
+        "--out",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-w11-film-20261023-c8431ad4-r2"
+      ],
+      "status": "completed",
+      "startedAt": "2026-10-23T09:29:01.512477+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r2-film-capture.log",
+      "pid": 45511,
+      "exitCode": 1,
+      "finishedAt": "2026-10-23T09:36:08.763412+00:00",
+      "logSha256": "e9667c775e3f9c5200067aa8eb6ba90d2c125c58c5433e424c0951e071a2b92a"
+    }
+  ],
+  "failure": "AssertionError('capture')",
+  "finishedAt": "2026-10-23T09:36:08.790327+00:00"
+}

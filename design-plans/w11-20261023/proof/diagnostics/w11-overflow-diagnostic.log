@@ -1,0 +1,572 @@
+✖ the admitted six-act product uses one deterministic clock, preserves sources and handles pause (6472.144667ms)
+✔ a slow cold read keeps the north-star frame on landing and on opening a recorded case (8501.058375ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15464.684125
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-presentation-browser-v1.test.cjs:7:1
+✖ the admitted six-act product uses one deterministic clock, preserves sources and handles pause (6472.144667ms)
+  AssertionError [ERR_ASSERTION]: all beat midpoints have no unintended content overlaps
+  + actual - expected
+  
+  + [
+  +   {
+  +     hits: [
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         1440,
+  +         36
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         ' Recorded replay · All cases are fictional.',
+  +         219,
+  +         17
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Skip to answer',
+  +         108,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         199,
+  +         33
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Skip to answer',
+  +         9,
+  +         26
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         7,
+  +         24
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-secondary Pause',
+  +         2,
+  +         19
+  +       ]
+  +     ],
+  +     operation: 'op_e76561e88226b4db51361885e53d6672',
+  +     phase: 'camera-in'
+  +   },
+  +   {
+  +     hits: [
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         1440,
+  +         36
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         ' Recorded replay · All cases are fictional.',
+  +         219,
+  +         17
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Skip to answer',
+  +         108,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         199,
+  +         33
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Skip to answer',
+  +         9,
+  +         26
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         7,
+  +         24
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-secondary Pause',
+  +         2,
+  +         19
+  +       ]
+  +     ],
+  +     operation: 'op_e76561e88226b4db51361885e53d6672',
+  +     phase: 'cursor'
+  +   },
+  +   {
+  +     hits: [
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         1440,
+  +         36
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         ' Recorded replay · All cases are fictional.',
+  +         219,
+  +         17
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Skip to answer',
+  +         108,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         199,
+  +         33
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Skip to answer',
+  +         9,
+  +         26
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         7,
+  +         24
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-secondary Pause',
+  +         2,
+  +         19
+  +       ]
+  +     ],
+  +     operation: 'op_e76561e88226b4db51361885e53d6672',
+  +     phase: 'highlight'
+  +   },
+  +   {
+  +     hits: [
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         1440,
+  +         36
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         ' Recorded replay · All cases are fictional.',
+  +         219,
+  +         17
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Skip to answer',
+  +         108,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         199,
+  +         33
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Skip to answer',
+  +         9,
+  +         26
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         7,
+  +         24
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-secondary Pause',
+  +         2,
+  +         19
+  +       ]
+  +     ],
+  +     operation: 'op_e76561e88226b4db51361885e53d6672',
+  +     phase: 'passage-rest'
+  +   },
+  +   {
+  +     hits: [
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         1440,
+  +         36
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         ' Recorded replay · All cases are fictional.',
+  +         219,
+  +         17
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Skip to answer',
+  +         108,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         199,
+  +         33
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Skip to answer',
+  +         9,
+  +         26
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         7,
+  +         24
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-secondary Pause',
+  +         2,
+  +         19
+  +       ]
+  +     ],
+  +     operation: 'op_e76561e88226b4db51361885e53d6672',
+  +     phase: 'fact'
+  +   },
+  +   {
+  +     hits: [
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         1440,
+  +         36
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         ' Recorded replay · All cases are fictional.',
+  +         219,
+  +         17
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Skip to answer',
+  +         108,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         199,
+  +         33
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Skip to answer',
+  +         9,
+  +         26
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         7,
+  +         24
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-secondary Pause',
+  +         2,
+  +         19
+  +       ]
+  +     ],
+  +     operation: 'op_e76561e88226b4db51361885e53d6672',
+  +     phase: 'connector'
+  +   },
+  +   {
+  +     hits: [
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         1440,
+  +         36
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         ' Recorded replay · All cases are fictional.',
+  +         219,
+  +         17
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Skip to answer',
+  +         108,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         199,
+  +         33
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Skip to answer',
+  +         9,
+  +         26
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         7,
+  +         24
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-secondary Pause',
+  +         2,
+  +         19
+  +       ]
+  +     ],
+  +     operation: 'op_e76561e88226b4db51361885e53d6672',
+  +     phase: 'fact-rest'
+  +   },
+  +   {
+  +     hits: [
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         1440,
+  +         36
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         ' Recorded replay · All cases are fictional.',
+  +         219,
+  +         17
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Skip to answer',
+  +         108,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         199,
+  +         33
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Skip to answer',
+  +         9,
+  +         26
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         7,
+  +         24
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-secondary Pause',
+  +         2,
+  +         19
+  +       ]
+  +     ],
+  +     operation: 'op_e76561e88226b4db51361885e53d6672',
+  +     phase: 'plan-tick'
+  +   },
+  +   {
+  +     hits: [
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         1440,
+  +         36
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         ' Recorded replay · All cases are fictional.',
+  +         219,
+  +         17
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         'au-agent-desk au-northstar Legal protection · case reviewAn increase for',
+  +         'au-secondary Skip to answer',
+  +         108,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         199,
+  +         33
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Pause',
+  +         60,
+  +         26
+  +       ],
+  +       [
+  +         ' Work log ›',
+  +         'au-secondary Skip to answer',
+  +         9,
+  +         26
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-executive-transport Recorded replay · All cases are fictional.Pau',
+  +         7,
+  +         24
+  +       ],
+  +       [
+  +         ' ›',
+  +         'au-secondary Pause',
+  +         2,
+  +         19
+  +       ]
+  +     ],
+  +     operation: 'op_e76561e88226b4db51361885e53d6672',
+  +     phase: 'camera-out'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-presentation-browser-v1.test.cjs:68:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { phase: 'camera-in', operation: 'op_e76561e88226b4db51361885e53d6672', hits: [Array] }, { phase: 'cursor', operation: 'op_e76561e88226b4db51361885e53d6672', hits: [Array] }, { phase: 'highlight', operation: 'op_e76561e88226b4db51361885e53d6672', hits: [Array] }, { phase: 'passage-rest', operation: 'op_e76561e88226b4db51361885e53d6672', hits: [Array] }, { phase: 'fact', operation: 'op_e76561e88226b4db51361885e53d6672', hits: [Array] }, { phase: 'connector', operation: 'op_e76561e88226b4db51361885e53d6672', hits: [Array] }, { phase: 'fact-rest', operation: 'op_e76561e88226b4db51361885e53d6672', hits: [Array] }, { phase: 'plan-tick', operation: 'op_e76561e88226b4db51361885e53d6672', hits: [Array] }, { phase: 'camera-out', operation: 'op_e76561e88226b4db51361885e53d6672', hits: [Array] } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

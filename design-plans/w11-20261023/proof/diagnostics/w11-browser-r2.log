@@ -1,0 +1,2220 @@
+✖ the admitted six-act product uses one deterministic clock, preserves sources and handles pause (6386.711834ms)
+✔ a slow cold read keeps the north-star frame on landing and on opening a recorded case (9246.738583ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16117.776208
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-presentation-browser-v1.test.cjs:7:1
+✖ the admitted six-act product uses one deterministic clock, preserves sources and handles pause (6386.711834ms)
+  AssertionError [ERR_ASSERTION]: every film frame has intact rows, facts and labels and only its current spinner
+  + actual - expected
+  
+  + [
+  +   {
+  +     checked: {
+  +       facts: 1,
+  +       labels: 17,
+  +       panels: 6,
+  +       rows: 5,
+  +       textFragments: 42
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'div.au-ns-facts Reasons given with the original increase',
+  +         boundary: {
+  +           bottom: 856,
+  +           left: 298,
+  +           right: 925,
+  +           top: 761
+  +         },
+  +         reason: 'box clipped by ancestor',
+  +         rect: {
+  +           bottom: 860.69,
+  +           left: 298,
+  +           right: 584.5,
+  +           top: 770.69
+  +         },
+  +         subject: '[data-au-ns-fact="op_e76561e88226b4db51361885e53d6672"] Reasons given with the original increase'
+  +       }
+  +     ],
+  +     n: 709,
+  +     passed: false,
+  +     time: 11816.666666666666,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 1,
+  +       labels: 17,
+  +       panels: 6,
+  +       rows: 5,
+  +       textFragments: 42
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'div.au-ns-facts Reasons given with the original increase',
+  +         boundary: {
+  +           bottom: 856,
+  +           left: 298,
+  +           right: 925,
+  +           top: 761
+  +         },
+  +         reason: 'box clipped by ancestor',
+  +         rect: {
+  +           bottom: 858.45,
+  +           left: 298,
+  +           right: 584.5,
+  +           top: 768.45
+  +         },
+  +         subject: '[data-au-ns-fact="op_e76561e88226b4db51361885e53d6672"] Reasons given with the original increase'
+  +       }
+  +     ],
+  +     n: 710,
+  +     passed: false,
+  +     time: 11833.333333333334,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1062,
+  +     passed: false,
+  +     time: 17700,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1063,
+  +     passed: false,
+  +     time: 17716.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1064,
+  +     passed: false,
+  +     time: 17733.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1065,
+  +     passed: false,
+  +     time: 17750,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1066,
+  +     passed: false,
+  +     time: 17766.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1067,
+  +     passed: false,
+  +     time: 17783.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1068,
+  +     passed: false,
+  +     time: 17800,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1069,
+  +     passed: false,
+  +     time: 17816.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1070,
+  +     passed: false,
+  +     time: 17833.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1071,
+  +     passed: false,
+  +     time: 17850,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1072,
+  +     passed: false,
+  +     time: 17866.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1073,
+  +     passed: false,
+  +     time: 17883.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1074,
+  +     passed: false,
+  +     time: 17900,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1075,
+  +     passed: false,
+  +     time: 17916.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1076,
+  +     passed: false,
+  +     time: 17933.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1077,
+  +     passed: false,
+  +     time: 17950,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1078,
+  +     passed: false,
+  +     time: 17966.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1079,
+  +     passed: false,
+  +     time: 17983.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1080,
+  +     passed: false,
+  +     time: 18000,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1081,
+  +     passed: false,
+  +     time: 18016.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1082,
+  +     passed: false,
+  +     time: 18033.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1083,
+  +     passed: false,
+  +     time: 18050,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1084,
+  +     passed: false,
+  +     time: 18066.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1085,
+  +     passed: false,
+  +     time: 18083.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1086,
+  +     passed: false,
+  +     time: 18100,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1087,
+  +     passed: false,
+  +     time: 18116.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1088,
+  +     passed: false,
+  +     time: 18133.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1089,
+  +     passed: false,
+  +     time: 18150,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1090,
+  +     passed: false,
+  +     time: 18166.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1091,
+  +     passed: false,
+  +     time: 18183.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1092,
+  +     passed: false,
+  +     time: 18200,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1093,
+  +     passed: false,
+  +     time: 18216.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1094,
+  +     passed: false,
+  +     time: 18233.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1095,
+  +     passed: false,
+  +     time: 18250,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1096,
+  +     passed: false,
+  +     time: 18266.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1097,
+  +     passed: false,
+  +     time: 18283.333333333332,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1098,
+  +     passed: false,
+  +     time: 18300,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     checked: {
+  +       facts: 0,
+  +       labels: 13,
+  +       panels: 6,
+  +       rows: 1,
+  +       textFragments: 24
+  +     },
+  +     contract: 'casepath.checklist-geometry/1.0.0',
+  +     failures: [
+  +       {
+  +         against: 'small.au-ns-step-status Checked',
+  +         boundary: {
+  +           bottom: 162,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 152
+  +         },
+  +         reason: 'text exceeds its label or row',
+  +         rect: {
+  +           bottom: 163,
+  +           left: 362.91,
+  +           right: 402.91,
+  +           top: 150
+  +         },
+  +         subject: 'small.au-ns-step-status Checked'
+  +       }
+  +     ],
+  +     n: 1099,
+  +     passed: false,
+  +     time: 18316.666666666668,
+  +     totalFailures: 1,
+  +     truncated: false
+  +   },
+  +   {
+  +     n: 1134,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1135,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1136,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1137,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1138,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1139,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1140,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1141,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1142,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1143,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1144,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1145,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1146,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1147,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1148,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1149,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1150,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1151,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1152,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1153,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1154,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1155,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1156,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1157,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1158,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1159,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1160,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1161,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1162,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1163,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1164,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1165,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1166,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1167,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1168,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1169,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1170,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1171,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1172,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1173,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1174,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1175,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1176,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1177,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1178,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1179,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1180,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1181,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1182,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1183,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1184,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1185,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1186,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1187,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1188,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1189,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1190,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1191,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1192,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1193,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1194,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1195,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1196,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1197,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1198,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1199,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1200,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1201,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1202,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1203,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1204,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1205,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1206,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1207,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1208,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1209,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1210,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1211,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1212,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1213,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1214,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1215,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1216,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1217,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1218,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1219,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1220,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1221,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1222,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1223,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1224,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1225,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1226,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1227,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1228,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1229,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1230,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1231,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1232,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1233,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1234,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1235,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1236,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1237,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1238,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1239,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1240,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1241,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1242,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1243,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1244,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1245,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1246,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1247,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1248,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1249,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1250,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1251,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1252,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1253,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1254,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1255,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1256,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1257,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1258,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1259,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1260,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1261,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1262,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1263,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1264,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1265,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1266,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1267,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1268,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1269,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1270,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1271,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1272,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1273,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1274,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1275,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1276,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1277,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1278,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1279,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1280,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1281,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1282,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1283,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1284,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1285,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1286,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1287,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1288,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1289,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1290,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1291,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1292,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1293,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1294,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1295,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1296,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1297,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1298,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1299,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1300,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1301,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1302,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1303,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1304,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1305,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1306,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1307,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1308,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1309,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1310,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1311,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1312,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1313,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1314,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1315,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1316,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1317,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1318,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1319,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1320,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1321,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1322,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1323,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1324,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1325,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1326,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1327,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1328,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1329,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1330,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1331,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1332,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1333,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1334,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1335,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1336,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1337,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1338,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1339,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   },
+  +   {
+  +     n: 1340,
+  +     reason: 'summary must count exactly the collapsed completed rows'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-presentation-browser-v1.test.cjs:81:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { n: 709, time: 11816.666666666666, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 710, time: 11833.333333333334, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1062, time: 17700, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1063, time: 17716.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1064, time: 17733.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1065, time: 17750, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1066, time: 17766.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1067, time: 17783.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1068, time: 17800, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1069, time: 17816.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1070, time: 17833.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1071, time: 17850, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1072, time: 17866.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1073, time: 17883.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1074, time: 17900, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1075, time: 17916.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1076, time: 17933.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1077, time: 17950, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1078, time: 17966.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1079, time: 17983.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1080, time: 18000, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1081, time: 18016.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1082, time: 18033.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1083, time: 18050, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1084, time: 18066.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1085, time: 18083.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1086, time: 18100, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1087, time: 18116.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1088, time: 18133.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1089, time: 18150, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1090, time: 18166.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1091, time: 18183.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1092, time: 18200, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1093, time: 18216.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1094, time: 18233.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1095, time: 18250, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1096, time: 18266.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1097, time: 18283.333333333332, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1098, time: 18300, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1099, time: 18316.666666666668, contract: 'casepath.checklist-geometry/1.0.0', passed: false, checked: [Object], failures: [Array], totalFailures: 1, truncated: false }, { n: 1134, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1135, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1136, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1137, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1138, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1139, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1140, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1141, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1142, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1143, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1144, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1145, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1146, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1147, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1148, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1149, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1150, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1151, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1152, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1153, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1154, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1155, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1156, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1157, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1158, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1159, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1160, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1161, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1162, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1163, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1164, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1165, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1166, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1167, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1168, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1169, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1170, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1171, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1172, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1173, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1174, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1175, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1176, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1177, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1178, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1179, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1180, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1181, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1182, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1183, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1184, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1185, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1186, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1187, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1188, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1189, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1190, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1191, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1192, reason: 'summary must count exactly the collapsed completed rows' }, { n: 1193, reason: 'summary must count exactly the collapsed completed rows' }, ... 147 more items ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

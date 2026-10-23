@@ -1,0 +1,4769 @@
+{
+  "count": 5283,
+  "checkedRows": 3800,
+  "checkedFacts": 601,
+  "checkedLabels": 49667,
+  "collapsedFrames": 207,
+  "failures": [
+    {
+      "n": 1525,
+      "time": 25416.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1526,
+      "time": 25433.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1527,
+      "time": 25450,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1528,
+      "time": 25466.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1529,
+      "time": 25483.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1530,
+      "time": 25500,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1531,
+      "time": 25516.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1532,
+      "time": 25533.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1533,
+      "time": 25550,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1534,
+      "time": 25566.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1535,
+      "time": 25583.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1536,
+      "time": 25600,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1537,
+      "time": 25616.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1538,
+      "time": 25633.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1539,
+      "time": 25650,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1540,
+      "time": 25666.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1541,
+      "time": 25683.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1542,
+      "time": 25700,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1543,
+      "time": 25716.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1544,
+      "time": 25733.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1545,
+      "time": 25750,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1546,
+      "time": 25766.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1547,
+      "time": 25783.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1549,
+      "time": 25816.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1550,
+      "time": 25833.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1551,
+      "time": 25850,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1552,
+      "time": 25866.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1553,
+      "time": 25883.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1554,
+      "time": 25900,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1555,
+      "time": 25916.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1556,
+      "time": 25933.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1557,
+      "time": 25950,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1558,
+      "time": 25966.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1559,
+      "time": 25983.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1560,
+      "time": 26000,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1561,
+      "time": 26016.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1562,
+      "time": 26033.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1563,
+      "time": 26050,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1564,
+      "time": 26066.666666666668,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    },
+    {
+      "n": 1565,
+      "time": 26083.333333333332,
+      "contract": "casepath.checklist-geometry/1.0.0",
+      "passed": false,
+      "checked": {
+        "rows": 0,
+        "facts": 0,
+        "labels": 12,
+        "panels": 6,
+        "textFragments": 44
+      },
+      "failures": [
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 1What increase was received?Checked",
+          "against": "button. 1What increase was received?Checked",
+          "rect": {
+            "left": 295,
+            "top": 210,
+            "right": 335,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 294,
+            "top": 103,
+            "right": 423,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "against": "button. 2What accompanied the original notice?✕1 legal test failed",
+          "rect": {
+            "left": 491.66,
+            "top": 191.55,
+            "right": 535.33,
+            "bottom": 208.55
+          },
+          "boundary": {
+            "left": 480.66,
+            "top": 103,
+            "right": 609.66,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button. 3Is the increase notice valid?Checked",
+          "against": "button. 3Is the increase notice valid?Checked",
+          "rect": {
+            "left": 668.33,
+            "top": 210,
+            "right": 708.33,
+            "bottom": 223
+          },
+          "boundary": {
+            "left": 667.33,
+            "top": 103,
+            "right": 796.33,
+            "bottom": 207
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease co",
+          "rect": {
+            "left": 307,
+            "top": 315.78,
+            "right": 474.98,
+            "bottom": 332.78
+          },
+          "boundary": {
+            "left": 307,
+            "top": 278,
+            "right": 504.75,
+            "bottom": 315.78
+          }
+        },
+        {
+          "reason": "text exceeds its label or row",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 295,
+            "top": 246,
+            "right": 533.75,
+            "bottom": 363.56
+          }
+        },
+        {
+          "reason": "text clipped by ancestor",
+          "subject": "button.au-ns-chain-column Source facts✓Relevant residential tenancy terms, parties and dwelling; this is not a compl",
+          "against": "span. ✓The actual received increase notification contents, without asserting lawful reasons",
+          "rect": {
+            "left": 307,
+            "top": 358.56,
+            "right": 460.08,
+            "bottom": 375.56
+          },
+          "boundary": {
+            "left": 307,
+            "top": 320.78,
+            "right": 504.75,
+            "bottom": 358.56
+          }
+        }
+      ],
+      "totalFailures": 6,
+      "truncated": false
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "sourceCommit": "7264b825866ffc7f5d79bb81ba0b6d0b241cad09",
+  "wrapperPid": 39674,
+  "startedAt": "2026-10-23T09:17:08.795958+00:00",
+  "status": "failed",
+  "serialized": true,
+  "lock": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/northstar-sequence.lock",
+  "stages": [
+    {
+      "name": "preview",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/start_preview_w11.py"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022",
+      "status": "completed",
+      "startedAt": "2026-10-23T09:17:08.920425+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11-recovery-preview.log",
+      "pid": 39681,
+      "exitCode": 0,
+      "finishedAt": "2026-10-23T09:17:22.014477+00:00",
+      "logSha256": "98439c72ce02ee6da4a47835746335c12905f9020a5e38d2c95e0d0beae9b0bd"
+    },
+    {
+      "name": "preflight",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/run_preflight_w11.py"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022",
+      "status": "completed",
+      "startedAt": "2026-10-23T09:17:22.184700+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11-recovery-preflight.log",
+      "pid": 39779,
+      "exitCode": 1,
+      "finishedAt": "2026-10-23T09:18:00.681657+00:00",
+      "logSha256": "b1f93629b5d1b8ebbca50312742446b7f38c5c46eb936dda3f346f6ab239cf50"
+    }
+  ],
+  "failure": "AssertionError('preflight')",
+  "finishedAt": "2026-10-23T09:18:00.686000+00:00"
+}

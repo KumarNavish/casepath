@@ -1,0 +1,105 @@
+{
+  "sourceCommit": "f777df0e05895207668540dcb5c01bddd6f4b544",
+  "recordedAt": "2026-10-23T09:45:50.940683+00:00",
+  "status": "comparisons-complete",
+  "comparisons": [
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/01-decision-building.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-proof/fact-rest.png",
+      "mean_difference_pct": 4.73,
+      "state": "01",
+      "frame_sha256": "b125f67fdd7db990c22ec66cb24413130c2695391c21613b706eb9feeb617025",
+      "concept_sha256": "fc521448b5c6da6841088b259a3dc41b444394e8e08cf1e0c58e3a141ccbe4de",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/tools/fidelity.mjs",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/01-decision-building.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-proof/fact-rest.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-fidelity/01"
+      ],
+      "logSha256": "08e06efadc395b6e5fbf7fe8eb2fb021076934d1d73b75c9489e6a29efcc5a84"
+    },
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/02-completed-process.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-proof/completed.png",
+      "mean_difference_pct": 6.15,
+      "state": "02",
+      "frame_sha256": "85484089e9d59c70ca4ca2f34b5e83a18a658708099cd249c8def071553451e1",
+      "concept_sha256": "48aca0434e0fa64e42c57d4e52b45054c7d1f7f08af368f39bbc0079c4a15f4a",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/tools/fidelity.mjs",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/02-completed-process.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-proof/completed.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-fidelity/02"
+      ],
+      "logSha256": "fe3e6b8828fb5f904bc63e2a6929f6a4f47b852ccbb3880413038a7d24810cc4"
+    },
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/03-reviewed-memory-payoff.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-proof/memory-notice-rest.png",
+      "mean_difference_pct": 5.02,
+      "state": "03",
+      "frame_sha256": "1873977f63b83fb45430ef6b91f56d93eaef9cc9dd14e7b46a093a7d8bcb0807",
+      "concept_sha256": "38d8f7a5907456dfc86b9b10fd9d1110d98916ae448e9f6bc393d8f832bdf2c0",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/tools/fidelity.mjs",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/03-reviewed-memory-payoff.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-proof/memory-notice-rest.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-fidelity/03"
+      ],
+      "logSha256": "55c6ec571231a6136eafea40fa484589e2920633127ee4923598b5871da1bcd0"
+    }
+  ],
+  "visualReview": {
+    "passed": true,
+    "pending": [],
+    "reviewedAt": "2026-10-23T09:46:56.299547+00:00",
+    "reviewer": "root visual inspection",
+    "viewed": [
+      {
+        "path": ".runtime/w11r3-fidelity/01-side.png",
+        "sha256": "9e0931c7644ed146f2bfdd8e0827c24f3d6e2a6250b6dc3a8b484516882a99b0"
+      },
+      {
+        "path": ".runtime/w11r3-fidelity/02-side.png",
+        "sha256": "5a2d654062ce9009592a28bd4b9ce41211cfaa5c3bb738762ffd245c468207c2"
+      },
+      {
+        "path": ".runtime/w11r3-fidelity/03-side.png",
+        "sha256": "9a5b8e170ec8d6a5415b20d83b354f99272885cbb5cf913359acd3504b301a69"
+      },
+      {
+        "path": ".runtime/w11r3-fidelity/01-overlay.png",
+        "sha256": "f8cbfe271b2edcf8f1125667bcbc2c6f52171112ad50f84c7e612671ffce7ebf"
+      },
+      {
+        "path": ".runtime/w11r3-fidelity/02-overlay.png",
+        "sha256": "8c6319f9b24715da3ddf16e93f114a28af1870cf6a6ba77a3c684e24a7cd4c15"
+      },
+      {
+        "path": ".runtime/w11r3-fidelity/03-overlay.png",
+        "sha256": "5cfa3552bd37f777c36d6740fd51b8fc7364d64cb99e59a646581f9f42386672"
+      }
+    ],
+    "matched": [
+      "Restrained white canvas, burgundy state accents, top role tabs and source rail.",
+      "Source passage, fact card and live checklist relationship remains visible.",
+      "Completed step-to-evidence chain and later-case source/checklist/result grouping.",
+      "W11 completed source headings now wholly visible; checklist rows, facts and labels are readable in compared states."
+    ],
+    "deliberateDifferences": [
+      "Recorded rent-increase case has three recorded process steps instead of the illustrative multi-row branching process; no unrecorded branch or human-reviewed memory edit is invented.",
+      "W11 lets live checklist/completed cards grow and collapses only completed rows when required; labels wrap instead of truncating.",
+      "Exact source passages and honest failed legal-test markers replace illustrative facts and universal success ticks.",
+      "Later-case reuse explicitly reuses checklist structure and rechecks current-case facts; human review remains required.",
+      "Visible replay controls and fictional-case disclosure remain in film; recorded role/state determines the active tab."
+    ],
+    "limits": [
+      "Mean pixel differences summarize changed pixels; they are not a semantic fidelity pass by themselves.",
+      "This inspection covers three comparison states; every-frame geometry, fresh cold review and final gate/walk remain separate requirements."
+    ]
+  },
+  "finishedAt": "2026-10-23T09:45:56.728339+00:00"
+}

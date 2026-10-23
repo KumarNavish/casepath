@@ -1,3 +1,17 @@
+# Current UI finish receipt — W11, final UI handoff
+
+The user authorized W11 as the final UI item, superseding `60d4907ca5c975e288fa3c0973992abd31fcc594`. The live checklist fits its rows, collapses only completed work when necessary, and spins only for the operation playing. A source-bound test audits all 5,283 film frames for row, fact-card and label clipping/overlap across all six acts. [The full W11 review](../../design-plans/w11-20261023/REVIEW.md) includes the fresh film, cold-viewer response, fidelity pairs, deliberate differences and limits.
+
+Capture source `f777df0e05895207668540dcb5c01bddd6f4b544` is bound to the final tested source through unchanged application/API/QA/fixture/tool and served asset bytes. Acceptance requires [the original final-gate receipt](../../design-plans/w11-20261023/final-gate/verification.json): all eleven frontend suites, the protected Mac-owned test, one clean seven-script nine-case walk, zero console errors/writes/overlaps and complete cleanup. Missing or failed receipts do not establish READY. The final comment names the sealed tested SHA separately from the evidence-only commit.
+
+The user authorizes integration and PR21/PR36 updates. The Mac owner retains release. No deployment, original-nine rerun, inference, provider/ledger writes or spending is authorized by W11. The original-nine grant was consumed, 18/18 calls; no remaining allowance exists.
+
+“Before any call, the Mac integration owner checks the ledger to confirm this allowance is still available. This receipt grants no new allowance or retry.”
+
+After the verified final UI handoff, no further UI changes are permitted except defects the Mac owner reports on PR21. Prior receipts below are retained as history.
+
+---
+
 # Current UI finish receipt — W10
 
 W10 follows [PLANNER 6350440684](https://github.com/KumarNavish/casepath/pull/21#issuecomment-6350440684), the Mac handoff and the direct human instruction “Use self-review, then all final gates.” The existing writer owns `mac/casepath-cold-landing-20261022`; the Mac owner retains integration and release. This follow-up supersedes `5f254a9` for review without disturbing its release.

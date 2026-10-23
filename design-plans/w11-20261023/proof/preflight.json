@@ -1,0 +1,72 @@
+{
+  "sourceCommit": "f777df0e05895207668540dcb5c01bddd6f4b544",
+  "pid": 51543,
+  "startedAt": "2026-10-23T09:41:50.143490+00:00",
+  "status": "passed",
+  "serialized": true,
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "f777df0e05895207668540dcb5c01bddd6f4b544",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "assets": {
+    "autonomous-workspace-v1.js": "e75ed4bf12f6ca0393114e7f28283e4cfc8d92842742ce8b49cdc2e4dd9deec9",
+    "autonomous-workspace-v1.css": "a528722c453d2200249d616ed8f836740bd01e57940fcbfa966c645400798bc6",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "stages": [
+    {
+      "name": "process",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w8-20261021-mac-r1/verify-process.mjs"
+      ],
+      "startedAt": "2026-10-23T09:41:50.401021+00:00",
+      "status": "completed",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-preflight-process.log",
+      "pid": 51558,
+      "exitCode": 0,
+      "finishedAt": "2026-10-23T09:42:57.518748+00:00",
+      "logSha256": "8f516bf6434e1a21b85122d4d6272266eb475de6380818b585f21f7b6270e235"
+    },
+    {
+      "name": "memory",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w8-20261021-mac-r1/verify-memory.mjs"
+      ],
+      "startedAt": "2026-10-23T09:42:57.876386+00:00",
+      "status": "completed",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-preflight-memory.log",
+      "pid": 51954,
+      "exitCode": 0,
+      "finishedAt": "2026-10-23T09:43:43.595228+00:00",
+      "logSha256": "bab3047ee7bbfdc5a5ae0ac23ba1885c6425ee1ab6fde63d6a42cfdc05b020b4"
+    },
+    {
+      "name": "presentation",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w9-20261021/verify_presentation.mjs"
+      ],
+      "startedAt": "2026-10-23T09:43:43.824570+00:00",
+      "status": "completed",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r3-preflight-presentation.log",
+      "pid": 52270,
+      "exitCode": 0,
+      "finishedAt": "2026-10-23T09:45:50.421546+00:00",
+      "logSha256": "30b0f1dd4df8ee3b7248d643706b57112d1977e178ebdfa242044124863e64d5"
+    }
+  ],
+  "finishedAt": "2026-10-23T09:45:50.432819+00:00"
+}

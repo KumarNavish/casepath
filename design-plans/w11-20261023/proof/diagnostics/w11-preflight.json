@@ -1,0 +1,45 @@
+{
+  "sourceCommit": "7264b825866ffc7f5d79bb81ba0b6d0b241cad09",
+  "pid": 39779,
+  "startedAt": "2026-10-23T09:17:22.431449+00:00",
+  "status": "failed",
+  "serialized": true,
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath.kumarnavish.chatgpt.site",
+    "source_commit": "7264b825866ffc7f5d79bb81ba0b6d0b241cad09",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "assets": {
+    "autonomous-workspace-v1.js": "f75164b9838977f71e9089cb2bcab13aed753cc56a8c9cd5b70dcd0b5fb7ceed",
+    "autonomous-workspace-v1.css": "be9e92264b95f80d700ae7bb133185b81100185da21a780a2348d368b91d8854",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "stages": [
+    {
+      "name": "process",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/w8-20261021-mac-r1/verify-process.mjs"
+      ],
+      "startedAt": "2026-10-23T09:17:22.573920+00:00",
+      "status": "completed",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11-preflight-process.log",
+      "pid": 39786,
+      "exitCode": 1,
+      "finishedAt": "2026-10-23T09:18:00.659088+00:00",
+      "logSha256": "2694acd6a3eb334744c7eb60c84de19ff7baf82b7e2ea2072174359c5e640dc4"
+    }
+  ],
+  "failure": "AssertionError('process')",
+  "finishedAt": "2026-10-23T09:18:00.662755+00:00"
+}

@@ -1,0 +1,62 @@
+{
+  "sourceCommit": "c8431ad4a1f1e6b38461a60f56710f900fbd1c17",
+  "recordedAt": "2026-10-23T09:28:55.231019+00:00",
+  "status": "comparisons-complete",
+  "comparisons": [
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/01-decision-building.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r2-proof/fact-rest.png",
+      "mean_difference_pct": 4.73,
+      "state": "01",
+      "frame_sha256": "b125f67fdd7db990c22ec66cb24413130c2695391c21613b706eb9feeb617025",
+      "concept_sha256": "fc521448b5c6da6841088b259a3dc41b444394e8e08cf1e0c58e3a141ccbe4de",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/tools/fidelity.mjs",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/01-decision-building.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r2-proof/fact-rest.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r2-fidelity/01"
+      ],
+      "logSha256": "8ad9490adb8457a93b367d4e0b56ab53eecdf63557646567811e1702e66b9299"
+    },
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/02-completed-process.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r2-proof/completed.png",
+      "mean_difference_pct": 6.15,
+      "state": "02",
+      "frame_sha256": "c9d8ca5116a63cf48d776d2531e6d2157b92fb485125a6287eb91ac6db6cbf19",
+      "concept_sha256": "48aca0434e0fa64e42c57d4e52b45054c7d1f7f08af368f39bbc0079c4a15f4a",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/tools/fidelity.mjs",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/02-completed-process.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r2-proof/completed.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r2-fidelity/02"
+      ],
+      "logSha256": "d640ad3bf264d2ab488b53a92d34f233b5b4212171bff39480a07a60a2d82e0f"
+    },
+    {
+      "concept": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/03-reviewed-memory-payoff.png",
+      "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r2-proof/memory-notice-rest.png",
+      "mean_difference_pct": 5.02,
+      "state": "03",
+      "frame_sha256": "1873977f63b83fb45430ef6b91f56d93eaef9cc9dd14e7b46a093a7d8bcb0807",
+      "concept_sha256": "38d8f7a5907456dfc86b9b10fd9d1110d98916ae448e9f6bc393d8f832bdf2c0",
+      "command": [
+        "/usr/local/bin/node",
+        "design-plans/tools/fidelity.mjs",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/design/northstar/03-reviewed-memory-payoff.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r2-proof/memory-notice-rest.png",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/.runtime/w11r2-fidelity/03"
+      ],
+      "logSha256": "c565d771447123cac010a86ff883a9a66dd98d159bef9cca3e8d6620fb987165"
+    }
+  ],
+  "visualReview": {
+    "passed": false,
+    "pending": [
+      "Inspect all three side-by-side frames and overlays"
+    ]
+  },
+  "finishedAt": "2026-10-23T09:29:01.015277+00:00"
+}

@@ -1,0 +1,4010 @@
+TAP version 13
+# Subtest: the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+not ok 1 - the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+  ---
+  duration_ms: 13424.373084
+  type: 'test'
+  location: '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-presentation-browser-v1.test.cjs:7:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    every film frame has intact rows, facts and labels and only its current spinner
+    + actual - expected
+    
+    + [
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1525,
+    +     passed: false,
+    +     time: 25416.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1526,
+    +     passed: false,
+    +     time: 25433.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1527,
+    +     passed: false,
+    +     time: 25450,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1528,
+    +     passed: false,
+    +     time: 25466.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1529,
+    +     passed: false,
+    +     time: 25483.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1530,
+    +     passed: false,
+    +     time: 25500,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1531,
+    +     passed: false,
+    +     time: 25516.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1532,
+    +     passed: false,
+    +     time: 25533.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1533,
+    +     passed: false,
+    +     time: 25550,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1534,
+    +     passed: false,
+    +     time: 25566.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1535,
+    +     passed: false,
+    +     time: 25583.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1536,
+    +     passed: false,
+    +     time: 25600,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1537,
+    +     passed: false,
+    +     time: 25616.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1538,
+    +     passed: false,
+    +     time: 25633.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1539,
+    +     passed: false,
+    +     time: 25650,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1540,
+    +     passed: false,
+    +     time: 25666.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1541,
+    +     passed: false,
+    +     time: 25683.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1542,
+    +     passed: false,
+    +     time: 25700,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1543,
+    +     passed: false,
+    +     time: 25716.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1544,
+    +     passed: false,
+    +     time: 25733.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1545,
+    +     passed: false,
+    +     time: 25750,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1546,
+    +     passed: false,
+    +     time: 25766.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1547,
+    +     passed: false,
+    +     time: 25783.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1549,
+    +     passed: false,
+    +     time: 25816.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1550,
+    +     passed: false,
+    +     time: 25833.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1551,
+    +     passed: false,
+    +     time: 25850,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1552,
+    +     passed: false,
+    +     time: 25866.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1553,
+    +     passed: false,
+    +     time: 25883.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1554,
+    +     passed: false,
+    +     time: 25900,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1555,
+    +     passed: false,
+    +     time: 25916.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1556,
+    +     passed: false,
+    +     time: 25933.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1557,
+    +     passed: false,
+    +     time: 25950,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1558,
+    +     passed: false,
+    +     time: 25966.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1559,
+    +     passed: false,
+    +     time: 25983.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1560,
+    +     passed: false,
+    +     time: 26000,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1561,
+    +     passed: false,
+    +     time: 26016.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1562,
+    +     passed: false,
+    +     time: 26033.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1563,
+    +     passed: false,
+    +     time: 26050,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1564,
+    +     passed: false,
+    +     time: 26066.666666666668,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   },
+    +   {
+    +     checked: {
+    +       facts: 0,
+    +       labels: 38,
+    +       panels: 6,
+    +       rows: 0,
+    +       textFragments: 77
+    +     },
+    +     contract: 'casepath.checklist-geometry/1.0.0',
+    +     failures: [
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'box clipped by ancestor',
+    +         rect: {
+    +           bottom: 791,
+    +           left: 315,
+    +           right: 756.16,
+    +           top: 772.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       },
+    +       {
+    +         against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason',
+    +         boundary: {
+    +           bottom: 784.5,
+    +           left: 305,
+    +           right: 766.16,
+    +           top: 501.5
+    +         },
+    +         reason: 'text clipped by ancestor',
+    +         rect: {
+    +           bottom: 789.25,
+    +           left: 315,
+    +           right: 546.06,
+    +           top: 773.25
+    +         },
+    +         subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+    +       }
+    +     ],
+    +     labelViews: {
+    +       decision: 38
+    +     },
+    +     n: 1565,
+    +     passed: false,
+    +     time: 26083.333333333332,
+    +     totalFailures: 2,
+    +     truncated: false
+    +   }
+    + ]
+    - []
+    
+    Missing fixture reads: []
+    Page errors: []
+    UI:  question
+    
+    ✕ Not met: Notice given on the canton-approved form
+    
+    “Form, Aussteller und sämtliche Zustellwege prüfen und vorsorglich die Frist sichern”
+    
+    Lease termination
+    
+    Answer ready
+    
+    Email notice and the complete service record
+    
+    ✕ Not met: Notice given on the canton-approved form
+    
+    “Vollständigkeit des Formulars und Verhältnis zur späteren E-Mail prüfen und die Frist sichern”
+    
+    Rent increases
+    
+    Answer ready
+    
+    A blank reason field and a later market email
+    
+    ✕ Not met: Reasons given with the increase
+    
+    “Vollständigkeit des Formulars und Verhältnis zur späteren E-Mail prüfen und die Frist sichern”
+    
+    Rent increases
+    
+    Answer ready
+    
+    An increase form with missing original reasons
+    
+    ✕ Not met: Reasons given with the increase
+    
+    “check the form's completeness and its relationship to the later email, and preserve the deadline”
+    
+    Rent increases
+    
+    Answer ready
+    
+    An increase form and the later email chronology
+    
+    ✕ Not met: Reasons given with the increase
+    
+    CasePath
+    Recorded replay · All cases are fictional.
+    Pause
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0:
+      n: 1525
+      time: 25416.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    1:
+      n: 1526
+      time: 25433.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    2:
+      n: 1527
+      time: 25450
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    3:
+      n: 1528
+      time: 25466.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    4:
+      n: 1529
+      time: 25483.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    5:
+      n: 1530
+      time: 25500
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    6:
+      n: 1531
+      time: 25516.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    7:
+      n: 1532
+      time: 25533.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    8:
+      n: 1533
+      time: 25550
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    9:
+      n: 1534
+      time: 25566.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    10:
+      n: 1535
+      time: 25583.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    11:
+      n: 1536
+      time: 25600
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    12:
+      n: 1537
+      time: 25616.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    13:
+      n: 1538
+      time: 25633.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    14:
+      n: 1539
+      time: 25650
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    15:
+      n: 1540
+      time: 25666.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    16:
+      n: 1541
+      time: 25683.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    17:
+      n: 1542
+      time: 25700
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    18:
+      n: 1543
+      time: 25716.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    19:
+      n: 1544
+      time: 25733.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    20:
+      n: 1545
+      time: 25750
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    21:
+      n: 1546
+      time: 25766.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    22:
+      n: 1547
+      time: 25783.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    23:
+      n: 1549
+      time: 25816.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    24:
+      n: 1550
+      time: 25833.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    25:
+      n: 1551
+      time: 25850
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    26:
+      n: 1552
+      time: 25866.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    27:
+      n: 1553
+      time: 25883.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    28:
+      n: 1554
+      time: 25900
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    29:
+      n: 1555
+      time: 25916.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    30:
+      n: 1556
+      time: 25933.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    31:
+      n: 1557
+      time: 25950
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    32:
+      n: 1558
+      time: 25966.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    33:
+      n: 1559
+      time: 25983.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    34:
+      n: 1560
+      time: 26000
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    35:
+      n: 1561
+      time: 26016.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    36:
+      n: 1562
+      time: 26033.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    37:
+      n: 1563
+      time: 26050
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    38:
+      n: 1564
+      time: 26066.666666666668
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+    39:
+      n: 1565
+      time: 26083.333333333332
+      contract: 'casepath.checklist-geometry/1.0.0'
+      passed: false
+      checked:
+        rows: 0
+        facts: 0
+        labels: 38
+        panels: 6
+        textFragments: 77
+      labelViews:
+        decision: 38
+      failures:
+        0:
+          reason: 'box clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 772.25
+            right: 756.16
+            bottom: 791
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+        1:
+          reason: 'text clipped by ancestor'
+          subject: 'h3. Mietzinserhoehung Formular Elin Ziegler'
+          against: 'div.au-ns-passages Ordinary tenancy and original notification documentsNo contemporaneous accompanying reason'
+          rect:
+            left: 315
+            top: 773.25
+            right: 546.06
+            bottom: 789.25
+          boundary:
+            left: 305
+            top: 501.5
+            right: 766.16
+            bottom: 784.5
+      totalFailures: 2
+      truncated: false
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-codex-northstar-20261022/casepath-qa/autonomous-presentation-browser-v1.test.cjs:83:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: a slow cold read keeps the north-star frame on landing and on opening a recorded case
+ok 2 - a slow cold read keeps the north-star frame on landing and on opening a recorded case
+  ---
+  duration_ms: 9137.396792
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 23205.793875
