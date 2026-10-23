@@ -56,9 +56,44 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   assert.ok(w10.checks.every(row=>row.center<2&&row.font==='17px'&&row.line==='25.5px'&&row.context==='0.45'&&row.badge===1&&row.highlight==='0'),JSON.stringify(w10.checks));assert.ok(w10.connector);assert.match(w10.path,/H.*V.*H.*V/);
   if(process.env.CASEPATH_W10_SHOTS){for(const [name,phase]of [['reading','fact-rest'],['completed','chain-rest'],['learning','memory-notice-rest']]){await page.evaluate(phase=>{const a=CasepathPresentation.active,b=a.manifest.beats.find(b=>b.phase===phase);a.advanceTo(b.end-1);},phase);await page.screenshot({path:process.env.CASEPATH_W10_SHOTS+'/'+name+'.png'});}}
   const {auditPresentation}=await import('../design-plans/w9-20261021/audit_presentation.mjs');
+  const {auditChecklistGeometry}=await import('../design-plans/tools/checklist_geometry_audit.mjs');
+  await page.evaluate(`window.auditChecklistGeometry=${auditChecklistGeometry.toString()}`);
+  const everyFrame=await page.evaluate(()=>{
+   const active=CasepathPresentation.active,count=Math.ceil(active.manifest.duration*60/1000),failures=[];
+   let collapsedFrames=0,checkedRows=0,checkedFacts=0,checkedLabels=0;
+   for(let n=0;n<count;n++){
+    active.advanceTo(n*1000/60);
+    const audit=window.auditChecklistGeometry();
+    checkedRows+=audit.checked.rows;checkedFacts+=audit.checked.facts;checkedLabels+=audit.checked.labels;
+    if(!audit.passed&&failures.length<40)failures.push({n,time:n*1000/60,...audit});
+    const plan=document.querySelector('[data-au-ns-plan]');if(!plan)continue;
+    const rows=[...plan.querySelectorAll('[data-au-ns-plan-row]')],spinners=rows.filter(row=>row.dataset.state==='active');
+    const op=plan.closest('[data-au-ns]').dataset.auNsOperation;
+    if(spinners.length>1||spinners.some(row=>row.hidden||!JSON.parse(row.dataset.auNsPlanOperations).includes(op)))failures.push({n,reason:'spinner does not identify only the current operation'});
+    const summary=plan.querySelector('[data-au-ns-plan-summary]'),hidden=rows.filter(row=>row.hidden);
+    if(!summary.hidden){collapsedFrames++;if(hidden.some(row=>row.dataset.state!=='done')||summary.textContent.replace(/\s+/g,' ').trim()!==`✓ ${hidden.length} done`)failures.push({n,reason:'summary must count exactly the collapsed completed rows'});}
+   }
+   return {count,checkedRows,checkedFacts,checkedLabels,collapsedFrames,failures};
+  });
+  if(process.env.CASEPATH_W11_DIAGNOSTICS)fs.writeFileSync(process.env.CASEPATH_W11_DIAGNOSTICS+'-every-frame.json',JSON.stringify(everyFrame,null,2));
+  assert.equal(everyFrame.count,Math.ceil(proof.manifest.duration*60/1000));
+  assert.ok(everyFrame.checkedRows>0&&everyFrame.checkedFacts>0&&everyFrame.checkedLabels>0&&everyFrame.collapsedFrames>0);
+  assert.deepEqual(everyFrame.failures,[],'every film frame has intact rows, facts and labels and only its current spinner');
+  // Negative control: the old cropped list must fail the new audit.
+  await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),proof.manifest.beats.find(b=>b.phase==='fact-rest').end-1);
+  const clipped=await page.addStyleTag({content:'.au-workspace .au-ns-plan ol {max-height:30px;overflow:hidden}'});
+  assert.equal((await page.evaluate(auditChecklistGeometry)).passed,false,'the audit detects a clipped checklist row');
+  await clipped.evaluate(el=>el.remove());
+
   const geometry=[];
   for(const beat of proof.manifest.beats.filter(b=>b.phase!=='act-transition')){await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),beat.start+beat.duration/2);const hits=await page.evaluate(auditPresentation);if(hits.length)geometry.push({phase:beat.phase,operation:beat.operation,hits});}
   if(process.env.CASEPATH_W10_SHOTS)fs.writeFileSync(process.env.CASEPATH_W10_SHOTS+'/geometry.json',JSON.stringify(geometry,null,2));
+  if(geometry.length&&process.env.CASEPATH_W11_DIAGNOSTICS){
+   const failure=geometry[0],beat=proof.manifest.beats.find(b=>b.phase===failure.phase&&b.operation===failure.operation);
+   await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),beat.start+beat.duration/2);
+   fs.writeFileSync(process.env.CASEPATH_W11_DIAGNOSTICS+'.json',JSON.stringify(await page.evaluate(()=>[...document.querySelectorAll('.au-ns-plan,.au-ns-plan li,.au-ns-log,.au-ns-right')].map(el=>({text:el.textContent,hidden:el.hidden,state:el.dataset.state,rect:el.getBoundingClientRect().toJSON()}))),null,2));
+   await page.screenshot({path:process.env.CASEPATH_W11_DIAGNOSTICS+'.png'});
+  }
   assert.deepEqual(geometry,[],'all beat midpoints have no unintended content overlaps');
   const ending=await page.evaluate(()=>{const a=CasepathPresentation.active;a.advanceTo(a.manifest.duration-1);const word=document.querySelector('.au-executive-wordmark').getBoundingClientRect(),list=document.querySelector('.au-claim-list').getBoundingClientRect(),footer=document.querySelector('.au-executive-transport').getBoundingClientRect();return {above:word.top-list.bottom,below:footer.top-word.bottom};});
   assert.ok(ending.above>=32&&ending.below>=32,JSON.stringify(ending));

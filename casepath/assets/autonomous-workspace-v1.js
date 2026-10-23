@@ -1506,7 +1506,7 @@
   }
   function northStarPlanProgress(group, through, completedCurrent = false) {
     const completed=group.operations.filter(op=>op.seq<through||op.seq===through&&completedCurrent).length,total=group.operations.length;
-    return {completed,total,percent:total?100*completed/total:0,state:completed===total?'done':group.operations.some(op=>op.seq<=through)?'active':'waiting'};
+    return {completed,total,percent:total?100*completed/total:0,state:completed===total?'done':!completedCurrent&&group.operations.some(op=>op.seq===through)?'active':'waiting'};
   }
   const NS_FACT_TYPES=Object.freeze({
     tenancy_terms_evidence:'The tenancy terms',landlord_knowledge_evidence:'Landlord notice and repair status',objective_defect_observation:'Dated observations of the defect',received_termination_packet:'The termination notice received',received_rent_increase_packet:'The rent increase notice received',original_notification_context:'What accompanied the original notice',
@@ -1633,6 +1633,7 @@
     const completionEvidence=northStarCompletionEvidence(op,head,rows,trace.sources);
     if(completionEvidence)facts=[completionEvidence];
     else if(trace.executive&&op?.kind==='fact.extract'&&northStarPin(op,trace.sources))facts=[op];
+    else if(trace.executive&&op?.kind==='step.complete')facts=facts.slice(-1);
     const sourceOperation=completionEvidence||(trace.executive&&op?.kind==='step.complete'?(facts.at(-1)||op):op);
     const pin=trace.nsInspectionSource?null:northStarPin(sourceOperation,trace.sources),source=trace.sources?.get(trace.nsInspectionSource||pin?.artifact_id|| (op?.kind==='source.open'?op.object.id:trace.displaySource?.artifact_id));
     const plans=catalogue.plans.get(nodeId)||[],through=op?.seq||rows.at(-1)?.seq||0;
@@ -1647,7 +1648,7 @@
     const opened=[...new Map([...trace.sources.values()].map(source=>[source.file_name||source.artifact_id,source])).values()],sourceIndex=opened.findIndex(source=>source.artifact_id===m.source?.artifact_id);
     const paper=m.source?`<section class="au-ns-paper" data-au-ns-paper><header><div class="au-ns-source-nav"><button type="button" aria-label="Previous source" data-au-ns-source="${h(opened[sourceIndex-1]?.artifact_id||'')}"${sourceIndex>0?'':' disabled'}>←</button><button type="button" aria-label="Next source" data-au-ns-source="${h(opened[sourceIndex+1]?.artifact_id||'')}"${sourceIndex<opened.length-1?'':' disabled'}>→</button></div><button type="button" class="au-link" data-au-source="${h(m.source.artifact_id)}"${pin?` data-au-citation="${h(JSON.stringify(pin))}"`:''}>Open full source</button></header>${northStarSourceFields(preview)}<div class="au-ns-source-scroll" tabindex="0" aria-label="Opened source"><pre>${sourceText}</pre></div></section>`:'';
     const facts=m.facts.map((fact,i)=>`${i?'<span class="au-ns-plus" aria-hidden="true">+</span>':''}<button type="button" class="au-ns-fact" data-au-ns-fact="${h(fact.id)}" data-au-source="${h(fact.source.artifact_id)}" data-au-citation="${h(JSON.stringify(fact.source))}">${northStarIcon('file')}${northStarFactCopy(m.head,fact)}</button>`).join('');
-    const planGroups=northStarPlanGroups(m.plans),plan=m.node&&planGroups.length?`<aside class="au-ns-plan" data-au-ns-plan><h2 title="${h(m.node.label||m.node.title||m.node.node_id)}">Checking “${h(northStarQuestion(m.node,m.plans.at(-1)?.operation.result))}”</h2><ol>${planGroups.map(group=>{const progress=northStarPlanProgress(group,m.through,trace.nsCues?.has(m.op?.id)||m.op?.kind==='step.complete'&&trace.nsPendingCompletion!==m.op.id),done=progress.state==='done',active=progress.state==='active';return `<li data-au-ns-plan-row="${h(group.operations.at(-1).id)}" data-au-ns-plan-operations="${h(JSON.stringify(group.operations.map(op=>op.id)))}" data-state="${progress.state}"${group.operations.some(op=>op.id===m.op?.id)?' data-au-ns-plan-current':''}><span class="au-ns-plan-status" aria-hidden="true">${done?northStarIcon('check'):''}</span><span>${h(group.label)}</span>${active?`<i class="au-ns-plan-progress" style="--au-plan-progress:${progress.percent}%" aria-hidden="true"></i>`:''}</li>`;}).join('')}</ol></aside>`:'';
+    const planGroups=northStarPlanGroups(m.plans),plan=m.node&&planGroups.length?`<aside class="au-ns-plan" data-au-ns-plan><h2 title="${h(m.node.label||m.node.title||m.node.node_id)}">Checking “${h(northStarQuestion(m.node,m.plans.at(-1)?.operation.result))}”</h2><ol>${planGroups.map(group=>{const progress=northStarPlanProgress(group,m.through,trace.nsCues?.has(m.op?.id)||m.op?.kind==='step.complete'&&trace.nsPendingCompletion!==m.op.id),done=progress.state==='done',active=progress.state==='active';return `<li data-au-ns-plan-row="${h(group.operations.at(-1).id)}" data-au-ns-plan-operations="${h(JSON.stringify(group.operations.map(op=>op.id)))}" data-state="${progress.state}"${group.operations.some(op=>op.id===m.op?.id)?' data-au-ns-plan-current':''}><span class="au-ns-plan-status" aria-hidden="true">${done?northStarIcon('check'):''}</span><span>${h(group.label)}</span>${active?`<i class="au-ns-plan-progress" style="--au-plan-progress:${progress.percent}%" aria-hidden="true"></i>`:''}</li>`;}).join('')}<li data-au-ns-plan-summary hidden><span aria-hidden="true">✓</span> <span data-au-ns-plan-done-count></span></li></ol></aside>`:'';
     return `<section class="au-agent-desk au-northstar" data-au-agent-desk data-au-ns${opening?' data-au-desk-loading aria-busy="true"':''} data-au-ns-role-active="${h(ready?'':m.role||'')}" data-au-ns-operation="${h(m.op?.id||'')}" data-au-ns-state="${opening?'opening':ready?'ready':pin?'selected':m.source?'source':'building'}"><aside class="au-ns-sources"><p class="au-ns-context">Legal protection · case review</p><h1 data-au-claim-title tabindex="-1">${h(caseLabel(state.claim_id,state.title).primary)}</h1>${northStarIntakeMarkup(m.head)}${opening&&!files.length?'':`<h2>Sources <span>${files.length}</span></h2>`}<ul>${sourceRows}</ul></aside><div class="au-ns-canvas"><ol class="au-ns-spine" aria-label="Recorded process">${spine}</ol><div class="au-ns-work"><div class="au-ns-reading">${ready?`<div class="au-ns-ready">${button('Watch the analysis','data-au-ns-start')}</div>`:opening==='replay'?'<section class="au-ns-paper" data-au-ns-paper-opening><header></header><p class="au-ns-opening" data-au-desk-trace-status role="status">Opening the recorded case…</p></section>':opening?'<p class="au-ns-opening" data-au-desk-trace-status role="status">Opening the recorded case…</p>':paper}<div class="au-ns-facts" aria-label="Source facts">${ready?'':facts}</div>${!ready&&m.facts.length?'<svg class="au-ns-fact-connector" style="visibility:hidden" viewBox="0 0 671 110" aria-hidden="true"><path d="M448 75H610V5m-5 6 5-6 5 6"/><circle cx="610" cy="75" r="6"/></svg>':''}</div>${opening?'':`<div class="au-ns-right">${ready?'':plan}<div class="au-ns-log">${m.role&&!ready?`<p><span class="au-ns-role-badge">${northStarIcon(m.role)}</span>${h(NS_ROLES.find(row=>row[0]===m.role)?.[1])}<small>Automated assistant · ${h(NS_ROLE_WORK[m.role])}</small></p>`:''}<button type="button" data-au-detail="activity">${northStarIcon('file')}Work log <span aria-hidden="true">›</span></button></div></div>`}</div></div>${opening?'':`<footer class="au-ns-footer"><span>Case ${index+1} of ${roster.length}</span><span>All cases are fictional.</span><div>${ready?'':`${button(presentation.playing?'Pause':'Resume',presentation.playing?'data-au-demo-stop':'data-au-demo-resume')}${button('Skip to answer','data-au-operation-skip')}`}</div></footer>`}</section>`;
   }
   // Until the recorded work is verified, keep the north-star frame with only the
@@ -4775,6 +4776,25 @@
       fallback=root.setTimeout(() => { const top=stageScrollTarget?.pane === pane ? stageScrollTarget.top : pane.scrollTop; pane.scrollTo?.({top,behavior:'instant'}); root.clearTimeout(quiet); quiet=root.setTimeout(finish,0); },1200);
       stageScrollCancel=clear;
     }
+    function fitNorthStarPlan(desk) {
+      const plan=desk.querySelector('[data-au-ns-plan]');if(!plan)return;
+      const rows=[...plan.querySelectorAll('[data-au-ns-plan-row]')],summary=plan.querySelector('[data-au-ns-plan-summary]');
+      for(const row of rows)row.hidden=false;
+      summary.hidden=true;delete plan.dataset.auNsPlanDense;
+      const log=desk.querySelector('.au-ns-log'),transport=host.querySelector('.au-executive-transport');
+      const bottom=Math.min(root.innerHeight,transport?.getBoundingClientRect().top??root.innerHeight)-24;
+      const available=bottom-plan.getBoundingClientRect().top-(log?.getBoundingClientRect().height||0)-24;
+      // Expand naturally first. Only completed work may yield space to the
+      // current and waiting operations; their text never becomes a scroll crop.
+      const done=rows.filter(row=>row.dataset.state==='done');
+      if(plan.getBoundingClientRect().height>available&&done.length>0){
+        for(const row of done)row.hidden=true;
+        summary.querySelector('[data-au-ns-plan-done-count]').textContent=`${done.length} done`;
+        summary.hidden=false;
+        plan.querySelector('ol').prepend(summary);
+      }
+      if(plan.getBoundingClientRect().height>available)plan.dataset.auNsPlanDense='true';
+    }
     function positionNorthStar(desk, animate = true) {
       const trace=operationTrace,op=trace?.current,mark=desk.querySelector('[data-au-ns-quote]'),pane=desk.querySelector('.au-ns-source-scroll');
       if(mark&&pane){
@@ -4782,8 +4802,7 @@
         const a=mark.getBoundingClientRect(),b=pane.getBoundingClientRect();
         pane.scrollTop=Math.max(0,pane.scrollTop+(a.top+a.bottom-b.top-b.bottom)/2);
       }
-      const planPane=desk.querySelector('.au-ns-plan ol'),activeRow=desk.querySelector('.au-ns-plan [data-state=active]');
-      if(planPane&&activeRow){const a=activeRow.getBoundingClientRect(),b=planPane.getBoundingClientRect();planPane.scrollTop=Math.max(0,planPane.scrollTop+a.top-b.top-120);}
+      fitNorthStarPlan(desk);
       const facts=desk.querySelector('.au-ns-facts'),lastFact=facts?.querySelector('.au-ns-fact:last-child'),factLink=desk.querySelector('.au-ns-fact-connector');
       if(facts&&lastFact&&factLink){
         facts.scrollLeft=Math.max(0,facts.scrollWidth-facts.clientWidth);
@@ -4821,11 +4840,12 @@
           const progress=northStarPlanProgress(group,model.through,true),status=row.querySelector('.au-ns-plan-status'),bar=row.querySelector('.au-ns-plan-progress');
           row.dataset.state=progress.state;if(progress.state==='done'){status.innerHTML=northStarIcon('check');bar?.remove();}else bar?.style.setProperty('--au-plan-progress',`${progress.percent}%`);
         }
+        fitNorthStarPlan(desk);
       };
       const settleCompletion=()=>{
         settlePlan();
         if(op.kind!=='step.complete')return;if(trace.nsPendingCompletion===op.id)trace.nsPendingCompletion=null;plan?.setAttribute('data-complete','true');
-        const row=plan?.querySelector('li:last-child'),status=row?.querySelector('.au-ns-plan-status'),node=[...desk.querySelectorAll('[data-au-ns-node]')].find(el=>el.dataset.auNsNode===op.object.id);
+        const row=[...(plan?.querySelectorAll('[data-au-ns-plan-row]')||[])].at(-1),status=row?.querySelector('.au-ns-plan-status'),node=[...desk.querySelectorAll('[data-au-ns-node]')].find(el=>el.dataset.auNsNode===op.object.id);
         if(row){row.dataset.state='done';status.innerHTML=northStarIcon('check');row.querySelector('.au-ns-plan-progress')?.remove();}
         if(node){node.dataset.state='done';node.querySelector('.au-ns-circle').innerHTML=northStarIcon('check');}
       };
@@ -4854,7 +4874,7 @@
           if(fact&&valid()){settlePlan();await rest('fact-rest');}
         }
         if(op.kind==='step.complete'){
-          const row=plan?.querySelector('li:last-child'),status=row?.querySelector('.au-ns-plan-status');
+          const row=[...(plan?.querySelectorAll('[data-au-ns-plan-row]')||[])].at(-1),status=row?.querySelector('.au-ns-plan-status');
           if(valid()&&status){status.innerHTML=northStarIcon('check');row.dataset.state='done';row.querySelector('.au-ns-plan-progress')?.remove();}
           await run(status,[{transform:'scale(.5)'},{transform:'scale(1)'}],200,'plan-tick');
           await run(plan,[{opacity:1},{opacity:.35}],400,'plan-recede');

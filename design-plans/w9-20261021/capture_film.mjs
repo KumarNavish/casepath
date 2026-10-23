@@ -10,6 +10,7 @@ import {createHash} from 'node:crypto';
 import {createRequire} from 'node:module';
 import {spawn,execFileSync} from 'node:child_process';
 import {gunzipSync} from 'node:zlib';
+import {auditChecklistGeometry} from '../tools/checklist_geometry_audit.mjs';
 
 const root=path.resolve(import.meta.dirname,'../..');
 const require=createRequire(root+'/casepath-qa/package.json'),{chromium}=require('playwright');
@@ -48,7 +49,7 @@ for(const name of ['autonomous-workspace-v1.js','autonomous-workspace-v1.css','a
   const bytes=Buffer.from(await response.arrayBuffer());assert.deepEqual(bytes,fs.readFileSync(root+'/casepath/assets/'+name));assets[name]=sha(bytes);
 }
 const rendererArgs=['--disable-gpu','--disable-gpu-rasterization','--disable-lcd-text'];
-const report={sourceCommit,verifierCommit,rendererArgs,deployment,assets,sourceManifestSha256:sha(fs.readFileSync(root+'/casepath/source-manifest.json')),fixtures:{responses:sha(fs.readFileSync(wirePath)),operations:sha(fs.readFileSync(tracePath))},viewport:{width:1440,height:900},deviceScaleFactor:2,fps:60,probe,errors:[],writes:[],missingReads:[],checksums:[],cleanup:[]};
+const report={sourceCommit,verifierCommit,rendererArgs,deployment,assets,sourceManifestSha256:sha(fs.readFileSync(root+'/casepath/source-manifest.json')),fixtures:{responses:sha(fs.readFileSync(wirePath)),operations:sha(fs.readFileSync(tracePath))},viewport:{width:1440,height:900},deviceScaleFactor:2,fps:60,probe,geometry:{frames:0,rows:0,facts:0,labels:0,failures:[]},errors:[],writes:[],missingReads:[],checksums:[],cleanup:[]};
 const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',args:rendererArgs});
 const context=await browser.newContext({viewport:report.viewport,deviceScaleFactor:2,serviceWorkers:'block',reducedMotion:'no-preference',timezoneId:'UTC',locale:'en-GB'});
 const page=await context.newPage();report.browserVersion=browser.version();
@@ -71,6 +72,7 @@ async function open(){
   await page.waitForFunction(()=>window.CasepathPresentation?.active,{},{timeout:90000});
   await page.evaluate(()=>document.fonts.ready);
   await page.evaluate(()=>CasepathPresentation.active.advanceTo(0));
+  await page.evaluate(`window.auditChecklistGeometry=${auditChecklistGeometry.toString()}`);
 }
 async function sample(n){
   const state=await page.evaluate(n=>{
@@ -79,8 +81,11 @@ async function sample(n){
     const visible=selector=>[...document.querySelectorAll(selector)].filter(el=>!el.closest('.au-executive-transition')&&el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden');
     const paper=host.querySelector('[data-au-ns-paper]'),mark=paper?.querySelector('[data-au-ns-quote]');
     const sourceBinding=beat.act==='process'?{pin:JSON.parse(paper.querySelector('[data-au-citation]').dataset.auCitation),facts:visible('[data-au-ns-fact]').filter(el=>+getComputedStyle(el).opacity>0).map(el=>JSON.parse(el.dataset.auCitation)),quote:mark.textContent,start:+mark.dataset.start,end:+mark.dataset.end,highlight:+paper.querySelector('.au-executive-ink').style.opacity}:null;
-    return {n,time,renderedTime:Number(host.dataset.auPresentationTime),act:beat.act,phase:beat.phase,operation:beat.operation,sourceBinding,view:beat.view||null,animations:document.getAnimations().length,pause:visible('[data-au-demo-stop]').map(el=>el.textContent),resume:visible('[data-au-demo-resume]').length,watch:visible('[data-au-desk-watch]').length,skip:visible('[data-au-operation-skip]').length,speed:document.querySelector('[data-au-film-speed]')?.textContent};
+    return {n,time,geometry:window.auditChecklistGeometry(),renderedTime:Number(host.dataset.auPresentationTime),act:beat.act,phase:beat.phase,operation:beat.operation,sourceBinding,view:beat.view||null,animations:document.getAnimations().length,pause:visible('[data-au-demo-stop]').map(el=>el.textContent),resume:visible('[data-au-demo-resume]').length,watch:visible('[data-au-desk-watch]').length,skip:visible('[data-au-operation-skip]').length,speed:document.querySelector('[data-au-film-speed]')?.textContent};
   },n);
+  report.geometry.frames++;for(const kind of ['rows','facts','labels'])report.geometry[kind]+=state.geometry.checked[kind];
+  if(!state.geometry.passed)report.geometry.failures.push({n,time:state.time,...state.geometry});
+  assert.equal(state.geometry.passed,true,'unclipped film geometry at '+n+': '+JSON.stringify(state.geometry.failures));
   assert.equal(state.renderedTime,state.time);assert.equal(state.animations,0,'native animation at '+n);
   assert.deepEqual(state.pause,['Pause'],'playing transport at '+n);assert.equal(state.resume,0);assert.equal(state.watch,0);
   assert.equal(state.speed,state.act==='process'?'4×':'');
@@ -127,7 +132,7 @@ try{
     for(let n=0;n<report.frameCount;n++){
       const state=await sample(n),filename=`${out}/frames/frame-${String(n).padStart(6,'0')}.png`;
       const bytes=await page.screenshot({type:'png',path:filename}),hash=sha(bytes);
-      const row={n:state.n,time:state.time,act:state.act,phase:state.phase,sha256:hash,animations:state.animations,transport:state.pause[0],sourceBinding:state.sourceBinding?{checked:true,artifact:state.sourceBinding.pin.artifact_id,start:state.sourceBinding.start,end:state.sourceBinding.end}:null};
+      const row={n:state.n,time:state.time,act:state.act,phase:state.phase,sha256:hash,animations:state.animations,geometry:{passed:state.geometry.passed,checked:state.geometry.checked},transport:state.pause[0],sourceBinding:state.sourceBinding?{checked:true,artifact:state.sourceBinding.pin.artifact_id,start:state.sourceBinding.start,end:state.sourceBinding.end}:null};
       fs.writeSync(indexFd,JSON.stringify(row)+'\n');
       if(n%60===0)report.checksums.push({n,time:state.time,sha256:hash});
       if(n%300===0)console.log(JSON.stringify({captured:n+1,total:report.frameCount,clockMilliseconds:state.time}));

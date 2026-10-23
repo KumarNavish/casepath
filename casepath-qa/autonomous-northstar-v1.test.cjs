@@ -93,11 +93,14 @@ for(const c of fixture.cases)test(`every recorded seq drives plan progress and m
   const groups=ui.northStarPlanGroups(catalogue.plans.get(nodeId)||[]);
   for(const group of groups){
    const seqs=group.operations.map(o=>o.seq),before=seqs.filter(seq=>seq<op.seq).length;
-   for(const finished of [false,true]){const n=before+(finished&&seqs.includes(op.seq)?1:0),actual=ui.northStarPlanProgress(group,op.seq,finished);assert.equal(actual.state,n===seqs.length?'done':op.seq>=seqs[0]?'active':'waiting');assert.equal(actual.percent,100*n/seqs.length);assert.equal(actual.completed,n);}
+   for(const finished of [false,true]){const n=before+(finished&&seqs.includes(op.seq)?1:0),actual=ui.northStarPlanProgress(group,op.seq,finished);assert.equal(actual.state,n===seqs.length?'done':!finished&&seqs.includes(op.seq)?'active':'waiting');assert.equal(actual.percent,100*n/seqs.length);assert.equal(actual.completed,n);}
   }
   const html=ui.northStarMarkup(state,{...all,rows:prefix,current:op,nsCatalogue:catalogue,nsPendingCompletion:op.kind==='step.complete'?op.id:null},{playing:true}),rings=[...html.matchAll(/data-au-ns-node="([^"]+)" data-state="building"/g)].map(m=>m[1]),node=state.graph.nodes.find(n=>n.node_id===nodeId);
   const rendered=[...html.matchAll(/<li data-au-ns-plan-row="([^"]+)"[^>]*data-state="([^"]+)"[^>]*>([\s\S]*?)<\/li>/g)];assert.equal(rendered.length,groups.length);
-  for(const row of rendered){const group=groups.find(g=>g.operations.at(-1).id===row[1]),seqs=group.operations.map(o=>o.seq),completed=seqs.filter(seq=>seq<op.seq).length,want=completed===seqs.length?'done':op.seq>=seqs[0]?'active':'waiting';assert.equal(row[2],want,`row at seq ${op.seq}`);if(want==='active'){const bar=+row[3].match(/--au-plan-progress:([0-9.]+)%/)[1];assert.equal(bar,100*completed/seqs.length);}}
+  for(const row of rendered){const group=groups.find(g=>g.operations.at(-1).id===row[1]),seqs=group.operations.map(o=>o.seq),completed=seqs.filter(seq=>seq<op.seq).length,want=completed===seqs.length?'done':seqs.includes(op.seq)?'active':'waiting';assert.equal(row[2],want,`row at seq ${op.seq}`);if(want==='active'){const bar=+row[3].match(/--au-plan-progress:([0-9.]+)%/)[1];assert.equal(bar,100*completed/seqs.length);}}
+  const running=rendered.filter(row=>row[2]==='active');
+  assert.ok(running.length<=1,`only the operation playing can spin at seq ${op.seq}`);
+  if(running.length)assert.ok(groups.find(group=>group.operations.at(-1).id===running[0][1]).operations.some(operation=>operation.id===op.id));
   assert.deepEqual(rings,node&&!done.has(nodeId)?[nodeId]:[],`seq ${op.seq}`);
   if(rings.length)assert.ok(html.includes(`Checking “${ui.northStarQuestion(node)}”`),`title/ring at seq ${op.seq}`);
   if(op.kind==='step.complete'&&op.result.status==='completed')done.add(op.object.id);
