@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1739,
+  "file_count": 1741,
   "files": [
     {
       "executable": false,
@@ -6935,8 +6935,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/hosted_app_v1.py",
-      "sha256": "53520d4e2554615aa86460881fc3c0773c739fa19234706be158b7c049f3e845",
-      "size_bytes": 6430
+      "sha256": "669895c34b2e2cacc4a0191a0a551f067a91ec79a81b18c93b1e2c952b94b2ce",
+      "size_bytes": 6828
     },
     {
       "executable": false,
@@ -6958,6 +6958,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/hosted_read_reliability_v1.py",
+      "sha256": "053025e4a06e7e041304fa800b85a1a5eceefdf78d132d4eef79bdaa3bfe902c",
+      "size_bytes": 5892
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/hosted_read_seed_v1.py",
       "sha256": "7da6d150cdb21ebfc909514c3480514aba96cd2fc504c4b8f5c1f5f1a264f20f",
       "size_bytes": 10904
@@ -6965,20 +6971,20 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/hosted_read_timing_v1.py",
-      "sha256": "59bb0f39d02e7f955136cad4d8b557487880f11a74192af77866616b2b53a7ce",
-      "size_bytes": 4271
+      "sha256": "74408ca2da103abd09673f36ec8b0432ee80fadee0e507823710c08867942a64",
+      "size_bytes": 4795
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/hosted_sql_v1.py",
-      "sha256": "f3499ae40660cc74e39574d95c8f61e15fd2fa776f8687b00c8af24539629f02",
-      "size_bytes": 22384
+      "sha256": "ee6e8513a7a886b802e37d7b512b97a7de3dfdfd657195456371af09319f6b94",
+      "size_bytes": 25438
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/hosted_storage_v1.py",
-      "sha256": "28cb7a075212231a28d6ef3ff9fa26d84f427b192081b57911438b5f3f5810c5",
-      "size_bytes": 43318
+      "sha256": "d6f90af7d2e156ddf20ae82af8ed36f816313a8df30099f16affc82cb0d5636a",
+      "size_bytes": 43384
     },
     {
       "executable": false,
@@ -8518,6 +8524,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_hosted_read_reliability_v1.py",
+      "sha256": "2c5a2a06f11973fec3883b9b78acff13c5fe209ca5d9741414ab50999133b94d",
+      "size_bytes": 12151
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_hosted_read_seed_export_v1.py",
       "sha256": "2083dc2a1f0fa9525f6d89f4f29280b5cb4f25e415d6f1c8e27baf08199f55f8",
       "size_bytes": 14733
@@ -8999,8 +9011,8 @@
     {
       "executable": false,
       "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
-      "sha256": "7867efde6412d121951b564a441906024cf1342d6b5f3c8e3ffea6a02af0ad9a",
-      "size_bytes": 638545
+      "sha256": "325ab4b09f6c01794dc490e3f443afa8510de1929eda170a725f9e1178ec4ef0",
+      "size_bytes": 651371
     },
     {
       "executable": false,
@@ -9539,8 +9551,8 @@
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.js",
-      "sha256": "e75ed4bf12f6ca0393114e7f28283e4cfc8d92842742ce8b49cdc2e4dd9deec9",
-      "size_bytes": 845009
+      "sha256": "573c2294692b4025549e687c0e21b959e14692365453519ed7a5ae4b8128e356",
+      "size_bytes": 847849
     },
     {
       "executable": false,
@@ -9749,7 +9761,7 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "6ad0175441bfcf327e6ef6f245756cc83f9ab183df4718a0ff14f3ac8ccc802f",
+      "sha256": "93e5e69e12d57a0acfbf8504074b061fa8d2d633f9e012283c62693167f06116",
       "size_bytes": 25792
     },
     {
@@ -10307,8 +10319,8 @@
     {
       "executable": false,
       "path": "docs/product/UI_FINISH_RECEIPT_20261021.md",
-      "sha256": "0fcd171fec15bf815115505857b0120b65d85e219db14ed7b5c5c99b355e9669",
-      "size_bytes": 21991
+      "sha256": "8f912a98e1c18247c39245a53bb5527744a928e6d5b4d38511a32099e6304adc",
+      "size_bytes": 23571
     },
     {
       "executable": false,
