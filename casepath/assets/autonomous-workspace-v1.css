@@ -1459,6 +1459,10 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
 @media (max-width:700px) {
   .au-workspace .au-demo-mode { flex-basis:100%; white-space:normal; margin-left:0; }
   .au-workspace .au-quiet-claim[data-au-stage-view] > .au-now { font-size:16px; }
+  /* Reserve the received status width so long source names cannot run underneath it. */
+  .au-workspace .au-quiet-claim .au-stage-thumbnail { display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:12px; align-items:start; padding-right:6px; }
+  .au-workspace .au-quiet-claim .au-stage-thumbnail > .au-stage-source-name { min-width:0; }
+  .au-workspace .au-quiet-claim .au-stage-thumbnail > .au-stage-source-check { position:static; white-space:nowrap; }
 }
 
 /* Case introductions and handoffs pause the presentation, never the saved work. */
