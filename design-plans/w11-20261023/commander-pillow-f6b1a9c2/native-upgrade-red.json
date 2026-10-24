@@ -1,0 +1,17 @@
+{
+  "status": "reproduced",
+  "command": [
+    "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+    "-B",
+    "-P",
+    "-c",
+    "import sys,pytest; sys.path.insert(0,'casepath-api'); raise SystemExit(pytest.main(['-q','-ra','casepath-api/tests/test_native_live_workspace_v1.py','-k','test_pillow_upgrade_resumes']))"
+  ],
+  "expected_failures": 4,
+  "purpose": "Reproduce independently found version-receipt continuation regression",
+  "started_at": "2026-10-24T08:59:12.811087+00:00",
+  "pid": 31754,
+  "exit_code": 1,
+  "log_sha256": "be70b94288f05b1280d833c04a60a8403c9c17a856e0c46a223416d48ee85a33",
+  "finished_at": "2026-10-24T08:59:18.078260+00:00"
+}

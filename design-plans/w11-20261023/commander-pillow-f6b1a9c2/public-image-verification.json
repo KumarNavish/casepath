@@ -1,0 +1,30 @@
+{
+  "source_commit": "f6b1a9c201f7014d25e0573fa0d204c104894d42",
+  "passed": true,
+  "observed_at": "2026-10-24T10:14:47.928853+00:00",
+  "site": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+  "claim_id": "clm_14970d755f5b88ed",
+  "artifact_id": "upl_535854833181406554dce563",
+  "http_status": 200,
+  "bytes": 201417,
+  "sha256": "2ab3a31917da3787a4fc3e334b609afe2da52bba7a9bda1d9356b70215ce14c1",
+  "matches_sealed_original": true,
+  "manifest_sha256": "7c885d3fd112dfc7314719d661fa73449f72b7bdf5b83159da9fa3e0b9a1b7eb",
+  "content_type": "image/jpeg",
+  "content_disposition": "attachment; filename*=UTF-8''Schimmel_hinter_Kleiderschrank.jpg",
+  "header_sha256": "2ab3a31917da3787a4fc3e334b609afe2da52bba7a9bda1d9356b70215ce14c1",
+  "local_pillow": "13.0.0",
+  "decoded_format": "JPEG",
+  "dimensions": [
+    853,
+    1844
+  ],
+  "mode": "RGB",
+  "server_decoder_exercised": false,
+  "coverage": "Deployed exact-original delivery and local Pillow13 compatibility. Hosted download serves bytes; it does not invoke Pillow.",
+  "methods": [
+    "GET"
+  ],
+  "provider_calls": 0,
+  "script_sha256": "e9e184bbbcd6c4fe1d448559f43a6cf967135324e27582b80bc351ec8b568b0a"
+}

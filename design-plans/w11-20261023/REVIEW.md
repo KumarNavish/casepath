@@ -89,3 +89,14 @@ The final tested and deployed source is **143ff3ccf2068a2aeae51f47fef405269e1313
 The authorized Mac follow-up release completed on the existing API and public Site. Sites version **46** and the API identify the same application source. The published 300-read sequential soak returned zero 503s. The desktop/mobile walkthrough and full presentation passed. Final primary reads confirmed the collection, Knowledge and complete reported usage/budget state unchanged. The original nine workflows were not repeated.
 
 The [complete final evidence and presenter guide](commander-final-143ff3cc/README.md) supersede the earlier pending-acceptance statements above while preserving the earlier receipts and their original outcomes. This evidence-only child commit changes no sealed product file and is not the source deployed to the API or Site.
+
+
+## Pillow security maintenance — source f6b1a9c2
+
+The tested and deployed maintenance source is **f6b1a9c201f7014d25e0573fa0d204c104894d42**. Pillow is pinned to 13.0.0 in all three dependency manifests. An independently reviewed compatibility rule preserves continuation of exact-original image receipts recorded under 11.3.0 without rewriting history. Source hashes, dimensions, format and all other receipt fields remain checked.
+
+The fresh full gate passed 2,919 tests with exactly the ten historical skips and all eleven frontend suites required. The existing 63 image/hosted compatibility cases passed with both installed Pillow versions; 26 native tests passed after the recorded continuation regression was reproduced and fixed. The targeted lossless-JPEG decoder probe passed with 13.0.0.
+
+The authorized API and Sites release completed on the existing services. Sites version **47** and the API identify the same application source. The new 300-read soak, desktop/mobile walkthrough, full 88.05-second presentation, and preserved-original JPEG check passed. Final primary reads confirmed the collection, Knowledge and complete reported usage/budget state unchanged. No original provider workflow was repeated.
+
+The [maintenance evidence and presenter guide](commander-pillow-f6b1a9c2/README.md) record the actual release identities and checks. The earlier 5,283-frame visual proof remains historical evidence from 143ff3cc; public UI source assets are unchanged and the new published browser checks are fresh. This evidence-only child commit changes no sealed product file and is not a new deployment.

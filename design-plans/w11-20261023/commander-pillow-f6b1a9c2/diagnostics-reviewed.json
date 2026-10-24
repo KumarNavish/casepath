@@ -1,0 +1,201 @@
+{
+  "source_commit": "f6b1a9c201f7014d25e0573fa0d204c104894d42",
+  "status": "passed",
+  "reviewed_at": "2026-10-24T10:17:54.861864+00:00",
+  "browser_report_sha256": "c90b91b67a1260dcfd36a22ccd4e6120600380c95aa4cfa5278f5a76f664582d",
+  "unexplained_failures": [],
+  "product_errors": 0,
+  "product_mutating_requests": 0,
+  "cancelled_reads": {
+    "count": 13,
+    "by_window": {
+      "cold-a-desktop-1440x900": 7,
+      "cold-b-mobile-390x844": 6
+    },
+    "by_endpoint": {
+      "operations": 9,
+      "snapshot": 2,
+      "replay": 2
+    },
+    "events": [
+      {
+        "window": "cold-a-desktop-1440x900",
+        "method": "GET",
+        "claim_id": "clm_314f2d309fea25e6",
+        "endpoint": "operations?mode=live",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-a-desktop-1440x900",
+        "method": "GET",
+        "claim_id": "clm_0f4f13b1e3e1328c",
+        "endpoint": "operations?mode=live",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-a-desktop-1440x900",
+        "method": "GET",
+        "claim_id": "clm_393285577dcb12c4",
+        "endpoint": "operations?mode=live",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-a-desktop-1440x900",
+        "method": "GET",
+        "claim_id": "clm_4a53299cfe619303",
+        "endpoint": "operations?mode=live",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-a-desktop-1440x900",
+        "method": "GET",
+        "claim_id": "clm_543f08f2415b2a33",
+        "endpoint": "operations?mode=live",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-a-desktop-1440x900",
+        "method": "GET",
+        "claim_id": "clm_7dbd7c7d1c4ddf90",
+        "endpoint": "operations?mode=live",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 2,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-a-desktop-1440x900",
+        "method": "GET",
+        "claim_id": "clm_7dbd7c7d1c4ddf90",
+        "endpoint": "operations?mode=live",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 2,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-b-mobile-390x844",
+        "method": "GET",
+        "claim_id": "clm_314f2d309fea25e6",
+        "endpoint": "operations?mode=live",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-b-mobile-390x844",
+        "method": "GET",
+        "claim_id": "clm_314f2d309fea25e6",
+        "endpoint": "snapshot?after=0",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-b-mobile-390x844",
+        "method": "GET",
+        "claim_id": "clm_314f2d309fea25e6",
+        "endpoint": "replay?through_seq=0",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-b-mobile-390x844",
+        "method": "GET",
+        "claim_id": "clm_4a07dbbbd859a3ce",
+        "endpoint": "operations?mode=recorded",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-b-mobile-390x844",
+        "method": "GET",
+        "claim_id": "clm_4a07dbbbd859a3ce",
+        "endpoint": "snapshot?after=0",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      },
+      {
+        "window": "cold-b-mobile-390x844",
+        "method": "GET",
+        "claim_id": "clm_4a07dbbbd859a3ce",
+        "endpoint": "replay?through_seq=0",
+        "error": "net::ERR_ABORTED",
+        "case_views_completed": 1,
+        "case_rendered": true
+      }
+    ],
+    "classification": "Recorded GET cancellations; each referenced case completed rendering successfully.",
+    "attribution": "Consistent with intentional page navigation and request cancellation in the walkthrough; this causal attribution is an inference because individual cancellation timestamps were not recorded."
+  },
+  "native_pdf_viewer": {
+    "count": 1,
+    "kind": "pageerror",
+    "message": "Assertion failed",
+    "stack": "Error: Assertion failed\n    at assert (chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/shared.rollup.js:4:12834)\n    at ViewerThumbnailBarElement.onKeydown_ (chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/pdf_viewer_wrapper.js:298:4324)",
+    "classification": "Chrome built-in PDF viewer keyboard assertion. Retained separately from product errors; the native PDF focus and return-to-application checks passed.",
+    "tabs_to_app_control": 1,
+    "keyboard_checks_passed": true
+  },
+  "hosting_edge_beacons": {
+    "count": 5,
+    "by_context": {
+      "cold-a-desktop-1440x900": 1,
+      "cold-b-mobile-390x844": 1,
+      "film": 1,
+      "supplement": 2
+    },
+    "method": "POST",
+    "path_prefix": "/cdn-cgi/challenge-platform/",
+    "classification": "Hosting challenge beacons, separate from product mutations. Opaque challenge identifiers omitted."
+  },
+  "film": {
+    "duration_ms": 88050,
+    "reached_end": true,
+    "wall_ms": 88459,
+    "acts": [
+      "customer",
+      "reading",
+      "process",
+      "decision",
+      "learning",
+      "cases"
+    ],
+    "samples": 58,
+    "samples_with_overlap": 0
+  },
+  "cleanup": {
+    "browser_closed": true,
+    "supplement_contexts_closed": true
+  },
+  "supplement_checks": {
+    "keyboard": {
+      "tabShiftTab": true,
+      "enterSource": true,
+      "backgroundControlsUnreachable": true,
+      "escapeReturnsFocus": true
+    },
+    "draft": {
+      "savedLocally": true,
+      "reloadPersistence": true,
+      "originalUnchanged": true,
+      "disposableContext": true
+    },
+    "reduced_motion": {
+      "runningAnimations": 0,
+      "cursors": 0,
+      "role": "result"
+    }
+  }
+}

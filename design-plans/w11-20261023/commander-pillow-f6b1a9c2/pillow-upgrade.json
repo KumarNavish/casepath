@@ -1,0 +1,144 @@
+{
+  "base_commit": "06b2085f5757e7ec403dd68d84886e0b41515f9f",
+  "status": "passed",
+  "started_at_utc": "2026-10-24T08:52:28.300593+00:00",
+  "stages": [
+    {
+      "name": "security-probe-before",
+      "status": "passed",
+      "started_at_utc": "2026-10-24T08:52:28.301739+00:00",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-I",
+        "-B",
+        "-P",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/pillow_security_probe.py"
+      ],
+      "expected_exit_code": 3,
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/security-probe-before.log",
+      "pid": 29497,
+      "exit_code": 3,
+      "finished_at_utc": "2026-10-24T08:52:29.289684+00:00",
+      "log_sha256": "8053d33edbc78d481ca426bf2f678e0f540ce0030bd76e768a4cb82e35e887d5"
+    },
+    {
+      "name": "dependency-sync",
+      "status": "passed",
+      "started_at_utc": "2026-10-24T08:52:29.337329+00:00",
+      "command": [
+        "/Users/kumar0002/.local/bin/uv",
+        "pip",
+        "sync",
+        "--python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath-api/requirements.lock"
+      ],
+      "expected_exit_code": 0,
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/dependency-sync.log",
+      "pid": 29504,
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-24T08:52:32.153082+00:00",
+      "log_sha256": "8a434bc75051d918a39798c2f8c5b96b673709d302a074d0731a365c76cb3ad1"
+    },
+    {
+      "name": "dependency-check",
+      "status": "passed",
+      "started_at_utc": "2026-10-24T08:52:32.173201+00:00",
+      "command": [
+        "/Users/kumar0002/.local/bin/uv",
+        "pip",
+        "check",
+        "--python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python"
+      ],
+      "expected_exit_code": 0,
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/dependency-check.log",
+      "pid": 29521,
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-24T08:52:32.755139+00:00",
+      "log_sha256": "affa3234bbbf7b916623ecf4552181878864441f1df12d01cbae6979be4a4050"
+    },
+    {
+      "name": "security-probe-after",
+      "status": "passed",
+      "started_at_utc": "2026-10-24T08:52:32.763850+00:00",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-I",
+        "-B",
+        "-P",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/pillow_security_probe.py"
+      ],
+      "expected_exit_code": 0,
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/security-probe-after.log",
+      "pid": 29524,
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-24T08:52:38.088652+00:00",
+      "log_sha256": "0a0a0bfb08c2c97e6d6ad3a42d3868c4322f583ce8446942867e28071438e423"
+    },
+    {
+      "name": "compatibility-upgraded",
+      "status": "passed",
+      "started_at_utc": "2026-10-24T08:52:38.115542+00:00",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-I",
+        "-B",
+        "-P",
+        "-c",
+        "import importlib.metadata,json,sys; sys.path.insert(0,sys.argv.pop(1)); import pytest; print(json.dumps({'pillow':importlib.metadata.version('Pillow')}),flush=True); raise SystemExit(pytest.main(sys.argv[1:]))",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/casepath-api",
+        "-q",
+        "-ra",
+        "-p",
+        "no:cacheprovider",
+        "casepath-api/tests/test_workspace_packet_preview.py",
+        "casepath-api/tests/test_native_live_workspace_v1.py",
+        "casepath-api/tests/test_autonomous_corpus_v1.py",
+        "casepath-api/tests/test_hosted_app_v1.py",
+        "casepath-api/tests/test_public_hosted_read_only_v1.py"
+      ],
+      "expected_exit_code": 0,
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/compatibility-upgraded.log",
+      "pid": 29552,
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-24T08:54:13.094289+00:00",
+      "log_sha256": "7637023cefc22a8290e0595bd7fcf1fe303ee659771e020f9b877611aa02306d"
+    },
+    {
+      "name": "candidate-diff-check",
+      "status": "passed",
+      "started_at_utc": "2026-10-24T08:54:13.109879+00:00",
+      "command": [
+        "/usr/bin/git",
+        "diff",
+        "--check"
+      ],
+      "expected_exit_code": 0,
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/candidate-diff-check.log",
+      "pid": 30080,
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-24T08:54:13.150414+00:00",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "dependency_changes": [
+    {
+      "path": "casepath-api/requirements.txt",
+      "before_sha256": "67f78f386a53135e4f6afc485cb99c8527cd86537e4dd063238883e00be776b4",
+      "after_sha256": "b63a06c8005de83b724570485b604bae5883ce3841295b14d54f6d200938ca95"
+    },
+    {
+      "path": "casepath-api/requirements.lock",
+      "before_sha256": "e55bd23b4ac8a23c4cd7ba5d53304a7d214c04a0e65d2f2089c8835634c4e4a7",
+      "after_sha256": "2630fe913459ce10d3f8d8d8c1c743cd5fb19f3cebfc5dff62bbd9a1aba326df"
+    },
+    {
+      "path": "casepath-api/pyproject.toml",
+      "before_sha256": "0dead3de785fb466adee140ed28b0c246ee2423f4de4bb53a595067df05a91a7",
+      "after_sha256": "b95028afc794b7c1b18ccfa8074d79dd87443a9e90869720b4874e24be23e392"
+    }
+  ],
+  "finished_at_utc": "2026-10-24T08:54:13.182023+00:00",
+  "candidate_patch_sha256": "8d25c399b25c41e1704a4581dde6c4a1a1776ec60b1047f8e6352d401d53bb1b"
+}

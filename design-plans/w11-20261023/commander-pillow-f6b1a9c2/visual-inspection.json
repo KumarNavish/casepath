@@ -1,0 +1,30 @@
+{
+  "source_commit": "f6b1a9c201f7014d25e0573fa0d204c104894d42",
+  "status": "passed",
+  "inspected_at": "2026-10-24T10:12:29.862827+00:00",
+  "method": "Root visually inspected both actual published case-view PNGs through Commander native image reads.",
+  "screenshots": [
+    {
+      "kind": "desktop",
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-browser-f6b1a9c2/cold-a-desktop-1440x900-demo-clm_543f08f2415b2a33.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "observations": "1440 \u00d7 900 saved case fully rendered. Process builder steps, four evidence columns, source list and two-pane cited document view are readable; the highlighted source passage is visible. No visible overlap or viewport clipping. The red failed legal check is the saved case outcome, not an application error.",
+      "sha256": "f8dc172359ba7b30b64161a79ea24967e9ee57bfe92bd677e35f48862e08a478",
+      "bytes": 201233
+    },
+    {
+      "kind": "mobile",
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-browser-f6b1a9c2/cold-b-mobile-390x844-demo-clm_543f08f2415b2a33.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "observations": "390 \u00d7 844 saved case fully rendered. Case identity, View only status, navigation, history link and vertical process are readable. Document names use bounded ellipsis with separate Received status; no visible overlap or horizontal clipping.",
+      "sha256": "a320d2d9a31c81706232dbd1a6fc81b814786bc9a48b34cceff578d2a952fae4",
+      "bytes": 56623
+    }
+  ]
+}

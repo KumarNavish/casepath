@@ -1,0 +1,84 @@
+{
+  "canonical_commit": "f6b1a9c201f7014d25e0573fa0d204c104894d42",
+  "source_tree": "50583b5a1eadda2063346e7b62ae0e95e7eb311a",
+  "candidate_parent": "06b2085f5757e7ec403dd68d84886e0b41515f9f",
+  "verified_at": "2026-10-24T09:56:33.448377+00:00",
+  "fresh_complete_gate": true,
+  "strict_reused": false,
+  "command": "CASEPATH_REQUIRE_FRONTEND_SUITES=1 nice -n 10 ./bin/casepath test",
+  "host": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024",
+  "exit_code": 0,
+  "summary_line": "2919 passed, 10 skipped, 10 warnings",
+  "seconds": 3237.49,
+  "passed": 2919,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 10,
+  "deselected": 0,
+  "new_skips": 0,
+  "skip_reports": [
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v1.py:605: frozen independent-transition packet is not available",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:457: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:548: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:559: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:579: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:592: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:610: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:636: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:646: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:696: saved native source-binding run is unavailable"
+  ],
+  "frontend_suites_required": [
+    "autonomous-workspace-v1.test.cjs",
+    "autonomous-language-v1.test.cjs",
+    "sites-autonomous-entry.test.cjs",
+    "autonomous-evidence-identity-v2.test.cjs",
+    "unified-product-v1.test.cjs",
+    "autonomous-desk-v3.test.cjs",
+    "autonomous-cases-v4.test.cjs",
+    "autonomous-knowledge-w6.test.cjs",
+    "autonomous-northstar-v1.test.cjs",
+    "autonomous-presentation-v1.test.cjs",
+    "autonomous-presentation-browser-v1.test.cjs"
+  ],
+  "frontend_suites_mandatory": true,
+  "mac_cold_landing_test_included": true,
+  "manifest_sha256": "26cb8020efd42f37776ee52fd837b2f0af002c6f12963c749e06cc7cfa9fe3ad",
+  "source_files": 1741,
+  "source_files_exact": true,
+  "source_clean_after": true,
+  "isolation": {
+    "contract": "casepath.isolated-backend-static-test/1.0.0",
+    "external_network_activity_attested": false,
+    "model_mode": "deterministic_reference",
+    "persistent_artifact_registry_used": false,
+    "persistent_product_database_used": false,
+    "provider_credential_names_present": [],
+    "receipt_sha256": "3ff391ed794cec05ffdcd0b36f07c4bc5ae6f860729dde320136a35c2df7565d",
+    "targets": [
+      "casepath-api/tests",
+      "casepath/tools/test_build_deployment_identity.py",
+      "casepath/tools/test_casepath_release.py"
+    ]
+  },
+  "frontend_source_unchanged_from_previous_release": true,
+  "prior_visual_evidence_is_historical_not_reexecuted": true,
+  "evidence": {
+    "full_log": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/full-gate.log",
+      "sha256": "2f199cb9c2ebdc07c63fb22c3688b207fbc08345af597855a44fd1903b8f6f07"
+    },
+    "runner": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/run_full_gate.py",
+      "sha256": "c46f41c1a0010875d0559a75b48790e13d5019cb71b7e71e78264205cebe4888"
+    },
+    "source_binding": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/source-binding.json",
+      "sha256": "5b532629396ec40ac5cbc759ff00706425fc27e21a1e56b6e85f6f90110add3f"
+    },
+    "independent_review": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/independent-review.json",
+      "sha256": "0b6d897169c64152ec35e339c9e1912ea3d8a3f1478d037fa2441007ab86df46"
+    }
+  }
+}

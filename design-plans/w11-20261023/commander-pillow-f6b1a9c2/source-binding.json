@@ -1,0 +1,21 @@
+{
+  "source_commit": "f6b1a9c201f7014d25e0573fa0d204c104894d42",
+  "source_tree": "50583b5a1eadda2063346e7b62ae0e95e7eb311a",
+  "base_commit": "06b2085f5757e7ec403dd68d84886e0b41515f9f",
+  "branch": "codex/casepath-pillow-security-20261024",
+  "source_manifest_sha256": "26cb8020efd42f37776ee52fd837b2f0af002c6f12963c749e06cc7cfa9fe3ad",
+  "source_files": 1741,
+  "changed_files": [
+    "casepath-api/casepath_api/native_live_workspace_v1.py",
+    "casepath-api/pyproject.toml",
+    "casepath-api/requirements.lock",
+    "casepath-api/requirements.txt",
+    "casepath-api/tests/test_native_live_workspace_v1.py",
+    "casepath-api/tests/test_workspace_packet_preview.py",
+    "casepath/source-manifest.json"
+  ],
+  "sealed_patch_sha256": "1adf0c31c6675b4b0c42300c41f1b3a9fbe1340e7e8667eda49366e3d553b805",
+  "independent_review_sha256": "0b6d897169c64152ec35e339c9e1912ea3d8a3f1478d037fa2441007ab86df46",
+  "created_at": "2026-10-24T09:01:29.589026+00:00",
+  "gate_pending": true
+}

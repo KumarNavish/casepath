@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/pillow_patch_review",
+  "device": "local",
+  "read_only": true,
+  "candidate_patch_sha256": "fc7687df8cd491a0541739d05b94d855088ad7bddb17115c5c35b34303bf7635",
+  "finding": "Cross-version continuation rejected immutable Pillow image receipts solely because decoder_version changed.",
+  "resolution": "Directed 11.3.0 to 13.0.0 compatibility only for verified exact-original JPEG/PNG receipts, with all other fields exact and no history rewrite.",
+  "finding_resolved": true,
+  "remaining_concrete_findings": [],
+  "review_did_not_execute_tests": true,
+  "execution_evidence": {
+    "red": "native-upgrade-red.json",
+    "green": "native-upgrade-green.json"
+  },
+  "recorded_at": "2026-10-24T09:00:49.723426+00:00"
+}

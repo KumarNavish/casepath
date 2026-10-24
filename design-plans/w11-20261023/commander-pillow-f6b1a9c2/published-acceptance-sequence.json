@@ -1,0 +1,135 @@
+{
+  "source_commit": "f6b1a9c201f7014d25e0573fa0d204c104894d42",
+  "status": "passed",
+  "started_at": "2026-10-24T10:05:41.972985+00:00",
+  "stages": [
+    {
+      "name": "soak",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published_soak.py",
+        "--source",
+        "f6b1a9c201f7014d25e0573fa0d204c104894d42",
+        "--baseline",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/readback-before.json",
+        "--out",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-soak-f6b1a9c2"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T10:05:41.974656+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-soak-command.log",
+      "pid": 58020,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T10:09:10.421190+00:00",
+      "log_sha256": "404d7afb43c6b1f4e3d16309038bda1a959a281e841d97c36941bbf661df6297",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-soak-f6b1a9c2/summary.json",
+          "sha256": "886e552bcd75605e58840a79bf2d8cf04de6dee7eda205f42804c95b35e83c73"
+        },
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-soak-f6b1a9c2/receipts.jsonl",
+          "sha256": "e1d10e1fa9a3c41bb3eb8c536febe3f86c23acd74f00bf2e16c3f09a2048c334"
+        }
+      ]
+    },
+    {
+      "name": "browser",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/verify_published.mjs",
+        "f6b1a9c201f7014d25e0573fa0d204c104894d42",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-browser-f6b1a9c2"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T10:09:10.432885+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-browser-command.log",
+      "pid": 59158,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T10:14:45.143337+00:00",
+      "log_sha256": "fb42b797f6f0c3711c8985711d34cb86a0f32ee427141afed68d151e0a5fed7c",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-browser-f6b1a9c2/summary.json",
+          "sha256": "24817c2b0fabf621b44c4af3cc644faf2cfbd23dc7660dbcfe27ab1533424177"
+        },
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-browser-f6b1a9c2/published-verification.json",
+          "sha256": "c90b91b67a1260dcfd36a22ccd4e6120600380c95aa4cfa5278f5a76f664582d"
+        }
+      ]
+    },
+    {
+      "name": "image",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/verify_public_image.py",
+        "f6b1a9c201f7014d25e0573fa0d204c104894d42"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T10:14:45.170026+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-image-command.log",
+      "pid": 63080,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T10:14:47.975380+00:00",
+      "log_sha256": "9c145468d494206ffa81d9e4d8c2e25128be23c1437431c612845a18b1cab601",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/public-image-verified.json",
+          "sha256": "12c1de9b7cff0c3f6b6bab1132c49ae821f1013d1523929a24a3adafcd931760"
+        }
+      ]
+    },
+    {
+      "name": "readback",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/readback.py",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/readback-after.json",
+        "--require-primary"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T10:14:47.977741+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-readback-command.log",
+      "pid": 63094,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T10:14:51.734783+00:00",
+      "log_sha256": "d611e058a75201b989e63943880b01e9ca63eb0591fa850cbb5fc86d3020bffd",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/readback-after.json",
+          "sha256": "793fdc29c0d2b0ac6a439f46c0d4cdc12419e4cd6c9fbf8e91138f6a09622c9e"
+        }
+      ]
+    },
+    {
+      "name": "verify_readback",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/verify_readback.py",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release",
+        "f6b1a9c201f7014d25e0573fa0d204c104894d42"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T10:14:51.740394+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/published-verify_readback-command.log",
+      "pid": 63110,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T10:14:51.782589+00:00",
+      "log_sha256": "59283d3e4b7838ea8f3a2a12cd22202c5dbc95faf4a7e2de642d4423ac557910",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/commander-pillow/release/readback-verified.json",
+          "sha256": "2d74106b06d7b9e1002f0b8858cb281070b22e8b5c6dff630b1e37395dd0585c"
+        }
+      ]
+    }
+  ],
+  "script_sha256": "189d6948e5a2d63ead6c6339889c092f9db091f94c63394fab7408aef9f8707a",
+  "helper_binding_sha256": "6fcab94c1d2c8db100d0c98ae77c69082773af4f3c21ab5a4fd5f329ee5f1923",
+  "site_version_id": "appgprj_6ac8aab031988191b5c370f7a4dbf160~appgver_de33413b3ae081918c0575627051d4d8",
+  "site_version_number": 47,
+  "distribution_commit": "8e71823b70c1a82ea32d94310d2e90ffa08552d7",
+  "site_deployment_id": "appgdep_6adc82d0ae288191a0fbd0dac6bc32ac",
+  "finished_at": "2026-10-24T10:14:51.791414+00:00"
+}

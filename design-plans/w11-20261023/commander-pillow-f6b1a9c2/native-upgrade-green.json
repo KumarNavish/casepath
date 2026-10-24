@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "command": [
+    "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-pillow-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+    "-B",
+    "-P",
+    "-c",
+    "import sys,pytest; sys.path.insert(0,'casepath-api'); raise SystemExit(pytest.main(['-q','-ra','casepath-api/tests/test_native_live_workspace_v1.py','casepath-api/tests/test_native_live_export_v1.py','casepath-api/tests/test_native_live_knowledge_v1.py']))"
+  ],
+  "started_at": "2026-10-24T08:59:37.268224+00:00",
+  "pid": 31888,
+  "exit_code": 0,
+  "log_sha256": "0ad1c8f1bca95411d2ba6c942049e8fb82d87b639a65c8145edad5e12dd7779d",
+  "finished_at": "2026-10-24T08:59:44.423293+00:00"
+}
