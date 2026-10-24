@@ -1,0 +1,139 @@
+{
+  "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+  "status": "passed",
+  "started_at": "2026-10-24T20:23:28.570309+00:00",
+  "stages": [
+    {
+      "name": "soak",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published_soak.py",
+        "--source",
+        "7b0fcc91dcad9cada95317e298fd379014b7149a",
+        "--baseline",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/readback-before.json",
+        "--out",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-soak-7b0fcc91"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T20:23:28.578542+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-soak-command.log",
+      "pid": 4968,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T20:27:04.005987+00:00",
+      "log_sha256": "2252a5e5d6f8169e22f6617d6ea82b6c9ecbaeb24c80d44de71afc3e91ffbcf2",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-soak-7b0fcc91/summary.json",
+          "sha256": "3f84655d40a02324c83777334c223dc8f3fa871d886235758c910517202c99c6"
+        },
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-soak-7b0fcc91/receipts.jsonl",
+          "sha256": "6567d7ca8a2daadf20f2dfa13391a239ab15ff4f4c21be0a8aa32bd8a8e22176"
+        }
+      ]
+    },
+    {
+      "name": "browser",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/verify_published.mjs",
+        "7b0fcc91dcad9cada95317e298fd379014b7149a",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-browser-7b0fcc91"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T20:27:04.028510+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-browser-command.log",
+      "pid": 6117,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T20:32:45.550983+00:00",
+      "log_sha256": "0374fb55499e9026d46cd261a2a3fb42c5b2eb072edf2ea7a8cd85904201af62",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-browser-7b0fcc91/summary.json",
+          "sha256": "a1084b06233fbb91674312c2cc04e1844a04972854024a7760a03dcd2b2dbfd9"
+        },
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-browser-7b0fcc91/published-verification.json",
+          "sha256": "63341705fbe7718431b8974267475f164c9e3aae7e673fd416fb8a8d73a31c27"
+        }
+      ]
+    },
+    {
+      "name": "image",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/verify_public_image.py",
+        "7b0fcc91dcad9cada95317e298fd379014b7149a"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T20:32:45.582365+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-image-command.log",
+      "pid": 8346,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T20:32:50.451846+00:00",
+      "log_sha256": "67a4efdf57366c2d624bc674bfadb89ce109979bcf2a83fb2b38ecf2ac15e7f7",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/public-image-verified.json",
+          "sha256": "03f4d6bd817a268d5694e84b83d5060d3e59ff7facc72b8246f6466ae647c197"
+        }
+      ]
+    },
+    {
+      "name": "readback",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/readback.py",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/readback-after.json",
+        "--require-primary"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T20:32:50.468667+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-readback-command.log",
+      "pid": 8376,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T20:32:54.244188+00:00",
+      "log_sha256": "f29d086860666a86a75ebc3e92d019dbe71026f6b56dd7307eaf78bdaf01ae88",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/readback-after.json",
+          "sha256": "c979a024c9ed0ee7cd1fcb9d7c04dacb920138fab34fb694d16cbf275ca3590f"
+        }
+      ]
+    },
+    {
+      "name": "verify_readback",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/verify_readback.py",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release",
+        "7b0fcc91dcad9cada95317e298fd379014b7149a"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T20:32:54.438170+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-verify_readback-command.log",
+      "pid": 8402,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T20:32:54.579645+00:00",
+      "log_sha256": "39f1484367d158b6d635b4e3f37db9d8615a4d06ce96da624bfc489ddceffd9a",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/readback-verified.json",
+          "sha256": "f4d858ed2953630e46cd9de79f1a81729494c068070fd21a147644cc6936dd60"
+        }
+      ]
+    }
+  ],
+  "script_sha256": "4f38750dc92775f4c79f206ec1ddfaa4d68df22754402caea66a1d37d518d1ac",
+  "helper_binding_sha256": "d5af8cd462d60fe57a69c38c136758c71cc925f09b7faca9364108e15c9297e5",
+  "site_version_id": "appgprj_6ac8aab031988191b5c370f7a4dbf160~appgver_2020e23297e88191997111a466466bc4",
+  "site_version_number": 50,
+  "distribution_commit": "72c758f38ee463a842be7a7e0b9671e72fe4302b",
+  "site_deployment_id": "appgdep_6add13220d2c8191b814ad63d4e5834f",
+  "finished_at": "2026-10-24T20:32:54.608146+00:00"
+}

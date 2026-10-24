@@ -1,0 +1,80 @@
+{
+  "contract": "casepath.cinema-source-binding/1",
+  "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+  "source_tree": "b5fe7823f786aeadf4027757588646cefe858455",
+  "base_commit": "0ccf1eafcd27e0827e2d0778f9c2642e34cd05f9",
+  "branch": "codex/casepath-cinema-final-20261024",
+  "created_at": "2026-10-24T18:56:07.928432+00:00",
+  "source_manifest_sha256": "2bf63dadf6bf3a2a7a8eade9ed0242a3f4305ea9cc422af22a3a52f06c1c96a8",
+  "source_files": 1746,
+  "changed_files": [
+    "casepath-qa/autonomous-northstar-v1.test.cjs",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs",
+    "casepath/assets/autonomous-presentation-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/index.html",
+    "casepath/source-manifest.json",
+    "design-plans/cinema-20261024/BRIEF.md"
+  ],
+  "authored_sha256": {
+    "casepath-qa/autonomous-northstar-v1.test.cjs": "ee5389fca09a891e5253215726945dfe794d941aa073468263367c65dfaa6c42",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs": "88398ce1b9bb783be6510cc043f680e79d89ee2eb51a081733b82585eeea6c9b",
+    "casepath/assets/autonomous-presentation-v1.js": "9548e51a79ad2307aea1981548ec2d7085ccd5d84c53de9b22f447e426e4c9bb",
+    "casepath/assets/autonomous-workspace-v1.css": "89aa8c15eba76e938e03666ecc038b9d2a25f6ec783be21cbfb5c907478ab94e",
+    "casepath/assets/autonomous-workspace-v1.js": "400cbe91908d8318f257626f38e674f34dc3a94eff467848b835d0e95171c8c1",
+    "casepath/index.html": "ca4bbed1699eaabca95e97369f4943ec6384bfb240b82838fdb6fec5dbd019b5",
+    "design-plans/cinema-20261024/BRIEF.md": "01db7e27fa362f2c6aadbf40df662f22f3697425a93c63a9c8d63e7e62779dee"
+  },
+  "sealed_patch_sha256": "cac7af939f570cce39b4ae576abcbd4c53e5748946381097255600a5dfea719d",
+  "seal_sha256": "b55104edba8bb81e9179bce99d8e847832ef45c07f471531c87cb508c9248382",
+  "expected_pytest_passed": 2927,
+  "expected_pytest_skipped": 10,
+  "expected_count_basis": "Unchanged 2927-test Python parameterization and 18 mandatory frontend suites; exact prior ten historical skips.",
+  "authored_files_input": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/authored-files.json",
+    "sha256": "7c91ddb924be184da23850a1957fbb9349790efce35de6f996382cc825fe7497"
+  },
+  "independent_review": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/independent-review.json",
+    "sha256": "2a015e0d74400f6aea92219c5a435c72646672858cae9d7d4b376e47ef9178c8"
+  },
+  "preseal_browser_receipt": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/final-stills/capture-receipt.json",
+    "sha256": "00982ae1320f33ace7e097872e9c6f2337cf3a46bb191d9ef939398456136d4a"
+  },
+  "frontend_suites_required": [
+    "autonomous-workspace-v1.test.cjs",
+    "autonomous-language-v1.test.cjs",
+    "sites-autonomous-entry.test.cjs",
+    "autonomous-evidence-identity-v2.test.cjs",
+    "unified-product-v1.test.cjs",
+    "autonomous-desk-v3.test.cjs",
+    "autonomous-cases-v4.test.cjs",
+    "autonomous-knowledge-w6.test.cjs",
+    "autonomous-northstar-v1.test.cjs",
+    "autonomous-presentation-v1.test.cjs",
+    "autonomous-presentation-browser-v1.test.cjs",
+    "review-northstar-v1.test.cjs",
+    "review-northstar-browser-v1.test.cjs",
+    "causal-process-v1.test.cjs",
+    "claims-workspace-presentation-v1.test.cjs",
+    "claim-sections-v1.test.cjs",
+    "claim-navigation-refresh-v4.test.cjs",
+    "claims-workspace-lazy-presentation-v1.test.cjs"
+  ],
+  "frontend_declaration_sha256": "d01a6b83f5f9983f0125a46fe490122bbdc648513b59b76cf8987663797851d8",
+  "historical_reference_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+  "historical_skip_reports": [
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v1.py:605: frozen independent-transition packet is not available",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:457: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:548: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:559: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:579: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:592: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:610: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:636: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:646: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:696: saved native source-binding run is unavailable"
+  ]
+}

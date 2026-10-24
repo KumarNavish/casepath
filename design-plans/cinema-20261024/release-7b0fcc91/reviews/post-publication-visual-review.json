@@ -1,0 +1,216 @@
+{
+  "contract": "casepath.cinema-published-visual-review/1",
+  "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+  "reviewed_at": "2026-10-24T20:40:54.789Z",
+  "status": "passed_with_scoped_transition_observation",
+  "source_and_media_identity": {
+    "capture_receipt_sha256": "5b821e0ba51c00b462042bfb4e14807081a080de568be3d0f6843ebed6f25c73",
+    "scored_sha256": "bf80904a6e5a07f3425335fcae8ceda97beea55badff4a2f59c2385eb1dbc614",
+    "silent_sha256": "5fb8e71be7c06cfda1ac4cb8980b72f5914e8644f9cd22e178a90c41557e4216"
+  },
+  "scope": {
+    "public_capture_contact_sheet": true,
+    "contact_sheet_frames": 24,
+    "independent_full_size_frames": [
+      15,
+      17,
+      20,
+      24
+    ],
+    "root_decoded_mp4_frames": [
+      {
+        "n": 1799,
+        "seconds": 59.96666666666667,
+        "file": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/decoded-final-review-v2/frame-01.png",
+        "sha256": "b1c7209d8b02238b03c77c277808131d5f881bbbbe092ee5ae17265c19cb0ec8"
+      },
+      {
+        "n": 2056,
+        "seconds": 68.53333333333333,
+        "file": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/decoded-final-review-v2/frame-02.png",
+        "sha256": "1f694be8e9f5a340be3c503b72c30ab5ca9c06b23a7f68e30a1eddd910578ecb"
+      },
+      {
+        "n": 2068,
+        "seconds": 68.93333333333334,
+        "file": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/decoded-final-review-v2/frame-03.png",
+        "sha256": "26a41b6537cd3bb70ef095f928cfe3d758722054b465ed9bb065b3b6759c6a9e"
+      },
+      {
+        "n": 2071,
+        "seconds": 69.03333333333333,
+        "file": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/decoded-final-review-v2/frame-04.png",
+        "sha256": "0dba099a8d2869a0fa1ed8f23ee4bdf1cab064b66f2ae43b3dcb9e639f0eb071"
+      },
+      {
+        "n": 2956,
+        "seconds": 98.53333333333333,
+        "file": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/decoded-final-review-v2/frame-05.png",
+        "sha256": "369f5962292e3c0180f6fb848635e4c1ffe54eec6073ba214bc0404870fbec25"
+      }
+    ],
+    "continuous_public_playback": "Completed by the source-bound public acceptance run; all six acts observed, zero application errors/writes.",
+    "subjective_audio_listening": false,
+    "qualified_human_approval": "not_claimed"
+  },
+  "findings": [
+    "The settled answer, later-case checklist reuse, and closing frames are readable without visible clipping or persistent overlap.",
+    "The answer identifies the failed reasons requirement and retains the unresolved questions.",
+    "The later case visibly reuses checks while requiring its own facts, documents, and dates.",
+    "The closing message is clean and legible: From source to answer. The reasoning stays visible.",
+    "At 68.533333 seconds the outgoing draft and incoming later-case view are superimposed during a brief dissolve. Root inspected decoded frames at 68.933333 and 69.033333 seconds; no persistent outgoing draft overlay remained. This was retained as a brief scene transition, not treated as a settled layout defect."
+  ],
+  "mobile_followup": {
+    "status": "sparse_initial_state_resolved_as_transient_in_observed_sample",
+    "observation": {
+      "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+      "status": "observation-failed",
+      "title_observed_at": "2026-10-24T20:35:09.508Z",
+      "finished_at": "2026-10-24T20:35:19.521Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "assertions": {
+        "deployment_source_matches": true,
+        "initial_claim_title_visible": true,
+        "casepath_visible_in_all_captures": false,
+        "site_origin_preserved": true
+      },
+      "observations": {
+        "body_text_changed_at_1s": true,
+        "body_text_changed_at_9s": true,
+        "viewport_text_changed_at_1s": true,
+        "viewport_text_changed_at_9s": true,
+        "added_viewport_lines_at_9s": [
+          "Step 5 of 6",
+          "Pause",
+          "Replay · Fictional case",
+          "Reader",
+          "finds a possible fact.",
+          "To be confirmed.",
+          "Details",
+          "Heating service report",
+          "Heating is inadequate",
+          "for the contracted winter residential use of the principal living rooms.",
+          "15.8C",
+          "Heating is inadequate",
+          "Dated technical defect observation"
+        ],
+        "removed_viewport_lines_at_9s": [
+          "CasePath",
+          "View only",
+          "Cases",
+          "Demonstration",
+          "Knowledge",
+          "Cases",
+          "Repeated heating failure and reported repair calls",
+          "Replay · Fictional case · View only",
+          "CasePath",
+          "has no recorded action yet.",
+          "No result recorded yet."
+        ],
+        "interpretation": "These are observed text differences, not a pass verdict on progression. Inspect the three PNGs and state files to judge the sparse view."
+      },
+      "captures": [
+        {
+          "label": "00-title-visible",
+          "requested_offset_ms": 0,
+          "actual_start_offset_ms": 1.13,
+          "actual_end_offset_ms": 114.579,
+          "screenshot": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/mobile-landing-observation-public/00-title-visible.png",
+          "screenshot_bytes": 56496,
+          "screenshot_sha256": "386423d6cf87b1ac0f5047d30d3f2659f04eff90094d05300d51891cc00c4b67",
+          "body_text_sha256": "86d3d6737416ee56c2974173e567ab021f88552af3414044e74b7278326e77aa",
+          "viewport_text_sha256": "7ed894d9e5ad3d02dc43da333fa8b9e3fb1b94c7509a1cf93f8cb59429990129",
+          "body_text_characters": 479,
+          "viewport_text_characters": 448,
+          "visible_headings": [
+            {
+              "text": "Repeated heating failure and reported repair calls",
+              "tag": "H1",
+              "role": null
+            }
+          ],
+          "visible_control_count": 15,
+          "horizontal_overflow_pixels": 0,
+          "page_url": "https://casepath-autonomous.kumarnavish.chatgpt.site/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=0"
+        },
+        {
+          "label": "01-after-1s",
+          "requested_offset_ms": 1000,
+          "actual_start_offset_ms": 1000.718,
+          "actual_end_offset_ms": 1035.819,
+          "screenshot": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/mobile-landing-observation-public/01-after-1s.png",
+          "screenshot_bytes": 35267,
+          "screenshot_sha256": "b96131dbcd02e6e74b0587b9d54939812c0b06ccf49aa06eb56f48db11d60343",
+          "body_text_sha256": "a71eb840765c51dfeccdf9586020c65c1f33f4fa0a8ac614716c9659d1e81bee",
+          "viewport_text_sha256": "80fdd472afc20e47207feaf7e5690ba4891c18f5dbb29a3f0a1fb0a8972e41c2",
+          "body_text_characters": 308,
+          "viewport_text_characters": 286,
+          "visible_headings": [
+            {
+              "text": "Case 1 of 9 · Defects and repairs",
+              "tag": "H1",
+              "role": null
+            }
+          ],
+          "visible_control_count": 8,
+          "horizontal_overflow_pixels": 0,
+          "page_url": "https://casepath-autonomous.kumarnavish.chatgpt.site/#autonomous/claim/clm_314f2d309fea25e6?operations=recorded&collection=reference&mode=replay&through=0"
+        },
+        {
+          "label": "09-after-9s",
+          "requested_offset_ms": 9000,
+          "actual_start_offset_ms": 9023.268,
+          "actual_end_offset_ms": 9194.41,
+          "screenshot": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/mobile-landing-observation-public/09-after-9s.png",
+          "screenshot_bytes": 59547,
+          "screenshot_sha256": "6f0975657d856ba27d502f4e79df606fe5862d9c82e63b4fe599e1745b685ea0",
+          "body_text_sha256": "e1c5571f9952cabba7865d79818ec871c62fb60edbb6bd46dd2bd822ee4c3d1b",
+          "viewport_text_sha256": "6a5ebe47a5cc7d7a9eac3b90c453f2762e75d28aba983d8428d93a8bc62a024b",
+          "body_text_characters": 766,
+          "viewport_text_characters": 527,
+          "visible_headings": [],
+          "visible_control_count": 14,
+          "horizontal_overflow_pixels": 0,
+          "page_url": "https://casepath-autonomous.kumarnavish.chatgpt.site/#autonomous/claim/clm_314f2d309fea25e6?operations=recorded&collection=reference&mode=replay&through=0"
+        }
+      ],
+      "app_write_count": 0,
+      "edge_beacon_count": 1,
+      "blocked_request_count": 0,
+      "errors": [
+        {
+          "kind": "diagnostic-error",
+          "message": "The expected app visibility or origin assertion failed."
+        }
+      ]
+    },
+    "actual_terminal": {
+      "sessionId": "cp-cinema-final-20261024-mobile-observation",
+      "pid": 9131,
+      "state": "failed",
+      "exitCode": 1,
+      "output": "{\"status\":\"observation-failed\",\"exit_code\":1,\"output_directory\":\"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/mobile-landing-observation-public\",\"assertions\":{\"deployment_source_matches\":true,\"initial_claim_title_visible\":true,\"casepath_visible_in_all_captures\":false,\"site_origin_preserved\":true},\"observations\":{\"body_text_changed_at_1s\":true,\"body_text_changed_at_9s\":true,\"viewport_text_changed_at_1s\":true,\"viewport_text_changed_at_9s\":true,\"added_viewport_lines_at_9s\":[\"Step 5 of 6\",\"Pause\",\"Replay · Fictional case\",\"Reader\",\"finds a possible fact.\",\"To be confirmed.\",\"Details\",\"Heating service report\",\"Heating is inadequate\",\"for the contracted winter residential use of the principal living rooms.\",\"15.8C\",\"Heating is inadequate\",\"Dated technical defect observation\"],\"removed_viewport_lines_at_9s\":[\"CasePath\",\"View only\",\"Cases\",\"Demonstration\",\"Knowledge\",\"Cases\",\"Repeated heating failure and reported repair calls\",\"Replay · Fictional case · View only\",\"CasePath\",\"has no recorded action yet.\",\"No result recorded yet.\"],\"interpretation\":\"These are observed text differences, not a pass verdict on progression. Inspect the three PNGs and state files to judge the sparse view.\"},\"writes\":1,\"blocked_requests\":0,\"errors\":1}\n",
+      "offset": 0,
+      "nextOffset": 1309,
+      "totalBytes": 1309,
+      "truncated": false,
+      "startedAt": "2026-10-24T20:35:05.376Z",
+      "finishedAt": "2026-10-24T20:35:19.550Z"
+    },
+    "helper_sha256": "27ca9bff385966ab9c0f1d65321b32883ef740ceb5a5ee0549dd27f366b25216",
+    "interpretation": "The +1s image is sparse. The +9s image shows Step 5 of 6, the Heating service report, highlighted evidence and the 15.8C fact, with no horizontal clipping. The diagnostic exit remains 1 because its assumption that the CasePath brand stays inside every viewport failed after normal vertical replay scrolling to y=328. The three completed captures resolve the initial concern; this is not recorded as a passing diagnostic run.",
+    "raw_request_logs_and_beacon_urls": "Retained only in ignored runtime; excluded from this record."
+  },
+  "media_validation": {
+    "full_decode_passed": true,
+    "frames": 2957,
+    "duration_seconds": 98.56666666666666,
+    "encoded_video_packets_unchanged": true,
+    "audio_lufs": -20.04,
+    "audio_true_peak_dbtp": -4.24
+  },
+  "blocking_findings": []
+}

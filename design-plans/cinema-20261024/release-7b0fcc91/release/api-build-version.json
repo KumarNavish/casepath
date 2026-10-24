@@ -1,0 +1,29 @@
+{
+  "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+  "status": "passed",
+  "deployment_id": "1add7ab0-21e6-4c68-a5a7-0e3fd8b7f0e6",
+  "pillow_version": "13.0.0",
+  "evidence_kind": "successful hosted image build installation log",
+  "installation_line": "+ pillow==13.0.0",
+  "raw_build_log_sha256": "04c46e5375cb16f5cff3fb91cd3e187c9d47524d32bae3fcccb5a620e753858d",
+  "build_log_command_exit": 0,
+  "server_decoder_invoked": false,
+  "verifier_sha256": "feadbb921e04878b57d58b034571415363cb0cbeb467a26de523a58aa1494fbc",
+  "command": [
+    "/Users/kumar0002/.local/bin/uv",
+    "run",
+    "--offline",
+    "--no-project",
+    "--with",
+    "fastapi[standard]",
+    "--with",
+    "fastapi-cloud-cli==0.26.0",
+    "fastapi",
+    "cloud",
+    "deployments",
+    "build-logs",
+    "1add7ab0-21e6-4c68-a5a7-0e3fd8b7f0e6",
+    "--no-follow",
+    "--json"
+  ]
+}

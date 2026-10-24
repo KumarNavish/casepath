@@ -1,0 +1,33 @@
+{
+  "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+  "prepared_at": "2026-10-24T18:56:45.832717+00:00",
+  "scope": "Runtime helper hashes only. No gate completion or publication claimed.",
+  "helpers": {
+    "integrate_canonical.py": "48f961311fdbf2f7970ad1bcd8c5afd6a3018e3a5c76ae4b1d9d602d817f8e77",
+    "run_api_release.py": "7043403378814efb949aa401e9e2d7a7439952ccf7b41e744f9429ae9d4abe0b",
+    "renew_seed.py": "4a05addac324645f185c39ce08c34e4ca95ded0c8c8307fad2a7074cb62c7edf",
+    "update_api_env.py": "b1e5b5aa3cd92f93573d00d88251bde24587b72ce56e70c198ea73c38ba800a9",
+    "deploy_api.py": "073b4f2b6b7003ff36daeebcac2bf53d978bc47e23333e837d40ebde6eef504f",
+    "await_api.py": "d2ee60b5849ed7e475cffbc6e3a249f717f7deb2fcbf06a187f4b29d9ef49a67",
+    "require_completed_gate.py": "248549973e918db22b5b2bf33fb6fe8f410a9b8ed35d17aa15229f787508fd26",
+    "copy_sites_inputs.py": "dc1af15b962a9d6c7e1427982a9db748062940cf1994ce4e04e53fc42d245454",
+    "run_sites_workflow_finite.py": "9b34315a38949f01280aca4662f999273cb3f34ff2136e01feab8135ac12cf49",
+    "readback.py": "d0f78aaf81347d7385106f8f2fef018220e70599222d28df6193a13c411e2806",
+    "verify_readback.py": "a14c1baf04e23bc74ecf918a188bd4e8e0498b01e484fe988af5f9642c781923",
+    "verify_api_build_v2.py": "feadbb921e04878b57d58b034571415363cb0cbeb467a26de523a58aa1494fbc",
+    "verify_public_image.py": "ebeea25ec13f1ce4618dd84570316551e9374e784909eec411659d78af4da4a7",
+    "prepare_public_archive_transfer.py": "26abdcee9a287b13c86dc0303a30e40b5f2fc43622d3177d1f63780e04789f82",
+    "published_soak.py": "46a5ba66f2b0dfc39833d9c90907e9603ae6a00ff95699ca56f1d7ad4f2c8c67"
+  },
+  "api_helpers": {
+    "await_api.py": "d2ee60b5849ed7e475cffbc6e3a249f717f7deb2fcbf06a187f4b29d9ef49a67",
+    "deploy_api.py": "073b4f2b6b7003ff36daeebcac2bf53d978bc47e23333e837d40ebde6eef504f",
+    "integrate_canonical.py": "48f961311fdbf2f7970ad1bcd8c5afd6a3018e3a5c76ae4b1d9d602d817f8e77",
+    "renew_seed.py": "4a05addac324645f185c39ce08c34e4ca95ded0c8c8307fad2a7074cb62c7edf",
+    "require_completed_gate.py": "248549973e918db22b5b2bf33fb6fe8f410a9b8ed35d17aa15229f787508fd26",
+    "run_api_release.py": "7043403378814efb949aa401e9e2d7a7439952ccf7b41e744f9429ae9d4abe0b",
+    "update_api_env.py": "b1e5b5aa3cd92f93573d00d88251bde24587b72ce56e70c198ea73c38ba800a9"
+  },
+  "actual_gate_validator_sha256": "ef4a80c672d50d0c446032a6ad86ce3ae611c5002a402ff93e1d75d0ffa9b741",
+  "syntax_validation": "Python sources parsed with ast.parse; no helper imported or executed."
+}

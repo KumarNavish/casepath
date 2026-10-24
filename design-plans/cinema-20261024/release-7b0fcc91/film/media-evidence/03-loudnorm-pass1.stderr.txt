@@ -1,0 +1,33 @@
+[aist#0:0/pcm_s16le @ 0x141604080] Guessed Channel Layout: stereo
+Input #0, wav, from '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/casepath-original-score.wav':
+  Duration: 00:01:38.57, bitrate: 1024 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 32000 Hz, stereo, s16, 1024 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (pcm_s16le (native) -> pcm_s16le (native))
+Output #0, null, to 'pipe:':
+  Metadata:
+    encoder         : Lavf63.1.102
+  Stream #0:0: Audio: pcm_s16le, 192000 Hz, stereo, s16, 6144 kb/s
+    Metadata:
+      encoder         : Lavc63.1.102 pcm_s16le
+size=N/A time=00:00:13.90 bitrate=N/A speed=27.3x elapsed=0:00:00.51    
+size=N/A time=00:00:28.80 bitrate=N/A speed=28.2x elapsed=0:00:01.02    
+size=N/A time=00:00:44.20 bitrate=N/A speed=29.1x elapsed=0:00:01.52    
+size=N/A time=00:01:00.00 bitrate=N/A speed=29.6x elapsed=0:00:02.02    
+size=N/A time=00:01:15.60 bitrate=N/A speed=29.8x elapsed=0:00:02.53    
+size=N/A time=00:01:30.80 bitrate=N/A speed=29.9x elapsed=0:00:03.04    
+[Parsed_loudnorm_3 @ 0x600003b98370] 
+{
+	"input_i" : "-21.93",
+	"input_tp" : "-7.00",
+	"input_lra" : "11.20",
+	"input_thresh" : "-32.09",
+	"output_i" : "-20.72",
+	"output_tp" : "-4.95",
+	"output_lra" : "9.80",
+	"output_thresh" : "-30.81",
+	"normalization_type" : "dynamic",
+	"target_offset" : "0.72"
+}
+[out#0/null @ 0x60000399c0c0] video:0KiB audio:73925KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+size=N/A time=00:01:38.60 bitrate=N/A speed=30.4x elapsed=0:00:03.24    

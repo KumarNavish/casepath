@@ -1,0 +1,94 @@
+{
+  "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+  "status": "passed",
+  "started_at": "2026-10-24T20:17:57.345119+00:00",
+  "stages": [
+    {
+      "name": "seed",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/renew_seed.py",
+        "7b0fcc91dcad9cada95317e298fd379014b7149a",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T20:18:00.322978+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-release-seed.log",
+      "pid": 2996,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T20:18:12.655594+00:00",
+      "log_sha256": "225f4850ab2b10ace7dc8d404916c9e08fa7c74d4eef3cb50e9d5cde87b76e72"
+    },
+    {
+      "name": "environment",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/update_api_env.py",
+        "7b0fcc91dcad9cada95317e298fd379014b7149a",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T20:18:14.218750+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-release-environment.log",
+      "pid": 3108,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T20:18:24.178528+00:00",
+      "log_sha256": "c4240f6560263fbb16b664a642e8a294c4ea3e531ef924ee4c7a9faea9593bfa"
+    },
+    {
+      "name": "deployment",
+      "command": [
+        "/Users/kumar0002/.local/bin/uv",
+        "run",
+        "--offline",
+        "--no-project",
+        "--with",
+        "fastapi[standard]",
+        "--with",
+        "fastapi-cloud-cli==0.26.0",
+        "python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/deploy_api.py",
+        "7b0fcc91dcad9cada95317e298fd379014b7149a",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T20:18:25.720627+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-release-deployment.log",
+      "pid": 3193,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T20:19:01.039911+00:00",
+      "log_sha256": "e915b4e133349739afb2623165401b2da9026820558b18f579c4a5c3149ad06c"
+    },
+    {
+      "name": "activation",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/await_api.py",
+        "7b0fcc91dcad9cada95317e298fd379014b7149a",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T20:19:02.173356+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-release-activation.log",
+      "pid": 3437,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T20:19:56.134301+00:00",
+      "log_sha256": "063517bae9ab690303f237b68ce732b5960ea4b5e1277bcaa1556d8a7f9e0013"
+    }
+  ],
+  "gate_sha256": "2a3fb980fba701ffb9c616d15b9aadc7fbcc3872d951e3652162aed915a0a33b",
+  "helper_sha256": {
+    "await_api.py": "d2ee60b5849ed7e475cffbc6e3a249f717f7deb2fcbf06a187f4b29d9ef49a67",
+    "deploy_api.py": "073b4f2b6b7003ff36daeebcac2bf53d978bc47e23333e837d40ebde6eef504f",
+    "integrate_canonical.py": "48f961311fdbf2f7970ad1bcd8c5afd6a3018e3a5c76ae4b1d9d602d817f8e77",
+    "renew_seed.py": "4a05addac324645f185c39ce08c34e4ca95ded0c8c8307fad2a7074cb62c7edf",
+    "require_completed_gate.py": "248549973e918db22b5b2bf33fb6fe8f410a9b8ed35d17aa15229f787508fd26",
+    "run_api_release.py": "7043403378814efb949aa401e9e2d7a7439952ccf7b41e744f9429ae9d4abe0b",
+    "update_api_env.py": "b1e5b5aa3cd92f93573d00d88251bde24587b72ce56e70c198ea73c38ba800a9"
+  },
+  "finished_at": "2026-10-24T20:19:56.152572+00:00"
+}

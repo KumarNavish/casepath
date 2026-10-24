@@ -1,0 +1,820 @@
+{
+  "contract": "casepath.cinema-evidence-manifest/1",
+  "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+  "created_at": "2026-10-24T20:41:15.041307+00:00",
+  "generator_sha256": "42c9afeaef890ec7f0995e6bf17950348dfb339c7d96cf862d641248962c1d01",
+  "intended_repository_destination": "design-plans/cinema-20261024/release-7b0fcc91",
+  "product_changes": false,
+  "commit_or_push_performed": false,
+  "copies": [
+    {
+      "file": "pack-inputs.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/pack-inputs.json",
+      "sha256": "4e787bae15797d6f7ce3bc389978e2161e2e344886c96dc975416980bb9da501",
+      "bytes": 3170
+    },
+    {
+      "file": "source-binding.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/source-binding.json",
+      "sha256": "3a03870809f474413e55ebeab3cc9e752b95bddc7c9b9e3fda4b9c48ed7efe42",
+      "bytes": 5186
+    },
+    {
+      "file": "seal-candidate.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/seal-candidate.json",
+      "sha256": "b55104edba8bb81e9179bce99d8e847832ef45c07f471531c87cb508c9248382",
+      "bytes": 8358
+    },
+    {
+      "file": "sealed-candidate.patch",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/sealed-candidate.patch",
+      "sha256": "cac7af939f570cce39b4ae576abcbd4c53e5748946381097255600a5dfea719d",
+      "bytes": 82507
+    },
+    {
+      "file": "prepare-candidate.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/prepare-candidate.json",
+      "sha256": "71eca47acca9813cc771819d93c7bbb3531b660cd9f4a5dc9ddb404198d4c6e1",
+      "bytes": 772
+    },
+    {
+      "file": "full-gate-command.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/full-gate-command.json",
+      "sha256": "20d726b215799ec333955675999896ce6c64e1faea9fc264cd052e748966bb12",
+      "bytes": 2422
+    },
+    {
+      "file": "full-gate.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/full-gate.log",
+      "sha256": "11d4d32740d262ca13e44bfa14af2ce98041dbd8b81c808847736efeed98c03d",
+      "bytes": 7833
+    },
+    {
+      "file": "helpers/seal_candidate.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/seal_candidate.py",
+      "sha256": "920bf1d63b503318438f1be38498e46fae786e6245abab56b89b4f09a6e0b2e7",
+      "bytes": 7142
+    },
+    {
+      "file": "helpers/commit_prepare.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/commit_prepare.py",
+      "sha256": "982ac3a3982ad2837aca72bd679966fdb8f13b368967b602f1705e006033f4c1",
+      "bytes": 8245
+    },
+    {
+      "file": "helpers/run_full_gate.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/run_full_gate.py",
+      "sha256": "063f99e70f6536f5755cf3bf761097d6a1ef4d745de88afb67c2d6afb61b9290",
+      "bytes": 7654
+    },
+    {
+      "file": "helpers/require_completed_gate.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/require_completed_gate.py",
+      "sha256": "ef4a80c672d50d0c446032a6ad86ce3ae611c5002a402ff93e1d75d0ffa9b741",
+      "bytes": 14964
+    },
+    {
+      "file": "helpers/run_published_acceptance.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/run_published_acceptance.py",
+      "sha256": "4f38750dc92775f4c79f206ec1ddfaa4d68df22754402caea66a1d37d518d1ac",
+      "bytes": 8135
+    },
+    {
+      "file": "helpers/prepare_evidence_bundle.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/prepare_evidence_bundle.py",
+      "sha256": "42c9afeaef890ec7f0995e6bf17950348dfb339c7d96cf862d641248962c1d01",
+      "bytes": 25658
+    },
+    {
+      "file": "sealed-source-manifest.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/casepath/source-manifest.json",
+      "sha256": "2bf63dadf6bf3a2a7a8eade9ed0242a3f4305ea9cc422af22a3a52f06c1c96a8",
+      "bytes": 460237
+    },
+    {
+      "file": "authored-files.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/authored-files.json",
+      "sha256": "7c91ddb924be184da23850a1957fbb9349790efce35de6f996382cc825fe7497",
+      "bytes": 361
+    },
+    {
+      "file": "independent-review.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/independent-review.json",
+      "sha256": "2a015e0d74400f6aea92219c5a435c72646672858cae9d7d4b376e47ef9178c8",
+      "bytes": 3772
+    },
+    {
+      "file": "preseal/capture-receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/final-stills/capture-receipt.json",
+      "sha256": "00982ae1320f33ace7e097872e9c6f2337cf3a46bb191d9ef939398456136d4a",
+      "bytes": 50278
+    },
+    {
+      "file": "release/published-soak-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-soak-command.log",
+      "sha256": "2252a5e5d6f8169e22f6617d6ea82b6c9ecbaeb24c80d44de71afc3e91ffbcf2",
+      "bytes": 727
+    },
+    {
+      "file": "release/published-soak-7b0fcc91/summary.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-soak-7b0fcc91/summary.json",
+      "sha256": "3f84655d40a02324c83777334c223dc8f3fa871d886235758c910517202c99c6",
+      "bytes": 2905
+    },
+    {
+      "file": "release/published-soak-7b0fcc91/receipts.jsonl",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-soak-7b0fcc91/receipts.jsonl",
+      "sha256": "6567d7ca8a2daadf20f2dfa13391a239ab15ff4f4c21be0a8aa32bd8a8e22176",
+      "bytes": 261151
+    },
+    {
+      "file": "release/published-browser-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-browser-command.log",
+      "sha256": "0374fb55499e9026d46cd261a2a3fb42c5b2eb072edf2ea7a8cd85904201af62",
+      "bytes": 1118
+    },
+    {
+      "file": "release/published-browser-7b0fcc91/summary.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-browser-7b0fcc91/summary.json",
+      "sha256": "a1084b06233fbb91674312c2cc04e1844a04972854024a7760a03dcd2b2dbfd9",
+      "bytes": 1250
+    },
+    {
+      "file": "release/published-browser-7b0fcc91/published-verification.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-browser-7b0fcc91/published-verification.json",
+      "sha256": "63341705fbe7718431b8974267475f164c9e3aae7e673fd416fb8a8d73a31c27",
+      "bytes": 93500
+    },
+    {
+      "file": "release/published-image-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-image-command.log",
+      "sha256": "67a4efdf57366c2d624bc674bfadb89ce109979bcf2a83fb2b38ecf2ac15e7f7",
+      "bytes": 1110
+    },
+    {
+      "file": "release/public-image-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/public-image-verified.json",
+      "sha256": "03f4d6bd817a268d5694e84b83d5060d3e59ff7facc72b8246f6466ae647c197",
+      "bytes": 1178
+    },
+    {
+      "file": "release/published-readback-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-readback-command.log",
+      "sha256": "f29d086860666a86a75ebc3e92d019dbe71026f6b56dd7307eaf78bdaf01ae88",
+      "bytes": 348
+    },
+    {
+      "file": "release/published-verify_readback-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-verify_readback-command.log",
+      "sha256": "39f1484367d158b6d635b4e3f37db9d8615a4d06ce96da624bfc489ddceffd9a",
+      "bytes": 729
+    },
+    {
+      "file": "release/readback-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/readback-verified.json",
+      "sha256": "f4d858ed2953630e46cd9de79f1a81729494c068070fd21a147644cc6936dd60",
+      "bytes": 747
+    },
+    {
+      "file": "release/full-gate-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/full-gate-verified.json",
+      "sha256": "2a3fb980fba701ffb9c616d15b9aadc7fbcc3872d951e3652162aed915a0a33b",
+      "bytes": 5761
+    },
+    {
+      "file": "release/gate-actual-completion.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/gate-actual-completion.json",
+      "sha256": "df8a7f47ad259888982e93074f6f9f6e0ca64716a52ecbd58b2c858984eaf189",
+      "bytes": 529
+    },
+    {
+      "file": "release/commander-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/commander-terminal.json",
+      "sha256": "911e9c45d1b8e167d113e7c3eb9417f66148cfbfcd59fc5e10f50c3a544d1e05",
+      "bytes": 7701
+    },
+    {
+      "file": "release/canonical-integration.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/canonical-integration.json",
+      "sha256": "be785da9c41cb6cc634cca3768bd593dbcf5d8f9fd4e46670744bb399a6bf4b8",
+      "bytes": 609
+    },
+    {
+      "file": "release/seed-renewal-receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/seed-renewal-receipt.json",
+      "sha256": "1fe5394cd4cc09234b2014554daf6c68bca78e85e81ddd3ae53d0f9ee673cc88",
+      "bytes": 742
+    },
+    {
+      "file": "release/api-environment-updated.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-environment-updated.json",
+      "sha256": "c581cdab913037e155ee274d1db42cfdefd381701a9d47aa3094a7b570531991",
+      "bytes": 456
+    },
+    {
+      "file": "release/api-private-package-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-private-package-verified.json",
+      "sha256": "a35e677e06867edcb2ede8d99cc7e6a4d8f31a839b587b58e4b9592e9d7ffa70",
+      "bytes": 375
+    },
+    {
+      "file": "release/api-private-wheel-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-private-wheel-verified.json",
+      "sha256": "fa660efb6e8a234ad3d09d8599b125b6e1cac19a3be1c55134056bbfc831d044",
+      "bytes": 369
+    },
+    {
+      "file": "release/api-deployment-created.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-deployment-created.json",
+      "sha256": "b1bf0d399cace1362535bcf97a2bdb151c6dc18fc06ca13cdf5e0ea34c2a0f52",
+      "bytes": 289
+    },
+    {
+      "file": "release/api-deployment-uploaded.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-deployment-uploaded.json",
+      "sha256": "0fc0e2fb7e683db8691734b108bc6934803311d1813159634dd03704c872b18f",
+      "bytes": 295
+    },
+    {
+      "file": "release/api-health-after.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-health-after.json",
+      "sha256": "318e197f12805fe277b06f2c7ea1cb86318a08d650227185f5ed7cc151ecbe1f",
+      "bytes": 179
+    },
+    {
+      "file": "release/api-release-sequence.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-release-sequence.json",
+      "sha256": "e79346fe89d7e797c68cc7b8d7ab6a4cb78b4becc4332db3d34f9222b75d2698",
+      "bytes": 4965
+    },
+    {
+      "file": "release/sites-inputs-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/sites-inputs-verified.json",
+      "sha256": "4468b3442b6099b08732d8e3824f7ffc1698df35b6336101800839788893ed9e",
+      "bytes": 464
+    },
+    {
+      "file": "release/sites-workflow-result.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/sites-workflow-result.json",
+      "sha256": "7201d5bd1bdc682e41e7ea2b0f7e599bad529f6bea54689a3e5ef3c3debeedfd",
+      "bytes": 395
+    },
+    {
+      "file": "release/sites-saved-version.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/sites-saved-version.json",
+      "sha256": "bf81af4838afaf1fd727bdc42c4796b56d0ba50502eb1a665508214833282d37",
+      "bytes": 576
+    },
+    {
+      "file": "release/sites-deployment.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/sites-deployment.json",
+      "sha256": "e7773a47f7590d4d7c658e90fe62c1d683ae47f819e5af754ae1ad18dcff8463",
+      "bytes": 581
+    },
+    {
+      "file": "release/published-acceptance-sequence.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published-acceptance-sequence.json",
+      "sha256": "84aa88e91e51eb5089e9f31ba77e2281191b5943997f3eba7d74e35e907bdc6c",
+      "bytes": 7719
+    },
+    {
+      "file": "release/api-build-version.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/api-build-version.json",
+      "sha256": "f549eb698e1a94da9c7a0e2281b7fae13efb1a8359471ee49e8be5372caf94c4",
+      "bytes": 871
+    },
+    {
+      "file": "release/helper-final-binding.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/helper-final-binding.json",
+      "sha256": "120b1345d231fbe328e66c7f88dd49a4aa28b86c6dab145fd361cec40300d03d",
+      "bytes": 2528
+    },
+    {
+      "file": "release/helper-acceptance-binding.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/helper-acceptance-binding.json",
+      "sha256": "d5af8cd462d60fe57a69c38c136758c71cc925f09b7faca9364108e15c9297e5",
+      "bytes": 2112
+    },
+    {
+      "file": "release/release-helper-adaptation.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/release-helper-adaptation.json",
+      "sha256": "0c6395651db6001f25a888898235a2226c96a99c3201fb21fdeac18879b3f343",
+      "bytes": 5888
+    },
+    {
+      "file": "release/presentation-expectation.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/presentation-expectation.json",
+      "sha256": "b4903815e354d94ddf2a4151c5dbded110e68fad94aae53f08d4b9acd3d1ddb4",
+      "bytes": 1032
+    },
+    {
+      "file": "release/await_api.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/await_api.py",
+      "sha256": "d2ee60b5849ed7e475cffbc6e3a249f717f7deb2fcbf06a187f4b29d9ef49a67",
+      "bytes": 3066
+    },
+    {
+      "file": "release/copy_sites_inputs.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/copy_sites_inputs.py",
+      "sha256": "dc1af15b962a9d6c7e1427982a9db748062940cf1994ce4e04e53fc42d245454",
+      "bytes": 3816
+    },
+    {
+      "file": "release/deploy_api.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/deploy_api.py",
+      "sha256": "073b4f2b6b7003ff36daeebcac2bf53d978bc47e23333e837d40ebde6eef504f",
+      "bytes": 8943
+    },
+    {
+      "file": "release/integrate_canonical.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/integrate_canonical.py",
+      "sha256": "48f961311fdbf2f7970ad1bcd8c5afd6a3018e3a5c76ae4b1d9d602d817f8e77",
+      "bytes": 4211
+    },
+    {
+      "file": "release/prepare_public_archive_transfer.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/prepare_public_archive_transfer.py",
+      "sha256": "26abdcee9a287b13c86dc0303a30e40b5f2fc43622d3177d1f63780e04789f82",
+      "bytes": 1906
+    },
+    {
+      "file": "release/published_soak.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/published_soak.py",
+      "sha256": "46a5ba66f2b0dfc39833d9c90907e9603ae6a00ff95699ca56f1d7ad4f2c8c67",
+      "bytes": 15317
+    },
+    {
+      "file": "release/readback.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/readback.py",
+      "sha256": "d0f78aaf81347d7385106f8f2fef018220e70599222d28df6193a13c411e2806",
+      "bytes": 2885
+    },
+    {
+      "file": "release/renew_seed.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/renew_seed.py",
+      "sha256": "4a05addac324645f185c39ce08c34e4ca95ded0c8c8307fad2a7074cb62c7edf",
+      "bytes": 6223
+    },
+    {
+      "file": "release/require_completed_gate.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/require_completed_gate.py",
+      "sha256": "248549973e918db22b5b2bf33fb6fe8f410a9b8ed35d17aa15229f787508fd26",
+      "bytes": 906
+    },
+    {
+      "file": "release/run_api_release.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/run_api_release.py",
+      "sha256": "7043403378814efb949aa401e9e2d7a7439952ccf7b41e744f9429ae9d4abe0b",
+      "bytes": 5383
+    },
+    {
+      "file": "release/run_sites_workflow_finite.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/run_sites_workflow_finite.py",
+      "sha256": "9b34315a38949f01280aca4662f999273cb3f34ff2136e01feab8135ac12cf49",
+      "bytes": 6357
+    },
+    {
+      "file": "release/update_api_env.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/update_api_env.py",
+      "sha256": "b1e5b5aa3cd92f93573d00d88251bde24587b72ce56e70c198ea73c38ba800a9",
+      "bytes": 3708
+    },
+    {
+      "file": "release/verify_api_build_v2.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/verify_api_build_v2.py",
+      "sha256": "feadbb921e04878b57d58b034571415363cb0cbeb467a26de523a58aa1494fbc",
+      "bytes": 1996
+    },
+    {
+      "file": "release/verify_public_image.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/verify_public_image.py",
+      "sha256": "ebeea25ec13f1ce4618dd84570316551e9374e784909eec411659d78af4da4a7",
+      "bytes": 3404
+    },
+    {
+      "file": "release/verify_published.mjs",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/verify_published.mjs",
+      "sha256": "a1420e5d7c715c7b21178181a7e40a02300021012fcd5d739061c97ed58f8410",
+      "bytes": 21350
+    },
+    {
+      "file": "release/verify_readback.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/verify_readback.py",
+      "sha256": "a14c1baf04e23bc74ecf918a188bd4e8e0498b01e484fe988af5f9642c781923",
+      "bytes": 2090
+    },
+    {
+      "file": "release/verify_supplement.mjs",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/verify_supplement.mjs",
+      "sha256": "29647d0a1b4554abeb3039fcf9b06ad61ee440c6c51f32fa8548358722044ec7",
+      "bytes": 9685
+    },
+    {
+      "file": "film/capture-receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/capture-receipt.json",
+      "sha256": "5b821e0ba51c00b462042bfb4e14807081a080de568be3d0f6843ebed6f25c73",
+      "bytes": 54400
+    },
+    {
+      "file": "film/timeline.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/timeline.json",
+      "sha256": "b5ce5ed4da24142093da0fbea0a729ad15b7afc474af670cdeea316d2e9f3ff6",
+      "bytes": 35983
+    },
+    {
+      "file": "film/frame-index.jsonl",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/frame-index.jsonl",
+      "sha256": "334d657d2eb155376ef2de120dc11d081e930c0ae88ae8dff44dac993f13c78b",
+      "bytes": 433711
+    },
+    {
+      "file": "film/CasePath_Cinematic_Demo_Silent.mp4",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo_Silent.mp4",
+      "sha256": "5fb8e71be7c06cfda1ac4cb8980b72f5914e8644f9cd22e178a90c41557e4216",
+      "bytes": 6384351
+    },
+    {
+      "file": "film/contact-sheet.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/contact-sheet.png",
+      "sha256": "af1439abef4e92925084967f18444d5186dd32ac85b8a43d2d186e6bf4ae6c8e",
+      "bytes": 698535
+    },
+    {
+      "file": "film/selected-frames/frame-01.jpg",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/contact/frame-01.jpg",
+      "sha256": "7049f40869b073eb8f9ac969e8429175109c2dda60a2ce8dc2c8b88f106d58aa",
+      "bytes": 95546
+    },
+    {
+      "file": "film/selected-frames/frame-04.jpg",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/contact/frame-04.jpg",
+      "sha256": "676f874030803800886db1389d83a293b3db98f69a3383b9ef81c35d995f6df0",
+      "bytes": 181860
+    },
+    {
+      "file": "film/selected-frames/frame-07.jpg",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/contact/frame-07.jpg",
+      "sha256": "75ebccf2816771b3feb5e0a40731d7bc9cac0dcb60c7e4adedb170fccc2ce943",
+      "bytes": 167781
+    },
+    {
+      "file": "film/selected-frames/frame-10.jpg",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/contact/frame-10.jpg",
+      "sha256": "7d4389ddf3bd1759640a7a8544a9ac2d3246804c4d0866bbaebe80f1d10b4cd4",
+      "bytes": 130244
+    },
+    {
+      "file": "film/selected-frames/frame-14.jpg",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/contact/frame-14.jpg",
+      "sha256": "4d6bb203b758d9c72fcaaa3cc5f4392a55a10f166bf5b213dfb7f78e39e95e46",
+      "bytes": 121261
+    },
+    {
+      "file": "film/selected-frames/frame-18.jpg",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/contact/frame-18.jpg",
+      "sha256": "76efd9f8380d20c4b96ad075817078634a8d233c8bc462ee479fb243f962dc8e",
+      "bytes": 153566
+    },
+    {
+      "file": "film/selected-frames/frame-21.jpg",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/contact/frame-21.jpg",
+      "sha256": "96183286f81a1cab127db873f4a8fca269e6d0c1e66de4104ce20440a878d3bb",
+      "bytes": 96122
+    },
+    {
+      "file": "film/selected-frames/frame-24.jpg",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/contact/frame-24.jpg",
+      "sha256": "0170cffb3689f276bd7f1439a830670bae36b7c5ea1e0a3f4a96e9edd9abc8d7",
+      "bytes": 65612
+    },
+    {
+      "file": "film/encode.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/encode.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/CasePath_Cinematic_Demo.mp4",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo.mp4",
+      "sha256": "bf80904a6e5a07f3425335fcae8ceda97beea55badff4a2f59c2385eb1dbc614",
+      "bytes": 8824579
+    },
+    {
+      "file": "film/media-receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo.media.json",
+      "sha256": "13c840ae00be4712d24fbfdcaddd4ea3bcff24859e521d0fd0c1239141d2f112",
+      "bytes": 16602
+    },
+    {
+      "file": "film/score-receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/casepath-original-score.score.json",
+      "sha256": "f47792aaebbdf6c2be894b834723fb475f666792709aad4dc252b893c0933fd3",
+      "bytes": 12642
+    },
+    {
+      "file": "film/score-timeline-input.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/final-stills/timeline.json",
+      "sha256": "37bc90bc0039388185f0ceeda2d69ece9bbef8422f70248dca1648f883822e7e",
+      "bytes": 35983
+    },
+    {
+      "file": "film/media-evidence/01-source-video-probe.stdout.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/01-source-video-probe.stdout.txt",
+      "sha256": "faca46a286cf94e978be0c3cfb55ad34d9c39920d00c5d1742efe1a952eaee91",
+      "bytes": 2712
+    },
+    {
+      "file": "film/media-evidence/01-source-video-probe.stderr.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/01-source-video-probe.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/02-source-score-probe.stdout.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/02-source-score-probe.stdout.txt",
+      "sha256": "54b26146f6c17c2bdb5ac0b1c124979f5ea217243223b4fe8e058c2e34d4df35",
+      "bytes": 1815
+    },
+    {
+      "file": "film/media-evidence/02-source-score-probe.stderr.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/02-source-score-probe.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/03-loudnorm-pass1.stdout.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/03-loudnorm-pass1.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/03-loudnorm-pass1.stderr.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/03-loudnorm-pass1.stderr.txt",
+      "sha256": "acd1cfe739e36b4ec415691ce29baf120fa776f351ec20d00ce4290f21d9e75a",
+      "bytes": 1595
+    },
+    {
+      "file": "film/media-evidence/04-loudnorm-pass2.stdout.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/04-loudnorm-pass2.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/04-loudnorm-pass2.stderr.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/04-loudnorm-pass2.stderr.txt",
+      "sha256": "46ebf50933053568b700d16936eb2b6546df21fc55d1270094b8cabb5e8061b3",
+      "bytes": 2026
+    },
+    {
+      "file": "film/media-evidence/05-mux.stdout.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/05-mux.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/05-mux.stderr.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/05-mux.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/06-output-probe.stdout.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/06-output-probe.stdout.txt",
+      "sha256": "789b5388b11ddb0e47f0b4cc6ebd944acf02bace124412fb9264204efc8c7931",
+      "bytes": 4479
+    },
+    {
+      "file": "film/media-evidence/06-output-probe.stderr.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/06-output-probe.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/07-original-video-packets.stdout.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/07-original-video-packets.stdout.txt",
+      "sha256": "fc61fcd5863fa1e0c5be2bd4bf909db746cc33df3e366d37d1b03b45b12fa9d2",
+      "bytes": 72
+    },
+    {
+      "file": "film/media-evidence/07-original-video-packets.stderr.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/07-original-video-packets.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/08-output-video-packets.stdout.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/08-output-video-packets.stdout.txt",
+      "sha256": "fc61fcd5863fa1e0c5be2bd4bf909db746cc33df3e366d37d1b03b45b12fa9d2",
+      "bytes": 72
+    },
+    {
+      "file": "film/media-evidence/08-output-video-packets.stderr.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/08-output-video-packets.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/09-full-decode.stdout.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/09-full-decode.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/09-full-decode.stderr.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/09-full-decode.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/10-final-aac-loudness.stdout.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/10-final-aac-loudness.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "film/media-evidence/10-final-aac-loudness.stderr.txt",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/10-final-aac-loudness.stderr.txt",
+      "sha256": "37032ade848dcfe88a7b8e53ec3c8943d72023e6f105c04be1235cdff8ece859",
+      "bytes": 2183
+    },
+    {
+      "file": "film/media-evidence/loudness-pass1.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/loudness-pass1.json",
+      "sha256": "455f9faac5206829041ceae2113eec4c7ed73a5dd2eaba69ce61262a8d7658b6",
+      "bytes": 264
+    },
+    {
+      "file": "film/helpers/capture.cjs",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/capture.cjs",
+      "sha256": "cf9f4ec92819ede3860d82c5dc0de85aa0270962e00387df0c90a8ee457142d0",
+      "bytes": 11731
+    },
+    {
+      "file": "film/helpers/score.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/score.py",
+      "sha256": "ac0bb4d26b238e4e9ea4e9882abded44f7982e952fd1ae6b12427003b965d99d",
+      "bytes": 13067
+    },
+    {
+      "file": "film/helpers/master_and_mux.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/master_and_mux.py",
+      "sha256": "552bd8a95e924ef425990f37f176a1d83a4f119a026935c21975b8dd97290bb6",
+      "bytes": 11133
+    },
+    {
+      "file": "terminals/acceptance.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/actual-acceptance-terminal.json",
+      "sha256": "f56daeacbfbe47fdc114b14a816e6f7e86cc440f5737e7cc7a79f0a0484ca35f",
+      "bytes": 1321
+    },
+    {
+      "file": "terminals/capture.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/actual-capture-terminal.json",
+      "sha256": "fbd90dfa6d66eca8ab85d4b7183f4f105a7943fbfa78ef866ee025f2864c6de3",
+      "bytes": 1541
+    },
+    {
+      "file": "terminals/media.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/actual-media-terminal.json",
+      "sha256": "39bafcdde75b9abef89ff1fd3186761d3fa3509e933ac57d4a286408840f9b00",
+      "bytes": 735
+    },
+    {
+      "file": "fidelity/fidelity-receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/fidelity-receipt.json",
+      "sha256": "676a5495e4bfc2be4da3bb9b96b583bb4b3761768d81679a0115c4bca5977e79",
+      "bytes": 7199
+    },
+    {
+      "file": "fidelity/capture-receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/receipt.json",
+      "sha256": "d88f9740bc077aff2591e237bd08e1d01b22fb53af304f90a0e100d54674926d",
+      "bytes": 154
+    },
+    {
+      "file": "fidelity/concept-1-side.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/concept-1-side.png",
+      "sha256": "448864d1d5f73f2cd653c711af9a9a9bf880586bf59292d10a3902a300389912",
+      "bytes": 1522167
+    },
+    {
+      "file": "fidelity/concept-1-overlay.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/concept-1-overlay.png",
+      "sha256": "ea6f436cad1be5d44d21dac6a1de6591be1248ef58c2dcbfd894f8a1929c1e07",
+      "bytes": 898501
+    },
+    {
+      "file": "fidelity/concept-1-diff.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/concept-1-diff.png",
+      "sha256": "3874f0a0b3a271f63791b90e5d1c8c86e60186c58e3c212931c8e76eb6ac20f8",
+      "bytes": 1410811
+    },
+    {
+      "file": "fidelity/concept-2-side.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/concept-2-side.png",
+      "sha256": "4e8cabdd2f234f79a5b92e2b75174a468ce101e44ac058943cc32b11c5f661f4",
+      "bytes": 1695314
+    },
+    {
+      "file": "fidelity/concept-2-overlay.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/concept-2-overlay.png",
+      "sha256": "e1427162afb12da27d173ca2ea6f7bdf007c3ebc8eaa30379f4c571ad2009e22",
+      "bytes": 1063631
+    },
+    {
+      "file": "fidelity/concept-2-diff.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/concept-2-diff.png",
+      "sha256": "8048d704f136c4f6db86f777d022f110dd401b192c202cb5baf8fb9c786d12df",
+      "bytes": 1603183
+    },
+    {
+      "file": "fidelity/concept-3-side.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/concept-3-side.png",
+      "sha256": "fe74c8e20ec5ebe3ed6a0c9b15b8be1df4884c964b4701b262734a8aa95c632c",
+      "bytes": 1666658
+    },
+    {
+      "file": "fidelity/concept-3-overlay.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/concept-3-overlay.png",
+      "sha256": "04929d0c3d2f7008424642f824d6310fdb42e10243f8e000d0e1df2cd2807b40",
+      "bytes": 1042942
+    },
+    {
+      "file": "fidelity/concept-3-diff.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/fidelity-final/concept-3-diff.png",
+      "sha256": "9b3df86d8a88f97e0ab97c9358e2f94ac7e9d577df5a62fbfa3aa16412d469b0",
+      "bytes": 1573279
+    },
+    {
+      "file": "reviews/all-frontend-preseal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/all-frontend-preseal.json",
+      "sha256": "4fab93bb8df5323789a00e254035e73cee9b28dfdaec2c76faa5259104298419",
+      "bytes": 921
+    },
+    {
+      "file": "reviews/preseal-frontend-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/preseal-frontend-terminal.json",
+      "sha256": "9a70412faa55287e3dd248401a36f286270cde7165eda41d20b18e0cf819a25a",
+      "bytes": 5038
+    },
+    {
+      "file": "reviews/fidelity-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/fidelity-terminal.json",
+      "sha256": "7ae3bd0abba3fdb944210902e98384a6e1699f3ea0e0322449615ebc3e36cfbb",
+      "bytes": 597
+    },
+    {
+      "file": "reviews/score-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/score-terminal.json",
+      "sha256": "a6739e4dec245ac72355ae91dd2102a4a759b46efb0b8ebaeef5b96101c50b39",
+      "bytes": 1108
+    },
+    {
+      "file": "reviews/archive-transfer-review.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/archive-transfer-review.json",
+      "sha256": "91a724515ad3b371f4808eb3c6db6aa9afd0d9f25be234af874d79ea1cc357c1",
+      "bytes": 12160
+    },
+    {
+      "file": "reviews/post-publication-visual-review.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/post-publication-visual-review.json",
+      "sha256": "b5b1a9de140eecde94db8c08a1466ab1c856a6413d8cf416df90aaa6d0f8cc49",
+      "bytes": 11873
+    }
+  ],
+  "derived": [
+    {
+      "file": "release-acceptance.json",
+      "sha256": "327790906ea70f9c376ce1fb0924b1a373362afd9cee06a8257c4c34506a5b78",
+      "bytes": 1635
+    },
+    {
+      "file": "README.md",
+      "sha256": "311e8ed0918c00f1609178bcb5670c66faa4c4c3166fd9b70618060a03293137",
+      "bytes": 1851
+    }
+  ],
+  "validated_but_not_copied": [
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/readback-after.json",
+      "sha256": "c979a024c9ed0ee7cd1fcb9d7c04dacb920138fab34fb694d16cbf275ca3590f",
+      "bytes": 1186093,
+      "copied": false,
+      "reason": "Full private collection readback retained in runtime"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/casepath-original-score.wav",
+      "sha256": "dce74d4041f8e23d0aa78ee16eab4c028430e924ab11af3629d609583ae5fda1",
+      "bytes": 12616580,
+      "copied": false,
+      "reason": "Reproducible original PCM score; final AAC is included in the scored film"
+    }
+  ],
+  "excluded": [
+    "private seed bytes",
+    "credentials",
+    "raw collection readbacks",
+    "large frame PNG directories",
+    "intermediate audio"
+  ]
+}

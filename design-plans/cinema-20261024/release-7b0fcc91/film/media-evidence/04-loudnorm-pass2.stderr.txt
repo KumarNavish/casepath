@@ -1,0 +1,34 @@
+[aist#0:0/pcm_s16le @ 0x156608bf0] Guessed Channel Layout: stereo
+Input #0, wav, from '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/casepath-original-score.wav':
+  Duration: 00:01:38.57, bitrate: 1024 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 32000 Hz, stereo, s16, 1024 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (pcm_s16le (native) -> pcm_s24le (native))
+Output #0, wav, to '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo-media-evidence/score-master-48k.wav':
+  Metadata:
+    ISFT            : Lavf63.1.102
+  Stream #0:0: Audio: pcm_s24le ([1][0][0][0] / 0x0001), 48000 Hz, stereo, s32 (24 bit), 2304 kb/s
+    Metadata:
+      encoder         : Lavc63.1.102 pcm_s24le
+size=    3584KiB time=00:00:12.99 bitrate=2258.5kbits/s speed=25.7x elapsed=0:00:00.50    
+size=    7424KiB time=00:00:26.89 bitrate=2260.9kbits/s speed=26.5x elapsed=0:00:01.01    
+size=   11264KiB time=00:00:40.39 bitrate=2284.0kbits/s speed=26.5x elapsed=0:00:01.52    
+size=   14848KiB time=00:00:53.69 bitrate=2265.1kbits/s speed=26.4x elapsed=0:00:02.03    
+size=   18688KiB time=00:01:06.59 bitrate=2298.7kbits/s speed=26.2x elapsed=0:00:02.54    
+size=   22272KiB time=00:01:19.89 bitrate=2283.5kbits/s speed=26.2x elapsed=0:00:03.04    
+size=   25600KiB time=00:01:31.49 bitrate=2292.0kbits/s speed=25.7x elapsed=0:00:03.55    
+[Parsed_loudnorm_3 @ 0x600000aacbb0] 
+{
+	"input_i" : "-21.93",
+	"input_tp" : "-7.00",
+	"input_lra" : "11.20",
+	"input_thresh" : "-32.09",
+	"output_i" : "-20.00",
+	"output_tp" : "-4.23",
+	"output_lra" : "9.80",
+	"output_thresh" : "-30.09",
+	"normalization_type" : "dynamic",
+	"target_offset" : "-0.00"
+}
+[out#0/wav @ 0x6000008ac9c0] video:0KiB audio:27722KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.000359%
+size=   27722KiB time=00:01:38.60 bitrate=2303.2kbits/s speed=26.1x elapsed=0:00:03.77    

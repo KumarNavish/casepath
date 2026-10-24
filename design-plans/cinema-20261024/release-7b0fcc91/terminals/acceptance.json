@@ -1,0 +1,13 @@
+{
+  "sessionId": "cp-cinema-final-20261024-public-acceptance",
+  "pid": 4941,
+  "state": "completed",
+  "exitCode": 0,
+  "output": "{\"stage\": \"soak\", \"status\": \"running\", \"source_commit\": \"7b0fcc91dcad9cada95317e298fd379014b7149a\"}\n{\"stage\": \"soak\", \"exit_code\": 0}\n{\"stage\": \"browser\", \"status\": \"running\", \"source_commit\": \"7b0fcc91dcad9cada95317e298fd379014b7149a\"}\n{\"stage\": \"browser\", \"exit_code\": 0}\n{\"stage\": \"image\", \"status\": \"running\", \"source_commit\": \"7b0fcc91dcad9cada95317e298fd379014b7149a\"}\n{\"stage\": \"image\", \"exit_code\": 0}\n{\"stage\": \"readback\", \"status\": \"running\", \"source_commit\": \"7b0fcc91dcad9cada95317e298fd379014b7149a\"}\n{\"stage\": \"readback\", \"exit_code\": 0}\n{\"stage\": \"verify_readback\", \"status\": \"running\", \"source_commit\": \"7b0fcc91dcad9cada95317e298fd379014b7149a\"}\n{\"stage\": \"verify_readback\", \"exit_code\": 0}\n{\"status\": \"passed\", \"source_commit\": \"7b0fcc91dcad9cada95317e298fd379014b7149a\", \"sequential_soak_reads\": 300, \"desktop_case_views\": 18, \"mobile_case_views\": 9, \"primary_final_readback\": true}\n",
+  "offset": 0,
+  "nextOffset": 902,
+  "totalBytes": 902,
+  "truncated": false,
+  "startedAt": "2026-10-24T20:23:26.619Z",
+  "finishedAt": "2026-10-24T20:32:54.637Z"
+}

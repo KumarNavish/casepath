@@ -1,0 +1,276 @@
+{
+  "scope": "Supplemental execution evidence for the official dist-root archive transport. The official archive was not repackaged or changed. The earlier root-layout transfer attempt is retained separately.",
+  "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+  "helper": {
+    "filename": "prepare_public_archive_transfer_v2.py",
+    "sha256": "ae0d852d0a5f2785844f33ad54e05586c5ab11546558583bfe39098147b95917",
+    "source": "\"\"\"Package the already built public Sites archive for a hash-checked tool transfer.\"\"\"\nfrom pathlib import Path\nimport base64, hashlib, json, tarfile\n\nBASE = Path(__file__).resolve().parent\nSOURCE = json.loads((BASE.parent / 'source-binding.json').read_text())['source_commit']\nresult = json.loads((BASE / 'sites-workflow-result.json').read_text())\narchive = BASE / ('casepath-public-' + SOURCE[:8] + '.tar.gz')\nassert result['archive'] == str(archive) and archive.is_file() and not archive.is_symlink()\nassert result['project_id'] == 'appgprj_6ac8aab031988191b5c370f7a4dbf160'\nwith tarfile.open(archive, 'r:gz') as stream:\n    members = stream.getmembers()\n    names = [m.name.removeprefix('./') for m in members]\n    assert 'dist/.openai/hosting.json' in names and 'dist/server/index.js' in names and 'dist/client/index.html' in names\n    assert all(name == 'dist' or name.startswith('dist/') for name in names)\n    assert len(names) == len(set(names))\n    assert not any(m.issym() or m.islnk() or m.name.startswith('/') or '..' in Path(m.name).parts for m in members)\n    assert not any(any(s in name.lower() for s in ('hosted-read-seed', 'private-release', '.env', 'credentials', 'casepath.db', 'work.sqlite3')) for name in names)\ndata = archive.read_bytes()\nout = BASE / ('public-archive-transfer-' + SOURCE[:8])\nout.mkdir()\nrows = []\nfor i, offset in enumerate(range(0, len(data), 32768)):\n    chunk = data[offset:offset + 32768]\n    name = f'chunk-{i:04d}.b64'\n    (out / name).write_text(base64.b64encode(chunk).decode('ascii') + '\\n')\n    rows.append({'file': name, 'bytes': len(chunk), 'sha256': hashlib.sha256(chunk).hexdigest()})\nrecord = {'source_commit': SOURCE, 'project_id': result['project_id'], 'distribution_commit': result['commit_sha'],\n          'archive': str(archive), 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest(), 'chunks': rows}\n(out / 'index.json').write_text(json.dumps(record, separators=(',', ':')) + '\\n')\nprint(json.dumps({'source_commit': SOURCE, 'bytes': len(data), 'sha256': record['sha256'], 'chunks': len(rows), 'index': str(out / 'index.json')}))\n"
+  },
+  "actual_transfer_index": {
+    "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+    "project_id": "appgprj_6ac8aab031988191b5c370f7a4dbf160",
+    "distribution_commit": "72c758f38ee463a842be7a7e0b9671e72fe4302b",
+    "archive": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/release/casepath-public-7b0fcc91.tar.gz",
+    "bytes": 1432692,
+    "sha256": "d577e4a976174c6bdfa3dc3dad6c83dead06941948e654ce6fd952e76f02c690",
+    "chunks": [
+      {
+        "file": "chunk-0000.b64",
+        "bytes": 32768,
+        "sha256": "1e14ae081977514dd4686ba738a9ef0286816a950925af1ab526027d4bb0677d"
+      },
+      {
+        "file": "chunk-0001.b64",
+        "bytes": 32768,
+        "sha256": "6b08267e025218a9d2049c1c5eb6da88f29c726776abaccfdd2ef90f7114c264"
+      },
+      {
+        "file": "chunk-0002.b64",
+        "bytes": 32768,
+        "sha256": "a84d85a43bfde98c69f2e85d0819a078d40fe6984819ed2c088caf3c17140aa3"
+      },
+      {
+        "file": "chunk-0003.b64",
+        "bytes": 32768,
+        "sha256": "c4b915b242e04201b223181b600004ec9e527e40d895238330931c61a2b47249"
+      },
+      {
+        "file": "chunk-0004.b64",
+        "bytes": 32768,
+        "sha256": "931f4e577a8e8f21524c3a61b598a61423c5bbe65f467d7592d155b26474bec9"
+      },
+      {
+        "file": "chunk-0005.b64",
+        "bytes": 32768,
+        "sha256": "7964b251cf5ac04c9fed27f6dc1727f93b67c6f02818d8ea5f4c863145b5827a"
+      },
+      {
+        "file": "chunk-0006.b64",
+        "bytes": 32768,
+        "sha256": "9dfb5e8d6b59959be5f7d1cbda4c7a8bed06d48996c1d45b33365ab64a176798"
+      },
+      {
+        "file": "chunk-0007.b64",
+        "bytes": 32768,
+        "sha256": "52c431ceefc18e83049bf181d5d058b09a966b295f78cda97cf28cec3f4b5b7a"
+      },
+      {
+        "file": "chunk-0008.b64",
+        "bytes": 32768,
+        "sha256": "3798e0a555a0281814bb2b9e020c6eb7b2bf45ace403eb43da4067c9078df5c9"
+      },
+      {
+        "file": "chunk-0009.b64",
+        "bytes": 32768,
+        "sha256": "972c648b88d3177e172dea284b4f9e0b07ef722d4636bb035332f1d2149c5618"
+      },
+      {
+        "file": "chunk-0010.b64",
+        "bytes": 32768,
+        "sha256": "174e72119a2151e1465dcae3c10fa8191c49d87dc328ba88f74384e2a3c5796e"
+      },
+      {
+        "file": "chunk-0011.b64",
+        "bytes": 32768,
+        "sha256": "d1629e74bd223fa5e65e77a3b3f9e49ef34874758d2289634d71a431c963bd3d"
+      },
+      {
+        "file": "chunk-0012.b64",
+        "bytes": 32768,
+        "sha256": "0572ef3c9c730ddae72c2c5bd7075e20920f0ef71e773d78e3b25eae0e286839"
+      },
+      {
+        "file": "chunk-0013.b64",
+        "bytes": 32768,
+        "sha256": "7d29ad0b989c69cb80606114f1f4447fe4cb8c66c77d99db14531afda6cb4de7"
+      },
+      {
+        "file": "chunk-0014.b64",
+        "bytes": 32768,
+        "sha256": "77d09239fb7d97026740cd95e593c8bb3351c2db6d069ec94cfaf637da5ba582"
+      },
+      {
+        "file": "chunk-0015.b64",
+        "bytes": 32768,
+        "sha256": "24c6ac4a7ed290bd3fc20976fc0844ca8261e39c4548a1cd18bd63561200a2d4"
+      },
+      {
+        "file": "chunk-0016.b64",
+        "bytes": 32768,
+        "sha256": "0c4b3a11bcf04bb007be8cacc9e8a0bc686a46082d5a698f93cadc4d3aa0125e"
+      },
+      {
+        "file": "chunk-0017.b64",
+        "bytes": 32768,
+        "sha256": "a94ce9297fc6726d17c3b4ccb3b5f6f6755292b322df1d4f63ced6009408127f"
+      },
+      {
+        "file": "chunk-0018.b64",
+        "bytes": 32768,
+        "sha256": "c67cfe40798b6a0af92bacd970670657b44a5a5d0984bcabe21570547b771af6"
+      },
+      {
+        "file": "chunk-0019.b64",
+        "bytes": 32768,
+        "sha256": "f6d92ff513079fadba0c643ca91573196f73c5877d165e675482410c358fb498"
+      },
+      {
+        "file": "chunk-0020.b64",
+        "bytes": 32768,
+        "sha256": "b533755ba834a350e1e82496168d06e1f90a09c793207f43207b909bb2e81bd9"
+      },
+      {
+        "file": "chunk-0021.b64",
+        "bytes": 32768,
+        "sha256": "23ce2e1480d6dbf6ec2abd5db847634ecd26da8beb66398038b1fb9dbd13806f"
+      },
+      {
+        "file": "chunk-0022.b64",
+        "bytes": 32768,
+        "sha256": "45d5e006a276b6655514c7ddb371176c4513500983746bbe52f118befe101a91"
+      },
+      {
+        "file": "chunk-0023.b64",
+        "bytes": 32768,
+        "sha256": "09767fcfc834957ffebfb83c149cc5e44f77365b6a7c0fb7c3eca395b80dc00d"
+      },
+      {
+        "file": "chunk-0024.b64",
+        "bytes": 32768,
+        "sha256": "6b7fadeb6a5ff1bdc3c3a00de45bb5d54c47277c3b553694dd66372d89a8406a"
+      },
+      {
+        "file": "chunk-0025.b64",
+        "bytes": 32768,
+        "sha256": "6a7260e0c180d412ae1a87e77ff40326cde4bcef4fb0cb246074035e2a5fe909"
+      },
+      {
+        "file": "chunk-0026.b64",
+        "bytes": 32768,
+        "sha256": "0bd2aadc1aa82f28a0f3818e7b1cb81411363f23965c94838d04a48e40c6a81d"
+      },
+      {
+        "file": "chunk-0027.b64",
+        "bytes": 32768,
+        "sha256": "b8f29b52d571bed2da433739cdc34f15ad59ee22f80f8abf914bc4cdfe280329"
+      },
+      {
+        "file": "chunk-0028.b64",
+        "bytes": 32768,
+        "sha256": "f7d01d16daf4127aa2a0c17b74d3c911e156f7a187e78c116ac09e45a543c431"
+      },
+      {
+        "file": "chunk-0029.b64",
+        "bytes": 32768,
+        "sha256": "d0141e65bfaaca19c287f287a3f7ec5dbe9c66cf59950e4999bd520d32f36c08"
+      },
+      {
+        "file": "chunk-0030.b64",
+        "bytes": 32768,
+        "sha256": "50190dfca13b3aad549df7a6e916fc96b68db78c47698a5758fdecb85b07d9a7"
+      },
+      {
+        "file": "chunk-0031.b64",
+        "bytes": 32768,
+        "sha256": "89290205c4a95a8b93747416345343e1b33f400f7d497ad7635c7aeac3fd5bc5"
+      },
+      {
+        "file": "chunk-0032.b64",
+        "bytes": 32768,
+        "sha256": "ec386b21a38ee0dcb4ece27aedfab487f693c0f3b7ee403d5180f31564b02a68"
+      },
+      {
+        "file": "chunk-0033.b64",
+        "bytes": 32768,
+        "sha256": "c767eb0cf9efe0c3dcf3c7eaa6b70d389dad309be7a98200efff667d9cbadfa9"
+      },
+      {
+        "file": "chunk-0034.b64",
+        "bytes": 32768,
+        "sha256": "f6ad1f0dcf08c241ffcccf71732be97742ed80d9aeb6317828815e3b04f590d4"
+      },
+      {
+        "file": "chunk-0035.b64",
+        "bytes": 32768,
+        "sha256": "82214309c058473d192c9a7f825713d28d238cbf57fc884b60222cece7f92db0"
+      },
+      {
+        "file": "chunk-0036.b64",
+        "bytes": 32768,
+        "sha256": "b8e324f7da64a11ed769696b55e92a3f04a6625adf1999e68f4178b34ee29bd7"
+      },
+      {
+        "file": "chunk-0037.b64",
+        "bytes": 32768,
+        "sha256": "d6e60b4f5b082c4d57756ad0b8a1d1318b3f4bf32dbf96575208af072a06d244"
+      },
+      {
+        "file": "chunk-0038.b64",
+        "bytes": 32768,
+        "sha256": "88265517cca099d060782ebe8afc0b72429cb75f14246a78e6fc6eddbea247f4"
+      },
+      {
+        "file": "chunk-0039.b64",
+        "bytes": 32768,
+        "sha256": "448883f85ce8d9bb1b7a5de9166fc7607ce38235bf16b301fea3366741bc5385"
+      },
+      {
+        "file": "chunk-0040.b64",
+        "bytes": 32768,
+        "sha256": "95146919c57fefe544bfad104f88e43fa697d22d0af7190a6f192e88a5dbc855"
+      },
+      {
+        "file": "chunk-0041.b64",
+        "bytes": 32768,
+        "sha256": "49ea834550fd5ccaefe3d3028725c6201f79fefc7fadfc4994f5c71e928c5854"
+      },
+      {
+        "file": "chunk-0042.b64",
+        "bytes": 32768,
+        "sha256": "e855920354820fa8a3f41be470777f6fa7f12f37c93fd086caeb535f6d1c00e6"
+      },
+      {
+        "file": "chunk-0043.b64",
+        "bytes": 23668,
+        "sha256": "68031bde202774e5f24a159dcbaafdafc1e26f29ca4e6d8877760645d9bb4438"
+      }
+    ]
+  },
+  "actual_transfer_index_sha256": "b38ac44c5eae073f38d56cef3e8d0ad04509cf1a0039e3e04ddd76205c8aec6d",
+  "received_archive_verification": {
+    "source_commit": "7b0fcc91dcad9cada95317e298fd379014b7149a",
+    "distribution_commit": "72c758f38ee463a842be7a7e0b9671e72fe4302b",
+    "archive": "/workspace/scratch/40a22638171b/casepath-public-transfer-7b0fcc91/casepath-public-7b0fcc91.tar.gz",
+    "bytes": 1432692,
+    "sha256": "d577e4a976174c6bdfa3dc3dad6c83dead06941948e654ce6fd952e76f02c690",
+    "tar_bytes": 5209088,
+    "tar_sha256": "9712feac2cb1a1fcd911c58bf594285ae0feee683c37a27a7260601577091ddc",
+    "regular_files": 47,
+    "asset_sha256": {
+      "autonomous-presentation-v1.js": "9548e51a79ad2307aea1981548ec2d7085ccd5d84c53de9b22f447e426e4c9bb",
+      "autonomous-workspace-v1.css": "89aa8c15eba76e938e03666ecc038b9d2a25f6ec783be21cbfb5c907478ab94e",
+      "autonomous-workspace-v1.js": "400cbe91908d8318f257626f38e674f34dc3a94eff467848b835d0e95171c8c1",
+      "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49"
+    },
+    "original_archive_unchanged": true,
+    "private_payloads_excluded": true
+  },
+  "saved_version": {
+    "id": "appgprj_6ac8aab031988191b5c370f7a4dbf160~appgver_2020e23297e88191997111a466466bc4",
+    "project_id": "appgprj_6ac8aab031988191b5c370f7a4dbf160",
+    "version_number": 50,
+    "source": {
+      "commit_sha": "72c758f38ee463a842be7a7e0b9671e72fe4302b"
+    },
+    "archive_storage": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_00000000fea48243bc8e9519f9dbc743",
+      "content_hash": "sha256:e285e99a8aaf5f8bbd6698eb220800f7bfac80bf2973e1586c8091e308b479e7",
+      "size_bytes": 5160960,
+      "file_count": 47
+    },
+    "screenshot_url": null,
+    "deployment_id": null
+  },
+  "native_archive_note": "Sites stores a normalized tar representation. Its native archive_storage hash describes that representation; the original compressed archive transfer hash remains recorded separately."
+}

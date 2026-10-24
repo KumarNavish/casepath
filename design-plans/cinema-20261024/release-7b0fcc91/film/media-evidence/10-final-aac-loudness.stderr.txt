@@ -1,0 +1,48 @@
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/published-film/CasePath_Cinematic_Demo.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    title           : CasePath
+    encoder         : Lavf63.1.102
+  Duration: 00:01:38.57, start: 0.000000, bitrate: 716 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080, 515 kb/s, 30 fps, 30 tbr, 15360 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 192 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Stream mapping:
+  Stream #0:1 -> #0:0 (aac (native) -> pcm_s16le (native))
+Output #0, null, to 'pipe:':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    title           : CasePath
+    encoder         : Lavf63.1.102
+  Stream #0:0(und): Audio: pcm_s16le, 192000 Hz, stereo, s16, 6144 kb/s (default)
+    Metadata:
+      encoder         : Lavc63.1.102 pcm_s16le
+      handler_name    : SoundHandler
+size=N/A time=00:00:14.90 bitrate=N/A speed=29.4x elapsed=0:00:00.50    
+size=N/A time=00:00:30.90 bitrate=N/A speed=30.4x elapsed=0:00:01.01    
+size=N/A time=00:00:46.60 bitrate=N/A speed=30.7x elapsed=0:00:01.51    
+size=N/A time=00:01:02.50 bitrate=N/A speed=30.8x elapsed=0:00:02.02    
+size=N/A time=00:01:18.50 bitrate=N/A speed=30.9x elapsed=0:00:02.53    
+size=N/A time=00:01:34.30 bitrate=N/A speed=  31x elapsed=0:00:03.04    
+[Parsed_loudnorm_0 @ 0x6000010c8dc0] 
+{
+	"input_i" : "-20.04",
+	"input_tp" : "-4.24",
+	"input_lra" : "10.00",
+	"input_thresh" : "-30.20",
+	"output_i" : "-19.89",
+	"output_tp" : "-4.21",
+	"output_lra" : "9.80",
+	"output_thresh" : "-29.98",
+	"normalization_type" : "dynamic",
+	"target_offset" : "-0.11"
+}
+[out#0/null @ 0x6000012c8a80] video:0KiB audio:73925KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+size=N/A time=00:01:38.60 bitrate=N/A speed=31.5x elapsed=0:00:03.13    

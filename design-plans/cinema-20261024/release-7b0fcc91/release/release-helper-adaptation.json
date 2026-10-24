@@ -1,0 +1,122 @@
+{
+  "base_commit": "0ccf1eafcd27e0827e2d0778f9c2642e34cd05f9",
+  "helpers": {
+    "await_api.py": {
+      "prior_sha256": "380d86398dae2687f13f6fd33a80c2ebad276ce5a704b47de51dfb5786f9a4ea",
+      "replacements": {
+        ".runtime/commander-demo-polish": 1,
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024": 1,
+        "f75af1ac22a7260487556fc9231f4e290489c2e0": 1
+      },
+      "sha256": "d2ee60b5849ed7e475cffbc6e3a249f717f7deb2fcbf06a187f4b29d9ef49a67"
+    },
+    "copy_sites_inputs.py": {
+      "prior_sha256": "f80483ed69110fc3b9a34bebf1a95776e41cb97793a7c8740f841ae706bba22a",
+      "replacements": {
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024": 1,
+        "b20685d1670b33b941b1bfcb902638a879c01b93": 2
+      },
+      "sha256": "dc1af15b962a9d6c7e1427982a9db748062940cf1994ce4e04e53fc42d245454"
+    },
+    "deploy_api.py": {
+      "prior_sha256": "51903de878ba05e0511b5a52fb4db3943fb5ea1f2ab414bd57a162d7d441abf4",
+      "replacements": {
+        ".runtime/commander-demo-polish": 1,
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024": 2,
+        "b20685d1670b33b941b1bfcb902638a879c01b93": 1,
+        "c568dbf8aeb3f06f093049c5d8c9880dc44f4e2aa350cfd5edae44e94819793d": 1,
+        "f75af1ac22a7260487556fc9231f4e290489c2e0": 1
+      },
+      "sha256": "073b4f2b6b7003ff36daeebcac2bf53d978bc47e23333e837d40ebde6eef504f"
+    },
+    "integrate_canonical.py": {
+      "prior_sha256": "e0aba2b47c83f0ac8499462c584730332d6822c3d894f394770e384d01a32318",
+      "replacements": {
+        ".runtime/commander-demo-polish": 1,
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024": 1,
+        "f75af1ac22a7260487556fc9231f4e290489c2e0": 1
+      },
+      "sha256": "48f961311fdbf2f7970ad1bcd8c5afd6a3018e3a5c76ae4b1d9d602d817f8e77"
+    },
+    "prepare_public_archive_transfer.py": {
+      "prior_sha256": "26abdcee9a287b13c86dc0303a30e40b5f2fc43622d3177d1f63780e04789f82",
+      "replacements": {},
+      "sha256": "26abdcee9a287b13c86dc0303a30e40b5f2fc43622d3177d1f63780e04789f82"
+    },
+    "published_soak.py": {
+      "prior_sha256": "46a5ba66f2b0dfc39833d9c90907e9603ae6a00ff95699ca56f1d7ad4f2c8c67",
+      "replacements": {},
+      "sha256": "46a5ba66f2b0dfc39833d9c90907e9603ae6a00ff95699ca56f1d7ad4f2c8c67"
+    },
+    "readback.py": {
+      "prior_sha256": "d0f78aaf81347d7385106f8f2fef018220e70599222d28df6193a13c411e2806",
+      "replacements": {},
+      "sha256": "d0f78aaf81347d7385106f8f2fef018220e70599222d28df6193a13c411e2806"
+    },
+    "renew_seed.py": {
+      "prior_sha256": "ca1ea0c82b4028b3f613e5afe4c59aac3049c33e60a20a8278b5762a396891bc",
+      "replacements": {
+        ".runtime/commander-demo-polish": 1,
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024": 1,
+        "b20685d1670b33b941b1bfcb902638a879c01b93": 1,
+        "c568dbf8aeb3f06f093049c5d8c9880dc44f4e2aa350cfd5edae44e94819793d": 1,
+        "f75af1ac22a7260487556fc9231f4e290489c2e0": 1,
+        "private-release-b20685d1670b": 1
+      },
+      "sha256": "4a05addac324645f185c39ce08c34e4ca95ded0c8c8307fad2a7074cb62c7edf"
+    },
+    "require_completed_gate.py": {
+      "prior_sha256": "3dfda32a8ec7825b1bffad15b34091495fe3ffa796a492ace18f640d2986bd28",
+      "replacements": {
+        "_casepath_demo_polish_completed_gate": 1
+      },
+      "sha256": "248549973e918db22b5b2bf33fb6fe8f410a9b8ed35d17aa15229f787508fd26"
+    },
+    "run_api_release.py": {
+      "prior_sha256": "649b39a368d808fd604834c94f5d6177ccd8219d3aa67ccef87c602252ec28bd",
+      "replacements": {
+        ".runtime/commander-demo-polish": 1,
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024": 1,
+        "b20685d1670b33b941b1bfcb902638a879c01b93": 1,
+        "f75af1ac22a7260487556fc9231f4e290489c2e0": 1
+      },
+      "sha256": "7043403378814efb949aa401e9e2d7a7439952ccf7b41e744f9429ae9d4abe0b"
+    },
+    "run_sites_workflow_finite.py": {
+      "prior_sha256": "f1adb0246d08980ec1087e52a988a20199bc2ae21df93ac5a0e70facc91003a8",
+      "replacements": {
+        "b20685d1670b33b941b1bfcb902638a879c01b93": 1,
+        "bb02a959c26b85681529f4a9e9e788ff1417f2aa": 1
+      },
+      "sha256": "9b34315a38949f01280aca4662f999273cb3f34ff2136e01feab8135ac12cf49"
+    },
+    "update_api_env.py": {
+      "prior_sha256": "3e6157c367359457806b1904719392cde7fec1eec03ddc1f0a166b53c375a309",
+      "replacements": {
+        ".runtime/commander-demo-polish": 1,
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024": 1,
+        "b20685d1670b33b941b1bfcb902638a879c01b93": 1,
+        "c568dbf8aeb3f06f093049c5d8c9880dc44f4e2aa350cfd5edae44e94819793d": 1,
+        "f75af1ac22a7260487556fc9231f4e290489c2e0": 1
+      },
+      "sha256": "b1e5b5aa3cd92f93573d00d88251bde24587b72ce56e70c198ea73c38ba800a9"
+    },
+    "verify_api_build_v2.py": {
+      "prior_sha256": "feadbb921e04878b57d58b034571415363cb0cbeb467a26de523a58aa1494fbc",
+      "replacements": {},
+      "sha256": "feadbb921e04878b57d58b034571415363cb0cbeb467a26de523a58aa1494fbc"
+    },
+    "verify_public_image.py": {
+      "prior_sha256": "ebeea25ec13f1ce4618dd84570316551e9374e784909eec411659d78af4da4a7",
+      "replacements": {},
+      "sha256": "ebeea25ec13f1ce4618dd84570316551e9374e784909eec411659d78af4da4a7"
+    },
+    "verify_readback.py": {
+      "prior_sha256": "a14c1baf04e23bc74ecf918a188bd4e8e0498b01e484fe988af5f9642c781923",
+      "replacements": {},
+      "sha256": "a14c1baf04e23bc74ecf918a188bd4e8e0498b01e484fe988af5f9642c781923"
+    }
+  },
+  "previous_source": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "scope": "Prepared helper source only; no gate, deployment, or acceptance execution claimed"
+}

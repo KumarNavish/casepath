@@ -1,0 +1,154 @@
+{
+  "contract": "casepath.cinema-seal/1",
+  "status": "passed",
+  "base_commit": "0ccf1eafcd27e0827e2d0778f9c2642e34cd05f9",
+  "branch": "codex/casepath-cinema-final-20261024",
+  "started_at": "2026-10-24T18:55:53.759149+00:00",
+  "stages": [
+    {
+      "name": "generate-artifacts",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "casepath-api/generate_artifacts.py"
+      ],
+      "status": "passed",
+      "started_at": "2026-10-24T18:55:53.761258+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/seal-generate-artifacts.log",
+      "pid": 67644,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T18:55:55.415292+00:00",
+      "log_sha256": "47663c264c5cc14b10971f66ba5f9d16d3d33b84fb2d0e2bc2dbf9caf0b6b33e"
+    },
+    {
+      "name": "photographic-evidence",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "casepath-api/replace_photographic_evidence.py",
+        "."
+      ],
+      "status": "passed",
+      "started_at": "2026-10-24T18:55:55.426448+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/seal-photographic-evidence.log",
+      "pid": 67651,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T18:55:55.658550+00:00",
+      "log_sha256": "436d8c99cacc285b9b4e4bc6d9ed91796efd803258628325d4fe550c634fac4e"
+    },
+    {
+      "name": "build-static",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "casepath/tools/build_static_site.py",
+        "--require-known-commit"
+      ],
+      "status": "passed",
+      "started_at": "2026-10-24T18:55:55.666747+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/seal-build-static.log",
+      "pid": 67652,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T18:55:55.886556+00:00",
+      "log_sha256": "dabae3f7592e205d38d50b34a6e18ef28299612e5595251f504dc1ee2ac63e17"
+    },
+    {
+      "name": "generate-seal",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "casepath/tools/casepath_release.py",
+        "generate"
+      ],
+      "status": "passed",
+      "started_at": "2026-10-24T18:55:55.891089+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/seal-generate-seal.log",
+      "pid": 67653,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T18:55:58.816832+00:00",
+      "log_sha256": "49168761a7d590bff31a6bc8ed166960ff4b64801b3ed581c9e5c77113c904f9"
+    }
+  ],
+  "authored_files": [
+    "casepath-qa/autonomous-northstar-v1.test.cjs",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs",
+    "casepath/assets/autonomous-presentation-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/index.html",
+    "design-plans/cinema-20261024/BRIEF.md"
+  ],
+  "authored_sha256": {
+    "casepath-qa/autonomous-northstar-v1.test.cjs": "ee5389fca09a891e5253215726945dfe794d941aa073468263367c65dfaa6c42",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs": "88398ce1b9bb783be6510cc043f680e79d89ee2eb51a081733b82585eeea6c9b",
+    "casepath/assets/autonomous-presentation-v1.js": "9548e51a79ad2307aea1981548ec2d7085ccd5d84c53de9b22f447e426e4c9bb",
+    "casepath/assets/autonomous-workspace-v1.css": "89aa8c15eba76e938e03666ecc038b9d2a25f6ec783be21cbfb5c907478ab94e",
+    "casepath/assets/autonomous-workspace-v1.js": "400cbe91908d8318f257626f38e674f34dc3a94eff467848b835d0e95171c8c1",
+    "casepath/index.html": "ca4bbed1699eaabca95e97369f4943ec6384bfb240b82838fdb6fec5dbd019b5",
+    "design-plans/cinema-20261024/BRIEF.md": "01db7e27fa362f2c6aadbf40df662f22f3697425a93c63a9c8d63e7e62779dee"
+  },
+  "runner_sha256": "920bf1d63b503318438f1be38498e46fae786e6245abab56b89b4f09a6e0b2e7",
+  "verifier_sha256": "ef4a80c672d50d0c446032a6ad86ce3ae611c5002a402ff93e1d75d0ffa9b741",
+  "historical_reference_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+  "historical_skip_reports": [
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v1.py:605: frozen independent-transition packet is not available",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:457: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:548: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:559: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:579: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:592: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:610: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:636: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:646: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:696: saved native source-binding run is unavailable"
+  ],
+  "frontend_suites_required": [
+    "autonomous-workspace-v1.test.cjs",
+    "autonomous-language-v1.test.cjs",
+    "sites-autonomous-entry.test.cjs",
+    "autonomous-evidence-identity-v2.test.cjs",
+    "unified-product-v1.test.cjs",
+    "autonomous-desk-v3.test.cjs",
+    "autonomous-cases-v4.test.cjs",
+    "autonomous-knowledge-w6.test.cjs",
+    "autonomous-northstar-v1.test.cjs",
+    "autonomous-presentation-v1.test.cjs",
+    "autonomous-presentation-browser-v1.test.cjs",
+    "review-northstar-v1.test.cjs",
+    "review-northstar-browser-v1.test.cjs",
+    "causal-process-v1.test.cjs",
+    "claims-workspace-presentation-v1.test.cjs",
+    "claim-sections-v1.test.cjs",
+    "claim-navigation-refresh-v4.test.cjs",
+    "claims-workspace-lazy-presentation-v1.test.cjs"
+  ],
+  "frontend_declaration_sha256": "d01a6b83f5f9983f0125a46fe490122bbdc648513b59b76cf8987663797851d8",
+  "expected_pytest_passed": 2927,
+  "expected_pytest_skipped": 10,
+  "expected_count_basis": "Unchanged 2927-test Python parameterization and 18 mandatory frontend suites; exact prior ten historical skips.",
+  "authored_files_input": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/authored-files.json",
+    "sha256": "7c91ddb924be184da23850a1957fbb9349790efce35de6f996382cc825fe7497"
+  },
+  "independent_review": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-release/independent-review.json",
+    "sha256": "2a015e0d74400f6aea92219c5a435c72646672858cae9d7d4b376e47ef9178c8"
+  },
+  "preseal_browser_receipt": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-cinema-final-20261024/.runtime/cinema-evidence/final-stills/capture-receipt.json",
+    "sha256": "00982ae1320f33ace7e097872e9c6f2337cf3a46bb191d9ef939398456136d4a"
+  },
+  "finished_at": "2026-10-24T18:55:59.800546+00:00",
+  "source_files": 1746,
+  "manifest_sha256": "2bf63dadf6bf3a2a7a8eade9ed0242a3f4305ea9cc422af22a3a52f06c1c96a8",
+  "changed_files": [
+    "casepath-qa/autonomous-northstar-v1.test.cjs",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs",
+    "casepath/assets/autonomous-presentation-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath/index.html",
+    "casepath/source-manifest.json",
+    "design-plans/cinema-20261024/BRIEF.md"
+  ]
+}
