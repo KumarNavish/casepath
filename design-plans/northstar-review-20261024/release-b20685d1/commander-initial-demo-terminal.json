@@ -1,0 +1,31 @@
+{
+  "state": "completed",
+  "operationState": "failed",
+  "startedAt": "2026-10-24T13:37:18.463Z",
+  "finishedAt": "2026-10-24T13:37:18.464Z",
+  "observation": true,
+  "receiptPersisted": false,
+  "retrySafe": false,
+  "sessionId": "cp-ns-20261024-engineering-demo-4194",
+  "result": {
+    "sessionId": "cp-ns-20261024-engineering-demo-4194",
+    "pid": 25621,
+    "state": "failed",
+    "exitCode": -15,
+    "output": "{\"source_commit\": \"b20685d1670b33b941b1bfcb902638a879c01b93\", \"source_manifest_sha256\": \"f1c20fd3de067a88a8b2e60e3d72383aa9eba6e58dd67e151036fd2cba2b5393\", \"launcher_sha256\": \"4bcabaaf11b91382a6985785a9ffe768da1002f7c581f625ff04e9d42dd67961\", \"qa_receipt_sha256\": \"83517c45d484e4623ca1744fdf209595196f0aca3e4f8d6c761778e787111f36\", \"capsule_receipt_sha256\": \"6d347dcde8946759f8efcaee1dc7783f20659ee27dd2ad11926eb24324153e07\", \"pid\": 25621, \"instance_id\": \"c249a178e95272f914805278\", \"host\": \"127.0.0.1\", \"port\": 4194, \"commander_session\": \"cp-ns-20261024-engineering-demo-4194\", \"status\": \"initialization_verified\", \"started_at\": \"2026-10-24T12:58:01.366379+00:00\", \"data_root\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/data\", \"work_store\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/data/work.sqlite3\", \"evidence_root\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/data/evidence\", \"source_capsule\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/source-capsules/f1c20fd3de067a88a8b2e60e3d72383aa9eba6e58dd67e151036fd2cba2b5393\", \"review_actions_at_startup\": 0, \"original_qa_data_preserved\": true, \"journal_before\": {\"rows\": 164, \"sha256\": \"d62426a9f751ea6a3b3dcc0e7294b9823d89740199633cc3eaa418dcb2884076\"}, \"journal_after\": {\"rows\": 164, \"sha256\": \"d62426a9f751ea6a3b3dcc0e7294b9823d89740199633cc3eaa418dcb2884076\"}, \"target_pin\": {\"fragment_id\": \"fragment.29a6fc5115919bfd6a5899cc\", \"version\": 1, \"fragment_sha256\": \"6ac29174c811526be16df2aaeae9d851663453ddcb263502da97d6a95c356047\", \"source_claim_id\": \"clm_f69b1747447bc221\"}, \"target_event_sha256\": \"9e590ad8cea0e42a28d4e02cb23b7e7707e290e2be5264436bf8c72ed54477a1\", \"target_workspace_state_sha256\": \"b5e35ec531912454cd7c7b399b6bb84023db3588bcfa12e8a534ff3f59b0ecca\", \"target_view_sha256\": \"59c2c3c2e011ab38c3ef3749831eedc24be0c0e53dd3c40757f1932d6b053ad6\", \"qualified_human_approval\": false, \"label\": \"Isolated engineering demo \\u2014 recorded Test handler actions; no human approval\"}\nINFO:     Started server process [25621]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\nINFO:     Uvicorn running on http://127.0.0.1:4194 (Press CTRL+C to quit)\nINFO:     Shutting down\nINFO:     Waiting for application shutdown.\nINFO:     Application shutdown complete.\nINFO:     Finished server process [25621]\n",
+    "offset": 0,
+    "nextOffset": 2618,
+    "totalBytes": 2618,
+    "truncated": false,
+    "startedAt": "2026-10-24T12:57:49.608Z",
+    "finishedAt": "2026-10-24T13:37:09.333Z"
+  },
+  "connectorOperation": {
+    "operationId": "b8ff671fde0f6214d0b94164f327ccd2dc1ab32c420941d78fb5e494e41d69c3",
+    "toolName": "commander_process_output",
+    "requestSha256": "7f31b031797728a5b7c4062faecb44dc7b57641be04d153314087935d4c63206",
+    "device": "local",
+    "sessionId": "cp-ns-20261024-engineering-demo-4194"
+  },
+  "error_code": "INVALID_ARGUMENT"
+}

@@ -1,0 +1,115 @@
+{
+  "contract": "casepath.operation-trace-identity-review/1",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "started_at": "2026-10-24T13:53:36.950Z",
+  "status": "passed",
+  "errors": [],
+  "writes": [],
+  "claims": [
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "trace_url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/operations?mode=recorded",
+      "trace_file": "clm_543f08f2415b2a33.ndjson",
+      "trace_sha256": "3dc1971237f51d29ab5bd61afde8750ad3a2ff2876004e15415b05b6c15a3947",
+      "state_file": "clm_543f08f2415b2a33-state.json",
+      "state_file_sha256": "4f0fec243a6d6f246b75f81ca3a077df8c0aeb0004403e301f174c26b46bb2a9",
+      "state_sha256": "77cb8dbb46914420234c73ddc53e3ff229b80553444c89ed2c0b3f63b528bfec",
+      "operation_count": 428,
+      "fixture_operation_count": 428,
+      "operation_chain_sha256": "f4ae02fd033bf329dcd810a9120f4180726f2f4b7504f0162fe2d8ca0bb6064a",
+      "frame_trace_sha256": "51600298a213a7d9d3471a3698a11b37380c3cc4a0c471f4d425b7ce13b36a76",
+      "official_checkedOperation_all_passed": true,
+      "final_binding_verified": true,
+      "difference_file": "clm_543f08f2415b2a33-fixture-differences.json",
+      "difference_sha256": "95968d8399cbe02d45c01812b410ab618eee5f1b32cf02c87ff66c9e60f2bf5a",
+      "differences": 306,
+      "difference_fields": [
+        "operation_sha256",
+        "previous_operation_sha256"
+      ],
+      "first_semantic_differences": [
+        {
+          "id": "op_b5241e6427a8d0fec9a684359b59fbbd",
+          "seq": 123,
+          "kind": "knowledge.reuse",
+          "missing_in_fixture": true
+        }
+      ]
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "trace_url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/operations?mode=recorded",
+      "trace_file": "clm_7dbd7c7d1c4ddf90.ndjson",
+      "trace_sha256": "5f5c9856882af60a660b2f60c13041f22f49a4b8204436e75118532a7a0647b4",
+      "state_file": "clm_7dbd7c7d1c4ddf90-state.json",
+      "state_file_sha256": "306cf90a58747dec5586a129e192b250647fda0673ef3f961eb900540ced2183",
+      "state_sha256": "f02392106065c7c6d78f100cc2cfd135620ca0fccb096b7d7395dfe7d69a52f1",
+      "operation_count": 428,
+      "fixture_operation_count": 428,
+      "operation_chain_sha256": "aa15b068aa8e318b0910a703d3de38c338cdc07edcfd296d638dc49f477ed4a9",
+      "frame_trace_sha256": "f99aaf7b03723cdaccad66fffd729c3ed809c68b5bd80286c852b17ccf8c9183",
+      "official_checkedOperation_all_passed": true,
+      "final_binding_verified": true,
+      "difference_file": "clm_7dbd7c7d1c4ddf90-fixture-differences.json",
+      "difference_sha256": "d8b16be32209beb84cdf1dd43847af648f13eeae4b1d0293738ed15214f6f978",
+      "differences": 428,
+      "difference_fields": [
+        "journal_seq",
+        "operation_sha256",
+        "previous_operation_sha256"
+      ],
+      "first_semantic_differences": [
+        {
+          "id": "op_9a718dbd5c8806e12b532ae87b7c4b31",
+          "seq": 1,
+          "kind": "process.inspect",
+          "keys": [
+            "journal_seq",
+            "operation_sha256"
+          ],
+          "values": {
+            "journal_seq": {
+              "actual": 35,
+              "fixture": 25
+            }
+          }
+        },
+        {
+          "id": "op_986ace6d95944eb0347d13811c097c39",
+          "seq": 2,
+          "kind": "condition.evaluate",
+          "keys": [
+            "journal_seq",
+            "operation_sha256",
+            "previous_operation_sha256"
+          ],
+          "values": {
+            "journal_seq": {
+              "actual": 35,
+              "fixture": 25
+            }
+          }
+        },
+        {
+          "id": "op_ec8e6165c6d1be2970cc2dd2a9c8bd0a",
+          "seq": 3,
+          "kind": "node.evaluate",
+          "keys": [
+            "journal_seq",
+            "operation_sha256",
+            "previous_operation_sha256"
+          ],
+          "values": {
+            "journal_seq": {
+              "actual": 35,
+              "fixture": 25
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "fixture_sha256": "1d718c6737ddf2bfca6c5a31ca439617f4d66fdb07b1d9a03881303d9fc1636c",
+  "official_validator_sha256": "573c2294692b4025549e687c0e21b959e14692365453519ed7a5ae4b8128e356",
+  "finished_at": "2026-10-24T13:54:15.394Z"
+}

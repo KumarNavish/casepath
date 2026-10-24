@@ -1,0 +1,58 @@
+{
+  "status": "passed",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "instance_id": "c249a178e95272f914805278",
+  "observed_at": "2026-10-24T13:48:49.483986+00:00",
+  "get_only": true,
+  "journal_unchanged_after_readonly_smoke": true,
+  "journal_before": {
+    "rows": 164,
+    "sha256": "d62426a9f751ea6a3b3dcc0e7294b9823d89740199633cc3eaa418dcb2884076"
+  },
+  "journal_after": {
+    "rows": 164,
+    "sha256": "d62426a9f751ea6a3b3dcc0e7294b9823d89740199633cc3eaa418dcb2884076"
+  },
+  "original_qa_files_unchanged": true,
+  "normal_workspace": {
+    "origin": "http://127.0.0.1:4173",
+    "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+    "model_mode": "deterministic_reference",
+    "model": null,
+    "credential_configured": false
+  },
+  "engineering_demo": {
+    "origin": "http://127.0.0.1:4194",
+    "label": "Isolated engineering demo \u2014 no qualified approval is asserted by this launcher",
+    "external_facts_enabled": false,
+    "original_qa_data_preserved": true
+  },
+  "served_assets": [
+    {
+      "origin": "http://127.0.0.1:4173",
+      "path": "/assets/review-northstar-v1.js",
+      "sha256": "911db61af8299ebbc00a818ad9fb9530ae84133dadac0dc12b9fd179c30d629b"
+    },
+    {
+      "origin": "http://127.0.0.1:4194",
+      "path": "/assets/review-northstar-v1.js",
+      "sha256": "911db61af8299ebbc00a818ad9fb9530ae84133dadac0dc12b9fd179c30d629b"
+    },
+    {
+      "origin": "http://127.0.0.1:4173",
+      "path": "/assets/review-northstar-v1.css",
+      "sha256": "7c75bde67d6fc138a71ec2b05536e17a267186fb3d2d46677ade9d8dea2e2dab"
+    },
+    {
+      "origin": "http://127.0.0.1:4194",
+      "path": "/assets/review-northstar-v1.css",
+      "sha256": "7c75bde67d6fc138a71ec2b05536e17a267186fb3d2d46677ade9d8dea2e2dab"
+    }
+  ],
+  "browser_receipt_sha256": "7f5c5aa9ee39a44e9f973000d4c8d9777292c0c4edaa2717937a7fc60c2b188d",
+  "browser_log_sha256": "dcf80c9870b25cebec4277a616cdd3439d11fd004703188783a400565ed0882a",
+  "browser_exit_code": 0,
+  "both_receiving_original_sources_opened": true,
+  "launcher_sha256": "4bcabaaf11b91382a6985785a9ffe768da1002f7c581f625ff04e9d42dd67961",
+  "screenshot_sha256": "0adbc9f0ae7ba9c9295bcd5e0ea0e246c93d79a16f816c0f00a43cfb1e1708c8"
+}

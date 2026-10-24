@@ -1,0 +1,34 @@
+{
+  "contract": "casepath.commander-northstar-full-gate/1",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "source_tree": "e89dca7ea2db16369d84f947235a1caf6ce4337f",
+  "base_commit": "3a63dacfc67bf31bf5533e206a7453e94ad0ef22",
+  "status": "passed",
+  "started_at": "2026-10-24T11:52:44.329433+00:00",
+  "wrapper_pid": 98799,
+  "command": [
+    "/usr/bin/nice",
+    "-n",
+    "10",
+    "./bin/casepath",
+    "test"
+  ],
+  "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/full-gate.log",
+  "strict_reused": false,
+  "frontend_suites_mandatory": true,
+  "runner_sha256": "15256de9e10059a6b54c0a8b66da0a7c88f2b4f6e081e680bff23645214ded3a",
+  "source_binding_sha256": "92801415b92e1f44e387021bb7ec59f87a4d6a615c960587c297d847dd291b29",
+  "preparation_sha256": "dfee716665f6362b88de86a1ffdb7cbc0b52b673a068346191d3c425080912a8",
+  "caffeinate_pid": 98812,
+  "pid": 98813,
+  "exit_code": 0,
+  "command_finished_at": "2026-10-24T12:52:44.378767+00:00",
+  "log_sha256": "b610dbc5d670589aec0abf3841809a4743c125d685d0024337139ac61f10e365",
+  "finished_at": "2026-10-24T12:52:45.081204+00:00",
+  "counts": {
+    "passed": 2927,
+    "skipped": 10,
+    "warnings": 10
+  },
+  "verified_receipt_sha256": "a9954389d72de2ee1de28366a5e63754ee48c0828b5ed1aa71bd8c8cd2764099"
+}

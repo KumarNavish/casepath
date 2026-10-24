@@ -1,0 +1,30 @@
+{
+  "state": "completed",
+  "operationState": "completed",
+  "startedAt": "2026-10-24T13:44:02.305Z",
+  "finishedAt": "2026-10-24T13:44:02.309Z",
+  "observation": true,
+  "receiptPersisted": false,
+  "retrySafe": false,
+  "sessionId": "cp-ns-20261024-published-acceptance",
+  "result": {
+    "sessionId": "cp-ns-20261024-published-acceptance",
+    "pid": 39474,
+    "state": "completed",
+    "exitCode": 0,
+    "output": "{\"stage\": \"soak\", \"status\": \"running\", \"source_commit\": \"b20685d1670b33b941b1bfcb902638a879c01b93\"}\n{\"stage\": \"soak\", \"exit_code\": 0}\n{\"stage\": \"browser\", \"status\": \"running\", \"source_commit\": \"b20685d1670b33b941b1bfcb902638a879c01b93\"}\n{\"stage\": \"browser\", \"exit_code\": 0}\n{\"stage\": \"image\", \"status\": \"running\", \"source_commit\": \"b20685d1670b33b941b1bfcb902638a879c01b93\"}\n{\"stage\": \"image\", \"exit_code\": 0}\n{\"stage\": \"readback\", \"status\": \"running\", \"source_commit\": \"b20685d1670b33b941b1bfcb902638a879c01b93\"}\n{\"stage\": \"readback\", \"exit_code\": 0}\n{\"stage\": \"verify_readback\", \"status\": \"running\", \"source_commit\": \"b20685d1670b33b941b1bfcb902638a879c01b93\"}\n{\"stage\": \"verify_readback\", \"exit_code\": 0}\n{\"status\": \"passed\", \"source_commit\": \"b20685d1670b33b941b1bfcb902638a879c01b93\", \"sequential_soak_reads\": 300, \"desktop_case_views\": 18, \"mobile_case_views\": 9, \"primary_final_readback\": true}\n",
+    "offset": 0,
+    "nextOffset": 902,
+    "totalBytes": 902,
+    "truncated": false,
+    "startedAt": "2026-10-24T13:34:11.567Z",
+    "finishedAt": "2026-10-24T13:43:33.273Z"
+  },
+  "connectorOperation": {
+    "operationId": "b2309246a6658a33bdea473f80b3791e948138af6852def4c25d33c0975fe670",
+    "toolName": "commander_process_output",
+    "requestSha256": "8c75acbaa3e153a2779a0c41171162655dfc6045f79e78103087cffe44977c08",
+    "device": "local",
+    "sessionId": "cp-ns-20261024-published-acceptance"
+  }
+}

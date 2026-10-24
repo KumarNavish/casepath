@@ -1,0 +1,23 @@
+{
+  "callId": "cp-demo-20261024-r2-011-stop-owned-demo",
+  "state": "completed",
+  "operationState": "terminated",
+  "startedAt": "2026-10-24T13:37:09.038Z",
+  "finishedAt": "2026-10-24T13:37:09.349Z",
+  "retrySafe": false,
+  "sessionId": "cp-ns-20261024-engineering-demo-4194",
+  "result": {
+    "sessionId": "cp-ns-20261024-engineering-demo-4194",
+    "pid": 25621,
+    "state": "failed",
+    "terminated": true
+  },
+  "connectorOperation": {
+    "operationId": "1875cbc391082f9877ec505020649baa7e71dddfb47b2aff633135ca18561222",
+    "toolName": "commander_force_terminate",
+    "requestSha256": "27b9818a6877494b989784d17b2e269bba35f60918142f458c7f639dc9f77eb0",
+    "device": "local",
+    "callId": "cp-demo-20261024-r2-011-stop-owned-demo",
+    "sessionId": "cp-ns-20261024-engineering-demo-4194"
+  }
+}

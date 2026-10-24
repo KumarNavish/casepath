@@ -1,0 +1,201 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: actual operation matches the frozen recorded reference
++ actual - expected
+... Skipped lines
+
+  {
+    cause_ids: [
+      'op_e35022381a270a657e80b1ae899b7541'
+    ],
+    contract: 'casepath.operations-stream/1.0.0',
+...
+    },
++   operation_sha256: 'c2043f161eb5004ed40e711c495a9affd1f4f82e78e0534d40847d6c01ab0de3',
++   previous_operation_sha256: 'd1890570a2a5be28af5de7899ca69dd64e7bf34b7e6d372dc0837175f5b8039e',
+-   operation_sha256: '1ba69b1bb0313e184f13aaa665fe033e89d52319e7bc3d32dcc257f5cdbb1373',
+-   previous_operation_sha256: 'e8fe06a82d24f762f525ed9369be8b285e5e90601c21328805ca7733ad3831b9',
+    result: {
+      action_id: 'assessment:ri_intake',
+      capability_id: 'local_assessment.record',
+      citations: [
+        {
+
+    at file:///Users/kumar0002/Documents/Die%20Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/capture_eight_states.mjs:86:32 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: {
+    cause_ids: [ 'op_e35022381a270a657e80b1ae899b7541' ],
+    contract: 'casepath.operations-stream/1.0.0',
+    id: 'op_25c365a21d60d77da12189a3217d4f88',
+    input: {
+      capability: {
+        authorized: true,
+        id: 'local_assessment.record',
+        reason: 'Record a verified internal assessment when source sufficiency and process prerequisites are established.'
+      },
+      execution_state: 'ready',
+      finding_status: 'established',
+      missing_document_types: []
+    },
+    input_sha256: '58b767f9efb8842c1459be228d2a045717260af845d162c6150496fbb453c2ca',
+    journal_seq: 38,
+    kind: 'step.complete',
+    object: { id: 'ri_intake', type: 'node' },
+    operation_sha256: 'c2043f161eb5004ed40e711c495a9affd1f4f82e78e0534d40847d6c01ab0de3',
+    previous_operation_sha256: 'd1890570a2a5be28af5de7899ca69dd64e7bf34b7e6d372dc0837175f5b8039e',
+    result: {
+      action_id: 'assessment:ri_intake',
+      capability_id: 'local_assessment.record',
+      citations: [
+        {
+          artifact_id: 'src_9d46c7702b4a255f2586f0564986e880',
+          end_char: 508,
+          quote: "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+          sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f',
+          start_char: 95,
+          text_sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f'
+        },
+        {
+          artifact_id: 'src_9d46c7702b4a255f2586f0564986e880',
+          end_char: 308,
+          quote: 'The rent is not indexed or stepped, and there is no Article269c agreed increase.',
+          sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f',
+          start_char: 228,
+          text_sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f'
+        },
+        {
+          artifact_id: 'src_e4e2957f6f57e80b3756ab08fb4188ad',
+          end_char: 723,
+          quote: 'The managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification.',
+          sha256: '92bda8ef8744a22132cb37f3516c40cdcd03019191a660a15578927bc5bcb8d0',
+          start_char: 479,
+          text_sha256: '92bda8ef8744a22132cb37f3516c40cdcd03019191a660a15578927bc5bcb8d0'
+        },
+        {
+          artifact_id: 'src_9d46c7702b4a255f2586f0564986e880',
+          end_char: 952,
+          quote: 'No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.',
+          sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f',
+          start_char: 810,
+          text_sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f'
+        },
+        {
+          artifact_id: 'src_e4e2957f6f57e80b3756ab08fb4188ad',
+          end_char: 477,
+          quote: 'This reply was sent after the tenant asked about the already received notice; it did not accompany the original communication.',
+          sha256: '92bda8ef8744a22132cb37f3516c40cdcd03019191a660a15578927bc5bcb8d0',
+          start_char: 351,
+          text_sha256: '92bda8ef8744a22132cb37f3516c40cdcd03019191a660a15578927bc5bcb8d0'
+        }
+      ],
+      node_id: 'ri_intake',
+      status: 'completed',
+      summary: 'Capture the original increase packet is supported within the bounded source packet.',
+      type: 'assessment_record'
+    },
+    result_sha256: '029f7d0d6eaae8c8fc84d6d75d37302047e8e1c27ed12aaca62ec7f51eb13ff6',
+    seq: 265,
+    source: {
+      artifact_id: 'src_9d46c7702b4a255f2586f0564986e880',
+      end_char: 508,
+      offset_unit: 'unicode_code_point',
+      quote: "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+      sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f',
+      start_char: 95,
+      text_sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f'
+    },
+    stage: 'native_execution',
+    type: 'operation'
+  },
+  expected: {
+    cause_ids: [ 'op_e35022381a270a657e80b1ae899b7541' ],
+    contract: 'casepath.operations-stream/1.0.0',
+    id: 'op_25c365a21d60d77da12189a3217d4f88',
+    input: {
+      capability: {
+        authorized: true,
+        id: 'local_assessment.record',
+        reason: 'Record a verified internal assessment when source sufficiency and process prerequisites are established.'
+      },
+      execution_state: 'ready',
+      finding_status: 'established',
+      missing_document_types: []
+    },
+    input_sha256: '58b767f9efb8842c1459be228d2a045717260af845d162c6150496fbb453c2ca',
+    journal_seq: 38,
+    kind: 'step.complete',
+    object: { id: 'ri_intake', type: 'node' },
+    operation_sha256: '1ba69b1bb0313e184f13aaa665fe033e89d52319e7bc3d32dcc257f5cdbb1373',
+    previous_operation_sha256: 'e8fe06a82d24f762f525ed9369be8b285e5e90601c21328805ca7733ad3831b9',
+    result: {
+      action_id: 'assessment:ri_intake',
+      capability_id: 'local_assessment.record',
+      citations: [
+        {
+          artifact_id: 'src_9d46c7702b4a255f2586f0564986e880',
+          end_char: 508,
+          quote: "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+          sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f',
+          start_char: 95,
+          text_sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f'
+        },
+        {
+          artifact_id: 'src_9d46c7702b4a255f2586f0564986e880',
+          end_char: 308,
+          quote: 'The rent is not indexed or stepped, and there is no Article269c agreed increase.',
+          sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f',
+          start_char: 228,
+          text_sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f'
+        },
+        {
+          artifact_id: 'src_e4e2957f6f57e80b3756ab08fb4188ad',
+          end_char: 723,
+          quote: 'The managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification.',
+          sha256: '92bda8ef8744a22132cb37f3516c40cdcd03019191a660a15578927bc5bcb8d0',
+          start_char: 479,
+          text_sha256: '92bda8ef8744a22132cb37f3516c40cdcd03019191a660a15578927bc5bcb8d0'
+        },
+        {
+          artifact_id: 'src_9d46c7702b4a255f2586f0564986e880',
+          end_char: 952,
+          quote: 'No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.',
+          sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f',
+          start_char: 810,
+          text_sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f'
+        },
+        {
+          artifact_id: 'src_e4e2957f6f57e80b3756ab08fb4188ad',
+          end_char: 477,
+          quote: 'This reply was sent after the tenant asked about the already received notice; it did not accompany the original communication.',
+          sha256: '92bda8ef8744a22132cb37f3516c40cdcd03019191a660a15578927bc5bcb8d0',
+          start_char: 351,
+          text_sha256: '92bda8ef8744a22132cb37f3516c40cdcd03019191a660a15578927bc5bcb8d0'
+        }
+      ],
+      node_id: 'ri_intake',
+      status: 'completed',
+      summary: 'Capture the original increase packet is supported within the bounded source packet.',
+      type: 'assessment_record'
+    },
+    result_sha256: '029f7d0d6eaae8c8fc84d6d75d37302047e8e1c27ed12aaca62ec7f51eb13ff6',
+    seq: 265,
+    source: {
+      artifact_id: 'src_9d46c7702b4a255f2586f0564986e880',
+      end_char: 508,
+      offset_unit: 'unicode_code_point',
+      quote: "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+      sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f',
+      start_char: 95,
+      text_sha256: '9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f'
+    },
+    stage: 'native_execution',
+    type: 'operation'
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.8.2

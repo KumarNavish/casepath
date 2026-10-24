@@ -1,0 +1,64 @@
+{
+  "contract": "casepath.northstar-independent-review/1",
+  "recorded_at": "2026-10-24T11:51:59.704115+00:00",
+  "authority": "Engineering code review only; no qualified human or legal approval",
+  "reviewed_source_files": {
+    "casepath-api/tests/test_causal_process_v1.py": "660003b6cd813b663306c4673e14238b26e1593b48c54cc959d5987c5bb3b907",
+    "casepath-api/tests/test_frontend_node_suites_v1.py": "d01a6b83f5f9983f0125a46fe490122bbdc648513b59b76cf8987663797851d8",
+    "casepath-qa/causal-process-v1.test.cjs": "c3c8a1b840c3b14a953460124e165a8eb3ff9e88414e8b5ecfc4bb9d0979b72c",
+    "casepath-qa/claim-navigation-refresh-v4.test.cjs": "6ab7b3de62b35f7dfa2c33467d6e4d5f236c5fdcd812237c1cd26f1fb31c6365",
+    "casepath-qa/claim-sections-v1.test.cjs": "fcab5937a2bea729f7642a4356cb32f8468a36e9de946107ab311ed9bce9ebe5",
+    "casepath-qa/review-northstar-browser-v1.test.cjs": "862e3ae9e00ba32b88e9f0cb5a4eefb446e61c58751b0428c0139ab780efd657",
+    "casepath-qa/review-northstar-v1.test.cjs": "27eafee69f883cd253a7d5987426b809dfd4aeed50cbb43ebccd70c6be47d6bf",
+    "casepath-qa/serve-review-northstar-fixture-v1.py": "1376ca10b97db1ab3671920b6e792fd64c58f8e07a0c95ae184abfedc662b3a1",
+    "casepath/assets/agent-desk-v2.js": "61c4e6a2c81afe6221dd0c0e397487269caf24ba475542ee51383dc64ab30a73",
+    "casepath/assets/autonomous-entry-v1.js": "e405667ff58085b9928ada3a43b1bef6cbeac3caf105061f12c7541112c04d0d",
+    "casepath/assets/causal-process-v1.js": "fcb07378587069fce1ad2efd1493d3a6a7dafed46b81952e4559628a14fca896",
+    "casepath/assets/claims-workspace-presentation-v1.js": "d7ff00fe6e132b4e322cf3cccf36a70e40f1d2a703a27e466d7909e99e648a24",
+    "casepath/assets/claims-workspace-v1.js": "ddc309c70e59190abc3109fae1a2cedde37537dabc47b0a68680fa57ff270940",
+    "casepath/assets/review-northstar-v1.css": "7c75bde67d6fc138a71ec2b05536e17a267186fb3d2d46677ade9d8dea2e2dab",
+    "casepath/assets/review-northstar-v1.js": "911db61af8299ebbc00a818ad9fb9530ae84133dadac0dc12b9fd179c30d629b",
+    "casepath/index.html": "fc9f81111a78f21451e48773d85551c8ad4f578f31ae0b27941f19ff5922fcb7",
+    "casepath/tools/build_static_site.py": "a6944f4fa1645ff93ad8e456aa0ded687489e2e59dc4b9a6a0933f693235f9e5",
+    "casepath/tools/test_build_deployment_identity.py": "0fca15628ad1f05f07211638bacf1b62c6296978261c042483917cfd2e925b47",
+    "design-plans/northstar-review-20261024/OPERATOR_REVIEW.md": "5966bc5787cd7a519036c44db0b64f00dfa965d10196bc898730c6ddc3c98c30",
+    "design-plans/northstar-review-20261024/REVIEW.md": "bcfcbb827b872a5c40e1a49b5f458a0d9e1a9ff4c09fb41eefb90ebfcf8c238b"
+  },
+  "reviews": [
+    {
+      "agent": "/root/northstar_test_contract",
+      "mode": "read-only",
+      "verdict": "No new concrete blocker after root077/root078; proceed subject to executed E2E and full gate",
+      "accepted": [
+        "Canonical post-reload receiving-node selection is active-visit and navigation-token guarded.",
+        "Compact date links retain escaped exact receiving-case artifact IDs and quotes.",
+        "Active requires, other blockers and historical application consequences remain distinct.",
+        "Result-role recovery is compatible with the saved pane and checked across reload/version pin.",
+        "Original source, evidence, earlier connections and claim outcome authority are preserved."
+      ]
+    },
+    {
+      "agent": "/root/review_memory_architecture",
+      "mode": "read-only",
+      "verdict": "Existing evidence prerequisite is preserved; do not change evaluator diagnostics or replay hashes",
+      "accepted": [
+        "The new requires connection cannot bypass an incomplete original flow predecessor.",
+        "Completing only the new prerequisite remains blocked on the old evidence step.",
+        "Existing evaluator and historical accepted-event hashes remain unchanged; focused regression added."
+      ]
+    },
+    {
+      "agent": "/root/northstar_release_audit",
+      "mode": "read-only",
+      "verdict": "Stale exact inventory expectation corrected; no further inspected packaging blocker",
+      "accepted": [
+        "Both new assets appear in PUBLIC_ASSETS and CONTENT_BOUND_ASSETS.",
+        "Exact public inventory test now requires45 files.",
+        "Manifest includes nonignored pending files before git add.",
+        "Strict frontend declaration contains18 suites."
+      ]
+    }
+  ],
+  "execution_evidence_separate": true,
+  "preseal_browser_receipt_sha256": "83e39aeff9930f95c785508ffbd379248d280069d60a176aeac67c2f6f102f69"
+}

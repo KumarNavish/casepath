@@ -1,0 +1,153 @@
+{
+  "contract": "casepath.northstar-visual-fidelity-review/1",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "status": "passed",
+  "reviewed_at": "2026-10-24T14:01:03.169Z",
+  "reviewer": "ChatGPT /root visual inspection; not a qualified legal review",
+  "measurement_sha256": "d97704dcab46a32d9d14950185ca15179545cd09eb74326c5b072b9fcbce6949",
+  "inspection_basis": "All nine exact side-by-side, overlay and difference PNGs were hash-verified after transfer and visually inspected at their original resolution.",
+  "metric_interpretation": "Mean pixel difference measures changed pixels including case content and layout. White background area strongly affects the number. It does not establish semantic fidelity, legal correctness or human acceptance.",
+  "comparisons": [
+    {
+      "concept": "01-decision-building.png",
+      "observations": [
+        "The source rail, five visible assistant roles, current process question, original source page, highlighted exact passage, extracted-fact card and causal connector occupy the intended visual regions.",
+        "The selected role is Claim reader because this captured recorded operation is fact extraction. The source text and question belong to the actual rent-increase case.",
+        "The highlighted passage is legible and bound to the visible fact. Surrounding source prose is intentionally dimmed during this focus beat; Open full source remains available."
+      ],
+      "accepted_deviations": [
+        {
+          "difference": "Three actual rent-increase questions replace the concept's six illustrative defect questions.",
+          "reason": "The screen displays the admitted case graph rather than inventing nodes to reproduce the illustration."
+        },
+        {
+          "difference": "One current source-matched fact card is visible at a time rather than the concept's two simultaneous cards.",
+          "reason": "The preserved sequential presentation follows the recorded operation. State 5 separately verifies at least two distinct contributing facts and their accepted completion; no claim of simultaneous cards is made."
+        },
+        {
+          "difference": "The active role, wording, exact source format and cursor position differ from the concept.",
+          "reason": "They follow the actual operation, source pin and case rather than illustrative email content."
+        }
+      ],
+      "state": 4,
+      "frame_sha256": "4c5348f662a3b63dba87681d3f307a882061994efe80a9551fa6b2163ba67f72",
+      "mean_difference_pct": 4.73,
+      "inspected_artifacts": [
+        {
+          "file": "concept-01-side.png",
+          "sha256": "f0aa33de38d6b33e07a40e24d6a2e6615c1192f6cbd18b551e773101a3e5b3f9",
+          "kind": "side"
+        },
+        {
+          "file": "concept-01-overlay.png",
+          "sha256": "a532c59b16a30743aad110657616f452bf5fb65ac4d3769cd2ad9d58c3a6daa0",
+          "kind": "overlay"
+        },
+        {
+          "file": "concept-01-diff.png",
+          "sha256": "686c32691bf0cdd9abda22894146216957f4317efc27e9c99aedebb2773f800e",
+          "kind": "diff"
+        }
+      ],
+      "status": "accepted_for_engineering_demo",
+      "unresolved_visual_blockers": []
+    },
+    {
+      "concept": "02-completed-process.png",
+      "observations": [
+        "Completed process questions sit above the connected Source facts, Law, Current evidence and Relevant reference case panel.",
+        "The failed reasons test is visually distinct from the received-evidence status; Documents reports zero missing for this actual case.",
+        "The lower source area shows an extracted passage and the original document side by side, with matching highlighted wording and source controls."
+      ],
+      "accepted_deviations": [
+        {
+          "difference": "The actual completed graph has three questions rather than the concept's ten-node branched defect graph.",
+          "reason": "The captured rent-increase case has a different genuine process. The evidence chain and document relationship remain visible."
+        },
+        {
+          "difference": "No public Edit decision action appears, and the evidence-needed concept column is replaced by the actual received-evidence state.",
+          "reason": "The public surface is read-only and its recorded case has zero missing documents. Direct editing is demonstrated separately in the isolated review workspace."
+        },
+        {
+          "difference": "The source pane is higher and its content differs from the concept's defect timeline.",
+          "reason": "The layout uses the actual shorter graph and actual cited original source."
+        }
+      ],
+      "state": 6,
+      "frame_sha256": "8c656c97aa0618f49069b82620c1849ed8c222900990ca3416114ddc5f7980fb",
+      "mean_difference_pct": 6.05,
+      "inspected_artifacts": [
+        {
+          "file": "concept-02-side.png",
+          "sha256": "5aa62348a2173c8f24de448e47b6de14281dab81358198544f9501924569b5a7",
+          "kind": "side"
+        },
+        {
+          "file": "concept-02-overlay.png",
+          "sha256": "14ef8b5485d5a9dbe3db8c74cc42425b2cbaffa1e81c16f3bb4c8331c101027c",
+          "kind": "overlay"
+        },
+        {
+          "file": "concept-02-diff.png",
+          "sha256": "89b65ab38861d2c601270301bcaa9805b5b520fa945e162a1e741fc47fee00ee",
+          "kind": "diff"
+        }
+      ],
+      "status": "accepted_for_engineering_demo",
+      "unresolved_visual_blockers": []
+    },
+    {
+      "concept": "03-reviewed-memory-payoff.png",
+      "observations": [
+        "The actual receiving-case graph displays the newly required Compare both complete notices dependency before Prepare challenge, extension or settlement.",
+        "The reuse area has the intended three-part relationship: this case's own source dates, the exact saved process version, and the current result in this case.",
+        "Both 30. Juni and 31. Juli are visible. Exact saved version 1, Saved by Test handler, and the remaining receiving-case review requirement are explicit.",
+        "The result remains waiting for prerequisites. The supporting customer message remains available below; longer result detail belongs to the scrollable review area."
+      ],
+      "accepted_deviations": [
+        {
+          "difference": "The actual twelve-step family-home notice process wraps across two rows rather than the concept's vertical ten-step mould process.",
+          "reason": "This preserves the real receiving-case graph and its existing connections while keeping the reused prerequisite visible."
+        },
+        {
+          "difference": "The concept's expert-reviewed memory badge is replaced by exact-version provenance and Saved by Test handler.",
+          "reason": "The captured action is engineering QA. Qualified substantive approval is still pending and cannot be asserted by automation."
+        },
+        {
+          "difference": "The accepted reuse view shows current dependencies; the before/after comparison is in the separate actual preview screenshot and event receipt.",
+          "reason": "The preview and acceptance are distinct product states. The release includes both, without fabricating a combined approval screen."
+        }
+      ],
+      "state": 8,
+      "frame_sha256": "62beb332a3e8d0e032b0a1e1e661223fc6afc9a6e636ab34f228738af94227b1",
+      "mean_difference_pct": 5.25,
+      "inspected_artifacts": [
+        {
+          "file": "concept-03-side.png",
+          "sha256": "454de9728efb6dd0ec8b587424159608ee3865a07944c5702ad3fe3285700ce4",
+          "kind": "side"
+        },
+        {
+          "file": "concept-03-overlay.png",
+          "sha256": "954e7a0561d23f875b5ce0ddc9a1342286e01f6a7f14153bd241258b66570db7",
+          "kind": "overlay"
+        },
+        {
+          "file": "concept-03-diff.png",
+          "sha256": "4efae2319c3217788d4b78cdf89d0f0b851d359f5f3f68465439fe628594ae7c",
+          "kind": "diff"
+        }
+      ],
+      "status": "accepted_for_engineering_demo",
+      "unresolved_visual_blockers": []
+    }
+  ],
+  "pending": [],
+  "qualified_human_approval": "pending",
+  "literal_state_8_expert_review_acceptance": false,
+  "additional_limits": [
+    "Dense legal/source prose benefits from pausing the film or opening the full source.",
+    "The stills do not independently establish playback timing; the continuous film and motion gate provide that separate evidence.",
+    "Accepted visual deviations are documented; pixel identity with illustrative concepts is not claimed."
+  ]
+}

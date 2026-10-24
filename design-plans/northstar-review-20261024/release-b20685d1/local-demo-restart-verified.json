@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "observed_at": "2026-10-24T13:38:18.984849+00:00",
+  "instance_id": "c249a178e95272f914805278",
+  "boot_id": "0c9e89e863ce5f24fb840cd4",
+  "pid": 40476,
+  "resumed_session": "cp-ns-20261024-engineering-demo-resumed-4194",
+  "known_owned_initial_process_terminated": true,
+  "actual_initial_terminal_observed": true,
+  "resumed_process_observed_running": true,
+  "get_only": true,
+  "initial_owner_preserved": true,
+  "initial_copy_receipt_preserved": true,
+  "original_qa_files_unchanged": true,
+  "current_claim_and_work_journals_unchanged": true,
+  "source_and_target_views_unchanged": true,
+  "copied_or_reset_data": false,
+  "seeded_or_replayed_work": false,
+  "checkpoint_sha256": "0a26aeee7a444fcc40cf064e4e67ac249d13436176d2e207937dde755d8f5ba3",
+  "current_server_receipt_sha256": "163747a509650178d1951f4c5ec2c60c022abf6c6a96ffbc4c11b40cbb847c47",
+  "resume_launcher_sha256": "9adbd960cdc67e901178aa0fc409c75434080546090f1c1f2152140929a15889",
+  "claim_and_work_journals": {
+    "claim": {
+      "rows": 164,
+      "sha256": "d62426a9f751ea6a3b3dcc0e7294b9823d89740199633cc3eaa418dcb2884076"
+    },
+    "work": {
+      "work_events": {
+        "rows": 11,
+        "sha256": "0cfd6a8ebb87b29778519605dc5a18763b52ac514045f6419d9ba2b858311ebe"
+      },
+      "work_runs": {
+        "rows": 5,
+        "sha256": "0a9c521135f80891ed16feb31d48f01bb1ea8d6338d79305e5a4918bd6fb17cc"
+      }
+    }
+  },
+  "views": {
+    "clm_f69b1747447bc221": {
+      "workspace_revision": 12,
+      "workspace_state_sha256": "c417d0937094add547e0fd6e9d6c05812010f51fbfd511ea0d75983f040b0eb3",
+      "view_sha256": "439f40f5214887dc3c87eae0c04e486c00c02080b157360246d632a250d8e0c8"
+    },
+    "clm_0e538990cc6ba7ef": {
+      "workspace_revision": 4,
+      "workspace_state_sha256": "b5e35ec531912454cd7c7b399b6bb84023db3588bcfa12e8a534ff3f59b0ecca",
+      "view_sha256": "59c2c3c2e011ab38c3ef3749831eedc24be0c0e53dd3c40757f1932d6b053ad6"
+    }
+  },
+  "commander_evidence": {
+    "commander-initial-demo-stop.json": "12bfea2925cbe3c1f48199b6e9e18b8a0216f59e4170bd9de49dff1bda9170f7",
+    "commander-initial-demo-terminal.json": "08fc1960a82d9a7ff46d85d55e79d14a7bb40659dc52423422d7bb57343384ac",
+    "commander-resumed-demo-running.json": "b73b234e86dbf8498ce614e9b1dd4cb32436b63ec837d73000f2639c37e476a6"
+  }
+}

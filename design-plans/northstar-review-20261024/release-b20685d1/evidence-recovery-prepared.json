@@ -1,0 +1,19 @@
+{
+  "contract": "casepath.evidence-recovery-binding/1",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "status": "prepared",
+  "prepared_at": "2026-10-24T13:57:05.219907+00:00",
+  "scope": "Evidence capture only; preserves failed attempt and exact live history; no product or deployment changes",
+  "artifact_helpers": {
+    "capture_eight_states_recovered.mjs": "cedf315d445a33cc509cd599bccc37b457b49055842d07d827d05e262ccddc2a",
+    "measure_northstar_fidelity_recovered.py": "e0ca120f88496e3bb8dfedd809529551bd1f1d14ecc5fae770e35548f46318e0"
+  },
+  "artifact_runner_sha256": "7225665a98f67c98fa1692f281aed71f1f3665a487b4633278f550ac6533268d",
+  "final_evidence_generator_sha256": "49c13ab52d83ff20df1840427adb11b8feb7ae623294f88acd38e389e2d0e1a1",
+  "trace_forensics_sha256": "5d34ff59af91414b7c2236931cf15d6b91f2cb9c6983d82029f431e50544b14b",
+  "original_binding_sha256": "2fae6900bb2b52da01b6ce2821b51fe9ed191f10c5cc7461633635df759a7e66",
+  "original_failed_capture_sha256": "7310e2ff20c608199a81af776049a702dce92172248c7ec825c4d442381f3e96",
+  "fixture_provenance_differences_sha256": "f30222c0292360ad8c58d6571aabcfc6e06878704a155ebac615993791cdf37e",
+  "python_syntax": "passed",
+  "node_syntax": "passed"
+}

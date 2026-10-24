@@ -1,0 +1,118 @@
+{
+  "contract": "casepath.fresh-silent-film-review/1",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "frame_index_sha256": "f05681d3b7bcbf818e195c13e1be9a79f41f565c1c32d08ad0587afbef6dec0c",
+  "video_sha256": "267c06852268331f5fc34f91ff0664ebb4b95868bb9cdd907056e525bc425c57",
+  "reviewed_at": "2026-10-24T13:53:15.473Z",
+  "reviewer": "/root/fresh_film_viewer",
+  "reviewer_kind": "Independent assistant sub-agent; not a human or qualified legal reviewer",
+  "reviewed_frame_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "fresh_reviewer_without_project_history": true,
+  "review_basis": "All 24 supplied images inspected in numeric order. No project history, source code, other reviews, manifest, or web read. This concerns what sampled images communicate; it does not independently establish playback timing, software execution, or legal correctness.",
+  "answers": {
+    "what_it_does": "CasePath helps someone reviewing legal-protection cases turn customer messages and supporting documents into a traceable assessment draft. The demonstrated example concerns whether a residential rent-increase notice supplied the required reasons. The product organizes evidence, presents legal checks and their outcomes, identifies unresolved questions, and leaves the final decision with a human reviewer. The ending also shows recorded examples involving repairs and lease termination.",
+    "how_it_reaches_results": "The visible sequence starts with customer documents and a set of case questions. A Claim reader highlights relevant passages and extracts facts. A Source checker shows quoted passages matched to received files, with an explicit statement that qualified legal review remains necessary. A Process builder connects source facts, evidence, a cited legal rule, and a reference checklist to each question. The law panel identifies the Swiss Code of Obligations, article 269d, and describes recorded checks against quoted text and a bounded rule. The Result checker brings five legal tests together, marks one as unmet, explains the displayed conclusion, and lists remaining uncertainties. It then presents an unsent assessment draft. A later case reuses three checklist items while explicitly saying that the new case supplies its own facts and its documents and dates are checked afresh.",
+    "why_valuable": "The demonstrated value is making a document-heavy review easier to follow and inspect. A reviewer can see which passage supports a fact, which legal check uses it, why a check failed, and which issues remain unresolved. The assessment draft gives that work a usable output. Reusing the checklist across similar cases offers a clear way to reduce repeated setup while retaining case-specific evidence review. Those are understandable benefits from the demonstration, although the frames do not measure time savings or establish the reliability of the underlying system.",
+    "what_was_unclear": "The opening shows a different case before the main example appears. Frames 1–4 remain on 'Opening the recorded case...' with a heating-failure case and six questions. Frame 5 changes to a rent-increase case with three questions. I initially could not tell whether the heating case was part of the story or a temporary loading state. The introduction in frame 5 resolves the product purpose, so this does not prevent overall understanding.\n\nThe checklist's creation and selection are explained more than demonstrated. The later-case screen says that its checklist was built from checks in an earlier case and shows three items being reused. I understand what is reused and that facts are checked again, but I do not see how the system originally constructs, saves, approves, or selects that checklist.\n\nSeveral evidence and law screens demand close reading. The mixture of German source material, English interface text, dense legal paragraphs, and occasional compressed spacing makes the detailed reasoning harder to absorb at a glance. Highlighted passages and the plain-language answer substantially help. I cannot determine from still images whether every dense screen remains visible long enough during normal playback.\n\nSome named assistants receive little direct explanation. Claim reader, Source checker, Process builder, and Result checker have visible roles in the demonstrated chain. Document finder is present in navigation, and document-completeness status is shown, but its distinct behavior is not clearly demonstrated.\n\nThe underlying execution remains outside what the film proves. The interface explicitly labels the material as a recorded replay of fictional cases. Animated checks and completed outputs communicate the intended workflow, but they do not show whether real AI calls, live retrieval, or independent validation occurred. The film also does not establish that a qualified legal professional approved the displayed conclusion."
+  },
+  "unclear_details": [
+    {
+      "issue": "The opening shows a different case before the main example appears.",
+      "detail": "Frames 1–4 remain on 'Opening the recorded case...' with a heating-failure case and six questions. Frame 5 changes to a rent-increase case with three questions. I initially could not tell whether the heating case was part of the story or a temporary loading state. The introduction in frame 5 resolves the product purpose, so this does not prevent overall understanding."
+    },
+    {
+      "issue": "The checklist's creation and selection are explained more than demonstrated.",
+      "detail": "The later-case screen says that its checklist was built from checks in an earlier case and shows three items being reused. I understand what is reused and that facts are checked again, but I do not see how the system originally constructs, saves, approves, or selects that checklist."
+    },
+    {
+      "issue": "Several evidence and law screens demand close reading.",
+      "detail": "The mixture of German source material, English interface text, dense legal paragraphs, and occasional compressed spacing makes the detailed reasoning harder to absorb at a glance. Highlighted passages and the plain-language answer substantially help. I cannot determine from still images whether every dense screen remains visible long enough during normal playback."
+    },
+    {
+      "issue": "Some named assistants receive little direct explanation.",
+      "detail": "Claim reader, Source checker, Process builder, and Result checker have visible roles in the demonstrated chain. Document finder is present in navigation, and document-completeness status is shown, but its distinct behavior is not clearly demonstrated."
+    },
+    {
+      "issue": "The underlying execution remains outside what the film proves.",
+      "detail": "The interface explicitly labels the material as a recorded replay of fictional cases. Animated checks and completed outputs communicate the intended workflow, but they do not show whether real AI calls, live retrieval, or independent validation occurred. The film also does not establish that a qualified legal professional approved the displayed conclusion."
+    }
+  ],
+  "accepted_for_silent_film_clarity": true,
+  "acceptance_rationale": "A first-time viewer can understand the purpose, the visible document-to-check-to-draft mechanism, and the benefit of traceability and checklist reuse without narration. The introduction states the promise directly, the central sequence shows evidence connected to checks, and the ending demonstrates reuse with fresh case facts. The opening inconsistency and other uncertainties are meaningful improvement opportunities, but none blocks understanding of those three essentials.",
+  "blockers": [],
+  "proof_boundary": {
+    "demonstrated_visually": [
+      "An evidence-linked legal case-review workflow.",
+      "Source quotations and a cited legal-rule panel.",
+      "Individual legal-test outcomes and unresolved questions.",
+      "An assessment draft explicitly marked as unsent and requiring review.",
+      "Checklist reuse on a later case with its own documents."
+    ],
+    "not_established_by_this_review": [
+      "Actual AI execution or live legal-source retrieval.",
+      "Accuracy or completeness of the displayed legal analysis.",
+      "Real human legal approval.",
+      "Measured time savings or operational performance.",
+      "Every interaction or transition between the 24 sampled frames."
+    ]
+  },
+  "observation_log": [
+    {
+      "frame_range": "1–4",
+      "observation": "CasePath navigation and a heating-defect question chain are visible, but the main panel stays on a loading message. The opening context differs from the case that follows."
+    },
+    {
+      "frame_range": "5",
+      "observation": "The introduction clearly states 'From customer documents to a reviewable answer,' shows Documents → Facts → Law → Answer, describes automated assistants, and identifies the walkthrough as completed work on fictional cases."
+    },
+    {
+      "frame_range": "6–8",
+      "observation": "The customer request and supporting documents appear. Relevant passages are highlighted, a Claim reader checks what accompanied the original notice, and an evidence item is connected to the process question."
+    },
+    {
+      "frame_range": "9–12",
+      "observation": "Process questions progress through checked states. The interface connects source facts, a failed reasons-related legal test, current evidence, and a reference checklist. The highlighted source remains available alongside the extracted fact."
+    },
+    {
+      "frame_range": "13–14",
+      "observation": "Verified passages and the legal-source panel explain two distinct checks: correspondence with received documents and comparison with a cited legal rule. Qualified legal review is explicitly required."
+    },
+    {
+      "frame_range": "15–18",
+      "observation": "Five tests populate the answer, one fails, and a written assessment explains the displayed outcome while preserving unresolved questions about excessive rent, the disputed amount, and deadlines. The draft is clearly not sent and requires human completion."
+    },
+    {
+      "frame_range": "19–22",
+      "observation": "A later case uses its own documents. Three checklist items visibly transfer into its process, with a count increasing from zero to three. Text explains that checks are reused while facts, documents, and dates are reviewed afresh. The later case then receives its own answer screen."
+    },
+    {
+      "frame_range": "23–24",
+      "observation": "The film ends on a view-only collection of nine recorded fictional examples with case categories and displayed test outcomes. This establishes a broader set of examples and provides a clear ending."
+    }
+  ]
+}

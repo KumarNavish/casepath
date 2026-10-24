@@ -1,0 +1,827 @@
+{
+  "contract": "casepath.generated-cache-repair/1",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "started_at": "2026-10-24T13:44:57.085378+00:00",
+  "status": "passed",
+  "baseline_receipt_sha256": "fb9a84c21c19febb910e320d815fa4c75183b5eff9d608bff9fa75eaea27c2b7",
+  "all_recorded_entries_unchanged": true,
+  "recorded_entries": 4147,
+  "extra_entries": 179,
+  "moved_directories": [
+    "PIL/__pycache__",
+    "__pycache__",
+    "anyio/__pycache__",
+    "anyio/_core/__pycache__",
+    "anyio/abc/__pycache__",
+    "anyio/streams/__pycache__",
+    "certifi/__pycache__",
+    "click/__pycache__",
+    "fitz/__pycache__",
+    "h11/__pycache__",
+    "httpcore/__pycache__",
+    "httpcore/_async/__pycache__",
+    "httpcore/_backends/__pycache__",
+    "httpcore/_sync/__pycache__",
+    "httpx/__pycache__",
+    "httpx/_transports/__pycache__",
+    "idna/__pycache__",
+    "pygments/__pycache__",
+    "pygments/lexers/__pycache__",
+    "pymupdf/__pycache__",
+    "sniffio/__pycache__",
+    "zstandard/__pycache__"
+  ],
+  "extra_files": [
+    {
+      "path": "PIL/__pycache__/BmpImagePlugin.cpython-313.pyc",
+      "sha256": "ef29a706f36579b8c9517cde96975c7e06ec9c4d5db8ac4fe01d094ef1bf30ad",
+      "bytes": 19074
+    },
+    {
+      "path": "PIL/__pycache__/ExifTags.cpython-313.pyc",
+      "sha256": "927e7b5a6469031fb205c1b10ae2c684da7f55cea2eb957ed07e348bace8f336",
+      "bytes": 11828
+    },
+    {
+      "path": "PIL/__pycache__/GifImagePlugin.cpython-313.pyc",
+      "sha256": "f5b57970135555143d8e11a4b590113b76d72448844f44f655f9ae8024f2d164",
+      "bytes": 45792
+    },
+    {
+      "path": "PIL/__pycache__/GimpGradientFile.cpython-313.pyc",
+      "sha256": "d245263a0832e19a3aeb775c11afcc05dd70620bdeb3bfb3186e132fe6f26e31",
+      "bytes": 5743
+    },
+    {
+      "path": "PIL/__pycache__/GimpPaletteFile.cpython-313.pyc",
+      "sha256": "f1db48b90b1092cffd4af1463ce5c0b9d1ff0012ed768343671af768544f524c",
+      "bytes": 3043
+    },
+    {
+      "path": "PIL/__pycache__/Image.cpython-313.pyc",
+      "sha256": "ba053e189c38c66437af7df16a03b7ea87bcf02ce092e8b3880cac98f1c2f564",
+      "bytes": 177821
+    },
+    {
+      "path": "PIL/__pycache__/ImageChops.cpython-313.pyc",
+      "sha256": "9e47ee4bc3e657a401a20bd64aa556dd58f39da87c25ffacf410f1f3d5e51394",
+      "bytes": 10144
+    },
+    {
+      "path": "PIL/__pycache__/ImageColor.cpython-313.pyc",
+      "sha256": "78c467a7610b4f67940956933cc592e31bf1a7e85e13840ba3e7271fbf08c63b",
+      "bytes": 12949
+    },
+    {
+      "path": "PIL/__pycache__/ImageFile.cpython-313.pyc",
+      "sha256": "e047222d20e288c08b752ae9e542593e5e56314bdd3305294811ccfae539efb9",
+      "bytes": 36673
+    },
+    {
+      "path": "PIL/__pycache__/ImageMode.cpython-313.pyc",
+      "sha256": "e63b3a1278707b035ad270ad89ecf6a56ab4825e986ac2c6222a1d36e00b9d6c",
+      "bytes": 2692
+    },
+    {
+      "path": "PIL/__pycache__/ImagePalette.cpython-313.pyc",
+      "sha256": "543149d81bbef9cdd067c0ac612de90a502a461cfe6ae6bd10c137b57555eafc",
+      "bytes": 13721
+    },
+    {
+      "path": "PIL/__pycache__/ImageSequence.cpython-313.pyc",
+      "sha256": "d129a503d016d6e0194bf9615261aee7d3457f615e80e619e88632139b004b7a",
+      "bytes": 3692
+    },
+    {
+      "path": "PIL/__pycache__/JpegImagePlugin.cpython-313.pyc",
+      "sha256": "fb3aaf8f7446d57433ea07329bba99ffdf5d616fa240a438ae961631a953dee6",
+      "bytes": 34773
+    },
+    {
+      "path": "PIL/__pycache__/JpegPresets.cpython-313.pyc",
+      "sha256": "e6895ab1f7819cf84e873d7fc6d023430f245f9dd025dcf854fd922ed06a851a",
+      "bytes": 8197
+    },
+    {
+      "path": "PIL/__pycache__/PaletteFile.cpython-313.pyc",
+      "sha256": "123823b7255cd2133d47524e19886a8dc2dc68ca04bd2790d2c3a305887b3c5f",
+      "bytes": 2182
+    },
+    {
+      "path": "PIL/__pycache__/PngImagePlugin.cpython-313.pyc",
+      "sha256": "bac25be070b992fae09a7e77273cf6842ebb749f29103835d1efc67cae48bff2",
+      "bytes": 66207
+    },
+    {
+      "path": "PIL/__pycache__/PpmImagePlugin.cpython-313.pyc",
+      "sha256": "501086017b386a74a8adc74a63d3b231c5c096f7a9b253648b86168ea6fd0006",
+      "bytes": 14702
+    },
+    {
+      "path": "PIL/__pycache__/TiffTags.cpython-313.pyc",
+      "sha256": "9b4b31bab5838cb0539ac10e4c8e0c22b197d761fd87ba01a16a80d08c40b41f",
+      "bytes": 19201
+    },
+    {
+      "path": "PIL/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "d3ded7c765de0c599be0ea60ead019f56863aad19ce7850ff4ce39a9f296df9e",
+      "bytes": 2156
+    },
+    {
+      "path": "PIL/__pycache__/_binary.cpython-313.pyc",
+      "sha256": "b9ef62b95063904ce31318a66b0189ff856b659411dd4efe14b8ad127f0b95c2",
+      "bytes": 3561
+    },
+    {
+      "path": "PIL/__pycache__/_deprecate.cpython-313.pyc",
+      "sha256": "18dd915ac8e4bec764aa53bea81dc1152c42324ffecc92f2f0f2e26428df8652",
+      "bytes": 2680
+    },
+    {
+      "path": "PIL/__pycache__/_util.cpython-313.pyc",
+      "sha256": "0f56f14d7d684670f712f205ec1bc594c553611e90534cdb845796df042fa80e",
+      "bytes": 1697
+    },
+    {
+      "path": "PIL/__pycache__/_version.cpython-313.pyc",
+      "sha256": "c8364c40151ff5f9b2d6424e46f5c278bf0e65835538cdc9793ab150f00ae41f",
+      "bytes": 334
+    },
+    {
+      "path": "__pycache__/_virtualenv.cpython-313.pyc",
+      "sha256": "f613012b5bd2e077fd6eac5cda6f40916714d9bbcbd0620a76d72d3ad86c0411",
+      "bytes": 4928
+    },
+    {
+      "path": "anyio/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "f2283278da605a119dc4dbeea29d41ee6a93344586380b97b58910799651de0c",
+      "bytes": 4722
+    },
+    {
+      "path": "anyio/__pycache__/from_thread.cpython-313.pyc",
+      "sha256": "dd3674afc7d6937cf5d1f9a97d378cc796ddee3378a91947455b3eab737b0cb3",
+      "bytes": 25542
+    },
+    {
+      "path": "anyio/__pycache__/lowlevel.cpython-313.pyc",
+      "sha256": "22f9af75e57cfa3d5c80132f8ebea665d76d556c51de36406d3c01e72922d893",
+      "bytes": 8075
+    },
+    {
+      "path": "anyio/__pycache__/to_thread.cpython-313.pyc",
+      "sha256": "03339c8f470e9a07d5f3b4d173adf8c30202817399800028c0536fa5ebd87aa1",
+      "bytes": 3163
+    },
+    {
+      "path": "anyio/_core/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "e4e2868363378f29d06cc549fdd137229291ea06eba361de8988bc6ac5d0db5e",
+      "bytes": 263
+    },
+    {
+      "path": "anyio/_core/__pycache__/_contextmanagers.cpython-313.pyc",
+      "sha256": "f42b5b6f3be2545d4aff8419e244045599ce16e47cde115b1f1871604b705544",
+      "bytes": 9142
+    },
+    {
+      "path": "anyio/_core/__pycache__/_eventloop.cpython-313.pyc",
+      "sha256": "69bc7b126e5a3a62366708c4ce541a5e3b0af5107bca2f29b1d479710cb5f629",
+      "bytes": 8194
+    },
+    {
+      "path": "anyio/_core/__pycache__/_exceptions.cpython-313.pyc",
+      "sha256": "c120535266920cefa3e2e56308e948f9878d8eade48ccece1ef0538af9bfab6c",
+      "bytes": 7730
+    },
+    {
+      "path": "anyio/_core/__pycache__/_fileio.cpython-313.pyc",
+      "sha256": "f33ab4dd2082231389e3c898f7a48184a585ddd49ffe08404c3427da33eebf6c",
+      "bytes": 43344
+    },
+    {
+      "path": "anyio/_core/__pycache__/_resources.cpython-313.pyc",
+      "sha256": "a252069b4a84aa87ff9b7a9a4350d575157975220c9eda5c44c10a38d39a6e5b",
+      "bytes": 999
+    },
+    {
+      "path": "anyio/_core/__pycache__/_signals.cpython-313.pyc",
+      "sha256": "237bd4b7a60f42d1dc449bb08d1d4a44c81691aa817fdecbded59ff0bf59c34d",
+      "bytes": 1414
+    },
+    {
+      "path": "anyio/_core/__pycache__/_sockets.cpython-313.pyc",
+      "sha256": "dfda4baece0e80016e40a7d1242e554ff50a20f1a69ec3acc80643162deaf59f",
+      "bytes": 40183
+    },
+    {
+      "path": "anyio/_core/__pycache__/_streams.cpython-313.pyc",
+      "sha256": "8413896e4404c7dcfc6a4a95d6412cf5662cdde7e399bce53888c9efaa0653da",
+      "bytes": 2451
+    },
+    {
+      "path": "anyio/_core/__pycache__/_subprocesses.cpython-313.pyc",
+      "sha256": "ed1689d95e32da4d96cb7779fbd587f0343831f930d42a72c0a23f335ff951b2",
+      "bytes": 9522
+    },
+    {
+      "path": "anyio/_core/__pycache__/_synchronization.cpython-313.pyc",
+      "sha256": "7e538c87e2b4c752aedf0f5de5053cf5e03519e457f21e838a7e16c0b56c79a6",
+      "bytes": 33030
+    },
+    {
+      "path": "anyio/_core/__pycache__/_tasks.cpython-313.pyc",
+      "sha256": "b5a6be7549b42c562e1b26e8c9f1f625adbb8c51aeb6e382a45b5ff63b6224fb",
+      "bytes": 7584
+    },
+    {
+      "path": "anyio/_core/__pycache__/_tempfile.cpython-313.pyc",
+      "sha256": "a031c4aa375bf8ca819ff855f7ead7884ceecccbea74f20fbe3a1e671218d6df",
+      "bytes": 27979
+    },
+    {
+      "path": "anyio/_core/__pycache__/_testing.cpython-313.pyc",
+      "sha256": "fa494ef633d5e5d9f1fb3fd5d166ce54bea8ce53d7ae3b58323c0590a727b8a5",
+      "bytes": 3877
+    },
+    {
+      "path": "anyio/_core/__pycache__/_typedattr.cpython-313.pyc",
+      "sha256": "ae7ebe1d899b2e4e8182557f011ab6fd4389367067abfcfc73dcb65c3a5d4e29",
+      "bytes": 3853
+    },
+    {
+      "path": "anyio/abc/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "8563ccab12bd89f17cf8557dc46363673e9e855b4a12961991b5f8e81beca218",
+      "bytes": 2457
+    },
+    {
+      "path": "anyio/abc/__pycache__/_eventloop.cpython-313.pyc",
+      "sha256": "906eca4aded2f2f6888b9b68a7ac812bfd411b5586f6f1432ade2743940274fb",
+      "bytes": 16493
+    },
+    {
+      "path": "anyio/abc/__pycache__/_resources.cpython-313.pyc",
+      "sha256": "dd1377625768459937a64864e6267ed13dc253620f2cfc2a79a79d35d39e6ff6",
+      "bytes": 1744
+    },
+    {
+      "path": "anyio/abc/__pycache__/_sockets.cpython-313.pyc",
+      "sha256": "ec16785a2472fe2b58fb8628e64b74718bf6741f1713a03eb1535d0853bcb863",
+      "bytes": 18066
+    },
+    {
+      "path": "anyio/abc/__pycache__/_streams.cpython-313.pyc",
+      "sha256": "77dc29240178cf70a3590da63422ffc8c9f5d1f389299bb4028157edfe287715",
+      "bytes": 9845
+    },
+    {
+      "path": "anyio/abc/__pycache__/_subprocesses.cpython-313.pyc",
+      "sha256": "9f6bd4f8995e17399dff90b6a445577b8fb8392710b371f366eb675bae968186",
+      "bytes": 3233
+    },
+    {
+      "path": "anyio/abc/__pycache__/_tasks.cpython-313.pyc",
+      "sha256": "1903fafcc83f09bc0ba577f8929b4b6b0b1a708c4ef36c310202191c29457782",
+      "bytes": 5052
+    },
+    {
+      "path": "anyio/abc/__pycache__/_testing.cpython-313.pyc",
+      "sha256": "2d141f9e540ff33677fa58136c645a94ae1ea2f8831322c087e9d4875737bace",
+      "bytes": 2848
+    },
+    {
+      "path": "anyio/streams/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "38b7889dec146472f6c36bd3d6e1b94bb09ab6e83a7cdb7e017c424c45569154",
+      "bytes": 265
+    },
+    {
+      "path": "anyio/streams/__pycache__/memory.cpython-313.pyc",
+      "sha256": "98c5a178a374a72f505e6fbb17cbe24fc9f8a4773fad88d46132abe5436d8217",
+      "bytes": 15007
+    },
+    {
+      "path": "anyio/streams/__pycache__/stapled.cpython-313.pyc",
+      "sha256": "3defc0bb73c77dec7b68e797feb12066c28783ba33162b3e1ffa20a9fdb0db0a",
+      "bytes": 7675
+    },
+    {
+      "path": "anyio/streams/__pycache__/tls.cpython-313.pyc",
+      "sha256": "5a41b4be8d2f76afe1ba4ddb6f22133628cfdcb06b2ee85222b9b9513ae27824",
+      "bytes": 20172
+    },
+    {
+      "path": "certifi/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "316b15916874b24b8f5ad396e00b3bd6d8142bdcb78a26d4401d2a522cdae014",
+      "bytes": 386
+    },
+    {
+      "path": "certifi/__pycache__/core.cpython-313.pyc",
+      "sha256": "677a0e71230bb28f54fc7c33150705fa8b47f39c7ce2c39f34081c40b2ca1fd7",
+      "bytes": 2141
+    },
+    {
+      "path": "click/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "ba5aa2f4832bd31ce813ce4db4ebac3842f10132fa21c38fa24db8e4cca9aeb6",
+      "bytes": 2810
+    },
+    {
+      "path": "click/__pycache__/_compat.cpython-313.pyc",
+      "sha256": "77e703c218ac30f3688cbe4b54a59afa52495994b25ffd32c27a4a46ef4c0c35",
+      "bytes": 28081
+    },
+    {
+      "path": "click/__pycache__/core.cpython-313.pyc",
+      "sha256": "5b2f3c11efb99ca70fa599f54809e507f7a32ebd871335415ba11173bd8c94bf",
+      "bytes": 134584
+    },
+    {
+      "path": "click/__pycache__/decorators.cpython-313.pyc",
+      "sha256": "d6e006f961d6e2966e619f8fdf40e4503f94660a9663c2b503f1e6b3eb36bcf5",
+      "bytes": 24749
+    },
+    {
+      "path": "click/__pycache__/exceptions.cpython-313.pyc",
+      "sha256": "36bb678f89d0c60e34d3e9d95d371d45a04cf98283e9860805aa562ea0ec39f4",
+      "bytes": 15262
+    },
+    {
+      "path": "click/__pycache__/formatting.cpython-313.pyc",
+      "sha256": "f7b678d43295ab5b62aacba34ea2b507a4dc4708a768e55114d09f9ef0d563da",
+      "bytes": 14095
+    },
+    {
+      "path": "click/__pycache__/globals.cpython-313.pyc",
+      "sha256": "f6043498353ee3cfb745a5d2cb335a0320ae96d820eef6bc9b61e5b46dbc204c",
+      "bytes": 3179
+    },
+    {
+      "path": "click/__pycache__/parser.cpython-313.pyc",
+      "sha256": "e23fdc4f3700f93c093ddb33b76e64be8f3669766c6b0e960b49f56eb90b0546",
+      "bytes": 21789
+    },
+    {
+      "path": "click/__pycache__/termui.cpython-313.pyc",
+      "sha256": "22338a622cdb61f6f597e1898e68d3714aced13876cc71ecce8ca8bb4bd86c56",
+      "bytes": 32134
+    },
+    {
+      "path": "click/__pycache__/types.cpython-313.pyc",
+      "sha256": "1d26d68269102d33e1d548ec28fde9ef8a50334cbcb2d080e4ac300d7564943d",
+      "bytes": 49869
+    },
+    {
+      "path": "click/__pycache__/utils.cpython-313.pyc",
+      "sha256": "03fd1d27db70f0b6d7da281816a6dfe92bf64059883a041d9708978cd255b9f2",
+      "bytes": 26312
+    },
+    {
+      "path": "fitz/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "7af6114b518b2cc347008f319e9e62b1f9f87ee3ee58d752765cb48c9b167e52",
+      "bytes": 686
+    },
+    {
+      "path": "h11/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "041501d40e9ba6cedcf895a10c98a832d4a9b6973d70ee9feb0075f814af11a1",
+      "bytes": 1146
+    },
+    {
+      "path": "h11/__pycache__/_abnf.cpython-313.pyc",
+      "sha256": "cdc93f47d36ca528a057b828ac3ce49bbba9d8b793f293981eda8287e8534e81",
+      "bytes": 1838
+    },
+    {
+      "path": "h11/__pycache__/_connection.cpython-313.pyc",
+      "sha256": "2d7df1a176ac830b971b9a5e881c7ff9a3bda764f86f1302cac4193c74bbe8b2",
+      "bytes": 22813
+    },
+    {
+      "path": "h11/__pycache__/_events.cpython-313.pyc",
+      "sha256": "27bbb3ebdfb0f1aa23d3504876edaa759679fa5fc5bb606b03b6748884eae0be",
+      "bytes": 13218
+    },
+    {
+      "path": "h11/__pycache__/_headers.cpython-313.pyc",
+      "sha256": "a9745c1db08e0fc3fc0e481a5851ba8f5bf944f17431834aa0949057b25c1a81",
+      "bytes": 8118
+    },
+    {
+      "path": "h11/__pycache__/_readers.cpython-313.pyc",
+      "sha256": "1239da2f7ecaf075af19e41680966757f59f91cc3c207f25ef59a4346df64be1",
+      "bytes": 9944
+    },
+    {
+      "path": "h11/__pycache__/_receivebuffer.cpython-313.pyc",
+      "sha256": "e5692c76b5e196a768f000414a9c4b7961a0962815d30ddfaf9914b11032971b",
+      "bytes": 4853
+    },
+    {
+      "path": "h11/__pycache__/_state.cpython-313.pyc",
+      "sha256": "315775e3cf4c19b19c9ca5a5b0f2dd820c2c46e92e95b4f1bd3ce5bf5f38971d",
+      "bytes": 8853
+    },
+    {
+      "path": "h11/__pycache__/_util.cpython-313.pyc",
+      "sha256": "1be29e4d5cff9b63d8a383218982b8eb91cc85a445b574332e57a959bfd79c2d",
+      "bytes": 4916
+    },
+    {
+      "path": "h11/__pycache__/_version.cpython-313.pyc",
+      "sha256": "5775eb5b30d9b8f7a347b208af5d409ad8c9e12624840a00f0be54507208b634",
+      "bytes": 284
+    },
+    {
+      "path": "h11/__pycache__/_writers.cpython-313.pyc",
+      "sha256": "290c19517ad45e0fdccd070fb3411668b69962c5bafa49ad2f841abaf4a372ff",
+      "bytes": 6544
+    },
+    {
+      "path": "httpcore/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "3ace0bd817f04431d8232e4236548d251c1820df63eba34a83c25a28ebcec2f7",
+      "bytes": 3336
+    },
+    {
+      "path": "httpcore/__pycache__/_api.cpython-313.pyc",
+      "sha256": "2929d1ca0650a617d4a86675f9bac54436d4e9f81a521bf70303a5274e79a960",
+      "bytes": 3689
+    },
+    {
+      "path": "httpcore/__pycache__/_exceptions.cpython-313.pyc",
+      "sha256": "31947fa82d5324ce7e7137dbecd27d6794365824b8060496843ff63f7cea9644",
+      "bytes": 3578
+    },
+    {
+      "path": "httpcore/__pycache__/_models.cpython-313.pyc",
+      "sha256": "9f7f8ae6a3c07e11b9f7f98157f25b351789e320e314718c5d32e719d01e2d18",
+      "bytes": 23363
+    },
+    {
+      "path": "httpcore/__pycache__/_ssl.cpython-313.pyc",
+      "sha256": "829dbccf93ef47803caef26daab1c3e92964fc7966af71ce0657c05c93ef76c9",
+      "bytes": 687
+    },
+    {
+      "path": "httpcore/__pycache__/_synchronization.cpython-313.pyc",
+      "sha256": "39e22b9b2ab0a7ef268cfc17414ef470d8423dc3699479c1d779d832a9266958",
+      "bytes": 14726
+    },
+    {
+      "path": "httpcore/__pycache__/_trace.cpython-313.pyc",
+      "sha256": "1d980bc43ac7e982d4f472cf1e12027f1d9e5e5f230ca35d3ba473bd2abb5e26",
+      "bytes": 5946
+    },
+    {
+      "path": "httpcore/__pycache__/_utils.cpython-313.pyc",
+      "sha256": "05b60e5a9f582c0be9c67c7911eb20abba750e7d6bb6fb2de9e68f3374ca5890",
+      "bytes": 1361
+    },
+    {
+      "path": "httpcore/_async/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "fc211cf44f945646a10165264e716af550768b49cccbecec7cde8048342aa662",
+      "bytes": 1778
+    },
+    {
+      "path": "httpcore/_async/__pycache__/connection.cpython-313.pyc",
+      "sha256": "c6bae4c46766a452fd4511e70948c8273eee60bb8f03ee417ac8367d269ce102",
+      "bytes": 12062
+    },
+    {
+      "path": "httpcore/_async/__pycache__/connection_pool.cpython-313.pyc",
+      "sha256": "271b62ebff4c66a3dfdab044d6f4633843a6c449b04e4004a11f6803eec5cb0f",
+      "bytes": 19751
+    },
+    {
+      "path": "httpcore/_async/__pycache__/http11.cpython-313.pyc",
+      "sha256": "2019c629838a284288ab2abf3029fa641abbb5e49e3b00aa4b85c52ae0f84dac",
+      "bytes": 20582
+    },
+    {
+      "path": "httpcore/_async/__pycache__/http2.cpython-313.pyc",
+      "sha256": "b457adb7a72b06cda84fdbc41594feb5a682d13bd9756270250ac55d4296141e",
+      "bytes": 31719
+    },
+    {
+      "path": "httpcore/_async/__pycache__/http_proxy.cpython-313.pyc",
+      "sha256": "91f8b3d823ed3923259e24c7c10a048591c4ceca0f5b3f03a889acdef097c53a",
+      "bytes": 17956
+    },
+    {
+      "path": "httpcore/_async/__pycache__/interfaces.cpython-313.pyc",
+      "sha256": "e437d021678556df26df1b32ea02030903ff36e15a1dbb8904472cc916672b6d",
+      "bytes": 5693
+    },
+    {
+      "path": "httpcore/_async/__pycache__/socks_proxy.cpython-313.pyc",
+      "sha256": "1da9aaeee3a4eba1aa57a60dd17729e24480292ec974f0b4c8637909d3d7d9d6",
+      "bytes": 16980
+    },
+    {
+      "path": "httpcore/_backends/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "c46a5a17a3031639b8fea96da63bbb73d19c250e0ce5d772580c1e77fa2d48dc",
+      "bytes": 270
+    },
+    {
+      "path": "httpcore/_backends/__pycache__/anyio.cpython-313.pyc",
+      "sha256": "19ee5ebe9d78be1282bbe8145508479ac0e6e354edbaaa58f8035a24b09b19e7",
+      "bytes": 8685
+    },
+    {
+      "path": "httpcore/_backends/__pycache__/auto.cpython-313.pyc",
+      "sha256": "40728fff64a5ce75bd927fcaa377bf5ada6f106b024ea85bac4f8b4b122ecbd1",
+      "bytes": 2823
+    },
+    {
+      "path": "httpcore/_backends/__pycache__/base.cpython-313.pyc",
+      "sha256": "1b9e999df289bee9b9cb90ef5f758fd8876b13ac158ca08cf80b5312cd7b3062",
+      "bytes": 5147
+    },
+    {
+      "path": "httpcore/_backends/__pycache__/mock.cpython-313.pyc",
+      "sha256": "90956849aee3a205453e9e7f7339056b3c5d897d3a7421f82dcd66db1f1dae87",
+      "bytes": 7460
+    },
+    {
+      "path": "httpcore/_backends/__pycache__/sync.cpython-313.pyc",
+      "sha256": "a151a88ab948258d0366d254532ef1bae1e5e0150885c8fae5d88a216b015212",
+      "bytes": 11687
+    },
+    {
+      "path": "httpcore/_backends/__pycache__/trio.cpython-313.pyc",
+      "sha256": "3e8e87dcc3d3a636756487bfc4ab24a9ad641687cbe0a3fbd2cb8c75caf7c333",
+      "bytes": 9196
+    },
+    {
+      "path": "httpcore/_sync/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "a1b28b7c944e8cac4252bf5fd33127da26bd14c6e20f22531edc3cc8eaa34bcb",
+      "bytes": 1732
+    },
+    {
+      "path": "httpcore/_sync/__pycache__/connection.cpython-313.pyc",
+      "sha256": "2b200250f448a98d243948ad6c4a047a99097c32c5b84741c4bb7505388485c4",
+      "bytes": 10729
+    },
+    {
+      "path": "httpcore/_sync/__pycache__/connection_pool.cpython-313.pyc",
+      "sha256": "111aec4c2877b46bb81bdbaa620c62389b07e61503bc5726ba8eb0996927e6d6",
+      "bytes": 18843
+    },
+    {
+      "path": "httpcore/_sync/__pycache__/http11.cpython-313.pyc",
+      "sha256": "44c9fcee562c3986381eef80fd984cad0483a488a0993a027b1f67f48fd70739",
+      "bytes": 18204
+    },
+    {
+      "path": "httpcore/_sync/__pycache__/http2.cpython-313.pyc",
+      "sha256": "63755e577680f29ca09fc53cfee1a024b48a820165115fd6ed86e7fb9dca62b5",
+      "bytes": 27905
+    },
+    {
+      "path": "httpcore/_sync/__pycache__/http_proxy.cpython-313.pyc",
+      "sha256": "3a8c07b518f64627b685b14ea529404ea99b0abce88512342410f7e43c5564b1",
+      "bytes": 17165
+    },
+    {
+      "path": "httpcore/_sync/__pycache__/interfaces.cpython-313.pyc",
+      "sha256": "54d745bdb6333fc23f3e53d9f286b94cfe12ffbadbf5da1689867925d67f0062",
+      "bytes": 5245
+    },
+    {
+      "path": "httpcore/_sync/__pycache__/socks_proxy.cpython-313.pyc",
+      "sha256": "d4efb734fc30f3efcc6dcc4ece2dd7fbb73f5a087628eede75c6f2e32eb737cb",
+      "bytes": 15777
+    },
+    {
+      "path": "httpx/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "fc4a36cccbbfd518283ba21cf5638dc1671db160554b7a930aebb08efea88fd8",
+      "bytes": 2214
+    },
+    {
+      "path": "httpx/__pycache__/__version__.cpython-313.pyc",
+      "sha256": "25eaf581bbad48b560e354fcab1f63a5ab2f2ba6e07310cb4dd66245d4974819",
+      "bytes": 386
+    },
+    {
+      "path": "httpx/__pycache__/_api.cpython-313.pyc",
+      "sha256": "9ecf14712bd2f844f9aaf1d9a616b548f784cbf614aa79ac0cae7df7279ab6d8",
+      "bytes": 10117
+    },
+    {
+      "path": "httpx/__pycache__/_auth.cpython-313.pyc",
+      "sha256": "f33a56db8ba798ec2af0450ee45b56c126cf16a0c662bf435329d34b87601d27",
+      "bytes": 15696
+    },
+    {
+      "path": "httpx/__pycache__/_client.cpython-313.pyc",
+      "sha256": "66fcbbe3e3f5b396896e9f0c30a63f04376910caa36ef8b6ce8ddce7ce96f496",
+      "bytes": 63560
+    },
+    {
+      "path": "httpx/__pycache__/_config.cpython-313.pyc",
+      "sha256": "9543b8fe6be5479aa188d3956bbaca43d0739df2b09d0bca18dcc0ac9ee929db",
+      "bytes": 11472
+    },
+    {
+      "path": "httpx/__pycache__/_content.cpython-313.pyc",
+      "sha256": "2ba90cdcfcf9de9bd27301e4bc2d8bfea5e01d67955f74ca654d694191d3468a",
+      "bytes": 10826
+    },
+    {
+      "path": "httpx/__pycache__/_decoders.cpython-313.pyc",
+      "sha256": "3e43fba17190b86b57054e3ad5e34957244e984f17480a1f54a595a2f4905428",
+      "bytes": 17336
+    },
+    {
+      "path": "httpx/__pycache__/_exceptions.cpython-313.pyc",
+      "sha256": "e10b3f96846b83389df64f3ffebf1c7a12e994a49d8ef5fcb9a7987f1a2f005e",
+      "bytes": 12435
+    },
+    {
+      "path": "httpx/__pycache__/_main.cpython-313.pyc",
+      "sha256": "fdffde194e75dd8c2d1f9eacee8e825274f71547d631f9c5e874235be52d6913",
+      "bytes": 20709
+    },
+    {
+      "path": "httpx/__pycache__/_models.cpython-313.pyc",
+      "sha256": "53b3edc68ca0516ccb9d8f9a5ac774d9b910708be5ff8444b7d7dc849354fdbf",
+      "bytes": 58657
+    },
+    {
+      "path": "httpx/__pycache__/_multipart.cpython-313.pyc",
+      "sha256": "aa9bf3a8f50b54ab971069dd726e43b89491b7bc40b818029b892183c5145ca7",
+      "bytes": 14048
+    },
+    {
+      "path": "httpx/__pycache__/_status_codes.cpython-313.pyc",
+      "sha256": "5cd766f79823be7bd89c8d8932eb0f7fe0218796a713e61988c3ff85fb5fe538",
+      "bytes": 7240
+    },
+    {
+      "path": "httpx/__pycache__/_types.cpython-313.pyc",
+      "sha256": "776a6564e409d9229fb6e8076555168b229db90fb7e6c847d86821172dd5c058",
+      "bytes": 3975
+    },
+    {
+      "path": "httpx/__pycache__/_urlparse.cpython-313.pyc",
+      "sha256": "da1a1b413272b54cbdec15ec8146b8317f8d1db8305e20337a146955e43f22d8",
+      "bytes": 18178
+    },
+    {
+      "path": "httpx/__pycache__/_urls.cpython-313.pyc",
+      "sha256": "8920487697500da9ed92ea150a515583d058051d789c71bc71b9882c67b98177",
+      "bytes": 27020
+    },
+    {
+      "path": "httpx/__pycache__/_utils.cpython-313.pyc",
+      "sha256": "b00a17a9bda79fb2cb13de60d8a4fb4a168f74c44a551f88b7bcd5e1546a5c59",
+      "bytes": 9617
+    },
+    {
+      "path": "httpx/_transports/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "c06a2f23b501af03501ef814328ca1c5dcbbfb1c4853ba604958ac9d39b61b38",
+      "bytes": 515
+    },
+    {
+      "path": "httpx/_transports/__pycache__/asgi.cpython-313.pyc",
+      "sha256": "d9423604d619da9cfa3627cca0037a0c451632898f27987e55d519fe1419ff66",
+      "bytes": 7815
+    },
+    {
+      "path": "httpx/_transports/__pycache__/base.cpython-313.pyc",
+      "sha256": "ccf1012ed85f233d59840130e0f308a3b789f744b8031b2ee88a175c754d9639",
+      "bytes": 3855
+    },
+    {
+      "path": "httpx/_transports/__pycache__/default.cpython-313.pyc",
+      "sha256": "3bcf99a3e4524470fa7c0716f6b7fdb47161f6d0b8e9cad9e108ecd2a834ba74",
+      "bytes": 17380
+    },
+    {
+      "path": "httpx/_transports/__pycache__/mock.cpython-313.pyc",
+      "sha256": "27bff1ced065ed015d3859b7ba10a193afd428fb2f436c5006d672f188d1a29c",
+      "bytes": 2097
+    },
+    {
+      "path": "httpx/_transports/__pycache__/wsgi.cpython-313.pyc",
+      "sha256": "c630ee3b01c7824d85a12645c277db9e191e2dbae310ede805bdb7ac8b60f6f7",
+      "bytes": 6972
+    },
+    {
+      "path": "idna/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "a0e5db198fdaabc9a70ba3b2544eb4c7ff39f970e668bfe0925bc500a85ea35a",
+      "bytes": 954
+    },
+    {
+      "path": "idna/__pycache__/core.cpython-313.pyc",
+      "sha256": "68ca0f71ee8e0f717b488d795d4d636c7bc92f9b431200a21c47557019a94c0f",
+      "bytes": 28493
+    },
+    {
+      "path": "idna/__pycache__/idnadata.cpython-313.pyc",
+      "sha256": "4a418a9be3e517f4fa2c9b67a35683384298a6a8ecf7cc8612beef0b6e106b6c",
+      "bytes": 22101
+    },
+    {
+      "path": "idna/__pycache__/intranges.cpython-313.pyc",
+      "sha256": "16d2bdabddc2f82b63cdfaaeaece3d649228fc7e15e3597ba41046cae6c03c65",
+      "bytes": 2635
+    },
+    {
+      "path": "idna/__pycache__/package_data.cpython-313.pyc",
+      "sha256": "1502a5d96b0141bea3eea11b8a72a7221275499ff793aeabd046ec4054d3f88e",
+      "bytes": 285
+    },
+    {
+      "path": "pygments/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "62ca3f75166daf5c41155398c52a6b4be1a83b3823fd439c014ff0d11aa5a182",
+      "bytes": 3480
+    },
+    {
+      "path": "pygments/__pycache__/modeline.cpython-313.pyc",
+      "sha256": "db94ed9cf854026bbd8a75515d3ad5e399e8fcaa3672f080bcc16d1278c4fa53",
+      "bytes": 1645
+    },
+    {
+      "path": "pygments/__pycache__/plugin.cpython-313.pyc",
+      "sha256": "45e0b8b2813d38cb184fc7574a2160073026d42f79bd6e25e36d47fada4562d4",
+      "bytes": 2697
+    },
+    {
+      "path": "pygments/__pycache__/util.cpython-313.pyc",
+      "sha256": "28094c31288522543e8544ff6337816156306fd4b3cbb84b96607973ef6e766e",
+      "bytes": 14250
+    },
+    {
+      "path": "pygments/lexers/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "222d52234987730f4f422c39b0bf7e55af5fc10b5f2de7d0038b90e20d57c8b6",
+      "bytes": 14778
+    },
+    {
+      "path": "pygments/lexers/__pycache__/_mapping.cpython-313.pyc",
+      "sha256": "6d848ae3a9cedf2dfa82c012481810e3067588314733d0448d980b874211d000",
+      "bytes": 67304
+    },
+    {
+      "path": "pymupdf/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "51205276cb25ac27b801ad8237f906c1a6effc362116641970db66f6761a54ef",
+      "bytes": 935578
+    },
+    {
+      "path": "pymupdf/__pycache__/_build.cpython-313.pyc",
+      "sha256": "1134388938aab70719fd3c7346858e623ba1fe7d876f30a4fc6934d7f3287339",
+      "bytes": 588
+    },
+    {
+      "path": "pymupdf/__pycache__/_wxcolors.cpython-313.pyc",
+      "sha256": "e51cdaa794656c0fb9f1feedb29ae60ca2bdf38f6e1cecd66434a0838bec3e69",
+      "bytes": 15771
+    },
+    {
+      "path": "pymupdf/__pycache__/extra.cpython-313.pyc",
+      "sha256": "12071c18c42217db3b6750a67355133d2b659f101988f7f146f26c87b607eeac",
+      "bytes": 13094
+    },
+    {
+      "path": "pymupdf/__pycache__/mupdf.cpython-313.pyc",
+      "sha256": "c8008eac7cb2bd0baf19a26c6aeaaf5da7c178881e8108e57cb15f1e361597e7",
+      "bytes": 3243603
+    },
+    {
+      "path": "pymupdf/__pycache__/pymupdf.cpython-313.pyc",
+      "sha256": "2e92bd750676252ef06fadc2897ddc621f5d8158f9cf59d97680264dc8c445ad",
+      "bytes": 280
+    },
+    {
+      "path": "pymupdf/__pycache__/table.cpython-313.pyc",
+      "sha256": "855d751061a4a290575d19411e977fadd98175c3309c646a26eb621dde31f01c",
+      "bytes": 99947
+    },
+    {
+      "path": "pymupdf/__pycache__/utils.cpython-313.pyc",
+      "sha256": "b97b81b451b9919623ea7cca17b119ad248cb4a24ae7bf1b75eac556c4c61737",
+      "bytes": 218321
+    },
+    {
+      "path": "sniffio/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "c72200e55ec63aa277c8ea16f70356ee8da07ae212234aa14024bc07831aebd1",
+      "bytes": 535
+    },
+    {
+      "path": "sniffio/__pycache__/_impl.cpython-313.pyc",
+      "sha256": "f4a3f3f45da5ff1987740146cee58122a4614cb9e57d5687ed2c27cfd80ee1cc",
+      "bytes": 3238
+    },
+    {
+      "path": "sniffio/__pycache__/_version.cpython-313.pyc",
+      "sha256": "8b50b1ca4c3982b77489775640fd2c0035b0216db84ff3901841573533da96ff",
+      "bytes": 287
+    },
+    {
+      "path": "zstandard/__pycache__/__init__.cpython-313.pyc",
+      "sha256": "3a7d96b77e2d8dec3cf97a3267bee25650a0f6e4ebc21a7967c54564ebc495f1",
+      "bytes": 6460
+    }
+  ],
+  "no_recorded_file_changed": true,
+  "prevention": "All subsequent verification helpers run with PYTHONDONTWRITEBYTECODE=1 and -B.",
+  "finished_at": "2026-10-24T13:44:58.081417+00:00",
+  "quarantine": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/runtime-cache-quarantine",
+  "original_validator_passed": true,
+  "boot_history_preserved": true
+}

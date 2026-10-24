@@ -1,0 +1,28 @@
+{
+  "state": "completed",
+  "operationState": "running",
+  "startedAt": "2026-10-24T13:37:48.050Z",
+  "finishedAt": "2026-10-24T13:37:48.051Z",
+  "observation": true,
+  "receiptPersisted": false,
+  "retrySafe": false,
+  "sessionId": "cp-ns-20261024-engineering-demo-resumed-4194",
+  "result": {
+    "sessionId": "cp-ns-20261024-engineering-demo-resumed-4194",
+    "pid": 40476,
+    "state": "running",
+    "output": "",
+    "offset": 0,
+    "nextOffset": 0,
+    "totalBytes": 0,
+    "truncated": false,
+    "startedAt": "2026-10-24T13:37:29.379Z"
+  },
+  "connectorOperation": {
+    "operationId": "1ea26aff91a92060840b3bd0125a07194b12920a6cc74a24f814c2c149fff10f",
+    "toolName": "commander_process_output",
+    "requestSha256": "9acbdcdd48cef3fc5b840753cac6409497accc00eb5794785391021974e02830",
+    "device": "local",
+    "sessionId": "cp-ns-20261024-engineering-demo-resumed-4194"
+  }
+}

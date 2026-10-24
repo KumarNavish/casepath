@@ -1,0 +1,30 @@
+{
+  "state": "completed",
+  "operationState": "completed",
+  "startedAt": "2026-10-24T13:58:17.868Z",
+  "finishedAt": "2026-10-24T13:58:17.872Z",
+  "observation": true,
+  "receiptPersisted": false,
+  "retrySafe": false,
+  "sessionId": "cp-ns-20261024-northstar-artifacts-recovered",
+  "result": {
+    "sessionId": "cp-ns-20261024-northstar-artifacts-recovered",
+    "pid": 48076,
+    "state": "completed",
+    "exitCode": 0,
+    "output": "{\"stage\": \"eight_states\", \"status\": \"running\"}\n{\"stage\": \"eight_states\", \"exit_code\": 0}\n{\"stage\": \"fidelity\", \"status\": \"running\"}\n{\"stage\": \"fidelity\", \"exit_code\": 0}\n{\"status\": \"passed\", \"source_commit\": \"b20685d1670b33b941b1bfcb902638a879c01b93\", \"eight_states\": 8, \"original_failure_preserved\": true, \"prior_film_frames_reused\": 24, \"concept_comparisons\": 3}\n",
+    "offset": 0,
+    "nextOffset": 365,
+    "totalBytes": 365,
+    "truncated": false,
+    "startedAt": "2026-10-24T13:57:20.824Z",
+    "finishedAt": "2026-10-24T13:58:00.142Z"
+  },
+  "connectorOperation": {
+    "operationId": "718e26e2c479768f7d053330f976c069b994001f725b64987644b454f1ca877d",
+    "toolName": "commander_process_output",
+    "requestSha256": "a5463496ca4f16c0d0f471f91545d3d042a188d6205f30f66aa1781d280227e7",
+    "device": "local",
+    "sessionId": "cp-ns-20261024-northstar-artifacts-recovered"
+  }
+}

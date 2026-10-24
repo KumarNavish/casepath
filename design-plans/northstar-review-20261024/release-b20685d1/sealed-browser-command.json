@@ -1,0 +1,30 @@
+{
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "source_tree": "e89dca7ea2db16369d84f947235a1caf6ce4337f",
+  "source_manifest_sha256": "f1c20fd3de067a88a8b2e60e3d72383aa9eba6e58dd67e151036fd2cba2b5393",
+  "status": "passed",
+  "started_at": "2026-10-24T12:53:02.760812+00:00",
+  "runner_sha256": "9d185fb7b77f8a83cd7fc139e97817cf8df28f00ce401f22eeb8a412ef81049f",
+  "authority": "Isolated deterministic engineering QA; Test handler is not human approval",
+  "out": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser",
+  "command": [
+    "/usr/local/bin/node",
+    "--test",
+    "--test-reporter=tap",
+    "casepath-qa/review-northstar-browser-v1.test.cjs"
+  ],
+  "pid": 24120,
+  "exit_code": 0,
+  "log_sha256": "a2f49388b6fb9259eadb7fe2a1f4711034f4e1b089859d7aa2d7604fc9452597",
+  "finished_at": "2026-10-24T12:54:39.878839+00:00",
+  "source_clean_after": true,
+  "artifact_hashes": {
+    "receipt.json": "83517c45d484e4623ca1744fdf209595196f0aca3e4f8d6c761778e787111f36",
+    "source-review.png": "4e1aa0e9a3575f519c1437450d214be947ffe5aef1270524ac05f6172a1397f6",
+    "later-case-preview.png": "7b07f27e09df53c26ce389d8c254af4d02bc258f24fe391afab354b264d4f152",
+    "later-case-reuse.png": "62beb332a3e8d0e032b0a1e1e661223fc6afc9a6e636ab34f228738af94227b1",
+    "mobile-review.png": "cade8e40c91a166b7ff5b5a517c674b6b45a0c1a6d9c33f63f08f9371be071f3",
+    "review-walkthrough.webm": "a70cb8a156e37e5c0a1289c2abfcdcc846aaed07a73d4a5f08d6ebca6c92b58c",
+    "server.log": "3f543e9b45663d8962292309f22a178afe59b5540690dc3b25ad117607da17cc"
+  }
+}

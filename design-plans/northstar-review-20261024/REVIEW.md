@@ -92,3 +92,16 @@ The complete browser journey passed on 24 October 2026 at 13:49 Zurich time (Com
 The final presentation edits also passed 110 focused Node checks and all 16 deployment identity/static inventory checks. Earlier 125-check coverage, 58 causal engine checks and 15 journal/replay integration checks remain documented above; this is not a claim that those earlier runs occurred on the final sealed commit. The full strict gate will establish the committed candidate result.
 
 The static build explicitly contains and content-binds both new presentation assets; its exact inventory is 45 files. Automated records use Test handler and do not constitute qualified human approval.
+
+
+## Completed engineering release — source b20685d1
+
+The tested and deployed application source is **b20685d1670b33b941b1bfcb902638a879c01b93**. The local north-star review canvas now connects source inspection, direct editing, actual before/after consequences, accepted structural review, exact-version saving, and reuse in another case. Its current result is derived from the receiving case's evaluation; historical application effects remain separately labeled.
+
+The complete sealed gate passed 2,927 tests, with exactly the ten historical skips and all eighteen frontend suites mandatory. The independently captured sealed-source browser journey completed with no browser errors or unexpected destinations and preserved the receiving case's facts, sources, evidence state and original connections. Version 1 remained pinned after version 2 was saved.
+
+Sites version **48** and the API identify the same application source. The fresh 300-read published soak, desktop/mobile walkthrough, original-image verification, and complete public presentation passed. Final primary reads confirmed that the collection, Knowledge and complete reported usage/budget state remained unchanged. No original provider workflow was repeated.
+
+The completed local example uses an isolated, byte-verified copy of the engineering journal, with no review events appended by startup or read-only smoke checks. Its actor is Test handler. A qualified person still needs to judge the proposed prerequisite and its scope; no automated record supplies human approval or authorizes the claim outcome.
+
+The [release evidence and presenter guide](release-b20685d1/README.md) record the actual identities, terminal receipts, screenshots, video, limits and review packet. This evidence-only child commit changes no sealed product file and is not a new deployment.

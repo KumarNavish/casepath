@@ -1,0 +1,51 @@
+{
+  "contract": "casepath.direct-visual-inspection/1",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "status": "passed",
+  "reviewer": "ChatGPT root; directly inspected hash-verified original screenshots",
+  "screenshots": [
+    {
+      "kind": "review-source",
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/source-review.png",
+      "sha256": "4e1aa0e9a3575f519c1437450d214be947ffe5aef1270524ac05f6172a1397f6",
+      "observation": "Original two-page notice remains in the source reader while the working graph and explicit Test handler save controls remain visible."
+    },
+    {
+      "kind": "review-preview",
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/later-case-preview.png",
+      "sha256": "7b07f27e09df53c26ce389d8c254af4d02bc258f24fe391afab354b264d4f152",
+      "observation": "Preview is explicitly unsaved; current/proposed dependency and required-step associations are shown alongside the unchanged next action and source message."
+    },
+    {
+      "kind": "review-reuse",
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/later-case-reuse.png",
+      "sha256": "62beb332a3e8d0e032b0a1e1e661223fc6afc9a6e636ab34f228738af94227b1",
+      "observation": "Receiving-case dates, exact saved version 1 and added prerequisite are visible together; imported dependency still requires review."
+    },
+    {
+      "kind": "review-mobile",
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/mobile-review.png",
+      "sha256": "cade8e40c91a166b7ff5b5a517c674b6b45a0c1a6d9c33f63f08f9371be071f3",
+      "observation": "Source list and message reflow to the 390px viewport; role navigation scrolls horizontally and source/process sections remain legible."
+    },
+    {
+      "kind": "public-desktop",
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/published-browser-b20685d1/cold-a-desktop-1440x900-demo-clm_314f2d309fea25e6.png",
+      "sha256": "e13f4694033d06ab5d8a3416d90c7366ea1765a85cddcf0f7ca9759413ba9ffd",
+      "observation": "Recorded process questions, source/law/evidence chain, received-document count and exact highlighted source are legible with no visible overlap at 1440×900."
+    },
+    {
+      "kind": "public-mobile",
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/published-browser-b20685d1/cold-b-mobile-390x844-demo-clm_314f2d309fea25e6.png",
+      "sha256": "aad6728be06f90e8398ab9afb29275839783e12c0af23042f09509d60dfe811d",
+      "observation": "View-only state, case title, history and vertical process/document rows are legible at 390×844; longer document labels are intentionally truncated within their row and remain reachable."
+    }
+  ],
+  "scope": "Six representative actual screenshots; broader flow coverage is supplied separately by terminal browser tests.",
+  "notes": [
+    "Desktop graph and original-source reader remain on the same workspace.",
+    "Current source view, pending preview and accepted reuse result retain distinct labels.",
+    "Test handler remains visible; no expert approval is asserted.",
+    "Desktop lower panels and mobile content scroll; the screenshots intentionally show a viewport rather than the full page."
+  ]
+}

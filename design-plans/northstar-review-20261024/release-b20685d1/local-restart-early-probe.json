@@ -1,0 +1,34 @@
+{
+  "classification": "Read-only verification started at 13:37:49 UTC before resumed service became ready at 13:37:51 UTC; original process remained running; no mutation or relaunch.",
+  "actual": {
+    "state": "completed",
+    "operationState": "failed",
+    "startedAt": "2026-10-24T13:38:16.407Z",
+    "finishedAt": "2026-10-24T13:38:16.408Z",
+    "observation": true,
+    "receiptPersisted": false,
+    "retrySafe": false,
+    "sessionId": "cp-demo-20261024-r2-016-verify-local-restart",
+    "result": {
+      "sessionId": "cp-demo-20261024-r2-016-verify-local-restart",
+      "pid": 40563,
+      "state": "failed",
+      "exitCode": 1,
+      "output": "Traceback (most recent call last):\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n        pool_request.request\n    )\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpcore/_sync/connection.py\", line 101, in handle_request\n    raise exc\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpcore/_sync/connection.py\", line 78, in handle_request\n    stream = self._connect(request)\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpcore/_sync/connection.py\", line 124, in _connect\n    stream = self._network_backend.connect_tcp(**kwargs)\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpcore/_backends/sync.py\", line 207, in connect_tcp\n    with map_exceptions(exc_map):\n         ~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/Users/kumar0002/.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/contextlib.py\", line 162, in __exit__\n    self.gen.throw(value)\n    ~~~~~~~~~~~~~~^^^^^^^\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ConnectError: [Errno 61] Connection refused\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/verify_local_restart.py\", line 28, in <module>\n    response=client.get(\"http://127.0.0.1:4194/healthz\");response.raise_for_status();health=response.json()\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpx/_client.py\", line 1053, in get\n    return self.request(\n           ~~~~~~~~~~~~^\n        \"GET\",\n        ^^^^^^\n    ...<7 lines>...\n        extensions=extensions,\n        ^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpx/_client.py\", line 825, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n        request,\n    ...<2 lines>...\n        history=[],\n    )\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n        request,\n        follow_redirects=follow_redirects,\n        history=history,\n    )\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n         ~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/Users/kumar0002/.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/contextlib.py\", line 162, in __exit__\n    self.gen.throw(value)\n    ~~~~~~~~~~~~~~^^^^^^^\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [Errno 61] Connection refused\n",
+      "offset": 0,
+      "nextOffset": 5539,
+      "totalBytes": 5539,
+      "truncated": false,
+      "startedAt": "2026-10-24T13:37:49.424Z",
+      "finishedAt": "2026-10-24T13:37:49.763Z"
+    },
+    "connectorOperation": {
+      "operationId": "3e0b5dacb25672a1590b13e1c4d0f15cbcc763bb1c98e03ef4b11ab1f7c26b8f",
+      "toolName": "commander_process_output",
+      "requestSha256": "9fd07c7716c6838b3428d367f363e739a544073e632315eefefa2334be338098",
+      "device": "local",
+      "sessionId": "cp-demo-20261024-r2-016-verify-local-restart"
+    },
+    "error_code": "INVALID_ARGUMENT"
+  }
+}

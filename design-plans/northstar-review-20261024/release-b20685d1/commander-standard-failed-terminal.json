@@ -1,0 +1,31 @@
+{
+  "state": "completed",
+  "operationState": "failed",
+  "startedAt": "2026-10-24T13:56:47.667Z",
+  "finishedAt": "2026-10-24T13:56:47.675Z",
+  "observation": true,
+  "receiptPersisted": false,
+  "retrySafe": false,
+  "sessionId": "cp-ns-20261024-standard-workspace-4173",
+  "result": {
+    "sessionId": "cp-ns-20261024-standard-workspace-4173",
+    "pid": 41108,
+    "state": "failed",
+    "exitCode": 1,
+    "output": "Using Python 3.13.9 environment at: .runtime/casepath-dev-v2/venv\nResolved 59 packages in 380ms\nChecked 59 packages in 2ms\nCasePath boot-history validation failed: runtime site-packages closure path roster is not exact\n",
+    "offset": 0,
+    "nextOffset": 219,
+    "totalBytes": 219,
+    "truncated": false,
+    "startedAt": "2026-10-24T13:39:16.828Z",
+    "finishedAt": "2026-10-24T13:39:58.593Z"
+  },
+  "connectorOperation": {
+    "operationId": "a189fc14115c900a61693f803fcfc9a15619a4da9c306ac2dd4ef2d465a0a877",
+    "toolName": "commander_process_output",
+    "requestSha256": "8c192a2d158b3eaa33df3f38ea0d4389ab5c1be55a8f9822bd75bab8c15c7dd6",
+    "device": "local",
+    "sessionId": "cp-ns-20261024-standard-workspace-4173"
+  },
+  "error_code": "INVALID_ARGUMENT"
+}

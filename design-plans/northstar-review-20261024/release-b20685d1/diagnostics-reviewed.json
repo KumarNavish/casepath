@@ -1,0 +1,278 @@
+{
+  "contract": "casepath.release-diagnostics-review/1",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "status": "passed",
+  "reviewed_at": "2026-10-24T14:02:14.543476+00:00",
+  "browser_report_sha256": "7f5da4b80aef1b725894fd54ecdc5da99b8d2f55bb9e02be76f1ea0de0110de7",
+  "application_errors": 0,
+  "application_writes": 0,
+  "native_viewer_diagnostics": [],
+  "all_captured_cases_rendered": true,
+  "all_captured_cases_without_viewport_overflow": true,
+  "classified_browser_diagnostics": [
+    {
+      "kind": "Navigation-cancelled read requests",
+      "count": 8,
+      "observed": [
+        {
+          "window": "cold-a-desktop-1440x900",
+          "request": "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live net::ERR_ABORTED"
+        },
+        {
+          "window": "cold-a-desktop-1440x900",
+          "request": "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/operations?mode=live net::ERR_ABORTED"
+        },
+        {
+          "window": "cold-b-mobile-390x844",
+          "request": "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live net::ERR_ABORTED"
+        },
+        {
+          "window": "cold-b-mobile-390x844",
+          "request": "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0 net::ERR_ABORTED"
+        },
+        {
+          "window": "cold-b-mobile-390x844",
+          "request": "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0 net::ERR_ABORTED"
+        },
+        {
+          "window": "cold-b-mobile-390x844",
+          "request": "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/operations?mode=recorded net::ERR_ABORTED"
+        },
+        {
+          "window": "cold-b-mobile-390x844",
+          "request": "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0 net::ERR_ABORTED"
+        },
+        {
+          "window": "cold-b-mobile-390x844",
+          "request": "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=0 net::ERR_ABORTED"
+        }
+      ],
+      "classification_basis": "Inference from GET-only net::ERR_ABORTED status, successful requested case renders, no application exceptions, and the unchanged source implementation cancelling stale controllers on case-navigation epoch changes. No HTTP server failure is reported by these entries.",
+      "source_validator_file": "casepath/assets/autonomous-workspace-v1.js",
+      "source_file_sha256": "573c2294692b4025549e687c0e21b959e14692365453519ed7a5ae4b8128e356"
+    },
+    {
+      "kind": "Hosting edge telemetry",
+      "count": 5,
+      "observed": [
+        "POST /cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.6991564385603833:1792847411:jb6gv2H60dSwKU629RoinMfRLbOZzDb2WK9otFq0zJM/a4f961038e1003a5",
+        "POST /cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.6991564385603833:1792847411:jb6gv2H60dSwKU629RoinMfRLbOZzDb2WK9otFq0zJM/a4f96422b8a1039d",
+        "POST /cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.6991564385603833:1792847411:jb6gv2H60dSwKU629RoinMfRLbOZzDb2WK9otFq0zJM/a4f9649c29013938",
+        "POST /cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.6991564385603833:1792847411:jb6gv2H60dSwKU629RoinMfRLbOZzDb2WK9otFq0zJM/a4f9674bfe0c29a7",
+        "POST /cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.6991564385603833:1792847411:jb6gv2H60dSwKU629RoinMfRLbOZzDb2WK9otFq0zJM/a4f967f9fed9be6d"
+      ],
+      "classification_basis": "Same-site /cdn-cgi/ challenge-platform beacons are hosting traffic, separately recorded from CasePath API writes. All application writes arrays are empty."
+    }
+  ],
+  "recovered_release_checks": [
+    {
+      "kind": "Premature local restart probe",
+      "observed_receipt": "local-restart-early-probe.json",
+      "resolution": "Initial GET probe preceded actual server readiness. The same resumed process subsequently passed journal/view-preserving restart verification and the GET-only browser handoff. No second server launch or data reset was used.",
+      "proofs": [
+        "local-demo-restart-verified.json",
+        "local-demo-ready.json",
+        "commander-local-handoff-terminal.json"
+      ]
+    },
+    {
+      "kind": "Generated runtime bytecode extras",
+      "observed_receipt": "commander-standard-failed-terminal.json",
+      "resolution": "The standard launcher correctly rejected extras outside its sealed site-packages roster. All 4,147 recorded entries were unchanged. 179 generated cache entries were quarantined; the unchanged official exact-closure validator passed, with original boot history preserved. The repaired launcher reached readiness and both local origins passed handoff.",
+      "proofs": [
+        "runtime-cache-repair.json",
+        "quarantine_generated_cache.py",
+        "commander-standard-running.json",
+        "local-demo-ready.json"
+      ]
+    },
+    {
+      "kind": "Stale fixture used as live-history oracle",
+      "observed_receipt": "commander-artifacts-failed-terminal.json",
+      "resolution": "The fixture records Knowledge version 1 while both actual traces use version 2 with the same definition and rule pack. The second case also has journal positions shifted by 10. These exact provenance changes alter operation IDs/hash chains. The recovery uses actual served states and complete live traces; all 856 operations pass the unchanged exported application validator, stream hashes and final bindings. The recovered capture requires byte-identical live traces to that independent proof. The original failed capture, log, terminal and four states remain unchanged.",
+      "proofs": [
+        "operation-trace-identity-review.json",
+        "commander-trace-forensics-terminal.json",
+        "northstar-artifacts-recovery-sequence.json",
+        "commander-artifacts-recovery-terminal.json"
+      ],
+      "fixture_provenance_differences": {
+        "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+        "basis": "Exact actual served NDJSON compared by operation sequence with immutable desk-v3 fixture; all live operations and terminal bindings separately verified by unchanged application validator.",
+        "claims": [
+          {
+            "claim_id": "clm_543f08f2415b2a33",
+            "non_chain_non_journal_differences": [
+              {
+                "seq": 123,
+                "kind": "knowledge.reuse",
+                "different_fields": [
+                  "id",
+                  "input",
+                  "input_sha256"
+                ],
+                "actual": {
+                  "input_sha256": "bb8ca3fe0656afbb9b229e82cf0e4cb594be74cb183863b529cf21313458581e",
+                  "id": "op_b5241e6427a8d0fec9a684359b59fbbd",
+                  "input": {
+                    "definition_sha256": "53c708285ee8d8accd5ea416ea1536614e20169c4e386c25de55c1a1d26771ba",
+                    "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+                    "receiving_claim_id": "clm_543f08f2415b2a33",
+                    "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                    "version": 2
+                  }
+                },
+                "fixture": {
+                  "input_sha256": "3e0fdae7fd4cbc9b85f9158b3530e9726ca38289bcb52d75c74de6b78f46758a",
+                  "id": "op_8f1a47f679c751d7dd9d070473076bbc",
+                  "input": {
+                    "definition_sha256": "53c708285ee8d8accd5ea416ea1536614e20169c4e386c25de55c1a1d26771ba",
+                    "knowledge_sha256": "73888e58829d6467d159bdfbb644255e12e4789263af1100a28daf0925846091",
+                    "receiving_claim_id": "clm_543f08f2415b2a33",
+                    "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                    "version": 1
+                  }
+                }
+              }
+            ],
+            "journal_seq_pairs": [
+              [
+                25,
+                25
+              ],
+              [
+                32,
+                32
+              ],
+              [
+                33,
+                33
+              ],
+              [
+                35,
+                35
+              ],
+              [
+                36,
+                36
+              ],
+              [
+                37,
+                37
+              ],
+              [
+                38,
+                38
+              ],
+              [
+                39,
+                39
+              ],
+              [
+                40,
+                40
+              ],
+              [
+                41,
+                41
+              ]
+            ]
+          },
+          {
+            "claim_id": "clm_7dbd7c7d1c4ddf90",
+            "non_chain_non_journal_differences": [
+              {
+                "seq": 123,
+                "kind": "knowledge.reuse",
+                "different_fields": [
+                  "id",
+                  "input",
+                  "input_sha256"
+                ],
+                "actual": {
+                  "input_sha256": "196f19e9b686087d718dda39082a9c1eee8156a87332a02983d918dba08ad548",
+                  "id": "op_84ffe9079d2b57a3f8bc4f47d5620998",
+                  "input": {
+                    "definition_sha256": "53c708285ee8d8accd5ea416ea1536614e20169c4e386c25de55c1a1d26771ba",
+                    "knowledge_sha256": "000c42d925c3eb6b8a53faf946bfb6fd4ba7dcf232932d5beb57821d7dd6aaa3",
+                    "receiving_claim_id": "clm_7dbd7c7d1c4ddf90",
+                    "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                    "version": 2
+                  }
+                },
+                "fixture": {
+                  "input_sha256": "e42d9d440b39a8867cdc9c29a7f3ffc9686c7be5d2133dd689e1dabb9721e852",
+                  "id": "op_18d3262e6856bfcb51058f01d4f4b21e",
+                  "input": {
+                    "definition_sha256": "53c708285ee8d8accd5ea416ea1536614e20169c4e386c25de55c1a1d26771ba",
+                    "knowledge_sha256": "73888e58829d6467d159bdfbb644255e12e4789263af1100a28daf0925846091",
+                    "receiving_claim_id": "clm_7dbd7c7d1c4ddf90",
+                    "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                    "version": 1
+                  }
+                }
+              }
+            ],
+            "journal_seq_pairs": [
+              [
+                35,
+                25
+              ],
+              [
+                42,
+                32
+              ],
+              [
+                43,
+                33
+              ],
+              [
+                45,
+                35
+              ],
+              [
+                46,
+                36
+              ],
+              [
+                47,
+                37
+              ],
+              [
+                48,
+                38
+              ],
+              [
+                49,
+                39
+              ],
+              [
+                50,
+                40
+              ],
+              [
+                51,
+                41
+              ]
+            ]
+          }
+        ]
+      },
+      "fixture_provenance_differences_sha256": "f30222c0292360ad8c58d6571aabcfc6e06878704a155ebac615993791cdf37e"
+    }
+  ],
+  "diagnostic_tool_limitations": [
+    {
+      "receipt": "commander-readonly-diagnostic-terminal.json",
+      "observation": "An incidental direct Python urllib read of the Site route returned HTTP 403. The underlying edge decision was not established. The same public paths succeeded through the actual application browser and are bound in the trace-forensics proof. No credential was supplied, changed or requested."
+    },
+    {
+      "receipt": "commander-trace-identity-failed-terminal.json",
+      "observation": "An incidental response-listener diagnostic failed because DevTools reported no response body for the captured resource. The replacement diagnostic awaits explicit GET responses from the actual page, verifies all operation hashes, and closes its browser normally. The initial diagnostic failure is retained."
+    }
+  ],
+  "unexplained_failures": [],
+  "unexplained_failures_scope": "Material release/browser gate failures; incidental tool limitations and their exact uncertainty are separately retained above.",
+  "all_material_release_failures_resolved": true,
+  "human_legal_approval": "pending"
+}

@@ -1,0 +1,31 @@
+{
+  "state": "completed",
+  "operationState": "failed",
+  "startedAt": "2026-10-24T13:56:47.745Z",
+  "finishedAt": "2026-10-24T13:56:47.747Z",
+  "observation": true,
+  "receiptPersisted": false,
+  "retrySafe": false,
+  "sessionId": "cp-demo-20261024-r3-006-inspect-live-diagnostics",
+  "result": {
+    "sessionId": "cp-demo-20261024-r3-006-inspect-live-diagnostics",
+    "pid": 45700,
+    "state": "failed",
+    "exitCode": 1,
+    "output": "{\"browser_report_sha256\": \"7f5da4b80aef1b725894fd54ecdc5da99b8d2f55bb9e02be76f1ea0de0110de7\", \"top_keys\": [\"site\", \"expected_commit\", \"expected_case_titles\", \"started_utc\", \"windows\", \"browser\", \"film\", \"supplement\", \"cleanup\", \"finished_utc\"], \"windows\": [{\"name\": \"cold-a-desktop-1440x900\", \"failed_requests\": [\"GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live net::ERR_ABORTED\", \"GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/operations?mode=live net::ERR_ABORTED\"], \"errors\": [], \"writes\": []}, {\"name\": \"cold-b-mobile-390x844\", \"failed_requests\": [\"GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live net::ERR_ABORTED\", \"GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0 net::ERR_ABORTED\", \"GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0 net::ERR_ABORTED\", \"GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/operations?mode=recorded net::ERR_ABORTED\", \"GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0 net::ERR_ABORTED\", \"GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=0 net::ERR_ABORTED\"], \"errors\": [], \"writes\": []}], \"film\": {\"errors\": [], \"writes\": [], \"duration_ms\": 88050, \"reached_end\": true}}\nTraceback (most recent call last):\n  File \"<stdin>\", line 9, in <module>\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py\", line 214, in urlopen\n    return opener.open(url, data, timeout)\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py\", line 523, in open\n    response = meth(req, response)\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py\", line 632, in http_response\n    response = self.parent.error(\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py\", line 561, in error\n    return self._call_chain(*args)\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py\", line 494, in _call_chain\n    result = func(*args)\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py\", line 641, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 403: Forbidden\n",
+    "offset": 0,
+    "nextOffset": 3013,
+    "totalBytes": 3013,
+    "truncated": false,
+    "startedAt": "2026-10-24T13:51:24.867Z",
+    "finishedAt": "2026-10-24T13:51:25.445Z"
+  },
+  "connectorOperation": {
+    "operationId": "54d82ef81cf0fa672221510aa518dcf435e62d1b51eb32f7f5f1455ede3ae1f1",
+    "toolName": "commander_process_output",
+    "requestSha256": "882fd718b63fa759060c7570de02fb86c94e6b1dd58e0339d12c7bc1a0a9a4bd",
+    "device": "local",
+    "sessionId": "cp-demo-20261024-r3-006-inspect-live-diagnostics"
+  },
+  "error_code": "INVALID_ARGUMENT"
+}

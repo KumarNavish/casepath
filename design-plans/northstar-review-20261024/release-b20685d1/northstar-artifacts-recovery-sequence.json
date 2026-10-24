@@ -1,0 +1,94 @@
+{
+  "contract": "casepath.artifact-recovery/1",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "status": "passed",
+  "started_at": "2026-10-24T13:57:21.314602+00:00",
+  "script_sha256": "7225665a98f67c98fa1692f281aed71f1f3665a487b4633278f550ac6533268d",
+  "helper_binding_sha256": "4e793318f171d1d49c1d6a35c4c94d90c02d03d3d5277cbd1e836d39e388e20e",
+  "original_failed_sequence_sha256": "c5a253962722e99fbdcb3d3a3bda7e855f73959fc3476d60ef0fbf84a47194a0",
+  "original_failed_terminal_sha256": "629bf7fb3a4e01b23c4baf16d5ae86fde1a6427ecbc2390da853aea5e01979bc",
+  "original_failed_capture_sha256": "7310e2ff20c608199a81af776049a702dce92172248c7ec825c4d442381f3e96",
+  "trace_forensics_sha256": "5d34ff59af91414b7c2236931cf15d6b91f2cb9c6983d82029f431e50544b14b",
+  "carried_forward_stages": [
+    {
+      "name": "film_frames",
+      "status": "completed",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/decode_public_film.py"
+      ],
+      "started_at": "2026-10-24T13:44:13.606571+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-film_frames-command.log",
+      "pid": 43022,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T13:44:16.501578+00:00",
+      "log_sha256": "fe01a40becfbcca7545c76cf8af47b445cb10a654faa483d23032f8dad990112",
+      "artifact": {
+        "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/frames-index.json",
+        "sha256": "f05681d3b7bcbf818e195c13e1be9a79f41f565c1c32d08ad0587afbef6dec0c"
+      }
+    },
+    {
+      "name": "contact_sheet",
+      "status": "completed",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/make_film_contact_sheet.mjs"
+      ],
+      "started_at": "2026-10-24T13:44:16.510907+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-contact_sheet-command.log",
+      "pid": 43066,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T13:44:18.799996+00:00",
+      "log_sha256": "381bbba26bce37d9fe24b517898abaf3070d3a71892d1fa30ff2d37caf378485",
+      "artifact": {
+        "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/contact-sheet.json",
+        "sha256": "eacb9e50de331655273c6b0ba59fa6281e9de6b44a3d9edd720746ccb1e3b092"
+      }
+    }
+  ],
+  "stages": [
+    {
+      "name": "eight_states",
+      "status": "completed",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/capture_eight_states_recovered.mjs"
+      ],
+      "started_at": "2026-10-24T13:57:21.316273+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-recovered-eight_states-command.log",
+      "pid": 48086,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T13:57:52.960518+00:00",
+      "log_sha256": "2e2dff185f6c69212f09a9de34069fb7ec705bead0ea04bfcc817287cd55a019",
+      "artifact": {
+        "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture-recovered/eight-state-evidence.json",
+        "sha256": "509d9a3ba0c06a836572c393e549c05e2a7a262a3bee139471e2025c2fd4498a"
+      }
+    },
+    {
+      "name": "fidelity",
+      "status": "completed",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/measure_northstar_fidelity_recovered.py"
+      ],
+      "started_at": "2026-10-24T13:57:52.973520+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-recovered-fidelity-command.log",
+      "pid": 48295,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T13:58:00.003671+00:00",
+      "log_sha256": "cfad005287a950e677e1a541add6c3f40398eb61b00a95414ea54405cf14b6c1",
+      "artifact": {
+        "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/fidelity-measurements.json",
+        "sha256": "d97704dcab46a32d9d14950185ca15179545cd09eb74326c5b072b9fcbce6949"
+      }
+    }
+  ],
+  "source_clean_before": true,
+  "original_failure_preserved": true,
+  "product_changes": false,
+  "finished_at": "2026-10-24T13:58:00.123041+00:00",
+  "source_clean_after": true
+}

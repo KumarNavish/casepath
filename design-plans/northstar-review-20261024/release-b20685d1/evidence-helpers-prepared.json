@@ -1,0 +1,25 @@
+{
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "status": "prepared",
+  "prepared_at": "2026-10-24T12:35:03.515460+00:00",
+  "scope": "Evidence capture and truthful acceptance mapping only; no product source change, provider workflow or publication executed.",
+  "artifact_helpers": {
+    "decode_public_film.py": "ba84615965070e771b7ee799a0c8499e496de020dca3c56a88fe41b5dab7baa4",
+    "make_film_contact_sheet.mjs": "7d16fb0898505e6f04cdcb096c5b3e3f7a28681842a0267b3edee3870fc8b8fd",
+    "capture_eight_states.mjs": "4feb8418280a03b793c79fe06f775bdee97e6dd7a5306947d8d20416f5b62a31",
+    "measure_northstar_fidelity.py": "fd3c0c9703de2dd9304b0ceac0d89548e124e9ababe9d5027cc63a30cc77a158"
+  },
+  "artifact_runner_sha256": "ffb899b00d5bd1c9a0a72ce476bdf57f23b68b69d28ee0bc08dd0f7c009f3c6a",
+  "final_evidence_generator_sha256": "6ea5a96fc972d739e1b61084acee7ec1fb2199243d377174f0c775ad9238a8e3",
+  "published_acceptance_binding_sha256": "976aaae2d89f053fde678a75a63d7eadd628ad703ee140b54070fc118549e338",
+  "closeout_binding_sha256": "bb0929054f4db72cd00a939aa9e9cad2cb2fe77594e412bc3e64f0ba098cbaec",
+  "ffmpeg_png_encoder_available": true,
+  "python_syntax": "passed",
+  "node_syntax": "passed",
+  "source_clean": true,
+  "restart_helpers": {
+    "resume_existing_review_qa.py": "9adbd960cdc67e901178aa0fc409c75434080546090f1c1f2152140929a15889",
+    "verify_local_restart.py": "21837547b45f03060331160f960a4360cc2eacc554d5eb0513c1e946279b94d6"
+  },
+  "restart_amended_at": "2026-10-24T12:46:26.616399+00:00"
+}

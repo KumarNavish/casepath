@@ -1,0 +1,1135 @@
+{
+  "contract": "casepath.northstar-final-evidence/1",
+  "tested_and_deployed_source": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "generated_at": "2026-10-24T14:02:31.399411+00:00",
+  "generator_sha256": "49c13ab52d83ff20df1840427adb11b8feb7ae623294f88acd38e389e2d0e1a1",
+  "product_changes": false,
+  "copies": [
+    {
+      "file": "full-gate.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/full-gate-verified.json",
+      "original_sha256": "a9954389d72de2ee1de28366a5e63754ee48c0828b5ed1aa71bd8c8cd2764099",
+      "committed_copy_sha256": "a9954389d72de2ee1de28366a5e63754ee48c0828b5ed1aa71bd8c8cd2764099",
+      "byte_identical": true,
+      "bytes": 4779
+    },
+    {
+      "file": "gate-actual-completion.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/gate-actual-completion.json",
+      "original_sha256": "ce0c18215d4851050d40e858c445db8082a20716038c3d385dce51c7994c5836",
+      "committed_copy_sha256": "ce0c18215d4851050d40e858c445db8082a20716038c3d385dce51c7994c5836",
+      "byte_identical": true,
+      "bytes": 680
+    },
+    {
+      "file": "commander-gate-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-gate-terminal.json",
+      "original_sha256": "22ba2c2e531634c2b786efa20254f6a73feeb364361aa7bbb77206c9b7db7872",
+      "committed_copy_sha256": "22ba2c2e531634c2b786efa20254f6a73feeb364361aa7bbb77206c9b7db7872",
+      "byte_identical": true,
+      "bytes": 7634
+    },
+    {
+      "file": "source-binding.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/source-binding.json",
+      "original_sha256": "92801415b92e1f44e387021bb7ec59f87a4d6a615c960587c297d847dd291b29",
+      "committed_copy_sha256": "92801415b92e1f44e387021bb7ec59f87a4d6a615c960587c297d847dd291b29",
+      "byte_identical": true,
+      "bytes": 2592
+    },
+    {
+      "file": "independent-review.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/independent-review.json",
+      "original_sha256": "88a55fabfa37106842b87860013db3849263874dd78c468faef34e8174ca1481",
+      "committed_copy_sha256": "88a55fabfa37106842b87860013db3849263874dd78c468faef34e8174ca1481",
+      "byte_identical": true,
+      "bytes": 4491
+    },
+    {
+      "file": "sealed-browser-command.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser-command.json",
+      "original_sha256": "1bc5f01db48a3d5b99361ee876ffafffe8623717e90ea8a50088c1ed6861d33e",
+      "committed_copy_sha256": "1bc5f01db48a3d5b99361ee876ffafffe8623717e90ea8a50088c1ed6861d33e",
+      "byte_identical": true,
+      "bytes": 1640
+    },
+    {
+      "file": "commander-sealed-browser-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-sealed-browser-terminal.json",
+      "original_sha256": "a79e7fd8f7dca45e56edfd4ef0ff79d38686e809c0a8b0479f356ed72c4dd470",
+      "committed_copy_sha256": "a79e7fd8f7dca45e56edfd4ef0ff79d38686e809c0a8b0479f356ed72c4dd470",
+      "byte_identical": true,
+      "bytes": 3093
+    },
+    {
+      "file": "review-browser-receipt.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/receipt.json",
+      "original_sha256": "83517c45d484e4623ca1744fdf209595196f0aca3e4f8d6c761778e787111f36",
+      "committed_copy_sha256": "83517c45d484e4623ca1744fdf209595196f0aca3e4f8d6c761778e787111f36",
+      "byte_identical": true,
+      "bytes": 41490
+    },
+    {
+      "file": "review-walkthrough.webm",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/review-walkthrough.webm",
+      "original_sha256": "a70cb8a156e37e5c0a1289c2abfcdcc846aaed07a73d4a5f08d6ebca6c92b58c",
+      "committed_copy_sha256": "a70cb8a156e37e5c0a1289c2abfcdcc846aaed07a73d4a5f08d6ebca6c92b58c",
+      "byte_identical": true,
+      "bytes": 7158831
+    },
+    {
+      "file": "api-wheel-verification.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/api-private-wheel-verified.json",
+      "original_sha256": "3d1f8fedeb04abbf5b2b53290765a1396a6cf97d61d4e8915ecea155ff1fbeaf",
+      "committed_copy_sha256": "3d1f8fedeb04abbf5b2b53290765a1396a6cf97d61d4e8915ecea155ff1fbeaf",
+      "byte_identical": true,
+      "bytes": 369
+    },
+    {
+      "file": "api-health.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/api-health-after.json",
+      "original_sha256": "de0a57a7d34119bf08d62ec8a99c0bf17a0f99877ffc59678a26fc2e3c42aff6",
+      "committed_copy_sha256": "de0a57a7d34119bf08d62ec8a99c0bf17a0f99877ffc59678a26fc2e3c42aff6",
+      "byte_identical": true,
+      "bytes": 179
+    },
+    {
+      "file": "api-deployment.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/api-deployment-uploaded.json",
+      "original_sha256": "b19f858859d76a48c7b29b9d86cc79791f913a172be6e3922ae631b80ba8916b",
+      "committed_copy_sha256": "b19f858859d76a48c7b29b9d86cc79791f913a172be6e3922ae631b80ba8916b",
+      "byte_identical": true,
+      "bytes": 295
+    },
+    {
+      "file": "sites-saved-version.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/sites-saved-version.json",
+      "original_sha256": "2161d332f8639cb472fc19875d1e37a5444a9f061815ef29e1ff2017ac6044df",
+      "committed_copy_sha256": "2161d332f8639cb472fc19875d1e37a5444a9f061815ef29e1ff2017ac6044df",
+      "byte_identical": true,
+      "bytes": 576
+    },
+    {
+      "file": "sites-deployment.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/sites-deployment.json",
+      "original_sha256": "b92f2e3ce8835cc0c2c4a24ed29d1b2fecc511e48a4df3f0239def2e96eb1a51",
+      "committed_copy_sha256": "b92f2e3ce8835cc0c2c4a24ed29d1b2fecc511e48a4df3f0239def2e96eb1a51",
+      "byte_identical": true,
+      "bytes": 581
+    },
+    {
+      "file": "published-acceptance-sequence.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/published-acceptance-sequence.json",
+      "original_sha256": "ccf919e4a9c1c00d25ac04b5408b9164fa214b34f2401d3fde59a98896e8dc48",
+      "committed_copy_sha256": "ccf919e4a9c1c00d25ac04b5408b9164fa214b34f2401d3fde59a98896e8dc48",
+      "byte_identical": true,
+      "bytes": 7700
+    },
+    {
+      "file": "commander-acceptance-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-acceptance-terminal.json",
+      "original_sha256": "17cca1cb8539bb477c025715350315c315e84e7cf2ea74bfcfec89c4879e0d7a",
+      "committed_copy_sha256": "17cca1cb8539bb477c025715350315c315e84e7cf2ea74bfcfec89c4879e0d7a",
+      "byte_identical": true,
+      "bytes": 1956
+    },
+    {
+      "file": "published-soak-summary.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/published-soak-b20685d1/summary.json",
+      "original_sha256": "9f3f602629db81d4e06f85670e6e4acb4812d0028d8e332303920db5a626c3fe",
+      "committed_copy_sha256": "9f3f602629db81d4e06f85670e6e4acb4812d0028d8e332303920db5a626c3fe",
+      "byte_identical": true,
+      "bytes": 2907
+    },
+    {
+      "file": "published-browser-summary.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/published-browser-b20685d1/summary.json",
+      "original_sha256": "f63d82d8951bfe712ac79fc95c55924d88995e68a0fae67d99856f33160cbcb4",
+      "committed_copy_sha256": "f63d82d8951bfe712ac79fc95c55924d88995e68a0fae67d99856f33160cbcb4",
+      "byte_identical": true,
+      "bytes": 1239
+    },
+    {
+      "file": "public-image-verification.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-image-verified.json",
+      "original_sha256": "dc39ac195e0c52fdf4d06a3c0bd7e449947fbec075cc2918b727a548f58180e0",
+      "committed_copy_sha256": "dc39ac195e0c52fdf4d06a3c0bd7e449947fbec075cc2918b727a548f58180e0",
+      "byte_identical": true,
+      "bytes": 1178
+    },
+    {
+      "file": "readback-verified.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/readback-verified.json",
+      "original_sha256": "9840afbeb97b6944c5f1ee1e552a4dfe0f1eb4d8294aff745f889f30e1083a5a",
+      "committed_copy_sha256": "9840afbeb97b6944c5f1ee1e552a4dfe0f1eb4d8294aff745f889f30e1083a5a",
+      "byte_identical": true,
+      "bytes": 747
+    },
+    {
+      "file": "visual-inspection.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/visual-inspection.json",
+      "original_sha256": "40f6c831d1c7b6884026d4fb3c8ac9eab694a3084ab55bf42df0cd84828b3cf4",
+      "committed_copy_sha256": "40f6c831d1c7b6884026d4fb3c8ac9eab694a3084ab55bf42df0cd84828b3cf4",
+      "byte_identical": true,
+      "bytes": 3665
+    },
+    {
+      "file": "diagnostics-reviewed.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/diagnostics-reviewed.json",
+      "original_sha256": "692a2be6eca3ecab5f80600201062e70aba3f610e372b83ab585e87f28da2f6f",
+      "committed_copy_sha256": "692a2be6eca3ecab5f80600201062e70aba3f610e372b83ab585e87f28da2f6f",
+      "byte_identical": true,
+      "bytes": 12983
+    },
+    {
+      "file": "local-demo-ready.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/local-demo-ready.json",
+      "original_sha256": "2d0709b06a053c3eb52709f3b07b80b77103a3c2713829f05ff8df0a10f648f0",
+      "committed_copy_sha256": "2d0709b06a053c3eb52709f3b07b80b77103a3c2713829f05ff8df0a10f648f0",
+      "byte_identical": true,
+      "bytes": 2231
+    },
+    {
+      "file": "local-demo-owner.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/owner.json",
+      "original_sha256": "af1c6c1fd726fede69523288d72c98b13435a6ebc9181660e7b9cb44efc47c32",
+      "committed_copy_sha256": "af1c6c1fd726fede69523288d72c98b13435a6ebc9181660e7b9cb44efc47c32",
+      "byte_identical": true,
+      "bytes": 2367
+    },
+    {
+      "file": "local-demo-copy.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/data-copy.json",
+      "original_sha256": "f6c7781d8bf9962f58862876bd7a02945a94c18e79423bb93b3d5ad587491175",
+      "committed_copy_sha256": "f6c7781d8bf9962f58862876bd7a02945a94c18e79423bb93b3d5ad587491175",
+      "byte_identical": true,
+      "bytes": 991
+    },
+    {
+      "file": "serve_existing_review_qa.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/serve_existing_review_qa.py",
+      "original_sha256": "4bcabaaf11b91382a6985785a9ffe768da1002f7c581f625ff04e9d42dd67961",
+      "committed_copy_sha256": "4bcabaaf11b91382a6985785a9ffe768da1002f7c581f625ff04e9d42dd67961",
+      "byte_identical": true,
+      "bytes": 7728
+    },
+    {
+      "file": "review-source.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/source-review.png",
+      "original_sha256": "4e1aa0e9a3575f519c1437450d214be947ffe5aef1270524ac05f6172a1397f6",
+      "committed_copy_sha256": "4e1aa0e9a3575f519c1437450d214be947ffe5aef1270524ac05f6172a1397f6",
+      "byte_identical": true,
+      "bytes": 134207
+    },
+    {
+      "file": "review-preview.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/later-case-preview.png",
+      "original_sha256": "7b07f27e09df53c26ce389d8c254af4d02bc258f24fe391afab354b264d4f152",
+      "committed_copy_sha256": "7b07f27e09df53c26ce389d8c254af4d02bc258f24fe391afab354b264d4f152",
+      "byte_identical": true,
+      "bytes": 163257
+    },
+    {
+      "file": "review-reuse.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/later-case-reuse.png",
+      "original_sha256": "62beb332a3e8d0e032b0a1e1e661223fc6afc9a6e636ab34f228738af94227b1",
+      "committed_copy_sha256": "62beb332a3e8d0e032b0a1e1e661223fc6afc9a6e636ab34f228738af94227b1",
+      "byte_identical": true,
+      "bytes": 177664
+    },
+    {
+      "file": "review-mobile.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/mobile-review.png",
+      "original_sha256": "cade8e40c91a166b7ff5b5a517c674b6b45a0c1a6d9c33f63f08f9371be071f3",
+      "committed_copy_sha256": "cade8e40c91a166b7ff5b5a517c674b6b45a0c1a6d9c33f63f08f9371be071f3",
+      "byte_identical": true,
+      "bytes": 62327
+    },
+    {
+      "file": "public-desktop.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/published-browser-b20685d1/cold-a-desktop-1440x900-demo-clm_314f2d309fea25e6.png",
+      "original_sha256": "e13f4694033d06ab5d8a3416d90c7366ea1765a85cddcf0f7ca9759413ba9ffd",
+      "committed_copy_sha256": "e13f4694033d06ab5d8a3416d90c7366ea1765a85cddcf0f7ca9759413ba9ffd",
+      "byte_identical": true,
+      "bytes": 177622
+    },
+    {
+      "file": "public-mobile.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/published-browser-b20685d1/cold-b-mobile-390x844-demo-clm_314f2d309fea25e6.png",
+      "original_sha256": "aad6728be06f90e8398ab9afb29275839783e12c0af23042f09509d60dfe811d",
+      "committed_copy_sha256": "aad6728be06f90e8398ab9afb29275839783e12c0af23042f09509d60dfe811d",
+      "byte_identical": true,
+      "bytes": 51488
+    },
+    {
+      "file": "full-gate.log",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/full-gate.log",
+      "original_sha256": "b610dbc5d670589aec0abf3841809a4743c125d685d0024337139ac61f10e365",
+      "committed_copy_sha256": "b610dbc5d670589aec0abf3841809a4743c125d685d0024337139ac61f10e365",
+      "byte_identical": true,
+      "bytes": 7824
+    },
+    {
+      "file": "full-gate-command.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/full-gate-command.json",
+      "original_sha256": "20f42de52e9b9feb0f61d4f59c64a6484b8db8b6169bdac57bb071b91f470d28",
+      "committed_copy_sha256": "20f42de52e9b9feb0f61d4f59c64a6484b8db8b6169bdac57bb071b91f470d28",
+      "byte_identical": true,
+      "bytes": 1347
+    },
+    {
+      "file": "sealed-browser-command.log",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser-command.log",
+      "original_sha256": "a2f49388b6fb9259eadb7fe2a1f4711034f4e1b089859d7aa2d7604fc9452597",
+      "committed_copy_sha256": "a2f49388b6fb9259eadb7fe2a1f4711034f4e1b089859d7aa2d7604fc9452597",
+      "byte_identical": true,
+      "bytes": 510
+    },
+    {
+      "file": "published-verification.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/published-browser-b20685d1/published-verification.json",
+      "original_sha256": "7f5da4b80aef1b725894fd54ecdc5da99b8d2f55bb9e02be76f1ea0de0110de7",
+      "committed_copy_sha256": "7f5da4b80aef1b725894fd54ecdc5da99b8d2f55bb9e02be76f1ea0de0110de7",
+      "byte_identical": true,
+      "bytes": 90667
+    },
+    {
+      "file": "public-walkthrough.webm",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/published-browser-b20685d1/public-walkthrough.webm",
+      "original_sha256": "267c06852268331f5fc34f91ff0664ebb4b95868bb9cdd907056e525bc425c57",
+      "committed_copy_sha256": "267c06852268331f5fc34f91ff0664ebb4b95868bb9cdd907056e525bc425c57",
+      "byte_identical": true,
+      "bytes": 9204002
+    },
+    {
+      "file": "northstar-artifacts-original-failed-sequence.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-artifacts-sequence.json",
+      "original_sha256": "c5a253962722e99fbdcb3d3a3bda7e855f73959fc3476d60ef0fbf84a47194a0",
+      "committed_copy_sha256": "c5a253962722e99fbdcb3d3a3bda7e855f73959fc3476d60ef0fbf84a47194a0",
+      "byte_identical": true,
+      "bytes": 3294
+    },
+    {
+      "file": "commander-artifacts-failed-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-artifacts-failed-terminal.json",
+      "original_sha256": "629bf7fb3a4e01b23c4baf16d5ae86fde1a6427ecbc2390da853aea5e01979bc",
+      "committed_copy_sha256": "629bf7fb3a4e01b23c4baf16d5ae86fde1a6427ecbc2390da853aea5e01979bc",
+      "byte_identical": true,
+      "bytes": 1570
+    },
+    {
+      "file": "northstar-artifacts-recovery-sequence.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-artifacts-recovery-sequence.json",
+      "original_sha256": "57d2d1ac3d746df79d62b1977a663d0536896e7e81fe2ef95ef99f361935c004",
+      "committed_copy_sha256": "57d2d1ac3d746df79d62b1977a663d0536896e7e81fe2ef95ef99f361935c004",
+      "byte_identical": true,
+      "bytes": 5268
+    },
+    {
+      "file": "commander-artifacts-recovery-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-artifacts-recovery-terminal.json",
+      "original_sha256": "2e3e30f72c82603ae5238a576d882c5064bb5b596d96a5dbe5d039142dfb4051",
+      "committed_copy_sha256": "2e3e30f72c82603ae5238a576d882c5064bb5b596d96a5dbe5d039142dfb4051",
+      "byte_identical": true,
+      "bytes": 1378
+    },
+    {
+      "file": "eight-state-evidence.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture-recovered/eight-state-evidence.json",
+      "original_sha256": "509d9a3ba0c06a836572c393e549c05e2a7a262a3bee139471e2025c2fd4498a",
+      "committed_copy_sha256": "509d9a3ba0c06a836572c393e549c05e2a7a262a3bee139471e2025c2fd4498a",
+      "byte_identical": true,
+      "bytes": 113480
+    },
+    {
+      "file": "frames-index.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/frames-index.json",
+      "original_sha256": "f05681d3b7bcbf818e195c13e1be9a79f41f565c1c32d08ad0587afbef6dec0c",
+      "committed_copy_sha256": "f05681d3b7bcbf818e195c13e1be9a79f41f565c1c32d08ad0587afbef6dec0c",
+      "byte_identical": true,
+      "bytes": 6116
+    },
+    {
+      "file": "public-video-metadata.log",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/video-metadata.log",
+      "original_sha256": "876931ec6e37877dbc238454c659575d80d568d7bb7f9f7e8440ec473f71f37a",
+      "committed_copy_sha256": "876931ec6e37877dbc238454c659575d80d568d7bb7f9f7e8440ec473f71f37a",
+      "byte_identical": true,
+      "bytes": 605
+    },
+    {
+      "file": "contact-sheet.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/contact-sheet.json",
+      "original_sha256": "eacb9e50de331655273c6b0ba59fa6281e9de6b44a3d9edd720746ccb1e3b092",
+      "committed_copy_sha256": "eacb9e50de331655273c6b0ba59fa6281e9de6b44a3d9edd720746ccb1e3b092",
+      "byte_identical": true,
+      "bytes": 3200
+    },
+    {
+      "file": "film-contact-sheet.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/film-contact-sheet.png",
+      "original_sha256": "961d2d076980f053baaa2ddf319b510887d2cc775b09ace28dd099d78b3e3751",
+      "committed_copy_sha256": "961d2d076980f053baaa2ddf319b510887d2cc775b09ace28dd099d78b3e3751",
+      "byte_identical": true,
+      "bytes": 950866
+    },
+    {
+      "file": "cold-viewer-review.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-viewer-review.json",
+      "original_sha256": "3c2817a8556a29fb4ff7802f50d2f4fe3245be36fb2151a47e08810d9a8505d6",
+      "committed_copy_sha256": "3c2817a8556a29fb4ff7802f50d2f4fe3245be36fb2151a47e08810d9a8505d6",
+      "byte_identical": true,
+      "bytes": 10931
+    },
+    {
+      "file": "fidelity-measurements.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/fidelity-measurements.json",
+      "original_sha256": "d97704dcab46a32d9d14950185ca15179545cd09eb74326c5b072b9fcbce6949",
+      "committed_copy_sha256": "d97704dcab46a32d9d14950185ca15179545cd09eb74326c5b072b9fcbce6949",
+      "byte_identical": true,
+      "bytes": 3619
+    },
+    {
+      "file": "fidelity-review.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/visual-review.json",
+      "original_sha256": "cb8cac85da18e92b95d76ef850b0802129ca7bde88cbafbe1f18c34b5c78c9d9",
+      "committed_copy_sha256": "cb8cac85da18e92b95d76ef850b0802129ca7bde88cbafbe1f18c34b5c78c9d9",
+      "byte_identical": true,
+      "bytes": 8512
+    },
+    {
+      "file": "evidence-helpers-prepared.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/evidence-helpers-prepared.json",
+      "original_sha256": "2fae6900bb2b52da01b6ce2821b51fe9ed191f10c5cc7461633635df759a7e66",
+      "committed_copy_sha256": "2fae6900bb2b52da01b6ce2821b51fe9ed191f10c5cc7461633635df759a7e66",
+      "byte_identical": true,
+      "bytes": 1531
+    },
+    {
+      "file": "run_northstar_artifacts.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/run_northstar_artifacts.py",
+      "original_sha256": "ffb899b00d5bd1c9a0a72ce476bdf57f23b68b69d28ee0bc08dd0f7c009f3c6a",
+      "committed_copy_sha256": "ffb899b00d5bd1c9a0a72ce476bdf57f23b68b69d28ee0bc08dd0f7c009f3c6a",
+      "byte_identical": true,
+      "bytes": 4363
+    },
+    {
+      "file": "state-1-ready.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture-recovered/state-1-ready.png",
+      "original_sha256": "dc3de6a1e9603af8df0e1d6f574510dd7a208fa3c8117af8b768783ad3e59dfb",
+      "committed_copy_sha256": "dc3de6a1e9603af8df0e1d6f574510dd7a208fa3c8117af8b768783ad3e59dfb",
+      "byte_identical": true,
+      "bytes": 103430
+    },
+    {
+      "file": "state-2-source-opened.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture-recovered/state-2-source-opened.png",
+      "original_sha256": "02a28ae5a136ab6dfb30e8e1150dee22e6246f0d2f7695dc617561b6ec95a4d9",
+      "committed_copy_sha256": "02a28ae5a136ab6dfb30e8e1150dee22e6246f0d2f7695dc617561b6ec95a4d9",
+      "byte_identical": true,
+      "bytes": 192258
+    },
+    {
+      "file": "state-3-exact-passage.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture-recovered/state-3-exact-passage.png",
+      "original_sha256": "5e983a245b5af51c58b0e0610efe52e953039241f781fceeb39c38f1d3fd5e9c",
+      "committed_copy_sha256": "5e983a245b5af51c58b0e0610efe52e953039241f781fceeb39c38f1d3fd5e9c",
+      "byte_identical": true,
+      "bytes": 196156
+    },
+    {
+      "file": "state-4-source-bound-fact.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture-recovered/state-4-source-bound-fact.png",
+      "original_sha256": "4c5348f662a3b63dba87681d3f307a882061994efe80a9551fa6b2163ba67f72",
+      "committed_copy_sha256": "4c5348f662a3b63dba87681d3f307a882061994efe80a9551fa6b2163ba67f72",
+      "byte_identical": true,
+      "bytes": 202930
+    },
+    {
+      "file": "state-5-accepted-question.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture-recovered/state-5-accepted-question.png",
+      "original_sha256": "d5038ecf5d96f282d5cef1f6cc00c44f5a408be0cdb4bba8887c22d6debaac46",
+      "committed_copy_sha256": "d5038ecf5d96f282d5cef1f6cc00c44f5a408be0cdb4bba8887c22d6debaac46",
+      "byte_identical": true,
+      "bytes": 176957
+    },
+    {
+      "file": "state-6-completed-process.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture-recovered/state-6-completed-process.png",
+      "original_sha256": "8c656c97aa0618f49069b82620c1849ed8c222900990ca3416114ddc5f7980fb",
+      "committed_copy_sha256": "8c656c97aa0618f49069b82620c1849ed8c222900990ca3416114ddc5f7980fb",
+      "byte_identical": true,
+      "bytes": 191407
+    },
+    {
+      "file": "state-7-direct-edit.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture-recovered/state-7-direct-edit.png",
+      "original_sha256": "4e1aa0e9a3575f519c1437450d214be947ffe5aef1270524ac05f6172a1397f6",
+      "committed_copy_sha256": "4e1aa0e9a3575f519c1437450d214be947ffe5aef1270524ac05f6172a1397f6",
+      "byte_identical": true,
+      "bytes": 134207
+    },
+    {
+      "file": "state-8-later-case-reuse.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture-recovered/state-8-later-case-reuse.png",
+      "original_sha256": "62beb332a3e8d0e032b0a1e1e661223fc6afc9a6e636ab34f228738af94227b1",
+      "committed_copy_sha256": "62beb332a3e8d0e032b0a1e1e661223fc6afc9a6e636ab34f228738af94227b1",
+      "byte_identical": true,
+      "bytes": 177664
+    },
+    {
+      "file": "cold-frame-01.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-01.png",
+      "original_sha256": "ec7ecf39b9a7a9dd604d1edbfe248913a9d8f179ee725ccc1d6bf1d0dd31e73e",
+      "committed_copy_sha256": "ec7ecf39b9a7a9dd604d1edbfe248913a9d8f179ee725ccc1d6bf1d0dd31e73e",
+      "byte_identical": true,
+      "bytes": 95928
+    },
+    {
+      "file": "cold-frame-02.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-02.png",
+      "original_sha256": "488064b7300da915d0b35057b6ae21f730c1f55df55a06b17d744f509189c52e",
+      "committed_copy_sha256": "488064b7300da915d0b35057b6ae21f730c1f55df55a06b17d744f509189c52e",
+      "byte_identical": true,
+      "bytes": 99443
+    },
+    {
+      "file": "cold-frame-03.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-03.png",
+      "original_sha256": "5c0ada056662b96a7384fd0fbbecad8a68f193d4ee19617ef8c4b9dd0c457018",
+      "committed_copy_sha256": "5c0ada056662b96a7384fd0fbbecad8a68f193d4ee19617ef8c4b9dd0c457018",
+      "byte_identical": true,
+      "bytes": 102918
+    },
+    {
+      "file": "cold-frame-04.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-04.png",
+      "original_sha256": "e5a719cdc256b02ad8328021303dc2227d935d05e30aa426fe0598f11d8a46b6",
+      "committed_copy_sha256": "e5a719cdc256b02ad8328021303dc2227d935d05e30aa426fe0598f11d8a46b6",
+      "byte_identical": true,
+      "bytes": 101181
+    },
+    {
+      "file": "cold-frame-05.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-05.png",
+      "original_sha256": "d9dfeb71fee0b9d075de420a7dda78c4a5f2f654cbb16890f009d9a429b000e0",
+      "committed_copy_sha256": "d9dfeb71fee0b9d075de420a7dda78c4a5f2f654cbb16890f009d9a429b000e0",
+      "byte_identical": true,
+      "bytes": 206293
+    },
+    {
+      "file": "cold-frame-06.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-06.png",
+      "original_sha256": "8de9ab18e497de611aed4880e99427ba4699f9b5f316601688b5f6e0bbb25ec5",
+      "committed_copy_sha256": "8de9ab18e497de611aed4880e99427ba4699f9b5f316601688b5f6e0bbb25ec5",
+      "byte_identical": true,
+      "bytes": 330934
+    },
+    {
+      "file": "cold-frame-07.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-07.png",
+      "original_sha256": "6ff89e81e545005d9aedac8c1208c4ffc39b13417a0bfe305159f2dfe4b8199b",
+      "committed_copy_sha256": "6ff89e81e545005d9aedac8c1208c4ffc39b13417a0bfe305159f2dfe4b8199b",
+      "byte_identical": true,
+      "bytes": 428302
+    },
+    {
+      "file": "cold-frame-08.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-08.png",
+      "original_sha256": "21b1c77ddbef33d2f26044202082a656a752368f26169faa5475a51bdeee2ab0",
+      "committed_copy_sha256": "21b1c77ddbef33d2f26044202082a656a752368f26169faa5475a51bdeee2ab0",
+      "byte_identical": true,
+      "bytes": 454868
+    },
+    {
+      "file": "cold-frame-09.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-09.png",
+      "original_sha256": "b104fd3adcd553a3b9e6908a6cc9c5f2a2ccba0e62ae9ee64dca0bd5eab0a0b0",
+      "committed_copy_sha256": "b104fd3adcd553a3b9e6908a6cc9c5f2a2ccba0e62ae9ee64dca0bd5eab0a0b0",
+      "byte_identical": true,
+      "bytes": 430391
+    },
+    {
+      "file": "cold-frame-10.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-10.png",
+      "original_sha256": "b75204b40d607da581954bd3d1e61b347c466397b05993c6ea7ac6284f3ccbec",
+      "committed_copy_sha256": "b75204b40d607da581954bd3d1e61b347c466397b05993c6ea7ac6284f3ccbec",
+      "byte_identical": true,
+      "bytes": 413213
+    },
+    {
+      "file": "cold-frame-11.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-11.png",
+      "original_sha256": "be660652114f7e69f725e7f2ad9b5a649579724dac9ceaa97556f6f991a5c7df",
+      "committed_copy_sha256": "be660652114f7e69f725e7f2ad9b5a649579724dac9ceaa97556f6f991a5c7df",
+      "byte_identical": true,
+      "bytes": 555932
+    },
+    {
+      "file": "cold-frame-12.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-12.png",
+      "original_sha256": "4f80adc7404705119c1a2577d076597f64122ad9363ada3b8c931aae8683d907",
+      "committed_copy_sha256": "4f80adc7404705119c1a2577d076597f64122ad9363ada3b8c931aae8683d907",
+      "byte_identical": true,
+      "bytes": 474026
+    },
+    {
+      "file": "cold-frame-13.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-13.png",
+      "original_sha256": "18236e1f4cc85f378f9b5664686c97e1732cfaeb1e7ae6e73f7e3368d84c0ab7",
+      "committed_copy_sha256": "18236e1f4cc85f378f9b5664686c97e1732cfaeb1e7ae6e73f7e3368d84c0ab7",
+      "byte_identical": true,
+      "bytes": 287911
+    },
+    {
+      "file": "cold-frame-14.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-14.png",
+      "original_sha256": "a2d7c2c0cba6692374b21e922a4f87869eb1521fd2935a055639cd0ff5a4a1ef",
+      "committed_copy_sha256": "a2d7c2c0cba6692374b21e922a4f87869eb1521fd2935a055639cd0ff5a4a1ef",
+      "byte_identical": true,
+      "bytes": 473481
+    },
+    {
+      "file": "cold-frame-15.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-15.png",
+      "original_sha256": "f99399686609ca83bba324a55c84283677fa3e2c4f772fe8b9157ca9bdafb9fd",
+      "committed_copy_sha256": "f99399686609ca83bba324a55c84283677fa3e2c4f772fe8b9157ca9bdafb9fd",
+      "byte_identical": true,
+      "bytes": 169165
+    },
+    {
+      "file": "cold-frame-16.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-16.png",
+      "original_sha256": "c2de2db2c86b7b7340958998b1a143a29f649af517b050ee531965d56131f27a",
+      "committed_copy_sha256": "c2de2db2c86b7b7340958998b1a143a29f649af517b050ee531965d56131f27a",
+      "byte_identical": true,
+      "bytes": 192399
+    },
+    {
+      "file": "cold-frame-17.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-17.png",
+      "original_sha256": "fb873e6e446c1272aa7b16b716788d4ec7dcbe5d37002ce31bfaa0f00b302b05",
+      "committed_copy_sha256": "fb873e6e446c1272aa7b16b716788d4ec7dcbe5d37002ce31bfaa0f00b302b05",
+      "byte_identical": true,
+      "bytes": 274179
+    },
+    {
+      "file": "cold-frame-18.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-18.png",
+      "original_sha256": "059cb468834d580da1e7921fd6b9b247ad6d807cf355d6cd6be18b1f626fd113",
+      "committed_copy_sha256": "059cb468834d580da1e7921fd6b9b247ad6d807cf355d6cd6be18b1f626fd113",
+      "byte_identical": true,
+      "bytes": 196845
+    },
+    {
+      "file": "cold-frame-19.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-19.png",
+      "original_sha256": "36a7f8854d78ca8b520d4d31d5489684d906ed183af2895b33bdcb815817745d",
+      "committed_copy_sha256": "36a7f8854d78ca8b520d4d31d5489684d906ed183af2895b33bdcb815817745d",
+      "byte_identical": true,
+      "bytes": 348851
+    },
+    {
+      "file": "cold-frame-20.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-20.png",
+      "original_sha256": "76c65e5f1184a3f4a69cd9f1d9f656c2c4bcd552ac8839bb653bfb5f38ef3239",
+      "committed_copy_sha256": "76c65e5f1184a3f4a69cd9f1d9f656c2c4bcd552ac8839bb653bfb5f38ef3239",
+      "byte_identical": true,
+      "bytes": 356146
+    },
+    {
+      "file": "cold-frame-21.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-21.png",
+      "original_sha256": "9b63f632593e39aa1da35208e3cfaa8482826db3f97e2f7b2b8a4bcdd1d948d2",
+      "committed_copy_sha256": "9b63f632593e39aa1da35208e3cfaa8482826db3f97e2f7b2b8a4bcdd1d948d2",
+      "byte_identical": true,
+      "bytes": 365632
+    },
+    {
+      "file": "cold-frame-22.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-22.png",
+      "original_sha256": "34116a7f19ab413f639f4aed5dce1c0f187b4307b24cf894b987465c556239c7",
+      "committed_copy_sha256": "34116a7f19ab413f639f4aed5dce1c0f187b4307b24cf894b987465c556239c7",
+      "byte_identical": true,
+      "bytes": 214006
+    },
+    {
+      "file": "cold-frame-23.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-23.png",
+      "original_sha256": "326cd30dbdce500913b29880f90fd1e0839af595d9483a905b1230f95c22ee61",
+      "committed_copy_sha256": "326cd30dbdce500913b29880f90fd1e0839af595d9483a905b1230f95c22ee61",
+      "byte_identical": true,
+      "bytes": 246421
+    },
+    {
+      "file": "cold-frame-24.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/public-film-review/cold-frame-24.png",
+      "original_sha256": "5e49e6447eef265cf66bddc69d5d41d791e06e7012ec6b09902d86ab240a0544",
+      "committed_copy_sha256": "5e49e6447eef265cf66bddc69d5d41d791e06e7012ec6b09902d86ab240a0544",
+      "byte_identical": true,
+      "bytes": 353470
+    },
+    {
+      "file": "concept-01-side.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/concept-01-side.png",
+      "original_sha256": "f0aa33de38d6b33e07a40e24d6a2e6615c1192f6cbd18b551e773101a3e5b3f9",
+      "committed_copy_sha256": "f0aa33de38d6b33e07a40e24d6a2e6615c1192f6cbd18b551e773101a3e5b3f9",
+      "byte_identical": true,
+      "bytes": 1512171
+    },
+    {
+      "file": "concept-01-overlay.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/concept-01-overlay.png",
+      "original_sha256": "a532c59b16a30743aad110657616f452bf5fb65ac4d3769cd2ad9d58c3a6daa0",
+      "committed_copy_sha256": "a532c59b16a30743aad110657616f452bf5fb65ac4d3769cd2ad9d58c3a6daa0",
+      "byte_identical": true,
+      "bytes": 889361
+    },
+    {
+      "file": "concept-01-diff.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/concept-01-diff.png",
+      "original_sha256": "686c32691bf0cdd9abda22894146216957f4317efc27e9c99aedebb2773f800e",
+      "committed_copy_sha256": "686c32691bf0cdd9abda22894146216957f4317efc27e9c99aedebb2773f800e",
+      "byte_identical": true,
+      "bytes": 1401921
+    },
+    {
+      "file": "concept-02-side.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/concept-02-side.png",
+      "original_sha256": "5aa62348a2173c8f24de448e47b6de14281dab81358198544f9501924569b5a7",
+      "committed_copy_sha256": "5aa62348a2173c8f24de448e47b6de14281dab81358198544f9501924569b5a7",
+      "byte_identical": true,
+      "bytes": 1690443
+    },
+    {
+      "file": "concept-02-overlay.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/concept-02-overlay.png",
+      "original_sha256": "14ef8b5485d5a9dbe3db8c74cc42425b2cbaffa1e81c16f3bb4c8331c101027c",
+      "committed_copy_sha256": "14ef8b5485d5a9dbe3db8c74cc42425b2cbaffa1e81c16f3bb4c8331c101027c",
+      "byte_identical": true,
+      "bytes": 1056275
+    },
+    {
+      "file": "concept-02-diff.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/concept-02-diff.png",
+      "original_sha256": "89b65ab38861d2c601270301bcaa9805b5b520fa945e162a1e741fc47fee00ee",
+      "committed_copy_sha256": "89b65ab38861d2c601270301bcaa9805b5b520fa945e162a1e741fc47fee00ee",
+      "byte_identical": true,
+      "bytes": 1595896
+    },
+    {
+      "file": "concept-03-side.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/concept-03-side.png",
+      "original_sha256": "454de9728efb6dd0ec8b587424159608ee3865a07944c5702ad3fe3285700ce4",
+      "committed_copy_sha256": "454de9728efb6dd0ec8b587424159608ee3865a07944c5702ad3fe3285700ce4",
+      "byte_identical": true,
+      "bytes": 1683393
+    },
+    {
+      "file": "concept-03-overlay.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/concept-03-overlay.png",
+      "original_sha256": "954e7a0561d23f875b5ce0ddc9a1342286e01f6a7f14153bd241258b66570db7",
+      "committed_copy_sha256": "954e7a0561d23f875b5ce0ddc9a1342286e01f6a7f14153bd241258b66570db7",
+      "byte_identical": true,
+      "bytes": 1104480
+    },
+    {
+      "file": "concept-03-diff.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-fidelity/concept-03-diff.png",
+      "original_sha256": "4efae2319c3217788d4b78cdf89d0f0b851d359f5f3f68465439fe628594ae7c",
+      "committed_copy_sha256": "4efae2319c3217788d4b78cdf89d0f0b851d359f5f3f68465439fe628594ae7c",
+      "byte_identical": true,
+      "bytes": 1605197
+    },
+    {
+      "file": "capture_eight_states.mjs",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/capture_eight_states.mjs",
+      "original_sha256": "4feb8418280a03b793c79fe06f775bdee97e6dd7a5306947d8d20416f5b62a31",
+      "committed_copy_sha256": "4feb8418280a03b793c79fe06f775bdee97e6dd7a5306947d8d20416f5b62a31",
+      "byte_identical": true,
+      "bytes": 15300
+    },
+    {
+      "file": "decode_public_film.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/decode_public_film.py",
+      "original_sha256": "ba84615965070e771b7ee799a0c8499e496de020dca3c56a88fe41b5dab7baa4",
+      "committed_copy_sha256": "ba84615965070e771b7ee799a0c8499e496de020dca3c56a88fe41b5dab7baa4",
+      "byte_identical": true,
+      "bytes": 3484
+    },
+    {
+      "file": "make_film_contact_sheet.mjs",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/make_film_contact_sheet.mjs",
+      "original_sha256": "7d16fb0898505e6f04cdcb096c5b3e3f7a28681842a0267b3edee3870fc8b8fd",
+      "committed_copy_sha256": "7d16fb0898505e6f04cdcb096c5b3e3f7a28681842a0267b3edee3870fc8b8fd",
+      "byte_identical": true,
+      "bytes": 2743
+    },
+    {
+      "file": "measure_northstar_fidelity.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/measure_northstar_fidelity.py",
+      "original_sha256": "fd3c0c9703de2dd9304b0ceac0d89548e124e9ababe9d5027cc63a30cc77a158",
+      "committed_copy_sha256": "fd3c0c9703de2dd9304b0ceac0d89548e124e9ababe9d5027cc63a30cc77a158",
+      "byte_identical": true,
+      "bytes": 2874
+    },
+    {
+      "file": "local-demo-restart-verified.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/local-demo-restart-verified.json",
+      "original_sha256": "e62bfcd591d9c2cc41ba9154f21611347d71897ea79b3b05b460db958107c593",
+      "committed_copy_sha256": "e62bfcd591d9c2cc41ba9154f21611347d71897ea79b3b05b460db958107c593",
+      "byte_identical": true,
+      "bytes": 2384
+    },
+    {
+      "file": "local-demo-before-restart.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/local-demo-before-restart.json",
+      "original_sha256": "0a26aeee7a444fcc40cf064e4e67ac249d13436176d2e207937dde755d8f5ba3",
+      "committed_copy_sha256": "0a26aeee7a444fcc40cf064e4e67ac249d13436176d2e207937dde755d8f5ba3",
+      "byte_identical": true,
+      "bytes": 1969
+    },
+    {
+      "file": "local-demo-current-server.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/current-server.json",
+      "original_sha256": "163747a509650178d1951f4c5ec2c60c022abf6c6a96ffbc4c11b40cbb847c47",
+      "committed_copy_sha256": "163747a509650178d1951f4c5ec2c60c022abf6c6a96ffbc4c11b40cbb847c47",
+      "byte_identical": true,
+      "bytes": 2882
+    },
+    {
+      "file": "resume_existing_review_qa.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/resume_existing_review_qa.py",
+      "original_sha256": "9adbd960cdc67e901178aa0fc409c75434080546090f1c1f2152140929a15889",
+      "committed_copy_sha256": "9adbd960cdc67e901178aa0fc409c75434080546090f1c1f2152140929a15889",
+      "byte_identical": true,
+      "bytes": 10386
+    },
+    {
+      "file": "verify_local_restart.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/verify_local_restart.py",
+      "original_sha256": "21837547b45f03060331160f960a4360cc2eacc554d5eb0513c1e946279b94d6",
+      "committed_copy_sha256": "21837547b45f03060331160f960a4360cc2eacc554d5eb0513c1e946279b94d6",
+      "byte_identical": true,
+      "bytes": 6118
+    },
+    {
+      "file": "commander-initial-demo-stop.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-initial-demo-stop.json",
+      "original_sha256": "12bfea2925cbe3c1f48199b6e9e18b8a0216f59e4170bd9de49dff1bda9170f7",
+      "committed_copy_sha256": "12bfea2925cbe3c1f48199b6e9e18b8a0216f59e4170bd9de49dff1bda9170f7",
+      "byte_identical": true,
+      "bytes": 808
+    },
+    {
+      "file": "commander-initial-demo-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-initial-demo-terminal.json",
+      "original_sha256": "08fc1960a82d9a7ff46d85d55e79d14a7bb40659dc52423422d7bb57343384ac",
+      "committed_copy_sha256": "08fc1960a82d9a7ff46d85d55e79d14a7bb40659dc52423422d7bb57343384ac",
+      "byte_identical": true,
+      "bytes": 3716
+    },
+    {
+      "file": "commander-resumed-demo-running.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-resumed-demo-running.json",
+      "original_sha256": "b73b234e86dbf8498ce614e9b1dd4cb32436b63ec837d73000f2639c37e476a6",
+      "committed_copy_sha256": "b73b234e86dbf8498ce614e9b1dd4cb32436b63ec837d73000f2639c37e476a6",
+      "byte_identical": true,
+      "bytes": 891
+    },
+    {
+      "file": "evidence-recovery-prepared.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/evidence-recovery-prepared.json",
+      "original_sha256": "4e793318f171d1d49c1d6a35c4c94d90c02d03d3d5277cbd1e836d39e388e20e",
+      "committed_copy_sha256": "4e793318f171d1d49c1d6a35c4c94d90c02d03d3d5277cbd1e836d39e388e20e",
+      "byte_identical": true,
+      "bytes": 1234
+    },
+    {
+      "file": "run_northstar_artifacts_recovered.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/run_northstar_artifacts_recovered.py",
+      "original_sha256": "7225665a98f67c98fa1692f281aed71f1f3665a487b4633278f550ac6533268d",
+      "committed_copy_sha256": "7225665a98f67c98fa1692f281aed71f1f3665a487b4633278f550ac6533268d",
+      "byte_identical": true,
+      "bytes": 6718
+    },
+    {
+      "file": "prepare_final_evidence_original.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/prepare_final_evidence.py",
+      "original_sha256": "6ea5a96fc972d739e1b61084acee7ec1fb2199243d377174f0c775ad9238a8e3",
+      "committed_copy_sha256": "6ea5a96fc972d739e1b61084acee7ec1fb2199243d377174f0c775ad9238a8e3",
+      "byte_identical": true,
+      "bytes": 31670
+    },
+    {
+      "file": "prepare_final_evidence_recovered.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/prepare_final_evidence_recovered.py",
+      "original_sha256": "49c13ab52d83ff20df1840427adb11b8feb7ae623294f88acd38e389e2d0e1a1",
+      "committed_copy_sha256": "49c13ab52d83ff20df1840427adb11b8feb7ae623294f88acd38e389e2d0e1a1",
+      "byte_identical": true,
+      "bytes": 39926
+    },
+    {
+      "file": "capture_eight_states_recovered.mjs",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/capture_eight_states_recovered.mjs",
+      "original_sha256": "cedf315d445a33cc509cd599bccc37b457b49055842d07d827d05e262ccddc2a",
+      "committed_copy_sha256": "cedf315d445a33cc509cd599bccc37b457b49055842d07d827d05e262ccddc2a",
+      "byte_identical": true,
+      "bytes": 17199
+    },
+    {
+      "file": "measure_northstar_fidelity_recovered.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/measure_northstar_fidelity_recovered.py",
+      "original_sha256": "e0ca120f88496e3bb8dfedd809529551bd1f1d14ecc5fae770e35548f46318e0",
+      "committed_copy_sha256": "e0ca120f88496e3bb8dfedd809529551bd1f1d14ecc5fae770e35548f46318e0",
+      "byte_identical": true,
+      "bytes": 2884
+    },
+    {
+      "file": "eight-state-original-failed-evidence.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture/eight-state-evidence.json",
+      "original_sha256": "7310e2ff20c608199a81af776049a702dce92172248c7ec825c4d442381f3e96",
+      "committed_copy_sha256": "7310e2ff20c608199a81af776049a702dce92172248c7ec825c4d442381f3e96",
+      "byte_identical": true,
+      "bytes": 46364
+    },
+    {
+      "file": "northstar-original-failed-capture-command.log",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-eight_states-command.log",
+      "original_sha256": "01f88978d21ba05b6c7284c61eb044af3ca220354b0faf2082cfa3abd39863a2",
+      "committed_copy_sha256": "01f88978d21ba05b6c7284c61eb044af3ca220354b0faf2082cfa3abd39863a2",
+      "byte_identical": true,
+      "bytes": 10717
+    },
+    {
+      "file": "operation-trace-identity-review.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/operation-trace-forensics/identity-review.json",
+      "original_sha256": "5d34ff59af91414b7c2236931cf15d6b91f2cb9c6983d82029f431e50544b14b",
+      "committed_copy_sha256": "5d34ff59af91414b7c2236931cf15d6b91f2cb9c6983d82029f431e50544b14b",
+      "byte_identical": true,
+      "bytes": 4403
+    },
+    {
+      "file": "inspect_trace_forensics.mjs",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/inspect_trace_forensics.mjs",
+      "original_sha256": "986cc00c7037095d2f79656c15b379793cf46769558b88ff0c1a4d0bf27462bf",
+      "committed_copy_sha256": "986cc00c7037095d2f79656c15b379793cf46769558b88ff0c1a4d0bf27462bf",
+      "byte_identical": true,
+      "bytes": 6353
+    },
+    {
+      "file": "commander-trace-forensics-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-trace-forensics-terminal.json",
+      "original_sha256": "ef6669c9368cf1d013d24cb551406cb8239feb490127b61a238f486982fc2d96",
+      "committed_copy_sha256": "ef6669c9368cf1d013d24cb551406cb8239feb490127b61a238f486982fc2d96",
+      "byte_identical": true,
+      "bytes": 4504
+    },
+    {
+      "file": "runtime-cache-repair.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/runtime-cache-repair.json",
+      "original_sha256": "e75a3ca13e9ba64d9f2a5d8ebecdac93613db951754078e999df5aa1c89544eb",
+      "committed_copy_sha256": "e75a3ca13e9ba64d9f2a5d8ebecdac93613db951754078e999df5aa1c89544eb",
+      "byte_identical": true,
+      "bytes": 29842
+    },
+    {
+      "file": "quarantine_generated_cache.py",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/quarantine_generated_cache.py",
+      "original_sha256": "76df256cca10ef4ab02e733d275128fae121c9fc9e0e491d080482f0d9db77a3",
+      "committed_copy_sha256": "76df256cca10ef4ab02e733d275128fae121c9fc9e0e491d080482f0d9db77a3",
+      "byte_identical": true,
+      "bytes": 3609
+    },
+    {
+      "file": "commander-standard-failed-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-standard-failed-terminal.json",
+      "original_sha256": "ce8a5034c564b1df93201de077108e03c20c98d70857fee380c89251c7bcbf08",
+      "committed_copy_sha256": "ce8a5034c564b1df93201de077108e03c20c98d70857fee380c89251c7bcbf08",
+      "byte_identical": true,
+      "bytes": 1199
+    },
+    {
+      "file": "commander-standard-running.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-standard-running.json",
+      "original_sha256": "dec3129b34360678625efbf020df316b94c78b90c106d79828e7313f32c1bb74",
+      "committed_copy_sha256": "dec3129b34360678625efbf020df316b94c78b90c106d79828e7313f32c1bb74",
+      "byte_identical": true,
+      "bytes": 2942
+    },
+    {
+      "file": "commander-local-handoff-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-local-handoff-terminal.json",
+      "original_sha256": "201f84b213dd68c5186598429b8d9f4659d7f7306c6b50a3f28aa9749a776710",
+      "committed_copy_sha256": "201f84b213dd68c5186598429b8d9f4659d7f7306c6b50a3f28aa9749a776710",
+      "byte_identical": true,
+      "bytes": 3250
+    },
+    {
+      "file": "local-restart-early-probe.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/local-restart-early-probe.json",
+      "original_sha256": "ce85693db549ae28c1806b4a5324083f6735f84e5f9250dad8add78bfee390c1",
+      "committed_copy_sha256": "ce85693db549ae28c1806b4a5324083f6735f84e5f9250dad8add78bfee390c1",
+      "byte_identical": true,
+      "bytes": 6908
+    },
+    {
+      "file": "commander-trace-identity-failed-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-trace-identity-failed-terminal.json",
+      "original_sha256": "1d30df1dc5606cf2b3a9ed4115a6aa983c2214eff708bd7d880f81be254e40f8",
+      "committed_copy_sha256": "1d30df1dc5606cf2b3a9ed4115a6aa983c2214eff708bd7d880f81be254e40f8",
+      "byte_identical": true,
+      "bytes": 1567
+    },
+    {
+      "file": "inspect_trace_identity.mjs",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/inspect_trace_identity.mjs",
+      "original_sha256": "00e16357a050d990b865443f170c6013b87a94c1db1c85046aa0b3de96cc2bc1",
+      "committed_copy_sha256": "00e16357a050d990b865443f170c6013b87a94c1db1c85046aa0b3de96cc2bc1",
+      "byte_identical": true,
+      "bytes": 6261
+    },
+    {
+      "file": "commander-readonly-diagnostic-terminal.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/commander-readonly-diagnostic-terminal.json",
+      "original_sha256": "e2bbbfb878d22feb4c9658338db322fec5b6ea8c3c572c541201c37cd98ceb9b",
+      "committed_copy_sha256": "e2bbbfb878d22feb4c9658338db322fec5b6ea8c3c572c541201c37cd98ceb9b",
+      "byte_identical": true,
+      "bytes": 4125
+    },
+    {
+      "file": "northstar-film_frames-command.log",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-film_frames-command.log",
+      "original_sha256": "fe01a40becfbcca7545c76cf8af47b445cb10a654faa483d23032f8dad990112",
+      "committed_copy_sha256": "fe01a40becfbcca7545c76cf8af47b445cb10a654faa483d23032f8dad990112",
+      "byte_identical": true,
+      "bytes": 311
+    },
+    {
+      "file": "northstar-contact_sheet-command.log",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-contact_sheet-command.log",
+      "original_sha256": "381bbba26bce37d9fe24b517898abaf3070d3a71892d1fa30ff2d37caf378485",
+      "committed_copy_sha256": "381bbba26bce37d9fe24b517898abaf3070d3a71892d1fa30ff2d37caf378485",
+      "byte_identical": true,
+      "bytes": 181
+    },
+    {
+      "file": "northstar-recovered-eight_states-command.log",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-recovered-eight_states-command.log",
+      "original_sha256": "2e2dff185f6c69212f09a9de34069fb7ec705bead0ea04bfcc817287cd55a019",
+      "committed_copy_sha256": "2e2dff185f6c69212f09a9de34069fb7ec705bead0ea04bfcc817287cd55a019",
+      "byte_identical": true,
+      "bytes": 148
+    },
+    {
+      "file": "northstar-recovered-fidelity-command.log",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/northstar-recovered-fidelity-command.log",
+      "original_sha256": "cfad005287a950e677e1a541add6c3f40398eb61b00a95414ea54405cf14b6c1",
+      "committed_copy_sha256": "cfad005287a950e677e1a541add6c3f40398eb61b00a95414ea54405cf14b6c1",
+      "byte_identical": true,
+      "bytes": 127
+    },
+    {
+      "file": "failed-state-1-ready.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture/state-1-ready.png",
+      "original_sha256": "dc3de6a1e9603af8df0e1d6f574510dd7a208fa3c8117af8b768783ad3e59dfb",
+      "committed_copy_sha256": "dc3de6a1e9603af8df0e1d6f574510dd7a208fa3c8117af8b768783ad3e59dfb",
+      "byte_identical": true,
+      "bytes": 103430
+    },
+    {
+      "file": "failed-state-2-source-opened.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture/state-2-source-opened.png",
+      "original_sha256": "02a28ae5a136ab6dfb30e8e1150dee22e6246f0d2f7695dc617561b6ec95a4d9",
+      "committed_copy_sha256": "02a28ae5a136ab6dfb30e8e1150dee22e6246f0d2f7695dc617561b6ec95a4d9",
+      "byte_identical": true,
+      "bytes": 192258
+    },
+    {
+      "file": "failed-state-3-exact-passage.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture/state-3-exact-passage.png",
+      "original_sha256": "5e983a245b5af51c58b0e0610efe52e953039241f781fceeb39c38f1d3fd5e9c",
+      "committed_copy_sha256": "5e983a245b5af51c58b0e0610efe52e953039241f781fceeb39c38f1d3fd5e9c",
+      "byte_identical": true,
+      "bytes": 196156
+    },
+    {
+      "file": "failed-state-4-source-bound-fact.png",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/eight-state-capture/state-4-source-bound-fact.png",
+      "original_sha256": "4c5348f662a3b63dba87681d3f307a882061994efe80a9551fa6b2163ba67f72",
+      "committed_copy_sha256": "4c5348f662a3b63dba87681d3f307a882061994efe80a9551fa6b2163ba67f72",
+      "byte_identical": true,
+      "bytes": 202930
+    },
+    {
+      "file": "clm_543f08f2415b2a33.ndjson",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/operation-trace-forensics/clm_543f08f2415b2a33.ndjson",
+      "original_sha256": "3dc1971237f51d29ab5bd61afde8750ad3a2ff2876004e15415b05b6c15a3947",
+      "committed_copy_sha256": "3dc1971237f51d29ab5bd61afde8750ad3a2ff2876004e15415b05b6c15a3947",
+      "byte_identical": true,
+      "bytes": 2980628
+    },
+    {
+      "file": "clm_543f08f2415b2a33-state.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/operation-trace-forensics/clm_543f08f2415b2a33-state.json",
+      "original_sha256": "4f0fec243a6d6f246b75f81ca3a077df8c0aeb0004403e301f174c26b46bb2a9",
+      "committed_copy_sha256": "4f0fec243a6d6f246b75f81ca3a077df8c0aeb0004403e301f174c26b46bb2a9",
+      "byte_identical": true,
+      "bytes": 513609
+    },
+    {
+      "file": "clm_543f08f2415b2a33-fixture-differences.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/operation-trace-forensics/clm_543f08f2415b2a33-fixture-differences.json",
+      "original_sha256": "95968d8399cbe02d45c01812b410ab618eee5f1b32cf02c87ff66c9e60f2bf5a",
+      "committed_copy_sha256": "95968d8399cbe02d45c01812b410ab618eee5f1b32cf02c87ff66c9e60f2bf5a",
+      "byte_identical": true,
+      "bytes": 62164
+    },
+    {
+      "file": "clm_7dbd7c7d1c4ddf90.ndjson",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/operation-trace-forensics/clm_7dbd7c7d1c4ddf90.ndjson",
+      "original_sha256": "5f5c9856882af60a660b2f60c13041f22f49a4b8204436e75118532a7a0647b4",
+      "committed_copy_sha256": "5f5c9856882af60a660b2f60c13041f22f49a4b8204436e75118532a7a0647b4",
+      "byte_identical": true,
+      "bytes": 3213389
+    },
+    {
+      "file": "clm_7dbd7c7d1c4ddf90-state.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/operation-trace-forensics/clm_7dbd7c7d1c4ddf90-state.json",
+      "original_sha256": "306cf90a58747dec5586a129e192b250647fda0673ef3f961eb900540ced2183",
+      "committed_copy_sha256": "306cf90a58747dec5586a129e192b250647fda0673ef3f961eb900540ced2183",
+      "byte_identical": true,
+      "bytes": 634152
+    },
+    {
+      "file": "clm_7dbd7c7d1c4ddf90-fixture-differences.json",
+      "source_receipt": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/operation-trace-forensics/clm_7dbd7c7d1c4ddf90-fixture-differences.json",
+      "original_sha256": "d8b16be32209beb84cdf1dd43847af648f13eeae4b1d0293738ed15214f6f978",
+      "committed_copy_sha256": "d8b16be32209beb84cdf1dd43847af648f13eeae4b1d0293738ed15214f6f978",
+      "byte_identical": true,
+      "bytes": 129498
+    }
+  ],
+  "derived": [
+    {
+      "file": "release-acceptance.json",
+      "sha256": "7ac3e36988dadd55aea6129aacff8e63f533b9f323442d9b6807fb843024c280",
+      "bytes": 2884
+    },
+    {
+      "file": "motion-evidence.json",
+      "sha256": "81f696523267751d42206129b81b7f60ef7cf811df3cf73b79a1b628c24f2937",
+      "bytes": 1386
+    },
+    {
+      "file": "README.md",
+      "sha256": "5d32ded16f02f526a945be5011b356a76f91ff4f35160cd491e5d20c65c009a4",
+      "bytes": 9455
+    },
+    {
+      "file": "demo-operator-guide.md",
+      "sha256": "1cf014a3cd13e107a7633c67c163648b0b86fa2f9c85c800d6409267187a2af1",
+      "bytes": 5443
+    }
+  ]
+}

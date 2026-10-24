@@ -1,0 +1,31 @@
+{
+  "contract": "casepath.motion-gate-mapping/1",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "verified_via_completed_strict_gate": true,
+  "gate_proof_sha256": "a9954389d72de2ee1de28366a5e63754ee48c0828b5ed1aa71bd8c8cd2764099",
+  "actual_completion_sha256": "ce0c18215d4851050d40e858c445db8082a20716038c3d385dce51c7994c5836",
+  "additional_motion_run_claimed": false,
+  "asserted_timeline_frames": 5283,
+  "modules": [
+    {
+      "path": "casepath-qa/autonomous-presentation-browser-v1.test.cjs",
+      "sha256": "27b7f113f00e6f03d2c5212a15e681c459152a3f4620b0fd0a7e4bf1baafcca7"
+    },
+    {
+      "path": "casepath-qa/autonomous-northstar-v1.test.cjs",
+      "sha256": "307598c905d7f2fa9f8c7f169051b7b05cbb85de123c1b596202e734c631e575"
+    }
+  ],
+  "coverage": [
+    "All timeline frames have intact rows, facts and labels and only the current recorded spinner",
+    "Recorded source pin, exact Unicode quote and bounds match the current fact or completion",
+    "Cursor arrival precedes highlight; source swap and camera motion do not prematurely highlight",
+    "Plan rows, roles and accepted node order remain bound to all nine recorded operation histories"
+  ],
+  "published_playback": {
+    "duration_ms": 88050,
+    "reached_end": true,
+    "four_x_seen": true,
+    "video_sha256": "267c06852268331f5fc34f91ff0664ebb4b95868bb9cdd907056e525bc425c57"
+  }
+}

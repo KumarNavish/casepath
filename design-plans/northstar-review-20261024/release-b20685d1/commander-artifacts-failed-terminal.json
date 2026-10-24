@@ -1,0 +1,31 @@
+{
+  "state": "completed",
+  "operationState": "failed",
+  "startedAt": "2026-10-24T13:48:11.194Z",
+  "finishedAt": "2026-10-24T13:48:11.198Z",
+  "observation": true,
+  "receiptPersisted": false,
+  "retrySafe": false,
+  "sessionId": "cp-ns-20261024-northstar-artifacts",
+  "result": {
+    "sessionId": "cp-ns-20261024-northstar-artifacts",
+    "pid": 43016,
+    "state": "failed",
+    "exitCode": 1,
+    "output": "{\"stage\": \"film_frames\", \"status\": \"running\"}\n{\"stage\": \"film_frames\", \"exit_code\": 0}\n{\"stage\": \"contact_sheet\", \"status\": \"running\"}\n{\"stage\": \"contact_sheet\", \"exit_code\": 0}\n{\"stage\": \"eight_states\", \"status\": \"running\"}\nTraceback (most recent call last):\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/run_northstar_artifacts.py\", line 59, in <module>\n    assert code==0,\"Preserve failed artifact evidence: \"+name\nAssertionError: Preserve failed artifact evidence: eight_states\n",
+    "offset": 0,
+    "nextOffset": 557,
+    "totalBytes": 557,
+    "truncated": false,
+    "startedAt": "2026-10-24T13:44:13.198Z",
+    "finishedAt": "2026-10-24T13:44:53.386Z"
+  },
+  "connectorOperation": {
+    "operationId": "76ba3080b6ff4a5a6e9079314c519da5c63c48c44ae3cde155bcc1508cb726af",
+    "toolName": "commander_process_output",
+    "requestSha256": "329eb68ccce4a56e57c5e67f3a9ea643faa807ea0fdd89e6796e16ebd8070da4",
+    "device": "local",
+    "sessionId": "cp-ns-20261024-northstar-artifacts"
+  },
+  "error_code": "INVALID_ARGUMENT"
+}

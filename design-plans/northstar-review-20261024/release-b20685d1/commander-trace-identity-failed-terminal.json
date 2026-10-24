@@ -1,0 +1,31 @@
+{
+  "state": "completed",
+  "operationState": "failed",
+  "startedAt": "2026-10-24T13:56:47.644Z",
+  "finishedAt": "2026-10-24T13:56:47.653Z",
+  "observation": true,
+  "receiptPersisted": false,
+  "retrySafe": false,
+  "sessionId": "cp-ns-20261024-trace-identity-review",
+  "result": {
+    "sessionId": "cp-ns-20261024-trace-identity-review",
+    "pid": 46347,
+    "state": "failed",
+    "exitCode": 1,
+    "output": "node:internal/process/promises:324\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\nresponse.text: Protocol error (Network.getResponseBody): No data found for resource with given identifier\n    at /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/inspect_trace_identity.mjs:22:70\n    at Page.<anonymous> (/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/release/inspect_trace_identity.mjs:22:178) {\n  name: 'Error'\n}\n\nNode.js v26.8.2\n",
+    "offset": 0,
+    "nextOffset": 586,
+    "totalBytes": 586,
+    "truncated": false,
+    "startedAt": "2026-10-24T13:52:50.288Z",
+    "finishedAt": "2026-10-24T13:53:10.467Z"
+  },
+  "connectorOperation": {
+    "operationId": "25c7441c525fe6b81411b50577f15428e9dfb0cc0cb6f67b22f8f42ee7781e2c",
+    "toolName": "commander_process_output",
+    "requestSha256": "bfa11e024a20041ff1a2842fbac41d0b4193696ecf48d570d0a114ce39ee9be4",
+    "device": "local",
+    "sessionId": "cp-ns-20261024-trace-identity-review"
+  },
+  "error_code": "INVALID_ARGUMENT"
+}
