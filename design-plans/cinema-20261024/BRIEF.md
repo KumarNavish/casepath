@@ -68,3 +68,17 @@ The current request authorizes cinematic editing of the demo and movie. The prod
 ## Final release candidate follow-up
 
 The first full gate at 619c2540f0df56a9f96dd517e0d0d736b5a99570 surfaced an obsolete frontend assertion expecting “All files received”. The intentional product wording is “Checklist scope”. The final candidate updates that exact assertion, including the closing small tag, while retaining the zero-missing count, process-verdict, source-title, citation and immutable-state checks. Product JavaScript, CSS and index bytes remain identical to the first cinematic candidate. This candidate still requires its own source seal and fresh full gate; no success is inferred from the earlier run.
+
+## Documentary correction requested on 2026-10-24
+
+The user rejected the released film because the live circles appeared frozen and the viewer lacked explicit teaching cues. The current instruction authorizes visible narration and emphasis, superseding the earlier preference for a silent, caption-free product presentation. This correction preserves the six acts and 98.55-second recorded timeline while giving every explanatory sentence a readable hold.
+
+Before editing, the north-star review identified three specific presentation defects: the global animation freeze had no replacement clock-driven circle motion; multiple independent visual accents competed for attention; and legal-test reveal timing used a model index after the answer rows had been sorted by process step. The remedy keeps the recorded sources, facts, identities, and source offsets intact.
+
+An asymmetric arc now follows the same absolute clock as the film. Its step number stays upright, pause freezes it, reduced motion uses a static state, and completed questions retain the separate Checked label. Plan rows use a quiet current-item dot rather than a second spinner.
+
+A reserved narration rail supplies stable instructional sentences. One focus window and a thin leader identify the exact passage, proposed fact, process question, rule, legal requirement, assessment, unresolved question, or checklist item being discussed. The source-to-fact-to-question sequence and later-case evidence distinction are explicit. The rail does not cover product content; source and completed panes reserve its space. Introduction and ending remain uncluttered.
+
+Legal-test beats carry predicate identity and status, and follow the same process-step ordering as the visible rows. The unmet requirement therefore receives its actual longer hold. The answer has separate reading time for the proposed conclusion and unresolved questions. Checklist reuse first establishes that the later case has its own evidence.
+
+Validation for this correction must include actual arc movement, pause and reduced-motion behavior, deterministic backward seeking, one resolved focus target, unclipped narration, exact semantic legal-test selection, source citation preservation, all 18 declared frontend suites, and the complete fresh release gate. A fresh public film and source-bound evidence are required; the previous film or success receipts do not validate this revision.

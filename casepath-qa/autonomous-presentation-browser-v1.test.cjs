@@ -30,6 +30,37 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   await page.locator('[data-au-demo-resume]').click();await page.waitForTimeout(60);assert.ok(await page.evaluate(()=>CasepathPresentation.active.time)>at);
   const orientation=await page.evaluate(()=>{const a=CasepathPresentation.active;a.advanceTo(0);return {purpose:document.querySelector('[data-au-ns-purpose]').textContent,transport:document.querySelector('.au-executive-transport').textContent};});
   assert.match(orientation.purpose,/From customer documents/);assert.match(orientation.purpose,/You make the decision/);assert.match(orientation.transport,/Recorded replay/);
+  const documentary=await page.evaluate(()=>{
+   const a=CasepathPresentation.active,m=a.manifest,failures=[],sentences=[];
+   for(const cue of m.guidance){const previous=sentences.at(-1);if(previous?.id===cue.id)previous.end=cue.end;else sentences.push({...cue});}
+   for(const cue of sentences)if(cue.end-cue.start<2000)failures.push({reason:'caption too brief',cue});
+   for(const beat of m.beats.filter(b=>!b.phase.endsWith('transition'))){
+    a.advanceTo(beat.start+Math.min(beat.duration-1,Math.max(450,beat.duration*.75)));
+    const guide=document.querySelector('.au-documentary-guide'),rail=guide.querySelector('.au-doc-narration').getBoundingClientRect(),copy=guide.querySelector('[data-au-guide-headline]'),focus=guide.querySelector('.au-doc-focus').getBoundingClientRect();
+    if(document.querySelectorAll('.au-documentary-guide').length!==1)failures.push({reason:'multiple guides',beat:beat.index});
+    if(copy.scrollWidth>copy.clientWidth+1||copy.getBoundingClientRect().bottom>rail.bottom)failures.push({reason:'caption clipped',beat:beat.index});
+    if(guide.dataset.auGuideSpotlight==='true'&&guide.dataset.auGuideResolved!=='true')failures.push({reason:'unresolved focus',beat:beat.index,target:guide.dataset.auGuideTarget});
+    if(guide.dataset.auGuideSpotlight==='true'&&(guide.dataset.auGuideVisible!=='true'||focus.width<=4||focus.height<=4||Number(getComputedStyle(guide.querySelector('.au-doc-focus-layer')).opacity)<.9))failures.push({reason:'invisible focus',beat:beat.index,target:guide.dataset.auGuideTarget});
+    if(Number(getComputedStyle(guide.querySelector('.au-doc-focus-layer')).opacity)>.9&&(focus.top<rail.bottom||focus.bottom>innerHeight-36))failures.push({reason:'focus outside reserved scene',beat:beat.index});
+   }
+   const openBeat=m.beats.find(b=>b.act==='decision'&&b.phase==='answer-rest');a.advanceTo(openBeat.start+4500);const open=document.querySelector('.au-desk-open').getBoundingClientRect(),rail=document.querySelector('.au-doc-narration').getBoundingClientRect();if(open.top<rail.bottom||open.bottom>innerHeight-36)failures.push({reason:'unresolved questions clipped',top:open.top,bottom:open.bottom});
+   for(const beat of m.beats.filter(b=>['chain','legal-test','memory-transfer'].includes(b.phase))){const at=beat.start+20,index=m.guidance.findIndex(row=>at>=row.start&&at<row.end);if(index<1||m.guidance[index-1].id!==m.guidance[index].id)continue;a.advanceTo(at);const guide=document.querySelector('.au-documentary-guide');if(guide.dataset.auGuideSpotlight==='true'&&Number(getComputedStyle(guide.querySelector('.au-doc-focus-layer')).opacity)<.9)failures.push({reason:'attention wash pulses between related targets',beat:beat.index});}
+   const legal=m.beats.filter(b=>b.phase==='legal-test-rest');
+   for(const beat of legal){a.advanceTo(beat.end-1);const rows=[...document.querySelectorAll('[data-au-desk-answer] > .au-desk-tests > li')],current=rows.find(el=>el.dataset.auDeskPredicate===beat.predicate),guide=document.querySelector('.au-documentary-guide');if(!current||getComputedStyle(current).opacity!=='1'||guide.dataset.auGuideTargetId!==beat.predicate)failures.push({reason:'wrong legal identity',beat:beat.index});if(beat.predicate_status==='failed'&&(beat.duration!==2000||guide.querySelector('[data-au-guide-target-label]').textContent!=='Unmet requirement'))failures.push({reason:'failed requirement hold',beat:beat.index});}
+   const ringBeat=m.beats.find(b=>b.phase==='passage-rest'&&b.act==='reading'&&b.duration===3600);
+   a.advanceTo(ringBeat.start+500);const ring=document.querySelector('.au-ns-building-ring'),number=document.querySelector('.au-ns-current-number'),before=ring.style.transform;
+   a.advanceTo(ringBeat.start+1100);const after=document.querySelector('.au-ns-building-ring').style.transform;
+   const snapshot=()=>{const guide=document.querySelector('.au-documentary-guide');return JSON.stringify({cue:guide.dataset.auGuideCue,target:guide.dataset.auGuideTargetId,box:guide.querySelector('.au-doc-focus').style.cssText,ring:document.querySelector('.au-ns-building-ring')?.style.transform});};
+   const direct=snapshot();a.advanceTo(m.duration-1);a.advanceTo(ringBeat.start+1100);if(snapshot()!==direct)failures.push({reason:'guide or ring differs after backward seek'});
+   a.seek(ringBeat.start+1100);
+   return {failures,sentences:sentences.length,ringBefore:before,ringAfter:after,numberTransform:number.style.transform,ringCount:document.querySelectorAll('.au-ns-building-ring').length,at:a.time,paused:a.paused};
+  });
+  assert.deepEqual(documentary.failures,[]);assert.ok(documentary.sentences>=15);assert.notEqual(documentary.ringBefore,documentary.ringAfter);assert.equal(documentary.numberTransform,'');assert.equal(documentary.ringCount,1);assert.equal(documentary.paused,true);
+  await page.waitForTimeout(60);assert.deepEqual(await page.evaluate(()=>({at:CasepathPresentation.active.time,ring:document.querySelector('.au-ns-building-ring').style.transform})),{at:documentary.at,ring:documentary.ringAfter});
+  await page.evaluate(()=>CasepathPresentation.active.resume());await page.waitForTimeout(100);assert.notEqual(await page.evaluate(()=>document.querySelector('.au-ns-building-ring').style.transform),documentary.ringAfter,'the actual live frame clock advances the ring');await page.evaluate(()=>CasepathPresentation.active.pause());
+  await page.emulateMedia({reducedMotion:'reduce'});
+  const reducedRing=await page.evaluate(at=>{const a=CasepathPresentation.active;a.advanceTo(at);const before=document.querySelector('.au-ns-building-ring').style.transform;a.advanceTo(at+300);return [before,document.querySelector('.au-ns-building-ring').style.transform];},documentary.at);
+  assert.deepEqual(reducedRing,['rotate(0deg)','rotate(0deg)']);await page.emulateMedia({reducedMotion:'no-preference'});
   const controls=await page.evaluate(()=>{const a=CasepathPresentation.active,footer=document.querySelector('.au-executive-transport'),button=footer.querySelector('[data-au-demo-stop]');const mutations=[];const observer=new MutationObserver(rows=>mutations.push(...rows));observer.observe(footer,{childList:true,subtree:true,attributes:true});for(const beat of a.manifest.beats)a.advanceTo(beat.start);const pending=observer.takeRecords();observer.disconnect();return {connected:footer.isConnected,sameButton:button===document.querySelector('.au-executive-transport [data-au-demo-stop]'),labelChanges:[...mutations,...pending].filter(row=>row.target===button).length};});
   assert.equal(controls.connected,true);assert.equal(controls.sameButton,true);assert.equal(controls.labelChanges,0,'unchanged Pause control does not repaint on every frame');
   const proof=await page.evaluate(()=>{
@@ -131,6 +162,10 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    await page.screenshot({path:process.env.CASEPATH_W11_DIAGNOSTICS+'.png'});
   }
   assert.deepEqual(geometry,[],'all beat midpoints have no unintended content overlaps');
+  await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),proof.manifest.beats.find(b=>b.phase==='fact-rest').end-1);
+  const obstructingGuide=await page.addStyleTag({content:'.au-workspace .au-doc-narration {top:300px!important}'});
+  assert.ok((await page.evaluate(auditPresentation)).some(hit=>hit.some(value=>typeof value==='string'&&value.includes('au-doc-'))),'the overlap audit still rejects narration covering product content');
+  await obstructingGuide.evaluate(el=>el.remove());
   const ending=await page.evaluate(()=>{const a=CasepathPresentation.active;a.advanceTo(a.manifest.duration-1);const finale=document.querySelector('.au-cinema-finale'),heading=finale.querySelector('h2').getBoundingClientRect(),notice=finale.querySelector('small').getBoundingClientRect(),footer=document.querySelector('.au-executive-transport').getBoundingClientRect();return {above:heading.top,below:footer.top-notice.bottom,visible:getComputedStyle(finale).opacity,roster:getComputedStyle(document.querySelector('.au-claim-list')).opacity,title:finale.querySelector('h2').textContent,hidden:finale.getAttribute('aria-hidden')};});
   assert.ok(ending.above>=32&&ending.below>=32,JSON.stringify(ending));assert.equal(ending.visible,'1');assert.equal(ending.roster,'0');assert.equal(ending.hidden,'false');assert.match(ending.title,/The reasoning stays visible/);
 

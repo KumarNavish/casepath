@@ -1664,7 +1664,7 @@
     const m=northStarModel(state,trace),ready=Boolean(trace.nsReady),opening=trace.nsOpening||'',files=deskOperationModel(state,trace).files,index=REFERENCE_DEMO_CASES.findIndex(row=>row.claim_id===state.claim_id),roster=presentation.tour?.cases||REFERENCE_DEMO_CASES;
     const active=m.source?.artifact_id,sourceRows=opening==='replay'?'':files.map(file=>`<li${file.ids.includes(active)?' aria-current="true"':''}><span>${northStarIcon(file.source.role==='customer_message'?'message':'file')}</span><button type="button" data-au-source="${h(file.ids.at(-1))}" title="${h(file.source.file_name)}">${h(deskFileLabel(file.source))}${file.source.received_at?`<small>Received ${h(file.source.received_at)}</small>`:''}</button></li>`).join('');
     const buildingId=m.done.has(m.nodeId)?null:m.nodeId;
-    const spine=ready||opening==='saved'?'':m.nodes.map((node,i)=>{const done=m.done.has(node.node_id),building=!done&&node.node_id===buildingId;return `<li data-au-ns-node="${h(node.node_id)}" data-state="${done?'done':building?'building':'waiting'}"><span class="au-ns-circle" aria-hidden="true">${done?i+1:building?'<svg class="au-ns-building-ring" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19"/></svg>':''}</span><span class="au-ns-node-label" title="${h(node.label||node.title||node.node_id)}">${h(northStarQuestion(node,m.catalogue?.plans.get(node.node_id)?.at(-1)?.operation.result||m.rows?.find(op=>op.kind==='step.complete'&&op.object.id===node.node_id)?.result))}</span>${done?'<small class="au-ns-step-status">Checked</small>':''}${i<m.nodes.length-1?'<svg class="au-ns-arrow" viewBox="0 0 70 16" aria-hidden="true"><path d="M1 8h66m-6-5 6 5-6 5"/></svg>':''}</li>`;}).join('');
+    const spine=ready||opening==='saved'?'':m.nodes.map((node,i)=>{const done=m.done.has(node.node_id),building=!done&&node.node_id===buildingId;return `<li data-au-ns-node="${h(node.node_id)}" data-state="${done?'done':building?'building':'waiting'}"><span class="au-ns-circle" aria-hidden="true">${done?i+1:building?'<svg class="au-ns-building-ring" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19"/></svg>'+(trace.executive?'<b class="au-ns-current-number">'+(i+1)+'</b>':''):''}</span><span class="au-ns-node-label" title="${h(node.label||node.title||node.node_id)}">${h(northStarQuestion(node,m.catalogue?.plans.get(node.node_id)?.at(-1)?.operation.result||m.rows?.find(op=>op.kind==='step.complete'&&op.object.id===node.node_id)?.result))}</span>${done?'<small class="au-ns-step-status">Checked</small>':trace.executive&&building?'<small class="au-ns-step-status">Checking</small>':''}${i<m.nodes.length-1?'<svg class="au-ns-arrow" viewBox="0 0 70 16" aria-hidden="true"><path d="M1 8h66m-6-5 6 5-6 5"/></svg>':''}</li>`;}).join('');
     const pin=m.pin,preview=m.source&&northStarSourcePreview(m.source,pin),sourceText=preview?(pin?northStarSourceBody(preview,pin):h(preview.text)):'';
     const opened=[...new Map([...trace.sources.values()].map(source=>[source.file_name||source.artifact_id,source])).values()],sourceIndex=opened.findIndex(source=>source.artifact_id===m.source?.artifact_id);
     const paper=m.source?`<section class="au-ns-paper" data-au-ns-paper><header><div class="au-ns-source-nav"><button type="button" aria-label="Previous source" data-au-ns-source="${h(opened[sourceIndex-1]?.artifact_id||'')}"${sourceIndex>0?'':' disabled'}>←</button><button type="button" aria-label="Next source" data-au-ns-source="${h(opened[sourceIndex+1]?.artifact_id||'')}"${sourceIndex<opened.length-1?'':' disabled'}>→</button></div><button type="button" class="au-link" data-au-source="${h(m.source.artifact_id)}"${pin?` data-au-citation="${h(JSON.stringify(pin))}"`:''}>Open full source</button></header>${northStarSourceFields(preview)}<div class="au-ns-source-scroll" tabindex="0" aria-label="Opened source"><pre>${sourceText}</pre></div></section>`:'';
@@ -5411,8 +5411,9 @@
       motion('decision','source-check',400,main,null,{view:'verified'});add('decision','source-check-rest',4200,main,null,{view:'verified'});
       motion('decision','law',400,main,null,{view:'law'});add('decision','law-rest',5400,main,null,{view:'law'});
       motion('decision','documents',400,main,null,{view:'documents'});hold('decision','documents-rest',main,null,{view:'documents'});
-      const tests=list(main.state.outcome?.legal_predicates);
-      for(let i=0;i<tests.length;i++){motion('decision','legal-test',350,main,null,{view:'answer',test:i});add('decision','legal-test-rest',tests[i].status==='failed'?2000:900,main,null,{view:'answer',test:i});}
+      const predicateStep=id=>{const nodes=decisive.desk.nodes.filter(node=>decisive.predicatesByNode.get(node.node_id).some(test=>test.predicate_id===id));return nodes.length===1?decisive.desk.nodes.indexOf(nodes[0]):Infinity;};
+      const tests=list(main.state.outcome?.legal_predicates).slice().sort((a,b)=>predicateStep(a.predicate_id)-predicateStep(b.predicate_id));
+      for(let i=0;i<tests.length;i++){const identity={view:'answer',test:i,predicate:tests[i].predicate_id,predicate_status:tests[i].status};motion('decision','legal-test',350,main,null,identity);add('decision','legal-test-rest',tests[i].status==='failed'?2000:900,main,null,identity);}
       motion('decision','answer',400,main,null,{view:'answer',test:tests.length});add('decision','answer-rest',6000,main,null,{view:'answer',test:tests.length});
       motion('decision','draft',400,main,null,{view:'draft'});add('decision','draft-rest',6000,main,null,{view:'draft'});
       const memory=northStarMemoryModel(later.state,{...later.trace,headState:later.state,finished:true,verifiedResult:true},knowledgeCache.value);
@@ -5544,7 +5545,7 @@
           }
         }
         if(viewName==='answer'&&['answer','answer-rest'].includes(phase)){
-          const pane=select('.au-ns-view-content'),lead=select('.au-desk-lead');if(pane&&lead)pane.scrollTop=Math.max(0,lead.getBoundingClientRect().top-pane.getBoundingClientRect().top-20);
+          const pane=select('.au-ns-view-content');if(pane)pane.scrollTop=0;
         }
         if(record===later){
           if(viewName==='answer')select('[data-au-desk-answer] > .au-desk-tests')?.remove();
@@ -5564,6 +5565,99 @@
         routeTitle(viewName==='cases'?'Cases':caseTitle(current.claim_id,current));
         drawTimings.push({beat:beat.index,phase:beat.phase,milliseconds:root.performance.now()-drawStarted});
       }
+      // Narration and its single focal target share the recorded presentation
+      // clock. The guide lives outside the replaceable scene and its clones.
+      const guideContext={firstCompletionId:completed[0]?.id,firstFactId:firstFact.id,decisivePredicate:failedIds.has(firstFact.object.id)?firstFact.object.id:null};
+      const guideWindows=[];
+      for(const beat of story.beats){
+        const starts=[beat.start];
+        if(beat.phase==='answer-rest'&&beat.act==='decision'&&beat.duration>3000)starts.push(beat.start+3000);
+        for(let i=0;i<starts.length;i++){
+          const start=starts[i],end=starts[i+1]??beat.end,cue=P.documentaryCue(beat,start-beat.start,guideContext),previous=guideWindows.at(-1);
+          if(previous?.id===cue.id&&previous.target===cue.target&&previous.targetId===cue.targetId&&previous.part===cue.part&&previous.spotlight===cue.spotlight)previous.end=end;
+          else guideWindows.push({...cue,start,end,beatIndex:beat.index});
+        }
+      }
+      const guideLayer=doc.createElement('div');guideLayer.className='au-documentary-guide';
+      guideLayer.innerHTML='<section class="au-doc-narration" aria-live="polite" aria-atomic="true"><div class="au-doc-chapter"></div><div class="au-doc-copy"><p data-au-guide-headline></p><small data-au-guide-label></small></div></section><div class="au-doc-focus-layer" aria-hidden="true"><div class="au-doc-focus"><span data-au-guide-target-label></span></div></div><svg class="au-doc-leader" aria-hidden="true"><path/><circle r="3"/></svg>';
+      container.appendChild(guideLayer);
+      const guideNodes={rail:guideLayer.querySelector('.au-doc-narration'),chapter:guideLayer.querySelector('.au-doc-chapter'),copy:guideLayer.querySelector('.au-doc-copy'),headline:guideLayer.querySelector('[data-au-guide-headline]'),label:guideLayer.querySelector('[data-au-guide-label]'),layer:guideLayer.querySelector('.au-doc-focus-layer'),focus:guideLayer.querySelector('.au-doc-focus'),targetLabel:guideLayer.querySelector('[data-au-guide-target-label]'),leader:guideLayer.querySelector('.au-doc-leader')};
+      function guideTarget(cue,beat){
+        const byId=(selector,attribute,id)=>all(selector).find(element=>element.getAttribute(attribute)===String(id));
+        const nodeId=beat.op?.kind==='step.complete'?beat.op.object.id:beat.op&&beat.record.catalogue.links.get(beat.op.id);
+        const item=all('[data-au-memory-item]')[Number.isSafeInteger(cue.item)?cue.item:beat.item];
+        switch(cue.target){
+          case 'source':return frameNodes.mark;
+          case 'node':return byId('[data-au-ns-node]','data-au-ns-node',nodeId);
+          case 'fact':return byId('[data-au-ns-fact]','data-au-ns-fact',cue.targetId||firstFact.id)||frameNodes.fact||all('[data-au-ns-fact]').at(-1);
+          case 'chain':return cue.column||cue.targetId||beat.column?byId('[data-au-ns-chain]','data-au-ns-chain',cue.column||cue.targetId||beat.column):select('[data-au-ns-chain-strip]');
+          case 'verified':return all('[data-au-ns-verified]').find(element=>{const pin=JSON.parse(element.dataset.auCitation);return pin.artifact_id===firstFact.source.artifact_id&&pin.quote===firstFact.source.quote;})||select('[data-au-ns-verified]');
+          case 'law':return select('.au-ns-law-source article');
+          case 'documents':return select('[data-au-ns-documents]');
+          case 'predicate':return byId('[data-au-desk-answer] > .au-desk-tests > li','data-au-desk-predicate',cue.targetId||beat.predicate);
+          case 'lead':return select('.au-desk-lead');
+          case 'open':return select('.au-desk-open');
+          case 'draft':return select('[data-au-draft-status]');
+          case 'memory-source':return select('.au-ns-memory-source blockquote')||select('.au-ns-memory-source');
+          case 'memory-item':return (beat.nextPhase||beat.phase)==='memory-transfer'&&frameNodes.transfers?.[0]?.clone||item;
+          case 'memory-target':return byId('[data-au-memory-target]','data-au-memory-target',item?.dataset.auMemoryItem);
+          case 'count':return select('[data-au-memory-count]')?.closest('article');
+          case 'cases':return select('.au-claim-list');
+          case 'finale':return select('.au-cinema-finale');
+          default:return select('[data-au-ns-purpose]');
+        }
+      }
+      function renderGuide(sample,beat,transition){
+        const cue=P.documentaryCue(beat,sample.elapsed,guideContext),found=guideWindows.findIndex(row=>sample.at>=row.start&&sample.at<row.end),windowIndex=found<0?guideWindows.length-1:found,window=guideWindows[windowIndex],chapter=P.chapter(beat.act),nodes=guideNodes;
+        let sentenceIndex=windowIndex;while(sentenceIndex>0&&guideWindows[sentenceIndex-1].id===cue.id)sentenceIndex--;
+        if(!guideLayer.isConnected)container.appendChild(guideLayer);
+        if(nodes.headline.textContent!==cue.headline)nodes.headline.textContent=cue.headline;
+        if(nodes.label.textContent!==cue.label)nodes.label.textContent=cue.label;
+        const chapterText=`${chapter.number} / ${chapter.label}`;if(nodes.chapter.textContent!==chapterText)nodes.chapter.textContent=chapterText;
+        guideLayer.dataset.auGuideCue=cue.id;guideLayer.dataset.auGuideTarget=cue.target;guideLayer.dataset.auGuideTargetId=String(cue.targetId??'');guideLayer.dataset.auGuideSpotlight=String(cue.spotlight);
+        guideLayer.dataset.auGuideTime=String(sample.at);
+        const fade=reduced?.matches?1:transition?P.ease(sample.progress):P.ease(Math.min(1,(sample.at-guideWindows[sentenceIndex].start)/350));
+        nodes.copy.style.opacity=String(transition ? .45+.55*fade : 1);
+        if(frameNodes.pointer)frameNodes.pointer.style.visibility=cue.target==='source'?'':'hidden';
+        const target=guideTarget(cue,beat),rail=nodes.rail.getBoundingClientRect(),footer=select('.au-executive-transport')?.getBoundingClientRect();
+        const pane=cue.target!=='source'&&target?.closest('.au-ns-view-content,.au-ns-law-source');
+        if(pane&&pane.scrollHeight>pane.clientHeight+1){
+          const bounds=pane.getBoundingClientRect(),item=target.getBoundingClientRect();
+          if(item.top<bounds.top+10||item.bottom>bounds.bottom-10)pane.scrollTop+=item.height>bounds.height-20?item.top-bounds.top-10:(item.top+item.bottom-bounds.top-bounds.bottom)/2;
+        }
+        // A focus window cannot extend beyond the source or answer's scroll
+        // viewport. It never changes source text or its citation offsets.
+        const boundsFor=element=>{
+          const box=element?.getBoundingClientRect();let left=box?.left??0,top=box?.top??0,right=box?.right??0,bottom=box?.bottom??0;
+          for(let parent=element?.parentElement;parent&&parent!==container;parent=parent.parentElement){
+            const style=root.getComputedStyle(parent);
+            if(/auto|scroll|hidden|clip/.test(style.overflowY)){const bounds=parent.getBoundingClientRect();top=Math.max(top,bounds.top);bottom=Math.min(bottom,bounds.bottom);}
+            if(/auto|scroll|hidden|clip/.test(style.overflowX)){const bounds=parent.getBoundingClientRect();left=Math.max(left,bounds.left);right=Math.min(right,bounds.right);}
+          }
+          return {left:Math.max(10,left-10),right:Math.min(root.innerWidth-10,right+10),top:Math.max(rail.bottom+12,top-10),bottom:Math.min((footer?.top||root.innerHeight-36)-10,bottom+10)};
+        };
+        let {left,top,right,bottom}=boundsFor(target);
+        const previous=guideWindows[windowIndex-1];
+        if(!reduced?.matches&&!transition&&previous?.id===cue.id&&sample.at-window.start<400){
+          const oldTarget=guideTarget(previous,story.beats[previous.beatIndex]),old=oldTarget&&boundsFor(oldTarget),p=P.ease(Math.max(0,(sample.at-window.start)/400));
+          if(old&&old.right>old.left&&old.bottom>old.top){left=old.left+(left-old.left)*p;top=old.top+(top-old.top)*p;right=old.right+(right-old.right)*p;bottom=old.bottom+(bottom-old.bottom)*p;}
+        }
+        const visible=Boolean(cue.spotlight&&target&&right-left>4&&bottom-top>4&&!transition);
+        guideLayer.dataset.auGuideResolved=String(Boolean(target));
+        guideLayer.dataset.auGuideVisible=String(visible);
+        nodes.layer.style.opacity=visible?String(fade):'0';nodes.leader.style.opacity=visible?String(fade):'0';
+        if(!visible)return;
+        nodes.layer.style.top=`${rail.bottom}px`;nodes.layer.style.bottom=`${root.innerHeight-(footer?.top||root.innerHeight-36)}px`;
+        nodes.focus.style.cssText=`left:${left}px;top:${top-rail.bottom}px;width:${right-left}px;height:${bottom-top}px;`;
+        nodes.targetLabel.textContent=cue.target==='source'?'Exact source passage':cue.target==='node'?target.dataset.state==='building'?'Checking this question':'Question checked':cue.target==='predicate'?cue.part==='unmet'?'Unmet requirement':'Supported requirement':cue.target==='fact'?'Proposed fact':cue.target==='memory-target'?'Reused checklist item':cue.label;
+        // A quiet vertical leader lands on the same exact region as the focus.
+        // Its origin stays below the narration and never crosses the sentence.
+        const x=Math.max(left+20,Math.min(right-20,(left+right)/2)),startY=rail.bottom-3,endY=top-2;
+        nodes.leader.setAttribute('viewBox',`0 0 ${root.innerWidth} ${root.innerHeight}`);
+        nodes.leader.querySelector('path').setAttribute('d',`M${x} ${startY}V${endY}`);
+        const dot=nodes.leader.querySelector('circle');dot.setAttribute('cx',String(x));dot.setAttribute('cy',String(endY));
+      }
+      const guideResize=()=>render(clock.now(),true);root.addEventListener('resize',guideResize);
       function render(at=clock.now(),force=false) {
         if(disposedStory||rendering||inspectionHold)return;
         const sample=story.at(at),b=sample.beat,transition=['act-transition','scene-transition'].includes(b.phase),sourceSwap=b.phase==='source-swap'&&!b.entryRevealed;
@@ -5600,6 +5694,7 @@
           const n=frameNodes;opacity(n.desk,1);opacity(n.canvas,1);opacity(n.paper,1);opacity(n.plan,1);opacity(select('.au-executive-cases'),1);
           for(const column of all('[data-au-ns-chain]'))opacity(column,1);
           for(const tick of all('.au-ns-plan-status,.au-ns-circle'))tick.style.transform='none';
+          for(const ring of all('.au-ns-building-ring'))ring.style.transform=P.ringTransform(sample.at,Boolean(reduced?.matches));
           if(n.mark)n.mark.dataset.arrived=String(!['ready','camera-in','cursor','source-open','source-swap'].includes(phase));
           const preFact=['camera-in','cursor','highlight','passage-rest'].includes(phase),postFact=['connector','fact-rest','plan-tick','camera-out','combine','plan-recede','node-accepted','node-rest','document','document-rest'].includes(phase);
           if(n.fact){opacity(n.fact,preFact?0:phase==='fact'?p:1);n.fact.style.transform=phase==='fact'?`translateY(${12*(1-p)}px)`:'none';}
@@ -5620,9 +5715,10 @@
           if(n.paper){const scale=phase==='camera-in'?1+.025*p:phase==='camera-out'?1+.025*(1-p):['cursor','highlight','passage-rest','fact','connector','fact-rest','document','document-rest','plan-tick'].includes(phase)?1.025:1;n.paper.style.transform=`scale(${scale})`;n.paper.style.transformOrigin='50% 50%';}
           if(b.column){for(const column of all('[data-au-ns-chain]'))opacity(column,column.dataset.auNsChain===b.column?phase==='chain'?.6+.4*p:1:.6);}
           if(b.view==='answer'){
-            const tests=all('[data-au-desk-answer] > .au-desk-tests > li');tests.forEach((el,i)=>opacity(el,i<b.test?1:i===b.test?(phase==='legal-test'?p:1):0));
+            const revealed=new Set(tests.slice(0,b.test).map(row=>row.predicate_id));
+            for(const element of all('[data-au-desk-answer] > .au-desk-tests > li'))opacity(element,revealed.has(element.dataset.auDeskPredicate)?1:element.dataset.auDeskPredicate===b.predicate?(phase==='legal-test'?p:1):0);
             const afterTests=['answer','answer-rest','draft','draft-rest'].includes(phase);
-            const pane=select('.au-ns-view-content'),lead=select('.au-desk-lead');if(pane)pane.scrollTop=afterTests&&lead?Math.max(0,lead.offsetTop-pane.offsetTop-20):0;
+            const pane=select('.au-ns-view-content');if(pane)pane.scrollTop=0;
             opacity(select('.au-desk-test-status'),afterTests?1:0);opacity(select('.au-desk-next'),afterTests?1:0);opacity(select('.au-desk-lead'),afterTests?(phase==='answer'?p:1):0);opacity(select('.au-desk-open'),afterTests?1:0);opacity(select('.au-desk-actions'),phase==='draft'?p:phase==='draft-rest'?1:0);opacity(select('.au-desk-why'),phase==='draft-rest'?1:0);
           }
           if(b.view==='knowledge'){
@@ -5650,6 +5746,7 @@
           if(transition){const fade=reduced?.matches?1:P.ease(sample.progress);opacity(n.desk||select('.au-executive-cases'),fade);opacity(transitionLayer,1-fade);opacity(header,fade);}
           all('[data-au-operation-skip]').forEach(el=>el.hidden=['answer','cases'].includes(b.view));
           all('[data-au-desk-watch]').forEach(el=>el.hidden=!clock.paused);
+          renderGuide(sample,b,transition);
           if(sample.at>=story.duration){clock.pause();waiting=false;pausedPresentation=session;demoSession=null;syncControls();}
         }finally{rendering=false;}
       }
@@ -5664,8 +5761,8 @@
         resume(){waiting=false;if(clock.now()>=story.duration)clock.seek(0);render(clock.now(),true);clock.resume();syncControls();},
         skip(){waiting=false;clock.seek(story.acts.find(a=>a.id==='decision').start);clock.resume();syncControls();},
         seek(at){waiting=false;pauseDeadline=null;freezeDeadline=null;clock.seek(at);syncControls();return {time:clock.now(),act:story.at(at).beat.act,phase:story.at(at).beat.phase};},
-        dispose(){disposedStory=true;clock.cancel();scope.removeAttribute('data-casepath-presentation');container.querySelector('.au-identity-header')?.style.removeProperty('opacity');if(root.CasepathPresentation?.active===controller)delete root.CasepathPresentation.active;},
-        get manifest(){return {showcase,duration:story.duration,acts:story.acts,beats:story.beats.map(({record,op,...beat})=>({...beat,claim:record.state.claim_id,operation:op?.id||null,seq:op?.seq||null})),claims:[main.state.claim_id,later.state.claim_id],stateHashes:[main.state.state_sha256,later.state.state_sha256]};},
+        dispose(){disposedStory=true;clock.cancel();guideLayer.remove();root.removeEventListener('resize',guideResize);scope.removeAttribute('data-casepath-presentation');container.querySelector('.au-identity-header')?.style.removeProperty('opacity');if(root.CasepathPresentation?.active===controller)delete root.CasepathPresentation.active;},
+        get manifest(){return {showcase,duration:story.duration,acts:story.acts,guidance:guideWindows.map(row=>({...row})),beats:story.beats.map(({record,op,...beat})=>({...beat,claim:record.state.claim_id,operation:op?.id||null,seq:op?.seq||null})),claims:[main.state.claim_id,later.state.claim_id],stateHashes:[main.state.state_sha256,later.state.state_sha256]};},
         get diagnostics(){return {drawTimings:drawTimings.slice(),cachedViews:markupCache.size};},
         get time(){return clock.now();},get paused(){return clock.paused;},get externallyDriven(){return clock.externallyDriven;}
       };

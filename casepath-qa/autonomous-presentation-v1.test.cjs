@@ -1,6 +1,6 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict');
-const {createClock,ease,interpolate,timeline}=require('../casepath/assets/autonomous-presentation-v1.js');
+const {createClock,ease,interpolate,timeline,ringTransform,documentaryCue}=require('../casepath/assets/autonomous-presentation-v1.js');
 function fixture(start=0,options={}) {
   let at=start,id=0;const queued=new Map();
   const runtime={performance:{now:()=>at},requestAnimationFrame:fn=>{queued.set(++id,fn);return id;},cancelAnimationFrame:id=>queued.delete(id)};
@@ -51,4 +51,37 @@ test('external frame stepping freezes wall time without changing the user playin
   f.clock.stepTo(1000/60);assert.equal(f.clock.now(),1000/60);assert.equal(f.clock.paused,false);assert.equal(f.clock.externallyDriven,true);assert.equal(f.queued.size,0);
   f.advance(60000);assert.equal(f.clock.now(),1000/60);f.clock.stepTo(2000/60);assert.equal(f.clock.now(),2000/60);
   f.clock.pause();assert.equal(f.clock.paused,true);f.clock.resume();f.advance(100);assert.ok(Math.abs(f.clock.now()-(2000/60+100))<1e-7);assert.equal(f.clock.externallyDriven,false);f.clock.stepTo(200);f.clock.resume();f.advance(100);assert.equal(f.clock.now(),300);
+});
+
+test('the visible ring follows presentation time, freezes with pause, and is static for reduced motion',()=>{
+  const f=fixture();let ring='';f.clock.onFrame(at=>ring=ringTransform(at));
+  f.advance(600);assert.equal(ring,'rotate(90deg)');
+  f.clock.pause();f.advance(60000);assert.equal(ring,'rotate(90deg)');
+  f.clock.resume();f.advance(600);assert.equal(ring,'rotate(180deg)');
+  f.clock.stepTo(1800);assert.equal(ring,'rotate(270deg)');
+  f.clock.stepTo(600);assert.equal(ring,'rotate(90deg)');
+  assert.equal(ringTransform(600,true),'rotate(0deg)');assert.equal(ringTransform(1800,true),'rotate(0deg)');
+});
+test('documentary cues preserve source to proposed fact to process meaning',()=>{
+  const context={firstCompletionId:'first',firstFactId:'fact',decisivePredicate:'contemporaneous_substantive_reasons'};
+  const source=documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact',kind:'fact.extract'}},1200,context);
+  const fact=documentaryCue({act:'reading',phase:'fact-rest',op:{id:'fact',kind:'fact.extract'}},1200,context);
+  const node=documentaryCue({act:'reading',phase:'node-rest',op:{id:'second',kind:'step.complete',object:{id:'n2'}}},600,context);
+  assert.match(source.headline,/no reasons accompanied/);assert.equal(source.target,'source');
+  assert.match(fact.headline,/proposed fact/);assert.equal(fact.targetId,'fact');assert.equal(node.target,'node');assert.equal(node.targetId,'n2');
+  assert.doesNotMatch(documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact'}},0,{...context,decisivePredicate:'different'}).headline,/no reasons/);
+});
+test('documentary legal focus requires semantic predicate identity',()=>{
+  const beat={act:'decision',phase:'legal-test-rest',test:3,predicate:'reasons',predicate_status:'failed'};
+  const cue=documentaryCue(beat,1500);assert.equal(cue.targetId,'reasons');assert.equal(cue.part,'unmet');assert.equal(cue.spotlight,true);
+  assert.equal(documentaryCue({...beat,predicate:undefined},1500).spotlight,false);
+  assert.equal(documentaryCue({...beat,predicate:'tenancy',predicate_status:'supported'},100).headline,cue.headline);
+});
+test('documentary answer and checklist cues distinguish open questions and independent evidence',()=>{
+  const answer={act:'decision',phase:'answer-rest',duration:6000};
+  assert.equal(documentaryCue(answer,2999).target,'lead');assert.equal(documentaryCue(answer,3000).target,'open');
+  assert.match(documentaryCue({act:'learning',phase:'memory-overview'}).headline,/own evidence/);
+  const move=documentaryCue({act:'learning',phase:'memory-transfer',item:1}),land=documentaryCue({act:'learning',phase:'memory-landed',item:1});
+  assert.equal(move.headline,land.headline);assert.equal(move.targetId,1);assert.equal(land.targetId,1);assert.equal(move.target,'memory-item');assert.equal(land.target,'memory-target');
+  assert.match(documentaryCue({act:'decision',phase:'draft-rest'}).headline,/person to review/);
 });

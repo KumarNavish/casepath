@@ -141,5 +141,123 @@
       return {beat,elapsed:at-beat.start,progress:clamp((at-beat.start)/beat.duration),at};
     }});
   }
-  return {ACTS,EASING,ease,interpolate,paint,createClock,timeline,chapter};
+  function ringTransform(milliseconds,reducedMotion=false) {
+    if(!Number.isFinite(milliseconds)||milliseconds<0)throw new RangeError('Ring time must be nonnegative.');
+    return `rotate(${reducedMotion?0:Math.round((milliseconds%2400)*.15*1e6)/1e6}deg)`;
+  }
+
+/* Pure editorial metadata. No DOM, timers, playback state, or outcome changes. */
+function documentaryCue(beat, elapsed = 0, context = {}) {
+  const b = beat && typeof beat === 'object' ? beat : {};
+  const transition = b.phase === 'act-transition' || b.phase === 'scene-transition';
+  const phase = transition ? b.nextPhase || '' : b.phase || '';
+  const op = b.op && typeof b.op === 'object' ? b.op : {};
+  const operationId = op.id || (typeof b.operation === 'string' ? b.operation : b.operation?.id) || b.operation_id;
+  const kind = op.kind || b.kind || b.usekind;
+  const finiteElapsed = Number.isFinite(elapsed) ? Math.max(0, elapsed) : 0;
+  const local = transition ? 0 : Number.isFinite(b.duration) ? Math.min(finiteElapsed, b.duration) : finiteElapsed;
+  const nodeId = b.node_id || b.nodeId || (kind === 'completed' || kind === 'node_completed' || kind === 'completion' ? op.object?.id : undefined);
+  const predicateId = typeof b.predicate === 'string' ? b.predicate : b.predicate?.predicate_id || b.predicate?.id || b.predicate_id;
+  const cue = (id, headline, label, target, detail = {}) => ({id, headline, label, target, spotlight: true, ...detail});
+
+  // Cue IDs identify stable sentences. Targets may hand off within one sentence.
+  // Every sentence lasts >= 2 seconds in the unchanged 98.55-second film.
+  if (b.act === 'customer') {
+    return cue('question', "Start with the tenant's question.", 'The question', 'source', {
+      part: phase === 'ready' ? 'introduction' : 'quote',
+      spotlight: phase !== 'ready' && phase !== ''
+    });
+  }
+
+  if (b.act === 'reading' || b.act === 'process') {
+    const accepted = ['plan-recede', 'node-accepted', 'node-rest'].includes(phase);
+    if (b.act === 'reading' && operationId && operationId === context.firstCompletionId) {
+      return cue('circles', 'Each circle is one question to check.', 'How to read the circles', 'node', {
+        ...(nodeId || op.object?.id ? {targetId: nodeId || op.object.id} : {}), part: accepted ? 'completed-question' : 'current-question'
+      });
+    }
+    const firstFact = operationId && operationId === context.firstFactId;
+    const factPhase = ['fact', 'connector', 'fact-rest', 'plan-tick', 'camera-out'].includes(phase);
+    if (firstFact || kind === 'fact' || factPhase) {
+      if (factPhase) {
+        return cue('source-fact', 'This passage supports a proposed fact.', 'From source to fact', 'fact', {
+          ...(operationId ? {targetId: operationId} : {}), part: phase === 'connector' ? 'connection' : 'proposed-fact'
+        });
+      }
+      return cue('decisive-source', firstFact && context.decisivePredicate === 'contemporaneous_substantive_reasons'
+        ? 'Look here: no reasons accompanied the original notice.'
+        : 'Look for the exact passage supporting this fact.', 'The decisive passage', 'source', {part: 'quote'});
+    }
+    return cue(b.act === 'process' ? 'final-check' : 'source-question', b.act === 'process'
+      ? 'Follow the final recorded check.'
+      : 'The evidence helps answer this process question.', b.act === 'process'
+      ? 'The final process question' : 'From evidence to process', accepted ? 'node' : 'source', {
+      ...(accepted && (nodeId || op.object?.id) ? {targetId: nodeId || op.object.id} : {}), part: accepted ? 'completed-question' : 'quote'
+    });
+  }
+
+  if (b.act === 'decision') {
+    if (['completed', 'overview', 'chain', 'chain-rest'].includes(phase)) {
+      return cue('reasoning', 'Follow the fact, rule and supporting sources.', 'The reasoning', 'chain', {
+        targetId: b.column || 'facts', part: b.column || 'facts'
+      });
+    }
+    if (['source-check', 'source-check-rest'].includes(phase)) {
+      return cue('verified-passages', 'Each quoted passage is matched to a received file.', 'Verified passages', 'verified');
+    }
+    // The document cutaway is only 1.3s; keep its sentence continuous with the law scene.
+    if (['law', 'law-rest', 'documents', 'documents-rest'].includes(phase)) {
+      return cue('rule-documents', 'See the rule and the documents used.', 'Rule and documents', phase.startsWith('documents') ? 'documents' : 'law');
+    }
+    if (['legal-test', 'legal-test-rest'].includes(phase)) {
+      return cue('legal-tests', 'The recorded assessment flags one unmet requirement.', 'Recorded legal tests', 'predicate', {
+        ...(predicateId ? {targetId: predicateId} : {}),
+        part: (b.predicate_status || b.predicate?.status) === 'failed' ? 'unmet' : 'check',
+        // A missing identity must never fall back to a numeric DOM position.
+        spotlight: Boolean(predicateId)
+      });
+    }
+    if (['answer', 'answer-rest'].includes(phase)) {
+      // The existing 6s answer hold gives the unresolved issues their own 3s.
+      if (phase === 'answer-rest' && local >= 3000) {
+        return cue('open-questions', 'Other questions remain unanswered.', 'Still open', 'open');
+      }
+      return cue('proposed-assessment', 'Read the proposed assessment.', 'Proposed assessment', 'lead');
+    }
+    if (['draft', 'draft-rest'].includes(phase)) {
+      return cue('human-review', 'A draft for a person to review.', 'Human review', 'draft');
+    }
+  }
+
+  if (b.act === 'learning') {
+    if (['later-case-rest', 'memory-open', 'memory-overview'].includes(phase)) {
+      return cue('later-evidence', 'This case brings its own evidence.', 'A later case', 'memory-source');
+    }
+    if (['memory-transfer', 'memory-landed'].includes(phase)) {
+      const landed = phase === 'memory-landed';
+      return cue('reuse-checklist', "Reuse the checklist. Recheck this case's evidence.", 'Checklist reuse', landed ? 'memory-target' : 'memory-item', {
+        ...(Number.isSafeInteger(b.item) && b.item >= 0 ? {targetId: b.item} : {}),
+        part: landed ? 'destination' : 'origin',
+        spotlight: Number.isSafeInteger(b.item) && b.item >= 0
+      });
+    }
+    if (['memory-notice', 'memory-notice-rest'].includes(phase)) {
+      return cue('fresh-facts', 'The checks are reused. The facts belong to this case.', 'Checklist reuse', 'count');
+    }
+    if (['answer', 'answer-rest'].includes(phase)) {
+      return cue('later-assessment', 'This case receives its own proposed assessment.', "The later case's assessment", 'lead');
+    }
+  }
+
+  if (b.act === 'cases') {
+    if (['wordmark', 'wordmark-rest'].includes(phase)) {
+      return cue('finale', 'Every step has a reason.', 'CasePath', 'finale', {spotlight: false});
+    }
+    return cue('recorded-examples', 'Every recorded example can be inspected.', 'Recorded examples', 'cases');
+  }
+  return cue('orientation', 'Follow each question back to its evidence.', 'Recorded demonstration', 'source', {spotlight: false});
+}
+
+
+  return {ACTS,EASING,ease,interpolate,paint,createClock,timeline,chapter,ringTransform,documentaryCue};
 });
