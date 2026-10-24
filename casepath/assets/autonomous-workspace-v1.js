@@ -1514,10 +1514,31 @@
   });
   function northStarFactCopy(state, operation) {
     const key=operation.input?.document_type||operation.object.id.replace(/^fact:/,''),label=NS_FACT_TYPES[key];
-    return label?`<span data-au-ns-fact-label data-au-ns-fact-type="${h(key)}">${h(label)}</span>`:`<span class="au-ns-fact-quotation" title="${h(operation.source.quote)}">“<span data-au-ns-fact-quote>${h(operation.source.quote)}</span>”</span>`;
+    const proposed=operation.result?.status==='provisional'?({supported:'Proposed: supported',failed:'Proposed: not supported',unresolved:'Proposed: unresolved'}[operation.result?.proposed_status]||null):null;
+    const verdict=proposed?`<small class="au-ns-fact-verdict" data-au-ns-fact-proposed="${h(operation.result.proposed_status)}">${h(proposed)}</small>`:'';
+    return (label?`<span data-au-ns-fact-label data-au-ns-fact-type="${h(key)}">${h(label)}</span>`:`<span class="au-ns-fact-quotation" title="${h(operation.source.quote)}">“<span data-au-ns-fact-quote>${h(operation.source.quote)}</span>”</span>`)+verdict;
+  }
+  // Empty layout spans improve extraction typography without adding, deleting
+  // or normalizing any recorded character. Citation offsets/text stay exact.
+  function northStarReadableText(value,law=false){
+   const text=String(value||''),points=new Map();
+   const space=pattern=>{for(const match of text.matchAll(pattern))points.set(match.index+match[0].length,'space');};
+   space(/\b(?:at|from|is|on|of|by|as|to|since|until|before|after|net|gross|advance|pages)(?=[A-ZÄÖÜ0-9])/gu);
+   space(/(?:CHF|EUR|USD)(?=\d)/gu);
+   space(/\d(?=(?:January|February|March|April|May|June|July|August|September|October|November|December|Januar|Februar|März|Mai|Juni|Juli|Oktober|Dezember))/gu);
+   space(/(?:January|February|March|April|May|June|July|August|September|October|November|December|Januar|Februar|März|Mai|Juni|Juli|Oktober|Dezember)(?=\d)/gu);
+   space(/\b(?:Art\.|Artikel|Absatz|Absätze|Ziffer|Ziffern)(?=\d)/gu);
+   space(/\d(?=und\d)/gu);space(/(?<=\d)und(?=\d)/gu);
+   if(law){
+    for(const match of text.matchAll(/[.!?](?=[2-9]\s+[A-ZÄÖÜ])/gu))points.set(match.index+1,'break');
+    for(const match of text.matchAll(/[:;](?=[a-z]\.[A-Za-zÄÖÜäöü])/gu))points.set(match.index+1,'break');
+   }
+   let from=0,markup='';
+   for(const [at,kind]of [...points].sort((a,b)=>a[0]-b[0])){markup+=h(text.slice(from,at))+'<span class="au-ns-text-'+kind+'" aria-hidden="true"></span>';from=at;}
+   return markup+h(text.slice(from));
   }
   function northStarSourceBody(preview, pin) {
-    return `<span class="au-ns-source-context">${h(preview.before)}</span><mark data-au-ns-quote data-start="${pin.start_char}" data-end="${pin.end_char}">${h(pin.quote)}</mark><span class="au-ns-source-context">${h(preview.after)}</span>`;
+    return `<span class="au-ns-source-context">${northStarReadableText(preview.before)}</span><mark data-au-ns-quote data-start="${pin.start_char}" data-end="${pin.end_char}">${northStarReadableText(pin.quote)}</mark><span class="au-ns-source-context">${northStarReadableText(preview.after)}</span>`;
   }
   function northStarSourcePreview(source, pin = null) {
     const chars=sourceCharacters(source),text=chars.join('');
@@ -1731,7 +1752,7 @@
     issuer_authority_and_complete_packet:'Sent by someone authorised, complete form received',
     contemporaneous_substantive_reasons:'Reasons given with the increase',
     ordinary_non269c_tenancy:'Ordinary lease, no staged rent',
-    later_email_is_not_original_reasons:'A later email cannot supply the missing reasons'
+    later_email_is_not_original_reasons:'Later email is separate from the original notice'
   });
   const deskLegalLabel = id => DESK_LEGAL_TESTS[id] || words(id);
   const DESK_STEPS = Object.freeze({
@@ -1844,7 +1865,7 @@
   function northStarLawMarkup(state, model) {
     const articles=new Set(model.laws.map(ref=>String(ref).replace(/^CO:/,'')));
     const rows=legalAuthorityRows(state).filter(row=>articles.has(row.article));
-    return `<section class="au-ns-law-source" data-au-ns-law-source><h2>Law behind this step</h2>${legalBasisMarkup(state)}<p>Recorded legal text · publisher: Fedlex. Recorded checks compare the exact quoted passage and a bounded rule. Qualified legal review is still required.</p>${rows.map(row=>`<article><h3>Article ${h(row.article)}</h3><pre>${h(row.text)}</pre></article>`).join('')}</section>`;
+    return `<section class="au-ns-law-source" data-au-ns-law-source><h2>Law behind this step</h2>${legalBasisMarkup(state)}<p>Recorded legal text · publisher: Fedlex. Recorded checks compare the exact quoted passage and a bounded rule. Qualified legal review is still required.</p>${rows.map(row=>`<article><h3>Article ${h(row.article)}</h3><pre>${northStarReadableText(row.text,true)}</pre></article>`).join('')}</section>`;
   }
   function deskDraftReadMarkup(value, status = 'Original draft.') {
     return `<section class="au-ns-draft-content" data-au-recorded-draft><p data-au-draft-status>${h(status)} Not sent — you decide.</p><p>Review and complete this draft before replying to the customer.</p><h3>${h(/bounded historical synthetic assessment/iu.test(value.subject)?'Assessment draft':value.subject)}</h3><pre class="au-record-body">${h(value.body)}</pre></section>`;
@@ -1859,7 +1880,7 @@
     const files=m.desk.files.map(file=>`<li${file.ids.includes(m.source?.artifact_id)?' aria-current="true"':''}>${northStarIcon(file.source.role==='customer_message'?'message':'file')}<button type="button" data-au-source="${h(file.ids.at(-1))}">${h(deskFileLabel(file.source))}${file.source.received_at?`<small>Received ${h(file.source.received_at)}</small>`:''}</button></li>`).join('');
     const spine=m.desk.nodes.map((node,i)=>{const done=m.desk.met.has(node.node_id),verdict=northStarNodeVerdict(m,node),decisive=verdict==='failed',failedCount=(m.predicatesByNode.get(node.node_id)||[]).filter(test=>test.status==='failed').length,edge=list(state.graph?.edges).find(edge=>edge.source_node_id===node.node_id&&edge.target_node_id===m.desk.nodes[i+1]?.node_id),taken=edge&&done&&m.desk.met.has(edge.target_node_id)&&list(state.evaluation?.edges).find(row=>row.edge_id===edge.edge_id)?.activation==='true';return `<li data-au-ns-node="${h(node.node_id)}" data-state="${done?'done':'waiting'}" data-selected="${node===m.node}" data-decisive="${decisive}" data-au-ns-node-verdict="${verdict}"><button type="button" data-au-desk-select="${h(node.node_id)}" aria-pressed="${node===m.node}" title="${h(node.label)}"><strong>${i+1}</strong><span>${h(northStarQuestion(node,m.catalogue?.plans.get(node.node_id)?.at(-1)?.operation.result||m.rows?.find(op=>op.kind==='step.complete'&&op.object.id===node.node_id)?.result))}</span><i class="au-ns-node-badge" aria-label="${decisive?'A mapped legal test failed':done?'Process step checked':'Process step pending'}">${decisive?'✕':''}</i><small class="au-ns-test-verdict">${decisive?`${failedCount} legal test${failedCount===1?'':'s'} failed`:done?'Checked':'Pending'}</small></button>${edge?`<svg class="au-ns-edge" data-taken="${Boolean(taken)}" viewBox="0 0 70 16" aria-hidden="true"><path d="M0 8h66m-6-5 6 5-6 5"/></svg>`:''}</li>`;}).join('');
     const chain=m.columns.map(column=>`<button type="button" class="au-ns-chain-column" data-au-ns-chain="${column.id}" data-au-ns-chain-node="${h(m.nodeId)}"><strong>${northStarIcon(column.icon)}${column.label}</strong><span>${column.id==='law'?m.predicates.filter(test=>test.status==='failed').map(test=>`<span class="au-ns-failed-test">✕ ${h(deskLegalLabel(test.predicate_id))}</span>`).join(''):''}${column.rows.slice(0,2).map(row=>`<span>${column.id==='facts'?'<i aria-hidden="true">✓</i>':''}${h(northStarChainLabel(column.id,row))}</span>`).join('')}${column.rows.length>2?`<small>+ ${column.rows.length-2} more</small>`:''}</span><b aria-hidden="true">›</b></button>`).join('');
-    const pin=m.pin,previewSource=m.source&&northStarSourcePreview(m.source,pin),body=pin?`${h(previewSource.before)}<mark data-au-ns-page-pin>${h(pin.quote)}</mark>${h(previewSource.after)}`:'';
+    const pin=m.pin,previewSource=m.source&&northStarSourcePreview(m.source,pin),body=pin?`${northStarReadableText(previewSource.before)}<mark data-au-ns-page-pin>${northStarReadableText(pin.quote)}</mark>${northStarReadableText(previewSource.after)}`:'';
     const localPins=[],seen=new Set();for(const op of [m.operation,...m.rows.filter(op=>m.desk.operationNodes.get(op.id)===m.nodeId)].filter(Boolean)){const p=northStarPin(op,trace.sources),id=p&&`${p.artifact_id}:${p.start_char}:${p.end_char}`;if(p&&!seen.has(id)){seen.add(id);localPins.push({pin:p,operation:op});}}
     const sourceGroups=new Map();for(const row of localPins){if(!sourceGroups.has(row.pin.artifact_id))sourceGroups.set(row.pin.artifact_id,[]);sourceGroups.get(row.pin.artifact_id).push(row);}
     const preview=pin?`<section class="au-ns-preview" data-au-ns-preview><div class="au-ns-passages" aria-label="Cited passages">${[...sourceGroups].map(([id,pins])=>`<section class="au-ns-passage-group"><h3>${h(deskFileLabel(trace.sources.get(id)))}</h3>${pins.map(({pin:p,operation})=>`<button type="button" data-au-ns-passage="${h(operation.id)}" aria-pressed="${p.artifact_id===pin.artifact_id&&p.start_char===pin.start_char&&p.end_char===pin.end_char}"><q>${h(p.quote)}</q></button>`).join('')}</section>`).join('')}</div><div class="au-ns-page"><h3>${h(deskFileLabel(m.source))}</h3>${previewSource.date?`<dl class="au-ns-source-fields"><dt>Date</dt><dd>${h(previewSource.date)}</dd></dl>`:''}<pre tabindex="0" aria-label="Exact source text">${body}</pre></div><div class="au-ns-page-controls"><button type="button" data-au-source="${h(m.source.artifact_id)}" data-au-citation="${h(JSON.stringify(pin))}" aria-label="Open full source">↗</button><button type="button" data-au-ns-zoom="1" aria-label="Enlarge source text">+</button><button type="button" data-au-ns-zoom="-1" aria-label="Reduce source text">−</button></div></section>`:'<p class="au-ns-empty">No exact source passage is recorded for this step.</p>';
@@ -1873,7 +1894,7 @@
     });
     const sourceList=`<section class="au-ns-view-content" data-au-ns-source-view="${role}">${role==='checker'?`<h2>Verified passages</h2><p class="au-ns-role-purpose">Automated assistant · matches quoted passages to received files and checks recorded evidence rules. Qualified legal review is still required.</p>${verifiedGroups.map(({file,passages})=>`<section class="au-ns-reader-source" data-au-ns-verified-source="${h(file.ids.at(-1))}"><h3><button type="button" data-au-source="${h(file.ids.at(-1))}">${northStarIcon('checker')}${h(deskFileLabel(file.source))}</button></h3><ul>${passages.map(op=>`<li><button type="button" class="au-ns-verified-row" data-au-ns-verified="${h(op.id)}" data-au-source="${h(op.source.artifact_id)}" data-au-citation="${h(JSON.stringify(op.source))}"><span aria-hidden="true">✓</span><q>${h(op.source.quote)}</q><span aria-hidden="true">›</span></button></li>`).join('')}</ul></section>`).join('')}`:m.desk.files.map(file=>{const facts=readerFacts(file),request=northStarMessageRequest(state,file,trace);return `<section class="au-ns-reader-source" data-au-ns-reader-source="${h(file.ids.at(-1))}"><h3><button type="button" data-au-source="${h(file.ids.at(-1))}">${northStarIcon(file.source.role==='customer_message'?'message':'file')}${h(deskFileLabel(file.source))}</button></h3>${request?`<p class="au-ns-reader-request">Wants: "<span data-au-ns-request>${h(request)}</span>"</p>`:''}${facts.length?`<ul>${facts.map(({fact,pin})=>`<li><button type="button" data-au-ns-reader-fact="${h(fact.fact_id)}" data-au-source="${h(pin.artifact_id)}" data-au-citation="${h(JSON.stringify(pin))}"><span aria-hidden="true">✓</span>${h(fact.short_label||fact.label||fact.fact_id)}<span aria-hidden="true">›</span></button></li>`).join('')}</ul>`:request?'':'<p>No facts from this source.</p>'}</section>`;}).join('')}</section>`;
     const documents=`<section class="au-ns-view-content" data-au-ns-documents><h2>Documents</h2>${deskNextStepMarkup(state)}${list(state.evaluation?.documents).map(document=>`<article class="au-ns-document-row"><h3>${h(northStarDocumentLabel(document))}</h3><p>${documentRouteGroup(document.route_state,document.review_state)==='supplied'?'Evidence received':h(statusLabel(document.route_state||document.review_state))}</p>${list(document.held_files).map(file=>`<button type="button" class="au-link" data-au-source="${h(file.artifact_id)}">${h(deskFileLabel(file))} ↗</button>`).join('')}</article>`).join('')}</section>`;
-    const build=`<ol class="au-ns-completed-spine" aria-label="Completed process">${spine}</ol><div class="au-ns-local"><div class="au-ns-chain" data-au-ns-chain-strip>${chain}</div><button type="button" class="au-ns-missing" data-au-detail="documents">${northStarIcon('finder')}<span>Documents<br>${m.missing.length} missing ›<small>${m.missing.length?'Evidence files':'All files received'}</small></span></button></div>${deskNextStepMarkup(state)}${detail==='law'?northStarLawMarkup(state,m):preview}`;
+    const build=`<ol class="au-ns-completed-spine" aria-label="Completed process">${spine}</ol><div class="au-ns-local"><div class="au-ns-chain" data-au-ns-chain-strip>${chain}</div><button type="button" class="au-ns-missing" data-au-detail="documents">${northStarIcon('finder')}<span>Documents<br>${m.missing.length} missing ›<small>${m.missing.length?'Evidence files':'Checklist scope'}</small></span></button></div>${deskNextStepMarkup(state)}${detail==='law'?northStarLawMarkup(state,m):preview}`;
     const content=detail==='draft'?`<div class="au-ns-view-content">${deskDraftBinding(state)?deskDraftReadMarkup(deskDraftBinding(state)):''}</div>`:detail==='knowledge'?northStarMemoryMarkup(state,trace,presentation):role==='result'?`<div class="au-ns-view-content">${northStarInitialDateMarkup(state)}${deskNextStepMarkup(state)}${deskAnswerMarkup(state,m.desk)}</div>`:role==='finder'?documents:['reader','checker'].includes(role)?sourceList:build;
     return `<section class="au-agent-desk au-northstar au-ns-completed" data-au-agent-desk data-au-ns data-au-ns-completed data-au-ns-role-active="${role}" data-au-ns-selected="${h(m.nodeId)}"><aside class="au-ns-sources"><p class="au-ns-context">Legal protection · case review</p><h1 data-au-claim-title tabindex="-1">${h(caseLabel(state.claim_id,state.title).primary)}</h1>${northStarIntakeMarkup(state)}<h2>Sources <span>${m.desk.files.length}</span></h2><ul>${files}</ul><div class="au-ns-source-bottom">${m.source?`<button type="button" data-au-source="${h(m.source.artifact_id)}"${pin?` data-au-citation="${h(JSON.stringify(pin))}"`:''}>Open full source ↗</button>`:''}<button type="button" class="au-link" data-au-desk-watch>Watch this case</button><p>All cases are fictional.</p></div></aside><div class="au-ns-completed-canvas">${content}<nav class="au-ns-secondary">${role==='result'?'':'<button type="button" data-au-ns-reasoning>Show the reasoning</button>'}${m.desk.reuse&&detail!=='knowledge'?'<button type="button" data-au-detail="knowledge">Checklist</button>':''}<button type="button" data-au-detail="activity">History</button></nav></div></section>`;
   }
@@ -5350,12 +5371,8 @@
       const hold=(act,phase,record,op,extra={})=>add(act,phase,900,record,op,extra);
       const rows=main.trace.rows, completed=rows.filter(op=>op.kind==='step.complete'&&op.result?.status==='completed'&&main.state.graph.nodes.some(n=>n.node_id===op.object.id));
       const firstOpen=rows.find(op=>op.kind==='source.open');
-      // Start with evidence for the recorded failed legal test, when it occurs
-      // before the first completed step. Keep the operation and exact span;
-      // the remaining history is still available in full.
       const failedIds=new Set(list(main.state.outcome?.legal_predicates).filter(test=>test.status==='failed').map(test=>test.predicate_id));
-      const firstFact=rows.find(op=>op.kind==='fact.extract'&&failedIds.has(op.object.id)&&op.seq<completed[0]?.seq&&northStarPin(op,main.trace.sources))||rows.find(op=>op.kind==='fact.extract'&&northStarPin(op,main.trace.sources));
-      if(!firstOpen||!firstFact||completed.length<2)throw new Error('The recorded demonstration lacks its source-to-step chain.');
+      if(!firstOpen||completed.length<2)throw new Error('The recorded demonstration lacks its source-to-step chain.');
       const reading=(act,record,op,{fact=false,document=false}={})=>{
         motion(act,'camera-in',700,record,op);motion(act,'cursor',550,record,op);motion(act,'highlight',250,record,op);add(act,'passage-rest',act==='reading'?3600:900,record,op);
         if(fact){motion(act,'fact',350,record,op);motion(act,'connector',400,record,op);add(act,'fact-rest',act==='reading'?1800:900,record,op);}
@@ -5371,9 +5388,22 @@
       add('customer','ready',4200,main);
       motion('customer','customer-source-open',400,main);
       motion('customer','customer-cursor',550,main);motion('customer','customer-highlight',250,main);hold('customer','customer-passage-rest',main);
-      reading('reading',main,firstFact,{fact:true});
-      for(const op of completed.slice(0,1))complete('reading',op);
-      for(const op of completed.slice(1))complete('process',op);
+      // Keep accepted history monotonic. Evidence may have been extracted
+      // before intake completed; review that exact operation against the already
+      // accepted prefix, without changing its identity or inventing a new read.
+      let firstFact=null,previousCompletion=0;
+      for(const op of completed){
+        const candidates=rows.filter(row=>row.kind==='fact.extract'&&row.seq<op.seq&&main.catalogue.links.get(row.id)===op.object.id&&northStarPin(row,main.trace.sources));
+        const fact=candidates.findLast(row=>failedIds.has(row.object.id))||candidates.at(-1);
+        if(!firstFact&&fact){
+          firstFact=fact;const from=beats.length;reading('reading',main,fact,{fact:true});
+          for(const beat of beats.slice(from)){beat.through=Math.max(previousCompletion,fact.seq);beat.review=previousCompletion>fact.seq;}
+          complete('reading',op);
+        }
+        else complete(firstFact?'process':'reading',op);
+        previousCompletion=op.seq;
+      }
+      if(!firstFact)throw new Error('The recorded demonstration lacks an ordered source-to-step chain.');
       // The completed view and all legal tests are the existing product views.
       motion('decision','completed',400,main,null,{view:'step'});hold('decision','overview',main,null,{view:'step'});
       const finalTrace={...main.trace,headState:main.state,finished:true,verifiedResult:true},decisive=northStarCompletedModel(main.state,finalTrace,null,null,knowledgeCache.value);
@@ -5383,35 +5413,50 @@
       motion('decision','documents',400,main,null,{view:'documents'});hold('decision','documents-rest',main,null,{view:'documents'});
       const tests=list(main.state.outcome?.legal_predicates);
       for(let i=0;i<tests.length;i++){motion('decision','legal-test',350,main,null,{view:'answer',test:i});add('decision','legal-test-rest',tests[i].status==='failed'?2000:900,main,null,{view:'answer',test:i});}
-      motion('decision','answer',400,main,null,{view:'answer',test:tests.length});add('decision','answer-rest',3400,main,null,{view:'answer',test:tests.length});
+      motion('decision','answer',400,main,null,{view:'answer',test:tests.length});add('decision','answer-rest',6000,main,null,{view:'answer',test:tests.length});
       motion('decision','draft',400,main,null,{view:'draft'});add('decision','draft-rest',6000,main,null,{view:'draft'});
       const memory=northStarMemoryModel(later.state,{...later.trace,headState:later.state,finished:true,verifiedResult:true},knowledgeCache.value);
       if(!memory)throw new Error('The later recording has no verified checklist reuse.');
-      hold('learning','later-case-rest',later,null,{view:'knowledge'});
+      add('learning','later-case-rest',1800,later,null,{view:'knowledge'});
       motion('learning','memory-open',400,later,null,{view:'knowledge'});hold('learning','memory-overview',later,null,{view:'knowledge'});
       for(let item=0;item<memory.links.length;item++){motion('learning','memory-transfer',1000,later,null,{view:'knowledge',item});add('learning','memory-landed',1500,later,null,{view:'knowledge',item});}
       motion('learning','memory-notice',400,later,null,{view:'knowledge'});add('learning','memory-notice-rest',2400,later,null,{view:'knowledge'});
       motion('learning','answer',400,later,null,{view:'answer',test:list(later.state.outcome?.legal_predicates).length});add('learning','answer-rest',4800,later,null,{view:'answer',test:list(later.state.outcome?.legal_predicates).length});
       motion('cases','case-list',400,main,null,{view:'cases'});
       for(let row=0;row<9;row++)motion('cases','case-row',250,main,null,{view:'cases',row});
-      add('cases','case-list-rest',2700,main,null,{view:'cases'});motion('cases','wordmark',400,main,null,{view:'cases'});add('cases','wordmark-rest',2250,main,null,{view:'cases'});
-      const staged=[];for(const beat of beats){if(staged.length&&staged.at(-1).act!==beat.act)staged.push({...beat,phase:'act-transition',nextPhase:beat.phase,duration:400,motion:true});staged.push(beat);}
+      add('cases','case-list-rest',2200,main,null,{view:'cases'});motion('cases','wordmark',650,main,null,{view:'cases'});add('cases','wordmark-rest',4500,main,null,{view:'cases'});
+      const staged=[];
+      for(const beat of beats){
+        const previous=staged.at(-1),actChange=previous&&previous.act!==beat.act;
+        const sceneChange=previous&&(previous.view!==beat.view||beat.phase==='customer-source-open'||beat.phase==='camera-in'&&previous.op?.id!==beat.op?.id);
+        if(actChange||sceneChange){
+          staged.push({...beat,phase:actChange?'act-transition':'scene-transition',nextPhase:beat.phase,duration:500,motion:true,entryRevealed:true});
+          staged.push({...beat,entryRevealed:true});
+        }else staged.push(beat);
+      }
       const story=P.timeline(staged),clock=P.createClock(root,{reducedMotion:Boolean(reduced?.matches)});
       clock.seek(0);
-      let last=-1,disposedStory=false,waiting=true,frameNodes={},rendering=false,transitionLayer=null,pauseDeadline=null,freezeDeadline=null;
+      let last=-1,disposedStory=false,waiting=true,frameNodes={},rendering=false,transitionLayer=null,pauseDeadline=null,freezeDeadline=null,sceneIdentity=null;
       const markupCache=new Map(),drawTimings=[];
       const present=new URLSearchParams(root.location?.search||'').get('present')==='1';
       const scope=doc.documentElement;scope.setAttribute('data-casepath-presentation','');
-      const atRecord=(record,op)=>{
-        const through=op?.seq??0,checkpoint=record.checkpoints.findLast(row=>row.after_operation<=through)||record.checkpoints[0];
+      const atRecord=(record,op,acceptedThrough=0)=>{
+        const through=Math.max(op?.seq??0,acceptedThrough||0),checkpoint=record.checkpoints.findLast(row=>row.after_operation<=through)||record.checkpoints[0];
         const prefix=record.trace.rows.filter(row=>row.seq<=through),opened=new Set(prefix.filter(row=>row.kind==='source.open').map(row=>row.object.id));
         const sources=new Map([...record.trace.sources].filter(([id])=>opened.has(id)));
         return {state:checkpoint.state,projection:checkpoint.projection,replay:checkpoint.replay,events:checkpoint.events||[],trace:{...record.trace,rows:prefix,sources,headState:record.state,current:op,northStar:true,executive:true,nsCatalogue:record.catalogue,finished:false,verifiedResult:false,nsCues:new Set(),displaySource:op?{artifact_id:op.source?.artifact_id||op.object.id}:null}};
       };
-      const transport=()=>`<footer class="au-executive-transport"><span data-au-film-speed></span><span>Recorded replay · All cases are fictional.</span><div>${button(waiting?'Watch the analysis':clock.paused?'Resume':'Pause',waiting?'data-au-ns-start':clock.paused?'data-au-demo-resume':'data-au-demo-stop')}${waiting?'':button('Skip to answer','data-au-operation-skip')}</div></footer>`;
+      const transport=()=>`<footer class="au-executive-transport"><span class="au-cinema-progress" aria-hidden="true"></span><span data-au-film-speed></span><span>Recorded replay · All cases are fictional.</span><div>${button(waiting?'Watch the analysis':clock.paused?'Resume':'Pause',waiting?'data-au-ns-start':clock.paused?'data-au-demo-resume':'data-au-demo-stop')}${waiting?'':button('Skip to answer','data-au-operation-skip')}</div></footer>`;
       const opacity=(element,value)=>{if(element)element.style.opacity=String(value);};
       const select=(selector)=>host.querySelector(selector),all=(selector)=>[...host.querySelectorAll(selector)].filter(el=>!el.closest('.au-executive-transition'));
-      function draw(beat) {
+      function markBeat(beat,phase,op,viewName){
+        host.dataset.auPresentationAct=beat.act;host.dataset.auPresentationPhase=phase;host.dataset.auCurrentOperation=op?.id||'';host.dataset.auCueActive=phase;host.dataset.auCueOperation=op?.id||'';host.dataset.auCueKind=op?.kind||'';
+        host.dataset.auOperationRunMode='recorded_operations';host.dataset.auOperationResultVerified=String(Boolean(viewName));
+        const speed=select('[data-au-film-speed]');if(speed)speed.textContent=beat.act==='process'?'Condensed replay':beat.review?'Reviewing recorded evidence':'';
+        const heading=select('.au-ns-context'),chapter=P.chapter(beat.act);
+        if(heading&&heading.dataset.auCinemaHeading!==beat.act){heading.dataset.auCinemaHeading=beat.act;heading.innerHTML=`<small>${h(chapter.number)} · ${h(chapter.label)}</small><strong>${h(chapter.title)}</strong>`;}
+      }
+      function draw(beat,force=false) {
         const drawStarted=root.performance.now();
         const heldTransport=select('.au-executive-transport'),heldWaiting=Boolean(heldTransport?.querySelector('[data-au-ns-start]')),heldFocus=heldTransport?.contains(doc.activeElement)?doc.activeElement:null;
         // Keep the fixed playback controls connected while only the case scene
@@ -5426,7 +5471,7 @@
         const record=beat.record,viewName=beat.view;
         let shown;
         if(viewName){shown={state:record.state,projection:record.checkpoints.at(-1).projection,replay:record.checkpoints.at(-1).replay,events:record.trace.journal,trace:{...record.trace,headState:record.state,northStar:true,executive:true,finished:true,verifiedResult:true,current:null}};}
-        else shown=atRecord(record,beat.op);
+        else shown=atRecord(record,beat.op,beat.through);
         current=shown.state;projection=shown.projection;history=shown.events;replayRecord=shown.replay||replayRecord;operationTrace=shown.trace;session.claimId=current.claim_id;
         const trace=operationTrace,op=beat.op,phase=beat.nextPhase||beat.phase,completion=op?.kind==='step.complete';
         if(completion&&!['node-accepted','node-rest'].includes(phase))trace.nsPendingCompletion=op.id;
@@ -5443,14 +5488,18 @@
           customerPin={artifact_id:customer.artifact_id,sha256:customer.sha256,text_sha256:customer.text_sha256,offset_unit:'unicode_code_point',start_char:start,end_char:start+Array.from(request).length,quote:request};
           trace.sources.set(customer.artifact_id,customer);trace.displaySource={artifact_id:customer.artifact_id};
         }
+        const identity=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id)),viewName==='knowledge'&&Number.isSafeInteger(beat.item)?beat.item:''].join(':');
+        markBeat(beat,phase,op,viewName);
+        if(!force&&sceneIdentity===identity)return;
+        sceneIdentity=identity;
         const opts={playing:!clock.paused,paused:clock.paused,tour:{cases:sessionCases(session)},knowledge:knowledgeCache.value};
         detail=viewName&&viewName!=='cases'?viewName:'step';chosenNode=null;deskSelection=null;evidenceContext={};
         if(viewName==='cases'){
           const records=sessionCases(session).map(row=>catalogRow(claims,row.claim_id)).filter(Boolean);
-          setScene(`<section class="au-executive-cases"><header class="au-executive-roster-heading"><h1 class="au-page-heading" tabindex="-1">9 recorded examples</h1><p class="au-executive-roster-note">Fictional cases · open any case to inspect its steps and sources.</p></header><div class="au-claim-list" data-au-claims>${claimsMarkup(records,{scope:'originals',page:1,pageSize:9})}</div><div class="au-executive-wordmark" aria-hidden="true">CasePath</div></section>${transport()}`);
+          setScene(`<section class="au-executive-cases"><header class="au-executive-roster-heading"><h1 class="au-page-heading" tabindex="-1">9 recorded examples</h1><p class="au-executive-roster-note">Fictional cases · open any case to inspect its steps and sources.</p></header><div class="au-claim-list" data-au-claims>${claimsMarkup(records,{scope:'originals',page:1,pageSize:9})}</div><div class="au-cinema-finale" aria-hidden="true"><p class="au-cinema-finale-brand">CasePath</p><h2>From source to answer.<br><span>The reasoning stays visible.</span></h2><div class="au-cinema-finale-path">Sources <b>→</b> Facts <b>→</b> Process <b>→</b> Your review</div><p>Reuse the checks. Recheck the evidence. You decide.</p><small>Recorded fictional examples · Human review remains required.</small></div></section>${transport()}`);
           nav('work');
         }else{
-          const cacheKey=[record.state.claim_id,viewName||op?.id||'customer',Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id))].join(':');
+          const cacheKey=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id))].join(':');
           if(!markupCache.has(cacheKey))markupCache.set(cacheKey,viewName?northStarCompletedMarkup(current,trace,detail,opts):northStarMarkup(current,trace,opts));
           setScene(markupCache.get(cacheKey)+transport());
         }
@@ -5464,9 +5513,7 @@
         if(!viewName){const count=new Set(trace.rows.filter(op=>op.kind==='document.check'&&op.source&&op.result?.assessment==='sufficient'&&(op.id!==beat.op?.id||!['camera-in','cursor','highlight','passage-rest'].includes(phase))).map(op=>op.object.id)).size;select('.au-ns-sources')?.insertAdjacentHTML('beforeend',`<button type="button" class="au-executive-documents" data-au-detail="documents">Documents <span>${count} checked</span></button>`);}
         const ns=select('[data-au-ns]'),tabs=container.querySelector('.au-ns-tabs');if(tabs)tabs.innerHTML=ns?northStarTabsMarkup(ns.dataset.auNsRoleActive,Boolean(viewName)):'';
         positionDesk(false);
-        host.dataset.auPresentationAct=beat.act;host.dataset.auPresentationPhase=phase;host.dataset.auCurrentOperation=op?.id||'';host.dataset.auCueActive=phase;host.dataset.auCueOperation=op?.id||'';host.dataset.auCueKind=op?.kind||'';
-        host.dataset.auOperationRunMode='recorded_operations';host.dataset.auOperationResultVerified=String(Boolean(viewName));
-        const speed=select('[data-au-film-speed]');if(speed)speed.textContent=beat.act==='process'?'4×':'';
+        markBeat(beat,phase,op,viewName);
         frameNodes={desk:ns,paper:select('[data-au-ns-paper]'),mark:select('[data-au-ns-quote]'),fact:op&&select(`[data-au-ns-fact="${op.id}"]`),link:select('.au-ns-fact-connector'),plan:select('[data-au-ns-plan]'),canvas:select('.au-ns-canvas,.au-ns-completed-canvas'),work:select('.au-ns-work')};
         const {mark,paper}=frameNodes;
         if(mark){
@@ -5519,37 +5566,47 @@
       }
       function render(at=clock.now(),force=false) {
         if(disposedStory||rendering||inspectionHold)return;
-        const sample=story.at(at),b=sample.beat,transition=b.phase==='act-transition',sourceSwap=b.phase==='source-swap';
+        const sample=story.at(at),b=sample.beat,transition=['act-transition','scene-transition'].includes(b.phase),sourceSwap=b.phase==='source-swap'&&!b.entryRevealed;
         let outgoing=null;
         if((transition||sourceSwap)&&(last!==b.index||force)&&b.index>0){
           render(story.beats[b.index-1].end-.001);
-          const canvas=sourceSwap?frameNodes.paper:frameNodes.canvas||select('.au-executive-cases');
+          const canvas=sourceSwap?frameNodes.paper:frameNodes.desk||select('.au-executive-cases');
           if(canvas){
             outgoing=doc.createElement('div');outgoing.className='au-executive-transition';outgoing.setAttribute('aria-hidden','true');outgoing.style.cssText='position:fixed;inset:0;z-index:3;pointer-events:none;';
-            const header=container.querySelector('.au-identity-header'),layers=b.act==='cases'?[canvas,select('.au-ns-sources'),header]:[canvas];
+            const header=container.querySelector('.au-identity-header'),layers=sourceSwap?[canvas]:[canvas,header];
             for(const element of layers.filter(Boolean)){
               const rect=element.getBoundingClientRect(),clone=element.cloneNode(true);
+              const originals=[element,...element.querySelectorAll('*')],copies=[clone,...clone.querySelectorAll('*')];
+              const scrollCopies=originals.flatMap((node,i)=>node.scrollTop||node.scrollLeft?[{node:copies[i],top:node.scrollTop,left:node.scrollLeft}]:[]);
               if(sourceSwap)clone.querySelectorAll('.au-executive-ink,.au-executive-cursor').forEach(el=>el.remove());
               // Cases leaves the case shell. Preserve its actual outgoing header
               // styles while the normal Cases navigation fades into the same bar.
               if(element===header){const originals=[element,...element.querySelectorAll('*')],copies=[clone,...clone.querySelectorAll('*')];originals.forEach((node,i)=>{const style=root.getComputedStyle(node);for(const key of ['display','font','color','height','min-height','width','gap','flex','flex-shrink','align-items','justify-content','padding','margin','border','letter-spacing'])copies[i].style.setProperty(key,style.getPropertyValue(key));});}
               clone.style.cssText+=`;position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;height:${rect.height}px;margin:0;box-sizing:border-box;background:white;pointer-events:none;`;
               for(const node of [clone,...clone.querySelectorAll('*')])for(const attr of [...node.attributes])if(attr.name.startsWith('data-au-')||attr.name==='id')node.removeAttribute(attr.name);
-              outgoing.appendChild(clone);
+              outgoing.appendChild(clone);outgoing._scrollCopies=(outgoing._scrollCopies||[]).concat(scrollCopies);
             }
           }
         }
         rendering=true;
         try{
           const phase=(b.nextPhase||b.phase).replace(/^customer-/,''),p=reduced?.matches?1:transition?0:P.ease(sample.progress);
-          if(last!==b.index||force){draw(b);last=b.index;transitionLayer=outgoing;if(outgoing)host.appendChild(outgoing);}
+          if(last!==b.index||force){
+            transitionLayer?.remove();draw(b,force);last=b.index;transitionLayer=outgoing;
+            if(outgoing){host.appendChild(outgoing);for(const copy of outgoing._scrollCopies||[]){copy.node.scrollTop=copy.top;copy.node.scrollLeft=copy.left;}}
+          }
           host.dataset.auPresentationTime=String(sample.at);host.dataset.auPresentationBeat=String(b.index);
-          const n=frameNodes,preFact=['camera-in','cursor','highlight','passage-rest'].includes(phase),postFact=['connector','fact-rest','plan-tick','camera-out','combine','plan-recede','node-accepted','node-rest','document','document-rest'].includes(phase);
+          const progress=select('.au-cinema-progress');if(progress)progress.style.transform=`scaleX(${sample.at/story.duration})`;
+          const n=frameNodes;opacity(n.desk,1);opacity(n.canvas,1);opacity(n.paper,1);opacity(n.plan,1);opacity(select('.au-executive-cases'),1);
+          for(const column of all('[data-au-ns-chain]'))opacity(column,1);
+          for(const tick of all('.au-ns-plan-status,.au-ns-circle'))tick.style.transform='none';
+          if(n.mark)n.mark.dataset.arrived=String(!['ready','camera-in','cursor','source-open','source-swap'].includes(phase));
+          const preFact=['camera-in','cursor','highlight','passage-rest'].includes(phase),postFact=['connector','fact-rest','plan-tick','camera-out','combine','plan-recede','node-accepted','node-rest','document','document-rest'].includes(phase);
           if(n.fact){opacity(n.fact,preFact?0:phase==='fact'?p:1);n.fact.style.transform=phase==='fact'?`translateY(${12*(1-p)}px)`:'none';}
           if(n.link){n.link.style.visibility='visible';opacity(n.link,preFact||phase==='fact'?0:phase==='connector'||phase==='combine'?p:1);n.link.style.transform=phase==='connector'||phase==='combine'?`scaleX(${p})`:'none';}
           opacity(n.ink,['ready','camera-in','cursor','source-open','source-swap'].includes(phase)?0:phase==='highlight'?p:1);
           if(n.pointer){opacity(n.pointer,phase==='ready'||phase==='camera-in'||phase==='source-open'||phase==='source-swap'?0:phase==='cursor'?p:1);n.pointer.style.transform=phase==='cursor'?`translate(0,${-40*(1-p)}px)`:'none';}
-          if(phase==='source-open')opacity(n.paper,p);
+          if(phase==='source-open')opacity(n.paper,b.entryRevealed?1:p);
           if(sourceSwap){opacity(n.paper,p);opacity(transitionLayer,1-p);}
           if(phase==='document')opacity(select('.au-executive-documents span'),p);
           if(phase==='plan-tick'){const tick=select('[data-au-ns-plan-current] .au-ns-plan-status');if(tick)tick.style.transform=`scale(${.8+.2*p})`;}
@@ -5564,7 +5621,9 @@
           if(b.column){for(const column of all('[data-au-ns-chain]'))opacity(column,column.dataset.auNsChain===b.column?phase==='chain'?.6+.4*p:1:.6);}
           if(b.view==='answer'){
             const tests=all('[data-au-desk-answer] > .au-desk-tests > li');tests.forEach((el,i)=>opacity(el,i<b.test?1:i===b.test?(phase==='legal-test'?p:1):0));
-            const afterTests=['answer','answer-rest','draft','draft-rest'].includes(phase);opacity(select('.au-desk-test-status'),afterTests?1:0);opacity(select('.au-desk-next'),afterTests?1:0);opacity(select('.au-desk-lead'),afterTests?(phase==='answer'?p:1):0);opacity(select('.au-desk-open'),afterTests?1:0);opacity(select('.au-desk-actions'),phase==='draft'?p:phase==='draft-rest'?1:0);opacity(select('.au-desk-why'),phase==='draft-rest'?1:0);
+            const afterTests=['answer','answer-rest','draft','draft-rest'].includes(phase);
+            const pane=select('.au-ns-view-content'),lead=select('.au-desk-lead');if(pane)pane.scrollTop=afterTests&&lead?Math.max(0,lead.offsetTop-pane.offsetTop-20):0;
+            opacity(select('.au-desk-test-status'),afterTests?1:0);opacity(select('.au-desk-next'),afterTests?1:0);opacity(select('.au-desk-lead'),afterTests?(phase==='answer'?p:1):0);opacity(select('.au-desk-open'),afterTests?1:0);opacity(select('.au-desk-actions'),phase==='draft'?p:phase==='draft-rest'?1:0);opacity(select('.au-desk-why'),phase==='draft-rest'?1:0);
           }
           if(b.view==='knowledge'){
             const items=all('[data-au-memory-item]'),complete=['memory-notice','memory-notice-rest'].includes(phase),landed=complete?items.length:Number.isSafeInteger(b.item)?b.item+(phase==='memory-landed'||p>=1?1:0):0;
@@ -5575,18 +5634,20 @@
             for(const origin of all('[data-au-memory-origin]'))opacity(origin,origin.parentElement.querySelector('[data-au-memory-target][data-landed=true]')?1:0);
             const count=select('[data-au-memory-count]');if(count&&count.textContent!==String(landed))count.textContent=String(landed);
             for(const flight of n.transfers||[]){opacity(flight.clone,phase==='memory-transfer'&&p<1?1:0);flight.clone.style.transform=`translate(${flight.dx*p}px,${flight.dy*p}px)`;flight.clone.style.width=`${flight.width+(flight.targetWidth-flight.width)*p}px`;}
-            if(phase==='memory-open')opacity(n.canvas,p);
-            if(phase==='memory-notice')opacity(select('.au-ns-memory footer'),p);
+            if(phase==='memory-open')opacity(n.canvas,1);
+            opacity(select('.au-ns-memory footer'),complete?(phase==='memory-notice'?p:1):0);
           }
           if(b.view==='cases'){
             const items=all('.au-claim-list > *'),row=b.row;
             items.forEach((el,i)=>opacity(el,phase==='case-row'?i<row?1:i===row?p:0:phase==='case-list'?0:1));
-            const wordmark=select('.au-executive-wordmark');opacity(wordmark,phase==='wordmark'?p:phase==='wordmark-rest'?1:0);
+            const finale=select('.au-cinema-finale'),outro=phase==='wordmark'?Math.min(1,p*2):phase==='wordmark-rest'?1:0,fade=phase==='wordmark'?Math.max(0,p*2-1):phase==='wordmark-rest'?1:0;
+            opacity(select('.au-claim-list'),1-outro);opacity(select('.au-executive-roster-heading'),1-outro);opacity(finale,fade);
+            if(finale){finale.style.transform=`translateY(${16*(1-fade)}px)`;finale.setAttribute('aria-hidden',String(fade===0));}
+            const list=select('.au-claim-list');if(list){list.style.pointerEvents=fade===1?'none':'';list.inert=fade===1;}
           }
-          if(['completed','documents','case-list','law','draft','source-check'].includes(phase))opacity(n.canvas||select('.au-executive-cases'),p);
+          if(['completed','documents','case-list','law','draft','source-check'].includes(phase))opacity(n.canvas||select('.au-executive-cases'),b.entryRevealed?1:p);
           const header=container.querySelector('.au-identity-header');opacity(header,1);
-          if(transition){const fade=reduced?.matches?1:P.ease(sample.progress);opacity(n.canvas||select('.au-executive-cases'),fade);opacity(transitionLayer,1-fade);if(b.act==='cases')opacity(header,fade);}
-          if(phase==='later-case-rest')opacity(n.canvas,0);
+          if(transition){const fade=reduced?.matches?1:P.ease(sample.progress);opacity(n.desk||select('.au-executive-cases'),fade);opacity(transitionLayer,1-fade);opacity(header,fade);}
           all('[data-au-operation-skip]').forEach(el=>el.hidden=['answer','cases'].includes(b.view));
           all('[data-au-desk-watch]').forEach(el=>el.hidden=!clock.paused);
           if(sample.at>=story.duration){clock.pause();waiting=false;pausedPresentation=session;demoSession=null;syncControls();}

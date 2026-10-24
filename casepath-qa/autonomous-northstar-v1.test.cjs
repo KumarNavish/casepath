@@ -188,7 +188,7 @@ test('W10 absence evidence and completed checks do not assert that reasons were 
  assert.match(completed,/data-au-ns-node="ri_reason"[\s\S]*?au-ns-test-verdict">Checked/);
  assert.match(completed,/An increase form with missing original reasons/);
  assert.doesNotMatch(completed, /au-ns-node-badge[^>]*>✓/);
- assert.match(completed,/Documents<br>0 missing ›<small>All files received/);
+ assert.match(completed,/Documents<br>0 missing ›<small>Checklist scope<\/small>/);
  assert.doesNotMatch(ui.northStarCompletedMarkup(state,trace,'answer',{knowledge}), /Initial report: start date uncertain/);
  const done=trace.rows.find(o=>o.kind==='step.complete'&&o.object.id==='ri_reason');
  const live=ui.northStarMarkup(state,{...trace,current:done,rows:trace.rows.filter(o=>o.seq<=done.seq),nsCatalogue:ui.northStarPlanModel(state,trace.rows)},{});

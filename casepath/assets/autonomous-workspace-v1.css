@@ -2195,3 +2195,103 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
 @media (min-width:701px) {
  .au-workspace .au-ns-facts:has(.au-ns-fact:only-child) { overflow:visible; }
 }
+
+/* Cinematic presentation: editorial focus stays inside the recorded product.
+   The absolute presentation clock owns all motion; these rules add no timers. */
+@media (min-width: 1000px) {
+ html[data-casepath-presentation] .au-ns-canvas:has([data-au-ns-purpose]) .au-ns-spine { visibility:hidden; }
+ html[data-casepath-presentation] .au-ns-work:has([data-au-ns-purpose]),
+ .au-ns-preparation .au-ns-work:has([data-au-ns-purpose]) { grid-template-columns:minmax(0,1fr); }
+ html[data-casepath-presentation] .au-ns-work:has([data-au-ns-purpose]) .au-ns-right { display:none; }
+ html[data-casepath-presentation] .au-ns-paper:has([data-au-ns-purpose]),
+ .au-ns-preparation .au-ns-paper:has([data-au-ns-purpose]) {
+   border-color:transparent; display:flex; align-items:center; overflow:visible;
+   justify-content:flex-start; min-height:493px; height:auto;
+ }
+ html[data-casepath-presentation] .au-ns-purpose,
+ .au-ns-preparation .au-ns-purpose { width:100%; max-width:900px; padding:24px 38px; }
+ html[data-casepath-presentation] .au-ns-purpose > p:first-child,
+ .au-ns-preparation .au-ns-purpose > p:first-child {
+   font:600 12px/1.5 Mulish,sans-serif; letter-spacing:.12em; text-transform:uppercase;
+ }
+ html[data-casepath-presentation] .au-ns-purpose h2,
+ .au-ns-preparation .au-ns-purpose h2 {
+   max-width:840px; margin:24px 0; font:600 clamp(36px,3.6vw,52px)/1.12 Mulish,sans-serif;
+   letter-spacing:-1.5px; color:#141516;
+ }
+ html[data-casepath-presentation] .au-ns-purpose > p:not(:first-child),
+ .au-ns-preparation .au-ns-purpose > p:not(:first-child) {
+   max-width:590px; color:#4c4b4d; font:400 18px/1.6 Mulish,sans-serif;
+ }
+ html[data-casepath-presentation] .au-ns-purpose > div,
+ .au-ns-preparation .au-ns-purpose > div {
+   margin:30px 0 22px; font:600 16px/1.6 Mulish,sans-serif;
+ }
+}
+.au-workspace .au-ns-context[data-au-cinema-heading] {
+ display:grid; gap:5px; margin-bottom:14px;
+}
+.au-workspace [data-au-cinema-heading] > small {
+ color:#61636b; font:500 10px/1.5 Mulish,sans-serif; letter-spacing:.09em; text-transform:uppercase;
+}
+.au-workspace [data-au-cinema-heading] > strong {
+ color:#82072a; font:600 16px/1.4 Mulish,sans-serif; letter-spacing:normal;
+}
+.au-workspace .au-cinema-progress {
+ position:absolute; top:-1px; left:0; width:100%; height:2px; background:#82072a;
+ transform-origin:left center; transform:scaleX(0); pointer-events:none;
+}
+.au-workspace .au-executive-cases { position:relative; }
+.au-workspace .au-cinema-finale {
+ position:absolute; inset:0; min-height:calc(100dvh - 150px); box-sizing:border-box;
+ display:flex; flex-direction:column; align-items:center; justify-content:center;
+ padding:40px 32px 64px; background:#fff; text-align:center; pointer-events:none;
+ opacity:0;
+}
+.au-workspace .au-cinema-finale-brand {
+ margin:0 0 26px; color:#82072a; font:650 28px/1.2 Mulish,sans-serif; letter-spacing:-.8px;
+}
+.au-workspace .au-cinema-finale h2 {
+ margin:0; max-width:1000px; font:600 clamp(34px,4vw,58px)/1.14 Mulish,sans-serif;
+ letter-spacing:-1.7px; color:#141516;
+}
+.au-workspace .au-cinema-finale h2 span { color:#82072a; }
+.au-workspace .au-cinema-finale-path {
+ display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:18px;
+ margin:36px 0 24px; color:#4c4b4d; font:500 17px/1.5 Mulish,sans-serif;
+}
+.au-workspace .au-cinema-finale-path b { color:#82072a; font-weight:400; }
+.au-workspace .au-cinema-finale p:last-of-type {
+ margin:0; color:#4c4b4d; font:400 18px/1.6 Mulish,sans-serif;
+}
+.au-workspace .au-cinema-finale small {
+ margin-top:28px; color:#61636b; font:400 12px/1.5 Mulish,sans-serif;
+}
+@media (max-width:700px) {
+ .au-workspace .au-ns-context[data-au-cinema-heading] { margin-inline:0; }
+ .au-workspace .au-cinema-finale { padding:32px 20px; min-height:calc(100dvh - 160px); }
+ .au-workspace .au-cinema-finale h2 { letter-spacing:-.7px; font-size:32px; }
+ .au-workspace .au-cinema-finale-path { gap:10px; font-size:14px; margin:28px 0 20px; }
+ .au-workspace .au-cinema-finale p:last-of-type { font-size:16px; }
+}
+
+.au-workspace .au-ns-fact-verdict { display:block; margin-top:3px; color:#82072a; font:600 10px/1.4 Mulish,sans-serif; }
+.au-workspace .au-ns-fact:has(.au-ns-fact-verdict) { display:grid; grid-template-columns:24px minmax(0,1fr); column-gap:12px; row-gap:4px; align-content:center; }
+.au-workspace .au-ns-fact:has(.au-ns-fact-verdict) > svg { grid-row:1 / 3; }
+.au-workspace .au-ns-fact:has(.au-ns-fact-verdict) > [data-au-ns-fact-label] { grid-column:2; }
+.au-workspace .au-ns-fact-verdict { grid-column:2; margin:0; font-size:11px; line-height:15px; }
+/* Mulish's full glyph box needs breathing room at display sizes. */
+@media (min-width:1000px) {
+ html[data-casepath-presentation] .au-ns-purpose h2,
+ .au-ns-preparation .au-ns-purpose h2 { line-height:1.28; }
+}
+.au-workspace .au-cinema-finale h2 { line-height:1.28; }
+@media (min-width:701px) {
+ html[data-casepath-presentation] .au-ns-sources { padding-bottom:80px; }
+}
+/* Presentation spacing only: these empty spans keep recorded textContent exact. */
+.au-workspace .au-ns-text-space { display:inline; margin-left:.2em; }
+.au-workspace .au-ns-text-break { display:block; height:.55em; }
+@media (min-width:701px) {
+ html[data-casepath-presentation] .au-ns-law-source { max-height:clamp(180px,calc(100dvh - 580px),320px); }
+}

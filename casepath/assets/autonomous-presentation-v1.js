@@ -7,6 +7,19 @@
   'use strict';
   const EASING = 'cubic-bezier(.2,.8,.2,1)';
   const ACTS = Object.freeze(['customer','reading','process','decision','learning','cases']);
+  // Editorial labels describe the recorded scene; they never claim live work.
+  const CHAPTERS = Object.freeze({
+    customer: Object.freeze({number:'01',label:'The question',title:'Start with the question.'}),
+    reading: Object.freeze({number:'02',label:'The evidence',title:'Find the exact evidence.'}),
+    process: Object.freeze({number:'03',label:'The process',title:'Build each step from evidence.'}),
+    decision: Object.freeze({number:'04',label:'The assessment',title:'Make the answer reviewable.'}),
+    learning: Object.freeze({number:'05',label:'The next case',title:'Reuse the checklist. Recheck the evidence.'}),
+    cases: Object.freeze({number:'06',label:'CasePath',title:'Every step has a reason.'})
+  });
+  function chapter(act) {
+    if (!Object.hasOwn(CHAPTERS,act)) throw new TypeError('Unknown presentation chapter.');
+    return CHAPTERS[act];
+  }
   const clamp = value => Math.max(0, Math.min(1, value));
   function ease(progress) {
     const x = clamp(progress);
@@ -128,5 +141,5 @@
       return {beat,elapsed:at-beat.start,progress:clamp((at-beat.start)/beat.duration),at};
     }});
   }
-  return {ACTS,EASING,ease,interpolate,paint,createClock,timeline};
+  return {ACTS,EASING,ease,interpolate,paint,createClock,timeline,chapter};
 });
