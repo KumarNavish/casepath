@@ -1,0 +1,94 @@
+{
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "status": "passed",
+  "started_at": "2026-10-24T16:37:13.321867+00:00",
+  "stages": [
+    {
+      "name": "seed",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/renew_seed.py",
+        "4864e7347c299bf1b580a5b35667635bc1c47f15",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T16:37:18.552042+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-release-seed.log",
+      "pid": 11297,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T16:37:26.735832+00:00",
+      "log_sha256": "4646ffbda91f8f81a3e21914d68d100d4a2058d3f00aff2a4cab1ac35f71d8a5"
+    },
+    {
+      "name": "environment",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/update_api_env.py",
+        "4864e7347c299bf1b580a5b35667635bc1c47f15",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T16:37:28.729670+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-release-environment.log",
+      "pid": 11381,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T16:37:42.809098+00:00",
+      "log_sha256": "c4240f6560263fbb16b664a642e8a294c4ea3e531ef924ee4c7a9faea9593bfa"
+    },
+    {
+      "name": "deployment",
+      "command": [
+        "/Users/kumar0002/.local/bin/uv",
+        "run",
+        "--offline",
+        "--no-project",
+        "--with",
+        "fastapi[standard]",
+        "--with",
+        "fastapi-cloud-cli==0.26.0",
+        "python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/deploy_api.py",
+        "4864e7347c299bf1b580a5b35667635bc1c47f15",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T16:37:44.384846+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-release-deployment.log",
+      "pid": 11483,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T16:38:52.613904+00:00",
+      "log_sha256": "82bd5367f5147030b32d502ca955f86dfb1d8d2bc6cd5bb900d427ac9372fd48"
+    },
+    {
+      "name": "activation",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/await_api.py",
+        "4864e7347c299bf1b580a5b35667635bc1c47f15",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-24T16:38:53.952820+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-release-activation.log",
+      "pid": 11789,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T16:39:32.100421+00:00",
+      "log_sha256": "58a9b129976a13b53b9b0f648db8dc1a4646edce857f9d2b3f5034f6bf33cdfa"
+    }
+  ],
+  "gate_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+  "helper_sha256": {
+    "await_api.py": "380d86398dae2687f13f6fd33a80c2ebad276ce5a704b47de51dfb5786f9a4ea",
+    "deploy_api.py": "51903de878ba05e0511b5a52fb4db3943fb5ea1f2ab414bd57a162d7d441abf4",
+    "integrate_canonical.py": "e0aba2b47c83f0ac8499462c584730332d6822c3d894f394770e384d01a32318",
+    "renew_seed.py": "ca1ea0c82b4028b3f613e5afe4c59aac3049c33e60a20a8278b5762a396891bc",
+    "require_completed_gate.py": "3dfda32a8ec7825b1bffad15b34091495fe3ffa796a492ace18f640d2986bd28",
+    "run_api_release.py": "649b39a368d808fd604834c94f5d6177ccd8219d3aa67ccef87c602252ec28bd",
+    "update_api_env.py": "3e6157c367359457806b1904719392cde7fec1eec03ddc1f0a166b53c375a309"
+  },
+  "finished_at": "2026-10-24T16:39:32.114509+00:00"
+}

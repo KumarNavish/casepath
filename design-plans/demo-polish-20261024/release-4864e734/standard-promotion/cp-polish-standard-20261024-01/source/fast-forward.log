@@ -1,0 +1,302 @@
+Updating b20685d1..4864e734
+Fast-forward
+ .../autonomous-presentation-browser-v1.test.cjs    |   111 +
+ casepath-qa/autonomous-workspace-v1.test.cjs       |    24 +
+ casepath-qa/review-northstar-browser-v1.test.cjs   |    74 +-
+ casepath-qa/review-northstar-v1.test.cjs           |    73 +-
+ casepath/assets/autonomous-workspace-v1.css        |    11 +-
+ casepath/assets/autonomous-workspace-v1.js         |    64 +-
+ casepath/assets/review-northstar-v1.css            |    51 +
+ casepath/assets/review-northstar-v1.js             |    51 +-
+ casepath/index.html                                |     8 +-
+ casepath/source-manifest.json                      |    34 +-
+ design-plans/demo-polish-20261024/REVIEW.md        |    65 +
+ design-plans/northstar-review-20261024/REVIEW.md   |    13 +
+ .../release-b20685d1/README.md                     |    76 +
+ .../release-b20685d1/api-deployment.json           |     8 +
+ .../release-b20685d1/api-health.json               |     8 +
+ .../release-b20685d1/api-wheel-verification.json   |     8 +
+ .../release-b20685d1/capture_eight_states.mjs      |   109 +
+ .../capture_eight_states_recovered.mjs             |   128 +
+ .../clm_543f08f2415b2a33-fixture-differences.json  |  3058 +++++
+ .../clm_543f08f2415b2a33-state.json                |  8764 +++++++++++++++
+ .../release-b20685d1/clm_543f08f2415b2a33.ndjson   |   447 +
+ .../clm_7dbd7c7d1c4ddf90-fixture-differences.json  |  6839 ++++++++++++
+ .../clm_7dbd7c7d1c4ddf90-state.json                | 11124 +++++++++++++++++++
+ .../release-b20685d1/clm_7dbd7c7d1c4ddf90.ndjson   |   447 +
+ .../release-b20685d1/cold-frame-01.png             |   Bin 0 -> 95928 bytes
+ .../release-b20685d1/cold-frame-02.png             |   Bin 0 -> 99443 bytes
+ .../release-b20685d1/cold-frame-03.png             |   Bin 0 -> 102918 bytes
+ .../release-b20685d1/cold-frame-04.png             |   Bin 0 -> 101181 bytes
+ .../release-b20685d1/cold-frame-05.png             |   Bin 0 -> 206293 bytes
+ .../release-b20685d1/cold-frame-06.png             |   Bin 0 -> 330934 bytes
+ .../release-b20685d1/cold-frame-07.png             |   Bin 0 -> 428302 bytes
+ .../release-b20685d1/cold-frame-08.png             |   Bin 0 -> 454868 bytes
+ .../release-b20685d1/cold-frame-09.png             |   Bin 0 -> 430391 bytes
+ .../release-b20685d1/cold-frame-10.png             |   Bin 0 -> 413213 bytes
+ .../release-b20685d1/cold-frame-11.png             |   Bin 0 -> 555932 bytes
+ .../release-b20685d1/cold-frame-12.png             |   Bin 0 -> 474026 bytes
+ .../release-b20685d1/cold-frame-13.png             |   Bin 0 -> 287911 bytes
+ .../release-b20685d1/cold-frame-14.png             |   Bin 0 -> 473481 bytes
+ .../release-b20685d1/cold-frame-15.png             |   Bin 0 -> 169165 bytes
+ .../release-b20685d1/cold-frame-16.png             |   Bin 0 -> 192399 bytes
+ .../release-b20685d1/cold-frame-17.png             |   Bin 0 -> 274179 bytes
+ .../release-b20685d1/cold-frame-18.png             |   Bin 0 -> 196845 bytes
+ .../release-b20685d1/cold-frame-19.png             |   Bin 0 -> 348851 bytes
+ .../release-b20685d1/cold-frame-20.png             |   Bin 0 -> 356146 bytes
+ .../release-b20685d1/cold-frame-21.png             |   Bin 0 -> 365632 bytes
+ .../release-b20685d1/cold-frame-22.png             |   Bin 0 -> 214006 bytes
+ .../release-b20685d1/cold-frame-23.png             |   Bin 0 -> 246421 bytes
+ .../release-b20685d1/cold-frame-24.png             |   Bin 0 -> 353470 bytes
+ .../release-b20685d1/cold-viewer-review.json       |   118 +
+ .../commander-acceptance-terminal.json             |    30 +
+ .../commander-artifacts-failed-terminal.json       |    31 +
+ .../commander-artifacts-recovery-terminal.json     |    30 +
+ .../release-b20685d1/commander-gate-terminal.json  |    30 +
+ .../commander-initial-demo-stop.json               |    23 +
+ .../commander-initial-demo-terminal.json           |    31 +
+ .../commander-local-handoff-terminal.json          |    30 +
+ .../commander-readonly-diagnostic-terminal.json    |    31 +
+ .../commander-resumed-demo-running.json            |    28 +
+ .../commander-sealed-browser-terminal.json         |    30 +
+ .../commander-standard-failed-terminal.json        |    31 +
+ .../commander-standard-running.json                |    28 +
+ .../commander-trace-forensics-terminal.json        |    30 +
+ .../commander-trace-identity-failed-terminal.json  |    31 +
+ .../release-b20685d1/concept-01-diff.png           |   Bin 0 -> 1401921 bytes
+ .../release-b20685d1/concept-01-overlay.png        |   Bin 0 -> 889361 bytes
+ .../release-b20685d1/concept-01-side.png           |   Bin 0 -> 1512171 bytes
+ .../release-b20685d1/concept-02-diff.png           |   Bin 0 -> 1595896 bytes
+ .../release-b20685d1/concept-02-overlay.png        |   Bin 0 -> 1056275 bytes
+ .../release-b20685d1/concept-02-side.png           |   Bin 0 -> 1690443 bytes
+ .../release-b20685d1/concept-03-diff.png           |   Bin 0 -> 1605197 bytes
+ .../release-b20685d1/concept-03-overlay.png        |   Bin 0 -> 1104480 bytes
+ .../release-b20685d1/concept-03-side.png           |   Bin 0 -> 1683393 bytes
+ .../release-b20685d1/contact-sheet.json            |   106 +
+ .../release-b20685d1/decode_public_film.py         |    52 +
+ .../release-b20685d1/demo-operator-guide.md        |    49 +
+ .../release-b20685d1/diagnostics-reviewed.json     |   278 +
+ .../release-b20685d1/eight-state-evidence.json     |  3432 ++++++
+ .../eight-state-original-failed-evidence.json      |  1739 +++
+ .../evidence-helpers-prepared.json                 |    25 +
+ .../release-b20685d1/evidence-manifest.json        |  1135 ++
+ .../evidence-recovery-prepared.json                |    19 +
+ .../release-b20685d1/failed-state-1-ready.png      |   Bin 0 -> 103430 bytes
+ .../failed-state-2-source-opened.png               |   Bin 0 -> 192258 bytes
+ .../failed-state-3-exact-passage.png               |   Bin 0 -> 196156 bytes
+ .../failed-state-4-source-bound-fact.png           |   Bin 0 -> 202930 bytes
+ .../release-b20685d1/fidelity-measurements.json    |    97 +
+ .../release-b20685d1/fidelity-review.json          |   153 +
+ .../release-b20685d1/film-contact-sheet.png        |   Bin 0 -> 950866 bytes
+ .../release-b20685d1/frames-index.json             |   199 +
+ .../release-b20685d1/full-gate-command.json        |    34 +
+ .../release-b20685d1/full-gate.json                |    92 +
+ .../release-b20685d1/full-gate.log                 |   103 +
+ .../release-b20685d1/gate-actual-completion.json   |    13 +
+ .../release-b20685d1/independent-review.json       |    64 +
+ .../release-b20685d1/inspect_trace_forensics.mjs   |    59 +
+ .../release-b20685d1/inspect_trace_identity.mjs    |    55 +
+ .../local-demo-before-restart.json                 |    54 +
+ .../release-b20685d1/local-demo-copy.json          |    17 +
+ .../local-demo-current-server.json                 |    67 +
+ .../release-b20685d1/local-demo-owner.json         |    39 +
+ .../release-b20685d1/local-demo-ready.json         |    58 +
+ .../local-demo-restart-verified.json               |    56 +
+ .../local-restart-early-probe.json                 |    34 +
+ .../release-b20685d1/make_film_contact_sheet.mjs   |    27 +
+ .../release-b20685d1/measure_northstar_fidelity.py |    39 +
+ .../measure_northstar_fidelity_recovered.py        |    39 +
+ .../release-b20685d1/motion-evidence.json          |    31 +
+ ...rthstar-artifacts-original-failed-sequence.json |    62 +
+ .../northstar-artifacts-recovery-sequence.json     |    94 +
+ .../northstar-contact_sheet-command.log            |     1 +
+ .../northstar-film_frames-command.log              |     1 +
+ .../northstar-original-failed-capture-command.log  |   201 +
+ .../northstar-recovered-eight_states-command.log   |     1 +
+ .../northstar-recovered-fidelity-command.log       |     1 +
+ .../operation-trace-identity-review.json           |   115 +
+ .../prepare_final_evidence_original.py             |   346 +
+ .../prepare_final_evidence_recovered.py            |   425 +
+ .../release-b20685d1/public-desktop.png            |   Bin 0 -> 177622 bytes
+ .../public-image-verification.json                 |    30 +
+ .../release-b20685d1/public-mobile.png             |   Bin 0 -> 51488 bytes
+ .../release-b20685d1/public-video-metadata.log     |    10 +
+ .../release-b20685d1/public-walkthrough.webm       |   Bin 0 -> 9204002 bytes
+ .../published-acceptance-sequence.json             |   135 +
+ .../published-browser-summary.json                 |    53 +
+ .../release-b20685d1/published-soak-summary.json   |   122 +
+ .../release-b20685d1/published-verification.json   |  2363 ++++
+ .../release-b20685d1/quarantine_generated_cache.py |    52 +
+ .../release-b20685d1/readback-verified.json        |    20 +
+ .../release-b20685d1/release-acceptance.json       |    45 +
+ .../release-b20685d1/resume_existing_review_qa.py  |   143 +
+ .../release-b20685d1/review-browser-receipt.json   |  1204 ++
+ .../release-b20685d1/review-mobile.png             |   Bin 0 -> 62327 bytes
+ .../release-b20685d1/review-preview.png            |   Bin 0 -> 163257 bytes
+ .../release-b20685d1/review-reuse.png              |   Bin 0 -> 177664 bytes
+ .../release-b20685d1/review-source.png             |   Bin 0 -> 134207 bytes
+ .../release-b20685d1/review-walkthrough.webm       |   Bin 0 -> 7158831 bytes
+ .../release-b20685d1/run_northstar_artifacts.py    |    67 +
+ .../run_northstar_artifacts_recovered.py           |    91 +
+ .../release-b20685d1/runtime-cache-repair.json     |   827 ++
+ .../release-b20685d1/sealed-browser-command.json   |    30 +
+ .../release-b20685d1/sealed-browser-command.log    |    17 +
+ .../release-b20685d1/serve_existing_review_qa.py   |   108 +
+ .../release-b20685d1/sites-deployment.json         |    15 +
+ .../release-b20685d1/sites-saved-version.json      |    17 +
+ .../release-b20685d1/source-binding.json           |    56 +
+ .../release-b20685d1/state-1-ready.png             |   Bin 0 -> 103430 bytes
+ .../release-b20685d1/state-2-source-opened.png     |   Bin 0 -> 192258 bytes
+ .../release-b20685d1/state-3-exact-passage.png     |   Bin 0 -> 196156 bytes
+ .../release-b20685d1/state-4-source-bound-fact.png |   Bin 0 -> 202930 bytes
+ .../release-b20685d1/state-5-accepted-question.png |   Bin 0 -> 176957 bytes
+ .../release-b20685d1/state-6-completed-process.png |   Bin 0 -> 191407 bytes
+ .../release-b20685d1/state-7-direct-edit.png       |   Bin 0 -> 134207 bytes
+ .../release-b20685d1/state-8-later-case-reuse.png  |   Bin 0 -> 177664 bytes
+ .../release-b20685d1/verify_local_restart.py       |    71 +
+ .../release-b20685d1/visual-inspection.json        |    51 +
+ 155 files changed, 47012 insertions(+), 54 deletions(-)
+ create mode 100644 design-plans/demo-polish-20261024/REVIEW.md
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/README.md
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/api-deployment.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/api-health.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/api-wheel-verification.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/capture_eight_states.mjs
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/capture_eight_states_recovered.mjs
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/clm_543f08f2415b2a33-fixture-differences.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/clm_543f08f2415b2a33-state.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/clm_543f08f2415b2a33.ndjson
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/clm_7dbd7c7d1c4ddf90-fixture-differences.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/clm_7dbd7c7d1c4ddf90-state.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/clm_7dbd7c7d1c4ddf90.ndjson
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-01.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-02.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-03.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-04.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-05.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-06.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-07.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-08.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-09.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-10.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-11.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-12.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-13.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-14.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-15.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-16.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-17.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-18.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-19.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-20.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-21.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-22.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-23.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-frame-24.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/cold-viewer-review.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-acceptance-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-artifacts-failed-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-artifacts-recovery-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-gate-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-initial-demo-stop.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-initial-demo-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-local-handoff-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-readonly-diagnostic-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-resumed-demo-running.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-sealed-browser-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-standard-failed-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-standard-running.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-trace-forensics-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/commander-trace-identity-failed-terminal.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/concept-01-diff.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/concept-01-overlay.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/concept-01-side.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/concept-02-diff.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/concept-02-overlay.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/concept-02-side.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/concept-03-diff.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/concept-03-overlay.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/concept-03-side.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/contact-sheet.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/decode_public_film.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/demo-operator-guide.md
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/diagnostics-reviewed.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/eight-state-evidence.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/eight-state-original-failed-evidence.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/evidence-helpers-prepared.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/evidence-manifest.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/evidence-recovery-prepared.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/failed-state-1-ready.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/failed-state-2-source-opened.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/failed-state-3-exact-passage.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/failed-state-4-source-bound-fact.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/fidelity-measurements.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/fidelity-review.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/film-contact-sheet.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/frames-index.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/full-gate-command.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/full-gate.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/full-gate.log
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/gate-actual-completion.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/independent-review.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/inspect_trace_forensics.mjs
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/inspect_trace_identity.mjs
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/local-demo-before-restart.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/local-demo-copy.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/local-demo-current-server.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/local-demo-owner.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/local-demo-ready.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/local-demo-restart-verified.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/local-restart-early-probe.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/make_film_contact_sheet.mjs
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/measure_northstar_fidelity.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/measure_northstar_fidelity_recovered.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/motion-evidence.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/northstar-artifacts-original-failed-sequence.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/northstar-artifacts-recovery-sequence.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/northstar-contact_sheet-command.log
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/northstar-film_frames-command.log
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/northstar-original-failed-capture-command.log
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/northstar-recovered-eight_states-command.log
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/northstar-recovered-fidelity-command.log
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/operation-trace-identity-review.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/prepare_final_evidence_original.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/prepare_final_evidence_recovered.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/public-desktop.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/public-image-verification.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/public-mobile.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/public-video-metadata.log
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/public-walkthrough.webm
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/published-acceptance-sequence.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/published-browser-summary.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/published-soak-summary.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/published-verification.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/quarantine_generated_cache.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/readback-verified.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/release-acceptance.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/resume_existing_review_qa.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/review-browser-receipt.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/review-mobile.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/review-preview.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/review-reuse.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/review-source.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/review-walkthrough.webm
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/run_northstar_artifacts.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/run_northstar_artifacts_recovered.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/runtime-cache-repair.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/sealed-browser-command.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/sealed-browser-command.log
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/serve_existing_review_qa.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/sites-deployment.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/sites-saved-version.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/source-binding.json
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/state-1-ready.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/state-2-source-opened.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/state-3-exact-passage.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/state-4-source-bound-fact.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/state-5-accepted-question.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/state-6-completed-process.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/state-7-direct-edit.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/state-8-later-case-reuse.png
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/verify_local_restart.py
+ create mode 100644 design-plans/northstar-review-20261024/release-b20685d1/visual-inspection.json

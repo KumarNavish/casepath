@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/usr/bin/git",
+    "-c",
+    "protocol.allow=never",
+    "-c",
+    "protocol.file.allow=always",
+    "-c",
+    "core.hooksPath=/dev/null",
+    "fetch",
+    "--no-tags",
+    "--no-recurse-submodules",
+    "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024",
+    "4864e7347c299bf1b580a5b35667635bc1c47f15"
+  ],
+  "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024",
+  "started_at": "2026-10-24T16:59:10.205893+00:00",
+  "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fetch.log",
+  "environment_keys": [
+    "CASEPATH_AGENT_WORK_EXTERNAL_FACTS",
+    "CASEPATH_MODEL_MODE",
+    "CASEPATH_SOURCE_COMMIT",
+    "CASEPATH_UV",
+    "GIT_TERMINAL_PROMPT",
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "PATH",
+    "PYTHONDONTWRITEBYTECODE",
+    "PYTHONNOUSERSITE",
+    "SOURCE_DATE_EPOCH",
+    "TZ"
+  ],
+  "inherits_caller_process_group": true
+}

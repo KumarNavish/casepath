@@ -1,0 +1,31 @@
+{
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "deployment_id": "b65452ad-499e-4467-9aa1-b268620b4ddb",
+  "raw_build_log_sha256": "7384f32f667a73ac39e211717ea5a0f344b6577e97fc637cf870ee57832e356d",
+  "raw_build_log_copied": false,
+  "build_log_command_exit": 0,
+  "failed": false,
+  "installation_messages": [
+    "+ pillow==13.0.0"
+  ],
+  "verifier_sha256": "feadbb921e04878b57d58b034571415363cb0cbeb467a26de523a58aa1494fbc",
+  "command": [
+    "/Users/kumar0002/.local/bin/uv",
+    "run",
+    "--offline",
+    "--no-project",
+    "--with",
+    "fastapi[standard]",
+    "--with",
+    "fastapi-cloud-cli==0.26.0",
+    "fastapi",
+    "cloud",
+    "deployments",
+    "build-logs",
+    "b65452ad-499e-4467-9aa1-b268620b4ddb",
+    "--no-follow",
+    "--json"
+  ],
+  "actual_terminal_sha256": "bec354c3b0e6f17987c7f7f6d1b3b83c0a21015d67c87e35d53067ea0de44a54",
+  "server_decoder_invoked": false
+}

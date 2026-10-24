@@ -1,0 +1,13 @@
+{
+  "sessionId": "cp-polish-20261024-api-build-proof-v2",
+  "pid": 13259,
+  "state": "completed",
+  "exitCode": 0,
+  "output": "{\"source_commit\": \"4864e7347c299bf1b580a5b35667635bc1c47f15\", \"status\": \"passed\", \"deployment_id\": \"b65452ad-499e-4467-9aa1-b268620b4ddb\", \"pillow_version\": \"13.0.0\", \"evidence_kind\": \"successful hosted image build installation log\", \"installation_line\": \"+ pillow==13.0.0\", \"raw_build_log_sha256\": \"7384f32f667a73ac39e211717ea5a0f344b6577e97fc637cf870ee57832e356d\", \"build_log_command_exit\": 0, \"server_decoder_invoked\": false, \"verifier_sha256\": \"feadbb921e04878b57d58b034571415363cb0cbeb467a26de523a58aa1494fbc\", \"command\": [\"/Users/kumar0002/.local/bin/uv\", \"run\", \"--offline\", \"--no-project\", \"--with\", \"fastapi[standard]\", \"--with\", \"fastapi-cloud-cli==0.26.0\", \"fastapi\", \"cloud\", \"deployments\", \"build-logs\", \"b65452ad-499e-4467-9aa1-b268620b4ddb\", \"--no-follow\", \"--json\"]}\n",
+  "offset": 0,
+  "nextOffset": 783,
+  "totalBytes": 783,
+  "truncated": false,
+  "startedAt": "2026-10-24T16:43:10.531Z",
+  "finishedAt": "2026-10-24T16:43:14.021Z"
+}

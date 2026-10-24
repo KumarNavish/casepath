@@ -1,0 +1,912 @@
+diff --git a/casepath-qa/autonomous-presentation-browser-v1.test.cjs b/casepath-qa/autonomous-presentation-browser-v1.test.cjs
+index fea2c590..390a095c 100644
+--- a/casepath-qa/autonomous-presentation-browser-v1.test.cjs
++++ b/casepath-qa/autonomous-presentation-browser-v1.test.cjs
+@@ -190,3 +190,114 @@ test('a slow cold read keeps the north-star frame on landing and on opening a re
+  }catch(error){error.message+='\nViews: '+JSON.stringify(await views().catch(()=>null))+'\nPage errors: '+JSON.stringify(errors)+'\nUI: '+(await page.locator('body').innerText()).slice(0,600);throw error;}
+  finally{for(const close of [()=>page.close(),()=>context.close(),()=>browser.close()]){let timer;await Promise.race([close(),new Promise(resolve=>{timer=setTimeout(resolve,10000);})]);clearTimeout(timer);}}
+ });
++
++async function assertPreparationRailVisible(page, failed=false){
++ for(const viewport of [{width:1440,height:900},{width:375,height:812}]){
++  await page.setViewportSize(viewport);
++  const proof=await page.evaluate(async failed=>{
++   await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(resolve));
++   const status=document.querySelector('.au-ns-preparation-status'),retry=document.querySelector('[data-au-presentation-unavailable] [data-au-nav="demonstration"]');
++   const check=element=>{if(!element)return null;const rect=element.getBoundingClientRect();return {text:element.textContent,inRail:!!element.closest('.au-ns-sources'),bounds:rect.toJSON(),fullyVisible:rect.width>0&&rect.height>0&&rect.left>=0&&rect.top>=0&&rect.right<=innerWidth+1&&rect.bottom<=innerHeight+1&&element.scrollWidth<=element.clientWidth+1&&element.scrollHeight<=element.clientHeight+1};};
++   const details=document.querySelector('.au-global-status > .au-record-link');
++   return {status:check(status),retry:check(retry),detailsGap:details?parseFloat(getComputedStyle(details).marginInlineStart):null,overflow:Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-innerWidth};
++  },failed);
++  assert.equal(proof.status?.inRail,true);assert.equal(proof.status?.fullyVisible,true,JSON.stringify({viewport,proof}));
++  assert.match(proof.status.text,failed?/The recorded walkthrough could not be opened/:/Preparing the recorded walkthrough/);
++  if(failed){assert.equal(proof.retry?.text,'Try again');assert.equal(proof.retry?.inRail,true);assert.equal(proof.retry?.fullyVisible,true,JSON.stringify({viewport,proof}));assert.ok(proof.detailsGap>=8,'Details is separated from the error text');}
++  assert.ok(proof.overflow<=1,JSON.stringify({viewport,proof}));
++ }
++ await page.setViewportSize({width:1440,height:900});
++}
++
++for(const ending of ['ready','cancelled','invalid','visibility'])test(`public preparation overlaps independent reads and keeps admission honest: ${ending}`,async()=>{
++ const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH||(fs.existsSync('/usr/bin/chromium')?'/usr/bin/chromium':chromium.executablePath())});
++ const context=await browser.newContext({viewport:{width:1440,height:900},serviceWorkers:'block'}),page=await context.newPage(),errors=[],writes=[],missing=[];
++ page.on('pageerror',error=>errors.push(error.message));
++ await page.route('**/*',async route=>{
++  const request=route.request(),url=new URL(request.url()),key=url.pathname+url.search;
++  if(!['GET','HEAD'].includes(request.method())){writes.push(key);return route.abort();}
++  if(request.isNavigationRequest())return route.fulfill({contentType:'text/html',body:'<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0"><main id="workspace"></main></body></html>'});
++  if(/\/fonts\/[^/]+\.ttf$/.test(url.pathname))return route.fulfill({contentType:'font/ttf',path:path.join(root,'casepath/assets/fonts',path.basename(url.pathname))});
++  const id=url.pathname.match(/\/claims\/([^/]+)\/operations$/)?.[1],record=id&&recorded.cases.find(row=>row.id===id);
++  if(record)return route.fulfill({contentType:'application/x-ndjson',body:record.trace});
++  if(wire[key])return route.fulfill({contentType:'application/json',body:JSON.stringify(wire[key])});
++  missing.push(key);return route.fulfill({status:404,contentType:'application/json',body:JSON.stringify({detail:'No recorded fixture for '+key})});
++ });
++ try{
++  await page.goto('http://localhost:41999/?present=1');
++  await page.addStyleTag({path:path.join(root,'casepath/assets/autonomous-workspace-v1.css')});
++  for(const asset of ['autonomous-language-v1.js','autonomous-presentation-v1.js','autonomous-workspace-v1.js'])await page.addScriptTag({path:path.join(root,'casepath/assets',asset)});
++  const initial=await page.evaluate(firstId=>{
++   window.CASEPATH_PUBLIC_READ_ONLY=true;window.heldStates=[];window.beforeAdmissionTitles=[];window.preparationReadPaths=[];window.stateBodiesRead=[];
++   new MutationObserver(()=>{if(!window.CasepathPresentation?.active){const title=document.querySelector('[data-au-claim-title]')?.textContent;if(title)window.beforeAdmissionTitles.push(title);}}).observe(document.querySelector('#workspace'),{childList:true,subtree:true});
++   const fetch=async(url,init)=>{
++    const address=new URL(url,location.href),path=address.pathname;window.preparationReadPaths.push(path+address.search);
++    const response=await window.fetch(url,init);
++    if(path.endsWith(`/claims/${firstId}/operations`)&&!window.openingReleased)return new Promise(resolve=>{window.releaseOpening=()=>{window.openingReleased=true;resolve(response);};});
++    const id=path.match(/\/claims\/([^/]+)$/)?.[1];
++    // Deliberately deliver held responses even after abort: route ownership
++    // must reject late work rather than relying only on a cooperative network.
++    if(id){const json=response.json.bind(response);response.json=async()=>{const data=await json();window.stateBodiesRead.push(id);return data;};return new Promise(resolve=>window.heldStates.push({id,signal:init.signal,response,resolve}));}
++    return response;
++   };
++   window.product=CasePathAutonomous.mount(document.querySelector('#workspace'),{fetch});
++   return {preparing:!!document.querySelector('[data-au-presentation-preparing][aria-busy="true"]'),purpose:document.querySelector('[data-au-ns-purpose]')?.textContent,title:document.title,caseTitle:document.querySelector('[data-au-claim-title]')?.textContent};
++  },recorded.cases[0].id);
++  assert.equal(initial.preparing,true,'the introduction exists synchronously before any response');assert.match(initial.purpose,/From customer documents/);assert.match(initial.purpose,/You make the decision/);assert.equal(initial.caseTitle,undefined);assert.equal(initial.title,'Demonstration — CasePath');
++  await page.waitForFunction(()=>typeof window.releaseOpening==='function',{},{timeout:45000});
++  assert.equal(await page.locator('[data-au-presentation-preparing]').count(),1);assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);
++  await page.evaluate(()=>window.releaseOpening());
++  await page.waitForFunction(count=>window.heldStates.length===count,recorded.cases.length-1,{timeout:10000});
++  assert.deepEqual((await page.evaluate(()=>window.heldStates.map(row=>row.id))).sort(),recorded.cases.slice(1).map(row=>row.id).sort(),'every independent state read starts before any is released');
++  assert.deepEqual(await page.evaluate(()=>window.beforeAdmissionTitles),[],'the unrelated first case is never painted while selecting the showcase');
++  assert.equal(await page.locator('[data-au-presentation-preparing]').count(),1);
++  if(ending==='ready')await assertPreparationRailVisible(page);
++  if(ending==='cancelled')await page.evaluate(()=>product.showWork());
++  let hiddenReads;
++  if(ending==='visibility')hiddenReads=await page.evaluate(()=>{
++   const before=window.preparationReadPaths.filter(path=>/\/operations\?|\/replay\?/.test(path));
++   Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));
++   return before;
++  });
++  await page.evaluate(async ending=>{
++   const reads=[...window.heldStates].reverse();
++   if(ending==='invalid'){
++    const row=reads.shift(),data=await row.response.json();
++    (data.state||data).claim_id='unrelated-claim';
++    row.resolve(new Response(JSON.stringify(data),{status:200,headers:{'Content-Type':'application/json'}}));
++   }
++   for(const row of reads){row.resolve(row.response);await Promise.resolve();}
++  },ending);
++  if(ending==='ready'){
++   await page.waitForFunction(()=>window.CasepathPresentation?.active,{},{timeout:45000});
++   const admitted=await page.evaluate(()=>({claims:CasepathPresentation.active.manifest.claims,hashes:CasepathPresentation.active.manifest.stateHashes,paused:CasepathPresentation.active.paused}));
++   assert.deepEqual(admitted.claims,recorded.cases.slice(7).map(row=>row.id));assert.deepEqual(admitted.hashes,recorded.cases.slice(7).map(row=>row.envelope.state.state_sha256));assert.equal(admitted.paused,false,'present=1 begins only after actual admission');
++   assert.equal(await page.locator('[data-au-ns-start]').count(),0);assert.equal(await page.locator('[data-au-presentation-preparing]').count(),0);
++  }else if(ending==='cancelled'){
++   await page.waitForFunction(()=>window.heldStates.every(row=>row.signal.aborted)&&!document.querySelector('[data-au-presentation-preparing]'));
++   assert.equal(await page.locator('[data-au-view-state="work"]').count(),1);assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);
++  }else if(ending==='visibility'){
++   // Wait for all held JSON bodies to be consumed. The existing operation gate
++   // must keep the next-case admission suspended until the tab is visible.
++   await page.waitForFunction(count=>window.stateBodiesRead.length===count,recorded.cases.length-1,{timeout:45000});
++   assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);
++   assert.equal(await page.locator('[data-au-presentation-preparing]').count(),1);assert.equal(await page.locator('[data-au-presentation-unavailable]').count(),0);
++   assert.deepEqual(await page.evaluate(()=>window.preparationReadPaths.filter(path=>/\/operations\?|\/replay\?/.test(path))),hiddenReads,'hidden state delivery cannot start the next recording or a fallback');
++   await page.evaluate(()=>{delete document.hidden;document.dispatchEvent(new Event('visibilitychange'));});
++   await page.waitForFunction(()=>window.CasepathPresentation?.active,{},{timeout:45000});
++   const admitted=await page.evaluate(()=>({claims:CasepathPresentation.active.manifest.claims,hashes:CasepathPresentation.active.manifest.stateHashes,paused:CasepathPresentation.active.paused}));
++   assert.deepEqual(admitted.claims,recorded.cases.slice(7).map(row=>row.id));assert.deepEqual(admitted.hashes,recorded.cases.slice(7).map(row=>row.envelope.state.state_sha256));assert.equal(admitted.paused,false);
++   assert.equal(await page.locator('[data-au-presentation-preparing],[aria-busy="true"]').count(),0,'returning to the tab cannot leave admission hanging');
++  }else{
++   await page.waitForFunction(()=>document.querySelector('.au-global-status')?.textContent.includes('Could not load this recorded walkthrough'),{},{timeout:45000});
++   assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);assert.equal(await page.locator('[data-au-presentation-preparing]').count(),0,'invalid state cannot leave a permanent preparation screen or start the film');
++   assert.equal(await page.locator('[data-au-presentation-unavailable]').count(),1);assert.equal(await page.locator('[aria-busy="true"]').count(),0);
++   assert.equal(await page.locator('[data-au-presentation-unavailable] [data-au-nav="demonstration"]').textContent(),'Try again');
++   assert.equal(await page.locator('[data-au-claim-title],.au-ns-spine li,[data-au-source]').count(),0,'an admitted fallback remains in memory without exposing the unrelated first case');
++   assert.doesNotMatch(await page.locator('[data-au-view]').innerText(),/heating|Showing the saved result/i);
++   await assertPreparationRailVisible(page,true);
++  }
++  assert.deepEqual(writes,[]);assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);
++ }catch(error){error.message+='\nMissing fixture reads: '+JSON.stringify(missing)+'\nPage errors: '+JSON.stringify(errors)+'\nUI: '+(await page.locator('body').innerText()).slice(0,1000);throw error;}
++ finally{await page.evaluate(()=>{window.releaseOpening?.();for(const row of window.heldStates||[])row.resolve(row.response);window.product?.destroy();}).catch(()=>{});for(const close of [()=>page.close(),()=>context.close(),()=>browser.close()]){let timer;await Promise.race([close(),new Promise(resolve=>{timer=setTimeout(resolve,10000);})]);clearTimeout(timer);}}
++});
+diff --git a/casepath-qa/autonomous-workspace-v1.test.cjs b/casepath-qa/autonomous-workspace-v1.test.cjs
+index 5ce47b1b..c8fc5c25 100644
+--- a/casepath-qa/autonomous-workspace-v1.test.cjs
++++ b/casepath-qa/autonomous-workspace-v1.test.cjs
+@@ -721,6 +721,30 @@ function fakeApi(overrides={}) {
+  return {fetch,calls};
+ }
+ 
++test('public presentation explains its purpose immediately and exposes an opening failure without a busy case',async t=>{
++ routingFixture(t,'#autonomous/demonstration');
++ const f=dom(),opening=deferredRead(),previousWidth=globalThis.innerWidth,previousAccess=globalThis.CASEPATH_PUBLIC_READ_ONLY;
++ globalThis.innerWidth=1440;globalThis.CASEPATH_PUBLIC_READ_ONLY=true;
++ const query=f.host.querySelector;f.host.querySelector=selector=>selector==='[data-au-presentation-preparing]'&&f.host.innerHTML.includes('data-au-presentation-preparing')?{}:query(selector);
++ const api=fakeApi({handle:async path=>path.includes('/claims/')?opening.promise:null}),controller=ui.mount(f.container,{fetch:api.fetch});
++ t.after(()=>{controller.destroy();opening.resolve(response({detail:'The saved opening is unavailable.'},404));if(previousWidth===undefined)delete globalThis.innerWidth;else globalThis.innerWidth=previousWidth;if(previousAccess===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=previousAccess;});
++ assert.match(f.host.innerHTML,/data-au-presentation-preparing aria-busy="true"/);
++ assert.match(f.host.innerHTML,/From customer documents<br>to a reviewable answer/);
++ assert.match(f.host.innerHTML,/You make the decision/);
++ assert.match(f.host.innerHTML,/Preparing the recorded walkthrough/);
++ assert.match(f.host.innerHTML.split('</aside>')[0],/au-ns-preparation-status[^>]*>Preparing the recorded walkthrough/,'preparation status precedes the tall introduction in the source rail');
++ assert.doesNotMatch(f.host.innerHTML,/data-au-claim-title|data-au-ns-start|data-au-source=|Heating|heating/,'no case or accepted evidence is presented before admission');
++ assert.equal(f.container.ownerDocument.title,'Demonstration — CasePath');
++ opening.resolve(response({detail:'The saved opening is unavailable.'},404));
++ await waitFor(()=>f.host.innerHTML.includes('data-au-presentation-unavailable'));
++ assert.doesNotMatch(f.host.innerHTML,/data-au-presentation-preparing|aria-busy="true"/);
++ assert.match(f.host.innerHTML,/The recorded walkthrough could not be opened/);
++ assert.match(f.host.innerHTML,/data-au-nav="demonstration"[^>]*>Try again/);
++ assert.match(f.host.innerHTML.split('</aside>')[0],/au-ns-preparation-status[\s\S]*data-au-nav="demonstration"[^>]*>Try again/,'failure and recovery stay together in the source rail');
++ assert.match(f.status.textContent,/Verified replay unavailable: The saved opening is unavailable/);
++ assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
++});
++
+ test('public read-only capability blocks forged forms and removes work controls while preserving inspection',async t=>{
+  const f=dom(),api=fakeApi({handle:async(path)=>path.endsWith('/status')?response({enabled:true,provider_ready:true,read_only:true,writable:false,limits:{}}):null});
+  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
+diff --git a/casepath-qa/review-northstar-browser-v1.test.cjs b/casepath-qa/review-northstar-browser-v1.test.cjs
+index b52cda75..e9c8100f 100644
+--- a/casepath-qa/review-northstar-browser-v1.test.cjs
++++ b/casepath-qa/review-northstar-browser-v1.test.cjs
+@@ -48,6 +48,29 @@ test('source, correction, accepted version and later-case consequence stay conne
+   });
+   assert.ok(value.right>value.left&&value.bottom>value.top&&value.exposed&&value.display!=='none',selector+' has exposed pixels in the current viewport: '+JSON.stringify(value));return value;
+  };
++ const fullyVisible=async selector=>{
++  const value=await page.locator(selector).first().evaluate(el=>{
++   const own=el.getBoundingClientRect();
++   let left=Math.max(0,own.left),top=Math.max(0,own.top),right=Math.min(innerWidth,own.right),bottom=Math.min(innerHeight,own.bottom);
++   for(let parent=el.parentElement;parent;parent=parent.parentElement){
++    const style=getComputedStyle(parent);if(style.display==='contents')continue;const r=parent.getBoundingClientRect();
++    if(/auto|scroll|hidden|clip/.test(style.overflowX)){left=Math.max(left,r.left+parent.clientLeft);right=Math.min(right,r.left+parent.clientLeft+parent.clientWidth);}
++    if(/auto|scroll|hidden|clip/.test(style.overflowY)){top=Math.max(top,r.top+parent.clientTop);bottom=Math.min(bottom,r.top+parent.clientTop+parent.clientHeight);}
++   }
++   const contained=own.width>0&&own.height>0&&left<=own.left+1&&top<=own.top+1&&right>=own.right-1&&bottom>=own.bottom-1;
++   const exposed=[.15,.5,.85].every(x=>[.15,.5,.85].every(y=>{const hit=document.elementFromPoint(own.left+own.width*x,own.top+own.height*y);return !!hit&&(hit===el||el.contains(hit));}));
++   return {left:own.left,top:own.top,right:own.right,bottom:own.bottom,clipped:{left,top,right,bottom},contained,exposed};
++  });
++  assert.ok(value.contained&&value.exposed,selector+' is fully visible and unobscured without scrolling: '+JSON.stringify(value));return value;
++ };
++ const matchingStepMarker=async()=>{
++  const marker=page.locator('[data-review-ordinal-for]'),node=await marker.getAttribute('data-review-ordinal-for');
++  const full=(await page.locator('[data-review-process-map] [data-causal-node="'+node+'"] .nr-step-number').textContent()).trim();
++  assert.match(full,/^(?:[1-9]\d*|✓)$/);
++  assert.equal(await marker.innerText(),full,'the affected-step marker matches the same step in the full process');
++  assert.equal(await marker.getAttribute('hidden'),null);
++  return full;
++ };
+  const meta=async form=>{await form.locator('[name="actor"]').fill('Test handler');await form.locator('[name="reason"]').fill('QA only: compare complete paired notices before joint resolution; preserve deadline protection.');};
+  async function preview(id,submit){
+   const before=(await detail(id)).state;
+@@ -196,13 +219,54 @@ test('source, correction, accepted version and later-case consequence stay conne
+   for(const edge of targetGraphBefore.graph.edges)assert.deepEqual(targetProcess.graph.edges.find(e=>e.edge_id===edge.edge_id),edge,'all earlier process connections remain unchanged');
+   assert.equal(await page.locator('[data-review-role="result"]').getAttribute('aria-selected'),'true');
+   await page.locator('[data-review-role="result"]').click();
+-  await page.locator('[data-review-current-dependency]').scrollIntoViewIfNeeded();
+-  await visible('[data-review-process-map]');await visible('#cwSourceInspector');await visible('[data-review-current-dependency]');
+-  assert.match(await page.locator('[data-review-current-dependency]').innerText(),/Prepare challenge, extension or settlement now also requires “Compare both complete notices”/);
++  await page.locator('[data-review-current-dependency]').waitFor({state:'visible'});
++  assert.equal(await page.locator('[data-review-full-process]').getAttribute('open'),null,'Result starts with the affected step; the complete graph is one disclosure away');
++  const payoffGeometry={};
++  for(const selector of ['[data-review-application-history]','[data-review-before]','[data-review-after]','[data-review-affected-step]','[data-review-reuse-card="sources"]','[data-review-reuse-card="version"]','[data-review-reuse-card="result"]','[data-review-current-next]','.nr-reuse-notice','#cwSourceInspector'])payoffGeometry[selector]=await fullyVisible(selector);
++  assert.match(await page.locator('[data-review-affected-step]').innerText(),/Prepare challenge, extension or settlement/);
++  assert.match(await page.locator('[data-review-before]').innerText(),/Waiting for prerequisites · Collect type-specific evidence/);
++  assert.match(await page.locator('[data-review-after]').innerText(),/Waiting for prerequisites · Compare both complete notices/);
++  assert.match(await page.locator('[data-review-application-history]').innerText(),/already waiting before application/);
++  assert.match(await page.locator('[data-review-retained-context]').innerText(),/Earlier process connections retained/);
++  await visible('[data-review-retained-context]');
++  const payoffOrdinal=await matchingStepMarker();
++  await fullyVisible('[data-review-ordinal-for]');
++  assert.match(await page.locator('[data-review-current-dependency]').innerText(),/Still requires “Compare both complete notices”/);
++  assert.equal(await page.locator('[data-review-current-result]').innerText(),'Waiting for prerequisites');
++  assert.match(await page.locator('[data-review-current-next]').innerText(),/unchanged by this application/);
++  assert.ok((await page.locator('[data-review-current-next]').innerText()).includes(targetProcess.effective_assessment.next_step));
++  await page.locator('.nr-application-record > summary').click();
+   assert.match(await page.locator('[data-review-preserved-connection]').innerText(),/Collect type-specific evidence/);
++  await page.locator('.nr-application-record > summary').click();
+   assert.match(await page.locator('[data-review-reuse="'+fragment.fragment_sha256+'"]').innerText(),/This case keeps its own facts/);
++  // The full graph is keyboard reachable without replacing this claim's original reader.
++  const inspectWrites=writes.length,inspectState=(await detail(TARGET)).state;
++  await page.locator('[data-review-reuse-card="sources"] [data-noticed-source]').first().click();
++  await page.locator('#cpPreviewPageWrap .cp-preview-page').waitFor({state:'visible'});
++  const targetReader=await page.locator('#cwSourceInspector').elementHandle(),targetPage=await page.locator('#cpPreviewPageLabel').innerText();
++  const fullProcess=page.locator('[data-review-full-process] > summary');
++  await fullProcess.focus();await fullProcess.press('Enter');
++  await page.waitForFunction(()=>document.querySelector('[data-review-full-process]')?.open);
++  assert.equal(await matchingStepMarker(),payoffOrdinal,'opening the full graph does not change the step identity');
++  await fullyVisible('[data-review-process-map]');
++  assert.equal(await page.locator('[data-review-process-map] [data-causal-node]').count(),targetProcess.graph.nodes.length);
++  await page.locator('[data-review-process-map] [data-causal-node="lt_resolution"]').click();
++  assert.equal(await matchingStepMarker(),payoffOrdinal);
++  assert.equal(await page.locator('[data-review-full-process]').getAttribute('open'),'','selecting a step preserves the expanded graph');
++  await fullProcess.focus();await fullProcess.press('Enter');
++  await page.waitForFunction(()=>document.querySelector('[data-review-full-process]')?.open===false);
++  assert.equal(await matchingStepMarker(),payoffOrdinal,'closing the graph preserves the same step marker');
++  await page.locator('[data-review-role="builder"]').click();await visible('[data-review-process-map]');
++  await page.locator('[data-review-role="result"]').click();
++  assert.equal(await page.locator('[data-review-full-process]').getAttribute('open'),null);
++  assert.ok(await targetReader.evaluate(el=>el.isConnected),'role and graph changes keep the settled original reader');
++  assert.equal(await page.locator('#cpPreviewPageLabel').innerText(),targetPage);
++  for(const card of ['sources','version','result'])await fullyVisible('[data-review-reuse-card="'+card+'"]');
++  await fullyVisible('.nr-reuse-notice');await fullyVisible('#cwSourceInspector');
++  assert.equal(writes.length,inspectWrites,'inspecting the payoff and full process makes no writes');
++  assert.deepEqual((await detail(TARGET)).state,inspectState);
+   await page.screenshot({path:path.join(server.out,'later-case-reuse.png')});
+-  receipt.stages.push({stage:'later-case-application',preview:reusePreview.preview_sha256,event:reused.event_sha256,impact:reusePreview.impact,pin,workspace_revision:targetProcess.workspace_revision,target_facts_preserved:true,target_source_bindings_preserved:true});
++  receipt.stages.push({stage:'later-case-application',preview:reusePreview.preview_sha256,event:reused.event_sha256,impact:reusePreview.impact,pin,workspace_revision:targetProcess.workspace_revision,target_facts_preserved:true,target_source_bindings_preserved:true,payoff_geometry:payoffGeometry,affected_step_marker:payoffOrdinal,full_process_keyboard_access:true,original_reader_retained:true});
+   await page.reload();await page.locator('#cpCausalProcess[data-claim-id="'+TARGET+'"]').waitFor({state:'visible'});
+   assert.ok((await processView(TARGET)).graph.fragment_instances.some(f=>f.fragment_sha256===fragment.fragment_sha256),'reload preserves the exact pin');
+   await page.locator('[data-review-role="result"][aria-selected="true"]').waitFor({state:'visible'});await visible('[data-review-current-dependency]');
+@@ -215,6 +279,8 @@ test('source, correction, accepted version and later-case consequence stay conne
+   await page.reload();await page.locator('[data-review-reuse="'+fragment.fragment_sha256+'"]').waitFor({state:'attached'});
+   assert.match(await page.locator('[data-review-reuse="'+fragment.fragment_sha256+'"]').innerText(),/Exact saved version 1/);
+   assert.equal(await page.locator('[data-review-role="result"]').getAttribute('aria-selected'),'true');await visible('[data-review-current-dependency]');
++  assert.equal(await matchingStepMarker(),payoffOrdinal,'reload and a newer library version preserve the displayed step identity');
++  for(const card of ['sources','version','result'])await fullyVisible('[data-review-reuse-card="'+card+'"]');
+   await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});
+   await page.locator('[data-review-role="finder"]').click();await visible('#cpPane-documents');
+   await page.locator('[data-review-role="checker"]').click();await visible('#cwSourceInspector');
+diff --git a/casepath-qa/review-northstar-v1.test.cjs b/casepath-qa/review-northstar-v1.test.cjs
+index a34019c7..4cfd4a1f 100644
+--- a/casepath-qa/review-northstar-v1.test.cjs
++++ b/casepath-qa/review-northstar-v1.test.cjs
+@@ -96,7 +96,11 @@ test('a later edit cannot make historical reuse consequences appear current', ()
+   const html=northstar.reuseMarkup(view);
+   assert.match(html,/When applied/);
+   assert.match(html,/Current process/);
+-  assert.match(html,/data-review-current-result[^>]*>[^<]*Prepare joint resolution: Ready to work/);
++  assert.match(html,/data-review-affected-step="resolution"[\s\S]*?<strong>Prepare joint resolution<\/strong>/);
++  assert.match(html,/data-review-current-result>Ready to work<\/strong>/);
++  assert.doesNotMatch(html,/data-review-current-dependency/);
++  assert.match(html,/data-review-after[\s\S]*?Waiting for prerequisites · Compare the complete notices/);
++  assert.match(html,/data-review-current-next><small>Current next action<\/small>Compare the complete notices/);
+ });
+ 
+ test('renaming the focused action is a wording change even when next_step text changes',()=>{
+@@ -130,7 +134,7 @@ test('an applied blocking connection is never described as a required prerequisi
+  const v=fixture(),fragment={fragment_id:'blocking',version:1,fragment_sha256:hash,source_claim_id:'earlier',name:'Test blocker',actor:'Test handler'};
+  v.fragments=[fragment];v.graph.fragment_instances=[{...fragment}];v.graph.edges[0].relation='blocks';
+  v.history=[{event_sha256:'f'.repeat(64),revision:3,operation:{type:'fragment.apply',fragment_sha256:hash},impact:delta}];
+- const html=northstar.reuseMarkup(v);assert.doesNotMatch(html,/now also requires/);assert.match(html,/is now blocked by/);
++ const html=northstar.reuseMarkup(v);assert.doesNotMatch(html,/Still requires/);assert.match(html,/Still blocked by/);
+ });
+ 
+ test('current reuse wording respects evaluated edge activation and relation',()=>{
+@@ -144,8 +148,8 @@ test('current reuse wording respects evaluated edge activation and relation',()=
+    v.graph.edges.push(block);v.evaluation.edges.push({...block,activation:'true'});
+   }
+   const html=northstar.reuseMarkup(v);
+-  if(mode==='requires'){assert.match(html,/now also requires/);assert.match(html,/still needs review in this case/);}
+-  else{assert.doesNotMatch(html,/now also requires/);assert.match(html,/is now blocked by/);}
++  if(mode==='requires'){assert.match(html,/Still requires/);assert.match(html,/still needs review in this case/);}
++  else{assert.doesNotMatch(html,/Still requires/);assert.match(html,/Still blocked by/);}
+  }
+ });
+ test('reuse document passages must belong to the receiving claim sources',()=>{
+@@ -156,3 +160,64 @@ test('reuse document passages must belong to the receiving claim sources',()=>{
+  assert.deepEqual(northstar.reuseModel(v).facts.map(f=>f.source_id),['target-a','target-b']);
+  const html=northstar.reuseMarkup(v);assert.match(html,/30. Juni/);assert.match(html,/31. Juli/);assert.doesNotMatch(html,/Another case/);
+ });
++
++test('the payoff exposes the recorded before and after without claiming an unblocked outcome',()=>{
++ const v=fixture(),fragment={fragment_id:'visible-history',version:1,fragment_sha256:hash,source_claim_id:'earlier',name:'Paired-notice review',actor:'Test handler'};
++ v.graph.nodes.unshift({node_id:'evidence',label:'Collect type-specific evidence'});
++ v.graph.edges.unshift({edge_id:'evidence_first',source_node_id:'evidence',target_node_id:'resolution',relation:'requires'});
++ v.fragments=[fragment,{...fragment,version:2,fragment_sha256:'2'.repeat(64)}];v.graph.fragment_instances=[{...fragment}];
++ const impact={...delta,node_changes:[{...delta.node_changes[0],before:{execution_state:'blocked',blocked_by:['evidence']}}]};
++ v.history=[{event_sha256:'f'.repeat(64),revision:3,operation:{type:'fragment.apply',fragment_sha256:hash},impact}];
++ v.evaluation.edges=v.graph.edges.map(edge=>({...edge,activation:'true'}));
++ v.effective_assessment.next_step=impact.next_action.after;
++ const html=northstar.reuseMarkup(v),history=html.slice(html.indexOf('data-review-application-history'),html.indexOf('class="nr-reuse-cards"'));
++ assert.doesNotMatch(history,/<details/,'before and after are visible content, not a closed provenance disclosure');
++ assert.match(history,/Before application<\/small><p>Waiting for prerequisites · Collect type-specific evidence/);
++ assert.match(history,/After application<\/small><p>Waiting for prerequisites · Compare the complete notices/);
++ assert.match(history,/already waiting before application/);
++ assert.match(history,/data-review-retained-context>Earlier process connections retained/);
++ assert.match(html,/data-review-current-result>Waiting for prerequisites<\/strong>/);
++ assert.match(html,/data-review-current-dependency>Still requires “Compare the complete notices”/);
++ assert.match(html,/data-review-current-next><small>Next action · unchanged by this application<\/small>Ask for copies/);
++ assert.match(html,/Exact saved version 1/);assert.doesNotMatch(html,/Exact saved version 2/);
++ assert.match(html,/Saved by Test handler/);assert.match(html,/Qualified review is still required/);
++ assert.equal((html.match(/data-review-reuse-card=/g)||[]).length,3);
++ assert.doesNotMatch(html,/expert.reviewed|Edited by reviewer|claim approved|outcome authorised/i);
++});
++
++test('the payoff does not invent an ordinal from a different raw node order',()=>{
++ const v=fixture(),fragment={fragment_id:'ordinal',version:1,fragment_sha256:hash,source_claim_id:'earlier',name:'Paired-notice review',actor:'Test handler'};
++ v.claim_id='ordinal';v.graph.nodes.reverse();
++ v.fragments=[fragment];v.graph.fragment_instances=[{...fragment}];v.history=[{event_sha256:'f'.repeat(64),operation:{type:'fragment.apply',fragment_sha256:hash},impact:delta}];
++ const original=JSON.stringify(v.graph),payoff=northstar.reuseMarkup(v);
++ assert.match(payoff,/data-review-ordinal-for="resolution" hidden><\/span>/,'the marker waits for the rendered process order');
++ assert.doesNotMatch(payoff,/data-review-retained-context/,'retention is claimed only for existing earlier connections');
++ globalThis.CasePathReviewNorthStar=northstar;
++ try{
++  const process=causal.render(v,{presentation:'northstar'});
++  assert.match(process,/data-causal-node="resolution"[^>]*><span class="nr-step-number">2<\/span>/);
++  assert.equal(v.graph.nodes.findIndex(node=>node.node_id==='resolution'),0,'raw source order differs from display order');
++  assert.equal(JSON.stringify(v.graph),original,'presentation never reorders the authoritative graph');
++ }finally{delete globalThis.CasePathReviewNorthStar;}
++});
++
++test('the full process remains available and a correction preview never collapses it',()=>{
++ const v=fixture(),fragment={fragment_id:'map',version:1,fragment_sha256:hash,source_claim_id:'earlier',name:'Paired-notice review',actor:'Test handler'};
++ v.fragments=[fragment];v.graph.fragment_instances=[{...fragment}];v.history=[{event_sha256:'f'.repeat(64),operation:{type:'fragment.apply',fragment_sha256:hash},impact:delta}];
++ const ui={graph:v.graph,node:v.graph.nodes[1],inspector:'<p>Selected process step</p>',tools:'',impact:'',processState:'Waiting for prerequisites'};
++ const rendered=northstar.renderProcess(v,{selected:'resolution',mode:null,preview:null},ui);
++ assert.match(rendered,/data-review-full-process open><summary>Full process · 2 steps/);
++ for(const node of v.graph.nodes)assert.match(rendered,new RegExp('data-causal-node="'+node.node_id+'"'));
++ for(const state of [{mode:'edit',preview:null},{mode:null,preview:{impact:delta}}]){
++  const html=northstar.renderProcess(v,{selected:'resolution',...state},ui);
++  assert.match(html,/data-review-process-map/);assert.doesNotMatch(html,/data-review-full-process|data-review-payoff/);
++ }
++});
++
++test('a missing next-action comparison is not presented as unchanged',()=>{
++ const v=fixture(),fragment={fragment_id:'unknown-next',version:1,fragment_sha256:hash,source_claim_id:'earlier',name:'Paired-notice review',actor:'Test handler'};
++ const impact={...delta};delete impact.next_action_changed;
++ v.fragments=[fragment];v.graph.fragment_instances=[{...fragment}];v.history=[{event_sha256:'f'.repeat(64),operation:{type:'fragment.apply',fragment_sha256:hash},impact}];
++ const html=northstar.reuseMarkup(v);
++ assert.match(html,/No next-action comparison recorded/);assert.doesNotMatch(html,/Next action[^<]*unchanged/);
++});
+diff --git a/casepath/assets/autonomous-workspace-v1.css b/casepath/assets/autonomous-workspace-v1.css
+index 576059e9..55d3f546 100644
+--- a/casepath/assets/autonomous-workspace-v1.css
++++ b/casepath/assets/autonomous-workspace-v1.css
+@@ -144,6 +144,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+ .au-workspace :is(.au-body,.au-context-body,.au-context-view,.au-process-hero,.au-evidence-stage) { min-width:0; }
+ .au-workspace .au-global-status:empty { display:none; }
+ .au-workspace .au-global-status { max-width:80ch; margin-bottom:16px; font-size:16px; }
++.au-workspace .au-global-status > .au-record-link { margin-inline-start:8px; }
+ .au-workspace .au-error { padding:10px 14px; border-left:2px solid var(--au-accent); color:#922d1f; background:#f5e8df; }
+ .au-workspace .au-notice { padding:10px 14px; border-left:2px solid var(--au-amber); color:#70532d; background:#ebe7d9; }
+ .au-workspace .au-eyebrow { color:var(--au-muted); font-size:16px; font-weight:400; line-height:1.5; letter-spacing:0; text-transform:none; }
+@@ -2141,6 +2142,14 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
+ .au-workspace .au-ns-purpose > div { margin:30px 0; font:600 16px/1.4 Mulish,sans-serif; }
+ .au-workspace .au-ns-purpose > div span { padding:0 12px; color:#82072a; }
+ .au-workspace .au-ns-purpose small { color:#61636b; font:400 13px/1.5 Mulish,sans-serif; }
++.au-workspace .au-ns-preparation-status { margin:12px 0 0; color:#61636b; font:400 15px/1.5 Mulish,sans-serif; }
++.au-workspace .au-ns-preparation .au-ns-sources > button { margin-top:12px; }
++@media (min-width:701px) {
++ .au-workspace .au-ns-preparation-status { margin:12px 27px 0; }
++ .au-workspace .au-ns-preparation .au-ns-sources > button { margin:12px 27px 0; }
++ .au-workspace .au-ns-preparation .au-ns-work { padding-top:159px; }
++ .au-workspace .au-ns-preparation .au-ns-paper { height:auto; min-height:493px; }
++}
+ 
+ /* W10: the cited bytes stay intact; context recedes behind the exact span. */
+ @media (min-width:701px) {
+@@ -2150,7 +2159,7 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
+  .au-workspace .au-ns-canvas { position:relative; }
+  .au-workspace .au-ns-fact-connector { z-index:1; }
+  .au-workspace .au-ns-fact-connector circle { stroke:#82072a; }
+- .au-workspace .au-ns-purpose > button { border:0; background:none; padding:12px 0; color:#82072a; text-decoration:underline; font:inherit; }
++ .au-workspace .au-ns-purpose > button { display:block; margin-top:8px; border:0; background:none; padding:4px 0; color:#82072a; text-decoration:underline; font:inherit; }
+  .au-workspace .au-ns-local { gap:18px; }
+  .au-workspace .au-ns-missing { flex-shrink:0; }
+ }
+diff --git a/casepath/assets/autonomous-workspace-v1.js b/casepath/assets/autonomous-workspace-v1.js
+index 55ccbb16..f7454d21 100644
+--- a/casepath/assets/autonomous-workspace-v1.js
++++ b/casepath/assets/autonomous-workspace-v1.js
+@@ -1657,6 +1657,14 @@
+   function northStarOpeningMarkup(state, presentation = {}, mode = 'replay') {
+     return northStarMarkup(state,{rows:[],sources:new Map(),headState:state,nsOpening:mode},presentation);
+   }
++  function northStarPurposeMarkup(claimId = null) {
++    return `<section class="au-ns-purpose" data-au-ns-purpose><p>Recorded example · legal protection</p><h2>From customer documents<br>to a reviewable answer</h2><p>Automated assistants connect evidence, legal checks and an assessment draft. You make the decision.</p><div aria-label="Assessment path">Documents <span>→</span> Facts <span>→</span> Law <span>→</span> Answer</div><small>This walkthrough replays completed work on fictional cases.</small>${claimId?`<button type="button" class="au-link" data-au-claim="${h(claimId)}">Open completed example ↗</button>`:''}</section>`;
++  }
++  function northStarPreparationMarkup(failed = false) {
++    // The showcase is not selected or admitted yet. Orient the visitor without
++    // presenting the first roster case as the subject of the walkthrough.
++    return `<section class="au-agent-desk au-northstar au-ns-preparation" data-au-agent-desk data-au-ns data-au-ns-state="opening" ${failed?'data-au-presentation-unavailable':'data-au-presentation-preparing aria-busy="true"'}><aside class="au-ns-sources"><p class="au-ns-context">Legal protection · case review</p><h1 tabindex="-1">Recorded walkthrough</h1><p class="au-ns-intake">All cases are fictional.</p><p class="au-ns-preparation-status" role="status">${failed?'The recorded walkthrough could not be opened.':'Preparing the recorded walkthrough…'}</p>${failed?button('Try again','data-au-nav="demonstration"'):''}</aside><div class="au-ns-canvas"><div class="au-ns-work"><div class="au-ns-reading"><section class="au-ns-paper">${northStarPurposeMarkup()}</section></div></div></div></section>`;
++  }
+   function deskFileLabel(source) {
+     if (source.role === 'customer_message') return 'Customer’s message';
+     return String(source.file_name || '').replace(/\.[a-z0-9]+$/iu,'').replace(/^\d+[-_ ]*/u,'').replace(/_\d{4}-\d{2}-\d{2}.*$/u,'').replace(/[-_]+/gu,' ').replace(/\bpacket\b/giu,'documents').replace(/\brecord\b/giu,'details').replace(/^./u,c => c.toUpperCase()) || 'Source';
+@@ -3430,6 +3438,7 @@
+     let publicationAttention = null, inspectionHold = false, operationTrace = null, attentionMarker = null, attentionPosition = null, attentionAnimation = null, factToken = null, factTokenAnimation = null, factTokenOperation = null, stageMotionTimer = null, stageReadAnimations = [], stageScrollCancel = null, stageScrollTarget = null, stageChoreography = null, operationPeek = null;
+     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, recordReturn = null, recordSelection = null, recordExplained = null, chosenNode = null, sourceEpoch = 0, polling = null, claimRead = 0;
+     let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'reference', tour = null, demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
++    let executivePreparationFailureEpoch = null;
+     let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, statusAuthority = null, readGeneration = 0;
+     // Knowledge opens as the procedure library; the learning replay is a secondary view.
+     let knowledgeMode = 'library', learningState = null, learningTimer = null, noticeCategory = null, announcedNow = null, noticeRecord = null;
+@@ -4038,9 +4047,28 @@
+       })().catch(error=>{if(valid()){const status=host.querySelector('[data-au-desk-trace-status]');if(status){status.hidden=false;status.innerHTML='This case could not be opened. '+button('Try again','data-au-desk-retry');}}}).finally(()=>{controllers.delete(controller);deskRecordReads.delete(identity);});
+       deskRecordReads.set(identity,promise);
+     }
++    function renderExecutivePreparation(session = demoSession || pausedPresentation) {
++      if (!session?.executive || session.executiveController || view !== 'claim' || doc.hidden) return false;
++      routeTitle('Demonstration');
++      if (!host.querySelector('[data-au-presentation-preparing]')) {
++        host.innerHTML = northStarPreparationMarkup();
++        const tabs = container.querySelector('.au-ns-tabs'); if (tabs) tabs.innerHTML = northStarTabsMarkup('');
++      }
++      return true;
++    }
++    function renderPresentationFailure(session) {
++      if (session?.executive && !session.executiveController) {
++        // A checked fallback may remain in memory, but it is not the selected
++        // showcase. Keep this route's failure explicit through late refreshes.
++        executivePreparationFailureEpoch = epoch;
++        host.innerHTML = northStarPreparationMarkup(true); routeTitle('Demonstration');
++      } else renderClaim();
++    }
+     function renderClaim(changes = null, navigation = false) {
++      if (view === 'claim' && executivePreparationFailureEpoch === epoch) return;
+       const executive=(demoSession||pausedPresentation)?.executiveController;
+       if(executive&&!inspectionHold){executive.render();return;}
++      if(renderExecutivePreparation())return;
+       const displayedState = operationPeek?.state || current, displayedProjection = operationPeek?.projection || projection, displayedTrace = operationPeek?.trace || operationTrace || deskRecords.get(current?.state_sha256);
+       if (!current || view !== 'claim') return;
+       routeTitle(caseTitle(current.claim_id,current));
+@@ -4313,7 +4341,10 @@
+       if (demoSession) demoSession.verifiedOpening = null;
+       const cached = presentationMode !== 'replay' && paintSavedClaim(id,preferences);
+       const nsOpening = session?.mode === 'operations' && (root.innerWidth || 0) > 700 && REFERENCE_DEMO_CASES.some(row => row.claim_id === id);
+-      if (!doc.hidden && !cached && !opening) { host.innerHTML = nsOpening ? northStarOpeningMarkup({claim_id:id,title:catalogRow(claims,id)?.title}) : session?.releasePlan ? releaseProcedurePreview(session.releasePlan,packetAtSelection ? 'pending' : session.operations,{revision:catalogRow(claims,id)?.revision,readOnly:publicReadOnly,tour:tour?.cases === session.cases && tour.cases[tour.index]?.claim_id === id ? tour : null}) : catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); if (session?.releasePlan && !nsOpening) drawEdges(); }
++      if (!doc.hidden && !cached) {
++        if (renderExecutivePreparation(session)) focusTitle();
++        else if (!opening) { host.innerHTML = nsOpening ? northStarOpeningMarkup({claim_id:id,title:catalogRow(claims,id)?.title}) : session?.releasePlan ? releaseProcedurePreview(session.releasePlan,packetAtSelection ? 'pending' : session.operations,{revision:catalogRow(claims,id)?.revision,readOnly:publicReadOnly,tour:tour?.cases === session.cases && tour.cases[tour.index]?.claim_id === id ? tour : null}) : catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); if (session?.releasePlan && !nsOpening) drawEdges(); }
++      }
+       interact(host);
+       if (presentationMode !== 'replay') {
+         sessionRestore?.then(() => { if (!disposed && token === epoch && !pendingRoute() && view === 'claim' && !current && id === openingId) paintSavedClaim(id,preferences); });
+@@ -4692,6 +4723,7 @@
+     function stopPresentation() {
+       const session = demoSession || pausedPresentation;
+       session?.executiveController?.dispose();
++      for (const controller of session?.executiveStateReads?.readControllers || []) controller.abort();
+       cancelNextOperationOpening(session);
+       if (session?.operationPreparation) cancelPreparedOperationReads(session.operationPreparation);
+       session?.operationChoiceController?.abort(); session?.operationController?.abort(); session?.operationWake?.();
+@@ -5173,7 +5205,7 @@
+     }
+     function operationFallbackNotice(session, reason, savedError = null) {
+       const recorded = Boolean(session.useRecorded || session.recorded || session.operations === 'recorded');
+-      notice(savedError === null ? recorded ? 'Could not load this replay. Showing the saved result.' : 'Could not finish this check. Showing the saved result.' : recorded ? 'Could not load this replay or its saved result.' : 'Could not finish this check or load its saved result.',true,'operation-unavailable');
++      notice(session.executive && !session.executiveController ? 'Could not load this recorded walkthrough. Try again.' : savedError === null ? recorded ? 'Could not load this replay. Showing the saved result.' : 'Could not finish this check. Showing the saved result.' : recorded ? 'Could not load this replay or its saved result.' : 'Could not finish this check or load its saved result.',true,'operation-unavailable');
+       noticeRecord = {message:reason,mode:recorded?'recorded':'live',...(savedError===null?{}:{saved_result_error:savedError})};
+       globalStatus.insertAdjacentHTML?.('beforeend',recordButton('Details','notice'));
+     }
+@@ -5183,7 +5215,7 @@
+       if (!await operationGate(session,token)) return;
+       current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
+       if (operationTrace) { operationTrace.finished = true; operationTrace.current = null; operationTrace.savedFallback = true; }
+-      stopPresentation(); renderClaim(); primeClaimReads(token); operationFallbackNotice(session,reason);
++      stopPresentation(); renderPresentationFailure(session); primeClaimReads(token); operationFallbackNotice(session,reason);
+     }
+     function prepareOperationReads(session, id, token) {
+       // A catalog row at revision zero has no history: no head or operation prefetch.
+@@ -5281,11 +5313,20 @@
+       const active=()=>operationActive(session,token);
+       if(!knowledgeCache){const value=readKnowledge(await request('/knowledge'));if(!active())return;knowledgeCache={value};}
+       if(!claimsLoaded){await loadClaims(token);if(!active())return;}
+-      const states=[];
+-      for(const row of sessionCases(session)){
+-        const state=row.claim_id===main.state.claim_id?main.state:readState(await request(`/claims/${key(row.claim_id)}`),row.claim_id).state;
+-        if(!active())return;states.push(state);
++      // At most the nine reference cases, retaining roster order regardless of
++      // response order. Own only reads created here: a previously shared GET
++      // keeps its original owner and cannot be aborted by this presentation.
++      const stateReads={readControllers:new Set()};session.executiveStateReads=stateReads;
++      let states;
++      try {
++        states=await Promise.all(sessionCases(session).map(async row=>
++          row.claim_id===main.state.claim_id?main.state:readState(await operationRequest(stateReads,`/claims/${key(row.claim_id)}`),row.claim_id).state
++        ));
++      } finally {
++        for(const controller of stateReads.readControllers)controller.abort();
++        if(session.executiveStateReads===stateReads)session.executiveStateReads=null;
+       }
++      if(!await operationGate(session,token))return;
+       const showcase=northStarShowcase(states,knowledgeCache.value);
+       if(showcase.claimId!==main.state.claim_id){
+         const selectedOpening=await nextOperationOpening(session,showcase.claimId);
+@@ -5295,12 +5336,13 @@
+       if(main.state.state_sha256!==showcase.candidates.find(row=>row.claimId===main.state.claim_id)?.stateHash)throw new Error('The selected showcase changed during admission.');
+       const next=states.find(state=>state.claim_id!==main.state.claim_id&&state.graph?.family===main.state.graph?.family&&states.indexOf(state)>states.findIndex(row=>row.claim_id===main.state.claim_id));
+       if(!next)throw new Error('The demonstration needs a later recorded case of the same type.');
++      if(!await operationGate(session,token))return;
+       const opening=await nextOperationOpening(session,next.claim_id);
+       if(!active())return;
+       const later=await checkedNorthStarRecording(opening.operationBuffer,opening,active);
+       if(!later||!active())return;
+       await doc.fonts?.ready;
+-      if(!active())return;
++      if(!await operationGate(session,token))return;
+       cancelStageMotion();
+       const P=presentationClock, beats=[];
+       const add=(act,phase,duration,record=main,op=null,extra={})=>beats.push({act,phase,duration,record,op,...extra});
+@@ -5416,7 +5458,7 @@
+         if(customerPin){const pre=select('.au-ns-source-scroll pre'),source=trace.sources.get(customerPin.artifact_id),preview=northStarSourcePreview(source,customerPin);pre.innerHTML=northStarSourceBody(preview,customerPin);pre.closest('[data-au-ns-paper]').dataset.auCustomerSource=customerPin.artifact_id;}
+         if(phase==='ready'){
+           const paper=select('[data-au-ns-paper]');
+-          paper.innerHTML=`<section class="au-ns-purpose" data-au-ns-purpose><p>Recorded example · legal protection</p><h2>From customer documents<br>to a reviewable answer</h2><p>Automated assistants connect evidence, legal checks and an assessment draft. You make the decision.</p><div aria-label="Assessment path">Documents <span>→</span> Facts <span>→</span> Law <span>→</span> Answer</div><small>This walkthrough replays completed work on fictional cases.</small><button type="button" class="au-link" data-au-claim="${h(main.state.claim_id)}">Open completed example ↗</button></section>`;
++          paper.innerHTML=northStarPurposeMarkup(main.state.claim_id);
+         }
+         all('.au-ns-footer').forEach(el=>el.remove());
+         if(!viewName){const count=new Set(trace.rows.filter(op=>op.kind==='document.check'&&op.source&&op.result?.assessment==='sufficient'&&(op.id!==beat.op?.id||!['camera-in','cursor','highlight','passage-rest'].includes(phase))).map(op=>op.object.id)).size;select('.au-ns-sources')?.insertAdjacentHTML('beforeend',`<button type="button" class="au-executive-documents" data-au-detail="documents">Documents <span>${count} checked</span></button>`);}
+@@ -5714,14 +5756,14 @@
+             if (operationTrace?.rows.length) session.previousAttempts = [...list(operationTrace.previousAttempts),{rows:operationTrace.rows,bytes:operationTrace.bytes,recorded:false,reason:error.message}];
+             session.useRecorded = true; session.operationStarted = false; operationController.abort(); session.operationController = null; startOperations(session,token); return; }
+           try { await fallbackOperations(session,token,error.message); }
+-          catch (fallback) { if (operationActive(session,token)) { if(operationTrace)operationTrace.replayUnavailable=true;stopPresentation(); renderClaim(); operationFallbackNotice(session,error.message,fallback.message); } }
++          catch (fallback) { if (operationActive(session,token)) { if(operationTrace)operationTrace.replayUnavailable=true;stopPresentation(); renderPresentationFailure(session); operationFallbackNotice(session,error.message,fallback.message); } }
+         }
+       } finally { operationController.abort(); controllers.delete(operationController); }
+     }
+     function presentationFailed(session, message) {
+       if (demoSession !== session) return;
+       if (doc.hidden) { session.failure = message; return; }
+-      stopPresentation(); renderClaim(); notice(message,true);
++      stopPresentation(); renderPresentationFailure(session); notice(message,true);
+     }
+     function syncReplayGuide() {
+       const legend = container.querySelector('[data-au-role-legend]');
+diff --git a/casepath/assets/review-northstar-v1.css b/casepath/assets/review-northstar-v1.css
+index 7b546bf3..3ab4a757 100644
+--- a/casepath/assets/review-northstar-v1.css
++++ b/casepath/assets/review-northstar-v1.css
+@@ -203,3 +203,54 @@ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-
+ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-source-fact small { grid-column:1; font-size:10px; line-height:1.3; overflow-wrap:anywhere; }
+ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-source-fact strong { grid-column:1; font-size:13px; font-weight:600; }
+ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-source-fact span { grid-column:2; grid-row:1 / span 2; align-self:center; color:var(--nr-wine); }
++
++/* The applied-version result begins with its recorded change. The complete
++   process remains one native disclosure here, and stays open in other roles. */
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-full-process > summary { display:none; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] #cwDetailPanel[data-review-active-role="result"] .nr-full-process > summary { display:list-item; padding:5px 0; color:var(--nr-muted); font-size:12px; cursor:pointer; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-full-process > summary span { float:right; font-size:11px; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] #cwDetailPanel[data-review-active-role="result"] [data-review-payoff] .nr-process-heading,
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] #cwDetailPanel[data-review-active-role="result"] [data-review-payoff] .cp-process-status[data-state="saved"] { display:none; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-application-change { margin:5px 0 16px; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-application-heading { display:flex; justify-content:space-between; gap:16px; margin:0 0 8px; color:var(--nr-muted); font-size:11px; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-application-heading p { margin:0; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-before-after { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) 26px minmax(0,1.1fr); align-items:stretch; gap:12px; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-affected-step { display:grid; grid-template-columns:30px minmax(0,1fr); gap:10px; align-items:center; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-affected-number { display:grid; place-items:center; width:30px; height:30px; box-sizing:border-box; border:1.5px solid var(--nr-wine); border-radius:50%; color:var(--nr-wine); font-weight:700; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-affected-number[hidden] { display:none; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-affected-step > div { padding:10px 12px; border:1.5px solid var(--nr-wine); border-radius:5px; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-affected-step:not(:has(.nr-affected-number:not([hidden]))) { grid-template-columns:1fr; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-affected-step strong { display:block; font-size:13px; line-height:1.4; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-before,
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-after { min-width:0; padding:10px 12px; border:1px dashed #c2c3c3; border-radius:5px; font-size:12px; color:var(--nr-muted); }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-after { border:1.5px solid var(--nr-wine); color:var(--nr-ink); font-weight:650; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-before-after small { display:block; margin-bottom:4px; font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.04em; color:var(--nr-muted); }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-before-after p { margin:0; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-change-arrow { align-self:center; color:var(--nr-wine); font-size:24px; text-align:center; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-reuse-cards article { padding:12px; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-reuse-cards h4 { margin-bottom:9px; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-reuse-cards p { margin:5px 0; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-reuse-cards details { margin-top:5px; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-current-state { color:var(--nr-muted); }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-current-state strong { color:var(--nr-ink); }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] [data-review-current-dependency] { font-weight:650; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-boundary-review { color:var(--nr-muted); font-size:11px; }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-reuse-cards .nr-current-next { padding-top:7px; margin-top:8px; border-top:1px solid var(--nr-line); }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-current-next small { display:block; font-size:10px; color:var(--nr-muted); }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-application-record { margin:8px 0 0; font-size:11px; color:var(--nr-muted); }
++html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-reuse-notice { padding:9px 12px; background:#f6f6f7; border-radius:4px; margin-top:10px; }
++@media(min-width:761px) {
++ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] #cwDetailPanel[data-review-active-role="result"] #cpPane-process:has([data-review-payoff]) { max-height:290px; overflow-y:auto; scroll-padding-top:0; }
++ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] #cwDetailPanel[data-review-active-role="result"] [data-review-payoff] .nr-process-map { position:relative; margin:8px 0 0; }
++}
++@media(max-width:1000px) {
++ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-before-after { grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr); }
++ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-affected-step { grid-column:1 / -1; }
++}
++@media(max-width:760px) {
++ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-application-heading { display:block; }
++ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-application-heading p + p { margin-top:4px; }
++ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-before-after { gap:8px; }
++ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-before,
++ html[data-agent-native=true] #claimsWorkspace[data-review-view="northstar"] .nr-after { padding:8px; }
++}
+diff --git a/casepath/assets/review-northstar-v1.js b/casepath/assets/review-northstar-v1.js
+index f7d17f3c..16cd1080 100644
+--- a/casepath/assets/review-northstar-v1.js
++++ b/casepath/assets/review-northstar-v1.js
+@@ -74,7 +74,6 @@ function reuseMarkup(view){
+   const f=model.fragment;
+   const sourceFacts=model.facts.slice(0,2).map(fact=>fact.source_id?'<button type="button" class="nr-source-fact" data-noticed-source="'+h(fact.source_id)+'" data-noticed-quote="'+h(fact.quote)+'"><small>'+h(fact.label||'This case’s source passage')+'</small><strong>'+h(fact.quote)+'</strong><span aria-hidden="true">↗</span></button>':'<blockquote>'+h(fact.quote)+'</blockquote>').join('');
+   const effect=model.consequence.rows[0];
+-  const result=effect?h(effect.label)+': '+h(effect.after):'The saved process version produced no different process or document requirement.';
+   const currentNode=effect?.kind==='Step'?list(view.evaluation?.nodes).find(n=>n.node_id===effect.id):null;
+   const currentDocument=effect?.kind==='Document'?list(view.evaluation?.documents).find(d=>d.document_type===effect.id):null;
+   const names=new Map(list(view.graph.nodes).map(n=>[n.node_id,n.label]));
+@@ -84,44 +83,60 @@ function reuseMarkup(view){
+   const activeRequirements=addedPending.filter(id=>list(view.graph.edges).some(edge=>edge.source_node_id===id&&edge.target_node_id===effect?.id&&edge.relation==='requires'&&evaluatedEdges.get(edge.edge_id)?.activation==='true'));
+   const otherBlockers=addedPending.filter(id=>!activeRequirements.includes(id));
+   const named=ids=>ids.map(id=>'“'+(names.get(id)||words(id))+'”').join(', ');
+-  const pendingStatement=[activeRequirements.length?(names.get(effect.id)||effect.label)+' now also requires '+named(activeRequirements)+'.':'',otherBlockers.length?(names.get(effect.id)||effect.label)+' is now blocked by '+named(otherBlockers)+'.':''].filter(Boolean).join(' ');
++  const pendingStatement=[activeRequirements.length?'Still requires '+named(activeRequirements)+'.':'',otherBlockers.length?'Still blocked by '+named(otherBlockers)+'.':''].filter(Boolean).join(' ');
+   const preservedConnections=list(historicalNode?.before?.blocked_by).filter(id=>list(view.graph.edges).some(edge=>edge.source_node_id===id&&edge.target_node_id===effect?.id));
+   const preservedNote=preservedConnections.length?'Earlier process connection retained: '+preservedConnections.map(id=>names.get(id)||words(id)).join(', ')+'.':'';
+   const pendingEdges=list(view.graph.edges).filter(edge=>edge.target_node_id===effect?.id&&activeRequirements.includes(edge.source_node_id)&&edge.relation==='requires'&&evaluatedEdges.get(edge.edge_id)?.activation==='true');
+   const boundaryReview=pendingEdges.some(edge=>edge.validation?.status!=='validated')?'The imported dependency still needs review in this case.':pendingEdges.length?'The dependency has a recorded review in this case.':'';
+-  const alreadyWaiting=historicalNode?.before?.execution_state==='blocked'&&historicalNode?.after?.execution_state==='blocked'?'This step was already waiting for other prerequisites.':'';
+-  const currentResult=currentNode?h(names.get(effect.id)||effect.label)+': '+h(stateName(currentNode.inconsistent_completion?'inconsistent':currentNode.execution_state||currentNode.state))+(list(currentNode.blocked_by).length?' · '+h(currentNode.blocked_by.map(id=>names.get(id)||words(id)).join(', ')):''):currentDocument?h(effect.label)+': '+h(stateName(currentDocument.route_state)):effect?.kind==='Step'||effect?.kind==='Document'?'This item is no longer in the current process.':'Open the graph to review the current dependency.';
+-  return '<section class="nr-reuse" aria-label="Reviewed process reuse" data-review-reuse="'+h(f.fragment_sha256)+'"><header><h3>Earlier review → this case</h3><p>Exact saved version '+h(f.version)+' · applied in this claim</p></header><div class="nr-reuse-cards">'+
+-    '<article><h4>'+icon('reader')+'This case’s sources</h4>'+ (sourceFacts||'<p>No quoted condition is available in this process view. Open the original sources to inspect this case.</p>')+'</article>'+
+-    '<article><h4>'+icon('builder')+'Reviewed process version</h4><strong>'+h(f.name)+'</strong><p>Saved by '+h(f.actor||f.handler||'the recorded reviewer')+'</p><a href="?journey=review&amp;view=northstar#claim='+encodeURIComponent(f.source_claim_id)+'">Open the source case ↗</a><details><summary>Version provenance</summary><dl><dt>Version</dt><dd>'+h(f.version)+'</dd><dt>Source revision</dt><dd>'+h(f.source_revision??f.source_workspace_revision??'See source record')+'</dd><dt>Version identity</dt><dd><code>'+h(f.fragment_sha256)+'</code></dd><dt>Accepted application</dt><dd><code>'+h(model.event.event_sha256)+'</code></dd></dl></details></article>'+
+-    '<article><h4>'+icon('result')+'Result in this case</h4>'+(pendingStatement?'<strong data-review-current-dependency>'+h(pendingStatement)+'</strong><p>'+h(boundaryReview)+'</p>':'')+'<p>Current process</p><strong data-review-current-result>'+currentResult+'</strong>'+(preservedNote?'<p data-review-preserved-connection>'+h(preservedNote)+'</p>':'')+'<details><summary>When applied · revision '+h(model.event.revision??'recorded')+'</summary><p>'+result+'</p><p>'+h(alreadyWaiting)+'</p><p>'+h(model.event.reason||'Saved application of the selected process version.')+'</p></details><p>This case keeps its own facts, source files and evidence reviews.</p></article></div><p class="nr-review-limit">A recorded process review does not authorise the claim outcome. Qualified review is still required.</p></section>';
++  const alreadyWaiting=historicalNode?.before?.execution_state==='blocked'&&historicalNode?.after?.execution_state==='blocked'?'This step was already waiting before application.':'';
++  const currentResult=currentNode?stateName(currentNode.inconsistent_completion?'inconsistent':currentNode.execution_state||currentNode.state):currentDocument?stateName(currentDocument.route_state):effect?.kind==='Step'||effect?.kind==='Document'?'This item is no longer in the current process.':'Open the graph to review the current dependency.';
++  const currentBlockers=list(currentNode?.blocked_by).filter(id=>!addedPending.includes(id));
++  const next=view.effective_assessment?.next_step;
++  const nextUnchanged=typeof next==='string'&&next===model.consequence.next.after&&model.event.impact.next_action_changed===false;
++  const nextHistory=model.event.impact.next_action_changed===true?'Next action changed on application.':model.event.impact.next_action_changed===false?'Next action unchanged by this application.':'No next-action comparison recorded.';
++  const history=effect?'<section class="nr-application-change" aria-label="Historical application change" data-review-application-history><div class="nr-application-heading"><p>When applied · revision '+h(model.event.revision??'recorded')+'</p><p>'+h([alreadyWaiting,nextHistory].filter(Boolean).join(' '))+(preservedConnections.length?' <span data-review-retained-context>Earlier process connections retained.</span>':'')+'</p></div><div class="nr-before-after"><div class="nr-affected-step" data-review-affected-step="'+h(effect.id)+'">'+(effect.kind==='Step'?'<span class="nr-affected-number" data-review-ordinal-for="'+h(effect.id)+'" hidden></span>':'')+'<div><small>Affected '+h(effect.kind.toLowerCase())+'</small><strong>'+h(effect.label)+'</strong></div></div><div class="nr-before" data-review-before><small>Before application</small><p>'+h(effect.before)+'</p></div><span class="nr-change-arrow" aria-hidden="true">→</span><div class="nr-after" data-review-after><small>After application</small><p>'+h(effect.after)+'</p></div></div></section>':'<p class="nr-no-effect">The saved process version produced no different process or document requirement.</p>';
++  return '<section class="nr-reuse" aria-label="Reviewed process reuse" data-review-reuse="'+h(f.fragment_sha256)+'"><header><h3>Earlier review → this case</h3><p>Exact saved version '+h(f.version)+' · applied in this claim</p></header>'+history+'<div class="nr-reuse-cards">'+
++    '<article data-review-reuse-card="sources"><h4>'+icon('reader')+'This case’s sources</h4>'+ (sourceFacts||'<p>No quoted condition is available in this process view. Open the original sources to inspect this case.</p>')+'</article>'+
++    '<article data-review-reuse-card="version"><h4>'+icon('builder')+'Reviewed process version</h4><strong>'+h(f.name)+'</strong><p>Saved by '+h(f.actor||f.handler||'the recorded reviewer')+'</p><a href="?journey=review&amp;view=northstar#claim='+encodeURIComponent(f.source_claim_id)+'">Open the source case ↗</a><details><summary>Version provenance</summary><dl><dt>Version</dt><dd>'+h(f.version)+'</dd><dt>Source revision</dt><dd>'+h(f.source_revision??f.source_workspace_revision??'See source record')+'</dd><dt>Version identity</dt><dd><code>'+h(f.fragment_sha256)+'</code></dd><dt>Accepted application</dt><dd><code>'+h(model.event.event_sha256)+'</code></dd></dl><p>'+h(model.event.reason||'Saved application of the selected process version.')+'</p></details>'+(preservedNote?'<details class="nr-application-record"><summary>Earlier process connections</summary><p data-review-preserved-connection>'+h(preservedNote)+'</p></details>':'')+'</article>'+
++    '<article data-review-reuse-card="result"><h4>'+icon('result')+'Result in this case</h4><p class="nr-current-state">Current process · <strong data-review-current-result>'+h(currentResult)+'</strong></p>'+(pendingStatement?'<p data-review-current-dependency>'+h(pendingStatement)+'</p>':'')+(currentBlockers.length?'<p>Also waiting for '+h(named(currentBlockers))+'.</p>':'')+(boundaryReview?'<p class="nr-boundary-review">'+h(boundaryReview)+'</p>':'')+'<p class="nr-current-next" data-review-current-next><small>'+h(nextUnchanged?'Next action · unchanged by this application':'Current next action')+'</small>'+h(next||'No current next action recorded.')+'</p></article></div>'+'<p class="nr-review-limit nr-reuse-notice">This case keeps its own facts, source files and evidence reviews. A recorded process review does not authorise the claim outcome. Qualified review is still required.</p></section>';
+ }
+ function renderProcess(view,s,ui){
+   const graph=ui.graph||view.graph,nodes=list(graph.nodes),selected=ui.node||nodes.find(n=>n.node_id===s.selected)||nodes[0];
+   const evaluations=new Map(list(view.evaluation?.nodes||view.evaluation?.steps).map(row=>[row.node_id,row]));
+   const last=list(view.history).slice().reverse().find(row=>row.impact&&row.event_sha256);
++  const payoff=!s.preview&&!s.mode&&reuseModel(view);
+   const map='<nav class="nr-process-map" aria-label="Working process graph" data-review-process-map><svg class="nr-process-links" aria-hidden="true"></svg><ol>'+nodes.map((node,i)=>{
+     const row=evaluations.get(node.node_id)||{},status=stateName(row.inconsistent_completion?'inconsistent':row.execution_state||row.state);
+     return '<li><button type="button" class="nr-process-node" data-causal-node="'+h(node.node_id)+'" aria-pressed="'+(node.node_id===selected?.node_id)+'"><span class="nr-step-number">'+(row.execution_state==='completed'?'✓':i+1)+'</span><strong>'+h(node.label)+'</strong><small>'+h(status)+'</small></button></li>';
+   }).join('')+'</ol></nav>';
+   const preview=s.preview?'<section class="cp-impact nr-impact" tabindex="-1" id="cpProcessImpact"><p class="nr-eyebrow">Preview · nothing saved yet</p>'+comparison(s.preview.impact,graph,{proposed:true})+'<p>'+h(s.preview.reason||'')+'</p><div class="cp-actions cp-impact-actions"><button type="button" class="cw-button cw-button-primary" data-causal-apply>Apply to this claim</button><button type="button" class="cw-button" data-causal-cancel>Keep current process</button></div><details class="nr-impact-details"><summary>All changed and unchanged requirements</summary>'+ui.impact+'</details></section>':'';
+   const recent=!s.preview&&!s.mode&&last?'<details class="nr-last-change"><summary>Last saved consequence · '+h(last.actor||'Recorded reviewer')+'</summary>'+comparison(last.impact,graph)+'</details>':'';
+-  return '<section class="cp-causal nr-causal" id="cpCausalProcess" data-claim-id="'+h(view.claim_id)+'" data-workspace-revision="'+h(view.workspace_revision)+'" aria-labelledby="cpCausalTitle" '+(s.busy?'aria-busy="true"':'')+'>'+
++  return '<section class="cp-causal nr-causal" id="cpCausalProcess" data-claim-id="'+h(view.claim_id)+'" data-workspace-revision="'+h(view.workspace_revision)+'"'+(payoff?' data-review-payoff="true"':'')+' aria-labelledby="cpCausalTitle" '+(s.busy?'aria-busy="true"':'')+'>'+
+     '<header class="nr-process-heading"><div><h2 id="cpCausalTitle">'+(view.process_adopted===false?'Proposed process':'Working process')+'</h2><p>'+h(ui.processState||'Review the process and its evidence')+'</p></div><div><span>Revision '+h(graph.revision)+'</span>'+(view.undo?'<button type="button" class="cw-text-button" data-causal-undo>Undo last change</button>':'')+'<button type="button" class="cw-text-button" data-causal-add>Add step</button>'+(reuseModel(view)?'<button type="button" class="cw-text-button" data-review-result>Review reuse result →</button>':'')+'</div></header>'+
+     (view.process_adopted===false?'<p class="cp-process-warning">This claim still uses its recorded assessment. Preview and apply a correction to adopt this proposed process.</p>':'')+
+     '<div class="cp-process-status" data-state="'+(s.busy?'working':s.notice?'saved':'idle')+'" role="status" aria-live="polite">'+h(s.busy?'Calculating consequences…':s.notice||'')+'</div>'+
+     (s.error?'<div class="cp-process-warning" role="alert">'+h(s.error)+' <button type="button" class="cw-button" data-causal-reload>Reload saved process</button></div>':'')+
+-    map+'<div class="nr-review-context"><div class="nr-selected-heading"><h3>'+h(selected?.label||'Process review')+'</h3>'+(!s.mode&&!s.preview&&selected?'<button type="button" class="cw-text-button nr-edit-decision" data-causal-edit>Edit decision</button>':'')+'</div><aside class="cp-process-inspector" aria-label="Selected process step">'+(preview||ui.inspector)+'</aside></div>'+recent+ui.tools+
++    (payoff?'<details class="nr-full-process" data-review-full-process open><summary>Full process · '+nodes.length+' steps <span>Revision '+h(graph.revision)+'</span></summary>'+map+'</details>':map)+'<div class="nr-review-context"><div class="nr-selected-heading"><h3>'+h(selected?.label||'Process review')+'</h3>'+(!s.mode&&!s.preview&&selected?'<button type="button" class="cw-text-button nr-edit-decision" data-causal-edit>Edit decision</button>':'')+'</div><aside class="cp-process-inspector" aria-label="Selected process step">'+(preview||ui.inspector)+'</aside></div>'+recent+ui.tools+
+     '<p class="nr-review-limit">Original evidence remains unchanged. Process completion and the claim decision are separate.</p></section>';
+ }
+ const observers=new WeakMap();
+ function bindGraph(container,view){
+   const map=container.querySelector('[data-review-process-map]');
+   if(!map)return;
+-  observers.get(container)?.disconnect();
++  const previous=observers.get(container),state=previous?.claimId===view.claim_id?previous.state:{resultExpanded:false};
++  previous?.disconnect();
++  const disclosure=map.closest('[data-review-full-process]'),panel=container.closest('#cwDetailPanel')||container.querySelector('#cwDetailPanel');
++  let role;
+   function draw(){
+     if(!map.isConnected)return;
+     const svg=map.querySelector('svg'),bounds=map.getBoundingClientRect(),buttons=new Map([...map.querySelectorAll('[data-causal-node]')].map(el=>[el.dataset.causalNode,el]));
++    // The map already has the shared presentation order. Never number this
++    // second view from the journal's raw node-array order.
++    for(const marker of container.querySelectorAll('[data-review-ordinal-for]')){
++      const label=buttons.get(marker.dataset.reviewOrdinalFor)?.querySelector('.nr-step-number')?.textContent.trim()||'';
++      marker.textContent=label;marker.hidden=!label;
++    }
++    if(!bounds.width||!bounds.height)return;
+     container.style?.setProperty('--nr-map-height',Math.ceil(bounds.height+12)+'px');
+     const selected=map.querySelector('[aria-pressed="true"]')?.dataset.causalNode;
+     const paths=list(view.graph.edges).map(edge=>{
+@@ -135,8 +150,18 @@ function bindGraph(container,view){
+     }).join('');
+     svg.setAttribute('viewBox','0 0 '+bounds.width+' '+bounds.height);svg.innerHTML='<defs><marker id="nr-process-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 6 3 L 0 6 z" fill="#b5b1b5"/></marker></defs>'+paths;
+   }
+-  draw();
+-  if(typeof ResizeObserver!=='undefined'){const observer=new ResizeObserver(draw);observer.observe(map);observers.set(container,observer);}
++  function syncRole(){
++    const next=panel?.dataset.reviewActiveRole||'builder';
++    if(role!==next){role=next;if(disclosure)disclosure.open=role==='result'?state.resultExpanded:true;}
++    draw();
++  }
++  const toggle=()=>{if(role==='result')state.resultExpanded=disclosure.open;draw();};
++  disclosure?.addEventListener('toggle',toggle);
++  syncRole();
++  let resize,roles;
++  if(typeof ResizeObserver!=='undefined'){resize=new ResizeObserver(draw);resize.observe(map);}
++  if(disclosure&&panel&&typeof MutationObserver!=='undefined'){roles=new MutationObserver(syncRole);roles.observe(panel,{attributes:true,attributeFilter:['data-review-active-role']});}
++  observers.set(container,{claimId:view.claim_id,state,disconnect(){resize?.disconnect();roles?.disconnect();disclosure?.removeEventListener('toggle',toggle);}});
+ }
+ return Object.freeze({header,renderProcess,consequenceModel,reuseModel,reuseMarkup,comparison,bindGraph});
+ });
+diff --git a/casepath/index.html b/casepath/index.html
+index a2c62c13..4af736c6 100644
+--- a/casepath/index.html
++++ b/casepath/index.html
+@@ -13,14 +13,14 @@
+   <meta name="casepath-causal-process-script" content="assets/causal-process-v1.js?sha256=fcb07378587069fce1ad2efd1493d3a6a7dafed46b81952e4559628a14fca896">
+   <meta name="casepath-paper-method-script" content="assets/process-evidence-v2.js?sha256=007bc2ad438b32e265da97f33866999ed3745c35107249eafd35191d210aaa8b">
+   <meta name="casepath-review-workspace-script" content="assets/claims-workspace-v1.js?sha256=ddc309c70e59190abc3109fae1a2cedde37537dabc47b0a68680fa57ff270940">
+-  <meta name="casepath-review-northstar-script" content="assets/review-northstar-v1.js?sha256=911db61af8299ebbc00a818ad9fb9530ae84133dadac0dc12b9fd179c30d629b">
++  <meta name="casepath-review-northstar-script" content="assets/review-northstar-v1.js?sha256=5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd">
+   <meta name="casepath-review-desk-script" content="assets/agent-desk-v2.js?sha256=61c4e6a2c81afe6221dd0c0e397487269caf24ba475542ee51383dc64ab30a73">
+   <meta name="casepath-autonomous-demo-packets" content="assets/autonomous-demo-packets.json?sha256=0570e94ab2d32005c858359ea345a9dafd8c941733193da0d3575525cb81ce8a">
+   <meta name="casepath-recorded-opening" content='{"url":"assets/autonomous-recorded-heating-v1.json?sha256=1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383","bytes":523167,"sha256":"1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383","deployment_commit":"0a213e471d70dbc63df2e0fcb3a62049ec5183aa","history_kind":"published_public_synthetic"}'>
+   <meta name="casepath-saved-history" content='{"url":"assets/autonomous-saved-history-v1.json?sha256=a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0","bytes":565908,"sha256":"a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0","deployment_commit":"0a213e471d70dbc63df2e0fcb3a62049ec5183aa","history_kind":"published_public_synthetic","claim_id":"clm_2a9c260c26afaa34","revision":15,"state_sha256":"63c7f9663040ad966daf87266b72dc31b0369de67b16c35a7b13fdd68fdcfe17","event_sha256":"efe81d202e86e3b7e58f252feef236a2caabe4e27e38af427e404e3da719f203"}'>
+   <script defer src="assets/autonomous-presentation-v1.js?sha256=fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da"></script>
+   <script defer src="assets/autonomous-language-v1.js?sha256=e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49"></script>
+-  <meta name="casepath-autonomous-script" content="assets/autonomous-workspace-v1.js?sha256=573c2294692b4025549e687c0e21b959e14692365453519ed7a5ae4b8128e356">
++  <meta name="casepath-autonomous-script" content="assets/autonomous-workspace-v1.js?sha256=cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b">
+   <link rel="icon" href="data:,">
+   <link rel="license" href="assets/fonts/Merriweather-OFL.txt">
+   <link rel="license" href="assets/fonts/Open_Sans-OFL.txt">
+@@ -109,8 +109,8 @@
+ <link rel="stylesheet" href="assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9">
+   <link rel="stylesheet" href="assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22">
+   <link rel="stylesheet" href="assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb">
+-  <link rel="stylesheet" href="assets/review-northstar-v1.css?sha256=7c75bde67d6fc138a71ec2b05536e17a267186fb3d2d46677ade9d8dea2e2dab">
+-  <link rel="stylesheet" href="assets/autonomous-workspace-v1.css?sha256=184979997357aea000c973295563c46287bc562949de1382ee3b829a4866ee5a">
++  <link rel="stylesheet" href="assets/review-northstar-v1.css?sha256=af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef">
++  <link rel="stylesheet" href="assets/autonomous-workspace-v1.css?sha256=3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262">
+ </head>
+ <body>
+   <div id="autonomousWorkspace"><p role="status">Opening your case…</p></div>
+diff --git a/casepath/source-manifest.json b/casepath/source-manifest.json
+index 679efb05..4ab2fee9 100644
+--- a/casepath/source-manifest.json
++++ b/casepath/source-manifest.json
+@@ -8999,8 +8999,8 @@
+     {
+       "executable": false,
+       "path": "casepath-qa/autonomous-presentation-browser-v1.test.cjs",
+-      "sha256": "27b7f113f00e6f03d2c5212a15e681c459152a3f4620b0fd0a7e4bf1baafcca7",
+-      "size_bytes": 25906
++      "sha256": "67a54c72f5c52049624de6fa14df518b5597d422847bd5bf5e06b9028b99074b",
++      "size_bytes": 37805
+     },
+     {
+       "executable": false,
+@@ -9011,8 +9011,8 @@
+     {
+       "executable": false,
+       "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
+-      "sha256": "325ab4b09f6c01794dc490e3f443afa8510de1929eda170a725f9e1178ec4ef0",
+-      "size_bytes": 651371
++      "sha256": "fc40356671f8bdd0f5637e0f60396e1ec203fc1dc59084abef31f7478a901550",
++      "size_bytes": 653921
+     },
+     {
+       "executable": false,
+@@ -9383,14 +9383,14 @@
+     {
+       "executable": false,
+       "path": "casepath-qa/review-northstar-browser-v1.test.cjs",
+-      "sha256": "862e3ae9e00ba32b88e9f0cb5a4eefb446e61c58751b0428c0139ab780efd657",
+-      "size_bytes": 23167
++      "sha256": "704c70f8473bf66f49b90ccc34399250ae27921a6fb131d1e7ce39ad93ffe1aa",
++      "size_bytes": 29525
+     },
+     {
+       "executable": false,
+       "path": "casepath-qa/review-northstar-v1.test.cjs",
+-      "sha256": "27eafee69f883cd253a7d5987426b809dfd4aeed50cbb43ebccd70c6be47d6bf",
+-      "size_bytes": 12183
++      "sha256": "8bb9f8c4e9fcd60eb84f6550bcea2de01c4ff432c03f50662494354d4dbd2e9e",
++      "size_bytes": 17926
+     },
+     {
+       "executable": false,
+@@ -9563,14 +9563,14 @@
+     {
+       "executable": false,
+       "path": "casepath/assets/autonomous-workspace-v1.css",
+-      "sha256": "184979997357aea000c973295563c46287bc562949de1382ee3b829a4866ee5a",
+-      "size_bytes": 359775
++      "sha256": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
++      "size_bytes": 360402
+     },
+     {
+       "executable": false,
+       "path": "casepath/assets/autonomous-workspace-v1.js",
+-      "sha256": "573c2294692b4025549e687c0e21b959e14692365453519ed7a5ae4b8128e356",
+-      "size_bytes": 847849
++      "sha256": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
++      "size_bytes": 851119
+     },
+     {
+       "executable": false,
+@@ -9755,14 +9755,14 @@
+     {
+       "executable": false,
+       "path": "casepath/assets/review-northstar-v1.css",
+-      "sha256": "7c75bde67d6fc138a71ec2b05536e17a267186fb3d2d46677ade9d8dea2e2dab",
+-      "size_bytes": 27167
++      "sha256": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
++      "size_bytes": 33919
+     },
+     {
+       "executable": false,
+       "path": "casepath/assets/review-northstar-v1.js",
+-      "sha256": "911db61af8299ebbc00a818ad9fb9530ae84133dadac0dc12b9fd179c30d629b",
+-      "size_bytes": 19204
++      "sha256": "5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd",
++      "size_bytes": 22567
+     },
+     {
+       "executable": false,
+@@ -9791,7 +9791,7 @@
+     {
+       "executable": false,
+       "path": "casepath/index.html",
+-      "sha256": "fc9f81111a78f21451e48773d85551c8ad4f578f31ae0b27941f19ff5922fcb7",
++      "sha256": "4ebf74f5811b8c1b2f959787251b5e5a88f0d75f7b6c126807f4e6cbdfb12684",
+       "size_bytes": 26089
+     },
+     {
+diff --git a/design-plans/demo-polish-20261024/REVIEW.md b/design-plans/demo-polish-20261024/REVIEW.md
+new file mode 100644
+index 00000000..d48458d6
+--- /dev/null
++++ b/design-plans/demo-polish-20261024/REVIEW.md
+@@ -0,0 +1,65 @@
++# Demo clarity and reliability — 24 October 2026
++
++## Starting point
++
++Recovered canonical and remote integration HEAD: f75af1ac22a7260487556fc9231f4e290489c2e0. Published and running application: b20685d1670b33b941b1bfcb902638a879c01b93 (Sites v48). Both existing local workspaces are healthy. Work proceeds in the isolated codex/casepath-demo-polish-20261024 normal clone.
++
++## Bounded outcome
++
++1. Open the public presentation on a consistent, immediate introduction. Avoid rendering an unrelated case during preparation. Keep all recorded-history verification and explicit failure handling. Start playback only when its admitted histories are ready.
++2. Make the receiving-case reuse result legible within the reference viewport: selected process step, actual historical before/after, receiving-case source passages, exact saved version and current effect. Keep historical effects distinct from current evaluation; show the whole process when requested.
++3. Verify the actual user journey at desktop and mobile sizes, source fidelity, reduced motion, read-only public behavior, exact-version pinning and evidence visibility. Capture a new continuous public film and fresh viewer assessment after deployment.
++
++## North-star self-review before editing
++
++- Read AGENTS.md, NORTHSTAR.md, CONTRIBUTING.md and active HYBRID_DEVELOPMENT.md.
++- Use the approved white/Mulish/crimson canvas, 75px top bar, source rail and five review roles.
++- Preserve original sources, source bounds and the source → fact → process relationship.
++- Derive each result from actual accepted events and current evaluation; no invented role actions or effect.
++- Engineering actor remains Test handler. Qualified approval is pending. No claim outcome is authorised by these edits.
++- Keep the existing public recorded histories and their original provider usage unchanged. No model or external-facts calls.
++- Preserve the active 4173 and 4194 servers and all existing data. Preview in an owned separate port and disposable QA copy.
++- Root integrates disjoint worker edits, updates asset hashes, seals the complete source, runs the mandatory gate and deploys matching Site/API identities only after verification.
++
++## Acceptance evidence to produce
++
++- Measured cold-entry behavior and honest slow/failure state.
++- Focused bootstrap and review regression results.
++- Original-source and exact-version real-browser assertions, full-page desktop/mobile screenshots.
++- Reference side-by-side / overlay / difference review with explicit justified deviations.
++- Completed full-gate terminal receipt for the sealed source.
++- Deployed matching identities, read-only case walkthrough, continuous film and independent fresh frame review.
++
++The previous release remains available while this candidate is developed. This plan is not a completion or qualification claim.
++
++## Development environment
++
++The launcher correctly rejected a linked worktree because its Git source authority must be a real directory. Development moved to this ordinary clone; the unchanged source guard is retained. The abandoned worktree has no product edits.
++
++## Pre-seal implementation and review
++
++The candidate now presents a case-neutral explanation immediately and never paints the unrelated first roster case before showcase admission. The eight independent state reads run together while the existing state, source, operation-chain and checkpoint admission checks remain in place. Owned reads are cancelled on navigation; late replies cannot start playback. Hidden-page admission waits, and invalid data exposes an honest retry.
++
++Preparation and failure status, including the entire retry control, are visible beside the walkthrough title at 1440 × 900 and 375 × 812. The shared purpose and admitted introduction retain their position and copy. The mobile failure page intentionally scrolls for the remaining explanatory content; recovery controls are visible before that content. Details is separated from the error sentence.
++
++The receiving-case Result view now leads with the affected step and the recorded before/after. Its three evidence cards, qualification note and actual next action are fully visible at the reference desktop viewport. The full twelve-step process remains available through a keyboard-accessible disclosure; editing and preview states keep the full graph. The affected-step marker copies the rendered process marker, including after selection, disclosure changes and reload. Earlier process connections are explicitly retained only when recorded graph evidence supports that statement.
++
++Historical reuse and current evaluation remain distinct. Both historical states were already waiting. The protective next action remains “Preserve challenge or extension deadline.” The later case keeps its own original source passages (30. Juni / 31. Juli), facts and reviews. It pins exact version 1 even after version 2 is published. “Saved by Test handler” remains engineering provenance, and qualified review remains required.
++
++### Completed focused verification
++
++- 13 opening/recorded-admission unit regressions.
++- 6 actual presentation browser scenarios, including the complete six-act presentation, delayed reads, all eight out-of-order responses, navigation cancellation, invalid identity and hidden-tab admission.
++- 19 review consequence unit regressions.
++- One complete isolated deterministic browser journey through original source review, actual correction, exact version save, preview, acceptance, later-case application, reload/version pinning, disclosure and keyboard inspection, and mobile/reduced-motion behavior.
++- The 19 opening checks were rerun after the final visibility-only adjustment. They and the five actual opening screenshots passed.
++- Root visually inspected the final desktop/mobile preparation and failure frames, admitted introduction, and receiving-case result/source reader. No unresolved layout blocker remains in the changed screens.
++- Independent source review found no concrete blocker in the startup admission/cancellation implementation or the final payoff marker/retention delta. Root reviewed the final rail-only markup/CSS adjustment and its actual browser evidence.
++
++The complete official gate, public deployment identity/asset checks, 300 primary read soak, final protected-data/usage readback, fresh continuous film review and all three concept comparisons remain mandatory after this seal. This pre-seal review does not claim those future stages are complete.
++
++### Deliberate design decisions
++
++The neutral loading view reserves the admitted introduction's desktop position rather than inventing case content. It shows a concise textual preparation state without cosmetic progress claims. The accepted reuse result prioritizes the actual change, while the complete process remains one disclosure away. Original documents remain accessible through the existing source reader and zoom control. The result does not imply a newly unblocked decision or qualified approval.
++
++Existing 4173 and 4194 services remain available during development. Any final promotion of the owned engineering service must retain its actual data directory, compare journal hashes/counts before and after startup, and perform no seed replay or provider work.

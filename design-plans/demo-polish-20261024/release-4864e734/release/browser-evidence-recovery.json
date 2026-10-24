@@ -1,0 +1,23 @@
+{
+  "contract": "casepath.browser-evidence-export-recovery/1",
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "status": "diagnosed",
+  "at": "2026-10-24T16:24:27.531250+00:00",
+  "full_gate_passed": true,
+  "gate_actual_completion_sha256": "f8e8297680f91a9991279c10796184b8618d5ed0ed205536913fbc73c6a591b9",
+  "failed_adopter_session": "cp-polish-20261024-078-adopt-gate-browser",
+  "failed_adopter_terminal_sha256": "2218d52872bbdb2802fc7f97dc08c90f508ae01f4eb4efbd8b41c901e7accef6",
+  "original_adopter_sha256": "f42ad1d0bd090fdf48bc5b26128ff6dc3abd2023905e4c00e5d2a35f1661c014",
+  "official_launcher_sha256": "08a6f75b8af06ed199dec4b1aa6ad4c52fafcb84d5a3972ff8fc832af5013b5b",
+  "launcher_forwarding_excerpt": "for frontend_tool_variable in CASEPATH_NODE NODE_PATH PLAYWRIGHT_BROWSERS_PATH \\\n      PLAYWRIGHT_EXECUTABLE_PATH CASEPATH_REQUIRE_FRONTEND_SUITES; do\n      if [[ -n \"${!frontend_tool_variable:-}\" ]]; then\n        frontend_tool_environment+=(\"$frontend_tool_variable=${!frontend_tool_variable}\")\n      fi\n    done",
+  "requested_export_variables_filtered": [
+    "CASEPATH_REVIEW_EVIDENCE_DIR",
+    "CASEPATH_REVIEW_RECORD_VIDEO"
+  ],
+  "expected_export_directory": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/gate-browser",
+  "expected_receipt_present": false,
+  "original_packager_sha256": "06e522dce24cd2f52b0fd2b7de32b16c60e67a5c93a9d1f52eb498d3c5690bb2",
+  "product_changes": false,
+  "full_gate_repeated": false,
+  "resolution": "Record the existing review browser test separately on the same sealed source after the completed gate, with explicit recording/export environment and its own actual Commander terminal; do not claim gate adoption."
+}

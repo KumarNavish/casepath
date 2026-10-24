@@ -1,0 +1,97 @@
+{
+  "contract": "casepath.sealed-review-browser-capture/1",
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "source_tree": "6d6050a9da3db4d7bb0af96fb4e8a861fd103ebe",
+  "source_manifest_sha256": "4bbdb036e69777937f19647f55fca80896ad96ae971a43928220bf93a5ddedef",
+  "status": "passed",
+  "started_at": "2026-10-24T16:41:16.857405+00:00",
+  "commander_session_id": "cp-polish-20261024-sealed-browser-tap",
+  "execution_origin": "Fresh standalone recording of the review browser suite after the completed full release gate",
+  "command": [
+    "/usr/local/bin/node",
+    "--test",
+    "--test-reporter=tap",
+    "casepath-qa/review-northstar-browser-v1.test.cjs"
+  ],
+  "environment": {
+    "HOME": "/Users/kumar0002",
+    "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "CASEPATH_SOURCE_COMMIT": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_AGENT_WORK_EXTERNAL_FACTS": "0",
+    "CASEPATH_PYTHON": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+    "CASEPATH_REVIEW_EVIDENCE_DIR": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser",
+    "CASEPATH_REVIEW_RECORD_VIDEO": "1",
+    "CASEPATH_NODE": "/usr/local/bin/node",
+    "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/casepath-canonical/casepath-qa/node_modules",
+    "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  },
+  "out": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser",
+  "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser-capture.log",
+  "runner_sha256": "7e2c6e8838cc62fca2b35882a98b68041c9841a62b8d6a3835cae542348e9c18",
+  "helper_sha256": "7e2c6e8838cc62fca2b35882a98b68041c9841a62b8d6a3835cae542348e9c18",
+  "verifier_sha256": "09d09605a83a849f7be640e907ddaf112cfcb41c5c6b50f4a90315041df18fb3",
+  "source_binding_sha256": "d19d63642a5d78b1467374aed1d849eac521bd71c0a219614e9515d940f5a265",
+  "test_sha256": "704c70f8473bf66f49b90ccc34399250ae27921a6fb131d1e7ce39ad93ffe1aa",
+  "fixture_sha256": "1376ca10b97db1ab3671920b6e792fd64c58f8e07a0c95ae184abfedc662b3a1",
+  "gate_session_id": "cp-polish-20261024-052-full-gate",
+  "gate_command_sha256": "7ec9ef6bbb7708dff13de8740159312b20949a465cd62b25f33151f823ca123b",
+  "gate_proof_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+  "gate_actual_completion_sha256": "f8e8297680f91a9991279c10796184b8618d5ed0ed205536913fbc73c6a591b9",
+  "completed_gate": {
+    "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+    "terminal_gate_exit": 0,
+    "proof_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+    "actual_completion_sha256": "f8e8297680f91a9991279c10796184b8618d5ed0ed205536913fbc73c6a591b9",
+    "commander_terminal_sha256": "9033a041afcc88b3758cad5f7d1a0e1fe6b1edf4fde1ef2add940aea1028936a"
+  },
+  "source_clean_before": true,
+  "full_gate_repeated": false,
+  "fresh_browser_recording": true,
+  "qualified_human_approval": "pending",
+  "authority": "Isolated deterministic engineering QA; Test handler is not qualified human approval",
+  "stages": [
+    {
+      "name": "review_browser_capture",
+      "status": "completed",
+      "started_at": "2026-10-24T16:41:16.859823+00:00",
+      "pid": 12591,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T16:42:59.391432+00:00"
+    }
+  ],
+  "pid": 12591,
+  "owned_process_group_cleanup": {
+    "process_group": 12591,
+    "child_reaped": true,
+    "child_exit_code": 0
+  },
+  "exit_code": 0,
+  "log_sha256": "0fc1570c6674078110a42e6da548956de26bf6cdc2855347517014fabd14f3e3",
+  "finished_at": "2026-10-24T16:43:01.155894+00:00",
+  "source_clean_after": true,
+  "artifact_hashes": {
+    "receipt.json": "ea9a8949ec1ae28aa3c3554eb17a0250bd4fc5f2cccd522c1c3b396a7ff8792e",
+    "source-review.png": "f9d42e538959aa0b3468016ad6d1b9db40dbf0af8784061f8c47566c7d1f6876",
+    "later-case-preview.png": "7b07f27e09df53c26ce389d8c254af4d02bc258f24fe391afab354b264d4f152",
+    "later-case-reuse.png": "dbfb481d41807f6636b50812fed61820d92c9e9b49dfa858e1c4608683b9693b",
+    "mobile-review.png": "20f3d936a9362e18ccd81dbfe923b002012b1030833c61de8fe6798932f0fc7e",
+    "review-walkthrough.webm": "2a69d591edf359f6a35f5220cc56a0830d23b4f24dd3817a001222455043f995",
+    "server.log": "586974bbc7ed9b859b74cc91b87a6c0c300d0f82790f84abccfe5fb988d4b6f5"
+  },
+  "browser_receipt_sha256": "ea9a8949ec1ae28aa3c3554eb17a0250bd4fc5f2cccd522c1c3b396a7ff8792e",
+  "test_counts": {
+    "tests": 1,
+    "pass": 1,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  }
+}

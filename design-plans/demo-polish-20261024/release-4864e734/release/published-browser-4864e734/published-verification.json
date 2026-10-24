@@ -1,0 +1,2368 @@
+{
+  "site": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+  "expected_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "expected_case_titles": {
+    "clm_314f2d309fea25e6": "Repeated heating failure and reported repair calls",
+    "clm_4a07dbbbd859a3ce": "Heating resets and an uncertain onset date",
+    "clm_95d08975bc575592": "Cold mornings and a requested service assessment",
+    "clm_0f4f13b1e3e1328c": "An emailed termination and uncertain paper service",
+    "clm_393285577dcb12c4": "An unsigned notice and the issuer question",
+    "clm_4a53299cfe619303": "Email notice and the complete service record",
+    "clm_2c55cdd816b1d0e8": "A blank reason field and a later market email",
+    "clm_543f08f2415b2a33": "An increase form with missing original reasons",
+    "clm_7dbd7c7d1c4ddf90": "An increase form and the later email chronology",
+    "clm_0c5e7c7723a3c694": "Competing notices and an alleged correction",
+    "clm_2a9c260c26afaa34": "Mixed debt demand and unknown payment allocation",
+    "clm_521c20913f4e0f9b": "Cold home and an unconfirmed repair plan",
+    "clm_9a179a4481767d43": "Reference-rate date conflict without supplied forms",
+    "clm_c44ddc0914ba9298": "Net rent and ancillary-charge reclassification",
+    "clm_e262801f9368bc12": "Recurring leak and a received image",
+    "clm_ee29ac770b1bf7b9": "Dampness with disputed contractor access",
+    "clm_f69b1747447bc221": "Different tenant and spouse notice dates"
+  },
+  "started_utc": "2026-10-24T16:44:44.502Z",
+  "windows": [
+    {
+      "name": "cold-a-desktop-1440x900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "errors": [],
+      "writes": [],
+      "failed_requests": [
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/operations?mode=recorded net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/operations?mode=live net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303/operations?mode=live net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/operations?mode=live net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/operations?mode=live net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/operations?mode=live net::ERR_ABORTED"
+      ],
+      "api_requests": 188,
+      "cases": [
+        {
+          "group": "demo",
+          "id": "clm_314f2d309fea25e6",
+          "state": "rendered",
+          "ms": 11329,
+          "title": "Repeated heating failure and reported repair calls",
+          "status": "",
+          "view": "northstar-desk",
+          "outcome": null,
+          "overflow": false,
+          "expected_title": "Repeated heating failure and reported repair calls",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "demo",
+          "id": "clm_4a07dbbbd859a3ce",
+          "state": "rendered",
+          "ms": 13498,
+          "title": "Heating resets and an uncertain onset date",
+          "status": "",
+          "view": "northstar-desk",
+          "outcome": null,
+          "overflow": false,
+          "expected_title": "Heating resets and an uncertain onset date",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "demo",
+          "id": "clm_95d08975bc575592",
+          "state": "rendered",
+          "ms": 14557,
+          "title": "Cold mornings and a requested service assessment",
+          "status": "",
+          "view": "northstar-desk",
+          "outcome": null,
+          "overflow": false,
+          "expected_title": "Cold mornings and a requested service assessment",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "demo",
+          "id": "clm_0f4f13b1e3e1328c",
+          "state": "rendered",
+          "ms": 10504,
+          "title": "An emailed termination and uncertain paper service",
+          "status": "",
+          "view": "northstar-desk",
+          "outcome": null,
+          "overflow": false,
+          "expected_title": "An emailed termination and uncertain paper service",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "demo",
+          "id": "clm_393285577dcb12c4",
+          "state": "rendered",
+          "ms": 10992,
+          "title": "An unsigned notice and the issuer question",
+          "status": "",
+          "view": "northstar-desk",
+          "outcome": null,
+          "overflow": false,
+          "expected_title": "An unsigned notice and the issuer question",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "demo",
+          "id": "clm_4a53299cfe619303",
+          "state": "rendered",
+          "ms": 11637,
+          "title": "Email notice and the complete service record",
+          "status": "",
+          "view": "northstar-desk",
+          "outcome": null,
+          "overflow": false,
+          "expected_title": "Email notice and the complete service record",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "demo",
+          "id": "clm_2c55cdd816b1d0e8",
+          "state": "rendered",
+          "ms": 9489,
+          "title": "A blank reason field and a later market email",
+          "status": "",
+          "view": "northstar-desk",
+          "outcome": null,
+          "overflow": false,
+          "expected_title": "A blank reason field and a later market email",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "demo",
+          "id": "clm_543f08f2415b2a33",
+          "state": "rendered",
+          "ms": 10343,
+          "title": "An increase form with missing original reasons",
+          "status": "",
+          "view": "northstar-desk",
+          "outcome": null,
+          "overflow": false,
+          "expected_title": "An increase form with missing original reasons",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "demo",
+          "id": "clm_7dbd7c7d1c4ddf90",
+          "state": "rendered",
+          "ms": 13294,
+          "title": "An increase form and the later email chronology",
+          "status": "",
+          "view": "northstar-desk",
+          "outcome": null,
+          "overflow": false,
+          "expected_title": "An increase form and the later email chronology",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "original",
+          "id": "clm_0c5e7c7723a3c694",
+          "state": "rendered",
+          "ms": 1621,
+          "title": "Competing notices and an alleged correction",
+          "status": "Deferred.",
+          "view": "claim",
+          "outcome": "Some facts still need proof.",
+          "overflow": false,
+          "expected_title": "Competing notices and an alleged correction",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "original",
+          "id": "clm_2a9c260c26afaa34",
+          "state": "rendered",
+          "ms": 546,
+          "title": "Mixed debt demand and unknown payment allocation",
+          "status": "Deferred.",
+          "view": "claim",
+          "outcome": "Some facts still need proof.",
+          "overflow": false,
+          "expected_title": "Mixed debt demand and unknown payment allocation",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "original",
+          "id": "clm_521c20913f4e0f9b",
+          "state": "rendered",
+          "ms": 1457,
+          "title": "Cold home and an unconfirmed repair plan",
+          "status": "Deferred.",
+          "view": "claim",
+          "outcome": "Some facts still need proof.",
+          "overflow": false,
+          "expected_title": "Cold home and an unconfirmed repair plan",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "original",
+          "id": "clm_7dbd7c7d1c4ddf90",
+          "state": "rendered",
+          "ms": 11738,
+          "title": "An increase form and the later email chronology",
+          "status": "",
+          "view": "northstar-desk",
+          "outcome": null,
+          "overflow": false,
+          "expected_title": "An increase form and the later email chronology",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "original",
+          "id": "clm_9a179a4481767d43",
+          "state": "rendered",
+          "ms": 1286,
+          "title": "Reference-rate date conflict without supplied forms",
+          "status": "More evidence needed.",
+          "view": "claim",
+          "outcome": "More documents are needed.",
+          "overflow": false,
+          "expected_title": "Reference-rate date conflict without supplied forms",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "original",
+          "id": "clm_c44ddc0914ba9298",
+          "state": "rendered",
+          "ms": 1539,
+          "title": "Net rent and ancillary-charge reclassification",
+          "status": "More evidence needed.",
+          "view": "claim",
+          "outcome": "More documents are needed.",
+          "overflow": false,
+          "expected_title": "Net rent and ancillary-charge reclassification",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "original",
+          "id": "clm_e262801f9368bc12",
+          "state": "rendered",
+          "ms": 1485,
+          "title": "Recurring leak and a received image",
+          "status": "Deferred.",
+          "view": "claim",
+          "outcome": "Some facts still need proof.",
+          "overflow": false,
+          "expected_title": "Recurring leak and a received image",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "original",
+          "id": "clm_ee29ac770b1bf7b9",
+          "state": "rendered",
+          "ms": 1111,
+          "title": "Dampness with disputed contractor access",
+          "status": "Deferred.",
+          "view": "claim",
+          "outcome": "Some facts still need proof.",
+          "overflow": false,
+          "expected_title": "Dampness with disputed contractor access",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        },
+        {
+          "group": "original",
+          "id": "clm_f69b1747447bc221",
+          "state": "rendered",
+          "ms": 1521,
+          "title": "Different tenant and spouse notice dates",
+          "status": "Deferred.",
+          "view": "claim",
+          "outcome": "Some facts still need proof.",
+          "overflow": false,
+          "expected_title": "Different tenant and spouse notice dates",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": []
+        }
+      ],
+      "edge_beacons": [
+        "POST /cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.9143971869041332:1792858212:V8YJihI9J8hOIViXvGqskO2ZSIXnsdy6ViuGYNU2fVo/a4fa72b93888bac8"
+      ],
+      "dom_ms": 428,
+      "first_content_ms": 16527,
+      "cold_timeline": [
+        {
+          "ms": 413.5,
+          "view": "loading"
+        },
+        {
+          "ms": 570,
+          "view": "northstar"
+        }
+      ],
+      "landing": {
+        "hash": "#autonomous/claim/clm_314f2d309fea25e6?operations=recorded&collection=reference&mode=replay&through=0",
+        "title": "An increase form with missing original reasons"
+      },
+      "cases_visible_ms": 16625,
+      "case_rows": 20,
+      "deployment": {
+        "alignment_eligible": true,
+        "component": "frontend",
+        "component_contract": "focused-claim-workspace-v20",
+        "component_version": "20.0.0",
+        "contract": "casepath.deployment-identity/1.0.0",
+        "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+        "release_id": "casepath-v20-reference-20260811",
+        "service": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+        "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+        "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+        "unknown_semantics": "unknown never satisfies cross-service release alignment"
+      },
+      "home_overflow": false,
+      "knowledge": {
+        "identities": 3,
+        "error": null,
+        "text": "Reusable checklists\n\nKnowledge\nHistory\nDefects and repairs\nUsed in 3 cases\nLease termination\nUsed in 3 cases\nRent increases\nUsed in 3 cases\nDefects and repairs\n\nLearned from “Repeated heating failure and reported repair calls” · reused in 2 later cases\n\nHow this was learned\n\nEach case still needs its own evidence. These legal tests come from the case that supplied the checklist.\n\nSteps\nRead the re",
+        "overflow": false
+      },
+      "served_assets": [
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "pathname": "/assets/agent-native-v2.css",
+          "type": "stylesheet",
+          "sha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "bytes": 67377,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "pathname": "/assets/agent-work-v1.css",
+          "type": "stylesheet",
+          "sha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "bytes": 28141,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-entry-v1.js?sha256=e405667ff58085b9928ada3a43b1bef6cbeac3caf105061f12c7541112c04d0d",
+          "pathname": "/assets/autonomous-entry-v1.js",
+          "type": "script",
+          "sha256": "e405667ff58085b9928ada3a43b1bef6cbeac3caf105061f12c7541112c04d0d",
+          "bytes": 3801,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-language-v1.js?sha256=e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+          "pathname": "/assets/autonomous-language-v1.js",
+          "type": "script",
+          "sha256": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+          "bytes": 37777,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-presentation-v1.js?sha256=fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+          "pathname": "/assets/autonomous-presentation-v1.js",
+          "type": "script",
+          "sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+          "bytes": 7473,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-workspace-v1.css?sha256=3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+          "pathname": "/assets/autonomous-workspace-v1.css",
+          "type": "stylesheet",
+          "sha256": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+          "bytes": 360402,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-workspace-v1.js?sha256=cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+          "pathname": "/assets/autonomous-workspace-v1.js",
+          "type": "script",
+          "sha256": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+          "bytes": 851119,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "pathname": "/assets/causal-process-v1.css",
+          "type": "stylesheet",
+          "sha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "bytes": 15740,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "pathname": "/assets/claims-workspace-presentation-v1.css",
+          "type": "stylesheet",
+          "sha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "bytes": 20081,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "pathname": "/assets/claims-workspace-v1.css",
+          "type": "stylesheet",
+          "sha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "bytes": 4108,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "pathname": "/assets/process-evidence-v2.css",
+          "type": "stylesheet",
+          "sha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "bytes": 2197,
+          "observations": 19
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/review-northstar-v1.css?sha256=af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+          "pathname": "/assets/review-northstar-v1.css",
+          "type": "stylesheet",
+          "sha256": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+          "bytes": 33919,
+          "observations": 19
+        }
+      ],
+      "required_static_assets": [
+        "/assets/autonomous-presentation-v1.js",
+        "/assets/autonomous-language-v1.js",
+        "/assets/claims-workspace-v1.css",
+        "/assets/causal-process-v1.css",
+        "/assets/claims-workspace-presentation-v1.css",
+        "/assets/agent-work-v1.css",
+        "/assets/process-evidence-v2.css",
+        "/assets/agent-native-v2.css",
+        "/assets/review-northstar-v1.css",
+        "/assets/autonomous-workspace-v1.css",
+        "/assets/autonomous-entry-v1.js"
+      ],
+      "review_assets": [
+        {
+          "pathname": "/assets/review-northstar-v1.js",
+          "sha256": "5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd",
+          "bytes": 22567,
+          "method": "GET"
+        },
+        {
+          "pathname": "/assets/review-northstar-v1.css",
+          "sha256": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+          "bytes": 33919,
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "name": "cold-b-mobile-390x844",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "errors": [],
+      "writes": [],
+      "failed_requests": [
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0 net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0 net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/operations?mode=recorded net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0 net::ERR_ABORTED",
+        "GET https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=0 net::ERR_ABORTED"
+      ],
+      "api_requests": 38,
+      "cases": [
+        {
+          "group": "demo",
+          "id": "clm_314f2d309fea25e6",
+          "state": "rendered",
+          "ms": 3626,
+          "title": "Repeated heating failure and reported repair calls",
+          "status": "Assessment complete.",
+          "view": "claim",
+          "outcome": "The checks support repair and rent reduction eligibility. Repair, the reduction amount and any award remain undetermined.",
+          "overflow": false,
+          "expected_title": "Repeated heating failure and reported repair calls",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": [
+            {
+              "name": "Tenancy details",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 563.078125,
+                "right": 258.625,
+                "bottom": 588.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 563.078125,
+                "right": 364,
+                "bottom": 588.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 555.078125,
+                "right": 370,
+                "bottom": 599.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Landlord knowledge and repair status",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 701.078125,
+                "right": 258.625,
+                "bottom": 726.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 701.078125,
+                "right": 364,
+                "bottom": 726.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 693.078125,
+                "right": 370,
+                "bottom": 737.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Heating service report",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 913.078125,
+                "right": 258.625,
+                "bottom": 938.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 913.078125,
+                "right": 364,
+                "bottom": 938.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 905.078125,
+                "right": 370,
+                "bottom": 949.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "group": "demo",
+          "id": "clm_4a07dbbbd859a3ce",
+          "state": "rendered",
+          "ms": 1978,
+          "title": "Heating resets and an uncertain onset date",
+          "status": "Assessment complete.",
+          "view": "claim",
+          "outcome": "The checks support repair and rent reduction eligibility. Repair, the reduction amount and any award remain undetermined.",
+          "overflow": false,
+          "expected_title": "Heating resets and an uncertain onset date",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": [
+            {
+              "name": "Tenancy details",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 563.078125,
+                "right": 258.625,
+                "bottom": 588.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 563.078125,
+                "right": 364,
+                "bottom": 588.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 555.078125,
+                "right": 370,
+                "bottom": 599.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Landlord knowledge and repair status",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 701.078125,
+                "right": 258.625,
+                "bottom": 726.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 701.078125,
+                "right": 364,
+                "bottom": 726.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 693.078125,
+                "right": 370,
+                "bottom": 737.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Heating service report",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 913.078125,
+                "right": 258.625,
+                "bottom": 938.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 913.078125,
+                "right": 364,
+                "bottom": 938.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 905.078125,
+                "right": 370,
+                "bottom": 949.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "group": "demo",
+          "id": "clm_95d08975bc575592",
+          "state": "rendered",
+          "ms": 1746,
+          "title": "Cold mornings and a requested service assessment",
+          "status": "Assessment complete.",
+          "view": "claim",
+          "outcome": "The checks support repair and rent reduction eligibility. Repair, the reduction amount and any award remain undetermined.",
+          "overflow": false,
+          "expected_title": "Cold mornings and a requested service assessment",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": [
+            {
+              "name": "Tenancy details",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 563.078125,
+                "right": 258.625,
+                "bottom": 588.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 563.078125,
+                "right": 364,
+                "bottom": 588.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 555.078125,
+                "right": 370,
+                "bottom": 599.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Landlord knowledge and repair status",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 701.078125,
+                "right": 258.625,
+                "bottom": 726.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 701.078125,
+                "right": 364,
+                "bottom": 726.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 693.078125,
+                "right": 370,
+                "bottom": 737.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Heating service report",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 913.078125,
+                "right": 258.625,
+                "bottom": 938.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 913.078125,
+                "right": 364,
+                "bottom": 938.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 905.078125,
+                "right": 370,
+                "bottom": 949.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "group": "demo",
+          "id": "clm_0f4f13b1e3e1328c",
+          "state": "rendered",
+          "ms": 1851,
+          "title": "An emailed termination and uncertain paper service",
+          "status": "Assessment complete.",
+          "view": "claim",
+          "outcome": "The termination notice is missing the required official form.",
+          "overflow": false,
+          "expected_title": "An emailed termination and uncertain paper service",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": [
+            {
+              "name": "Notice and delivery details",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 623.640625,
+                "right": 258.625,
+                "bottom": 648.828125,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 623.640625,
+                "right": 364,
+                "bottom": 648.828125,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 615.640625,
+                "right": 370,
+                "bottom": 659.640625,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Termination by email Taylor Miller 2026 05 08",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 679.640625,
+                "right": 258.625,
+                "bottom": 704.828125,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 679.640625,
+                "right": 364,
+                "bottom": 704.828125,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 671.640625,
+                "right": 370,
+                "bottom": 715.640625,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Issuer authority and complete channel archive",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 735.640625,
+                "right": 258.625,
+                "bottom": 760.828125,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 735.640625,
+                "right": 364,
+                "bottom": 760.828125,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 727.640625,
+                "right": 370,
+                "bottom": 771.640625,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "group": "demo",
+          "id": "clm_393285577dcb12c4",
+          "state": "rendered",
+          "ms": 1930,
+          "title": "An unsigned notice and the issuer question",
+          "status": "Assessment complete.",
+          "view": "claim",
+          "outcome": "The termination notice is missing the required official form.",
+          "overflow": false,
+          "expected_title": "An unsigned notice and the issuer question",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": [
+            {
+              "name": "Notice and delivery details",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 649.734375,
+                "right": 258.625,
+                "bottom": 674.921875,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 649.734375,
+                "right": 364,
+                "bottom": 674.921875,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 641.734375,
+                "right": 370,
+                "bottom": 685.734375,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Kuendigung per E Mail Simon Steiner 2026 05 04",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 705.734375,
+                "right": 258.625,
+                "bottom": 730.921875,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 705.734375,
+                "right": 364,
+                "bottom": 730.921875,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 697.734375,
+                "right": 370,
+                "bottom": 741.734375,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Issuer authority and complete channel archive",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 761.734375,
+                "right": 258.625,
+                "bottom": 786.921875,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 761.734375,
+                "right": 364,
+                "bottom": 786.921875,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 753.734375,
+                "right": 370,
+                "bottom": 797.734375,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "group": "demo",
+          "id": "clm_4a53299cfe619303",
+          "state": "rendered",
+          "ms": 2251,
+          "title": "Email notice and the complete service record",
+          "status": "Assessment complete.",
+          "view": "claim",
+          "outcome": "The termination notice is missing the required official form.",
+          "overflow": false,
+          "expected_title": "Email notice and the complete service record",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": [
+            {
+              "name": "Notice and delivery details",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 649.734375,
+                "right": 258.625,
+                "bottom": 674.921875,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 649.734375,
+                "right": 364,
+                "bottom": 674.921875,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 641.734375,
+                "right": 370,
+                "bottom": 685.734375,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Kuendigung per E Mail Lea Meier 2026 05 08",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 705.734375,
+                "right": 258.625,
+                "bottom": 730.921875,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 705.734375,
+                "right": 364,
+                "bottom": 730.921875,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 697.734375,
+                "right": 370,
+                "bottom": 741.734375,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Issuer authority and complete channel archive",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 761.734375,
+                "right": 258.625,
+                "bottom": 786.921875,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 761.734375,
+                "right": 364,
+                "bottom": 786.921875,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 753.734375,
+                "right": 370,
+                "bottom": 797.734375,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "group": "demo",
+          "id": "clm_2c55cdd816b1d0e8",
+          "state": "rendered",
+          "ms": 2717,
+          "title": "A blank reason field and a later market email",
+          "status": "Assessment complete.",
+          "view": "claim",
+          "outcome": "The rent increase notice is missing reasons supplied with the notice.",
+          "overflow": false,
+          "expected_title": "A blank reason field and a later market email",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": [
+            {
+              "name": "Notice and delivery details",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 589.171875,
+                "right": 258.625,
+                "bottom": 614.359375,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 589.171875,
+                "right": 364,
+                "bottom": 614.359375,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 581.171875,
+                "right": 370,
+                "bottom": 625.171875,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Mietzinserhoehung Formular Noah Frei 2025 11 17",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 645.171875,
+                "right": 258.625,
+                "bottom": 670.359375,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 645.171875,
+                "right": 364,
+                "bottom": 670.359375,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 637.171875,
+                "right": 370,
+                "bottom": 681.171875,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Later email and original absence of reasons",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 783.171875,
+                "right": 258.625,
+                "bottom": 808.359375,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 783.171875,
+                "right": 364,
+                "bottom": 808.359375,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 775.171875,
+                "right": 370,
+                "bottom": 819.171875,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "group": "demo",
+          "id": "clm_543f08f2415b2a33",
+          "state": "rendered",
+          "ms": 2016,
+          "title": "An increase form with missing original reasons",
+          "status": "Assessment complete.",
+          "view": "claim",
+          "outcome": "The rent increase notice is missing reasons supplied with the notice.",
+          "overflow": false,
+          "expected_title": "An increase form with missing original reasons",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": [
+            {
+              "name": "Notice and delivery details",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 589.171875,
+                "right": 258.625,
+                "bottom": 614.359375,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 589.171875,
+                "right": 364,
+                "bottom": 614.359375,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 581.171875,
+                "right": 370,
+                "bottom": 625.171875,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Mietzinserhoehung Formular Elin Ziegler 2025 11 18",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 645.171875,
+                "right": 258.625,
+                "bottom": 670.359375,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 645.171875,
+                "right": 364,
+                "bottom": 670.359375,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 637.171875,
+                "right": 370,
+                "bottom": 681.171875,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Later email and original absence of reasons",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 783.171875,
+                "right": 258.625,
+                "bottom": 808.359375,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 783.171875,
+                "right": 364,
+                "bottom": 808.359375,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 775.171875,
+                "right": 370,
+                "bottom": 819.171875,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "group": "demo",
+          "id": "clm_7dbd7c7d1c4ddf90",
+          "state": "rendered",
+          "ms": 2385,
+          "title": "An increase form and the later email chronology",
+          "status": "Assessment complete.",
+          "view": "claim",
+          "outcome": "The rent increase notice is missing reasons supplied with the notice.",
+          "overflow": false,
+          "expected_title": "An increase form and the later email chronology",
+          "title_identity_ok": true,
+          "overlaps": [],
+          "mobileDocuments": [
+            {
+              "name": "Notice and delivery details",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 563.078125,
+                "right": 258.625,
+                "bottom": 588.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 563.078125,
+                "right": 364,
+                "bottom": 588.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 555.078125,
+                "right": 370,
+                "bottom": 599.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Mietzinserhoehung Formular Drew Shaw 2025 11 22",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 619.078125,
+                "right": 258.625,
+                "bottom": 644.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 619.078125,
+                "right": 364,
+                "bottom": 644.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 611.078125,
+                "right": 370,
+                "bottom": 655.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            },
+            {
+              "name": "Later email and original absence of reasons",
+              "status": "Received ✓",
+              "nameRect": {
+                "x": 28,
+                "y": 757.078125,
+                "right": 258.625,
+                "bottom": 782.265625,
+                "width": 230.625,
+                "height": 25.1875
+              },
+              "statusRect": {
+                "x": 270.625,
+                "y": 757.078125,
+                "right": 364,
+                "bottom": 782.265625,
+                "width": 93.375,
+                "height": 25.1875
+              },
+              "buttonRect": {
+                "x": 28,
+                "y": 749.078125,
+                "right": 370,
+                "bottom": 793.078125,
+                "width": 342,
+                "height": 44
+              },
+              "gap": 12,
+              "overlap": false,
+              "passed": true
+            }
+          ]
+        }
+      ],
+      "edge_beacons": [
+        "POST /cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.9143971869041332:1792858212:V8YJihI9J8hOIViXvGqskO2ZSIXnsdy6ViuGYNU2fVo/a4fa764afe1f8dde"
+      ],
+      "dom_ms": 390,
+      "first_content_ms": 1235,
+      "cold_timeline": [
+        {
+          "ms": 363,
+          "view": "loading"
+        },
+        {
+          "ms": 992.5,
+          "view": "claim"
+        }
+      ],
+      "landing": {
+        "hash": "#autonomous/claim/clm_314f2d309fea25e6?operations=recorded&collection=reference&mode=replay&through=0",
+        "title": "Case 1 of 9 · Defects and repairs"
+      },
+      "cases_visible_ms": 2570,
+      "case_rows": 20,
+      "deployment": {
+        "alignment_eligible": true,
+        "component": "frontend",
+        "component_contract": "focused-claim-workspace-v20",
+        "component_version": "20.0.0",
+        "contract": "casepath.deployment-identity/1.0.0",
+        "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+        "release_id": "casepath-v20-reference-20260811",
+        "service": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+        "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+        "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+        "unknown_semantics": "unknown never satisfies cross-service release alignment"
+      },
+      "home_overflow": false,
+      "served_assets": [
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "pathname": "/assets/agent-native-v2.css",
+          "type": "stylesheet",
+          "sha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "bytes": 67377,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "pathname": "/assets/agent-work-v1.css",
+          "type": "stylesheet",
+          "sha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "bytes": 28141,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-entry-v1.js?sha256=e405667ff58085b9928ada3a43b1bef6cbeac3caf105061f12c7541112c04d0d",
+          "pathname": "/assets/autonomous-entry-v1.js",
+          "type": "script",
+          "sha256": "e405667ff58085b9928ada3a43b1bef6cbeac3caf105061f12c7541112c04d0d",
+          "bytes": 3801,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-language-v1.js?sha256=e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+          "pathname": "/assets/autonomous-language-v1.js",
+          "type": "script",
+          "sha256": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+          "bytes": 37777,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-presentation-v1.js?sha256=fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+          "pathname": "/assets/autonomous-presentation-v1.js",
+          "type": "script",
+          "sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+          "bytes": 7473,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-workspace-v1.css?sha256=3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+          "pathname": "/assets/autonomous-workspace-v1.css",
+          "type": "stylesheet",
+          "sha256": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+          "bytes": 360402,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-workspace-v1.js?sha256=cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+          "pathname": "/assets/autonomous-workspace-v1.js",
+          "type": "script",
+          "sha256": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+          "bytes": 851119,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "pathname": "/assets/causal-process-v1.css",
+          "type": "stylesheet",
+          "sha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "bytes": 15740,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "pathname": "/assets/claims-workspace-presentation-v1.css",
+          "type": "stylesheet",
+          "sha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "bytes": 20081,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "pathname": "/assets/claims-workspace-v1.css",
+          "type": "stylesheet",
+          "sha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "bytes": 4108,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "pathname": "/assets/process-evidence-v2.css",
+          "type": "stylesheet",
+          "sha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "bytes": 2197,
+          "observations": 10
+        },
+        {
+          "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/review-northstar-v1.css?sha256=af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+          "pathname": "/assets/review-northstar-v1.css",
+          "type": "stylesheet",
+          "sha256": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+          "bytes": 33919,
+          "observations": 10
+        }
+      ],
+      "required_static_assets": [
+        "/assets/autonomous-presentation-v1.js",
+        "/assets/autonomous-language-v1.js",
+        "/assets/claims-workspace-v1.css",
+        "/assets/causal-process-v1.css",
+        "/assets/claims-workspace-presentation-v1.css",
+        "/assets/agent-work-v1.css",
+        "/assets/process-evidence-v2.css",
+        "/assets/agent-native-v2.css",
+        "/assets/review-northstar-v1.css",
+        "/assets/autonomous-workspace-v1.css",
+        "/assets/autonomous-entry-v1.js"
+      ],
+      "review_assets": [
+        {
+          "pathname": "/assets/review-northstar-v1.js",
+          "sha256": "5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd",
+          "bytes": 22567,
+          "method": "GET"
+        },
+        {
+          "pathname": "/assets/review-northstar-v1.css",
+          "sha256": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+          "bytes": 33919,
+          "method": "GET"
+        }
+      ]
+    }
+  ],
+  "browser": "155.0.8059.85",
+  "film": {
+    "recording_requested_at": "2026-10-24T16:47:35.883Z",
+    "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "errors": [],
+    "writes": [],
+    "samples": [
+      {
+        "t": 31,
+        "beat": "0",
+        "act": "customer",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 1598,
+        "beat": "0",
+        "act": "customer",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 3115,
+        "beat": "0",
+        "act": "customer",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 4652,
+        "beat": "2",
+        "act": "customer",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 6185,
+        "beat": "4",
+        "act": "customer",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 7744,
+        "beat": "7",
+        "act": "reading",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 9292,
+        "beat": "9",
+        "act": "reading",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 10869,
+        "beat": "9",
+        "act": "reading",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 12417,
+        "beat": "11",
+        "act": "reading",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 14067,
+        "beat": "12",
+        "act": "reading",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 15646,
+        "beat": "16",
+        "act": "reading",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 17178,
+        "beat": "18",
+        "act": "reading",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 18716,
+        "beat": "21",
+        "act": "reading",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 20281,
+        "beat": "26",
+        "act": "process",
+        "four_x": true,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 21858,
+        "beat": "29",
+        "act": "process",
+        "four_x": true,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 23429,
+        "beat": "33",
+        "act": "process",
+        "four_x": true,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 24997,
+        "beat": "36",
+        "act": "process",
+        "four_x": true,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 26594,
+        "beat": "39",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 28192,
+        "beat": "41",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 29781,
+        "beat": "44",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 31340,
+        "beat": "46",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 32895,
+        "beat": "49",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 34421,
+        "beat": "49",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 35940,
+        "beat": "49",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 37463,
+        "beat": "51",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 39086,
+        "beat": "51",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 40658,
+        "beat": "51",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 42232,
+        "beat": "51",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 43814,
+        "beat": "53",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 45333,
+        "beat": "56",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 46851,
+        "beat": "58",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 48372,
+        "beat": "61",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 49925,
+        "beat": "61",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 51567,
+        "beat": "64",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 53130,
+        "beat": "65",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 54671,
+        "beat": "65",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 56221,
+        "beat": "67",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 57737,
+        "beat": "67",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 59253,
+        "beat": "67",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 60767,
+        "beat": "67",
+        "act": "decision",
+        "four_x": false,
+        "heading": "An increase form with missing original reasons",
+        "overlaps": []
+      },
+      {
+        "t": 62288,
+        "beat": "69",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 63876,
+        "beat": "71",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 65506,
+        "beat": "73",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 67076,
+        "beat": "74",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 68627,
+        "beat": "75",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 70209,
+        "beat": "77",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 71749,
+        "beat": "78",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 73288,
+        "beat": "79",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 74831,
+        "beat": "80",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 76416,
+        "beat": "81",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 77947,
+        "beat": "81",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 79477,
+        "beat": "81",
+        "act": "learning",
+        "four_x": false,
+        "heading": "An increase form and the later email chronology",
+        "overlaps": []
+      },
+      {
+        "t": 80992,
+        "beat": "86",
+        "act": "cases",
+        "four_x": false,
+        "heading": "9 recorded examples",
+        "overlaps": []
+      },
+      {
+        "t": 82501,
+        "beat": "92",
+        "act": "cases",
+        "four_x": false,
+        "heading": "9 recorded examples",
+        "overlaps": []
+      },
+      {
+        "t": 84043,
+        "beat": "93",
+        "act": "cases",
+        "four_x": false,
+        "heading": "9 recorded examples",
+        "overlaps": []
+      },
+      {
+        "t": 85582,
+        "beat": "94",
+        "act": "cases",
+        "four_x": false,
+        "heading": "9 recorded examples",
+        "overlaps": []
+      },
+      {
+        "t": 87121,
+        "beat": "95",
+        "act": "cases",
+        "four_x": false,
+        "heading": "9 recorded examples",
+        "overlaps": []
+      },
+      {
+        "t": 88056,
+        "beat": "95",
+        "act": "cases",
+        "four_x": false,
+        "heading": "9 recorded examples",
+        "overlaps": []
+      }
+    ],
+    "edge_beacons": [
+      "POST /cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.9143971869041332:1792858212:V8YJihI9J8hOIViXvGqskO2ZSIXnsdy6ViuGYNU2fVo/a4fa76e49b0acdb8"
+    ],
+    "playback_first_observed_at": "2026-10-24T16:47:51.693Z",
+    "duration_ms": 88050,
+    "wall_ms": 88795,
+    "playback_observed_end_at": "2026-10-24T16:49:20.514Z",
+    "reached_end": true,
+    "acts_seen": [
+      "customer",
+      "reading",
+      "process",
+      "decision",
+      "learning",
+      "cases"
+    ],
+    "four_x_seen": true,
+    "video_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-browser-4864e734/public-walkthrough.webm",
+    "video_sha256": "2d41d1ba48e2c14164ff80fc5f904868c64a5c51b8fe596cd4ee20271696bce3",
+    "video_bytes": 9143069
+  },
+  "supplement": {
+    "errors": [],
+    "nativeViewerDiagnostics": [],
+    "writes": [],
+    "edge_beacons": [
+      "POST /cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.9143971869041332:1792858212:V8YJihI9J8hOIViXvGqskO2ZSIXnsdy6ViuGYNU2fVo/a4fa7972fce0bc41",
+      "POST /cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.9143971869041332:1792858212:V8YJihI9J8hOIViXvGqskO2ZSIXnsdy6ViuGYNU2fVo/a4fa7a230a31c4a5"
+    ],
+    "contrast": [
+      {
+        "label": "role controls",
+        "rows": [
+          {
+            "text": "Claim reader",
+            "ratio": 10.432241106993011,
+            "opacity": 1,
+            "color": "rgb(130, 7, 42)",
+            "fontSize": "15.5px"
+          },
+          {
+            "text": "Source checker",
+            "ratio": 8.674477430807434,
+            "opacity": 1,
+            "color": "rgb(76, 75, 77)",
+            "fontSize": "15.5px"
+          },
+          {
+            "text": "Process builder",
+            "ratio": 8.674477430807434,
+            "opacity": 1,
+            "color": "rgb(76, 75, 77)",
+            "fontSize": "15.5px"
+          },
+          {
+            "text": "Document finder",
+            "ratio": 8.674477430807434,
+            "opacity": 1,
+            "color": "rgb(76, 75, 77)",
+            "fontSize": "15.5px"
+          },
+          {
+            "text": "Result checker",
+            "ratio": 8.674477430807434,
+            "opacity": 1,
+            "color": "rgb(76, 75, 77)",
+            "fontSize": "15.5px"
+          }
+        ]
+      },
+      {
+        "label": "reader facts",
+        "rows": [
+          {
+            "text": "✓The actual received increase notification contents, without asserting lawful reasons›",
+            "ratio": 8.674477430807434,
+            "opacity": 1,
+            "color": "rgb(76, 75, 77)",
+            "fontSize": "14px"
+          },
+          {
+            "text": "✓Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract›",
+            "ratio": 8.674477430807434,
+            "opacity": 1,
+            "color": "rgb(76, 75, 77)",
+            "fontSize": "14px"
+          },
+          {
+            "text": "✓Issuer authority and complete contemporaneous notification packet›",
+            "ratio": 8.674477430807434,
+            "opacity": 1,
+            "color": "rgb(76, 75, 77)",
+            "fontSize": "14px"
+          }
+        ]
+      },
+      {
+        "label": "legal article",
+        "rows": [
+          {
+            "text": "1 Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er mus",
+            "ratio": 16.113838420027594,
+            "opacity": 1,
+            "color": "rgb(32, 33, 35)",
+            "fontSize": "15px"
+          }
+        ]
+      },
+      {
+        "label": "draft status",
+        "rows": [
+          {
+            "text": "Your copy, saved on this device. Not sent — you decide.",
+            "ratio": 16.113838420027594,
+            "opacity": 1,
+            "color": "rgb(32, 33, 35)",
+            "fontSize": "16px"
+          }
+        ]
+      }
+    ],
+    "focus": {
+      "width": "3px",
+      "style": "solid",
+      "color": "rgb(22, 79, 136)"
+    },
+    "source": {
+      "quote": "Begründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1",
+      "metadata": "Original source\n\nMietzinserhoehung Formular Elin Ziegler 2025 11 18\nClose source\nSource text verified · exact cited span verified\nExtracted text\nDownload original\nGestützt auf die Art. 269d und 270b des Schweizerischen Obligationenrechts (OR) gebe/n ich/wir \nIhnen folgende\nMitteilung von Mietzinserhöhungen und einseitigen \nVertragsänderungen (Art. 269d OR)\nDer Auszug aus den massgeblichen Bestimmungen des Obligationenrechts auf Seite 3 ist Bestandteil dieses amtlichen Formulars.\nMietzinserhöhung\nandere einseitige Vertragsänderung bekannt.\nAdresse:\nbisher:\nneu ab:\nLiegenschaft/en:\nWohnung\nGeschäftsräume\nNebenkosten:\nTotal Mietzins inkl. Nebenkosten\nA. Mietzins\nNettomietzins (ohne Nebenkosten) Fr.\nFr.\npro Monat\nFr.\nFr.\npro Monat\nFr.\nFr.\npro Monat\nFr.\nFr.\npro Monat\nFr.\nFr.\npro Monat\nFr.\nFr.\npro Monat\nFr.\nFr.\npro Monat\nFr.\nFr.\npro Monat\nFr.\nFr.\npro Monat\nBegründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1\n(für Fenstercouvert links)\n(für Fenstercouvert rechts)\nFormular bereitgestellt durch die Direktion der Justiz und des Innern des Kantons Zürich\n1/3\nElin Ziegler\nSeefeldstrasse 67, 8008 Zürich\nVerde Gestion SA\nPostfach 184, 8008 Zürich\nAare Wohnraum AG\nSeefeldstrasse 67, 8008 Zürich\n01.04.2026\n1'850.00\n1'975.00\nAkonto Heizung / Warmwasser\n180.00\n180.00\nAkonto Wasser / Abwasser\n60.00\n60.00\n2'090.00\n2'215.00\n\n\f\nOrt und Datum\n1. Umschreibung der Änderung:\n2. Begründung der Änderung1:\n3. Zeitpunkt des Inkrafttretens:\nB. Andere einseitige Vertragsänderung\nBei Erhöhung wegen Mehrleistungen:  \nErhalt von Förderbeiträgen für wertvermehrende Verbesserungen\nDiese Mietzinserhöhung und/oder andere einseitige Vertragsänderung kann/können \ninnert 30 Tagen nach Empfang der Mitteilung bei der Paritätischen Schlichtungs- \nbehörde des Bezirks, in dem sich das Mietobjekt befindet (zuständiges Bezirksgericht), \nals missbräuchlich angefochten werden.\n1 Erfolgt die Begründung in einem Begleitschreiben, hat der/die Vermieter/in im Formular ausdrücklich darauf hinzuweisen.\nJa\nNein\nUnterschrift\nFormular bereitgestellt durch die Direktion der Justiz und des Innern des Kantons Zürich\n2/3\ni. A. Bewirtschaftung\nZürich, 18.11.2025\n\n\f\nAuszug aus den massgeblichen Bestimmungen des Schweizerischen Obligationenrechts  \nAchter Titel: Die Miete\nZweiter Abschnitt: Schutz vor missbräuchlichen Mietzinsen und anderen missbräuchlichen Forderungen des Vermieters bei \nder Miete von Wohn- und Geschäftsräumen\nArt. 269 (A. Missbräuchliche Mietzinse. I. Regel)\nMietzinse sind missbräuchlich, wenn damit ein übersetzter Ertrag aus \nder Mietsache erzielt wird oder wenn sie auf einem offensichtlich über-\nsetzten Kaufpreis beruhen.\nArt. 269a (Il. Ausnahmen)\nMietzinse sind in der Regel nicht missbräuchlich, wenn sie insbesondere:\na. im Rahmen der orts- oder quartierüblichen Mietzinse liegen;\nb.\tdurch Kostensteigerungen oder Mehrleistungen des Vermieters \t\n\t\n\t\nbegründet sind;\nc.\tbei neueren Bauten im Rahmen der kostendeckenden Brutto- \n\t\nrendite liegen;\nd.\tIediglich dem Ausgleich einer Mietzinsverbilligung dienen, die \t\n\t\n\t\nzuvor durch Umlagerung marktüblicher Finanzierungskosten  \n\t\ngewährt wurde, und in einem dem Mieter im voraus bekanntge- \n\t\ngebenen Zahlungsplan festgelegt sind;\ne.\tIediglich die Teuerung auf dem risikotragenden Kapital ausgleichen;\nf.\t das Ausmass nicht überschreiten, das Vermieter- und Mieterver- \n\t\nbände oder Organisationen, die ähnliche Interessen wahrnehmen, \t \t\n\t\nin ihren Rahmenverträgen empfehlen.\nArt. 269b (B. Indexierte Mietzinse)\nDie Vereinbarung, dass der Mietzins einem Index folgt, ist nur gültig, \nwenn der Mietvertrag für mindestens fünf Jahre abgeschlossen und als \nIndex der Landesindex der Konsumentenpreise vorgesehen wird.\nArt. 269c (C. Gestaffelte Mietzinse)\nDie Vereinbarung, dass sich der Mietzins periodisch um einen bestimm-\nten Betrag erhöht, ist nur gültig, wenn:\na.\tder Mietvertrag für mindestens drei Jahre abgeschlossen wird;\nb.\tder Mietzins höchstens einmal jährlich erhöht wird; und\nc.\tder Betrag der Erhöhung in Franken festgelegt wird.\nArt. 269d (D. Mietzinserhöhungen und andere einseitige \nVertragsänderungen durch den Vermieter)\n1 \t Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen  \nKündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung \nmindestens zehn Tage vor Beginn der Kündigungsfrist auf einem  \nvom \tKanton genehmigten Formular mitteilen und begründen.\n2 \t Die Mietzinserhöhung ist nichtig, wenn der Vermieter:\na.\tsie nicht mit dem vorgeschriebenen Formular mitteilt;\nb.\tsie nicht begründet;\nc.\tmit der Mitteilung die Kündigung androht oder ausspricht.\n3 \t Die Absätze 1 und 2 gelten auch, wenn der Vermieter beabsichtigt,  \nsonstwie den Mietvertrag einseitig zu Lasten des Mieters zu ändern,  \nnamentlich seine bisherigen Leistungen zu vermindern oder neue  \nNebenkosten einzuführen.\n4 \t Für die Mitteilung einer Mietzinserhöhung und anderer einseitiger  \nVertragsänderungen genügt eine auf mechanischem Weg nachgebil-\ndete Unterschrift auf dem vorgeschriebenen Formular.\n5 \t Für die Mitteilung von Mietzinserhöhungen, die in einer Vereinba-\nrung nach Artikel 269c vorgesehen sind, genügt die schriftliche Form.\nArt. 270 (E. Anfechtung des Mietzinses I. Herabsetzungsbe-\ngehren 1. Anfangsmietzins)\n1 \t Der Mieter kann den Anfangsmietzins innert 30 Tagen nach Übernah- \nme der Sache bei der Schlichtungsbehörde als missbräuchlich im  \nSinne der Artikel 269 und 269a anfechten und dessen Herabsetzung \t \t\nverlangen, wenn:\na.\ter sich wegen einer persönlichen oder familiären Notlage oder  \n\t\nwegen der Verhältnisse auf dem örtlichen Markt für Wohn- und \t\n\t\n\t\nGeschäftsräume zum Vertragsabschluss gezwungen sah; oder\nb.\tder Vermieter den Anfangsmietzins gegenüber dem früheren  \n\t\nMietzins für dieselbe Sache erheblich erhöht hat.\n2 \t Im Falle von Wohnungsmangel können die Kantone für ihr Gebiet \noder einen Teil davon die Verwendung des Formulars gemäss Artikel \n269d beim Abschluss eines neuen Mietvertrags obligatorisch erklären.\nArt. 270a (2. Während der Mietdauer)\n1 \t Der Mieter kann den Mietzins als missbräuchlich anfechten und die  \nHerabsetzung auf den nächstmöglichen Kündigungstermin verlangen,  \nwenn er Grund zur Annahme hat, dass der Vermieter wegen einer  \nwesentlichen Änderung der Berechnungsgrundlagen, vor allem wegen  \neiner Kostensenkung, einen nach den Artikeln 269 und 269a übersetz- \nten Ertrag aus der Mietsache erzielt.\n2 \t Der Mieter muss das Herabsetzungsbegehren schriftlich beim  \nVermieter stellen; dieser muss innert 30 Tagen Stellung nehmen. \nEntspricht der Vermieter dem Begehren nicht oder nur teilweise oder \nantwortet er nicht fristgemäss, so kann der Mieter innert 30 Tagen die \nSchlichtungsbehörde anrufen.\n3 \t Absatz 2 ist nicht anwendbar, wenn der Mieter gleichzeitig mit der  \nAnfechtung einer Mietzinserhöhung ein Herabsetzungsbegehren stellt.\nArt. 270b (Il. Anfechtung von Mietzinserhöhungen und  \nandern einseitigen Vertragsänderungen)\n1 \t Der Mieter kann eine Mietzinserhöhung innert 30 Tagen, nach dem  \nsie ihm mitgeteilt worden ist, bei der Schlichtungsbehörde als miss- \nbräuchlich im Sinne der Artikel 269 und 269a anfechten.\n2 \t Absatz 1 gilt auch, wenn der Vermieter sonstwie den Mietvertrag  \neinseitig zu Lasten des Mieters ändert, namentlich seine bisherigen  \nLeistungen vermindert oder neue Nebenkosten einführt.\nArt. 270c (III. Anfechtung indexierter Mietzinse)\nUnter Vorbehalt der Anfechtung des Anfangsmietzinses kann eine Partei \nvor der Schlichtungsbehörde nur geltend machen, dass die von der \nanderen Partei verlangte Erhöhung oder Herabsetzung des Mietzinses \ndurch keine entsprechende Änderung des Indexes gerechtfertigt sei.\nArt. 270d (IV. Anfechtung gestaffelter Mietzinse)\nUnter Vorbehalt der Anfechtung des Anfangsmietzinses kann der Mieter \ngestaffelte Mietzinse nicht anfechten.\nArt. 270e (F. Weitergeltung des Mietvertrags während des\nAnfechtungsverfahrens) \nDer bestehende Mietvertrag gilt unverändert weiter:\na.\twährend des Schlichtungsverfahrens, wenn zwischen den Parteien  \n\t\nkeine Einigung zustandekommt, und\nb.\twährend des Gerichtsverfahrens, unter Vorbehalt vorsorglicher  \n\t\nMassnahmen des Richters.\nFormular bereitgestellt durch die Direktion der Justiz und des Innern des Kantons Zürich\n3/3\n\nDetails"
+    },
+    "nativeTabTrace": [
+      {
+        "tag": "A",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": "Download original"
+      },
+      {
+        "tag": "IFRAME",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": ""
+      },
+      {
+        "tag": "SUMMARY",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": "Details"
+      },
+      {
+        "tag": "BODY",
+        "inDialog": false,
+        "documentFocused": false,
+        "text": ""
+      },
+      {
+        "tag": "DIALOG",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": "Original sourceMietzinserhoehung Formular Elin Ziegler 2025 11 18Close sourceSou"
+      },
+      {
+        "tag": "BUTTON",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": "Close source"
+      },
+      {
+        "tag": "A",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": "Download original"
+      },
+      {
+        "tag": "IFRAME",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": ""
+      },
+      {
+        "tag": "SUMMARY",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": "Details"
+      },
+      {
+        "tag": "DIALOG",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": "Original sourceMietzinserhoehung Formular Elin Ziegler 2025 11 18Close sourceSou"
+      },
+      {
+        "tag": "BUTTON",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": "Close source"
+      },
+      {
+        "tag": "A",
+        "inDialog": true,
+        "documentFocused": true,
+        "text": "Download original"
+      }
+    ],
+    "sourceBeforeEscape": {
+      "open": true,
+      "active": "<a href=\"/api/claim-loops/v1/autonomous/sources/clm_543f08f2415b2a33/src_054f18d0fb9cb3928a70e6879d0fbd4d\" download=\"Mietzinserhoehung_Formular_Elin-Ziegler_2025-11-18.pdf\">Download original</a>"
+    },
+    "nativePdfKeyboard": {
+      "wasFocused": false,
+      "tabsToAppControl": 0
+    },
+    "keyboard": {
+      "tabShiftTab": true,
+      "enterSource": true,
+      "backgroundControlsUnreachable": true,
+      "escapeReturnsFocus": true
+    },
+    "law": {
+      "text": "Law behind this step\n\nLegal basis · Swiss Code of Obligations, art. 269d\n\nRecorded legal text · publisher: Fedlex. Recorded checks compare the exact quoted passage and a bounded rule. Qualified legal review is still required.\n\nArticle 269d\n1 Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.2 Die Mietzinserhöhung ist nichtig, wenn der Vermieter:a.sie nicht mit dem vorgeschriebenen Formular mitteilt;b.sie nicht begründet;c.mit der Mitteilung die Kündigung androht oder ausspricht.3 Die Absätze1und2 gelten auch, wenn der Vermieter beabsichtigt, sonstwie den Mietvertrag einseitig zu Lasten des Mieters zu ändern, namentlich seine bisherigen Leistungen vermindert oder neue Nebenkosten einzuführen.4 Für die Mitteilung einer Mietzinserhöhung und anderer einseitiger Vertragsänderungen genügt eine auf mechanischem Weg nachgebildete Unterschrift auf dem vorgeschriebenen Formular.5 Für die Mitteilung von Mietzinserhöhungen, die in einer Vereinbarung nach Artikel269c vorgesehen sind, genügt die schriftliche Form.",
+      "articles": [
+        "1 Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.2 Die Mietzinserhöhung ist nichtig, wenn der Vermieter:a.sie nicht mit dem vorgeschriebenen Formular mitteilt;b.sie nicht begründet;c.mit der Mitteilung die Kündigung androht oder ausspricht.3 Die Absätze1und2 gelten auch, wenn der Vermieter beabsichtigt, sonstwie den Mietvertrag einseitig zu Lasten des Mieters zu ändern, namentlich seine bisherigen Leistungen vermindert oder neue Nebenkosten einzuführen.4 Für die Mitteilung einer Mietzinserhöhung und anderer einseitiger Vertragsänderungen genügt eine auf mechanischem Weg nachgebildete Unterschrift auf dem vorgeschriebenen Formular.5 Für die Mitteilung von Mietzinserhöhungen, die in einer Vereinbarung nach Artikel269c vorgesehen sind, genügt die schriftliche Form."
+      ],
+      "links": [
+        "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf"
+      ],
+      "dialog": "Law\nClose\nCO 269d\nLaw behind this step\n\nLegal basis · Swiss Code of Obligations, art. 269d\n\nRecorded legal text · publisher: Fedlex. Recorded checks compare the exact quoted passage and a bounded rule. Qualified legal review is still required.\n\nArticle 269d\n1 Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.2 Die Mietzinserhöhung ist nichtig, wenn der Vermieter:a.sie nicht mit dem vorgeschriebenen Formular mitteilt;b.sie nicht begründet;c.mit der Mitteilung die Kündigung androht oder ausspricht.3 Die Absätze1und2 gelten auch, wenn der Vermieter beabsichtigt, sonstwie den Mietvertrag einseitig zu Lasten des Mieters zu ändern, namentlich seine bisherigen Leistungen vermindert oder neue Nebenkosten einzuführen.4 Für die Mitteilung einer Mietzinserhöhung und anderer einseitiger Vertragsänderungen genügt eine auf mechanischem Weg nachgebildete Unterschrift auf dem vorgeschriebenen Formular.5 Für die Mitteilung von Mietzinserhöhungen, die in einer Vereinbarung nach Artikel269c vorgesehen sind, genügt die schriftliche Form.\n\nIt is a residential tenancy: supported · CO 269d\n\nNotice and delivery details I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich… ↗\n\nOrdinary lease, no staged rent: supported · CO 269d\n\nNotice and delivery details The rent is not indexed or stepped, and there is no Article269c agreed… ↗\n\nReasons given with the increase: failed · CO 269d\n\nNotice and delivery details No contemporaneous accompanying reason letter, email reason, calculation… ↗"
+    },
+    "draft": {
+      "savedLocally": true,
+      "reloadPersistence": true,
+      "originalUnchanged": true,
+      "disposableContext": true
+    },
+    "reduced": {
+      "runningAnimations": 0,
+      "cursors": 0,
+      "role": "result"
+    },
+    "passed": true,
+    "cleanup": {
+      "contextsClosed": true
+    }
+  },
+  "cleanup": {
+    "browser_closed": true
+  },
+  "finished_utc": "2026-10-24T16:50:32.797Z"
+}

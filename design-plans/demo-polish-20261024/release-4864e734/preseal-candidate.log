@@ -1,0 +1,255 @@
+TAP version 13
+# Subtest: reference demonstration has the exact new nine and legacy history remains separate
+ok 1 - reference demonstration has the exact new nine and legacy history remains separate
+  ---
+  duration_ms: 3.51375
+  type: 'test'
+  ...
+# Subtest: public presentation explains its purpose immediately and exposes an opening failure without a busy case
+ok 2 - public presentation explains its purpose immediately and exposes an opening failure without a busy case
+  ---
+  duration_ms: 5.533792
+  type: 'test'
+  ...
+# Subtest: ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session
+ok 3 - ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session
+  ---
+  duration_ms: 1850.31
+  type: 'test'
+  ...
+# Subtest: recorded opening decision preserves trusted pending Pause and route cancellation without repainting late work
+ok 4 - recorded opening decision preserves trusted pending Pause and route cancellation without repainting late work
+  ---
+  duration_ms: 327.6755
+  type: 'test'
+  ...
+# Subtest: cold operation selection starts the pinned head hint and live transport before its opening read finishes
+ok 5 - cold operation selection starts the pinned head hint and live transport before its opening read finishes
+  ---
+  duration_ms: 7.570667
+  type: 'test'
+  ...
+# Subtest: cold operation selection reuses one complete atomic head while showing only a release outline before any response
+ok 6 - cold operation selection reuses one complete atomic head while showing only a release outline before any response
+  ---
+  duration_ms: 8.350291
+  type: 'test'
+  ...
+# Subtest: cold operation selection falls back once for a partial atomic head without admitting its state
+ok 7 - cold operation selection falls back once for a partial atomic head without admitting its state
+  ---
+  duration_ms: 4.999959
+  type: 'test'
+  ...
+# Subtest: cold operation selection never starts a fallback head read from an invalid atomic response after navigation
+ok 8 - cold operation selection never starts a fallback head read from an invalid atomic response after navigation
+  ---
+  duration_ms: 3.895333
+  type: 'test'
+  ...
+# Subtest: cold operation selection refetches a stale catalog revision without consuming its hinted state
+ok 9 - cold operation selection refetches a stale catalog revision without consuming its hinted state
+  ---
+  duration_ms: 3.938542
+  type: 'test'
+  ...
+# Subtest: cold operation selection aborts its early reader and ignores late opening and outline responses after navigation
+ok 10 - cold operation selection aborts its early reader and ignores late opening and outline responses after navigation
+  ---
+  duration_ms: 2.456834
+  type: 'test'
+  ...
+# Subtest: cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback
+ok 11 - cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback
+  ---
+  duration_ms: 30.941208
+  type: 'test'
+  ...
+# Subtest: a yielded operation batch cannot continue after abort stale route or inspection-gate cancellation
+ok 12 - a yielded operation batch cannot continue after abort stale route or inspection-gate cancellation
+  ---
+  duration_ms: 0.519792
+  type: 'test'
+  ...
+# Subtest: leaving a direct recorded opening cancels packet verification without late repaint
+ok 13 - leaving a direct recorded opening cancels packet verification without late repaint
+  ---
+  duration_ms: 9.193291
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2389.607
+TAP version 13
+# Subtest: the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+ok 1 - the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+  ---
+  duration_ms: 17949.318458
+  type: 'test'
+  ...
+# Subtest: a slow cold read keeps the north-star frame on landing and on opening a recorded case
+ok 2 - a slow cold read keeps the north-star frame on landing and on opening a recorded case
+  ---
+  duration_ms: 8666.027083
+  type: 'test'
+  ...
+# Subtest: public preparation overlaps independent reads and keeps admission honest: ready
+ok 3 - public preparation overlaps independent reads and keeps admission honest: ready
+  ---
+  duration_ms: 2090.210208
+  type: 'test'
+  ...
+# Subtest: public preparation overlaps independent reads and keeps admission honest: cancelled
+ok 4 - public preparation overlaps independent reads and keeps admission honest: cancelled
+  ---
+  duration_ms: 1826.6865
+  type: 'test'
+  ...
+# Subtest: public preparation overlaps independent reads and keeps admission honest: invalid
+ok 5 - public preparation overlaps independent reads and keeps admission honest: invalid
+  ---
+  duration_ms: 2100.972584
+  type: 'test'
+  ...
+# Subtest: public preparation overlaps independent reads and keeps admission honest: visibility
+ok 6 - public preparation overlaps independent reads and keeps admission honest: visibility
+  ---
+  duration_ms: 2161.981541
+  type: 'test'
+  ...
+# North-star review evidence: /Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/preseal-review-2
+# Subtest: source, correction, accepted version and later-case consequence stay connected
+ok 7 - source, correction, accepted version and later-case consequence stay connected
+  ---
+  duration_ms: 108882.519209
+  type: 'test'
+  ...
+# Subtest: graph and direct edit remain present beside a read-only consequence preview
+ok 8 - graph and direct edit remain present beside a read-only consequence preview
+  ---
+  duration_ms: 2.550166
+  type: 'test'
+  ...
+# Subtest: graph stays available while an actual step form is being edited
+ok 9 - graph stays available while an actual step form is being edited
+  ---
+  duration_ms: 0.241334
+  type: 'test'
+  ...
+# Subtest: reuse payoff needs an exact pinned version and an accepted matching history event
+ok 10 - reuse payoff needs an exact pinned version and an accepted matching history event
+  ---
+  duration_ms: 0.207917
+  type: 'test'
+  ...
+# Subtest: a wording-only edit cannot be presented as a changed process decision
+ok 11 - a wording-only edit cannot be presented as a changed process decision
+  ---
+  duration_ms: 0.094
+  type: 'test'
+  ...
+# Subtest: new prerequisites are named even when the next action is unchanged
+ok 12 - new prerequisites are named even when the next action is unchanged
+  ---
+  duration_ms: 0.086
+  type: 'test'
+  ...
+# Subtest: source and reviewer text is escaped; only data-backed lineage is shown
+ok 13 - source and reviewer text is escaped; only data-backed lineage is shown
+  ---
+  duration_ms: 0.122834
+  type: 'test'
+  ...
+# Subtest: a proposed process stays labelled proposed and can gain its first prerequisite
+ok 14 - a proposed process stays labelled proposed and can gain its first prerequisite
+  ---
+  duration_ms: 0.228583
+  type: 'test'
+  ...
+# Subtest: a later edit cannot make historical reuse consequences appear current
+ok 15 - a later edit cannot make historical reuse consequences appear current
+  ---
+  duration_ms: 0.440291
+  type: 'test'
+  ...
+# Subtest: renaming the focused action is a wording change even when next_step text changes
+ok 16 - renaming the focused action is a wording change even when next_step text changes
+  ---
+  duration_ms: 0.087875
+  type: 'test'
+  ...
+# Subtest: an unassessed northstar claim exposes its single existing review action in Process
+ok 17 - an unassessed northstar claim exposes its single existing review action in Process
+  ---
+  duration_ms: 2.441583
+  type: 'test'
+  ...
+# Subtest: reuse emphasizes the changed receiving decision before an added step
+ok 18 - reuse emphasizes the changed receiving decision before an added step
+  ---
+  duration_ms: 0.141958
+  type: 'test'
+  ...
+# Subtest: a proposed prerequisite is named from its impact before it exists in the current graph
+ok 19 - a proposed prerequisite is named from its impact before it exists in the current graph
+  ---
+  duration_ms: 0.099792
+  type: 'test'
+  ...
+# Subtest: an applied blocking connection is never described as a required prerequisite
+ok 20 - an applied blocking connection is never described as a required prerequisite
+  ---
+  duration_ms: 0.14725
+  type: 'test'
+  ...
+# Subtest: current reuse wording respects evaluated edge activation and relation
+ok 21 - current reuse wording respects evaluated edge activation and relation
+  ---
+  duration_ms: 0.2225
+  type: 'test'
+  ...
+# Subtest: reuse document passages must belong to the receiving claim sources
+ok 22 - reuse document passages must belong to the receiving claim sources
+  ---
+  duration_ms: 0.555125
+  type: 'test'
+  ...
+# Subtest: the payoff exposes the recorded before and after without claiming an unblocked outcome
+ok 23 - the payoff exposes the recorded before and after without claiming an unblocked outcome
+  ---
+  duration_ms: 0.26175
+  type: 'test'
+  ...
+# Subtest: the payoff does not invent an ordinal from a different raw node order
+ok 24 - the payoff does not invent an ordinal from a different raw node order
+  ---
+  duration_ms: 0.424
+  type: 'test'
+  ...
+# Subtest: the full process remains available and a correction preview never collapses it
+ok 25 - the full process remains available and a correction preview never collapses it
+  ---
+  duration_ms: 0.164416
+  type: 'test'
+  ...
+# Subtest: a missing next-action comparison is not presented as unchanged
+ok 26 - a missing next-action comparison is not presented as unchanged
+  ---
+  duration_ms: 0.128084
+  type: 'test'
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 26
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 149403.480709

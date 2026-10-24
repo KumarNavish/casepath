@@ -1,0 +1,196 @@
+{
+  "contract": "casepath.standard-promotion/1",
+  "mode": "verify",
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "old_source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "started_at": "2026-10-24T17:00:38.575459+00:00",
+  "helper_binding_sha256": "e172d7ca6e4443fb2cb935ed4b7314fd88d25f200f54a8ed1d9ed31e744144c6",
+  "source_binding_sha256": "d19d63642a5d78b1467374aed1d849eac521bd71c0a219614e9515d940f5a265",
+  "helper_sha256": "c8f88d28c40c6d245034f03fb0104392a9ba0f33dd7d39e6cee225172e906e4b",
+  "server_stop_or_launch_by_helper": false,
+  "seed_or_replay_by_helper": false,
+  "snapshot_receipt": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/snapshot/receipt.json",
+    "sha256": "d02df301d4a2794ac3bea855764c5a56c22acefcb2d95edb2f74d8f61454ec16"
+  },
+  "source_receipt": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/receipt.json",
+    "sha256": "e4c6eadc9b63650bf0956413c37db5472df0ecb674c63d54eff40ff34c7c0e12"
+  },
+  "release": {
+    "completed_gate": {
+      "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+      "terminal_gate_exit": 0,
+      "proof_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+      "actual_completion_sha256": "f8e8297680f91a9991279c10796184b8618d5ed0ed205536913fbc73c6a591b9",
+      "commander_terminal_sha256": "9033a041afcc88b3758cad5f7d1a0e1fe6b1edf4fde1ef2add940aea1028936a"
+    },
+    "gate_guard_sha256": "09d09605a83a849f7be640e907ddaf112cfcb41c5c6b50f4a90315041df18fb3",
+    "published_acceptance_sha256": "bfcda21a73416959c0bc59522774bf6c0115a6e97ec053c3bb0159823e81dc65",
+    "publication_helper_binding_sha256": "9ef0f35f14e4e56d435b2103668695740aba06ef7356bad9c26a83b6cd63c115"
+  },
+  "commander_running": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/standard-promotion-running.json",
+    "sha256": "18cfd1517c2690faac0cd21be62e4baa18c9891be23e65383272b63578646450",
+    "sessionId": "cp-polish-20261024-standard-workspace-4173",
+    "pids": [
+      19755
+    ],
+    "state": "running"
+  },
+  "git": {
+    "head": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+    "tree": "6d6050a9da3db4d7bb0af96fb4e8a861fd103ebe",
+    "branch": "codex/casepath-northstar-review-20261024",
+    "clean": true
+  },
+  "health": {
+    "observed_at": "2026-10-24T17:01:41.052461+00:00",
+    "response_sha256": "82c217b0a86bc1443307f76b986f1d0ae3d37f673e276ab33b5f5ddbb4cdf067",
+    "bytes": 2111,
+    "identity": {
+      "status": "ok",
+      "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+      "source_commit_aligned": true,
+      "source_commit_conflict": false,
+      "model_mode": "deterministic_reference",
+      "runtime_profile": "deterministic_reference",
+      "model": null
+    },
+    "credential_configured": false,
+    "external_tracing": false
+  },
+  "readiness": {
+    "response_sha256": "a8e10b94e49c078d6a68029e9d6cda79678a9965af7560d1f886f703e691a282",
+    "bytes": 1518,
+    "status": "ready",
+    "credential_configured": false
+  },
+  "model_ledger": {
+    "response_sha256": "566097eca9aaa6384100745f64f969b14f40ea24350e74028656c0f47a666467",
+    "bytes": 309,
+    "records": 0,
+    "network_calls": 0
+  },
+  "readiness_observations": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/readiness-observations.jsonl",
+    "sha256": "0407508ba19b97bf4ece40b3ddb71c7643ded60b66dba0401a29d2cafa5a2569",
+    "attempts": 116
+  },
+  "listener": {
+    "listener_pid": 20593,
+    "ancestor_pids": [
+      20593,
+      19827,
+      19783,
+      19765,
+      19755,
+      19754,
+      1869,
+      1692
+    ],
+    "observed_at": "2026-10-24T17:01:41.298151+00:00",
+    "port": 4173
+  },
+  "native_boot": {
+    "current_sha256": "9d6578e81adb2ee5dcfee7a994dca6b893efc847a2a82ba107ef86777570f35b",
+    "current_bytes": 2838959,
+    "current_immutable_file": "boot-20261024T170140730635Z-8d38051a-15c6-4857-b3f1-dd4df9367294.json",
+    "inventory": {
+      "boot-20261024T104727975296Z-78808a4a-737d-4d77-b362-8b37db47a1a7.json": {
+        "sha256": "fb9a84c21c19febb910e320d815fa4c75183b5eff9d608bff9fa75eaea27c2b7",
+        "bytes": 2836220
+      },
+      "boot-20261024T134701390125Z-45c0f194-1b6b-4bee-9a5b-570c8f59eff0.json": {
+        "sha256": "7bc00a72856901a8778029c4c6af7b17d9206b45352716c674d955037cb19ffb",
+        "bytes": 2838959
+      },
+      "boot-20261024T170140730635Z-8d38051a-15c6-4857-b3f1-dd4df9367294.json": {
+        "sha256": "9d6578e81adb2ee5dcfee7a994dca6b893efc847a2a82ba107ef86777570f35b",
+        "bytes": 2838959
+      }
+    },
+    "inventory_sha256": "817b3e96889dc497df37a72ee8ae2be15df3d68a884b27f1de95d17331d1ac27",
+    "history_count": 3,
+    "identity": {
+      "boot_id": "boot-20261024T170140730635Z-8d38051a-15c6-4857-b3f1-dd4df9367294",
+      "ready_at_utc": "2026-10-24T17:01:40.845733+00:00",
+      "semantic_receipt_sha256": "114c51b297efdf74368ec3951fa1ee75379de4089d14906425027f855f30cd29",
+      "prior_boot_receipt_file_sha256": "7bc00a72856901a8778029c4c6af7b17d9206b45352716c674d955037cb19ffb",
+      "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+      "source_manifest_sha256": "4bbdb036e69777937f19647f55fca80896ad96ae971a43928220bf93a5ddedef",
+      "launcher_sha256": "08a6f75b8af06ed199dec4b1aa6ad4c52fafcb84d5a3972ff8fc832af5013b5b",
+      "listener_pid": 20593,
+      "runtime_closure_sha256": "b74f766d8560c3ca04f3ad8072ecd185cb579b171e98afb499cc5c1aa207bd20"
+    }
+  },
+  "added_immutable_boot": "boot-20261024T170140730635Z-8d38051a-15c6-4857-b3f1-dd4df9367294.json",
+  "data_fingerprint_sha256": "698befba323ac403a4d9454216d8d42b1d5446a364770e89ba7d9f8355564528",
+  "data_table_counts": {
+    "casepath.db": 15,
+    "agent-work-v1.sqlite3": 17
+  },
+  "assets": [
+    {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/review-northstar-v1.js",
+      "url": "http://127.0.0.1:4173/assets/review-northstar-v1.js",
+      "sha256": "5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd",
+      "bytes": 22567,
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/casepath/assets/review-northstar-v1.js",
+      "source_sha256": "5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd"
+    },
+    {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/review-northstar-v1.css",
+      "url": "http://127.0.0.1:4173/assets/review-northstar-v1.css",
+      "sha256": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+      "bytes": 33919,
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/casepath/assets/review-northstar-v1.css",
+      "source_sha256": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef"
+    },
+    {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-workspace-v1.js",
+      "url": "http://127.0.0.1:4173/assets/autonomous-workspace-v1.js",
+      "sha256": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+      "bytes": 851119,
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/casepath/assets/autonomous-workspace-v1.js",
+      "source_sha256": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b"
+    },
+    {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-workspace-v1.css",
+      "url": "http://127.0.0.1:4173/assets/autonomous-workspace-v1.css",
+      "sha256": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+      "bytes": 360402,
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/casepath/assets/autonomous-workspace-v1.css",
+      "source_sha256": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262"
+    },
+    {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-presentation-v1.js",
+      "url": "http://127.0.0.1:4173/assets/autonomous-presentation-v1.js",
+      "sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+      "bytes": 7473,
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/casepath/assets/autonomous-presentation-v1.js",
+      "source_sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da"
+    },
+    {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-language-v1.js",
+      "url": "http://127.0.0.1:4173/assets/autonomous-language-v1.js",
+      "sha256": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+      "bytes": 37777,
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/casepath/assets/autonomous-language-v1.js",
+      "source_sha256": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49"
+    }
+  ],
+  "deployment": {
+    "response_sha256": "08ab53aed357c2d63d85b3df947c212b6f51cb82a955de13d3b275079d4ba7fb",
+    "bytes": 603,
+    "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15"
+  },
+  "boot_lineage_advanced": true,
+  "prior_boot_files_unchanged": true,
+  "original_data_unchanged": true,
+  "repeated_full_fingerprint_equal": true,
+  "get_only": true,
+  "qualified_human_approval": "pending; this is engineering release verification",
+  "status": "passed",
+  "finished_at": "2026-10-24T17:01:44.181054+00:00"
+}

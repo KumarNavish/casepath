@@ -1,0 +1,59 @@
+{
+  "status": "passed",
+  "base_commit": "f75af1ac22a7260487556fc9231f4e290489c2e0",
+  "candidate_uncommitted": true,
+  "source_files": {
+    "casepath/assets/autonomous-workspace-v1.js": "e2a2cad229114773796234b3a7b4f641d34cc3f89cbf64fdf64fd47f3860afcd",
+    "casepath/assets/autonomous-workspace-v1.css": "56c00e3783cc627d6cd9d892431348f293262bf9e771dcc831321348a033b6b2",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "fdad1f23de4951886c6b4bb7e0f6d01024136636fe963c83de3e2a6c670db3ec",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs": "fda5a3876bf8cb3ed8d239a3a3ed5d45894fb6b83057e0ee06b6685ad4213685",
+    "casepath/assets/review-northstar-v1.js": "5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd",
+    "casepath/assets/review-northstar-v1.css": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+    "casepath-qa/review-northstar-v1.test.cjs": "8bb9f8c4e9fcd60eb84f6550bcea2de01c4ff432c03f50662494354d4dbd2e9e",
+    "casepath-qa/review-northstar-browser-v1.test.cjs": "704c70f8473bf66f49b90ccc34399250ae27921a6fb131d1e7ce39ad93ffe1aa",
+    "casepath/index.html": "bc8b89205c463bc3f4ead92f4c0de88d5b566784a412d501021623c562150710"
+  },
+  "started_at": "2026-10-24T15:06:38.414446+00:00",
+  "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/preseal-candidate.log",
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "10",
+        "/usr/local/bin/node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern=public presentation explains|cold operation selection|leaving a direct recorded opening|ready recorded packet|recorded opening decision|a yielded operation batch|reference demonstration",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "started_at": "2026-10-24T15:06:38.415907+00:00",
+      "pid": 73354,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T15:06:41.044502+00:00"
+    },
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "10",
+        "/usr/local/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=tap",
+        "casepath-qa/review-northstar-v1.test.cjs",
+        "casepath-qa/review-northstar-browser-v1.test.cjs",
+        "casepath-qa/autonomous-presentation-browser-v1.test.cjs"
+      ],
+      "started_at": "2026-10-24T15:06:41.065880+00:00",
+      "pid": 73367,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T15:09:10.541877+00:00"
+    }
+  ],
+  "authority": "Isolated deterministic engineering QA; no paid models; Test handler is not human approval",
+  "exit_code": 0,
+  "finished_at": "2026-10-24T15:09:10.547655+00:00",
+  "log_sha256": "4d78a5352b658d49adf8a4a7a606148e252d40688c00007574fb28032ba44f93",
+  "review_browser_receipt_sha256": "96c3ac7b8a07ba7a5743d7bd6d46852a19f8e27c8084d2ec0587f6732ef2963b"
+}

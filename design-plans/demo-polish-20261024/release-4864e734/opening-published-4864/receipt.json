@@ -1,0 +1,887 @@
+{
+  "status": "passed",
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "measured_at": "2026-10-24T16:41:33.112Z",
+  "ready_at_ms": 21297,
+  "opening": {
+    "claim": "clm_543f08f2415b2a33",
+    "purpose": "Recorded example · legal protectionFrom customer documentsto a reviewable answerAutomated assistants connect evidence, legal checks and an assessment draft. You make the decision.Documents → Facts → Law → AnswerThis walkthrough replays completed work on fictional cases.Open completed example ↗",
+    "act": "customer",
+    "controls": [
+      {
+        "text": "Resume",
+        "disabled": false
+      },
+      {
+        "text": "Skip to answer",
+        "disabled": false
+      }
+    ],
+    "state": 18.799999982118607
+  },
+  "requests": [
+    {
+      "path": "/?present=1",
+      "method": "GET",
+      "at": 23,
+      "status": 200,
+      "response_at": 2048
+    },
+    {
+      "path": "/assets/autonomous-presentation-v1.js?sha256=fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+      "method": "GET",
+      "at": 2056,
+      "status": 200,
+      "response_at": 2073
+    },
+    {
+      "path": "/assets/autonomous-language-v1.js?sha256=e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+      "method": "GET",
+      "at": 2056,
+      "status": 200,
+      "response_at": 2059
+    },
+    {
+      "path": "/assets/fonts/Merriweather-Light.ttf",
+      "method": "GET",
+      "at": 2056,
+      "status": 200,
+      "response_at": 2327
+    },
+    {
+      "path": "/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+      "method": "GET",
+      "at": 2056,
+      "status": 200,
+      "response_at": 2415
+    },
+    {
+      "path": "/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+      "method": "GET",
+      "at": 2056,
+      "status": 200,
+      "response_at": 2058
+    },
+    {
+      "path": "/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "method": "GET",
+      "at": 2057,
+      "status": 200,
+      "response_at": 2059
+    },
+    {
+      "path": "/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "method": "GET",
+      "at": 2057,
+      "status": 200,
+      "response_at": 2083
+    },
+    {
+      "path": "/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "method": "GET",
+      "at": 2057,
+      "status": 200,
+      "response_at": 2058
+    },
+    {
+      "path": "/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "method": "GET",
+      "at": 2057,
+      "status": 200,
+      "response_at": 2083
+    },
+    {
+      "path": "/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "method": "GET",
+      "at": 2057,
+      "status": 200,
+      "response_at": 2083
+    },
+    {
+      "path": "/assets/review-northstar-v1.css?sha256=af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+      "method": "GET",
+      "at": 2057,
+      "status": 200,
+      "response_at": 2149
+    },
+    {
+      "path": "/assets/autonomous-workspace-v1.css?sha256=3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+      "method": "GET",
+      "at": 2057,
+      "status": 200,
+      "response_at": 2400
+    },
+    {
+      "path": "/assets/autonomous-entry-v1.js?sha256=e405667ff58085b9928ada3a43b1bef6cbeac3caf105061f12c7541112c04d0d",
+      "method": "GET",
+      "at": 2057,
+      "status": 200,
+      "response_at": 2426
+    },
+    {
+      "path": "/assets/autonomous-recorded-heating-v1.json?sha256=1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383",
+      "method": "GET",
+      "at": 2057,
+      "status": 200,
+      "response_at": 2085
+    },
+    {
+      "path": "/assets/autonomous-saved-history-v1.json?sha256=a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0",
+      "method": "GET",
+      "at": 2057,
+      "status": 200,
+      "response_at": 2085
+    },
+    {
+      "path": "/assets/autonomous-workspace-v1.js?sha256=cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+      "method": "GET",
+      "at": 2470,
+      "status": 200,
+      "response_at": 2859
+    },
+    {
+      "path": "/cdn-cgi/challenge-platform/scripts/jsd/main.js",
+      "method": "GET",
+      "at": 2470,
+      "status": 302,
+      "response_at": 2499
+    },
+    {
+      "path": "/cdn-cgi/challenge-platform/h/b/scripts/jsd/d2d3316b729e/main.js",
+      "method": "GET",
+      "at": 2500,
+      "status": 200,
+      "response_at": 2519
+    },
+    {
+      "path": "/cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.9143971869041332:1792858212:V8YJihI9J8hOIViXvGqskO2ZSIXnsdy6ViuGYNU2fVo/a4fa6d81aebd5aea",
+      "method": "POST",
+      "at": 2591,
+      "status": 200,
+      "response_at": 2610
+    },
+    {
+      "path": "/assets/fonts/Mulish.ttf",
+      "method": "GET",
+      "at": 2885,
+      "status": 200,
+      "response_at": 2989
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "at": 3347,
+      "status": 200,
+      "response_at": 4913
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "at": 5457,
+      "status": 200,
+      "response_at": 6160
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce",
+      "method": "GET",
+      "at": 6215,
+      "status": 200,
+      "response_at": 13316
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592",
+      "method": "GET",
+      "at": 6215,
+      "status": 200,
+      "response_at": 13381
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c",
+      "method": "GET",
+      "at": 6215,
+      "status": 200,
+      "response_at": 13059
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4",
+      "method": "GET",
+      "at": 6215,
+      "status": 200,
+      "response_at": 12872
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303",
+      "method": "GET",
+      "at": 6215,
+      "status": 200,
+      "response_at": 12163
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8",
+      "method": "GET",
+      "at": 6215,
+      "status": 200,
+      "response_at": 13198
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33",
+      "method": "GET",
+      "at": 6215,
+      "status": 200,
+      "response_at": 13078
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90",
+      "method": "GET",
+      "at": 6215,
+      "status": 200,
+      "response_at": 13141
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/replay?through_seq=41",
+      "method": "GET",
+      "at": 14026,
+      "status": 200,
+      "response_at": 17190
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/operations?mode=recorded",
+      "method": "GET",
+      "at": 14026,
+      "status": 200,
+      "response_at": 16869,
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/replay?through_seq=0",
+      "method": "GET",
+      "at": 14027,
+      "status": 200,
+      "response_at": 17277
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/replay?through_seq=51",
+      "method": "GET",
+      "at": 17612,
+      "status": 200,
+      "response_at": 20680
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/operations?mode=recorded",
+      "method": "GET",
+      "at": 17612,
+      "status": 200,
+      "response_at": 20358
+    },
+    {
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/replay?through_seq=0",
+      "method": "GET",
+      "at": 17613,
+      "status": 200,
+      "response_at": 20837
+    },
+    {
+      "path": "/deployment.json",
+      "method": "GET",
+      "at": 21316,
+      "status": 200,
+      "response_at": 21374
+    }
+  ],
+  "snapshots": [
+    {
+      "at": 2727,
+      "purpose": false,
+      "preparing": false,
+      "claim": null,
+      "heading": "Open CasePath through its local web address.",
+      "active": false
+    },
+    {
+      "at": 3002,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 3347,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 3479,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 3729,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 3980,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 4232,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 4481,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 4731,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 4980,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 5231,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 5481,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 5731,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 6045,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 6257,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 6508,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 6758,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 7009,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 7261,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 7512,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 7762,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 8014,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 8264,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 8517,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 8767,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 9020,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 9268,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 9518,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 9803,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 10157,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 10307,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 10571,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 10816,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 11074,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 11323,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 11574,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 11824,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 12075,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 12325,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 12576,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 12827,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 13076,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 13327,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 13579,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 13829,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 14079,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 14329,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 14579,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 14830,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 15082,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 15331,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 15582,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 15833,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 16085,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 16336,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 16587,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 16840,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 17089,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 17393,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 17591,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 17842,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 18094,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 18343,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 18594,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 18845,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 19095,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 19345,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 19595,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 19846,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 20098,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 20348,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 20600,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 20880,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    },
+    {
+      "at": 21101,
+      "purpose": true,
+      "preparing": true,
+      "claim": null,
+      "heading": "Recorded walkthrough",
+      "active": false
+    }
+  ],
+  "errors": [],
+  "application_writes": []
+}

@@ -1,0 +1,115 @@
+{
+  "status": "passed",
+  "source_files": {
+    "casepath/assets/autonomous-workspace-v1.js": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+    "casepath/assets/autonomous-workspace-v1.css": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "fc40356671f8bdd0f5637e0f60396e1ec203fc1dc59084abef31f7478a901550",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs": "67a54c72f5c52049624de6fa14df518b5597d422847bd5bf5e06b9028b99074b",
+    "casepath/assets/review-northstar-v1.js": "5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd",
+    "casepath/assets/review-northstar-v1.css": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+    "casepath-qa/review-northstar-v1.test.cjs": "8bb9f8c4e9fcd60eb84f6550bcea2de01c4ff432c03f50662494354d4dbd2e9e",
+    "casepath-qa/review-northstar-browser-v1.test.cjs": "704c70f8473bf66f49b90ccc34399250ae27921a6fb131d1e7ce39ad93ffe1aa",
+    "casepath/index.html": "4ebf74f5811b8c1b2f959787251b5e5a88f0d75f7b6c126807f4e6cbdfb12684"
+  },
+  "base_commit": "f75af1ac22a7260487556fc9231f4e290489c2e0",
+  "scope": "Final opening layout, admission regressions and visual capture; review files unchanged since passing preseal-review-2",
+  "started_at": "2026-10-24T15:16:02.700774+00:00",
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "10",
+        "/usr/local/bin/node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern=public presentation explains|cold operation selection|leaving a direct recorded opening|ready recorded packet|recorded opening decision|a yielded operation batch|reference demonstration",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "started_at": "2026-10-24T15:16:02.701976+00:00",
+      "pid": 78774,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T15:16:05.112213+00:00"
+    },
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "10",
+        "/usr/local/bin/node",
+        "--test",
+        "--test-reporter=tap",
+        "casepath-qa/autonomous-presentation-browser-v1.test.cjs"
+      ],
+      "started_at": "2026-10-24T15:16:05.133443+00:00",
+      "pid": 78791,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T15:16:38.912328+00:00"
+    },
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "10",
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/capture_opening_v2.cjs"
+      ],
+      "started_at": "2026-10-24T15:16:38.929866+00:00",
+      "pid": 79060,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T15:16:44.444460+00:00"
+    }
+  ],
+  "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/preseal-opening-final.log",
+  "exit_code": 0,
+  "finished_at": "2026-10-24T15:16:44.449628+00:00",
+  "log_sha256": "95a23d1b384a8ab6f95f53139e2db53b0657a0421377be92cb1334ea26168d94",
+  "visual_receipt_sha256": "f6df671abab7aafb725a86245ac191419916212a265a5caf8007b4b0405e7db5",
+  "visual_checks": [
+    {
+      "file": "preparing-desktop.png",
+      "noHorizontalOverflow": true,
+      "headingsFullyVisible": true,
+      "purposeFullyVisible": true,
+      "preparationStatusFullyVisible": true,
+      "retryWhollyVisible": null,
+      "completedExampleLinkFullyVisible": null
+    },
+    {
+      "file": "preparing-mobile.png",
+      "noHorizontalOverflow": true,
+      "headingsFullyVisible": true,
+      "purposeFullyVisible": true,
+      "preparationStatusFullyVisible": true,
+      "retryWhollyVisible": null,
+      "completedExampleLinkFullyVisible": null
+    },
+    {
+      "file": "admitted-intro-desktop.png",
+      "noHorizontalOverflow": true,
+      "headingsFullyVisible": true,
+      "purposeFullyVisible": true,
+      "preparationStatusFullyVisible": null,
+      "retryWhollyVisible": null,
+      "completedExampleLinkFullyVisible": true
+    },
+    {
+      "file": "invalid-state-desktop.png",
+      "noHorizontalOverflow": true,
+      "headingsFullyVisible": true,
+      "purposeFullyVisible": true,
+      "preparationStatusFullyVisible": true,
+      "retryWhollyVisible": true,
+      "completedExampleLinkFullyVisible": null
+    },
+    {
+      "file": "invalid-state-mobile.png",
+      "noHorizontalOverflow": true,
+      "headingsFullyVisible": true,
+      "purposeFullyVisible": false,
+      "preparationStatusFullyVisible": true,
+      "retryWhollyVisible": true,
+      "completedExampleLinkFullyVisible": null
+    }
+  ]
+}

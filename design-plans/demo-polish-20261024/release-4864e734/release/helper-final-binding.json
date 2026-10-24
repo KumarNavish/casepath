@@ -1,0 +1,47 @@
+{
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "prepared_at": "2026-10-24T15:24:12.904616+00:00",
+  "scope": "Reviewed runtime helpers only. This binding does not claim gate completion or publication.",
+  "helpers": {
+    "integrate_canonical.py": "e0aba2b47c83f0ac8499462c584730332d6822c3d894f394770e384d01a32318",
+    "run_api_release.py": "649b39a368d808fd604834c94f5d6177ccd8219d3aa67ccef87c602252ec28bd",
+    "renew_seed.py": "ca1ea0c82b4028b3f613e5afe4c59aac3049c33e60a20a8278b5762a396891bc",
+    "update_api_env.py": "3e6157c367359457806b1904719392cde7fec1eec03ddc1f0a166b53c375a309",
+    "deploy_api.py": "51903de878ba05e0511b5a52fb4db3943fb5ea1f2ab414bd57a162d7d441abf4",
+    "await_api.py": "380d86398dae2687f13f6fd33a80c2ebad276ce5a704b47de51dfb5786f9a4ea",
+    "copy_sites_inputs.py": "f80483ed69110fc3b9a34bebf1a95776e41cb97793a7c8740f841ae706bba22a",
+    "run_sites_workflow_finite.py": "f1adb0246d08980ec1087e52a988a20199bc2ae21df93ac5a0e70facc91003a8",
+    "readback.py": "d0f78aaf81347d7385106f8f2fef018220e70599222d28df6193a13c411e2806",
+    "published_soak.py": "46a5ba66f2b0dfc39833d9c90907e9603ae6a00ff95699ca56f1d7ad4f2c8c67",
+    "verify_published.mjs": "cca80241f51304c369e887985e8464a0e1eac9fc8fa2d26454a01fe3740ccf18",
+    "verify_supplement.mjs": "29647d0a1b4554abeb3039fcf9b06ad61ee440c6c51f32fa8548358722044ec7",
+    "verify_public_image.py": "ebeea25ec13f1ce4618dd84570316551e9374e784909eec411659d78af4da4a7",
+    "verify_api_build.py": "82469dd1d9bc895be7836dbce1c2b588df204c74263b421c98703b98fe361b1d",
+    "verify_readback.py": "a14c1baf04e23bc74ecf918a188bd4e8e0498b01e484fe988af5f9642c781923",
+    "capture_eight_states.mjs": "5034b9995a3b69722f77f12455f491ff22706502342e7be142d2f6b1ddf0a8dc",
+    "measure_northstar_fidelity.py": "a418a6d81b0d247915573adfbf7ba6cb74f74545e04a964f29c25700fc617662",
+    "decode_public_film.py": "641f808e6198ede8c3206ff4359d820d4c4179851a381eaa344e16f71bbb65b7",
+    "make_film_contact_sheet.mjs": "8d360d7701592e34127660f2a543aa4374e9de3a729ae3aad4467cba15b9fded",
+    "require_completed_gate.py": "3dfda32a8ec7825b1bffad15b34091495fe3ffa796a492ace18f640d2986bd28"
+  },
+  "api_helpers": {
+    "await_api.py": "380d86398dae2687f13f6fd33a80c2ebad276ce5a704b47de51dfb5786f9a4ea",
+    "deploy_api.py": "51903de878ba05e0511b5a52fb4db3943fb5ea1f2ab414bd57a162d7d441abf4",
+    "integrate_canonical.py": "e0aba2b47c83f0ac8499462c584730332d6822c3d894f394770e384d01a32318",
+    "renew_seed.py": "ca1ea0c82b4028b3f613e5afe4c59aac3049c33e60a20a8278b5762a396891bc",
+    "require_completed_gate.py": "3dfda32a8ec7825b1bffad15b34091495fe3ffa796a492ace18f640d2986bd28",
+    "run_api_release.py": "649b39a368d808fd604834c94f5d6177ccd8219d3aa67ccef87c602252ec28bd",
+    "update_api_env.py": "3e6157c367359457806b1904719392cde7fec1eec03ddc1f0a166b53c375a309"
+  },
+  "acceptance_runner_sha256": "e6b5db01f0c08b2063996084faa7ed6a93186b5f441e49e53f1909078982a30c",
+  "browser_adoption_runner_sha256": "f42ad1d0bd090fdf48bc5b26128ff6dc3abd2023905e4c00e5d2a35f1661c014",
+  "artifact_runner_sha256": "3f90957a437a28a2e22b0eb6c56caaefc7f1cbc0aea745957525dd4c5852ff9a",
+  "actual_gate_validator_sha256": "09d09605a83a849f7be640e907ddaf112cfcb41c5c6b50f4a90315041df18fb3",
+  "fidelity_tool_sha256": "23b9218d50d0da293cb8aa208ee9a48512c85b76c971a8f09f334f341e2c0067",
+  "independent_reviews": [
+    "polish_release_helpers reviewed API helpers and independently reviewed Sites/public acceptance; root reviewed API adaptations.",
+    "polish_opening_audit independently reviewed the fresh artifact helpers and full-gate browser adoption; direct adopter invocation is Python -B without -I."
+  ],
+  "syntax_validation": "All Python helpers parsed without importing; all four JavaScript helpers passed the actual Mac Node syntax check.",
+  "data_authority": "No protected-data change, provider workflow or qualification performed by helper preparation."
+}

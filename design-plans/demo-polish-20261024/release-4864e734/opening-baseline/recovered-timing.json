@@ -1,0 +1,74 @@
+{
+  "contract": "casepath.observed-opening-timing/1",
+  "status": "timing_recovered_from_original_observations",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "original_command_session": "cp-polish-20261024-015-baseline-cold-opening",
+  "original_command_exit": 1,
+  "original_failure_sha256": "0bbba1cf3bbb7b36d0a7ae88e16c1182f423fdf2118b9800b756e83c2865d9f1",
+  "harness_error": "The original check waited for a manual Start control, but present=1 intentionally autoplays. The recorded active-controller and intro observations remain usable as timing evidence. No product failure is asserted by that timeout.",
+  "first_active_observed_ms": 23758,
+  "last_inactive_observed_ms": 23415,
+  "first_intro_observed_ms": 23758,
+  "sample_interval_ms": 250,
+  "application_gets": 16,
+  "browser_errors": [],
+  "served_assets_matched_to_unchanged_base": [
+    {
+      "path": "autonomous-presentation-v1.js",
+      "sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da"
+    },
+    {
+      "path": "autonomous-language-v1.js",
+      "sha256": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49"
+    },
+    {
+      "path": "claims-workspace-v1.css",
+      "sha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+    },
+    {
+      "path": "causal-process-v1.css",
+      "sha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed"
+    },
+    {
+      "path": "claims-workspace-presentation-v1.css",
+      "sha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557"
+    },
+    {
+      "path": "agent-work-v1.css",
+      "sha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9"
+    },
+    {
+      "path": "process-evidence-v2.css",
+      "sha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22"
+    },
+    {
+      "path": "agent-native-v2.css",
+      "sha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb"
+    },
+    {
+      "path": "review-northstar-v1.css",
+      "sha256": "7c75bde67d6fc138a71ec2b05536e17a267186fb3d2d46677ade9d8dea2e2dab"
+    },
+    {
+      "path": "autonomous-workspace-v1.css",
+      "sha256": "184979997357aea000c973295563c46287bc562949de1382ee3b829a4866ee5a"
+    },
+    {
+      "path": "autonomous-entry-v1.js",
+      "sha256": "e405667ff58085b9928ada3a43b1bef6cbeac3caf105061f12c7541112c04d0d"
+    },
+    {
+      "path": "autonomous-recorded-heating-v1.json",
+      "sha256": "1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383"
+    },
+    {
+      "path": "autonomous-saved-history-v1.json",
+      "sha256": "a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0"
+    },
+    {
+      "path": "autonomous-workspace-v1.js",
+      "sha256": "573c2294692b4025549e687c0e21b959e14692365453519ed7a5ae4b8128e356"
+    }
+  ],
+  "scope": "Timing and request trace only; not a completed presentation acceptance run."
+}

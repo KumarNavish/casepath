@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "blocking_findings": [],
+  "at": "2026-10-24T15:19:17.471744+00:00",
+  "reviews": [
+    {
+      "reviewer": "polish_release_helpers",
+      "verdict": "Independent source review of startup admission, cancellation and failure handling passed; final rail-only visibility delta separately reviewed by root."
+    },
+    {
+      "reviewer": "polish_release_helpers",
+      "verdict": "Independent review of final payoff delta passed: rendered ordinal, retained connections, disclosure selection and missing/completed markers. Exact final review source hashes bound below."
+    },
+    {
+      "reviewer": "root",
+      "verdict": "Reviewed final combined source, asset query hashes, plan and visibility-only delta; inspected all five final opening screenshots and final desktop/mobile payoff screenshots. No blocking finding. Full release gate and deployed acceptance remain required."
+    }
+  ],
+  "reviewed_source_files": {
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs": "67a54c72f5c52049624de6fa14df518b5597d422847bd5bf5e06b9028b99074b",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "fc40356671f8bdd0f5637e0f60396e1ec203fc1dc59084abef31f7478a901550",
+    "casepath-qa/review-northstar-browser-v1.test.cjs": "704c70f8473bf66f49b90ccc34399250ae27921a6fb131d1e7ce39ad93ffe1aa",
+    "casepath-qa/review-northstar-v1.test.cjs": "8bb9f8c4e9fcd60eb84f6550bcea2de01c4ff432c03f50662494354d4dbd2e9e",
+    "casepath/assets/autonomous-workspace-v1.css": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+    "casepath/assets/autonomous-workspace-v1.js": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+    "casepath/assets/review-northstar-v1.css": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+    "casepath/assets/review-northstar-v1.js": "5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd",
+    "casepath/index.html": "4ebf74f5811b8c1b2f959787251b5e5a88f0d75f7b6c126807f4e6cbdfb12684",
+    "design-plans/demo-polish-20261024/REVIEW.md": "2890027220535d7061af01f0f0942481db4224d2ab891730b9a4990e2ef283c4"
+  },
+  "preseal_browser_receipt_sha256": "96c3ac7b8a07ba7a5743d7bd6d46852a19f8e27c8084d2ec0587f6732ef2963b",
+  "preseal_review_command_sha256": "4089cb28430c6c38f7d47efc9e393e44cebddd0b7f7316de6b1160364a037b75",
+  "preseal_opening_command_sha256": "27ff57377df2ad758b7ee362449ec6a895bc42e87d271704f0150526e9badf53",
+  "preseal_opening_visual_receipt_sha256": "f6df671abab7aafb725a86245ac191419916212a265a5caf8007b4b0405e7db5",
+  "focused_unique_checks": 39,
+  "visual_review": {
+    "root_inspected": true,
+    "mobile_failure_explanation_scroll": "Deliberate normal page flow; status and entire recovery control visible in first viewport."
+  },
+  "authority": "Engineering demo candidate; Test handler is not qualified human approval; no provider work or protected-data mutation."
+}

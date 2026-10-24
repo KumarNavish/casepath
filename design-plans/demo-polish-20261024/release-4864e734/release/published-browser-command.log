@@ -1,0 +1,53 @@
+{
+ "windows": [
+  {
+   "name": "cold-a-desktop-1440x900",
+   "commit_ok": true,
+   "cases_visible_ms": 16625,
+   "rendered": 18,
+   "total": 18,
+   "identity_failures": 0,
+   "errors": 0,
+   "writes": 0,
+   "overflow": false,
+   "served_assets_verified": 12,
+   "required_static_assets_verified": 11,
+   "review_assets_verified": 2,
+   "mobile_document_rows": 0,
+   "mobile_document_failures": 0
+  },
+  {
+   "name": "cold-b-mobile-390x844",
+   "commit_ok": true,
+   "cases_visible_ms": 2570,
+   "rendered": 9,
+   "total": 9,
+   "identity_failures": 0,
+   "errors": 0,
+   "writes": 0,
+   "overflow": false,
+   "served_assets_verified": 12,
+   "required_static_assets_verified": 11,
+   "review_assets_verified": 2,
+   "mobile_document_rows": 27,
+   "mobile_document_failures": 0
+  }
+ ],
+ "film": {
+  "recorded_video": true,
+  "video_sha256": "2d41d1ba48e2c14164ff80fc5f904868c64a5c51b8fe596cd4ee20271696bce3",
+  "duration_ms": 88050,
+  "reached_end": true,
+  "acts": [
+   "customer",
+   "reading",
+   "process",
+   "decision",
+   "learning",
+   "cases"
+  ],
+  "four_x": true,
+  "errors": 0,
+  "writes": 0
+ }
+}

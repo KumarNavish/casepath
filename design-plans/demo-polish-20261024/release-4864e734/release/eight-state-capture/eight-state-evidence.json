@@ -1,0 +1,3759 @@
+{
+  "contract": "casepath.eight-state-engineering-evidence/2",
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "started_at": "2026-10-24T16:51:26.202Z",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "status": "passed",
+  "script_sha256": "5034b9995a3b69722f77f12455f491ff22706502342e7be142d2f6b1ddf0a8dc",
+  "helper_binding_sha256": "31348e82004991ad870e4e6627f5fe66f5899b376d85139c73e71d5e21237000",
+  "source_binding_sha256": "d19d63642a5d78b1467374aed1d849eac521bd71c0a219614e9515d940f5a265",
+  "official_validator_sha256": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+  "states": [
+    {
+      "state": 1,
+      "name": "ready",
+      "file": "state-1-ready.png",
+      "capture_kind": "Deterministic inspection of the actual deployed recorded presentation",
+      "claim_id": "clm_543f08f2415b2a33",
+      "beat": {
+        "act": "customer",
+        "phase": "ready",
+        "duration": 4200,
+        "index": 0,
+        "start": 0,
+        "end": 4200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      "observed": {
+        "time": 0,
+        "phase": "ready",
+        "act": "customer",
+        "overflow": false,
+        "animations": 0,
+        "start_control_visible": true,
+        "source_open": true,
+        "quote": null,
+        "source_pin": null,
+        "visible_facts": [],
+        "done_nodes": [],
+        "completed_process": false,
+        "local_chain_columns": []
+      },
+      "sha256": "442197600a84148ab86ccab40060ceb3fb2f7f32efa5cfa2df51bf9b879d8432",
+      "bytes": 103796,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "state": 2,
+      "name": "source-opened",
+      "file": "state-2-source-opened.png",
+      "capture_kind": "Deterministic inspection of the actual deployed recorded presentation",
+      "claim_id": "clm_543f08f2415b2a33",
+      "beat": {
+        "act": "reading",
+        "phase": "camera-in",
+        "duration": 700,
+        "motion": true,
+        "index": 6,
+        "start": 6700,
+        "end": 7400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      "observed": {
+        "time": 7399,
+        "phase": "camera-in",
+        "act": "reading",
+        "overflow": false,
+        "animations": 0,
+        "start_control_visible": false,
+        "source_open": true,
+        "quote": {
+          "text": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+          "start": 810,
+          "end": 952,
+          "ink_opacity": 0
+        },
+        "source_pin": {
+          "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+          "end_char": 952,
+          "offset_unit": "unicode_code_point",
+          "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+          "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+          "start_char": 810,
+          "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+        },
+        "visible_facts": [],
+        "done_nodes": [],
+        "completed_process": false,
+        "local_chain_columns": []
+      },
+      "sha256": "02a28ae5a136ab6dfb30e8e1150dee22e6246f0d2f7695dc617561b6ec95a4d9",
+      "bytes": 192258,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "state": 3,
+      "name": "exact-passage",
+      "file": "state-3-exact-passage.png",
+      "capture_kind": "Deterministic inspection of the actual deployed recorded presentation",
+      "claim_id": "clm_543f08f2415b2a33",
+      "beat": {
+        "act": "reading",
+        "phase": "passage-rest",
+        "duration": 3600,
+        "index": 9,
+        "start": 8200,
+        "end": 11800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      "observed": {
+        "time": 11799,
+        "phase": "passage-rest",
+        "act": "reading",
+        "overflow": false,
+        "animations": 0,
+        "start_control_visible": false,
+        "source_open": true,
+        "quote": {
+          "text": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+          "start": 810,
+          "end": 952,
+          "ink_opacity": 1
+        },
+        "source_pin": {
+          "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+          "end_char": 952,
+          "offset_unit": "unicode_code_point",
+          "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+          "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+          "start_char": 810,
+          "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+        },
+        "visible_facts": [],
+        "done_nodes": [],
+        "completed_process": false,
+        "local_chain_columns": []
+      },
+      "sha256": "5e983a245b5af51c58b0e0610efe52e953039241f781fceeb39c38f1d3fd5e9c",
+      "bytes": 196156,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "state": 4,
+      "name": "source-bound-fact",
+      "file": "state-4-source-bound-fact.png",
+      "capture_kind": "Deterministic inspection of the actual deployed recorded presentation",
+      "claim_id": "clm_543f08f2415b2a33",
+      "beat": {
+        "act": "reading",
+        "phase": "fact-rest",
+        "duration": 1800,
+        "index": 12,
+        "start": 12550,
+        "end": 14350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      "observed": {
+        "time": 14349,
+        "phase": "fact-rest",
+        "act": "reading",
+        "overflow": false,
+        "animations": 0,
+        "start_control_visible": false,
+        "source_open": true,
+        "quote": {
+          "text": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+          "start": 810,
+          "end": 952,
+          "ink_opacity": 1
+        },
+        "source_pin": {
+          "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+          "end_char": 952,
+          "offset_unit": "unicode_code_point",
+          "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+          "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+          "start_char": 810,
+          "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+        },
+        "visible_facts": [
+          {
+            "operation": "op_e76561e88226b4db51361885e53d6672",
+            "citation": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 952,
+              "offset_unit": "unicode_code_point",
+              "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 810,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            },
+            "text": "Reasons given with the original increase"
+          }
+        ],
+        "done_nodes": [],
+        "completed_process": false,
+        "local_chain_columns": []
+      },
+      "sha256": "4c5348f662a3b63dba87681d3f307a882061994efe80a9551fa6b2163ba67f72",
+      "bytes": 202930,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "state": 5,
+      "name": "accepted-question",
+      "file": "state-5-accepted-question.png",
+      "capture_kind": "Deterministic inspection of the actual deployed recorded presentation",
+      "claim_id": "clm_543f08f2415b2a33",
+      "beat": {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 29,
+        "start": 21450,
+        "end": 22350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      "observed": {
+        "time": 22349,
+        "phase": "node-rest",
+        "act": "process",
+        "overflow": false,
+        "animations": 0,
+        "start_control_visible": false,
+        "source_open": true,
+        "quote": {
+          "text": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+          "start": 810,
+          "end": 952,
+          "ink_opacity": 1
+        },
+        "source_pin": {
+          "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+          "end_char": 952,
+          "offset_unit": "unicode_code_point",
+          "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+          "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+          "start_char": 810,
+          "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+        },
+        "visible_facts": [
+          {
+            "operation": "op_e76561e88226b4db51361885e53d6672",
+            "citation": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 952,
+              "offset_unit": "unicode_code_point",
+              "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 810,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            },
+            "text": "Reasons given with the original increase"
+          }
+        ],
+        "done_nodes": [
+          {
+            "node_id": "ri_intake",
+            "text": "1What increase was received?Checked"
+          },
+          {
+            "node_id": "ri_form",
+            "text": "2What accompanied the original notice?Checked"
+          }
+        ],
+        "completed_process": false,
+        "local_chain_columns": []
+      },
+      "sha256": "d5038ecf5d96f282d5cef1f6cc00c44f5a408be0cdb4bba8887c22d6debaac46",
+      "bytes": 176957,
+      "width": 1440,
+      "height": 900,
+      "recorded_relationship": {
+        "graph_source": "fresh served claim state, atomic saved journal and production-validated recorded operation/checkpoint chain",
+        "admitted_state_sha256": "77cb8dbb46914420234c73ddc53e3ff229b80553444c89ed2c0b3f63b528bfec",
+        "completion_operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "node_id": "ri_form",
+        "trace_url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/operations?mode=recorded",
+        "trace_sha256": "3dc1971237f51d29ab5bd61afde8750ad3a2ff2876004e15415b05b6c15a3947",
+        "fact_count": 5,
+        "fact_extract_operations_count": 12,
+        "facts": [
+          {
+            "operation_id": "op_6746b263c89eb93156a176abf440a869",
+            "fact_id": "fact:tenancy_terms_evidence",
+            "sequence": 30,
+            "source": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 508,
+              "offset_unit": "unicode_code_point",
+              "quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 95,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            }
+          },
+          {
+            "operation_id": "op_c297e6ac874e92f464e929e6dfbd45fa",
+            "fact_id": "residential_tenancy_scope",
+            "sequence": 31,
+            "source": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 508,
+              "offset_unit": "unicode_code_point",
+              "quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 95,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            }
+          },
+          {
+            "operation_id": "op_a639a8909328097221a6eb3d0e993027",
+            "fact_id": "fact:received_rent_increase_packet",
+            "sequence": 54,
+            "source": {
+              "artifact_id": "src_054f18d0fb9cb3928a70e6879d0fbd4d",
+              "end_char": 770,
+              "offset_unit": "unicode_code_point",
+              "quote": "Begründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1",
+              "sha256": "4d31868f954159f960ec0bcd5e4aa225bf9c992fec9874dc73df7183f49542fb",
+              "start_char": 700,
+              "text_sha256": "e7c58e77efce03f0bcc6d17f7e14736c3253dca3fa575390ed72480ba18c12c3"
+            }
+          },
+          {
+            "operation_id": "op_5c5f2cfbe1b11b7b502d0dca5d38f54a",
+            "fact_id": "ordinary_non269c_tenancy",
+            "sequence": 56,
+            "source": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 308,
+              "offset_unit": "unicode_code_point",
+              "quote": "The rent is not indexed or stepped, and there is no Article269c agreed increase.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 228,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            }
+          },
+          {
+            "operation_id": "op_e76561e88226b4db51361885e53d6672",
+            "fact_id": "contemporaneous_substantive_reasons",
+            "sequence": 58,
+            "source": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 952,
+              "offset_unit": "unicode_code_point",
+              "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 810,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            }
+          },
+          {
+            "operation_id": "op_703866894dfde084a11629bdd1f76bfd",
+            "fact_id": "fact:tenancy_terms_evidence",
+            "sequence": 83,
+            "source": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 508,
+              "offset_unit": "unicode_code_point",
+              "quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 95,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            }
+          },
+          {
+            "operation_id": "op_f3de7fc5b984c8afa905b2a1517381dc",
+            "fact_id": "residential_tenancy_scope",
+            "sequence": 84,
+            "source": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 508,
+              "offset_unit": "unicode_code_point",
+              "quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 95,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            }
+          },
+          {
+            "operation_id": "op_f05dc710c59579bd86f33cbb87e3a430",
+            "fact_id": "fact:received_rent_increase_packet",
+            "sequence": 107,
+            "source": {
+              "artifact_id": "src_054f18d0fb9cb3928a70e6879d0fbd4d",
+              "end_char": 770,
+              "offset_unit": "unicode_code_point",
+              "quote": "Begründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1",
+              "sha256": "4d31868f954159f960ec0bcd5e4aa225bf9c992fec9874dc73df7183f49542fb",
+              "start_char": 700,
+              "text_sha256": "e7c58e77efce03f0bcc6d17f7e14736c3253dca3fa575390ed72480ba18c12c3"
+            }
+          },
+          {
+            "operation_id": "op_094de2dad8336003299634d2aa710a8b",
+            "fact_id": "ordinary_non269c_tenancy",
+            "sequence": 109,
+            "source": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 308,
+              "offset_unit": "unicode_code_point",
+              "quote": "The rent is not indexed or stepped, and there is no Article269c agreed increase.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 228,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            }
+          },
+          {
+            "operation_id": "op_68d8836ece520d0cc211169434b896e3",
+            "fact_id": "contemporaneous_substantive_reasons",
+            "sequence": 111,
+            "source": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 952,
+              "offset_unit": "unicode_code_point",
+              "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 810,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            }
+          },
+          {
+            "operation_id": "op_befad2e2ee0599512b6a16e51c4d0010",
+            "fact_id": "fact:tenancy_terms_evidence",
+            "sequence": 166,
+            "source": {
+              "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+              "end_char": 508,
+              "offset_unit": "unicode_code_point",
+              "quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+              "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+              "start_char": 95,
+              "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+            }
+          },
+          {
+            "operation_id": "op_18272bd7e6584a0eb385e27cb5cfbe7b",
+            "fact_id": "fact:received_rent_increase_packet",
+            "sequence": 195,
+            "source": {
+              "artifact_id": "src_054f18d0fb9cb3928a70e6879d0fbd4d",
+              "end_char": 770,
+              "offset_unit": "unicode_code_point",
+              "quote": "Begründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1",
+              "sha256": "4d31868f954159f960ec0bcd5e4aa225bf9c992fec9874dc73df7183f49542fb",
+              "start_char": 700,
+              "text_sha256": "e7c58e77efce03f0bcc6d17f7e14736c3253dca3fa575390ed72480ba18c12c3"
+            }
+          }
+        ],
+        "plan_operations": [
+          {
+            "id": "op_9c03b988195863c0fda3ace2899ebefc",
+            "sequence": 7,
+            "kind": "source.open"
+          },
+          {
+            "id": "op_adc1adcfce93f1a3ce19d5b6a320ddfc",
+            "sequence": 8,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_62c447fb46d00d665e2f155d84acbf64",
+            "sequence": 16,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_8a23d332cb247db31ff72723850fca95",
+            "sequence": 22,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_a42975120981d4e2b54f8957bd4c99ad",
+            "sequence": 26,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_6746b263c89eb93156a176abf440a869",
+            "sequence": 30,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_c297e6ac874e92f464e929e6dfbd45fa",
+            "sequence": 31,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_d326459a3266e33e3b76ed0157f87714",
+            "sequence": 32,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_c94e1990f62b9132577d39139ac7ec17",
+            "sequence": 34,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_61530f1d3c7699cfaf15a5379f8cecff",
+            "sequence": 40,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_6c9f03d5636367fcc7dcdb0644716f5b",
+            "sequence": 44,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_e0eea3f632029668e860f0d358bb30ef",
+            "sequence": 48,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_a639a8909328097221a6eb3d0e993027",
+            "sequence": 54,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_5c5f2cfbe1b11b7b502d0dca5d38f54a",
+            "sequence": 56,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_e76561e88226b4db51361885e53d6672",
+            "sequence": 58,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_170487abbb955166cb1cf451c9867558",
+            "sequence": 60,
+            "kind": "source.open"
+          },
+          {
+            "id": "op_a00b0697b8c8adcbfcdc12674143ade7",
+            "sequence": 61,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_049bb46333c4e9e111a51f0180b75dfb",
+            "sequence": 69,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_9c9e0fab5ac27f2d09beed47fe1814de",
+            "sequence": 75,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_67e0b3e9762663b38b53fd6cc8d19100",
+            "sequence": 79,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_703866894dfde084a11629bdd1f76bfd",
+            "sequence": 83,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_f3de7fc5b984c8afa905b2a1517381dc",
+            "sequence": 84,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_feae3beacb4d378cd67fa191475a8d06",
+            "sequence": 85,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_de03ccdbc16daeb790fda79e305edc8f",
+            "sequence": 87,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_922600ecd0ef64581dd431ad56f5a9a6",
+            "sequence": 89,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_c36ed4022a5a63631331fba920cde2a9",
+            "sequence": 93,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_3eb5fdd20185994e1244d77b354b6c61",
+            "sequence": 95,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_fd402da721715311ed4f32a0f31b5510",
+            "sequence": 97,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_48a174cd362c47a7d0a5ce547ce52c12",
+            "sequence": 99,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_e643654db483aacc791a18bb24d0b933",
+            "sequence": 101,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_25548613d82cce9c4c1edf5ed9315499",
+            "sequence": 103,
+            "kind": "span.read"
+          },
+          {
+            "id": "op_f05dc710c59579bd86f33cbb87e3a430",
+            "sequence": 107,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_094de2dad8336003299634d2aa710a8b",
+            "sequence": 109,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_68d8836ece520d0cc211169434b896e3",
+            "sequence": 111,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_3f4cd22dce7cdaaa1c3c12cc0cd3779e",
+            "sequence": 165,
+            "kind": "document.check"
+          },
+          {
+            "id": "op_befad2e2ee0599512b6a16e51c4d0010",
+            "sequence": 166,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_63e5ec965bf74f4e3abe1a54cf4a3c76",
+            "sequence": 194,
+            "kind": "document.check"
+          },
+          {
+            "id": "op_18272bd7e6584a0eb385e27cb5cfbe7b",
+            "sequence": 195,
+            "kind": "fact.extract"
+          },
+          {
+            "id": "op_4144e849b5327ced4f3f3b03562eeb87",
+            "sequence": 306,
+            "kind": "step.complete"
+          }
+        ]
+      },
+      "presentation_choice": "Preserved W10/W11 sequential presentation: only the current source-matched fact is visible; prior contributing facts remain in recorded history. This still does not show simultaneous multiple fact cards."
+    },
+    {
+      "state": 6,
+      "name": "completed-process",
+      "file": "state-6-completed-process.png",
+      "capture_kind": "Deterministic inspection of the actual deployed recorded presentation",
+      "claim_id": "clm_543f08f2415b2a33",
+      "beat": {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "facts",
+        "index": 41,
+        "start": 27500,
+        "end": 28400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      "observed": {
+        "time": 28399,
+        "phase": "chain-rest",
+        "act": "decision",
+        "overflow": false,
+        "animations": 0,
+        "start_control_visible": false,
+        "source_open": false,
+        "quote": null,
+        "source_pin": null,
+        "visible_facts": [],
+        "done_nodes": [
+          {
+            "node_id": "ri_intake",
+            "text": "1What increase was received?Checked"
+          },
+          {
+            "node_id": "ri_form",
+            "text": "2What accompanied the original notice?✕1 legal test failed"
+          },
+          {
+            "node_id": "ri_reason",
+            "text": "3Is the increase notice valid?Checked"
+          }
+        ],
+        "completed_process": true,
+        "local_chain_columns": [
+          "facts",
+          "law",
+          "evidence",
+          "reference"
+        ]
+      },
+      "sha256": "8c656c97aa0618f49069b82620c1849ed8c222900990ca3416114ddc5f7980fb",
+      "bytes": 191407,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "state": 7,
+      "name": "direct-edit",
+      "file": "state-7-direct-edit.png",
+      "capture_kind": "Byte-identical screenshot from the actual sealed isolated operator browser run",
+      "claim_id": "clm_f69b1747447bc221",
+      "actor": "Test handler — engineering QA",
+      "capture_scope": "Accepted source graph after direct edits and fragment save; actual preview/acceptance continuity is in the event receipt and video.",
+      "source_receipt_sha256": "ea9a8949ec1ae28aa3c3554eb17a0250bd4fc5f2cccd522c1c3b396a7ff8792e",
+      "recorded_events": [
+        {
+          "stage": "new-prerequisite",
+          "preview": "b0b7fff223b0388f04012ef020830c4662eafd2f6b97520487cd96dfd66811e9",
+          "event": "5382a15f52ac054995c8a0282ce6a645bdbfd886a687cdfe085492ed7f7b48d0",
+          "node_id": "step_6d30fa49a49f",
+          "impact": {
+            "before_graph_sha256": "74b2184a8f646e7456279ef0ec7f7263751fb0779f1b33086379c3f6b9ad97e9",
+            "after_graph_sha256": "7c40213a1a0a4d500d0325cfe012f5bdb0330bf8905aad845637b5b4bbba2025",
+            "changed_node_ids": [
+              "step_6d30fa49a49f"
+            ],
+            "unchanged_node_ids": [
+              "lt_intake",
+              "lt_deadline",
+              "lt_form",
+              "lt_type",
+              "lt_arrears",
+              "lt_family",
+              "lt_abuse",
+              "lt_extension",
+              "lt_evidence",
+              "lt_resolution",
+              "lt_close"
+            ],
+            "removed_node_ids": [],
+            "added_node_ids": [
+              "step_6d30fa49a49f"
+            ],
+            "node_changes": [
+              {
+                "node_id": "step_6d30fa49a49f",
+                "label": "Compare both complete notices",
+                "before": null,
+                "after": {
+                  "node_id": "step_6d30fa49a49f",
+                  "label": "Compare both complete notices",
+                  "meaning": "Review both complete served notices and resolve their differing end dates before preparing a joint resolution. Missing scan pages alone do not establish invalidity.",
+                  "condition": {
+                    "flag": "family_home"
+                  },
+                  "document_types": [
+                    "termination_notice",
+                    "spouse_notice_copy"
+                  ],
+                  "validation": {
+                    "status": "unvalidated"
+                  },
+                  "provenance": {
+                    "kind": "manual",
+                    "source": "Test handler"
+                  },
+                  "kind": "action",
+                  "entry": false,
+                  "completed": false,
+                  "authority": null,
+                  "responsibility": "claim_handler",
+                  "terminal": false,
+                  "activation": "true",
+                  "execution_state": "blocked",
+                  "effective_completed": false,
+                  "inconsistent_completion": false,
+                  "blocked_by": [
+                    "lt_deadline"
+                  ],
+                  "unresolved_dependencies": [],
+                  "condition_flags": [
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "missing_document_types": [
+                    "termination_notice",
+                    "spouse_notice_copy"
+                  ]
+                }
+              }
+            ],
+            "changed_edge_ids": [
+              "after_72436c69d43384035ce1"
+            ],
+            "unchanged_edge_ids": [
+              "lt_e01",
+              "lt_e02",
+              "lt_e03",
+              "lt_e04",
+              "lt_e05",
+              "lt_e06",
+              "lt_e07",
+              "lt_e08",
+              "lt_e09",
+              "lt_e10",
+              "lt_e11",
+              "lt_e12",
+              "lt_e13"
+            ],
+            "removed_edge_ids": [],
+            "added_edge_ids": [
+              "after_72436c69d43384035ce1"
+            ],
+            "edge_changes": [
+              {
+                "edge_id": "after_72436c69d43384035ce1",
+                "label": "enables",
+                "before": null,
+                "after": {
+                  "edge_id": "after_72436c69d43384035ce1",
+                  "source_node_id": "lt_deadline",
+                  "target_node_id": "step_6d30fa49a49f",
+                  "relation": "enables",
+                  "provenance": {
+                    "kind": "manual",
+                    "source": "Test handler"
+                  },
+                  "condition": {
+                    "const": "true"
+                  },
+                  "validation": {
+                    "status": "unvalidated"
+                  },
+                  "label": "enables",
+                  "condition_verdict": "true",
+                  "condition_flags": [
+                    "termination_received"
+                  ],
+                  "activation": "true"
+                }
+              }
+            ],
+            "changed_requirement_document_types": [],
+            "unchanged_requirement_document_types": [
+              "lease_contract",
+              "termination_notice",
+              "proof_of_receipt",
+              "notice_period_evidence",
+              "stated_reason",
+              "spouse_notice_copy",
+              "payment_deadline_letter",
+              "rent_ledger_payment_evidence",
+              "prior_rights_correspondence",
+              "housing_search_log",
+              "landlord_correspondence"
+            ],
+            "document_definition_changes": [],
+            "changed_document_types": [
+              "termination_notice",
+              "spouse_notice_copy"
+            ],
+            "unchanged_document_types": [
+              "lease_contract",
+              "proof_of_receipt",
+              "notice_period_evidence",
+              "stated_reason",
+              "payment_deadline_letter",
+              "rent_ledger_payment_evidence",
+              "prior_rights_correspondence",
+              "housing_search_log",
+              "landlord_correspondence"
+            ],
+            "added_document_types": [],
+            "removed_document_types": [],
+            "document_changes": [
+              {
+                "document_type": "termination_notice",
+                "label": "Termination notice",
+                "before": {
+                  "authority": {
+                    "article": "Art. 266l",
+                    "authority_id": "or-art-266l-para1-20260101-de",
+                    "passage": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen."
+                  },
+                  "label": "Termination notice",
+                  "held_files": [
+                    {
+                      "artifact_id": "doc_0d043bd02b074535",
+                      "file_name": "Tenant_termination_notice_June_Robin-Foster.pdf",
+                      "state": "held_not_reviewed"
+                    }
+                  ],
+                  "condition_flag": null,
+                  "document_type": "termination_notice",
+                  "reason": "'Termination notice' is a mandatory evidence item for process step(s) lt_form.",
+                  "requirement_class": "mandatory",
+                  "condition": {
+                    "const": "true"
+                  },
+                  "required_at_node_ids": [
+                    "lt_form"
+                  ],
+                  "active_node_ids": [
+                    "lt_form"
+                  ],
+                  "condition_flags": [
+                    "termination_received"
+                  ],
+                  "review_state": "review_needed",
+                  "review_scope": "document_requirement",
+                  "activation": "true",
+                  "route_state": "held_not_reviewed",
+                  "request": false
+                },
+                "after": {
+                  "authority": {
+                    "article": "Art. 266l",
+                    "authority_id": "or-art-266l-para1-20260101-de",
+                    "passage": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen."
+                  },
+                  "label": "Termination notice",
+                  "held_files": [
+                    {
+                      "artifact_id": "doc_0d043bd02b074535",
+                      "file_name": "Tenant_termination_notice_June_Robin-Foster.pdf",
+                      "state": "held_not_reviewed"
+                    }
+                  ],
+                  "condition_flag": null,
+                  "document_type": "termination_notice",
+                  "reason": "'Termination notice' is a mandatory evidence item for process step(s) lt_form.",
+                  "requirement_class": "mandatory",
+                  "condition": {
+                    "const": "true"
+                  },
+                  "required_at_node_ids": [
+                    "lt_form",
+                    "step_6d30fa49a49f"
+                  ],
+                  "active_node_ids": [
+                    "lt_form",
+                    "step_6d30fa49a49f"
+                  ],
+                  "condition_flags": [
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "review_state": "review_needed",
+                  "review_scope": "document_requirement",
+                  "activation": "true",
+                  "route_state": "held_not_reviewed",
+                  "request": false
+                }
+              },
+              {
+                "document_type": "spouse_notice_copy",
+                "label": "Separate spouse notice",
+                "before": {
+                  "authority": {
+                    "article": "Art. 266n",
+                    "authority_id": "or-art-266n-para-20260101-de",
+                    "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+                  },
+                  "label": "Separate spouse notice",
+                  "held_files": [
+                    {
+                      "artifact_id": "doc_b137c2a1c0239f90",
+                      "file_name": "Spouse_termination_notice_July_Robin-Foster.pdf",
+                      "state": "held_not_reviewed"
+                    }
+                  ],
+                  "condition_flag": "family_home",
+                  "document_type": "spouse_notice_copy",
+                  "reason": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+                  "requirement_class": "conditional",
+                  "condition": {
+                    "flag": "family_home"
+                  },
+                  "required_at_node_ids": [
+                    "lt_family"
+                  ],
+                  "active_node_ids": [
+                    "lt_family"
+                  ],
+                  "condition_flags": [
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "review_state": "review_needed",
+                  "review_scope": "document_requirement",
+                  "activation": "true",
+                  "route_state": "held_not_reviewed",
+                  "request": false
+                },
+                "after": {
+                  "authority": {
+                    "article": "Art. 266n",
+                    "authority_id": "or-art-266n-para-20260101-de",
+                    "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+                  },
+                  "label": "Separate spouse notice",
+                  "held_files": [
+                    {
+                      "artifact_id": "doc_b137c2a1c0239f90",
+                      "file_name": "Spouse_termination_notice_July_Robin-Foster.pdf",
+                      "state": "held_not_reviewed"
+                    }
+                  ],
+                  "condition_flag": "family_home",
+                  "document_type": "spouse_notice_copy",
+                  "reason": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+                  "requirement_class": "conditional",
+                  "condition": {
+                    "flag": "family_home"
+                  },
+                  "required_at_node_ids": [
+                    "lt_family",
+                    "step_6d30fa49a49f"
+                  ],
+                  "active_node_ids": [
+                    "lt_family",
+                    "step_6d30fa49a49f"
+                  ],
+                  "condition_flags": [
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "review_state": "review_needed",
+                  "review_scope": "document_requirement",
+                  "activation": "true",
+                  "route_state": "held_not_reviewed",
+                  "request": false
+                }
+              }
+            ],
+            "document_source_changes": [
+              "termination_notice",
+              "spouse_notice_copy"
+            ],
+            "document_source_change_details": [
+              {
+                "document_type": "termination_notice",
+                "fields": [
+                  "required_at_node_ids"
+                ],
+                "before": {
+                  "required_at_node_ids": [
+                    "lt_form"
+                  ]
+                },
+                "after": {
+                  "required_at_node_ids": [
+                    "lt_form",
+                    "step_6d30fa49a49f"
+                  ]
+                }
+              },
+              {
+                "document_type": "spouse_notice_copy",
+                "fields": [
+                  "required_at_node_ids"
+                ],
+                "before": {
+                  "required_at_node_ids": [
+                    "lt_family"
+                  ]
+                },
+                "after": {
+                  "required_at_node_ids": [
+                    "lt_family",
+                    "step_6d30fa49a49f"
+                  ]
+                }
+              }
+            ],
+            "next_action_changed": false,
+            "next_action": {
+              "before": "Preserve challenge or extension deadline",
+              "after": "Preserve challenge or extension deadline"
+            },
+            "reopened_question_ids": [],
+            "resolved_question_ids": [],
+            "inconsistent_completed_node_ids": [],
+            "affected_node_ids": [
+              "step_6d30fa49a49f"
+            ],
+            "affected_downstream_node_ids": [],
+            "unchanged_affected_node_ids": [],
+            "summary": {
+              "changed_steps": 1,
+              "changed_relationships": 1,
+              "added_documents": 0,
+              "removed_documents": 0,
+              "changed_document_definitions": 0,
+              "unchanged_requirements": 11,
+              "unchanged_documents": 9
+            }
+          }
+        },
+        {
+          "stage": "resolution-dependency",
+          "preview": "a2aeba169508c7e2b04ebca6c924ea16f391bced1b5b56c11d768d07d1433963",
+          "event": "d363da169348027fc7bc3f27bb0d3e722ff52f7dddacc435d4094ca583889c29",
+          "impact": {
+            "before_graph_sha256": "7c40213a1a0a4d500d0325cfe012f5bdb0330bf8905aad845637b5b4bbba2025",
+            "after_graph_sha256": "2c5bcdbd6926ee033334156bc08d2871141f77597dccdd08d1a1adf393dc2597",
+            "changed_node_ids": [
+              "lt_resolution"
+            ],
+            "unchanged_node_ids": [
+              "lt_intake",
+              "lt_deadline",
+              "lt_form",
+              "lt_type",
+              "lt_arrears",
+              "lt_family",
+              "lt_abuse",
+              "lt_extension",
+              "lt_evidence",
+              "lt_close",
+              "step_6d30fa49a49f"
+            ],
+            "removed_node_ids": [],
+            "added_node_ids": [],
+            "node_changes": [
+              {
+                "node_id": "lt_resolution",
+                "label": "Prepare challenge, extension or settlement",
+                "before": {
+                  "node_id": "lt_resolution",
+                  "label": "Prepare challenge, extension or settlement",
+                  "meaning": "The lease_termination_dispute process includes the step 'Prepare challenge, extension or settlement' owned by claim_handler.",
+                  "kind": "action",
+                  "entry": false,
+                  "completed": false,
+                  "responsibility": "claim_handler",
+                  "terminal": false,
+                  "document_types": [],
+                  "authority": null,
+                  "provenance": {
+                    "kind": "inferred",
+                    "source": "static_policy",
+                    "family": "lease_termination_dispute"
+                  },
+                  "condition": {
+                    "const": "true"
+                  },
+                  "validation": {
+                    "status": "unvalidated"
+                  },
+                  "activation": "true",
+                  "execution_state": "blocked",
+                  "effective_completed": false,
+                  "inconsistent_completion": false,
+                  "blocked_by": [
+                    "lt_evidence"
+                  ],
+                  "unresolved_dependencies": [],
+                  "condition_flags": [
+                    "arrears",
+                    "extension_relevant",
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "missing_document_types": []
+                },
+                "after": {
+                  "node_id": "lt_resolution",
+                  "label": "Prepare challenge, extension or settlement",
+                  "meaning": "The lease_termination_dispute process includes the step 'Prepare challenge, extension or settlement' owned by claim_handler.",
+                  "kind": "action",
+                  "entry": false,
+                  "completed": false,
+                  "responsibility": "claim_handler",
+                  "terminal": false,
+                  "document_types": [],
+                  "authority": null,
+                  "provenance": {
+                    "kind": "inferred",
+                    "source": "static_policy",
+                    "family": "lease_termination_dispute"
+                  },
+                  "condition": {
+                    "const": "true"
+                  },
+                  "validation": {
+                    "status": "unvalidated"
+                  },
+                  "activation": "true",
+                  "execution_state": "blocked",
+                  "effective_completed": false,
+                  "inconsistent_completion": false,
+                  "blocked_by": [
+                    "step_6d30fa49a49f"
+                  ],
+                  "unresolved_dependencies": [],
+                  "condition_flags": [
+                    "arrears",
+                    "extension_relevant",
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "missing_document_types": []
+                }
+              }
+            ],
+            "changed_edge_ids": [
+              "link_e03bede6cde2"
+            ],
+            "unchanged_edge_ids": [
+              "lt_e01",
+              "lt_e02",
+              "lt_e03",
+              "lt_e04",
+              "lt_e05",
+              "lt_e06",
+              "lt_e07",
+              "lt_e08",
+              "lt_e09",
+              "lt_e10",
+              "lt_e11",
+              "lt_e12",
+              "lt_e13",
+              "after_72436c69d43384035ce1"
+            ],
+            "removed_edge_ids": [],
+            "added_edge_ids": [
+              "link_e03bede6cde2"
+            ],
+            "edge_changes": [
+              {
+                "edge_id": "link_e03bede6cde2",
+                "label": "Requires",
+                "before": null,
+                "after": {
+                  "edge_id": "link_e03bede6cde2",
+                  "source_node_id": "step_6d30fa49a49f",
+                  "target_node_id": "lt_resolution",
+                  "relation": "requires",
+                  "condition": {
+                    "const": "true"
+                  },
+                  "label": "Requires",
+                  "validation": {
+                    "status": "unvalidated"
+                  },
+                  "provenance": {
+                    "kind": "manual",
+                    "source": "Test handler"
+                  },
+                  "condition_verdict": "true",
+                  "condition_flags": [
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "activation": "true"
+                }
+              }
+            ],
+            "changed_requirement_document_types": [],
+            "unchanged_requirement_document_types": [
+              "lease_contract",
+              "termination_notice",
+              "proof_of_receipt",
+              "notice_period_evidence",
+              "stated_reason",
+              "spouse_notice_copy",
+              "payment_deadline_letter",
+              "rent_ledger_payment_evidence",
+              "prior_rights_correspondence",
+              "housing_search_log",
+              "landlord_correspondence"
+            ],
+            "document_definition_changes": [],
+            "changed_document_types": [],
+            "unchanged_document_types": [
+              "lease_contract",
+              "termination_notice",
+              "proof_of_receipt",
+              "notice_period_evidence",
+              "stated_reason",
+              "spouse_notice_copy",
+              "payment_deadline_letter",
+              "rent_ledger_payment_evidence",
+              "prior_rights_correspondence",
+              "housing_search_log",
+              "landlord_correspondence"
+            ],
+            "added_document_types": [],
+            "removed_document_types": [],
+            "document_changes": [],
+            "document_source_changes": [],
+            "document_source_change_details": [],
+            "next_action_changed": false,
+            "next_action": {
+              "before": "Preserve challenge or extension deadline",
+              "after": "Preserve challenge or extension deadline"
+            },
+            "reopened_question_ids": [],
+            "resolved_question_ids": [],
+            "inconsistent_completed_node_ids": [],
+            "affected_node_ids": [
+              "lt_resolution",
+              "lt_close"
+            ],
+            "affected_downstream_node_ids": [
+              "lt_close"
+            ],
+            "unchanged_affected_node_ids": [
+              "lt_close"
+            ],
+            "summary": {
+              "changed_steps": 1,
+              "changed_relationships": 1,
+              "added_documents": 0,
+              "removed_documents": 0,
+              "changed_document_definitions": 0,
+              "unchanged_requirements": 11,
+              "unchanged_documents": 11
+            }
+          }
+        },
+        {
+          "stage": "saved-version",
+          "event": "7793cca0ebdc22a87d6ecff7e91cc612562c8849665b69335b48698291d5cbb4",
+          "fragment_sha256": "3c4dfbd0d19b692751334b8512741cd51b2382203949033b9648999d4898202e",
+          "version": 1,
+          "actor": "Test handler"
+        }
+      ],
+      "qualified_human_approval": false,
+      "sha256": "f9d42e538959aa0b3468016ad6d1b9db40dbf0af8784061f8c47566c7d1f6876",
+      "bytes": 134207,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "state": 8,
+      "name": "later-case-reuse",
+      "file": "state-8-later-case-reuse.png",
+      "capture_kind": "Byte-identical screenshot from the actual sealed isolated operator browser run",
+      "claim_id": "clm_0e538990cc6ba7ef",
+      "actor": "Test handler — engineering QA",
+      "capture_scope": "Receiving-case exact version and current consequence after accepted application.",
+      "source_receipt_sha256": "ea9a8949ec1ae28aa3c3554eb17a0250bd4fc5f2cccd522c1c3b396a7ff8792e",
+      "recorded_events": [
+        {
+          "stage": "later-case-application",
+          "preview": "9569287a60c1663c904c2c086ffe18bd48df344b68efe96f363179f0b13e264a",
+          "event": "3c1ba183b363e54340aa6d5f3ff41b90bc545b480c3ef34eb8644f6f47f92538",
+          "impact": {
+            "before_graph_sha256": "e534dba5f68c0ac7ac1c866323c7101f643e2c1cf0c59fef8775ee7f2c619de2",
+            "after_graph_sha256": "778654bbb4674d09d1e8c2bb07db9d69d65f5a521fb11d701a6e8e34a6e9fb56",
+            "changed_node_ids": [
+              "lt_resolution",
+              "step_6d30fa49a49f"
+            ],
+            "unchanged_node_ids": [
+              "lt_intake",
+              "lt_deadline",
+              "lt_form",
+              "lt_type",
+              "lt_arrears",
+              "lt_family",
+              "lt_abuse",
+              "lt_extension",
+              "lt_evidence",
+              "lt_close"
+            ],
+            "removed_node_ids": [],
+            "added_node_ids": [
+              "step_6d30fa49a49f"
+            ],
+            "node_changes": [
+              {
+                "node_id": "lt_resolution",
+                "label": "Prepare challenge, extension or settlement",
+                "before": {
+                  "node_id": "lt_resolution",
+                  "label": "Prepare challenge, extension or settlement",
+                  "meaning": "The lease_termination_dispute process includes the step 'Prepare challenge, extension or settlement' owned by claim_handler.",
+                  "kind": "action",
+                  "entry": false,
+                  "completed": false,
+                  "responsibility": "claim_handler",
+                  "terminal": false,
+                  "document_types": [],
+                  "authority": null,
+                  "provenance": {
+                    "kind": "inferred",
+                    "source": "static_policy",
+                    "family": "lease_termination_dispute"
+                  },
+                  "condition": {
+                    "const": "true"
+                  },
+                  "validation": {
+                    "status": "unvalidated"
+                  },
+                  "activation": "true",
+                  "execution_state": "blocked",
+                  "effective_completed": false,
+                  "inconsistent_completion": false,
+                  "blocked_by": [
+                    "lt_evidence"
+                  ],
+                  "unresolved_dependencies": [],
+                  "condition_flags": [
+                    "arrears",
+                    "extension_relevant",
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "missing_document_types": []
+                },
+                "after": {
+                  "node_id": "lt_resolution",
+                  "label": "Prepare challenge, extension or settlement",
+                  "meaning": "The lease_termination_dispute process includes the step 'Prepare challenge, extension or settlement' owned by claim_handler.",
+                  "kind": "action",
+                  "entry": false,
+                  "completed": false,
+                  "responsibility": "claim_handler",
+                  "terminal": false,
+                  "document_types": [],
+                  "authority": null,
+                  "provenance": {
+                    "kind": "inferred",
+                    "source": "static_policy",
+                    "family": "lease_termination_dispute"
+                  },
+                  "condition": {
+                    "const": "true"
+                  },
+                  "validation": {
+                    "status": "unvalidated"
+                  },
+                  "activation": "true",
+                  "execution_state": "blocked",
+                  "effective_completed": false,
+                  "inconsistent_completion": false,
+                  "blocked_by": [
+                    "step_6d30fa49a49f"
+                  ],
+                  "unresolved_dependencies": [],
+                  "condition_flags": [
+                    "arrears",
+                    "extension_relevant",
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "missing_document_types": []
+                }
+              },
+              {
+                "node_id": "step_6d30fa49a49f",
+                "label": "Compare both complete notices",
+                "before": null,
+                "after": {
+                  "authority": null,
+                  "completed": false,
+                  "condition": {
+                    "flag": "family_home"
+                  },
+                  "document_types": [
+                    "termination_notice",
+                    "spouse_notice_copy"
+                  ],
+                  "entry": false,
+                  "kind": "action",
+                  "label": "Compare both complete notices",
+                  "meaning": "Review both complete served notices and resolve their differing end dates before preparing a joint resolution. Missing scan pages alone do not establish invalidity.",
+                  "node_id": "step_6d30fa49a49f",
+                  "provenance": {
+                    "kind": "reused",
+                    "source": "3c4dfbd0d19b692751334b8512741cd51b2382203949033b9648999d4898202e",
+                    "actor": "Test handler"
+                  },
+                  "responsibility": "claim_handler",
+                  "terminal": false,
+                  "validation": {
+                    "actor": "Test handler",
+                    "status": "validated"
+                  },
+                  "activation": "true",
+                  "execution_state": "blocked",
+                  "effective_completed": false,
+                  "inconsistent_completion": false,
+                  "blocked_by": [
+                    "lt_deadline"
+                  ],
+                  "unresolved_dependencies": [],
+                  "condition_flags": [
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "missing_document_types": [
+                    "termination_notice",
+                    "spouse_notice_copy"
+                  ]
+                }
+              }
+            ],
+            "changed_edge_ids": [
+              "after_72436c69d43384035ce1",
+              "link_e03bede6cde2"
+            ],
+            "unchanged_edge_ids": [
+              "lt_e01",
+              "lt_e02",
+              "lt_e03",
+              "lt_e04",
+              "lt_e05",
+              "lt_e06",
+              "lt_e07",
+              "lt_e08",
+              "lt_e09",
+              "lt_e10",
+              "lt_e11",
+              "lt_e12",
+              "lt_e13"
+            ],
+            "removed_edge_ids": [],
+            "added_edge_ids": [
+              "after_72436c69d43384035ce1",
+              "link_e03bede6cde2"
+            ],
+            "edge_changes": [
+              {
+                "edge_id": "after_72436c69d43384035ce1",
+                "label": "enables",
+                "before": null,
+                "after": {
+                  "condition": {
+                    "const": "true"
+                  },
+                  "edge_id": "after_72436c69d43384035ce1",
+                  "label": "enables",
+                  "provenance": {
+                    "kind": "reused",
+                    "source": "3c4dfbd0d19b692751334b8512741cd51b2382203949033b9648999d4898202e",
+                    "actor": "Test handler"
+                  },
+                  "relation": "enables",
+                  "source_node_id": "lt_deadline",
+                  "target_node_id": "step_6d30fa49a49f",
+                  "validation": {
+                    "status": "unvalidated",
+                    "actor": "Test handler"
+                  },
+                  "condition_verdict": "true",
+                  "condition_flags": [
+                    "termination_received"
+                  ],
+                  "activation": "true"
+                }
+              },
+              {
+                "edge_id": "link_e03bede6cde2",
+                "label": "Requires",
+                "before": null,
+                "after": {
+                  "condition": {
+                    "const": "true"
+                  },
+                  "edge_id": "link_e03bede6cde2",
+                  "label": "Requires",
+                  "provenance": {
+                    "kind": "reused",
+                    "source": "3c4dfbd0d19b692751334b8512741cd51b2382203949033b9648999d4898202e",
+                    "actor": "Test handler"
+                  },
+                  "relation": "requires",
+                  "source_node_id": "step_6d30fa49a49f",
+                  "target_node_id": "lt_resolution",
+                  "validation": {
+                    "status": "unvalidated",
+                    "actor": "Test handler"
+                  },
+                  "condition_verdict": "true",
+                  "condition_flags": [
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "activation": "true"
+                }
+              }
+            ],
+            "changed_requirement_document_types": [],
+            "unchanged_requirement_document_types": [
+              "lease_contract",
+              "termination_notice",
+              "proof_of_receipt",
+              "notice_period_evidence",
+              "stated_reason",
+              "spouse_notice_copy",
+              "payment_deadline_letter",
+              "rent_ledger_payment_evidence",
+              "prior_rights_correspondence",
+              "housing_search_log",
+              "landlord_correspondence"
+            ],
+            "document_definition_changes": [],
+            "changed_document_types": [
+              "termination_notice",
+              "spouse_notice_copy"
+            ],
+            "unchanged_document_types": [
+              "lease_contract",
+              "proof_of_receipt",
+              "notice_period_evidence",
+              "stated_reason",
+              "payment_deadline_letter",
+              "rent_ledger_payment_evidence",
+              "prior_rights_correspondence",
+              "housing_search_log",
+              "landlord_correspondence"
+            ],
+            "added_document_types": [],
+            "removed_document_types": [],
+            "document_changes": [
+              {
+                "document_type": "termination_notice",
+                "label": "Termination notice",
+                "before": {
+                  "authority": {
+                    "article": "Art. 266l",
+                    "authority_id": "or-art-266l-para1-20260101-de",
+                    "passage": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen."
+                  },
+                  "label": "Termination notice",
+                  "held_files": [
+                    {
+                      "artifact_id": "doc_ee5afc3a4e3cd60f",
+                      "file_name": "Tenant_termination_notice_June_Avery-Miller.pdf",
+                      "state": "held_not_reviewed"
+                    }
+                  ],
+                  "condition_flag": null,
+                  "document_type": "termination_notice",
+                  "reason": "'Termination notice' is a mandatory evidence item for process step(s) lt_form.",
+                  "requirement_class": "mandatory",
+                  "condition": {
+                    "const": "true"
+                  },
+                  "required_at_node_ids": [
+                    "lt_form"
+                  ],
+                  "active_node_ids": [
+                    "lt_form"
+                  ],
+                  "condition_flags": [
+                    "termination_received"
+                  ],
+                  "review_state": "review_needed",
+                  "review_scope": "document_requirement",
+                  "activation": "true",
+                  "route_state": "held_not_reviewed",
+                  "request": false
+                },
+                "after": {
+                  "authority": {
+                    "article": "Art. 266l",
+                    "authority_id": "or-art-266l-para1-20260101-de",
+                    "passage": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen."
+                  },
+                  "condition": {
+                    "const": "true"
+                  },
+                  "condition_flag": null,
+                  "document_type": "termination_notice",
+                  "held_files": [
+                    {
+                      "artifact_id": "doc_ee5afc3a4e3cd60f",
+                      "file_name": "Tenant_termination_notice_June_Avery-Miller.pdf",
+                      "state": "held_not_reviewed"
+                    }
+                  ],
+                  "label": "Termination notice",
+                  "reason": "'Termination notice' is a mandatory evidence item for process step(s) lt_form.",
+                  "requirement_class": "mandatory",
+                  "required_at_node_ids": [
+                    "lt_form",
+                    "step_6d30fa49a49f"
+                  ],
+                  "active_node_ids": [
+                    "lt_form",
+                    "step_6d30fa49a49f"
+                  ],
+                  "condition_flags": [
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "review_state": "review_needed",
+                  "review_scope": "document_requirement",
+                  "activation": "true",
+                  "route_state": "held_not_reviewed",
+                  "request": false
+                }
+              },
+              {
+                "document_type": "spouse_notice_copy",
+                "label": "Separate spouse notice",
+                "before": {
+                  "authority": {
+                    "article": "Art. 266n",
+                    "authority_id": "or-art-266n-para-20260101-de",
+                    "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+                  },
+                  "label": "Separate spouse notice",
+                  "held_files": [
+                    {
+                      "artifact_id": "doc_7377764332dadd26",
+                      "file_name": "Spouse_termination_notice_July_Avery-Miller.pdf",
+                      "state": "held_not_reviewed"
+                    }
+                  ],
+                  "condition_flag": "family_home",
+                  "document_type": "spouse_notice_copy",
+                  "reason": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+                  "requirement_class": "conditional",
+                  "condition": {
+                    "flag": "family_home"
+                  },
+                  "required_at_node_ids": [
+                    "lt_family"
+                  ],
+                  "active_node_ids": [
+                    "lt_family"
+                  ],
+                  "condition_flags": [
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "review_state": "review_needed",
+                  "review_scope": "document_requirement",
+                  "activation": "true",
+                  "route_state": "held_not_reviewed",
+                  "request": false
+                },
+                "after": {
+                  "authority": {
+                    "article": "Art. 266n",
+                    "authority_id": "or-art-266n-para-20260101-de",
+                    "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+                  },
+                  "condition": {
+                    "flag": "family_home"
+                  },
+                  "condition_flag": "family_home",
+                  "document_type": "spouse_notice_copy",
+                  "held_files": [
+                    {
+                      "artifact_id": "doc_7377764332dadd26",
+                      "file_name": "Spouse_termination_notice_July_Avery-Miller.pdf",
+                      "state": "held_not_reviewed"
+                    }
+                  ],
+                  "label": "Separate spouse notice",
+                  "reason": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+                  "requirement_class": "conditional",
+                  "required_at_node_ids": [
+                    "lt_family",
+                    "step_6d30fa49a49f"
+                  ],
+                  "active_node_ids": [
+                    "lt_family",
+                    "step_6d30fa49a49f"
+                  ],
+                  "condition_flags": [
+                    "family_home",
+                    "termination_received"
+                  ],
+                  "review_state": "review_needed",
+                  "review_scope": "document_requirement",
+                  "activation": "true",
+                  "route_state": "held_not_reviewed",
+                  "request": false
+                }
+              }
+            ],
+            "document_source_changes": [
+              "termination_notice",
+              "spouse_notice_copy"
+            ],
+            "document_source_change_details": [
+              {
+                "document_type": "termination_notice",
+                "fields": [
+                  "required_at_node_ids"
+                ],
+                "before": {
+                  "required_at_node_ids": [
+                    "lt_form"
+                  ]
+                },
+                "after": {
+                  "required_at_node_ids": [
+                    "lt_form",
+                    "step_6d30fa49a49f"
+                  ]
+                }
+              },
+              {
+                "document_type": "spouse_notice_copy",
+                "fields": [
+                  "required_at_node_ids"
+                ],
+                "before": {
+                  "required_at_node_ids": [
+                    "lt_family"
+                  ]
+                },
+                "after": {
+                  "required_at_node_ids": [
+                    "lt_family",
+                    "step_6d30fa49a49f"
+                  ]
+                }
+              }
+            ],
+            "next_action_changed": false,
+            "next_action": {
+              "before": "Preserve challenge or extension deadline",
+              "after": "Preserve challenge or extension deadline"
+            },
+            "reopened_question_ids": [],
+            "resolved_question_ids": [],
+            "inconsistent_completed_node_ids": [],
+            "affected_node_ids": [
+              "lt_resolution",
+              "lt_close",
+              "step_6d30fa49a49f"
+            ],
+            "affected_downstream_node_ids": [
+              "lt_close"
+            ],
+            "unchanged_affected_node_ids": [
+              "lt_close"
+            ],
+            "summary": {
+              "changed_steps": 2,
+              "changed_relationships": 2,
+              "added_documents": 0,
+              "removed_documents": 0,
+              "changed_document_definitions": 0,
+              "unchanged_requirements": 11,
+              "unchanged_documents": 9
+            }
+          },
+          "pin": {
+            "fragment_id": "fragment.ed87af17c0736a0ccce2bcbf",
+            "version": 1,
+            "fragment_sha256": "3c4dfbd0d19b692751334b8512741cd51b2382203949033b9648999d4898202e",
+            "source_claim_id": "clm_f69b1747447bc221"
+          },
+          "workspace_revision": 4,
+          "target_facts_preserved": true,
+          "target_source_bindings_preserved": true,
+          "payoff_geometry": {
+            "[data-review-application-history]": {
+              "left": 290,
+              "top": 198.5,
+              "right": 1412,
+              "bottom": 282.1875,
+              "clipped": {
+                "left": 290,
+                "top": 198.5,
+                "right": 1412,
+                "bottom": 282.1875
+              },
+              "contained": true,
+              "exposed": true
+            },
+            "[data-review-before]": {
+              "left": 643.921875,
+              "top": 223,
+              "right": 985.859375,
+              "bottom": 282.1875,
+              "clipped": {
+                "left": 643.921875,
+                "top": 223,
+                "right": 985.859375,
+                "bottom": 282.1875
+              },
+              "contained": true,
+              "exposed": true
+            },
+            "[data-review-after]": {
+              "left": 1035.859375,
+              "top": 223,
+              "right": 1412,
+              "bottom": 282.1875,
+              "clipped": {
+                "left": 1035.859375,
+                "top": 223,
+                "right": 1412,
+                "bottom": 282.1875
+              },
+              "contained": true,
+              "exposed": true
+            },
+            "[data-review-affected-step]": {
+              "left": 290,
+              "top": 223,
+              "right": 631.921875,
+              "bottom": 282.1875,
+              "clipped": {
+                "left": 290,
+                "top": 223,
+                "right": 631.921875,
+                "bottom": 282.1875
+              },
+              "contained": true,
+              "exposed": true
+            },
+            "[data-review-reuse-card=\"sources\"]": {
+              "left": 290,
+              "top": 298.1875,
+              "right": 648,
+              "bottom": 467.6875,
+              "clipped": {
+                "left": 290,
+                "top": 298.1875,
+                "right": 648,
+                "bottom": 467.6875
+              },
+              "contained": true,
+              "exposed": true
+            },
+            "[data-review-reuse-card=\"version\"]": {
+              "left": 672,
+              "top": 298.1875,
+              "right": 1030,
+              "bottom": 467.6875,
+              "clipped": {
+                "left": 672,
+                "top": 298.1875,
+                "right": 1030,
+                "bottom": 467.6875
+              },
+              "contained": true,
+              "exposed": true
+            },
+            "[data-review-reuse-card=\"result\"]": {
+              "left": 1054,
+              "top": 298.1875,
+              "right": 1412,
+              "bottom": 467.6875,
+              "clipped": {
+                "left": 1054,
+                "top": 298.1875,
+                "right": 1412,
+                "bottom": 467.6875
+              },
+              "contained": true,
+              "exposed": true
+            },
+            "[data-review-current-next]": {
+              "left": 1067,
+              "top": 408.6875,
+              "right": 1399,
+              "bottom": 449.6875,
+              "clipped": {
+                "left": 1067,
+                "top": 408.6875,
+                "right": 1399,
+                "bottom": 449.6875
+              },
+              "contained": true,
+              "exposed": true
+            },
+            ".nr-reuse-notice": {
+              "left": 290,
+              "top": 477.6875,
+              "right": 1412,
+              "bottom": 512.1875,
+              "clipped": {
+                "left": 290,
+                "top": 477.6875,
+                "right": 1412,
+                "bottom": 512.1875
+              },
+              "contained": true,
+              "exposed": true
+            },
+            "#cwSourceInspector": {
+              "left": 290,
+              "top": 630,
+              "right": 1412,
+              "bottom": 880,
+              "clipped": {
+                "left": 290,
+                "top": 630,
+                "right": 1412,
+                "bottom": 880
+              },
+              "contained": true,
+              "exposed": true
+            }
+          },
+          "affected_step_marker": "11",
+          "full_process_keyboard_access": true,
+          "original_reader_retained": true
+        }
+      ],
+      "qualified_human_approval": false,
+      "sha256": "dbfb481d41807f6636b50812fed61820d92c9e9b49dfa858e1c4608683b9693b",
+      "bytes": 137072,
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "edge_beacons": [
+    {
+      "method": "POST",
+      "path": "/cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.9143971869041332:1792858212:V8YJihI9J8hOIViXvGqskO2ZSIXnsdy6ViuGYNU2fVo/a4fa7c8ced4c343e",
+      "network_request_suppressed": true
+    }
+  ],
+  "http_inputs": [
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/deployment.json",
+      "status": 200,
+      "file": "inputs/deployment.json",
+      "sha256": "5fd9a5ecbf5bb8c0aae192491fefea154a1f18fd605eb5e9e81e9378dae6c578",
+      "bytes": 614,
+      "content_type": "application/json",
+      "received_at": "2026-10-24T16:51:27.108Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-workspace-v1.js",
+      "status": 200,
+      "file": "inputs/asset-autonomous-workspace-v1.js",
+      "sha256": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+      "bytes": 851119,
+      "content_type": "text/javascript",
+      "received_at": "2026-10-24T16:51:27.379Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-workspace-v1.css",
+      "status": 200,
+      "file": "inputs/asset-autonomous-workspace-v1.css",
+      "sha256": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+      "bytes": 360402,
+      "content_type": "text/css",
+      "received_at": "2026-10-24T16:51:27.480Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-presentation-v1.js",
+      "status": 200,
+      "file": "inputs/asset-autonomous-presentation-v1.js",
+      "sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+      "bytes": 7473,
+      "content_type": "text/javascript",
+      "received_at": "2026-10-24T16:51:27.567Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/autonomous-language-v1.js",
+      "status": 200,
+      "file": "inputs/asset-autonomous-language-v1.js",
+      "sha256": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+      "bytes": 37777,
+      "content_type": "text/javascript",
+      "received_at": "2026-10-24T16:51:27.636Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/assets/fonts/Mulish.ttf",
+      "status": 200,
+      "file": "inputs/asset-fonts-Mulish.ttf",
+      "sha256": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac",
+      "bytes": 211988,
+      "content_type": "application/octet-stream",
+      "received_at": "2026-10-24T16:51:27.758Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33",
+      "status": 200,
+      "file": "inputs/clm_543f08f2415b2a33-claim.json",
+      "sha256": "2100eb0a98c3311de853fe9e39075e04bb3546efa4c93a0d9e365e0a9ba7caf2",
+      "bytes": 1004381,
+      "content_type": "application/json",
+      "received_at": "2026-10-24T16:51:47.585Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/snapshot?after=0",
+      "status": 200,
+      "file": "inputs/clm_543f08f2415b2a33-snapshot.json",
+      "sha256": "2100eb0a98c3311de853fe9e39075e04bb3546efa4c93a0d9e365e0a9ba7caf2",
+      "bytes": 1004381,
+      "content_type": "application/json",
+      "received_at": "2026-10-24T16:51:47.704Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/replay?through_seq=0",
+      "status": 200,
+      "file": "inputs/clm_543f08f2415b2a33-opening.json",
+      "sha256": "b027ae39c5c9170264755fcb45924e1419100428d7e307896398f78f6e477904",
+      "bytes": 10018,
+      "content_type": "application/json",
+      "received_at": "2026-10-24T16:51:47.806Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/operations?mode=recorded",
+      "status": 200,
+      "file": "inputs/clm_543f08f2415b2a33-operations.ndjson",
+      "sha256": "3dc1971237f51d29ab5bd61afde8750ad3a2ff2876004e15415b05b6c15a3947",
+      "bytes": 2980628,
+      "content_type": "application/x-ndjson",
+      "received_at": "2026-10-24T16:51:48.903Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90",
+      "status": 200,
+      "file": "inputs/clm_7dbd7c7d1c4ddf90-claim.json",
+      "sha256": "49ea5783b9d2987de5302265ce7b29ced7b2d469f41d7f2065be446ab28b1cee",
+      "bytes": 1221005,
+      "content_type": "application/json",
+      "received_at": "2026-10-24T16:51:52.533Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/snapshot?after=0",
+      "status": 200,
+      "file": "inputs/clm_7dbd7c7d1c4ddf90-snapshot.json",
+      "sha256": "49ea5783b9d2987de5302265ce7b29ced7b2d469f41d7f2065be446ab28b1cee",
+      "bytes": 1221005,
+      "content_type": "application/json",
+      "received_at": "2026-10-24T16:51:52.722Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/replay?through_seq=0",
+      "status": 200,
+      "file": "inputs/clm_7dbd7c7d1c4ddf90-opening.json",
+      "sha256": "a82c4d400515c5da97f7cfd89b35a47bda0586749ecc798da8464a2258094232",
+      "bytes": 9456,
+      "content_type": "application/json",
+      "received_at": "2026-10-24T16:51:52.726Z"
+    },
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/operations?mode=recorded",
+      "status": 200,
+      "file": "inputs/clm_7dbd7c7d1c4ddf90-operations.ndjson",
+      "sha256": "5f5c9856882af60a660b2f60c13041f22f49a4b8204436e75118532a7a0647b4",
+      "bytes": 3213389,
+      "content_type": "application/x-ndjson",
+      "received_at": "2026-10-24T16:51:54.123Z"
+    }
+  ],
+  "live_trace_validations": [
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "trace_url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/operations?mode=recorded",
+      "trace_file": "inputs/clm_543f08f2415b2a33-operations.ndjson",
+      "trace_sha256": "3dc1971237f51d29ab5bd61afde8750ad3a2ff2876004e15415b05b6c15a3947",
+      "claim_file": "inputs/clm_543f08f2415b2a33-claim.json",
+      "claim_sha256": "2100eb0a98c3311de853fe9e39075e04bb3546efa4c93a0d9e365e0a9ba7caf2",
+      "opening_file": "inputs/clm_543f08f2415b2a33-opening.json",
+      "opening_sha256": "b027ae39c5c9170264755fcb45924e1419100428d7e307896398f78f6e477904",
+      "snapshot_file": "inputs/clm_543f08f2415b2a33-snapshot.json",
+      "snapshot_sha256": "2100eb0a98c3311de853fe9e39075e04bb3546efa4c93a0d9e365e0a9ba7caf2",
+      "state_sha256": "77cb8dbb46914420234c73ddc53e3ff229b80553444c89ed2c0b3f63b528bfec",
+      "operation_count": 428,
+      "checkpoint_count": 17,
+      "operation_chain_sha256": "f4ae02fd033bf329dcd810a9120f4180726f2f4b7504f0162fe2d8ca0bb6064a",
+      "frame_trace_sha256": "51600298a213a7d9d3471a3698a11b37380c3cc4a0c471f4d425b7ce13b36a76",
+      "delivery_mode": "historical_recomputed",
+      "input_sha256": "ae3a60eb6e6e68ed9a4457058a880c654f8077007114fbe22aa8c1873978f537",
+      "input_digest_independently_reconstructed": false,
+      "official_readState_passed": true,
+      "official_atomic_head_passed": true,
+      "official_replay_start_passed": true,
+      "official_checkedOperationBinding_passed": true,
+      "official_checkedOperation_all_passed": true,
+      "official_checkpoints_all_passed": true,
+      "final_binding_verified": true,
+      "admitted_state_hash_matched": true
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "trace_url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/operations?mode=recorded",
+      "trace_file": "inputs/clm_7dbd7c7d1c4ddf90-operations.ndjson",
+      "trace_sha256": "5f5c9856882af60a660b2f60c13041f22f49a4b8204436e75118532a7a0647b4",
+      "claim_file": "inputs/clm_7dbd7c7d1c4ddf90-claim.json",
+      "claim_sha256": "49ea5783b9d2987de5302265ce7b29ced7b2d469f41d7f2065be446ab28b1cee",
+      "opening_file": "inputs/clm_7dbd7c7d1c4ddf90-opening.json",
+      "opening_sha256": "a82c4d400515c5da97f7cfd89b35a47bda0586749ecc798da8464a2258094232",
+      "snapshot_file": "inputs/clm_7dbd7c7d1c4ddf90-snapshot.json",
+      "snapshot_sha256": "49ea5783b9d2987de5302265ce7b29ced7b2d469f41d7f2065be446ab28b1cee",
+      "state_sha256": "f02392106065c7c6d78f100cc2cfd135620ca0fccb096b7d7395dfe7d69a52f1",
+      "operation_count": 428,
+      "checkpoint_count": 17,
+      "operation_chain_sha256": "aa15b068aa8e318b0910a703d3de38c338cdc07edcfd296d638dc49f477ed4a9",
+      "frame_trace_sha256": "f99aaf7b03723cdaccad66fffd729c3ed809c68b5bd80286c852b17ccf8c9183",
+      "delivery_mode": "historical_recomputed",
+      "input_sha256": "ce88470f574469a4fd15ade94873a2f5446d4f4e16d70bcdad01058c0b1c3d29",
+      "input_digest_independently_reconstructed": false,
+      "official_readState_passed": true,
+      "official_atomic_head_passed": true,
+      "official_replay_start_passed": true,
+      "official_checkedOperationBinding_passed": true,
+      "official_checkedOperation_all_passed": true,
+      "official_checkpoints_all_passed": true,
+      "final_binding_verified": true,
+      "admitted_state_hash_matched": true
+    }
+  ],
+  "trace_reads": [
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/operations?mode=recorded",
+      "status": 200
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/operations?mode=recorded",
+      "status": 200
+    }
+  ],
+  "assets": {
+    "autonomous-workspace-v1.js": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+    "autonomous-workspace-v1.css": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+    "autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "fonts/Mulish.ttf": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac"
+  },
+  "coverage_scope": "Fresh recorded source-to-process journey plus the exact sealed isolated Test handler edit, versioning and later-case reuse",
+  "trace_input_proof_scope": "Production checkedOperationBinding validates the run, accepted replay start, profile, source roster, rule set, saved head and input hash field. The top-level input_sha256 is not independently reconstructed from a separate initial-input payload. Every operation input/result hash, source text hash, Unicode span, checkpoint and final chain is validated from freshly captured responses.",
+  "qualified_human_approval": "pending",
+  "literal_state_8_expert_review_acceptance": false,
+  "claim_outcome_authorized": false,
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+    "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "manifest": {
+    "showcase": {
+      "claimId": "clm_543f08f2415b2a33",
+      "candidates": [
+        {
+          "claimId": "clm_314f2d309fea25e6",
+          "stateHash": "df5f95e988c60ec91b36f7435375549ffc3c532103d51dfddd4a929ca8b3dcf4",
+          "index": 0,
+          "counts": {
+            "failed": 0,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 0,
+            "tests": 5,
+            "steps": 6
+          },
+          "score": [
+            0,
+            0,
+            0,
+            0,
+            5,
+            6
+          ]
+        },
+        {
+          "claimId": "clm_4a07dbbbd859a3ce",
+          "stateHash": "ef77d4d427f72291d1efb18851a64a7adc390b7b5a0e7ac62d274be5af970670",
+          "index": 1,
+          "counts": {
+            "failed": 0,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 6
+          },
+          "score": [
+            0,
+            0,
+            0,
+            1,
+            5,
+            6
+          ]
+        },
+        {
+          "claimId": "clm_95d08975bc575592",
+          "stateHash": "77a261c714da465ddace4ea599ee31169262cfe83796ebd15e2b01abb9952a8a",
+          "index": 2,
+          "counts": {
+            "failed": 0,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 6
+          },
+          "score": [
+            0,
+            0,
+            0,
+            1,
+            5,
+            6
+          ]
+        },
+        {
+          "claimId": "clm_0f4f13b1e3e1328c",
+          "stateHash": "e46dc84c04f0ede959dd7244fa3512f7faa6b60c6556777168a52a7c56877af2",
+          "index": 3,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 0,
+            "tests": 4,
+            "steps": 2
+          },
+          "score": [
+            1,
+            0,
+            0,
+            0,
+            4,
+            2
+          ]
+        },
+        {
+          "claimId": "clm_393285577dcb12c4",
+          "stateHash": "3517b616c11d48965d5615304ac786a0380890b60756d98c0de51dac3f7f44e7",
+          "index": 4,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 4,
+            "steps": 2
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            4,
+            2
+          ]
+        },
+        {
+          "claimId": "clm_4a53299cfe619303",
+          "stateHash": "259b2a73a923c956d8adb4c60c52a826bb77e28134e3862fdd90abe2c737fd82",
+          "index": 5,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 4,
+            "steps": 2
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            4,
+            2
+          ]
+        },
+        {
+          "claimId": "clm_2c55cdd816b1d0e8",
+          "stateHash": "fb76e06529882c1d6eab57810a7f7c91a167cbe2d14fde8333067823397ce366",
+          "index": 6,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 0,
+            "tests": 5,
+            "steps": 3
+          },
+          "score": [
+            1,
+            0,
+            0,
+            0,
+            5,
+            3
+          ]
+        },
+        {
+          "claimId": "clm_543f08f2415b2a33",
+          "stateHash": "77cb8dbb46914420234c73ddc53e3ff229b80553444c89ed2c0b3f63b528bfec",
+          "index": 7,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 3
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            5,
+            3
+          ]
+        },
+        {
+          "claimId": "clm_7dbd7c7d1c4ddf90",
+          "stateHash": "f02392106065c7c6d78f100cc2cfd135620ca0fccb096b7d7395dfe7d69a52f1",
+          "index": 8,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 3
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            5,
+            3
+          ]
+        }
+      ],
+      "rule": "Failed legal test; missing evidence; forks/excluded routes; recorded earlier-case checklist; legal-test count; step count; original roster order."
+    },
+    "duration": 88050,
+    "acts": [
+      {
+        "id": "customer",
+        "start": 0,
+        "end": 6300
+      },
+      {
+        "id": "reading",
+        "start": 6300,
+        "end": 18900
+      },
+      {
+        "id": "process",
+        "start": 18900,
+        "end": 25400
+      },
+      {
+        "id": "decision",
+        "start": 25400,
+        "end": 61550
+      },
+      {
+        "id": "learning",
+        "start": 61550,
+        "end": 79650
+      },
+      {
+        "id": "cases",
+        "start": 79650,
+        "end": 88050
+      }
+    ],
+    "beats": [
+      {
+        "act": "customer",
+        "phase": "ready",
+        "duration": 4200,
+        "index": 0,
+        "start": 0,
+        "end": 4200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-source-open",
+        "duration": 400,
+        "motion": true,
+        "index": 1,
+        "start": 4200,
+        "end": 4600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 2,
+        "start": 4600,
+        "end": 5150,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 3,
+        "start": 5150,
+        "end": 5400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-passage-rest",
+        "duration": 900,
+        "index": 4,
+        "start": 5400,
+        "end": 6300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "reading",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "nextPhase": "camera-in",
+        "index": 5,
+        "start": 6300,
+        "end": 6700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      {
+        "act": "reading",
+        "phase": "camera-in",
+        "duration": 700,
+        "motion": true,
+        "index": 6,
+        "start": 6700,
+        "end": 7400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      {
+        "act": "reading",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 7,
+        "start": 7400,
+        "end": 7950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      {
+        "act": "reading",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 8,
+        "start": 7950,
+        "end": 8200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      {
+        "act": "reading",
+        "phase": "passage-rest",
+        "duration": 3600,
+        "index": 9,
+        "start": 8200,
+        "end": 11800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      {
+        "act": "reading",
+        "phase": "fact",
+        "duration": 350,
+        "motion": true,
+        "index": 10,
+        "start": 11800,
+        "end": 12150,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      {
+        "act": "reading",
+        "phase": "connector",
+        "duration": 400,
+        "motion": true,
+        "index": 11,
+        "start": 12150,
+        "end": 12550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      {
+        "act": "reading",
+        "phase": "fact-rest",
+        "duration": 1800,
+        "index": 12,
+        "start": 12550,
+        "end": 14350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      {
+        "act": "reading",
+        "phase": "plan-tick",
+        "duration": 300,
+        "motion": true,
+        "index": 13,
+        "start": 14350,
+        "end": 14650,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      {
+        "act": "reading",
+        "phase": "camera-out",
+        "duration": 700,
+        "motion": true,
+        "index": 14,
+        "start": 14650,
+        "end": 15350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_e76561e88226b4db51361885e53d6672",
+        "seq": 58
+      },
+      {
+        "act": "reading",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 15,
+        "start": 15350,
+        "end": 15600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 16,
+        "start": 15600,
+        "end": 16150,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 17,
+        "start": 16150,
+        "end": 16400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 18,
+        "start": 16400,
+        "end": 17300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "plan-recede",
+        "duration": 400,
+        "motion": true,
+        "index": 19,
+        "start": 17300,
+        "end": 17700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "node-accepted",
+        "duration": 300,
+        "motion": true,
+        "index": 20,
+        "start": 17700,
+        "end": 18000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 21,
+        "start": 18000,
+        "end": 18900,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "process",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "nextPhase": "source-swap",
+        "index": 22,
+        "start": 18900,
+        "end": 19300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 23,
+        "start": 19300,
+        "end": 19550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "cursor",
+        "duration": 250,
+        "motion": true,
+        "index": 24,
+        "start": 19550,
+        "end": 19800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 25,
+        "start": 19800,
+        "end": 20050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 26,
+        "start": 20050,
+        "end": 20950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "plan-recede",
+        "duration": 250,
+        "motion": true,
+        "index": 27,
+        "start": 20950,
+        "end": 21200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "node-accepted",
+        "duration": 250,
+        "motion": true,
+        "index": 28,
+        "start": 21200,
+        "end": 21450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 29,
+        "start": 21450,
+        "end": 22350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 30,
+        "start": 22350,
+        "end": 22600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "cursor",
+        "duration": 250,
+        "motion": true,
+        "index": 31,
+        "start": 22600,
+        "end": 22850,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 32,
+        "start": 22850,
+        "end": 23100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 33,
+        "start": 23100,
+        "end": 24000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "plan-recede",
+        "duration": 250,
+        "motion": true,
+        "index": 34,
+        "start": 24000,
+        "end": 24250,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "node-accepted",
+        "duration": 250,
+        "motion": true,
+        "index": 35,
+        "start": 24250,
+        "end": 24500,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 36,
+        "start": 24500,
+        "end": 25400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "decision",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "nextPhase": "completed",
+        "index": 37,
+        "start": 25400,
+        "end": 25800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "completed",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "index": 38,
+        "start": 25800,
+        "end": 26200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "overview",
+        "duration": 900,
+        "view": "step",
+        "index": 39,
+        "start": 26200,
+        "end": 27100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "facts",
+        "index": 40,
+        "start": 27100,
+        "end": 27500,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "facts",
+        "index": 41,
+        "start": 27500,
+        "end": 28400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "law",
+        "index": 42,
+        "start": 28400,
+        "end": 28800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "law",
+        "index": 43,
+        "start": 28800,
+        "end": 29700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "evidence",
+        "index": 44,
+        "start": 29700,
+        "end": 30100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "evidence",
+        "index": 45,
+        "start": 30100,
+        "end": 31000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "reference",
+        "index": 46,
+        "start": 31000,
+        "end": 31400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "reference",
+        "index": 47,
+        "start": 31400,
+        "end": 32300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "source-check",
+        "duration": 400,
+        "motion": true,
+        "view": "verified",
+        "index": 48,
+        "start": 32300,
+        "end": 32700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "source-check-rest",
+        "duration": 4200,
+        "view": "verified",
+        "index": 49,
+        "start": 32700,
+        "end": 36900,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "law",
+        "duration": 400,
+        "motion": true,
+        "view": "law",
+        "index": 50,
+        "start": 36900,
+        "end": 37300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "law-rest",
+        "duration": 5400,
+        "view": "law",
+        "index": 51,
+        "start": 37300,
+        "end": 42700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "documents",
+        "duration": 400,
+        "motion": true,
+        "view": "documents",
+        "index": 52,
+        "start": 42700,
+        "end": 43100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "documents-rest",
+        "duration": 900,
+        "view": "documents",
+        "index": 53,
+        "start": 43100,
+        "end": 44000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 0,
+        "index": 54,
+        "start": 44000,
+        "end": 44350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 0,
+        "index": 55,
+        "start": 44350,
+        "end": 45250,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 1,
+        "index": 56,
+        "start": 45250,
+        "end": 45600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 1,
+        "index": 57,
+        "start": 45600,
+        "end": 46500,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 2,
+        "index": 58,
+        "start": 46500,
+        "end": 46850,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 2,
+        "index": 59,
+        "start": 46850,
+        "end": 47750,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 3,
+        "index": 60,
+        "start": 47750,
+        "end": 48100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 2000,
+        "view": "answer",
+        "test": 3,
+        "index": 61,
+        "start": 48100,
+        "end": 50100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 4,
+        "index": 62,
+        "start": 50100,
+        "end": 50450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 4,
+        "index": 63,
+        "start": 50450,
+        "end": 51350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "answer",
+        "duration": 400,
+        "motion": true,
+        "view": "answer",
+        "test": 5,
+        "index": 64,
+        "start": 51350,
+        "end": 51750,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "answer-rest",
+        "duration": 3400,
+        "view": "answer",
+        "test": 5,
+        "index": 65,
+        "start": 51750,
+        "end": 55150,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "draft",
+        "duration": 400,
+        "motion": true,
+        "view": "draft",
+        "index": 66,
+        "start": 55150,
+        "end": 55550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "draft-rest",
+        "duration": 6000,
+        "view": "draft",
+        "index": 67,
+        "start": 55550,
+        "end": 61550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "act-transition",
+        "duration": 400,
+        "view": "knowledge",
+        "nextPhase": "later-case-rest",
+        "motion": true,
+        "index": 68,
+        "start": 61550,
+        "end": 61950,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "later-case-rest",
+        "duration": 900,
+        "view": "knowledge",
+        "index": 69,
+        "start": 61950,
+        "end": 62850,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-open",
+        "duration": 400,
+        "motion": true,
+        "view": "knowledge",
+        "index": 70,
+        "start": 62850,
+        "end": 63250,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-overview",
+        "duration": 900,
+        "view": "knowledge",
+        "index": 71,
+        "start": 63250,
+        "end": 64150,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-transfer",
+        "duration": 1000,
+        "motion": true,
+        "view": "knowledge",
+        "item": 0,
+        "index": 72,
+        "start": 64150,
+        "end": 65150,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-landed",
+        "duration": 1500,
+        "view": "knowledge",
+        "item": 0,
+        "index": 73,
+        "start": 65150,
+        "end": 66650,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-transfer",
+        "duration": 1000,
+        "motion": true,
+        "view": "knowledge",
+        "item": 1,
+        "index": 74,
+        "start": 66650,
+        "end": 67650,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-landed",
+        "duration": 1500,
+        "view": "knowledge",
+        "item": 1,
+        "index": 75,
+        "start": 67650,
+        "end": 69150,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-transfer",
+        "duration": 1000,
+        "motion": true,
+        "view": "knowledge",
+        "item": 2,
+        "index": 76,
+        "start": 69150,
+        "end": 70150,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-landed",
+        "duration": 1500,
+        "view": "knowledge",
+        "item": 2,
+        "index": 77,
+        "start": 70150,
+        "end": 71650,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-notice",
+        "duration": 400,
+        "motion": true,
+        "view": "knowledge",
+        "index": 78,
+        "start": 71650,
+        "end": 72050,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-notice-rest",
+        "duration": 2400,
+        "view": "knowledge",
+        "index": 79,
+        "start": 72050,
+        "end": 74450,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "answer",
+        "duration": 400,
+        "motion": true,
+        "view": "answer",
+        "test": 5,
+        "index": 80,
+        "start": 74450,
+        "end": 74850,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "answer-rest",
+        "duration": 4800,
+        "view": "answer",
+        "test": 5,
+        "index": 81,
+        "start": 74850,
+        "end": 79650,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "act-transition",
+        "duration": 400,
+        "motion": true,
+        "view": "cases",
+        "nextPhase": "case-list",
+        "index": 82,
+        "start": 79650,
+        "end": 80050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-list",
+        "duration": 400,
+        "motion": true,
+        "view": "cases",
+        "index": 83,
+        "start": 80050,
+        "end": 80450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 0,
+        "index": 84,
+        "start": 80450,
+        "end": 80700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 1,
+        "index": 85,
+        "start": 80700,
+        "end": 80950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 2,
+        "index": 86,
+        "start": 80950,
+        "end": 81200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 3,
+        "index": 87,
+        "start": 81200,
+        "end": 81450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 4,
+        "index": 88,
+        "start": 81450,
+        "end": 81700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 5,
+        "index": 89,
+        "start": 81700,
+        "end": 81950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 6,
+        "index": 90,
+        "start": 81950,
+        "end": 82200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 7,
+        "index": 91,
+        "start": 82200,
+        "end": 82450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 8,
+        "index": 92,
+        "start": 82450,
+        "end": 82700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-list-rest",
+        "duration": 2700,
+        "view": "cases",
+        "index": 93,
+        "start": 82700,
+        "end": 85400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "wordmark",
+        "duration": 400,
+        "motion": true,
+        "view": "cases",
+        "index": 94,
+        "start": 85400,
+        "end": 85800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "wordmark-rest",
+        "duration": 2250,
+        "view": "cases",
+        "index": 95,
+        "start": 85800,
+        "end": 88050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      }
+    ],
+    "claims": [
+      "clm_543f08f2415b2a33",
+      "clm_7dbd7c7d1c4ddf90"
+    ],
+    "stateHashes": [
+      "77cb8dbb46914420234c73ddc53e3ff229b80553444c89ed2c0b3f63b528bfec",
+      "f02392106065c7c6d78f100cc2cfd135620ca0fccb096b7d7395dfe7d69a52f1"
+    ]
+  },
+  "admitted_manifest_sha256": "aeffbc3659fa2e93e9448c42d027fa85966346fa557f575bdf8945e1ed5845ba",
+  "cleanup": [
+    {
+      "name": "context",
+      "status": "closed"
+    },
+    {
+      "name": "browser",
+      "status": "closed"
+    }
+  ],
+  "finished_at": "2026-10-24T16:52:03.158Z"
+}

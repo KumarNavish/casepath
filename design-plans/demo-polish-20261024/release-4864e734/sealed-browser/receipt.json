@@ -1,0 +1,1349 @@
+{
+  "scope": "isolated deterministic QA; Test handler is not a human approval",
+  "cases": [
+    "clm_f69b1747447bc221",
+    "clm_0e538990cc6ba7ef"
+  ],
+  "stages": [
+    {
+      "stage": "new-prerequisite",
+      "preview": "b0b7fff223b0388f04012ef020830c4662eafd2f6b97520487cd96dfd66811e9",
+      "event": "5382a15f52ac054995c8a0282ce6a645bdbfd886a687cdfe085492ed7f7b48d0",
+      "node_id": "step_6d30fa49a49f",
+      "impact": {
+        "before_graph_sha256": "74b2184a8f646e7456279ef0ec7f7263751fb0779f1b33086379c3f6b9ad97e9",
+        "after_graph_sha256": "7c40213a1a0a4d500d0325cfe012f5bdb0330bf8905aad845637b5b4bbba2025",
+        "changed_node_ids": [
+          "step_6d30fa49a49f"
+        ],
+        "unchanged_node_ids": [
+          "lt_intake",
+          "lt_deadline",
+          "lt_form",
+          "lt_type",
+          "lt_arrears",
+          "lt_family",
+          "lt_abuse",
+          "lt_extension",
+          "lt_evidence",
+          "lt_resolution",
+          "lt_close"
+        ],
+        "removed_node_ids": [],
+        "added_node_ids": [
+          "step_6d30fa49a49f"
+        ],
+        "node_changes": [
+          {
+            "node_id": "step_6d30fa49a49f",
+            "label": "Compare both complete notices",
+            "before": null,
+            "after": {
+              "node_id": "step_6d30fa49a49f",
+              "label": "Compare both complete notices",
+              "meaning": "Review both complete served notices and resolve their differing end dates before preparing a joint resolution. Missing scan pages alone do not establish invalidity.",
+              "condition": {
+                "flag": "family_home"
+              },
+              "document_types": [
+                "termination_notice",
+                "spouse_notice_copy"
+              ],
+              "validation": {
+                "status": "unvalidated"
+              },
+              "provenance": {
+                "kind": "manual",
+                "source": "Test handler"
+              },
+              "kind": "action",
+              "entry": false,
+              "completed": false,
+              "authority": null,
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "activation": "true",
+              "execution_state": "blocked",
+              "effective_completed": false,
+              "inconsistent_completion": false,
+              "blocked_by": [
+                "lt_deadline"
+              ],
+              "unresolved_dependencies": [],
+              "condition_flags": [
+                "family_home",
+                "termination_received"
+              ],
+              "missing_document_types": [
+                "termination_notice",
+                "spouse_notice_copy"
+              ]
+            }
+          }
+        ],
+        "changed_edge_ids": [
+          "after_72436c69d43384035ce1"
+        ],
+        "unchanged_edge_ids": [
+          "lt_e01",
+          "lt_e02",
+          "lt_e03",
+          "lt_e04",
+          "lt_e05",
+          "lt_e06",
+          "lt_e07",
+          "lt_e08",
+          "lt_e09",
+          "lt_e10",
+          "lt_e11",
+          "lt_e12",
+          "lt_e13"
+        ],
+        "removed_edge_ids": [],
+        "added_edge_ids": [
+          "after_72436c69d43384035ce1"
+        ],
+        "edge_changes": [
+          {
+            "edge_id": "after_72436c69d43384035ce1",
+            "label": "enables",
+            "before": null,
+            "after": {
+              "edge_id": "after_72436c69d43384035ce1",
+              "source_node_id": "lt_deadline",
+              "target_node_id": "step_6d30fa49a49f",
+              "relation": "enables",
+              "provenance": {
+                "kind": "manual",
+                "source": "Test handler"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "validation": {
+                "status": "unvalidated"
+              },
+              "label": "enables",
+              "condition_verdict": "true",
+              "condition_flags": [
+                "termination_received"
+              ],
+              "activation": "true"
+            }
+          }
+        ],
+        "changed_requirement_document_types": [],
+        "unchanged_requirement_document_types": [
+          "lease_contract",
+          "termination_notice",
+          "proof_of_receipt",
+          "notice_period_evidence",
+          "stated_reason",
+          "spouse_notice_copy",
+          "payment_deadline_letter",
+          "rent_ledger_payment_evidence",
+          "prior_rights_correspondence",
+          "housing_search_log",
+          "landlord_correspondence"
+        ],
+        "document_definition_changes": [],
+        "changed_document_types": [
+          "termination_notice",
+          "spouse_notice_copy"
+        ],
+        "unchanged_document_types": [
+          "lease_contract",
+          "proof_of_receipt",
+          "notice_period_evidence",
+          "stated_reason",
+          "payment_deadline_letter",
+          "rent_ledger_payment_evidence",
+          "prior_rights_correspondence",
+          "housing_search_log",
+          "landlord_correspondence"
+        ],
+        "added_document_types": [],
+        "removed_document_types": [],
+        "document_changes": [
+          {
+            "document_type": "termination_notice",
+            "label": "Termination notice",
+            "before": {
+              "authority": {
+                "article": "Art. 266l",
+                "authority_id": "or-art-266l-para1-20260101-de",
+                "passage": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen."
+              },
+              "label": "Termination notice",
+              "held_files": [
+                {
+                  "artifact_id": "doc_0d043bd02b074535",
+                  "file_name": "Tenant_termination_notice_June_Robin-Foster.pdf",
+                  "state": "held_not_reviewed"
+                }
+              ],
+              "condition_flag": null,
+              "document_type": "termination_notice",
+              "reason": "'Termination notice' is a mandatory evidence item for process step(s) lt_form.",
+              "requirement_class": "mandatory",
+              "condition": {
+                "const": "true"
+              },
+              "required_at_node_ids": [
+                "lt_form"
+              ],
+              "active_node_ids": [
+                "lt_form"
+              ],
+              "condition_flags": [
+                "termination_received"
+              ],
+              "review_state": "review_needed",
+              "review_scope": "document_requirement",
+              "activation": "true",
+              "route_state": "held_not_reviewed",
+              "request": false
+            },
+            "after": {
+              "authority": {
+                "article": "Art. 266l",
+                "authority_id": "or-art-266l-para1-20260101-de",
+                "passage": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen."
+              },
+              "label": "Termination notice",
+              "held_files": [
+                {
+                  "artifact_id": "doc_0d043bd02b074535",
+                  "file_name": "Tenant_termination_notice_June_Robin-Foster.pdf",
+                  "state": "held_not_reviewed"
+                }
+              ],
+              "condition_flag": null,
+              "document_type": "termination_notice",
+              "reason": "'Termination notice' is a mandatory evidence item for process step(s) lt_form.",
+              "requirement_class": "mandatory",
+              "condition": {
+                "const": "true"
+              },
+              "required_at_node_ids": [
+                "lt_form",
+                "step_6d30fa49a49f"
+              ],
+              "active_node_ids": [
+                "lt_form",
+                "step_6d30fa49a49f"
+              ],
+              "condition_flags": [
+                "family_home",
+                "termination_received"
+              ],
+              "review_state": "review_needed",
+              "review_scope": "document_requirement",
+              "activation": "true",
+              "route_state": "held_not_reviewed",
+              "request": false
+            }
+          },
+          {
+            "document_type": "spouse_notice_copy",
+            "label": "Separate spouse notice",
+            "before": {
+              "authority": {
+                "article": "Art. 266n",
+                "authority_id": "or-art-266n-para-20260101-de",
+                "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+              },
+              "label": "Separate spouse notice",
+              "held_files": [
+                {
+                  "artifact_id": "doc_b137c2a1c0239f90",
+                  "file_name": "Spouse_termination_notice_July_Robin-Foster.pdf",
+                  "state": "held_not_reviewed"
+                }
+              ],
+              "condition_flag": "family_home",
+              "document_type": "spouse_notice_copy",
+              "reason": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+              "requirement_class": "conditional",
+              "condition": {
+                "flag": "family_home"
+              },
+              "required_at_node_ids": [
+                "lt_family"
+              ],
+              "active_node_ids": [
+                "lt_family"
+              ],
+              "condition_flags": [
+                "family_home",
+                "termination_received"
+              ],
+              "review_state": "review_needed",
+              "review_scope": "document_requirement",
+              "activation": "true",
+              "route_state": "held_not_reviewed",
+              "request": false
+            },
+            "after": {
+              "authority": {
+                "article": "Art. 266n",
+                "authority_id": "or-art-266n-para-20260101-de",
+                "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+              },
+              "label": "Separate spouse notice",
+              "held_files": [
+                {
+                  "artifact_id": "doc_b137c2a1c0239f90",
+                  "file_name": "Spouse_termination_notice_July_Robin-Foster.pdf",
+                  "state": "held_not_reviewed"
+                }
+              ],
+              "condition_flag": "family_home",
+              "document_type": "spouse_notice_copy",
+              "reason": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+              "requirement_class": "conditional",
+              "condition": {
+                "flag": "family_home"
+              },
+              "required_at_node_ids": [
+                "lt_family",
+                "step_6d30fa49a49f"
+              ],
+              "active_node_ids": [
+                "lt_family",
+                "step_6d30fa49a49f"
+              ],
+              "condition_flags": [
+                "family_home",
+                "termination_received"
+              ],
+              "review_state": "review_needed",
+              "review_scope": "document_requirement",
+              "activation": "true",
+              "route_state": "held_not_reviewed",
+              "request": false
+            }
+          }
+        ],
+        "document_source_changes": [
+          "termination_notice",
+          "spouse_notice_copy"
+        ],
+        "document_source_change_details": [
+          {
+            "document_type": "termination_notice",
+            "fields": [
+              "required_at_node_ids"
+            ],
+            "before": {
+              "required_at_node_ids": [
+                "lt_form"
+              ]
+            },
+            "after": {
+              "required_at_node_ids": [
+                "lt_form",
+                "step_6d30fa49a49f"
+              ]
+            }
+          },
+          {
+            "document_type": "spouse_notice_copy",
+            "fields": [
+              "required_at_node_ids"
+            ],
+            "before": {
+              "required_at_node_ids": [
+                "lt_family"
+              ]
+            },
+            "after": {
+              "required_at_node_ids": [
+                "lt_family",
+                "step_6d30fa49a49f"
+              ]
+            }
+          }
+        ],
+        "next_action_changed": false,
+        "next_action": {
+          "before": "Preserve challenge or extension deadline",
+          "after": "Preserve challenge or extension deadline"
+        },
+        "reopened_question_ids": [],
+        "resolved_question_ids": [],
+        "inconsistent_completed_node_ids": [],
+        "affected_node_ids": [
+          "step_6d30fa49a49f"
+        ],
+        "affected_downstream_node_ids": [],
+        "unchanged_affected_node_ids": [],
+        "summary": {
+          "changed_steps": 1,
+          "changed_relationships": 1,
+          "added_documents": 0,
+          "removed_documents": 0,
+          "changed_document_definitions": 0,
+          "unchanged_requirements": 11,
+          "unchanged_documents": 9
+        }
+      }
+    },
+    {
+      "stage": "resolution-dependency",
+      "preview": "a2aeba169508c7e2b04ebca6c924ea16f391bced1b5b56c11d768d07d1433963",
+      "event": "d363da169348027fc7bc3f27bb0d3e722ff52f7dddacc435d4094ca583889c29",
+      "impact": {
+        "before_graph_sha256": "7c40213a1a0a4d500d0325cfe012f5bdb0330bf8905aad845637b5b4bbba2025",
+        "after_graph_sha256": "2c5bcdbd6926ee033334156bc08d2871141f77597dccdd08d1a1adf393dc2597",
+        "changed_node_ids": [
+          "lt_resolution"
+        ],
+        "unchanged_node_ids": [
+          "lt_intake",
+          "lt_deadline",
+          "lt_form",
+          "lt_type",
+          "lt_arrears",
+          "lt_family",
+          "lt_abuse",
+          "lt_extension",
+          "lt_evidence",
+          "lt_close",
+          "step_6d30fa49a49f"
+        ],
+        "removed_node_ids": [],
+        "added_node_ids": [],
+        "node_changes": [
+          {
+            "node_id": "lt_resolution",
+            "label": "Prepare challenge, extension or settlement",
+            "before": {
+              "node_id": "lt_resolution",
+              "label": "Prepare challenge, extension or settlement",
+              "meaning": "The lease_termination_dispute process includes the step 'Prepare challenge, extension or settlement' owned by claim_handler.",
+              "kind": "action",
+              "entry": false,
+              "completed": false,
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "document_types": [],
+              "authority": null,
+              "provenance": {
+                "kind": "inferred",
+                "source": "static_policy",
+                "family": "lease_termination_dispute"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "validation": {
+                "status": "unvalidated"
+              },
+              "activation": "true",
+              "execution_state": "blocked",
+              "effective_completed": false,
+              "inconsistent_completion": false,
+              "blocked_by": [
+                "lt_evidence"
+              ],
+              "unresolved_dependencies": [],
+              "condition_flags": [
+                "arrears",
+                "extension_relevant",
+                "family_home",
+                "termination_received"
+              ],
+              "missing_document_types": []
+            },
+            "after": {
+              "node_id": "lt_resolution",
+              "label": "Prepare challenge, extension or settlement",
+              "meaning": "The lease_termination_dispute process includes the step 'Prepare challenge, extension or settlement' owned by claim_handler.",
+              "kind": "action",
+              "entry": false,
+              "completed": false,
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "document_types": [],
+              "authority": null,
+              "provenance": {
+                "kind": "inferred",
+                "source": "static_policy",
+                "family": "lease_termination_dispute"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "validation": {
+                "status": "unvalidated"
+              },
+              "activation": "true",
+              "execution_state": "blocked",
+              "effective_completed": false,
+              "inconsistent_completion": false,
+              "blocked_by": [
+                "step_6d30fa49a49f"
+              ],
+              "unresolved_dependencies": [],
+              "condition_flags": [
+                "arrears",
+                "extension_relevant",
+                "family_home",
+                "termination_received"
+              ],
+              "missing_document_types": []
+            }
+          }
+        ],
+        "changed_edge_ids": [
+          "link_e03bede6cde2"
+        ],
+        "unchanged_edge_ids": [
+          "lt_e01",
+          "lt_e02",
+          "lt_e03",
+          "lt_e04",
+          "lt_e05",
+          "lt_e06",
+          "lt_e07",
+          "lt_e08",
+          "lt_e09",
+          "lt_e10",
+          "lt_e11",
+          "lt_e12",
+          "lt_e13",
+          "after_72436c69d43384035ce1"
+        ],
+        "removed_edge_ids": [],
+        "added_edge_ids": [
+          "link_e03bede6cde2"
+        ],
+        "edge_changes": [
+          {
+            "edge_id": "link_e03bede6cde2",
+            "label": "Requires",
+            "before": null,
+            "after": {
+              "edge_id": "link_e03bede6cde2",
+              "source_node_id": "step_6d30fa49a49f",
+              "target_node_id": "lt_resolution",
+              "relation": "requires",
+              "condition": {
+                "const": "true"
+              },
+              "label": "Requires",
+              "validation": {
+                "status": "unvalidated"
+              },
+              "provenance": {
+                "kind": "manual",
+                "source": "Test handler"
+              },
+              "condition_verdict": "true",
+              "condition_flags": [
+                "family_home",
+                "termination_received"
+              ],
+              "activation": "true"
+            }
+          }
+        ],
+        "changed_requirement_document_types": [],
+        "unchanged_requirement_document_types": [
+          "lease_contract",
+          "termination_notice",
+          "proof_of_receipt",
+          "notice_period_evidence",
+          "stated_reason",
+          "spouse_notice_copy",
+          "payment_deadline_letter",
+          "rent_ledger_payment_evidence",
+          "prior_rights_correspondence",
+          "housing_search_log",
+          "landlord_correspondence"
+        ],
+        "document_definition_changes": [],
+        "changed_document_types": [],
+        "unchanged_document_types": [
+          "lease_contract",
+          "termination_notice",
+          "proof_of_receipt",
+          "notice_period_evidence",
+          "stated_reason",
+          "spouse_notice_copy",
+          "payment_deadline_letter",
+          "rent_ledger_payment_evidence",
+          "prior_rights_correspondence",
+          "housing_search_log",
+          "landlord_correspondence"
+        ],
+        "added_document_types": [],
+        "removed_document_types": [],
+        "document_changes": [],
+        "document_source_changes": [],
+        "document_source_change_details": [],
+        "next_action_changed": false,
+        "next_action": {
+          "before": "Preserve challenge or extension deadline",
+          "after": "Preserve challenge or extension deadline"
+        },
+        "reopened_question_ids": [],
+        "resolved_question_ids": [],
+        "inconsistent_completed_node_ids": [],
+        "affected_node_ids": [
+          "lt_resolution",
+          "lt_close"
+        ],
+        "affected_downstream_node_ids": [
+          "lt_close"
+        ],
+        "unchanged_affected_node_ids": [
+          "lt_close"
+        ],
+        "summary": {
+          "changed_steps": 1,
+          "changed_relationships": 1,
+          "added_documents": 0,
+          "removed_documents": 0,
+          "changed_document_definitions": 0,
+          "unchanged_requirements": 11,
+          "unchanged_documents": 11
+        }
+      }
+    },
+    {
+      "stage": "saved-version",
+      "event": "7793cca0ebdc22a87d6ecff7e91cc612562c8849665b69335b48698291d5cbb4",
+      "fragment_sha256": "3c4dfbd0d19b692751334b8512741cd51b2382203949033b9648999d4898202e",
+      "version": 1,
+      "actor": "Test handler"
+    },
+    {
+      "stage": "later-case-application",
+      "preview": "9569287a60c1663c904c2c086ffe18bd48df344b68efe96f363179f0b13e264a",
+      "event": "3c1ba183b363e54340aa6d5f3ff41b90bc545b480c3ef34eb8644f6f47f92538",
+      "impact": {
+        "before_graph_sha256": "e534dba5f68c0ac7ac1c866323c7101f643e2c1cf0c59fef8775ee7f2c619de2",
+        "after_graph_sha256": "778654bbb4674d09d1e8c2bb07db9d69d65f5a521fb11d701a6e8e34a6e9fb56",
+        "changed_node_ids": [
+          "lt_resolution",
+          "step_6d30fa49a49f"
+        ],
+        "unchanged_node_ids": [
+          "lt_intake",
+          "lt_deadline",
+          "lt_form",
+          "lt_type",
+          "lt_arrears",
+          "lt_family",
+          "lt_abuse",
+          "lt_extension",
+          "lt_evidence",
+          "lt_close"
+        ],
+        "removed_node_ids": [],
+        "added_node_ids": [
+          "step_6d30fa49a49f"
+        ],
+        "node_changes": [
+          {
+            "node_id": "lt_resolution",
+            "label": "Prepare challenge, extension or settlement",
+            "before": {
+              "node_id": "lt_resolution",
+              "label": "Prepare challenge, extension or settlement",
+              "meaning": "The lease_termination_dispute process includes the step 'Prepare challenge, extension or settlement' owned by claim_handler.",
+              "kind": "action",
+              "entry": false,
+              "completed": false,
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "document_types": [],
+              "authority": null,
+              "provenance": {
+                "kind": "inferred",
+                "source": "static_policy",
+                "family": "lease_termination_dispute"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "validation": {
+                "status": "unvalidated"
+              },
+              "activation": "true",
+              "execution_state": "blocked",
+              "effective_completed": false,
+              "inconsistent_completion": false,
+              "blocked_by": [
+                "lt_evidence"
+              ],
+              "unresolved_dependencies": [],
+              "condition_flags": [
+                "arrears",
+                "extension_relevant",
+                "family_home",
+                "termination_received"
+              ],
+              "missing_document_types": []
+            },
+            "after": {
+              "node_id": "lt_resolution",
+              "label": "Prepare challenge, extension or settlement",
+              "meaning": "The lease_termination_dispute process includes the step 'Prepare challenge, extension or settlement' owned by claim_handler.",
+              "kind": "action",
+              "entry": false,
+              "completed": false,
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "document_types": [],
+              "authority": null,
+              "provenance": {
+                "kind": "inferred",
+                "source": "static_policy",
+                "family": "lease_termination_dispute"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "validation": {
+                "status": "unvalidated"
+              },
+              "activation": "true",
+              "execution_state": "blocked",
+              "effective_completed": false,
+              "inconsistent_completion": false,
+              "blocked_by": [
+                "step_6d30fa49a49f"
+              ],
+              "unresolved_dependencies": [],
+              "condition_flags": [
+                "arrears",
+                "extension_relevant",
+                "family_home",
+                "termination_received"
+              ],
+              "missing_document_types": []
+            }
+          },
+          {
+            "node_id": "step_6d30fa49a49f",
+            "label": "Compare both complete notices",
+            "before": null,
+            "after": {
+              "authority": null,
+              "completed": false,
+              "condition": {
+                "flag": "family_home"
+              },
+              "document_types": [
+                "termination_notice",
+                "spouse_notice_copy"
+              ],
+              "entry": false,
+              "kind": "action",
+              "label": "Compare both complete notices",
+              "meaning": "Review both complete served notices and resolve their differing end dates before preparing a joint resolution. Missing scan pages alone do not establish invalidity.",
+              "node_id": "step_6d30fa49a49f",
+              "provenance": {
+                "kind": "reused",
+                "source": "3c4dfbd0d19b692751334b8512741cd51b2382203949033b9648999d4898202e",
+                "actor": "Test handler"
+              },
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "validation": {
+                "actor": "Test handler",
+                "status": "validated"
+              },
+              "activation": "true",
+              "execution_state": "blocked",
+              "effective_completed": false,
+              "inconsistent_completion": false,
+              "blocked_by": [
+                "lt_deadline"
+              ],
+              "unresolved_dependencies": [],
+              "condition_flags": [
+                "family_home",
+                "termination_received"
+              ],
+              "missing_document_types": [
+                "termination_notice",
+                "spouse_notice_copy"
+              ]
+            }
+          }
+        ],
+        "changed_edge_ids": [
+          "after_72436c69d43384035ce1",
+          "link_e03bede6cde2"
+        ],
+        "unchanged_edge_ids": [
+          "lt_e01",
+          "lt_e02",
+          "lt_e03",
+          "lt_e04",
+          "lt_e05",
+          "lt_e06",
+          "lt_e07",
+          "lt_e08",
+          "lt_e09",
+          "lt_e10",
+          "lt_e11",
+          "lt_e12",
+          "lt_e13"
+        ],
+        "removed_edge_ids": [],
+        "added_edge_ids": [
+          "after_72436c69d43384035ce1",
+          "link_e03bede6cde2"
+        ],
+        "edge_changes": [
+          {
+            "edge_id": "after_72436c69d43384035ce1",
+            "label": "enables",
+            "before": null,
+            "after": {
+              "condition": {
+                "const": "true"
+              },
+              "edge_id": "after_72436c69d43384035ce1",
+              "label": "enables",
+              "provenance": {
+                "kind": "reused",
+                "source": "3c4dfbd0d19b692751334b8512741cd51b2382203949033b9648999d4898202e",
+                "actor": "Test handler"
+              },
+              "relation": "enables",
+              "source_node_id": "lt_deadline",
+              "target_node_id": "step_6d30fa49a49f",
+              "validation": {
+                "status": "unvalidated",
+                "actor": "Test handler"
+              },
+              "condition_verdict": "true",
+              "condition_flags": [
+                "termination_received"
+              ],
+              "activation": "true"
+            }
+          },
+          {
+            "edge_id": "link_e03bede6cde2",
+            "label": "Requires",
+            "before": null,
+            "after": {
+              "condition": {
+                "const": "true"
+              },
+              "edge_id": "link_e03bede6cde2",
+              "label": "Requires",
+              "provenance": {
+                "kind": "reused",
+                "source": "3c4dfbd0d19b692751334b8512741cd51b2382203949033b9648999d4898202e",
+                "actor": "Test handler"
+              },
+              "relation": "requires",
+              "source_node_id": "step_6d30fa49a49f",
+              "target_node_id": "lt_resolution",
+              "validation": {
+                "status": "unvalidated",
+                "actor": "Test handler"
+              },
+              "condition_verdict": "true",
+              "condition_flags": [
+                "family_home",
+                "termination_received"
+              ],
+              "activation": "true"
+            }
+          }
+        ],
+        "changed_requirement_document_types": [],
+        "unchanged_requirement_document_types": [
+          "lease_contract",
+          "termination_notice",
+          "proof_of_receipt",
+          "notice_period_evidence",
+          "stated_reason",
+          "spouse_notice_copy",
+          "payment_deadline_letter",
+          "rent_ledger_payment_evidence",
+          "prior_rights_correspondence",
+          "housing_search_log",
+          "landlord_correspondence"
+        ],
+        "document_definition_changes": [],
+        "changed_document_types": [
+          "termination_notice",
+          "spouse_notice_copy"
+        ],
+        "unchanged_document_types": [
+          "lease_contract",
+          "proof_of_receipt",
+          "notice_period_evidence",
+          "stated_reason",
+          "payment_deadline_letter",
+          "rent_ledger_payment_evidence",
+          "prior_rights_correspondence",
+          "housing_search_log",
+          "landlord_correspondence"
+        ],
+        "added_document_types": [],
+        "removed_document_types": [],
+        "document_changes": [
+          {
+            "document_type": "termination_notice",
+            "label": "Termination notice",
+            "before": {
+              "authority": {
+                "article": "Art. 266l",
+                "authority_id": "or-art-266l-para1-20260101-de",
+                "passage": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen."
+              },
+              "label": "Termination notice",
+              "held_files": [
+                {
+                  "artifact_id": "doc_ee5afc3a4e3cd60f",
+                  "file_name": "Tenant_termination_notice_June_Avery-Miller.pdf",
+                  "state": "held_not_reviewed"
+                }
+              ],
+              "condition_flag": null,
+              "document_type": "termination_notice",
+              "reason": "'Termination notice' is a mandatory evidence item for process step(s) lt_form.",
+              "requirement_class": "mandatory",
+              "condition": {
+                "const": "true"
+              },
+              "required_at_node_ids": [
+                "lt_form"
+              ],
+              "active_node_ids": [
+                "lt_form"
+              ],
+              "condition_flags": [
+                "termination_received"
+              ],
+              "review_state": "review_needed",
+              "review_scope": "document_requirement",
+              "activation": "true",
+              "route_state": "held_not_reviewed",
+              "request": false
+            },
+            "after": {
+              "authority": {
+                "article": "Art. 266l",
+                "authority_id": "or-art-266l-para1-20260101-de",
+                "passage": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen."
+              },
+              "condition": {
+                "const": "true"
+              },
+              "condition_flag": null,
+              "document_type": "termination_notice",
+              "held_files": [
+                {
+                  "artifact_id": "doc_ee5afc3a4e3cd60f",
+                  "file_name": "Tenant_termination_notice_June_Avery-Miller.pdf",
+                  "state": "held_not_reviewed"
+                }
+              ],
+              "label": "Termination notice",
+              "reason": "'Termination notice' is a mandatory evidence item for process step(s) lt_form.",
+              "requirement_class": "mandatory",
+              "required_at_node_ids": [
+                "lt_form",
+                "step_6d30fa49a49f"
+              ],
+              "active_node_ids": [
+                "lt_form",
+                "step_6d30fa49a49f"
+              ],
+              "condition_flags": [
+                "family_home",
+                "termination_received"
+              ],
+              "review_state": "review_needed",
+              "review_scope": "document_requirement",
+              "activation": "true",
+              "route_state": "held_not_reviewed",
+              "request": false
+            }
+          },
+          {
+            "document_type": "spouse_notice_copy",
+            "label": "Separate spouse notice",
+            "before": {
+              "authority": {
+                "article": "Art. 266n",
+                "authority_id": "or-art-266n-para-20260101-de",
+                "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+              },
+              "label": "Separate spouse notice",
+              "held_files": [
+                {
+                  "artifact_id": "doc_7377764332dadd26",
+                  "file_name": "Spouse_termination_notice_July_Avery-Miller.pdf",
+                  "state": "held_not_reviewed"
+                }
+              ],
+              "condition_flag": "family_home",
+              "document_type": "spouse_notice_copy",
+              "reason": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+              "requirement_class": "conditional",
+              "condition": {
+                "flag": "family_home"
+              },
+              "required_at_node_ids": [
+                "lt_family"
+              ],
+              "active_node_ids": [
+                "lt_family"
+              ],
+              "condition_flags": [
+                "family_home",
+                "termination_received"
+              ],
+              "review_state": "review_needed",
+              "review_scope": "document_requirement",
+              "activation": "true",
+              "route_state": "held_not_reviewed",
+              "request": false
+            },
+            "after": {
+              "authority": {
+                "article": "Art. 266n",
+                "authority_id": "or-art-266n-para-20260101-de",
+                "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+              },
+              "condition": {
+                "flag": "family_home"
+              },
+              "condition_flag": "family_home",
+              "document_type": "spouse_notice_copy",
+              "held_files": [
+                {
+                  "artifact_id": "doc_7377764332dadd26",
+                  "file_name": "Spouse_termination_notice_July_Avery-Miller.pdf",
+                  "state": "held_not_reviewed"
+                }
+              ],
+              "label": "Separate spouse notice",
+              "reason": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+              "requirement_class": "conditional",
+              "required_at_node_ids": [
+                "lt_family",
+                "step_6d30fa49a49f"
+              ],
+              "active_node_ids": [
+                "lt_family",
+                "step_6d30fa49a49f"
+              ],
+              "condition_flags": [
+                "family_home",
+                "termination_received"
+              ],
+              "review_state": "review_needed",
+              "review_scope": "document_requirement",
+              "activation": "true",
+              "route_state": "held_not_reviewed",
+              "request": false
+            }
+          }
+        ],
+        "document_source_changes": [
+          "termination_notice",
+          "spouse_notice_copy"
+        ],
+        "document_source_change_details": [
+          {
+            "document_type": "termination_notice",
+            "fields": [
+              "required_at_node_ids"
+            ],
+            "before": {
+              "required_at_node_ids": [
+                "lt_form"
+              ]
+            },
+            "after": {
+              "required_at_node_ids": [
+                "lt_form",
+                "step_6d30fa49a49f"
+              ]
+            }
+          },
+          {
+            "document_type": "spouse_notice_copy",
+            "fields": [
+              "required_at_node_ids"
+            ],
+            "before": {
+              "required_at_node_ids": [
+                "lt_family"
+              ]
+            },
+            "after": {
+              "required_at_node_ids": [
+                "lt_family",
+                "step_6d30fa49a49f"
+              ]
+            }
+          }
+        ],
+        "next_action_changed": false,
+        "next_action": {
+          "before": "Preserve challenge or extension deadline",
+          "after": "Preserve challenge or extension deadline"
+        },
+        "reopened_question_ids": [],
+        "resolved_question_ids": [],
+        "inconsistent_completed_node_ids": [],
+        "affected_node_ids": [
+          "lt_resolution",
+          "lt_close",
+          "step_6d30fa49a49f"
+        ],
+        "affected_downstream_node_ids": [
+          "lt_close"
+        ],
+        "unchanged_affected_node_ids": [
+          "lt_close"
+        ],
+        "summary": {
+          "changed_steps": 2,
+          "changed_relationships": 2,
+          "added_documents": 0,
+          "removed_documents": 0,
+          "changed_document_definitions": 0,
+          "unchanged_requirements": 11,
+          "unchanged_documents": 9
+        }
+      },
+      "pin": {
+        "fragment_id": "fragment.ed87af17c0736a0ccce2bcbf",
+        "version": 1,
+        "fragment_sha256": "3c4dfbd0d19b692751334b8512741cd51b2382203949033b9648999d4898202e",
+        "source_claim_id": "clm_f69b1747447bc221"
+      },
+      "workspace_revision": 4,
+      "target_facts_preserved": true,
+      "target_source_bindings_preserved": true,
+      "payoff_geometry": {
+        "[data-review-application-history]": {
+          "left": 290,
+          "top": 198.5,
+          "right": 1412,
+          "bottom": 282.1875,
+          "clipped": {
+            "left": 290,
+            "top": 198.5,
+            "right": 1412,
+            "bottom": 282.1875
+          },
+          "contained": true,
+          "exposed": true
+        },
+        "[data-review-before]": {
+          "left": 643.921875,
+          "top": 223,
+          "right": 985.859375,
+          "bottom": 282.1875,
+          "clipped": {
+            "left": 643.921875,
+            "top": 223,
+            "right": 985.859375,
+            "bottom": 282.1875
+          },
+          "contained": true,
+          "exposed": true
+        },
+        "[data-review-after]": {
+          "left": 1035.859375,
+          "top": 223,
+          "right": 1412,
+          "bottom": 282.1875,
+          "clipped": {
+            "left": 1035.859375,
+            "top": 223,
+            "right": 1412,
+            "bottom": 282.1875
+          },
+          "contained": true,
+          "exposed": true
+        },
+        "[data-review-affected-step]": {
+          "left": 290,
+          "top": 223,
+          "right": 631.921875,
+          "bottom": 282.1875,
+          "clipped": {
+            "left": 290,
+            "top": 223,
+            "right": 631.921875,
+            "bottom": 282.1875
+          },
+          "contained": true,
+          "exposed": true
+        },
+        "[data-review-reuse-card=\"sources\"]": {
+          "left": 290,
+          "top": 298.1875,
+          "right": 648,
+          "bottom": 467.6875,
+          "clipped": {
+            "left": 290,
+            "top": 298.1875,
+            "right": 648,
+            "bottom": 467.6875
+          },
+          "contained": true,
+          "exposed": true
+        },
+        "[data-review-reuse-card=\"version\"]": {
+          "left": 672,
+          "top": 298.1875,
+          "right": 1030,
+          "bottom": 467.6875,
+          "clipped": {
+            "left": 672,
+            "top": 298.1875,
+            "right": 1030,
+            "bottom": 467.6875
+          },
+          "contained": true,
+          "exposed": true
+        },
+        "[data-review-reuse-card=\"result\"]": {
+          "left": 1054,
+          "top": 298.1875,
+          "right": 1412,
+          "bottom": 467.6875,
+          "clipped": {
+            "left": 1054,
+            "top": 298.1875,
+            "right": 1412,
+            "bottom": 467.6875
+          },
+          "contained": true,
+          "exposed": true
+        },
+        "[data-review-current-next]": {
+          "left": 1067,
+          "top": 408.6875,
+          "right": 1399,
+          "bottom": 449.6875,
+          "clipped": {
+            "left": 1067,
+            "top": 408.6875,
+            "right": 1399,
+            "bottom": 449.6875
+          },
+          "contained": true,
+          "exposed": true
+        },
+        ".nr-reuse-notice": {
+          "left": 290,
+          "top": 477.6875,
+          "right": 1412,
+          "bottom": 512.1875,
+          "clipped": {
+            "left": 290,
+            "top": 477.6875,
+            "right": 1412,
+            "bottom": 512.1875
+          },
+          "contained": true,
+          "exposed": true
+        },
+        "#cwSourceInspector": {
+          "left": 290,
+          "top": 630,
+          "right": 1412,
+          "bottom": 880,
+          "clipped": {
+            "left": 290,
+            "top": 630,
+            "right": 1412,
+            "bottom": 880
+          },
+          "contained": true,
+          "exposed": true
+        }
+      },
+      "affected_step_marker": "11",
+      "full_process_keyboard_access": true,
+      "original_reader_retained": true
+    }
+  ],
+  "api_writes": [
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/fragments",
+      "purpose": "QA version 2 pin check",
+      "status": 200
+    }
+  ],
+  "status": "passed",
+  "browser_errors": [],
+  "unexpected_destinations": [],
+  "browser_writes": [
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/apply"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/apply"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/apply"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/apply"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process/fragments"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_0e538990cc6ba7ef/process/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_0e538990cc6ba7ef/process/apply"
+    }
+  ],
+  "mobile": {
+    "pageOverflow": 0,
+    "panelOverflow": 0,
+    "reduced": true,
+    "animations": 0
+  }
+}

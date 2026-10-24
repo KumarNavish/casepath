@@ -1,0 +1,1054 @@
+{
+  "startedAt": "2026-10-24T15:16:39.662Z",
+  "sourceRoot": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024",
+  "sourceHashes": {
+    "casepath/assets/autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "casepath/assets/autonomous-presentation-v1.js": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+    "casepath/assets/autonomous-workspace-v1.js": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+    "casepath/assets/autonomous-workspace-v1.css": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "fc40356671f8bdd0f5637e0f60396e1ec203fc1dc59084abef31f7478a901550",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs": "67a54c72f5c52049624de6fa14df518b5597d422847bd5bf5e06b9028b99074b"
+  },
+  "fixtureHashes": {
+    "casepath-qa/fixtures/presentation-v1.json.gz": "c577184294c6520baf7c6bfcf270e582f6c18666379bc680d0102e03d93265bc",
+    "casepath-qa/fixtures/desk-v3.json.gz": "1d718c6737ddf2bfca6c5a31ca439617f4d66fdb07b1d9a03881303d9fc1636c"
+  },
+  "requests": [
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/?present=0",
+      "type": "document"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/fonts/Mulish.ttf",
+      "type": "font"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=recorded",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/knowledge",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/replay?through_seq=41",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/operations?mode=recorded",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/replay?through_seq=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/replay?through_seq=41",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/operations?mode=recorded",
+      "type": "fetch"
+    },
+    {
+      "scenario": "ready",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/replay?through_seq=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/?present=0",
+      "type": "document"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/fonts/Mulish.ttf",
+      "type": "font"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=recorded",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/knowledge",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592/snapshot?after=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c/snapshot?after=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4/snapshot?after=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303/snapshot?after=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/snapshot?after=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/snapshot?after=0",
+      "type": "fetch"
+    },
+    {
+      "scenario": "invalid",
+      "method": "GET",
+      "path": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/snapshot?after=0",
+      "type": "fetch"
+    }
+  ],
+  "writes": [],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "missingFixtures": [],
+  "frames": [
+    {
+      "scenario": "ready",
+      "file": "preparing-desktop.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "horizontalOverflow": 0,
+      "title": "Demonstration — CasePath",
+      "preparing": true,
+      "unavailable": false,
+      "busy": true,
+      "headings": [
+        {
+          "text": "Recorded walkthrough",
+          "bounds": {
+            "x": 27,
+            "y": 123,
+            "width": 207,
+            "height": 21.75,
+            "top": 123,
+            "right": 234,
+            "bottom": 144.75,
+            "left": 27
+          },
+          "clip": {
+            "left": 0,
+            "top": 0,
+            "right": 1440,
+            "bottom": 900
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 1,
+          "clippedFragments": [],
+          "fullyVisible": true
+        },
+        {
+          "text": "From customer documentsto a reviewable answer",
+          "bounds": {
+            "x": 337,
+            "y": 333.390625,
+            "width": 564,
+            "height": 72.78125,
+            "top": 333.390625,
+            "right": 901,
+            "bottom": 406.171875,
+            "left": 337
+          },
+          "clip": {
+            "left": 298,
+            "top": 234,
+            "right": 969,
+            "bottom": 727
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 2,
+          "clippedFragments": [],
+          "fullyVisible": true
+        }
+      ],
+      "purpose": {
+        "text": "Recorded example · legal protectionFrom customer documentsto a reviewable answerAutomated assistants connect evidence, legal checks and an assessment draft. You make the decision.Documents → Facts → Law → AnswerThis walkthrough replays completed work on fictional cases.",
+        "bounds": {
+          "x": 299,
+          "y": 235,
+          "width": 640,
+          "height": 405.6875,
+          "top": 235,
+          "right": 939,
+          "bottom": 640.6875,
+          "left": 299
+        },
+        "clip": {
+          "left": 298,
+          "top": 234,
+          "right": 969,
+          "bottom": 727
+        },
+        "boundsFullyVisible": true,
+        "textFragments": 13,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "preparationStatus": {
+        "text": "Preparing the recorded walkthrough…",
+        "bounds": {
+          "x": 27,
+          "y": 192.25,
+          "width": 207,
+          "height": 45,
+          "top": 192.25,
+          "right": 234,
+          "bottom": 237.25,
+          "left": 27
+        },
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 1440,
+          "bottom": 900
+        },
+        "boundsFullyVisible": true,
+        "textFragments": 2,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "retry": null,
+      "completedExampleLink": null,
+      "status": "",
+      "caseTitle": null,
+      "clock": null
+    },
+    {
+      "scenario": "ready",
+      "file": "preparing-mobile.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "documentWidth": 375,
+      "horizontalOverflow": 0,
+      "title": "Demonstration — CasePath",
+      "preparing": true,
+      "unavailable": false,
+      "busy": true,
+      "headings": [
+        {
+          "text": "Recorded walkthrough",
+          "bounds": {
+            "x": 16,
+            "y": 137.890625,
+            "width": 343,
+            "height": 37.5,
+            "top": 137.890625,
+            "right": 359,
+            "bottom": 175.390625,
+            "left": 16
+          },
+          "clip": {
+            "left": 0,
+            "top": 0,
+            "right": 375,
+            "bottom": 812
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 1,
+          "clippedFragments": [],
+          "fullyVisible": true
+        },
+        {
+          "text": "From customer documentsto a reviewable answer",
+          "bounds": {
+            "x": 54,
+            "y": 333.078125,
+            "width": 267,
+            "height": 145.5625,
+            "top": 333.078125,
+            "right": 321,
+            "bottom": 478.640625,
+            "left": 54
+          },
+          "clip": {
+            "left": 0,
+            "top": 0,
+            "right": 375,
+            "bottom": 812
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 4,
+          "clippedFragments": [],
+          "fullyVisible": true
+        }
+      ],
+      "purpose": {
+        "text": "Recorded example · legal protectionFrom customer documentsto a reviewable answerAutomated assistants connect evidence, legal checks and an assessment draft. You make the decision.Documents → Facts → Law → AnswerThis walkthrough replays completed work on fictional cases.",
+        "bounds": {
+          "x": 16,
+          "y": 234.6875,
+          "width": 343,
+          "height": 583.078125,
+          "top": 234.6875,
+          "right": 359,
+          "bottom": 817.765625,
+          "left": 16
+        },
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 375,
+          "bottom": 812
+        },
+        "boundsFullyVisible": false,
+        "textFragments": 18,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "preparationStatus": {
+        "text": "Preparing the recorded walkthrough…",
+        "bounds": {
+          "x": 16,
+          "y": 212.1875,
+          "width": 343,
+          "height": 22.5,
+          "top": 212.1875,
+          "right": 359,
+          "bottom": 234.6875,
+          "left": 16
+        },
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 375,
+          "bottom": 812
+        },
+        "boundsFullyVisible": true,
+        "textFragments": 1,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "retry": null,
+      "completedExampleLink": null,
+      "status": "",
+      "caseTitle": null,
+      "clock": null
+    },
+    {
+      "scenario": "ready",
+      "file": "admitted-intro-desktop.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "horizontalOverflow": 0,
+      "title": "An increase form with missing original reasons — CasePath",
+      "preparing": false,
+      "unavailable": false,
+      "busy": false,
+      "headings": [
+        {
+          "text": "An increase form with missing original reasons",
+          "bounds": {
+            "x": 27,
+            "y": 123,
+            "width": 207,
+            "height": 43.5,
+            "top": 123,
+            "right": 234,
+            "bottom": 166.5,
+            "left": 27
+          },
+          "clip": {
+            "left": 0,
+            "top": 0,
+            "right": 1440,
+            "bottom": 900
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 2,
+          "clippedFragments": [],
+          "fullyVisible": true
+        },
+        {
+          "text": "Sources 4",
+          "bounds": {
+            "x": 27,
+            "y": 214,
+            "width": 207,
+            "height": 18.75,
+            "top": 214,
+            "right": 234,
+            "bottom": 232.75,
+            "left": 27
+          },
+          "clip": {
+            "left": 0,
+            "top": 0,
+            "right": 1440,
+            "bottom": 900
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 2,
+          "clippedFragments": [],
+          "fullyVisible": true
+        },
+        {
+          "text": "From customer documentsto a reviewable answer",
+          "bounds": {
+            "x": 337,
+            "y": 333.390625,
+            "width": 564,
+            "height": 72.78125,
+            "top": 333.390625,
+            "right": 901,
+            "bottom": 406.171875,
+            "left": 337
+          },
+          "clip": {
+            "left": 298,
+            "top": 234,
+            "right": 969,
+            "bottom": 727
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 2,
+          "clippedFragments": [],
+          "fullyVisible": true
+        }
+      ],
+      "purpose": {
+        "text": "Recorded example · legal protectionFrom customer documentsto a reviewable answerAutomated assistants connect evidence, legal checks and an assessment draft. You make the decision.Documents → Facts → Law → AnswerThis walkthrough replays completed work on fictional cases.Open completed example ↗",
+        "bounds": {
+          "x": 299,
+          "y": 235,
+          "width": 640,
+          "height": 455.6875,
+          "top": 235,
+          "right": 939,
+          "bottom": 690.6875,
+          "left": 299
+        },
+        "clip": {
+          "left": 298,
+          "top": 234,
+          "right": 969,
+          "bottom": 727
+        },
+        "boundsFullyVisible": true,
+        "textFragments": 14,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "preparationStatus": null,
+      "retry": null,
+      "completedExampleLink": {
+        "text": "Open completed example ↗",
+        "bounds": {
+          "x": 337,
+          "y": 594.6875,
+          "width": 188.875,
+          "height": 42,
+          "top": 594.6875,
+          "right": 525.875,
+          "bottom": 636.6875,
+          "left": 337
+        },
+        "clip": {
+          "left": 298,
+          "top": 234,
+          "right": 969,
+          "bottom": 727
+        },
+        "boundsFullyVisible": true,
+        "textFragments": 1,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "status": "",
+      "caseTitle": "An increase form with missing original reasons",
+      "clock": {
+        "time": 0,
+        "paused": true
+      }
+    },
+    {
+      "scenario": "invalid",
+      "file": "invalid-state-desktop.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "horizontalOverflow": 0,
+      "title": "Demonstration — CasePath",
+      "preparing": false,
+      "unavailable": true,
+      "busy": false,
+      "headings": [
+        {
+          "text": "Recorded walkthrough",
+          "bounds": {
+            "x": 27,
+            "y": 193,
+            "width": 207,
+            "height": 21.75,
+            "top": 193,
+            "right": 234,
+            "bottom": 214.75,
+            "left": 27
+          },
+          "clip": {
+            "left": 0,
+            "top": 0,
+            "right": 1440,
+            "bottom": 900
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 1,
+          "clippedFragments": [],
+          "fullyVisible": true
+        },
+        {
+          "text": "From customer documentsto a reviewable answer",
+          "bounds": {
+            "x": 337,
+            "y": 403.390625,
+            "width": 564,
+            "height": 72.78125,
+            "top": 403.390625,
+            "right": 901,
+            "bottom": 476.171875,
+            "left": 337
+          },
+          "clip": {
+            "left": 298,
+            "top": 304,
+            "right": 969,
+            "bottom": 797
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 2,
+          "clippedFragments": [],
+          "fullyVisible": true
+        }
+      ],
+      "purpose": {
+        "text": "Recorded example · legal protectionFrom customer documentsto a reviewable answerAutomated assistants connect evidence, legal checks and an assessment draft. You make the decision.Documents → Facts → Law → AnswerThis walkthrough replays completed work on fictional cases.",
+        "bounds": {
+          "x": 299,
+          "y": 305,
+          "width": 640,
+          "height": 405.6875,
+          "top": 305,
+          "right": 939,
+          "bottom": 710.6875,
+          "left": 299
+        },
+        "clip": {
+          "left": 298,
+          "top": 304,
+          "right": 969,
+          "bottom": 797
+        },
+        "boundsFullyVisible": true,
+        "textFragments": 13,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "preparationStatus": {
+        "text": "The recorded walkthrough could not be opened.",
+        "bounds": {
+          "x": 27,
+          "y": 262.25,
+          "width": 207,
+          "height": 45,
+          "top": 262.25,
+          "right": 234,
+          "bottom": 307.25,
+          "left": 27
+        },
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 1440,
+          "bottom": 900
+        },
+        "boundsFullyVisible": true,
+        "textFragments": 2,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "retry": {
+        "text": "Try again",
+        "bounds": {
+          "x": 27,
+          "y": 319.25,
+          "width": 99.453125,
+          "height": 42.390625,
+          "top": 319.25,
+          "right": 126.453125,
+          "bottom": 361.640625,
+          "left": 27
+        },
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 1440,
+          "bottom": 900
+        },
+        "boundsFullyVisible": true,
+        "textFragments": 1,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "completedExampleLink": null,
+      "status": "Could not load this recorded walkthrough. Try again.Details",
+      "caseTitle": null,
+      "clock": null
+    },
+    {
+      "scenario": "invalid",
+      "file": "invalid-state-mobile.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "documentWidth": 375,
+      "horizontalOverflow": 0,
+      "title": "Demonstration — CasePath",
+      "preparing": false,
+      "unavailable": true,
+      "busy": false,
+      "headings": [
+        {
+          "text": "Recorded walkthrough",
+          "bounds": {
+            "x": 16,
+            "y": 232.6875,
+            "width": 343,
+            "height": 37.5,
+            "top": 232.6875,
+            "right": 359,
+            "bottom": 270.1875,
+            "left": 16
+          },
+          "clip": {
+            "left": 0,
+            "top": 0,
+            "right": 375,
+            "bottom": 812
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 1,
+          "clippedFragments": [],
+          "fullyVisible": true
+        },
+        {
+          "text": "From customer documentsto a reviewable answer",
+          "bounds": {
+            "x": 54,
+            "y": 482.265625,
+            "width": 267,
+            "height": 145.5625,
+            "top": 482.265625,
+            "right": 321,
+            "bottom": 627.828125,
+            "left": 54
+          },
+          "clip": {
+            "left": 0,
+            "top": 0,
+            "right": 375,
+            "bottom": 812
+          },
+          "boundsFullyVisible": true,
+          "textFragments": 4,
+          "clippedFragments": [],
+          "fullyVisible": true
+        }
+      ],
+      "purpose": {
+        "text": "Recorded example · legal protectionFrom customer documentsto a reviewable answerAutomated assistants connect evidence, legal checks and an assessment draft. You make the decision.Documents → Facts → Law → AnswerThis walkthrough replays completed work on fictional cases.",
+        "bounds": {
+          "x": 16,
+          "y": 383.875,
+          "width": 343,
+          "height": 583.078125,
+          "top": 383.875,
+          "right": 359,
+          "bottom": 966.953125,
+          "left": 16
+        },
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 375,
+          "bottom": 812
+        },
+        "boundsFullyVisible": false,
+        "textFragments": 18,
+        "clippedFragments": [
+          {
+            "text": "→",
+            "left": 66,
+            "top": 811.96875,
+            "right": 82,
+            "bottom": 831.96875
+          },
+          {
+            "text": "Answer",
+            "left": 94,
+            "top": 811.96875,
+            "right": 156.09375,
+            "bottom": 831.96875
+          },
+          {
+            "text": "This walkthrough replays completed work on fictional cases.",
+            "left": 54,
+            "top": 868.359375,
+            "right": 304.484375,
+            "bottom": 884.359375
+          },
+          {
+            "text": "This walkthrough replays completed work on fictional cases.",
+            "left": 54,
+            "top": 893.15625,
+            "right": 160.390625,
+            "bottom": 909.15625
+          }
+        ],
+        "fullyVisible": false
+      },
+      "preparationStatus": {
+        "text": "The recorded walkthrough could not be opened.",
+        "bounds": {
+          "x": 16,
+          "y": 306.984375,
+          "width": 343,
+          "height": 22.5,
+          "top": 306.984375,
+          "right": 359,
+          "bottom": 329.484375,
+          "left": 16
+        },
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 375,
+          "bottom": 812
+        },
+        "boundsFullyVisible": true,
+        "textFragments": 1,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "retry": {
+        "text": "Try again",
+        "bounds": {
+          "x": 16,
+          "y": 341.484375,
+          "width": 99.453125,
+          "height": 42.390625,
+          "top": 341.484375,
+          "right": 115.453125,
+          "bottom": 383.875,
+          "left": 16
+        },
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 375,
+          "bottom": 812
+        },
+        "boundsFullyVisible": true,
+        "textFragments": 1,
+        "clippedFragments": [],
+        "fullyVisible": true
+      },
+      "completedExampleLink": null,
+      "status": "Could not load this recorded walkthrough. Try again.Details",
+      "caseTitle": null,
+      "clock": null
+    }
+  ],
+  "scenarios": [
+    {
+      "kind": "ready",
+      "heldIds": [
+        "clm_4a07dbbbd859a3ce",
+        "clm_95d08975bc575592",
+        "clm_0f4f13b1e3e1328c",
+        "clm_393285577dcb12c4",
+        "clm_4a53299cfe619303",
+        "clm_2c55cdd816b1d0e8",
+        "clm_543f08f2415b2a33",
+        "clm_7dbd7c7d1c4ddf90"
+      ],
+      "admission": {
+        "claims": [
+          "clm_543f08f2415b2a33",
+          "clm_7dbd7c7d1c4ddf90"
+        ],
+        "stateHashes": [
+          "953e96dfd84ae74f227576098c3c0b62f2236b536fc84f5aee78c98b30685d5c",
+          "283f3d0624c8b8d39d28ca49972448d2a6f33bd2f8d96de8a1627d339bc86501"
+        ],
+        "time": 0,
+        "paused": true
+      }
+    },
+    {
+      "kind": "invalid",
+      "heldIds": [
+        "clm_4a07dbbbd859a3ce",
+        "clm_95d08975bc575592",
+        "clm_0f4f13b1e3e1328c",
+        "clm_393285577dcb12c4",
+        "clm_4a53299cfe619303",
+        "clm_2c55cdd816b1d0e8",
+        "clm_543f08f2415b2a33",
+        "clm_7dbd7c7d1c4ddf90"
+      ]
+    }
+  ],
+  "completed": true,
+  "fontSha256": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac",
+  "finishedAt": "2026-10-24T15:16:44.430Z",
+  "visualChecks": [
+    {
+      "file": "preparing-desktop.png",
+      "noHorizontalOverflow": true,
+      "headingsFullyVisible": true,
+      "purposeFullyVisible": true,
+      "preparationStatusFullyVisible": true,
+      "retryWhollyVisible": null,
+      "completedExampleLinkFullyVisible": null
+    },
+    {
+      "file": "preparing-mobile.png",
+      "noHorizontalOverflow": true,
+      "headingsFullyVisible": true,
+      "purposeFullyVisible": true,
+      "preparationStatusFullyVisible": true,
+      "retryWhollyVisible": null,
+      "completedExampleLinkFullyVisible": null
+    },
+    {
+      "file": "admitted-intro-desktop.png",
+      "noHorizontalOverflow": true,
+      "headingsFullyVisible": true,
+      "purposeFullyVisible": true,
+      "preparationStatusFullyVisible": null,
+      "retryWhollyVisible": null,
+      "completedExampleLinkFullyVisible": true
+    },
+    {
+      "file": "invalid-state-desktop.png",
+      "noHorizontalOverflow": true,
+      "headingsFullyVisible": true,
+      "purposeFullyVisible": true,
+      "preparationStatusFullyVisible": true,
+      "retryWhollyVisible": true,
+      "completedExampleLinkFullyVisible": null
+    },
+    {
+      "file": "invalid-state-mobile.png",
+      "noHorizontalOverflow": true,
+      "headingsFullyVisible": true,
+      "purposeFullyVisible": false,
+      "preparationStatusFullyVisible": true,
+      "retryWhollyVisible": true,
+      "completedExampleLinkFullyVisible": null
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "contract": "casepath.standard-promotion-stop/1",
+  "snapshot_sha256": "d02df301d4a2794ac3bea855764c5a56c22acefcb2d95edb2f74d8f61454ec16",
+  "stop_response": {
+    "sessionId": "cp-ns-20261024-standard-workspace-repaired-4173",
+    "pid": 43532,
+    "state": "failed",
+    "terminated": true
+  },
+  "terminal_response": {
+    "sessionId": "cp-ns-20261024-standard-workspace-repaired-4173",
+    "pid": 43532,
+    "state": "failed",
+    "exitCode": -15,
+    "output": "Using Python 3.13.9 environment at: .runtime/casepath-dev-v2/venv\nResolved 59 packages in 111ms\nChecked 59 packages in 1ms\n{\"contract\":\"casepath.local-durable-data-provenance/1.3.0\",\"created_at\":\"2026-10-24T10:47:06.416632+00:00\",\"destination\":\"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-data-v1\",\"destination_database_file_identity_at_creation\":{\"device\":16777229,\"inode\":217121938},\"destination_database_file_sha256_at_creation\":\"fab823f8f88be43e3f54d356d1e21f4d71cba8c26e717f87eb5682f207ef25d4\",\"destination_registry_directory_identity_at_creation\":{\"device\":16777229,\"inode\":217121937},\"destination_registry_inventory_sha256_at_creation\":\"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\",\"origin\":{\"claim_loop_event_count\":0,\"claim_loop_event_roster\":[],\"claim_loop_event_roster_sha256\":\"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\",\"kind\":\"new_empty_durable_data_root\",\"legacy_database_file_sha256_at_backup\":null,\"legacy_database_path\":null,\"legacy_registry_cutover\":{\"applied\":false,\"mode_lease_receipt\":null,\"mode_lease_receipt_sha256\":null,\"mode_roster_sha256\":\"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\",\"open_handle_count_after_freeze\":0,\"policy\":\"write_bits_removed_and_zero_open_handles_through_atomic_publication\"},\"legacy_registry_inventory\":[],\"legacy_registry_inventory_sha256\":\"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\"},\"receipt_sha256\":\"15e7152acd51eedf1bd196d7932b573cec186de21993b0b13699f0c7dde8b53d\"}\nINFO:     Started server process [43977]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\nINFO:     Uvicorn running on http://127.0.0.1:4173 (Press CTRL+C to quit)\n\nCasePath is ready: http://127.0.0.1:4173/\nDeterministic local mode · one origin · zero provider credentials\nPress Ctrl-C to stop. State persists in .runtime/casepath-data-v1.\n\nINFO:     Shutting down\nINFO:     Waiting for application shutdown.\nINFO:     Application shutdown complete.\nINFO:     Finished server process [43977]\n",
+    "offset": 0,
+    "nextOffset": 2096,
+    "totalBytes": 2096,
+    "truncated": false,
+    "startedAt": "2026-10-24T13:45:34.940Z",
+    "finishedAt": "2026-10-24T16:59:04.811Z"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "contract": "casepath.fresh-artifact-inputs/1",
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "created_at": "2026-10-24T16:51:17.712675+00:00",
+  "runner_sha256": "3f90957a437a28a2e22b0eb6c56caaefc7f1cbc0aea745957525dd4c5852ff9a",
+  "helpers": {
+    "capture_eight_states.mjs": "5034b9995a3b69722f77f12455f491ff22706502342e7be142d2f6b1ddf0a8dc",
+    "measure_northstar_fidelity.py": "a418a6d81b0d247915573adfbf7ba6cb74f74545e04a964f29c25700fc617662",
+    "decode_public_film.py": "641f808e6198ede8c3206ff4359d820d4c4179851a381eaa344e16f71bbb65b7",
+    "make_film_contact_sheet.mjs": "8d360d7701592e34127660f2a543aa4374e9de3a729ae3aad4467cba15b9fded"
+  },
+  "source_binding_sha256": "d19d63642a5d78b1467374aed1d849eac521bd71c0a219614e9515d940f5a265",
+  "gate_validator_sha256": "3dfda32a8ec7825b1bffad15b34091495fe3ffa796a492ace18f640d2986bd28",
+  "gate_proof_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+  "gate_actual_completion_sha256": "f8e8297680f91a9991279c10796184b8618d5ed0ed205536913fbc73c6a591b9",
+  "published_acceptance_sha256": "bfcda21a73416959c0bc59522774bf6c0115a6e97ec053c3bb0159823e81dc65",
+  "sealed_browser_command_sha256": "3dffb5b347032f4bafe23882c3999c7f6038c461ac11ca02130b7998a7ffbc0b",
+  "sealed_browser_receipt_sha256": "ea9a8949ec1ae28aa3c3554eb17a0250bd4fc5f2cccd522c1c3b396a7ff8792e",
+  "trace_inputs": "Fresh GET responses captured and independently checked during this run; no prior fixture or forensic receipt is an input."
+}

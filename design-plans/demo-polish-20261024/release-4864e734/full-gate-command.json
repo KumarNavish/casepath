@@ -1,0 +1,53 @@
+{
+  "contract": "casepath.commander-demo-polish-full-gate/1",
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "source_tree": "6d6050a9da3db4d7bb0af96fb4e8a861fd103ebe",
+  "base_commit": "f75af1ac22a7260487556fc9231f4e290489c2e0",
+  "status": "passed",
+  "started_at": "2026-10-24T15:22:02.166669+00:00",
+  "wrapper_pid": 80879,
+  "command": [
+    "/usr/bin/nice",
+    "-n",
+    "10",
+    "./bin/casepath",
+    "test"
+  ],
+  "commander_session_id": "cp-polish-20261024-052-full-gate",
+  "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/full-gate.log",
+  "strict_reused": false,
+  "frontend_suites_mandatory": true,
+  "environment": {
+    "PATH": "/usr/bin:/bin:/usr/sbin:/sbin:/Users/kumar0002/.local/bin:/usr/local/bin",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_UV": "/Users/kumar0002/.local/bin/uv",
+    "HOME": "/Users/kumar0002",
+    "CASEPATH_SOURCE_COMMIT": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+    "CASEPATH_REQUIRE_FRONTEND_SUITES": "1",
+    "CASEPATH_NODE": "/usr/local/bin/node",
+    "NODE_PATH": "/Users/kumar0002/Documents/Die Mobiliar/casepath-canonical/casepath-qa/node_modules",
+    "PLAYWRIGHT_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "CASEPATH_REVIEW_EVIDENCE_DIR": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/gate-browser",
+    "CASEPATH_REVIEW_RECORD_VIDEO": "1"
+  },
+  "runner_sha256": "ca8ae3571730429a3afdc1252398ae666da409c63d59ea973b5cfca348934a6f",
+  "verifier_sha256": "09d09605a83a849f7be640e907ddaf112cfcb41c5c6b50f4a90315041df18fb3",
+  "source_binding_sha256": "d19d63642a5d78b1467374aed1d849eac521bd71c0a219614e9515d940f5a265",
+  "preparation_sha256": "517bb55f4fa24b3cfb37568acd04fae06ec59f2c4e5233ad9826bfeb363c2628",
+  "caffeinate_pid": 80900,
+  "pid": 80901,
+  "exit_code": 0,
+  "command_finished_at": "2026-10-24T16:19:49.127851+00:00",
+  "log_sha256": "cfe039c2082025e8395af43475756fea5457a0fbc7c7d643a7d43c04a9e87477",
+  "finished_at": "2026-10-24T16:19:50.560015+00:00",
+  "counts": {
+    "passed": 2927,
+    "skipped": 10,
+    "warnings": 10
+  },
+  "verified_receipt_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57"
+}

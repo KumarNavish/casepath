@@ -1,0 +1,13 @@
+{
+  "sessionId": "cp-polish-20261024-published-acceptance",
+  "pid": 12509,
+  "state": "completed",
+  "exitCode": 0,
+  "output": "{\"stage\": \"soak\", \"status\": \"running\", \"source_commit\": \"4864e7347c299bf1b580a5b35667635bc1c47f15\"}\n{\"stage\": \"soak\", \"exit_code\": 0}\n{\"stage\": \"browser\", \"status\": \"running\", \"source_commit\": \"4864e7347c299bf1b580a5b35667635bc1c47f15\"}\n{\"stage\": \"browser\", \"exit_code\": 0}\n{\"stage\": \"image\", \"status\": \"running\", \"source_commit\": \"4864e7347c299bf1b580a5b35667635bc1c47f15\"}\n{\"stage\": \"image\", \"exit_code\": 0}\n{\"stage\": \"readback\", \"status\": \"running\", \"source_commit\": \"4864e7347c299bf1b580a5b35667635bc1c47f15\"}\n{\"stage\": \"readback\", \"exit_code\": 0}\n{\"stage\": \"verify_readback\", \"status\": \"running\", \"source_commit\": \"4864e7347c299bf1b580a5b35667635bc1c47f15\"}\n{\"stage\": \"verify_readback\", \"exit_code\": 0}\n{\"status\": \"passed\", \"source_commit\": \"4864e7347c299bf1b580a5b35667635bc1c47f15\", \"sequential_soak_reads\": 300, \"desktop_case_views\": 18, \"mobile_case_views\": 9, \"primary_final_readback\": true}\n",
+  "offset": 0,
+  "nextOffset": 902,
+  "totalBytes": 902,
+  "truncated": false,
+  "startedAt": "2026-10-24T16:41:07.211Z",
+  "finishedAt": "2026-10-24T16:50:44.197Z"
+}

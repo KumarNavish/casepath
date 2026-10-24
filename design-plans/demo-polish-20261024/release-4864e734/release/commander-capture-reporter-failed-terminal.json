@@ -1,0 +1,13 @@
+{
+  "sessionId": "cp-polish-20261024-sealed-browser",
+  "pid": 11060,
+  "state": "failed",
+  "exitCode": 1,
+  "output": "{\"status\": \"running\", \"source_commit\": \"4864e7347c299bf1b580a5b35667635bc1c47f15\", \"pid\": 11078, \"log\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser-capture.log\"}\nTraceback (most recent call last):\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/run_sealed_browser_capture.py\", line 167, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/run_sealed_browser_capture.py\", line 131, in main\n    require(summary == {\"tests\": 1, \"pass\": 1, \"fail\": 0, \"cancelled\": 0, \"skipped\": 0, \"todo\": 0}, \"Expected exactly one completed browser test without skips\")\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/run_sealed_browser_capture.py\", line 38, in require\n    raise RuntimeError(reason)\nRuntimeError: Expected exactly one completed browser test without skips\n",
+  "offset": 0,
+  "nextOffset": 1288,
+  "totalBytes": 1288,
+  "truncated": false,
+  "startedAt": "2026-10-24T16:36:43.883Z",
+  "finishedAt": "2026-10-24T16:39:16.435Z"
+}

@@ -1,0 +1,2154 @@
+{
+  "contract": "casepath.demo-polish-final-evidence/1",
+  "tested_and_deployed_source": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "source_manifest_sha256": "4bbdb036e69777937f19647f55fca80896ad96ae971a43928220bf93a5ddedef",
+  "generated_at": "2026-10-24T17:02:14.663308+00:00",
+  "generator_sha256": "9ecc9e7e4025083aed77f0c63de7ade2255b53aa2b28c25e03f1cbd11690349b",
+  "intended_repository_destination": "design-plans/demo-polish-20261024/release-4864e734",
+  "product_changes": false,
+  "commit_or_push_performed": false,
+  "qualified_human_approval": "pending",
+  "copies": [
+    {
+      "file": "adopt_gate_browser.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/adopt_gate_browser.py",
+      "original_sha256": "f42ad1d0bd090fdf48bc5b26128ff6dc3abd2023905e4c00e5d2a35f1661c014",
+      "bytes": 3065,
+      "hash_authority": "Original immutable adopter; its attempted execution failed",
+      "copied_sha256": "f42ad1d0bd090fdf48bc5b26128ff6dc3abd2023905e4c00e5d2a35f1661c014",
+      "byte_identical": true
+    },
+    {
+      "file": "authored-files.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/authored-files.json",
+      "original_sha256": "8c01f38fb37831c72a3e35887fc4671300a2f0a6709a386310039bdfe7b10fe3",
+      "bytes": 511,
+      "hash_authority": "source-binding.json:authored_files_input",
+      "copied_sha256": "8c01f38fb37831c72a3e35887fc4671300a2f0a6709a386310039bdfe7b10fe3",
+      "byte_identical": true
+    },
+    {
+      "file": "capture-attempts/spec-reporter/run_sealed_browser_capture.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/capture-attempts/spec-reporter/run_sealed_browser_capture.py",
+      "original_sha256": "87f7593cf5b7ea49aee157da5725ba917efea5761eae24ffa6d87360bdb573c4",
+      "bytes": 11676,
+      "hash_authority": "Exact archived pre-correction recording runner",
+      "copied_sha256": "87f7593cf5b7ea49aee157da5725ba917efea5761eae24ffa6d87360bdb573c4",
+      "byte_identical": true
+    },
+    {
+      "file": "capture-attempts/spec-reporter/sealed-browser-capture.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/capture-attempts/spec-reporter/sealed-browser-capture.log",
+      "original_sha256": "53c2f9597c28b2f28fd5e283069945cbc4f64230dd76ea693a8433db20f0483f",
+      "bytes": 383,
+      "hash_authority": "Exact archived spec-reporter log",
+      "copied_sha256": "53c2f9597c28b2f28fd5e283069945cbc4f64230dd76ea693a8433db20f0483f",
+      "byte_identical": true
+    },
+    {
+      "file": "capture-attempts/spec-reporter/sealed-browser-command.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/capture-attempts/spec-reporter/sealed-browser-command.json",
+      "original_sha256": "e5b1d4e9f01d6760f2a3c448a5e059d745ec9bed98e7a1ced278698a80c556f1",
+      "bytes": 4219,
+      "hash_authority": "Archived first recording: child exit 0, wrapper failed while parsing spec output",
+      "copied_sha256": "e5b1d4e9f01d6760f2a3c448a5e059d745ec9bed98e7a1ced278698a80c556f1",
+      "byte_identical": true
+    },
+    {
+      "file": "capture_opening_v2.cjs",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/capture_opening_v2.cjs",
+      "original_sha256": "3975261c5f7f28355c227377d8f475c930e98774f3cb1afd6c7c40e1bc68187a",
+      "bytes": 11555,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "3975261c5f7f28355c227377d8f475c930e98774f3cb1afd6c7c40e1bc68187a",
+      "byte_identical": true
+    },
+    {
+      "file": "commit_prepare.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/commit_prepare.py",
+      "original_sha256": "bcde52ecc3744988427ea9057f4f3cf4ed7096759a59634a2523f419c1d9ac02",
+      "bytes": 8254,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "bcde52ecc3744988427ea9057f4f3cf4ed7096759a59634a2523f419c1d9ac02",
+      "byte_identical": true
+    },
+    {
+      "file": "engineering-demo-promotions/20261024T165701-18429/before-snapshot.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/engineering-demo-promotions/20261024T165701-18429/before-snapshot.json",
+      "original_sha256": "1902fa4809d69be9fa474a00551978e9b3a6ffcd522e72d1230791fc71e8fda0",
+      "bytes": 17128,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "1902fa4809d69be9fa474a00551978e9b3a6ffcd522e72d1230791fc71e8fda0",
+      "byte_identical": true
+    },
+    {
+      "file": "engineering-demo-promotions/20261024T165701-18429/owner.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/engineering-demo-promotions/20261024T165701-18429/owner.json",
+      "original_sha256": "225297176818b069df9644c7a03584eb36e0f7f067d3117d1567f585959d6fde",
+      "bytes": 18472,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "225297176818b069df9644c7a03584eb36e0f7f067d3117d1567f585959d6fde",
+      "byte_identical": true
+    },
+    {
+      "file": "engineering-demo-promotions/20261024T165701-18429/previous-current-server.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/engineering-demo-promotions/20261024T165701-18429/previous-current-server.json",
+      "original_sha256": "163747a509650178d1951f4c5ec2c60c022abf6c6a96ffbc4c11b40cbb847c47",
+      "bytes": 2882,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "163747a509650178d1951f4c5ec2c60c022abf6c6a96ffbc4c11b40cbb847c47",
+      "byte_identical": true
+    },
+    {
+      "file": "final-evidence-helper-binding-v2.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/final-evidence-helper-binding-v2.json",
+      "original_sha256": "84d428b7026140328d9df598edc927cab5d1816fcb0c87f07e3812c7def1ee2e",
+      "bytes": 1254,
+      "hash_authority": "Unchanged historical v2 binding; original path references retained",
+      "copied_sha256": "84d428b7026140328d9df598edc927cab5d1816fcb0c87f07e3812c7def1ee2e",
+      "byte_identical": true
+    },
+    {
+      "file": "final-evidence-helper-binding-v3.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/final-evidence-helper-binding-v3.json",
+      "original_sha256": "d5a54dd41b20d89a022aa6095f523a231fa81668596c1a50a51d274c32ce065a",
+      "bytes": 1539,
+      "hash_authority": "Root-authored v3 binding for the actual generator, preserved earlier generators and explicit-TAP recording runner",
+      "copied_sha256": "d5a54dd41b20d89a022aa6095f523a231fa81668596c1a50a51d274c32ce065a",
+      "byte_identical": true
+    },
+    {
+      "file": "full-gate-command.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/full-gate-command.json",
+      "original_sha256": "7ec9ef6bbb7708dff13de8740159312b20949a465cd62b25f33151f823ca123b",
+      "bytes": 2427,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "7ec9ef6bbb7708dff13de8740159312b20949a465cd62b25f33151f823ca123b",
+      "byte_identical": true
+    },
+    {
+      "file": "full-gate.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/full-gate.log",
+      "original_sha256": "cfe039c2082025e8395af43475756fea5457a0fbc7c7d643a7d43c04a9e87477",
+      "bytes": 7848,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "cfe039c2082025e8395af43475756fea5457a0fbc7c7d643a7d43c04a9e87477",
+      "byte_identical": true
+    },
+    {
+      "file": "independent-review.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/independent-review.json",
+      "original_sha256": "e1a5a10154558f98645969e841f7fd13dd17ed8d3cba721aa56526819ca46acc",
+      "bytes": 2900,
+      "hash_authority": "source-binding.json:independent_review",
+      "copied_sha256": "e1a5a10154558f98645969e841f7fd13dd17ed8d3cba721aa56526819ca46acc",
+      "byte_identical": true
+    },
+    {
+      "file": "local-engineering-current-server.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/current-server.json",
+      "original_sha256": "225297176818b069df9644c7a03584eb36e0f7f067d3117d1567f585959d6fde",
+      "bytes": 18472,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "225297176818b069df9644c7a03584eb36e0f7f067d3117d1567f585959d6fde",
+      "byte_identical": true
+    },
+    {
+      "file": "local-original-engineering/data-copy.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/data-copy.json",
+      "original_sha256": "f6c7781d8bf9962f58862876bd7a02945a94c18e79423bb93b3d5ad587491175",
+      "bytes": 991,
+      "hash_authority": "engineering promotion original provenance",
+      "copied_sha256": "f6c7781d8bf9962f58862876bd7a02945a94c18e79423bb93b3d5ad587491175",
+      "byte_identical": true
+    },
+    {
+      "file": "local-original-engineering/original-qa-receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/sealed-browser/receipt.json",
+      "original_sha256": "83517c45d484e4623ca1744fdf209595196f0aca3e4f8d6c761778e787111f36",
+      "bytes": 41490,
+      "hash_authority": "Original b206 QA store ancestry",
+      "copied_sha256": "83517c45d484e4623ca1744fdf209595196f0aca3e4f8d6c761778e787111f36",
+      "byte_identical": true
+    },
+    {
+      "file": "local-original-engineering/owner.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/owner.json",
+      "original_sha256": "af1c6c1fd726fede69523288d72c98b13435a6ebc9181660e7b9cb44efc47c32",
+      "bytes": 2367,
+      "hash_authority": "engineering promotion original provenance",
+      "copied_sha256": "af1c6c1fd726fede69523288d72c98b13435a6ebc9181660e7b9cb44efc47c32",
+      "byte_identical": true
+    },
+    {
+      "file": "measure_public_opening_v2.mjs",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/measure_public_opening_v2.mjs",
+      "original_sha256": "ed484d60aab772292c52868aa83220910cf8872a40cf5ea808093c28d68743a3",
+      "bytes": 4048,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "ed484d60aab772292c52868aa83220910cf8872a40cf5ea808093c28d68743a3",
+      "byte_identical": true
+    },
+    {
+      "file": "opening-baseline/recovered-timing.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/opening-baseline/recovered-timing.json",
+      "original_sha256": "f05ffad3670982f90153bbb20eac11d8cf9e5940d8c6d6bbac2753da76cac27f",
+      "bytes": 2918,
+      "hash_authority": "Historical first-active observation only; no completed exact baseline",
+      "copied_sha256": "f05ffad3670982f90153bbb20eac11d8cf9e5940d8c6d6bbac2753da76cac27f",
+      "byte_identical": true
+    },
+    {
+      "file": "opening-published-4864/ready.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/opening-published-4864/ready.png",
+      "original_sha256": "1bd97cf9dc49930c5a1a4acce575be07cb669aff9d5ab292939e8404c90a7339",
+      "bytes": 104200,
+      "hash_authority": "Exact observed inspection image; producer does not put an image digest in its receipt, so this index binds the bytes",
+      "copied_sha256": "1bd97cf9dc49930c5a1a4acce575be07cb669aff9d5ab292939e8404c90a7339",
+      "byte_identical": true
+    },
+    {
+      "file": "opening-published-4864/receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/opening-published-4864/receipt.json",
+      "original_sha256": "fac93d5b3f7b6d2a9f2b99347b7a72a1debb8c0e7f126c9bb0a0088c364e1c84",
+      "bytes": 20456,
+      "hash_authority": "Separate cold-opening inspection, paused at admission",
+      "copied_sha256": "fac93d5b3f7b6d2a9f2b99347b7a72a1debb8c0e7f126c9bb0a0088c364e1c84",
+      "byte_identical": true
+    },
+    {
+      "file": "opening-visual-2/admitted-intro-desktop.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/opening-visual-2/admitted-intro-desktop.png",
+      "original_sha256": "442197600a84148ab86ccab40060ceb3fb2f7f32efa5cfa2df51bf9b879d8432",
+      "bytes": 103796,
+      "hash_authority": "preseal-visuals.json",
+      "copied_sha256": "442197600a84148ab86ccab40060ceb3fb2f7f32efa5cfa2df51bf9b879d8432",
+      "byte_identical": true
+    },
+    {
+      "file": "opening-visual-2/invalid-state-desktop.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/opening-visual-2/invalid-state-desktop.png",
+      "original_sha256": "bc52eebc2503ae53154769532ec12eae3af91eccaa45d7915155cb08b4985eb5",
+      "bytes": 71641,
+      "hash_authority": "preseal-visuals.json",
+      "copied_sha256": "bc52eebc2503ae53154769532ec12eae3af91eccaa45d7915155cb08b4985eb5",
+      "byte_identical": true
+    },
+    {
+      "file": "opening-visual-2/invalid-state-mobile.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/opening-visual-2/invalid-state-mobile.png",
+      "original_sha256": "bd7fa3076a18dc380374f134543c0a21c12070b0732c1c3b302aa41cfe025694",
+      "bytes": 59700,
+      "hash_authority": "preseal-visuals.json",
+      "copied_sha256": "bd7fa3076a18dc380374f134543c0a21c12070b0732c1c3b302aa41cfe025694",
+      "byte_identical": true
+    },
+    {
+      "file": "opening-visual-2/preparing-desktop.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/opening-visual-2/preparing-desktop.png",
+      "original_sha256": "fd7d90cee7593d88eb82ad9a1ec0450b654dd8319339fd92aefa9d291276dea6",
+      "bytes": 63202,
+      "hash_authority": "preseal-visuals.json",
+      "copied_sha256": "fd7d90cee7593d88eb82ad9a1ec0450b654dd8319339fd92aefa9d291276dea6",
+      "byte_identical": true
+    },
+    {
+      "file": "opening-visual-2/preparing-mobile.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/opening-visual-2/preparing-mobile.png",
+      "original_sha256": "9e74bdcbd3f3e8a0997d3736355ea7c4b896361b741252edd15e610ab1ff16a3",
+      "bytes": 57541,
+      "hash_authority": "preseal-visuals.json",
+      "copied_sha256": "9e74bdcbd3f3e8a0997d3736355ea7c4b896361b741252edd15e610ab1ff16a3",
+      "byte_identical": true
+    },
+    {
+      "file": "opening-visual-2/receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/opening-visual-2/receipt.json",
+      "original_sha256": "f6df671abab7aafb725a86245ac191419916212a265a5caf8007b4b0405e7db5",
+      "bytes": 29399,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "f6df671abab7aafb725a86245ac191419916212a265a5caf8007b4b0405e7db5",
+      "byte_identical": true
+    },
+    {
+      "file": "prepare-candidate.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/prepare-candidate.json",
+      "original_sha256": "517bb55f4fa24b3cfb37568acd04fae06ec59f2c4e5233ad9826bfeb363c2628",
+      "bytes": 789,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "517bb55f4fa24b3cfb37568acd04fae06ec59f2c4e5233ad9826bfeb363c2628",
+      "byte_identical": true
+    },
+    {
+      "file": "prepare-candidate.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/prepare-candidate.log",
+      "original_sha256": "a563aa9643c12110e7047eff8717a9e7601cf1f451d6b0d7033feeada94dfbed",
+      "bytes": 321,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "a563aa9643c12110e7047eff8717a9e7601cf1f451d6b0d7033feeada94dfbed",
+      "byte_identical": true
+    },
+    {
+      "file": "prepare_final_polish_evidence.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/prepare_final_polish_evidence.py",
+      "original_sha256": "9ecc9e7e4025083aed77f0c63de7ade2255b53aa2b28c25e03f1cbd11690349b",
+      "bytes": 90070,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "9ecc9e7e4025083aed77f0c63de7ade2255b53aa2b28c25e03f1cbd11690349b",
+      "byte_identical": true
+    },
+    {
+      "file": "prepare_final_polish_evidence_initial.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/prepare_final_polish_evidence_initial.py",
+      "original_sha256": "06e522dce24cd2f52b0fd2b7de32b16c60e67a5c93a9d1f52eb498d3c5690bb2",
+      "bytes": 71109,
+      "hash_authority": "Superseded initially bound packaging template; preserved without execution for this handoff",
+      "copied_sha256": "06e522dce24cd2f52b0fd2b7de32b16c60e67a5c93a9d1f52eb498d3c5690bb2",
+      "byte_identical": true
+    },
+    {
+      "file": "prepare_final_polish_evidence_v2.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/prepare_final_polish_evidence_v2.py",
+      "original_sha256": "96d78aefd1ad912f07b28f0006b4d0237858b82aa5a2ee5d9c77d8fa041f9dfa",
+      "bytes": 80956,
+      "hash_authority": "Preserved v2 packager before the explicit reporter correction",
+      "copied_sha256": "96d78aefd1ad912f07b28f0006b4d0237858b82aa5a2ee5d9c77d8fa041f9dfa",
+      "byte_identical": true
+    },
+    {
+      "file": "preseal-candidate-command.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/preseal-candidate-command.json",
+      "original_sha256": "4089cb28430c6c38f7d47efc9e393e44cebddd0b7f7316de6b1160364a037b75",
+      "bytes": 2928,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "4089cb28430c6c38f7d47efc9e393e44cebddd0b7f7316de6b1160364a037b75",
+      "byte_identical": true
+    },
+    {
+      "file": "preseal-candidate.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/preseal-candidate.log",
+      "original_sha256": "4d78a5352b658d49adf8a4a7a606148e252d40688c00007574fb28032ba44f93",
+      "bytes": 9809,
+      "hash_authority": "Earlier preseal command; not whole-final-source verification",
+      "copied_sha256": "4d78a5352b658d49adf8a4a7a606148e252d40688c00007574fb28032ba44f93",
+      "byte_identical": true
+    },
+    {
+      "file": "preseal-opening-final-command.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/preseal-opening-final-command.json",
+      "original_sha256": "27ff57377df2ad758b7ee362449ec6a895bc42e87d271704f0150526e9badf53",
+      "bytes": 4668,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "27ff57377df2ad758b7ee362449ec6a895bc42e87d271704f0150526e9badf53",
+      "byte_identical": true
+    },
+    {
+      "file": "preseal-opening-final.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/preseal-opening-final.log",
+      "original_sha256": "95a23d1b384a8ab6f95f53139e2db53b0657a0421377be92cb1334ea26168d94",
+      "bytes": 5591,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "95a23d1b384a8ab6f95f53139e2db53b0657a0421377be92cb1334ea26168d94",
+      "byte_identical": true
+    },
+    {
+      "file": "preseal-review-2/receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/preseal-review-2/receipt.json",
+      "original_sha256": "96c3ac7b8a07ba7a5743d7bd6d46852a19f8e27c8084d2ec0587f6732ef2963b",
+      "bytes": 45241,
+      "hash_authority": "source-binding.json:preseal_browser_receipt",
+      "copied_sha256": "96c3ac7b8a07ba7a5743d7bd6d46852a19f8e27c8084d2ec0587f6732ef2963b",
+      "byte_identical": true
+    },
+    {
+      "file": "preseal-visuals.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/preseal-visuals.json",
+      "original_sha256": "951d4935f74454a0d19447a273060c4f9ecce3be647d7617ea7cc881965d3704",
+      "bytes": 2035,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "951d4935f74454a0d19447a273060c4f9ecce3be647d7617ea7cc881965d3704",
+      "byte_identical": true
+    },
+    {
+      "file": "promote_standard_workspace.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/promote_standard_workspace.py",
+      "original_sha256": "c8f88d28c40c6d245034f03fb0104392a9ba0f33dd7d39e6cee225172e906e4b",
+      "bytes": 47241,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "c8f88d28c40c6d245034f03fb0104392a9ba0f33dd7d39e6cee225172e906e4b",
+      "byte_identical": true
+    },
+    {
+      "file": "release/api-build-version.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-build-version.json",
+      "original_sha256": "5b6ee8a785a78d376c828c27cf2bfc4634ee901d195727a4dc3b3d7baa53aa31",
+      "bytes": 871,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "5b6ee8a785a78d376c828c27cf2bfc4634ee901d195727a4dc3b3d7baa53aa31",
+      "byte_identical": true
+    },
+    {
+      "file": "release/api-deployment-uploaded.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-deployment-uploaded.json",
+      "original_sha256": "6d4a842de7526d29c17bff4cc261b5a4b4a46789b7071efc3738b446f89aa484",
+      "bytes": 295,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "6d4a842de7526d29c17bff4cc261b5a4b4a46789b7071efc3738b446f89aa484",
+      "byte_identical": true
+    },
+    {
+      "file": "release/api-health-after.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-health-after.json",
+      "original_sha256": "b6b5eac38518a89cba41772ac7a97cd84416c7fe770d58f1e6263503c49fe228",
+      "bytes": 179,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "b6b5eac38518a89cba41772ac7a97cd84416c7fe770d58f1e6263503c49fe228",
+      "byte_identical": true
+    },
+    {
+      "file": "release/api-private-wheel-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-private-wheel-verified.json",
+      "original_sha256": "603520c1d3b43cd36ed1677a987dcce05b7ee572ee00003a5638515ae306b3cb",
+      "bytes": 369,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "603520c1d3b43cd36ed1677a987dcce05b7ee572ee00003a5638515ae306b3cb",
+      "byte_identical": true
+    },
+    {
+      "file": "release/api-release-activation.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-release-activation.log",
+      "original_sha256": "58a9b129976a13b53b9b0f648db8dc1a4646edce857f9d2b3f5034f6bf33cdfa",
+      "bytes": 258,
+      "hash_authority": "api-release-sequence.json",
+      "copied_sha256": "58a9b129976a13b53b9b0f648db8dc1a4646edce857f9d2b3f5034f6bf33cdfa",
+      "byte_identical": true
+    },
+    {
+      "file": "release/api-release-deployment.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-release-deployment.log",
+      "original_sha256": "82bd5367f5147030b32d502ca955f86dfb1d8d2bc6cd5bb900d427ac9372fd48",
+      "bytes": 558,
+      "hash_authority": "api-release-sequence.json",
+      "copied_sha256": "82bd5367f5147030b32d502ca955f86dfb1d8d2bc6cd5bb900d427ac9372fd48",
+      "byte_identical": true
+    },
+    {
+      "file": "release/api-release-environment.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-release-environment.log",
+      "original_sha256": "c4240f6560263fbb16b664a642e8a294c4ea3e531ef924ee4c7a9faea9593bfa",
+      "bytes": 61,
+      "hash_authority": "api-release-sequence.json",
+      "copied_sha256": "c4240f6560263fbb16b664a642e8a294c4ea3e531ef924ee4c7a9faea9593bfa",
+      "byte_identical": true
+    },
+    {
+      "file": "release/api-release-seed.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-release-seed.log",
+      "original_sha256": "4646ffbda91f8f81a3e21914d68d100d4a2058d3f00aff2a4cab1ac35f71d8a5",
+      "bytes": 706,
+      "hash_authority": "api-release-sequence.json",
+      "copied_sha256": "4646ffbda91f8f81a3e21914d68d100d4a2058d3f00aff2a4cab1ac35f71d8a5",
+      "byte_identical": true
+    },
+    {
+      "file": "release/api-release-sequence.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-release-sequence.json",
+      "original_sha256": "e8c4e4f563a731f0c5ead5baa0e23ff0950f66e506375979a0310a041b539d3f",
+      "bytes": 5128,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "e8c4e4f563a731f0c5ead5baa0e23ff0950f66e506375979a0310a041b539d3f",
+      "byte_identical": true
+    },
+    {
+      "file": "release/await_api.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/await_api.py",
+      "original_sha256": "380d86398dae2687f13f6fd33a80c2ebad276ce5a704b47de51dfb5786f9a4ea",
+      "bytes": 3078,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "380d86398dae2687f13f6fd33a80c2ebad276ce5a704b47de51dfb5786f9a4ea",
+      "byte_identical": true
+    },
+    {
+      "file": "release/browser-evidence-recovery.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/browser-evidence-recovery.json",
+      "original_sha256": "976f79abdcc00652cc8c60edf9b68dde2b986acbea70ec5f4d9905e30257c3c3",
+      "bytes": 1774,
+      "hash_authority": "Root-authored diagnosis of missing export after the completed passing gate",
+      "copied_sha256": "976f79abdcc00652cc8c60edf9b68dde2b986acbea70ec5f4d9905e30257c3c3",
+      "byte_identical": true
+    },
+    {
+      "file": "release/canonical-integration.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/canonical-integration.json",
+      "original_sha256": "98c6b2919a69c8a64043c3c6fb9b91394cb8081ab9d29a522d22630490b7b1b4",
+      "bytes": 614,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "98c6b2919a69c8a64043c3c6fb9b91394cb8081ab9d29a522d22630490b7b1b4",
+      "byte_identical": true
+    },
+    {
+      "file": "release/capture_eight_states.mjs",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/capture_eight_states.mjs",
+      "original_sha256": "5034b9995a3b69722f77f12455f491ff22706502342e7be142d2f6b1ddf0a8dc",
+      "bytes": 23198,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "5034b9995a3b69722f77f12455f491ff22706502342e7be142d2f6b1ddf0a8dc",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-acceptance-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-acceptance-terminal.json",
+      "original_sha256": "2623a1a1fb54203a74310f0ab3c206edb1e73a07e27fb768107981d69b817356",
+      "bytes": 1319,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "2623a1a1fb54203a74310f0ab3c206edb1e73a07e27fb768107981d69b817356",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-adoption-failed-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-adoption-failed-terminal.json",
+      "original_sha256": "2218d52872bbdb2802fc7f97dc08c90f508ae01f4eb4efbd8b41c901e7accef6",
+      "bytes": 1902,
+      "hash_authority": "Actual failed adopter terminal; failure retained, not relabeled",
+      "copied_sha256": "2218d52872bbdb2802fc7f97dc08c90f508ae01f4eb4efbd8b41c901e7accef6",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-api-build-proof-failed-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-api-build-proof-failed-terminal.json",
+      "original_sha256": "c6d7218d38da1e25bf91a02046efe356e2110b7dc9b44bca45f8b63b6f7de24c",
+      "bytes": 1300,
+      "hash_authority": "Preserved original API build-proof CLI compatibility failure, exit 1",
+      "copied_sha256": "c6d7218d38da1e25bf91a02046efe356e2110b7dc9b44bca45f8b63b6f7de24c",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-api-build-proof-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-api-build-proof-terminal.json",
+      "original_sha256": "bec354c3b0e6f17987c7f7f6d1b3b83c0a21015d67c87e35d53067ea0de44a54",
+      "bytes": 1150,
+      "hash_authority": "Actual completed corrected API build-proof terminal, exit 0",
+      "copied_sha256": "bec354c3b0e6f17987c7f7f6d1b3b83c0a21015d67c87e35d53067ea0de44a54",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-artifacts-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-artifacts-terminal.json",
+      "original_sha256": "80eaeeb10974e27fdb7dd0db7f448226462617702d1ef460e63643a62fb702cb",
+      "bytes": 951,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "80eaeeb10974e27fdb7dd0db7f448226462617702d1ef460e63643a62fb702cb",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-capture-reporter-failed-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-capture-reporter-failed-terminal.json",
+      "original_sha256": "d7360b23d2337dd22404e95134809c123e81d25501027e41c716fb71254d19cc",
+      "bytes": 1626,
+      "hash_authority": "Actual first standalone wrapper terminal, exit 1",
+      "copied_sha256": "d7360b23d2337dd22404e95134809c123e81d25501027e41c716fb71254d19cc",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-engineering-previous-stop.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-engineering-previous-stop.json",
+      "original_sha256": "55bf0507a64e4562b07d925ca5f87874fcae64d191fa7674ebf40a44ae54a2c1",
+      "bytes": 125,
+      "hash_authority": "engineering-promotion-verified-4864.json:stop",
+      "copied_sha256": "55bf0507a64e4562b07d925ca5f87874fcae64d191fa7674ebf40a44ae54a2c1",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-engineering-previous-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-engineering-previous-terminal.json",
+      "original_sha256": "eae6b45f79b16c6b801293cb6aaed8d18382dc6c53065fdca1a7f864234bd829",
+      "bytes": 3485,
+      "hash_authority": "engineering-promotion-verified-4864.json:terminal",
+      "copied_sha256": "eae6b45f79b16c6b801293cb6aaed8d18382dc6c53065fdca1a7f864234bd829",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-engineering-promoted-running.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-engineering-promoted-running.json",
+      "original_sha256": "022db68b8adc448d9578b2f5be36e24b7a844ff444c175562c017fa13b830031",
+      "bytes": 786,
+      "hash_authority": "engineering-promotion-verified-4864.json:running",
+      "copied_sha256": "022db68b8adc448d9578b2f5be36e24b7a844ff444c175562c017fa13b830031",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-sealed-browser-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-sealed-browser-terminal.json",
+      "original_sha256": "630337e0832f76d9d5147994d1448f260abd8e42f7d287e89b447190738ad114",
+      "bytes": 1210,
+      "hash_authority": "Actual completed standalone recording terminal",
+      "copied_sha256": "630337e0832f76d9d5147994d1448f260abd8e42f7d287e89b447190738ad114",
+      "byte_identical": true
+    },
+    {
+      "file": "release/commander-terminal.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/commander-terminal.json",
+      "original_sha256": "9033a041afcc88b3758cad5f7d1a0e1fe6b1edf4fde1ef2add940aea1028936a",
+      "bytes": 7063,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "9033a041afcc88b3758cad5f7d1a0e1fe6b1edf4fde1ef2add940aea1028936a",
+      "byte_identical": true
+    },
+    {
+      "file": "release/copy_sites_inputs.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/copy_sites_inputs.py",
+      "original_sha256": "f80483ed69110fc3b9a34bebf1a95776e41cb97793a7c8740f841ae706bba22a",
+      "bytes": 3821,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "f80483ed69110fc3b9a34bebf1a95776e41cb97793a7c8740f841ae706bba22a",
+      "byte_identical": true
+    },
+    {
+      "file": "release/decode_public_film.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/decode_public_film.py",
+      "original_sha256": "641f808e6198ede8c3206ff4359d820d4c4179851a381eaa344e16f71bbb65b7",
+      "bytes": 4176,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "641f808e6198ede8c3206ff4359d820d4c4179851a381eaa344e16f71bbb65b7",
+      "byte_identical": true
+    },
+    {
+      "file": "release/deploy_api.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/deploy_api.py",
+      "original_sha256": "51903de878ba05e0511b5a52fb4db3943fb5ea1f2ab414bd57a162d7d441abf4",
+      "bytes": 8960,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "51903de878ba05e0511b5a52fb4db3943fb5ea1f2ab414bd57a162d7d441abf4",
+      "byte_identical": true
+    },
+    {
+      "file": "release/eight-state-capture/admitted-manifest.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/admitted-manifest.json",
+      "original_sha256": "aeffbc3659fa2e93e9448c42d027fa85966346fa557f575bdf8945e1ed5845ba",
+      "bytes": 32225,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "aeffbc3659fa2e93e9448c42d027fa85966346fa557f575bdf8945e1ed5845ba",
+      "byte_identical": true
+    },
+    {
+      "file": "release/eight-state-capture/eight-state-evidence.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/eight-state-evidence.json",
+      "original_sha256": "0e1ed6ec0766a5786084d675a491c9ecec807e1ec402476b08a697508b6187c0",
+      "bytes": 126623,
+      "hash_authority": "northstar-artifacts-sequence.json",
+      "copied_sha256": "0e1ed6ec0766a5786084d675a491c9ecec807e1ec402476b08a697508b6187c0",
+      "byte_identical": true
+    },
+    {
+      "file": "release/eight-state-capture/state-1-ready.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/state-1-ready.png",
+      "original_sha256": "442197600a84148ab86ccab40060ceb3fb2f7f32efa5cfa2df51bf9b879d8432",
+      "bytes": 103796,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "442197600a84148ab86ccab40060ceb3fb2f7f32efa5cfa2df51bf9b879d8432",
+      "byte_identical": true
+    },
+    {
+      "file": "release/eight-state-capture/state-2-source-opened.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/state-2-source-opened.png",
+      "original_sha256": "02a28ae5a136ab6dfb30e8e1150dee22e6246f0d2f7695dc617561b6ec95a4d9",
+      "bytes": 192258,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "02a28ae5a136ab6dfb30e8e1150dee22e6246f0d2f7695dc617561b6ec95a4d9",
+      "byte_identical": true
+    },
+    {
+      "file": "release/eight-state-capture/state-3-exact-passage.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/state-3-exact-passage.png",
+      "original_sha256": "5e983a245b5af51c58b0e0610efe52e953039241f781fceeb39c38f1d3fd5e9c",
+      "bytes": 196156,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "5e983a245b5af51c58b0e0610efe52e953039241f781fceeb39c38f1d3fd5e9c",
+      "byte_identical": true
+    },
+    {
+      "file": "release/eight-state-capture/state-4-source-bound-fact.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/state-4-source-bound-fact.png",
+      "original_sha256": "4c5348f662a3b63dba87681d3f307a882061994efe80a9551fa6b2163ba67f72",
+      "bytes": 202930,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "4c5348f662a3b63dba87681d3f307a882061994efe80a9551fa6b2163ba67f72",
+      "byte_identical": true
+    },
+    {
+      "file": "release/eight-state-capture/state-5-accepted-question.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/state-5-accepted-question.png",
+      "original_sha256": "d5038ecf5d96f282d5cef1f6cc00c44f5a408be0cdb4bba8887c22d6debaac46",
+      "bytes": 176957,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "d5038ecf5d96f282d5cef1f6cc00c44f5a408be0cdb4bba8887c22d6debaac46",
+      "byte_identical": true
+    },
+    {
+      "file": "release/eight-state-capture/state-6-completed-process.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/state-6-completed-process.png",
+      "original_sha256": "8c656c97aa0618f49069b82620c1849ed8c222900990ca3416114ddc5f7980fb",
+      "bytes": 191407,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "8c656c97aa0618f49069b82620c1849ed8c222900990ca3416114ddc5f7980fb",
+      "byte_identical": true
+    },
+    {
+      "file": "release/eight-state-capture/state-7-direct-edit.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/state-7-direct-edit.png",
+      "original_sha256": "f9d42e538959aa0b3468016ad6d1b9db40dbf0af8784061f8c47566c7d1f6876",
+      "bytes": 134207,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "f9d42e538959aa0b3468016ad6d1b9db40dbf0af8784061f8c47566c7d1f6876",
+      "byte_identical": true
+    },
+    {
+      "file": "release/eight-state-capture/state-8-later-case-reuse.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/state-8-later-case-reuse.png",
+      "original_sha256": "dbfb481d41807f6636b50812fed61820d92c9e9b49dfa858e1c4608683b9693b",
+      "bytes": 137072,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "dbfb481d41807f6636b50812fed61820d92c9e9b49dfa858e1c4608683b9693b",
+      "byte_identical": true
+    },
+    {
+      "file": "release/engineering-promotion-before-4864.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/engineering-promotion-before-4864.json",
+      "original_sha256": "1902fa4809d69be9fa474a00551978e9b3a6ffcd522e72d1230791fc71e8fda0",
+      "bytes": 17128,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "1902fa4809d69be9fa474a00551978e9b3a6ffcd522e72d1230791fc71e8fda0",
+      "byte_identical": true
+    },
+    {
+      "file": "release/engineering-promotion-verified-4864.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/engineering-promotion-verified-4864.json",
+      "original_sha256": "76d76255b89204780f96900993e92fae5233ff64235c4011f17f4e75d3db998d",
+      "bytes": 35511,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "76d76255b89204780f96900993e92fae5233ff64235c4011f17f4e75d3db998d",
+      "byte_identical": true
+    },
+    {
+      "file": "release/full-gate-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/full-gate-verified.json",
+      "original_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+      "bytes": 5844,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+      "byte_identical": true
+    },
+    {
+      "file": "release/gate-actual-completion.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/gate-actual-completion.json",
+      "original_sha256": "f8e8297680f91a9991279c10796184b8618d5ed0ed205536913fbc73c6a591b9",
+      "bytes": 524,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "f8e8297680f91a9991279c10796184b8618d5ed0ed205536913fbc73c6a591b9",
+      "byte_identical": true
+    },
+    {
+      "file": "release/helper-acceptance-binding.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/helper-acceptance-binding.json",
+      "original_sha256": "9ef0f35f14e4e56d435b2103668695740aba06ef7356bad9c26a83b6cd63c115",
+      "bytes": 2306,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "9ef0f35f14e4e56d435b2103668695740aba06ef7356bad9c26a83b6cd63c115",
+      "byte_identical": true
+    },
+    {
+      "file": "release/helper-final-binding.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/helper-final-binding.json",
+      "original_sha256": "912251f44375ad0eb80fda7c15a51385dcb2e7b79b6a7a6d759b45dd376f08b2",
+      "bytes": 3912,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "912251f44375ad0eb80fda7c15a51385dcb2e7b79b6a7a6d759b45dd376f08b2",
+      "byte_identical": true
+    },
+    {
+      "file": "release/integrate_canonical.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/integrate_canonical.py",
+      "original_sha256": "e0aba2b47c83f0ac8499462c584730332d6822c3d894f394770e384d01a32318",
+      "bytes": 4223,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "e0aba2b47c83f0ac8499462c584730332d6822c3d894f394770e384d01a32318",
+      "byte_identical": true
+    },
+    {
+      "file": "release/make_film_contact_sheet.mjs",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/make_film_contact_sheet.mjs",
+      "original_sha256": "8d360d7701592e34127660f2a543aa4374e9de3a729ae3aad4467cba15b9fded",
+      "bytes": 3641,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "8d360d7701592e34127660f2a543aa4374e9de3a729ae3aad4467cba15b9fded",
+      "byte_identical": true
+    },
+    {
+      "file": "release/measure_northstar_fidelity.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/measure_northstar_fidelity.py",
+      "original_sha256": "a418a6d81b0d247915573adfbf7ba6cb74f74545e04a964f29c25700fc617662",
+      "bytes": 5568,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "a418a6d81b0d247915573adfbf7ba6cb74f74545e04a964f29c25700fc617662",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-artifact-inputs.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-artifact-inputs.json",
+      "original_sha256": "31348e82004991ad870e4e6627f5fe66f5899b376d85139c73e71d5e21237000",
+      "bytes": 1513,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "31348e82004991ad870e4e6627f5fe66f5899b376d85139c73e71d5e21237000",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-artifacts-sequence.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-artifacts-sequence.json",
+      "original_sha256": "1c26b732a21cc77b15694936350d33ab38ace18ac286bfb9d82da7a3be15da6c",
+      "bytes": 25259,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "1c26b732a21cc77b15694936350d33ab38ace18ac286bfb9d82da7a3be15da6c",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-contact_sheet-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-contact_sheet-command.log",
+      "original_sha256": "9ff3d4763ca785f87479aaeb8b67b515425c8ce2e67147880f59144cd38026b9",
+      "bytes": 181,
+      "hash_authority": "northstar-artifacts-sequence.json",
+      "copied_sha256": "9ff3d4763ca785f87479aaeb8b67b515425c8ce2e67147880f59144cd38026b9",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-eight_states-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-eight_states-command.log",
+      "original_sha256": "2050aa8b20f8398e1e0e07bdd278e1f43ffb5b585676052209458d1e7879a8b8",
+      "bytes": 148,
+      "hash_authority": "northstar-artifacts-sequence.json",
+      "copied_sha256": "2050aa8b20f8398e1e0e07bdd278e1f43ffb5b585676052209458d1e7879a8b8",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity-command.log",
+      "original_sha256": "ee8a1235222fcef2c1828fd02ed1c1ccadb08ae6d05d3eb6fef0edb79282b6b6",
+      "bytes": 155,
+      "hash_authority": "northstar-artifacts-sequence.json",
+      "copied_sha256": "ee8a1235222fcef2c1828fd02ed1c1ccadb08ae6d05d3eb6fef0edb79282b6b6",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-01-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-01-command.log",
+      "original_sha256": "ad0e0a47b4b33e5d0ce5f81e1478184134b0ff7b5b2f5d8d01051000528ccea6",
+      "bytes": 366,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "ad0e0a47b4b33e5d0ce5f81e1478184134b0ff7b5b2f5d8d01051000528ccea6",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-01-diff.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-01-diff.png",
+      "original_sha256": "686c32691bf0cdd9abda22894146216957f4317efc27e9c99aedebb2773f800e",
+      "bytes": 1401921,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "686c32691bf0cdd9abda22894146216957f4317efc27e9c99aedebb2773f800e",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-01-overlay.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-01-overlay.png",
+      "original_sha256": "a532c59b16a30743aad110657616f452bf5fb65ac4d3769cd2ad9d58c3a6daa0",
+      "bytes": 889361,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "a532c59b16a30743aad110657616f452bf5fb65ac4d3769cd2ad9d58c3a6daa0",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-01-side.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-01-side.png",
+      "original_sha256": "f0aa33de38d6b33e07a40e24d6a2e6615c1192f6cbd18b551e773101a3e5b3f9",
+      "bytes": 1512171,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "f0aa33de38d6b33e07a40e24d6a2e6615c1192f6cbd18b551e773101a3e5b3f9",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-02-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-02-command.log",
+      "original_sha256": "4121a9be89bdeba0b2a27611248145ca419635eec7d505859cfab3a59dc7428d",
+      "bytes": 366,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "4121a9be89bdeba0b2a27611248145ca419635eec7d505859cfab3a59dc7428d",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-02-diff.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-02-diff.png",
+      "original_sha256": "89b65ab38861d2c601270301bcaa9805b5b520fa945e162a1e741fc47fee00ee",
+      "bytes": 1595896,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "89b65ab38861d2c601270301bcaa9805b5b520fa945e162a1e741fc47fee00ee",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-02-overlay.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-02-overlay.png",
+      "original_sha256": "14ef8b5485d5a9dbe3db8c74cc42425b2cbaffa1e81c16f3bb4c8331c101027c",
+      "bytes": 1056275,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "14ef8b5485d5a9dbe3db8c74cc42425b2cbaffa1e81c16f3bb4c8331c101027c",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-02-side.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-02-side.png",
+      "original_sha256": "5aa62348a2173c8f24de448e47b6de14281dab81358198544f9501924569b5a7",
+      "bytes": 1690443,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "5aa62348a2173c8f24de448e47b6de14281dab81358198544f9501924569b5a7",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-03-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-03-command.log",
+      "original_sha256": "373114c146991044daec394fb08257f12820e8a787696899cd8ebfabc18112de",
+      "bytes": 370,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "373114c146991044daec394fb08257f12820e8a787696899cd8ebfabc18112de",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-03-diff.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-03-diff.png",
+      "original_sha256": "6d952709d001c74c0ff87711855f62bdfd23986ee68039b5e36c25be11e9bedb",
+      "bytes": 1540428,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "6d952709d001c74c0ff87711855f62bdfd23986ee68039b5e36c25be11e9bedb",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-03-overlay.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-03-overlay.png",
+      "original_sha256": "cd0ec08c7138ab8990e7ac53cf5826d1a70fc1cf8b0a81d1116cb32b636e2c3a",
+      "bytes": 1033491,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "cd0ec08c7138ab8990e7ac53cf5826d1a70fc1cf8b0a81d1116cb32b636e2c3a",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/concept-03-side.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/concept-03-side.png",
+      "original_sha256": "6a783672ae1b9b198c3dee7a11a82ae1acf9c2f6da67db7a5b17ca6bf463c3e3",
+      "bytes": 1624711,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "6a783672ae1b9b198c3dee7a11a82ae1acf9c2f6da67db7a5b17ca6bf463c3e3",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/fidelity-measurements.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/fidelity-measurements.json",
+      "original_sha256": "ae0bfd5430a22d7e239cd7d20541705caccae0c56f41b387d094cd56475bb7d1",
+      "bytes": 3946,
+      "hash_authority": "northstar-artifacts-sequence.json",
+      "copied_sha256": "ae0bfd5430a22d7e239cd7d20541705caccae0c56f41b387d094cd56475bb7d1",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-fidelity/visual-review.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-fidelity/visual-review.json",
+      "original_sha256": "cb41a0d374f748a5328500fb5a5b6877136f7e09beaeac26c86b68b46184c978",
+      "bytes": 6214,
+      "hash_authority": "Root-authored visual review after inspecting the actual comparison outputs",
+      "copied_sha256": "cb41a0d374f748a5328500fb5a5b6877136f7e09beaeac26c86b68b46184c978",
+      "byte_identical": true
+    },
+    {
+      "file": "release/northstar-film_frames-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/northstar-film_frames-command.log",
+      "original_sha256": "9218f24e210ede46d1fc7df0fab1005b36b13c26785c7d1e412a3cb3e4250869",
+      "bytes": 321,
+      "hash_authority": "northstar-artifacts-sequence.json",
+      "copied_sha256": "9218f24e210ede46d1fc7df0fab1005b36b13c26785c7d1e412a3cb3e4250869",
+      "byte_identical": true
+    },
+    {
+      "file": "release/prepare_public_archive_transfer.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/prepare_public_archive_transfer.py",
+      "original_sha256": "26abdcee9a287b13c86dc0303a30e40b5f2fc43622d3177d1f63780e04789f82",
+      "bytes": 1906,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "26abdcee9a287b13c86dc0303a30e40b5f2fc43622d3177d1f63780e04789f82",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-01.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-01.png",
+      "original_sha256": "5e2c437c50afc4ec7c97de97e680d55b72fddd37e30489679558ffe089870634",
+      "bytes": 132190,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "5e2c437c50afc4ec7c97de97e680d55b72fddd37e30489679558ffe089870634",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-02.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-02.png",
+      "original_sha256": "87257344ee9d538026d9eaf7ddb8b0bcf9716f2e6f63b7a6b9b67bcaf05e9e27",
+      "bytes": 126142,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "87257344ee9d538026d9eaf7ddb8b0bcf9716f2e6f63b7a6b9b67bcaf05e9e27",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-03.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-03.png",
+      "original_sha256": "629e62b77776e01392f4cf3b8f9acdea9cdb0aac3e9bcaec1af3e10d1b952c6e",
+      "bytes": 131207,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "629e62b77776e01392f4cf3b8f9acdea9cdb0aac3e9bcaec1af3e10d1b952c6e",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-04.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-04.png",
+      "original_sha256": "0facd6b6657489f3bcc056dc63e224bf73d526ccb23f9d89482a1ae673817be4",
+      "bytes": 207836,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "0facd6b6657489f3bcc056dc63e224bf73d526ccb23f9d89482a1ae673817be4",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-05.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-05.png",
+      "original_sha256": "7f50d19d75bdad05470781d203351836d6282db7e38d0e33ccda910be516d5e6",
+      "bytes": 304191,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "7f50d19d75bdad05470781d203351836d6282db7e38d0e33ccda910be516d5e6",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-06.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-06.png",
+      "original_sha256": "7ca5603f9383db0d9faefca5951933661535c375e95bea2b2262f96798782439",
+      "bytes": 472820,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "7ca5603f9383db0d9faefca5951933661535c375e95bea2b2262f96798782439",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-07.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-07.png",
+      "original_sha256": "d8609d0d26a0f8bd468d3ea2e49d9b04540eb09aae329fa9a84e173399b26a97",
+      "bytes": 478606,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "d8609d0d26a0f8bd468d3ea2e49d9b04540eb09aae329fa9a84e173399b26a97",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-08.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-08.png",
+      "original_sha256": "a350bbbb8061b9f26b463d5fd5738c948de6b9b2790baacb34b476aee24bfaaa",
+      "bytes": 417418,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "a350bbbb8061b9f26b463d5fd5738c948de6b9b2790baacb34b476aee24bfaaa",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-09.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-09.png",
+      "original_sha256": "489c24dc3ec2fdce6e96b8762b13188671a1ddd53b750f9f2562a307800b964e",
+      "bytes": 429076,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "489c24dc3ec2fdce6e96b8762b13188671a1ddd53b750f9f2562a307800b964e",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-10.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-10.png",
+      "original_sha256": "4a7678df0673e6daccb94590d468f94ef264bd434b2f1a3b287bd29b572b830d",
+      "bytes": 523047,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "4a7678df0673e6daccb94590d468f94ef264bd434b2f1a3b287bd29b572b830d",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-11.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-11.png",
+      "original_sha256": "517bea37702c3174172f4087bf69290c612c4e8c173610155c8ca30d9b21a68c",
+      "bytes": 461806,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "517bea37702c3174172f4087bf69290c612c4e8c173610155c8ca30d9b21a68c",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-12.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-12.png",
+      "original_sha256": "425a0555c8b1aa6d80611bd4781a6066fd44c7dafad55fe8fa21a9f0c3a10a99",
+      "bytes": 279655,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "425a0555c8b1aa6d80611bd4781a6066fd44c7dafad55fe8fa21a9f0c3a10a99",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-13.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-13.png",
+      "original_sha256": "eb1c7339d4a548596b000a5ab8a326e666bd872a3a4d2cfbf7ef385170b07373",
+      "bytes": 468465,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "eb1c7339d4a548596b000a5ab8a326e666bd872a3a4d2cfbf7ef385170b07373",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-14.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-14.png",
+      "original_sha256": "60cd78292dd7bf30bf81379059e96d819efc9c63deb3d0ca35548ac10e3896bc",
+      "bytes": 208393,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "60cd78292dd7bf30bf81379059e96d819efc9c63deb3d0ca35548ac10e3896bc",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-15.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-15.png",
+      "original_sha256": "5ddc6cb24137cc59791570b6682f03e28ed17b3bdb222609317b2d175939d70f",
+      "bytes": 178620,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "5ddc6cb24137cc59791570b6682f03e28ed17b3bdb222609317b2d175939d70f",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-16.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-16.png",
+      "original_sha256": "678a9e76f37b19368eb524ee32dcec4bdb3cae71192fc8f1ec360f1ef1d745c6",
+      "bytes": 267956,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "678a9e76f37b19368eb524ee32dcec4bdb3cae71192fc8f1ec360f1ef1d745c6",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-17.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-17.png",
+      "original_sha256": "eb39bcecebcc01cb64db78612f54aed60040c1e4176bf551b74cab350856d038",
+      "bytes": 193049,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "eb39bcecebcc01cb64db78612f54aed60040c1e4176bf551b74cab350856d038",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-18.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-18.png",
+      "original_sha256": "1029eb6e667e89835766cd9a29348ce4a22936ae12c14ffd432bf88bd9cf134b",
+      "bytes": 196230,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "1029eb6e667e89835766cd9a29348ce4a22936ae12c14ffd432bf88bd9cf134b",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-19.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-19.png",
+      "original_sha256": "862006a53d51332493393f1bd1dc45dd632cc5792098371f0d234f0a013ddf97",
+      "bytes": 344086,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "862006a53d51332493393f1bd1dc45dd632cc5792098371f0d234f0a013ddf97",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-20.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-20.png",
+      "original_sha256": "a0faa6e4d176e6672a8b960004f603761bd43bd5fee27a60f5d3b73686da568c",
+      "bytes": 359734,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "a0faa6e4d176e6672a8b960004f603761bd43bd5fee27a60f5d3b73686da568c",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-21.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-21.png",
+      "original_sha256": "3d61a61d95429b15bf53cf04b1f97fbeaeaa36706e7b97a014114a9d68201c7e",
+      "bytes": 362152,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "3d61a61d95429b15bf53cf04b1f97fbeaeaa36706e7b97a014114a9d68201c7e",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-22.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-22.png",
+      "original_sha256": "15abfe7dd5287c7c74fd86a22230dc83bef92bb18158d559a5062eeadf0f01a7",
+      "bytes": 217948,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "15abfe7dd5287c7c74fd86a22230dc83bef92bb18158d559a5062eeadf0f01a7",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-23.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-23.png",
+      "original_sha256": "2485ddb496b51bc4676c62cb389ae465d4858903f2b05fd1ab9875e8a8144746",
+      "bytes": 318038,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "2485ddb496b51bc4676c62cb389ae465d4858903f2b05fd1ab9875e8a8144746",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-frame-24.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-frame-24.png",
+      "original_sha256": "db285ff447483e1c149e9d85105499ae334eaecc0d65b150b70cacd79fb8de9e",
+      "bytes": 382074,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "db285ff447483e1c149e9d85105499ae334eaecc0d65b150b70cacd79fb8de9e",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/cold-viewer-review.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/cold-viewer-review.json",
+      "original_sha256": "575b6ade0daae64bb6c88d37077c94e3881b06613405df047704e5722618e5fe",
+      "bytes": 3869,
+      "hash_authority": "Actual independent assistant review; qualification is not claimed",
+      "copied_sha256": "575b6ade0daae64bb6c88d37077c94e3881b06613405df047704e5722618e5fe",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/contact-sheet.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/contact-sheet.json",
+      "original_sha256": "7a50ad1b3597b7135cda9a483f9d2e9c44ebbe2442c63a12e3c3679282a639c5",
+      "bytes": 3404,
+      "hash_authority": "northstar-artifacts-sequence.json",
+      "copied_sha256": "7a50ad1b3597b7135cda9a483f9d2e9c44ebbe2442c63a12e3c3679282a639c5",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/film-contact-sheet.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/film-contact-sheet.png",
+      "original_sha256": "4f1fb91a0a68660aff9e56461e80e5e8f4778f0a126dfcb7aa00a5e92906cf8d",
+      "bytes": 990022,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "4f1fb91a0a68660aff9e56461e80e5e8f4778f0a126dfcb7aa00a5e92906cf8d",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/frames-index.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/frames-index.json",
+      "original_sha256": "e16307359111459cefa588979aaba21e33af4a7fffdac9121952d499f01fcdee",
+      "bytes": 6366,
+      "hash_authority": "northstar-artifacts-sequence.json",
+      "copied_sha256": "e16307359111459cefa588979aaba21e33af4a7fffdac9121952d499f01fcdee",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-film-review/video-metadata.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-film-review/video-metadata.log",
+      "original_sha256": "7c1c42f82b1cedd1fd14f834d30d756b31da1994312e1e6e656ccbdaf978beb7",
+      "bytes": 615,
+      "hash_authority": "northstar-artifacts-sequence.json:outputs",
+      "copied_sha256": "7c1c42f82b1cedd1fd14f834d30d756b31da1994312e1e6e656ccbdaf978beb7",
+      "byte_identical": true
+    },
+    {
+      "file": "release/public-image-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/public-image-verified.json",
+      "original_sha256": "e885e73970071508480550e5c4b88b6e18d4392768bb6675584eb293d698f7a5",
+      "bytes": 1178,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "e885e73970071508480550e5c4b88b6e18d4392768bb6675584eb293d698f7a5",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-acceptance-sequence.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-acceptance-sequence.json",
+      "original_sha256": "bfcda21a73416959c0bc59522774bf6c0115a6e97ec053c3bb0159823e81dc65",
+      "bytes": 8008,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "bfcda21a73416959c0bc59522774bf6c0115a6e97ec053c3bb0159823e81dc65",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-browser-4864e734/public-walkthrough.webm",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-browser-4864e734/public-walkthrough.webm",
+      "original_sha256": "2d41d1ba48e2c14164ff80fc5f904868c64a5c51b8fe596cd4ee20271696bce3",
+      "bytes": 9143069,
+      "hash_authority": "published-verification.json:film",
+      "copied_sha256": "2d41d1ba48e2c14164ff80fc5f904868c64a5c51b8fe596cd4ee20271696bce3",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-browser-4864e734/published-verification.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-browser-4864e734/published-verification.json",
+      "original_sha256": "dce0770dc4d0e521b46179e9932cd15e9f612d9663dec3c26d26b3f8546494c7",
+      "bytes": 91446,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "dce0770dc4d0e521b46179e9932cd15e9f612d9663dec3c26d26b3f8546494c7",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-browser-4864e734/summary.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-browser-4864e734/summary.json",
+      "original_sha256": "7cb800c99ed92e0f340f898451aa7b811d608a32e398127f3f857311a31b7f69",
+      "bytes": 1240,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "7cb800c99ed92e0f340f898451aa7b811d608a32e398127f3f857311a31b7f69",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-browser-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-browser-command.log",
+      "original_sha256": "16ffdd6266a599da951a2f5f5e4b4e65bcd9b9b7fdc66f25da8e5f57d7692fa4",
+      "bytes": 1108,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "16ffdd6266a599da951a2f5f5e4b4e65bcd9b9b7fdc66f25da8e5f57d7692fa4",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-image-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-image-command.log",
+      "original_sha256": "80e400f53332396768e6ad8a31e5375bd5818edd07dab7c0bc2ab87b321c9f5e",
+      "bytes": 1110,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "80e400f53332396768e6ad8a31e5375bd5818edd07dab7c0bc2ab87b321c9f5e",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-readback-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-readback-command.log",
+      "original_sha256": "14d7ca0d03a7d3b5033494b15ec9d32c36f0ff92148eb24824c8a141dc14259f",
+      "bytes": 349,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "14d7ca0d03a7d3b5033494b15ec9d32c36f0ff92148eb24824c8a141dc14259f",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-soak-4864e734/receipts.jsonl",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-soak-4864e734/receipts.jsonl",
+      "original_sha256": "5e3ef99c754a85f3360ff802bf4626a1753bece3756737fe8fc98282552efb0c",
+      "bytes": 261162,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "5e3ef99c754a85f3360ff802bf4626a1753bece3756737fe8fc98282552efb0c",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-soak-4864e734/summary.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-soak-4864e734/summary.json",
+      "original_sha256": "d71df5c171c7fc02bf6281d74d68c3f66e4028e3de08b77bd4c7280e00c8d434",
+      "bytes": 2905,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "d71df5c171c7fc02bf6281d74d68c3f66e4028e3de08b77bd4c7280e00c8d434",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-soak-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-soak-command.log",
+      "original_sha256": "3b6453864e1edd7938500df1ee95d470c1c36f3bbbeebe2f0bfccdd22ba986bb",
+      "bytes": 739,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "3b6453864e1edd7938500df1ee95d470c1c36f3bbbeebe2f0bfccdd22ba986bb",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published-verify_readback-command.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published-verify_readback-command.log",
+      "original_sha256": "d11d01512b73384b6ad6320ae87ee0f8028d2e62fdb0ce84e575d3528fed95dd",
+      "bytes": 729,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "d11d01512b73384b6ad6320ae87ee0f8028d2e62fdb0ce84e575d3528fed95dd",
+      "byte_identical": true
+    },
+    {
+      "file": "release/published_soak.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/published_soak.py",
+      "original_sha256": "46a5ba66f2b0dfc39833d9c90907e9603ae6a00ff95699ca56f1d7ad4f2c8c67",
+      "bytes": 15317,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "46a5ba66f2b0dfc39833d9c90907e9603ae6a00ff95699ca56f1d7ad4f2c8c67",
+      "byte_identical": true
+    },
+    {
+      "file": "release/readback-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/readback-verified.json",
+      "original_sha256": "7b6afc324710f63f13960632061b292046bfde804991753eda162d38ef299dec",
+      "bytes": 747,
+      "hash_authority": "published-acceptance-sequence.json",
+      "copied_sha256": "7b6afc324710f63f13960632061b292046bfde804991753eda162d38ef299dec",
+      "byte_identical": true
+    },
+    {
+      "file": "release/readback.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/readback.py",
+      "original_sha256": "d0f78aaf81347d7385106f8f2fef018220e70599222d28df6193a13c411e2806",
+      "bytes": 2885,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "d0f78aaf81347d7385106f8f2fef018220e70599222d28df6193a13c411e2806",
+      "byte_identical": true
+    },
+    {
+      "file": "release/renew_seed.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/renew_seed.py",
+      "original_sha256": "ca1ea0c82b4028b3f613e5afe4c59aac3049c33e60a20a8278b5762a396891bc",
+      "bytes": 6235,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "ca1ea0c82b4028b3f613e5afe4c59aac3049c33e60a20a8278b5762a396891bc",
+      "byte_identical": true
+    },
+    {
+      "file": "release/require_completed_gate.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/require_completed_gate.py",
+      "original_sha256": "3dfda32a8ec7825b1bffad15b34091495fe3ffa796a492ace18f640d2986bd28",
+      "bytes": 911,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "3dfda32a8ec7825b1bffad15b34091495fe3ffa796a492ace18f640d2986bd28",
+      "byte_identical": true
+    },
+    {
+      "file": "release/resume_promoted_review_qa.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/resume_promoted_review_qa.py",
+      "original_sha256": "4ee4a454c6d2bff91b12fc5fd878865069cada4ad76c119dcd1ff5de409365c1",
+      "bytes": 28282,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "4ee4a454c6d2bff91b12fc5fd878865069cada4ad76c119dcd1ff5de409365c1",
+      "byte_identical": true
+    },
+    {
+      "file": "release/run_api_release.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/run_api_release.py",
+      "original_sha256": "649b39a368d808fd604834c94f5d6177ccd8219d3aa67ccef87c602252ec28bd",
+      "bytes": 5395,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "649b39a368d808fd604834c94f5d6177ccd8219d3aa67ccef87c602252ec28bd",
+      "byte_identical": true
+    },
+    {
+      "file": "release/run_sites_workflow_finite.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/run_sites_workflow_finite.py",
+      "original_sha256": "f1adb0246d08980ec1087e52a988a20199bc2ae21df93ac5a0e70facc91003a8",
+      "bytes": 6357,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "f1adb0246d08980ec1087e52a988a20199bc2ae21df93ac5a0e70facc91003a8",
+      "byte_identical": true
+    },
+    {
+      "file": "release/seed-renewal-receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/seed-renewal-receipt.json",
+      "original_sha256": "1ec199ca59c3913d24ed307419d6c55224538846281ae618ae44535c7fb3775a",
+      "bytes": 742,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "1ec199ca59c3913d24ed307419d6c55224538846281ae618ae44535c7fb3775a",
+      "byte_identical": true
+    },
+    {
+      "file": "release/sites-deployment.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/sites-deployment.json",
+      "original_sha256": "51331c7a30eefb727ded27d30697a179956765f8442bfd4ae098b9ce0145455f",
+      "bytes": 581,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "51331c7a30eefb727ded27d30697a179956765f8442bfd4ae098b9ce0145455f",
+      "byte_identical": true
+    },
+    {
+      "file": "release/sites-inputs-verified.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/sites-inputs-verified.json",
+      "original_sha256": "0509b4b190e9fc9289044bf51f6a60fed804230af798ab7950e16358140594e1",
+      "bytes": 507,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "0509b4b190e9fc9289044bf51f6a60fed804230af798ab7950e16358140594e1",
+      "byte_identical": true
+    },
+    {
+      "file": "release/sites-saved-version.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/sites-saved-version.json",
+      "original_sha256": "d1857ddc6ffa6cf37314ca1e6708e656951f1e4378502130b4b1ce207c38a882",
+      "bytes": 576,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "d1857ddc6ffa6cf37314ca1e6708e656951f1e4378502130b4b1ce207c38a882",
+      "byte_identical": true
+    },
+    {
+      "file": "release/sites-workflow-result.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/sites-workflow-result.json",
+      "original_sha256": "3a84775bbef8023f6e847fec5811618dcc15d24e0d05718ce4f19786bfe00a9c",
+      "bytes": 407,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "3a84775bbef8023f6e847fec5811618dcc15d24e0d05718ce4f19786bfe00a9c",
+      "byte_identical": true
+    },
+    {
+      "file": "release/standard-promotion-running.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/standard-promotion-running.json",
+      "original_sha256": "18cfd1517c2690faac0cd21be62e4baa18c9891be23e65383272b63578646450",
+      "bytes": 366,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "18cfd1517c2690faac0cd21be62e4baa18c9891be23e65383272b63578646450",
+      "byte_identical": true
+    },
+    {
+      "file": "release/standard-promotion-stop.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/standard-promotion-stop.json",
+      "original_sha256": "96172c4cbf7675bf68a1ac50c3d964eea0f75d3a6af9295b299e43eebe005a36",
+      "bytes": 2850,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "96172c4cbf7675bf68a1ac50c3d964eea0f75d3a6af9295b299e43eebe005a36",
+      "byte_identical": true
+    },
+    {
+      "file": "release/update_api_env.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/update_api_env.py",
+      "original_sha256": "3e6157c367359457806b1904719392cde7fec1eec03ddc1f0a166b53c375a309",
+      "bytes": 3720,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "3e6157c367359457806b1904719392cde7fec1eec03ddc1f0a166b53c375a309",
+      "byte_identical": true
+    },
+    {
+      "file": "release/verify_api_build.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/verify_api_build.py",
+      "original_sha256": "82469dd1d9bc895be7836dbce1c2b588df204c74263b421c98703b98fe361b1d",
+      "bytes": 1954,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "82469dd1d9bc895be7836dbce1c2b588df204c74263b421c98703b98fe361b1d",
+      "byte_identical": true
+    },
+    {
+      "file": "release/verify_api_build_v2.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/verify_api_build_v2.py",
+      "original_sha256": "feadbb921e04878b57d58b034571415363cb0cbeb467a26de523a58aa1494fbc",
+      "bytes": 1996,
+      "hash_authority": "Corrected read-only build-log CLI proof; no deployment repeated",
+      "copied_sha256": "feadbb921e04878b57d58b034571415363cb0cbeb467a26de523a58aa1494fbc",
+      "byte_identical": true
+    },
+    {
+      "file": "release/verify_promoted_review_qa.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/verify_promoted_review_qa.py",
+      "original_sha256": "22a72bc2f509310f6a5de821661cf761fb061305dc8ab23cfee20379c1424fb8",
+      "bytes": 9655,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "22a72bc2f509310f6a5de821661cf761fb061305dc8ab23cfee20379c1424fb8",
+      "byte_identical": true
+    },
+    {
+      "file": "release/verify_public_image.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/verify_public_image.py",
+      "original_sha256": "ebeea25ec13f1ce4618dd84570316551e9374e784909eec411659d78af4da4a7",
+      "bytes": 3404,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "ebeea25ec13f1ce4618dd84570316551e9374e784909eec411659d78af4da4a7",
+      "byte_identical": true
+    },
+    {
+      "file": "release/verify_published.mjs",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/verify_published.mjs",
+      "original_sha256": "cca80241f51304c369e887985e8464a0e1eac9fc8fa2d26454a01fe3740ccf18",
+      "bytes": 20052,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "cca80241f51304c369e887985e8464a0e1eac9fc8fa2d26454a01fe3740ccf18",
+      "byte_identical": true
+    },
+    {
+      "file": "release/verify_readback.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/verify_readback.py",
+      "original_sha256": "a14c1baf04e23bc74ecf918a188bd4e8e0498b01e484fe988af5f9642c781923",
+      "bytes": 2090,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "a14c1baf04e23bc74ecf918a188bd4e8e0498b01e484fe988af5f9642c781923",
+      "byte_identical": true
+    },
+    {
+      "file": "release/verify_supplement.mjs",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/verify_supplement.mjs",
+      "original_sha256": "29647d0a1b4554abeb3039fcf9b06ad61ee440c6c51f32fa8548358722044ec7",
+      "bytes": 9685,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "29647d0a1b4554abeb3039fcf9b06ad61ee440c6c51f32fa8548358722044ec7",
+      "byte_identical": true
+    },
+    {
+      "file": "require_completed_gate.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/require_completed_gate.py",
+      "original_sha256": "09d09605a83a849f7be640e907ddaf112cfcb41c5c6b50f4a90315041df18fb3",
+      "bytes": 14965,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "09d09605a83a849f7be640e907ddaf112cfcb41c5c6b50f4a90315041df18fb3",
+      "byte_identical": true
+    },
+    {
+      "file": "run_full_gate.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/run_full_gate.py",
+      "original_sha256": "ca8ae3571730429a3afdc1252398ae666da409c63d59ea973b5cfca348934a6f",
+      "bytes": 7640,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "ca8ae3571730429a3afdc1252398ae666da409c63d59ea973b5cfca348934a6f",
+      "byte_identical": true
+    },
+    {
+      "file": "run_northstar_artifacts.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/run_northstar_artifacts.py",
+      "original_sha256": "3f90957a437a28a2e22b0eb6c56caaefc7f1cbc0aea745957525dd4c5852ff9a",
+      "bytes": 8521,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "3f90957a437a28a2e22b0eb6c56caaefc7f1cbc0aea745957525dd4c5852ff9a",
+      "byte_identical": true
+    },
+    {
+      "file": "run_published_acceptance.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/run_published_acceptance.py",
+      "original_sha256": "e6b5db01f0c08b2063996084faa7ed6a93186b5f441e49e53f1909078982a30c",
+      "bytes": 8018,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "e6b5db01f0c08b2063996084faa7ed6a93186b5f441e49e53f1909078982a30c",
+      "byte_identical": true
+    },
+    {
+      "file": "run_sealed_browser_capture.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/run_sealed_browser_capture.py",
+      "original_sha256": "7e2c6e8838cc62fca2b35882a98b68041c9841a62b8d6a3835cae542348e9c18",
+      "bytes": 11699,
+      "hash_authority": "Standalone recording receipt runner/helper hash",
+      "copied_sha256": "7e2c6e8838cc62fca2b35882a98b68041c9841a62b8d6a3835cae542348e9c18",
+      "byte_identical": true
+    },
+    {
+      "file": "seal-build-static.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/seal-build-static.log",
+      "original_sha256": "10a8109833403768ecc1403fe9e8c36c0bda27410cdaddbd61a18e0a2813b919",
+      "bytes": 250,
+      "hash_authority": "seal-candidate.json",
+      "copied_sha256": "10a8109833403768ecc1403fe9e8c36c0bda27410cdaddbd61a18e0a2813b919",
+      "byte_identical": true
+    },
+    {
+      "file": "seal-candidate.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/seal-candidate.json",
+      "original_sha256": "0d6479d9ed4377fd47c0e6768872302007d1ad1d6a2cca35ee9080410ffe86e2",
+      "bytes": 9115,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "0d6479d9ed4377fd47c0e6768872302007d1ad1d6a2cca35ee9080410ffe86e2",
+      "byte_identical": true
+    },
+    {
+      "file": "seal-generate-artifacts.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/seal-generate-artifacts.log",
+      "original_sha256": "47663c264c5cc14b10971f66ba5f9d16d3d33b84fb2d0e2bc2dbf9caf0b6b33e",
+      "bytes": 955,
+      "hash_authority": "seal-candidate.json",
+      "copied_sha256": "47663c264c5cc14b10971f66ba5f9d16d3d33b84fb2d0e2bc2dbf9caf0b6b33e",
+      "byte_identical": true
+    },
+    {
+      "file": "seal-generate-seal.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/seal-generate-seal.log",
+      "original_sha256": "278203c443cd759ad51ee829662b31f14fbb5e44119f4d7da9cc9d066473d850",
+      "bytes": 250,
+      "hash_authority": "seal-candidate.json",
+      "copied_sha256": "278203c443cd759ad51ee829662b31f14fbb5e44119f4d7da9cc9d066473d850",
+      "byte_identical": true
+    },
+    {
+      "file": "seal-photographic-evidence.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/seal-photographic-evidence.log",
+      "original_sha256": "436d8c99cacc285b9b4e4bc6d9ed91796efd803258628325d4fe550c634fac4e",
+      "bytes": 1094,
+      "hash_authority": "seal-candidate.json",
+      "copied_sha256": "436d8c99cacc285b9b4e4bc6d9ed91796efd803258628325d4fe550c634fac4e",
+      "byte_identical": true
+    },
+    {
+      "file": "seal_candidate.py",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/seal_candidate.py",
+      "original_sha256": "516de1a08c2b35c64012c917c489328ad94fe8dd17d5c1af0c35abab4c5e4fbf",
+      "bytes": 7147,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "516de1a08c2b35c64012c917c489328ad94fe8dd17d5c1af0c35abab4c5e4fbf",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-browser-capture.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser-capture.log",
+      "original_sha256": "0fc1570c6674078110a42e6da548956de26bf6cdc2855347517014fabd14f3e3",
+      "bytes": 520,
+      "hash_authority": "Standalone browser command log",
+      "copied_sha256": "0fc1570c6674078110a42e6da548956de26bf6cdc2855347517014fabd14f3e3",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-browser-command.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser-command.json",
+      "original_sha256": "3dffb5b347032f4bafe23882c3999c7f6038c461ac11ca02130b7998a7ffbc0b",
+      "bytes": 5073,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "3dffb5b347032f4bafe23882c3999c7f6038c461ac11ca02130b7998a7ffbc0b",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-browser/later-case-preview.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser/later-case-preview.png",
+      "original_sha256": "7b07f27e09df53c26ce389d8c254af4d02bc258f24fe391afab354b264d4f152",
+      "bytes": 163257,
+      "hash_authority": "Actual standalone sealed-browser-command.json:later-case-preview.png",
+      "copied_sha256": "7b07f27e09df53c26ce389d8c254af4d02bc258f24fe391afab354b264d4f152",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-browser/later-case-reuse.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser/later-case-reuse.png",
+      "original_sha256": "dbfb481d41807f6636b50812fed61820d92c9e9b49dfa858e1c4608683b9693b",
+      "bytes": 137072,
+      "hash_authority": "Actual standalone sealed-browser-command.json:later-case-reuse.png",
+      "copied_sha256": "dbfb481d41807f6636b50812fed61820d92c9e9b49dfa858e1c4608683b9693b",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-browser/mobile-review.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser/mobile-review.png",
+      "original_sha256": "20f3d936a9362e18ccd81dbfe923b002012b1030833c61de8fe6798932f0fc7e",
+      "bytes": 61678,
+      "hash_authority": "Actual standalone sealed-browser-command.json:mobile-review.png",
+      "copied_sha256": "20f3d936a9362e18ccd81dbfe923b002012b1030833c61de8fe6798932f0fc7e",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-browser/receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser/receipt.json",
+      "original_sha256": "ea9a8949ec1ae28aa3c3554eb17a0250bd4fc5f2cccd522c1c3b396a7ff8792e",
+      "bytes": 45241,
+      "hash_authority": "Actual standalone sealed-browser-command.json:receipt.json",
+      "copied_sha256": "ea9a8949ec1ae28aa3c3554eb17a0250bd4fc5f2cccd522c1c3b396a7ff8792e",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-browser/review-walkthrough.webm",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser/review-walkthrough.webm",
+      "original_sha256": "2a69d591edf359f6a35f5220cc56a0830d23b4f24dd3817a001222455043f995",
+      "bytes": 7406964,
+      "hash_authority": "Actual standalone sealed-browser-command.json:review-walkthrough.webm",
+      "copied_sha256": "2a69d591edf359f6a35f5220cc56a0830d23b4f24dd3817a001222455043f995",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-browser/server.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser/server.log",
+      "original_sha256": "586974bbc7ed9b859b74cc91b87a6c0c300d0f82790f84abccfe5fb988d4b6f5",
+      "bytes": 650,
+      "hash_authority": "Actual standalone sealed-browser-command.json:server.log",
+      "copied_sha256": "586974bbc7ed9b859b74cc91b87a6c0c300d0f82790f84abccfe5fb988d4b6f5",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-browser/source-review.png",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-browser/source-review.png",
+      "original_sha256": "f9d42e538959aa0b3468016ad6d1b9db40dbf0af8784061f8c47566c7d1f6876",
+      "bytes": 134207,
+      "hash_authority": "Actual standalone sealed-browser-command.json:source-review.png",
+      "copied_sha256": "f9d42e538959aa0b3468016ad6d1b9db40dbf0af8784061f8c47566c7d1f6876",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-candidate.patch",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/sealed-candidate.patch",
+      "original_sha256": "3b151542109eaca8377979d2045b51cef1bfad7f29f87c4be868a2b4e8a41be1",
+      "bytes": 94717,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "3b151542109eaca8377979d2045b51cef1bfad7f29f87c4be868a2b4e8a41be1",
+      "byte_identical": true
+    },
+    {
+      "file": "sealed-source-manifest.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/casepath/source-manifest.json",
+      "original_sha256": "4bbdb036e69777937f19647f55fca80896ad96ae971a43928220bf93a5ddedef",
+      "bytes": 460237,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "4bbdb036e69777937f19647f55fca80896ad96ae971a43928220bf93a5ddedef",
+      "byte_identical": true
+    },
+    {
+      "file": "source-binding.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/source-binding.json",
+      "original_sha256": "d19d63642a5d78b1467374aed1d849eac521bd71c0a219614e9515d940f5a265",
+      "bytes": 5725,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "d19d63642a5d78b1467374aed1d849eac521bd71c0a219614e9515d940f5a265",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/helper-binding.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/helper-binding.json",
+      "original_sha256": "e172d7ca6e4443fb2cb935ed4b7314fd88d25f200f54a8ed1d9ed31e744144c6",
+      "bytes": 949,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "e172d7ca6e4443fb2cb935ed4b7314fd88d25f200f54a8ed1d9ed31e744144c6",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/snapshot/receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/snapshot/receipt.json",
+      "original_sha256": "d02df301d4a2794ac3bea855764c5a56c22acefcb2d95edb2f74d8f61454ec16",
+      "bytes": 20177,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "d02df301d4a2794ac3bea855764c5a56c22acefcb2d95edb2f74d8f61454ec16",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/fast-forward-completed.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fast-forward-completed.json",
+      "original_sha256": "ae11c4ad43ea05be3907a88e7656c65c28cadffe08b3652e13f86e6e68e383e5",
+      "bytes": 1124,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "ae11c4ad43ea05be3907a88e7656c65c28cadffe08b3652e13f86e6e68e383e5",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/fast-forward-requested.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fast-forward-requested.json",
+      "original_sha256": "411868755b0fad57c8402dea308f7f701466b73a6c24e7f57c06425b6f9204c5",
+      "bytes": 953,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "411868755b0fad57c8402dea308f7f701466b73a6c24e7f57c06425b6f9204c5",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/fast-forward-started.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fast-forward-started.json",
+      "original_sha256": "774bd726ce67c7d755d3f52ee00307fb31b9d040a0cbc1993648c958d5ddf6be",
+      "bytes": 969,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "774bd726ce67c7d755d3f52ee00307fb31b9d040a0cbc1993648c958d5ddf6be",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/fast-forward.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fast-forward.log",
+      "original_sha256": "296168075e550a0f0c6a0144a53b38cd39188aebba5bf18c7aba8a990e93e2a6",
+      "bytes": 25404,
+      "hash_authority": "standard source promotion command receipt",
+      "copied_sha256": "296168075e550a0f0c6a0144a53b38cd39188aebba5bf18c7aba8a990e93e2a6",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/fetch-completed.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fetch-completed.json",
+      "original_sha256": "f1f8da3693df0b3df30becfc9c7c8db2de2de637788a5ab4308a4a61558cdd33",
+      "bytes": 1249,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "f1f8da3693df0b3df30becfc9c7c8db2de2de637788a5ab4308a4a61558cdd33",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/fetch-requested.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fetch-requested.json",
+      "original_sha256": "dcb2130607a27cf5845a818020c0dce650adc3b139a3a0547b27a52d7edd3573",
+      "bytes": 1078,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "dcb2130607a27cf5845a818020c0dce650adc3b139a3a0547b27a52d7edd3573",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/fetch-started.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fetch-started.json",
+      "original_sha256": "31da8b05f27e5c5ae0066a84845a9cf010446d844563be56222f1acc432b65b3",
+      "bytes": 1094,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "31da8b05f27e5c5ae0066a84845a9cf010446d844563be56222f1acc432b65b3",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/fetch.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fetch.log",
+      "original_sha256": "13a5ec1aa70560945a1f4f6a03008346600c8294fa66de38dc8562269f6900d8",
+      "bytes": 175,
+      "hash_authority": "standard source promotion command receipt",
+      "copied_sha256": "13a5ec1aa70560945a1f4f6a03008346600c8294fa66de38dc8562269f6900d8",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/official-prepare-completed.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/official-prepare-completed.json",
+      "original_sha256": "1a77527de95b38d016fcf20c79630fa83906242efd09b3572c781462dbb7b225",
+      "bytes": 945,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "1a77527de95b38d016fcf20c79630fa83906242efd09b3572c781462dbb7b225",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/official-prepare-requested.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/official-prepare-requested.json",
+      "original_sha256": "aae69bd9f7fc32884aac4aec9595231dd934fb46a60409d5a24831af5c60783d",
+      "bytes": 774,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "aae69bd9f7fc32884aac4aec9595231dd934fb46a60409d5a24831af5c60783d",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/official-prepare-started.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/official-prepare-started.json",
+      "original_sha256": "8aa4b7927c9f7c9c00674b4d8adc4fc4809a438b1d73e4bb1384d3ec9f5070f4",
+      "bytes": 790,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "8aa4b7927c9f7c9c00674b4d8adc4fc4809a438b1d73e4bb1384d3ec9f5070f4",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/official-prepare.log",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/official-prepare.log",
+      "original_sha256": "917b899da2476f08e555efc5a29c7d27474510d1eb40f16ea9b5e736f9f1ffb0",
+      "bytes": 313,
+      "hash_authority": "standard source promotion command receipt",
+      "copied_sha256": "917b899da2476f08e555efc5a29c7d27474510d1eb40f16ea9b5e736f9f1ffb0",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/source/receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/receipt.json",
+      "original_sha256": "e4c6eadc9b63650bf0956413c37db5472df0ecb674c63d54eff40ff34c7c0e12",
+      "bytes": 6683,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "e4c6eadc9b63650bf0956413c37db5472df0ecb674c63d54eff40ff34c7c0e12",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-language-v1.js",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-language-v1.js",
+      "original_sha256": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+      "bytes": 37777,
+      "hash_authority": "standard promotion served source asset",
+      "copied_sha256": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-presentation-v1.js",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-presentation-v1.js",
+      "original_sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+      "bytes": 7473,
+      "hash_authority": "standard promotion served source asset",
+      "copied_sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-workspace-v1.css",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-workspace-v1.css",
+      "original_sha256": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+      "bytes": 360402,
+      "hash_authority": "standard promotion served source asset",
+      "copied_sha256": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-workspace-v1.js",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/autonomous-workspace-v1.js",
+      "original_sha256": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+      "bytes": 851119,
+      "hash_authority": "standard promotion served source asset",
+      "copied_sha256": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/verify/assets/review-northstar-v1.css",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/review-northstar-v1.css",
+      "original_sha256": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+      "bytes": 33919,
+      "hash_authority": "standard promotion served source asset",
+      "copied_sha256": "af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/verify/assets/review-northstar-v1.js",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/assets/review-northstar-v1.js",
+      "original_sha256": "5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd",
+      "bytes": 22567,
+      "hash_authority": "standard promotion served source asset",
+      "copied_sha256": "5e0ca03e0e16155d2b996cdce5797836b1ae02fd4eec2f132e8c6c561b6b4cdd",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/verify/readiness-observations.jsonl",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/readiness-observations.jsonl",
+      "original_sha256": "0407508ba19b97bf4ece40b3ddb71c7643ded60b66dba0401a29d2cafa5a2569",
+      "bytes": 13466,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "0407508ba19b97bf4ece40b3ddb71c7643ded60b66dba0401a29d2cafa5a2569",
+      "byte_identical": true
+    },
+    {
+      "file": "standard-promotion/cp-polish-standard-20261024-01/verify/receipt.json",
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/verify/receipt.json",
+      "original_sha256": "8b2a0438c2d4e765d42a49af0ea8c3420f9525386210e3c02ff15c1a017f6d90",
+      "bytes": 10734,
+      "hash_authority": "Exact source bytes rechecked by this evidence generator",
+      "copied_sha256": "8b2a0438c2d4e765d42a49af0ea8c3420f9525386210e3c02ff15c1a017f6d90",
+      "byte_identical": true
+    }
+  ],
+  "derived": [
+    {
+      "file": "release-acceptance.json",
+      "sha256": "35a8509fb140157cd9074656009356443c94fd952e4b7efa2e5173d07c365ed3",
+      "bytes": 4819,
+      "basis": "Only validated actual input records; no additional test, review or deployment is claimed"
+    },
+    {
+      "file": "api-build-installation-excerpt.json",
+      "sha256": "73c603add3cd480e587fcb6b982c1124d0d1437b68ad248dd1bbdaeb21a43dde",
+      "bytes": 912,
+      "basis": "Only validated actual input records; no additional test, review or deployment is claimed"
+    },
+    {
+      "file": "baseline-preservation-summary.json",
+      "sha256": "f4997ba29284bf8c46cf8611c94f635d90e6af35b90beb373d842251144e0005",
+      "bytes": 493,
+      "basis": "Only validated actual input records; no additional test, review or deployment is claimed"
+    },
+    {
+      "file": "README.md",
+      "sha256": "2a76438bd120a52004aa1f3e5723154d074a833d5d076d5f5e0e7022ccf92239",
+      "bytes": 14528,
+      "basis": "Only validated actual input records; no additional test, review or deployment is claimed"
+    },
+    {
+      "file": "demo-operator-guide.md",
+      "sha256": "5f8fc397ac6ae049fa90923f71d34eeddf65ad6d61416aace9efb01b2b307f70",
+      "bytes": 6741,
+      "basis": "Only validated actual input records; no additional test, review or deployment is claimed"
+    }
+  ],
+  "validated_but_not_copied": [
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/readback-after.json",
+      "sha256": "84113f837d7f8fa44f523a3b8f5bf4ff98f61ac62df565dfa4bf74d888110050",
+      "bytes": 1186094,
+      "copied": false,
+      "reason": "Full private collection readback; retain the verified public preservation summary"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/api-build-log.json",
+      "sha256": "7384f32f667a73ac39e211717ea5a0f344b6577e97fc637cf870ee57832e356d",
+      "bytes": 18647,
+      "copied": false,
+      "reason": "Retain exact version receipt and selected installation-line excerpt"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/baseline-binding.json",
+      "sha256": "76e263db1731ef4601b0211517eab08973d6723c4afb8a1d6999ff8e689d1fa9",
+      "bytes": 111384,
+      "copied": false,
+      "reason": "Full nested historical policy, prior-budget and run-grant history; only six selected top-level fields are exported"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/readback-before.json",
+      "sha256": "31fdb68c407a4ca0b30bcf64949cdf1e5d9d39416560d79d4f4e8d8bd0c56e56",
+      "bytes": 1186093,
+      "copied": false,
+      "reason": "Full private baseline collection; summary hashes only"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/deployment.json",
+      "sha256": "5fd9a5ecbf5bb8c0aae192491fefea154a1f18fd605eb5e9e81e9378dae6c578",
+      "bytes": 614,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/asset-autonomous-workspace-v1.js",
+      "sha256": "cc73bfdf46a8e0fb791e5b926c0f4455ab47272f8209baead6d915388f3b364b",
+      "bytes": 851119,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/asset-autonomous-workspace-v1.css",
+      "sha256": "3f6b81337e2a8b4d984586a083691776dc4e78dbfc3d2a1b23eb8462e48cb262",
+      "bytes": 360402,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/asset-autonomous-presentation-v1.js",
+      "sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+      "bytes": 7473,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/asset-autonomous-language-v1.js",
+      "sha256": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+      "bytes": 37777,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/asset-fonts-Mulish.ttf",
+      "sha256": "00f1105796291a2fdda117a0fc7f25d8e68f8010cdbb34a411f60b3bd57717ac",
+      "bytes": 211988,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/clm_543f08f2415b2a33-claim.json",
+      "sha256": "2100eb0a98c3311de853fe9e39075e04bb3546efa4c93a0d9e365e0a9ba7caf2",
+      "bytes": 1004381,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/clm_543f08f2415b2a33-snapshot.json",
+      "sha256": "2100eb0a98c3311de853fe9e39075e04bb3546efa4c93a0d9e365e0a9ba7caf2",
+      "bytes": 1004381,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/clm_543f08f2415b2a33-opening.json",
+      "sha256": "b027ae39c5c9170264755fcb45924e1419100428d7e307896398f78f6e477904",
+      "bytes": 10018,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/clm_543f08f2415b2a33-operations.ndjson",
+      "sha256": "3dc1971237f51d29ab5bd61afde8750ad3a2ff2876004e15415b05b6c15a3947",
+      "bytes": 2980628,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/clm_7dbd7c7d1c4ddf90-claim.json",
+      "sha256": "49ea5783b9d2987de5302265ce7b29ced7b2d469f41d7f2065be446ab28b1cee",
+      "bytes": 1221005,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/clm_7dbd7c7d1c4ddf90-snapshot.json",
+      "sha256": "49ea5783b9d2987de5302265ce7b29ced7b2d469f41d7f2065be446ab28b1cee",
+      "bytes": 1221005,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/clm_7dbd7c7d1c4ddf90-opening.json",
+      "sha256": "a82c4d400515c5da97f7cfd89b35a47bda0586749ecc798da8464a2258094232",
+      "bytes": 9456,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    },
+    {
+      "source_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/eight-state-capture/inputs/clm_7dbd7c7d1c4ddf90-operations.ndjson",
+      "sha256": "5f5c9856882af60a660b2f60c13041f22f49a4b8204436e75118532a7a0647b4",
+      "bytes": 3213389,
+      "copied": false,
+      "reason": "Fresh public response retained in runtime; package includes its bound validation receipt, not response bodies"
+    }
+  ],
+  "excluded_payloads": [
+    "private API seed",
+    "full private collection readbacks",
+    "full historical policy/budget history",
+    "complete corpus",
+    "credentials",
+    "native boot base64 payloads",
+    "raw public trace response bodies"
+  ],
+  "preseal_development_pass_counts": {
+    "earlier_combined": [
+      13,
+      26
+    ],
+    "final_opening": [
+      13,
+      6
+    ]
+  }
+}

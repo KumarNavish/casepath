@@ -1,0 +1,13 @@
+{
+  "sessionId": "cp-polish-20261024-api-build-proof",
+  "pid": 12549,
+  "state": "failed",
+  "exitCode": 1,
+  "output": "Traceback (most recent call last):\n  File \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/verify_api_build.py\", line 15, in <module>\n    data=json.loads(result.stdout)\n  File \"/Users/kumar0002/.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/json/__init__.py\", line 346, in loads\n    return _default_decoder.decode(s)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"/Users/kumar0002/.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/json/decoder.py\", line 345, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kumar0002/.local/share/uv/python/cpython-3.13.9-macos-aarch64-none/lib/python3.13/json/decoder.py\", line 363, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n",
+  "offset": 0,
+  "nextOffset": 986,
+  "totalBytes": 986,
+  "truncated": false,
+  "startedAt": "2026-10-24T16:41:11.542Z",
+  "finishedAt": "2026-10-24T16:41:16.413Z"
+}

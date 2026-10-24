@@ -1,0 +1,110 @@
+{
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "status": "passed",
+  "pending": [],
+  "measurement_sha256": "ae0bfd5430a22d7e239cd7d20541705caccae0c56f41b387d094cd56475bb7d1",
+  "qualified_human_approval": "pending",
+  "reviewer_kind": "assistant",
+  "review_scope": "Root inspected all eight actual state images and all nine side/overlay/diff comparison outputs. Comparison previews were scaled by the image reader; actual 1440x900 state images were also inspected individually. Pixel difference does not establish semantic or legal approval.",
+  "reviewed_states": [
+    {
+      "state": 1,
+      "file": "state-1-ready.png",
+      "sha256": "442197600a84148ab86ccab40060ceb3fb2f7f32efa5cfa2df51bf9b879d8432"
+    },
+    {
+      "state": 2,
+      "file": "state-2-source-opened.png",
+      "sha256": "02a28ae5a136ab6dfb30e8e1150dee22e6246f0d2f7695dc617561b6ec95a4d9"
+    },
+    {
+      "state": 3,
+      "file": "state-3-exact-passage.png",
+      "sha256": "5e983a245b5af51c58b0e0610efe52e953039241f781fceeb39c38f1d3fd5e9c"
+    },
+    {
+      "state": 4,
+      "file": "state-4-source-bound-fact.png",
+      "sha256": "4c5348f662a3b63dba87681d3f307a882061994efe80a9551fa6b2163ba67f72"
+    },
+    {
+      "state": 5,
+      "file": "state-5-accepted-question.png",
+      "sha256": "d5038ecf5d96f282d5cef1f6cc00c44f5a408be0cdb4bba8887c22d6debaac46"
+    },
+    {
+      "state": 6,
+      "file": "state-6-completed-process.png",
+      "sha256": "8c656c97aa0618f49069b82620c1849ed8c222900990ca3416114ddc5f7980fb"
+    },
+    {
+      "state": 7,
+      "file": "state-7-direct-edit.png",
+      "sha256": "f9d42e538959aa0b3468016ad6d1b9db40dbf0af8784061f8c47566c7d1f6876"
+    },
+    {
+      "state": 8,
+      "file": "state-8-later-case-reuse.png",
+      "sha256": "dbfb481d41807f6636b50812fed61820d92c9e9b49dfa858e1c4608683b9693b"
+    }
+  ],
+  "comparisons": [
+    {
+      "name": "01-decision-building.png",
+      "reviewed_outputs": [
+        {
+          "file": "concept-01-side.png",
+          "sha256": "f0aa33de38d6b33e07a40e24d6a2e6615c1192f6cbd18b551e773101a3e5b3f9"
+        },
+        {
+          "file": "concept-01-overlay.png",
+          "sha256": "a532c59b16a30743aad110657616f452bf5fb65ac4d3769cd2ad9d58c3a6daa0"
+        },
+        {
+          "file": "concept-01-diff.png",
+          "sha256": "686c32691bf0cdd9abda22894146216957f4317efc27e9c99aedebb2773f800e"
+        }
+      ],
+      "decision": "accepted_with_documented_deviations",
+      "justification": "The side-by-side, overlay and difference images preserve the intended source rail, role bar, focused document, exact highlighted passage, fact card, dotted source connection, work panel and work-log placement. The live rent-increase case has four source entries and three actual review questions rather than the concept's seven sources and six heating-related questions. Its focused fact card and active Claim reader role reflect the captured operation; text, source content and vertical positions therefore differ. I inspected states 1–5 individually: the purpose, source passage and source-to-fact connection are legible and contained in the desktop viewport. These are case-specific, truthful differences rather than missing evidence controls."
+    },
+    {
+      "name": "02-completed-process.png",
+      "reviewed_outputs": [
+        {
+          "file": "concept-02-side.png",
+          "sha256": "5aa62348a2173c8f24de448e47b6de14281dab81358198544f9501924569b5a7"
+        },
+        {
+          "file": "concept-02-overlay.png",
+          "sha256": "14ef8b5485d5a9dbe3db8c74cc42425b2cbaffa1e81c16f3bb4c8331c101027c"
+        },
+        {
+          "file": "concept-02-diff.png",
+          "sha256": "89b65ab38861d2c601270301bcaa9805b5b520fa945e162a1e741fc47fee00ee"
+        }
+      ],
+      "decision": "accepted_with_documented_deviations",
+      "justification": "The completed live process keeps the concept's question graph, evidence/law/reference inspection, document status and original-source reader. The rent-increase graph contains three real questions, four evidence columns and zero missing files rather than the concept's larger branching heating graph and missing-evidence count. The failed legal requirement is explicitly red while evidence completeness remains separately stated. The selected quotation is readable beside the original source, with zoom/full-source controls. Source text, graph density and panel heights differ because this is the admitted case's actual state. The individual state-6 capture has no obscured main conclusion or horizontal clipping."
+    },
+    {
+      "name": "03-reviewed-memory-payoff.png",
+      "reviewed_outputs": [
+        {
+          "file": "concept-03-side.png",
+          "sha256": "6a783672ae1b9b198c3dee7a11a82ae1acf9c2f6da67db7a5b17ca6bf463c3e3"
+        },
+        {
+          "file": "concept-03-overlay.png",
+          "sha256": "cd0ec08c7138ab8990e7ac53cf5826d1a70fc1cf8b0a81d1116cb32b636e2c3a"
+        },
+        {
+          "file": "concept-03-diff.png",
+          "sha256": "6d952709d001c74c0ff87711855f62bdfd23986ee68039b5e36c25be11e9bedb"
+        }
+      ],
+      "decision": "accepted_with_documented_deviations",
+      "justification": "The live receiving case makes the historical Before/After dependency change and exact saved version immediately visible, followed by the case's own two source passages, reviewed-version provenance and current consequence in three cards. The full 12-step process is available through a disclosure instead of the concept's permanently expanded vertical graph; the affected step is correctly numbered 11 in the rendered process. The new prerequisite remains waiting, the protective deadline action stays unchanged, and the original evidence relationship is retained. An original-document reader and the explicit Test handler/qualified-review boundary replace the concept's illustrative expert-review claim. I inspected states 7 and 8 separately; the source editor's PDF continues in its normal reader below the visible section, while the later-case comparison, source links and next action fit together at 1440×900. These differences improve the actual case's clarity without asserting claim approval."
+    }
+  ]
+}

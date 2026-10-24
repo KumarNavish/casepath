@@ -1,0 +1,100 @@
+{
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "created_at": "2026-10-24T16:52:03.308391+00:00",
+  "status": "measured",
+  "script_sha256": "a418a6d81b0d247915573adfbf7ba6cb74f74545e04a964f29c25700fc617662",
+  "tool_sha256": "23b9218d50d0da293cb8aa208ee9a48512c85b76c971a8f09f334f341e2c0067",
+  "helper_binding_sha256": "31348e82004991ad870e4e6627f5fe66f5899b376d85139c73e71d5e21237000",
+  "capture_receipt_sha256": "0e1ed6ec0766a5786084d675a491c9ecec807e1ec402476b08a697508b6187c0",
+  "scope": "Pixel measurements of unchanged concept images against actual captured states. Numeric differences do not establish semantic acceptance.",
+  "comparisons": [
+    {
+      "concept": "01-decision-building.png",
+      "concept_sha256": "fc521448b5c6da6841088b259a3dc41b444394e8e08cf1e0c58e3a141ccbe4de",
+      "state": 4,
+      "frame": "state-4-source-bound-fact.png",
+      "frame_sha256": "4c5348f662a3b63dba87681d3f307a882061994efe80a9551fa6b2163ba67f72",
+      "mean_difference_pct": 4.73,
+      "command_log_sha256": "ad0e0a47b4b33e5d0ce5f81e1478184134b0ff7b5b2f5d8d01051000528ccea6",
+      "outputs": [
+        {
+          "kind": "side",
+          "file": "concept-01-side.png",
+          "sha256": "f0aa33de38d6b33e07a40e24d6a2e6615c1192f6cbd18b551e773101a3e5b3f9",
+          "bytes": 1512171
+        },
+        {
+          "kind": "overlay",
+          "file": "concept-01-overlay.png",
+          "sha256": "a532c59b16a30743aad110657616f452bf5fb65ac4d3769cd2ad9d58c3a6daa0",
+          "bytes": 889361
+        },
+        {
+          "kind": "diff",
+          "file": "concept-01-diff.png",
+          "sha256": "686c32691bf0cdd9abda22894146216957f4317efc27e9c99aedebb2773f800e",
+          "bytes": 1401921
+        }
+      ]
+    },
+    {
+      "concept": "02-completed-process.png",
+      "concept_sha256": "48aca0434e0fa64e42c57d4e52b45054c7d1f7f08af368f39bbc0079c4a15f4a",
+      "state": 6,
+      "frame": "state-6-completed-process.png",
+      "frame_sha256": "8c656c97aa0618f49069b82620c1849ed8c222900990ca3416114ddc5f7980fb",
+      "mean_difference_pct": 6.05,
+      "command_log_sha256": "4121a9be89bdeba0b2a27611248145ca419635eec7d505859cfab3a59dc7428d",
+      "outputs": [
+        {
+          "kind": "side",
+          "file": "concept-02-side.png",
+          "sha256": "5aa62348a2173c8f24de448e47b6de14281dab81358198544f9501924569b5a7",
+          "bytes": 1690443
+        },
+        {
+          "kind": "overlay",
+          "file": "concept-02-overlay.png",
+          "sha256": "14ef8b5485d5a9dbe3db8c74cc42425b2cbaffa1e81c16f3bb4c8331c101027c",
+          "bytes": 1056275
+        },
+        {
+          "kind": "diff",
+          "file": "concept-02-diff.png",
+          "sha256": "89b65ab38861d2c601270301bcaa9805b5b520fa945e162a1e741fc47fee00ee",
+          "bytes": 1595896
+        }
+      ]
+    },
+    {
+      "concept": "03-reviewed-memory-payoff.png",
+      "concept_sha256": "38d8f7a5907456dfc86b9b10fd9d1110d98916ae448e9f6bc393d8f832bdf2c0",
+      "state": 8,
+      "frame": "state-8-later-case-reuse.png",
+      "frame_sha256": "dbfb481d41807f6636b50812fed61820d92c9e9b49dfa858e1c4608683b9693b",
+      "mean_difference_pct": 4.67,
+      "command_log_sha256": "373114c146991044daec394fb08257f12820e8a787696899cd8ebfabc18112de",
+      "outputs": [
+        {
+          "kind": "side",
+          "file": "concept-03-side.png",
+          "sha256": "6a783672ae1b9b198c3dee7a11a82ae1acf9c2f6da67db7a5b17ca6bf463c3e3",
+          "bytes": 1624711
+        },
+        {
+          "kind": "overlay",
+          "file": "concept-03-overlay.png",
+          "sha256": "cd0ec08c7138ab8990e7ac53cf5826d1a70fc1cf8b0a81d1116cb32b636e2c3a",
+          "bytes": 1033491
+        },
+        {
+          "kind": "diff",
+          "file": "concept-03-diff.png",
+          "sha256": "6d952709d001c74c0ff87711855f62bdfd23986ee68039b5e36c25be11e9bedb",
+          "bytes": 1540428
+        }
+      ]
+    }
+  ],
+  "visual_review": "pending"
+}

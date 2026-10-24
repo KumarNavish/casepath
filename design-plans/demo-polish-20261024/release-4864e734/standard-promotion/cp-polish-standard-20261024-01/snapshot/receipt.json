@@ -1,0 +1,407 @@
+{
+  "contract": "casepath.standard-promotion/1",
+  "mode": "snapshot",
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "old_source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "started_at": "2026-10-24T16:57:59.414804+00:00",
+  "helper_binding_sha256": "e172d7ca6e4443fb2cb935ed4b7314fd88d25f200f54a8ed1d9ed31e744144c6",
+  "source_binding_sha256": "d19d63642a5d78b1467374aed1d849eac521bd71c0a219614e9515d940f5a265",
+  "helper_sha256": "c8f88d28c40c6d245034f03fb0104392a9ba0f33dd7d39e6cee225172e906e4b",
+  "server_stop_or_launch_by_helper": false,
+  "seed_or_replay_by_helper": false,
+  "git": {
+    "head": "b20685d1670b33b941b1bfcb902638a879c01b93",
+    "tree": "e89dca7ea2db16369d84f947235a1caf6ce4337f",
+    "branch": "codex/casepath-northstar-review-20261024",
+    "clean": true
+  },
+  "health": {
+    "observed_at": "2026-10-24T16:57:59.783011+00:00",
+    "response_sha256": "02da6082ecda4cfa4402fcc425a98b040d9670307a74ddf02969a247dba8b404",
+    "bytes": 2111,
+    "identity": {
+      "status": "ok",
+      "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+      "source_commit_aligned": true,
+      "source_commit_conflict": false,
+      "model_mode": "deterministic_reference",
+      "runtime_profile": "deterministic_reference",
+      "model": null
+    },
+    "credential_configured": false,
+    "external_tracing": false
+  },
+  "readiness": {
+    "response_sha256": "a8e10b94e49c078d6a68029e9d6cda79678a9965af7560d1f886f703e691a282",
+    "bytes": 1518,
+    "status": "ready",
+    "credential_configured": false
+  },
+  "model_ledger": {
+    "response_sha256": "566097eca9aaa6384100745f64f969b14f40ea24350e74028656c0f47a666467",
+    "bytes": 309,
+    "records": 0,
+    "network_calls": 0
+  },
+  "data": {
+    "contract": "casepath.standard-logical-data/1",
+    "data_root": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-data-v1",
+    "data_root_identity": {
+      "device": 16777229,
+      "inode": 217121936
+    },
+    "databases": {
+      "casepath.db": {
+        "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-data-v1/casepath.db",
+        "file_identity": {
+          "device": 16777229,
+          "inode": 217121938
+        },
+        "table_count": 15,
+        "logical_sha256": "d0daf976caa953dc347d820344478dc09218e9803437a387121766452733168c",
+        "schema_sha256": "c18123354b200614795677c27e4ae9b699cce2f069b5f0e68412a6a1024c7239",
+        "tables": {
+          "candidates": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "63a0148d6f81e9cfbddc17fff2933e6fc3d642c8e390ec58084a47ac3acbbeeb",
+            "columns_sha256": "b87a8d8081965c15bc9352c58e1f976bd590943efa0c4e2cf6b3485be6731304",
+            "columns": 5,
+            "implicit_rowid_included": true
+          },
+          "claim_loop_acquisitions": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "8be6f6870e1d01191b781f75601d967701d935a8121c66f5c46f6bda1b100a3b",
+            "columns_sha256": "c8abe9a9c509fbec9f5f8aa91ebf2e042a82e385dc5cdabd6b29d498cb0f2fb5",
+            "columns": 9,
+            "implicit_rowid_included": true
+          },
+          "claim_loop_checkpoints": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "b7078c5e8d55b4d0123474cf9d1a8a823aeeacee78a68600c9ade47bbda286cb",
+            "columns_sha256": "c3b5455cf46c3383515d567c187a25f1e8b23f203ac5720b3dfe79d6986c471f",
+            "columns": 8,
+            "implicit_rowid_included": true
+          },
+          "claim_loop_client_requests": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "dbb00602d86d2103c8c1c1c79bc0b7fe70c48f3dca7edebdb41f8c3c002b7640",
+            "columns_sha256": "5b6e41b73fafa65802f51b0ab2eebf29f23398aa8af0bf777a45281729f8d40e",
+            "columns": 22,
+            "implicit_rowid_included": true
+          },
+          "claim_loop_correction_artifacts": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "064976353b311576775491e42891d7553dbe58abc7ffd42bdec3fed8bce3464f",
+            "columns_sha256": "52b25a7e62673f5636a4746e3f6d314a7b8a3507ee0629c6954aa3328c776f1c",
+            "columns": 6,
+            "implicit_rowid_included": true
+          },
+          "claim_loop_corrections": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "176d89a41954e05c7110f8a31e885708fd9c448c96e70df8ae296b7a92365804",
+            "columns_sha256": "3d3e957d39b6b0cc21962a2c52759b00885317780e0fc1d53428604a3a360955",
+            "columns": 6,
+            "implicit_rowid_included": true
+          },
+          "claim_loop_events": {
+            "rows": 150,
+            "row_multiset_sha256": "eea9aae92c7a412ecc4da2326280222d89ab43603642741dfe56ece50993ba99",
+            "schema_sha256": "d2f0dc17dce9e8ab1f7a414217e15ea668d9196d717acd8e9089c3191e3cc9ed",
+            "columns_sha256": "eda8cec57b392cc373848efc4796865739f714fba68657d25829b8c8dd9e08f7",
+            "columns": 8,
+            "implicit_rowid_included": true
+          },
+          "claim_loop_tool_artifacts": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "d0280da8a2e210f8e8d7d6c1ceff851eceea3844c6525a69f040b10ce3214371",
+            "columns_sha256": "2983c6913efc5439a5310a90a3d398ff6a65f00695ddd8cca8327a3bc90c34c9",
+            "columns": 7,
+            "implicit_rowid_included": true
+          },
+          "events": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "79b7b1a2be12cd656dede0b8369432ca1245db8bc4d57293edb37353fe46cfb7",
+            "columns_sha256": "c4aff21b9727ae7185bfe43dad316a5f1d2e17adcee63447f4a883a1fb2abecd",
+            "columns": 6,
+            "implicit_rowid_included": true
+          },
+          "memories": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "4667093bbd5f5bc313fdf13abc09798903db4cd7e7466ee77218c6d73a88d4f0",
+            "columns_sha256": "2db8e58cb3f7b74a2fdfa64536105a96bfe7942ec23f82d93f0a592bb80640e0",
+            "columns": 6,
+            "implicit_rowid_included": true
+          },
+          "model_calls": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "8e027a19771b360e3998b5537d8d5f871cd4ecfe0160d1125c9aa5531d7647ca",
+            "columns_sha256": "c3a8d7ea764b6a9de842f5d30aa8dfe45028f45e35b35d9aa7afef26d9e12a7d",
+            "columns": 13,
+            "implicit_rowid_included": true
+          },
+          "reviews": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "0dad4efb2e4cda8dd56769bcb55cc3bd763ac8f609f54d988ab767785b8ad367",
+            "columns_sha256": "66edead5d387e0ff318a75eba647f24defb3770f35fb1998d9cc82e841cda144",
+            "columns": 6,
+            "implicit_rowid_included": true
+          },
+          "run_stream_events": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "0ff2dfc99b3e01a59c1d57656fb812427dcba8e491d2adee486d25b65810dee2",
+            "columns_sha256": "33c5548431ce1c7330329fc8ceb46e6a25819ed559ca41f2ae6e1e49eaa5025e",
+            "columns": 8,
+            "implicit_rowid_included": true
+          },
+          "runs": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "7a1650e5569e8a605d5b48b2aa9b5ebcb3ec31b45fb9f09834202c99af5ab744",
+            "columns_sha256": "da62fe16706250ce1608b497cc3f825763b9bcaf12276d05aeae7a023952b49c",
+            "columns": 7,
+            "implicit_rowid_included": true
+          },
+          "workspace_reviewed_memory_index": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "0a4e43b0743b5947ed4d17031a1d04182758d8203357e9e89ac88783e91513ac",
+            "columns_sha256": "e26b46bae6e69f11be8ebe42ee368b1b45e7df806689d4b345e3ba7b6de7d286",
+            "columns": 8,
+            "implicit_rowid_included": true
+          }
+        },
+        "user_version": 0,
+        "application_id": 0
+      },
+      "agent-work-v1.sqlite3": {
+        "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-data-v1/agent-work-v1.sqlite3",
+        "file_identity": {
+          "device": 16777229,
+          "inode": 217122005
+        },
+        "table_count": 17,
+        "logical_sha256": "10aaab3dc33a530534fd8bb575956f69b66afef1c87c93078fbeed730b008986",
+        "schema_sha256": "0bc002050c7dc7634e11ea47474851aeb6fae613cb498a160dc04ae4b28c6842",
+        "tables": {
+          "work_autonomous_calls": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "053adb5af934851ddabb317b6e29178df71eab55f226eb73650a686bb97eaf1c",
+            "columns_sha256": "f9a19f52ee555af0c426d701aeea7544c06d2a5be698fd99fe019d1e0604b7c7",
+            "columns": 4,
+            "implicit_rowid_included": true
+          },
+          "work_autonomous_capacity_grant": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "a2e4c1e941473650d533afec96afa1c71873ba32cfc7644039e5a42c9665ee00",
+            "columns_sha256": "79038e2d002fa4a5421f06e5bfd56ad006552a610e2be7b6a23d7fdb071c3ff8",
+            "columns": 3,
+            "implicit_rowid_included": true
+          },
+          "work_autonomous_outcomes": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "e0d0d85bb8a2a2413afb50d97ee5feb239a2d0c8817c46e6413b362fc49501bd",
+            "columns_sha256": "f9a19f52ee555af0c426d701aeea7544c06d2a5be698fd99fe019d1e0604b7c7",
+            "columns": 4,
+            "implicit_rowid_included": true
+          },
+          "work_autonomous_policy": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "c9bdcf0e51f240f929a9579ba9d8010a461ba7dea5c4864d3645a29a610f30e1",
+            "columns_sha256": "79038e2d002fa4a5421f06e5bfd56ad006552a610e2be7b6a23d7fdb071c3ff8",
+            "columns": 3,
+            "implicit_rowid_included": true
+          },
+          "work_autonomous_terminals": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "57cb8618c5f19d22867d14ee589a3b59e71884afaca4c459d3e4aa0df7525b29",
+            "columns_sha256": "8df7e4c2795baef1ea674b60353e3a61deb1bb1ccd751a1cb55941aa7d0ad8e4",
+            "columns": 3,
+            "implicit_rowid_included": true
+          },
+          "work_autonomous_workflows": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "df830f98d5670ecf72c7283018c73fc0ae3a1e888b93b183bfcdf50d9b2dea8b",
+            "columns_sha256": "8df7e4c2795baef1ea674b60353e3a61deb1bb1ccd751a1cb55941aa7d0ad8e4",
+            "columns": 3,
+            "implicit_rowid_included": true
+          },
+          "work_calls": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "e37591e53aa733ec13c1ed227a9e6edbb2aa6f8590b5fb3cd28711180146cd53",
+            "columns_sha256": "2135b01950c7f29d39fb880d9bb53782e16905b6acac0b4d2654096e35bcd1b0",
+            "columns": 8,
+            "implicit_rowid_included": true
+          },
+          "work_cancellation_requests": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "bd4037a9771265c4da4c1b367fc8acbdf4ee9ba3640e7502097807cd7ab129fd",
+            "columns_sha256": "050fc7dedd6daa15d3bca463ce2f9cd0811e827eba3268b7e23aa9c8d7f88d3b",
+            "columns": 1,
+            "implicit_rowid_included": true
+          },
+          "work_desk_requests": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "29b458834940c865f1fc2805d108f20a938c3ff1057db1f3c0f84c8832eef29d",
+            "columns_sha256": "e14965b6d1474cd4ea92d78cbaa438ad2fd31dde160a30524a23003062fdc6c2",
+            "columns": 3,
+            "implicit_rowid_included": true
+          },
+          "work_events": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "94f8b0087db56bb0a356e31a04d2a7bc0c41d1f4c8fae72bc62e9dd3b13becc9",
+            "columns_sha256": "2c8e4ca133d10e1d939be6e181722ed94385fbaa175548338b1aff4c05c60694",
+            "columns": 4,
+            "implicit_rowid_included": true
+          },
+          "work_external_budget": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "70548804670e98b04686e6b9a9466a5715c20277a0a23d617229f041b87aab79",
+            "columns_sha256": "533e0e06e8caea138aa1e59949d8329a44feca3162706c6fe4f79df6750993da",
+            "columns": 3,
+            "implicit_rowid_included": true
+          },
+          "work_external_permits": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "e2f9efc43535059a3435917ba9a240ac0b328be8c5284b81bd3388dc9cf1b9eb",
+            "columns_sha256": "050fc7dedd6daa15d3bca463ce2f9cd0811e827eba3268b7e23aa9c8d7f88d3b",
+            "columns": 1,
+            "implicit_rowid_included": true
+          },
+          "work_external_run_grant": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "3dc211a34aeccddb0af6b93ce01868f7413e64fcbe741d4923e9aaa3e4b6bf04",
+            "columns_sha256": "628edd4c41b5ef0ca7188615e40e8ef1447c56535b1e64bac324e71dc06b8c18",
+            "columns": 3,
+            "implicit_rowid_included": true
+          },
+          "work_objects": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "d7726e5233718f4085391ade30d212db37013a4789040aaa4cf91e6ae59f0b78",
+            "columns_sha256": "215d94f43be41c21284a15029bb1dc4658a25c13aa7f7acb6a9ace39c2e16a2d",
+            "columns": 6,
+            "implicit_rowid_included": true
+          },
+          "work_original_nine_grant": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "878f2d83bf5fa2b9f07b1a6a69408a1b9f86d11e38762b696b9cf03c931a7601",
+            "columns_sha256": "79038e2d002fa4a5421f06e5bfd56ad006552a610e2be7b6a23d7fdb071c3ff8",
+            "columns": 3,
+            "implicit_rowid_included": true
+          },
+          "work_pause_requests": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "8c273c518c4bcdd90db1f54b01517c094faa15e97bd98be2a9e6c497c6c1b4aa",
+            "columns_sha256": "050fc7dedd6daa15d3bca463ce2f9cd0811e827eba3268b7e23aa9c8d7f88d3b",
+            "columns": 1,
+            "implicit_rowid_included": true
+          },
+          "work_runs": {
+            "rows": 0,
+            "row_multiset_sha256": "84cb7b8c265ac32161c826db596fb7935274224153f2fe228c49098f7a26c39e",
+            "schema_sha256": "ef10d2bcd686a62d9d5a72cb176268d2757986662daf0f3010b8b96b70008f30",
+            "columns_sha256": "4bafd7b062847777bd34574722ec2e7a4bf488e298eb00c562eabe0cc24f9a68",
+            "columns": 9,
+            "implicit_rowid_included": true
+          }
+        },
+        "user_version": 0,
+        "application_id": 0
+      }
+    },
+    "artifact_registry": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/casepath-data-v1/artifact-registry",
+      "file_count": 0,
+      "bytes": 0,
+      "aggregate_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "root_identity": {
+        "device": 16777229,
+        "inode": 217121937
+      }
+    },
+    "provenance": {
+      "sha256": "4c1d81a5c0065ce1329faeb78ed048f06f953785ac7d037a5a163f4dfb0321eb",
+      "bytes": 1622,
+      "file_identity": {
+        "device": 16777229,
+        "inode": 217121956
+      }
+    },
+    "scope": "All SQLite tables and schema, typed row multisets with accessible implicit rowids; registry relative paths and exact file bytes; exact provenance bytes. No table rows are serialized. SQLite WAL/checkpoint byte layout is deliberately not treated as logical content."
+  },
+  "native_boot": {
+    "current_sha256": "7bc00a72856901a8778029c4c6af7b17d9206b45352716c674d955037cb19ffb",
+    "current_bytes": 2838959,
+    "current_immutable_file": "boot-20261024T134701390125Z-45c0f194-1b6b-4bee-9a5b-570c8f59eff0.json",
+    "inventory": {
+      "boot-20261024T104727975296Z-78808a4a-737d-4d77-b362-8b37db47a1a7.json": {
+        "sha256": "fb9a84c21c19febb910e320d815fa4c75183b5eff9d608bff9fa75eaea27c2b7",
+        "bytes": 2836220
+      },
+      "boot-20261024T134701390125Z-45c0f194-1b6b-4bee-9a5b-570c8f59eff0.json": {
+        "sha256": "7bc00a72856901a8778029c4c6af7b17d9206b45352716c674d955037cb19ffb",
+        "bytes": 2838959
+      }
+    },
+    "inventory_sha256": "77ad24167e2151f83cae1ddd04c0022d0fa0c9961698197e7384ada479a064b3",
+    "history_count": 2,
+    "identity": {
+      "boot_id": "boot-20261024T134701390125Z-45c0f194-1b6b-4bee-9a5b-570c8f59eff0",
+      "ready_at_utc": "2026-10-24T13:47:01.514288+00:00",
+      "semantic_receipt_sha256": "543d1299101bcae323ee13ffb70c765e86e62a526f6f3aa2d4ea4756ff4044ca",
+      "prior_boot_receipt_file_sha256": "fb9a84c21c19febb910e320d815fa4c75183b5eff9d608bff9fa75eaea27c2b7",
+      "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+      "source_manifest_sha256": "f1c20fd3de067a88a8b2e60e3d72383aa9eba6e58dd67e151036fd2cba2b5393",
+      "launcher_sha256": "08a6f75b8af06ed199dec4b1aa6ad4c52fafcb84d5a3972ff8fc832af5013b5b",
+      "listener_pid": 43977,
+      "runtime_closure_sha256": "08d225cbd6722d5cb6f2690b78d93e9421f65c11a8cd223ccc798167a4a8db52"
+    }
+  },
+  "listener": {
+    "listener_pid": 43977,
+    "ancestor_pids": [
+      43977,
+      43605,
+      43565,
+      43546,
+      43532,
+      43530,
+      1869,
+      1692
+    ],
+    "observed_at": "2026-10-24T16:57:59.954622+00:00",
+    "port": 4173
+  },
+  "known_commander_session": "cp-ns-20261024-standard-workspace-repaired-4173",
+  "get_only": true,
+  "repeated_full_fingerprint_equal": true,
+  "status": "passed",
+  "finished_at": "2026-10-24T16:58:00.315899+00:00"
+}

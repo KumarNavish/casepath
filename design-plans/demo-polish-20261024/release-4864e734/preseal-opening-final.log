@@ -1,0 +1,135 @@
+TAP version 13
+# Subtest: reference demonstration has the exact new nine and legacy history remains separate
+ok 1 - reference demonstration has the exact new nine and legacy history remains separate
+  ---
+  duration_ms: 3.131375
+  type: 'test'
+  ...
+# Subtest: public presentation explains its purpose immediately and exposes an opening failure without a busy case
+ok 2 - public presentation explains its purpose immediately and exposes an opening failure without a busy case
+  ---
+  duration_ms: 5.421167
+  type: 'test'
+  ...
+# Subtest: ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session
+ok 3 - ready recorded packet wins the bounded opening choice and late live replies cannot replace the whole Recorded session
+  ---
+  duration_ms: 1857.797375
+  type: 'test'
+  ...
+# Subtest: recorded opening decision preserves trusted pending Pause and route cancellation without repainting late work
+ok 4 - recorded opening decision preserves trusted pending Pause and route cancellation without repainting late work
+  ---
+  duration_ms: 326.033959
+  type: 'test'
+  ...
+# Subtest: cold operation selection starts the pinned head hint and live transport before its opening read finishes
+ok 5 - cold operation selection starts the pinned head hint and live transport before its opening read finishes
+  ---
+  duration_ms: 7.766708
+  type: 'test'
+  ...
+# Subtest: cold operation selection reuses one complete atomic head while showing only a release outline before any response
+ok 6 - cold operation selection reuses one complete atomic head while showing only a release outline before any response
+  ---
+  duration_ms: 8.273
+  type: 'test'
+  ...
+# Subtest: cold operation selection falls back once for a partial atomic head without admitting its state
+ok 7 - cold operation selection falls back once for a partial atomic head without admitting its state
+  ---
+  duration_ms: 4.53075
+  type: 'test'
+  ...
+# Subtest: cold operation selection never starts a fallback head read from an invalid atomic response after navigation
+ok 8 - cold operation selection never starts a fallback head read from an invalid atomic response after navigation
+  ---
+  duration_ms: 4.011
+  type: 'test'
+  ...
+# Subtest: cold operation selection refetches a stale catalog revision without consuming its hinted state
+ok 9 - cold operation selection refetches a stale catalog revision without consuming its hinted state
+  ---
+  duration_ms: 3.444
+  type: 'test'
+  ...
+# Subtest: cold operation selection aborts its early reader and ignores late opening and outline responses after navigation
+ok 10 - cold operation selection aborts its early reader and ignores late opening and outline responses after navigation
+  ---
+  duration_ms: 2.471959
+  type: 'test'
+  ...
+# Subtest: cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback
+ok 11 - cold operation selection retains explicit recorded delivery and never starts live reads for legacy playback
+  ---
+  duration_ms: 30.405125
+  type: 'test'
+  ...
+# Subtest: a yielded operation batch cannot continue after abort stale route or inspection-gate cancellation
+ok 12 - a yielded operation batch cannot continue after abort stale route or inspection-gate cancellation
+  ---
+  duration_ms: 0.495792
+  type: 'test'
+  ...
+# Subtest: leaving a direct recorded opening cancels packet verification without late repaint
+ok 13 - leaving a direct recorded opening cancels packet verification without late repaint
+  ---
+  duration_ms: 8.255167
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2347.921083
+TAP version 13
+# Subtest: the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+ok 1 - the admitted six-act product uses one deterministic clock, preserves sources and handles pause
+  ---
+  duration_ms: 15860.180208
+  type: 'test'
+  ...
+# Subtest: a slow cold read keeps the north-star frame on landing and on opening a recorded case
+ok 2 - a slow cold read keeps the north-star frame on landing and on opening a recorded case
+  ---
+  duration_ms: 9290.44325
+  type: 'test'
+  ...
+# Subtest: public preparation overlaps independent reads and keeps admission honest: ready
+ok 3 - public preparation overlaps independent reads and keeps admission honest: ready
+  ---
+  duration_ms: 2095.365875
+  type: 'test'
+  ...
+# Subtest: public preparation overlaps independent reads and keeps admission honest: cancelled
+ok 4 - public preparation overlaps independent reads and keeps admission honest: cancelled
+  ---
+  duration_ms: 1748.186709
+  type: 'test'
+  ...
+# Subtest: public preparation overlaps independent reads and keeps admission honest: invalid
+ok 5 - public preparation overlaps independent reads and keeps admission honest: invalid
+  ---
+  duration_ms: 1869.246834
+  type: 'test'
+  ...
+# Subtest: public preparation overlaps independent reads and keeps admission honest: visibility
+ok 6 - public preparation overlaps independent reads and keeps admission honest: visibility
+  ---
+  duration_ms: 2247.258125
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 33693.818458
+{"completed":true,"receipt":"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/opening-visual-2/receipt.json","frames":["preparing-desktop.png","preparing-mobile.png","admitted-intro-desktop.png","invalid-state-desktop.png","invalid-state-mobile.png"]}

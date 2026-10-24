@@ -1,0 +1,418 @@
+{
+  "status": "passed",
+  "observed_at": "2026-10-24T16:56:08.654019+00:00",
+  "target_source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "instance_id": "c249a178e95272f914805278",
+  "data_root": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/data",
+  "get_only": true,
+  "original_qa_files_unchanged": true,
+  "original_application_retained": true,
+  "qualified_human_approval_asserted": false,
+  "release_proof": {
+    "source_binding_sha256": "d19d63642a5d78b1467374aed1d849eac521bd71c0a219614e9515d940f5a265",
+    "gate": {
+      "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+      "terminal_gate_exit": 0,
+      "proof_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+      "actual_completion_sha256": "f8e8297680f91a9991279c10796184b8618d5ed0ed205536913fbc73c6a591b9",
+      "commander_terminal_sha256": "9033a041afcc88b3758cad5f7d1a0e1fe6b1edf4fde1ef2add940aea1028936a"
+    },
+    "published_acceptance": {
+      "sequence_sha256": "bfcda21a73416959c0bc59522774bf6c0115a6e97ec053c3bb0159823e81dc65",
+      "helper_binding_sha256": "9ef0f35f14e4e56d435b2103668695740aba06ef7356bad9c26a83b6cd63c115"
+    },
+    "capsule_receipt_sha256": "08d8fe81159b3c37e0e0d24d425343f500bbc14f96e90295e9cdfbe67fc6850a"
+  },
+  "original_proof": {
+    "initial_owner_sha256": "af1c6c1fd726fede69523288d72c98b13435a6ebc9181660e7b9cb44efc47c32",
+    "initial_copy_sha256": "f6c7781d8bf9962f58862876bd7a02945a94c18e79423bb93b3d5ad587491175",
+    "original_qa_receipt_sha256": "83517c45d484e4623ca1744fdf209595196f0aca3e4f8d6c761778e787111f36",
+    "original_qa_inventory_sha256": "a420a421b927e2eeede4db9c0607d168a3efdf49e6fcc79ad4ace62b47a86075",
+    "original_qa_file_count": 4,
+    "original_capsule_manifest_sha256": "f1c20fd3de067a88a8b2e60e3d72383aa9eba6e58dd67e151036fd2cba2b5393",
+    "original_capsule_receipt_sha256": "6d347dcde8946759f8efcaee1dc7783f20659ee27dd2ad11926eb24324153e07"
+  },
+  "verifier_sha256": "22a72bc2f509310f6a5de821661cf761fb061305dc8ab23cfee20379c1424fb8",
+  "launcher_sha256": "4ee4a454c6d2bff91b12fc5fd878865069cada4ad76c119dcd1ff5de409365c1",
+  "current_server": {
+    "contract": "casepath.owned-qa-restart/1",
+    "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+    "source_manifest_sha256": "f1c20fd3de067a88a8b2e60e3d72383aa9eba6e58dd67e151036fd2cba2b5393",
+    "launcher_sha256": "9adbd960cdc67e901178aa0fc409c75434080546090f1c1f2152140929a15889",
+    "initial_owner_sha256": "af1c6c1fd726fede69523288d72c98b13435a6ebc9181660e7b9cb44efc47c32",
+    "initial_copy_sha256": "f6c7781d8bf9962f58862876bd7a02945a94c18e79423bb93b3d5ad587491175",
+    "qa_receipt_sha256": "83517c45d484e4623ca1744fdf209595196f0aca3e4f8d6c761778e787111f36",
+    "pid": 40476,
+    "instance_id": "c249a178e95272f914805278",
+    "host": "127.0.0.1",
+    "port": 4194,
+    "commander_session": "cp-ns-20261024-engineering-demo-resumed-4194",
+    "restart_id": "20261024T133751-40476",
+    "boot_id": "0c9e89e863ce5f24fb840cd4",
+    "status": "initialization_verified",
+    "started_at": "2026-10-24T13:37:51.697613+00:00",
+    "data_root": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024/.runtime/commander-northstar/engineering-demo/data",
+    "copied_or_reset_data": false,
+    "seeded_or_replayed_work": false,
+    "review_actions_at_startup": 0,
+    "original_qa_data_preserved": true,
+    "journal_before": {
+      "rows": 164,
+      "sha256": "d62426a9f751ea6a3b3dcc0e7294b9823d89740199633cc3eaa418dcb2884076"
+    },
+    "journal_after": {
+      "rows": 164,
+      "sha256": "d62426a9f751ea6a3b3dcc0e7294b9823d89740199633cc3eaa418dcb2884076"
+    },
+    "work_before": {
+      "work_events": {
+        "rows": 11,
+        "sha256": "0cfd6a8ebb87b29778519605dc5a18763b52ac514045f6419d9ba2b858311ebe"
+      },
+      "work_runs": {
+        "rows": 5,
+        "sha256": "0a9c521135f80891ed16feb31d48f01bb1ea8d6338d79305e5a4918bd6fb17cc"
+      }
+    },
+    "work_after": {
+      "work_events": {
+        "rows": 11,
+        "sha256": "0cfd6a8ebb87b29778519605dc5a18763b52ac514045f6419d9ba2b858311ebe"
+      },
+      "work_runs": {
+        "rows": 5,
+        "sha256": "0a9c521135f80891ed16feb31d48f01bb1ea8d6338d79305e5a4918bd6fb17cc"
+      }
+    },
+    "source_workspace_state_sha256": "c417d0937094add547e0fd6e9d6c05812010f51fbfd511ea0d75983f040b0eb3",
+    "target_workspace_state_sha256": "b5e35ec531912454cd7c7b399b6bb84023db3588bcfa12e8a534ff3f59b0ecca",
+    "source_view_sha256": "439f40f5214887dc3c87eae0c04e486c00c02080b157360246d632a250d8e0c8",
+    "target_view_sha256": "59c2c3c2e011ab38c3ef3749831eedc24be0c0e53dd3c40757f1932d6b053ad6",
+    "source_workspace_revision": 12,
+    "target_workspace_revision": 4,
+    "current_target_pins": [
+      {
+        "fragment_id": "fragment.29a6fc5115919bfd6a5899cc",
+        "version": 1,
+        "fragment_sha256": "6ac29174c811526be16df2aaeae9d851663453ddcb263502da97d6a95c356047",
+        "source_claim_id": "clm_f69b1747447bc221"
+      }
+    ],
+    "qualified_human_approval_asserted": false,
+    "label": "Isolated engineering demo \u2014 no qualified approval is asserted by this launcher"
+  },
+  "current_server_sha256": "163747a509650178d1951f4c5ec2c60c022abf6c6a96ffbc4c11b40cbb847c47",
+  "health": {
+    "status": "ok",
+    "source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+    "instance_id": "c249a178e95272f914805278",
+    "label": "Isolated engineering demo \u2014 no qualified approval is asserted by this launcher",
+    "restart_id": "20261024T133751-40476",
+    "boot_id": "0c9e89e863ce5f24fb840cd4",
+    "pid": 40476,
+    "startup_kind": "existing_owned_qa",
+    "model_mode": "deterministic_reference",
+    "external_facts_enabled": false,
+    "review_actions_at_startup": 0,
+    "cases": [
+      "clm_f69b1747447bc221",
+      "clm_0e538990cc6ba7ef"
+    ],
+    "isolated_writable_qa_store": true
+  },
+  "views": {
+    "clm_f69b1747447bc221": {
+      "workspace_revision": 12,
+      "workspace_state_sha256": "c417d0937094add547e0fd6e9d6c05812010f51fbfd511ea0d75983f040b0eb3",
+      "view_sha256": "439f40f5214887dc3c87eae0c04e486c00c02080b157360246d632a250d8e0c8",
+      "history_sha256": "454a02a3417618164affe41f0aa4419fe4fd3e80a20b8200b5d1d9d34d97cc6c",
+      "process_view_sha256": "91c2d4c000fc7049836ecd80765e4433b65cf20352dbe8c3c555a9eda9afe95f",
+      "fragment_instances_present": false,
+      "fragment_instances_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "claim_decision_authorized": false
+    },
+    "clm_0e538990cc6ba7ef": {
+      "workspace_revision": 4,
+      "workspace_state_sha256": "b5e35ec531912454cd7c7b399b6bb84023db3588bcfa12e8a534ff3f59b0ecca",
+      "view_sha256": "59c2c3c2e011ab38c3ef3749831eedc24be0c0e53dd3c40757f1932d6b053ad6",
+      "history_sha256": "05fffd93bddf74c5eb93c8bc7a74702d0ad7e8343845b8a6ed69d3bf997caed6",
+      "process_view_sha256": "86a11505364435f6180eb097e44c2075f599d520868960acec15c8bad4794ebc",
+      "fragment_instances_present": true,
+      "fragment_instances_sha256": "249e962cc9d382603310be3a47deaa9708997febd137577ab1d6bc69723728c1",
+      "claim_decision_authorized": false
+    }
+  },
+  "data_fingerprints": {
+    "databases": {
+      "casepath.db": {
+        "schema_sha256": "0f09b305b47779185f3a4ce1d4e2b5af3979453ff0dd3f7108c030900b5c5451",
+        "tables": {
+          "candidates": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "claim_loop_acquisitions": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "claim_loop_checkpoints": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "claim_loop_client_requests": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "claim_loop_correction_artifacts": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "claim_loop_corrections": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "claim_loop_events": {
+            "rows": 164,
+            "sha256": "c66cc8a0878b4195fe55a316c632afece4b049490806ae03143fb51a807cc3dd"
+          },
+          "claim_loop_tool_artifacts": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "events": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "memories": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "model_calls": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "reviews": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "run_stream_events": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "runs": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "workspace_reviewed_memory_index": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          }
+        }
+      },
+      "work.sqlite3": {
+        "schema_sha256": "d151db2c5f1a9c0a0ccd5f618ee6ee97179420afd29b1cee42b0c99599d0aaec",
+        "tables": {
+          "work_autonomous_calls": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_autonomous_capacity_grant": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_autonomous_outcomes": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_autonomous_policy": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_autonomous_terminals": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_autonomous_workflows": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_calls": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_cancellation_requests": {
+            "rows": 3,
+            "sha256": "2520efa80fbfe93ede7aa5ac7ed22e42a6dd1ae831a3614a5403e80b7d421fea"
+          },
+          "work_desk_requests": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_events": {
+            "rows": 11,
+            "sha256": "a182bedd3f4a75c6e27b9516a7b8d950e5c288939354df44a612702ef2bc566d"
+          },
+          "work_external_budget": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_external_permits": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_external_run_grant": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_objects": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_original_nine_grant": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_pause_requests": {
+            "rows": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "work_runs": {
+            "rows": 5,
+            "sha256": "de18dda7c49c07500e794247781898b2995cdad035701bb7ba67e74a6fbe6684"
+          }
+        }
+      }
+    },
+    "other_files": {}
+  },
+  "display_assets": {
+    "index.html": {
+      "sha256": "fc9f81111a78f21451e48773d85551c8ad4f578f31ae0b27941f19ff5922fcb7",
+      "bytes": 26089
+    },
+    "source-manifest.json": {
+      "sha256": "f1c20fd3de067a88a8b2e60e3d72383aa9eba6e58dd67e151036fd2cba2b5393",
+      "bytes": 460237
+    },
+    "assets/app.js": {
+      "sha256": "7766a9b66c5f8dbde6c9c7ce15ebeca9ca5d6042b0537583e71b05d51fa4d6b3",
+      "bytes": 29946
+    },
+    "assets/styles.css": {
+      "sha256": "c0b99a741af5d5c84fc7aaea2fa32b8ca8aad392eab5115fbc96402b39661258",
+      "bytes": 25661
+    },
+    "assets/review-northstar-v1.js": {
+      "sha256": "911db61af8299ebbc00a818ad9fb9530ae84133dadac0dc12b9fd179c30d629b",
+      "bytes": 19204
+    },
+    "assets/review-northstar-v1.css": {
+      "sha256": "7c75bde67d6fc138a71ec2b05536e17a267186fb3d2d46677ade9d8dea2e2dab",
+      "bytes": 27167
+    },
+    "assets/autonomous-workspace-v1.js": {
+      "sha256": "573c2294692b4025549e687c0e21b959e14692365453519ed7a5ae4b8128e356",
+      "bytes": 847849
+    },
+    "assets/autonomous-workspace-v1.css": {
+      "sha256": "184979997357aea000c973295563c46287bc562949de1382ee3b829a4866ee5a",
+      "bytes": 359775
+    },
+    "assets/autonomous-presentation-v1.js": {
+      "sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da",
+      "bytes": 7473
+    },
+    "assets/autonomous-entry-v1.js": {
+      "sha256": "e405667ff58085b9928ada3a43b1bef6cbeac3caf105061f12c7541112c04d0d",
+      "bytes": 3801
+    }
+  },
+  "get_requests": [
+    {
+      "method": "GET",
+      "path": "/healthz",
+      "status": 200,
+      "response_sha256": "a23455bda4026b39eb9ef7436e02059f47452cabc502968fe9ba001e973768bd"
+    },
+    {
+      "method": "GET",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_f69b1747447bc221/process",
+      "status": 200,
+      "response_sha256": "357d833c4860c62048a0e9a1d9ab8445452683a9d7d6dd205ee8d4dd48ca6f10"
+    },
+    {
+      "method": "GET",
+      "path": "/api/claim-loops/v1/workspace/claims/clm_0e538990cc6ba7ef/process",
+      "status": 200,
+      "response_sha256": "c363a6a38c3b358760f09665aeb04fdcecb2803d69c436e5794b7548da3f8bbc"
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "response_sha256": "fc9f81111a78f21451e48773d85551c8ad4f578f31ae0b27941f19ff5922fcb7"
+    },
+    {
+      "method": "GET",
+      "path": "/source-manifest.json",
+      "status": 200,
+      "response_sha256": "f1c20fd3de067a88a8b2e60e3d72383aa9eba6e58dd67e151036fd2cba2b5393"
+    },
+    {
+      "method": "GET",
+      "path": "/assets/app.js",
+      "status": 200,
+      "response_sha256": "7766a9b66c5f8dbde6c9c7ce15ebeca9ca5d6042b0537583e71b05d51fa4d6b3"
+    },
+    {
+      "method": "GET",
+      "path": "/assets/styles.css",
+      "status": 200,
+      "response_sha256": "c0b99a741af5d5c84fc7aaea2fa32b8ca8aad392eab5115fbc96402b39661258"
+    },
+    {
+      "method": "GET",
+      "path": "/assets/review-northstar-v1.js",
+      "status": 200,
+      "response_sha256": "911db61af8299ebbc00a818ad9fb9530ae84133dadac0dc12b9fd179c30d629b"
+    },
+    {
+      "method": "GET",
+      "path": "/assets/review-northstar-v1.css",
+      "status": 200,
+      "response_sha256": "7c75bde67d6fc138a71ec2b05536e17a267186fb3d2d46677ade9d8dea2e2dab"
+    },
+    {
+      "method": "GET",
+      "path": "/assets/autonomous-workspace-v1.js",
+      "status": 200,
+      "response_sha256": "573c2294692b4025549e687c0e21b959e14692365453519ed7a5ae4b8128e356"
+    },
+    {
+      "method": "GET",
+      "path": "/assets/autonomous-workspace-v1.css",
+      "status": 200,
+      "response_sha256": "184979997357aea000c973295563c46287bc562949de1382ee3b829a4866ee5a"
+    },
+    {
+      "method": "GET",
+      "path": "/assets/autonomous-presentation-v1.js",
+      "status": 200,
+      "response_sha256": "fa6f162c86bdad5ae5beebf32a55d34810d54331c295596074b68c06468ab0da"
+    },
+    {
+      "method": "GET",
+      "path": "/assets/autonomous-entry-v1.js",
+      "status": 200,
+      "response_sha256": "e405667ff58085b9928ada3a43b1bef6cbeac3caf105061f12c7541112c04d0d"
+    },
+    {
+      "method": "GET",
+      "path": "/healthz",
+      "status": 200,
+      "response_sha256": "a23455bda4026b39eb9ef7436e02059f47452cabc502968fe9ba001e973768bd"
+    }
+  ],
+  "contract": "casepath.owned-qa-promotion-checkpoint/1"
+}

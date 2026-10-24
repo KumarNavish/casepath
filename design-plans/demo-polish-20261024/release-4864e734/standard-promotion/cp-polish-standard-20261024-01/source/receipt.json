@@ -1,0 +1,171 @@
+{
+  "contract": "casepath.standard-promotion/1",
+  "mode": "source",
+  "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+  "old_source_commit": "b20685d1670b33b941b1bfcb902638a879c01b93",
+  "started_at": "2026-10-24T16:59:07.433137+00:00",
+  "helper_binding_sha256": "e172d7ca6e4443fb2cb935ed4b7314fd88d25f200f54a8ed1d9ed31e744144c6",
+  "source_binding_sha256": "d19d63642a5d78b1467374aed1d849eac521bd71c0a219614e9515d940f5a265",
+  "helper_sha256": "c8f88d28c40c6d245034f03fb0104392a9ba0f33dd7d39e6cee225172e906e4b",
+  "server_stop_or_launch_by_helper": false,
+  "seed_or_replay_by_helper": false,
+  "snapshot_receipt": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/snapshot/receipt.json",
+    "sha256": "d02df301d4a2794ac3bea855764c5a56c22acefcb2d95edb2f74d8f61454ec16"
+  },
+  "stop_evidence": {
+    "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/release/standard-promotion-stop.json",
+    "sha256": "96172c4cbf7675bf68a1ac50c3d964eea0f75d3a6af9295b299e43eebe005a36",
+    "sessionId": "cp-ns-20261024-standard-workspace-repaired-4173",
+    "supervisor_pid": 43532,
+    "terminal_states": [
+      "failed"
+    ],
+    "exit_codes": [
+      -15
+    ],
+    "explicit_signals": [
+      {}
+    ],
+    "actual_structured_stop_and_terminal": true
+  },
+  "release": {
+    "completed_gate": {
+      "source_commit": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+      "terminal_gate_exit": 0,
+      "proof_sha256": "61acc82472860b0c27dbe57c305ca1933bd78bed37bc54eb2152c43693b41e57",
+      "actual_completion_sha256": "f8e8297680f91a9991279c10796184b8618d5ed0ed205536913fbc73c6a591b9",
+      "commander_terminal_sha256": "9033a041afcc88b3758cad5f7d1a0e1fe6b1edf4fde1ef2add940aea1028936a"
+    },
+    "gate_guard_sha256": "09d09605a83a849f7be640e907ddaf112cfcb41c5c6b50f4a90315041df18fb3",
+    "published_acceptance_sha256": "bfcda21a73416959c0bc59522774bf6c0115a6e97ec053c3bb0159823e81dc65",
+    "publication_helper_binding_sha256": "9ef0f35f14e4e56d435b2103668695740aba06ef7356bad9c26a83b6cd63c115"
+  },
+  "git": {
+    "head": "4864e7347c299bf1b580a5b35667635bc1c47f15",
+    "tree": "6d6050a9da3db4d7bb0af96fb4e8a861fd103ebe",
+    "branch": "codex/casepath-northstar-review-20261024",
+    "clean": true
+  },
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/git",
+        "-c",
+        "protocol.allow=never",
+        "-c",
+        "protocol.file.allow=always",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "fetch",
+        "--no-tags",
+        "--no-recurse-submodules",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024",
+        "4864e7347c299bf1b580a5b35667635bc1c47f15"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024",
+      "started_at": "2026-10-24T16:59:10.205893+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fetch.log",
+      "environment_keys": [
+        "CASEPATH_AGENT_WORK_EXTERNAL_FACTS",
+        "CASEPATH_MODEL_MODE",
+        "CASEPATH_SOURCE_COMMIT",
+        "CASEPATH_UV",
+        "GIT_TERMINAL_PROMPT",
+        "HOME",
+        "LANG",
+        "LC_ALL",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "PYTHONNOUSERSITE",
+        "SOURCE_DATE_EPOCH",
+        "TZ"
+      ],
+      "inherits_caller_process_group": true,
+      "pid": 19289,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T16:59:12.541892+00:00",
+      "log_sha256": "13a5ec1aa70560945a1f4f6a03008346600c8294fa66de38dc8562269f6900d8"
+    },
+    {
+      "command": [
+        "/usr/bin/git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-c",
+        "submodule.recurse=false",
+        "merge",
+        "--ff-only",
+        "--no-edit",
+        "--no-autostash",
+        "4864e7347c299bf1b580a5b35667635bc1c47f15"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024",
+      "started_at": "2026-10-24T16:59:12.714346+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/fast-forward.log",
+      "environment_keys": [
+        "CASEPATH_AGENT_WORK_EXTERNAL_FACTS",
+        "CASEPATH_MODEL_MODE",
+        "CASEPATH_SOURCE_COMMIT",
+        "CASEPATH_UV",
+        "GIT_TERMINAL_PROMPT",
+        "HOME",
+        "LANG",
+        "LC_ALL",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "PYTHONNOUSERSITE",
+        "SOURCE_DATE_EPOCH",
+        "TZ"
+      ],
+      "inherits_caller_process_group": true,
+      "pid": 19319,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T16:59:12.929499+00:00",
+      "log_sha256": "296168075e550a0f0c6a0144a53b38cd39188aebba5bf18c7aba8a990e93e2a6"
+    },
+    {
+      "command": [
+        "./bin/casepath",
+        "prepare"
+      ],
+      "cwd": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-northstar-20261024",
+      "started_at": "2026-10-24T16:59:13.245530+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-demo-polish-clone-20261024/.runtime/commander-demo-polish/standard-promotion/cp-polish-standard-20261024-01/source/official-prepare.log",
+      "environment_keys": [
+        "CASEPATH_AGENT_WORK_EXTERNAL_FACTS",
+        "CASEPATH_MODEL_MODE",
+        "CASEPATH_SOURCE_COMMIT",
+        "CASEPATH_UV",
+        "GIT_TERMINAL_PROMPT",
+        "HOME",
+        "LANG",
+        "LC_ALL",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "PYTHONNOUSERSITE",
+        "SOURCE_DATE_EPOCH",
+        "TZ"
+      ],
+      "inherits_caller_process_group": true,
+      "pid": 19331,
+      "exit_code": 0,
+      "finished_at": "2026-10-24T16:59:46.640305+00:00",
+      "log_sha256": "917b899da2476f08e555efc5a29c7d27474510d1eb40f16ea9b5e736f9f1ffb0"
+    }
+  ],
+  "original_data_unchanged": true,
+  "native_boot_unchanged": true,
+  "port_closed_after_prepare": {
+    "observed_at": "2026-10-24T16:59:47.140278+00:00",
+    "port": 4173,
+    "closed_loopbacks": [
+      "127.0.0.1",
+      "::1"
+    ]
+  },
+  "official_prepare_exit_code": 0,
+  "next_action": "Parent starts ./bin/casepath dev in this original workspace under a new owned Commander session, then runs verify.",
+  "status": "passed",
+  "finished_at": "2026-10-24T16:59:49.214187+00:00"
+}
