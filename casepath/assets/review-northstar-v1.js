@@ -74,7 +74,6 @@ function reuseMarkup(view){
   const f=model.fragment;
   const sourceFacts=model.facts.slice(0,2).map(fact=>fact.source_id?'<button type="button" class="nr-source-fact" data-noticed-source="'+h(fact.source_id)+'" data-noticed-quote="'+h(fact.quote)+'"><small>'+h(fact.label||'This case’s source passage')+'</small><strong>'+h(fact.quote)+'</strong><span aria-hidden="true">↗</span></button>':'<blockquote>'+h(fact.quote)+'</blockquote>').join('');
   const effect=model.consequence.rows[0];
-  const result=effect?h(effect.label)+': '+h(effect.after):'The saved process version produced no different process or document requirement.';
   const currentNode=effect?.kind==='Step'?list(view.evaluation?.nodes).find(n=>n.node_id===effect.id):null;
   const currentDocument=effect?.kind==='Document'?list(view.evaluation?.documents).find(d=>d.document_type===effect.id):null;
   const names=new Map(list(view.graph.nodes).map(n=>[n.node_id,n.label]));
@@ -84,44 +83,60 @@ function reuseMarkup(view){
   const activeRequirements=addedPending.filter(id=>list(view.graph.edges).some(edge=>edge.source_node_id===id&&edge.target_node_id===effect?.id&&edge.relation==='requires'&&evaluatedEdges.get(edge.edge_id)?.activation==='true'));
   const otherBlockers=addedPending.filter(id=>!activeRequirements.includes(id));
   const named=ids=>ids.map(id=>'“'+(names.get(id)||words(id))+'”').join(', ');
-  const pendingStatement=[activeRequirements.length?(names.get(effect.id)||effect.label)+' now also requires '+named(activeRequirements)+'.':'',otherBlockers.length?(names.get(effect.id)||effect.label)+' is now blocked by '+named(otherBlockers)+'.':''].filter(Boolean).join(' ');
+  const pendingStatement=[activeRequirements.length?'Still requires '+named(activeRequirements)+'.':'',otherBlockers.length?'Still blocked by '+named(otherBlockers)+'.':''].filter(Boolean).join(' ');
   const preservedConnections=list(historicalNode?.before?.blocked_by).filter(id=>list(view.graph.edges).some(edge=>edge.source_node_id===id&&edge.target_node_id===effect?.id));
   const preservedNote=preservedConnections.length?'Earlier process connection retained: '+preservedConnections.map(id=>names.get(id)||words(id)).join(', ')+'.':'';
   const pendingEdges=list(view.graph.edges).filter(edge=>edge.target_node_id===effect?.id&&activeRequirements.includes(edge.source_node_id)&&edge.relation==='requires'&&evaluatedEdges.get(edge.edge_id)?.activation==='true');
   const boundaryReview=pendingEdges.some(edge=>edge.validation?.status!=='validated')?'The imported dependency still needs review in this case.':pendingEdges.length?'The dependency has a recorded review in this case.':'';
-  const alreadyWaiting=historicalNode?.before?.execution_state==='blocked'&&historicalNode?.after?.execution_state==='blocked'?'This step was already waiting for other prerequisites.':'';
-  const currentResult=currentNode?h(names.get(effect.id)||effect.label)+': '+h(stateName(currentNode.inconsistent_completion?'inconsistent':currentNode.execution_state||currentNode.state))+(list(currentNode.blocked_by).length?' · '+h(currentNode.blocked_by.map(id=>names.get(id)||words(id)).join(', ')):''):currentDocument?h(effect.label)+': '+h(stateName(currentDocument.route_state)):effect?.kind==='Step'||effect?.kind==='Document'?'This item is no longer in the current process.':'Open the graph to review the current dependency.';
-  return '<section class="nr-reuse" aria-label="Reviewed process reuse" data-review-reuse="'+h(f.fragment_sha256)+'"><header><h3>Earlier review → this case</h3><p>Exact saved version '+h(f.version)+' · applied in this claim</p></header><div class="nr-reuse-cards">'+
-    '<article><h4>'+icon('reader')+'This case’s sources</h4>'+ (sourceFacts||'<p>No quoted condition is available in this process view. Open the original sources to inspect this case.</p>')+'</article>'+
-    '<article><h4>'+icon('builder')+'Reviewed process version</h4><strong>'+h(f.name)+'</strong><p>Saved by '+h(f.actor||f.handler||'the recorded reviewer')+'</p><a href="?journey=review&amp;view=northstar#claim='+encodeURIComponent(f.source_claim_id)+'">Open the source case ↗</a><details><summary>Version provenance</summary><dl><dt>Version</dt><dd>'+h(f.version)+'</dd><dt>Source revision</dt><dd>'+h(f.source_revision??f.source_workspace_revision??'See source record')+'</dd><dt>Version identity</dt><dd><code>'+h(f.fragment_sha256)+'</code></dd><dt>Accepted application</dt><dd><code>'+h(model.event.event_sha256)+'</code></dd></dl></details></article>'+
-    '<article><h4>'+icon('result')+'Result in this case</h4>'+(pendingStatement?'<strong data-review-current-dependency>'+h(pendingStatement)+'</strong><p>'+h(boundaryReview)+'</p>':'')+'<p>Current process</p><strong data-review-current-result>'+currentResult+'</strong>'+(preservedNote?'<p data-review-preserved-connection>'+h(preservedNote)+'</p>':'')+'<details><summary>When applied · revision '+h(model.event.revision??'recorded')+'</summary><p>'+result+'</p><p>'+h(alreadyWaiting)+'</p><p>'+h(model.event.reason||'Saved application of the selected process version.')+'</p></details><p>This case keeps its own facts, source files and evidence reviews.</p></article></div><p class="nr-review-limit">A recorded process review does not authorise the claim outcome. Qualified review is still required.</p></section>';
+  const alreadyWaiting=historicalNode?.before?.execution_state==='blocked'&&historicalNode?.after?.execution_state==='blocked'?'This step was already waiting before application.':'';
+  const currentResult=currentNode?stateName(currentNode.inconsistent_completion?'inconsistent':currentNode.execution_state||currentNode.state):currentDocument?stateName(currentDocument.route_state):effect?.kind==='Step'||effect?.kind==='Document'?'This item is no longer in the current process.':'Open the graph to review the current dependency.';
+  const currentBlockers=list(currentNode?.blocked_by).filter(id=>!addedPending.includes(id));
+  const next=view.effective_assessment?.next_step;
+  const nextUnchanged=typeof next==='string'&&next===model.consequence.next.after&&model.event.impact.next_action_changed===false;
+  const nextHistory=model.event.impact.next_action_changed===true?'Next action changed on application.':model.event.impact.next_action_changed===false?'Next action unchanged by this application.':'No next-action comparison recorded.';
+  const history=effect?'<section class="nr-application-change" aria-label="Historical application change" data-review-application-history><div class="nr-application-heading"><p>When applied · revision '+h(model.event.revision??'recorded')+'</p><p>'+h([alreadyWaiting,nextHistory].filter(Boolean).join(' '))+(preservedConnections.length?' <span data-review-retained-context>Earlier process connections retained.</span>':'')+'</p></div><div class="nr-before-after"><div class="nr-affected-step" data-review-affected-step="'+h(effect.id)+'">'+(effect.kind==='Step'?'<span class="nr-affected-number" data-review-ordinal-for="'+h(effect.id)+'" hidden></span>':'')+'<div><small>Affected '+h(effect.kind.toLowerCase())+'</small><strong>'+h(effect.label)+'</strong></div></div><div class="nr-before" data-review-before><small>Before application</small><p>'+h(effect.before)+'</p></div><span class="nr-change-arrow" aria-hidden="true">→</span><div class="nr-after" data-review-after><small>After application</small><p>'+h(effect.after)+'</p></div></div></section>':'<p class="nr-no-effect">The saved process version produced no different process or document requirement.</p>';
+  return '<section class="nr-reuse" aria-label="Reviewed process reuse" data-review-reuse="'+h(f.fragment_sha256)+'"><header><h3>Earlier review → this case</h3><p>Exact saved version '+h(f.version)+' · applied in this claim</p></header>'+history+'<div class="nr-reuse-cards">'+
+    '<article data-review-reuse-card="sources"><h4>'+icon('reader')+'This case’s sources</h4>'+ (sourceFacts||'<p>No quoted condition is available in this process view. Open the original sources to inspect this case.</p>')+'</article>'+
+    '<article data-review-reuse-card="version"><h4>'+icon('builder')+'Reviewed process version</h4><strong>'+h(f.name)+'</strong><p>Saved by '+h(f.actor||f.handler||'the recorded reviewer')+'</p><a href="?journey=review&amp;view=northstar#claim='+encodeURIComponent(f.source_claim_id)+'">Open the source case ↗</a><details><summary>Version provenance</summary><dl><dt>Version</dt><dd>'+h(f.version)+'</dd><dt>Source revision</dt><dd>'+h(f.source_revision??f.source_workspace_revision??'See source record')+'</dd><dt>Version identity</dt><dd><code>'+h(f.fragment_sha256)+'</code></dd><dt>Accepted application</dt><dd><code>'+h(model.event.event_sha256)+'</code></dd></dl><p>'+h(model.event.reason||'Saved application of the selected process version.')+'</p></details>'+(preservedNote?'<details class="nr-application-record"><summary>Earlier process connections</summary><p data-review-preserved-connection>'+h(preservedNote)+'</p></details>':'')+'</article>'+
+    '<article data-review-reuse-card="result"><h4>'+icon('result')+'Result in this case</h4><p class="nr-current-state">Current process · <strong data-review-current-result>'+h(currentResult)+'</strong></p>'+(pendingStatement?'<p data-review-current-dependency>'+h(pendingStatement)+'</p>':'')+(currentBlockers.length?'<p>Also waiting for '+h(named(currentBlockers))+'.</p>':'')+(boundaryReview?'<p class="nr-boundary-review">'+h(boundaryReview)+'</p>':'')+'<p class="nr-current-next" data-review-current-next><small>'+h(nextUnchanged?'Next action · unchanged by this application':'Current next action')+'</small>'+h(next||'No current next action recorded.')+'</p></article></div>'+'<p class="nr-review-limit nr-reuse-notice">This case keeps its own facts, source files and evidence reviews. A recorded process review does not authorise the claim outcome. Qualified review is still required.</p></section>';
 }
 function renderProcess(view,s,ui){
   const graph=ui.graph||view.graph,nodes=list(graph.nodes),selected=ui.node||nodes.find(n=>n.node_id===s.selected)||nodes[0];
   const evaluations=new Map(list(view.evaluation?.nodes||view.evaluation?.steps).map(row=>[row.node_id,row]));
   const last=list(view.history).slice().reverse().find(row=>row.impact&&row.event_sha256);
+  const payoff=!s.preview&&!s.mode&&reuseModel(view);
   const map='<nav class="nr-process-map" aria-label="Working process graph" data-review-process-map><svg class="nr-process-links" aria-hidden="true"></svg><ol>'+nodes.map((node,i)=>{
     const row=evaluations.get(node.node_id)||{},status=stateName(row.inconsistent_completion?'inconsistent':row.execution_state||row.state);
     return '<li><button type="button" class="nr-process-node" data-causal-node="'+h(node.node_id)+'" aria-pressed="'+(node.node_id===selected?.node_id)+'"><span class="nr-step-number">'+(row.execution_state==='completed'?'✓':i+1)+'</span><strong>'+h(node.label)+'</strong><small>'+h(status)+'</small></button></li>';
   }).join('')+'</ol></nav>';
   const preview=s.preview?'<section class="cp-impact nr-impact" tabindex="-1" id="cpProcessImpact"><p class="nr-eyebrow">Preview · nothing saved yet</p>'+comparison(s.preview.impact,graph,{proposed:true})+'<p>'+h(s.preview.reason||'')+'</p><div class="cp-actions cp-impact-actions"><button type="button" class="cw-button cw-button-primary" data-causal-apply>Apply to this claim</button><button type="button" class="cw-button" data-causal-cancel>Keep current process</button></div><details class="nr-impact-details"><summary>All changed and unchanged requirements</summary>'+ui.impact+'</details></section>':'';
   const recent=!s.preview&&!s.mode&&last?'<details class="nr-last-change"><summary>Last saved consequence · '+h(last.actor||'Recorded reviewer')+'</summary>'+comparison(last.impact,graph)+'</details>':'';
-  return '<section class="cp-causal nr-causal" id="cpCausalProcess" data-claim-id="'+h(view.claim_id)+'" data-workspace-revision="'+h(view.workspace_revision)+'" aria-labelledby="cpCausalTitle" '+(s.busy?'aria-busy="true"':'')+'>'+
+  return '<section class="cp-causal nr-causal" id="cpCausalProcess" data-claim-id="'+h(view.claim_id)+'" data-workspace-revision="'+h(view.workspace_revision)+'"'+(payoff?' data-review-payoff="true"':'')+' aria-labelledby="cpCausalTitle" '+(s.busy?'aria-busy="true"':'')+'>'+
     '<header class="nr-process-heading"><div><h2 id="cpCausalTitle">'+(view.process_adopted===false?'Proposed process':'Working process')+'</h2><p>'+h(ui.processState||'Review the process and its evidence')+'</p></div><div><span>Revision '+h(graph.revision)+'</span>'+(view.undo?'<button type="button" class="cw-text-button" data-causal-undo>Undo last change</button>':'')+'<button type="button" class="cw-text-button" data-causal-add>Add step</button>'+(reuseModel(view)?'<button type="button" class="cw-text-button" data-review-result>Review reuse result →</button>':'')+'</div></header>'+
     (view.process_adopted===false?'<p class="cp-process-warning">This claim still uses its recorded assessment. Preview and apply a correction to adopt this proposed process.</p>':'')+
     '<div class="cp-process-status" data-state="'+(s.busy?'working':s.notice?'saved':'idle')+'" role="status" aria-live="polite">'+h(s.busy?'Calculating consequences…':s.notice||'')+'</div>'+
     (s.error?'<div class="cp-process-warning" role="alert">'+h(s.error)+' <button type="button" class="cw-button" data-causal-reload>Reload saved process</button></div>':'')+
-    map+'<div class="nr-review-context"><div class="nr-selected-heading"><h3>'+h(selected?.label||'Process review')+'</h3>'+(!s.mode&&!s.preview&&selected?'<button type="button" class="cw-text-button nr-edit-decision" data-causal-edit>Edit decision</button>':'')+'</div><aside class="cp-process-inspector" aria-label="Selected process step">'+(preview||ui.inspector)+'</aside></div>'+recent+ui.tools+
+    (payoff?'<details class="nr-full-process" data-review-full-process open><summary>Full process · '+nodes.length+' steps <span>Revision '+h(graph.revision)+'</span></summary>'+map+'</details>':map)+'<div class="nr-review-context"><div class="nr-selected-heading"><h3>'+h(selected?.label||'Process review')+'</h3>'+(!s.mode&&!s.preview&&selected?'<button type="button" class="cw-text-button nr-edit-decision" data-causal-edit>Edit decision</button>':'')+'</div><aside class="cp-process-inspector" aria-label="Selected process step">'+(preview||ui.inspector)+'</aside></div>'+recent+ui.tools+
     '<p class="nr-review-limit">Original evidence remains unchanged. Process completion and the claim decision are separate.</p></section>';
 }
 const observers=new WeakMap();
 function bindGraph(container,view){
   const map=container.querySelector('[data-review-process-map]');
   if(!map)return;
-  observers.get(container)?.disconnect();
+  const previous=observers.get(container),state=previous?.claimId===view.claim_id?previous.state:{resultExpanded:false};
+  previous?.disconnect();
+  const disclosure=map.closest('[data-review-full-process]'),panel=container.closest('#cwDetailPanel')||container.querySelector('#cwDetailPanel');
+  let role;
   function draw(){
     if(!map.isConnected)return;
     const svg=map.querySelector('svg'),bounds=map.getBoundingClientRect(),buttons=new Map([...map.querySelectorAll('[data-causal-node]')].map(el=>[el.dataset.causalNode,el]));
+    // The map already has the shared presentation order. Never number this
+    // second view from the journal's raw node-array order.
+    for(const marker of container.querySelectorAll('[data-review-ordinal-for]')){
+      const label=buttons.get(marker.dataset.reviewOrdinalFor)?.querySelector('.nr-step-number')?.textContent.trim()||'';
+      marker.textContent=label;marker.hidden=!label;
+    }
+    if(!bounds.width||!bounds.height)return;
     container.style?.setProperty('--nr-map-height',Math.ceil(bounds.height+12)+'px');
     const selected=map.querySelector('[aria-pressed="true"]')?.dataset.causalNode;
     const paths=list(view.graph.edges).map(edge=>{
@@ -135,8 +150,18 @@ function bindGraph(container,view){
     }).join('');
     svg.setAttribute('viewBox','0 0 '+bounds.width+' '+bounds.height);svg.innerHTML='<defs><marker id="nr-process-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 6 3 L 0 6 z" fill="#b5b1b5"/></marker></defs>'+paths;
   }
-  draw();
-  if(typeof ResizeObserver!=='undefined'){const observer=new ResizeObserver(draw);observer.observe(map);observers.set(container,observer);}
+  function syncRole(){
+    const next=panel?.dataset.reviewActiveRole||'builder';
+    if(role!==next){role=next;if(disclosure)disclosure.open=role==='result'?state.resultExpanded:true;}
+    draw();
+  }
+  const toggle=()=>{if(role==='result')state.resultExpanded=disclosure.open;draw();};
+  disclosure?.addEventListener('toggle',toggle);
+  syncRole();
+  let resize,roles;
+  if(typeof ResizeObserver!=='undefined'){resize=new ResizeObserver(draw);resize.observe(map);}
+  if(disclosure&&panel&&typeof MutationObserver!=='undefined'){roles=new MutationObserver(syncRole);roles.observe(panel,{attributes:true,attributeFilter:['data-review-active-role']});}
+  observers.set(container,{claimId:view.claim_id,state,disconnect(){resize?.disconnect();roles?.disconnect();disclosure?.removeEventListener('toggle',toggle);}});
 }
 return Object.freeze({header,renderProcess,consequenceModel,reuseModel,reuseMarkup,comparison,bindGraph});
 });

@@ -190,3 +190,114 @@ test('a slow cold read keeps the north-star frame on landing and on opening a re
  }catch(error){error.message+='\nViews: '+JSON.stringify(await views().catch(()=>null))+'\nPage errors: '+JSON.stringify(errors)+'\nUI: '+(await page.locator('body').innerText()).slice(0,600);throw error;}
  finally{for(const close of [()=>page.close(),()=>context.close(),()=>browser.close()]){let timer;await Promise.race([close(),new Promise(resolve=>{timer=setTimeout(resolve,10000);})]);clearTimeout(timer);}}
 });
+
+async function assertPreparationRailVisible(page, failed=false){
+ for(const viewport of [{width:1440,height:900},{width:375,height:812}]){
+  await page.setViewportSize(viewport);
+  const proof=await page.evaluate(async failed=>{
+   await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(resolve));
+   const status=document.querySelector('.au-ns-preparation-status'),retry=document.querySelector('[data-au-presentation-unavailable] [data-au-nav="demonstration"]');
+   const check=element=>{if(!element)return null;const rect=element.getBoundingClientRect();return {text:element.textContent,inRail:!!element.closest('.au-ns-sources'),bounds:rect.toJSON(),fullyVisible:rect.width>0&&rect.height>0&&rect.left>=0&&rect.top>=0&&rect.right<=innerWidth+1&&rect.bottom<=innerHeight+1&&element.scrollWidth<=element.clientWidth+1&&element.scrollHeight<=element.clientHeight+1};};
+   const details=document.querySelector('.au-global-status > .au-record-link');
+   return {status:check(status),retry:check(retry),detailsGap:details?parseFloat(getComputedStyle(details).marginInlineStart):null,overflow:Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-innerWidth};
+  },failed);
+  assert.equal(proof.status?.inRail,true);assert.equal(proof.status?.fullyVisible,true,JSON.stringify({viewport,proof}));
+  assert.match(proof.status.text,failed?/The recorded walkthrough could not be opened/:/Preparing the recorded walkthrough/);
+  if(failed){assert.equal(proof.retry?.text,'Try again');assert.equal(proof.retry?.inRail,true);assert.equal(proof.retry?.fullyVisible,true,JSON.stringify({viewport,proof}));assert.ok(proof.detailsGap>=8,'Details is separated from the error text');}
+  assert.ok(proof.overflow<=1,JSON.stringify({viewport,proof}));
+ }
+ await page.setViewportSize({width:1440,height:900});
+}
+
+for(const ending of ['ready','cancelled','invalid','visibility'])test(`public preparation overlaps independent reads and keeps admission honest: ${ending}`,async()=>{
+ const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH||(fs.existsSync('/usr/bin/chromium')?'/usr/bin/chromium':chromium.executablePath())});
+ const context=await browser.newContext({viewport:{width:1440,height:900},serviceWorkers:'block'}),page=await context.newPage(),errors=[],writes=[],missing=[];
+ page.on('pageerror',error=>errors.push(error.message));
+ await page.route('**/*',async route=>{
+  const request=route.request(),url=new URL(request.url()),key=url.pathname+url.search;
+  if(!['GET','HEAD'].includes(request.method())){writes.push(key);return route.abort();}
+  if(request.isNavigationRequest())return route.fulfill({contentType:'text/html',body:'<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0"><main id="workspace"></main></body></html>'});
+  if(/\/fonts\/[^/]+\.ttf$/.test(url.pathname))return route.fulfill({contentType:'font/ttf',path:path.join(root,'casepath/assets/fonts',path.basename(url.pathname))});
+  const id=url.pathname.match(/\/claims\/([^/]+)\/operations$/)?.[1],record=id&&recorded.cases.find(row=>row.id===id);
+  if(record)return route.fulfill({contentType:'application/x-ndjson',body:record.trace});
+  if(wire[key])return route.fulfill({contentType:'application/json',body:JSON.stringify(wire[key])});
+  missing.push(key);return route.fulfill({status:404,contentType:'application/json',body:JSON.stringify({detail:'No recorded fixture for '+key})});
+ });
+ try{
+  await page.goto('http://localhost:41999/?present=1');
+  await page.addStyleTag({path:path.join(root,'casepath/assets/autonomous-workspace-v1.css')});
+  for(const asset of ['autonomous-language-v1.js','autonomous-presentation-v1.js','autonomous-workspace-v1.js'])await page.addScriptTag({path:path.join(root,'casepath/assets',asset)});
+  const initial=await page.evaluate(firstId=>{
+   window.CASEPATH_PUBLIC_READ_ONLY=true;window.heldStates=[];window.beforeAdmissionTitles=[];window.preparationReadPaths=[];window.stateBodiesRead=[];
+   new MutationObserver(()=>{if(!window.CasepathPresentation?.active){const title=document.querySelector('[data-au-claim-title]')?.textContent;if(title)window.beforeAdmissionTitles.push(title);}}).observe(document.querySelector('#workspace'),{childList:true,subtree:true});
+   const fetch=async(url,init)=>{
+    const address=new URL(url,location.href),path=address.pathname;window.preparationReadPaths.push(path+address.search);
+    const response=await window.fetch(url,init);
+    if(path.endsWith(`/claims/${firstId}/operations`)&&!window.openingReleased)return new Promise(resolve=>{window.releaseOpening=()=>{window.openingReleased=true;resolve(response);};});
+    const id=path.match(/\/claims\/([^/]+)$/)?.[1];
+    // Deliberately deliver held responses even after abort: route ownership
+    // must reject late work rather than relying only on a cooperative network.
+    if(id){const json=response.json.bind(response);response.json=async()=>{const data=await json();window.stateBodiesRead.push(id);return data;};return new Promise(resolve=>window.heldStates.push({id,signal:init.signal,response,resolve}));}
+    return response;
+   };
+   window.product=CasePathAutonomous.mount(document.querySelector('#workspace'),{fetch});
+   return {preparing:!!document.querySelector('[data-au-presentation-preparing][aria-busy="true"]'),purpose:document.querySelector('[data-au-ns-purpose]')?.textContent,title:document.title,caseTitle:document.querySelector('[data-au-claim-title]')?.textContent};
+  },recorded.cases[0].id);
+  assert.equal(initial.preparing,true,'the introduction exists synchronously before any response');assert.match(initial.purpose,/From customer documents/);assert.match(initial.purpose,/You make the decision/);assert.equal(initial.caseTitle,undefined);assert.equal(initial.title,'Demonstration — CasePath');
+  await page.waitForFunction(()=>typeof window.releaseOpening==='function',{},{timeout:45000});
+  assert.equal(await page.locator('[data-au-presentation-preparing]').count(),1);assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);
+  await page.evaluate(()=>window.releaseOpening());
+  await page.waitForFunction(count=>window.heldStates.length===count,recorded.cases.length-1,{timeout:10000});
+  assert.deepEqual((await page.evaluate(()=>window.heldStates.map(row=>row.id))).sort(),recorded.cases.slice(1).map(row=>row.id).sort(),'every independent state read starts before any is released');
+  assert.deepEqual(await page.evaluate(()=>window.beforeAdmissionTitles),[],'the unrelated first case is never painted while selecting the showcase');
+  assert.equal(await page.locator('[data-au-presentation-preparing]').count(),1);
+  if(ending==='ready')await assertPreparationRailVisible(page);
+  if(ending==='cancelled')await page.evaluate(()=>product.showWork());
+  let hiddenReads;
+  if(ending==='visibility')hiddenReads=await page.evaluate(()=>{
+   const before=window.preparationReadPaths.filter(path=>/\/operations\?|\/replay\?/.test(path));
+   Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));
+   return before;
+  });
+  await page.evaluate(async ending=>{
+   const reads=[...window.heldStates].reverse();
+   if(ending==='invalid'){
+    const row=reads.shift(),data=await row.response.json();
+    (data.state||data).claim_id='unrelated-claim';
+    row.resolve(new Response(JSON.stringify(data),{status:200,headers:{'Content-Type':'application/json'}}));
+   }
+   for(const row of reads){row.resolve(row.response);await Promise.resolve();}
+  },ending);
+  if(ending==='ready'){
+   await page.waitForFunction(()=>window.CasepathPresentation?.active,{},{timeout:45000});
+   const admitted=await page.evaluate(()=>({claims:CasepathPresentation.active.manifest.claims,hashes:CasepathPresentation.active.manifest.stateHashes,paused:CasepathPresentation.active.paused}));
+   assert.deepEqual(admitted.claims,recorded.cases.slice(7).map(row=>row.id));assert.deepEqual(admitted.hashes,recorded.cases.slice(7).map(row=>row.envelope.state.state_sha256));assert.equal(admitted.paused,false,'present=1 begins only after actual admission');
+   assert.equal(await page.locator('[data-au-ns-start]').count(),0);assert.equal(await page.locator('[data-au-presentation-preparing]').count(),0);
+  }else if(ending==='cancelled'){
+   await page.waitForFunction(()=>window.heldStates.every(row=>row.signal.aborted)&&!document.querySelector('[data-au-presentation-preparing]'));
+   assert.equal(await page.locator('[data-au-view-state="work"]').count(),1);assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);
+  }else if(ending==='visibility'){
+   // Wait for all held JSON bodies to be consumed. The existing operation gate
+   // must keep the next-case admission suspended until the tab is visible.
+   await page.waitForFunction(count=>window.stateBodiesRead.length===count,recorded.cases.length-1,{timeout:45000});
+   assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);
+   assert.equal(await page.locator('[data-au-presentation-preparing]').count(),1);assert.equal(await page.locator('[data-au-presentation-unavailable]').count(),0);
+   assert.deepEqual(await page.evaluate(()=>window.preparationReadPaths.filter(path=>/\/operations\?|\/replay\?/.test(path))),hiddenReads,'hidden state delivery cannot start the next recording or a fallback');
+   await page.evaluate(()=>{delete document.hidden;document.dispatchEvent(new Event('visibilitychange'));});
+   await page.waitForFunction(()=>window.CasepathPresentation?.active,{},{timeout:45000});
+   const admitted=await page.evaluate(()=>({claims:CasepathPresentation.active.manifest.claims,hashes:CasepathPresentation.active.manifest.stateHashes,paused:CasepathPresentation.active.paused}));
+   assert.deepEqual(admitted.claims,recorded.cases.slice(7).map(row=>row.id));assert.deepEqual(admitted.hashes,recorded.cases.slice(7).map(row=>row.envelope.state.state_sha256));assert.equal(admitted.paused,false);
+   assert.equal(await page.locator('[data-au-presentation-preparing],[aria-busy="true"]').count(),0,'returning to the tab cannot leave admission hanging');
+  }else{
+   await page.waitForFunction(()=>document.querySelector('.au-global-status')?.textContent.includes('Could not load this recorded walkthrough'),{},{timeout:45000});
+   assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);assert.equal(await page.locator('[data-au-presentation-preparing]').count(),0,'invalid state cannot leave a permanent preparation screen or start the film');
+   assert.equal(await page.locator('[data-au-presentation-unavailable]').count(),1);assert.equal(await page.locator('[aria-busy="true"]').count(),0);
+   assert.equal(await page.locator('[data-au-presentation-unavailable] [data-au-nav="demonstration"]').textContent(),'Try again');
+   assert.equal(await page.locator('[data-au-claim-title],.au-ns-spine li,[data-au-source]').count(),0,'an admitted fallback remains in memory without exposing the unrelated first case');
+   assert.doesNotMatch(await page.locator('[data-au-view]').innerText(),/heating|Showing the saved result/i);
+   await assertPreparationRailVisible(page,true);
+  }
+  assert.deepEqual(writes,[]);assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);
+ }catch(error){error.message+='\nMissing fixture reads: '+JSON.stringify(missing)+'\nPage errors: '+JSON.stringify(errors)+'\nUI: '+(await page.locator('body').innerText()).slice(0,1000);throw error;}
+ finally{await page.evaluate(()=>{window.releaseOpening?.();for(const row of window.heldStates||[])row.resolve(row.response);window.product?.destroy();}).catch(()=>{});for(const close of [()=>page.close(),()=>context.close(),()=>browser.close()]){let timer;await Promise.race([close(),new Promise(resolve=>{timer=setTimeout(resolve,10000);})]);clearTimeout(timer);}}
+});

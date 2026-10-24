@@ -1657,6 +1657,14 @@
   function northStarOpeningMarkup(state, presentation = {}, mode = 'replay') {
     return northStarMarkup(state,{rows:[],sources:new Map(),headState:state,nsOpening:mode},presentation);
   }
+  function northStarPurposeMarkup(claimId = null) {
+    return `<section class="au-ns-purpose" data-au-ns-purpose><p>Recorded example · legal protection</p><h2>From customer documents<br>to a reviewable answer</h2><p>Automated assistants connect evidence, legal checks and an assessment draft. You make the decision.</p><div aria-label="Assessment path">Documents <span>→</span> Facts <span>→</span> Law <span>→</span> Answer</div><small>This walkthrough replays completed work on fictional cases.</small>${claimId?`<button type="button" class="au-link" data-au-claim="${h(claimId)}">Open completed example ↗</button>`:''}</section>`;
+  }
+  function northStarPreparationMarkup(failed = false) {
+    // The showcase is not selected or admitted yet. Orient the visitor without
+    // presenting the first roster case as the subject of the walkthrough.
+    return `<section class="au-agent-desk au-northstar au-ns-preparation" data-au-agent-desk data-au-ns data-au-ns-state="opening" ${failed?'data-au-presentation-unavailable':'data-au-presentation-preparing aria-busy="true"'}><aside class="au-ns-sources"><p class="au-ns-context">Legal protection · case review</p><h1 tabindex="-1">Recorded walkthrough</h1><p class="au-ns-intake">All cases are fictional.</p><p class="au-ns-preparation-status" role="status">${failed?'The recorded walkthrough could not be opened.':'Preparing the recorded walkthrough…'}</p>${failed?button('Try again','data-au-nav="demonstration"'):''}</aside><div class="au-ns-canvas"><div class="au-ns-work"><div class="au-ns-reading"><section class="au-ns-paper">${northStarPurposeMarkup()}</section></div></div></div></section>`;
+  }
   function deskFileLabel(source) {
     if (source.role === 'customer_message') return 'Customer’s message';
     return String(source.file_name || '').replace(/\.[a-z0-9]+$/iu,'').replace(/^\d+[-_ ]*/u,'').replace(/_\d{4}-\d{2}-\d{2}.*$/u,'').replace(/[-_]+/gu,' ').replace(/\bpacket\b/giu,'documents').replace(/\brecord\b/giu,'details').replace(/^./u,c => c.toUpperCase()) || 'Source';
@@ -3430,6 +3438,7 @@
     let publicationAttention = null, inspectionHold = false, operationTrace = null, attentionMarker = null, attentionPosition = null, attentionAnimation = null, factToken = null, factTokenAnimation = null, factTokenOperation = null, stageMotionTimer = null, stageReadAnimations = [], stageScrollCancel = null, stageScrollTarget = null, stageChoreography = null, operationPeek = null;
     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, recordReturn = null, recordSelection = null, recordExplained = null, chosenNode = null, sourceEpoch = 0, polling = null, claimRead = 0;
     let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'reference', tour = null, demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
+    let executivePreparationFailureEpoch = null;
     let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, statusAuthority = null, readGeneration = 0;
     // Knowledge opens as the procedure library; the learning replay is a secondary view.
     let knowledgeMode = 'library', learningState = null, learningTimer = null, noticeCategory = null, announcedNow = null, noticeRecord = null;
@@ -4038,9 +4047,28 @@
       })().catch(error=>{if(valid()){const status=host.querySelector('[data-au-desk-trace-status]');if(status){status.hidden=false;status.innerHTML='This case could not be opened. '+button('Try again','data-au-desk-retry');}}}).finally(()=>{controllers.delete(controller);deskRecordReads.delete(identity);});
       deskRecordReads.set(identity,promise);
     }
+    function renderExecutivePreparation(session = demoSession || pausedPresentation) {
+      if (!session?.executive || session.executiveController || view !== 'claim' || doc.hidden) return false;
+      routeTitle('Demonstration');
+      if (!host.querySelector('[data-au-presentation-preparing]')) {
+        host.innerHTML = northStarPreparationMarkup();
+        const tabs = container.querySelector('.au-ns-tabs'); if (tabs) tabs.innerHTML = northStarTabsMarkup('');
+      }
+      return true;
+    }
+    function renderPresentationFailure(session) {
+      if (session?.executive && !session.executiveController) {
+        // A checked fallback may remain in memory, but it is not the selected
+        // showcase. Keep this route's failure explicit through late refreshes.
+        executivePreparationFailureEpoch = epoch;
+        host.innerHTML = northStarPreparationMarkup(true); routeTitle('Demonstration');
+      } else renderClaim();
+    }
     function renderClaim(changes = null, navigation = false) {
+      if (view === 'claim' && executivePreparationFailureEpoch === epoch) return;
       const executive=(demoSession||pausedPresentation)?.executiveController;
       if(executive&&!inspectionHold){executive.render();return;}
+      if(renderExecutivePreparation())return;
       const displayedState = operationPeek?.state || current, displayedProjection = operationPeek?.projection || projection, displayedTrace = operationPeek?.trace || operationTrace || deskRecords.get(current?.state_sha256);
       if (!current || view !== 'claim') return;
       routeTitle(caseTitle(current.claim_id,current));
@@ -4313,7 +4341,10 @@
       if (demoSession) demoSession.verifiedOpening = null;
       const cached = presentationMode !== 'replay' && paintSavedClaim(id,preferences);
       const nsOpening = session?.mode === 'operations' && (root.innerWidth || 0) > 700 && REFERENCE_DEMO_CASES.some(row => row.claim_id === id);
-      if (!doc.hidden && !cached && !opening) { host.innerHTML = nsOpening ? northStarOpeningMarkup({claim_id:id,title:catalogRow(claims,id)?.title}) : session?.releasePlan ? releaseProcedurePreview(session.releasePlan,packetAtSelection ? 'pending' : session.operations,{revision:catalogRow(claims,id)?.revision,readOnly:publicReadOnly,tour:tour?.cases === session.cases && tour.cases[tour.index]?.claim_id === id ? tour : null}) : catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); if (session?.releasePlan && !nsOpening) drawEdges(); }
+      if (!doc.hidden && !cached) {
+        if (renderExecutivePreparation(session)) focusTitle();
+        else if (!opening) { host.innerHTML = nsOpening ? northStarOpeningMarkup({claim_id:id,title:catalogRow(claims,id)?.title}) : session?.releasePlan ? releaseProcedurePreview(session.releasePlan,packetAtSelection ? 'pending' : session.operations,{revision:catalogRow(claims,id)?.revision,readOnly:publicReadOnly,tour:tour?.cases === session.cases && tour.cases[tour.index]?.claim_id === id ? tour : null}) : catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); if (session?.releasePlan && !nsOpening) drawEdges(); }
+      }
       interact(host);
       if (presentationMode !== 'replay') {
         sessionRestore?.then(() => { if (!disposed && token === epoch && !pendingRoute() && view === 'claim' && !current && id === openingId) paintSavedClaim(id,preferences); });
@@ -4692,6 +4723,7 @@
     function stopPresentation() {
       const session = demoSession || pausedPresentation;
       session?.executiveController?.dispose();
+      for (const controller of session?.executiveStateReads?.readControllers || []) controller.abort();
       cancelNextOperationOpening(session);
       if (session?.operationPreparation) cancelPreparedOperationReads(session.operationPreparation);
       session?.operationChoiceController?.abort(); session?.operationController?.abort(); session?.operationWake?.();
@@ -5173,7 +5205,7 @@
     }
     function operationFallbackNotice(session, reason, savedError = null) {
       const recorded = Boolean(session.useRecorded || session.recorded || session.operations === 'recorded');
-      notice(savedError === null ? recorded ? 'Could not load this replay. Showing the saved result.' : 'Could not finish this check. Showing the saved result.' : recorded ? 'Could not load this replay or its saved result.' : 'Could not finish this check or load its saved result.',true,'operation-unavailable');
+      notice(session.executive && !session.executiveController ? 'Could not load this recorded walkthrough. Try again.' : savedError === null ? recorded ? 'Could not load this replay. Showing the saved result.' : 'Could not finish this check. Showing the saved result.' : recorded ? 'Could not load this replay or its saved result.' : 'Could not finish this check or load its saved result.',true,'operation-unavailable');
       noticeRecord = {message:reason,mode:recorded?'recorded':'live',...(savedError===null?{}:{saved_result_error:savedError})};
       globalStatus.insertAdjacentHTML?.('beforeend',recordButton('Details','notice'));
     }
@@ -5183,7 +5215,7 @@
       if (!await operationGate(session,token)) return;
       current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
       if (operationTrace) { operationTrace.finished = true; operationTrace.current = null; operationTrace.savedFallback = true; }
-      stopPresentation(); renderClaim(); primeClaimReads(token); operationFallbackNotice(session,reason);
+      stopPresentation(); renderPresentationFailure(session); primeClaimReads(token); operationFallbackNotice(session,reason);
     }
     function prepareOperationReads(session, id, token) {
       // A catalog row at revision zero has no history: no head or operation prefetch.
@@ -5281,11 +5313,20 @@
       const active=()=>operationActive(session,token);
       if(!knowledgeCache){const value=readKnowledge(await request('/knowledge'));if(!active())return;knowledgeCache={value};}
       if(!claimsLoaded){await loadClaims(token);if(!active())return;}
-      const states=[];
-      for(const row of sessionCases(session)){
-        const state=row.claim_id===main.state.claim_id?main.state:readState(await request(`/claims/${key(row.claim_id)}`),row.claim_id).state;
-        if(!active())return;states.push(state);
+      // At most the nine reference cases, retaining roster order regardless of
+      // response order. Own only reads created here: a previously shared GET
+      // keeps its original owner and cannot be aborted by this presentation.
+      const stateReads={readControllers:new Set()};session.executiveStateReads=stateReads;
+      let states;
+      try {
+        states=await Promise.all(sessionCases(session).map(async row=>
+          row.claim_id===main.state.claim_id?main.state:readState(await operationRequest(stateReads,`/claims/${key(row.claim_id)}`),row.claim_id).state
+        ));
+      } finally {
+        for(const controller of stateReads.readControllers)controller.abort();
+        if(session.executiveStateReads===stateReads)session.executiveStateReads=null;
       }
+      if(!await operationGate(session,token))return;
       const showcase=northStarShowcase(states,knowledgeCache.value);
       if(showcase.claimId!==main.state.claim_id){
         const selectedOpening=await nextOperationOpening(session,showcase.claimId);
@@ -5295,12 +5336,13 @@
       if(main.state.state_sha256!==showcase.candidates.find(row=>row.claimId===main.state.claim_id)?.stateHash)throw new Error('The selected showcase changed during admission.');
       const next=states.find(state=>state.claim_id!==main.state.claim_id&&state.graph?.family===main.state.graph?.family&&states.indexOf(state)>states.findIndex(row=>row.claim_id===main.state.claim_id));
       if(!next)throw new Error('The demonstration needs a later recorded case of the same type.');
+      if(!await operationGate(session,token))return;
       const opening=await nextOperationOpening(session,next.claim_id);
       if(!active())return;
       const later=await checkedNorthStarRecording(opening.operationBuffer,opening,active);
       if(!later||!active())return;
       await doc.fonts?.ready;
-      if(!active())return;
+      if(!await operationGate(session,token))return;
       cancelStageMotion();
       const P=presentationClock, beats=[];
       const add=(act,phase,duration,record=main,op=null,extra={})=>beats.push({act,phase,duration,record,op,...extra});
@@ -5416,7 +5458,7 @@
         if(customerPin){const pre=select('.au-ns-source-scroll pre'),source=trace.sources.get(customerPin.artifact_id),preview=northStarSourcePreview(source,customerPin);pre.innerHTML=northStarSourceBody(preview,customerPin);pre.closest('[data-au-ns-paper]').dataset.auCustomerSource=customerPin.artifact_id;}
         if(phase==='ready'){
           const paper=select('[data-au-ns-paper]');
-          paper.innerHTML=`<section class="au-ns-purpose" data-au-ns-purpose><p>Recorded example · legal protection</p><h2>From customer documents<br>to a reviewable answer</h2><p>Automated assistants connect evidence, legal checks and an assessment draft. You make the decision.</p><div aria-label="Assessment path">Documents <span>→</span> Facts <span>→</span> Law <span>→</span> Answer</div><small>This walkthrough replays completed work on fictional cases.</small><button type="button" class="au-link" data-au-claim="${h(main.state.claim_id)}">Open completed example ↗</button></section>`;
+          paper.innerHTML=northStarPurposeMarkup(main.state.claim_id);
         }
         all('.au-ns-footer').forEach(el=>el.remove());
         if(!viewName){const count=new Set(trace.rows.filter(op=>op.kind==='document.check'&&op.source&&op.result?.assessment==='sufficient'&&(op.id!==beat.op?.id||!['camera-in','cursor','highlight','passage-rest'].includes(phase))).map(op=>op.object.id)).size;select('.au-ns-sources')?.insertAdjacentHTML('beforeend',`<button type="button" class="au-executive-documents" data-au-detail="documents">Documents <span>${count} checked</span></button>`);}
@@ -5714,14 +5756,14 @@
             if (operationTrace?.rows.length) session.previousAttempts = [...list(operationTrace.previousAttempts),{rows:operationTrace.rows,bytes:operationTrace.bytes,recorded:false,reason:error.message}];
             session.useRecorded = true; session.operationStarted = false; operationController.abort(); session.operationController = null; startOperations(session,token); return; }
           try { await fallbackOperations(session,token,error.message); }
-          catch (fallback) { if (operationActive(session,token)) { if(operationTrace)operationTrace.replayUnavailable=true;stopPresentation(); renderClaim(); operationFallbackNotice(session,error.message,fallback.message); } }
+          catch (fallback) { if (operationActive(session,token)) { if(operationTrace)operationTrace.replayUnavailable=true;stopPresentation(); renderPresentationFailure(session); operationFallbackNotice(session,error.message,fallback.message); } }
         }
       } finally { operationController.abort(); controllers.delete(operationController); }
     }
     function presentationFailed(session, message) {
       if (demoSession !== session) return;
       if (doc.hidden) { session.failure = message; return; }
-      stopPresentation(); renderClaim(); notice(message,true);
+      stopPresentation(); renderPresentationFailure(session); notice(message,true);
     }
     function syncReplayGuide() {
       const legend = container.querySelector('[data-au-role-legend]');

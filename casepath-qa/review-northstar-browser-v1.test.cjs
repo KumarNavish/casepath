@@ -48,6 +48,29 @@ test('source, correction, accepted version and later-case consequence stay conne
   });
   assert.ok(value.right>value.left&&value.bottom>value.top&&value.exposed&&value.display!=='none',selector+' has exposed pixels in the current viewport: '+JSON.stringify(value));return value;
  };
+ const fullyVisible=async selector=>{
+  const value=await page.locator(selector).first().evaluate(el=>{
+   const own=el.getBoundingClientRect();
+   let left=Math.max(0,own.left),top=Math.max(0,own.top),right=Math.min(innerWidth,own.right),bottom=Math.min(innerHeight,own.bottom);
+   for(let parent=el.parentElement;parent;parent=parent.parentElement){
+    const style=getComputedStyle(parent);if(style.display==='contents')continue;const r=parent.getBoundingClientRect();
+    if(/auto|scroll|hidden|clip/.test(style.overflowX)){left=Math.max(left,r.left+parent.clientLeft);right=Math.min(right,r.left+parent.clientLeft+parent.clientWidth);}
+    if(/auto|scroll|hidden|clip/.test(style.overflowY)){top=Math.max(top,r.top+parent.clientTop);bottom=Math.min(bottom,r.top+parent.clientTop+parent.clientHeight);}
+   }
+   const contained=own.width>0&&own.height>0&&left<=own.left+1&&top<=own.top+1&&right>=own.right-1&&bottom>=own.bottom-1;
+   const exposed=[.15,.5,.85].every(x=>[.15,.5,.85].every(y=>{const hit=document.elementFromPoint(own.left+own.width*x,own.top+own.height*y);return !!hit&&(hit===el||el.contains(hit));}));
+   return {left:own.left,top:own.top,right:own.right,bottom:own.bottom,clipped:{left,top,right,bottom},contained,exposed};
+  });
+  assert.ok(value.contained&&value.exposed,selector+' is fully visible and unobscured without scrolling: '+JSON.stringify(value));return value;
+ };
+ const matchingStepMarker=async()=>{
+  const marker=page.locator('[data-review-ordinal-for]'),node=await marker.getAttribute('data-review-ordinal-for');
+  const full=(await page.locator('[data-review-process-map] [data-causal-node="'+node+'"] .nr-step-number').textContent()).trim();
+  assert.match(full,/^(?:[1-9]\d*|✓)$/);
+  assert.equal(await marker.innerText(),full,'the affected-step marker matches the same step in the full process');
+  assert.equal(await marker.getAttribute('hidden'),null);
+  return full;
+ };
  const meta=async form=>{await form.locator('[name="actor"]').fill('Test handler');await form.locator('[name="reason"]').fill('QA only: compare complete paired notices before joint resolution; preserve deadline protection.');};
  async function preview(id,submit){
   const before=(await detail(id)).state;
@@ -196,13 +219,54 @@ test('source, correction, accepted version and later-case consequence stay conne
   for(const edge of targetGraphBefore.graph.edges)assert.deepEqual(targetProcess.graph.edges.find(e=>e.edge_id===edge.edge_id),edge,'all earlier process connections remain unchanged');
   assert.equal(await page.locator('[data-review-role="result"]').getAttribute('aria-selected'),'true');
   await page.locator('[data-review-role="result"]').click();
-  await page.locator('[data-review-current-dependency]').scrollIntoViewIfNeeded();
-  await visible('[data-review-process-map]');await visible('#cwSourceInspector');await visible('[data-review-current-dependency]');
-  assert.match(await page.locator('[data-review-current-dependency]').innerText(),/Prepare challenge, extension or settlement now also requires “Compare both complete notices”/);
+  await page.locator('[data-review-current-dependency]').waitFor({state:'visible'});
+  assert.equal(await page.locator('[data-review-full-process]').getAttribute('open'),null,'Result starts with the affected step; the complete graph is one disclosure away');
+  const payoffGeometry={};
+  for(const selector of ['[data-review-application-history]','[data-review-before]','[data-review-after]','[data-review-affected-step]','[data-review-reuse-card="sources"]','[data-review-reuse-card="version"]','[data-review-reuse-card="result"]','[data-review-current-next]','.nr-reuse-notice','#cwSourceInspector'])payoffGeometry[selector]=await fullyVisible(selector);
+  assert.match(await page.locator('[data-review-affected-step]').innerText(),/Prepare challenge, extension or settlement/);
+  assert.match(await page.locator('[data-review-before]').innerText(),/Waiting for prerequisites · Collect type-specific evidence/);
+  assert.match(await page.locator('[data-review-after]').innerText(),/Waiting for prerequisites · Compare both complete notices/);
+  assert.match(await page.locator('[data-review-application-history]').innerText(),/already waiting before application/);
+  assert.match(await page.locator('[data-review-retained-context]').innerText(),/Earlier process connections retained/);
+  await visible('[data-review-retained-context]');
+  const payoffOrdinal=await matchingStepMarker();
+  await fullyVisible('[data-review-ordinal-for]');
+  assert.match(await page.locator('[data-review-current-dependency]').innerText(),/Still requires “Compare both complete notices”/);
+  assert.equal(await page.locator('[data-review-current-result]').innerText(),'Waiting for prerequisites');
+  assert.match(await page.locator('[data-review-current-next]').innerText(),/unchanged by this application/);
+  assert.ok((await page.locator('[data-review-current-next]').innerText()).includes(targetProcess.effective_assessment.next_step));
+  await page.locator('.nr-application-record > summary').click();
   assert.match(await page.locator('[data-review-preserved-connection]').innerText(),/Collect type-specific evidence/);
+  await page.locator('.nr-application-record > summary').click();
   assert.match(await page.locator('[data-review-reuse="'+fragment.fragment_sha256+'"]').innerText(),/This case keeps its own facts/);
+  // The full graph is keyboard reachable without replacing this claim's original reader.
+  const inspectWrites=writes.length,inspectState=(await detail(TARGET)).state;
+  await page.locator('[data-review-reuse-card="sources"] [data-noticed-source]').first().click();
+  await page.locator('#cpPreviewPageWrap .cp-preview-page').waitFor({state:'visible'});
+  const targetReader=await page.locator('#cwSourceInspector').elementHandle(),targetPage=await page.locator('#cpPreviewPageLabel').innerText();
+  const fullProcess=page.locator('[data-review-full-process] > summary');
+  await fullProcess.focus();await fullProcess.press('Enter');
+  await page.waitForFunction(()=>document.querySelector('[data-review-full-process]')?.open);
+  assert.equal(await matchingStepMarker(),payoffOrdinal,'opening the full graph does not change the step identity');
+  await fullyVisible('[data-review-process-map]');
+  assert.equal(await page.locator('[data-review-process-map] [data-causal-node]').count(),targetProcess.graph.nodes.length);
+  await page.locator('[data-review-process-map] [data-causal-node="lt_resolution"]').click();
+  assert.equal(await matchingStepMarker(),payoffOrdinal);
+  assert.equal(await page.locator('[data-review-full-process]').getAttribute('open'),'','selecting a step preserves the expanded graph');
+  await fullProcess.focus();await fullProcess.press('Enter');
+  await page.waitForFunction(()=>document.querySelector('[data-review-full-process]')?.open===false);
+  assert.equal(await matchingStepMarker(),payoffOrdinal,'closing the graph preserves the same step marker');
+  await page.locator('[data-review-role="builder"]').click();await visible('[data-review-process-map]');
+  await page.locator('[data-review-role="result"]').click();
+  assert.equal(await page.locator('[data-review-full-process]').getAttribute('open'),null);
+  assert.ok(await targetReader.evaluate(el=>el.isConnected),'role and graph changes keep the settled original reader');
+  assert.equal(await page.locator('#cpPreviewPageLabel').innerText(),targetPage);
+  for(const card of ['sources','version','result'])await fullyVisible('[data-review-reuse-card="'+card+'"]');
+  await fullyVisible('.nr-reuse-notice');await fullyVisible('#cwSourceInspector');
+  assert.equal(writes.length,inspectWrites,'inspecting the payoff and full process makes no writes');
+  assert.deepEqual((await detail(TARGET)).state,inspectState);
   await page.screenshot({path:path.join(server.out,'later-case-reuse.png')});
-  receipt.stages.push({stage:'later-case-application',preview:reusePreview.preview_sha256,event:reused.event_sha256,impact:reusePreview.impact,pin,workspace_revision:targetProcess.workspace_revision,target_facts_preserved:true,target_source_bindings_preserved:true});
+  receipt.stages.push({stage:'later-case-application',preview:reusePreview.preview_sha256,event:reused.event_sha256,impact:reusePreview.impact,pin,workspace_revision:targetProcess.workspace_revision,target_facts_preserved:true,target_source_bindings_preserved:true,payoff_geometry:payoffGeometry,affected_step_marker:payoffOrdinal,full_process_keyboard_access:true,original_reader_retained:true});
   await page.reload();await page.locator('#cpCausalProcess[data-claim-id="'+TARGET+'"]').waitFor({state:'visible'});
   assert.ok((await processView(TARGET)).graph.fragment_instances.some(f=>f.fragment_sha256===fragment.fragment_sha256),'reload preserves the exact pin');
   await page.locator('[data-review-role="result"][aria-selected="true"]').waitFor({state:'visible'});await visible('[data-review-current-dependency]');
@@ -215,6 +279,8 @@ test('source, correction, accepted version and later-case consequence stay conne
   await page.reload();await page.locator('[data-review-reuse="'+fragment.fragment_sha256+'"]').waitFor({state:'attached'});
   assert.match(await page.locator('[data-review-reuse="'+fragment.fragment_sha256+'"]').innerText(),/Exact saved version 1/);
   assert.equal(await page.locator('[data-review-role="result"]').getAttribute('aria-selected'),'true');await visible('[data-review-current-dependency]');
+  assert.equal(await matchingStepMarker(),payoffOrdinal,'reload and a newer library version preserve the displayed step identity');
+  for(const card of ['sources','version','result'])await fullyVisible('[data-review-reuse-card="'+card+'"]');
   await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});
   await page.locator('[data-review-role="finder"]').click();await visible('#cpPane-documents');
   await page.locator('[data-review-role="checker"]').click();await visible('#cwSourceInspector');

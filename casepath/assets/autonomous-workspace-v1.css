@@ -144,6 +144,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace :is(.au-body,.au-context-body,.au-context-view,.au-process-hero,.au-evidence-stage) { min-width:0; }
 .au-workspace .au-global-status:empty { display:none; }
 .au-workspace .au-global-status { max-width:80ch; margin-bottom:16px; font-size:16px; }
+.au-workspace .au-global-status > .au-record-link { margin-inline-start:8px; }
 .au-workspace .au-error { padding:10px 14px; border-left:2px solid var(--au-accent); color:#922d1f; background:#f5e8df; }
 .au-workspace .au-notice { padding:10px 14px; border-left:2px solid var(--au-amber); color:#70532d; background:#ebe7d9; }
 .au-workspace .au-eyebrow { color:var(--au-muted); font-size:16px; font-weight:400; line-height:1.5; letter-spacing:0; text-transform:none; }
@@ -2141,6 +2142,14 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
 .au-workspace .au-ns-purpose > div { margin:30px 0; font:600 16px/1.4 Mulish,sans-serif; }
 .au-workspace .au-ns-purpose > div span { padding:0 12px; color:#82072a; }
 .au-workspace .au-ns-purpose small { color:#61636b; font:400 13px/1.5 Mulish,sans-serif; }
+.au-workspace .au-ns-preparation-status { margin:12px 0 0; color:#61636b; font:400 15px/1.5 Mulish,sans-serif; }
+.au-workspace .au-ns-preparation .au-ns-sources > button { margin-top:12px; }
+@media (min-width:701px) {
+ .au-workspace .au-ns-preparation-status { margin:12px 27px 0; }
+ .au-workspace .au-ns-preparation .au-ns-sources > button { margin:12px 27px 0; }
+ .au-workspace .au-ns-preparation .au-ns-work { padding-top:159px; }
+ .au-workspace .au-ns-preparation .au-ns-paper { height:auto; min-height:493px; }
+}
 
 /* W10: the cited bytes stay intact; context recedes behind the exact span. */
 @media (min-width:701px) {
@@ -2150,7 +2159,7 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
  .au-workspace .au-ns-canvas { position:relative; }
  .au-workspace .au-ns-fact-connector { z-index:1; }
  .au-workspace .au-ns-fact-connector circle { stroke:#82072a; }
- .au-workspace .au-ns-purpose > button { border:0; background:none; padding:12px 0; color:#82072a; text-decoration:underline; font:inherit; }
+ .au-workspace .au-ns-purpose > button { display:block; margin-top:8px; border:0; background:none; padding:4px 0; color:#82072a; text-decoration:underline; font:inherit; }
  .au-workspace .au-ns-local { gap:18px; }
  .au-workspace .au-ns-missing { flex-shrink:0; }
 }

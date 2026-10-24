@@ -721,6 +721,30 @@ function fakeApi(overrides={}) {
  return {fetch,calls};
 }
 
+test('public presentation explains its purpose immediately and exposes an opening failure without a busy case',async t=>{
+ routingFixture(t,'#autonomous/demonstration');
+ const f=dom(),opening=deferredRead(),previousWidth=globalThis.innerWidth,previousAccess=globalThis.CASEPATH_PUBLIC_READ_ONLY;
+ globalThis.innerWidth=1440;globalThis.CASEPATH_PUBLIC_READ_ONLY=true;
+ const query=f.host.querySelector;f.host.querySelector=selector=>selector==='[data-au-presentation-preparing]'&&f.host.innerHTML.includes('data-au-presentation-preparing')?{}:query(selector);
+ const api=fakeApi({handle:async path=>path.includes('/claims/')?opening.promise:null}),controller=ui.mount(f.container,{fetch:api.fetch});
+ t.after(()=>{controller.destroy();opening.resolve(response({detail:'The saved opening is unavailable.'},404));if(previousWidth===undefined)delete globalThis.innerWidth;else globalThis.innerWidth=previousWidth;if(previousAccess===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=previousAccess;});
+ assert.match(f.host.innerHTML,/data-au-presentation-preparing aria-busy="true"/);
+ assert.match(f.host.innerHTML,/From customer documents<br>to a reviewable answer/);
+ assert.match(f.host.innerHTML,/You make the decision/);
+ assert.match(f.host.innerHTML,/Preparing the recorded walkthrough/);
+ assert.match(f.host.innerHTML.split('</aside>')[0],/au-ns-preparation-status[^>]*>Preparing the recorded walkthrough/,'preparation status precedes the tall introduction in the source rail');
+ assert.doesNotMatch(f.host.innerHTML,/data-au-claim-title|data-au-ns-start|data-au-source=|Heating|heating/,'no case or accepted evidence is presented before admission');
+ assert.equal(f.container.ownerDocument.title,'Demonstration — CasePath');
+ opening.resolve(response({detail:'The saved opening is unavailable.'},404));
+ await waitFor(()=>f.host.innerHTML.includes('data-au-presentation-unavailable'));
+ assert.doesNotMatch(f.host.innerHTML,/data-au-presentation-preparing|aria-busy="true"/);
+ assert.match(f.host.innerHTML,/The recorded walkthrough could not be opened/);
+ assert.match(f.host.innerHTML,/data-au-nav="demonstration"[^>]*>Try again/);
+ assert.match(f.host.innerHTML.split('</aside>')[0],/au-ns-preparation-status[\s\S]*data-au-nav="demonstration"[^>]*>Try again/,'failure and recovery stay together in the source rail');
+ assert.match(f.status.textContent,/Verified replay unavailable: The saved opening is unavailable/);
+ assert.ok(api.calls.every(row=>(row.init.method||'GET')==='GET'));
+});
+
 test('public read-only capability blocks forged forms and removes work controls while preserving inspection',async t=>{
  const f=dom(),api=fakeApi({handle:async(path)=>path.endsWith('/status')?response({enabled:true,provider_ready:true,read_only:true,writable:false,limits:{}}):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);

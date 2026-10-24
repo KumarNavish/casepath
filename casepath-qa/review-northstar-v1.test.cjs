@@ -96,7 +96,11 @@ test('a later edit cannot make historical reuse consequences appear current', ()
   const html=northstar.reuseMarkup(view);
   assert.match(html,/When applied/);
   assert.match(html,/Current process/);
-  assert.match(html,/data-review-current-result[^>]*>[^<]*Prepare joint resolution: Ready to work/);
+  assert.match(html,/data-review-affected-step="resolution"[\s\S]*?<strong>Prepare joint resolution<\/strong>/);
+  assert.match(html,/data-review-current-result>Ready to work<\/strong>/);
+  assert.doesNotMatch(html,/data-review-current-dependency/);
+  assert.match(html,/data-review-after[\s\S]*?Waiting for prerequisites · Compare the complete notices/);
+  assert.match(html,/data-review-current-next><small>Current next action<\/small>Compare the complete notices/);
 });
 
 test('renaming the focused action is a wording change even when next_step text changes',()=>{
@@ -130,7 +134,7 @@ test('an applied blocking connection is never described as a required prerequisi
  const v=fixture(),fragment={fragment_id:'blocking',version:1,fragment_sha256:hash,source_claim_id:'earlier',name:'Test blocker',actor:'Test handler'};
  v.fragments=[fragment];v.graph.fragment_instances=[{...fragment}];v.graph.edges[0].relation='blocks';
  v.history=[{event_sha256:'f'.repeat(64),revision:3,operation:{type:'fragment.apply',fragment_sha256:hash},impact:delta}];
- const html=northstar.reuseMarkup(v);assert.doesNotMatch(html,/now also requires/);assert.match(html,/is now blocked by/);
+ const html=northstar.reuseMarkup(v);assert.doesNotMatch(html,/Still requires/);assert.match(html,/Still blocked by/);
 });
 
 test('current reuse wording respects evaluated edge activation and relation',()=>{
@@ -144,8 +148,8 @@ test('current reuse wording respects evaluated edge activation and relation',()=
    v.graph.edges.push(block);v.evaluation.edges.push({...block,activation:'true'});
   }
   const html=northstar.reuseMarkup(v);
-  if(mode==='requires'){assert.match(html,/now also requires/);assert.match(html,/still needs review in this case/);}
-  else{assert.doesNotMatch(html,/now also requires/);assert.match(html,/is now blocked by/);}
+  if(mode==='requires'){assert.match(html,/Still requires/);assert.match(html,/still needs review in this case/);}
+  else{assert.doesNotMatch(html,/Still requires/);assert.match(html,/Still blocked by/);}
  }
 });
 test('reuse document passages must belong to the receiving claim sources',()=>{
@@ -155,4 +159,65 @@ test('reuse document passages must belong to the receiving claim sources',()=>{
  v.effective_assessment={conflicts:[{sources:[{artifact_id:'target-a',quote:'30. Juni'},{artifact_id:'target-b',quote:'31. Juli'},{artifact_id:'earlier-file',quote:'Another case'}]}]};
  assert.deepEqual(northstar.reuseModel(v).facts.map(f=>f.source_id),['target-a','target-b']);
  const html=northstar.reuseMarkup(v);assert.match(html,/30. Juni/);assert.match(html,/31. Juli/);assert.doesNotMatch(html,/Another case/);
+});
+
+test('the payoff exposes the recorded before and after without claiming an unblocked outcome',()=>{
+ const v=fixture(),fragment={fragment_id:'visible-history',version:1,fragment_sha256:hash,source_claim_id:'earlier',name:'Paired-notice review',actor:'Test handler'};
+ v.graph.nodes.unshift({node_id:'evidence',label:'Collect type-specific evidence'});
+ v.graph.edges.unshift({edge_id:'evidence_first',source_node_id:'evidence',target_node_id:'resolution',relation:'requires'});
+ v.fragments=[fragment,{...fragment,version:2,fragment_sha256:'2'.repeat(64)}];v.graph.fragment_instances=[{...fragment}];
+ const impact={...delta,node_changes:[{...delta.node_changes[0],before:{execution_state:'blocked',blocked_by:['evidence']}}]};
+ v.history=[{event_sha256:'f'.repeat(64),revision:3,operation:{type:'fragment.apply',fragment_sha256:hash},impact}];
+ v.evaluation.edges=v.graph.edges.map(edge=>({...edge,activation:'true'}));
+ v.effective_assessment.next_step=impact.next_action.after;
+ const html=northstar.reuseMarkup(v),history=html.slice(html.indexOf('data-review-application-history'),html.indexOf('class="nr-reuse-cards"'));
+ assert.doesNotMatch(history,/<details/,'before and after are visible content, not a closed provenance disclosure');
+ assert.match(history,/Before application<\/small><p>Waiting for prerequisites · Collect type-specific evidence/);
+ assert.match(history,/After application<\/small><p>Waiting for prerequisites · Compare the complete notices/);
+ assert.match(history,/already waiting before application/);
+ assert.match(history,/data-review-retained-context>Earlier process connections retained/);
+ assert.match(html,/data-review-current-result>Waiting for prerequisites<\/strong>/);
+ assert.match(html,/data-review-current-dependency>Still requires “Compare the complete notices”/);
+ assert.match(html,/data-review-current-next><small>Next action · unchanged by this application<\/small>Ask for copies/);
+ assert.match(html,/Exact saved version 1/);assert.doesNotMatch(html,/Exact saved version 2/);
+ assert.match(html,/Saved by Test handler/);assert.match(html,/Qualified review is still required/);
+ assert.equal((html.match(/data-review-reuse-card=/g)||[]).length,3);
+ assert.doesNotMatch(html,/expert.reviewed|Edited by reviewer|claim approved|outcome authorised/i);
+});
+
+test('the payoff does not invent an ordinal from a different raw node order',()=>{
+ const v=fixture(),fragment={fragment_id:'ordinal',version:1,fragment_sha256:hash,source_claim_id:'earlier',name:'Paired-notice review',actor:'Test handler'};
+ v.claim_id='ordinal';v.graph.nodes.reverse();
+ v.fragments=[fragment];v.graph.fragment_instances=[{...fragment}];v.history=[{event_sha256:'f'.repeat(64),operation:{type:'fragment.apply',fragment_sha256:hash},impact:delta}];
+ const original=JSON.stringify(v.graph),payoff=northstar.reuseMarkup(v);
+ assert.match(payoff,/data-review-ordinal-for="resolution" hidden><\/span>/,'the marker waits for the rendered process order');
+ assert.doesNotMatch(payoff,/data-review-retained-context/,'retention is claimed only for existing earlier connections');
+ globalThis.CasePathReviewNorthStar=northstar;
+ try{
+  const process=causal.render(v,{presentation:'northstar'});
+  assert.match(process,/data-causal-node="resolution"[^>]*><span class="nr-step-number">2<\/span>/);
+  assert.equal(v.graph.nodes.findIndex(node=>node.node_id==='resolution'),0,'raw source order differs from display order');
+  assert.equal(JSON.stringify(v.graph),original,'presentation never reorders the authoritative graph');
+ }finally{delete globalThis.CasePathReviewNorthStar;}
+});
+
+test('the full process remains available and a correction preview never collapses it',()=>{
+ const v=fixture(),fragment={fragment_id:'map',version:1,fragment_sha256:hash,source_claim_id:'earlier',name:'Paired-notice review',actor:'Test handler'};
+ v.fragments=[fragment];v.graph.fragment_instances=[{...fragment}];v.history=[{event_sha256:'f'.repeat(64),operation:{type:'fragment.apply',fragment_sha256:hash},impact:delta}];
+ const ui={graph:v.graph,node:v.graph.nodes[1],inspector:'<p>Selected process step</p>',tools:'',impact:'',processState:'Waiting for prerequisites'};
+ const rendered=northstar.renderProcess(v,{selected:'resolution',mode:null,preview:null},ui);
+ assert.match(rendered,/data-review-full-process open><summary>Full process · 2 steps/);
+ for(const node of v.graph.nodes)assert.match(rendered,new RegExp('data-causal-node="'+node.node_id+'"'));
+ for(const state of [{mode:'edit',preview:null},{mode:null,preview:{impact:delta}}]){
+  const html=northstar.renderProcess(v,{selected:'resolution',...state},ui);
+  assert.match(html,/data-review-process-map/);assert.doesNotMatch(html,/data-review-full-process|data-review-payoff/);
+ }
+});
+
+test('a missing next-action comparison is not presented as unchanged',()=>{
+ const v=fixture(),fragment={fragment_id:'unknown-next',version:1,fragment_sha256:hash,source_claim_id:'earlier',name:'Paired-notice review',actor:'Test handler'};
+ const impact={...delta};delete impact.next_action_changed;
+ v.fragments=[fragment];v.graph.fragment_instances=[{...fragment}];v.history=[{event_sha256:'f'.repeat(64),operation:{type:'fragment.apply',fragment_sha256:hash},impact}];
+ const html=northstar.reuseMarkup(v);
+ assert.match(html,/No next-action comparison recorded/);assert.doesNotMatch(html,/Next action[^<]*unchanged/);
 });
