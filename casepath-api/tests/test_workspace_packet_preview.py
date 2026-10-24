@@ -60,6 +60,62 @@ def test_image_dimensions_and_scaling():
     with Image.open(BytesIO(preview_page(raw,row,1,160))) as image: assert image.size==(160,120)
 
 
+@pytest.mark.parametrize('orientation,size,red_point,blue_point', [
+    (1, (160, 80), (40, 20), (120, 60)),
+    (3, (160, 80), (120, 60), (40, 20)),
+    (6, (160, 320), (120, 80), (40, 240)),
+    (8, (160, 320), (40, 240), (120, 80)),
+])
+def test_jpeg_preview_preserves_exif_orientation_and_original(
+    orientation, size, red_point, blue_point
+):
+    stream = BytesIO()
+    with Image.new('RGB', (640, 320), (20, 40, 200)) as source:
+        source.paste((200, 20, 40), (0, 0, 320, 160))
+        exif = Image.Exif()
+        exif[274] = orientation
+        source.save(stream, 'JPEG', quality=95, exif=exif)
+    raw = stream.getvalue()
+    row = record(raw, 'image/jpeg')
+    metadata = preview_metadata(raw, row)
+    assert (metadata['width'], metadata['height']) == (640, 320)
+    assert metadata['is_evidence_admission'] is False
+    with Image.open(BytesIO(preview_page(raw, row, 1, 160))) as image:
+        assert image.format == 'PNG' and image.mode == 'RGB'
+        assert image.size == size
+        red = image.getpixel(red_point)
+        blue = image.getpixel(blue_point)
+        assert red[0] > 180 and red[2] < 80
+        assert blue[2] > 180 and blue[0] < 80
+        assert image.getexif().get(274) is None
+    assert hashlib.sha256(raw).hexdigest() == row['sha256']
+    with Image.open(BytesIO(raw)) as original:
+        assert original.size == (640, 320)
+        assert original.getexif()[274] == orientation
+
+
+@pytest.mark.parametrize('mode,value,expected', [
+    ('L', 120, (120, 120, 120)),
+    ('RGBA', (12, 34, 56, 100), (12, 34, 56)),
+    ('P', 1, (12, 34, 56)),
+    ('I;16', 120, (120, 120, 120)),
+])
+def test_png_preview_preserves_rgb_conversion_and_original(mode, value, expected):
+    stream = BytesIO()
+    with Image.new(mode, (320, 160), value) as source:
+        if mode == 'P':
+            source.putpalette([0, 0, 0, 12, 34, 56] + [0] * 762)
+        source.save(stream, 'PNG')
+    raw = stream.getvalue()
+    row = record(raw, 'image/png')
+    assert preview_metadata(raw, row)['is_evidence_admission'] is False
+    with Image.open(BytesIO(preview_page(raw, row, 1, 160))) as image:
+        assert image.format == 'PNG' and image.mode == 'RGB'
+        assert image.size == (160, 80)
+        assert image.getpixel((80, 40)) == expected
+    assert hashlib.sha256(raw).hexdigest() == row['sha256']
+
+
 def test_word_returns_text_not_executable_markup():
     raw=office({'word/document.xml':'<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:r><w:t>Original &amp; unmodified</w:t></w:r></w:p></w:body></w:document>'})
     value=preview_metadata(raw,record(raw,'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))

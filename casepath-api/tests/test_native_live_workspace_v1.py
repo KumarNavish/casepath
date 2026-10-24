@@ -351,3 +351,197 @@ def test_controlled_pdf_renders_every_native_page_from_admitted_bytes(
     assert [row["image_id"] for row in prepared.image_receipts] == [
         f"p{index}" for index in range(expected_pages)
     ]
+
+
+def _historical_image_stream(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    source_kind: str,
+    image_format: str = "PNG",
+):
+    """Persist historical decoder provenance using only the injected test transport."""
+    import base64
+    from io import BytesIO
+
+    from PIL import Image
+    from casepath_api import native_live_workspace_v1 as native_module
+
+    buffer = BytesIO()
+    Image.new("RGB", (12, 7), (20, 80, 140)).save(buffer, format=image_format)
+    raw = buffer.getvalue()
+    source = {
+        "source_id": "decoder_upgrade_image",
+        "file_name": "decoder-upgrade." + image_format.lower(),
+        "media_type": "image/" + ("jpeg" if image_format == "JPEG" else "png"),
+        "raw_base64": base64.b64encode(raw).decode("ascii"),
+        "sha256": sha256_bytes(raw),
+    }
+    request = {"channel_id": "c1", "need_ids": ["n0"], "purpose": "Read returned image."}
+    output = {**_actor_output(), "requests": [request] if source_kind == "admission" else []}
+    transport = CapturingTransport(output, [])
+    service = _configure_app_service(monkeypatch, tmp_path, transport)
+    config = {
+        "system_prompt": "Read only the supplied test sources.",
+        "refinement_prompt": "Review the supplied proposal.",
+        "available_channels": [{"channel_id": "c1", "description": "Test source export."}],
+        "remaining_export_attempts": 1,
+    }
+    if source_kind == "knowledge":
+        config["knowledge_sources"] = [{"knowledge_kind": "policy", "source": source}]
+    # The regression is in recorded provenance, not decoding. The pinned decoder
+    # reads the fixture; only its historical version label is simulated here.
+    with monkeypatch.context() as historical:
+        historical.setattr(Image, "__version__", "11.3.0")
+        service.configure_export(
+            MARA_CLAIM_ID, idempotency_key="decoder.config", config=config
+        )
+        first = service.cycle(MARA_CLAIM_ID, idempotency_key="decoder.first")
+        assert first["qualified"] is True
+        if source_kind == "admission":
+            service.admit_source(
+                MARA_CLAIM_ID,
+                idempotency_key="decoder.admission",
+                admission={
+                    "kind": "export",
+                    "origin_cycle_id": first["cycle_id"],
+                    "request_index": 0,
+                    "request": request,
+                    "status": "exported",
+                    "observed_at": "2026-09-06T09:16:00+00:00",
+                    "source": source,
+                },
+            )
+    journal = service._journal()
+    try:
+        events = journal.events(service._stream_id(MARA_CLAIM_ID))
+    finally:
+        journal.close()
+    event_type = (
+        native_module.EXPORT_CONFIG_EVENT
+        if source_kind == "knowledge"
+        else native_module.SOURCE_ADMISSION_EVENT
+    )
+    payload = next(event["payload"] for event in events if event["event_type"] == event_type)
+    receipt = (
+        payload["knowledge_renderer_receipts"][0]
+        if source_kind == "knowledge"
+        else payload["renderer_receipt"]
+    )
+    assert receipt["decoder_version"] == "11.3.0"
+    return service, transport, events, source, raw, first
+
+
+@pytest.mark.parametrize("source_kind", ["knowledge", "admission"])
+@pytest.mark.parametrize("image_format", ["JPEG", "PNG"])
+def test_pillow_upgrade_resumes_journaled_images_without_rewriting_history(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    source_kind: str,
+    image_format: str,
+) -> None:
+    from PIL import Image
+
+    service, transport, before, source, raw, first = _historical_image_stream(
+        tmp_path, monkeypatch, source_kind=source_kind, image_format=image_format
+    )
+    assert Image.__version__ == "13.0.0"
+    restarted = NativeLiveWorkspaceServiceV1(
+        corpus=service.corpus,
+        database=service.database,
+        runtime_root=service.runtime_root,
+        provider_config=service.provider_config,
+        transport=transport,
+        clock=lambda: "2026-09-06T09:17:00+00:00",
+    )
+    replay = restarted.cycle(MARA_CLAIM_ID, idempotency_key="decoder.first")
+    assert replay["replayed"] is True
+    assert replay["terminal_event_sha256"] == first["terminal_event_sha256"]
+    assert len(transport.requests) == 1
+
+    transport.output = {**_actor_output(), "requests": []}
+    resumed = restarted.cycle(MARA_CLAIM_ID, idempotency_key="decoder.resumed")
+    assert resumed["qualified"] is True
+    assert len(transport.requests) == 2
+    receipt = next(
+        row for row in resumed["source_receipts"] if row["artifact_id"] == source["source_id"]
+    )
+    assert receipt["admission_receipt"]["renderer_receipt"]["decoder_version"] == "13.0.0"
+    native = next(
+        row for row in resumed["native_image_receipts"] if row["source_id"] == source["source_id"]
+    )
+    assert native["sha256"] == source["sha256"]
+    assert Path(native["image_path"]).read_bytes() == raw
+    journal = restarted._journal()
+    try:
+        after = journal.events(restarted._stream_id(MARA_CLAIM_ID))
+    finally:
+        journal.close()
+    assert after[:len(before)] == before
+    app_module.native_live_workspace_service.cache_clear()
+
+
+@pytest.mark.parametrize("source_kind", ["knowledge", "admission"])
+@pytest.mark.parametrize(
+    "drift",
+    ["unknown_decoder", "renderer", "dimensions", "format", "native_bytes", "extra_field", "raw_hash", "downgrade"],
+)
+def test_pillow_upgrade_still_rejects_image_evidence_drift(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    source_kind: str,
+    drift: str,
+) -> None:
+    from copy import deepcopy
+
+    from PIL import Image
+    from casepath_api import native_live_workspace_v1 as native_module
+
+    service, transport, before, _, _, _ = _historical_image_stream(
+        tmp_path, monkeypatch, source_kind=source_kind
+    )
+    events = deepcopy(before)
+    event_type = (
+        native_module.EXPORT_CONFIG_EVENT
+        if source_kind == "knowledge"
+        else native_module.SOURCE_ADMISSION_EVENT
+    )
+    payload = next(event["payload"] for event in events if event["event_type"] == event_type)
+    if source_kind == "knowledge":
+        receipt = payload["knowledge_renderer_receipts"][0]
+        source = payload["config"]["knowledge_sources"][0]["source"]
+        reconstruct = service._knowledge_sources
+    else:
+        receipt = payload["renderer_receipt"]
+        source = payload["source"]
+        reconstruct = service._returned_sources
+    changes = {
+        "unknown_decoder": ("decoder_version", "12.3.0"),
+        "renderer": ("renderer", "unrecognized-renderer"),
+        "dimensions": ("dimensions", [99, 7]),
+        "format": ("decoded_format", "JPEG"),
+        "native_bytes": ("native_bytes_unchanged", False),
+        "extra_field": ("unreviewed_transform", True),
+    }
+    if drift == "raw_hash":
+        source["sha256"] = "0" * 64
+    elif drift == "downgrade":
+        receipt["decoder_version"] = "13.0.0"
+        monkeypatch.setattr(Image, "__version__", "11.3.0")
+    else:
+        key, value = changes[drift]
+        receipt[key] = value
+    with pytest.raises(
+        native_module.NativeLiveWorkspaceError,
+        match="byte hash mismatch" if drift == "raw_hash" else "renderer receipt drifted",
+    ):
+        reconstruct(
+            MARA_CLAIM_ID, events, observed_at="2026-09-06T09:17:00+00:00"
+        )
+    journal = service._journal()
+    try:
+        assert journal.events(service._stream_id(MARA_CLAIM_ID)) == before
+    finally:
+        journal.close()
+    assert len(transport.requests) == 1
+    app_module.native_live_workspace_service.cache_clear()

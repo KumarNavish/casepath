@@ -646,6 +646,32 @@ def _render_artifact(
     return tuple(text_views), tuple(native_views), receipt
 
 
+
+def _renderer_receipt_matches(
+    current: Mapping[str, Any], recorded: Any
+) -> bool:
+    """Allow only the reviewed image-decoder upgrade, preserving journal receipts.
+
+    Original image bytes are hash-checked and verified again before this check.
+    Pillow does not transform those bytes. The 11.3.0 -> 13.0.0 security update
+    may therefore change decoder provenance alone; format, dimensions and every
+    other receipt field must still match. Other upgrades and downgrades fail
+    closed until reviewed. New cycle receipts retain the actual current version.
+    """
+    if current == recorded:
+        return True
+    if (
+        not isinstance(recorded, Mapping)
+        or current.get("renderer") != "Pillow.verify+exact-original-bytes/1"
+        or current.get("decoder_version") != "13.0.0"
+        or recorded.get("decoder_version") != "11.3.0"
+        or current.get("decoded_format") not in {"JPEG", "PNG"}
+        or current.get("native_bytes_unchanged") is not True
+    ):
+        return False
+    return {**current, "decoder_version": "11.3.0"} == recorded
+
+
 def _validated_source_payload(value: Any) -> tuple[dict[str, str], bytes]:
     required = {
         "source_id",
@@ -1236,7 +1262,7 @@ class NativeLiveWorkspaceServiceV1:
                     "export_config_event_sha256": config_event["event_sha256"],
                 },
             )
-            if rendered != renderer_receipts[index]:
+            if not _renderer_receipt_matches(rendered, renderer_receipts[index]):
                 raise NativeLiveWorkspaceError("knowledge source renderer receipt drifted")
             admitted.validate(observed_at)
             result.append(admitted)
@@ -1329,7 +1355,7 @@ class NativeLiveWorkspaceServiceV1:
                     ),
                 },
             )
-            if renderer_receipt != payload["renderer_receipt"]:
+            if not _renderer_receipt_matches(renderer_receipt, payload["renderer_receipt"]):
                 raise NativeLiveWorkspaceError("admitted source renderer receipt drifted")
             admitted.validate(observed_at)
             result.append(admitted)

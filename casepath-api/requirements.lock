@@ -1,6 +1,7 @@
 # Complete application and build/test lock resolved and verified with CPython
 # 3.13.9 on 2026-08-11. Every direct requirement and active transitive is
 # pinned; render-build.sh installs this file before running the release gates.
+# Pillow security update verified with CPython 3.13.9 on 2026-10-24.
 annotated-types==0.7.0
 anyio==4.12.1
 certifi==2026.7.22
@@ -31,7 +32,7 @@ openrouter==0.11.46
 orjson==3.11.9
 ormsgpack==1.12.2
 packaging==26.3
-pillow==11.3.0
+pillow==13.0.0
 pluggy==1.6.0
 pydantic==2.11.7
 pydantic_core==2.33.2
