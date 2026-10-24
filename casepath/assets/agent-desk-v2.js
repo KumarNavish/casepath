@@ -214,6 +214,7 @@
     window.addEventListener('casepath:desk-refresh',()=>{if(!workspace.snapshot().claim)void load();});
     document.addEventListener('click',event=>{const tab=event.target.closest('[data-claim-section]');if(tab){const mount=document.getElementById('agentClaimMount');if(mount)mount.dataset.pane=tab.dataset.claimSection;}});
     void load().then(async()=>{
+      if(new URLSearchParams(location.search).get('view')==='northstar')return;
       try {
         await workspace.request('/api/claim-loops/v1/workspace/desk/start',{method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Agent-Work':'1','X-CasePath-Idempotency-Key':'desk-arrival-synthetic-150-v2-6'},body:JSON.stringify({limit:6})});
         await load();

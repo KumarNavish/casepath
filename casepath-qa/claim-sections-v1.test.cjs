@@ -9,7 +9,7 @@ const source=fs.readFileSync(path.join(__dirname,'../casepath/assets/claims-work
 // Execute the production navigation functions without starting the claim API.
 function fixture({mobile=false}={}){
  const names=['overview','process','documents'],storage=new Map();
- const tabs=names.map(name=>({dataset:{claimSection:name},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},closest(){return this}}));
+ const tabs=names.map(name=>({dataset:{claimSection:name},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},closest(selector){return selector==='[data-claim-section]'?this:null}}));
  const panes=names.map(name=>({dataset:{claimPane:name},fields:[{value:'Unsaved handler explanation'}]}));
  const column={scrollTop:150},rail={setAttribute(){},removeAttribute(){}},toggle={setAttribute(k,v){this[k]=v}};
  const panel={dataset:{},scrollTop:150,querySelector:s=>s==='.cp-work-column'?column:null,querySelectorAll:s=>s==='[data-claim-section]'?tabs:s==='[data-claim-pane]'?panes:s==='[data-open-inspector]'?[toggle]:[]};
@@ -312,4 +312,110 @@ test('connected source work has a named target and still opens the complete reco
  c.inspect(null,opened.id);
  assert.match(dialog.innerHTML,/<h2>Customer message · The saved claim title &lt;unconfirmed&gt;<\/h2>/);
  assert.equal(c.objectTitle({kind:'opened_source',value:{extraction:'pdf_text',filename:'Separate_notice.pdf',text:'Full PDF extraction'}}),'Separate notice.pdf');
+});
+
+test('a completed save for an old visit cannot replace the current claim loop',async()=>{
+ const f=contextualPaneFixture(),c=f.c;
+ vm.runInContext(source.slice(source.indexOf('  async function reloadCausalProcess('),source.indexOf('  function chooseEvidence(')),c);
+ const aContext=c.activeDetailContext(),aDetail=c.state.detail,aLoop={claim_id:'claim-a'},bLoop={claim_id:'claim-b'};
+ let releaseLoop,entered;
+ const atLoop=new Promise(resolve=>entered=resolve),heldLoop=new Promise(resolve=>releaseLoop=resolve);
+ c.request=async()=>aDetail;c.validateDetailResponse=async value=>value;c.state.loop=aLoop;
+ c.loadClaimLoop=()=>{entered();return heldLoop;};
+ let followups=0;c.loadDraftList=async()=>{followups++;};c.loadCausalProcess=async()=>{followups++;};
+ const pending=c.reloadCausalProcess(aContext,f.process);await atLoop;
+ const bDetail={state:{claim_id:'claim-b',revision:9,state_sha256:'b-state'},artifacts:[]},bProcess={claim_id:'claim-b',workspace_revision:9};
+ c.state.detailEpoch++;c.state.detail=bDetail;c.state.causal=bProcess;c.state.loop=bLoop;
+ releaseLoop(aLoop);await pending;
+ assert.strictEqual(c.state.detail,bDetail);assert.strictEqual(c.state.causal,bProcess);assert.strictEqual(c.state.loop,bLoop);assert.equal(followups,0);
+});
+
+function northstarScrollFixture(width=1440){
+ const f=fixture({mobile:width<=540}),c=f.context,originalQuery=f.panel.querySelector;
+ f.panel.dataset.reviewView='northstar';c.northstarReview=true;c.northstarCompactWorkbench={matches:width<=760};
+ const byName=new Map(f.panes.map(pane=>{pane.scrollTop=0;pane.attrs={};pane.setAttribute=function(name,value){this.attrs[name]=String(value);};return [pane.dataset.claimPane,pane];}));
+ f.panel.querySelector=selector=>selector.startsWith('#cpPane-')?byName.get(selector.slice(8))||null:originalQuery(selector);
+ c.state.claimSection='process';c.state.reviewRole='builder';
+ return {...f,c,process:byName.get('process'),documents:byName.get('documents')};
+}
+test('northstar restores the destination pane without overwriting the pane being left',()=>{
+ const f=northstarScrollFixture(),{c,process,documents,listeners}=f,fields=f.panes.map(p=>p.fields[0]);
+ process.scrollTop=240;documents.scrollTop=11;c.state.sectionScroll.documents=91;
+ c.selectClaimSection('documents');
+ assert.equal(c.claimScrollRegion(),documents);assert.equal(c.state.sectionScroll.process,240);
+ assert.equal(process.scrollTop,240);assert.equal(documents.scrollTop,91);
+ documents.scrollTop=183;listeners.scroll({target:documents});c.selectClaimSection('process');
+ assert.equal(c.claimScrollRegion(),process);assert.equal(process.scrollTop,240);assert.equal(documents.scrollTop,183);
+ process.scrollTop=275;listeners.scroll({target:process});c.selectClaimSection('documents');
+ assert.equal(process.scrollTop,275);assert.equal(documents.scrollTop,183);
+ f.panes.forEach((pane,index)=>{assert.equal(pane.fields[0],fields[index]);assert.equal(pane.fields[0].value,'Unsaved handler explanation');});
+});
+test('northstar uses the panel through 760px while preserving the standard 540px breakpoint',()=>{
+ for(const width of [541,650,760]){
+  const {c,panel,process,documents,column,rail,listeners}=northstarScrollFixture(width);
+  assert.equal(c.mobileWorkbench.matches,false);assert.equal(c.claimScrollRegion(),panel,width+'px uses the northstar CSS scroll owner');
+  panel.scrollTop=212;process.scrollTop=17;documents.scrollTop=23;listeners.scroll({target:panel});
+  assert.equal(c.state.sectionScroll.process,212);
+  for(const target of [process,column,rail])listeners.scroll({target});
+  assert.equal(c.state.sectionScroll.process,212);
+  c.selectClaimSection('documents');assert.equal(panel.scrollTop,0);
+  panel.scrollTop=91;listeners.scroll({target:panel});c.selectClaimSection('process');assert.equal(panel.scrollTop,212);
+  c.selectClaimSection('documents');assert.equal(panel.scrollTop,91);assert.equal(process.scrollTop,17);assert.equal(documents.scrollTop,23);
+ }
+ const f=northstarScrollFixture(761);assert.equal(f.c.claimScrollRegion(),f.process);
+});
+
+test('a rejected loop refresh cannot partially publish a newer claim revision',async()=>{
+ const f=contextualPaneFixture(),c=f.c;
+ vm.runInContext(source.slice(source.indexOf('  async function reloadCausalProcess('),source.indexOf('  function chooseEvidence(')),c);
+ const context=c.activeDetailContext(),oldDetail=c.state.detail,oldProcess=c.state.causal;
+ const oldLoop={claim_id:'claim-a',revision:4},oldPriority={claim_id:'claim-a',state_sha256:'saved-state'};
+ c.state.loop=oldLoop;c.state.detailPriority=oldPriority;
+ const fresh={...oldDetail,state:{...oldDetail.state,revision:5,state_sha256:'state-five'}},accepted={...f.process,workspace_revision:5,workspace_state_sha256:'state-five'},failure=new Error('Loop read unavailable');
+ let rejectLoop,entered;const atLoop=new Promise(resolve=>entered=resolve),heldLoop=new Promise((resolve,reject)=>rejectLoop=reject);
+ c.request=async()=>fresh;c.validateDetailResponse=async value=>value;c.loadClaimLoop=()=>{entered();return heldLoop;};
+ let followups=0;c.loadDraftList=async()=>{followups++;};c.loadCausalProcess=async()=>{followups++;};
+ const rejected=assert.rejects(c.reloadCausalProcess(context,accepted),error=>error===failure);await atLoop;
+ const during={detail:c.state.detail,causal:c.state.causal,loop:c.state.loop,priority:c.state.detailPriority};
+ rejectLoop(failure);await rejected;
+ for(const snapshot of [during,{detail:c.state.detail,causal:c.state.causal,loop:c.state.loop,priority:c.state.detailPriority}]){
+  assert.strictEqual(snapshot.detail,oldDetail);assert.strictEqual(snapshot.causal,oldProcess);assert.strictEqual(snapshot.loop,oldLoop);assert.strictEqual(snapshot.priority,oldPriority);
+ }
+ assert.equal(followups,0);assert.ok(f.renders.every(detail=>detail===oldDetail));
+});
+test('a slow same-visit loop refresh cannot replace a newer coherent revision',async()=>{
+ const f=contextualPaneFixture(),c=f.c;
+ vm.runInContext(source.slice(source.indexOf('  async function reloadCausalProcess('),source.indexOf('  function chooseEvidence(')),c);
+ const context=c.activeDetailContext(),oldDetail=c.state.detail;
+ c.state.loop={claim_id:'claim-a',revision:4};
+ const five={...oldDetail,state:{...oldDetail.state,revision:5,state_sha256:'state-five'}},six={...oldDetail,state:{...oldDetail.state,revision:6,state_sha256:'state-six'}};
+ const sixProcess={...f.process,workspace_revision:6,workspace_state_sha256:'state-six'},sixLoop={claim_id:'claim-a',revision:6};
+ let resolveLoop,entered;const atLoop=new Promise(r=>entered=r),held=new Promise(r=>resolveLoop=r);
+ c.request=async()=>five;c.validateDetailResponse=async v=>v;c.loadClaimLoop=()=>{entered();return held;};
+ let followups=0;c.loadDraftList=async()=>{followups++;};c.loadCausalProcess=async()=>{followups++;};
+ const pending=c.reloadCausalProcess(context);await atLoop;
+ c.state.detail=six;c.state.causal=sixProcess;c.state.loop=sixLoop;
+ resolveLoop({claim_id:'claim-a',revision:5});await pending;
+ assert.strictEqual(c.state.detail,six);assert.strictEqual(c.state.causal,sixProcess);assert.strictEqual(c.state.loop,sixLoop);assert.equal(followups,0);
+});
+
+test('post-commit read failures retain a coherent snapshot and render recovery only in the active visit',async()=>{
+ for(const phase of ['draft','process']){
+  const f=contextualPaneFixture(),c=f.c;
+  vm.runInContext(source.slice(source.indexOf('  async function reloadCausalProcess('),source.indexOf('  function chooseEvidence(')),c);
+  const context=c.activeDetailContext(),fresh={...c.state.detail,state:{...c.state.detail.state,revision:5,state_sha256:'state-five'}},loop={claim_id:'claim-a',revision:5};
+  const accepted={...f.process,workspace_revision:5,workspace_state_sha256:'state-five'},failure=new Error(phase+' unavailable');
+  c.state.loop={claim_id:'claim-a',revision:4};c.request=async()=>fresh;c.validateDetailResponse=async v=>v;c.loadClaimLoop=async()=>loop;
+  c.loadDraftList=async()=>{if(phase==='draft')throw failure;};c.loadCausalProcess=async()=>{throw failure;};
+  await assert.rejects(c.reloadCausalProcess(context,accepted),error=>error===failure);
+  assert.strictEqual(c.state.detail,fresh);assert.equal(c.state.causal.workspace_revision,5);assert.strictEqual(c.state.loop,loop);
+  assert.strictEqual(f.renders.at(-1),c.state.detail);
+ }
+});
+
+test('northstar restores the selected review role after reload and refuses an incompatible role',()=>{
+ const f=northstarScrollFixture(),c=f.c;c.state.reviewRole='result';c.selectClaimSection('overview');
+ c.recoverPresentation('claim-a');assert.equal(c.state.claimSection,'overview');assert.equal(c.state.reviewRole,'result');
+ c.sessionStorage.setItem('casepath:presentation:claim-a',JSON.stringify({claimSection:'documents',reviewRole:'result'}));
+ c.recoverPresentation('claim-a');c.selectClaimSection(c.state.claimSection,{restoring:true});assert.equal(c.state.reviewRole,'finder');
 });

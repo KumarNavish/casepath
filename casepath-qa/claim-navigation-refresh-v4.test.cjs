@@ -6,7 +6,7 @@ const presentation=require('../casepath/assets/claims-workspace-presentation-v1.
 
 // A small connected tree exercises the real render/read/navigation functions.
 // No timers, provider, browser, API server or external DOM dependency is needed.
-function fixture({mobile=false}={}){
+function fixture({mobile=false,northstar=false}={}){
  const document={activeElement:null};
  const dataName=name=>name.slice(5).replace(/-([a-z])/g,(_,c)=>c.toUpperCase());
  class Node{
@@ -56,7 +56,7 @@ function fixture({mobile=false}={}){
  const storage=new Map(),events=[],reads=[];
  const assessment={domain_scores:[],policy_template:{title:'Saved policy'},current_node:{label:'Deadline'},outgoing_branches:[],policy_clause_refs:[],claim_assessment:{conditions:{}}};
  const detail={state:{claim_id:'claim-a',revision:4,state_sha256:'state-a',workflow_state:'in_review',owner:'Original handler',intake_assessment:assessment,binding:{language:'en'}},artifacts:[],message:{body:'Original customer message.'}};
- const c={document,root:document.body,mobileWorkbench:{matches:mobile},URLSearchParams,CSS:{escape:value=>value},location:{hash:'#claim=claim-a'},
+ const c={document,northstarReview:northstar,root:document.body,mobileWorkbench:{matches:mobile},URLSearchParams,CSS:{escape:value=>value},location:{hash:'#claim=claim-a'},
   state:{detail,items:[{claim_id:'claim-a',state_sha256:'state-a'}],detailEpoch:1,claimSection:'process',sectionScroll:{},motion:0},
   window:{dispatchEvent:event=>events.push(event),CasePathMotion:{enter(){}},CasePathAgentClaim:{session:()=>({sources:[]})}},
   sessionStorage:{getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,value)},

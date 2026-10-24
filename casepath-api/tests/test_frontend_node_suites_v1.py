@@ -36,6 +36,13 @@ SUITES = (
     ("autonomous-northstar-v1.test.cjs", False),
     ("autonomous-presentation-v1.test.cjs", False),
     ("autonomous-presentation-browser-v1.test.cjs", True),
+    ("review-northstar-v1.test.cjs", False),
+    ("review-northstar-browser-v1.test.cjs", True),
+    ("causal-process-v1.test.cjs", False),
+    ("claims-workspace-presentation-v1.test.cjs", False),
+    ("claim-sections-v1.test.cjs", False),
+    ("claim-navigation-refresh-v4.test.cjs", False),
+    ("claims-workspace-lazy-presentation-v1.test.cjs", False),
 )
 
 PLAYWRIGHT_PROBE = """

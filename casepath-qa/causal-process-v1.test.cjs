@@ -215,3 +215,59 @@ test('an unresolved branch stays possible until its signed evaluation activates 
  const pending=ui.contextMarkup(v,'a');assert.match(pending,/>Possible branch</);assert.match(pending,/Needs clarification/);assert.doesNotMatch(pending,/>Branches to</);
  v.evaluation.edges[0].activation='true';const active=ui.contextMarkup(v,'a');assert.match(active,/>Branches to</);assert.match(active,/Active connection/);assert.doesNotMatch(active,/Possible branch/);
 });
+
+for(const destination of ['other claim','same claim, newer revision','same claim, new visit']){
+ test('a stale preview cannot publish or focus after '+destination,async()=>{
+  const id='preview-race-'+destination,v=view(id);v.workspace_state_sha256='state-a';
+  const s=ui.session(id);ui.render(v);
+  let submit,releaseVerify,verificationEntered,active=true;
+  let focuses=0,scrolls=0;
+  const atVerification=new Promise(r=>verificationEntered=r);
+  const verification=new Promise(r=>releaseVerify=r);
+  const form={dataset:{causalCondition:'family_home'},elements:{verdict:{value:'false'},actor:{value:'Test handler'},reason:{value:'Test-only correction'}},addEventListener(type,handler){if(type==='submit')submit=handler;}};
+  const mount={dataset:{claimId:id,workspaceRevision:'2'},querySelectorAll(selector){return selector==='[data-causal-condition]'?[form]:[];},querySelector(){return null;},addEventListener(){}};
+  const impact={focus(){focuses++;},scrollIntoView(){scrolls++;}};
+  const container={isConnected:true,querySelector(selector){if(selector==='#cpCausalProcess')return mount;if(selector==='#cpProcessImpact')return impact;return null;}};
+  const savedStorage=Object.getOwnPropertyDescriptor(globalThis,'sessionStorage');
+  Object.defineProperty(globalThis,'sessionStorage',{configurable:true,value:{getItem:()=>null}});
+  try{
+   ui.bind(container,v,{request:async()=>({claim_id:id,preview_sha256:'preview-a',impact:{}}),verify:()=>{verificationEntered();return verification;},isCurrent:()=>active,reload:async()=>{},changed:async()=>{}});
+   submit({preventDefault(){}});await atVerification;active=false;
+   if(destination==='other claim')mount.dataset.claimId='claim-b';
+   if(destination==='same claim, newer revision')mount.dataset.workspaceRevision='3';
+   releaseVerify();await new Promise(r=>setImmediate(r));
+   assert.deepEqual({hasPreview:!!s.preview,focuses,scrolls},{hasPreview:false,focuses:0,scrolls:0});
+   assert.equal(s.busy,false);
+  }finally{
+   if(savedStorage)Object.defineProperty(globalThis,'sessionStorage',savedStorage);else delete globalThis.sessionStorage;
+  }
+ });
+}
+
+test('an accepted save settles a reopened claim without replay or navigation',async()=>{
+ const id='save-race-reopened',initial=view(id);initial.workspace_state_sha256='before';
+ const accepted={...view(id),workspace_revision:3,workspace_state_sha256:'after'},s=ui.session(id);
+ s.preview={preview_sha256:'preview-save',impact:{}};
+ s.previewBody={operation:{type:'fragment.apply',fragment_sha256:'fragment-test'},actor:'Test handler',reason:'Test-only reuse',expected_revision:2,expected_state_sha256:'before'};
+ let visit=1,mount,click,posts=0,reloads=0,navigations=0,focuses=0,requestEntered,releaseSave;
+ const atRequest=new Promise(r=>requestEntered=r),heldSave=new Promise(r=>releaseSave=r);
+ const result={claim_id:id,result_sha256:'saved-result',process:accepted};
+ const values=new Map(),storage={getItem:k=>values.get(k)||null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)};
+ const originals=new Map(['sessionStorage','crypto'].map(k=>[k,Object.getOwnPropertyDescriptor(globalThis,k)]));
+ Object.defineProperty(globalThis,'sessionStorage',{configurable:true,value:storage});
+ Object.defineProperty(globalThis,'crypto',{configurable:true,value:{randomUUID:()=> 'save-settlement-test'}});
+ const status={querySelector(){return {addEventListener(){}};}};
+ const container={isConnected:true,querySelector(selector){if(selector==='#cpCausalProcess')return mount;if(selector==='.cp-process-status')return status;if(selector==='#cpProcessImpact')return {focus(){focuses++;},scrollIntoView(){focuses++;}};return null;}};
+ function bindVisit(v,epoch){
+  mount={dataset:{claimId:v.claim_id,workspaceRevision:String(v.workspace_revision)},html:ui.render(v),get outerHTML(){return this.html;},set outerHTML(value){this.html=value;},querySelectorAll(){return [];},querySelector(){return null;},addEventListener(type,handler){if(type==='click')click=handler;}};
+  ui.bind(container,v,{isCurrent:()=>visit===epoch,request:()=>{posts++;requestEntered();return heldSave;},verify:async value=>value,changed:async()=>{if(visit===epoch)navigations++;},reload:async()=>{if(visit!==epoch)return;reloads++;bindVisit(accepted,epoch);}});
+ }
+ try{
+  bindVisit(initial,1);click({target:{closest(){return this;},hasAttribute:name=>name==='data-causal-apply',dataset:{}}});await atRequest;
+  visit=2;bindVisit(initial,2);assert.match(mount.html,/aria-busy="true"/);
+  releaseSave(result);await new Promise(r=>setImmediate(r));
+  assert.equal(posts,1);assert.equal(storage.getItem('casepath:causal-pending:'+id),null);
+  assert.equal(reloads,1,'the current visit refreshes with a read-only callback');assert.equal(mount.dataset.workspaceRevision,'3');
+  assert.doesNotMatch(mount.html,/aria-busy="true"/);assert.equal(s.busy,false);assert.equal(navigations,0);assert.equal(focuses,0);
+ }finally{for(const [key,descriptor]of originals){if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key];}}
+});

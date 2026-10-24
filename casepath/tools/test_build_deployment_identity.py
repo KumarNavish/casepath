@@ -100,6 +100,7 @@ def test_curated_static_build_has_exact_runtime_inventory(
         "assets/claims-workspace-presentation-v1.css",
         "assets/agent-work-v1.js", "assets/agent-work-v1.css",
         "assets/causal-process-v1.js", "assets/causal-process-v1.css",
+        "assets/review-northstar-v1.js", "assets/review-northstar-v1.css",
         "assets/process-evidence-v2.css", "assets/process-evidence-v2.js",
         "assets/agent-claim-v2.js", "assets/agent-desk-v2.js",
         "assets/agent-native-v2.css",
@@ -111,7 +112,7 @@ def test_curated_static_build_has_exact_runtime_inventory(
     }
     assert files == static_site.PUBLIC_INVENTORY == expected_files
     assert directories == static_site.PUBLIC_DIRECTORIES == {"assets", "assets/fonts"}
-    assert len(files) == 43
+    assert len(files) == 45
     assert {"corpus.html", "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json"} <= files
     assert {"method.html", "assets/method-guide.css",
             "assets/method-guide-data.json"} <= files

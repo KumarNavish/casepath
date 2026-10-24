@@ -435,3 +435,31 @@ def test_undo_rejects_changed_target_fields_without_mutating_the_graph():
     with pytest.raises(ValueError, match="edited fields changed"):
         apply_edit(changed, {"type": "process.undo", "target_revision": 1})
     assert changed == before
+
+def test_completed_new_prerequisite_does_not_bypass_incomplete_existing_flow():
+    before = graph()
+    before_nodes = by_id(evaluate(before)["nodes"], "node_id")
+    assert before_nodes["left"]["effective_completed"] is False
+    assert before_nodes["down"]["execution_state"] == "blocked"
+    assert before_nodes["down"]["blocked_by"] == ["left"]
+    added = apply_edit(before, {"type": "node.add", "node": {
+        "node_id": "verify", "label": "Additional prerequisite",
+        "entry": True, "document_types": []}})
+    added = apply_edit(added, {"type": "edge.add", "edge": {
+        "edge_id": "extra_required_review", "source_node_id": "verify",
+        "target_node_id": "down", "relation": "requires"}})
+    waiting = by_id(evaluate(added)["nodes"], "node_id")
+    assert waiting["down"]["execution_state"] == "blocked"
+    # Explicit blockers take diagnostic precedence; existing flow is still required.
+    assert waiting["down"]["blocked_by"] == ["verify"]
+    completed = apply_edit(added, {"type": "node.complete", "node_id": "verify", "completed": True})
+    result = evaluate(completed)
+    nodes = by_id(result["nodes"], "node_id")
+    assert nodes["verify"]["execution_state"] == "completed"
+    assert nodes["verify"]["inconsistent_completion"] is False
+    assert nodes["left"]["effective_completed"] is False
+    assert nodes["down"]["execution_state"] == "blocked"
+    assert nodes["down"]["blocked_by"] == ["left"]
+    assert by_id(completed["edges"], "edge_id")["down_path"] == by_id(before["edges"], "edge_id")["down_path"]
+    assert completed["document_catalog"] == before["document_catalog"]
+    assert by_id(result["documents"], "document_type")["down_doc"]["route_state"] == "needed_later"

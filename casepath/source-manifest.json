@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1741,
+  "file_count": 1746,
   "files": [
     {
       "executable": false,
@@ -8285,8 +8285,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_causal_process_v1.py",
-      "sha256": "8aabc86593c8b42ba4574825c8208c6384d7c55edb7cd03102c082d21435d55a",
-      "size_bytes": 27049
+      "sha256": "660003b6cd813b663306c4673e14238b26e1593b48c54cc959d5987c5bb3b907",
+      "size_bytes": 28774
     },
     {
       "executable": false,
@@ -8447,8 +8447,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_frontend_node_suites_v1.py",
-      "sha256": "f6e44af53342402ae12787751dc4fe3eb27b8852e32b378c7c59a751cda92e8d",
-      "size_bytes": 4999
+      "sha256": "d01a6b83f5f9983f0125a46fe490122bbdc648513b59b76cf8987663797851d8",
+      "size_bytes": 5356
     },
     {
       "executable": false,
@@ -9137,8 +9137,8 @@
     {
       "executable": false,
       "path": "casepath-qa/causal-process-v1.test.cjs",
-      "sha256": "45cff202561b8ffaced284aabea857a10551c5f81dc993bbae701971ff7fd658",
-      "size_bytes": 20317
+      "sha256": "c3c8a1b840c3b14a953460124e165a8eb3ff9e88414e8b5ecfc4bb9d0979b72c",
+      "size_bytes": 25364
     },
     {
       "executable": false,
@@ -9161,8 +9161,8 @@
     {
       "executable": false,
       "path": "casepath-qa/claim-navigation-refresh-v4.test.cjs",
-      "sha256": "ab27082e0f83128b70eafadc17b2bfd40171edc26b60fd59d4f220a5f30d1a8f",
-      "size_bytes": 13973
+      "sha256": "6ab7b3de62b35f7dfa2c33467d6e4d5f236c5fdcd812237c1cd26f1fb31c6365",
+      "size_bytes": 14015
     },
     {
       "executable": false,
@@ -9173,8 +9173,8 @@
     {
       "executable": false,
       "path": "casepath-qa/claim-sections-v1.test.cjs",
-      "sha256": "abcf968447b9f5768559a6ecf887ef17bbb6db27a5021f5505a1122fd173975c",
-      "size_bytes": 25551
+      "sha256": "fcab5937a2bea729f7642a4356cb32f8468a36e9de946107ab311ed9bce9ebe5",
+      "size_bytes": 34502
     },
     {
       "executable": false,
@@ -9382,6 +9382,18 @@
     },
     {
       "executable": false,
+      "path": "casepath-qa/review-northstar-browser-v1.test.cjs",
+      "sha256": "862e3ae9e00ba32b88e9f0cb5a4eefb446e61c58751b0428c0139ab780efd657",
+      "size_bytes": 23167
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/review-northstar-v1.test.cjs",
+      "sha256": "27eafee69f883cd253a7d5987426b809dfd4aeed50cbb43ebccd70c6be47d6bf",
+      "size_bytes": 12183
+    },
+    {
+      "executable": false,
       "path": "casepath-qa/run-definitive-v20.sh",
       "sha256": "e2ce94b855cf882bbaad0a7350ed443e658d53cb9a389a366979cd8bdb04bcf6",
       "size_bytes": 8242
@@ -9421,6 +9433,12 @@
       "path": "casepath-qa/serve-evidence.mjs",
       "sha256": "38cbef4903b2b813002fccaaad0be1d109ee90697abeb4967b5a2737162b416c",
       "size_bytes": 2164
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/serve-review-northstar-fixture-v1.py",
+      "sha256": "1376ca10b97db1ab3671920b6e792fd64c58f8e07a0c95ae184abfedc662b3a1",
+      "size_bytes": 3921
     },
     {
       "executable": false,
@@ -9473,8 +9491,8 @@
     {
       "executable": false,
       "path": "casepath/assets/agent-desk-v2.js",
-      "sha256": "3db6bccb56c066bb22a61d8ebe902c804c056387a79d7dec76be050e85154621",
-      "size_bytes": 23599
+      "sha256": "61c4e6a2c81afe6221dd0c0e397487269caf24ba475542ee51383dc64ab30a73",
+      "size_bytes": 23679
     },
     {
       "executable": false,
@@ -9515,8 +9533,8 @@
     {
       "executable": false,
       "path": "casepath/assets/autonomous-entry-v1.js",
-      "sha256": "99bde577dbc5423a68a9ed95f13f11dc0e3a88764ccc1f4f7a1255bf7aa387c9",
-      "size_bytes": 2926
+      "sha256": "e405667ff58085b9928ada3a43b1bef6cbeac3caf105061f12c7541112c04d0d",
+      "size_bytes": 3801
     },
     {
       "executable": false,
@@ -9593,8 +9611,8 @@
     {
       "executable": false,
       "path": "casepath/assets/causal-process-v1.js",
-      "sha256": "7eceb15ab624c544f987fc373dc959709947631fc53fcd53609e3e08909569ff",
-      "size_bytes": 48882
+      "sha256": "fcb07378587069fce1ad2efd1493d3a6a7dafed46b81952e4559628a14fca896",
+      "size_bytes": 50945
     },
     {
       "executable": false,
@@ -9605,8 +9623,8 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.js",
-      "sha256": "2dd6679ff4fa3c2866adc4c43190f156323c3408e4b7bdbf318c430317e17ac5",
-      "size_bytes": 74919
+      "sha256": "d7ff00fe6e132b4e322cf3cccf36a70e40f1d2a703a27e466d7909e99e648a24",
+      "size_bytes": 75645
     },
     {
       "executable": false,
@@ -9617,8 +9635,8 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-v1.js",
-      "sha256": "e91a20ec9eaea05b20e60d832443187ab10693445d1de9f4464654f482eb0e23",
-      "size_bytes": 247671
+      "sha256": "ddc309c70e59190abc3109fae1a2cedde37537dabc47b0a68680fa57ff270940",
+      "size_bytes": 252708
     },
     {
       "executable": false,
@@ -9736,6 +9754,18 @@
     },
     {
       "executable": false,
+      "path": "casepath/assets/review-northstar-v1.css",
+      "sha256": "7c75bde67d6fc138a71ec2b05536e17a267186fb3d2d46677ade9d8dea2e2dab",
+      "size_bytes": 27167
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/review-northstar-v1.js",
+      "sha256": "911db61af8299ebbc00a818ad9fb9530ae84133dadac0dc12b9fd179c30d629b",
+      "size_bytes": 19204
+    },
+    {
+      "executable": false,
       "path": "casepath/assets/styles.css",
       "sha256": "c0b99a741af5d5c84fc7aaea2fa32b8ca8aad392eab5115fbc96402b39661258",
       "size_bytes": 25661
@@ -9761,8 +9791,8 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "aa3242fa363fc23fc3898175132984c77f062127c47baa50dac65b0b6914be8a",
-      "size_bytes": 25792
+      "sha256": "fc9f81111a78f21451e48773d85551c8ad4f578f31ae0b27941f19ff5922fcb7",
+      "size_bytes": 26089
     },
     {
       "executable": false,
@@ -9971,8 +10001,8 @@
     {
       "executable": false,
       "path": "casepath/tools/build_static_site.py",
-      "sha256": "d598844e7f4308b4dc1ff7d320b13656272759f87971542a1a6eea86a4ce8c21",
-      "size_bytes": 10125
+      "sha256": "a6944f4fa1645ff93ad8e456aa0ded687489e2e59dc4b9a6a0933f693235f9e5",
+      "size_bytes": 10275
     },
     {
       "executable": false,
@@ -10013,8 +10043,8 @@
     {
       "executable": false,
       "path": "casepath/tools/test_build_deployment_identity.py",
-      "sha256": "b0d7ca1d95354ca6f9dec238e46becfbc6ecfd1c5451a3c4785a1ac58f62153b",
-      "size_bytes": 14911
+      "sha256": "0fca15628ad1f05f07211638bacf1b62c6296978261c042483917cfd2e925b47",
+      "size_bytes": 14986
     },
     {
       "executable": false,

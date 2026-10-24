@@ -35,6 +35,7 @@
       knowledgeOpening = null;
       window.addEventListener('pagehide', event => { if (!event.persisted) window.CasePathAutonomous.destroy(); });
     } else {
+      if(new URLSearchParams(location.search).get('view')==='northstar')await load('casepath-review-northstar-script');
       await load('casepath-review-workspace-script');
       await load('casepath-review-desk-script');
     }
@@ -47,6 +48,12 @@
       retry.type = 'button'; retry.textContent = 'Retry';
       retry.addEventListener('click', () => location.reload());
       container.append(retry);
+    } else {
+      const recovery=document.createElement('main');recovery.id='reviewStartupError';recovery.setAttribute('role','alert');recovery.style.cssText='display:block!important;max-width:560px;margin:80px auto;padding:24px;font:16px/1.6 sans-serif';
+      const heading=document.createElement('h1');heading.textContent='The review workspace could not open';
+      const explanation=document.createElement('p');explanation.textContent='A required part of the workspace did not load. Retry to read the saved claim.';
+      const retry=document.createElement('button');retry.type='button';retry.textContent='Retry';retry.addEventListener('click',()=>location.reload());
+      recovery.append(heading,explanation,retry);document.body.append(recovery);
     }
   }
 })();
