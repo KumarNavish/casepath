@@ -1,0 +1,3376 @@
+[
+  {
+    "id": "question",
+    "start_ms": 900,
+    "window_end_ms": 6400,
+    "intent": "Establish the actual rent-increase notice question in the opening.",
+    "focus_mode": "chapter-framing",
+    "visual_focus": {
+      "id": "question",
+      "target": "source"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "question",
+        "target": "source"
+      },
+      "mode": "chapter-framing",
+      "guidance_start_ms": 0,
+      "start_ms": 0,
+      "end_ms": 6800,
+      "guidance_segments": 2,
+      "excluded_entering_transition_ms": 0,
+      "settle_reference": "chapter-cue-start"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "A tenant asks: is this rent increase notice valid?",
+        "word_count": 9,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/question/01-primary-155wpm.aiff",
+        "aiff_sha256": "6d8e731513d5deb572c6502e46110b73cc19f36ada8b85b7841a1d00ae8ca684",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/question/01-primary-155wpm.wav",
+        "wav_sha256": "e2ffd02da4a026491a817022065dbc8b95db896a93907ba1273bde4994b6475e",
+        "text_sha256": "c3fe7a97e72a5f364608fae71c96683ff43b87badbad3c373b245faef7700691",
+        "samples": 155079,
+        "duration_seconds": 3.2308125,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 71239,
+              "duration": "3.230794",
+              "bit_rate": "352800",
+              "nb_frames": "71239",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/question/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "3.230794",
+            "size": "146574",
+            "bit_rate": "362942",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 155079,
+              "duration": "3.230812",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/question/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "3.230813",
+            "size": "310236",
+            "bit_rate": "768193",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "A tenant asks: is this rent increase notice valid?",
+      "word_count": 9,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/question/01-primary-155wpm.aiff",
+      "aiff_sha256": "6d8e731513d5deb572c6502e46110b73cc19f36ada8b85b7841a1d00ae8ca684",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/question/01-primary-155wpm.wav",
+      "wav_sha256": "e2ffd02da4a026491a817022065dbc8b95db896a93907ba1273bde4994b6475e",
+      "samples": 155079,
+      "duration_seconds": 3.2308125
+    },
+    "actual_end_ms": 4130.8125,
+    "remaining_window_ms": 2269.1875,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "circles",
+    "start_ms": 7650,
+    "window_end_ms": 10750,
+    "intent": "Explain one process circle after the scene has arrived.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "circles",
+      "target": "node"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "circles",
+        "target": "node"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 6800,
+      "start_ms": 7300,
+      "end_ms": 10850,
+      "guidance_segments": 2,
+      "excluded_entering_transition_ms": 500,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "Each circle is one question to check.",
+        "word_count": 7,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/circles/01-primary-155wpm.aiff",
+        "aiff_sha256": "e8f523404b4b599d5dbdae6da479d8fdcb95e93781144162712ee201b12e29cb",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/circles/01-primary-155wpm.wav",
+        "wav_sha256": "b583faa510784c5d657803409d3f3eafe96b227f6e7a91f855d23944cbfb12b6",
+        "text_sha256": "686c1db19673ba0abed1a2d569d98ed5f9197b6d68bad86d46951f2deac55120",
+        "samples": 107629,
+        "duration_seconds": 2.2422708333333334,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 49442,
+              "duration": "2.242268",
+              "bit_rate": "352800",
+              "nb_frames": "49442",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/circles/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "2.242268",
+            "size": "102980",
+            "bit_rate": "367413",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 107629,
+              "duration": "2.242271",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/circles/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "2.242271",
+            "size": "215336",
+            "bit_rate": "768278",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "Each circle is one question to check.",
+      "word_count": 7,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/circles/01-primary-155wpm.aiff",
+      "aiff_sha256": "e8f523404b4b599d5dbdae6da479d8fdcb95e93781144162712ee201b12e29cb",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/circles/01-primary-155wpm.wav",
+      "wav_sha256": "b583faa510784c5d657803409d3f3eafe96b227f6e7a91f855d23944cbfb12b6",
+      "samples": 107629,
+      "duration_seconds": 2.2422708333333334
+    },
+    "actual_end_ms": 9892.270833333334,
+    "remaining_window_ms": 857.7291666666661,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "decisive-source",
+    "start_ms": 12250,
+    "window_end_ms": 16250,
+    "intent": "Speak the finding only while the exact source passage remains in focus.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "decisive-source",
+      "target": "source"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "decisive-source",
+        "target": "source"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 10850,
+      "start_ms": 11350,
+      "end_ms": 16450,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 500,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "The original notice gave no reasons.",
+        "word_count": 6,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/decisive-source/01-primary-155wpm.aiff",
+        "aiff_sha256": "6d33478f33e8829a52fed9eb2cf5aaed9252f6bef38d51568f73e1387de17bdd",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/decisive-source/01-primary-155wpm.wav",
+        "wav_sha256": "50e0bcf830cb5d156499db44dc6712d8b0d1a0ca8fd34a6d72e002482db33fae",
+        "text_sha256": "d7323bede07c06c92135e024bd3630e11936636fff1a365bd633e57bcb8cd943",
+        "samples": 108570,
+        "duration_seconds": 2.261875,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 49874,
+              "duration": "2.261859",
+              "bit_rate": "352800",
+              "nb_frames": "49874",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/decisive-source/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "2.261859",
+            "size": "103844",
+            "bit_rate": "367287",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 108570,
+              "duration": "2.261875",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/decisive-source/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "2.261875",
+            "size": "217218",
+            "bit_rate": "768275",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "The original notice gave no reasons.",
+      "word_count": 6,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/decisive-source/01-primary-155wpm.aiff",
+      "aiff_sha256": "6d33478f33e8829a52fed9eb2cf5aaed9252f6bef38d51568f73e1387de17bdd",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/decisive-source/01-primary-155wpm.wav",
+      "wav_sha256": "50e0bcf830cb5d156499db44dc6712d8b0d1a0ca8fd34a6d72e002482db33fae",
+      "samples": 108570,
+      "duration_seconds": 2.261875
+    },
+    "actual_end_ms": 14511.875,
+    "remaining_window_ms": 1738.125,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "proposed-fact",
+    "start_ms": 17050,
+    "window_end_ms": 19800,
+    "intent": "Wait for the fact highlight to settle, then explain the source-to-fact relationship.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "source-fact",
+      "target": "fact"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "source-fact",
+        "target": "fact"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 16450,
+      "start_ms": 16450,
+      "end_ms": 20000,
+      "guidance_segments": 3,
+      "excluded_entering_transition_ms": 0,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "That supports a proposed finding.",
+        "word_count": 5,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/proposed-fact/01-primary-155wpm.aiff",
+        "aiff_sha256": "6e22a0384cf96898a0ae37599fb60ee03bfe405db732af33ca2d6c8a1210286c",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/proposed-fact/01-primary-155wpm.wav",
+        "wav_sha256": "681d2ee772756093e9976fa02c1846fac4faba2ea241f193020d9befd24d749a",
+        "text_sha256": "9a2d7b2ef2f13f2016153d210396bdd95f686e2899ae743ef580f4e4fd0f8859",
+        "samples": 95182,
+        "duration_seconds": 1.9829583333333334,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 43724,
+              "duration": "1.982948",
+              "bit_rate": "352800",
+              "nb_frames": "43724",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/proposed-fact/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "1.982948",
+            "size": "91544",
+            "bit_rate": "369324",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 95182,
+              "duration": "1.982958",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/proposed-fact/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "1.982958",
+            "size": "190442",
+            "bit_rate": "768314",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "That supports a proposed finding.",
+      "word_count": 5,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/proposed-fact/01-primary-155wpm.aiff",
+      "aiff_sha256": "6e22a0384cf96898a0ae37599fb60ee03bfe405db732af33ca2d6c8a1210286c",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/proposed-fact/01-primary-155wpm.wav",
+      "wav_sha256": "681d2ee772756093e9976fa02c1846fac4faba2ea241f193020d9befd24d749a",
+      "samples": 95182,
+      "duration_seconds": 1.9829583333333334
+    },
+    "actual_end_ms": 19032.958333333332,
+    "remaining_window_ms": 767.0416666666679,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "reasoning",
+    "start_ms": 28200,
+    "window_end_ms": 33850,
+    "intent": "Describe the reasoning while its columns are in focus; finish before the quotation cutaway.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "reasoning",
+      "target": "chain"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "reasoning",
+        "target": "chain"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 27100,
+      "start_ms": 27600,
+      "end_ms": 34100,
+      "guidance_segments": 4,
+      "excluded_entering_transition_ms": 500,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "The reasoning connects facts, rules, and supporting sources.",
+        "word_count": 8,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reasoning/01-primary-155wpm.aiff",
+        "aiff_sha256": "6ed6621fcebff0fe63f071db6ac4f846fb82f6290714013f1c1d504a38dc7f36",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reasoning/01-primary-155wpm.wav",
+        "wav_sha256": "f851752621e49a67de697bc6cf58935af605dc8353b52bdc54bdb2400efc197a",
+        "text_sha256": "7aa1d20c3776a7ca6ba01f253bf2d8016cddf34c12496cda0361775a465c06b9",
+        "samples": 203975,
+        "duration_seconds": 4.249479166666666,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 93701,
+              "duration": "4.249478",
+              "bit_rate": "352800",
+              "nb_frames": "93701",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reasoning/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "4.249478",
+            "size": "191498",
+            "bit_rate": "360511",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 203975,
+              "duration": "4.249479",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reasoning/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "4.249479",
+            "size": "408028",
+            "bit_rate": "768146",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "The reasoning connects facts, rules, and supporting sources.",
+      "word_count": 8,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reasoning/01-primary-155wpm.aiff",
+      "aiff_sha256": "6ed6621fcebff0fe63f071db6ac4f846fb82f6290714013f1c1d504a38dc7f36",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reasoning/01-primary-155wpm.wav",
+      "wav_sha256": "f851752621e49a67de697bc6cf58935af605dc8353b52bdc54bdb2400efc197a",
+      "samples": 203975,
+      "duration_seconds": 4.249479166666666
+    },
+    "actual_end_ms": 32449.479166666668,
+    "remaining_window_ms": 1400.5208333333321,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "verified-passages",
+    "start_ms": 35050,
+    "window_end_ms": 39050,
+    "intent": "Speak about source matching only after the received-file view has settled.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "verified-passages",
+      "target": "verified"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "verified-passages",
+        "target": "verified"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 34100,
+      "start_ms": 34600,
+      "end_ms": 39200,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 500,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "Each quotation can be checked against a received file.",
+        "word_count": 9,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/verified-passages/01-primary-155wpm.aiff",
+        "aiff_sha256": "666dfda3e1bba8b40aba4e12b03da2a407924b655ef2943d5c13abdaf9609abf",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/verified-passages/01-primary-155wpm.wav",
+        "wav_sha256": "d669269bfadda4fe3814c3d6687494134eead611a02f939dd64a718a6ee0e9b9",
+        "text_sha256": "c12cbffe6e040690b9d0e71d45bfdcd36c5ab51fad8ba8988ef8e125e20afa3c",
+        "samples": 155244,
+        "duration_seconds": 3.23425,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 71315,
+              "duration": "3.234240",
+              "bit_rate": "352800",
+              "nb_frames": "71315",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/verified-passages/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "3.234240",
+            "size": "146726",
+            "bit_rate": "362931",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 155244,
+              "duration": "3.234250",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/verified-passages/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "3.234250",
+            "size": "310566",
+            "bit_rate": "768192",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "Each quotation can be checked against a received file.",
+      "word_count": 9,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/verified-passages/01-primary-155wpm.aiff",
+      "aiff_sha256": "666dfda3e1bba8b40aba4e12b03da2a407924b655ef2943d5c13abdaf9609abf",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/verified-passages/01-primary-155wpm.wav",
+      "wav_sha256": "d669269bfadda4fe3814c3d6687494134eead611a02f939dd64a718a6ee0e9b9",
+      "samples": 155244,
+      "duration_seconds": 3.23425
+    },
+    "actual_end_ms": 38284.25,
+    "remaining_window_ms": 765.75,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "rule",
+    "start_ms": 40400,
+    "window_end_ms": 45100,
+    "intent": "Explain the highlighted paragraph 2(b), without claiming the entire case is resolved.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "rule-documents",
+      "target": "law"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "rule-documents",
+        "target": "law"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 39200,
+      "start_ms": 39700,
+      "end_ms": 45500,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 500,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "The rule links missing reasons to an invalid notice.",
+        "word_count": 9,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/rule/01-primary-155wpm.aiff",
+        "aiff_sha256": "0949e690dac1c3995e2a64a8f334d6b4c449316b2418a24078e716de7b68a0a1",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/rule/01-primary-155wpm.wav",
+        "wav_sha256": "8086908a634513c3fe89a014299419ab0641e784d70a4cd18ea26d2df7da23d4",
+        "text_sha256": "7876c5de7ddc8d10b1d29d8431e1af3f488a47b7671205c2ac137cc193e61dbe",
+        "samples": 139762,
+        "duration_seconds": 2.9117083333333333,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 64203,
+              "duration": "2.911701",
+              "bit_rate": "352800",
+              "nb_frames": "64203",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/rule/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "2.911701",
+            "size": "132502",
+            "bit_rate": "364053",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 139762,
+              "duration": "2.911708",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/rule/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "2.911708",
+            "size": "279602",
+            "bit_rate": "768214",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "The rule links missing reasons to an invalid notice.",
+      "word_count": 9,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/rule/01-primary-155wpm.aiff",
+      "aiff_sha256": "0949e690dac1c3995e2a64a8f334d6b4c449316b2418a24078e716de7b68a0a1",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/rule/01-primary-155wpm.wav",
+      "wav_sha256": "8086908a634513c3fe89a014299419ab0641e784d70a4cd18ea26d2df7da23d4",
+      "samples": 139762,
+      "duration_seconds": 2.9117083333333333
+    },
+    "actual_end_ms": 43311.708333333336,
+    "remaining_window_ms": 1788.2916666666642,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "unmet-requirement",
+    "start_ms": 50750,
+    "window_end_ms": 52600,
+    "intent": "Name the failed requirement only inside its semantic highlight, after its reveal.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "legal-tests",
+      "target": "predicate",
+      "target_id": "contemporaneous_substantive_reasons"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "legal-tests",
+        "target": "predicate",
+        "target_id": "contemporaneous_substantive_reasons"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 50300,
+      "start_ms": 50300,
+      "end_ms": 52650,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 0,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "One unmet requirement.",
+        "word_count": 3,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/unmet-requirement/01-primary-155wpm.aiff",
+        "aiff_sha256": "6f5f603bc60e8ac85f80cf7a8c0c11f19a17225baf48e4c2ef42a15e70279d46",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/unmet-requirement/01-primary-155wpm.wav",
+        "wav_sha256": "7d05ad9580fd64c623548602894edb7b4dcae5a4ec28afb1535c35efb398d39a",
+        "text_sha256": "28e297b5f1b72e5acfd080f90b5a1be9c9f36cf39e00f4545a46ff4dd65b6b28",
+        "samples": 68652,
+        "duration_seconds": 1.43025,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 31537,
+              "duration": "1.430249",
+              "bit_rate": "352800",
+              "nb_frames": "31537",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/unmet-requirement/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "1.430249",
+            "size": "67170",
+            "bit_rate": "375710",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 68652,
+              "duration": "1.430250",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/unmet-requirement/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "1.430250",
+            "size": "137382",
+            "bit_rate": "768436",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "One unmet requirement.",
+      "word_count": 3,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/unmet-requirement/01-primary-155wpm.aiff",
+      "aiff_sha256": "6f5f603bc60e8ac85f80cf7a8c0c11f19a17225baf48e4c2ef42a15e70279d46",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/unmet-requirement/01-primary-155wpm.wav",
+      "wav_sha256": "7d05ad9580fd64c623548602894edb7b4dcae5a4ec28afb1535c35efb398d39a",
+      "samples": 68652,
+      "duration_seconds": 1.43025
+    },
+    "actual_end_ms": 52180.25,
+    "remaining_window_ms": 419.75,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "assessment",
+    "start_ms": 56050,
+    "window_end_ms": 58350,
+    "intent": "State proposed invalidity on this ground; unresolved issues follow separately.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "proposed-assessment",
+      "target": "lead"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "proposed-assessment",
+        "target": "lead"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 55150,
+      "start_ms": 55150,
+      "end_ms": 58550,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 0,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "Proposed: invalid on this ground.",
+        "word_count": 5,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/01-primary-155wpm.aiff",
+        "aiff_sha256": "0a46c8107bdd23979b5020831993f926e80ea76dc2bef8866e7e8ee34c347733",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/01-primary-155wpm.wav",
+        "wav_sha256": "0cf629e05d9d0b92c3fac7b02011d87edb3d6293d33230de5bacca7cae80a83b",
+        "text_sha256": "f3b3bb3685a6e81e300f7bb09b0a3b9480d030402e9194585f243fb15bd4a834",
+        "samples": 109171,
+        "duration_seconds": 2.274395833333333,
+        "fits_window": false,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 50150,
+              "duration": "2.274376",
+              "bit_rate": "352800",
+              "nb_frames": "50150",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "2.274376",
+            "size": "104396",
+            "bit_rate": "367207",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 109171,
+              "duration": "2.274396",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "2.274396",
+            "size": "218420",
+            "bit_rate": "768274",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      },
+      {
+        "variant": "primary",
+        "text": "Proposed: invalid on this ground.",
+        "word_count": 5,
+        "rate_wpm": 172,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/02-primary-172wpm.aiff",
+        "aiff_sha256": "0a46c8107bdd23979b5020831993f926e80ea76dc2bef8866e7e8ee34c347733",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/02-primary-172wpm.wav",
+        "wav_sha256": "0cf629e05d9d0b92c3fac7b02011d87edb3d6293d33230de5bacca7cae80a83b",
+        "text_sha256": "f3b3bb3685a6e81e300f7bb09b0a3b9480d030402e9194585f243fb15bd4a834",
+        "samples": 109171,
+        "duration_seconds": 2.274395833333333,
+        "fits_window": false,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 50150,
+              "duration": "2.274376",
+              "bit_rate": "352800",
+              "nb_frames": "50150",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/02-primary-172wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "2.274376",
+            "size": "104396",
+            "bit_rate": "367207",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 109171,
+              "duration": "2.274396",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/02-primary-172wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "2.274396",
+            "size": "218420",
+            "bit_rate": "768274",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      },
+      {
+        "variant": "primary",
+        "text": "Proposed: invalid on this ground.",
+        "word_count": 5,
+        "rate_wpm": 180,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/03-primary-180wpm.aiff",
+        "aiff_sha256": "0a46c8107bdd23979b5020831993f926e80ea76dc2bef8866e7e8ee34c347733",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/03-primary-180wpm.wav",
+        "wav_sha256": "0cf629e05d9d0b92c3fac7b02011d87edb3d6293d33230de5bacca7cae80a83b",
+        "text_sha256": "f3b3bb3685a6e81e300f7bb09b0a3b9480d030402e9194585f243fb15bd4a834",
+        "samples": 109171,
+        "duration_seconds": 2.274395833333333,
+        "fits_window": false,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 50150,
+              "duration": "2.274376",
+              "bit_rate": "352800",
+              "nb_frames": "50150",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/03-primary-180wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "2.274376",
+            "size": "104396",
+            "bit_rate": "367207",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 109171,
+              "duration": "2.274396",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/03-primary-180wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "2.274396",
+            "size": "218420",
+            "bit_rate": "768274",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      },
+      {
+        "variant": "short",
+        "text": "Proposed: invalid notice.",
+        "word_count": 3,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/04-short-155wpm.aiff",
+        "aiff_sha256": "79a6faf23d0dac481aef242d7552d89d6dda25c5dfa2863412aef3a6b8717d6c",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/04-short-155wpm.wav",
+        "wav_sha256": "3efe642d4e3105840859f6e11ba6a59b125f5bc29ba856e40471a2bca0d68f2a",
+        "text_sha256": "6f8a4dc047bb2f733f161b13edbcbbfa49198de5baeea78675b34d0c6afa647a",
+        "samples": 96353,
+        "duration_seconds": 2.0073541666666666,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 44262,
+              "duration": "2.007347",
+              "bit_rate": "352800",
+              "nb_frames": "44262",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/04-short-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "2.007347",
+            "size": "92620",
+            "bit_rate": "369124",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 96353,
+              "duration": "2.007354",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/04-short-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "2.007354",
+            "size": "192784",
+            "bit_rate": "768310",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "short",
+      "text": "Proposed: invalid notice.",
+      "word_count": 3,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/04-short-155wpm.aiff",
+      "aiff_sha256": "79a6faf23d0dac481aef242d7552d89d6dda25c5dfa2863412aef3a6b8717d6c",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/assessment/04-short-155wpm.wav",
+      "wav_sha256": "3efe642d4e3105840859f6e11ba6a59b125f5bc29ba856e40471a2bca0d68f2a",
+      "samples": 96353,
+      "duration_seconds": 2.0073541666666666
+    },
+    "actual_end_ms": 58057.354166666664,
+    "remaining_window_ms": 292.64583333333576,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "open-questions",
+    "start_ms": 58900,
+    "window_end_ms": 61250,
+    "intent": "Begin only after the open-questions focus has settled.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "open-questions",
+      "target": "open"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "open-questions",
+        "target": "open"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 58550,
+      "start_ms": 58550,
+      "end_ms": 61550,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 0,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "Other questions remain open.",
+        "word_count": 4,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/open-questions/01-primary-155wpm.aiff",
+        "aiff_sha256": "f43fe324faa00ea0ae4750ef6b66888f26ff65cb7045a6b2d585b2268b382b18",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/open-questions/01-primary-155wpm.wav",
+        "wav_sha256": "74947db8a74c8eb7c811fc8b4a543ee598ec9ec61896c6ccc540f31485540825",
+        "text_sha256": "ea366fd2176fa88ffb628fee55dae9daf5bd2e708213bea50e19d26c8a888f7a",
+        "samples": 79289,
+        "duration_seconds": 1.6518541666666666,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 36423,
+              "duration": "1.651837",
+              "bit_rate": "352800",
+              "nb_frames": "36423",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/open-questions/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "1.651837",
+            "size": "76942",
+            "bit_rate": "372637",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 79289,
+              "duration": "1.651854",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/open-questions/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "1.651854",
+            "size": "158656",
+            "bit_rate": "768377",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "Other questions remain open.",
+      "word_count": 4,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/open-questions/01-primary-155wpm.aiff",
+      "aiff_sha256": "f43fe324faa00ea0ae4750ef6b66888f26ff65cb7045a6b2d585b2268b382b18",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/open-questions/01-primary-155wpm.wav",
+      "wav_sha256": "74947db8a74c8eb7c811fc8b4a543ee598ec9ec61896c6ccc540f31485540825",
+      "samples": 79289,
+      "duration_seconds": 1.6518541666666666
+    },
+    "actual_end_ms": 60551.854166666664,
+    "remaining_window_ms": 698.1458333333358,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "human-review",
+    "start_ms": 62750,
+    "window_end_ms": 65150,
+    "intent": "Describe the actual unsent draft while its body is highlighted.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "human-review",
+      "target": "draft-body"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "human-review",
+        "target": "draft-body"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 61550,
+      "start_ms": 62050,
+      "end_ms": 65450,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 500,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "A draft for review.",
+        "word_count": 4,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/human-review/01-primary-155wpm.aiff",
+        "aiff_sha256": "dadf6c5d526ff5f53b7eced0e0cd3b7847f3620006575879b8f377ba09538947",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/human-review/01-primary-155wpm.wav",
+        "wav_sha256": "3a853967cefb3dd114153c70782b1e6b7b2da748edca6bc69fa04a1bc47be25c",
+        "text_sha256": "9dd1a4f98fcd20f20c36c6635935b7055f4715df3f251e9b289e6dd8d0387d99",
+        "samples": 63128,
+        "duration_seconds": 1.3151666666666666,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 28999,
+              "duration": "1.315147",
+              "bit_rate": "352800",
+              "nb_frames": "28999",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/human-review/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "1.315147",
+            "size": "62094",
+            "bit_rate": "377715",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 63128,
+              "duration": "1.315167",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/human-review/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "1.315167",
+            "size": "126334",
+            "bit_rate": "768474",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "A draft for review.",
+      "word_count": 4,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/human-review/01-primary-155wpm.aiff",
+      "aiff_sha256": "dadf6c5d526ff5f53b7eced0e0cd3b7847f3620006575879b8f377ba09538947",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/human-review/01-primary-155wpm.wav",
+      "wav_sha256": "3a853967cefb3dd114153c70782b1e6b7b2da748edca6bc69fa04a1bc47be25c",
+      "samples": 63128,
+      "duration_seconds": 1.3151666666666666
+    },
+    "actual_end_ms": 64065.166666666664,
+    "remaining_window_ms": 1084.8333333333358,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "nothing-sent",
+    "start_ms": 65900,
+    "window_end_ms": 68100,
+    "intent": "Keep the human action boundary explicit while draft status is highlighted.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "human-review",
+      "target": "draft"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "human-review",
+        "target": "draft"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 65450,
+      "start_ms": 65450,
+      "end_ms": 68450,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 0,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "Nothing is sent.",
+        "word_count": 3,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/nothing-sent/01-primary-155wpm.aiff",
+        "aiff_sha256": "b52e358999cb05d5d2bcd42d84c8a7d1d6e1e7e2d0c238d60966e99b32c54292",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/nothing-sent/01-primary-155wpm.wav",
+        "wav_sha256": "9e95d2c5bcf04b807880afca6ca1ef8cafa369dc1773ab175ade6fe97c0307b4",
+        "text_sha256": "41c4a0014b5120b29228521e884081dca01c74ccce999374b42ad849020ded43",
+        "samples": 46949,
+        "duration_seconds": 0.9781041666666667,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 21567,
+              "duration": "0.978095",
+              "bit_rate": "352800",
+              "nb_frames": "21567",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/nothing-sent/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "0.978095",
+            "size": "47230",
+            "bit_rate": "386301",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 46949,
+              "duration": "0.978104",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/nothing-sent/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "0.978104",
+            "size": "93976",
+            "bit_rate": "768638",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "Nothing is sent.",
+      "word_count": 3,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/nothing-sent/01-primary-155wpm.aiff",
+      "aiff_sha256": "b52e358999cb05d5d2bcd42d84c8a7d1d6e1e7e2d0c238d60966e99b32c54292",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/nothing-sent/01-primary-155wpm.wav",
+      "wav_sha256": "9e95d2c5bcf04b807880afca6ca1ef8cafa369dc1773ab175ade6fe97c0307b4",
+      "samples": 46949,
+      "duration_seconds": 0.9781041666666667
+    },
+    "actual_end_ms": 66878.10416666667,
+    "remaining_window_ms": 1221.8958333333285,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "later-evidence",
+    "start_ms": 69300,
+    "window_end_ms": 71900,
+    "intent": "Establish independent evidence before checklist reuse starts.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "later-evidence",
+      "target": "memory-source"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "later-evidence",
+        "target": "memory-source"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 68450,
+      "start_ms": 68950,
+      "end_ms": 72050,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 500,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "New case. Its own evidence.",
+        "word_count": 5,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-evidence/01-primary-155wpm.aiff",
+        "aiff_sha256": "efedf2e663bd41997351df2931ae03f9543c192227cba0e9d99bd233711b9cfe",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-evidence/01-primary-155wpm.wav",
+        "wav_sha256": "8ff414c604631b8a142eb014d51ff3600fa81b1414182e822f1aae122707d6cf",
+        "text_sha256": "6139fa04f32f119256ef53a7289834d7a092845128fade9d7a8e5fd615ddfcb1",
+        "samples": 99895,
+        "duration_seconds": 2.0811458333333333,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 45889,
+              "duration": "2.081134",
+              "bit_rate": "352800",
+              "nb_frames": "45889",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-evidence/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "2.081134",
+            "size": "95874",
+            "bit_rate": "368545",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 99895,
+              "duration": "2.081146",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-evidence/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "2.081146",
+            "size": "199868",
+            "bit_rate": "768299",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "New case. Its own evidence.",
+      "word_count": 5,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-evidence/01-primary-155wpm.aiff",
+      "aiff_sha256": "efedf2e663bd41997351df2931ae03f9543c192227cba0e9d99bd233711b9cfe",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-evidence/01-primary-155wpm.wav",
+      "wav_sha256": "8ff414c604631b8a142eb014d51ff3600fa81b1414182e822f1aae122707d6cf",
+      "samples": 99895,
+      "duration_seconds": 2.0811458333333333
+    },
+    "actual_end_ms": 71381.14583333333,
+    "remaining_window_ms": 518.8541666666715,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "reuse-checklist",
+    "start_ms": 72400,
+    "window_end_ms": 74350,
+    "intent": "Name reuse after the first checklist transfer begins, then leave the remaining transfers to read.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "reuse-checklist"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "reuse-checklist"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 72050,
+      "start_ms": 72050,
+      "end_ms": 79550,
+      "guidance_segments": 6,
+      "excluded_entering_transition_ms": 0,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "Reuse the checklist.",
+        "word_count": 3,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reuse-checklist/01-primary-155wpm.aiff",
+        "aiff_sha256": "5faae53553db5d1a86e53c6319dbdd50fbd6340546878ccba00cf00fdaff419a",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reuse-checklist/01-primary-155wpm.wav",
+        "wav_sha256": "256c0ae95b6e1458a76eefab6e4ba68966c7b99f9ebae811627d07f1789423d3",
+        "text_sha256": "78693072329d1b6b6236e958d4e6c3318e679fa7620b4fd6b8186b1cc2ce55f9",
+        "samples": 60881,
+        "duration_seconds": 1.2683541666666667,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 27967,
+              "duration": "1.268345",
+              "bit_rate": "352800",
+              "nb_frames": "27967",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reuse-checklist/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "1.268345",
+            "size": "60030",
+            "bit_rate": "378635",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 60881,
+              "duration": "1.268354",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reuse-checklist/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "1.268354",
+            "size": "121840",
+            "bit_rate": "768492",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "Reuse the checklist.",
+      "word_count": 3,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reuse-checklist/01-primary-155wpm.aiff",
+      "aiff_sha256": "5faae53553db5d1a86e53c6319dbdd50fbd6340546878ccba00cf00fdaff419a",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/reuse-checklist/01-primary-155wpm.wav",
+      "wav_sha256": "256c0ae95b6e1458a76eefab6e4ba68966c7b99f9ebae811627d07f1789423d3",
+      "samples": 60881,
+      "duration_seconds": 1.2683541666666667
+    },
+    "actual_end_ms": 73668.35416666667,
+    "remaining_window_ms": 681.6458333333285,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "fresh-facts",
+    "start_ms": 80050,
+    "window_end_ms": 82250,
+    "intent": "Wait for the new-case facts cue; do not anticipate it during checklist transfers.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "fresh-facts",
+      "target": "count"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "fresh-facts",
+        "target": "count"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 79550,
+      "start_ms": 79550,
+      "end_ms": 82350,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 0,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "Check the new facts.",
+        "word_count": 4,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/fresh-facts/01-primary-155wpm.aiff",
+        "aiff_sha256": "17477c5f675bbd00018b48036f21ab1ee21cc08842bd0fc295d1bcbb7ea867db",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/fresh-facts/01-primary-155wpm.wav",
+        "wav_sha256": "4b53c82cc8c749a0d25dab7e5344d1d006bbed0c095057fdcbe1777a369f9bf1",
+        "text_sha256": "dd0b8631aab75af72e3dabbb2c7991992bad16ee91cd83402c7278d8bfd838db",
+        "samples": 63620,
+        "duration_seconds": 1.3254166666666667,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 29225,
+              "duration": "1.325397",
+              "bit_rate": "352800",
+              "nb_frames": "29225",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/fresh-facts/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "1.325397",
+            "size": "62546",
+            "bit_rate": "377523",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 63620,
+              "duration": "1.325417",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/fresh-facts/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "1.325417",
+            "size": "127318",
+            "bit_rate": "768470",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "Check the new facts.",
+      "word_count": 4,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/fresh-facts/01-primary-155wpm.aiff",
+      "aiff_sha256": "17477c5f675bbd00018b48036f21ab1ee21cc08842bd0fc295d1bcbb7ea867db",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/fresh-facts/01-primary-155wpm.wav",
+      "wav_sha256": "4b53c82cc8c749a0d25dab7e5344d1d006bbed0c095057fdcbe1777a369f9bf1",
+      "samples": 63620,
+      "duration_seconds": 1.3254166666666667
+    },
+    "actual_end_ms": 81375.41666666667,
+    "remaining_window_ms": 874.5833333333285,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "later-assessment",
+    "start_ms": 83500,
+    "window_end_ms": 87650,
+    "intent": "Complete the later-case story before the quiet overview of examples.",
+    "focus_mode": "spotlight",
+    "visual_focus": {
+      "id": "later-assessment",
+      "target": "lead"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "later-assessment",
+        "target": "lead"
+      },
+      "mode": "spotlight",
+      "guidance_start_ms": 82350,
+      "start_ms": 82850,
+      "end_ms": 88050,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 500,
+      "settle_reference": "visible-spotlight-arrival"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "This case receives its own proposed assessment.",
+        "word_count": 7,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-assessment/01-primary-155wpm.aiff",
+        "aiff_sha256": "420daa3e152a8d625f0fa24b9f37b1288b4c1d5f414fcfb96d13aab73ae35bdd",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-assessment/01-primary-155wpm.wav",
+        "wav_sha256": "31c2cd1f95095ef882b292c6e4a944ae5e81a57b91c768013d7d6eae02b6bf17",
+        "text_sha256": "07494b10efa53c17afe1c644cba03deb3c29934d6807685a4599f51464a4aa19",
+        "samples": 126953,
+        "duration_seconds": 2.6448541666666667,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 58319,
+              "duration": "2.644853",
+              "bit_rate": "352800",
+              "nb_frames": "58319",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-assessment/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "2.644853",
+            "size": "120734",
+            "bit_rate": "365189",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 126953,
+              "duration": "2.644854",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-assessment/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "2.644854",
+            "size": "253984",
+            "bit_rate": "768235",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "This case receives its own proposed assessment.",
+      "word_count": 7,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-assessment/01-primary-155wpm.aiff",
+      "aiff_sha256": "420daa3e152a8d625f0fa24b9f37b1288b4c1d5f414fcfb96d13aab73ae35bdd",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/later-assessment/01-primary-155wpm.wav",
+      "wav_sha256": "31c2cd1f95095ef882b292c6e4a944ae5e81a57b91c768013d7d6eae02b6bf17",
+      "samples": 126953,
+      "duration_seconds": 2.6448541666666667
+    },
+    "actual_end_ms": 86144.85416666667,
+    "remaining_window_ms": 1505.1458333333285,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  },
+  {
+    "id": "finale",
+    "start_ms": 94300,
+    "window_end_ms": 97950,
+    "intent": "A short closing line with a music-only tail.",
+    "focus_mode": "chapter-framing",
+    "visual_focus": {
+      "id": "finale",
+      "target": "finale"
+    },
+    "resolved_visual_focus": {
+      "selector": {
+        "id": "finale",
+        "target": "finale"
+      },
+      "mode": "chapter-framing",
+      "guidance_start_ms": 93400,
+      "start_ms": 93400,
+      "end_ms": 98550,
+      "guidance_segments": 1,
+      "excluded_entering_transition_ms": 0,
+      "settle_reference": "chapter-cue-start"
+    },
+    "attempts": [
+      {
+        "variant": "primary",
+        "text": "Case Path. Every step has a reason.",
+        "word_count": 7,
+        "rate_wpm": 155,
+        "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/finale/01-primary-155wpm.aiff",
+        "aiff_sha256": "9a83ca1756d371757af5eba4a6d504f8dff3d0adbf31d219acb8f25add9f8d5e",
+        "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/finale/01-primary-155wpm.wav",
+        "wav_sha256": "19631be7266eb0bd4665586a8185f130b47c483fecd3e6712607176f7f4ace28",
+        "text_sha256": "43f6a8786502739e8089c58f8984b8299db5b6180022cc1acedc3c709396038b",
+        "samples": 123793,
+        "duration_seconds": 2.5790208333333333,
+        "fits_window": true,
+        "aiff_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16be",
+              "codec_long_name": "PCM signed 16-bit big-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "twos",
+              "codec_tag": "0x736f7774",
+              "sample_fmt": "s16",
+              "sample_rate": "22050",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/22050",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 56867,
+              "duration": "2.579002",
+              "bit_rate": "352800",
+              "nb_frames": "56867",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/finale/01-primary-155wpm.aiff",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "aiff",
+            "format_long_name": "Audio IFF",
+            "start_time": "0.000000",
+            "duration": "2.579002",
+            "size": "117830",
+            "bit_rate": "365505",
+            "probe_score": 100
+          }
+        },
+        "wav_probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "pcm_s16le",
+              "codec_long_name": "PCM signed 16-bit little-endian",
+              "codec_type": "audio",
+              "codec_tag_string": "[1][0][0][0]",
+              "codec_tag": "0x0001",
+              "sample_fmt": "s16",
+              "sample_rate": "48000",
+              "channels": 1,
+              "bits_per_sample": 16,
+              "initial_padding": 0,
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration_ts": 123793,
+              "duration": "2.579021",
+              "bit_rate": "768000",
+              "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/finale/01-primary-155wpm.wav",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "wav",
+            "format_long_name": "WAV / WAVE (Waveform Audio)",
+            "duration": "2.579021",
+            "size": "247664",
+            "bit_rate": "768241",
+            "probe_score": 99,
+            "tags": {
+              "encoder": "Lavf63.1.102"
+            }
+          }
+        }
+      }
+    ],
+    "selected": {
+      "variant": "primary",
+      "text": "Case Path. Every step has a reason.",
+      "word_count": 7,
+      "rate_wpm": 155,
+      "aiff": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/finale/01-primary-155wpm.aiff",
+      "aiff_sha256": "9a83ca1756d371757af5eba4a6d504f8dff3d0adbf31d219acb8f25add9f8d5e",
+      "wav": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/clips/finale/01-primary-155wpm.wav",
+      "wav_sha256": "19631be7266eb0bd4665586a8185f130b47c483fecd3e6712607176f7f4ace28",
+      "samples": 123793,
+      "duration_seconds": 2.5790208333333333
+    },
+    "actual_end_ms": 96879.02083333333,
+    "remaining_window_ms": 1070.9791666666715,
+    "fade_in_ms": 5,
+    "fade_out_ms": 20
+  }
+]

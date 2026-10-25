@@ -1,0 +1,511 @@
+{
+  "contract": "casepath.documentary-narration-plan/1",
+  "title": "CasePath \u2014 Every step has a reason",
+  "language": "en-GB",
+  "voice": "Daniel",
+  "engine": "/usr/bin/say",
+  "provider_or_model_calls": false,
+  "downloads": false,
+  "planned_duration_ms": 98550,
+  "fps": 30,
+  "max_words": 110,
+  "primary_word_count": 98,
+  "min_rate_wpm": 145,
+  "preferred_rate_wpm": 155,
+  "max_rate_wpm": 180,
+  "tail_guard_ms": 220,
+  "pronunciation_note": "Case Path is the spoken pronunciation of the CasePath brand.",
+  "editorial_basis": {
+    "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+    "captured_timeline_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/final-source-a1b59cf5-20261025/timeline.json",
+    "previous_plan_sha256": "caa45e90500abc52b7b671cccf5044a19e28756319e46a82c2c6b72e9a38b1ea",
+    "note": "Seventeen settled phrases. Draft body and unsent status have separate windows. Finding, proposed invalidity, unresolved issues, and independent later-case facts remain distinct. Final rendering still requires the successful public capture."
+  },
+  "mix": {
+    "voice_integrated_lufs": -18,
+    "voice_true_peak_dbtp": -3,
+    "voice_lra_lu": 7,
+    "music_baseline_db": -3,
+    "music_under_voice_extra_db": -14,
+    "duck_attack_ms": 240,
+    "duck_hold_ms": 180,
+    "duck_release_ms": 650,
+    "final_integrated_lufs": -18,
+    "pcm_true_peak_dbtp": -2.5,
+    "final_true_peak_ceiling_dbtp": -2,
+    "final_lra_lu": 9
+  },
+  "cues": [
+    {
+      "id": "question",
+      "start": {
+        "act": "customer",
+        "phase": "ready",
+        "edge": "start",
+        "offset_ms": 900,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "customer",
+        "phase": "customer-passage-rest",
+        "edge": "end",
+        "offset_ms": -400,
+        "occurrence": 0
+      },
+      "text": "A tenant asks: is this rent increase notice valid?",
+      "short_text": "Is this rent increase notice valid?",
+      "intent": "Establish the actual rent-increase notice question in the opening.",
+      "word_count": 9,
+      "short_word_count": 6,
+      "visual_focus": {
+        "id": "question",
+        "target": "source"
+      },
+      "focus_mode": "chapter-framing"
+    },
+    {
+      "id": "circles",
+      "start": {
+        "act": "reading",
+        "phase": "act-transition",
+        "edge": "start",
+        "offset_ms": 850,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "reading",
+        "phase": "node-rest",
+        "edge": "end",
+        "offset_ms": -100,
+        "occurrence": 0
+      },
+      "text": "Each circle is one question to check.",
+      "short_text": "Each circle marks a question.",
+      "intent": "Explain one process circle after the scene has arrived.",
+      "word_count": 7,
+      "short_word_count": 5,
+      "visual_focus": {
+        "id": "circles",
+        "target": "node"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "decisive-source",
+      "start": {
+        "act": "reading",
+        "phase": "camera-in",
+        "edge": "start",
+        "offset_ms": 900,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "reading",
+        "phase": "fact",
+        "edge": "start",
+        "offset_ms": -200,
+        "occurrence": 0
+      },
+      "text": "The original notice gave no reasons.",
+      "short_text": "The notice gave no reasons.",
+      "intent": "Speak the finding only while the exact source passage remains in focus.",
+      "word_count": 6,
+      "short_word_count": 5,
+      "grounding": {
+        "predicate": "contemporaneous_substantive_reasons",
+        "basis": "Root supplied the actual failed predicate and exact quotation as grounding for this wording."
+      },
+      "visual_focus": {
+        "id": "decisive-source",
+        "target": "source"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "proposed-fact",
+      "start": {
+        "act": "reading",
+        "phase": "fact",
+        "edge": "start",
+        "offset_ms": 600,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "reading",
+        "phase": "camera-out",
+        "edge": "end",
+        "offset_ms": -200,
+        "occurrence": 0
+      },
+      "text": "That supports a proposed finding.",
+      "short_text": "A proposed finding.",
+      "intent": "Wait for the fact highlight to settle, then explain the source-to-fact relationship.",
+      "word_count": 5,
+      "short_word_count": 3,
+      "grounding": {
+        "predicate": "contemporaneous_substantive_reasons",
+        "basis": "Root supplied the actual failed predicate and exact quotation as grounding for this wording."
+      },
+      "visual_focus": {
+        "id": "source-fact",
+        "target": "fact"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "reasoning",
+      "start": {
+        "act": "decision",
+        "phase": "overview",
+        "edge": "start",
+        "offset_ms": 200,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "decision",
+        "phase": "chain-rest",
+        "edge": "end",
+        "offset_ms": -250,
+        "occurrence": -1
+      },
+      "text": "The reasoning connects facts, rules, and supporting sources.",
+      "short_text": "Follow the facts, rules, and sources.",
+      "intent": "Describe the reasoning while its columns are in focus; finish before the quotation cutaway.",
+      "word_count": 8,
+      "short_word_count": 6,
+      "visual_focus": {
+        "id": "reasoning",
+        "target": "chain"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "verified-passages",
+      "start": {
+        "act": "decision",
+        "phase": "source-check-rest",
+        "edge": "start",
+        "offset_ms": 50,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "decision",
+        "phase": "source-check-rest",
+        "edge": "end",
+        "offset_ms": -150,
+        "occurrence": 0
+      },
+      "text": "Each quotation can be checked against a received file.",
+      "short_text": "Check each quotation against its file.",
+      "intent": "Speak about source matching only after the received-file view has settled.",
+      "word_count": 9,
+      "short_word_count": 6,
+      "visual_focus": {
+        "id": "verified-passages",
+        "target": "verified"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "rule",
+      "start": {
+        "act": "decision",
+        "phase": "law-rest",
+        "edge": "start",
+        "offset_ms": 300,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "decision",
+        "phase": "law-rest",
+        "edge": "end",
+        "offset_ms": -400,
+        "occurrence": 0
+      },
+      "text": "The rule links missing reasons to an invalid notice.",
+      "short_text": "Missing reasons can make the notice invalid.",
+      "intent": "Explain the highlighted paragraph 2(b), without claiming the entire case is resolved.",
+      "word_count": 9,
+      "short_word_count": 7,
+      "visual_focus": {
+        "id": "rule-documents",
+        "target": "law"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "unmet-requirement",
+      "start": {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "edge": "start",
+        "offset_ms": 100,
+        "occurrence": 2
+      },
+      "end": {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "edge": "end",
+        "offset_ms": -50,
+        "occurrence": 2
+      },
+      "text": "One unmet requirement.",
+      "short_text": "Unmet requirement.",
+      "intent": "Name the failed requirement only inside its semantic highlight, after its reveal.",
+      "word_count": 3,
+      "short_word_count": 2,
+      "visual_focus": {
+        "id": "legal-tests",
+        "target": "predicate",
+        "target_id": "contemporaneous_substantive_reasons"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "assessment",
+      "start": {
+        "act": "decision",
+        "phase": "answer-rest",
+        "edge": "start",
+        "offset_ms": 500,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "decision",
+        "phase": "answer-rest",
+        "edge": "start",
+        "offset_ms": 2800,
+        "occurrence": 0
+      },
+      "text": "Proposed: invalid on this ground.",
+      "short_text": "Proposed: invalid notice.",
+      "intent": "State proposed invalidity on this ground; unresolved issues follow separately.",
+      "word_count": 5,
+      "short_word_count": 3,
+      "visual_focus": {
+        "id": "proposed-assessment",
+        "target": "lead"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "open-questions",
+      "start": {
+        "act": "decision",
+        "phase": "answer-rest",
+        "edge": "start",
+        "offset_ms": 3350,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "decision",
+        "phase": "answer-rest",
+        "edge": "end",
+        "offset_ms": -300,
+        "occurrence": 0
+      },
+      "text": "Other questions remain open.",
+      "short_text": "Questions remain open.",
+      "intent": "Begin only after the open-questions focus has settled.",
+      "word_count": 4,
+      "short_word_count": 3,
+      "visual_focus": {
+        "id": "open-questions",
+        "target": "open"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "human-review",
+      "start": {
+        "act": "decision",
+        "phase": "draft-rest",
+        "edge": "start",
+        "offset_ms": 300,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "decision",
+        "phase": "draft-rest",
+        "edge": "start",
+        "offset_ms": 2700,
+        "occurrence": 0
+      },
+      "text": "A draft for review.",
+      "short_text": "A draft for review.",
+      "intent": "Describe the actual unsent draft while its body is highlighted.",
+      "word_count": 4,
+      "short_word_count": 4,
+      "visual_focus": {
+        "id": "human-review",
+        "target": "draft-body"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "nothing-sent",
+      "start": {
+        "act": "decision",
+        "phase": "draft-rest",
+        "edge": "start",
+        "offset_ms": 3450,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "decision",
+        "phase": "draft-rest",
+        "edge": "end",
+        "offset_ms": -350,
+        "occurrence": 0
+      },
+      "text": "Nothing is sent.",
+      "short_text": "Nothing is sent.",
+      "intent": "Keep the human action boundary explicit while draft status is highlighted.",
+      "word_count": 3,
+      "short_word_count": 3,
+      "visual_focus": {
+        "id": "human-review",
+        "target": "draft"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "later-evidence",
+      "start": {
+        "act": "learning",
+        "phase": "later-case-rest",
+        "edge": "start",
+        "offset_ms": 350,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "learning",
+        "phase": "memory-overview",
+        "edge": "end",
+        "offset_ms": -150,
+        "occurrence": 0
+      },
+      "text": "New case. Its own evidence.",
+      "short_text": "New case, new evidence.",
+      "intent": "Establish independent evidence before checklist reuse starts.",
+      "word_count": 5,
+      "short_word_count": 4,
+      "visual_focus": {
+        "id": "later-evidence",
+        "target": "memory-source"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "reuse-checklist",
+      "start": {
+        "act": "learning",
+        "phase": "memory-transfer",
+        "edge": "start",
+        "offset_ms": 350,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "learning",
+        "phase": "memory-landed",
+        "edge": "end",
+        "offset_ms": -200,
+        "occurrence": 0
+      },
+      "text": "Reuse the checklist.",
+      "short_text": "Reuse the checklist.",
+      "intent": "Name reuse after the first checklist transfer begins, then leave the remaining transfers to read.",
+      "word_count": 3,
+      "short_word_count": 3,
+      "visual_focus": {
+        "id": "reuse-checklist"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "fresh-facts",
+      "start": {
+        "act": "learning",
+        "phase": "memory-notice-rest",
+        "edge": "start",
+        "offset_ms": 100,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "learning",
+        "phase": "memory-notice-rest",
+        "edge": "end",
+        "offset_ms": -100,
+        "occurrence": 0
+      },
+      "text": "Check the new facts.",
+      "short_text": "Recheck the facts.",
+      "intent": "Wait for the new-case facts cue; do not anticipate it during checklist transfers.",
+      "word_count": 4,
+      "short_word_count": 3,
+      "visual_focus": {
+        "id": "fresh-facts",
+        "target": "count"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "later-assessment",
+      "start": {
+        "act": "learning",
+        "phase": "answer-rest",
+        "edge": "start",
+        "offset_ms": 250,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "learning",
+        "phase": "answer-rest",
+        "edge": "end",
+        "offset_ms": -400,
+        "occurrence": 0
+      },
+      "text": "This case receives its own proposed assessment.",
+      "short_text": "Its own evidence. Its own assessment.",
+      "intent": "Complete the later-case story before the quiet overview of examples.",
+      "word_count": 7,
+      "short_word_count": 6,
+      "visual_focus": {
+        "id": "later-assessment",
+        "target": "lead"
+      },
+      "focus_mode": "spotlight"
+    },
+    {
+      "id": "finale",
+      "start": {
+        "act": "cases",
+        "phase": "wordmark-rest",
+        "edge": "start",
+        "offset_ms": 250,
+        "occurrence": 0
+      },
+      "end": {
+        "act": "cases",
+        "phase": "wordmark-rest",
+        "edge": "end",
+        "offset_ms": -600,
+        "occurrence": 0
+      },
+      "text": "Case Path. Every step has a reason.",
+      "short_text": "Case Path. Every step has a reason.",
+      "intent": "A short closing line with a music-only tail.",
+      "word_count": 7,
+      "short_word_count": 7,
+      "visual_focus": {
+        "id": "finale",
+        "target": "finale"
+      },
+      "focus_mode": "chapter-framing"
+    }
+  ],
+  "reviewed_cue_count": 17,
+  "minimum_focus_settle_ms": 350,
+  "focus_exit_guard_ms": 50,
+  "exclude_entering_transitions": true
+}

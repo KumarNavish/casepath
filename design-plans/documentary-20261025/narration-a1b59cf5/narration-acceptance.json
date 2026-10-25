@@ -1,0 +1,42 @@
+{
+  "contract": "casepath.documentary-narration-supplement/1",
+  "status": "verified",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "source_tree": "5c204a90f491d4201bb0fd327b6dba2feabf6bcb",
+  "source_manifest_sha256": "d5ac9d1420beb023002cf4a5ef732003a2ec5b1f1cc3e3e787e5e4a0d012e5b5",
+  "strict_evidence_destination": "design-plans/documentary-20261025/release-a1b59cf5",
+  "strict_prepared_sha256": "7a19530b72e28a571b945c24189b80ecfb64326df1116986d2ebec83b7790d3b",
+  "strict_manifest_sha256": "402d254553087583f4f6da5552484a9dccf3f2539ae93895ab82a3938c41ec64",
+  "narration_receipt_sha256": "48f65f63a55bb8a6ae91c33a34137d3adbb12df8b702ecab6214b6faf1fe4412",
+  "commander_session_id": "casepath-20261025-final-narration-v1",
+  "commander_terminal_sha256": "a151dc8e9a8ddb00854c0a9098006c0e49e2f262991c7d46624fb086ea227bc5",
+  "narrated_film_sha256": "542ac7644314b1beba46ddf74f8c49b61700ed5886efc4ae1d126639cbd75016",
+  "narration_helper_sha256": "c894a0567faf1652acbae6e0f0f9b38e448462ec1b89f9faf4565a7cb5abb4ab",
+  "video_packets_unchanged": true,
+  "encoded_video_sha256": "a50f96f518620a384aa302cc9903b9442f74f75a19fd25f5e301c6e2d6c23a81",
+  "video_frames": 2957,
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "duration_seconds": 98.56666666666666,
+  "measured_integrated_lufs": -18.0,
+  "measured_true_peak_dbtp": -2.44,
+  "voice": {
+    "name": "Daniel",
+    "language": "en-GB",
+    "engine": "/usr/bin/say",
+    "speed_range_wpm": [
+      145,
+      180
+    ],
+    "installed_inventory_line": "Daniel              en_GB    # Hello! My name is Daniel."
+  },
+  "spoken_word_count": 96,
+  "cue_count": 17,
+  "provider_or_model_calls": false,
+  "voice_downloads": false,
+  "subjective_listening_claimed": false,
+  "product_changes": false,
+  "deployment_performed": false,
+  "commit_or_push_performed": false
+}
