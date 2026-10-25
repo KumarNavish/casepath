@@ -1,0 +1,104 @@
+{
+  "canonical_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "source_tree": "5c204a90f491d4201bb0fd327b6dba2feabf6bcb",
+  "candidate_parent": "5da3233a0aa04ad29843c8ec55dfb685118381c9",
+  "verified_at": "2026-10-25T10:55:39.843016+00:00",
+  "fresh_complete_gate": true,
+  "strict_reused": false,
+  "command": "CASEPATH_REQUIRE_FRONTEND_SUITES=1 nice -n 10 ./bin/casepath test",
+  "host": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024",
+  "exit_code": 0,
+  "summary_line": "2927 passed, 10 skipped, 10 warnings",
+  "seconds": 3254.05,
+  "passed": 2927,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 10,
+  "deselected": 0,
+  "new_skips": 0,
+  "skip_reports": [
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v1.py:605: frozen independent-transition packet is not available",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:457: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:548: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:559: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:579: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:592: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:610: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:636: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:646: saved native source-binding run is unavailable",
+    "SKIPPED [1] casepath-api/tests/test_document_lifecycle_shadow_v2.py:696: saved native source-binding run is unavailable"
+  ],
+  "frontend_suites_required": [
+    "autonomous-workspace-v1.test.cjs",
+    "autonomous-language-v1.test.cjs",
+    "sites-autonomous-entry.test.cjs",
+    "autonomous-evidence-identity-v2.test.cjs",
+    "unified-product-v1.test.cjs",
+    "autonomous-desk-v3.test.cjs",
+    "autonomous-cases-v4.test.cjs",
+    "autonomous-knowledge-w6.test.cjs",
+    "autonomous-northstar-v1.test.cjs",
+    "autonomous-presentation-v1.test.cjs",
+    "autonomous-presentation-browser-v1.test.cjs",
+    "review-northstar-v1.test.cjs",
+    "review-northstar-browser-v1.test.cjs",
+    "causal-process-v1.test.cjs",
+    "claims-workspace-presentation-v1.test.cjs",
+    "claim-sections-v1.test.cjs",
+    "claim-navigation-refresh-v4.test.cjs",
+    "claims-workspace-lazy-presentation-v1.test.cjs"
+  ],
+  "frontend_suites_mandatory": true,
+  "frontend_suite_evidence": "Unchanged bound 18-suite declaration, strict mandatory environment, complete official gate exit zero, and no frontend skips; successful TAP is captured inside the existing pytest tests.",
+  "manifest_sha256": "d5ac9d1420beb023002cf4a5ef732003a2ec5b1f1cc3e3e787e5e4a0d012e5b5",
+  "source_files": 1746,
+  "source_files_exact": true,
+  "source_clean_after": true,
+  "isolation": {
+    "contract": "casepath.isolated-backend-static-test/1.0.0",
+    "external_network_activity_attested": false,
+    "model_mode": "deterministic_reference",
+    "persistent_artifact_registry_used": false,
+    "persistent_product_database_used": false,
+    "provider_credential_names_present": [],
+    "receipt_sha256": "3ff391ed794cec05ffdcd0b36f07c4bc5ae6f860729dde320136a35c2df7565d",
+    "targets": [
+      "casepath-api/tests",
+      "casepath/tools/test_build_deployment_identity.py",
+      "casepath/tools/test_casepath_release.py"
+    ]
+  },
+  "frontend_source_changed": true,
+  "current_visual_evidence_required": true,
+  "qualified_human_review": "not_claimed_by_automated_QA",
+  "evidence": {
+    "full_log": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/full-gate.log",
+      "sha256": "767381b799f4334649d8715e11d32952740944dceb3ede2afe773973645c3028"
+    },
+    "runner": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/run_full_gate.py",
+      "sha256": "063f99e70f6536f5755cf3bf761097d6a1ef4d745de88afb67c2d6afb61b9290"
+    },
+    "verifier": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/require_completed_gate.py",
+      "sha256": "bb53d1c55cde19624e4f3867dddff9dbae9fcc6dfdfd51b3afc14c76845d07e1"
+    },
+    "source_binding": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/source-binding.json",
+      "sha256": "ee31623efdadae14ebd56f53fd9b3ca6dd32d6ed660245ed5a4a940b5878d124"
+    },
+    "preparation": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/prepare-candidate.json",
+      "sha256": "4f6d0d6768fb6af374653d9e784a4033ada78d4e7f413cc256dedd741e247373"
+    },
+    "independent_review": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/independent-review.json",
+      "sha256": "3048ed65da43d0533a876536b44d87fffd778d4c9791c322813013c2b7283e45"
+    },
+    "preseal_browser_receipt": {
+      "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/teaching-preview-seal-20261025/capture-receipt.json",
+      "sha256": "de6c1a78ee57ece962f324d63911427016326b53d502144af2b20797aeb2288e"
+    }
+  }
+}

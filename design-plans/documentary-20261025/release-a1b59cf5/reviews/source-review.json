@@ -1,0 +1,34 @@
+{
+  "contract": "casepath.documentary-source-review/1",
+  "reviewer": "independent assistant /root/story_audit",
+  "status": "passed",
+  "blocking_findings": [],
+  "verdict": "Ready to seal and run the full release gate; no blocking issue in the bounded documentary source/QA review.",
+  "scope": "Source-and-frame audit, targeted regression design, one paragraph-boundary edge identified and repaired; direct review of actual final focused receipt and TAP log.",
+  "reviewed_source_files": {
+    "casepath/assets/autonomous-presentation-v1.js": "1245d621780dfca6ba311b667fbf95ca8af7f9240afc93992f8a28d95b05ea4e",
+    "casepath/assets/autonomous-workspace-v1.js": "eb0d03f7760d80fcaefafe55638c71035802c92c45f028b139f0237f6ff02416",
+    "casepath-qa/autonomous-presentation-v1.test.cjs": "4f0e3efc6351f474ecc524750c5a37202177dcca19c3bd88292ee54dd36ce794",
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs": "a23b56bc3c707ca4181a46d56a9b794f6373598f957f5ae93e0f67abab7be88d"
+  },
+  "focused_result": {
+    "tests": 20,
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "source_unchanged": true,
+    "log_sha256": "b2390d20d03941bc05ca84960be20bb2f782faccf6b96c68dab081ac4d362525"
+  },
+  "verified_coverage": [
+    "Complete recorded law text and paragraph-layout spans",
+    "Unique exact clause and evidence-conditioned captions",
+    "Wrong, missing, duplicated and paragraph-3 clause rejection",
+    "Precise visible law focus and deterministic backward seeking",
+    "Full original draft before three-second focus handoff to unsent human-review status",
+    "Stable caption and original draft text",
+    "Pause, ring motion, reduced motion, admission, recorded source identity and 98.55-second timeline"
+  ],
+  "qa_write_scope_closed": true,
+  "limitation": "Does not substitute for the fresh complete release gate, publication identity checks, or exported-film verification."
+}

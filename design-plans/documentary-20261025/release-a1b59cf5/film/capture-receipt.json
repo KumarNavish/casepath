@@ -1,0 +1,6947 @@
+{
+  "contract": "casepath.cinema-capture/1",
+  "started_at": "2026-10-25T11:05:27.266Z",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "asset_sha256": {
+    "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+    "autonomous-presentation-v1.js": "1245d621780dfca6ba311b667fbf95ca8af7f9240afc93992f8a28d95b05ea4e",
+    "autonomous-workspace-v1.js": "eb0d03f7760d80fcaefafe55638c71035802c92c45f028b139f0237f6ff02416",
+    "autonomous-workspace-v1.css": "dd9c40b60b89f210ad6f4331c92ad0df8279b3dd29209d83e4977c5e940dedf1"
+  },
+  "mode": "deployed_read_only_replay",
+  "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/?present=1#autonomous/demonstration",
+  "new_inference": false,
+  "writes": [],
+  "edge_beacons": [
+    {
+      "method": "POST",
+      "origin": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+      "pathname_prefix": "/cdn-cgi/challenge-platform/h/b/jsd/oneshot/",
+      "pathname_sha256": "34cc0743156c78b1063d220e728535645644a6fa55da202c833ce3386cb4d7de",
+      "classification": "same_origin_edge_challenge",
+      "action": "continued"
+    }
+  ],
+  "unexpected_destinations": [],
+  "browser_errors": [],
+  "viewport": {
+    "width": 1600,
+    "height": 900
+  },
+  "device_scale": 1.2,
+  "output": {
+    "width": 1920,
+    "height": 1080
+  },
+  "fps": 30,
+  "frames": [
+    {
+      "n": 0,
+      "time": 0,
+      "act": "customer",
+      "phase": "ready",
+      "sha256": "dc47147294e9a2aeabcbac84561591f3a50c93920cdc81188318901e92aff107",
+      "file": "contact/frame-01.png",
+      "review_file": "contact/frame-01.jpg"
+    },
+    {
+      "n": 129,
+      "time": 4300,
+      "act": "customer",
+      "phase": "customer-source-open",
+      "sha256": "3ac44c8d91b97bc41a302e154ed9cc3716764d3e98c90805e7ae24c11a72485b",
+      "file": "contact/frame-02.png",
+      "review_file": "contact/frame-02.jpg"
+    },
+    {
+      "n": 257,
+      "time": 8566.666666666666,
+      "act": "reading",
+      "phase": "passage-rest",
+      "sha256": "ad719421227835aa58e293a7c5ab89a34f50945810145230c37c1e2b495deee6",
+      "file": "contact/frame-03.png",
+      "review_file": "contact/frame-03.jpg"
+    },
+    {
+      "n": 386,
+      "time": 12866.666666666666,
+      "act": "reading",
+      "phase": "passage-rest",
+      "sha256": "3e8399961fbdc07e92760fddd92dcf021970cb8055484450fbddaa7ec675e024",
+      "file": "contact/frame-04.png",
+      "review_file": "contact/frame-04.jpg"
+    },
+    {
+      "n": 514,
+      "time": 17133.333333333332,
+      "act": "reading",
+      "phase": "connector",
+      "sha256": "bafc47372a9974dcea06b090b371d321738218baab88f4eed5db3c6ffa5dafa1",
+      "file": "contact/frame-05.png",
+      "review_file": "contact/frame-05.jpg"
+    },
+    {
+      "n": 643,
+      "time": 21433.333333333332,
+      "act": "reading",
+      "phase": "passage-rest",
+      "sha256": "caff6c86c0c7655a0296a5949b6fdf183eb573975ebb14c3f2556f002795fbcd",
+      "file": "contact/frame-06.png",
+      "review_file": "contact/frame-06.jpg"
+    },
+    {
+      "n": 771,
+      "time": 25700,
+      "act": "process",
+      "phase": "plan-recede",
+      "sha256": "91d9f6150df4a2c111228112177f17af1ea1a15f93c9de98159278ba22bb072d",
+      "file": "contact/frame-07.png",
+      "review_file": "contact/frame-07.jpg"
+    },
+    {
+      "n": 900,
+      "time": 30000,
+      "act": "decision",
+      "phase": "chain-rest",
+      "sha256": "9ffa63459034b99acd855f0ef324b8e6a2a14f288da22ff0727aef7d8e8d8ffd",
+      "file": "contact/frame-08.png",
+      "review_file": "contact/frame-08.jpg"
+    },
+    {
+      "n": 1028,
+      "time": 34266.666666666664,
+      "act": "decision",
+      "phase": "source-check",
+      "sha256": "d16ccb25e3a446c23c83eb12b337ada0a8023e3d26edbac02b91f798c503967f",
+      "file": "contact/frame-09.png",
+      "review_file": "contact/frame-09.jpg"
+    },
+    {
+      "n": 1157,
+      "time": 38566.666666666664,
+      "act": "decision",
+      "phase": "source-check-rest",
+      "sha256": "4738630e07e5496b1598e569360600eb5581af936749260157118405c2931744",
+      "file": "contact/frame-10.png",
+      "review_file": "contact/frame-10.jpg"
+    },
+    {
+      "n": 1285,
+      "time": 42833.333333333336,
+      "act": "decision",
+      "phase": "law-rest",
+      "sha256": "fac9343f2ad7e84caf490a078ef6d8bb824862214a407d64c8ada337e7e4679e",
+      "file": "contact/frame-11.png",
+      "review_file": "contact/frame-11.jpg"
+    },
+    {
+      "n": 1414,
+      "time": 47133.333333333336,
+      "act": "decision",
+      "phase": "documents-rest",
+      "sha256": "b0ad6a0319fea7954da6ae84090678beda315f63bd667cdb66de2feba0c2aded",
+      "file": "contact/frame-12.png",
+      "review_file": "contact/frame-12.jpg"
+    },
+    {
+      "n": 1542,
+      "time": 51400,
+      "act": "decision",
+      "phase": "legal-test-rest",
+      "sha256": "fbeee6b7018cfb1d8e0eba18ce4ff3833028ec1a3777fa4550a084a952be2d26",
+      "file": "contact/frame-13.png",
+      "review_file": "contact/frame-13.jpg"
+    },
+    {
+      "n": 1671,
+      "time": 55700,
+      "act": "decision",
+      "phase": "answer-rest",
+      "sha256": "c3bd52bf87f0866adf4b664d68fdeb4d9bdf81f77eeff9aa42db87e5e3aaa67c",
+      "file": "contact/frame-14.png",
+      "review_file": "contact/frame-14.jpg"
+    },
+    {
+      "n": 1799,
+      "time": 59966.666666666664,
+      "act": "decision",
+      "phase": "answer-rest",
+      "sha256": "eecb9ebb9d7792cdc2267fcea239e34cef47e059c69958cbd993a69e1f4bb1c2",
+      "file": "contact/frame-15.png",
+      "review_file": "contact/frame-15.jpg"
+    },
+    {
+      "n": 1928,
+      "time": 64266.666666666664,
+      "act": "decision",
+      "phase": "draft-rest",
+      "sha256": "d794115aaddac29da52361a219c876e262652cfccb0534ec24d6af0dd0b5b35a",
+      "file": "contact/frame-16.png",
+      "review_file": "contact/frame-16.jpg"
+    },
+    {
+      "n": 2056,
+      "time": 68533.33333333333,
+      "act": "learning",
+      "phase": "later-case-rest",
+      "sha256": "415aae73b63afbc35c422dfe39ce7d608f2ddb59b379edbb39c6075c8d919517",
+      "file": "contact/frame-17.png",
+      "review_file": "contact/frame-17.jpg"
+    },
+    {
+      "n": 2185,
+      "time": 72833.33333333333,
+      "act": "learning",
+      "phase": "memory-transfer",
+      "sha256": "777d21c4847e9872ec4d5dfec6f47cd6d3fe47a899ad78c7645d70818e35e138",
+      "file": "contact/frame-18.png",
+      "review_file": "contact/frame-18.jpg"
+    },
+    {
+      "n": 2313,
+      "time": 77100,
+      "act": "learning",
+      "phase": "memory-transfer",
+      "sha256": "191f8bae0a1fcef2475ee380d6059c86f23ef5641ea828d9503d3beb548ed546",
+      "file": "contact/frame-19.png",
+      "review_file": "contact/frame-19.jpg"
+    },
+    {
+      "n": 2442,
+      "time": 81400,
+      "act": "learning",
+      "phase": "memory-notice-rest",
+      "sha256": "d99df47d2a58a15499c3ab0366f2d99e31b62036af250d481f336d8e61db1a38",
+      "file": "contact/frame-20.png",
+      "review_file": "contact/frame-20.jpg"
+    },
+    {
+      "n": 2570,
+      "time": 85666.66666666667,
+      "act": "learning",
+      "phase": "answer-rest",
+      "sha256": "683cb73de53faa5ae4c835d8b8e1bf08f6cb897664f5f584ba1a305575bd8947",
+      "file": "contact/frame-21.png",
+      "review_file": "contact/frame-21.jpg"
+    },
+    {
+      "n": 2699,
+      "time": 89966.66666666667,
+      "act": "cases",
+      "phase": "case-row",
+      "sha256": "3e1bf47e3dcb20bc9db8c411dd3654fc031af8ac03063eb8003e7268c87dd600",
+      "file": "contact/frame-22.png",
+      "review_file": "contact/frame-22.jpg"
+    },
+    {
+      "n": 2827,
+      "time": 94233.33333333333,
+      "act": "cases",
+      "phase": "wordmark-rest",
+      "sha256": "7527be50f54f0fd3788fc5a0d6bc3a016541d5eec8b9b1e0d56c63cbe0c90363",
+      "file": "contact/frame-23.png",
+      "review_file": "contact/frame-23.jpg"
+    },
+    {
+      "n": 2956,
+      "time": 98533.33333333333,
+      "act": "cases",
+      "phase": "wordmark-rest",
+      "sha256": "ec081a2156aa4e1c4fbd4b9b9a55abdf7793c3ccb4ea9d7a14e9f6803ddee22b",
+      "file": "contact/frame-24.png",
+      "review_file": "contact/frame-24.jpg"
+    }
+  ],
+  "scenes": [
+    {
+      "name": "scenes/000-customer-ready.png",
+      "time": 4199,
+      "sha256": "df49cd7da6f4e906762245f10c38ae55bae03c3a66dd5262afb819825fa40dc6"
+    },
+    {
+      "name": "scenes/005-customer-customer-passage-rest.png",
+      "time": 6799,
+      "sha256": "61c6ab23edbe90990eea6553822a780a991986c282efb7e72c8421e08ee1e1f7"
+    },
+    {
+      "name": "scenes/013-reading-node-rest.png",
+      "time": 10849,
+      "sha256": "83c3749b277832554e70607ab7de00648cf152f7d28bddd8a586c50848779da6"
+    },
+    {
+      "name": "scenes/021-reading-fact-rest.png",
+      "time": 18999,
+      "sha256": "c2803c3cff72df4576b243d40e3f691078f0ec04e3546fd98651dc74783ac993"
+    },
+    {
+      "name": "scenes/030-reading-node-rest.png",
+      "time": 23549,
+      "sha256": "53c56f1ca311a1bd02adcb7de0d9840d2513eec8066902b2392cc658575fecbf"
+    },
+    {
+      "name": "scenes/038-process-node-rest.png",
+      "time": 27099,
+      "sha256": "12d2619faac61485182c9936c060dc161bc20729aab20eaa523c50a3fbb1c744"
+    },
+    {
+      "name": "scenes/041-decision-overview.png",
+      "time": 28899,
+      "sha256": "16a926806715294fcdaef61d57da86f7e1ed904c7de447c8ad589dde8a1537a3"
+    },
+    {
+      "name": "scenes/052-decision-source-check-rest.png",
+      "time": 39199,
+      "sha256": "6bf9c091ddaf7038651f84770eff9f07a78af5cc7b25f0400286c4a2629ae92a"
+    },
+    {
+      "name": "scenes/055-decision-law-rest.png",
+      "time": 45499,
+      "sha256": "d8a7a672c096acd6cbbcb1c265e89775b027a97743b6e594d11b0cff8ca25391"
+    },
+    {
+      "name": "scenes/058-decision-documents-rest.png",
+      "time": 47299,
+      "sha256": "4d407f3880cded8d31876f3ddc65d3dcf133a770e4c4c6bb262c3ce1975ca3f8"
+    },
+    {
+      "name": "scenes/071-decision-answer-rest.png",
+      "time": 61549,
+      "sha256": "27d35184b529b2c4e7ea4fafa05c5720e4ad8b31f4d799a880c3501f0653101a"
+    },
+    {
+      "name": "scenes/074-decision-draft-rest.png",
+      "time": 68449,
+      "sha256": "a1408368a686791721168307850402a626e56a8f1d695f221a65504c8eeef314"
+    },
+    {
+      "name": "scenes/078-learning-memory-overview.png",
+      "time": 72049,
+      "sha256": "19a4df15d00d39488c50008b7e2390b2f88a7ed1a46ede40c3cec2219892784e"
+    },
+    {
+      "name": "scenes/086-learning-memory-notice-rest.png",
+      "time": 82349,
+      "sha256": "7cc701503987012180b8040689e30b9a27af52a8afd0c758a12b490742076673"
+    },
+    {
+      "name": "scenes/089-learning-answer-rest.png",
+      "time": 88049,
+      "sha256": "df71c05d1a8155a0083a36fc8fb038e82c070efbd4089e23d1bbda316e6f82ca"
+    },
+    {
+      "name": "scenes/101-cases-case-list-rest.png",
+      "time": 93399,
+      "sha256": "513d59174595a49a7b27856f156057bd482af43cfd585113ef54cbc93e7a5abc"
+    },
+    {
+      "name": "scenes/103-cases-wordmark-rest.png",
+      "time": 98549,
+      "sha256": "b1a07ffe795e8a50a16319325f2f5a5fafcf24fe6cbd591eeb19553512c5e901"
+    }
+  ],
+  "request_policy": {
+    "application_methods": [
+      "GET",
+      "HEAD"
+    ],
+    "edge_exception": {
+      "origin": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+      "method": "POST",
+      "pathname_prefix": "/cdn-cgi/challenge-platform/h/b/jsd/oneshot/"
+    }
+  },
+  "health": {
+    "status": "ok",
+    "component": "api",
+    "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+    "storage": "remote_primary",
+    "writable": false,
+    "read_only": true
+  },
+  "deployment": {
+    "alignment_eligible": true,
+    "component": "frontend",
+    "component_contract": "focused-claim-workspace-v20",
+    "component_version": "20.0.0",
+    "contract": "casepath.deployment-identity/1.0.0",
+    "release_contract_sha256": "ece5736049403c8b622e08aeee2cfc53ebd1dd164ca49889a8e4bfc05289113e",
+    "release_id": "casepath-v20-reference-20260811",
+    "service": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+    "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+    "source_commit_source": "CASEPATH_SOURCE_COMMIT",
+    "unknown_semantics": "unknown never satisfies cross-service release alignment"
+  },
+  "admission_ms": 19273,
+  "timeline": {
+    "showcase": {
+      "claimId": "clm_543f08f2415b2a33",
+      "candidates": [
+        {
+          "claimId": "clm_314f2d309fea25e6",
+          "stateHash": "df5f95e988c60ec91b36f7435375549ffc3c532103d51dfddd4a929ca8b3dcf4",
+          "index": 0,
+          "counts": {
+            "failed": 0,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 0,
+            "tests": 5,
+            "steps": 6
+          },
+          "score": [
+            0,
+            0,
+            0,
+            0,
+            5,
+            6
+          ]
+        },
+        {
+          "claimId": "clm_4a07dbbbd859a3ce",
+          "stateHash": "ef77d4d427f72291d1efb18851a64a7adc390b7b5a0e7ac62d274be5af970670",
+          "index": 1,
+          "counts": {
+            "failed": 0,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 6
+          },
+          "score": [
+            0,
+            0,
+            0,
+            1,
+            5,
+            6
+          ]
+        },
+        {
+          "claimId": "clm_95d08975bc575592",
+          "stateHash": "77a261c714da465ddace4ea599ee31169262cfe83796ebd15e2b01abb9952a8a",
+          "index": 2,
+          "counts": {
+            "failed": 0,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 6
+          },
+          "score": [
+            0,
+            0,
+            0,
+            1,
+            5,
+            6
+          ]
+        },
+        {
+          "claimId": "clm_0f4f13b1e3e1328c",
+          "stateHash": "e46dc84c04f0ede959dd7244fa3512f7faa6b60c6556777168a52a7c56877af2",
+          "index": 3,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 0,
+            "tests": 4,
+            "steps": 2
+          },
+          "score": [
+            1,
+            0,
+            0,
+            0,
+            4,
+            2
+          ]
+        },
+        {
+          "claimId": "clm_393285577dcb12c4",
+          "stateHash": "3517b616c11d48965d5615304ac786a0380890b60756d98c0de51dac3f7f44e7",
+          "index": 4,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 4,
+            "steps": 2
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            4,
+            2
+          ]
+        },
+        {
+          "claimId": "clm_4a53299cfe619303",
+          "stateHash": "259b2a73a923c956d8adb4c60c52a826bb77e28134e3862fdd90abe2c737fd82",
+          "index": 5,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 4,
+            "steps": 2
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            4,
+            2
+          ]
+        },
+        {
+          "claimId": "clm_2c55cdd816b1d0e8",
+          "stateHash": "fb76e06529882c1d6eab57810a7f7c91a167cbe2d14fde8333067823397ce366",
+          "index": 6,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 0,
+            "tests": 5,
+            "steps": 3
+          },
+          "score": [
+            1,
+            0,
+            0,
+            0,
+            5,
+            3
+          ]
+        },
+        {
+          "claimId": "clm_543f08f2415b2a33",
+          "stateHash": "77cb8dbb46914420234c73ddc53e3ff229b80553444c89ed2c0b3f63b528bfec",
+          "index": 7,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 3
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            5,
+            3
+          ]
+        },
+        {
+          "claimId": "clm_7dbd7c7d1c4ddf90",
+          "stateHash": "f02392106065c7c6d78f100cc2cfd135620ca0fccb096b7d7395dfe7d69a52f1",
+          "index": 8,
+          "counts": {
+            "failed": 1,
+            "missing": 0,
+            "forks": 0,
+            "excluded": 0,
+            "reference": 1,
+            "tests": 5,
+            "steps": 3
+          },
+          "score": [
+            1,
+            0,
+            0,
+            1,
+            5,
+            3
+          ]
+        }
+      ],
+      "rule": "Failed legal test; missing evidence; forks/excluded routes; recorded earlier-case checklist; legal-test count; step count; original roster order."
+    },
+    "duration": 98550,
+    "acts": [
+      {
+        "id": "customer",
+        "start": 0,
+        "end": 6800
+      },
+      {
+        "id": "reading",
+        "start": 6800,
+        "end": 23550
+      },
+      {
+        "id": "process",
+        "start": 23550,
+        "end": 27100
+      },
+      {
+        "id": "decision",
+        "start": 27100,
+        "end": 68450
+      },
+      {
+        "id": "learning",
+        "start": 68450,
+        "end": 88050
+      },
+      {
+        "id": "cases",
+        "start": 88050,
+        "end": 98550
+      }
+    ],
+    "guidance": [
+      {
+        "id": "question",
+        "headline": "The tenant asks us to check a rent-increase notice.",
+        "label": "The question",
+        "target": "source",
+        "spotlight": false,
+        "part": "introduction",
+        "start": 0,
+        "end": 4200,
+        "beatIndex": 0
+      },
+      {
+        "id": "question",
+        "headline": "The tenant asks us to check a rent-increase notice.",
+        "label": "The question",
+        "target": "source",
+        "spotlight": true,
+        "part": "quote",
+        "start": 4200,
+        "end": 6800,
+        "beatIndex": 1
+      },
+      {
+        "id": "circles",
+        "headline": "Each circle is one question to check.",
+        "label": "How to read the circles",
+        "target": "node",
+        "spotlight": true,
+        "targetId": "ri_intake",
+        "part": "current-question",
+        "start": 6800,
+        "end": 9250,
+        "beatIndex": 6
+      },
+      {
+        "id": "circles",
+        "headline": "Each circle is one question to check.",
+        "label": "How to read the circles",
+        "target": "node",
+        "spotlight": true,
+        "targetId": "ri_intake",
+        "part": "completed-question",
+        "start": 9250,
+        "end": 10850,
+        "beatIndex": 11
+      },
+      {
+        "id": "decisive-source",
+        "headline": "Look here: no reasons accompanied the original notice.",
+        "label": "The decisive passage",
+        "target": "source",
+        "spotlight": true,
+        "part": "quote",
+        "start": 10850,
+        "end": 16450,
+        "beatIndex": 14
+      },
+      {
+        "id": "source-fact",
+        "headline": "Proposed finding: the original notice gave no reasons.",
+        "label": "From source to fact",
+        "target": "fact",
+        "spotlight": true,
+        "targetId": "op_68d8836ece520d0cc211169434b896e3",
+        "part": "proposed-fact",
+        "start": 16450,
+        "end": 16800,
+        "beatIndex": 19
+      },
+      {
+        "id": "source-fact",
+        "headline": "Proposed finding: the original notice gave no reasons.",
+        "label": "From source to fact",
+        "target": "fact",
+        "spotlight": true,
+        "targetId": "op_68d8836ece520d0cc211169434b896e3",
+        "part": "connection",
+        "start": 16800,
+        "end": 17200,
+        "beatIndex": 20
+      },
+      {
+        "id": "source-fact",
+        "headline": "Proposed finding: the original notice gave no reasons.",
+        "label": "From source to fact",
+        "target": "fact",
+        "spotlight": true,
+        "targetId": "op_68d8836ece520d0cc211169434b896e3",
+        "part": "proposed-fact",
+        "start": 17200,
+        "end": 20000,
+        "beatIndex": 21
+      },
+      {
+        "id": "source-question",
+        "headline": "The evidence helps answer this process question.",
+        "label": "From evidence to process",
+        "target": "source",
+        "spotlight": true,
+        "part": "quote",
+        "start": 20000,
+        "end": 21950,
+        "beatIndex": 24
+      },
+      {
+        "id": "source-question",
+        "headline": "The evidence helps answer this process question.",
+        "label": "From evidence to process",
+        "target": "node",
+        "spotlight": true,
+        "targetId": "ri_form",
+        "part": "completed-question",
+        "start": 21950,
+        "end": 23550,
+        "beatIndex": 28
+      },
+      {
+        "id": "final-check",
+        "headline": "Follow the final recorded check.",
+        "label": "The final process question",
+        "target": "source",
+        "spotlight": true,
+        "part": "quote",
+        "start": 23550,
+        "end": 25700,
+        "beatIndex": 31
+      },
+      {
+        "id": "final-check",
+        "headline": "Follow the final recorded check.",
+        "label": "The final process question",
+        "target": "node",
+        "spotlight": true,
+        "targetId": "ri_reason",
+        "part": "completed-question",
+        "start": 25700,
+        "end": 27100,
+        "beatIndex": 36
+      },
+      {
+        "id": "reasoning",
+        "headline": "Follow the fact, rule and supporting sources.",
+        "label": "The reasoning",
+        "target": "chain",
+        "spotlight": true,
+        "targetId": "facts",
+        "part": "facts",
+        "start": 27100,
+        "end": 30200,
+        "beatIndex": 39
+      },
+      {
+        "id": "reasoning",
+        "headline": "Follow the fact, rule and supporting sources.",
+        "label": "The reasoning",
+        "target": "chain",
+        "spotlight": true,
+        "targetId": "law",
+        "part": "law",
+        "start": 30200,
+        "end": 31500,
+        "beatIndex": 44
+      },
+      {
+        "id": "reasoning",
+        "headline": "Follow the fact, rule and supporting sources.",
+        "label": "The reasoning",
+        "target": "chain",
+        "spotlight": true,
+        "targetId": "evidence",
+        "part": "evidence",
+        "start": 31500,
+        "end": 32800,
+        "beatIndex": 46
+      },
+      {
+        "id": "reasoning",
+        "headline": "Follow the fact, rule and supporting sources.",
+        "label": "The reasoning",
+        "target": "chain",
+        "spotlight": true,
+        "targetId": "reference",
+        "part": "reference",
+        "start": 32800,
+        "end": 34100,
+        "beatIndex": 48
+      },
+      {
+        "id": "verified-passages",
+        "headline": "Each quoted passage is matched to a received file.",
+        "label": "Verified passages",
+        "target": "verified",
+        "spotlight": true,
+        "start": 34100,
+        "end": 39200,
+        "beatIndex": 50
+      },
+      {
+        "id": "rule-documents",
+        "headline": "The rule connects missing reasons with an invalid notice.",
+        "label": "Article 269d, paragraph 2(b)",
+        "target": "law",
+        "spotlight": true,
+        "start": 39200,
+        "end": 45500,
+        "beatIndex": 53
+      },
+      {
+        "id": "rule-documents",
+        "headline": "The rule connects missing reasons with an invalid notice.",
+        "label": "Supporting documents",
+        "target": "documents",
+        "spotlight": true,
+        "start": 45500,
+        "end": 47300,
+        "beatIndex": 56
+      },
+      {
+        "id": "legal-tests",
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "label": "Recorded legal tests",
+        "target": "predicate",
+        "spotlight": true,
+        "targetId": "residential_tenancy_scope",
+        "part": "check",
+        "start": 47300,
+        "end": 49050,
+        "beatIndex": 59
+      },
+      {
+        "id": "legal-tests",
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "label": "Recorded legal tests",
+        "target": "predicate",
+        "spotlight": true,
+        "targetId": "ordinary_non269c_tenancy",
+        "part": "check",
+        "start": 49050,
+        "end": 50300,
+        "beatIndex": 62
+      },
+      {
+        "id": "legal-tests",
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "label": "Recorded legal tests",
+        "target": "predicate",
+        "spotlight": true,
+        "targetId": "contemporaneous_substantive_reasons",
+        "part": "unmet",
+        "start": 50300,
+        "end": 52650,
+        "beatIndex": 64
+      },
+      {
+        "id": "legal-tests",
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "label": "Recorded legal tests",
+        "target": "predicate",
+        "spotlight": true,
+        "targetId": "issuer_authority_and_complete_packet",
+        "part": "check",
+        "start": 52650,
+        "end": 53900,
+        "beatIndex": 66
+      },
+      {
+        "id": "legal-tests",
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "label": "Recorded legal tests",
+        "target": "predicate",
+        "spotlight": true,
+        "targetId": "later_email_is_not_original_reasons",
+        "part": "check",
+        "start": 53900,
+        "end": 55150,
+        "beatIndex": 68
+      },
+      {
+        "id": "proposed-assessment",
+        "headline": "Proposed assessment: invalid on this ground.",
+        "label": "Proposed assessment",
+        "target": "lead",
+        "spotlight": true,
+        "start": 55150,
+        "end": 58550,
+        "beatIndex": 70
+      },
+      {
+        "id": "open-questions",
+        "headline": "Other questions remain unanswered.",
+        "label": "Still open",
+        "target": "open",
+        "spotlight": true,
+        "start": 58550,
+        "end": 61550,
+        "beatIndex": 71
+      },
+      {
+        "id": "human-review",
+        "headline": "A draft for a person to review. Nothing is sent.",
+        "label": "Human review",
+        "target": "draft-body",
+        "spotlight": true,
+        "part": "prepared-reply",
+        "start": 61550,
+        "end": 65450,
+        "beatIndex": 72
+      },
+      {
+        "id": "human-review",
+        "headline": "A draft for a person to review. Nothing is sent.",
+        "label": "Human review",
+        "target": "draft",
+        "spotlight": true,
+        "part": "review-boundary",
+        "start": 65450,
+        "end": 68450,
+        "beatIndex": 74
+      },
+      {
+        "id": "later-evidence",
+        "headline": "This case brings its own evidence.",
+        "label": "A later case",
+        "target": "memory-source",
+        "spotlight": true,
+        "start": 68450,
+        "end": 72050,
+        "beatIndex": 75
+      },
+      {
+        "id": "reuse-checklist",
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "label": "Checklist reuse",
+        "target": "memory-item",
+        "spotlight": true,
+        "targetId": 0,
+        "part": "origin",
+        "start": 72050,
+        "end": 73050,
+        "beatIndex": 79
+      },
+      {
+        "id": "reuse-checklist",
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "label": "Checklist reuse",
+        "target": "memory-target",
+        "spotlight": true,
+        "targetId": 0,
+        "part": "destination",
+        "start": 73050,
+        "end": 74550,
+        "beatIndex": 80
+      },
+      {
+        "id": "reuse-checklist",
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "label": "Checklist reuse",
+        "target": "memory-item",
+        "spotlight": true,
+        "targetId": 1,
+        "part": "origin",
+        "start": 74550,
+        "end": 75550,
+        "beatIndex": 81
+      },
+      {
+        "id": "reuse-checklist",
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "label": "Checklist reuse",
+        "target": "memory-target",
+        "spotlight": true,
+        "targetId": 1,
+        "part": "destination",
+        "start": 75550,
+        "end": 77050,
+        "beatIndex": 82
+      },
+      {
+        "id": "reuse-checklist",
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "label": "Checklist reuse",
+        "target": "memory-item",
+        "spotlight": true,
+        "targetId": 2,
+        "part": "origin",
+        "start": 77050,
+        "end": 78050,
+        "beatIndex": 83
+      },
+      {
+        "id": "reuse-checklist",
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "label": "Checklist reuse",
+        "target": "memory-target",
+        "spotlight": true,
+        "targetId": 2,
+        "part": "destination",
+        "start": 78050,
+        "end": 79550,
+        "beatIndex": 84
+      },
+      {
+        "id": "fresh-facts",
+        "headline": "The checks are reused. The facts belong to this case.",
+        "label": "Checklist reuse",
+        "target": "count",
+        "spotlight": true,
+        "start": 79550,
+        "end": 82350,
+        "beatIndex": 85
+      },
+      {
+        "id": "later-assessment",
+        "headline": "This case receives its own proposed assessment.",
+        "label": "The later case's assessment",
+        "target": "lead",
+        "spotlight": true,
+        "start": 82350,
+        "end": 88050,
+        "beatIndex": 87
+      },
+      {
+        "id": "recorded-examples",
+        "headline": "Every recorded example can be inspected.",
+        "label": "Recorded examples",
+        "target": "cases",
+        "spotlight": true,
+        "start": 88050,
+        "end": 93400,
+        "beatIndex": 90
+      },
+      {
+        "id": "finale",
+        "headline": "Every step has a reason.",
+        "label": "CasePath",
+        "target": "finale",
+        "spotlight": false,
+        "start": 93400,
+        "end": 98550,
+        "beatIndex": 102
+      }
+    ],
+    "beats": [
+      {
+        "act": "customer",
+        "phase": "ready",
+        "duration": 4200,
+        "index": 0,
+        "start": 0,
+        "end": 4200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "scene-transition",
+        "duration": 500,
+        "motion": true,
+        "nextPhase": "customer-source-open",
+        "entryRevealed": true,
+        "index": 1,
+        "start": 4200,
+        "end": 4700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-source-open",
+        "duration": 400,
+        "motion": true,
+        "entryRevealed": true,
+        "index": 2,
+        "start": 4700,
+        "end": 5100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 3,
+        "start": 5100,
+        "end": 5650,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 4,
+        "start": 5650,
+        "end": 5900,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "customer",
+        "phase": "customer-passage-rest",
+        "duration": 900,
+        "index": 5,
+        "start": 5900,
+        "end": 6800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "reading",
+        "phase": "act-transition",
+        "duration": 500,
+        "motion": true,
+        "nextPhase": "source-swap",
+        "entryRevealed": true,
+        "index": 6,
+        "start": 6800,
+        "end": 7300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "entryRevealed": true,
+        "index": 7,
+        "start": 7300,
+        "end": 7550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 8,
+        "start": 7550,
+        "end": 8100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 9,
+        "start": 8100,
+        "end": 8350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 10,
+        "start": 8350,
+        "end": 9250,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "plan-recede",
+        "duration": 400,
+        "motion": true,
+        "index": 11,
+        "start": 9250,
+        "end": 9650,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "node-accepted",
+        "duration": 300,
+        "motion": true,
+        "index": 12,
+        "start": 9650,
+        "end": 9950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 13,
+        "start": 9950,
+        "end": 10850,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_25c365a21d60d77da12189a3217d4f88",
+        "seq": 265
+      },
+      {
+        "act": "reading",
+        "phase": "scene-transition",
+        "duration": 500,
+        "motion": true,
+        "through": 265,
+        "review": true,
+        "nextPhase": "camera-in",
+        "entryRevealed": true,
+        "index": 14,
+        "start": 10850,
+        "end": 11350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_68d8836ece520d0cc211169434b896e3",
+        "seq": 111
+      },
+      {
+        "act": "reading",
+        "phase": "camera-in",
+        "duration": 700,
+        "motion": true,
+        "through": 265,
+        "review": true,
+        "entryRevealed": true,
+        "index": 15,
+        "start": 11350,
+        "end": 12050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_68d8836ece520d0cc211169434b896e3",
+        "seq": 111
+      },
+      {
+        "act": "reading",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "through": 265,
+        "review": true,
+        "index": 16,
+        "start": 12050,
+        "end": 12600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_68d8836ece520d0cc211169434b896e3",
+        "seq": 111
+      },
+      {
+        "act": "reading",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "through": 265,
+        "review": true,
+        "index": 17,
+        "start": 12600,
+        "end": 12850,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_68d8836ece520d0cc211169434b896e3",
+        "seq": 111
+      },
+      {
+        "act": "reading",
+        "phase": "passage-rest",
+        "duration": 3600,
+        "through": 265,
+        "review": true,
+        "index": 18,
+        "start": 12850,
+        "end": 16450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_68d8836ece520d0cc211169434b896e3",
+        "seq": 111
+      },
+      {
+        "act": "reading",
+        "phase": "fact",
+        "duration": 350,
+        "motion": true,
+        "through": 265,
+        "review": true,
+        "index": 19,
+        "start": 16450,
+        "end": 16800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_68d8836ece520d0cc211169434b896e3",
+        "seq": 111
+      },
+      {
+        "act": "reading",
+        "phase": "connector",
+        "duration": 400,
+        "motion": true,
+        "through": 265,
+        "review": true,
+        "index": 20,
+        "start": 16800,
+        "end": 17200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_68d8836ece520d0cc211169434b896e3",
+        "seq": 111
+      },
+      {
+        "act": "reading",
+        "phase": "fact-rest",
+        "duration": 1800,
+        "through": 265,
+        "review": true,
+        "index": 21,
+        "start": 17200,
+        "end": 19000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_68d8836ece520d0cc211169434b896e3",
+        "seq": 111
+      },
+      {
+        "act": "reading",
+        "phase": "plan-tick",
+        "duration": 300,
+        "motion": true,
+        "through": 265,
+        "review": true,
+        "index": 22,
+        "start": 19000,
+        "end": 19300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_68d8836ece520d0cc211169434b896e3",
+        "seq": 111
+      },
+      {
+        "act": "reading",
+        "phase": "camera-out",
+        "duration": 700,
+        "motion": true,
+        "through": 265,
+        "review": true,
+        "index": 23,
+        "start": 19300,
+        "end": 20000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_68d8836ece520d0cc211169434b896e3",
+        "seq": 111
+      },
+      {
+        "act": "reading",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "index": 24,
+        "start": 20000,
+        "end": 20250,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "reading",
+        "phase": "cursor",
+        "duration": 550,
+        "motion": true,
+        "index": 25,
+        "start": 20250,
+        "end": 20800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "reading",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 26,
+        "start": 20800,
+        "end": 21050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "reading",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 27,
+        "start": 21050,
+        "end": 21950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "reading",
+        "phase": "plan-recede",
+        "duration": 400,
+        "motion": true,
+        "index": 28,
+        "start": 21950,
+        "end": 22350,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "reading",
+        "phase": "node-accepted",
+        "duration": 300,
+        "motion": true,
+        "index": 29,
+        "start": 22350,
+        "end": 22650,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "reading",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 30,
+        "start": 22650,
+        "end": 23550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_4144e849b5327ced4f3f3b03562eeb87",
+        "seq": 306
+      },
+      {
+        "act": "process",
+        "phase": "act-transition",
+        "duration": 500,
+        "motion": true,
+        "nextPhase": "source-swap",
+        "entryRevealed": true,
+        "index": 31,
+        "start": 23550,
+        "end": 24050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "source-swap",
+        "duration": 250,
+        "motion": true,
+        "entryRevealed": true,
+        "index": 32,
+        "start": 24050,
+        "end": 24300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "cursor",
+        "duration": 250,
+        "motion": true,
+        "index": 33,
+        "start": 24300,
+        "end": 24550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "highlight",
+        "duration": 250,
+        "motion": true,
+        "index": 34,
+        "start": 24550,
+        "end": 24800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "passage-rest",
+        "duration": 900,
+        "index": 35,
+        "start": 24800,
+        "end": 25700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "plan-recede",
+        "duration": 250,
+        "motion": true,
+        "index": 36,
+        "start": 25700,
+        "end": 25950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "node-accepted",
+        "duration": 250,
+        "motion": true,
+        "index": 37,
+        "start": 25950,
+        "end": 26200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "process",
+        "phase": "node-rest",
+        "duration": 900,
+        "index": 38,
+        "start": 26200,
+        "end": 27100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": "op_5fd74b61e63c48f408b8a55d99300719",
+        "seq": 347
+      },
+      {
+        "act": "decision",
+        "phase": "act-transition",
+        "duration": 500,
+        "motion": true,
+        "view": "step",
+        "nextPhase": "completed",
+        "entryRevealed": true,
+        "index": 39,
+        "start": 27100,
+        "end": 27600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "completed",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "entryRevealed": true,
+        "index": 40,
+        "start": 27600,
+        "end": 28000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "overview",
+        "duration": 900,
+        "view": "step",
+        "index": 41,
+        "start": 28000,
+        "end": 28900,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "facts",
+        "index": 42,
+        "start": 28900,
+        "end": 29300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "facts",
+        "index": 43,
+        "start": 29300,
+        "end": 30200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "law",
+        "index": 44,
+        "start": 30200,
+        "end": 30600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "law",
+        "index": 45,
+        "start": 30600,
+        "end": 31500,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "evidence",
+        "index": 46,
+        "start": 31500,
+        "end": 31900,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "evidence",
+        "index": 47,
+        "start": 31900,
+        "end": 32800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain",
+        "duration": 400,
+        "motion": true,
+        "view": "step",
+        "column": "reference",
+        "index": 48,
+        "start": 32800,
+        "end": 33200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "chain-rest",
+        "duration": 900,
+        "view": "step",
+        "column": "reference",
+        "index": 49,
+        "start": 33200,
+        "end": 34100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "scene-transition",
+        "duration": 500,
+        "motion": true,
+        "view": "verified",
+        "nextPhase": "source-check",
+        "entryRevealed": true,
+        "index": 50,
+        "start": 34100,
+        "end": 34600,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "source-check",
+        "duration": 400,
+        "motion": true,
+        "view": "verified",
+        "entryRevealed": true,
+        "index": 51,
+        "start": 34600,
+        "end": 35000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "source-check-rest",
+        "duration": 4200,
+        "view": "verified",
+        "index": 52,
+        "start": 35000,
+        "end": 39200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "scene-transition",
+        "duration": 500,
+        "motion": true,
+        "view": "law",
+        "nextPhase": "law",
+        "entryRevealed": true,
+        "index": 53,
+        "start": 39200,
+        "end": 39700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "law",
+        "duration": 400,
+        "motion": true,
+        "view": "law",
+        "entryRevealed": true,
+        "index": 54,
+        "start": 39700,
+        "end": 40100,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "law-rest",
+        "duration": 5400,
+        "view": "law",
+        "index": 55,
+        "start": 40100,
+        "end": 45500,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "scene-transition",
+        "duration": 500,
+        "motion": true,
+        "view": "documents",
+        "nextPhase": "documents",
+        "entryRevealed": true,
+        "index": 56,
+        "start": 45500,
+        "end": 46000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "documents",
+        "duration": 400,
+        "motion": true,
+        "view": "documents",
+        "entryRevealed": true,
+        "index": 57,
+        "start": 46000,
+        "end": 46400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "documents-rest",
+        "duration": 900,
+        "view": "documents",
+        "index": 58,
+        "start": 46400,
+        "end": 47300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "scene-transition",
+        "duration": 500,
+        "motion": true,
+        "view": "answer",
+        "test": 0,
+        "predicate": "residential_tenancy_scope",
+        "predicate_status": "supported",
+        "nextPhase": "legal-test",
+        "entryRevealed": true,
+        "index": 59,
+        "start": 47300,
+        "end": 47800,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 0,
+        "predicate": "residential_tenancy_scope",
+        "predicate_status": "supported",
+        "entryRevealed": true,
+        "index": 60,
+        "start": 47800,
+        "end": 48150,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 0,
+        "predicate": "residential_tenancy_scope",
+        "predicate_status": "supported",
+        "index": 61,
+        "start": 48150,
+        "end": 49050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 1,
+        "predicate": "ordinary_non269c_tenancy",
+        "predicate_status": "supported",
+        "index": 62,
+        "start": 49050,
+        "end": 49400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 1,
+        "predicate": "ordinary_non269c_tenancy",
+        "predicate_status": "supported",
+        "index": 63,
+        "start": 49400,
+        "end": 50300,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 2,
+        "predicate": "contemporaneous_substantive_reasons",
+        "predicate_status": "failed",
+        "index": 64,
+        "start": 50300,
+        "end": 50650,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 2000,
+        "view": "answer",
+        "test": 2,
+        "predicate": "contemporaneous_substantive_reasons",
+        "predicate_status": "failed",
+        "index": 65,
+        "start": 50650,
+        "end": 52650,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 3,
+        "predicate": "issuer_authority_and_complete_packet",
+        "predicate_status": "supported",
+        "index": 66,
+        "start": 52650,
+        "end": 53000,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 3,
+        "predicate": "issuer_authority_and_complete_packet",
+        "predicate_status": "supported",
+        "index": 67,
+        "start": 53000,
+        "end": 53900,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test",
+        "duration": 350,
+        "motion": true,
+        "view": "answer",
+        "test": 4,
+        "predicate": "later_email_is_not_original_reasons",
+        "predicate_status": "supported",
+        "index": 68,
+        "start": 53900,
+        "end": 54250,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "legal-test-rest",
+        "duration": 900,
+        "view": "answer",
+        "test": 4,
+        "predicate": "later_email_is_not_original_reasons",
+        "predicate_status": "supported",
+        "index": 69,
+        "start": 54250,
+        "end": 55150,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "answer",
+        "duration": 400,
+        "motion": true,
+        "view": "answer",
+        "test": 5,
+        "index": 70,
+        "start": 55150,
+        "end": 55550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "answer-rest",
+        "duration": 6000,
+        "view": "answer",
+        "test": 5,
+        "index": 71,
+        "start": 55550,
+        "end": 61550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "scene-transition",
+        "duration": 500,
+        "motion": true,
+        "view": "draft",
+        "nextPhase": "draft",
+        "entryRevealed": true,
+        "index": 72,
+        "start": 61550,
+        "end": 62050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "draft",
+        "duration": 400,
+        "motion": true,
+        "view": "draft",
+        "entryRevealed": true,
+        "index": 73,
+        "start": 62050,
+        "end": 62450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "decision",
+        "phase": "draft-rest",
+        "duration": 6000,
+        "view": "draft",
+        "index": 74,
+        "start": 62450,
+        "end": 68450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "act-transition",
+        "duration": 500,
+        "view": "knowledge",
+        "nextPhase": "later-case-rest",
+        "motion": true,
+        "entryRevealed": true,
+        "index": 75,
+        "start": 68450,
+        "end": 68950,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "later-case-rest",
+        "duration": 1800,
+        "view": "knowledge",
+        "entryRevealed": true,
+        "index": 76,
+        "start": 68950,
+        "end": 70750,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-open",
+        "duration": 400,
+        "motion": true,
+        "view": "knowledge",
+        "index": 77,
+        "start": 70750,
+        "end": 71150,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-overview",
+        "duration": 900,
+        "view": "knowledge",
+        "index": 78,
+        "start": 71150,
+        "end": 72050,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-transfer",
+        "duration": 1000,
+        "motion": true,
+        "view": "knowledge",
+        "item": 0,
+        "index": 79,
+        "start": 72050,
+        "end": 73050,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-landed",
+        "duration": 1500,
+        "view": "knowledge",
+        "item": 0,
+        "index": 80,
+        "start": 73050,
+        "end": 74550,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-transfer",
+        "duration": 1000,
+        "motion": true,
+        "view": "knowledge",
+        "item": 1,
+        "index": 81,
+        "start": 74550,
+        "end": 75550,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-landed",
+        "duration": 1500,
+        "view": "knowledge",
+        "item": 1,
+        "index": 82,
+        "start": 75550,
+        "end": 77050,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-transfer",
+        "duration": 1000,
+        "motion": true,
+        "view": "knowledge",
+        "item": 2,
+        "index": 83,
+        "start": 77050,
+        "end": 78050,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-landed",
+        "duration": 1500,
+        "view": "knowledge",
+        "item": 2,
+        "index": 84,
+        "start": 78050,
+        "end": 79550,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-notice",
+        "duration": 400,
+        "motion": true,
+        "view": "knowledge",
+        "index": 85,
+        "start": 79550,
+        "end": 79950,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "memory-notice-rest",
+        "duration": 2400,
+        "view": "knowledge",
+        "index": 86,
+        "start": 79950,
+        "end": 82350,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "scene-transition",
+        "duration": 500,
+        "motion": true,
+        "view": "answer",
+        "test": 5,
+        "nextPhase": "answer",
+        "entryRevealed": true,
+        "index": 87,
+        "start": 82350,
+        "end": 82850,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "answer",
+        "duration": 400,
+        "motion": true,
+        "view": "answer",
+        "test": 5,
+        "entryRevealed": true,
+        "index": 88,
+        "start": 82850,
+        "end": 83250,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "learning",
+        "phase": "answer-rest",
+        "duration": 4800,
+        "view": "answer",
+        "test": 5,
+        "index": 89,
+        "start": 83250,
+        "end": 88050,
+        "claim": "clm_7dbd7c7d1c4ddf90",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "act-transition",
+        "duration": 500,
+        "motion": true,
+        "view": "cases",
+        "nextPhase": "case-list",
+        "entryRevealed": true,
+        "index": 90,
+        "start": 88050,
+        "end": 88550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-list",
+        "duration": 400,
+        "motion": true,
+        "view": "cases",
+        "entryRevealed": true,
+        "index": 91,
+        "start": 88550,
+        "end": 88950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 0,
+        "index": 92,
+        "start": 88950,
+        "end": 89200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 1,
+        "index": 93,
+        "start": 89200,
+        "end": 89450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 2,
+        "index": 94,
+        "start": 89450,
+        "end": 89700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 3,
+        "index": 95,
+        "start": 89700,
+        "end": 89950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 4,
+        "index": 96,
+        "start": 89950,
+        "end": 90200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 5,
+        "index": 97,
+        "start": 90200,
+        "end": 90450,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 6,
+        "index": 98,
+        "start": 90450,
+        "end": 90700,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 7,
+        "index": 99,
+        "start": 90700,
+        "end": 90950,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-row",
+        "duration": 250,
+        "motion": true,
+        "view": "cases",
+        "row": 8,
+        "index": 100,
+        "start": 90950,
+        "end": 91200,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "case-list-rest",
+        "duration": 2200,
+        "view": "cases",
+        "index": 101,
+        "start": 91200,
+        "end": 93400,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "wordmark",
+        "duration": 650,
+        "motion": true,
+        "view": "cases",
+        "index": 102,
+        "start": 93400,
+        "end": 94050,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      },
+      {
+        "act": "cases",
+        "phase": "wordmark-rest",
+        "duration": 4500,
+        "view": "cases",
+        "index": 103,
+        "start": 94050,
+        "end": 98550,
+        "claim": "clm_543f08f2415b2a33",
+        "operation": null,
+        "seq": null
+      }
+    ],
+    "claims": [
+      "clm_543f08f2415b2a33",
+      "clm_7dbd7c7d1c4ddf90"
+    ],
+    "stateHashes": [
+      "77cb8dbb46914420234c73ddc53e3ff229b80553444c89ed2c0b3f63b528bfec",
+      "f02392106065c7c6d78f100cc2cfd135620ca0fccb096b7d7395dfe7d69a52f1"
+    ]
+  },
+  "documentary_diagnostics": {
+    "contract": "casepath.documentary-motion-focus/1",
+    "status": "passed",
+    "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+    "ring_samples": [
+      {
+        "label": "ring-quarter-a",
+        "time": 13350,
+        "paused": false,
+        "visible_rings": 1,
+        "transform": "rotate(202.5deg)",
+        "computed_transform": "matrix(-0.92388, -0.382683, 0.382683, -0.92388, 0, 0)",
+        "stroke_dasharray": "38px, 82px",
+        "number": "2",
+        "number_transform": "none",
+        "circle_transform": "none",
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "circle": {
+          "x": 588.75,
+          "y": 198,
+          "width": 40,
+          "height": 40
+        },
+        "animations": 0,
+        "clip": {
+          "x": 584,
+          "y": 194,
+          "width": 49,
+          "height": 48
+        },
+        "file": "documentary-diagnostics/ring-quarter-a.png",
+        "sha256": "6b4fa1a8274a88c65d67ffbd99cae0a3d703890fd0455036ea01ac79797602e9",
+        "bytes": 1439
+      },
+      {
+        "label": "ring-quarter-b",
+        "time": 13950,
+        "paused": false,
+        "visible_rings": 1,
+        "transform": "rotate(292.5deg)",
+        "computed_transform": "matrix(0.382683, -0.92388, 0.92388, 0.382683, 0, 0)",
+        "stroke_dasharray": "38px, 82px",
+        "number": "2",
+        "number_transform": "none",
+        "circle_transform": "none",
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "circle": {
+          "x": 588.75,
+          "y": 198,
+          "width": 40,
+          "height": 40
+        },
+        "animations": 0,
+        "clip": {
+          "x": 584,
+          "y": 194,
+          "width": 49,
+          "height": 48
+        },
+        "file": "documentary-diagnostics/ring-quarter-b.png",
+        "sha256": "9e558cb1d6c2c1de6e7affdfb10bf5e966eaa6634a4e2816a551a4cfd4270a58",
+        "bytes": 1417
+      },
+      {
+        "label": "ring-paused-before",
+        "time": 13950,
+        "paused": true,
+        "visible_rings": 1,
+        "transform": "rotate(292.5deg)",
+        "computed_transform": "matrix(0.382683, -0.92388, 0.92388, 0.382683, 0, 0)",
+        "stroke_dasharray": "38px, 82px",
+        "number": "2",
+        "number_transform": "none",
+        "circle_transform": "none",
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "circle": {
+          "x": 588.75,
+          "y": 198,
+          "width": 40,
+          "height": 40
+        },
+        "animations": 0,
+        "clip": {
+          "x": 584,
+          "y": 194,
+          "width": 49,
+          "height": 48
+        },
+        "file": "documentary-diagnostics/ring-paused-before.png",
+        "sha256": "9e558cb1d6c2c1de6e7affdfb10bf5e966eaa6634a4e2816a551a4cfd4270a58",
+        "bytes": 1417
+      },
+      {
+        "label": "ring-paused-after",
+        "time": 13950,
+        "paused": true,
+        "visible_rings": 1,
+        "transform": "rotate(292.5deg)",
+        "computed_transform": "matrix(0.382683, -0.92388, 0.92388, 0.382683, 0, 0)",
+        "stroke_dasharray": "38px, 82px",
+        "number": "2",
+        "number_transform": "none",
+        "circle_transform": "none",
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "circle": {
+          "x": 588.75,
+          "y": 198,
+          "width": 40,
+          "height": 40
+        },
+        "animations": 0,
+        "clip": {
+          "x": 584,
+          "y": 194,
+          "width": 49,
+          "height": 48
+        },
+        "file": "documentary-diagnostics/ring-paused-after.png",
+        "sha256": "9e558cb1d6c2c1de6e7affdfb10bf5e966eaa6634a4e2816a551a4cfd4270a58",
+        "bytes": 1417
+      },
+      {
+        "label": "ring-resumed",
+        "time": 14076.299999982119,
+        "paused": true,
+        "visible_rings": 1,
+        "transform": "rotate(311.445deg)",
+        "computed_transform": "matrix(0.661901, -0.749591, 0.749591, 0.661901, 0, 0)",
+        "stroke_dasharray": "38px, 82px",
+        "number": "2",
+        "number_transform": "none",
+        "circle_transform": "none",
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "circle": {
+          "x": 588.75,
+          "y": 198,
+          "width": 40,
+          "height": 40
+        },
+        "animations": 0,
+        "clip": {
+          "x": 584,
+          "y": 194,
+          "width": 49,
+          "height": 48
+        },
+        "file": "documentary-diagnostics/ring-resumed.png",
+        "sha256": "66386a2b9931a95263e74d3e25fe66512ae15c92b5cb14b497605357cbd3a164",
+        "bytes": 1428
+      },
+      {
+        "label": "ring-reseek",
+        "time": 13950,
+        "paused": false,
+        "visible_rings": 1,
+        "transform": "rotate(292.5deg)",
+        "computed_transform": "matrix(0.382683, -0.92388, 0.92388, 0.382683, 0, 0)",
+        "stroke_dasharray": "38px, 82px",
+        "number": "2",
+        "number_transform": "none",
+        "circle_transform": "none",
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "circle": {
+          "x": 588.75,
+          "y": 198,
+          "width": 40,
+          "height": 40
+        },
+        "animations": 0,
+        "clip": {
+          "x": 584,
+          "y": 194,
+          "width": 49,
+          "height": 48
+        },
+        "file": "documentary-diagnostics/ring-reseek.png",
+        "sha256": "9e558cb1d6c2c1de6e7affdfb10bf5e966eaa6634a4e2816a551a4cfd4270a58",
+        "bytes": 1417
+      },
+      {
+        "label": "ring-reduced-a",
+        "time": 13350,
+        "paused": false,
+        "visible_rings": 1,
+        "transform": "rotate(0deg)",
+        "computed_transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "stroke_dasharray": "38px, 82px",
+        "number": "2",
+        "number_transform": "none",
+        "circle_transform": "none",
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "circle": {
+          "x": 588.75,
+          "y": 198,
+          "width": 40,
+          "height": 40
+        },
+        "animations": 0,
+        "clip": {
+          "x": 584,
+          "y": 194,
+          "width": 49,
+          "height": 48
+        },
+        "file": "documentary-diagnostics/ring-reduced-a.png",
+        "sha256": "1c59cb6487531d28db549d6041950dcd44e63178cc8bb89a0493a51d8d6cb371",
+        "bytes": 1433
+      },
+      {
+        "label": "ring-reduced-b",
+        "time": 13950,
+        "paused": false,
+        "visible_rings": 1,
+        "transform": "rotate(0deg)",
+        "computed_transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "stroke_dasharray": "38px, 82px",
+        "number": "2",
+        "number_transform": "none",
+        "circle_transform": "none",
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "circle": {
+          "x": 588.75,
+          "y": 198,
+          "width": 40,
+          "height": 40
+        },
+        "animations": 0,
+        "clip": {
+          "x": 584,
+          "y": 194,
+          "width": 49,
+          "height": 48
+        },
+        "file": "documentary-diagnostics/ring-reduced-b.png",
+        "sha256": "1c59cb6487531d28db549d6041950dcd44e63178cc8bb89a0493a51d8d6cb371",
+        "bytes": 1433
+      }
+    ],
+    "guidance": [
+      {
+        "guide_count": 1,
+        "cue": "question",
+        "target": "source",
+        "target_id": "",
+        "spotlight": false,
+        "resolved": false,
+        "headline": "The tenant asks us to check a rent-increase notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 533.96875,
+          "right": 1035.4375,
+          "bottom": 627.765625,
+          "width": 732.203125,
+          "height": 93.796875
+        },
+        "focus_opacity": 0,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 4199,
+        "beat": 0,
+        "act": "customer",
+        "phase": "ready"
+      },
+      {
+        "guide_count": 1,
+        "cue": "question",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The tenant asks us to check a rent-increase notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 313,
+          "top": 572.5,
+          "right": 1006.453125,
+          "bottom": 639,
+          "width": 693.453125,
+          "height": 66.5
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 5099,
+        "beat": 2,
+        "act": "customer",
+        "phase": "customer-source-open"
+      },
+      {
+        "guide_count": 1,
+        "cue": "question",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The tenant asks us to check a rent-increase notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 573.9375,
+          "right": 1013.515625,
+          "bottom": 641.59375,
+          "width": 710.28125,
+          "height": 67.65625
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 5649,
+        "beat": 3,
+        "act": "customer",
+        "phase": "customer-cursor"
+      },
+      {
+        "guide_count": 1,
+        "cue": "question",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The tenant asks us to check a rent-increase notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 573.9375,
+          "right": 1013.515625,
+          "bottom": 641.59375,
+          "width": 710.28125,
+          "height": 67.65625
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 5899,
+        "beat": 4,
+        "act": "customer",
+        "phase": "customer-highlight"
+      },
+      {
+        "guide_count": 1,
+        "cue": "question",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The tenant asks us to check a rent-increase notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 573.9375,
+          "right": 1013.515625,
+          "bottom": 641.59375,
+          "width": 710.28125,
+          "height": 67.65625
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 6799,
+        "beat": 5,
+        "act": "customer",
+        "phase": "customer-passage-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "circles",
+        "target": "node",
+        "target_id": "ri_intake",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Each circle is one question to check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 280,
+          "top": 188,
+          "right": 512.5,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Checking this question",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 7549,
+        "beat": 7,
+        "act": "reading",
+        "phase": "source-swap"
+      },
+      {
+        "guide_count": 1,
+        "cue": "circles",
+        "target": "node",
+        "target_id": "ri_intake",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Each circle is one question to check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 280,
+          "top": 188,
+          "right": 512.5,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Checking this question",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 8099,
+        "beat": 8,
+        "act": "reading",
+        "phase": "cursor"
+      },
+      {
+        "guide_count": 1,
+        "cue": "circles",
+        "target": "node",
+        "target_id": "ri_intake",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Each circle is one question to check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 280,
+          "top": 188,
+          "right": 512.5,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Checking this question",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 8349,
+        "beat": 9,
+        "act": "reading",
+        "phase": "highlight"
+      },
+      {
+        "guide_count": 1,
+        "cue": "circles",
+        "target": "node",
+        "target_id": "ri_intake",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Each circle is one question to check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 280,
+          "top": 188,
+          "right": 512.5,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Checking this question",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 9249,
+        "beat": 10,
+        "act": "reading",
+        "phase": "passage-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "circles",
+        "target": "node",
+        "target_id": "ri_intake",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Each circle is one question to check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 280,
+          "top": 188,
+          "right": 512.5,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Checking this question",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 9649,
+        "beat": 11,
+        "act": "reading",
+        "phase": "plan-recede"
+      },
+      {
+        "guide_count": 1,
+        "cue": "circles",
+        "target": "node",
+        "target_id": "ri_intake",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Each circle is one question to check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 280,
+          "top": 188,
+          "right": 512.5,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Question checked",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 9949,
+        "beat": 12,
+        "act": "reading",
+        "phase": "node-accepted"
+      },
+      {
+        "guide_count": 1,
+        "cue": "circles",
+        "target": "node",
+        "target_id": "ri_intake",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Each circle is one question to check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 280,
+          "top": 188,
+          "right": 512.5,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Question checked",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 10849,
+        "beat": 13,
+        "act": "reading",
+        "phase": "node-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "decisive-source",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Look here: no reasons accompanied the original notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 533.96875,
+          "right": 1035.4375,
+          "bottom": 627.765625,
+          "width": 732.203125,
+          "height": 93.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 12049,
+        "beat": 15,
+        "act": "reading",
+        "phase": "camera-in"
+      },
+      {
+        "guide_count": 1,
+        "cue": "decisive-source",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Look here: no reasons accompanied the original notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 533.96875,
+          "right": 1035.4375,
+          "bottom": 627.765625,
+          "width": 732.203125,
+          "height": 93.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 12599,
+        "beat": 16,
+        "act": "reading",
+        "phase": "cursor"
+      },
+      {
+        "guide_count": 1,
+        "cue": "decisive-source",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Look here: no reasons accompanied the original notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 533.96875,
+          "right": 1035.4375,
+          "bottom": 627.765625,
+          "width": 732.203125,
+          "height": 93.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 12849,
+        "beat": 17,
+        "act": "reading",
+        "phase": "highlight"
+      },
+      {
+        "guide_count": 1,
+        "cue": "decisive-source",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Look here: no reasons accompanied the original notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 533.96875,
+          "right": 1035.4375,
+          "bottom": 627.765625,
+          "width": 732.203125,
+          "height": 93.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 16449,
+        "beat": 18,
+        "act": "reading",
+        "phase": "passage-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-fact",
+        "target": "fact",
+        "target_id": "op_68d8836ece520d0cc211169434b896e3",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Proposed finding: the original notice gave no reasons.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 288,
+          "top": 751,
+          "right": 674.5,
+          "bottom": 854,
+          "width": 386.5,
+          "height": 103
+        },
+        "focus_opacity": 0.999999,
+        "target_label": "Proposed fact",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 16799,
+        "beat": 19,
+        "act": "reading",
+        "phase": "fact"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-fact",
+        "target": "fact",
+        "target_id": "op_68d8836ece520d0cc211169434b896e3",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Proposed finding: the original notice gave no reasons.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 288,
+          "top": 751,
+          "right": 674.5,
+          "bottom": 854,
+          "width": 386.5,
+          "height": 103
+        },
+        "focus_opacity": 1,
+        "target_label": "Proposed fact",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 17199,
+        "beat": 20,
+        "act": "reading",
+        "phase": "connector"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-fact",
+        "target": "fact",
+        "target_id": "op_68d8836ece520d0cc211169434b896e3",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Proposed finding: the original notice gave no reasons.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 288,
+          "top": 751,
+          "right": 674.5,
+          "bottom": 854,
+          "width": 386.5,
+          "height": 103
+        },
+        "focus_opacity": 1,
+        "target_label": "Proposed fact",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 18999,
+        "beat": 21,
+        "act": "reading",
+        "phase": "fact-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-fact",
+        "target": "fact",
+        "target_id": "op_68d8836ece520d0cc211169434b896e3",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Proposed finding: the original notice gave no reasons.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 288,
+          "top": 751,
+          "right": 674.5,
+          "bottom": 854,
+          "width": 386.5,
+          "height": 103
+        },
+        "focus_opacity": 1,
+        "target_label": "Proposed fact",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 19299,
+        "beat": 22,
+        "act": "reading",
+        "phase": "plan-tick"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-fact",
+        "target": "fact",
+        "target_id": "op_68d8836ece520d0cc211169434b896e3",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Proposed finding: the original notice gave no reasons.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 288,
+          "top": 751,
+          "right": 674.5,
+          "bottom": 854,
+          "width": 386.5,
+          "height": 103
+        },
+        "focus_opacity": 1,
+        "target_label": "Proposed fact",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 19999,
+        "beat": 23,
+        "act": "reading",
+        "phase": "camera-out"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-question",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The evidence helps answer this process question.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 313,
+          "top": 533.5,
+          "right": 1027.84375,
+          "bottom": 625.5,
+          "width": 714.84375,
+          "height": 92
+        },
+        "focus_opacity": 0.987475,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 20249,
+        "beat": 24,
+        "act": "reading",
+        "phase": "source-swap"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-question",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The evidence helps answer this process question.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 533.96875,
+          "right": 1035.4375,
+          "bottom": 627.765625,
+          "width": 732.203125,
+          "height": 93.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 20799,
+        "beat": 25,
+        "act": "reading",
+        "phase": "cursor"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-question",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The evidence helps answer this process question.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 533.96875,
+          "right": 1035.4375,
+          "bottom": 627.765625,
+          "width": 732.203125,
+          "height": 93.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 21049,
+        "beat": 26,
+        "act": "reading",
+        "phase": "highlight"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-question",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The evidence helps answer this process question.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 533.96875,
+          "right": 1035.4375,
+          "bottom": 627.765625,
+          "width": 732.203125,
+          "height": 93.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 21949,
+        "beat": 27,
+        "act": "reading",
+        "phase": "passage-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-question",
+        "target": "node",
+        "target_id": "ri_form",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The evidence helps answer this process question.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 492.484375,
+          "top": 188,
+          "right": 724.984375,
+          "bottom": 331.984375,
+          "width": 232.5,
+          "height": 143.984375
+        },
+        "focus_opacity": 1,
+        "target_label": "Checking this question",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 22349,
+        "beat": 28,
+        "act": "reading",
+        "phase": "plan-recede"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-question",
+        "target": "node",
+        "target_id": "ri_form",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The evidence helps answer this process question.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 492.5,
+          "top": 188,
+          "right": 725,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Question checked",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 22649,
+        "beat": 29,
+        "act": "reading",
+        "phase": "node-accepted"
+      },
+      {
+        "guide_count": 1,
+        "cue": "source-question",
+        "target": "node",
+        "target_id": "ri_form",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The evidence helps answer this process question.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 492.5,
+          "top": 188,
+          "right": 725,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Question checked",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 23549,
+        "beat": 30,
+        "act": "reading",
+        "phase": "node-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "final-check",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the final recorded check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 313,
+          "top": 534,
+          "right": 1067.859375,
+          "bottom": 626,
+          "width": 754.859375,
+          "height": 92
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 24299,
+        "beat": 32,
+        "act": "process",
+        "phase": "source-swap"
+      },
+      {
+        "guide_count": 1,
+        "cue": "final-check",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the final recorded check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 534.484375,
+          "right": 1076.453125,
+          "bottom": 628.28125,
+          "width": 773.21875,
+          "height": 93.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 24549,
+        "beat": 33,
+        "act": "process",
+        "phase": "cursor"
+      },
+      {
+        "guide_count": 1,
+        "cue": "final-check",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the final recorded check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 534.484375,
+          "right": 1076.453125,
+          "bottom": 628.28125,
+          "width": 773.21875,
+          "height": 93.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 24799,
+        "beat": 34,
+        "act": "process",
+        "phase": "highlight"
+      },
+      {
+        "guide_count": 1,
+        "cue": "final-check",
+        "target": "source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the final recorded check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 303.234375,
+          "top": 534.484375,
+          "right": 1076.453125,
+          "bottom": 628.28125,
+          "width": 773.21875,
+          "height": 93.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Exact source passage",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 25699,
+        "beat": 35,
+        "act": "process",
+        "phase": "passage-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "final-check",
+        "target": "node",
+        "target_id": "ri_reason",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the final recorded check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 695.34375,
+          "top": 196.515625,
+          "right": 940.703125,
+          "bottom": 339.234375,
+          "width": 245.359375,
+          "height": 142.71875
+        },
+        "focus_opacity": 1,
+        "target_label": "Checking this question",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 25949,
+        "beat": 36,
+        "act": "process",
+        "phase": "plan-recede"
+      },
+      {
+        "guide_count": 1,
+        "cue": "final-check",
+        "target": "node",
+        "target_id": "ri_reason",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the final recorded check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 705,
+          "top": 188,
+          "right": 937.5,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Question checked",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 26199,
+        "beat": 37,
+        "act": "process",
+        "phase": "node-accepted"
+      },
+      {
+        "guide_count": 1,
+        "cue": "final-check",
+        "target": "node",
+        "target_id": "ri_reason",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the final recorded check.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 705,
+          "top": 188,
+          "right": 937.5,
+          "bottom": 332,
+          "width": 232.5,
+          "height": 144
+        },
+        "focus_opacity": 1,
+        "target_label": "Question checked",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 27099,
+        "beat": 38,
+        "act": "process",
+        "phase": "node-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reasoning",
+        "target": "chain",
+        "target_id": "facts",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the fact, rule and supporting sources.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 285,
+          "top": 335.765625,
+          "right": 583.75,
+          "bottom": 511.109375,
+          "width": 298.75,
+          "height": 175.34375
+        },
+        "focus_opacity": 1,
+        "target_label": "The reasoning",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 27999,
+        "beat": 40,
+        "act": "decision",
+        "phase": "completed"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reasoning",
+        "target": "chain",
+        "target_id": "facts",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the fact, rule and supporting sources.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 285,
+          "top": 335.765625,
+          "right": 583.75,
+          "bottom": 511.109375,
+          "width": 298.75,
+          "height": 175.34375
+        },
+        "focus_opacity": 1,
+        "target_label": "The reasoning",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 28899,
+        "beat": 41,
+        "act": "decision",
+        "phase": "overview"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reasoning",
+        "target": "chain",
+        "target_id": "facts",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the fact, rule and supporting sources.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 285,
+          "top": 335.765625,
+          "right": 583.75,
+          "bottom": 511.109375,
+          "width": 298.75,
+          "height": 175.34375
+        },
+        "focus_opacity": 1,
+        "target_label": "The reasoning",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 29299,
+        "beat": 42,
+        "act": "decision",
+        "phase": "chain"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reasoning",
+        "target": "chain",
+        "target_id": "facts",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the fact, rule and supporting sources.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 285,
+          "top": 335.765625,
+          "right": 583.75,
+          "bottom": 511.109375,
+          "width": 298.75,
+          "height": 175.34375
+        },
+        "focus_opacity": 1,
+        "target_label": "The reasoning",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 30199,
+        "beat": 43,
+        "act": "decision",
+        "phase": "chain-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reasoning",
+        "target": "chain",
+        "target_id": "law",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the fact, rule and supporting sources.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 563.734375,
+          "top": 335.765625,
+          "right": 862.484375,
+          "bottom": 511.109375,
+          "width": 298.75,
+          "height": 175.34375
+        },
+        "focus_opacity": 1,
+        "target_label": "The reasoning",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 30599,
+        "beat": 44,
+        "act": "decision",
+        "phase": "chain"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reasoning",
+        "target": "chain",
+        "target_id": "law",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the fact, rule and supporting sources.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 563.75,
+          "top": 335.765625,
+          "right": 862.5,
+          "bottom": 511.109375,
+          "width": 298.75,
+          "height": 175.34375
+        },
+        "focus_opacity": 1,
+        "target_label": "The reasoning",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 31499,
+        "beat": 45,
+        "act": "decision",
+        "phase": "chain-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reasoning",
+        "target": "chain",
+        "target_id": "evidence",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the fact, rule and supporting sources.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 842.484375,
+          "top": 335.765625,
+          "right": 1141.234375,
+          "bottom": 511.109375,
+          "width": 298.75,
+          "height": 175.34375
+        },
+        "focus_opacity": 1,
+        "target_label": "The reasoning",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 31899,
+        "beat": 46,
+        "act": "decision",
+        "phase": "chain"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reasoning",
+        "target": "chain",
+        "target_id": "evidence",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the fact, rule and supporting sources.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 842.5,
+          "top": 335.765625,
+          "right": 1141.25,
+          "bottom": 511.109375,
+          "width": 298.75,
+          "height": 175.34375
+        },
+        "focus_opacity": 1,
+        "target_label": "The reasoning",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 32799,
+        "beat": 47,
+        "act": "decision",
+        "phase": "chain-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reasoning",
+        "target": "chain",
+        "target_id": "reference",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the fact, rule and supporting sources.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 1121.234375,
+          "top": 335.765625,
+          "right": 1418.984375,
+          "bottom": 511.109375,
+          "width": 297.75,
+          "height": 175.34375
+        },
+        "focus_opacity": 1,
+        "target_label": "The reasoning",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 33199,
+        "beat": 48,
+        "act": "decision",
+        "phase": "chain"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reasoning",
+        "target": "chain",
+        "target_id": "reference",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Follow the fact, rule and supporting sources.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 1121.25,
+          "top": 335.765625,
+          "right": 1419,
+          "bottom": 511.109375,
+          "width": 297.75,
+          "height": 175.34375
+        },
+        "focus_opacity": 1,
+        "target_label": "The reasoning",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 34099,
+        "beat": 49,
+        "act": "decision",
+        "phase": "chain-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "verified-passages",
+        "target": "verified",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Each quoted passage is matched to a received file.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 514,
+          "top": 336.5,
+          "right": 1394,
+          "bottom": 393.5,
+          "width": 880,
+          "height": 57
+        },
+        "focus_opacity": 1,
+        "target_label": "Verified passages",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 34999,
+        "beat": 51,
+        "act": "decision",
+        "phase": "source-check"
+      },
+      {
+        "guide_count": 1,
+        "cue": "verified-passages",
+        "target": "verified",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Each quoted passage is matched to a received file.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 514,
+          "top": 336.5,
+          "right": 1394,
+          "bottom": 393.5,
+          "width": 880,
+          "height": 57
+        },
+        "focus_opacity": 1,
+        "target_label": "Verified passages",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 39199,
+        "beat": 52,
+        "act": "decision",
+        "phase": "source-check-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "rule-documents",
+        "target": "law",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The rule connects missing reasons with an invalid notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 309,
+          "top": 658.359375,
+          "right": 476.953125,
+          "bottom": 697.359375,
+          "width": 167.953125,
+          "height": 39
+        },
+        "focus_opacity": 1,
+        "target_label": "Article 269d, paragraph 2(b)",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 40099,
+        "beat": 54,
+        "act": "decision",
+        "phase": "law"
+      },
+      {
+        "guide_count": 1,
+        "cue": "rule-documents",
+        "target": "law",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The rule connects missing reasons with an invalid notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 309,
+          "top": 658.359375,
+          "right": 476.953125,
+          "bottom": 697.359375,
+          "width": 167.953125,
+          "height": 39
+        },
+        "focus_opacity": 1,
+        "target_label": "Article 269d, paragraph 2(b)",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 45499,
+        "beat": 55,
+        "act": "decision",
+        "phase": "law-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "rule-documents",
+        "target": "documents",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The rule connects missing reasons with an invalid notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 474,
+          "top": 191,
+          "right": 1394,
+          "bottom": 706.5,
+          "width": 920,
+          "height": 515.5
+        },
+        "focus_opacity": 1,
+        "target_label": "Supporting documents",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 46399,
+        "beat": 57,
+        "act": "decision",
+        "phase": "documents"
+      },
+      {
+        "guide_count": 1,
+        "cue": "rule-documents",
+        "target": "documents",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The rule connects missing reasons with an invalid notice.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 474,
+          "top": 191,
+          "right": 1394,
+          "bottom": 706.5,
+          "width": 920,
+          "height": 515.5
+        },
+        "focus_opacity": 1,
+        "target_label": "Supporting documents",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 47299,
+        "beat": 58,
+        "act": "decision",
+        "phase": "documents-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "legal-tests",
+        "target": "predicate",
+        "target_id": "residential_tenancy_scope",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 382,
+          "right": 1367,
+          "bottom": 459,
+          "width": 866,
+          "height": 77
+        },
+        "focus_opacity": 1,
+        "target_label": "Supported requirement",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 48149,
+        "beat": 60,
+        "act": "decision",
+        "phase": "legal-test"
+      },
+      {
+        "guide_count": 1,
+        "cue": "legal-tests",
+        "target": "predicate",
+        "target_id": "residential_tenancy_scope",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 382,
+          "right": 1367,
+          "bottom": 459,
+          "width": 866,
+          "height": 77
+        },
+        "focus_opacity": 1,
+        "target_label": "Supported requirement",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 49049,
+        "beat": 61,
+        "act": "decision",
+        "phase": "legal-test-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "legal-tests",
+        "target": "predicate",
+        "target_id": "ordinary_non269c_tenancy",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 438.875,
+          "right": 1367,
+          "bottom": 515.875,
+          "width": 866,
+          "height": 77
+        },
+        "focus_opacity": 1,
+        "target_label": "Supported requirement",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 49399,
+        "beat": 62,
+        "act": "decision",
+        "phase": "legal-test"
+      },
+      {
+        "guide_count": 1,
+        "cue": "legal-tests",
+        "target": "predicate",
+        "target_id": "ordinary_non269c_tenancy",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 439,
+          "right": 1367,
+          "bottom": 516,
+          "width": 866,
+          "height": 77
+        },
+        "focus_opacity": 1,
+        "target_label": "Supported requirement",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 50299,
+        "beat": 63,
+        "act": "decision",
+        "phase": "legal-test-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "legal-tests",
+        "target": "predicate",
+        "target_id": "contemporaneous_substantive_reasons",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 495.875,
+          "right": 1367,
+          "bottom": 572.875,
+          "width": 866,
+          "height": 77
+        },
+        "focus_opacity": 1,
+        "target_label": "Unmet requirement",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 50649,
+        "beat": 64,
+        "act": "decision",
+        "phase": "legal-test"
+      },
+      {
+        "guide_count": 1,
+        "cue": "legal-tests",
+        "target": "predicate",
+        "target_id": "contemporaneous_substantive_reasons",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 496,
+          "right": 1367,
+          "bottom": 573,
+          "width": 866,
+          "height": 77
+        },
+        "focus_opacity": 1,
+        "target_label": "Unmet requirement",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 52649,
+        "beat": 65,
+        "act": "decision",
+        "phase": "legal-test-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "legal-tests",
+        "target": "predicate",
+        "target_id": "issuer_authority_and_complete_packet",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 552.875,
+          "right": 1367,
+          "bottom": 629.875,
+          "width": 866,
+          "height": 77
+        },
+        "focus_opacity": 1,
+        "target_label": "Supported requirement",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 52999,
+        "beat": 66,
+        "act": "decision",
+        "phase": "legal-test"
+      },
+      {
+        "guide_count": 1,
+        "cue": "legal-tests",
+        "target": "predicate",
+        "target_id": "issuer_authority_and_complete_packet",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 553,
+          "right": 1367,
+          "bottom": 630,
+          "width": 866,
+          "height": 77
+        },
+        "focus_opacity": 1,
+        "target_label": "Supported requirement",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 53899,
+        "beat": 67,
+        "act": "decision",
+        "phase": "legal-test-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "legal-tests",
+        "target": "predicate",
+        "target_id": "later_email_is_not_original_reasons",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 609.875,
+          "right": 1367,
+          "bottom": 686.875,
+          "width": 866,
+          "height": 77
+        },
+        "focus_opacity": 1,
+        "target_label": "Supported requirement",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 54249,
+        "beat": 68,
+        "act": "decision",
+        "phase": "legal-test"
+      },
+      {
+        "guide_count": 1,
+        "cue": "legal-tests",
+        "target": "predicate",
+        "target_id": "later_email_is_not_original_reasons",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The recorded assessment flags one unmet requirement.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 610,
+          "right": 1367,
+          "bottom": 687,
+          "width": 866,
+          "height": 77
+        },
+        "focus_opacity": 1,
+        "target_label": "Supported requirement",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 55149,
+        "beat": 69,
+        "act": "decision",
+        "phase": "legal-test-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "proposed-assessment",
+        "target": "lead",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Proposed assessment: invalid on this ground.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 685,
+          "right": 1367,
+          "bottom": 753,
+          "width": 866,
+          "height": 68
+        },
+        "focus_opacity": 1,
+        "target_label": "Proposed assessment",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 55549,
+        "beat": 70,
+        "act": "decision",
+        "phase": "answer"
+      },
+      {
+        "guide_count": 1,
+        "cue": "open-questions",
+        "target": "open",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Other questions remain unanswered.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 749,
+          "right": 1367,
+          "bottom": 793,
+          "width": 866,
+          "height": 44
+        },
+        "focus_opacity": 1,
+        "target_label": "Still open",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 61549,
+        "beat": 71,
+        "act": "decision",
+        "phase": "answer-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "human-review",
+        "target": "draft-body",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "A draft for a person to review. Nothing is sent.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 474,
+          "top": 191,
+          "right": 1394,
+          "bottom": 398.140625,
+          "width": 920,
+          "height": 207.140625
+        },
+        "focus_opacity": 1,
+        "target_label": "Human review",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 62449,
+        "beat": 73,
+        "act": "decision",
+        "phase": "draft"
+      },
+      {
+        "guide_count": 1,
+        "cue": "human-review",
+        "target": "draft",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "A draft for a person to review. Nothing is sent.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 474,
+          "top": 191,
+          "right": 1394,
+          "bottom": 232.75,
+          "width": 920,
+          "height": 41.75
+        },
+        "focus_opacity": 1,
+        "target_label": "Human review",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 68449,
+        "beat": 74,
+        "act": "decision",
+        "phase": "draft-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "later-evidence",
+        "target": "memory-source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "This case brings its own evidence.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 603,
+          "top": 389.5,
+          "right": 965.109375,
+          "bottom": 521.25,
+          "width": 362.109375,
+          "height": 131.75
+        },
+        "focus_opacity": 1,
+        "target_label": "A later case",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 70749,
+        "beat": 76,
+        "act": "learning",
+        "phase": "later-case-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "later-evidence",
+        "target": "memory-source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "This case brings its own evidence.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 603,
+          "top": 389.5,
+          "right": 965.109375,
+          "bottom": 521.25,
+          "width": 362.109375,
+          "height": 131.75
+        },
+        "focus_opacity": 1,
+        "target_label": "A later case",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 71149,
+        "beat": 77,
+        "act": "learning",
+        "phase": "memory-open"
+      },
+      {
+        "guide_count": 1,
+        "cue": "later-evidence",
+        "target": "memory-source",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "This case brings its own evidence.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 603,
+          "top": 389.5,
+          "right": 965.109375,
+          "bottom": 521.25,
+          "width": 362.109375,
+          "height": 131.75
+        },
+        "focus_opacity": 1,
+        "target_label": "A later case",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 72049,
+        "beat": 78,
+        "act": "learning",
+        "phase": "memory-overview"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reuse-checklist",
+        "target": "memory-item",
+        "target_id": "0",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 336,
+          "top": 549.375,
+          "right": 584,
+          "bottom": 618.96875,
+          "width": 248,
+          "height": 69.59375
+        },
+        "focus_opacity": 1,
+        "target_label": "Checklist reuse",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 73049,
+        "beat": 79,
+        "act": "learning",
+        "phase": "memory-transfer"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reuse-checklist",
+        "target": "memory-target",
+        "target_id": "0",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 336,
+          "top": 549.375,
+          "right": 584,
+          "bottom": 618.96875,
+          "width": 248,
+          "height": 69.59375
+        },
+        "focus_opacity": 1,
+        "target_label": "Reused checklist item",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 74549,
+        "beat": 80,
+        "act": "learning",
+        "phase": "memory-landed"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reuse-checklist",
+        "target": "memory-item",
+        "target_id": "1",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 336,
+          "top": 390.1875,
+          "right": 584,
+          "bottom": 442.984375,
+          "width": 248,
+          "height": 52.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Checklist reuse",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 75549,
+        "beat": 81,
+        "act": "learning",
+        "phase": "memory-transfer"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reuse-checklist",
+        "target": "memory-target",
+        "target_id": "1",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 336,
+          "top": 390.1875,
+          "right": 584,
+          "bottom": 442.984375,
+          "width": 248,
+          "height": 52.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Reused checklist item",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 77049,
+        "beat": 82,
+        "act": "learning",
+        "phase": "memory-landed"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reuse-checklist",
+        "target": "memory-item",
+        "target_id": "2",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 336,
+          "top": 430.984375,
+          "right": 584,
+          "bottom": 483.78125,
+          "width": 248,
+          "height": 52.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Checklist reuse",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 78049,
+        "beat": 83,
+        "act": "learning",
+        "phase": "memory-transfer"
+      },
+      {
+        "guide_count": 1,
+        "cue": "reuse-checklist",
+        "target": "memory-target",
+        "target_id": "2",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Reuse the checklist. Recheck this case's evidence.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 336,
+          "top": 430.984375,
+          "right": 584,
+          "bottom": 483.78125,
+          "width": 248,
+          "height": 52.796875
+        },
+        "focus_opacity": 1,
+        "target_label": "Reused checklist item",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 79549,
+        "beat": 84,
+        "act": "learning",
+        "phase": "memory-landed"
+      },
+      {
+        "guide_count": 1,
+        "cue": "fresh-facts",
+        "target": "count",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The checks are reused. The facts belong to this case.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 1301.046875,
+          "top": 299.75,
+          "right": 1583.984375,
+          "bottom": 736.5,
+          "width": 282.9375,
+          "height": 436.75
+        },
+        "focus_opacity": 1,
+        "target_label": "Checklist reuse",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 79949,
+        "beat": 85,
+        "act": "learning",
+        "phase": "memory-notice"
+      },
+      {
+        "guide_count": 1,
+        "cue": "fresh-facts",
+        "target": "count",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "The checks are reused. The facts belong to this case.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 1301.046875,
+          "top": 299.75,
+          "right": 1583.984375,
+          "bottom": 736.5,
+          "width": 282.9375,
+          "height": 436.75
+        },
+        "focus_opacity": 1,
+        "target_label": "Checklist reuse",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 82349,
+        "beat": 86,
+        "act": "learning",
+        "phase": "memory-notice-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "later-assessment",
+        "target": "lead",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "This case receives its own proposed assessment.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 335,
+          "right": 1367,
+          "bottom": 403,
+          "width": 866,
+          "height": 68
+        },
+        "focus_opacity": 1,
+        "target_label": "The later case's assessment",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 83249,
+        "beat": 88,
+        "act": "learning",
+        "phase": "answer"
+      },
+      {
+        "guide_count": 1,
+        "cue": "later-assessment",
+        "target": "lead",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "This case receives its own proposed assessment.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 501,
+          "top": 335,
+          "right": 1367,
+          "bottom": 403,
+          "width": 866,
+          "height": 68
+        },
+        "focus_opacity": 1,
+        "target_label": "The later case's assessment",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 88049,
+        "beat": 89,
+        "act": "learning",
+        "phase": "answer-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 88949,
+        "beat": 91,
+        "act": "cases",
+        "phase": "case-list"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 89199,
+        "beat": 92,
+        "act": "cases",
+        "phase": "case-row"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 89449,
+        "beat": 93,
+        "act": "cases",
+        "phase": "case-row"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 89699,
+        "beat": 94,
+        "act": "cases",
+        "phase": "case-row"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 89949,
+        "beat": 95,
+        "act": "cases",
+        "phase": "case-row"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 90199,
+        "beat": 96,
+        "act": "cases",
+        "phase": "case-row"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 90449,
+        "beat": 97,
+        "act": "cases",
+        "phase": "case-row"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 90699,
+        "beat": 98,
+        "act": "cases",
+        "phase": "case-row"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 90949,
+        "beat": 99,
+        "act": "cases",
+        "phase": "case-row"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 91199,
+        "beat": 100,
+        "act": "cases",
+        "phase": "case-row"
+      },
+      {
+        "guide_count": 1,
+        "cue": "recorded-examples",
+        "target": "cases",
+        "target_id": "",
+        "spotlight": true,
+        "resolved": true,
+        "headline": "Every recorded example can be inspected.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 1,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 93399,
+        "beat": 101,
+        "act": "cases",
+        "phase": "case-list-rest"
+      },
+      {
+        "guide_count": 1,
+        "cue": "finale",
+        "target": "finale",
+        "target_id": "",
+        "spotlight": false,
+        "resolved": true,
+        "headline": "Every step has a reason.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 0,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 94049,
+        "beat": 102,
+        "act": "cases",
+        "phase": "wordmark"
+      },
+      {
+        "guide_count": 1,
+        "cue": "finale",
+        "target": "finale",
+        "target_id": "",
+        "spotlight": false,
+        "resolved": true,
+        "headline": "Every step has a reason.",
+        "headline_rect": {
+          "left": 298,
+          "top": 93.453125,
+          "right": 1564,
+          "bottom": 122.046875,
+          "width": 1266,
+          "height": 28.59375
+        },
+        "headline_overflow": false,
+        "rail": {
+          "left": 0,
+          "top": 75,
+          "right": 1600,
+          "bottom": 163,
+          "width": 1600,
+          "height": 88
+        },
+        "focus": {
+          "left": 36,
+          "top": 214.1875,
+          "right": 1236,
+          "bottom": 793.1875,
+          "width": 1200,
+          "height": 579
+        },
+        "focus_opacity": 0,
+        "target_label": "Recorded examples",
+        "footer_top": 864,
+        "viewport": {
+          "width": 1600,
+          "height": 900
+        },
+        "time": 98549,
+        "beat": 103,
+        "act": "cases",
+        "phase": "wordmark-rest"
+      }
+    ],
+    "failed_predicates": [
+      {
+        "predicate": "contemporaneous_substantive_reasons",
+        "matches": 1,
+        "text": "2✕Reasons given with the increaseCO 269d",
+        "opacity": 1,
+        "target": "predicate",
+        "target_id": "contemporaneous_substantive_reasons",
+        "target_label": "Unmet requirement",
+        "visible_predicate_ids": [
+          "residential_tenancy_scope",
+          "ordinary_non269c_tenancy",
+          "contemporaneous_substantive_reasons"
+        ],
+        "beat": 65,
+        "duration_ms": 2000
+      }
+    ],
+    "subjective_motion_or_audio_review": false,
+    "motion": {
+      "period_ms": 2400,
+      "quarter_cycle_ms": 600,
+      "rendered_pixels_changed": true,
+      "live_resume_pixels_changed": true,
+      "pause_pixels_unchanged": true,
+      "reseek_pixels_identical": true,
+      "reduced_motion_pixels_unchanged": true,
+      "step_number_unchanged": true
+    }
+  },
+  "frame_count": 2957,
+  "duration": 98.56666666666666,
+  "video": {
+    "file": "CasePath_Cinematic_Demo_Silent.mp4",
+    "bytes": 7565112,
+    "sha256": "1dca59a80b34e4fc7b38cf898c896d4d3a1522b1580bab44e56f8f3a997e0c39",
+    "probe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "mime_codec_string": "avc1.640028",
+          "width": 1920,
+          "height": 1080,
+          "coded_width": 1920,
+          "coded_height": 1080,
+          "has_b_frames": 2,
+          "pix_fmt": "yuv420p",
+          "level": 40,
+          "chroma_location": "left",
+          "field_order": "progressive",
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "time_base": "1/15360",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 1513984,
+          "duration": "98.566667",
+          "bit_rate": "611175",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "2957",
+          "extradata_size": 47,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "encoder": "Lavc63.1.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/published-film-20261025/CasePath_Cinematic_Demo_Silent.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "98.566667",
+        "size": "7565112",
+        "bit_rate": "614009",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf63.1.102"
+        }
+      }
+    }
+  },
+  "frame_index_sha256": "7b6f8525ad0936f1a76dece70f04d8ff05cd03b773890a17ec4e001fb6c3aef3",
+  "status": "passed",
+  "finished_at": "2026-10-25T11:09:41.003Z"
+}

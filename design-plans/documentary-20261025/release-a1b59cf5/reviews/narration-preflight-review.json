@@ -1,0 +1,28 @@
+{
+  "contract": "casepath.documentary-narration-review/1",
+  "status": "passed_local_timing_and_editorial_only",
+  "reviewer": "independent assistant /root/documentary_audio",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "receipt_sha256": "5802b4a0fa2151955e4eba0fe46c620693ef20756ea8e82273a8fee74d496675",
+  "selected_words": 96,
+  "clips": 17,
+  "speaking_rates_wpm": [
+    155
+  ],
+  "minimum_tail_ms": 292.64583333333576,
+  "short_variants": [
+    {
+      "id": "assessment",
+      "text": "Proposed: invalid notice."
+    }
+  ],
+  "frozen_helpers": {
+    "documentary-narration-plan.json": "66999759edc2c162281c41a5810df7d1e3056e6533dedc18a8f574b2bbaf277d",
+    "render_documentary_narration.py": "c894a0567faf1652acbae6e0f0f9b38e448462ec1b89f9faf4565a7cb5abb4ab",
+    "preflight_documentary_voice_fit.py": "ff25cf5420ce758980dc02baa4f7020a684029a85be9eeb10b46a2e8050373a2",
+    "narration-resolved-schedule.json": "eacaebfbae9af0d7433ac3f9b289b1ff04d286df91ac57c2932ab67a27f492f0"
+  },
+  "verdict": "All17settled semantic windows fit; separate draft-body and unsent-status clips preserve the human boundary. The assessment fallback remains paired with on-screen on-this-ground qualification and later open questions. No further preflight or script change justified.",
+  "final_public_media_verified": false,
+  "subjective_listening_claimed": false
+}

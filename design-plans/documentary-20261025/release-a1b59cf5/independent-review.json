@@ -1,0 +1,41 @@
+{
+  "contract": "casepath.documentary-independent-review/1",
+  "status": "passed",
+  "blocking_findings": [],
+  "reviewed_source_files": {
+    "casepath-qa/autonomous-presentation-browser-v1.test.cjs": "a23b56bc3c707ca4181a46d56a9b794f6373598f957f5ae93e0f67abab7be88d",
+    "casepath-qa/autonomous-presentation-v1.test.cjs": "4f0e3efc6351f474ecc524750c5a37202177dcca19c3bd88292ee54dd36ce794",
+    "casepath/assets/autonomous-presentation-v1.js": "1245d621780dfca6ba311b667fbf95ca8af7f9240afc93992f8a28d95b05ea4e",
+    "casepath/assets/autonomous-workspace-v1.css": "dd9c40b60b89f210ad6f4331c92ad0df8279b3dd29209d83e4977c5e940dedf1",
+    "casepath/assets/autonomous-workspace-v1.js": "eb0d03f7760d80fcaefafe55638c71035802c92c45f028b139f0237f6ff02416",
+    "casepath/index.html": "ff5227ab7e64ce35a63a0c6a9090ab950555b085ffd5290ea5e938189395f947",
+    "design-plans/cinema-20261024/BRIEF.md": "4492b1819fe6f230d3c865600d6bf1d657378bb5bc86ec1d001da0d4496bbfad"
+  },
+  "preseal_browser_receipt_sha256": "de6c1a78ee57ece962f324d63911427016326b53d502144af2b20797aeb2288e",
+  "reviews": [
+    {
+      "reviewer": "independent assistant /root/story_audit",
+      "verdict": "Ready to seal and run the full release gate; no blocking issue in the bounded documentary source/QA review.",
+      "scope": "Source-and-frame audit, targeted regression design, one paragraph-boundary edge identified and repaired; direct review of actual final focused receipt and TAP log.",
+      "record_sha256": "34fd3b344eb45ad05f9df09dc66c0a016a4765ea87565cf4bf851559e7fe2e1b"
+    },
+    {
+      "reviewer": "independent assistant /root/cold_viewer",
+      "verdict": "No blocking basic comprehension issue in initial24frame cold review; no new blocker in final-preview follow-up.",
+      "scope": "Static assistant visual review; no human acceptance, audio or full-speed judgment.",
+      "initial_record_sha256": "1c0f9df603c756a099e7e651f106d1329b80234ed2570b7cab4bdb87280eb1e7",
+      "final_followup_sha256": "9632996a973b4b4a578332eef08dd7445d0880dfd0335297cdc6500c1ec0ad63"
+    },
+    {
+      "reviewer": "integration owner /root",
+      "verdict": "Reviewed complete product diff, final test edits, exact asset/index identities and design note; targeted verification and final preview are consistent.",
+      "scope": "Source and integration review, not a claim of full release-gate completion."
+    }
+  ],
+  "focused_tests_receipt_sha256": "6f6a85116a4c3b4e882b82ff3506731f0f8e581c94b9cd48688b3b31c6e6e307",
+  "pixel_comparison_sha256": "9c7e1ba42fdb31bf8240f6d0fdbd6329c04a89b397447dbd7baa0810bce2d0ce",
+  "pixel_comparison_note": "Cross-process images are not byte-identical; measured small raster differences were retained and the final frames reviewed directly. No exact-pixel-equivalence claim.",
+  "full_gate_completed": false,
+  "publication_completed": false,
+  "qualified_human_approval": "not_claimed"
+}

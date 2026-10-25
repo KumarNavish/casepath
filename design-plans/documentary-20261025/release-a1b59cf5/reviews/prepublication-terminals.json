@@ -1,0 +1,58 @@
+{
+  "contract": "casepath.documentary-prepublication-terminals/1",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "observations": [
+    {
+      "sessionId": "casepath-20261025-voice-fit-v1",
+      "pid": 95767,
+      "state": "completed",
+      "exitCode": 0,
+      "output": "{\"cue\": \"question\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"circles\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"decisive-source\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"proposed-fact\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"reasoning\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"verified-passages\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"rule\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"unmet-requirement\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"assessment\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"open-questions\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"human-review\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"nothing-sent\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"later-evidence\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"reuse-checklist\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"fresh-facts\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"later-assessment\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"cue\": \"finale\", \"fits_window\": true, \"rate_wpm\": 155}\n{\"status\": \"passed_local_voice_fit_only\", \"receipt\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/voice-fit-preflight-01/voice-fit-preflight.json\", \"failed_cues\": []}\n",
+      "offset": 0,
+      "nextOffset": 1299,
+      "totalBytes": 1299,
+      "truncated": false,
+      "startedAt": "2026-10-25T10:06:13.456Z",
+      "finishedAt": "2026-10-25T10:06:37.591Z"
+    },
+    {
+      "sessionId": "casepath-20261025-final-fidelity-v1",
+      "pid": 95182,
+      "state": "completed",
+      "exitCode": 0,
+      "output": "{\"status\": \"passed\", \"source_commit\": \"a1b59cf5d78662b35790a11cfd2d46851310482d\", \"receipt\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/fidelity-final-20261025/fidelity-receipt.json\", \"differences_pct\": [3.74, 4.78, 4.18]}\n",
+      "offset": 0,
+      "nextOffset": 292,
+      "totalBytes": 292,
+      "truncated": false,
+      "startedAt": "2026-10-25T10:04:33.816Z",
+      "finishedAt": "2026-10-25T10:04:43.161Z"
+    },
+    {
+      "sessionId": "casepath-20261025-final-source-capture-v1",
+      "pid": 93736,
+      "state": "completed",
+      "exitCode": 0,
+      "output": "{\"status\":\"passed\",\"out\":\"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/final-source-a1b59cf5-20261025\",\"duration\":98.56666666666666,\"frames\":2957,\"admission_ms\":857}\n",
+      "offset": 0,
+      "nextOffset": 232,
+      "totalBytes": 232,
+      "truncated": false,
+      "startedAt": "2026-10-25T10:00:41.903Z",
+      "finishedAt": "2026-10-25T10:00:50.796Z"
+    },
+    {
+      "sessionId": "casepath-20261025-focused-teaching-tests-v1",
+      "pid": 92014,
+      "state": "completed",
+      "exitCode": 0,
+      "output": "{\n  \"contract\": \"casepath.focused-teaching-regressions/1\",\n  \"status\": \"passed\",\n  \"command\": [\n    \"/usr/local/bin/node\",\n    \"--test\",\n    \"--test-reporter=tap\",\n    \"casepath-qa/autonomous-presentation-v1.test.cjs\",\n    \"casepath-qa/autonomous-presentation-browser-v1.test.cjs\"\n  ],\n  \"exit_code\": 0,\n  \"counts\": {\n    \"tests\": 20,\n    \"pass\": 20,\n    \"fail\": 0,\n    \"skipped\": 0\n  },\n  \"source_sha256\": {\n    \"casepath/assets/autonomous-presentation-v1.js\": \"1245d621780dfca6ba311b667fbf95ca8af7f9240afc93992f8a28d95b05ea4e\",\n    \"casepath/assets/autonomous-workspace-v1.js\": \"eb0d03f7760d80fcaefafe55638c71035802c92c45f028b139f0237f6ff02416\",\n    \"casepath/assets/autonomous-workspace-v1.css\": \"dd9c40b60b89f210ad6f4331c92ad0df8279b3dd29209d83e4977c5e940dedf1\",\n    \"casepath/index.html\": \"ff5227ab7e64ce35a63a0c6a9090ab950555b085ffd5290ea5e938189395f947\",\n    \"casepath-qa/autonomous-presentation-v1.test.cjs\": \"4f0e3efc6351f474ecc524750c5a37202177dcca19c3bd88292ee54dd36ce794\",\n    \"casepath-qa/autonomous-presentation-browser-v1.test.cjs\": \"a23b56bc3c707ca4181a46d56a9b794f6373598f957f5ae93e0f67abab7be88d\"\n  },\n  \"source_unchanged\": true,\n  \"log_sha256\": \"b2390d20d03941bc05ca84960be20bb2f782faccf6b96c68dab081ac4d362525\",\n  \"started_at\": \"2026-10-25T09:55:58.661018+00:00\",\n  \"finished_at\": \"2026-10-25T09:56:47.412335+00:00\"\n}\nTAP version 13\n# Subtest: the admitted six-act product uses one deterministic clock, preserves sources and handles pause\nok 1 - the admitted six-act product uses one deterministic clock, preserves sources and handles pause\n  ---\n  duration_ms: 31779.432417\n  type: 'test'\n  ...\n# Subtest: a slow cold read keeps the north-star frame on landing and on opening a recorded case\nok 2 - a slow cold read keeps the north-star frame on landing and on opening a recorded case\n  ---\n  duration_ms: 8559.350625\n  type: 'test'\n  ...\n# Subtest: public preparation overlaps independent reads and keeps admission honest: ready\nok 3 - public preparation overlaps independent reads and keeps admission honest: ready\n  ---\n  duration_ms: 2064.899833\n  type: 'test'\n  ...\n# Subtest: public preparation overlaps independent reads and keeps admission honest: cancelled\nok 4 - public preparation overlaps independent reads and keeps admission honest: cancelled\n  ---\n  duration_ms: 1755.464459\n  type: 'test'\n  ...\n# Subtest: public preparation overlaps independent reads and keeps admission honest: invalid\nok 5 - public preparation overlaps independent reads and keeps admission honest: invalid\n  ---\n  duration_ms: 1929.310292\n  type: 'test'\n  ...\n# Subtest: public preparation overlaps independent reads and keeps admission honest: visibility\nok 6 - public preparation overlaps independent reads and keeps admission honest: visibility\n  ---\n  duration_ms: 2065.324209\n  type: 'test'\n  ...\n# Subtest: pause freezes motion and reading holds, including a long interruption\nok 7 - pause freezes motion and reading holds, including a long interruption\n  ---\n  duration_ms: 1.544417\n  type: 'test'\n  ...\n# Subtest: capture seeks an absolute timeline at exact n times 1000/60, independent of host origin\nok 8 - capture seeks an absolute timeline at exact n times 1000/60, independent of host origin\n  ---\n  duration_ms: 0.658833\n  type: 'test'\n  ...\n# Subtest: reduced motion keeps reading holds and changes states instantly\nok 9 - reduced motion keeps reading holds and changes states instantly\n  ---\n  duration_ms: 0.139083\n  type: 'test'\n  ...\n# Subtest: a second visual change, layout properties and incompatible transforms are rejected\nok 10 - a second visual change, layout properties and incompatible transforms are rejected\n  ---\n  duration_ms: 0.306333\n  type: 'test'\n  ...\n# Subtest: navigation or a removed element settles pending work without completion\nok 11 - navigation or a removed element settles pending work without completion\n  ---\n  duration_ms: 0.150208\n  type: 'test'\n  ...\n# Subtest: recorded payload cannot override presentation timestamps or event kinds\nok 12 - recorded payload cannot override presentation timestamps or event kinds\n  ---\n  duration_ms: 0.09175\n  type: 'test'\n  ...\n# Subtest: timeline boundaries are deterministic and never borrow time from reading holds\nok 13 - timeline boundaries are deterministic and never borrow time from reading holds\n  ---\n  duration_ms: 0.205958\n  type: 'test'\n  ...\n# Subtest: external frame stepping freezes wall time without changing the user playing state\nok 14 - external frame stepping freezes wall time without changing the user playing state\n  ---\n  duration_ms: 0.12225\n  type: 'test'\n  ...\n# Subtest: the visible ring follows presentation time, freezes with pause, and is static for reduced motion\nok 15 - the visible ring follows presentation time, freezes with pause, and is static for reduced motion\n  ---\n  duration_ms: 0.114333\n  type: 'test'\n  ...\n# Subtest: documentary cues preserve source to proposed fact to process meaning\nok 16 - documentary cues preserve source to proposed fact to process meaning\n  ---\n  duration_ms: 0.746459\n  type: 'test'\n  ...\n# Subtest: documentary legal focus requires semantic predicate identity\nok 17 - documentary legal focus requires semantic predicate identity\n  ---\n  duration_ms: 0.082708\n  type: 'test'\n  ...\n# Subtest: documentary answer and checklist cues distinguish open questions and independent evidence\nok 18 - documentary answer and checklist cues distinguish open questions and independent evidence\n  ---\n  duration_ms: 0.089125\n  type: 'test'\n  ...\n# Subtest: documentary law focus needs the exact unique clause and matching recorded context\nok 19 - documentary law focus needs the exact unique clause and matching recorded context\n  ---\n  duration_ms: 0.309459\n  type: 'test'\n  ...\n# Subtest: specific documentary explanations require their recorded evidence and draft focus hands off at three seconds\nok 20 - specific documentary explanations require their recorded evidence and draft focus hands off at three seconds\n  ---\n  duration_ms: 0.11325\n  type: 'test'\n  ...\n1..20\n# tests 20\n# suites 0\n# pass 20\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 48696.219\n\n",
+      "offset": 0,
+      "nextOffset": 6127,
+      "totalBytes": 6127,
+      "truncated": false,
+      "startedAt": "2026-10-25T09:55:58.417Z",
+      "finishedAt": "2026-10-25T09:56:47.432Z"
+    }
+  ]
+}

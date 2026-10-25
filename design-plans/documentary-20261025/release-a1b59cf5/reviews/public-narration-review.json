@@ -1,0 +1,43 @@
+{
+  "contract": "casepath.documentary-final-narration-review/1",
+  "status": "passed",
+  "blocking_findings": [],
+  "reviewer": "/root/documentary_audio",
+  "review_type": "Independent assistant read-only final narration evidence review",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "output": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/narrated-public-01/CasePath_Documentary_Narrated.mp4",
+  "verified_sha256": {
+    "narrated_mp4": "542ac7644314b1beba46ddf74f8c49b61700ed5886efc4ae1d126639cbd75016",
+    "narration_receipt": "48f65f63a55bb8a6ae91c33a34137d3adbb12df8b702ecab6214b6faf1fe4412",
+    "subtitles": "9dd8f32cb52181362d8e1f09724b34cbbbbe3511905ad22996a2d12b2ee55b16"
+  },
+  "measured": {
+    "reviewed_cues": 17,
+    "words": 96,
+    "spoken_seconds": 37.394875,
+    "all_selected_rates_wpm": 155,
+    "decoded_video_frames": 2957,
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration_seconds": 98.56666666666666,
+    "integrated_lufs": -18,
+    "true_peak_dbtp": -2.44,
+    "commands": 101,
+    "command_failures": 0,
+    "minimum_speech_tail_ms": 292.646
+  },
+  "verified": [
+    "Parsed the complete narration receipt, cue timings, SRT, frozen plan, actual public timeline, public capture and scored-film receipt.",
+    "Re-resolved all 17 anchors and semantic focus intervals against the actual public timeline.",
+    "Every cue starts at least 350 ms after visible focus, ends inside its focus and preserves at least 220 ms of speech tail.",
+    "The SRT exactly matches selected phrases and actual millisecond start/end timings.",
+    "Fresh native file-info hashes match the final MP4/SRT, all six inputs, original scored film, frozen helper/plan, input manifest and real source binding.",
+    "Complete audio/video decode passed and encoded H.264 packets remain unchanged."
+  ],
+  "limits": [
+    "This is objective evidence and semantic timing review.",
+    "No subjective listening, human approval or independent legal approval is claimed.",
+    "No process or file-write actions were performed by the reviewer."
+  ]
+}

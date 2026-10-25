@@ -1,0 +1,82 @@
+{
+  "contract": "casepath.documentary-release-handoff-review/1",
+  "status": "passed",
+  "blocking_findings": [],
+  "reviewer": "/root/story_audit",
+  "review_type": "Independent assistant read-only review of completed public receipts",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "identity": {
+    "product_source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+    "api_source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+    "frontend_source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+    "site_version": 52,
+    "site_version_id": "appgprj_6ac8aab031988191b5c370f7a4dbf160~appgver_5b57b73c1928819189cb7c5cf268f338",
+    "site_deployment_id": "appgdep_6adde23aa5048191abc8c8bfce3de06f",
+    "site_status": "succeeded",
+    "url": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+    "distribution_commit": "08b66bdde2f6d1f35c948b24828996e86762c36d",
+    "acceptance_finished_at": "2026-10-25T11:15:45.885529+00:00"
+  },
+  "acceptance": {
+    "all_five_stages_exit_zero": true,
+    "sequential_primary_gets": 300,
+    "successful_gets": 300,
+    "runner_retries": 0,
+    "http_503_responses": 0,
+    "desktop": {
+      "viewport": "1440x900",
+      "rendered": 18,
+      "total": 18
+    },
+    "mobile": {
+      "viewport": "390x844",
+      "rendered": 9,
+      "total": 9,
+      "document_rows": 27
+    },
+    "identity_failures": 0,
+    "browser_errors": 0,
+    "writes": 0,
+    "overflow": 0,
+    "presentation_acts": 6,
+    "presentation_duration_ms": 98550,
+    "presentation_reached_end": true,
+    "original_image_bytes_match": true
+  },
+  "preserved_state": {
+    "read_only": true,
+    "writable": false,
+    "storage": "remote_primary",
+    "claims": 159,
+    "collection_unchanged": true,
+    "knowledge_unchanged": true,
+    "ledger_unchanged": true,
+    "historical_provider_calls": 42,
+    "historical_cost_usd": "0.0657322775",
+    "original_nine_workflows": 9,
+    "original_nine_calls": 18,
+    "original_nine_repeated": false
+  },
+  "observed_loading": {
+    "cold_desktop_cases_visible_ms": 15603,
+    "mobile_cases_visible_ms": 3445
+  },
+  "limits": [
+    "Historical provider totals are not spending incurred by this release.",
+    "The expected full-gate counts in source-binding.json are not completion evidence; actual terminal and full-gate receipts establish completion.",
+    "Original-image verification covers byte delivery and local decoder compatibility; the hosted image-decoder path was not exercised.",
+    "Final narration and artifact identity have their own media receipts.",
+    "No final evidence-only Git HEAD was asserted during this review.",
+    "No raw before/after collections were read; no processes or mutations were issued."
+  ],
+  "evidence_reviewed": [
+    "source-binding.json",
+    "release/readback-verified.json",
+    "release/published-acceptance-sequence.json",
+    "release/sites-saved-version.json",
+    "release/sites-deployment.json",
+    "release/published-soak-a1b59cf5/summary.json",
+    "release/published-browser-a1b59cf5/summary.json",
+    "release/public-image-verified.json"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "contract": "casepath.documentary-cold-review/1",
+  "reviewer": "independent assistant /root/cold_viewer",
+  "reviewed_at_utc": "2026-10-25",
+  "source_preview": ".runtime/cinema-evidence/teaching-preview-final-20261025",
+  "scope": "Contact sheet and all 24 individual sampled frames; no source code or prior implementation context supplied.",
+  "verdict": "No blocking issue for basic product comprehension in the static sample.",
+  "blocking_findings": [],
+  "understood_product": "Prepares a case assessment and shows the evidence and legal checks behind it, so staff can review the conclusion.",
+  "understood_path": [
+    "customer question",
+    "three questions to check",
+    "missing original reasons distinguished from later email",
+    "source facts connected to rule and documents",
+    "one unmet requirement and a proposed result limited to that ground",
+    "unresolved questions",
+    "draft for human review, not sent",
+    "reuse of a checking structure with the later case's own facts"
+  ],
+  "nonblocking_findings": [
+    {
+      "frames": [
+        5
+      ],
+      "finding": "The negative proposed-fact label takes a second reading; the explanatory headline and surrounding source passage resolve it."
+    },
+    {
+      "frames": [
+        18,
+        19,
+        20,
+        21
+      ],
+      "finding": "The later case reaches the same assessment wording; the headers explicitly require fresh evidence, but the repeated result makes independence less visually distinct."
+    },
+    {
+      "frames": [
+        9,
+        10
+      ],
+      "finding": "Verified passages could be overread as legal-conclusion verification. The visible qualification limits verification to matching quotations to files and retains legal review."
+    },
+    {
+      "frames": [
+        2,
+        9,
+        17
+      ],
+      "finding": "Samples fall inside transitions with overlapping screens. Static samples alone do not establish a playback problem."
+    }
+  ],
+  "limitations": {
+    "static_assistant_review": true,
+    "full_speed_playback_review": false,
+    "audio_listening": false,
+    "human_acceptance": false,
+    "legal_approval": false,
+    "quantified_productivity_claim": false
+  }
+}

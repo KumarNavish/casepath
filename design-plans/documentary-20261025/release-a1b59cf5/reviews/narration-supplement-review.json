@@ -1,0 +1,43 @@
+{
+  "contract": "casepath.documentary-narration-supplement-review/1",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "status": "passed",
+  "blocking_findings": [],
+  "review_type": "Independent assistant source-diff review",
+  "reviewer": "/root/cold_viewer",
+  "reviewed_date": "2026-10-25",
+  "methods": [
+    "Read the full original and adapted helper in bounded chunks",
+    "Read the adapter, complete diff and adaptation record",
+    "Independently applied all ten once-only substitutions and verified exact equality with the adapted text",
+    "Independently verified the listed file hashes and unchanged real source binding"
+  ],
+  "verified_sha256": {
+    "adapted_helper": "49ae8e589f5607839fbcc72089d38e0294ed98169f884ffc6305a689389855a1",
+    "diff": "d25e5a9c5aab94ab7543e541ca6fad7e1ea563caaeb1df03f6f4816a21c0fbf9",
+    "adaptation_record": "a9d3e16ddacc3bf4cb86e08aac40a5a05f2410730a3a432f51c3a2e5da19725e",
+    "real_source_binding": "ee31623efdadae14ebd56f53fd9b3ca6dd32d6ed660245ed5a4a940b5878d124"
+  },
+  "reviewed_cue_count": 17,
+  "spotlight_clips": 15,
+  "chapter_framing_clips": 2,
+  "guards_preserved": [
+    "Actual public capture and matching strict scored-film evidence",
+    "Product source cleanliness",
+    "Exact video packet identity",
+    "Measured cue timing",
+    "Actual completed Commander terminal evidence",
+    "Privacy exclusions",
+    "Fresh attempt directories",
+    "Explicit future canonical HEAD",
+    "Exact new-file inventory",
+    "Normal push and remote readback verification"
+  ],
+  "preparation_path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/preparation",
+  "supplement_runtime": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/supplement-a1b59cf5",
+  "strict_bundle": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/final-evidence-bundle",
+  "limitations": [
+    "Read-only review; no pack, commit, or final render executed by the reviewer",
+    "No human approval or subjective listening is claimed"
+  ]
+}

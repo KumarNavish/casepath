@@ -1,0 +1,356 @@
+diff --git a/casepath-qa/autonomous-presentation-browser-v1.test.cjs b/casepath-qa/autonomous-presentation-browser-v1.test.cjs
+index 0db8f93c..4d3ae090 100644
+--- a/casepath-qa/autonomous-presentation-browser-v1.test.cjs
++++ b/casepath-qa/autonomous-presentation-browser-v1.test.cjs
+@@ -61,6 +61,37 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
+   await page.emulateMedia({reducedMotion:'reduce'});
+   const reducedRing=await page.evaluate(at=>{const a=CasepathPresentation.active;a.advanceTo(at);const before=document.querySelector('.au-ns-building-ring').style.transform;a.advanceTo(at+300);return [before,document.querySelector('.au-ns-building-ring').style.transform];},documentary.at);
+   assert.deepEqual(reducedRing,['rotate(0deg)','rotate(0deg)']);await page.emulateMedia({reducedMotion:'no-preference'});
++  const teachingState=recorded.cases[7].envelope.state;
++  const teachingLaw=teachingState.semantic_contexts[teachingState.run_id].rule_packs.find(pack=>pack.family===teachingState.graph.family).legal_authority.find(row=>row.article==='269d').text;
++  const teaching=await page.evaluate(({lawText,draftBody})=>{
++   const a=CasepathPresentation.active,m=a.manifest,failures=[];
++   const inside=(box,outer)=>box.width>4&&box.height>4&&box.left>=outer.left-1&&box.right<=outer.right+1&&box.top>=outer.top-1&&box.bottom<=outer.bottom+1;
++   const guide=()=>document.querySelector('.au-documentary-guide'),focus=()=>guide().querySelector('.au-doc-focus').getBoundingClientRect();
++   const lawBeat=m.beats.find(b=>b.phase==='law-rest'),lawAt=lawBeat.end-1;
++   const lawSnapshot=()=>{const mark=document.querySelector('[data-au-guide-law]'),pre=mark?.closest('pre');return JSON.stringify({text:pre?.textContent,html:pre?.innerHTML,target:guide().dataset.auGuideTarget,box:guide().querySelector('.au-doc-focus').style.cssText});};
++   a.advanceTo(lawAt);
++   const mark=document.querySelector('[data-au-guide-law]'),pre=mark?.closest('pre');
++   if(!mark||document.querySelectorAll('[data-au-guide-law]').length!==1)failures.push('law clause not uniquely marked');
++   if(pre?.textContent!==lawText)failures.push('law source text changed');
++   if(mark?.textContent!=='b.sie nicht begründet;'||mark?.dataset.auRuleArticle!=='269d'||mark?.dataset.auRuleParagraph!=='2(b)')failures.push('wrong exact law clause or identity');
++   if(!pre||pre.querySelectorAll('.au-ns-text-break').length<4)failures.push('recorded law paragraph layout lost');
++   if(!mark||!inside(mark.getBoundingClientRect(),focus())||guide().dataset.auGuideTarget!=='law'||guide().dataset.auGuideVisible!=='true')failures.push('exact law clause is not visibly focused');
++   const directLaw=lawSnapshot();
++   const draftBeat=m.beats.find(b=>b.act==='decision'&&b.phase==='draft-rest');
++   a.advanceTo(draftBeat.start+1500);
++   const draft=document.querySelector('[data-au-recorded-draft]'),body=draft?.querySelector('pre'),bodyBox=focus(),bodyHeadline=guide().querySelector('[data-au-guide-headline]').textContent;
++   if(body?.textContent!==draftBody)failures.push('recorded draft text changed');
++   if(guide().dataset.auGuideTarget!=='draft-body'||guide().dataset.auGuideVisible!=='true'||!draft||!inside(draft.getBoundingClientRect(),bodyBox))failures.push('draft artifact is not focused before review boundary');
++   if(body&&!getComputedStyle(body).fontFamily.includes('Mulish'))failures.push('draft typography is not presentation font');
++   a.advanceTo(draftBeat.start+4500);
++   const status=document.querySelector('[data-au-draft-status]');
++   if(guide().dataset.auGuideTarget!=='draft'||guide().dataset.auGuideVisible!=='true'||!status||!inside(status.getBoundingClientRect(),focus()))failures.push('draft focus does not hand off to human review');
++   if(guide().querySelector('[data-au-guide-headline]').textContent!==bodyHeadline)failures.push('draft caption changes during target handoff');
++   if(document.querySelector('[data-au-recorded-draft] pre')?.textContent!==draftBody)failures.push('draft text changed at review boundary');
++   a.advanceTo(m.duration-1);a.advanceTo(lawAt);if(lawSnapshot()!==directLaw)failures.push('law source or focus changes after backward seek');
++   return {failures,duration:m.duration};
++  },{lawText:teachingLaw,draftBody:teachingState.outcome.request_draft.body});
++  assert.deepEqual(teaching.failures,[]);assert.equal(teaching.duration,98550);
+   const controls=await page.evaluate(()=>{const a=CasepathPresentation.active,footer=document.querySelector('.au-executive-transport'),button=footer.querySelector('[data-au-demo-stop]');const mutations=[];const observer=new MutationObserver(rows=>mutations.push(...rows));observer.observe(footer,{childList:true,subtree:true,attributes:true});for(const beat of a.manifest.beats)a.advanceTo(beat.start);const pending=observer.takeRecords();observer.disconnect();return {connected:footer.isConnected,sameButton:button===document.querySelector('.au-executive-transport [data-au-demo-stop]'),labelChanges:[...mutations,...pending].filter(row=>row.target===button).length};});
+   assert.equal(controls.connected,true);assert.equal(controls.sameButton,true);assert.equal(controls.labelChanges,0,'unchanged Pause control does not repaint on every frame');
+   const proof=await page.evaluate(()=>{
+diff --git a/casepath-qa/autonomous-presentation-v1.test.cjs b/casepath-qa/autonomous-presentation-v1.test.cjs
+index 64098844..0ae31adc 100644
+--- a/casepath-qa/autonomous-presentation-v1.test.cjs
++++ b/casepath-qa/autonomous-presentation-v1.test.cjs
+@@ -1,6 +1,6 @@
+ 'use strict';
+ const test=require('node:test'),assert=require('node:assert/strict');
+-const {createClock,ease,interpolate,timeline,ringTransform,documentaryCue}=require('../casepath/assets/autonomous-presentation-v1.js');
++const {createClock,ease,interpolate,timeline,ringTransform,documentaryCue,documentaryRuleFocus}=require('../casepath/assets/autonomous-presentation-v1.js');
+ function fixture(start=0,options={}) {
+   let at=start,id=0;const queued=new Map();
+   const runtime={performance:{now:()=>at},requestAnimationFrame:fn=>{queued.set(++id,fn);return id;},cancelAnimationFrame:id=>queued.delete(id)};
+@@ -68,7 +68,7 @@ test('documentary cues preserve source to proposed fact to process meaning',()=>
+   const fact=documentaryCue({act:'reading',phase:'fact-rest',op:{id:'fact',kind:'fact.extract'}},1200,context);
+   const node=documentaryCue({act:'reading',phase:'node-rest',op:{id:'second',kind:'step.complete',object:{id:'n2'}}},600,context);
+   assert.match(source.headline,/no reasons accompanied/);assert.equal(source.target,'source');
+-  assert.match(fact.headline,/proposed fact/);assert.equal(fact.targetId,'fact');assert.equal(node.target,'node');assert.equal(node.targetId,'n2');
++  assert.match(fact.headline,/Proposed finding: the original notice gave no reasons/);assert.equal(fact.targetId,'fact');assert.equal(node.target,'node');assert.equal(node.targetId,'n2');
+   assert.doesNotMatch(documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact'}},0,{...context,decisivePredicate:'different'}).headline,/no reasons/);
+ });
+ test('documentary legal focus requires semantic predicate identity',()=>{
+@@ -85,3 +85,26 @@ test('documentary answer and checklist cues distinguish open questions and indep
+   assert.equal(move.headline,land.headline);assert.equal(move.targetId,1);assert.equal(land.targetId,1);assert.equal(move.target,'memory-item');assert.equal(land.target,'memory-target');
+   assert.match(documentaryCue({act:'decision',phase:'draft-rest'}).headline,/person to review/);
+ });
++
++test('documentary law focus needs the exact unique clause and matching recorded context',()=>{
++ const context={decisivePredicate:'contemporaneous_substantive_reasons',article:'269d'};
++ const text='1 Other rule. 2 Die Mietzinserhöhung ist nichtig, wenn der Vermieter:a.sie nicht mit dem vorgeschriebenen Formular mitteilt;b.sie nicht begründet;c.mit der Mitteilung die Kündigung androht. 3 Other rule.';
++ const quote='b.sie nicht begründet;',start=text.indexOf(quote);
++ assert.deepEqual(documentaryRuleFocus(text,context),{start,end:start+quote.length,quote,article:'269d',paragraph:'2(b)'});
++ for(const candidate of [{...context,article:'269c'},{...context,decisivePredicate:'different'},{}])assert.equal(documentaryRuleFocus(text,candidate),null);
++ for(const candidate of [text.replace('2 Die','1 Die'),text+' '+quote,text.replace(quote,'b.eine andere Bedingung;'),text.replace(quote,'')+' '+quote,text.replace(quote,'').replace(' 3 Other rule.','.3 Other rule.')+' '+quote])assert.equal(documentaryRuleFocus(candidate,context),null);
++ const spaced=text.replace(quote,'b.\n sie nicht begründet;'),focus=documentaryRuleFocus(spaced,context);assert.equal(focus.quote,'b.\n sie nicht begründet;');assert.equal(spaced.slice(focus.start,focus.end),focus.quote);
++});
++
++test('specific documentary explanations require their recorded evidence and draft focus hands off at three seconds',()=>{
++ const evidence={firstFactId:'fact',decisivePredicate:'contemporaneous_substantive_reasons'};
++ assert.match(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,evidence).headline,/rent-increase notice/);
++ assert.doesNotMatch(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,{}).headline,/rent-increase/);
++ const fact={act:'reading',phase:'fact-rest',op:{id:'fact',kind:'fact.extract'}};
++ assert.match(documentaryCue(fact,0,evidence).headline,/gave no reasons/);assert.match(documentaryCue(fact,0,{firstFactId:'fact'}).headline,/proposed fact/);
++ const law={act:'decision',phase:'law-rest'},answer={act:'decision',phase:'answer-rest',duration:6000};
++ assert.doesNotMatch(documentaryCue(law,0,evidence).headline,/invalid notice/);assert.match(documentaryCue(law,0,{...evidence,decisiveRule:true}).headline,/invalid notice/);
++ assert.doesNotMatch(documentaryCue(answer,1000,{...evidence,decisiveRule:true}).headline,/invalid on this ground/);assert.match(documentaryCue(answer,1000,{...evidence,decisiveRule:true,assessmentSupportsInvalidity:true}).headline,/invalid on this ground/);
++ const draft={act:'decision',phase:'draft-rest',duration:6000},body=documentaryCue(draft,2999),review=documentaryCue(draft,3000);
++ assert.equal(body.target,'draft-body');assert.equal(body.part,'prepared-reply');assert.equal(review.target,'draft');assert.equal(review.part,'review-boundary');assert.equal(body.id,review.id);assert.equal(body.headline,review.headline);assert.match(review.headline,/Nothing is sent/);
++});
+diff --git a/casepath/assets/autonomous-presentation-v1.js b/casepath/assets/autonomous-presentation-v1.js
+index acd146f9..fadc0528 100644
+--- a/casepath/assets/autonomous-presentation-v1.js
++++ b/casepath/assets/autonomous-presentation-v1.js
+@@ -146,6 +146,20 @@
+     return `rotate(${reducedMotion?0:Math.round((milliseconds%2400)*.15*1e6)/1e6}deg)`;
+   }
+ 
++// Locate an exact recorded clause, never a paraphrase or an inferred legal source.
++// The caller must identify both the recorded failed check and the actual article.
++function documentaryRuleFocus(text, context = {}) {
++  if (typeof text !== 'string' || context.decisivePredicate !== 'contemporaneous_substantive_reasons' || String(context.article) !== '269d') return null;
++  const lead = /2\s+Die Mietzinserhöhung ist nichtig, wenn der Vermieter:/u.exec(text);
++  const matches = [...text.matchAll(/b\.\s*sie nicht begründet;/gu)];
++  if (!lead || matches.length !== 1) return null;
++  const match = matches[0], start = match.index, end = start + match[0].length;
++  const paragraphStart = lead.index + lead[0].length;
++  const nextParagraph = text.slice(paragraphStart).search(/(?:^|[\s.!?])3\s/u);
++  if (start < paragraphStart || nextParagraph >= 0 && start >= paragraphStart + nextParagraph) return null;
++  return {start, end, quote: match[0], article: '269d', paragraph: '2(b)'};
++}
++
+ /* Pure editorial metadata. No DOM, timers, playback state, or outcome changes. */
+ function documentaryCue(beat, elapsed = 0, context = {}) {
+   const b = beat && typeof beat === 'object' ? beat : {};
+@@ -163,7 +177,9 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
+   // Cue IDs identify stable sentences. Targets may hand off within one sentence.
+   // Every sentence lasts >= 2 seconds in the unchanged 98.55-second film.
+   if (b.act === 'customer') {
+-    return cue('question', "Start with the tenant's question.", 'The question', 'source', {
++    return cue('question', context.decisivePredicate === 'contemporaneous_substantive_reasons'
++      ? 'The tenant asks us to check a rent-increase notice.'
++      : "Start with the tenant's question.", 'The question', 'source', {
+       part: phase === 'ready' ? 'introduction' : 'quote',
+       spotlight: phase !== 'ready' && phase !== ''
+     });
+@@ -180,7 +196,9 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
+     const factPhase = ['fact', 'connector', 'fact-rest', 'plan-tick', 'camera-out'].includes(phase);
+     if (firstFact || kind === 'fact' || factPhase) {
+       if (factPhase) {
+-        return cue('source-fact', 'This passage supports a proposed fact.', 'From source to fact', 'fact', {
++        return cue('source-fact', firstFact && context.decisivePredicate === 'contemporaneous_substantive_reasons'
++          ? 'Proposed finding: the original notice gave no reasons.'
++          : 'This passage supports a proposed fact.', 'From source to fact', 'fact', {
+           ...(operationId ? {targetId: operationId} : {}), part: phase === 'connector' ? 'connection' : 'proposed-fact'
+         });
+       }
+@@ -207,7 +225,11 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
+     }
+     // The document cutaway is only 1.3s; keep its sentence continuous with the law scene.
+     if (['law', 'law-rest', 'documents', 'documents-rest'].includes(phase)) {
+-      return cue('rule-documents', 'See the rule and the documents used.', 'Rule and documents', phase.startsWith('documents') ? 'documents' : 'law');
++      const documents = phase.startsWith('documents');
++      return cue('rule-documents', context.decisiveRule === true
++        ? 'The rule connects missing reasons with an invalid notice.'
++        : 'See the rule and the documents used.', documents ? 'Supporting documents'
++        : context.decisiveRule === true ? 'Article 269d, paragraph 2(b)' : 'Rule and documents', documents ? 'documents' : 'law');
+     }
+     if (['legal-test', 'legal-test-rest'].includes(phase)) {
+       return cue('legal-tests', 'The recorded assessment flags one unmet requirement.', 'Recorded legal tests', 'predicate', {
+@@ -222,10 +244,13 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
+       if (phase === 'answer-rest' && local >= 3000) {
+         return cue('open-questions', 'Other questions remain unanswered.', 'Still open', 'open');
+       }
+-      return cue('proposed-assessment', 'Read the proposed assessment.', 'Proposed assessment', 'lead');
++      return cue('proposed-assessment', context.assessmentSupportsInvalidity === true
++        ? 'Proposed assessment: invalid on this ground.'
++        : 'Read the proposed assessment.', 'Proposed assessment', 'lead');
+     }
+     if (['draft', 'draft-rest'].includes(phase)) {
+-      return cue('human-review', 'A draft for a person to review.', 'Human review', 'draft');
++      const review = phase === 'draft-rest' && local >= 3000;
++      return cue('human-review', 'A draft for a person to review. Nothing is sent.', 'Human review', review ? 'draft' : 'draft-body', {part: review ? 'review-boundary' : 'prepared-reply'});
+     }
+   }
+ 
+@@ -259,5 +284,5 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
+ }
+ 
+ 
+-  return {ACTS,EASING,ease,interpolate,paint,createClock,timeline,chapter,ringTransform,documentaryCue};
++  return {ACTS,EASING,ease,interpolate,paint,createClock,timeline,chapter,ringTransform,documentaryRuleFocus,documentaryCue};
+ });
+diff --git a/casepath/assets/autonomous-workspace-v1.css b/casepath/assets/autonomous-workspace-v1.css
+index 67547901..c0c832d2 100644
+--- a/casepath/assets/autonomous-workspace-v1.css
++++ b/casepath/assets/autonomous-workspace-v1.css
+@@ -2341,3 +2341,7 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
+  html[data-casepath-presentation] .au-ns-current-number { position:relative; color:#82072a; font:600 15px/1 Mulish,sans-serif; }
+  html[data-casepath-presentation] .au-ns-spine [data-state=building] .au-ns-node-label { color:#82072a; }
+ }
++
++/* Documentary emphasis decorates exact source bytes; it never rewrites them. */
++html[data-casepath-presentation] .au-workspace [data-au-guide-law] { background:#f6eff0; color:inherit; border-radius:2px; padding:0; }
++html[data-casepath-presentation] .au-workspace [data-au-recorded-draft] pre { font:400 17px/1.65 Mulish,sans-serif; }
+diff --git a/casepath/assets/autonomous-workspace-v1.js b/casepath/assets/autonomous-workspace-v1.js
+index 88cd8936..8943cdf0 100644
+--- a/casepath/assets/autonomous-workspace-v1.js
++++ b/casepath/assets/autonomous-workspace-v1.js
+@@ -5544,6 +5544,30 @@
+             if(record===main)answer.querySelector(':scope > .au-desk-tests').insertAdjacentHTML('beforebegin',`<p class="au-executive-test-context"><strong>${model.desk.nodes.length} process steps · ${rows.length} legal tests</strong><br>Numbers link each legal test to its process step.</p>`);
+           }
+         }
++        if(viewName==='law'){
++          const article=all('.au-ns-law-source article').find(element=>element.querySelector('h3')?.textContent.trim()==='Article 269d');
++          const pre=article?.querySelector('pre'),text=pre?.textContent;
++          const focus=P.documentaryRuleFocus(text,{...guideContext,article:'269d'});
++          if(focus){
++            // Wrap the existing text nodes so the source's paragraph spacing,
++            // empty layout spans and exact citation text all remain intact.
++            const walker=doc.createTreeWalker(pre,root.NodeFilter.SHOW_TEXT);
++            let node,offset=0,start=null,end=null;
++            while((node=walker.nextNode())){
++              const next=offset+node.textContent.length;
++              if(!start&&focus.start>=offset&&focus.start<next)start={node,offset:focus.start-offset};
++              if(focus.end>offset&&focus.end<=next){end={node,offset:focus.end-offset};break;}
++              offset=next;
++            }
++            if(start&&end){
++              const range=doc.createRange(),mark=doc.createElement('mark');
++              range.setStart(start.node,start.offset);range.setEnd(end.node,end.offset);
++              mark.setAttribute('data-au-guide-law','');mark.dataset.auRuleArticle=focus.article;mark.dataset.auRuleParagraph=focus.paragraph;
++              mark.appendChild(range.extractContents());range.insertNode(mark);
++            }
++            if(pre.textContent!==text)throw new Error('The documentary must preserve the exact recorded law text.');
++          }
++        }
+         if(viewName==='answer'&&['answer','answer-rest'].includes(phase)){
+           const pane=select('.au-ns-view-content');if(pane)pane.scrollTop=0;
+         }
+@@ -5568,10 +5592,12 @@
+       // Narration and its single focal target share the recorded presentation
+       // clock. The guide lives outside the replaceable scene and its clones.
+       const guideContext={firstCompletionId:completed[0]?.id,firstFactId:firstFact.id,decisivePredicate:failedIds.has(firstFact.object.id)?firstFact.object.id:null};
++      guideContext.decisiveRule=Boolean(P.documentaryRuleFocus(legalAuthorityRows(main.state).find(row=>row.article==='269d')?.text,{...guideContext,article:'269d'}));
++      guideContext.assessmentSupportsInvalidity=guideContext.decisiveRule&&main.state.outcome?.assessment_scope==='rent_increase_reasons_nullity_assessment'&&String(main.state.outcome?.summary||'').includes('supporting invalidity under CO 269d(2)(b)');
+       const guideWindows=[];
+       for(const beat of story.beats){
+         const starts=[beat.start];
+-        if(beat.phase==='answer-rest'&&beat.act==='decision'&&beat.duration>3000)starts.push(beat.start+3000);
++        if(['answer-rest','draft-rest'].includes(beat.phase)&&beat.act==='decision'&&beat.duration>3000)starts.push(beat.start+3000);
+         for(let i=0;i<starts.length;i++){
+           const start=starts[i],end=starts[i+1]??beat.end,cue=P.documentaryCue(beat,start-beat.start,guideContext),previous=guideWindows.at(-1);
+           if(previous?.id===cue.id&&previous.target===cue.target&&previous.targetId===cue.targetId&&previous.part===cue.part&&previous.spotlight===cue.spotlight)previous.end=end;
+@@ -5592,11 +5618,12 @@
+           case 'fact':return byId('[data-au-ns-fact]','data-au-ns-fact',cue.targetId||firstFact.id)||frameNodes.fact||all('[data-au-ns-fact]').at(-1);
+           case 'chain':return cue.column||cue.targetId||beat.column?byId('[data-au-ns-chain]','data-au-ns-chain',cue.column||cue.targetId||beat.column):select('[data-au-ns-chain-strip]');
+           case 'verified':return all('[data-au-ns-verified]').find(element=>{const pin=JSON.parse(element.dataset.auCitation);return pin.artifact_id===firstFact.source.artifact_id&&pin.quote===firstFact.source.quote;})||select('[data-au-ns-verified]');
+-          case 'law':return select('.au-ns-law-source article');
++          case 'law':return select('[data-au-guide-law]')||select('.au-ns-law-source article');
+           case 'documents':return select('[data-au-ns-documents]');
+           case 'predicate':return byId('[data-au-desk-answer] > .au-desk-tests > li','data-au-desk-predicate',cue.targetId||beat.predicate);
+           case 'lead':return select('.au-desk-lead');
+           case 'open':return select('.au-desk-open');
++          case 'draft-body':return select('[data-au-recorded-draft]');
+           case 'draft':return select('[data-au-draft-status]');
+           case 'memory-source':return select('.au-ns-memory-source blockquote')||select('.au-ns-memory-source');
+           case 'memory-item':return (beat.nextPhase||beat.phase)==='memory-transfer'&&frameNodes.transfers?.[0]?.clone||item;
+diff --git a/casepath/index.html b/casepath/index.html
+index a56d83ad..880a0095 100644
+--- a/casepath/index.html
++++ b/casepath/index.html
+@@ -18,9 +18,9 @@
+   <meta name="casepath-autonomous-demo-packets" content="assets/autonomous-demo-packets.json?sha256=0570e94ab2d32005c858359ea345a9dafd8c941733193da0d3575525cb81ce8a">
+   <meta name="casepath-recorded-opening" content='{"url":"assets/autonomous-recorded-heating-v1.json?sha256=1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383","bytes":523167,"sha256":"1995cf8675257d674f7117fb9f53320020b4ad8be90b615f4fdb54b2c0fab383","deployment_commit":"0a213e471d70dbc63df2e0fcb3a62049ec5183aa","history_kind":"published_public_synthetic"}'>
+   <meta name="casepath-saved-history" content='{"url":"assets/autonomous-saved-history-v1.json?sha256=a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0","bytes":565908,"sha256":"a38d73c0a679368a7a9e50d7275ffb88f89c1e5ab10cdd6982a2ac5343453ab0","deployment_commit":"0a213e471d70dbc63df2e0fcb3a62049ec5183aa","history_kind":"published_public_synthetic","claim_id":"clm_2a9c260c26afaa34","revision":15,"state_sha256":"63c7f9663040ad966daf87266b72dc31b0369de67b16c35a7b13fdd68fdcfe17","event_sha256":"efe81d202e86e3b7e58f252feef236a2caabe4e27e38af427e404e3da719f203"}'>
+-  <script defer src="assets/autonomous-presentation-v1.js?sha256=6e2d694c6eaa01b2d5047f210ab2e73abd5b44e821340a2eb45b995e3beb69e2"></script>
++  <script defer src="assets/autonomous-presentation-v1.js?sha256=1245d621780dfca6ba311b667fbf95ca8af7f9240afc93992f8a28d95b05ea4e"></script>
+   <script defer src="assets/autonomous-language-v1.js?sha256=e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49"></script>
+-  <meta name="casepath-autonomous-script" content="assets/autonomous-workspace-v1.js?sha256=99e694ca336ee5ce35e4d15e07ed3786049aaa47b282f056c17882698d426cc2">
++  <meta name="casepath-autonomous-script" content="assets/autonomous-workspace-v1.js?sha256=eb0d03f7760d80fcaefafe55638c71035802c92c45f028b139f0237f6ff02416">
+   <link rel="icon" href="data:,">
+   <link rel="license" href="assets/fonts/Merriweather-OFL.txt">
+   <link rel="license" href="assets/fonts/Open_Sans-OFL.txt">
+@@ -110,7 +110,7 @@
+   <link rel="stylesheet" href="assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22">
+   <link rel="stylesheet" href="assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb">
+   <link rel="stylesheet" href="assets/review-northstar-v1.css?sha256=af146200023e43fe5b1160956bfa93826897f1b94fbdaefc01d9bd56d63fd5ef">
+-  <link rel="stylesheet" href="assets/autonomous-workspace-v1.css?sha256=c2c19022da20ffd4ea98238e2ce8b120b879046f0da55ca81b088916cb076778">
++  <link rel="stylesheet" href="assets/autonomous-workspace-v1.css?sha256=dd9c40b60b89f210ad6f4331c92ad0df8279b3dd29209d83e4977c5e940dedf1">
+ </head>
+ <body>
+   <div id="autonomousWorkspace"><p role="status">Opening your case…</p></div>
+diff --git a/casepath/source-manifest.json b/casepath/source-manifest.json
+index 407e28ec..6723114e 100644
+--- a/casepath/source-manifest.json
++++ b/casepath/source-manifest.json
+@@ -8999,14 +8999,14 @@
+     {
+       "executable": false,
+       "path": "casepath-qa/autonomous-presentation-browser-v1.test.cjs",
+-      "sha256": "9a85f397905df617dbde77e093d137bd32014c233b43fab4837811462b909cfd",
+-      "size_bytes": 48874
++      "sha256": "a23b56bc3c707ca4181a46d56a9b794f6373598f957f5ae93e0f67abab7be88d",
++      "size_bytes": 52410
+     },
+     {
+       "executable": false,
+       "path": "casepath-qa/autonomous-presentation-v1.test.cjs",
+-      "sha256": "8f8b9b06049d4b4da0766b37a043ac566932e50a9d45a741bb1faa5c9e72ef78",
+-      "size_bytes": 8271
++      "sha256": "4f0e3efc6351f474ecc524750c5a37202177dcca19c3bd88292ee54dd36ce794",
++      "size_bytes": 11253
+     },
+     {
+       "executable": false,
+@@ -9545,8 +9545,8 @@
+     {
+       "executable": false,
+       "path": "casepath/assets/autonomous-presentation-v1.js",
+-      "sha256": "6e2d694c6eaa01b2d5047f210ab2e73abd5b44e821340a2eb45b995e3beb69e2",
+-      "size_bytes": 15346
++      "sha256": "1245d621780dfca6ba311b667fbf95ca8af7f9240afc93992f8a28d95b05ea4e",
++      "size_bytes": 17177
+     },
+     {
+       "executable": false,
+@@ -9563,14 +9563,14 @@
+     {
+       "executable": false,
+       "path": "casepath/assets/autonomous-workspace-v1.css",
+-      "sha256": "c2c19022da20ffd4ea98238e2ce8b120b879046f0da55ca81b088916cb076778",
+-      "size_bytes": 370302
++      "sha256": "dd9c40b60b89f210ad6f4331c92ad0df8279b3dd29209d83e4977c5e940dedf1",
++      "size_bytes": 370638
+     },
+     {
+       "executable": false,
+       "path": "casepath/assets/autonomous-workspace-v1.js",
+-      "sha256": "99e694ca336ee5ce35e4d15e07ed3786049aaa47b282f056c17882698d426cc2",
+-      "size_bytes": 867372
++      "sha256": "eb0d03f7760d80fcaefafe55638c71035802c92c45f028b139f0237f6ff02416",
++      "size_bytes": 869460
+     },
+     {
+       "executable": false,
+@@ -9791,7 +9791,7 @@
+     {
+       "executable": false,
+       "path": "casepath/index.html",
+-      "sha256": "1dd013b58ab0bc534ec3a117987032a62b59d01510a53f674e69579d7a02a583",
++      "sha256": "ff5227ab7e64ce35a63a0c6a9090ab950555b085ffd5290ea5e938189395f947",
+       "size_bytes": 26089
+     },
+     {
+diff --git a/design-plans/cinema-20261024/BRIEF.md b/design-plans/cinema-20261024/BRIEF.md
+index e371218b..12a64e38 100644
+--- a/design-plans/cinema-20261024/BRIEF.md
++++ b/design-plans/cinema-20261024/BRIEF.md
+@@ -82,3 +82,16 @@ A reserved narration rail supplies stable instructional sentences. One focus win
+ Legal-test beats carry predicate identity and status, and follow the same process-step ordering as the visible rows. The unmet requirement therefore receives its actual longer hold. The answer has separate reading time for the proposed conclusion and unresolved questions. Checklist reuse first establishes that the later case has its own evidence.
+ 
+ Validation for this correction must include actual arc movement, pause and reduced-motion behavior, deterministic backward seeking, one resolved focus target, unclipped narration, exact semantic legal-test selection, source citation preservation, all 18 declared frontend suites, and the complete fresh release gate. A fresh public film and source-bound evidence are required; the previous film or success receipts do not validate this revision.
++
++
++## Teaching closure — 25 October 2026
++
++Recovered both the clean integration and the prior isolated documentary checkout at `5da3233a0aa04ad29843c8ec55dfb685118381c9`. The previous public capture and acceptance workers had completed successfully after their conversation ended; their original receipts are preserved. The current public version was observed as 51, and the native API health retained the same source and read-only capability. Existing 4173/4194 servers, journals and the separate research context remain untouched.
++
++This continuation owns only presentation explanation, its focused regression checks, the required sealed release, and documentary media. It uses the existing isolated normal checkout on `codex/casepath-documentary-20261025`. No external model runtime, inference, new spending, case mutation or changed public audience is part of the work.
++
++A source-and-frame review identified four remaining teaching gaps. The opener now explains the tenant's actual question in English while preserving the original source. The negative proposed fact is explained directly. The law scene marks the exact recorded Article 269d paragraph 2(b) clause, with an explicit causal caption; marking preserves the source's complete textContent and existing paragraph-layout spans. The proposed-assessment caption is conditional on this recorded assessment's actual scope and summary. Other examples retain generic explanatory wording. The draft scene first shows the full compact draft and then focuses on the unsent human-review boundary. Its body uses the same Mulish typography as the presentation.
++
++The timeline remains 98.55 seconds. The clock-driven rings, pause/reduced-motion behavior, one focus window, original citation offsets and semantic predicate order are retained. A fresh preview passed the existing rendered capture diagnostics. A separate cold reviewer inspected all 24 evenly spaced frames and reported no blocking comprehension issue; this is an assistant static visual review, not human acceptance, full-speed audiovisual evaluation or legal approval. Its remaining cautions about negative predicate labels, same-worded later assessments and quotation verification are recorded in the release evidence.
++
++The north-star review preserves the approved white/Mulish/crimson composition and actual recorded process. Deliberate additions remain the explanatory narration rail, exact-law emphasis and draft attention handoff requested by the current documentary brief. The fresh full gate, publication alignment, fresh public capture, audio delivery and final receipts are completion gates and are not established by this design note.

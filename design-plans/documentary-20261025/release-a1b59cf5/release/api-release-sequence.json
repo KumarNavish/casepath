@@ -1,0 +1,94 @@
+{
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "status": "passed",
+  "started_at": "2026-10-25T11:01:10.718363+00:00",
+  "stages": [
+    {
+      "name": "seed",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/renew_seed.py",
+        "a1b59cf5d78662b35790a11cfd2d46851310482d",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-25T11:01:11.620410+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/api-release-seed.log",
+      "pid": 19064,
+      "exit_code": 0,
+      "finished_at": "2026-10-25T11:01:16.417597+00:00",
+      "log_sha256": "6d6e19beced3e905edf8752803ae67183e9fad90081c805496252fd106e51e6d"
+    },
+    {
+      "name": "environment",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/update_api_env.py",
+        "a1b59cf5d78662b35790a11cfd2d46851310482d",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-25T11:01:17.069809+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/api-release-environment.log",
+      "pid": 19123,
+      "exit_code": 0,
+      "finished_at": "2026-10-25T11:01:23.803410+00:00",
+      "log_sha256": "c4240f6560263fbb16b664a642e8a294c4ea3e531ef924ee4c7a9faea9593bfa"
+    },
+    {
+      "name": "deployment",
+      "command": [
+        "/Users/kumar0002/.local/bin/uv",
+        "run",
+        "--offline",
+        "--no-project",
+        "--with",
+        "fastapi[standard]",
+        "--with",
+        "fastapi-cloud-cli==0.26.0",
+        "python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/deploy_api.py",
+        "a1b59cf5d78662b35790a11cfd2d46851310482d",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-25T11:01:24.472747+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/api-release-deployment.log",
+      "pid": 19183,
+      "exit_code": 0,
+      "finished_at": "2026-10-25T11:02:28.616345+00:00",
+      "log_sha256": "b6d49e54e29545b03ecf4acdc90421ac3fa96d11a84452cc1a64f2385be7b9a4"
+    },
+    {
+      "name": "activation",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/await_api.py",
+        "a1b59cf5d78662b35790a11cfd2d46851310482d",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-25T11:02:29.630275+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/api-release-activation.log",
+      "pid": 19542,
+      "exit_code": 0,
+      "finished_at": "2026-10-25T11:03:21.483843+00:00",
+      "log_sha256": "29d55725b2a8c0f9aaf90303199b3ec7dd89f31e469272757862f150f9714cd2"
+    }
+  ],
+  "gate_sha256": "7f45a4a27d74519ef49f7a5147e739f5dac28d91f627e8dc9b50e09e3f466ef4",
+  "helper_sha256": {
+    "await_api.py": "965bb72be039226afc80bcee3c743d90ee058a80416248f5ebe6698323d6266b",
+    "deploy_api.py": "4d820f796a0848b2d06ffdbe571a5ad2609479c5c4e741f9b943ab257cf99ae4",
+    "integrate_canonical.py": "e36442ccdc8da07fc68bdb7a490b04796b17ab6eaefb3d711ee45455e2459839",
+    "renew_seed.py": "169e5ccbca842c23474f901c3c1794b17fde0ef765d299022d300c17cd92bab5",
+    "require_completed_gate.py": "248549973e918db22b5b2bf33fb6fe8f410a9b8ed35d17aa15229f787508fd26",
+    "run_api_release.py": "a8a4ed3c241aadd1f95d75e88c41d3a97a258a8fc3878eb462a6065c37289947",
+    "update_api_env.py": "f9377d15650f363d917e2431e3c827b1432ca3dc9f3f95c2dfb4e9b731a2da7c"
+  },
+  "finished_at": "2026-10-25T11:03:21.487331+00:00"
+}

@@ -1,0 +1,13 @@
+{
+  "sessionId": "casepath-20261025-public-acceptance-v1",
+  "pid": 21137,
+  "state": "completed",
+  "exitCode": 0,
+  "output": "{\"stage\": \"soak\", \"status\": \"running\", \"source_commit\": \"a1b59cf5d78662b35790a11cfd2d46851310482d\"}\n{\"stage\": \"soak\", \"exit_code\": 0}\n{\"stage\": \"browser\", \"status\": \"running\", \"source_commit\": \"a1b59cf5d78662b35790a11cfd2d46851310482d\"}\n{\"stage\": \"browser\", \"exit_code\": 0}\n{\"stage\": \"image\", \"status\": \"running\", \"source_commit\": \"a1b59cf5d78662b35790a11cfd2d46851310482d\"}\n{\"stage\": \"image\", \"exit_code\": 0}\n{\"stage\": \"readback\", \"status\": \"running\", \"source_commit\": \"a1b59cf5d78662b35790a11cfd2d46851310482d\"}\n{\"stage\": \"readback\", \"exit_code\": 0}\n{\"stage\": \"verify_readback\", \"status\": \"running\", \"source_commit\": \"a1b59cf5d78662b35790a11cfd2d46851310482d\"}\n{\"stage\": \"verify_readback\", \"exit_code\": 0}\n{\"status\": \"passed\", \"source_commit\": \"a1b59cf5d78662b35790a11cfd2d46851310482d\", \"sequential_soak_reads\": 300, \"desktop_case_views\": 18, \"mobile_case_views\": 9, \"primary_final_readback\": true}\n",
+  "offset": 0,
+  "nextOffset": 902,
+  "totalBytes": 902,
+  "truncated": false,
+  "startedAt": "2026-10-25T11:06:20.145Z",
+  "finishedAt": "2026-10-25T11:15:45.909Z"
+}

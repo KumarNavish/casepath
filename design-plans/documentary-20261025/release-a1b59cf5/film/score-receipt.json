@@ -1,0 +1,544 @@
+{
+  "title": "CasePath \u2014 A clear path",
+  "type": "Original deterministic additive synthesis",
+  "recordings_used": false,
+  "network_used": false,
+  "model_or_provider_calls": false,
+  "timeline_file": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/final-source-capture/timeline.json",
+  "timeline_sha256": "bc887f82b74aac38fcd7d44901f55a8b334abf4a73182347e05c254e3c32d81a",
+  "output_file": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/score-documentary-5da3233a.wav",
+  "output_sha256": "55b5b9583f6c98d46259ec0fd7f11002dd431421d389695a07604a028419920a",
+  "duration_seconds": 98.56666666666666,
+  "sample_rate": 48000,
+  "channels": 2,
+  "pcm_bits": 16,
+  "backend": "stdlib",
+  "peak_target_dbfs": -7.0,
+  "loudness_lufs": null,
+  "loudness_note": "Peak normalized only; measure and master loudness separately.",
+  "editorial_note": "Cues mark presentation acts, not new application operations.",
+  "acts": [
+    {
+      "id": "customer",
+      "start": 0.0,
+      "end": 6.8
+    },
+    {
+      "id": "reading",
+      "start": 6.8,
+      "end": 23.55
+    },
+    {
+      "id": "process",
+      "start": 23.55,
+      "end": 27.1
+    },
+    {
+      "id": "decision",
+      "start": 27.1,
+      "end": 68.45
+    },
+    {
+      "id": "learning",
+      "start": 68.45,
+      "end": 88.05
+    },
+    {
+      "id": "cases",
+      "start": 88.05,
+      "end": 98.55
+    }
+  ],
+  "events": [
+    {
+      "kind": "pad",
+      "start": 0.0,
+      "length": 9.05,
+      "midi": 50,
+      "frequency": 146.8323839587038,
+      "amplitude": 0.0079464,
+      "pan": -0.32,
+      "label": "customer: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 0.0,
+      "length": 9.05,
+      "midi": 57,
+      "frequency": 220.0,
+      "amplitude": 0.00924,
+      "pan": 0.24,
+      "label": "customer: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 0.0,
+      "length": 9.05,
+      "midi": 62,
+      "frequency": 293.6647679174076,
+      "amplitude": 0.00924,
+      "pan": -0.12,
+      "label": "customer: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 0.0,
+      "length": 9.05,
+      "midi": 64,
+      "frequency": 329.6275569128699,
+      "amplitude": 0.00924,
+      "pan": 0.35,
+      "label": "customer: open voicing"
+    },
+    {
+      "kind": "key",
+      "start": 0.9,
+      "length": 6.5,
+      "midi": 62,
+      "frequency": 293.6647679174076,
+      "amplitude": 0.06423999999999999,
+      "pan": -0.18,
+      "label": "customer: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 2.15,
+      "length": 6.5,
+      "midi": 69,
+      "frequency": 440.0,
+      "amplitude": 0.0528,
+      "pan": 0.12,
+      "label": "customer: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 3.65,
+      "length": 6.5,
+      "midi": 76,
+      "frequency": 659.2551138257398,
+      "amplitude": 0.05016,
+      "pan": 0.25,
+      "label": "customer: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 1.05,
+      "length": 7.5,
+      "midi": 50,
+      "frequency": 146.8323839587038,
+      "amplitude": 0.03344,
+      "pan": -0.06,
+      "label": "customer: quiet foundation"
+    },
+    {
+      "kind": "pad",
+      "start": 5.55,
+      "length": 20.25,
+      "midi": 47,
+      "frequency": 123.47082531403103,
+      "amplitude": 0.008271480000000001,
+      "pan": -0.32,
+      "label": "reading: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 5.55,
+      "length": 20.25,
+      "midi": 54,
+      "frequency": 184.9972113558172,
+      "amplitude": 0.009618000000000002,
+      "pan": 0.24,
+      "label": "reading: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 5.55,
+      "length": 20.25,
+      "midi": 57,
+      "frequency": 220.0,
+      "amplitude": 0.009618000000000002,
+      "pan": -0.12,
+      "label": "reading: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 5.55,
+      "length": 20.25,
+      "midi": 62,
+      "frequency": 293.6647679174076,
+      "amplitude": 0.009618000000000002,
+      "pan": 0.35,
+      "label": "reading: open voicing"
+    },
+    {
+      "kind": "key",
+      "start": 7.7,
+      "length": 6.5,
+      "midi": 62,
+      "frequency": 293.6647679174076,
+      "amplitude": 0.066868,
+      "pan": -0.18,
+      "label": "reading: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 8.95,
+      "length": 6.5,
+      "midi": 66,
+      "frequency": 369.9944227116344,
+      "amplitude": 0.05496,
+      "pan": 0.12,
+      "label": "reading: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 10.45,
+      "length": 6.5,
+      "midi": 69,
+      "frequency": 440.0,
+      "amplitude": 0.052212,
+      "pan": 0.25,
+      "label": "reading: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 7.85,
+      "length": 7.5,
+      "midi": 47,
+      "frequency": 123.47082531403103,
+      "amplitude": 0.034808,
+      "pan": -0.06,
+      "label": "reading: quiet foundation"
+    },
+    {
+      "kind": "pad",
+      "start": 22.3,
+      "length": 7.050000000000001,
+      "midi": 43,
+      "frequency": 97.99885899543733,
+      "amplitude": 0.00859656,
+      "pan": -0.32,
+      "label": "process: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 22.3,
+      "length": 7.050000000000001,
+      "midi": 50,
+      "frequency": 146.8323839587038,
+      "amplitude": 0.009996,
+      "pan": 0.24,
+      "label": "process: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 22.3,
+      "length": 7.050000000000001,
+      "midi": 57,
+      "frequency": 220.0,
+      "amplitude": 0.009996,
+      "pan": -0.12,
+      "label": "process: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 22.3,
+      "length": 7.050000000000001,
+      "midi": 59,
+      "frequency": 246.94165062806206,
+      "amplitude": 0.009996,
+      "pan": 0.35,
+      "label": "process: open voicing"
+    },
+    {
+      "kind": "key",
+      "start": 24.45,
+      "length": 6.5,
+      "midi": 62,
+      "frequency": 293.6647679174076,
+      "amplitude": 0.06949599999999999,
+      "pan": -0.18,
+      "label": "process: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 25.7,
+      "length": 6.5,
+      "midi": 69,
+      "frequency": 440.0,
+      "amplitude": 0.05712,
+      "pan": 0.12,
+      "label": "process: chapter motif"
+    },
+    {
+      "kind": "pad",
+      "start": 25.85,
+      "length": 44.85,
+      "midi": 45,
+      "frequency": 110.0,
+      "amplitude": 0.008921640000000002,
+      "pan": -0.32,
+      "label": "decision: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 25.85,
+      "length": 44.85,
+      "midi": 52,
+      "frequency": 164.81377845643496,
+      "amplitude": 0.010374000000000001,
+      "pan": 0.24,
+      "label": "decision: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 25.85,
+      "length": 44.85,
+      "midi": 57,
+      "frequency": 220.0,
+      "amplitude": 0.010374000000000001,
+      "pan": -0.12,
+      "label": "decision: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 25.85,
+      "length": 44.85,
+      "midi": 62,
+      "frequency": 293.6647679174076,
+      "amplitude": 0.010374000000000001,
+      "pan": 0.35,
+      "label": "decision: open voicing"
+    },
+    {
+      "kind": "key",
+      "start": 28.0,
+      "length": 6.5,
+      "midi": 64,
+      "frequency": 329.6275569128699,
+      "amplitude": 0.072124,
+      "pan": -0.18,
+      "label": "decision: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 29.25,
+      "length": 6.5,
+      "midi": 69,
+      "frequency": 440.0,
+      "amplitude": 0.05928,
+      "pan": 0.12,
+      "label": "decision: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 30.75,
+      "length": 6.5,
+      "midi": 74,
+      "frequency": 587.3295358348151,
+      "amplitude": 0.056316,
+      "pan": 0.25,
+      "label": "decision: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 28.150000000000002,
+      "length": 7.5,
+      "midi": 45,
+      "frequency": 110.0,
+      "amplitude": 0.037544,
+      "pan": -0.06,
+      "label": "decision: quiet foundation"
+    },
+    {
+      "kind": "key",
+      "start": 48.602000000000004,
+      "length": 6,
+      "midi": 69,
+      "frequency": 440.0,
+      "amplitude": 0.042483999999999994,
+      "pan": 0.17,
+      "label": "decision: sustained attention"
+    },
+    {
+      "kind": "key",
+      "start": 58.526,
+      "length": 6,
+      "midi": 64,
+      "frequency": 329.6275569128699,
+      "amplitude": 0.037544,
+      "pan": -0.17,
+      "label": "decision: sustained attention"
+    },
+    {
+      "kind": "pad",
+      "start": 67.2,
+      "length": 23.099999999999994,
+      "midi": 43,
+      "frequency": 97.99885899543733,
+      "amplitude": 0.009246720000000002,
+      "pan": -0.32,
+      "label": "learning: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 67.2,
+      "length": 23.099999999999994,
+      "midi": 50,
+      "frequency": 146.8323839587038,
+      "amplitude": 0.010752000000000001,
+      "pan": 0.24,
+      "label": "learning: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 67.2,
+      "length": 23.099999999999994,
+      "midi": 57,
+      "frequency": 220.0,
+      "amplitude": 0.010752000000000001,
+      "pan": -0.12,
+      "label": "learning: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 67.2,
+      "length": 23.099999999999994,
+      "midi": 59,
+      "frequency": 246.94165062806206,
+      "amplitude": 0.010752000000000001,
+      "pan": 0.35,
+      "label": "learning: open voicing"
+    },
+    {
+      "kind": "key",
+      "start": 69.35000000000001,
+      "length": 6.5,
+      "midi": 62,
+      "frequency": 293.6647679174076,
+      "amplitude": 0.074752,
+      "pan": -0.18,
+      "label": "learning: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 70.60000000000001,
+      "length": 6.5,
+      "midi": 67,
+      "frequency": 391.99543598174927,
+      "amplitude": 0.06144,
+      "pan": 0.12,
+      "label": "learning: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 72.10000000000001,
+      "length": 6.5,
+      "midi": 69,
+      "frequency": 440.0,
+      "amplitude": 0.058368,
+      "pan": 0.25,
+      "label": "learning: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 69.5,
+      "length": 7.5,
+      "midi": 43,
+      "frequency": 97.99885899543733,
+      "amplitude": 0.038912,
+      "pan": -0.06,
+      "label": "learning: quiet foundation"
+    },
+    {
+      "kind": "key",
+      "start": 78.642,
+      "length": 6,
+      "midi": 69,
+      "frequency": 440.0,
+      "amplitude": 0.044031999999999995,
+      "pan": 0.17,
+      "label": "learning: sustained attention"
+    },
+    {
+      "kind": "pad",
+      "start": 86.8,
+      "length": 11.766666666666666,
+      "midi": 50,
+      "frequency": 146.8323839587038,
+      "amplitude": 0.0095718,
+      "pan": -0.32,
+      "label": "cases: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 86.8,
+      "length": 11.766666666666666,
+      "midi": 57,
+      "frequency": 220.0,
+      "amplitude": 0.011130000000000001,
+      "pan": 0.24,
+      "label": "cases: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 86.8,
+      "length": 11.766666666666666,
+      "midi": 59,
+      "frequency": 246.94165062806206,
+      "amplitude": 0.011130000000000001,
+      "pan": -0.12,
+      "label": "cases: open voicing"
+    },
+    {
+      "kind": "pad",
+      "start": 86.8,
+      "length": 11.766666666666666,
+      "midi": 64,
+      "frequency": 329.6275569128699,
+      "amplitude": 0.011130000000000001,
+      "pan": 0.35,
+      "label": "cases: open voicing"
+    },
+    {
+      "kind": "key",
+      "start": 88.95,
+      "length": 6.5,
+      "midi": 62,
+      "frequency": 293.6647679174076,
+      "amplitude": 0.07738,
+      "pan": -0.18,
+      "label": "cases: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 90.2,
+      "length": 6.5,
+      "midi": 69,
+      "frequency": 440.0,
+      "amplitude": 0.0636,
+      "pan": 0.12,
+      "label": "cases: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 91.7,
+      "length": 6.5,
+      "midi": 76,
+      "frequency": 659.2551138257398,
+      "amplitude": 0.06042000000000001,
+      "pan": 0.25,
+      "label": "cases: chapter motif"
+    },
+    {
+      "kind": "key",
+      "start": 89.1,
+      "length": 7.5,
+      "midi": 50,
+      "frequency": 146.8323839587038,
+      "amplitude": 0.04028,
+      "pan": -0.06,
+      "label": "cases: quiet foundation"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "contract": "casepath.documentary-encoded-frame-review/1",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "status": "passed",
+  "blocking_findings": [],
+  "reviewer": "/root",
+  "review_type": "Assistant visual inspection of one decoded frame from the final public silent MP4",
+  "extraction": {
+    "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+    "status": "extracted_for_visual_review",
+    "source_video": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/published-film-20261025/CasePath_Cinematic_Demo_Silent.mp4",
+    "source_video_sha256": "1dca59a80b34e4fc7b38cf898c896d4d3a1522b1580bab44e56f8f3a997e0c39",
+    "frame_index": 1285,
+    "time_seconds": 42.833333333333336,
+    "frame": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/encoded-law-frame.png",
+    "frame_sha256": "1c34c89a6796b0ac936daaf749e8a143b9c476d1641d32e02cbba3a0252e6528",
+    "frame_bytes": 288393,
+    "command": [
+      "/Users/kumar0002/.local/bin/ffmpeg",
+      "-v",
+      "error",
+      "-n",
+      "-i",
+      "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/published-film-20261025/CasePath_Cinematic_Demo_Silent.mp4",
+      "-vf",
+      "select=eq(n\\,1285)",
+      "-fps_mode",
+      "vfr",
+      "-frames:v",
+      "1",
+      "-update",
+      "1",
+      "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/encoded-law-frame.png"
+    ],
+    "exit_code": 0,
+    "source_video_unchanged": true
+  },
+  "observations": [
+    "The explanatory headline and article reference are readable in the encoded frame.",
+    "The crimson guide and precise missing-reasons clause remain visible and contained.",
+    "No obvious clipping, missing text or distracting compression defect is visible at this inspected frame."
+  ],
+  "limits": [
+    "One static decoded frame; this is not a full-speed or human review.",
+    "No exact-pixel equivalence with the uncompressed capture is claimed.",
+    "The audio variants preserve the same encoded video packets, as checked separately by their media receipts.",
+    "The inspection PNG is an intermediate; the preserved MP4 and extraction command permit reproduction."
+  ]
+}

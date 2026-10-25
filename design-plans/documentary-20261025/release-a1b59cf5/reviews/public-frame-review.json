@@ -1,0 +1,38 @@
+{
+  "contract": "casepath.documentary-public-static-followup/1",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "status": "passed",
+  "blocking_findings": [],
+  "reviewer": "/root/cold_viewer",
+  "reviewed_date": "2026-10-25",
+  "capture_directory": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/published-film-20261025",
+  "reviewed_files": [
+    {
+      "file": "contact-sheet.png",
+      "sha256": "ff5e1605a1e4a967236d1d68956882451691845b1b5d14e20b65e3ac4de799d3"
+    },
+    {
+      "file": "contact/frame-11.png",
+      "sha256": "fac9343f2ad7e84caf490a078ef6d8bb824862214a407d64c8ada337e7e4679e"
+    },
+    {
+      "file": "contact/frame-16.png",
+      "sha256": "d794115aaddac29da52361a219c876e262652cfccb0534ec24d6af0dd0b5b35a"
+    },
+    {
+      "file": "contact/frame-18.png",
+      "sha256": "777d21c4847e9872ec4d5dfec6f47cd6d3fe47a899ad78c7645d70818e35e138"
+    }
+  ],
+  "findings": [
+    "The 24-frame contact sheet preserves a coherent sequence from customer documents through evidence and legal assessment to human review and checklist reuse.",
+    "The law scene emphasizes the specific missing-reasons provision with its explanatory heading and legal context intact.",
+    "The draft scene keeps the assessment, unresolved questions, human-review requirement and Nothing is sent message readable.",
+    "The reuse scene explicitly distinguishes reuse of the checklist from checking the new case evidence; the emphasized item remains readable and contained."
+  ],
+  "limits": [
+    "Static public follow-up using the contact sheet and three full-size frames",
+    "Not a new blind review, full-speed playback assessment, exact-pixel comparison, human approval or subjective audio review",
+    "Reviewer performed no process or file-write operations"
+  ]
+}

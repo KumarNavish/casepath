@@ -1,0 +1,139 @@
+{
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "status": "passed",
+  "started_at": "2026-10-25T11:06:21.638015+00:00",
+  "stages": [
+    {
+      "name": "soak",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published_soak.py",
+        "--source",
+        "a1b59cf5d78662b35790a11cfd2d46851310482d",
+        "--baseline",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/readback-before.json",
+        "--out",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-soak-a1b59cf5"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-25T11:06:21.643854+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-soak-command.log",
+      "pid": 21155,
+      "exit_code": 0,
+      "finished_at": "2026-10-25T11:09:48.846295+00:00",
+      "log_sha256": "40fd9bc4a790b55840406981c68e04ca37989beedd9b2bbdca0aeb743f589e3e",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-soak-a1b59cf5/summary.json",
+          "sha256": "790146ff2c0276ded01ac83177f2f8136e1717e5eb378e8f2626844e81885334"
+        },
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-soak-a1b59cf5/receipts.jsonl",
+          "sha256": "c54a91febd7e70e80f364d01ce9b7fb4ef87510d489a6eb79054fd99d7b93a7e"
+        }
+      ]
+    },
+    {
+      "name": "browser",
+      "command": [
+        "/usr/local/bin/node",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/verify_published.mjs",
+        "a1b59cf5d78662b35790a11cfd2d46851310482d",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-browser-a1b59cf5"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-25T11:09:48.870207+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-browser-command.log",
+      "pid": 22273,
+      "exit_code": 0,
+      "finished_at": "2026-10-25T11:15:38.172806+00:00",
+      "log_sha256": "18c813370a18fdf97ed4d6df4782d35641e7192d3f5206730d042e11b525be79",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-browser-a1b59cf5/summary.json",
+          "sha256": "f88557ec759a4f8f99b2a1ab220e5900260751372caf14815cf5b3a705b31671"
+        },
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-browser-a1b59cf5/published-verification.json",
+          "sha256": "a30b93b91c7cfc162cb75ff598dd07664e198f7eab663c591b52a9f0a8b249be"
+        }
+      ]
+    },
+    {
+      "name": "image",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/verify_public_image.py",
+        "a1b59cf5d78662b35790a11cfd2d46851310482d"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-25T11:15:38.198028+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-image-command.log",
+      "pid": 24657,
+      "exit_code": 0,
+      "finished_at": "2026-10-25T11:15:42.624425+00:00",
+      "log_sha256": "87aa375a749a447cf0a1cba0b2fae8dc5374452000aba6a7efdfde9ef7dbd4f5",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/public-image-verified.json",
+          "sha256": "2987624b731fb85c897f572cd1e77ae52c07695661a87b15241d00920cc264ed"
+        }
+      ]
+    },
+    {
+      "name": "readback",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/readback.py",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/readback-after.json",
+        "--require-primary"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-25T11:15:42.649904+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-readback-command.log",
+      "pid": 24686,
+      "exit_code": 0,
+      "finished_at": "2026-10-25T11:15:45.736182+00:00",
+      "log_sha256": "a0a4028e7a6352c642e1f7b4c29c62ff3ca828f1f2670a7f43115e1a64bb15d5",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/readback-after.json",
+          "sha256": "1faef4db3128fed254147b9920d2ced280f0f9364cb03eb6ba640a1aa93bea5e"
+        }
+      ]
+    },
+    {
+      "name": "verify_readback",
+      "command": [
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/casepath-dev-v2/venv/bin/python",
+        "-B",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/verify_readback.py",
+        "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release",
+        "a1b59cf5d78662b35790a11cfd2d46851310482d"
+      ],
+      "status": "completed",
+      "started_at": "2026-10-25T11:15:45.771861+00:00",
+      "log": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/published-verify_readback-command.log",
+      "pid": 24702,
+      "exit_code": 0,
+      "finished_at": "2026-10-25T11:15:45.855035+00:00",
+      "log_sha256": "9f1f552e3a12fcdd35d07f0e75c8ce71d52e27ecb40f995912ad4ce9d280fd7a",
+      "artifacts": [
+        {
+          "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/documentary-release-20261025/release/readback-verified.json",
+          "sha256": "0a0e78227ec88af3e28085389437f58fb8099c7fe97b37ed0858477a26d05003"
+        }
+      ]
+    }
+  ],
+  "script_sha256": "4f38750dc92775f4c79f206ec1ddfaa4d68df22754402caea66a1d37d518d1ac",
+  "helper_binding_sha256": "543e16b41a7bc66735af06171b430b45cef3677fe69cda057d50b1652d94da5b",
+  "site_version_id": "appgprj_6ac8aab031988191b5c370f7a4dbf160~appgver_5b57b73c1928819189cb7c5cf268f338",
+  "site_version_number": 52,
+  "distribution_commit": "08b66bdde2f6d1f35c948b24828996e86762c36d",
+  "site_deployment_id": "appgdep_6adde23aa5048191abc8c8bfce3de06f",
+  "finished_at": "2026-10-25T11:15:45.885529+00:00"
+}

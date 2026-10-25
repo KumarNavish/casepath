@@ -1,0 +1,28 @@
+{
+  "acceptance_runner_sha256": "4f38750dc92775f4c79f206ec1ddfaa4d68df22754402caea66a1d37d518d1ac",
+  "actual_gate_validator_sha256": "bb53d1c55cde19624e4f3867dddff9dbae9fcc6dfdfd51b3afc14c76845d07e1",
+  "adaptation_sha256": "1bf947f7b82c6ba4ed6b212db67d324932b9da00bfab07b1a415b6188eb20c09",
+  "helper_review_input": null,
+  "helpers": {
+    "await_api.py": "965bb72be039226afc80bcee3c743d90ee058a80416248f5ebe6698323d6266b",
+    "copy_sites_inputs.py": "0c0aacd964c3b3ee9c13ec06660993cb502f12eac50875b6bb5e9e9c80bd074b",
+    "deploy_api.py": "4d820f796a0848b2d06ffdbe571a5ad2609479c5c4e741f9b943ab257cf99ae4",
+    "integrate_canonical.py": "e36442ccdc8da07fc68bdb7a490b04796b17ab6eaefb3d711ee45455e2459839",
+    "prepare_public_archive_transfer_v2.py": "ae0d852d0a5f2785844f33ad54e05586c5ab11546558583bfe39098147b95917",
+    "presentation-expectation.json": "ab4f51885fc7de93d6a2ef5e79b8436e69ab5c1aabd0c5728e7e5ff9a564e32a",
+    "published_soak.py": "46a5ba66f2b0dfc39833d9c90907e9603ae6a00ff95699ca56f1d7ad4f2c8c67",
+    "readback.py": "d0f78aaf81347d7385106f8f2fef018220e70599222d28df6193a13c411e2806",
+    "renew_seed.py": "169e5ccbca842c23474f901c3c1794b17fde0ef765d299022d300c17cd92bab5",
+    "require_completed_gate.py": "248549973e918db22b5b2bf33fb6fe8f410a9b8ed35d17aa15229f787508fd26",
+    "run_api_release.py": "a8a4ed3c241aadd1f95d75e88c41d3a97a258a8fc3878eb462a6065c37289947",
+    "run_sites_workflow_finite.py": "a34f60111ed696469ca9917add2d5c8cdc9b8d8f69cfdc16fec1654ec0a99aa0",
+    "update_api_env.py": "f9377d15650f363d917e2431e3c827b1432ca3dc9f3f95c2dfb4e9b731a2da7c",
+    "verify_api_build_v2.py": "feadbb921e04878b57d58b034571415363cb0cbeb467a26de523a58aa1494fbc",
+    "verify_public_image.py": "ebeea25ec13f1ce4618dd84570316551e9374e784909eec411659d78af4da4a7",
+    "verify_published.mjs": "a8dd2959e66c5ef5b671ea8103f330bdcb19464ac1dff2ea09c6042002f02f11",
+    "verify_readback.py": "a14c1baf04e23bc74ecf918a188bd4e8e0498b01e484fe988af5f9642c781923",
+    "verify_supplement.mjs": "29647d0a1b4554abeb3039fcf9b06ad61ee440c6c51f32fa8548358722044ec7"
+  },
+  "scope": "Actual helper hashes and fresh local timing expectation only; no public success claimed.",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d"
+}

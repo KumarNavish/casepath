@@ -1,0 +1,453 @@
+{
+  "contract": "casepath.documentary-preview-pixel-comparison/1",
+  "scope": "Investigation after PNG byte-identity check failed; actual decoded RGB comparisons, not a subjective visual approval.",
+  "previous_preview_receipt_sha256": "b44094065c6f7d163be368414532a8cbb6dd52ae5ba63d267e208b4193b87943",
+  "final_preview_receipt_sha256": "de6c1a78ee57ece962f324d63911427016326b53d502144af2b20797aeb2288e",
+  "frames": [
+    {
+      "file": "contact/frame-01.png",
+      "old_sha256": "dc47147294e9a2aeabcbac84561591f3a50c93920cdc81188318901e92aff107",
+      "new_sha256": "dc47147294e9a2aeabcbac84561591f3a50c93920cdc81188318901e92aff107",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-02.png",
+      "old_sha256": "bcc5255c13d547b124f2c1501149ce747c190dcb4c68fc5511792cdb7758d36f",
+      "new_sha256": "bcc5255c13d547b124f2c1501149ce747c190dcb4c68fc5511792cdb7758d36f",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-03.png",
+      "old_sha256": "ad719421227835aa58e293a7c5ab89a34f50945810145230c37c1e2b495deee6",
+      "new_sha256": "ad719421227835aa58e293a7c5ab89a34f50945810145230c37c1e2b495deee6",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-04.png",
+      "old_sha256": "30eaa0c6ed7ba1c71df4e19256442783939f9483febd4676bd04a8e23ff1e115",
+      "new_sha256": "9b13f71ac0735243cca652b6a87c8aeebb9c3e2c790a9f66c18e34a76efce9eb",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 770,
+      "total_pixels": 2073600,
+      "bounds": [
+        402,
+        242,
+        1448,
+        754
+      ],
+      "maximum_channel_difference": 5,
+      "mean_channel_difference": [
+        0.0003462577160493827,
+        0.0001654128086419753,
+        0.00014756944444444445
+      ]
+    },
+    {
+      "file": "contact/frame-05.png",
+      "old_sha256": "8bd7506c53e88bf0f444c449b2474effe256e93a1e3d958280dd7dd56bdc1958",
+      "new_sha256": "16b8e2c36693ffd8e45c667dfd2bd96cdc139cfad3b37c263658ca2e3d98d6bb",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 400,
+      "total_pixels": 2073600,
+      "bounds": [
+        358,
+        192,
+        1448,
+        1021
+      ],
+      "maximum_channel_difference": 5,
+      "mean_channel_difference": [
+        0.00019241898148148148,
+        0.00032118055555555556,
+        0.00019386574074074073
+      ]
+    },
+    {
+      "file": "contact/frame-06.png",
+      "old_sha256": "caff6c86c0c7655a0296a5949b6fdf183eb573975ebb14c3f2556f002795fbcd",
+      "new_sha256": "6cf3dfaf58fed021cb30e01e8fb25bd7991a859a70a783d7ef3c348006ecb4dd",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 45,
+      "total_pixels": 2073600,
+      "bounds": [
+        1139,
+        654,
+        1142,
+        678
+      ],
+      "maximum_channel_difference": 1,
+      "mean_channel_difference": [
+        1.0609567901234568e-05,
+        1.0609567901234568e-05,
+        2.0736882716049384e-05
+      ]
+    },
+    {
+      "file": "contact/frame-07.png",
+      "old_sha256": "91d9f6150df4a2c111228112177f17af1ea1a15f93c9de98159278ba22bb072d",
+      "new_sha256": "91d9f6150df4a2c111228112177f17af1ea1a15f93c9de98159278ba22bb072d",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-08.png",
+      "old_sha256": "9ffa63459034b99acd855f0ef324b8e6a2a14f288da22ff0727aef7d8e8d8ffd",
+      "new_sha256": "9ffa63459034b99acd855f0ef324b8e6a2a14f288da22ff0727aef7d8e8d8ffd",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-09.png",
+      "old_sha256": "d16ccb25e3a446c23c83eb12b337ada0a8023e3d26edbac02b91f798c503967f",
+      "new_sha256": "d16ccb25e3a446c23c83eb12b337ada0a8023e3d26edbac02b91f798c503967f",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-10.png",
+      "old_sha256": "4738630e07e5496b1598e569360600eb5581af936749260157118405c2931744",
+      "new_sha256": "1285f96d5040514a9816595f866190c08ad515cc5cc377fa8188b811eb2141e2",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 2,
+      "total_pixels": 2073600,
+      "bounds": [
+        580,
+        686,
+        1661,
+        845
+      ],
+      "maximum_channel_difference": 1,
+      "mean_channel_difference": [
+        4.822530864197531e-07,
+        4.822530864197531e-07,
+        4.822530864197531e-07
+      ]
+    },
+    {
+      "file": "contact/frame-11.png",
+      "old_sha256": "fac9343f2ad7e84caf490a078ef6d8bb824862214a407d64c8ada337e7e4679e",
+      "new_sha256": "fac9343f2ad7e84caf490a078ef6d8bb824862214a407d64c8ada337e7e4679e",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-12.png",
+      "old_sha256": "c5c781c12c89a93d31257799e58e88986b1255757f1f390c662ebb421c911740",
+      "new_sha256": "b0ad6a0319fea7954da6ae84090678beda315f63bd667cdb66de2feba0c2aded",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 449,
+      "total_pixels": 2073600,
+      "bounds": [
+        568,
+        414,
+        1661,
+        838
+      ],
+      "maximum_channel_difference": 23,
+      "mean_channel_difference": [
+        0.0002314814814814815,
+        0.00019917052469135802,
+        0.0001996527777777778
+      ]
+    },
+    {
+      "file": "contact/frame-13.png",
+      "old_sha256": "b078b3ed0f9ddabe3717ec9881ccfa4661e1cd6752a0e3b1d408eafea3e4de4b",
+      "new_sha256": "fbeee6b7018cfb1d8e0eba18ce4ff3833028ec1a3777fa4550a084a952be2d26",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 1,
+      "total_pixels": 2073600,
+      "bounds": [
+        1001,
+        1039,
+        1002,
+        1040
+      ],
+      "maximum_channel_difference": 1,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        4.822530864197531e-07
+      ]
+    },
+    {
+      "file": "contact/frame-14.png",
+      "old_sha256": "7400ee3cb68ec38379425ea8eb2ccb84f78da97890f18af8be70bbd584b4bdac",
+      "new_sha256": "c3bd52bf87f0866adf4b664d68fdeb4d9bdf81f77eeff9aa42db87e5e3aaa67c",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 31,
+      "total_pixels": 2073600,
+      "bounds": [
+        1120,
+        415,
+        1121,
+        663
+      ],
+      "maximum_channel_difference": 1,
+      "mean_channel_difference": [
+        0.0,
+        2.4112654320987654e-06,
+        1.253858024691358e-05
+      ]
+    },
+    {
+      "file": "contact/frame-15.png",
+      "old_sha256": "705ce5b141b1871b766199bbb57eed4d6af631b884ed823032554ffa6691a93b",
+      "new_sha256": "eecb9ebb9d7792cdc2267fcea239e34cef47e059c69958cbd993a69e1f4bb1c2",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 384,
+      "total_pixels": 2073600,
+      "bounds": [
+        831,
+        351,
+        1121,
+        1040
+      ],
+      "maximum_channel_difference": 1,
+      "mean_channel_difference": [
+        0.0,
+        0.0001615547839506173,
+        6.076388888888889e-05
+      ]
+    },
+    {
+      "file": "contact/frame-16.png",
+      "old_sha256": "d794115aaddac29da52361a219c876e262652cfccb0534ec24d6af0dd0b5b35a",
+      "new_sha256": "4ae8b75680c5738ad2d02a73700ad5648cb3f7d84d3d3659efef6907b00a65cd",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 32,
+      "total_pixels": 2073600,
+      "bounds": [
+        568,
+        383,
+        569,
+        415
+      ],
+      "maximum_channel_difference": 1,
+      "mean_channel_difference": [
+        1.54320987654321e-05,
+        1.54320987654321e-05,
+        1.54320987654321e-05
+      ]
+    },
+    {
+      "file": "contact/frame-17.png",
+      "old_sha256": "415aae73b63afbc35c422dfe39ce7d608f2ddb59b379edbb39c6075c8d919517",
+      "new_sha256": "415aae73b63afbc35c422dfe39ce7d608f2ddb59b379edbb39c6075c8d919517",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-18.png",
+      "old_sha256": "777d21c4847e9872ec4d5dfec6f47cd6d3fe47a899ad78c7645d70818e35e138",
+      "new_sha256": "777d21c4847e9872ec4d5dfec6f47cd6d3fe47a899ad78c7645d70818e35e138",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-19.png",
+      "old_sha256": "191f8bae0a1fcef2475ee380d6059c86f23ef5641ea828d9503d3beb548ed546",
+      "new_sha256": "191f8bae0a1fcef2475ee380d6059c86f23ef5641ea828d9503d3beb548ed546",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-20.png",
+      "old_sha256": "eb6066547220ac943f464fa3e3dc12acb203235772599a3cfecbdb576bd6ec05",
+      "new_sha256": "d99df47d2a58a15499c3ab0366f2d99e31b62036af250d481f336d8e61db1a38",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 5275,
+      "total_pixels": 2073600,
+      "bounds": [
+        24,
+        319,
+        1889,
+        1040
+      ],
+      "maximum_channel_difference": 24,
+      "mean_channel_difference": [
+        0.006420235339506173,
+        0.005737847222222222,
+        0.006495949074074074
+      ]
+    },
+    {
+      "file": "contact/frame-21.png",
+      "old_sha256": "683cb73de53faa5ae4c835d8b8e1bf08f6cb897664f5f584ba1a305575bd8947",
+      "new_sha256": "5b678915087513bd8f7998d394f6069476293d2fe3c8edcf4f574525869841de",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 1773,
+      "total_pixels": 2073600,
+      "bounds": [
+        24,
+        291,
+        1661,
+        1040
+      ],
+      "maximum_channel_difference": 3,
+      "mean_channel_difference": [
+        0.0006433256172839507,
+        0.0010421489197530863,
+        0.000859375
+      ]
+    },
+    {
+      "file": "contact/frame-22.png",
+      "old_sha256": "df5db5b3897cc01abaeae0202946399c0290652678a7e17b3bf953dfbaf8ea77",
+      "new_sha256": "df5db5b3897cc01abaeae0202946399c0290652678a7e17b3bf953dfbaf8ea77",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "file": "contact/frame-23.png",
+      "old_sha256": "ef170c702a3f7dcf672dae5e66db41d29d81a43e2450a5d4fb9075017d0f3890",
+      "new_sha256": "97f267dfef819cedb5591a5d04fe233658110c6439044a62798bd0c21ecf56e7",
+      "png_bytes_identical": false,
+      "pixels_identical": false,
+      "changed_pixels": 8,
+      "total_pixels": 2073600,
+      "bounds": [
+        1661,
+        1039,
+        1669,
+        1040
+      ],
+      "maximum_channel_difference": 1,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        3.858024691358025e-06
+      ]
+    },
+    {
+      "file": "contact/frame-24.png",
+      "old_sha256": "1e5f08e935349b897c9e4f1d2bb1141012f8be0662397f7a90d9a42a26f62fda",
+      "new_sha256": "1e5f08e935349b897c9e4f1d2bb1141012f8be0662397f7a90d9a42a26f62fda",
+      "png_bytes_identical": true,
+      "pixels_identical": true,
+      "changed_pixels": 0,
+      "total_pixels": 2073600,
+      "bounds": null,
+      "maximum_channel_difference": 0,
+      "mean_channel_difference": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "all_24_pixels_identical": false
+}

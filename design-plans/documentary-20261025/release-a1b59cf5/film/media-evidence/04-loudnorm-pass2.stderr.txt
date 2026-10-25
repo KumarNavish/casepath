@@ -1,0 +1,34 @@
+[aist#0:0/pcm_s16le @ 0x139608bf0] Guessed Channel Layout: stereo
+Input #0, wav, from '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/score-documentary-5da3233a.wav':
+  Duration: 00:01:38.57, bitrate: 1536 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 48000 Hz, stereo, s16, 1536 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (pcm_s16le (native) -> pcm_s24le (native))
+Output #0, wav, to '/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/cinema-evidence/audio-20261025/CasePath_Documentary_Music-media-evidence/score-master-48k.wav':
+  Metadata:
+    ISFT            : Lavf63.1.102
+  Stream #0:0: Audio: pcm_s24le ([1][0][0][0] / 0x0001), 48000 Hz, stereo, s32 (24 bit), 2304 kb/s
+    Metadata:
+      encoder         : Lavc63.1.102 pcm_s24le
+size=    3328KiB time=00:00:12.69 bitrate=2146.7kbits/s speed=25.2x elapsed=0:00:00.50    
+size=    7424KiB time=00:00:26.59 bitrate=2286.4kbits/s speed=26.3x elapsed=0:00:01.00    
+size=   11008KiB time=00:00:39.49 bitrate=2283.0kbits/s speed=26.1x elapsed=0:00:01.51    
+size=   14848KiB time=00:00:53.19 bitrate=2286.4kbits/s speed=26.4x elapsed=0:00:02.01    
+size=   18688KiB time=00:01:06.89 bitrate=2288.4kbits/s speed=26.5x elapsed=0:00:02.52    
+size=   22528KiB time=00:01:20.89 bitrate=2281.2kbits/s speed=26.7x elapsed=0:00:03.02    
+size=   25856KiB time=00:01:32.79 bitrate=2282.5kbits/s speed=26.3x elapsed=0:00:03.52    
+[Parsed_loudnorm_3 @ 0x6000028d42c0] 
+{
+	"input_i" : "-21.93",
+	"input_tp" : "-7.00",
+	"input_lra" : "11.20",
+	"input_thresh" : "-32.09",
+	"output_i" : "-20.00",
+	"output_tp" : "-4.23",
+	"output_lra" : "9.80",
+	"output_thresh" : "-30.09",
+	"normalization_type" : "dynamic",
+	"target_offset" : "-0.00"
+}
+[out#0/wav @ 0x600002ad09c0] video:0KiB audio:27722KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.000359%
+size=   27722KiB time=00:01:38.60 bitrate=2303.2kbits/s speed=26.7x elapsed=0:00:03.69    

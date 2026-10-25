@@ -1,0 +1,29 @@
+{
+  "contract": "casepath.documentary-release-helper-review/1",
+  "reviewer": "independent assistant /root/cold_viewer",
+  "status": "passed",
+  "blocking_findings": [],
+  "scope": "Read-only review of all 17 original and candidate helpers, exact declared substitutions, 34 independently observed source/target hashes, the root gate guard and preparation/runtime binder.",
+  "findings": "Exact identity and namespace substitutions only. All previous gate, privacy, clean-source, no-repeat, completed-terminal, public-read-only and package checks preserved.",
+  "original_review": {
+    "helper_count": 17,
+    "exact_text_matches": 17,
+    "source_and_target_hashes_verified": 34,
+    "source_helpers_only": true
+  },
+  "reviewed_sha256": {
+    "release/release-helper-adaptation.json": "e7a4e52009058cedaa5074b557558f87834cd4ee87e651fc02cf82debec65abc",
+    "release/release-helper-changes.diff": "e852229d349a47e1281844378a968ea454a5ceb56c624cdc3081513a4a05a71c",
+    "prepare_documentary_runtime.py": "85de34b4aa63a4803578da6a81559e3c94ad2cdb9b54c2f60bc8ea12c02b7c16",
+    "bind_documentary_runtime.py": "3b51f1aac7a74b1ee3fce2c8cc299db624a590213dd96d7cb89909237e9f82e5",
+    "require_completed_gate.py": "bb53d1c55cde19624e4f3867dddff9dbae9fcc6dfdfd51b3afc14c76845d07e1"
+  },
+  "followup_closed": [
+    "Preparation now checks the exact release-helper key set and declared path/name/source/target hash fields against computed values.",
+    "Runtime binder now checks the exact release adaptation path and bound digest."
+  ],
+  "limitations": [
+    "Source review only; no helper execution, source test gate, live deployment identity or publication success claimed.",
+    "Historical 7b0 proof remains an inventory/skip reference only, never a substitute for the fresh gate."
+  ]
+}
