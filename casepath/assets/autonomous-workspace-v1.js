@@ -5544,6 +5544,30 @@
             if(record===main)answer.querySelector(':scope > .au-desk-tests').insertAdjacentHTML('beforebegin',`<p class="au-executive-test-context"><strong>${model.desk.nodes.length} process steps · ${rows.length} legal tests</strong><br>Numbers link each legal test to its process step.</p>`);
           }
         }
+        if(viewName==='law'){
+          const article=all('.au-ns-law-source article').find(element=>element.querySelector('h3')?.textContent.trim()==='Article 269d');
+          const pre=article?.querySelector('pre'),text=pre?.textContent;
+          const focus=P.documentaryRuleFocus(text,{...guideContext,article:'269d'});
+          if(focus){
+            // Wrap the existing text nodes so the source's paragraph spacing,
+            // empty layout spans and exact citation text all remain intact.
+            const walker=doc.createTreeWalker(pre,root.NodeFilter.SHOW_TEXT);
+            let node,offset=0,start=null,end=null;
+            while((node=walker.nextNode())){
+              const next=offset+node.textContent.length;
+              if(!start&&focus.start>=offset&&focus.start<next)start={node,offset:focus.start-offset};
+              if(focus.end>offset&&focus.end<=next){end={node,offset:focus.end-offset};break;}
+              offset=next;
+            }
+            if(start&&end){
+              const range=doc.createRange(),mark=doc.createElement('mark');
+              range.setStart(start.node,start.offset);range.setEnd(end.node,end.offset);
+              mark.setAttribute('data-au-guide-law','');mark.dataset.auRuleArticle=focus.article;mark.dataset.auRuleParagraph=focus.paragraph;
+              mark.appendChild(range.extractContents());range.insertNode(mark);
+            }
+            if(pre.textContent!==text)throw new Error('The documentary must preserve the exact recorded law text.');
+          }
+        }
         if(viewName==='answer'&&['answer','answer-rest'].includes(phase)){
           const pane=select('.au-ns-view-content');if(pane)pane.scrollTop=0;
         }
@@ -5568,10 +5592,12 @@
       // Narration and its single focal target share the recorded presentation
       // clock. The guide lives outside the replaceable scene and its clones.
       const guideContext={firstCompletionId:completed[0]?.id,firstFactId:firstFact.id,decisivePredicate:failedIds.has(firstFact.object.id)?firstFact.object.id:null};
+      guideContext.decisiveRule=Boolean(P.documentaryRuleFocus(legalAuthorityRows(main.state).find(row=>row.article==='269d')?.text,{...guideContext,article:'269d'}));
+      guideContext.assessmentSupportsInvalidity=guideContext.decisiveRule&&main.state.outcome?.assessment_scope==='rent_increase_reasons_nullity_assessment'&&String(main.state.outcome?.summary||'').includes('supporting invalidity under CO 269d(2)(b)');
       const guideWindows=[];
       for(const beat of story.beats){
         const starts=[beat.start];
-        if(beat.phase==='answer-rest'&&beat.act==='decision'&&beat.duration>3000)starts.push(beat.start+3000);
+        if(['answer-rest','draft-rest'].includes(beat.phase)&&beat.act==='decision'&&beat.duration>3000)starts.push(beat.start+3000);
         for(let i=0;i<starts.length;i++){
           const start=starts[i],end=starts[i+1]??beat.end,cue=P.documentaryCue(beat,start-beat.start,guideContext),previous=guideWindows.at(-1);
           if(previous?.id===cue.id&&previous.target===cue.target&&previous.targetId===cue.targetId&&previous.part===cue.part&&previous.spotlight===cue.spotlight)previous.end=end;
@@ -5592,11 +5618,12 @@
           case 'fact':return byId('[data-au-ns-fact]','data-au-ns-fact',cue.targetId||firstFact.id)||frameNodes.fact||all('[data-au-ns-fact]').at(-1);
           case 'chain':return cue.column||cue.targetId||beat.column?byId('[data-au-ns-chain]','data-au-ns-chain',cue.column||cue.targetId||beat.column):select('[data-au-ns-chain-strip]');
           case 'verified':return all('[data-au-ns-verified]').find(element=>{const pin=JSON.parse(element.dataset.auCitation);return pin.artifact_id===firstFact.source.artifact_id&&pin.quote===firstFact.source.quote;})||select('[data-au-ns-verified]');
-          case 'law':return select('.au-ns-law-source article');
+          case 'law':return select('[data-au-guide-law]')||select('.au-ns-law-source article');
           case 'documents':return select('[data-au-ns-documents]');
           case 'predicate':return byId('[data-au-desk-answer] > .au-desk-tests > li','data-au-desk-predicate',cue.targetId||beat.predicate);
           case 'lead':return select('.au-desk-lead');
           case 'open':return select('.au-desk-open');
+          case 'draft-body':return select('[data-au-recorded-draft]');
           case 'draft':return select('[data-au-draft-status]');
           case 'memory-source':return select('.au-ns-memory-source blockquote')||select('.au-ns-memory-source');
           case 'memory-item':return (beat.nextPhase||beat.phase)==='memory-transfer'&&frameNodes.transfers?.[0]?.clone||item;

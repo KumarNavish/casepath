@@ -2341,3 +2341,7 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
  html[data-casepath-presentation] .au-ns-current-number { position:relative; color:#82072a; font:600 15px/1 Mulish,sans-serif; }
  html[data-casepath-presentation] .au-ns-spine [data-state=building] .au-ns-node-label { color:#82072a; }
 }
+
+/* Documentary emphasis decorates exact source bytes; it never rewrites them. */
+html[data-casepath-presentation] .au-workspace [data-au-guide-law] { background:#f6eff0; color:inherit; border-radius:2px; padding:0; }
+html[data-casepath-presentation] .au-workspace [data-au-recorded-draft] pre { font:400 17px/1.65 Mulish,sans-serif; }

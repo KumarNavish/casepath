@@ -61,6 +61,37 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   await page.emulateMedia({reducedMotion:'reduce'});
   const reducedRing=await page.evaluate(at=>{const a=CasepathPresentation.active;a.advanceTo(at);const before=document.querySelector('.au-ns-building-ring').style.transform;a.advanceTo(at+300);return [before,document.querySelector('.au-ns-building-ring').style.transform];},documentary.at);
   assert.deepEqual(reducedRing,['rotate(0deg)','rotate(0deg)']);await page.emulateMedia({reducedMotion:'no-preference'});
+  const teachingState=recorded.cases[7].envelope.state;
+  const teachingLaw=teachingState.semantic_contexts[teachingState.run_id].rule_packs.find(pack=>pack.family===teachingState.graph.family).legal_authority.find(row=>row.article==='269d').text;
+  const teaching=await page.evaluate(({lawText,draftBody})=>{
+   const a=CasepathPresentation.active,m=a.manifest,failures=[];
+   const inside=(box,outer)=>box.width>4&&box.height>4&&box.left>=outer.left-1&&box.right<=outer.right+1&&box.top>=outer.top-1&&box.bottom<=outer.bottom+1;
+   const guide=()=>document.querySelector('.au-documentary-guide'),focus=()=>guide().querySelector('.au-doc-focus').getBoundingClientRect();
+   const lawBeat=m.beats.find(b=>b.phase==='law-rest'),lawAt=lawBeat.end-1;
+   const lawSnapshot=()=>{const mark=document.querySelector('[data-au-guide-law]'),pre=mark?.closest('pre');return JSON.stringify({text:pre?.textContent,html:pre?.innerHTML,target:guide().dataset.auGuideTarget,box:guide().querySelector('.au-doc-focus').style.cssText});};
+   a.advanceTo(lawAt);
+   const mark=document.querySelector('[data-au-guide-law]'),pre=mark?.closest('pre');
+   if(!mark||document.querySelectorAll('[data-au-guide-law]').length!==1)failures.push('law clause not uniquely marked');
+   if(pre?.textContent!==lawText)failures.push('law source text changed');
+   if(mark?.textContent!=='b.sie nicht begründet;'||mark?.dataset.auRuleArticle!=='269d'||mark?.dataset.auRuleParagraph!=='2(b)')failures.push('wrong exact law clause or identity');
+   if(!pre||pre.querySelectorAll('.au-ns-text-break').length<4)failures.push('recorded law paragraph layout lost');
+   if(!mark||!inside(mark.getBoundingClientRect(),focus())||guide().dataset.auGuideTarget!=='law'||guide().dataset.auGuideVisible!=='true')failures.push('exact law clause is not visibly focused');
+   const directLaw=lawSnapshot();
+   const draftBeat=m.beats.find(b=>b.act==='decision'&&b.phase==='draft-rest');
+   a.advanceTo(draftBeat.start+1500);
+   const draft=document.querySelector('[data-au-recorded-draft]'),body=draft?.querySelector('pre'),bodyBox=focus(),bodyHeadline=guide().querySelector('[data-au-guide-headline]').textContent;
+   if(body?.textContent!==draftBody)failures.push('recorded draft text changed');
+   if(guide().dataset.auGuideTarget!=='draft-body'||guide().dataset.auGuideVisible!=='true'||!draft||!inside(draft.getBoundingClientRect(),bodyBox))failures.push('draft artifact is not focused before review boundary');
+   if(body&&!getComputedStyle(body).fontFamily.includes('Mulish'))failures.push('draft typography is not presentation font');
+   a.advanceTo(draftBeat.start+4500);
+   const status=document.querySelector('[data-au-draft-status]');
+   if(guide().dataset.auGuideTarget!=='draft'||guide().dataset.auGuideVisible!=='true'||!status||!inside(status.getBoundingClientRect(),focus()))failures.push('draft focus does not hand off to human review');
+   if(guide().querySelector('[data-au-guide-headline]').textContent!==bodyHeadline)failures.push('draft caption changes during target handoff');
+   if(document.querySelector('[data-au-recorded-draft] pre')?.textContent!==draftBody)failures.push('draft text changed at review boundary');
+   a.advanceTo(m.duration-1);a.advanceTo(lawAt);if(lawSnapshot()!==directLaw)failures.push('law source or focus changes after backward seek');
+   return {failures,duration:m.duration};
+  },{lawText:teachingLaw,draftBody:teachingState.outcome.request_draft.body});
+  assert.deepEqual(teaching.failures,[]);assert.equal(teaching.duration,98550);
   const controls=await page.evaluate(()=>{const a=CasepathPresentation.active,footer=document.querySelector('.au-executive-transport'),button=footer.querySelector('[data-au-demo-stop]');const mutations=[];const observer=new MutationObserver(rows=>mutations.push(...rows));observer.observe(footer,{childList:true,subtree:true,attributes:true});for(const beat of a.manifest.beats)a.advanceTo(beat.start);const pending=observer.takeRecords();observer.disconnect();return {connected:footer.isConnected,sameButton:button===document.querySelector('.au-executive-transport [data-au-demo-stop]'),labelChanges:[...mutations,...pending].filter(row=>row.target===button).length};});
   assert.equal(controls.connected,true);assert.equal(controls.sameButton,true);assert.equal(controls.labelChanges,0,'unchanged Pause control does not repaint on every frame');
   const proof=await page.evaluate(()=>{

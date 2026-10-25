@@ -146,6 +146,20 @@
     return `rotate(${reducedMotion?0:Math.round((milliseconds%2400)*.15*1e6)/1e6}deg)`;
   }
 
+// Locate an exact recorded clause, never a paraphrase or an inferred legal source.
+// The caller must identify both the recorded failed check and the actual article.
+function documentaryRuleFocus(text, context = {}) {
+  if (typeof text !== 'string' || context.decisivePredicate !== 'contemporaneous_substantive_reasons' || String(context.article) !== '269d') return null;
+  const lead = /2\s+Die Mietzinserhöhung ist nichtig, wenn der Vermieter:/u.exec(text);
+  const matches = [...text.matchAll(/b\.\s*sie nicht begründet;/gu)];
+  if (!lead || matches.length !== 1) return null;
+  const match = matches[0], start = match.index, end = start + match[0].length;
+  const paragraphStart = lead.index + lead[0].length;
+  const nextParagraph = text.slice(paragraphStart).search(/(?:^|[\s.!?])3\s/u);
+  if (start < paragraphStart || nextParagraph >= 0 && start >= paragraphStart + nextParagraph) return null;
+  return {start, end, quote: match[0], article: '269d', paragraph: '2(b)'};
+}
+
 /* Pure editorial metadata. No DOM, timers, playback state, or outcome changes. */
 function documentaryCue(beat, elapsed = 0, context = {}) {
   const b = beat && typeof beat === 'object' ? beat : {};
@@ -163,7 +177,9 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
   // Cue IDs identify stable sentences. Targets may hand off within one sentence.
   // Every sentence lasts >= 2 seconds in the unchanged 98.55-second film.
   if (b.act === 'customer') {
-    return cue('question', "Start with the tenant's question.", 'The question', 'source', {
+    return cue('question', context.decisivePredicate === 'contemporaneous_substantive_reasons'
+      ? 'The tenant asks us to check a rent-increase notice.'
+      : "Start with the tenant's question.", 'The question', 'source', {
       part: phase === 'ready' ? 'introduction' : 'quote',
       spotlight: phase !== 'ready' && phase !== ''
     });
@@ -180,7 +196,9 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
     const factPhase = ['fact', 'connector', 'fact-rest', 'plan-tick', 'camera-out'].includes(phase);
     if (firstFact || kind === 'fact' || factPhase) {
       if (factPhase) {
-        return cue('source-fact', 'This passage supports a proposed fact.', 'From source to fact', 'fact', {
+        return cue('source-fact', firstFact && context.decisivePredicate === 'contemporaneous_substantive_reasons'
+          ? 'Proposed finding: the original notice gave no reasons.'
+          : 'This passage supports a proposed fact.', 'From source to fact', 'fact', {
           ...(operationId ? {targetId: operationId} : {}), part: phase === 'connector' ? 'connection' : 'proposed-fact'
         });
       }
@@ -207,7 +225,11 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
     }
     // The document cutaway is only 1.3s; keep its sentence continuous with the law scene.
     if (['law', 'law-rest', 'documents', 'documents-rest'].includes(phase)) {
-      return cue('rule-documents', 'See the rule and the documents used.', 'Rule and documents', phase.startsWith('documents') ? 'documents' : 'law');
+      const documents = phase.startsWith('documents');
+      return cue('rule-documents', context.decisiveRule === true
+        ? 'The rule connects missing reasons with an invalid notice.'
+        : 'See the rule and the documents used.', documents ? 'Supporting documents'
+        : context.decisiveRule === true ? 'Article 269d, paragraph 2(b)' : 'Rule and documents', documents ? 'documents' : 'law');
     }
     if (['legal-test', 'legal-test-rest'].includes(phase)) {
       return cue('legal-tests', 'The recorded assessment flags one unmet requirement.', 'Recorded legal tests', 'predicate', {
@@ -222,10 +244,13 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
       if (phase === 'answer-rest' && local >= 3000) {
         return cue('open-questions', 'Other questions remain unanswered.', 'Still open', 'open');
       }
-      return cue('proposed-assessment', 'Read the proposed assessment.', 'Proposed assessment', 'lead');
+      return cue('proposed-assessment', context.assessmentSupportsInvalidity === true
+        ? 'Proposed assessment: invalid on this ground.'
+        : 'Read the proposed assessment.', 'Proposed assessment', 'lead');
     }
     if (['draft', 'draft-rest'].includes(phase)) {
-      return cue('human-review', 'A draft for a person to review.', 'Human review', 'draft');
+      const review = phase === 'draft-rest' && local >= 3000;
+      return cue('human-review', 'A draft for a person to review. Nothing is sent.', 'Human review', review ? 'draft' : 'draft-body', {part: review ? 'review-boundary' : 'prepared-reply'});
     }
   }
 
@@ -259,5 +284,5 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
 }
 
 
-  return {ACTS,EASING,ease,interpolate,paint,createClock,timeline,chapter,ringTransform,documentaryCue};
+  return {ACTS,EASING,ease,interpolate,paint,createClock,timeline,chapter,ringTransform,documentaryRuleFocus,documentaryCue};
 });
