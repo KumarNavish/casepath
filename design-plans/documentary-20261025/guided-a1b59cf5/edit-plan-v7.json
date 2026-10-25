@@ -1,0 +1,2280 @@
+{
+  "contract": "casepath.guided-documentary-edit/1",
+  "created_at": "2026-10-25T12:07:12.013Z",
+  "product_source": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "source_capture": "clean-source-02/capture-receipt.json",
+  "source_film": "clean-source-02/CasePath_Clean_Source.mp4",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "frames": 8952,
+  "duration_seconds": 298.4,
+  "requires_audio": false,
+  "claims": {
+    "recorded_fictional_cases": true,
+    "film_only_edit": true,
+    "original_source_wording_preserved": true,
+    "no_new_inference": true,
+    "no_human_approval_claimed": true,
+    "checklist_origin": "An earlier recorded case; not asserted to be the first showcased case"
+  },
+  "editorial_rule": "Orient, explain, connect and anticipate at substantial context changes; demonstrate actual recorded behavior; hold the outcome.",
+  "shots": [
+    {
+      "id": "001",
+      "kind": "hold",
+      "at_ms": 0,
+      "duration_s": 8,
+      "chapter": "01 · The question",
+      "title": "A rent increase arrives.",
+      "subtitle": "Does the notice meet the rules?",
+      "crop": [
+        0,
+        195,
+        1920,
+        840
+      ],
+      "focus": [],
+      "layout": "hero",
+      "purpose": "orient",
+      "hero_kicker": "A RECORDED FICTIONAL CASE",
+      "hero_note": "CasePath helps a case handler prepare an assessment for human review.",
+      "frames": 240,
+      "start_frame": 0,
+      "end_frame": 240,
+      "words": 10,
+      "source_frame": 0,
+      "legacy_id": "001"
+    },
+    {
+      "id": "002",
+      "kind": "hold",
+      "at_ms": 0,
+      "duration_s": 7,
+      "chapter": "01 · The question",
+      "title": "From documents to a reviewable answer.",
+      "subtitle": "Follow the evidence. See what each check establishes.",
+      "crop": [
+        0,
+        195,
+        1920,
+        840
+      ],
+      "focus": [],
+      "layout": "journey",
+      "purpose": "connect",
+      "nodes": [
+        "Documents",
+        "Checks",
+        "Proposed answer",
+        "Human review"
+      ],
+      "frames": 210,
+      "start_frame": 240,
+      "end_frame": 450,
+      "words": 14,
+      "source_frame": 0,
+      "legacy_id": "002"
+    },
+    {
+      "id": "003",
+      "kind": "play",
+      "start_ms": 0,
+      "end_ms": 4700,
+      "duration_s": 4.7,
+      "chapter": "01 · The question",
+      "title": "One question, several documents.",
+      "subtitle": "The tenant asks CasePath to check the rent-increase notice.",
+      "crop": [
+        280,
+        200,
+        1500,
+        760
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 141,
+      "start_frame": 450,
+      "end_frame": 591,
+      "words": 13,
+      "source_frame": 0,
+      "legacy_id": "003",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "004",
+      "kind": "play",
+      "start_ms": 4700,
+      "end_ms": 7500,
+      "duration_s": 2.8,
+      "chapter": "01 · The question",
+      "title": "One question, several documents.",
+      "subtitle": "The tenant asks CasePath to check the rent-increase notice.",
+      "crop": [
+        320,
+        200,
+        1475,
+        825
+      ],
+      "focus": [
+        [
+          350,
+          530,
+          1020,
+          300
+        ]
+      ],
+      "purpose": "demonstrate",
+      "frames": 84,
+      "start_frame": 591,
+      "end_frame": 675,
+      "words": 13,
+      "source_frame": 141,
+      "legacy_id": "004",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "005",
+      "kind": "hold",
+      "at_ms": 7500,
+      "duration_s": 5,
+      "chapter": "02 · Read the evidence",
+      "title": "The received files stay beside the review.",
+      "subtitle": "Each source can be opened and inspected.",
+      "crop": [
+        0,
+        195,
+        1920,
+        840
+      ],
+      "focus": [
+        [
+          20,
+          215,
+          280,
+          615
+        ]
+      ],
+      "purpose": "orient",
+      "label": "The evidence",
+      "frames": 150,
+      "start_frame": 675,
+      "end_frame": 825,
+      "words": 14,
+      "source_frame": 225,
+      "legacy_id": "005",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "006",
+      "kind": "hold",
+      "at_ms": 7500,
+      "duration_s": 5,
+      "chapter": "02 · Read the evidence",
+      "title": "Each circle is a question about this case.",
+      "subtitle": "The connected questions organise the review.",
+      "crop": [
+        320,
+        200,
+        1475,
+        825
+      ],
+      "focus": [
+        [
+          385,
+          225,
+          730,
+          135
+        ]
+      ],
+      "purpose": "explain",
+      "label": "Questions to resolve",
+      "frames": 150,
+      "start_frame": 825,
+      "end_frame": 975,
+      "words": 14,
+      "source_frame": 225,
+      "legacy_id": "006",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "007",
+      "kind": "hold",
+      "at_ms": 7500,
+      "duration_s": 5,
+      "chapter": "02 · Read the evidence",
+      "title": "The work list follows the active question.",
+      "subtitle": "Next, watch a source passage support a finding.",
+      "crop": [
+        320,
+        200,
+        1475,
+        825
+      ],
+      "focus": [
+        [
+          1390,
+          410,
+          390,
+          495
+        ]
+      ],
+      "purpose": "anticipate",
+      "label": "Work for this question",
+      "frames": 150,
+      "start_frame": 975,
+      "end_frame": 1125,
+      "words": 15,
+      "source_frame": 225,
+      "legacy_id": "007",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "008",
+      "kind": "play",
+      "start_ms": 7500,
+      "end_ms": 12050,
+      "duration_s": 4.566666666666666,
+      "chapter": "02 · Read the evidence",
+      "title": "A question directs the search for evidence.",
+      "subtitle": "The active ring marks the question being checked.",
+      "crop": [
+        320,
+        200,
+        1475,
+        825
+      ],
+      "focus": [],
+      "purpose": "demonstrate",
+      "frames": 137,
+      "start_frame": 1125,
+      "end_frame": 1262,
+      "words": 15,
+      "source_frame": 225,
+      "legacy_id": "008",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "009",
+      "kind": "hold",
+      "at_ms": 12050,
+      "duration_s": 6,
+      "chapter": "02 · Read the evidence",
+      "title": "What arrived with the original notice?",
+      "subtitle": "First locate the passage. Then follow its proposed finding.",
+      "crop": [
+        335,
+        400,
+        1050,
+        610
+      ],
+      "focus": [
+        [
+          368,
+          650,
+          935,
+          125
+        ]
+      ],
+      "purpose": "anticipate",
+      "label": "Follow the evidence",
+      "frames": 180,
+      "start_frame": 1262,
+      "end_frame": 1442,
+      "words": 15,
+      "source_frame": 361,
+      "legacy_id": "009",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "010",
+      "kind": "play",
+      "start_ms": 12050,
+      "end_ms": 16450,
+      "duration_s": 4.4,
+      "chapter": "02 · Read the evidence",
+      "title": "The original packet contained no reasons.",
+      "subtitle": "The marked passage is the basis for the proposed finding.",
+      "crop": [
+        345,
+        455,
+        1030,
+        420
+      ],
+      "focus": [],
+      "purpose": "demonstrate",
+      "frames": 132,
+      "start_frame": 1442,
+      "end_frame": 1574,
+      "words": 16,
+      "source_frame": 362,
+      "legacy_id": "010",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "011",
+      "kind": "hold",
+      "at_ms": 16450,
+      "duration_s": 5,
+      "chapter": "02 · Read the evidence",
+      "title": "A passage becomes a proposed finding.",
+      "subtitle": "Watch its link to the question remain visible.",
+      "crop": [
+        340,
+        560,
+        1060,
+        475
+      ],
+      "focus": [
+        [
+          365,
+          650,
+          950,
+          110
+        ]
+      ],
+      "purpose": "connect",
+      "label": "Source passage",
+      "flow": [
+        "Source passage",
+        "Proposed finding"
+      ],
+      "frames": 150,
+      "start_frame": 1574,
+      "end_frame": 1724,
+      "words": 14,
+      "source_frame": 493,
+      "legacy_id": "011",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "012",
+      "kind": "play",
+      "start_ms": 16450,
+      "end_ms": 19000,
+      "duration_s": 2.533333333333333,
+      "chapter": "02 · Read the evidence",
+      "title": "A passage becomes a proposed finding.",
+      "subtitle": "Watch its link to the question remain visible.",
+      "crop": [
+        340,
+        560,
+        1060,
+        475
+      ],
+      "focus": [],
+      "purpose": "demonstrate",
+      "frames": 76,
+      "start_frame": 1724,
+      "end_frame": 1800,
+      "words": 14,
+      "source_frame": 494,
+      "legacy_id": "012",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "013",
+      "kind": "hold",
+      "at_ms": 19000,
+      "duration_s": 4,
+      "chapter": "02 · Read the evidence",
+      "title": "Proposed finding: the original notice gave no reasons.",
+      "subtitle": "",
+      "crop": [
+        340,
+        560,
+        1060,
+        475
+      ],
+      "focus": [
+        [
+          350,
+          905,
+          455,
+          120
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Proposed finding",
+      "frames": 120,
+      "start_frame": 1800,
+      "end_frame": 1920,
+      "words": 8,
+      "source_frame": 570,
+      "legacy_id": "013",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "014",
+      "kind": "play",
+      "start_ms": 19000,
+      "end_ms": 23550,
+      "duration_s": 4.566666666666666,
+      "chapter": "02 · Read the evidence",
+      "title": "Proposed finding: the original notice gave no reasons.",
+      "subtitle": "",
+      "crop": [
+        320,
+        200,
+        1475,
+        825
+      ],
+      "focus": [],
+      "purpose": "demonstrate",
+      "frames": 137,
+      "start_frame": 1920,
+      "end_frame": 2057,
+      "words": 8,
+      "source_frame": 570,
+      "legacy_id": "014",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "015a",
+      "kind": "play",
+      "start_ms": 23550,
+      "end_ms": 27100,
+      "duration_s": 3.533333333333333,
+      "chapter": "02 · Read the evidence",
+      "title": "The later email arrived after the original notice.",
+      "subtitle": "",
+      "crop": [
+        320,
+        200,
+        1475,
+        825
+      ],
+      "focus": [],
+      "purpose": "demonstrate",
+      "frames": 106,
+      "start_frame": 2057,
+      "end_frame": 2163,
+      "words": 8,
+      "source_frame": 707,
+      "legacy_id": "015a",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "015b",
+      "kind": "hold",
+      "duration_s": 2,
+      "chapter": "02 · Read the evidence",
+      "title": "The later email arrived after the original notice.",
+      "subtitle": "",
+      "crop": [
+        320,
+        200,
+        1475,
+        825
+      ],
+      "focus": [],
+      "purpose": "outcome",
+      "frames": 60,
+      "start_frame": 2163,
+      "end_frame": 2223,
+      "words": 8,
+      "source_frame": 812,
+      "at_ms": 27099,
+      "legacy_id": "015b",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "015c",
+      "kind": "hold",
+      "duration_s": 4,
+      "chapter": "03 · Connect the checks",
+      "title": "Now connect the findings to their checks.",
+      "subtitle": "The questions will become a connected review path.",
+      "crop": [
+        320,
+        200,
+        1475,
+        825
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 120,
+      "start_frame": 2223,
+      "end_frame": 2343,
+      "words": 15,
+      "source_frame": 812,
+      "at_ms": 27099,
+      "bridge": true,
+      "legacy_id": "015c",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "015d",
+      "kind": "play",
+      "start_ms": 27100,
+      "end_ms": 28000,
+      "duration_s": 0.9,
+      "chapter": "03 · Connect the checks",
+      "title": "Now connect the findings to their checks.",
+      "subtitle": "The questions will become a connected review path.",
+      "crop": [
+        320,
+        200,
+        1475,
+        825
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 27,
+      "start_frame": 2343,
+      "end_frame": 2370,
+      "words": 15,
+      "source_frame": 813,
+      "transition_plate_path": "clean-source-02/plates/process.png",
+      "transition_plate_time_ms": 28200,
+      "legacy_id": "015d",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "016",
+      "kind": "hold",
+      "at_ms": 28000,
+      "duration_s": 5,
+      "chapter": "03 · Connect the checks",
+      "title": "The questions form a review path.",
+      "subtitle": "Arrows show how the recorded checks connect.",
+      "crop": [
+        340,
+        215,
+        1550,
+        750
+      ],
+      "focus": [
+        [
+          345,
+          225,
+          690,
+          165
+        ]
+      ],
+      "purpose": "orient",
+      "label": "Recorded process",
+      "frames": 150,
+      "start_frame": 2370,
+      "end_frame": 2520,
+      "words": 13,
+      "source_frame": 840,
+      "legacy_id": "016",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "017",
+      "kind": "hold",
+      "at_ms": 28000,
+      "duration_s": 5,
+      "chapter": "03 · Connect the checks",
+      "title": "Each check keeps its reasons attached.",
+      "subtitle": "Next, follow its facts, cited rule and supporting files.",
+      "crop": [
+        340,
+        215,
+        1550,
+        750
+      ],
+      "focus": [
+        [
+          345,
+          395,
+          1545,
+          230
+        ]
+      ],
+      "purpose": "connect",
+      "label": "Why this check exists",
+      "frames": 150,
+      "start_frame": 2520,
+      "end_frame": 2670,
+      "words": 15,
+      "source_frame": 840,
+      "legacy_id": "017",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "018",
+      "kind": "play",
+      "start_ms": 28000,
+      "end_ms": 34100,
+      "duration_s": 6.1,
+      "chapter": "03 · Connect the checks",
+      "title": "The reasoning is available to inspect.",
+      "subtitle": "Facts, law and documents support the selected question.",
+      "crop": [
+        340,
+        215,
+        1550,
+        750
+      ],
+      "focus": [],
+      "purpose": "demonstrate",
+      "frames": 183,
+      "start_frame": 2670,
+      "end_frame": 2853,
+      "words": 14,
+      "source_frame": 840,
+      "legacy_id": "018",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "kind": "hold",
+      "at_ms": 34099,
+      "duration_s": 4,
+      "chapter": "04 · Check the source",
+      "title": "Can the quotation be traced to a file?",
+      "subtitle": "",
+      "crop": [
+        340,
+        215,
+        1550,
+        750
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "transition": "chapter",
+      "bridge": true,
+      "id": "019",
+      "frames": 120,
+      "start_frame": 2853,
+      "end_frame": 2973,
+      "words": 8,
+      "source_frame": 1022,
+      "legacy_id": "019",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "020",
+      "kind": "play",
+      "start_ms": 34100,
+      "end_ms": 35000,
+      "duration_s": 0.9,
+      "chapter": "04 · Check the source",
+      "title": "Can the quotation be traced to a file?",
+      "subtitle": "",
+      "crop": [
+        340,
+        215,
+        1550,
+        750
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 27,
+      "start_frame": 2973,
+      "end_frame": 3000,
+      "words": 8,
+      "source_frame": 1023,
+      "transition_plate_path": "clean-source-02/plates/source-check.png",
+      "transition_plate_time_ms": 37100,
+      "transition": "source-dissolve",
+      "legacy_id": "020",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "021",
+      "kind": "hold",
+      "at_ms": 35000,
+      "duration_s": 6,
+      "chapter": "04 · Check the source",
+      "title": "Each quotation is matched to a received file.",
+      "subtitle": "This establishes the quotation’s source.",
+      "crop": [
+        560,
+        230,
+        1130,
+        650
+      ],
+      "focus": [
+        [
+          575,
+          370,
+          1080,
+          115
+        ]
+      ],
+      "purpose": "orient",
+      "label": "Quotation and file",
+      "frames": 180,
+      "start_frame": 3000,
+      "end_frame": 3180,
+      "words": 13,
+      "source_frame": 1050,
+      "legacy_id": "021",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "022",
+      "kind": "play",
+      "start_ms": 35000,
+      "end_ms": 39200,
+      "duration_s": 4.2,
+      "chapter": "04 · Check the source",
+      "title": "The source match is recorded.",
+      "subtitle": "The interpretation still needs qualified review.",
+      "crop": [
+        560,
+        230,
+        1130,
+        650
+      ],
+      "focus": [
+        [
+          575,
+          710,
+          1080,
+          145
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Traceable passage",
+      "frames": 126,
+      "start_frame": 3180,
+      "end_frame": 3306,
+      "words": 11,
+      "source_frame": 1050,
+      "legacy_id": "022",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "kind": "hold",
+      "at_ms": 39199,
+      "duration_s": 4,
+      "chapter": "05 · Apply the rule",
+      "title": "What does the cited rule require?",
+      "subtitle": "",
+      "crop": [
+        340,
+        215,
+        1550,
+        750
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "transition": "chapter",
+      "bridge": true,
+      "id": "023",
+      "frames": 120,
+      "start_frame": 3306,
+      "end_frame": 3426,
+      "words": 6,
+      "source_frame": 1175,
+      "legacy_id": "023",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "024",
+      "kind": "play",
+      "start_ms": 39200,
+      "end_ms": 40100,
+      "duration_s": 0.9,
+      "chapter": "05 · Apply the rule",
+      "title": "What does the cited rule require?",
+      "subtitle": "",
+      "crop": [
+        340,
+        215,
+        1550,
+        750
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 27,
+      "start_frame": 3426,
+      "end_frame": 3453,
+      "words": 6,
+      "source_frame": 1176,
+      "transition_plate_path": "clean-source-02/plates/law.png",
+      "transition_plate_time_ms": 42800,
+      "transition": "source-dissolve",
+      "legacy_id": "024",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "025",
+      "kind": "hold",
+      "at_ms": 40100,
+      "duration_s": 5,
+      "chapter": "05 · Apply the rule",
+      "title": "Read the specific clause behind the assessment.",
+      "subtitle": "Article 269d, paragraph 2(b).",
+      "crop": [
+        350,
+        677,
+        1150,
+        280
+      ],
+      "focus": [
+        [
+          375,
+          726,
+          660,
+          115
+        ]
+      ],
+      "purpose": "orient",
+      "label": "Cited legal text",
+      "frames": 150,
+      "start_frame": 3453,
+      "end_frame": 3603,
+      "words": 11,
+      "source_frame": 1203,
+      "legacy_id": "025",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "026",
+      "kind": "hold",
+      "at_ms": 40100,
+      "duration_s": 6,
+      "chapter": "05 · Apply the rule",
+      "title": "The cited rule links missing reasons to invalidity.",
+      "subtitle": "The original legal wording remains visible below.",
+      "crop": [
+        350,
+        677,
+        1150,
+        280
+      ],
+      "focus": [
+        [
+          375,
+          795,
+          205,
+          45
+        ]
+      ],
+      "purpose": "explain",
+      "label": "Article 269d · 2(b)",
+      "flow": [
+        "No original reasons",
+        "Cited requirement unmet"
+      ],
+      "frames": 180,
+      "start_frame": 3603,
+      "end_frame": 3783,
+      "words": 15,
+      "source_frame": 1203,
+      "legacy_id": "026",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "027",
+      "kind": "play",
+      "start_ms": 40100,
+      "end_ms": 45500,
+      "duration_s": 5.4,
+      "chapter": "05 · Apply the rule",
+      "title": "This is why the missing reasons matter.",
+      "subtitle": "The proposed assessment must connect the fact and the rule.",
+      "crop": [
+        350,
+        677,
+        1150,
+        280
+      ],
+      "focus": [
+        [
+          375,
+          795,
+          205,
+          45
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Exact clause",
+      "frames": 162,
+      "start_frame": 3783,
+      "end_frame": 3945,
+      "words": 17,
+      "source_frame": 1203,
+      "legacy_id": "027",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "kind": "hold",
+      "at_ms": 45499,
+      "duration_s": 4,
+      "chapter": "06 · Inspect the supporting files",
+      "title": "Which files support these checks?",
+      "subtitle": "",
+      "crop": [
+        340,
+        215,
+        1550,
+        750
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "transition": "chapter",
+      "bridge": true,
+      "id": "028",
+      "frames": 120,
+      "start_frame": 3945,
+      "end_frame": 4065,
+      "words": 5,
+      "source_frame": 1364,
+      "legacy_id": "028",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "029",
+      "kind": "play",
+      "start_ms": 45500,
+      "end_ms": 46400,
+      "duration_s": 0.9,
+      "chapter": "06 · Inspect the supporting files",
+      "title": "Which files support these checks?",
+      "subtitle": "",
+      "crop": [
+        340,
+        215,
+        1550,
+        750
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 27,
+      "start_frame": 4065,
+      "end_frame": 4092,
+      "words": 5,
+      "source_frame": 1365,
+      "transition_plate_path": "clean-source-02/plates/documents.png",
+      "transition_plate_time_ms": 46800,
+      "transition": "source-dissolve",
+      "legacy_id": "029",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "030",
+      "kind": "hold",
+      "at_ms": 46400,
+      "duration_s": 6,
+      "chapter": "06 · Inspect the supporting files",
+      "title": "Each entry links a requirement to its received file.",
+      "subtitle": "The supporting records remain available for inspection.",
+      "crop": [
+        565,
+        228,
+        1110,
+        620
+      ],
+      "focus": [
+        [
+          570,
+          360,
+          1100,
+          440
+        ]
+      ],
+      "purpose": "orient",
+      "label": "Supporting records",
+      "frames": 180,
+      "start_frame": 4092,
+      "end_frame": 4272,
+      "words": 16,
+      "source_frame": 1392,
+      "legacy_id": "030",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "031",
+      "kind": "play",
+      "start_ms": 46400,
+      "end_ms": 47300,
+      "duration_s": 0.9,
+      "chapter": "06 · Inspect the supporting files",
+      "title": "Each entry links a requirement to its received file.",
+      "subtitle": "The supporting records remain available for inspection.",
+      "crop": [
+        565,
+        228,
+        1110,
+        620
+      ],
+      "focus": [],
+      "purpose": "outcome",
+      "frames": 27,
+      "start_frame": 4272,
+      "end_frame": 4299,
+      "words": 16,
+      "source_frame": 1392,
+      "legacy_id": "031",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "kind": "hold",
+      "at_ms": 47299,
+      "duration_s": 4,
+      "chapter": "07 · Understand the assessment",
+      "title": "Next, test each legal requirement.",
+      "subtitle": "",
+      "crop": [
+        565,
+        228,
+        1110,
+        620
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "transition": "chapter",
+      "bridge": true,
+      "id": "032",
+      "frames": 120,
+      "start_frame": 4299,
+      "end_frame": 4419,
+      "words": 5,
+      "source_frame": 1418,
+      "legacy_id": "032",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "033",
+      "kind": "play",
+      "start_ms": 47300,
+      "end_ms": 47800,
+      "duration_s": 0.5,
+      "chapter": "07 · Understand the assessment",
+      "title": "Next, test each legal requirement.",
+      "subtitle": "",
+      "crop": [
+        565,
+        228,
+        1110,
+        620
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 15,
+      "start_frame": 4419,
+      "end_frame": 4434,
+      "words": 5,
+      "source_frame": 1419,
+      "transition_plate_path": "clean-source-02/plates/assessment.png",
+      "transition_plate_time_ms": 57400,
+      "transition": "source-dissolve",
+      "legacy_id": "033",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "034",
+      "kind": "hold",
+      "at_ms": 47800,
+      "duration_s": 7,
+      "chapter": "07 · Understand the assessment",
+      "title": "Three process questions lead to five legal checks.",
+      "subtitle": "Numbers link each check to its process question.",
+      "crop": [
+        575,
+        300,
+        1090,
+        570
+      ],
+      "focus": [
+        [
+          600,
+          375,
+          1035,
+          440
+        ]
+      ],
+      "purpose": "orient",
+      "label": "Requirement checks",
+      "frames": 210,
+      "start_frame": 4434,
+      "end_frame": 4644,
+      "words": 16,
+      "source_frame": 1434,
+      "plate_path": "clean-source-02/plates/assessment.png",
+      "plate_time_ms": 57400,
+      "legacy_id": "034",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "035",
+      "kind": "hold",
+      "at_ms": 47800,
+      "duration_s": 5,
+      "chapter": "07 · Understand the assessment",
+      "title": "Watch for the requirement marked unmet.",
+      "subtitle": "A checkmark records support; a cross marks an unmet requirement.",
+      "crop": [
+        575,
+        300,
+        1090,
+        570
+      ],
+      "focus": [
+        [
+          600,
+          465,
+          1035,
+          350
+        ]
+      ],
+      "purpose": "anticipate",
+      "label": "Follow the status",
+      "frames": 150,
+      "start_frame": 4644,
+      "end_frame": 4794,
+      "words": 16,
+      "source_frame": 1434,
+      "plate_path": "clean-source-02/plates/assessment.png",
+      "plate_time_ms": 57400,
+      "legacy_id": "035",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "036",
+      "kind": "play",
+      "start_ms": 47800,
+      "end_ms": 50650,
+      "duration_s": 2.8666666666666667,
+      "chapter": "07 · Understand the assessment",
+      "title": "Watch for the requirement marked unmet.",
+      "subtitle": "A checkmark records support; a cross marks an unmet requirement.",
+      "crop": [
+        575,
+        300,
+        1090,
+        570
+      ],
+      "focus": [],
+      "purpose": "demonstrate",
+      "frames": 86,
+      "start_frame": 4794,
+      "end_frame": 4880,
+      "words": 16,
+      "source_frame": 1434,
+      "plate_path": "clean-source-02/plates/assessment.png",
+      "plate_time_ms": 57400,
+      "focus_by_source": [
+        {
+          "start_ms": 47800,
+          "end_ms": 49050,
+          "rect": [
+            610,
+            475,
+            1020,
+            64
+          ]
+        },
+        {
+          "start_ms": 49050,
+          "end_ms": 50300,
+          "rect": [
+            610,
+            543,
+            1020,
+            64
+          ]
+        },
+        {
+          "start_ms": 50300,
+          "end_ms": 52650,
+          "rect": [
+            610,
+            610,
+            1020,
+            64
+          ]
+        },
+        {
+          "start_ms": 52650,
+          "end_ms": 53900,
+          "rect": [
+            610,
+            677,
+            1020,
+            64
+          ]
+        },
+        {
+          "start_ms": 53900,
+          "end_ms": 55550,
+          "rect": [
+            610,
+            744,
+            1020,
+            64
+          ]
+        }
+      ],
+      "label": "Recorded requirement",
+      "guidance_only": true,
+      "legacy_id": "036",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "037",
+      "kind": "hold",
+      "at_ms": 50650,
+      "duration_s": 5,
+      "chapter": "07 · Understand the assessment",
+      "title": "The reasons requirement is unmet.",
+      "subtitle": "The original packet contained no substantive reasons.",
+      "crop": [
+        585,
+        460,
+        1070,
+        250
+      ],
+      "focus": [
+        [
+          610,
+          610,
+          1020,
+          65
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Unmet requirement",
+      "frames": 150,
+      "start_frame": 4880,
+      "end_frame": 5030,
+      "words": 12,
+      "source_frame": 1519,
+      "legacy_id": "037",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "038",
+      "kind": "play",
+      "start_ms": 50650,
+      "end_ms": 55550,
+      "duration_s": 4.9,
+      "chapter": "07 · Understand the assessment",
+      "title": "The other checks retain their own results.",
+      "subtitle": "The missing-reasons finding remains explicit.",
+      "crop": [
+        575,
+        300,
+        1090,
+        570
+      ],
+      "focus": [],
+      "purpose": "demonstrate",
+      "frames": 147,
+      "start_frame": 5030,
+      "end_frame": 5177,
+      "words": 12,
+      "source_frame": 1520,
+      "plate_path": "clean-source-02/plates/assessment.png",
+      "plate_time_ms": 57400,
+      "focus_by_source": [
+        {
+          "start_ms": 47800,
+          "end_ms": 49050,
+          "rect": [
+            610,
+            475,
+            1020,
+            64
+          ]
+        },
+        {
+          "start_ms": 49050,
+          "end_ms": 50300,
+          "rect": [
+            610,
+            543,
+            1020,
+            64
+          ]
+        },
+        {
+          "start_ms": 50300,
+          "end_ms": 52650,
+          "rect": [
+            610,
+            610,
+            1020,
+            64
+          ]
+        },
+        {
+          "start_ms": 52650,
+          "end_ms": 53900,
+          "rect": [
+            610,
+            677,
+            1020,
+            64
+          ]
+        },
+        {
+          "start_ms": 53900,
+          "end_ms": 55550,
+          "rect": [
+            610,
+            744,
+            1020,
+            64
+          ]
+        }
+      ],
+      "label": "Recorded requirement",
+      "guidance_only": true,
+      "legacy_id": "038",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "039",
+      "kind": "hold",
+      "at_ms": 55550,
+      "duration_s": 6,
+      "chapter": "07 · Understand the assessment",
+      "title": "Proposed assessment: invalid on this ground.",
+      "subtitle": "The result follows the missing reasons and the cited provision.",
+      "crop": [
+        580,
+        780,
+        1080,
+        220
+      ],
+      "focus": [
+        [
+          600,
+          820,
+          1040,
+          78
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Proposed assessment",
+      "frames": 180,
+      "start_frame": 5177,
+      "end_frame": 5357,
+      "words": 16,
+      "source_frame": 1666,
+      "legacy_id": "039",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "040",
+      "kind": "play",
+      "start_ms": 55550,
+      "end_ms": 58750,
+      "duration_s": 3.2,
+      "chapter": "07 · Understand the assessment",
+      "title": "Proposed assessment: invalid on this ground.",
+      "subtitle": "The result follows the missing reasons and the cited provision.",
+      "crop": [
+        580,
+        780,
+        1080,
+        220
+      ],
+      "focus": [],
+      "purpose": "outcome",
+      "frames": 96,
+      "start_frame": 5357,
+      "end_frame": 5453,
+      "words": 16,
+      "source_frame": 1667,
+      "legacy_id": "040",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "041",
+      "kind": "play",
+      "start_ms": 58750,
+      "end_ms": 61550,
+      "duration_s": 2.8,
+      "chapter": "07 · Understand the assessment",
+      "title": "Other questions remain open.",
+      "subtitle": "Rent amount and filing deadlines still need review.",
+      "crop": [
+        580,
+        890,
+        1080,
+        110
+      ],
+      "focus": [
+        [
+          600,
+          915,
+          1040,
+          70
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Still open",
+      "frames": 84,
+      "start_frame": 5453,
+      "end_frame": 5537,
+      "words": 12,
+      "source_frame": 1763,
+      "legacy_id": "041",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "042",
+      "kind": "hold",
+      "at_ms": 61550,
+      "duration_s": 4,
+      "chapter": "07 · Understand the assessment",
+      "title": "Other questions remain open.",
+      "subtitle": "Rent amount and filing deadlines still need review.",
+      "crop": [
+        580,
+        890,
+        1080,
+        110
+      ],
+      "focus": [
+        [
+          600,
+          915,
+          1040,
+          70
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Still open",
+      "frames": 120,
+      "start_frame": 5537,
+      "end_frame": 5657,
+      "words": 12,
+      "source_frame": 1846,
+      "legacy_id": "042",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "kind": "hold",
+      "at_ms": 61549,
+      "duration_s": 4,
+      "chapter": "08 · Prepare the next step",
+      "title": "What can the handler do with this assessment?",
+      "subtitle": "",
+      "crop": [
+        580,
+        780,
+        1080,
+        220
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "transition": "chapter",
+      "bridge": true,
+      "id": "043",
+      "frames": 120,
+      "start_frame": 5657,
+      "end_frame": 5777,
+      "words": 8,
+      "source_frame": 1846,
+      "legacy_id": "043",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "044",
+      "kind": "play",
+      "start_ms": 61550,
+      "end_ms": 62450,
+      "duration_s": 0.9,
+      "chapter": "08 · Prepare the next step",
+      "title": "What can the handler do with this assessment?",
+      "subtitle": "",
+      "crop": [
+        0,
+        195,
+        1920,
+        840
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 27,
+      "start_frame": 5777,
+      "end_frame": 5804,
+      "words": 8,
+      "source_frame": 1847,
+      "transition_plate_path": "clean-source-02/plates/draft.png",
+      "transition_plate_time_ms": 65000,
+      "transition": "source-dissolve",
+      "legacy_id": "044",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "045",
+      "kind": "hold",
+      "at_ms": 62450,
+      "duration_s": 7,
+      "chapter": "08 · Prepare the next step",
+      "title": "A draft is prepared for a person to review.",
+      "subtitle": "The assessment is prepared for the responsible handler.",
+      "crop": [
+        570,
+        235,
+        1110,
+        235
+      ],
+      "focus": [
+        [
+          575,
+          295,
+          1100,
+          155
+        ]
+      ],
+      "purpose": "orient",
+      "label": "Assessment draft",
+      "frames": 210,
+      "start_frame": 5804,
+      "end_frame": 6014,
+      "words": 17,
+      "source_frame": 1873,
+      "legacy_id": "045",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "046",
+      "kind": "play",
+      "start_ms": 62450,
+      "end_ms": 66000,
+      "duration_s": 3.533333333333333,
+      "chapter": "08 · Prepare the next step",
+      "title": "A draft is prepared for a person to review.",
+      "subtitle": "The assessment is prepared for the responsible handler.",
+      "crop": [
+        570,
+        235,
+        1110,
+        235
+      ],
+      "focus": [
+        [
+          590,
+          340,
+          1065,
+          110
+        ]
+      ],
+      "purpose": "demonstrate",
+      "label": "Draft body",
+      "frames": 106,
+      "start_frame": 6014,
+      "end_frame": 6120,
+      "words": 17,
+      "source_frame": 1874,
+      "legacy_id": "046",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "047",
+      "kind": "play",
+      "start_ms": 66000,
+      "end_ms": 68450,
+      "duration_s": 2.466666666666667,
+      "chapter": "08 · Prepare the next step",
+      "title": "Prepared for review. Nothing sent.",
+      "subtitle": "The person responsible for the case decides what happens next.",
+      "crop": [
+        570,
+        235,
+        1110,
+        235
+      ],
+      "focus": [
+        [
+          575,
+          238,
+          1080,
+          55
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Human review",
+      "frames": 74,
+      "start_frame": 6120,
+      "end_frame": 6194,
+      "words": 15,
+      "source_frame": 1980,
+      "legacy_id": "047",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "id": "048",
+      "kind": "hold",
+      "at_ms": 68450,
+      "duration_s": 4,
+      "chapter": "08 · Prepare the next step",
+      "title": "Prepared for review. Nothing sent.",
+      "subtitle": "The person responsible for the case decides what happens next.",
+      "crop": [
+        570,
+        235,
+        1110,
+        235
+      ],
+      "focus": [
+        [
+          575,
+          238,
+          1080,
+          55
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Human review",
+      "frames": 120,
+      "start_frame": 6194,
+      "end_frame": 6314,
+      "words": 15,
+      "source_frame": 2053,
+      "legacy_id": "048",
+      "case_badge": "ELIN ZIEGLER · FIRST CASE"
+    },
+    {
+      "kind": "hold",
+      "at_ms": 68449,
+      "duration_s": 4,
+      "chapter": "09 · Reuse the questions",
+      "title": "Can a later case reuse the checks?",
+      "subtitle": "",
+      "crop": [
+        570,
+        235,
+        1110,
+        235
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "transition": "chapter",
+      "bridge": true,
+      "id": "049",
+      "frames": 120,
+      "start_frame": 6314,
+      "end_frame": 6434,
+      "words": 7,
+      "source_frame": 2053,
+      "legacy_id": "049",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "050",
+      "kind": "play",
+      "start_ms": 68450,
+      "end_ms": 68950,
+      "duration_s": 0.5,
+      "chapter": "09 · Reuse the questions",
+      "title": "Can a later case reuse the checks?",
+      "subtitle": "",
+      "crop": [
+        0,
+        195,
+        1920,
+        840
+      ],
+      "focus": [],
+      "purpose": "orient",
+      "frames": 15,
+      "start_frame": 6434,
+      "end_frame": 6449,
+      "words": 7,
+      "source_frame": 2054,
+      "transition_plate_path": "clean-source-02/plates/later-case.png",
+      "transition_plate_time_ms": 69500,
+      "transition": "source-dissolve",
+      "legacy_id": "050",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "051",
+      "kind": "hold",
+      "at_ms": 68950,
+      "duration_s": 5,
+      "chapter": "09 · Reuse the questions",
+      "title": "Meet Drew Shaw: a different case.",
+      "subtitle": "An earlier checklist can guide what needs checking.",
+      "crop": [
+        0,
+        195,
+        1920,
+        840
+      ],
+      "focus": [
+        [
+          20,
+          220,
+          280,
+          615
+        ]
+      ],
+      "purpose": "orient",
+      "label": "Drew’s own documents",
+      "frames": 150,
+      "start_frame": 6449,
+      "end_frame": 6599,
+      "words": 14,
+      "source_frame": 2068,
+      "legacy_id": "051",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "052",
+      "kind": "play",
+      "start_ms": 68950,
+      "end_ms": 71150,
+      "duration_s": 2.2,
+      "chapter": "09 · Reuse the questions",
+      "title": "Meet Drew Shaw: a different case.",
+      "subtitle": "An earlier checklist can guide what needs checking.",
+      "crop": [
+        340,
+        290,
+        1550,
+        620
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 66,
+      "start_frame": 6599,
+      "end_frame": 6665,
+      "words": 14,
+      "source_frame": 2069,
+      "legacy_id": "052",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "052b",
+      "kind": "hold",
+      "at_ms": 71150,
+      "duration_s": 8,
+      "chapter": "09 · Reuse the questions",
+      "title": "Drew’s documents, Drew’s dates.",
+      "subtitle": "The email came after the notice.",
+      "crop": [
+        340,
+        290,
+        1550,
+        620
+      ],
+      "focus": [],
+      "layout": "chronology",
+      "purpose": "explain",
+      "date_nodes": [
+        {
+          "date": "22 NOV 2025",
+          "label": "Original notice",
+          "artifact_id": "src_7cc0cf1a55319c24ca61d6fab075aa4c"
+        },
+        {
+          "date": "25 NOV 2025",
+          "label": "Later email",
+          "artifact_id": "src_37f81974b96ecddbf4d9c31dcc6745d7"
+        }
+      ],
+      "evidence_proof": "later-case-date-proof.json",
+      "source_caption": "Recorded dates from Drew’s notification packet and email archive.",
+      "legacy_id": "052b",
+      "case_badge": "DREW SHAW · LATER CASE",
+      "source_frame": 2134,
+      "frames": 240,
+      "start_frame": 6665,
+      "end_frame": 6905,
+      "words": 10
+    },
+    {
+      "id": "053",
+      "kind": "hold",
+      "at_ms": 71150,
+      "duration_s": 5,
+      "chapter": "09 · Reuse the questions",
+      "title": "This case supplies the evidence.",
+      "subtitle": "Its own documents and dates determine the findings.",
+      "crop": [
+        340,
+        290,
+        1550,
+        620
+      ],
+      "focus": [
+        [
+          718,
+          370,
+          445,
+          505
+        ]
+      ],
+      "purpose": "explain",
+      "label": "This case’s source",
+      "frames": 150,
+      "start_frame": 6905,
+      "end_frame": 7055,
+      "words": 13,
+      "source_frame": 2134,
+      "legacy_id": "053",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "054",
+      "kind": "hold",
+      "at_ms": 71150,
+      "duration_s": 5,
+      "chapter": "09 · Reuse the questions",
+      "title": "An earlier case supplies a checklist.",
+      "subtitle": "Reusable questions guide what to inspect.",
+      "crop": [
+        340,
+        290,
+        1550,
+        620
+      ],
+      "focus": [
+        [
+          1205,
+          370,
+          325,
+          505
+        ]
+      ],
+      "purpose": "explain",
+      "label": "Earlier checklist",
+      "frames": 150,
+      "start_frame": 7055,
+      "end_frame": 7205,
+      "words": 12,
+      "source_frame": 2134,
+      "legacy_id": "054",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "055",
+      "kind": "hold",
+      "at_ms": 71150,
+      "duration_s": 6,
+      "chapter": "09 · Reuse the questions",
+      "title": "Watch these questions enter the new case’s review.",
+      "subtitle": "Documents and dates are checked afresh.",
+      "crop": [
+        340,
+        290,
+        1550,
+        620
+      ],
+      "focus": [
+        [
+          405,
+          308,
+          295,
+          430
+        ],
+        [
+          1220,
+          550,
+          295,
+          200
+        ]
+      ],
+      "purpose": "connect",
+      "label": "Questions move into the review",
+      "frames": 180,
+      "start_frame": 7205,
+      "end_frame": 7385,
+      "words": 14,
+      "source_frame": 2134,
+      "connection_path": [
+        [
+          1220,
+          595
+        ],
+        [
+          1180,
+          595
+        ],
+        [
+          1180,
+          790
+        ],
+        [
+          700,
+          790
+        ],
+        [
+          700,
+          700
+        ],
+        [
+          690,
+          700
+        ]
+      ],
+      "legacy_id": "055",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "056",
+      "kind": "play",
+      "start_ms": 71150,
+      "end_ms": 79550,
+      "duration_s": 8.4,
+      "chapter": "09 · Reuse the questions",
+      "title": "Questions are reused. Facts are checked afresh.",
+      "subtitle": "Follow the three checklist items as they enter this review.",
+      "crop": [
+        340,
+        290,
+        1550,
+        620
+      ],
+      "focus": [],
+      "purpose": "demonstrate",
+      "frames": 252,
+      "start_frame": 7385,
+      "end_frame": 7637,
+      "words": 17,
+      "source_frame": 2135,
+      "legacy_id": "056",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "057",
+      "kind": "hold",
+      "at_ms": 79550,
+      "duration_s": 4,
+      "chapter": "09 · Reuse the questions",
+      "title": "Three checks reused in this case.",
+      "subtitle": "Its evidence is checked afresh. Human review is still required.",
+      "crop": [
+        340,
+        290,
+        1550,
+        620
+      ],
+      "focus": [
+        [
+          1570,
+          370,
+          320,
+          505
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Reuse result",
+      "frames": 120,
+      "start_frame": 7637,
+      "end_frame": 7757,
+      "words": 16,
+      "source_frame": 2386,
+      "legacy_id": "057",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "058",
+      "kind": "play",
+      "start_ms": 79550,
+      "end_ms": 82350,
+      "duration_s": 2.8,
+      "chapter": "09 · Reuse the questions",
+      "title": "Three checks reused in this case.",
+      "subtitle": "Its evidence is checked afresh. Human review is still required.",
+      "crop": [
+        340,
+        290,
+        1550,
+        620
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 84,
+      "start_frame": 7757,
+      "end_frame": 7841,
+      "words": 16,
+      "source_frame": 2387,
+      "legacy_id": "058",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "kind": "hold",
+      "at_ms": 82349,
+      "duration_s": 4,
+      "chapter": "09 · Reuse the questions",
+      "title": "What does this case’s evidence support?",
+      "subtitle": "",
+      "crop": [
+        340,
+        290,
+        1550,
+        620
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "transition": "chapter",
+      "bridge": true,
+      "id": "059",
+      "frames": 120,
+      "start_frame": 7841,
+      "end_frame": 7961,
+      "words": 6,
+      "source_frame": 2470,
+      "legacy_id": "059",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "060",
+      "kind": "play",
+      "start_ms": 82350,
+      "end_ms": 83250,
+      "duration_s": 0.9,
+      "chapter": "09 · Reuse the questions",
+      "title": "What does this case’s evidence support?",
+      "subtitle": "",
+      "crop": [
+        340,
+        290,
+        1550,
+        620
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 27,
+      "start_frame": 7961,
+      "end_frame": 7988,
+      "words": 6,
+      "source_frame": 2471,
+      "transition_plate_path": "clean-source-02/plates/later-result.png",
+      "transition_plate_time_ms": 85500,
+      "transition": "source-dissolve",
+      "legacy_id": "060",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "061",
+      "kind": "hold",
+      "at_ms": 83250,
+      "duration_s": 5,
+      "chapter": "09 · Reuse the questions",
+      "title": "Drew’s case reaches the same proposed result.",
+      "subtitle": "Its own notice and later email support that assessment.",
+      "crop": [
+        570,
+        290,
+        1110,
+        415
+      ],
+      "focus": [
+        [
+          590,
+          420,
+          1060,
+          115
+        ]
+      ],
+      "purpose": "outcome",
+      "label": "Drew’s proposed result",
+      "frames": 150,
+      "start_frame": 7988,
+      "end_frame": 8138,
+      "words": 16,
+      "source_frame": 2497,
+      "legacy_id": "061",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "id": "062",
+      "kind": "play",
+      "start_ms": 83250,
+      "end_ms": 88050,
+      "duration_s": 4.8,
+      "chapter": "09 · Reuse the questions",
+      "title": "Drew’s case reaches the same proposed result.",
+      "subtitle": "Its own notice and later email support that assessment.",
+      "crop": [
+        570,
+        290,
+        1110,
+        415
+      ],
+      "focus": [],
+      "purpose": "outcome",
+      "frames": 144,
+      "start_frame": 8138,
+      "end_frame": 8282,
+      "words": 16,
+      "source_frame": 2498,
+      "legacy_id": "062",
+      "case_badge": "DREW SHAW · LATER CASE"
+    },
+    {
+      "kind": "hold",
+      "at_ms": 88049,
+      "duration_s": 4,
+      "chapter": "10 · Keep the reasoning visible",
+      "title": "Keep each case’s reasoning available to inspect.",
+      "subtitle": "",
+      "crop": [
+        570,
+        290,
+        1110,
+        415
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "transition": "chapter",
+      "bridge": true,
+      "id": "063",
+      "frames": 120,
+      "start_frame": 8282,
+      "end_frame": 8402,
+      "words": 7,
+      "source_frame": 2641,
+      "legacy_id": "063"
+    },
+    {
+      "id": "064",
+      "kind": "play",
+      "start_ms": 88050,
+      "end_ms": 88950,
+      "duration_s": 0.9,
+      "chapter": "10 · Keep the reasoning visible",
+      "title": "Keep each case’s reasoning available to inspect.",
+      "subtitle": "",
+      "crop": [
+        570,
+        290,
+        1110,
+        415
+      ],
+      "focus": [],
+      "purpose": "anticipate",
+      "frames": 27,
+      "start_frame": 8402,
+      "end_frame": 8429,
+      "words": 7,
+      "source_frame": 2642,
+      "transition_plate_path": "clean-source-02/plates/case-list.png",
+      "transition_plate_time_ms": 92400,
+      "transition": "source-dissolve",
+      "legacy_id": "064"
+    },
+    {
+      "id": "065",
+      "kind": "hold",
+      "at_ms": 88950,
+      "duration_s": 5,
+      "chapter": "10 · Keep the reasoning visible",
+      "title": "Each row opens a different recorded example.",
+      "subtitle": "Reviewers can return to its steps and sources.",
+      "crop": [
+        40,
+        190,
+        1445,
+        765
+      ],
+      "focus": [
+        [
+          45,
+          265,
+          1430,
+          82
+        ]
+      ],
+      "purpose": "orient",
+      "frames": 150,
+      "start_frame": 8429,
+      "end_frame": 8579,
+      "words": 15,
+      "source_frame": 2668,
+      "plate_path": "clean-source-02/plates/case-list.png",
+      "plate_time_ms": 92400,
+      "label": "One recorded example",
+      "legacy_id": "065"
+    },
+    {
+      "id": "066",
+      "kind": "play",
+      "start_ms": 88950,
+      "end_ms": 93400,
+      "duration_s": 4.433333333333334,
+      "chapter": "10 · Keep the reasoning visible",
+      "title": "The review trail remains available.",
+      "subtitle": "Inspect the evidence, checks and proposed outcome in each case.",
+      "crop": [
+        40,
+        190,
+        1445,
+        765
+      ],
+      "focus": [],
+      "purpose": "demonstrate",
+      "frames": 133,
+      "start_frame": 8579,
+      "end_frame": 8712,
+      "words": 15,
+      "source_frame": 2669,
+      "plate_path": "clean-source-02/plates/case-list.png",
+      "plate_time_ms": 92400,
+      "legacy_id": "066"
+    },
+    {
+      "id": "067",
+      "kind": "play",
+      "start_ms": 93400,
+      "end_ms": 98550,
+      "duration_s": 5.166666666666667,
+      "chapter": "10 · Keep the reasoning visible",
+      "title": "From evidence to a reviewable answer.",
+      "subtitle": "Clear reasons. Reusable checks. Human review.",
+      "crop": [
+        0,
+        195,
+        1920,
+        840
+      ],
+      "focus": [],
+      "layout": "journey",
+      "purpose": "outcome",
+      "nodes": [
+        "Read evidence",
+        "Check requirements",
+        "Explain the proposal",
+        "Prepare for review"
+      ],
+      "frames": 155,
+      "start_frame": 8712,
+      "end_frame": 8867,
+      "words": 12,
+      "source_frame": 2802,
+      "legacy_id": "067"
+    },
+    {
+      "id": "068",
+      "kind": "hold",
+      "duration_s": 2.8333333333333335,
+      "chapter": "10 · Keep the reasoning visible",
+      "title": "From evidence to a reviewable answer.",
+      "subtitle": "Clear reasons. Reusable checks. Human review.",
+      "crop": [
+        0,
+        195,
+        1920,
+        840
+      ],
+      "focus": [],
+      "layout": "journey",
+      "purpose": "outcome",
+      "nodes": [
+        "Read evidence",
+        "Check requirements",
+        "Explain the proposal",
+        "Prepare for review"
+      ],
+      "frames": 85,
+      "start_frame": 8867,
+      "end_frame": 8952,
+      "words": 12,
+      "source_frame": 2956,
+      "at_ms": 98549,
+      "legacy_id": "068",
+      "visual_offset_s": 5.166666666666667
+    }
+  ],
+  "version": 7,
+  "min_bridge_seconds": 4,
+  "source_film_sha256": "c46e86ef75bb6b5f8e5cd997f495810bfa99ce3f07743f2f42f65deb8cf61a82",
+  "source_coverage": "Full recorded source clock mapped in order. Editorial title cards, reframing, chapter dissolves and source-bound orientation plates are explicitly identified.",
+  "editorial_plate_rule": "Only exact clean-capture PNGs with source time and recorded hash; no invented UI states.",
+  "editorial_date_graphic": "Drew's original notice and later email dates, verified against exact hashed artifacts in the sealed recorded-operation fixture at the bound product source commit, cited in later-case-date-proof.json; authored graphic, not a product UI."
+}

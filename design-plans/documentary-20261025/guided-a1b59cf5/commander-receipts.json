@@ -1,0 +1,370 @@
+{
+  "contract": "casepath.guided-documentary-commander-receipts/1",
+  "note": "Actual returned Commander observations and terminal results; final render and both final-media jobs completed with exit 0.",
+  "observations": {
+    "clean_4k_capture": {
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:03:10.273Z",
+      "finishedAt": "2026-10-25T12:03:10.274Z",
+      "observation": true,
+      "receiptPersisted": false,
+      "retrySafe": false,
+      "sessionId": "casepath-20261025-capture-guided-clean-source-4k-v1",
+      "result": {
+        "sessionId": "casepath-20261025-capture-guided-clean-source-4k-v1",
+        "pid": 40906,
+        "state": "completed",
+        "exitCode": 0,
+        "output": "{\"stage\":\"plates_complete\",\"anchors\":27,\"out\":\"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/clean-source-02\"}\n{\"stage\":\"capture\",\"frame\":0,\"total\":2957}\n{\"stage\":\"capture\",\"frame\":300,\"total\":2957}\n{\"stage\":\"capture\",\"frame\":600,\"total\":2957}\n{\"stage\":\"capture\",\"frame\":900,\"total\":2957}\n{\"stage\":\"capture\",\"frame\":1200,\"total\":2957}\n{\"stage\":\"capture\",\"frame\":1500,\"total\":2957}\n{\"stage\":\"capture\",\"frame\":1800,\"total\":2957}\n{\"stage\":\"capture\",\"frame\":2100,\"total\":2957}\n{\"stage\":\"capture\",\"frame\":2400,\"total\":2957}\n{\"stage\":\"capture\",\"frame\":2700,\"total\":2957}\n{\"status\":\"passed\",\"video\":\"CasePath_Clean_Source.mp4\",\"sha256\":\"c46e86ef75bb6b5f8e5cd997f495810bfa99ce3f07743f2f42f65deb8cf61a82\",\"frames\":2957,\"out\":\"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/clean-source-02\"}\n",
+        "offset": 0,
+        "nextOffset": 921,
+        "totalBytes": 921,
+        "truncated": false,
+        "startedAt": "2026-10-25T11:54:35.197Z",
+        "finishedAt": "2026-10-25T12:01:50.413Z"
+      },
+      "connectorOperation": {
+        "operationId": "b0445e9914855d7406d0c8fbf9597d0d0cffaabba4e08b9c36850480e373ab3e",
+        "toolName": "commander_process_output",
+        "requestSha256": "f3058af4cc5592f0842b2636d8c3ab48ffadb6606f857f1ef922aa6135fc964e",
+        "device": "local",
+        "sessionId": "casepath-20261025-capture-guided-clean-source-4k-v1"
+      }
+    },
+    "final_plan_write": {
+      "callId": "casepath-20261025-write-guided-final-plan-provenance",
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:14:41.458Z",
+      "finishedAt": "2026-10-25T12:14:41.495Z",
+      "retrySafe": false,
+      "result": {
+        "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/edit-plan-v7.json",
+        "bytes": 54069,
+        "mode": "rewrite"
+      },
+      "connectorOperation": {
+        "operationId": "9d5e77f37bd2205981e9edd22a138621ff49905548c50f8310dc83416baeddb8",
+        "toolName": "commander_write_file",
+        "requestSha256": "da6abc0a66d538dad174649f6697083a47aef737e322e4b13e45864bf8e62ce9",
+        "device": "local",
+        "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/edit-plan-v7.json",
+        "callId": "casepath-20261025-write-guided-final-plan-provenance"
+      }
+    },
+    "final_compositor_write": {
+      "callId": "casepath-20261025-write-guided-compositor-final-v1",
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:09:25.643Z",
+      "finishedAt": "2026-10-25T12:09:25.666Z",
+      "retrySafe": false,
+      "result": {
+        "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/compose_guided_film.py",
+        "bytes": 19228,
+        "mode": "rewrite"
+      },
+      "connectorOperation": {
+        "operationId": "fde239a9a9c18c8b023381e0fcbde393ad1aeada3ba34be3d1bb028c69a84713",
+        "toolName": "commander_write_file",
+        "requestSha256": "511c530760a8fcde39d0b436cd9cf5819734563e60a80592034b7abc2b9db784",
+        "device": "local",
+        "path": "/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/compose_guided_film.py",
+        "callId": "casepath-20261025-write-guided-compositor-final-v1"
+      }
+    },
+    "final_score": {
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:11:40.401Z",
+      "finishedAt": "2026-10-25T12:11:40.403Z",
+      "observation": true,
+      "receiptPersisted": false,
+      "retrySafe": false,
+      "sessionId": "casepath-20261025-guided-score-render-final-v1",
+      "result": {
+        "sessionId": "casepath-20261025-guided-score-render-final-v1",
+        "pid": 45914,
+        "state": "completed",
+        "exitCode": 0,
+        "output": "{\"rendered_events\": 12, \"total_events\": 94, \"backend\": \"stdlib\"}\n{\"rendered_events\": 24, \"total_events\": 94, \"backend\": \"stdlib\"}\n{\"rendered_events\": 36, \"total_events\": 94, \"backend\": \"stdlib\"}\n{\"rendered_events\": 48, \"total_events\": 94, \"backend\": \"stdlib\"}\n{\"rendered_events\": 60, \"total_events\": 94, \"backend\": \"stdlib\"}\n{\"rendered_events\": 72, \"total_events\": 94, \"backend\": \"stdlib\"}\n{\"rendered_events\": 84, \"total_events\": 94, \"backend\": \"stdlib\"}\n{\"rendered_events\": 94, \"total_events\": 94, \"backend\": \"stdlib\"}\n{\"written\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/score-guided-final.wav\", \"receipt\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/score-guided-final.score.json\", \"seconds\": 298.4, \"sample_rate\": 48000, \"events\": 94, \"peak_target_dbfs\": -7.0, \"backend\": \"stdlib\"}\n",
+        "offset": 0,
+        "nextOffset": 935,
+        "totalBytes": 935,
+        "truncated": false,
+        "startedAt": "2026-10-25T12:08:00.567Z",
+        "finishedAt": "2026-10-25T12:09:27.010Z"
+      },
+      "connectorOperation": {
+        "operationId": "de373a94cb5957daba94de8eff32a4b720bb65f2dce1107235826c1c44ab3d22",
+        "toolName": "commander_process_output",
+        "requestSha256": "4ea42114db8d4b8abb6c4f5309b0f2bbf838fd2cf696b8cba5d9925a3ad1f669",
+        "device": "local",
+        "sessionId": "casepath-20261025-guided-score-render-final-v1"
+      }
+    },
+    "sealed_date_proof": {
+      "callId": "casepath-20261025-write-verified-date-proof-v1",
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:14:30.770Z",
+      "finishedAt": "2026-10-25T12:14:31.166Z",
+      "retrySafe": false,
+      "sessionId": "casepath-20261025-write-verified-date-proof-v1",
+      "result": {
+        "sessionId": "casepath-20261025-write-verified-date-proof-v1",
+        "pid": 48013,
+        "state": "completed",
+        "exitCode": 0,
+        "output": "{\"status\": \"passed\", \"path\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/later-case-date-proof.json\", \"sha256\": \"60be1c48dec43b426ef602a36dd3e5c605c4529c97ad4d0a2862b44cfd9dcc47\", \"artifacts\": [{\"id\": \"src_7cc0cf1a55319c24ca61d6fab075aa4c\", \"text_sha256\": \"a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4\"}, {\"id\": \"src_37f81974b96ecddbf4d9c31dcc6745d7\", \"text_sha256\": \"66717d12a5196d405dbc05f003c39224951dbabdb63522dae601e6718dc95fc7\"}], \"dates\": {\"original_notice\": \"2025-11-22\", \"later_email\": \"2025-11-25\"}, \"basis\": \"Exact, hash-verified source artifacts in the sealed recorded-operation fixture at the bound product source commit.\"}\n",
+        "offset": 0,
+        "nextOffset": 730,
+        "totalBytes": 730,
+        "truncated": false,
+        "startedAt": "2026-10-25T12:14:30.888Z",
+        "finishedAt": "2026-10-25T12:14:31.153Z",
+        "reused": false
+      },
+      "connectorOperation": {
+        "operationId": "4dbd9a74a6a72d71a854f018e598aed04519c1a75160b7fd70a49dd2ec898897",
+        "toolName": "commander_start_process",
+        "requestSha256": "4e6f870089c732ade5221aca19482469afadeb774e536cd15427d04f9f3f1575",
+        "device": "local",
+        "callId": "casepath-20261025-write-verified-date-proof-v1",
+        "sessionId": "casepath-20261025-write-verified-date-proof-v1"
+      }
+    },
+    "prepackage_state": {
+      "callId": "casepath-20261025-guided-prepackage-state-v1",
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:08:55.226Z",
+      "finishedAt": "2026-10-25T12:08:56.299Z",
+      "retrySafe": false,
+      "sessionId": "casepath-20261025-guided-prepackage-state-v1",
+      "result": {
+        "sessionId": "casepath-20261025-guided-prepackage-state-v1",
+        "pid": 46251,
+        "state": "completed",
+        "exitCode": 0,
+        "output": "{\n  \"canonical\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-sites-hosting-20261009\",\n  \"branch\": \"codex/casepath-causal-experience-integration-20261009\",\n  \"head\": \"8e0509f84b1ef21262230243f9aa9ebaeb675d25\",\n  \"status\": \"\",\n  \"remote\": \"8e0509f84b1ef21262230243f9aa9ebaeb675d25\\trefs/heads/codex/casepath-causal-experience-integration-20261009\",\n  \"existing_guided\": false\n}\n",
+        "offset": 0,
+        "nextOffset": 388,
+        "totalBytes": 388,
+        "truncated": false,
+        "startedAt": "2026-10-25T12:08:55.315Z",
+        "finishedAt": "2026-10-25T12:08:56.285Z",
+        "reused": false
+      },
+      "connectorOperation": {
+        "operationId": "d68bd46179d2b33d690e7801da5187107cc8147dacf90aadee4e1b4968e996db",
+        "toolName": "commander_start_process",
+        "requestSha256": "526b9ce788c41af7ff891fb8c19884eb0cedee5aafa1c16b64cdc3609263519f",
+        "device": "local",
+        "callId": "casepath-20261025-guided-prepackage-state-v1",
+        "sessionId": "casepath-20261025-guided-prepackage-state-v1"
+      }
+    },
+    "evidence_worktree": {
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:16:27.854Z",
+      "finishedAt": "2026-10-25T12:16:27.855Z",
+      "observation": true,
+      "receiptPersisted": false,
+      "retrySafe": false,
+      "sessionId": "casepath-20261025-create-guided-evidence-worktree-v1",
+      "result": {
+        "sessionId": "casepath-20261025-create-guided-evidence-worktree-v1",
+        "pid": 48342,
+        "state": "completed",
+        "exitCode": 0,
+        "output": "{\"status\": \"passed\", \"worktree\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-guided-film-evidence-20261025\", \"branch\": \"codex/casepath-guided-film-20261025\", \"base\": \"8e0509f84b1ef21262230243f9aa9ebaeb675d25\", \"git_output\": \"Preparing worktree (new branch 'codex/casepath-guided-film-20261025')\\nHEAD is now at 8e0509f8 Add verified narrated CasePath documentary supplement\"}\n",
+        "offset": 0,
+        "nextOffset": 388,
+        "totalBytes": 388,
+        "truncated": false,
+        "startedAt": "2026-10-25T12:15:33.770Z",
+        "finishedAt": "2026-10-25T12:15:43.016Z"
+      },
+      "connectorOperation": {
+        "operationId": "e2446bba7520f26c20c01500b4f1936b5bd74083c4a19dcecb6817ee354db423",
+        "toolName": "commander_process_output",
+        "requestSha256": "5b030b93a8eb9e16a773018c8686ac6515472870fe1a3ada54e430e44a2c34ae",
+        "device": "local",
+        "sessionId": "casepath-20261025-create-guided-evidence-worktree-v1"
+      }
+    },
+    "date_worker_reconciliation": {
+      "state": "completed",
+      "operationState": "unsubmitted",
+      "result": {
+        "sessionId": "casepath-20261025-date-audit-public-drew-v1",
+        "state": "unsubmitted",
+        "dispatched": false
+      },
+      "retrySafe": false,
+      "connectorOperation": {
+        "operationId": "8c02a936b0fcf1f839f4060dcdb18612f69df6d65c741cc79cc3ff78b676480a",
+        "toolName": "commander_process_output",
+        "requestSha256": "19c23335340a60cd6e60a97d0fe92c27c9ff1219f2e7ad85a91230d588d1198d",
+        "device": "local",
+        "sessionId": "casepath-20261025-date-audit-public-drew-v1"
+      }
+    },
+    "arrow_layout_check": {
+      "callId": "casepath-20261025-guided-arrow-layout-check-v1",
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:09:51.338Z",
+      "finishedAt": "2026-10-25T12:09:52.199Z",
+      "retrySafe": false,
+      "sessionId": "casepath-20261025-guided-arrow-layout-check-v1",
+      "result": {
+        "sessionId": "casepath-20261025-guided-arrow-layout-check-v1",
+        "pid": 46564,
+        "state": "completed",
+        "exitCode": 0,
+        "output": "{\"arrow\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/arrow-final.png\", \"multiline_titles\": [], \"status\": \"passed\"}\n",
+        "offset": 0,
+        "nextOffset": 189,
+        "totalBytes": 189,
+        "truncated": false,
+        "startedAt": "2026-10-25T12:09:51.438Z",
+        "finishedAt": "2026-10-25T12:09:52.181Z",
+        "reused": false
+      },
+      "connectorOperation": {
+        "operationId": "ddc963964fd0023458b3c2fc4aa288fb0f99140abf036db097f580e4b149074e",
+        "toolName": "commander_start_process",
+        "requestSha256": "58f0d9a7c3f1e97b43ce9b6a293742dcefac67d6978888c70b4fa31afc7c60e8",
+        "device": "local",
+        "callId": "casepath-20261025-guided-arrow-layout-check-v1",
+        "sessionId": "casepath-20261025-guided-arrow-layout-check-v1"
+      }
+    },
+    "final_render": {
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:23:59.425Z",
+      "finishedAt": "2026-10-25T12:23:59.425Z",
+      "observation": true,
+      "receiptPersisted": false,
+      "retrySafe": false,
+      "sessionId": "casepath-20261025-guided-final-render-v1",
+      "result": {
+        "sessionId": "casepath-20261025-guided-final-render-v1",
+        "pid": 48074,
+        "state": "completed",
+        "exitCode": 0,
+        "output": "{\"stage\": \"render\", \"shot\": \"001\", \"of\": 72, \"film_seconds\": 8.0}\n{\"stage\": \"render\", \"shot\": \"002\", \"of\": 72, \"film_seconds\": 15.0}\n{\"stage\": \"render\", \"shot\": \"003\", \"of\": 72, \"film_seconds\": 19.7}\n{\"stage\": \"render\", \"shot\": \"004\", \"of\": 72, \"film_seconds\": 22.5}\n{\"stage\": \"render\", \"shot\": \"005\", \"of\": 72, \"film_seconds\": 27.5}\n{\"stage\": \"render\", \"shot\": \"006\", \"of\": 72, \"film_seconds\": 32.5}\n{\"stage\": \"render\", \"shot\": \"007\", \"of\": 72, \"film_seconds\": 37.5}\n{\"stage\": \"render\", \"shot\": \"008\", \"of\": 72, \"film_seconds\": 42.06666666666667}\n{\"stage\": \"render\", \"shot\": \"009\", \"of\": 72, \"film_seconds\": 48.06666666666667}\n{\"stage\": \"render\", \"shot\": \"010\", \"of\": 72, \"film_seconds\": 52.46666666666667}\n{\"stage\": \"render\", \"shot\": \"011\", \"of\": 72, \"film_seconds\": 57.46666666666667}\n{\"stage\": \"render\", \"shot\": \"012\", \"of\": 72, \"film_seconds\": 60.0}\n{\"stage\": \"render\", \"shot\": \"013\", \"of\": 72, \"film_seconds\": 64.0}\n{\"stage\": \"render\", \"shot\": \"014\", \"of\": 72, \"film_seconds\": 68.56666666666666}\n{\"stage\": \"render\", \"shot\": \"015a\", \"of\": 72, \"film_seconds\": 72.1}\n{\"stage\": \"render\", \"shot\": \"015b\", \"of\": 72, \"film_seconds\": 74.1}\n{\"stage\": \"render\", \"shot\": \"015c\", \"of\": 72, \"film_seconds\": 78.1}\n{\"stage\": \"render\", \"shot\": \"015d\", \"of\": 72, \"film_seconds\": 79.0}\n{\"stage\": \"render\", \"shot\": \"016\", \"of\": 72, \"film_seconds\": 84.0}\n{\"stage\": \"render\", \"shot\": \"017\", \"of\": 72, \"film_seconds\": 89.0}\n{\"stage\": \"render\", \"shot\": \"018\", \"of\": 72, \"film_seconds\": 95.1}\n{\"stage\": \"render\", \"shot\": \"019\", \"of\": 72, \"film_seconds\": 99.1}\n{\"stage\": \"render\", \"shot\": \"020\", \"of\": 72, \"film_seconds\": 100.0}\n{\"stage\": \"render\", \"shot\": \"021\", \"of\": 72, \"film_seconds\": 106.0}\n{\"stage\": \"render\", \"shot\": \"022\", \"of\": 72, \"film_seconds\": 110.2}\n{\"stage\": \"render\", \"shot\": \"023\", \"of\": 72, \"film_seconds\": 114.2}\n{\"stage\": \"render\", \"shot\": \"024\", \"of\": 72, \"film_seconds\": 115.1}\n{\"stage\": \"render\", \"shot\": \"025\", \"of\": 72, \"film_seconds\": 120.1}\n{\"stage\": \"render\", \"shot\": \"026\", \"of\": 72, \"film_seconds\": 126.1}\n{\"stage\": \"render\", \"shot\": \"027\", \"of\": 72, \"film_seconds\": 131.5}\n{\"stage\": \"render\", \"shot\": \"028\", \"of\": 72, \"film_seconds\": 135.5}\n{\"stage\": \"render\", \"shot\": \"029\", \"of\": 72, \"film_seconds\": 136.4}\n{\"stage\": \"render\", \"shot\": \"030\", \"of\": 72, \"film_seconds\": 142.4}\n{\"stage\": \"render\", \"shot\": \"031\", \"of\": 72, \"film_seconds\": 143.3}\n{\"stage\": \"render\", \"shot\": \"032\", \"of\": 72, \"film_seconds\": 147.3}\n{\"stage\": \"render\", \"shot\": \"033\", \"of\": 72, \"film_seconds\": 147.8}\n{\"stage\": \"render\", \"shot\": \"034\", \"of\": 72, \"film_seconds\": 154.8}\n{\"stage\": \"render\", \"shot\": \"035\", \"of\": 72, \"film_seconds\": 159.8}\n{\"stage\": \"render\", \"shot\": \"036\", \"of\": 72, \"film_seconds\": 162.66666666666666}\n{\"stage\": \"render\", \"shot\": \"037\", \"of\": 72, \"film_seconds\": 167.66666666666666}\n{\"stage\": \"render\", \"shot\": \"038\", \"of\": 72, \"film_seconds\": 172.56666666666666}\n{\"stage\": \"render\", \"shot\": \"039\", \"of\": 72, \"film_seconds\": 178.56666666666666}\n{\"stage\": \"render\", \"shot\": \"040\", \"of\": 72, \"film_seconds\": 181.76666666666668}\n{\"stage\": \"render\", \"shot\": \"041\", \"of\": 72, \"film_seconds\": 184.56666666666666}\n{\"stage\": \"render\", \"shot\": \"042\", \"of\": 72, \"film_seconds\": 188.56666666666666}\n{\"stage\": \"render\", \"shot\": \"043\", \"of\": 72, \"film_seconds\": 192.56666666666666}\n{\"stage\": \"render\", \"shot\": \"044\", \"of\": 72, \"film_seconds\": 193.46666666666667}\n{\"stage\": \"render\", \"shot\": \"045\", \"of\": 72, \"film_seconds\": 200.46666666666667}\n{\"stage\": \"render\", \"shot\": \"046\", \"of\": 72, \"film_seconds\": 204.0}\n{\"stage\": \"render\", \"shot\": \"047\", \"of\": 72, \"film_seconds\": 206.46666666666667}\n{\"stage\": \"render\", \"shot\": \"048\", \"of\": 72, \"film_seconds\": 210.46666666666667}\n{\"stage\": \"render\", \"shot\": \"049\", \"of\": 72, \"film_seconds\": 214.46666666666667}\n{\"stage\": \"render\", \"shot\": \"050\", \"of\": 72, \"film_seconds\": 214.96666666666667}\n{\"stage\": \"render\", \"shot\": \"051\", \"of\": 72, \"film_seconds\": 219.96666666666667}\n{\"stage\": \"render\", \"shot\": \"052\", \"of\": 72, \"film_seconds\": 222.16666666666666}\n{\"stage\": \"render\", \"shot\": \"052b\", \"of\": 72, \"film_seconds\": 230.16666666666666}\n{\"stage\": \"render\", \"shot\": \"053\", \"of\": 72, \"film_seconds\": 235.16666666666666}\n{\"stage\": \"render\", \"shot\": \"054\", \"of\": 72, \"film_seconds\": 240.16666666666666}\n{\"stage\": \"render\", \"shot\": \"055\", \"of\": 72, \"film_seconds\": 246.16666666666666}\n{\"stage\": \"render\", \"shot\": \"056\", \"of\": 72, \"film_seconds\": 254.56666666666666}\n{\"stage\": \"render\", \"shot\": \"057\", \"of\": 72, \"film_seconds\": 258.56666666666666}\n{\"stage\": \"render\", \"shot\": \"058\", \"of\": 72, \"film_seconds\": 261.3666666666667}\n{\"stage\": \"render\", \"shot\": \"059\", \"of\": 72, \"film_seconds\": 265.3666666666667}\n{\"stage\": \"render\", \"shot\": \"060\", \"of\": 72, \"film_seconds\": 266.26666666666665}\n{\"stage\": \"render\", \"shot\": \"061\", \"of\": 72, \"film_seconds\": 271.26666666666665}\n{\"stage\": \"render\", \"shot\": \"062\", \"of\": 72, \"film_seconds\": 276.06666666666666}\n{\"stage\": \"render\", \"shot\": \"063\", \"of\": 72, \"film_seconds\": 280.06666666666666}\n{\"stage\": \"render\", \"shot\": \"064\", \"of\": 72, \"film_seconds\": 280.96666666666664}\n{\"stage\": \"render\", \"shot\": \"065\", \"of\": 72, \"film_seconds\": 285.96666666666664}\n{\"stage\": \"render\", \"shot\": \"066\", \"of\": 72, \"film_seconds\": 290.4}\n{\"stage\": \"render\", \"shot\": \"067\", \"of\": 72, \"film_seconds\": 295.56666666666666}\n{\"stage\": \"render\", \"shot\": \"068\", \"of\": 72, \"film_seconds\": 298.4}\n{\"status\": \"passed\", \"out\": \"/Users/kumar0002/Documents/Die Mobiliar/.work/casepath-commander-documentary-20261024/.runtime/guided-film-20261025/final-render\", \"preview_only\": false, \"frames\": 8952, \"seconds\": 298.4, \"video\": \"607794b382dbf533d8762ff3fbf41cab46ac698a2e8e3e5b355d6964644d8b87\"}\n",
+        "offset": 0,
+        "nextOffset": 5638,
+        "totalBytes": 5638,
+        "truncated": false,
+        "startedAt": "2026-10-25T12:14:43.343Z",
+        "finishedAt": "2026-10-25T12:23:20.032Z"
+      },
+      "connectorOperation": {
+        "operationId": "682e0fa1f24e13382f8c3ea412ab85605ca0d2e2670a651b0a1403ad681f258f",
+        "toolName": "commander_process_output",
+        "requestSha256": "19fdd0c5ad703313f607e4f9886c77e64da5b799efd963c859ea5a3d75f38b55",
+        "device": "local",
+        "sessionId": "casepath-20261025-guided-final-render-v1"
+      }
+    },
+    "final_media_pipeline": {
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:24:37.385Z",
+      "finishedAt": "2026-10-25T12:24:37.387Z",
+      "observation": true,
+      "receiptPersisted": false,
+      "retrySafe": false,
+      "sessionId": "casepath-20261025-guided-final-media-pipeline-v1",
+      "result": {
+        "sessionId": "casepath-20261025-guided-final-media-pipeline-v1",
+        "pid": 49089,
+        "state": "completed",
+        "exitCode": 0,
+        "output": "{\"stage\": \"final_media_checks\", \"frames\": 8952}\n{\"stage\": \"completed\", \"jobs\": [{\"job\": \"master\", \"exit_code\": 0, \"log\": \"final-master.log\"}, {\"job\": \"visual-qa\", \"exit_code\": 0, \"log\": \"final-visual-qa.log\"}], \"passed\": true}\n",
+        "offset": 0,
+        "nextOffset": 227,
+        "totalBytes": 227,
+        "truncated": false,
+        "startedAt": "2026-10-25T12:17:49.196Z",
+        "finishedAt": "2026-10-25T12:24:22.006Z"
+      },
+      "connectorOperation": {
+        "operationId": "33989321326346198bc0e0946b8c1b63fccc064c2d41bba1068c43851b8cb919",
+        "toolName": "commander_process_output",
+        "requestSha256": "ff8b313a81025c9ec797da611fe41364cc09ed6ab17af4ec3a3a6a2e7864866e",
+        "device": "local",
+        "sessionId": "casepath-20261025-guided-final-media-pipeline-v1"
+      }
+    },
+    "media_results": {
+      "callId": "casepath-20261025-guided-media-results-read-v1",
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:24:38.114Z",
+      "finishedAt": "2026-10-25T12:24:38.372Z",
+      "retrySafe": false,
+      "sessionId": "casepath-20261025-guided-media-results-read-v1",
+      "result": {
+        "sessionId": "casepath-20261025-guided-media-results-read-v1",
+        "pid": 53647,
+        "state": "completed",
+        "exitCode": 0,
+        "output": "{\"passed\": true, \"output_sha256\": \"f09239b0ea18a4cf85dc831919e7733dacbe97d30a4bbe3e40fc767b31c402d7\", \"output_bytes\": 30939883, \"video_frames\": 8952, \"duration_seconds\": 298.4, \"measured_integrated_lufs\": -20.02, \"measured_true_peak_dbtp\": -3.74, \"originals_unchanged\": true, \"encoded_video_sha256\": {\"source\": \"566911404f772550435088b049815782b83196c3025b3d2332e3202ee1ee6b69\", \"output\": \"566911404f772550435088b049815782b83196c3025b3d2332e3202ee1ee6b69\"}, \"failure\": null}\n",
+        "offset": 0,
+        "nextOffset": 475,
+        "totalBytes": 475,
+        "truncated": false,
+        "startedAt": "2026-10-25T12:24:38.232Z",
+        "finishedAt": "2026-10-25T12:24:38.336Z",
+        "reused": false
+      },
+      "connectorOperation": {
+        "operationId": "b2831b0e20e332b58fc68269928b354ee833b6c20831483e0d28c0b9e60ef31e",
+        "toolName": "commander_start_process",
+        "requestSha256": "532fe4f071888cbf120929d72356da44fe6969c5fabf0b4a99042f9bd9dd3ef6",
+        "device": "local",
+        "callId": "casepath-20261025-guided-media-results-read-v1",
+        "sessionId": "casepath-20261025-guided-media-results-read-v1"
+      }
+    },
+    "final_temporal_review": {
+      "callId": "casepath-20261025-finalize-guided-qa-evidence-v1",
+      "state": "completed",
+      "operationState": "completed",
+      "startedAt": "2026-10-25T12:25:18.988Z",
+      "finishedAt": "2026-10-25T12:25:19.265Z",
+      "retrySafe": false,
+      "sessionId": "casepath-20261025-finalize-guided-qa-evidence-v1",
+      "result": {
+        "sessionId": "casepath-20261025-finalize-guided-qa-evidence-v1",
+        "pid": 53884,
+        "state": "completed",
+        "exitCode": 0,
+        "output": "{\"status\": \"passed\", \"qa_sha256\": \"e85b1774ad294dd84beb47bac91c45048fb90a5b8a0af0f9a72e7b90298d98a1\", \"encoded_shots\": 72, \"temporal_sequences\": 5, \"music\": {\"status\": \"passed\", \"receipt_sha256\": \"ebec4f0a375aa1b392d682450f2edc42a3540108cecff3ba00f7f25a7392896c\", \"sha256\": \"f09239b0ea18a4cf85dc831919e7733dacbe97d30a4bbe3e40fc767b31c402d7\", \"bytes\": 30939883, \"integrated_lufs\": -20.02, \"true_peak_dbtp\": -3.74, \"encoded_picture_identical\": true}}\n",
+        "offset": 0,
+        "nextOffset": 449,
+        "totalBytes": 449,
+        "truncated": false,
+        "startedAt": "2026-10-25T12:25:19.128Z",
+        "finishedAt": "2026-10-25T12:25:19.228Z",
+        "reused": false
+      },
+      "connectorOperation": {
+        "operationId": "aeaa685a59d57b6abd6c8398ea5f6c2ebbfd85c99e08d81f509f7ee808887668",
+        "toolName": "commander_start_process",
+        "requestSha256": "44c073a3bed69deb9619e3bcbf5eb16417005202a3463c3e3e00b18831eef4f7",
+        "device": "local",
+        "callId": "casepath-20261025-finalize-guided-qa-evidence-v1",
+        "sessionId": "casepath-20261025-finalize-guided-qa-evidence-v1"
+      }
+    }
+  }
+}

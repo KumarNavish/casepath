@@ -1,0 +1,44 @@
+{
+  "contract": "casepath.guided-documentary-date-proof/1",
+  "status": "passed",
+  "verified_at": "2026-10-25T12:14:31Z",
+  "basis": "Exact, hash-verified source artifacts in the sealed recorded-operation fixture at the bound product source commit.",
+  "product_source": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "claim_id": "clm_7dbd7c7d1c4ddf90",
+  "case_name": "Drew Shaw",
+  "dates": {
+    "original_notice": "2025-11-22",
+    "later_email": "2025-11-25"
+  },
+  "fixture": {
+    "path": "casepath-qa/fixtures/desk-v3.json.gz",
+    "sha256": "1d718c6737ddf2bfca6c5a31ca439617f4d66fdb07b1d9a03881303d9fc1636c",
+    "recorded_trace_sha256": "f85264a981ac5ad75f364b0668ee1b3749f8aec6cce1ee2ad18b33b913eeeeec",
+    "captured_at": "2026-10-21T10:15:41.778Z"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "src_7cc0cf1a55319c24ca61d6fab075aa4c",
+      "file_name": "01-ordinary-tenancy-and-original-notification-packet.txt",
+      "text": "Synthetic demonstration document (fictional)\nSource date: 2025-11-29\nReview as-of: 2025-11-29\n\nI, Drew Shaw, rent the dwelling atZollikerstrasse 11, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.\n\nThe landlord's managing agent Nova Régie SA notified this proposed increase on2025-11-22T18:00:00+01:00. The sole contemporaneous attachment was Mietzinserhoehung_Formular_Drew-Shaw_2025-11-22.pdf: all three pages1/3,2/3,3/3, new netCHF1975 from1April2026 and unchanged advances, grossCHF2215. No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received. The printed reason field was blank; its standard separate-letter label did not correspond to an attached letter.\n\nMy active request is assessment of the original notice's missing-reasons/nullity ground and preparation of a protective objection. I do not seek a finding of excessive rent, a reference-rate calculation or a cost allocation decision. This packet confirmation clarifies the previously unknown notification date and basis; no challenge has been filed and no communication has been sent.\n",
+      "text_sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4",
+      "sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4",
+      "complete": true
+    },
+    {
+      "artifact_id": "src_37f81974b96ecddbf4d9c31dcc6745d7",
+      "file_name": "02-later-email-and-original-absence-of-reasons.txt",
+      "text": "Synthetic demonstration document (fictional)\nSource date: 2025-11-25\nReview as-of: 2025-11-29\n\nEmail archive: FromNova Régie SA toDrew Shaw; Date2025-11-25 at10:00+01:00; Subject: Reply to your question about the rent increase. Message text: 'The rent is being adjusted to the market.' No calculation or other attachment accompanied this reply. This reply was sent after the tenant asked about the already received notice; it did not accompany the original communication.\n\nThe managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification. The later reply is retained as adverse/contextual evidence rather than silently treated as an original reason. The form's mechanically reproduced signature is not relied on as a defect.\n",
+      "text_sha256": "66717d12a5196d405dbc05f003c39224951dbabdb63522dae601e6718dc95fc7",
+      "sha256": "66717d12a5196d405dbc05f003c39224951dbabdb63522dae601e6718dc95fc7",
+      "complete": true
+    }
+  ],
+  "public_live_check": {
+    "independently_completed": false,
+    "urllib_status": 403,
+    "attempted_route": "https://casepath-agent.fastapicloud.dev/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/operations?mode=recorded",
+    "note": "The independent network date check did not complete; the dates are verified against the sealed recorded fixture. Public UI/source deployment identity was independently verified by the successful clean capture."
+  },
+  "display_rule": "Authored chronology graphic, explicitly marked as recorded document dates; not a synthetic product UI state."
+}

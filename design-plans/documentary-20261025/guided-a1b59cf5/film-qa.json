@@ -1,0 +1,1367 @@
+{
+  "contract": "casepath.guided-documentary-qa/1",
+  "status": "passed",
+  "created_at": "2026-10-25T12:23:47Z",
+  "source_commit": "a1b59cf5d78662b35790a11cfd2d46851310482d",
+  "plan_sha256": "736060e7043b83a6e4d461e71a867e42fb85455c72d514bf9e58df9d4ca6bec1",
+  "film_sha256": "607794b382dbf533d8762ff3fbf41cab46ac698a2e8e3e5b355d6964644d8b87",
+  "frames": 8952,
+  "seconds": 298.4,
+  "source_raster": [
+    3840,
+    2160
+  ],
+  "export_raster": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "source_clock_coverage": 2957,
+  "all_shot_encoded_comparisons": [
+    {
+      "shot": "001",
+      "film_frame": 120,
+      "mean_absolute_rgb_error": 0.105142,
+      "encoded_sha256": "ead66bcbcd7ba04dfe01ada9428806ddd7a68eeb14234b2dbabcd41cc6a61014"
+    },
+    {
+      "shot": "002",
+      "film_frame": 345,
+      "mean_absolute_rgb_error": 0.13348,
+      "encoded_sha256": "de1ff0a795c24ffe800a5331abc075ebf9686b0c674eb39556805b6e216c5df4"
+    },
+    {
+      "shot": "003",
+      "film_frame": 520,
+      "mean_absolute_rgb_error": 0.13095,
+      "encoded_sha256": "74da2d5bea641cc3724c0777257bc1840140b7f48082c5e78e955fe82d5d20e5"
+    },
+    {
+      "shot": "004",
+      "film_frame": 633,
+      "mean_absolute_rgb_error": 0.353362,
+      "encoded_sha256": "51d875bd601c8db127384b0037ffa760b1b7e296970eb4dee5f8588b3b35fcd5"
+    },
+    {
+      "shot": "005",
+      "film_frame": 750,
+      "mean_absolute_rgb_error": 0.380083,
+      "encoded_sha256": "6d00b5e6943dbd9553638cbe22aba5c2f5cda81b22db25e940fc9004ff71ab48"
+    },
+    {
+      "shot": "006",
+      "film_frame": 900,
+      "mean_absolute_rgb_error": 0.386326,
+      "encoded_sha256": "449a341665a57386eca49aa90f5663840d014043417450461faf099b559312e2"
+    },
+    {
+      "shot": "007",
+      "film_frame": 1050,
+      "mean_absolute_rgb_error": 0.354469,
+      "encoded_sha256": "feba8d5ec694ce5a9493689bd68df16b3fffbca4514ab960d5e8a04a7c1b8779"
+    },
+    {
+      "shot": "008",
+      "film_frame": 1193,
+      "mean_absolute_rgb_error": 0.217746,
+      "encoded_sha256": "e431124f7a83110e336f5b5d558e549add35a6e2c0da1bce44534519ad86f900"
+    },
+    {
+      "shot": "009",
+      "film_frame": 1352,
+      "mean_absolute_rgb_error": 0.399573,
+      "encoded_sha256": "25540832cfeff14731ca14a189ee4c5e5dbd4a8da38b1493cd2a3db8d7cf1fee"
+    },
+    {
+      "shot": "010",
+      "film_frame": 1508,
+      "mean_absolute_rgb_error": 0.29694,
+      "encoded_sha256": "430ed93ddb60d0a756da33958d552d66f16100137d1fe5aaf2bc627a3fcdee28"
+    },
+    {
+      "shot": "011",
+      "film_frame": 1649,
+      "mean_absolute_rgb_error": 0.489382,
+      "encoded_sha256": "44cfd699b1b01dbfe7439bf3ea8ed714e44a2513c0e419274423b678a4995455"
+    },
+    {
+      "shot": "012",
+      "film_frame": 1762,
+      "mean_absolute_rgb_error": 0.258915,
+      "encoded_sha256": "fc1704aee37687bbdb4b050a7c35213f5dad07a69be3847a242664aae1b9f46c"
+    },
+    {
+      "shot": "013",
+      "film_frame": 1860,
+      "mean_absolute_rgb_error": 0.465544,
+      "encoded_sha256": "1f3c502aea0bd9c52149014ceae638cbd80e1f9053b9ddde27b1b9f6f32c302d"
+    },
+    {
+      "shot": "014",
+      "film_frame": 1988,
+      "mean_absolute_rgb_error": 0.197445,
+      "encoded_sha256": "20b60a08d045efe5fd29ad5efd403932f4506dcf79651c35aaf347e94bf93bf7"
+    },
+    {
+      "shot": "015a",
+      "film_frame": 2110,
+      "mean_absolute_rgb_error": 0.184185,
+      "encoded_sha256": "686d614560552c5b3f31e791ebd48a50433b5fbe957441de7f941356171cd00e"
+    },
+    {
+      "shot": "015b",
+      "film_frame": 2193,
+      "mean_absolute_rgb_error": 0.178744,
+      "encoded_sha256": "4aa25152a61675cd77910fac472921804decdcc0b4920baf9b164c8f3c514708"
+    },
+    {
+      "shot": "015c",
+      "film_frame": 2283,
+      "mean_absolute_rgb_error": 0.199264,
+      "encoded_sha256": "78be51178a2c3d6f490a0c7cfc7efdd759c1da607288e7eea000b0596bfa339d"
+    },
+    {
+      "shot": "015d",
+      "film_frame": 2356,
+      "mean_absolute_rgb_error": 0.354736,
+      "encoded_sha256": "fb09aeb13d1bae7c4d9c0bcd06117c55946c5137fbc7ab652be63901b4ae360e"
+    },
+    {
+      "shot": "016",
+      "film_frame": 2445,
+      "mean_absolute_rgb_error": 0.497971,
+      "encoded_sha256": "41b29cb288a396e7fd8297fe5a5b75c1a05b7a78300d9b9973d49ba10263401e"
+    },
+    {
+      "shot": "017",
+      "film_frame": 2595,
+      "mean_absolute_rgb_error": 0.482214,
+      "encoded_sha256": "68e1e41fe2c78cfa87d8228aec1c301f8a21aa65d38ca7fd9a9a55e798879297"
+    },
+    {
+      "shot": "018",
+      "film_frame": 2761,
+      "mean_absolute_rgb_error": 0.256779,
+      "encoded_sha256": "227950895afec3ffde16b9c4b63fe5e615cf497cea01a82a69730be5cece480f"
+    },
+    {
+      "shot": "019",
+      "film_frame": 2913,
+      "mean_absolute_rgb_error": 0.297325,
+      "encoded_sha256": "2cfe8e17b468d86a32fe259ce8d8f8f601e9b564fabc2f50b0a1a2ae821e32ca"
+    },
+    {
+      "shot": "020",
+      "film_frame": 2986,
+      "mean_absolute_rgb_error": 0.287119,
+      "encoded_sha256": "b8a88ab4e864701aa811cf8d65f5f7220b4abb2ec7d4fc048351214cbacb2e93"
+    },
+    {
+      "shot": "021",
+      "film_frame": 3090,
+      "mean_absolute_rgb_error": 0.402003,
+      "encoded_sha256": "752ade201822a00da1b0172a7df233cf587eaefc9f9ac56b96e6cbd09ad95756"
+    },
+    {
+      "shot": "022",
+      "film_frame": 3243,
+      "mean_absolute_rgb_error": 0.356196,
+      "encoded_sha256": "f292fbc66bf789ad09e26573d028837dc308bc548060dae5ae5881ad13bb5032"
+    },
+    {
+      "shot": "023",
+      "film_frame": 3366,
+      "mean_absolute_rgb_error": 0.112742,
+      "encoded_sha256": "e77522fa06dac6a1f2ce2651b36492b9c3107a463f2f362a5899c1fab9a5db96"
+    },
+    {
+      "shot": "024",
+      "film_frame": 3439,
+      "mean_absolute_rgb_error": 0.290937,
+      "encoded_sha256": "f00f07d392dce1e776955153f2626372e44cff45b6790e59be53468b2a0e23a0"
+    },
+    {
+      "shot": "025",
+      "film_frame": 3528,
+      "mean_absolute_rgb_error": 0.389382,
+      "encoded_sha256": "c27126fa1535cab5dcd321566791e1ea83637567ef1cfc26f35f6525c1e00c71"
+    },
+    {
+      "shot": "026",
+      "film_frame": 3693,
+      "mean_absolute_rgb_error": 0.373374,
+      "encoded_sha256": "f91d9f48175751e39c5c989c065faf5c87018bfb2fa01e36763f9d6f7b5ee578"
+    },
+    {
+      "shot": "027",
+      "film_frame": 3864,
+      "mean_absolute_rgb_error": 0.343882,
+      "encoded_sha256": "9f2782f1a63177d031456ffeece64bfa490210aed5f8a7c39be74431d27b5818"
+    },
+    {
+      "shot": "028",
+      "film_frame": 4005,
+      "mean_absolute_rgb_error": 0.195024,
+      "encoded_sha256": "117ae7dc69627cbf059556696921be97a7bce645d192241896b3ffb9b78f0888"
+    },
+    {
+      "shot": "029",
+      "film_frame": 4078,
+      "mean_absolute_rgb_error": 0.225594,
+      "encoded_sha256": "f4c9496c0b3b0218e2889b93778bee04906512d63a254478f7a2c0c9abcc882c"
+    },
+    {
+      "shot": "030",
+      "film_frame": 4182,
+      "mean_absolute_rgb_error": 0.330865,
+      "encoded_sha256": "14c30ed3fe4cf9edaaf8e2c03e8b451c4cfde5a454d392ca780ea09e25bf0ee7"
+    },
+    {
+      "shot": "031",
+      "film_frame": 4285,
+      "mean_absolute_rgb_error": 0.125697,
+      "encoded_sha256": "6f91c0ae17084141ab2a143c28ec3921294aa03c75f7a9dd8bf2b72f6fd01a56"
+    },
+    {
+      "shot": "032",
+      "film_frame": 4359,
+      "mean_absolute_rgb_error": 0.136267,
+      "encoded_sha256": "89f2f8d291054e4313893c2c2291d045a121302a3e139aca8fc752f601bc130f"
+    },
+    {
+      "shot": "033",
+      "film_frame": 4426,
+      "mean_absolute_rgb_error": 0.190858,
+      "encoded_sha256": "8d3dd4b65a9e220a11012cd5a8b91978b6429199d2a15ddb4be065dba4df539e"
+    },
+    {
+      "shot": "034",
+      "film_frame": 4539,
+      "mean_absolute_rgb_error": 0.370059,
+      "encoded_sha256": "dcdb759e0297cec07d4218b1680b1f176247a2074b91e1d2b0007cb7afe36ee5"
+    },
+    {
+      "shot": "035",
+      "film_frame": 4719,
+      "mean_absolute_rgb_error": 0.339623,
+      "encoded_sha256": "1c6e4332e807540dfe6c55d8d3141a4e68b128e968354a940e7a613e1533ab49"
+    },
+    {
+      "shot": "036",
+      "film_frame": 4837,
+      "mean_absolute_rgb_error": 0.422622,
+      "encoded_sha256": "1fd225dfc2bd87993b3a9b60e53022ea648c16328dc21158954974ba146c33be"
+    },
+    {
+      "shot": "037",
+      "film_frame": 4955,
+      "mean_absolute_rgb_error": 0.356133,
+      "encoded_sha256": "30750bb1ffacf7a6a3f3dc471995f5f4ff3d40377fe4efa5c8cfdcc3a07122c5"
+    },
+    {
+      "shot": "038",
+      "film_frame": 5103,
+      "mean_absolute_rgb_error": 0.441639,
+      "encoded_sha256": "4a5bd987ddff2dd7f5c1cfb3acef0eb61584e9112c60b98181240e7c70185a03"
+    },
+    {
+      "shot": "039",
+      "film_frame": 5267,
+      "mean_absolute_rgb_error": 0.4606,
+      "encoded_sha256": "1cd5a10a0691f08015f712f99dd8391321853442a5dca50ce13a65d8e85762d3"
+    },
+    {
+      "shot": "040",
+      "film_frame": 5405,
+      "mean_absolute_rgb_error": 0.209084,
+      "encoded_sha256": "69fcf437383c44c9f05e54c8a92c988f7f3ba0896d364e8d89b7f9e36a0c00bd"
+    },
+    {
+      "shot": "041",
+      "film_frame": 5495,
+      "mean_absolute_rgb_error": 0.413338,
+      "encoded_sha256": "134e3f7d9832bc9360533f038061e13c38c594f70bf8e20bf324ea33ee9fb937"
+    },
+    {
+      "shot": "042",
+      "film_frame": 5597,
+      "mean_absolute_rgb_error": 0.418462,
+      "encoded_sha256": "c45e1bc9aa7c43331e2d7e2fa7b4eb1ce5a4ae66ea749682c9ed4be8b84ddd62"
+    },
+    {
+      "shot": "043",
+      "film_frame": 5717,
+      "mean_absolute_rgb_error": 0.180651,
+      "encoded_sha256": "e7c7a755b05414f0360c60b65e57b702aaf1b7f2fda1a408f72f15c7a78c3fb1"
+    },
+    {
+      "shot": "044",
+      "film_frame": 5790,
+      "mean_absolute_rgb_error": 0.227822,
+      "encoded_sha256": "0c8a5017fa0bbafad174f4f38a68405234927c1ba91790f6979619e85ceced23"
+    },
+    {
+      "shot": "045",
+      "film_frame": 5909,
+      "mean_absolute_rgb_error": 0.354927,
+      "encoded_sha256": "45bc0b1dccb655cc850c96bea8325d071d25891350db69a0d614f2d5ba9b6bd2"
+    },
+    {
+      "shot": "046",
+      "film_frame": 6067,
+      "mean_absolute_rgb_error": 0.373909,
+      "encoded_sha256": "b01f04a0a994b15ad59ef5f5cfd5708933354388191469a4b5eb40414b76113d"
+    },
+    {
+      "shot": "047",
+      "film_frame": 6157,
+      "mean_absolute_rgb_error": 0.368666,
+      "encoded_sha256": "2e164f30632dc52276f90441816d25149dfe69c2640af39cabdbaf45642d3653"
+    },
+    {
+      "shot": "048",
+      "film_frame": 6254,
+      "mean_absolute_rgb_error": 0.40593,
+      "encoded_sha256": "9c1848c7cbec024e65d59983c91d40be682d864ef7274b0c37d6eb63dc1f6741"
+    },
+    {
+      "shot": "049",
+      "film_frame": 6374,
+      "mean_absolute_rgb_error": 0.168828,
+      "encoded_sha256": "a315886307998b6f97cd12d27d26bc0c1b04df59752e059bb7d9e7e6e1df7884"
+    },
+    {
+      "shot": "050",
+      "film_frame": 6441,
+      "mean_absolute_rgb_error": 0.332034,
+      "encoded_sha256": "bb62ec98baeb0d54b6df161e177110aefa1ae5096fdeb36877409ec63790ad43"
+    },
+    {
+      "shot": "051",
+      "film_frame": 6524,
+      "mean_absolute_rgb_error": 0.429143,
+      "encoded_sha256": "6f79d02e6cfec37e7d5a243774d48fd5f077a441387ab081611d6d698aa2a740"
+    },
+    {
+      "shot": "052",
+      "film_frame": 6632,
+      "mean_absolute_rgb_error": 0.289227,
+      "encoded_sha256": "27ef048fcb6bc9cd12a6d552c9f90aec4c84303c52c7670f53733ce0d2f5b792"
+    },
+    {
+      "shot": "052b",
+      "film_frame": 6785,
+      "mean_absolute_rgb_error": 0.193321,
+      "encoded_sha256": "97a59e853aadde2e7b448c5eba067a6d838639fd1280fcc948b1409361a038e3"
+    },
+    {
+      "shot": "053",
+      "film_frame": 6980,
+      "mean_absolute_rgb_error": 0.427805,
+      "encoded_sha256": "4a223c51aa27e9dd38077aa34744cc664af0ab3ff211017bddd20c55d8827cfd"
+    },
+    {
+      "shot": "054",
+      "film_frame": 7130,
+      "mean_absolute_rgb_error": 0.461188,
+      "encoded_sha256": "f76ab7745cc1b77ae7567baa40981e08b4282cfc2d7da0a050ff6419b4edb29a"
+    },
+    {
+      "shot": "055",
+      "film_frame": 7295,
+      "mean_absolute_rgb_error": 0.501942,
+      "encoded_sha256": "2f8f56ee1144d560104e8c117819378b6404f5995d51d69d7031da5d7d162d50"
+    },
+    {
+      "shot": "056",
+      "film_frame": 7511,
+      "mean_absolute_rgb_error": 0.301288,
+      "encoded_sha256": "5ee9fae533390362591ce9d6ffb9998e1f49d821cfb5eed327dd709576a6fa78"
+    },
+    {
+      "shot": "057",
+      "film_frame": 7697,
+      "mean_absolute_rgb_error": 0.467903,
+      "encoded_sha256": "0bddb8f5afe00f34d180943a6643b439a1984b978fb1974f599a1f6566e3b83e"
+    },
+    {
+      "shot": "058",
+      "film_frame": 7799,
+      "mean_absolute_rgb_error": 0.333106,
+      "encoded_sha256": "4b596027ce431df579dd9d368077f6d18da345cba9ed05221cc2bc15c9bffc69"
+    },
+    {
+      "shot": "059",
+      "film_frame": 7901,
+      "mean_absolute_rgb_error": 0.353755,
+      "encoded_sha256": "0f2ce13db7165f953ddc43481312217e11d9e902e87248be6aee63b9bffdefe0"
+    },
+    {
+      "shot": "060",
+      "film_frame": 7974,
+      "mean_absolute_rgb_error": 0.337668,
+      "encoded_sha256": "5f9169137b6c316ea1a10a06d67b6c8ed795e4bcf1a348d3b9d326efdba1edbf"
+    },
+    {
+      "shot": "061",
+      "film_frame": 8063,
+      "mean_absolute_rgb_error": 0.470915,
+      "encoded_sha256": "b338cda9435fb30e7a363d6978d4056b1514a7b631896e88025293499635f2aa"
+    },
+    {
+      "shot": "062",
+      "film_frame": 8210,
+      "mean_absolute_rgb_error": 0.192097,
+      "encoded_sha256": "0b007e808f04c1f6d091d6f053d04c3d4835316c2ee23e6814290a5d25023c48"
+    },
+    {
+      "shot": "063",
+      "film_frame": 8342,
+      "mean_absolute_rgb_error": 0.221719,
+      "encoded_sha256": "0a4dcbc535db0d71a59bdb90d71f091c350ca6ac50f6141a35fe03871556ff1e"
+    },
+    {
+      "shot": "064",
+      "film_frame": 8415,
+      "mean_absolute_rgb_error": 0.241065,
+      "encoded_sha256": "e4e00d721f79dfdd53b826e548962d873e687296d3d2129a42277655474df0fe"
+    },
+    {
+      "shot": "065",
+      "film_frame": 8504,
+      "mean_absolute_rgb_error": 0.551269,
+      "encoded_sha256": "ee66ef36cd58c0a516bdcb4b753ce4ae7b98f38606caeb7f7c0653dd69b8b256"
+    },
+    {
+      "shot": "066",
+      "film_frame": 8645,
+      "mean_absolute_rgb_error": 0.313033,
+      "encoded_sha256": "276893780c963dbb8e96f774fd678aaa9a63845706d863d504e0566b716232b4"
+    },
+    {
+      "shot": "067",
+      "film_frame": 8789,
+      "mean_absolute_rgb_error": 0.151713,
+      "encoded_sha256": "b35034d48589d2d1039feed1db5abecc060d0af49308ebd1554d9b3599e809f9"
+    },
+    {
+      "shot": "068",
+      "film_frame": 8909,
+      "mean_absolute_rgb_error": 0.178267,
+      "encoded_sha256": "fbceb4337b0def753b7b750fffcc330d139328e653963929cd7c4a8d1f1af8a2"
+    }
+  ],
+  "max_mean_absolute_rgb_error": 0.551269,
+  "reading_windows": [
+    {
+      "copy": [
+        "A rent increase arrives.",
+        "Does the notice meet the rules?"
+      ],
+      "start_frame": 0,
+      "end_frame": 240,
+      "shots": [
+        "001"
+      ],
+      "seconds": 8.0,
+      "words": 10,
+      "words_per_second": 1.25
+    },
+    {
+      "copy": [
+        "From documents to a reviewable answer.",
+        "Follow the evidence. See what each check establishes."
+      ],
+      "start_frame": 240,
+      "end_frame": 450,
+      "shots": [
+        "002"
+      ],
+      "seconds": 7.0,
+      "words": 14,
+      "words_per_second": 2.0
+    },
+    {
+      "copy": [
+        "One question, several documents.",
+        "The tenant asks CasePath to check the rent-increase notice."
+      ],
+      "start_frame": 450,
+      "end_frame": 675,
+      "shots": [
+        "003",
+        "004"
+      ],
+      "seconds": 7.5,
+      "words": 13,
+      "words_per_second": 1.7333333333333334
+    },
+    {
+      "copy": [
+        "The received files stay beside the review.",
+        "Each source can be opened and inspected."
+      ],
+      "start_frame": 675,
+      "end_frame": 825,
+      "shots": [
+        "005"
+      ],
+      "seconds": 5.0,
+      "words": 14,
+      "words_per_second": 2.8
+    },
+    {
+      "copy": [
+        "Each circle is a question about this case.",
+        "The connected questions organise the review."
+      ],
+      "start_frame": 825,
+      "end_frame": 975,
+      "shots": [
+        "006"
+      ],
+      "seconds": 5.0,
+      "words": 14,
+      "words_per_second": 2.8
+    },
+    {
+      "copy": [
+        "The work list follows the active question.",
+        "Next, watch a source passage support a finding."
+      ],
+      "start_frame": 975,
+      "end_frame": 1125,
+      "shots": [
+        "007"
+      ],
+      "seconds": 5.0,
+      "words": 15,
+      "words_per_second": 3.0
+    },
+    {
+      "copy": [
+        "A question directs the search for evidence.",
+        "The active ring marks the question being checked."
+      ],
+      "start_frame": 1125,
+      "end_frame": 1262,
+      "shots": [
+        "008"
+      ],
+      "seconds": 4.566666666666666,
+      "words": 15,
+      "words_per_second": 3.2846715328467155
+    },
+    {
+      "copy": [
+        "What arrived with the original notice?",
+        "First locate the passage. Then follow its proposed finding."
+      ],
+      "start_frame": 1262,
+      "end_frame": 1442,
+      "shots": [
+        "009"
+      ],
+      "seconds": 6.0,
+      "words": 15,
+      "words_per_second": 2.5
+    },
+    {
+      "copy": [
+        "The original packet contained no reasons.",
+        "The marked passage is the basis for the proposed finding."
+      ],
+      "start_frame": 1442,
+      "end_frame": 1574,
+      "shots": [
+        "010"
+      ],
+      "seconds": 4.4,
+      "words": 16,
+      "words_per_second": 3.6363636363636362
+    },
+    {
+      "copy": [
+        "A passage becomes a proposed finding.",
+        "Watch its link to the question remain visible."
+      ],
+      "start_frame": 1574,
+      "end_frame": 1800,
+      "shots": [
+        "011",
+        "012"
+      ],
+      "seconds": 7.533333333333333,
+      "words": 14,
+      "words_per_second": 1.8584070796460177
+    },
+    {
+      "copy": [
+        "Proposed finding: the original notice gave no reasons.",
+        ""
+      ],
+      "start_frame": 1800,
+      "end_frame": 2057,
+      "shots": [
+        "013",
+        "014"
+      ],
+      "seconds": 8.566666666666666,
+      "words": 8,
+      "words_per_second": 0.933852140077821
+    },
+    {
+      "copy": [
+        "The later email arrived after the original notice.",
+        ""
+      ],
+      "start_frame": 2057,
+      "end_frame": 2223,
+      "shots": [
+        "015a",
+        "015b"
+      ],
+      "seconds": 5.533333333333333,
+      "words": 8,
+      "words_per_second": 1.4457831325301205
+    },
+    {
+      "copy": [
+        "Now connect the findings to their checks.",
+        "The questions will become a connected review path."
+      ],
+      "start_frame": 2223,
+      "end_frame": 2370,
+      "shots": [
+        "015c",
+        "015d"
+      ],
+      "seconds": 4.9,
+      "words": 15,
+      "words_per_second": 3.061224489795918
+    },
+    {
+      "copy": [
+        "The questions form a review path.",
+        "Arrows show how the recorded checks connect."
+      ],
+      "start_frame": 2370,
+      "end_frame": 2520,
+      "shots": [
+        "016"
+      ],
+      "seconds": 5.0,
+      "words": 13,
+      "words_per_second": 2.6
+    },
+    {
+      "copy": [
+        "Each check keeps its reasons attached.",
+        "Next, follow its facts, cited rule and supporting files."
+      ],
+      "start_frame": 2520,
+      "end_frame": 2670,
+      "shots": [
+        "017"
+      ],
+      "seconds": 5.0,
+      "words": 15,
+      "words_per_second": 3.0
+    },
+    {
+      "copy": [
+        "The reasoning is available to inspect.",
+        "Facts, law and documents support the selected question."
+      ],
+      "start_frame": 2670,
+      "end_frame": 2853,
+      "shots": [
+        "018"
+      ],
+      "seconds": 6.1,
+      "words": 14,
+      "words_per_second": 2.295081967213115
+    },
+    {
+      "copy": [
+        "Can the quotation be traced to a file?",
+        ""
+      ],
+      "start_frame": 2853,
+      "end_frame": 3000,
+      "shots": [
+        "019",
+        "020"
+      ],
+      "seconds": 4.9,
+      "words": 8,
+      "words_per_second": 1.6326530612244896
+    },
+    {
+      "copy": [
+        "Each quotation is matched to a received file.",
+        "This establishes the quotation\u2019s source."
+      ],
+      "start_frame": 3000,
+      "end_frame": 3180,
+      "shots": [
+        "021"
+      ],
+      "seconds": 6.0,
+      "words": 13,
+      "words_per_second": 2.1666666666666665
+    },
+    {
+      "copy": [
+        "The source match is recorded.",
+        "The interpretation still needs qualified review."
+      ],
+      "start_frame": 3180,
+      "end_frame": 3306,
+      "shots": [
+        "022"
+      ],
+      "seconds": 4.2,
+      "words": 11,
+      "words_per_second": 2.619047619047619
+    },
+    {
+      "copy": [
+        "What does the cited rule require?",
+        ""
+      ],
+      "start_frame": 3306,
+      "end_frame": 3453,
+      "shots": [
+        "023",
+        "024"
+      ],
+      "seconds": 4.9,
+      "words": 6,
+      "words_per_second": 1.2244897959183672
+    },
+    {
+      "copy": [
+        "Read the specific clause behind the assessment.",
+        "Article 269d, paragraph 2(b)."
+      ],
+      "start_frame": 3453,
+      "end_frame": 3603,
+      "shots": [
+        "025"
+      ],
+      "seconds": 5.0,
+      "words": 11,
+      "words_per_second": 2.2
+    },
+    {
+      "copy": [
+        "The cited rule links missing reasons to invalidity.",
+        "The original legal wording remains visible below."
+      ],
+      "start_frame": 3603,
+      "end_frame": 3783,
+      "shots": [
+        "026"
+      ],
+      "seconds": 6.0,
+      "words": 15,
+      "words_per_second": 2.5
+    },
+    {
+      "copy": [
+        "This is why the missing reasons matter.",
+        "The proposed assessment must connect the fact and the rule."
+      ],
+      "start_frame": 3783,
+      "end_frame": 3945,
+      "shots": [
+        "027"
+      ],
+      "seconds": 5.4,
+      "words": 17,
+      "words_per_second": 3.148148148148148
+    },
+    {
+      "copy": [
+        "Which files support these checks?",
+        ""
+      ],
+      "start_frame": 3945,
+      "end_frame": 4092,
+      "shots": [
+        "028",
+        "029"
+      ],
+      "seconds": 4.9,
+      "words": 5,
+      "words_per_second": 1.0204081632653061
+    },
+    {
+      "copy": [
+        "Each entry links a requirement to its received file.",
+        "The supporting records remain available for inspection."
+      ],
+      "start_frame": 4092,
+      "end_frame": 4299,
+      "shots": [
+        "030",
+        "031"
+      ],
+      "seconds": 6.9,
+      "words": 16,
+      "words_per_second": 2.318840579710145
+    },
+    {
+      "copy": [
+        "Next, test each legal requirement.",
+        ""
+      ],
+      "start_frame": 4299,
+      "end_frame": 4434,
+      "shots": [
+        "032",
+        "033"
+      ],
+      "seconds": 4.5,
+      "words": 5,
+      "words_per_second": 1.1111111111111112
+    },
+    {
+      "copy": [
+        "Three process questions lead to five legal checks.",
+        "Numbers link each check to its process question."
+      ],
+      "start_frame": 4434,
+      "end_frame": 4644,
+      "shots": [
+        "034"
+      ],
+      "seconds": 7.0,
+      "words": 16,
+      "words_per_second": 2.2857142857142856
+    },
+    {
+      "copy": [
+        "Watch for the requirement marked unmet.",
+        "A checkmark records support; a cross marks an unmet requirement."
+      ],
+      "start_frame": 4644,
+      "end_frame": 4880,
+      "shots": [
+        "035",
+        "036"
+      ],
+      "seconds": 7.866666666666666,
+      "words": 16,
+      "words_per_second": 2.0338983050847457
+    },
+    {
+      "copy": [
+        "The reasons requirement is unmet.",
+        "The original packet contained no substantive reasons."
+      ],
+      "start_frame": 4880,
+      "end_frame": 5030,
+      "shots": [
+        "037"
+      ],
+      "seconds": 5.0,
+      "words": 12,
+      "words_per_second": 2.4
+    },
+    {
+      "copy": [
+        "The other checks retain their own results.",
+        "The missing-reasons finding remains explicit."
+      ],
+      "start_frame": 5030,
+      "end_frame": 5177,
+      "shots": [
+        "038"
+      ],
+      "seconds": 4.9,
+      "words": 12,
+      "words_per_second": 2.4489795918367343
+    },
+    {
+      "copy": [
+        "Proposed assessment: invalid on this ground.",
+        "The result follows the missing reasons and the cited provision."
+      ],
+      "start_frame": 5177,
+      "end_frame": 5453,
+      "shots": [
+        "039",
+        "040"
+      ],
+      "seconds": 9.2,
+      "words": 16,
+      "words_per_second": 1.7391304347826089
+    },
+    {
+      "copy": [
+        "Other questions remain open.",
+        "Rent amount and filing deadlines still need review."
+      ],
+      "start_frame": 5453,
+      "end_frame": 5657,
+      "shots": [
+        "041",
+        "042"
+      ],
+      "seconds": 6.8,
+      "words": 12,
+      "words_per_second": 1.7647058823529411
+    },
+    {
+      "copy": [
+        "What can the handler do with this assessment?",
+        ""
+      ],
+      "start_frame": 5657,
+      "end_frame": 5804,
+      "shots": [
+        "043",
+        "044"
+      ],
+      "seconds": 4.9,
+      "words": 8,
+      "words_per_second": 1.6326530612244896
+    },
+    {
+      "copy": [
+        "A draft is prepared for a person to review.",
+        "The assessment is prepared for the responsible handler."
+      ],
+      "start_frame": 5804,
+      "end_frame": 6120,
+      "shots": [
+        "045",
+        "046"
+      ],
+      "seconds": 10.533333333333333,
+      "words": 17,
+      "words_per_second": 1.6139240506329113
+    },
+    {
+      "copy": [
+        "Prepared for review. Nothing sent.",
+        "The person responsible for the case decides what happens next."
+      ],
+      "start_frame": 6120,
+      "end_frame": 6314,
+      "shots": [
+        "047",
+        "048"
+      ],
+      "seconds": 6.466666666666667,
+      "words": 15,
+      "words_per_second": 2.319587628865979
+    },
+    {
+      "copy": [
+        "Can a later case reuse the checks?",
+        ""
+      ],
+      "start_frame": 6314,
+      "end_frame": 6449,
+      "shots": [
+        "049",
+        "050"
+      ],
+      "seconds": 4.5,
+      "words": 7,
+      "words_per_second": 1.5555555555555556
+    },
+    {
+      "copy": [
+        "Meet Drew Shaw: a different case.",
+        "An earlier checklist can guide what needs checking."
+      ],
+      "start_frame": 6449,
+      "end_frame": 6665,
+      "shots": [
+        "051",
+        "052"
+      ],
+      "seconds": 7.2,
+      "words": 14,
+      "words_per_second": 1.9444444444444444
+    },
+    {
+      "copy": [
+        "Drew\u2019s documents, Drew\u2019s dates.",
+        "The email came after the notice."
+      ],
+      "start_frame": 6665,
+      "end_frame": 6905,
+      "shots": [
+        "052b"
+      ],
+      "seconds": 8.0,
+      "words": 10,
+      "words_per_second": 1.25
+    },
+    {
+      "copy": [
+        "This case supplies the evidence.",
+        "Its own documents and dates determine the findings."
+      ],
+      "start_frame": 6905,
+      "end_frame": 7055,
+      "shots": [
+        "053"
+      ],
+      "seconds": 5.0,
+      "words": 13,
+      "words_per_second": 2.6
+    },
+    {
+      "copy": [
+        "An earlier case supplies a checklist.",
+        "Reusable questions guide what to inspect."
+      ],
+      "start_frame": 7055,
+      "end_frame": 7205,
+      "shots": [
+        "054"
+      ],
+      "seconds": 5.0,
+      "words": 12,
+      "words_per_second": 2.4
+    },
+    {
+      "copy": [
+        "Watch these questions enter the new case\u2019s review.",
+        "Documents and dates are checked afresh."
+      ],
+      "start_frame": 7205,
+      "end_frame": 7385,
+      "shots": [
+        "055"
+      ],
+      "seconds": 6.0,
+      "words": 14,
+      "words_per_second": 2.3333333333333335
+    },
+    {
+      "copy": [
+        "Questions are reused. Facts are checked afresh.",
+        "Follow the three checklist items as they enter this review."
+      ],
+      "start_frame": 7385,
+      "end_frame": 7637,
+      "shots": [
+        "056"
+      ],
+      "seconds": 8.4,
+      "words": 17,
+      "words_per_second": 2.0238095238095237
+    },
+    {
+      "copy": [
+        "Three checks reused in this case.",
+        "Its evidence is checked afresh. Human review is still required."
+      ],
+      "start_frame": 7637,
+      "end_frame": 7841,
+      "shots": [
+        "057",
+        "058"
+      ],
+      "seconds": 6.8,
+      "words": 16,
+      "words_per_second": 2.3529411764705883
+    },
+    {
+      "copy": [
+        "What does this case\u2019s evidence support?",
+        ""
+      ],
+      "start_frame": 7841,
+      "end_frame": 7988,
+      "shots": [
+        "059",
+        "060"
+      ],
+      "seconds": 4.9,
+      "words": 6,
+      "words_per_second": 1.2244897959183672
+    },
+    {
+      "copy": [
+        "Drew\u2019s case reaches the same proposed result.",
+        "Its own notice and later email support that assessment."
+      ],
+      "start_frame": 7988,
+      "end_frame": 8282,
+      "shots": [
+        "061",
+        "062"
+      ],
+      "seconds": 9.8,
+      "words": 16,
+      "words_per_second": 1.6326530612244896
+    },
+    {
+      "copy": [
+        "Keep each case\u2019s reasoning available to inspect.",
+        ""
+      ],
+      "start_frame": 8282,
+      "end_frame": 8429,
+      "shots": [
+        "063",
+        "064"
+      ],
+      "seconds": 4.9,
+      "words": 7,
+      "words_per_second": 1.4285714285714284
+    },
+    {
+      "copy": [
+        "Each row opens a different recorded example.",
+        "Reviewers can return to its steps and sources."
+      ],
+      "start_frame": 8429,
+      "end_frame": 8579,
+      "shots": [
+        "065"
+      ],
+      "seconds": 5.0,
+      "words": 15,
+      "words_per_second": 3.0
+    },
+    {
+      "copy": [
+        "The review trail remains available.",
+        "Inspect the evidence, checks and proposed outcome in each case."
+      ],
+      "start_frame": 8579,
+      "end_frame": 8712,
+      "shots": [
+        "066"
+      ],
+      "seconds": 4.433333333333334,
+      "words": 15,
+      "words_per_second": 3.3834586466165413
+    },
+    {
+      "copy": [
+        "From evidence to a reviewable answer.",
+        "Clear reasons. Reusable checks. Human review."
+      ],
+      "start_frame": 8712,
+      "end_frame": 8952,
+      "shots": [
+        "067",
+        "068"
+      ],
+      "seconds": 8.0,
+      "words": 12,
+      "words_per_second": 1.5
+    }
+  ],
+  "temporal_sequences": [
+    {
+      "name": "email-timing",
+      "contact_sheet": "temporal-qa/email-timing.jpg",
+      "sha256": "5ec52dc26a526b784524eeb0ece8c6fbe8202678dad6910a6cf284b4f04a2d70",
+      "samples": [
+        {
+          "shot": "015a",
+          "film_frame": 2069,
+          "local_seconds": 0.4,
+          "encoded_sha256": "38735e1e6c560dbbd90da2a6a1b0824897b567d282b72898e6fe85bffc56614b"
+        },
+        {
+          "shot": "015a",
+          "film_frame": 2117,
+          "local_seconds": 2.0,
+          "encoded_sha256": "bcd58ab8ed5b974c6a79c1d1672b711c8ff30a9c6ca92be105f44ee43c2a951b"
+        },
+        {
+          "shot": "015b",
+          "film_frame": 2199,
+          "local_seconds": 1.2,
+          "encoded_sha256": "42a5486cd346b0ff899cad1668433a5c08082860dd907684dc56da74fe436a48"
+        },
+        {
+          "shot": "015c",
+          "film_frame": 2283,
+          "local_seconds": 2.0,
+          "encoded_sha256": "78be51178a2c3d6f490a0c7cfc7efdd759c1da607288e7eea000b0596bfa339d"
+        }
+      ]
+    },
+    {
+      "name": "assessment-focus",
+      "contact_sheet": "temporal-qa/assessment-focus.jpg",
+      "sha256": "7352cd3401ff18f21811c68daa84678c128dad31970e3bc00c8c47946a60d4a5",
+      "samples": [
+        {
+          "shot": "036",
+          "film_frame": 4818,
+          "local_seconds": 0.8,
+          "encoded_sha256": "de5e378e0f6095d8f1563aa103eb4334d84bc3e3dc4aa224058e934ff9ae0f28"
+        },
+        {
+          "shot": "036",
+          "film_frame": 4860,
+          "local_seconds": 2.2,
+          "encoded_sha256": "b7ad5cabf914e082cfe0cdcebf137934decc6db8e35e33ed4ba111ea7320b137"
+        },
+        {
+          "shot": "037",
+          "film_frame": 4955,
+          "local_seconds": 2.5,
+          "encoded_sha256": "30750bb1ffacf7a6a3f3dc471995f5f4ff3d40377fe4efa5c8cfdcc3a07122c5"
+        },
+        {
+          "shot": "038",
+          "film_frame": 5105,
+          "local_seconds": 2.5,
+          "encoded_sha256": "44f167fa73cf8e5340f3bd7ac8f96e45b1efc892e734763e090eece45dc132fd"
+        },
+        {
+          "shot": "038",
+          "film_frame": 5162,
+          "local_seconds": 4.4,
+          "encoded_sha256": "ba82cebac461a1fa800628325b21cf3478bcfa776679bbfdaf17dfa346c3c8bc"
+        },
+        {
+          "shot": "039",
+          "film_frame": 5267,
+          "local_seconds": 3.0,
+          "encoded_sha256": "1cd5a10a0691f08015f712f99dd8391321853442a5dca50ce13a65d8e85762d3"
+        }
+      ]
+    },
+    {
+      "name": "reuse-connector",
+      "contact_sheet": "temporal-qa/reuse-connector.jpg",
+      "sha256": "7e4f16312bfa2e554c9f930467d1fad56e28b3b7139fdc66ef18bbe8ceaf1d0b",
+      "samples": [
+        {
+          "shot": "055",
+          "film_frame": 7247,
+          "local_seconds": 1.4,
+          "encoded_sha256": "4980ed4a37fe8c9b3a5c6a238d5caa2a71ac6246bb22c8212b6389e4afaf1d20"
+        },
+        {
+          "shot": "055",
+          "film_frame": 7280,
+          "local_seconds": 2.5,
+          "encoded_sha256": "916bf6994cdb2d7a4f15de3b66901a5ce0c14c4de71165d86d958f5e377a6e69"
+        },
+        {
+          "shot": "055",
+          "film_frame": 7313,
+          "local_seconds": 3.6,
+          "encoded_sha256": "54b98fbea7abdf811073f870cc528859cc1f8892c2049a09cc964cddb4d410f8"
+        },
+        {
+          "shot": "055",
+          "film_frame": 7340,
+          "local_seconds": 4.5,
+          "encoded_sha256": "87a7c95cca2ff9a9c47f115bd87af959db52a2662653cc935017c89f54caa7d4"
+        }
+      ]
+    },
+    {
+      "name": "three-reused-checks",
+      "contact_sheet": "temporal-qa/three-reused-checks.jpg",
+      "sha256": "abb797455c6efe9c8ac89e77a77da7f867dda504ff385ec8389c88500e453559",
+      "samples": [
+        {
+          "shot": "056",
+          "film_frame": 7391,
+          "local_seconds": 0.2,
+          "encoded_sha256": "c03d4dab80d94eb04cc82146d7fc721cd866376c68963f80ea8c108f1fd7f08f"
+        },
+        {
+          "shot": "056",
+          "film_frame": 7472,
+          "local_seconds": 2.9,
+          "encoded_sha256": "73f480f5ccef52506c8ba950400e944afc87cb6b2fc0c50805cec765e8e4e03a"
+        },
+        {
+          "shot": "056",
+          "film_frame": 7550,
+          "local_seconds": 5.5,
+          "encoded_sha256": "01c720d1aa137719bfe25e468cab22756e72108d3626c2844d6692dc4fc1f5e9"
+        },
+        {
+          "shot": "056",
+          "film_frame": 7631,
+          "local_seconds": 8.2,
+          "encoded_sha256": "0aaaf8f26cb2c44cce922415d53fc2f448fb3c72d59df7ffa2e666f7e27a832c"
+        },
+        {
+          "shot": "057",
+          "film_frame": 7697,
+          "local_seconds": 2.0,
+          "encoded_sha256": "0bddb8f5afe00f34d180943a6643b439a1984b978fb1974f599a1f6566e3b83e"
+        }
+      ]
+    },
+    {
+      "name": "closing-continuity",
+      "contact_sheet": "temporal-qa/closing-continuity.jpg",
+      "sha256": "8aca0d57d5f23f6b3ca288ffd522a02c52839eba2904b084541e42a12213026f",
+      "samples": [
+        {
+          "shot": "067",
+          "film_frame": 8856,
+          "local_seconds": 4.8,
+          "encoded_sha256": "85b5453ab75cf8dc081fdd4caed511cb4266a42fe2b166a1174d9bf2e652b6ea"
+        },
+        {
+          "shot": "067",
+          "film_frame": 8865,
+          "local_seconds": 5.1,
+          "encoded_sha256": "ff210deab0b96352e2ed98392a7854481b8e8b792cc6448aa437bcae4565cecc"
+        },
+        {
+          "shot": "068",
+          "film_frame": 8867,
+          "local_seconds": 0.0,
+          "encoded_sha256": "58d67e68c7684c1df0aa481bfccb9c9eeb40a5bf4646e8b10fa8f2cee9b49ab8"
+        },
+        {
+          "shot": "068",
+          "film_frame": 8912,
+          "local_seconds": 1.5,
+          "encoded_sha256": "b25733bb22175f0f0daaaf78c746525858faad21ec6de88b9d762ba86854fe17"
+        }
+      ]
+    }
+  ],
+  "visual_review": {
+    "complete_story": "Independent ordered contact-sheet review and selected full-resolution frames, followed by targeted 4K preview review.",
+    "encoded_temporal_review": "Root inspected encoded email timing, assessment emphasis and closing continuity sheets. Independent first-time editorial reviewer inspected encoded connector completion and the three-item reuse progression.",
+    "human_study": false,
+    "real_time_human_playback_test": false,
+    "encoded_temporal_review_status": "passed",
+    "reviewed_at": "2026-10-25T12:25:19Z",
+    "observations": [
+      "The later-email headline accompanies the visible email passage and its timing highlight; the process bridge follows the reading hold.",
+      "Requirement focus moves through passing rows, holds the missing-reasons requirement, then preserves other check results; assessment focus ends above the Still open line.",
+      "Connector completes at the actual workflow destination at local 3.6 and 4.5 seconds, away from the Open exact passage link.",
+      "Actual recorded reuse count progresses 0 to 1 to 2 to 3 with the three corresponding workflow entries; the result is held.",
+      "Closing journey retains all four completed emphasis states across the play-to-hold boundary without resetting."
+    ],
+    "independent_review_limit": "Model-assisted review of sampled encoded sequences; not real-time human playback or an empirical comprehension study."
+  },
+  "scope": "Film-only edit; no app source modifications, application mutations or new inference.",
+  "music_export": {
+    "status": "passed",
+    "receipt_sha256": "ebec4f0a375aa1b392d682450f2edc42a3540108cecff3ba00f7f25a7392896c",
+    "sha256": "f09239b0ea18a4cf85dc831919e7733dacbe97d30a4bbe3e40fc767b31c402d7",
+    "bytes": 30939883,
+    "integrated_lufs": -20.02,
+    "true_peak_dbtp": -3.74,
+    "encoded_picture_identical": true
+  }
+}
