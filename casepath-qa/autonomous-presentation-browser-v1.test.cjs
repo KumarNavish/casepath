@@ -108,14 +108,16 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    a.advanceTo(highlight.start+highlight.duration/2);return selectors.map((s,i)=>({selector:s,present:Boolean(before[i]),same:before[i]===document.querySelector(s),connected:before[i]?.isConnected}));
   });assert.ok(stable.every(r=>r.present&&r.same&&r.connected),JSON.stringify(stable));
   const recordedOrder=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).filter(o=>o.kind==='step.complete'&&o.result?.status==='completed').map(o=>o.object.id);
-  const acceptance=await page.evaluate(order=>{
+  // Recorded document checks may serve a later question before an earlier one is answered.
+  const documentChecks=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).filter(o=>o.kind==='document.check').map(o=>o.id);
+  const acceptance=await page.evaluate(([order,documentChecks])=>{
    const a=CasepathPresentation.active,failures=[];let previous=0;
    for(const beat of a.manifest.beats.filter(b=>['reading','process'].includes(b.act)&&!b.phase.endsWith('transition'))){
     a.advanceTo(beat.end-.001);const nodes=[...document.querySelectorAll('[data-au-ns-node]')].filter(el=>!el.closest('.au-executive-transition')),done=nodes.filter(el=>el.dataset.state==='done').map(el=>el.dataset.auNsNode),building=nodes.find(el=>el.dataset.state==='building')?.dataset.auNsNode;
-    if(done.length<previous||JSON.stringify(done)!==JSON.stringify(order.slice(0,done.length))||building&&building!==order[done.length])failures.push({beat:beat.index,done,building,previous});
+    if(done.length<previous||JSON.stringify(done)!==JSON.stringify(order.slice(0,done.length))||building&&!documentChecks.includes(beat.operation)&&building!==order[done.length])failures.push({beat:beat.index,done,building,previous});
     previous=done.length;
    }return failures;
-  },recordedOrder);assert.deepEqual(acceptance,[],'accepted steps never disappear and active nodes follow process order');
+  },[recordedOrder,documentChecks]);assert.deepEqual(acceptance,[],'accepted steps never disappear and active nodes follow process order');
   const deterministic=await page.evaluate(()=>{
    const a=CasepathPresentation.active,failures=[];
    const snapshot=()=>{const selectors=['[data-au-ns]','.au-ns-canvas','.au-ns-completed-canvas','[data-au-ns-paper]','[data-au-ns-plan]','[data-au-ns-procedure]','[data-au-photo-frame]','[data-au-photo-findings]','[data-au-ns-shelf]','[data-au-map]','.au-cinema-finale'];return JSON.stringify({styles:selectors.map(s=>{const el=document.querySelector(s);return el?[s,getComputedStyle(el).opacity,el.style.transform]:[s,null];}),nodes:[...document.querySelectorAll('[data-au-ns-node]')].filter(e=>!e.closest('.au-executive-transition')).map(e=>[e.dataset.auNsNode,e.dataset.state]),source:document.querySelector('[data-au-ns-quote]')?.textContent,marks:[...document.querySelectorAll('.au-photo-mark')].map(e=>getComputedStyle(e).opacity).join(),scroll:document.querySelector('.au-ns-view-content')?.scrollTop});};
