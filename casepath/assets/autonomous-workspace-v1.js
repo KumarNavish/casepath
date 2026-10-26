@@ -4910,6 +4910,8 @@
       fitNorthStarPlan(desk);
       const facts=desk.querySelector('.au-ns-facts'),lastFact=facts?.querySelector('.au-ns-fact:last-child'),factLink=desk.querySelector('.au-ns-fact-connector');
       if(facts&&lastFact&&factLink){
+        // The presentation shows the latest facts that fit; earlier ones would only sit scrolled out of sight.
+        if(desk.ownerDocument.documentElement.hasAttribute('data-casepath-presentation'))while(facts.scrollWidth>facts.clientWidth+1&&facts.querySelectorAll('.au-ns-fact').length>1){const first=facts.querySelector('.au-ns-fact');if(first.nextElementSibling?.classList.contains('au-ns-plus'))first.nextElementSibling.remove();first.remove();}
         facts.scrollLeft=Math.max(0,facts.scrollWidth-facts.clientWidth);
         const canvas=desk.querySelector('.au-ns-canvas'),node=desk.querySelector('.au-ns-spine [data-state=building]')||[...desk.querySelectorAll('.au-ns-spine [data-au-ns-node]')].find(el=>el.dataset.auNsNode===northStarModel(current,trace).nodeId);
         if(node){
