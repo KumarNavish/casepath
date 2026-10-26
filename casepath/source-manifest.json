@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1746,
+  "file_count": 1749,
   "files": [
     {
       "executable": false,
@@ -887,8 +887,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_api_v1.py",
-      "sha256": "159c439da24e3dda5b0451517c993077fbd154305785425a77232e1ccc4f72d1",
-      "size_bytes": 33375
+      "sha256": "a17549bbd60bd773b1790f767af55987990928ce462ff05dcce8d54105f28aa0",
+      "size_bytes": 34444
     },
     {
       "executable": false,
@@ -7318,6 +7318,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/photo_reading_v1.py",
+      "sha256": "b43634563c558b018cefa560e1239306b076912c8a2bf972ef3fa22609a2ae56",
+      "size_bytes": 8654
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/pipeline.py",
       "sha256": "87bdaa1ec925ea5bf6d9f91eed41141bac91de6c0b7ae511cddc7663bfbad911",
       "size_bytes": 31368
@@ -8740,6 +8746,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_photo_reading_v1.py",
+      "sha256": "2085b0965edb0ea54602d6f8e8a5992e1b094cc405acf290db40d47508d4ef28",
+      "size_bytes": 4949
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_pipeline.py",
       "sha256": "7a187053ab2e6ba99e2728f939c7c6282a7745e468af56b4826d0e2380160bcf",
       "size_bytes": 99196
@@ -8969,8 +8981,8 @@
     {
       "executable": false,
       "path": "casepath-qa/autonomous-desk-v3.test.cjs",
-      "sha256": "2f6aa4552aec713940dfe83cde032ec5623cec37055ebd00d2843247deb3527d",
-      "size_bytes": 6705
+      "sha256": "1e4cfec4b171a933e52114044f97749cd9b2b9867c77352d2951ce0aa0cece2f",
+      "size_bytes": 6664
     },
     {
       "executable": false,
@@ -8993,26 +9005,26 @@
     {
       "executable": false,
       "path": "casepath-qa/autonomous-northstar-v1.test.cjs",
-      "sha256": "ee5389fca09a891e5253215726945dfe794d941aa073468263367c65dfaa6c42",
-      "size_bytes": 31336
+      "sha256": "5d54144aa22841578caf5853f0f994a42d43a3770251c3f8b29e085d1234ab51",
+      "size_bytes": 31189
     },
     {
       "executable": false,
       "path": "casepath-qa/autonomous-presentation-browser-v1.test.cjs",
-      "sha256": "a23b56bc3c707ca4181a46d56a9b794f6373598f957f5ae93e0f67abab7be88d",
-      "size_bytes": 52410
+      "sha256": "c3776f234a8a3b1506fa90d7c70102b5a752721530967ebfc26bb3b246df4ac6",
+      "size_bytes": 54221
     },
     {
       "executable": false,
       "path": "casepath-qa/autonomous-presentation-v1.test.cjs",
-      "sha256": "4f0e3efc6351f474ecc524750c5a37202177dcca19c3bd88292ee54dd36ce794",
-      "size_bytes": 11253
+      "sha256": "d9297e1246adc2f8c6a8342a8497b80f03b2784935452ffb5d6a0b9264fd9081",
+      "size_bytes": 14280
     },
     {
       "executable": false,
       "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
-      "sha256": "fc40356671f8bdd0f5637e0f60396e1ec203fc1dc59084abef31f7478a901550",
-      "size_bytes": 653921
+      "sha256": "7c2edd4db35878339b9f83180e24f0e8d6b7e06018c16f9e8f57502280bb6e96",
+      "size_bytes": 653917
     },
     {
       "executable": false,
@@ -9241,6 +9253,12 @@
       "path": "casepath-qa/fixtures/knowledge-w6.json.gz",
       "sha256": "b4afc7efbc1d0f6c7d3dc82afee28a3f20e54f9e1bb52d10e006036f2203a540",
       "size_bytes": 13579
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/fixtures/photo-reading-v1.json.gz",
+      "sha256": "8030c2fa4703ad97f004345a3a4f496684ac242f3fce6abf91c89042a7b5661d",
+      "size_bytes": 249594
     },
     {
       "executable": false,
@@ -9545,8 +9563,8 @@
     {
       "executable": false,
       "path": "casepath/assets/autonomous-presentation-v1.js",
-      "sha256": "1245d621780dfca6ba311b667fbf95ca8af7f9240afc93992f8a28d95b05ea4e",
-      "size_bytes": 17177
+      "sha256": "f2f6f8d4bed40d4b61095be978d97eb4594c34b34205cf0cf1cb8c91472eaada",
+      "size_bytes": 21762
     },
     {
       "executable": false,
@@ -9563,14 +9581,14 @@
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.css",
-      "sha256": "dd9c40b60b89f210ad6f4331c92ad0df8279b3dd29209d83e4977c5e940dedf1",
-      "size_bytes": 370638
+      "sha256": "35b4fe89c590805a6aac1115f9855e898007c7b2ef5112db9607b7f969e187eb",
+      "size_bytes": 384121
     },
     {
       "executable": false,
       "path": "casepath/assets/autonomous-workspace-v1.js",
-      "sha256": "eb0d03f7760d80fcaefafe55638c71035802c92c45f028b139f0237f6ff02416",
-      "size_bytes": 869460
+      "sha256": "12e39ae42c7788e523abfb885e0cfb7d67b280848a5b7c3e848b518951348f6b",
+      "size_bytes": 903182
     },
     {
       "executable": false,
@@ -9791,7 +9809,7 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "ff5227ab7e64ce35a63a0c6a9090ab950555b085ffd5290ea5e938189395f947",
+      "sha256": "28472deb751ec7ff66231489e6d8aecfb369cbbe8f3425fccfad3e68625f86ca",
       "size_bytes": 26089
     },
     {
