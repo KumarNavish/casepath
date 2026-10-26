@@ -84,18 +84,20 @@ test('documentary legal focus requires semantic predicate identity',()=>{
 test('documentary answer and checklist cues distinguish open questions and independent evidence',()=>{
   const answer={act:'decision',phase:'answer-rest',duration:6000};
   assert.equal(documentaryCue(answer,2999).target,'lead');assert.equal(documentaryCue(answer,3000).target,'open');
-  assert.match(documentaryCue({act:'learning',phase:'memory-overview'}).headline,/new case of the same kind/);
-  const move=documentaryCue({act:'learning',phase:'memory-transfer',item:0}),land=documentaryCue({act:'learning',phase:'memory-landed',item:0});
-  assert.equal(move.headline,land.headline);assert.equal(move.targetId,0);assert.equal(land.targetId,0);assert.equal(move.target,'memory-item');assert.equal(land.target,'memory-target');
-  assert.equal(documentaryCue({act:'learning',phase:'memory-transfer',item:1}).card,false);
+  // The next case repeats the plan gesture: the same card comes off the shelf, then works silently.
+  assert.match(documentaryCue({act:'learning',phase:'plan-shelf'}).headline,/new case of the same kind/);
+  const pick=documentaryCue({act:'learning',phase:'plan-pick'}),open=documentaryCue({act:'learning',phase:'plan-reuse'});
+  assert.equal(pick.id,open.id);assert.equal(pick.target,'shelf-card');assert.equal(open.target,'procedure');
+  assert.equal(documentaryCue({act:'learning',phase:'plan-node'}).card,false);assert.match(documentaryCue({act:'learning',phase:'plan-rest'}).headline,/Same checklist/);
   assert.match(documentaryCue({act:'decision',phase:'draft-rest'}).headline,/A person decides/);
 });
 test('plan, document-check and knowledge cues state only what their context records',()=>{
-  assert.match(documentaryCue({act:'plan',phase:'plan-reuse'},0,{procedureScope:'Rent increases'}).detail,/rent increases checklist, learned from an earlier case/);
-  assert.doesNotMatch(documentaryCue({act:'plan',phase:'plan-reuse'},0,{}).detail,/rent/);
+  assert.equal(documentaryCue({act:'plan',phase:'plan-reuse'},0,{procedureScope:'Rent increases'}).headline,'It takes the rent increases checklist.');
+  assert.doesNotMatch(documentaryCue({act:'plan',phase:'plan-reuse'},0,{}).headline,/rent/);
+  assert.equal(documentaryCue({act:'plan',phase:'plan-shelf'}).target,'shelf');
   assert.equal(documentaryCue({act:'plan',phase:'plan-rest'},0,{questionCount:3,documentCount:3}).detail,'3 questions. 3 documents to check.');
   assert.equal(documentaryCue({act:'plan',phase:'plan-rest'},0,{}).detail,'Now the assistants go to work.');
-  assert.equal(documentaryCue({act:'plan',phase:'plan-node'},0,{questionCount:3}).headline,'It breaks the case into 3 questions.');
+  assert.equal(documentaryCue({act:'plan',phase:'plan-node'},0,{questionCount:3}).headline,'The checklist becomes this case’s questions.');
   const scanning=documentaryCue({act:'photo',phase:'photo-scan'}),found=documentaryCue({act:'photo',phase:'photo-rest'});
   assert.equal(scanning.target,'photo');assert.equal(scanning.mode,'lead');assert.equal(found.target,'photo-findings');assert.equal(found.mode,'hold');
   const check={act:'reading',phase:'cursor',op:{id:'c1',kind:'document.check',object:{id:'tenancy_terms_evidence'}}};
@@ -104,7 +106,10 @@ test('plan, document-check and knowledge cues state only what their context reco
   assert.equal(documentaryCue(check,0,{firstCheckId:'other'}).card,false);
   const opening=documentaryCue({act:'customer',phase:'ready',duration:6000},1000),sources=documentaryCue({act:'customer',phase:'ready',duration:6000},3000);
   assert.equal(opening.card,false);assert.equal(opening.spotlight,false);assert.equal(sources.target,'sources');
-  assert.equal(documentaryCue({act:'library',phase:'library-rest',family:'rent_increase_dispute'}).targetId,'rent_increase_dispute');
+  // The knowledge totals are only the recorded counts passed in.
+  assert.equal(documentaryCue({act:'library',phase:'map-rest'},0,{knowledgeUses:15,knowledgeCases:9}).detail,'15 recorded uses across 9 cases.');
+  assert.doesNotMatch(documentaryCue({act:'library',phase:'map-rest'},0,{}).detail,/\d/);
+  assert.equal(documentaryCue({act:'library',phase:'map-use',use:3}).card,false);
   assert.equal(documentaryCue({act:'cases',phase:'wordmark-rest'}).card,false);
 });
 

@@ -84,7 +84,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    if(document.querySelector('[data-au-recorded-draft] pre')?.textContent!==draftBody)failures.push('draft text changed at review boundary');
    return {failures,duration:m.duration};
   },{draftBody:teachingState.outcome.request_draft.body});
-  assert.deepEqual(teaching.failures,[]);assert.equal(teaching.duration,149850);
+  assert.deepEqual(teaching.failures,[]);assert.equal(teaching.duration,163180);
   const controls=await page.evaluate(()=>{const a=CasepathPresentation.active,footer=document.querySelector('.au-executive-transport'),button=footer.querySelector('[data-au-demo-stop]');const mutations=[];const observer=new MutationObserver(rows=>mutations.push(...rows));observer.observe(footer,{childList:true,subtree:true,attributes:true});for(const beat of a.manifest.beats)a.advanceTo(beat.start);const pending=observer.takeRecords();observer.disconnect();return {connected:footer.isConnected,sameButton:button===document.querySelector('.au-executive-transport [data-au-demo-stop]'),labelChanges:[...mutations,...pending].filter(row=>row.target===button).length};});
   assert.equal(controls.connected,true);assert.equal(controls.sameButton,true);assert.equal(controls.labelChanges,0,'unchanged Pause control does not repaint on every frame');
   const proof=await page.evaluate(()=>{
@@ -95,7 +95,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    return {manifest,failures,citation,factOperation:fact.dataset.auNsFact,animations:document.getAnimations().length};
   });
   for(const beat of proof.manifest.beats){if(beat.operation){const bound=recorded.cases.find(c=>c.id===beat.claim)?.trace.trim().split('\n').map(JSON.parse).find(row=>row.id===beat.operation);assert.ok(bound,'recorded operation '+beat.operation);assert.equal(bound.seq,beat.seq);}}
-  assert.deepEqual(proof.failures,[]);assert.deepEqual(proof.manifest.acts.map(a=>a.id),['customer','plan','reading','process','decision','learning','photo','library','cases']);
+  assert.deepEqual(proof.failures,[]);assert.deepEqual(proof.manifest.acts.map(a=>a.id),['customer','plan','reading','process','decision','photo','learning','library','cases']);
   const continuity=await page.evaluate(()=>{
    const a=CasepathPresentation.active,failures=[];
    const visible=()=>{const outer=document.querySelector('[data-au-ns],.au-executive-cases'),inner=document.querySelector('.au-ns-canvas,.au-ns-completed-canvas');return Number(getComputedStyle(outer).opacity)*(inner?Number(getComputedStyle(inner).opacity):1);};
@@ -118,8 +118,8 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   },recordedOrder);assert.deepEqual(acceptance,[],'accepted steps never disappear and active nodes follow process order');
   const deterministic=await page.evaluate(()=>{
    const a=CasepathPresentation.active,failures=[];
-   const snapshot=()=>{const selectors=['[data-au-ns]','.au-ns-canvas','.au-ns-completed-canvas','[data-au-ns-paper]','[data-au-ns-plan]','[data-au-ns-procedure]','[data-au-photo-frame]','[data-au-photo-findings]','.au-ns-memory footer','.au-cinema-finale'];return JSON.stringify({styles:selectors.map(s=>{const el=document.querySelector(s);return el?[s,getComputedStyle(el).opacity,el.style.transform]:[s,null];}),nodes:[...document.querySelectorAll('[data-au-ns-node]')].filter(e=>!e.closest('.au-executive-transition')).map(e=>[e.dataset.auNsNode,e.dataset.state]),source:document.querySelector('[data-au-ns-quote]')?.textContent,marks:[...document.querySelectorAll('.au-photo-mark')].map(e=>getComputedStyle(e).opacity).join(),scroll:document.querySelector('.au-ns-view-content')?.scrollTop});};
-   for(const phase of ['plan-rest','fact-rest','node-rest','answer-rest','later-case-rest','memory-notice-rest','photo-rest','library-rest','wordmark-rest']){
+   const snapshot=()=>{const selectors=['[data-au-ns]','.au-ns-canvas','.au-ns-completed-canvas','[data-au-ns-paper]','[data-au-ns-plan]','[data-au-ns-procedure]','[data-au-photo-frame]','[data-au-photo-findings]','[data-au-ns-shelf]','[data-au-map]','.au-cinema-finale'];return JSON.stringify({styles:selectors.map(s=>{const el=document.querySelector(s);return el?[s,getComputedStyle(el).opacity,el.style.transform]:[s,null];}),nodes:[...document.querySelectorAll('[data-au-ns-node]')].filter(e=>!e.closest('.au-executive-transition')).map(e=>[e.dataset.auNsNode,e.dataset.state]),source:document.querySelector('[data-au-ns-quote]')?.textContent,marks:[...document.querySelectorAll('.au-photo-mark')].map(e=>getComputedStyle(e).opacity).join(),scroll:document.querySelector('.au-ns-view-content')?.scrollTop});};
+   for(const phase of ['plan-shelf','plan-rest','fact-rest','node-rest','answer-rest','photo-rest','map-use','map-rest','wordmark-rest']){
     const b=a.manifest.beats.find(b=>b.phase===phase),target=b.end-1;a.advanceTo(0);a.advanceTo(target);const first=snapshot();a.advanceTo(a.manifest.duration-1);a.advanceTo(target);if(snapshot()!==first)failures.push(phase);
    }return failures;
   });assert.deepEqual(deterministic,[],'direct and backward seeks produce the same visible state');
@@ -128,15 +128,19 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   const w10=await page.evaluate(()=>{
    const a=CasepathPresentation.active,m=a.manifest,checks=[];
    for(const beat of m.beats.filter(b=>['cursor','customer-cursor'].includes(b.phase))){a.advanceTo(beat.end-.001);const mark=document.querySelector('[data-au-ns-quote]'),pane=document.querySelector('.au-ns-source-scroll'),r=mark.getBoundingClientRect(),q=pane.getBoundingClientRect();checks.push({center:Math.abs((r.top+r.bottom-q.top-q.bottom)/2),font:getComputedStyle(mark).fontSize,line:getComputedStyle(mark).lineHeight,context:getComputedStyle(document.querySelector('.au-ns-source-context')).opacity,badge:document.querySelector('.au-executive-cursor .au-ns-role-badge')?.childElementCount,highlight:document.querySelector('.au-executive-ink').style.opacity});}
-   const counts=[];for(const beat of m.beats.filter(b=>b.phase==='memory-landed')){a.advanceTo(beat.end-1);counts.push(+document.querySelector('[data-au-memory-count]').textContent);}
-   a.advanceTo(m.beats.find(b=>b.phase==='memory-notice-rest').end-1);
-   const mapping=[...document.querySelectorAll('[data-au-memory-target]')].map(el=>({type:el.dataset.auMemoryTarget,node:el.dataset.auMemoryStep,request:el.dataset.auMemoryRequest,landed:el.dataset.landed}));
+   // The shelf holds every learned checklist; the case on screen takes its own kind, in both cases.
+   const shelves=m.beats.filter(b=>b.phase==='plan-shelf').map(beat=>{a.advanceTo(beat.end-1);return {act:beat.act,cards:document.querySelectorAll('[data-au-shelf-card]').length,selected:document.querySelector('[data-au-shelf-card][data-selected]')?.dataset.auShelfCard,claim:document.querySelector('[data-au-ns]')?.closest('[data-au-view]')&&document.querySelector('[data-au-claim-title]')?.textContent};});
+   // The map ends on the recorded totals: every use drawn as one ring.
+   a.advanceTo(m.beats.find(b=>b.phase==='map-rest').end-1);
+   const counts=['checklists','cases','uses'].map(key=>+document.querySelector(`[data-au-map-count="${key}"]`).textContent),rings=[...document.querySelectorAll('.au-km-ring')].filter(e=>+getComputedStyle(e).opacity===1).length,lit=document.querySelectorAll('.au-km-case[data-lit=true]').length;
    a.advanceTo(m.beats.find(b=>b.phase==='fact-rest').end-1);const connector=document.querySelector('.au-ns-fact-connector');
-   return {checks,counts,mapping,connector:connector.dataset.auNsConnectorNode,path:connector.querySelector('path').getAttribute('d'),selection:m.showcase};
+   return {checks,counts,rings,lit,shelves,connector:connector.dataset.auNsConnectorNode,path:connector.querySelector('path').getAttribute('d'),selection:m.showcase};
   });
-  assert.equal(w10.selection.claimId,recorded.cases[7].id);assert.deepEqual(w10.counts,[1,2,3]);assert.equal(w10.mapping.length,3);assert.ok(w10.mapping.every(row=>row.landed==='true'&&row.request));
+  assert.equal(w10.selection.claimId,recorded.cases[7].id);const replay=load('knowledge-w6').learning_replay,used=replay.events.filter(e=>e.kind==='knowledge.used');
+  assert.deepEqual(w10.counts,[replay.events.filter(e=>e.kind==='knowledge.published').length,new Set(replay.events.map(e=>e.claim_id)).size,used.length]);assert.equal(w10.rings,used.length);assert.equal(w10.lit,w10.counts[1]);
+  assert.deepEqual(w10.shelves.map(row=>[row.act,row.cards,row.selected]),[['plan',3,'procedure.rent_increase_dispute'],['learning',3,'procedure.rent_increase_dispute']]);
   assert.ok(w10.checks.every(row=>row.center<2&&row.font==='17px'&&row.line==='25.5px'&&row.context==='0.45'&&row.badge===1&&row.highlight==='0'),JSON.stringify(w10.checks));assert.ok(w10.connector);assert.match(w10.path,/H.*V.*H.*V/);
-  if(process.env.CASEPATH_W10_SHOTS){for(const [name,phase]of [['reading','fact-rest'],['answer','answer-rest'],['learning','memory-notice-rest']]){await page.evaluate(phase=>{const a=CasepathPresentation.active,b=a.manifest.beats.find(b=>b.phase===phase);a.advanceTo(b.end-1);},phase);await page.screenshot({path:process.env.CASEPATH_W10_SHOTS+'/'+name+'.png'});}}
+  if(process.env.CASEPATH_W10_SHOTS){for(const [name,phase]of [['reading','fact-rest'],['answer','answer-rest'],['knowledge','map-rest']]){await page.evaluate(phase=>{const a=CasepathPresentation.active,b=a.manifest.beats.find(b=>b.phase===phase);a.advanceTo(b.end-1);},phase);await page.screenshot({path:process.env.CASEPATH_W10_SHOTS+'/'+name+'.png'});}}
   const {auditPresentation}=await import('../design-plans/w9-20261021/audit_presentation.mjs');
   const {auditChecklistGeometry}=await import('../design-plans/tools/checklist_geometry_audit.mjs');
   await page.evaluate(`window.auditChecklistGeometry=${auditChecklistGeometry.toString()}`);
@@ -168,7 +172,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   const clipped=await page.addStyleTag({content:'.au-workspace .au-ns-plan ol {max-height:30px;overflow:hidden}'});
   assert.equal((await page.evaluate(auditChecklistGeometry)).passed,false,'the audit detects a clipped checklist row');
   await clipped.evaluate(el=>el.remove());
-  for(const [phase,selector] of [['legal-test-rest','.au-desk-tests > li > button'],['plan-rest','.au-ns-procedure li'],['fact-rest','.au-executive-checklist li'],['photo-rest','.au-ns-photo-findings li'],['library-rest','.au-library-index button > strong']]){
+  for(const [phase,selector] of [['legal-test-rest','.au-desk-tests > li > button'],['plan-rest','.au-ns-procedure li'],['fact-rest','.au-executive-checklist li'],['photo-rest','.au-ns-photo-findings li'],['map-rest','.au-km-case p']]){
    await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),proof.manifest.beats.find(b=>b.phase===phase).end-1);
    assert.equal((await page.evaluate(auditChecklistGeometry)).passed,true,'unmodified '+phase+' labels fit');
    const crop=await page.addStyleTag({content:selector+' {height:5px!important;min-height:0!important;overflow:hidden!important}'});
@@ -213,13 +217,12 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    active.advanceTo(m.beats.find(b=>b.phase==='node-rest'&&b.act==='process').end-1);const checklist=document.querySelector('[data-au-ns-checklist] h2').textContent;
    const scan=m.beats.find(b=>b.phase==='photo-scan');active.advanceTo(scan.start+1);const litAtStart=[...document.querySelectorAll('.au-photo-mark')].filter(e=>+getComputedStyle(e).opacity>0).length;
    active.advanceTo(m.beats.find(b=>b.phase==='photo-rest').end-1);const photo={marks:document.querySelectorAll('.au-photo-mark').length,lit:[...document.querySelectorAll('.au-photo-mark')].filter(e=>+getComputedStyle(e).opacity===1).length,litAtStart,image:document.querySelector('[data-au-photo-frame] img').src,findings:document.querySelector('[data-au-photo-findings]').textContent};
-   const later=m.beats.find(b=>b.phase==='later-case-rest');active.advanceTo(later.start+899);
-   const canvasVisible=getComputedStyle(document.querySelector('.au-ns-completed-canvas')).opacity==='1',label=document.querySelector('.au-executive-later').textContent,title=document.querySelector('[data-au-claim-title]').textContent;
-   active.advanceTo(m.beats.find(b=>b.phase==='memory-landed').start);
-   return {failures,checked,tests,draft,plan,checklist,photo,laterDuration:later.duration,canvasVisible,label,title,sourceHeading:document.querySelector('.au-ns-memory-source h3').textContent,border:getComputedStyle(document.querySelector('.au-ns-memory-source blockquote')).borderTop};
+   const later=m.beats.find(b=>b.act==='learning'&&b.phase==='plan-rest');active.advanceTo(later.end-1);
+   const label=document.querySelector('.au-executive-later').textContent,title=document.querySelector('[data-au-claim-title]').textContent,laterDocuments=document.querySelectorAll('[data-au-ns-procedure] li').length;
+   return {failures,checked,tests,draft,plan,checklist,photo,label,title,laterDocuments};
   },completions);
   assert.deepEqual(bindings.failures,[]);assert.ok(bindings.checked>0);
-  assert.ok(proof.manifest.duration<155000,'the complete recorded story stays below 155 seconds');assert.match(bindings.draft,/Not sent — you decide/);assert.ok(bindings.draft.includes(recorded.cases[7].envelope.state.outcome.request_draft.body));
+  assert.ok(proof.manifest.duration<170000,'the complete recorded story stays below 170 seconds');assert.match(bindings.draft,/Not sent — you decide/);assert.ok(bindings.draft.includes(recorded.cases[7].envelope.state.outcome.request_draft.body));
   assert.deepEqual(bindings.tests.map(t=>t.step),[2,2,2,3,3]);assert.ok(bindings.tests.every(t=>t.ring===20&&t.label===String(t.step)));
   // The plan shows only what the recording required: one row per document.require, one circle per evaluated step.
   const mainOps=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).filter(row=>row.type==='operation');
@@ -230,8 +233,9 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   const photoReading=Object.entries(photo.responses).find(([key])=>key.endsWith('/photo-reading'))[1];
   assert.equal(photoReading.evidence_admitted,false);assert.equal(bindings.photo.marks,photoReading.regions[0].segments.length);assert.equal(bindings.photo.lit,bindings.photo.marks);assert.ok(bindings.photo.litAtStart<bindings.photo.marks/4);
   assert.match(bindings.photo.image,/^blob:/);assert.match(bindings.photo.findings,/Dark spots found/);assert.match(bindings.photo.findings,/Photo taken 14 March 2025/);
-  assert.ok(proof.manifest.acts.find(a=>a.id==='customer').end-proof.manifest.acts.find(a=>a.id==='customer').start<8000,'intake stops before repeated document reading');
-  assert.equal(bindings.laterDuration,2400);assert.equal(bindings.canvasVisible,true);assert.equal(bindings.label,'New case');assert.ok(bindings.title.length);assert.equal(bindings.sourceHeading,'From the new case');assert.equal(bindings.border,'1px solid rgb(46, 107, 53)');
+  assert.ok(proof.manifest.acts.find(a=>a.id==='customer').end-proof.manifest.acts.find(a=>a.id==='customer').start<13000,'intake stops before repeated document reading');
+  assert.equal(bindings.label,'New case');assert.ok(bindings.title.length);
+  const laterOps=recorded.cases[8].trace.trim().split('\n').map(JSON.parse).filter(row=>row.type==='operation');assert.equal(bindings.laterDocuments,new Set(laterOps.filter(o=>o.kind==='document.require'&&o.seq>laterOps.find(r=>r.kind==='knowledge.reuse').seq).map(o=>o.object.id)).size);
   assert.ok(proof.manifest.beats.filter(b=>b.phase==='source-swap').every(b=>b.duration===(b.act==='process'?250:500)));
   await page.evaluate(at=>CasepathPresentation.active.seek(at),proof.manifest.beats.find(b=>b.phase==='fact-rest').start);
   const op=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).find(row=>row.id===proof.factOperation);assert.deepEqual(proof.citation,op.source);const reading=proof.manifest.beats.find(b=>b.act==='reading'&&b.phase==='fact-rest'),readingOp=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).find(row=>row.id===reading.operation);const recordingRows=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).filter(row=>row.type==='operation'),catalogue=require('../casepath/assets/autonomous-workspace-v1.js').northStarPlanModel(recorded.cases[7].envelope.state,recordingRows),nextCompletion=proof.manifest.beats.find(b=>b.phase==='node-rest'&&b.start>reading.end),completionOp=recordingRows.find(row=>row.id===nextCompletion.operation);

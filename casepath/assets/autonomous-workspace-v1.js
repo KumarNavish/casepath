@@ -1567,7 +1567,7 @@
     return label?`<p class="au-ns-intake" data-au-ns-intake>Arrived by ${h(label.toLowerCase())}</p>`:'';
   }
   const NS_ROLES = Object.freeze([
-    ['reader','Reader'],['checker','Fact checker'],['builder','Planner'],['finder','Document finder'],['result','Answer writer']
+    ['reader','Claim reader'],['checker','Source checker'],['builder','Process builder'],['finder','Document finder'],['result','Result checker']
   ]);
   const NS_ROLE_WORK = Object.freeze({
     reader:'Reads the documents and finds the facts.',
@@ -1595,7 +1595,7 @@
     return previous;
   }
   function northStarIcon(kind) {
-    const paths={reader:'M7 2h7l5 5v15H5V2h2m7 0v6h5M8 12h8M8 16h8',checker:'m12 2 9 4v7c0 5-9 9-9 9S3 18 3 13V6l9-4m-4 10 3 3 5-6',builder:'M9 2h6v5H9zM2 17h6v5H2zm14 0h6v5h-6zM9 17h6v5H9zm3-10v6M5 17v-4h14v4m-7-4v4',finder:'M2 7V4h7l3 3h10v15H2V7h20',result:'M22 11a10 10 0 1 1-5-8M7 11l4 4L22 3',message:'M3 3h18v15h-7l-4 4v-4H3V3m4 5h10M7 12h7',file:'M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8',check:'m4 12 5 5L20 6',search:'M15 15l7 7M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',help:'M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0M9 8a3 3 0 0 1 6 0c0 2-3 2-3 5m0 4v.1'};
+    const paths={reader:'M13 21H5V3h9l4 4v5M14 3v4h4M8 9h7M8 12h7M8 15h3m4 6 .6-2.6 4.4-4.4 2 2-4.4 4.4z',checker:'M12 21H5V3h9l4 4v4M14 3v4h4M20 16a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-5.1.1 1.1 1.1 1.9-2.3',builder:'M14 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0M12 7v7.5M6 17v-2.5h12V17M8 19a2 2 0 1 1-4 0 2 2 0 0 1 4 0m12 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0',finder:'M11 21H5V3h9l4 4v3M14 3v4h4M8 9h6M8 12h3m10 3.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-1 2.5 3 3',result:'m12 2 9 4v7c0 5-9 9-9 9S3 18 3 13V6l9-4m-4 10 3 3 5-6',message:'M3 3h18v15h-7l-4 4v-4H3V3m4 5h10M7 12h7',file:'M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8',check:'m4 12 5 5L20 6',search:'M15 15l7 7M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',help:'M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0M9 8a3 3 0 0 1 6 0c0 2-3 2-3 5m0 4v.1'};
     return `<svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[kind]||paths.file}"/></svg>`;
   }
   function northStarTabsMarkup(role, interactive = false) {
@@ -2113,6 +2113,24 @@
     const source=first.source_claim_id||first.claim_id;
     const later=[...new Set(events.filter(event=>event.kind==='knowledge.used' && Date.parse(event.at)>Date.parse(first.at) && event.claim_id && event.claim_id!==source).map(event=>event.claim_id))];
     return {source,later};
+  }
+  // The recorded knowledge history for the film: each qualified checklist,
+  // the first case it was learned from, and every recorded use in order.
+  function knowledgeMapModel(data, claims = []) {
+    const versions=knowledgeLearningModel(data).versions.filter(isDeskChecklist);
+    const byId=new Map(versions.map(version=>[version.knowledge_id,version]));
+    const events=list(data?.learning_replay?.events).filter(event=>byId.has(event.knowledge_id)&&event.claim_id&&['knowledge.published','knowledge.used'].includes(event.kind));
+    const published=events.filter(event=>event.kind==='knowledge.published'),uses=events.filter(event=>event.kind==='knowledge.used');
+    if(!published.length||!uses.length)return null;
+    const title=id=>caseLabel(id,{title:catalogRow(claims,id)?.title}).primary;
+    const checklists=published.map(event=>{
+      const version=byId.get(event.knowledge_id),cases=[event.claim_id,...new Set(uses.filter(use=>use.knowledge_id===event.knowledge_id&&use.claim_id!==event.claim_id).map(use=>use.claim_id))];
+      return {id:event.knowledge_id,family:version.family,label:procedureScope(version),version,source:event.claim_id,questions:layoutGraph(version.graph).nodes.length,documents:list(version.graph?.document_catalog).length,checks:list(version.source_outcome?.legal_predicates).length,cases:cases.map(id=>({id,title:title(id)}))};
+    });
+    // The first wave is every case's first use; afterwards cases use it again.
+    const seen=new Set(published.map(event=>event.claim_id));let firstWave=uses.length;
+    for(let i=0;i<uses.length;i++){if(seen.has(uses[i].claim_id)){firstWave=i;break;}seen.add(uses[i].claim_id);}
+    return {checklists,published:published.map(event=>({id:event.knowledge_id,claim:event.claim_id})),uses:uses.map(use=>({id:use.knowledge_id,claim:use.claim_id})),firstWave,caseCount:new Set(events.map(event=>event.claim_id)).size};
   }
   function knowledgeChecklistMarkup(version,data,caseTitle=()=> '') {
     if (!isDeskChecklist(version)) return '';
@@ -5401,14 +5419,29 @@
       if(!firstOpen||completed.length<2)throw new Error('The recorded demonstration lacks its source-to-step chain.');
       // The plan is the recorded process and its document requirements, in the
       // order the record evaluated them. Each check is a recorded document.check.
-      const graphNodes=list(main.state.graph?.nodes),catalogue=list(main.state.graph?.document_catalog),catalogTypes=new Set(catalogue.map(row=>row.document_type));
-      const firstOf=(kind,keep)=>{const seen=new Set();return rows.filter(op=>op.kind===kind&&keep(op)&&!seen.has(op.object.id)&&seen.add(op.object.id));};
-      const reuse=rows.find(op=>op.kind==='knowledge.reuse');
-      const evaluations=firstOf('node.evaluate',op=>graphNodes.some(node=>node.node_id===op.object.id)&&(!reuse||op.seq>reuse.seq));
-      const requirements=firstOf('document.require',op=>catalogTypes.has(op.object.id)&&(!reuse||op.seq>reuse.seq));
-      const checks=firstOf('document.check',op=>catalogTypes.has(op.object.id)&&op.result?.assessment==='sufficient'&&northStarPin(op,main.trace.sources));
-      const procedureVersion=reuse&&knowledgeLearningModel(knowledgeCache.value).versions.find(version=>version.knowledge_id===reuse.object.id&&String(version.version)===String(reuse.input?.version));
-      const planned=Boolean(procedureVersion&&evaluations.length===graphNodes.length&&requirements.length);
+      const planOf=record=>{
+        const rows=record.trace.rows,graphNodes=list(record.state.graph?.nodes),catalogue=list(record.state.graph?.document_catalog),catalogTypes=new Set(catalogue.map(row=>row.document_type));
+        const firstOf=(kind,keep)=>{const seen=new Set();return rows.filter(op=>op.kind===kind&&keep(op)&&!seen.has(op.object.id)&&seen.add(op.object.id));};
+        const reuse=rows.find(op=>op.kind==='knowledge.reuse');
+        const evaluations=firstOf('node.evaluate',op=>graphNodes.some(node=>node.node_id===op.object.id)&&(!reuse||op.seq>reuse.seq));
+        const requirements=firstOf('document.require',op=>catalogTypes.has(op.object.id)&&(!reuse||op.seq>reuse.seq));
+        const checks=firstOf('document.check',op=>catalogTypes.has(op.object.id)&&op.result?.assessment==='sufficient'&&northStarPin(op,record.trace.sources));
+        const version=reuse&&knowledgeLearningModel(knowledgeCache.value).versions.find(version=>version.knowledge_id===reuse.object.id&&String(version.version)===String(reuse.input?.version));
+        return {record,rows,graphNodes,catalogue,catalogTypes,reuse,evaluations,requirements,checks,version,planned:Boolean(version&&evaluations.length===graphNodes.length&&requirements.length)};
+      };
+      const mainPlan=planOf(main),laterPlan=planOf(later);
+      const {graphNodes,catalogue,catalogTypes,reuse,evaluations,requirements,checks}=mainPlan,procedureVersion=mainPlan.version,planned=mainPlan.planned;
+      // The same recorded gesture for every case that reuses a checklist: the
+      // shelf, the card coming off it, its questions and its documents.
+      const planBeats=(act,plan,t)=>{
+        const record=plan.record,planning={planning:true},at=seq=>({...planning,through:seq});
+        add(act,'plan-shelf',t.shelf,record,null,at(plan.reuse.seq));motion(act,'plan-pick',t.pick,record,null,at(plan.reuse.seq));add(act,'plan-reuse',t.reuse,record,null,at(plan.reuse.seq));
+        if(t.nodeLead)add(act,'plan-node-lead',t.nodeLead,record,null,at(plan.reuse.seq));
+        for(const op of plan.evaluations){motion(act,'plan-node',t.node,record,null,at(op.seq));add(act,'plan-node-rest',t.nodeRest,record,null,at(op.seq));}
+        if(t.docLead)add(act,'plan-document-lead',t.docLead,record,null,at(plan.evaluations.at(-1).seq));
+        for(const op of plan.requirements){motion(act,'plan-document',t.doc,record,null,at(op.seq));add(act,'plan-document-rest',t.docRest,record,null,at(op.seq));}
+        add(act,'plan-rest',t.rest,record,null,at(plan.requirements.at(-1).seq));
+      };
       const reading=(act,record,op,{fact=false,document=false,lead=700,rest}={})=>{
         motion(act,'camera-in',lead,record,op);motion(act,'cursor',550,record,op);motion(act,'highlight',250,record,op);add(act,'passage-rest',rest??(act==='reading'?2600:900),record,op);
         if(fact){motion(act,'fact',350,record,op);motion(act,'connector',400,record,op);add(act,'fact-rest',act==='reading'?3000:900,record,op);}
@@ -5428,13 +5461,7 @@
       motion('customer','customer-source-open',400,main);add('customer','customer-source-open',2400,main,null,{entryRevealed:true,lead:true});
       motion('customer','customer-cursor',550,main);motion('customer','customer-highlight',250,main);add('customer','customer-passage-rest',2200,main);
       if(planned){
-        const plan={planning:true};
-        add('plan','plan-reuse',4600,main,null,{...plan,through:reuse.seq});
-        add('plan','plan-node-lead',2200,main,null,{...plan,through:reuse.seq});
-        for(const op of evaluations){motion('plan','plan-node',500,main,null,{...plan,through:op.seq});add('plan','plan-node-rest',700,main,null,{...plan,through:op.seq});}
-        add('plan','plan-document-lead',2200,main,null,{...plan,through:evaluations.at(-1).seq});
-        for(const op of requirements){motion('plan','plan-document',450,main,null,{...plan,through:op.seq});add('plan','plan-document-rest',800,main,null,{...plan,through:op.seq});}
-        add('plan','plan-rest',3000,main,null,{...plan,through:requirements.at(-1).seq});
+        planBeats('plan',mainPlan,{shelf:4200,pick:1500,reuse:2800,nodeLead:1800,node:800,nodeRest:500,docLead:1800,doc:450,docRest:700,rest:2800});
         checks.forEach((op,i)=>reading('reading',main,op,i?{document:900,lead:800,rest:600}:{document:2800,lead:2600,rest:1400}));
       }
       // Keep accepted history monotonic. Evidence may have been extracted
@@ -5461,12 +5488,6 @@
       for(let i=0;i<tests.length;i++){const identity={view:'answer',test:i,predicate:tests[i].predicate_id,predicate_status:tests[i].status};motion('decision','legal-test',350,main,null,identity);add('decision','legal-test-rest',tests[i].status==='failed'?3400:600,main,null,identity);}
       motion('decision','answer',400,main,null,{view:'answer',test:tests.length});add('decision','answer-rest',6000,main,null,{view:'answer',test:tests.length});
       motion('decision','draft',400,main,null,{view:'draft'});add('decision','draft-rest',4600,main,null,{view:'draft'});
-      const memory=northStarMemoryModel(later.state,{...later.trace,headState:later.state,finished:true,verifiedResult:true},knowledgeCache.value);
-      if(!memory)throw new Error('The later recording has no verified checklist reuse.');
-      add('learning','later-case-rest',2400,later,null,{view:'knowledge'});
-      motion('learning','memory-open',400,later,null,{view:'knowledge'});add('learning','memory-overview',1600,later,null,{view:'knowledge'});
-      for(let item=0;item<memory.links.length;item++){motion('learning','memory-transfer',1000,later,null,{view:'knowledge',item});add('learning','memory-landed',item?700:1900,later,null,{view:'knowledge',item});}
-      motion('learning','memory-notice',400,later,null,{view:'knowledge'});add('learning','memory-notice-rest',3000,later,null,{view:'knowledge'});
       // A customer photo, read by the service's own pixel measurement.
       if(photo){
         const view={view:'photo'};
@@ -5475,20 +5496,27 @@
         motion('photo','photo-finding',500,main,null,{...view,finding:0});motion('photo','photo-finding',500,main,null,{...view,finding:1});
         add('photo','photo-rest',3800,main,null,{...view,finding:1});
       }
-      // Every reusable checklist in the record: the photo's kind of case and
-      // the showcase's own first, then the rest.
-      const families=knowledgeLibrary(knowledgeCache.value).filter(entry=>isDeskChecklist(entry.current)).map(entry=>entry.family);
-      const ownFamily=procedureVersion?libraryFamily(procedureVersion):null,photoFamily=photo?.family||null;
-      const rank=family=>family===photoFamily?0:family===ownFamily?1:2;
-      families.sort((a,b)=>rank(a)-rank(b));
-      families.forEach((family,i)=>{motion('library',i?'library-switch':'library-open',400,main,null,{view:'library',family});add('library','library-rest',i?2400:3600,main,null,{view:'library',family});});
+      // The next case of the same kind: the identical gesture, from its own recording.
+      if(laterPlan.planned&&laterPlan.version?.knowledge_id===procedureVersion?.knowledge_id){
+        planBeats('learning',laterPlan,{shelf:3200,pick:1300,reuse:2400,node:520,nodeRest:260,doc:380,docRest:260,rest:3400});
+      }
+      // Everything learned: each checklist from the first case of its kind,
+      // then every recorded use in recorded order.
+      const knowledgeMap=knowledgeMapModel(knowledgeCache.value,claims);
+      if(knowledgeMap){
+        const view={view:'map'};
+        motion('library','map-open',600,main,null,view);add('library','map-lead',2600,main,null,view);
+        knowledgeMap.published.forEach((event,i)=>{motion('library','map-learned',700,main,null,{...view,event:i});add('library','map-learned-rest',350,main,null,{...view,event:i});});
+        knowledgeMap.uses.forEach((use,i)=>{const quick=i>=knowledgeMap.firstWave;motion('library','map-use',quick?420:760,main,null,{...view,use:i});if(!quick)add('library','map-use-rest',180,main,null,{...view,use:i});});
+        add('library','map-rest',5200,main,null,{...view,use:knowledgeMap.uses.length-1});
+      }
       motion('cases','wordmark',650,main,null,{view:'cases',direct:true});add('cases','wordmark-rest',4800,main,null,{view:'cases',direct:true});
       // Checklist rows come only from recorded document.require and
       // document.check operations in the shown prefix. A check in progress is
       // not counted until its recorded result is shown.
-      const questionOf=node=>node?northStarQuestion(node,main.catalogue?.plans.get(node.node_id)?.at(-1)?.operation.result||rows.find(op=>op.kind==='step.complete'&&op.object.id===node.node_id)?.result):'';
-      function checklistModel(prefix,pendingId){
-        const docs=new Map();
+      const questionOf=(node,plan=mainPlan)=>node?northStarQuestion(node,plan.record.catalogue?.plans.get(node.node_id)?.at(-1)?.operation.result||plan.rows.find(op=>op.kind==='step.complete'&&op.object.id===node.node_id)?.result):'';
+      function checklistModel(prefix,pendingId,plan=mainPlan){
+        const {catalogTypes,reuse,graphNodes,catalogue}=plan,docs=new Map();
         for(const op of prefix){
           if(op.kind==='document.require'&&catalogTypes.has(op.object.id)&&(!reuse||op.seq>reuse.seq)&&!docs.has(op.object.id)){
             const node=graphNodes.find(row=>row.node_id===list(op.input?.required_at_node_ids)[0]);
@@ -5498,8 +5526,13 @@
         }
         return [...docs.values()];
       }
-      const originTitle=procedureVersion?caseLabel(procedureVersion.source_claim_id,{title:catalogRow(claims,procedureVersion.source_claim_id)?.title}).primary:'';
-      const procedurePanel=(docs,through)=>`<section class="au-ns-procedure" data-au-ns-procedure><p class="au-ns-procedure-kicker">Reused checklist</p><h2>${h(procedureScope(procedureVersion))}</h2>${originTitle?`<p class="au-ns-procedure-origin">Learned from “${h(originTitle)}”</p>`:''}<h3${docs.length?'':' hidden'}>Evidence this case needs</h3><ol>${docs.map(doc=>`<li data-au-ns-checklist-doc="${h(doc.type)}"${doc.seq===through?' data-au-ns-new':''}><span class="au-ns-check-mark" aria-hidden="true">${northStarIcon('file')}</span><span><b>${h(doc.label)}</b><small>For question ${h(doc.step)}: ${h(questionOf(doc.node))}</small></span></li>`).join('')}</ol></section>`;
+      const originOf=version=>version?caseLabel(version.source_claim_id,{title:catalogRow(claims,version.source_claim_id)?.title}).primary:'';
+      const procedurePanel=(docs,through,plan=mainPlan)=>`<section class="au-ns-procedure" data-au-ns-procedure><p class="au-ns-procedure-kicker">${northStarIcon('builder')}Checklist from the shelf</p><h2>${h(procedureScope(plan.version))}</h2>${originOf(plan.version)?`<p class="au-ns-procedure-origin">Learned from “${h(originOf(plan.version))}”</p>`:''}<h3${docs.length?'':' hidden'}>Evidence this case needs</h3><ol>${docs.map(doc=>`<li data-au-ns-checklist-doc="${h(doc.type)}"${doc.seq===through?' data-au-ns-new':''}><span class="au-ns-check-mark" aria-hidden="true">${northStarIcon('file')}</span><span><b>${h(doc.label)}</b><small>For question ${h(doc.step)}: ${h(questionOf(doc.node,plan))}</small></span></li>`).join('')}</ol></section>`;
+      const shelfCards=knowledgeMap?knowledgeMap.checklists.slice():[];
+      if(shelfCards.length===3&&procedureVersion){const i=shelfCards.findIndex(card=>card.id===procedureVersion.knowledge_id);if(i>=0)shelfCards.splice(1,0,...shelfCards.splice(i,1));}
+      const shelfCard=(card,selected)=>`<article class="au-shelf-card" data-au-shelf-card="${h(card.id)}"${selected?' data-selected':''}><p class="au-shelf-kicker">${northStarIcon('builder')}Checklist</p><h3>${h(card.label)}</h3><ul><li>${northStarIcon('builder')}<b>${card.questions}</b> questions</li><li>${northStarIcon('finder')}<b>${card.documents}</b> documents</li><li>${northStarIcon('result')}<b>${card.checks}</b> checks</li></ul><p class="au-shelf-origin">Learned from “${h(card.cases[0]?.title||'')}”</p></article>`;
+      const shelfMarkup=selected=>`<div class="au-ns-shelf" data-au-ns-shelf aria-hidden="true"><header><p>Knowledge</p><h2>Checklists CasePath has learned</h2></header><div class="au-ns-shelf-row">${shelfCards.map(card=>shelfCard(card,card.id===selected)).join('')}</div></div>`;
+      const mapMarkup=model=>`<section class="au-executive-cases au-executive-map"><section class="au-km" data-au-map><header class="au-km-head"><div><p>Knowledge</p><h1>What CasePath has learned</h1></div><dl class="au-km-counters" data-au-map-counters>${[['checklists','checklists'],['cases','cases'],['uses','uses']].map(([key,label])=>`<div><dd data-au-map-count="${key}">0</dd><dt>${label}</dt></div>`).join('')}</dl></header><div class="au-km-lanes">${model.checklists.map(card=>`<div class="au-km-lane" data-au-map-lane="${h(card.id)}">${card.cases.map((row,i)=>`<div class="au-km-case" data-au-map-case="${h(row.id)}" data-lane="${h(card.id)}"${i?'':' data-first'} style="grid-column:${i?i+2:1}"><span class="au-km-dot"></span>${i?'':'<small>First case</small>'}<p>${h(row.title)}</p></div>`).join('')}<article class="au-km-card" data-au-map-card="${h(card.id)}" style="grid-column:2"><p>${northStarIcon('builder')}Checklist</p><h3>${h(card.label)}</h3><ul><li><b>${card.questions}</b> questions</li><li><b>${card.documents}</b> documents</li><li><b>${card.checks}</b> checks</li></ul></article></div>`).join('')}</div><svg class="au-km-wires" data-au-map-wires aria-hidden="true"></svg></section></section>`;
       const railChecklist=(docs,current)=>`<section class="au-executive-checklist" data-au-ns-checklist><h2>Evidence checklist <span>${docs.filter(doc=>doc.checked).length} of ${docs.length} checked</span></h2><ol>${docs.map(doc=>`<li data-au-ns-checklist-doc="${h(doc.type)}" data-state="${doc.checked?'checked':'needed'}"${doc.type===current?' data-au-ns-checklist-current':''}><span class="au-ns-check-mark" aria-hidden="true">${doc.checked||doc.type===current?northStarIcon('check'):''}</span><span>${h(doc.label)}</span></li>`).join('')}</ol></section>`;
       const staged=[];
       for(const beat of beats){
@@ -5564,7 +5597,7 @@
           customerPin={artifact_id:customer.artifact_id,sha256:customer.sha256,text_sha256:customer.text_sha256,offset_unit:'unicode_code_point',start_char:start,end_char:start+Array.from(request).length,quote:request};
           trace.sources.set(customer.artifact_id,customer);trace.displaySource={artifact_id:customer.artifact_id};
         }
-        const identity=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id)),viewName==='knowledge'&&Number.isSafeInteger(beat.item)?beat.item:'',beat.family||'',beat.act==='plan'].join(':');
+        const identity=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id)),viewName==='knowledge'&&Number.isSafeInteger(beat.item)?beat.item:'',beat.family||'',Boolean(beat.planning)].join(':');
         markBeat(beat,phase,op,viewName);
         if(!force&&sceneIdentity===identity)return;
         sceneIdentity=identity;
@@ -5584,6 +5617,8 @@
             const finding=(index,title,detail)=>`<li data-au-photo-finding="${index}" data-state="done"><span class="au-ns-plan-status" aria-hidden="true">${northStarIcon('check')}</span><span><b>${h(title)}</b><small>${h(detail)}</small></span></li>`;
             setScene(`<section class="au-agent-desk au-northstar au-ns-photo-desk" data-au-agent-desk data-au-ns data-au-ns-role-active="reader"><aside class="au-ns-sources"><h1 data-au-claim-title tabindex="-1">${h(photo.title)}</h1><h2>Sources <span>2</span></h2><ul><li><span>${northStarIcon('message')}</span><button type="button">Customer’s message</button></li><li aria-current="true"><span>${northStarIcon('file')}</span><button type="button">Photo from the tenant${taken?`<small>Taken ${h(taken)}</small>`:''}</button></li></ul></aside><div class="au-ns-canvas"><div class="au-ns-work au-ns-photo-work"><div class="au-ns-reading"><section class="au-ns-paper au-ns-photo" data-au-ns-paper><div class="au-ns-photo-frame" data-au-photo-frame><img src="${h(photo.url)}" alt="Photo from the tenant"><svg viewBox="0 0 ${r.width} ${r.height}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${list(g.segments).map(([x,y,w,hh])=>`<ellipse class="au-photo-mark" cx="${x+w/2}" cy="${y+hh/2}" rx="${Math.max(2,w/2)}" ry="${Math.max(2,hh/2)}" data-y="${y+hh/2}"/>`).join('')}<rect class="au-photo-region" x="${g.x}" y="${g.y}" width="${g.width}" height="${g.height}" rx="${Math.round(Math.max(r.width,r.height)*.008)}"/><rect class="au-photo-scan" x="0" y="0" width="${r.width}" height="${Math.max(2,Math.round(r.height*.01))}"/></svg></div></section></div><aside class="au-ns-plan au-ns-photo-findings" data-au-photo-findings><h2>What CasePath found</h2><ol>${finding(0,kind,'Marked on the photo')}${taken?finding(1,`Photo taken ${taken}`,'Read from the photo file'):''}</ol></aside></div></div></section>${transport()}`);
           }
+        }else if(viewName==='map'){
+          if(!select('[data-au-map]'))setScene(`${mapMarkup(knowledgeMap)}${transport()}`);
         }else if(viewName==='library'){
           // The product's own Knowledge page, one recorded checklist at a time.
           if(!select('[data-au-library]'))setScene(`<section class="au-executive-cases au-executive-library">${knowledgeLibraryMarkup(knowledgeCache.value,claims)}</section>${transport()}`);
@@ -5592,7 +5627,7 @@
           for(const row of all('[data-au-library-entry]')){const pinned=row.dataset.auLibraryEntry===beat.family;row.hidden=!pinned;if(pinned)row.setAttribute('data-pinned','true');else row.removeAttribute('data-pinned');}
           nav('knowledge');
         }else{
-          trace.nsPlanning=beat.act==='plan';
+          trace.nsPlanning=Boolean(beat.planning);
           const cacheKey=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id)),trace.nsPlanning].join(':');
           if(!markupCache.has(cacheKey))markupCache.set(cacheKey,viewName?northStarCompletedMarkup(current,trace,detail,opts):northStarMarkup(current,trace,opts));
           setScene(markupCache.get(cacheKey)+transport());
@@ -5612,19 +5647,37 @@
         if(recordedLead&&record===main&&guideContext.assessmentSupportsInvalidity===true&&guideContext.decisivePredicate)recordedLead.insertAdjacentHTML('beforebegin','<p class="au-desk-plain">The rent increase is not valid: no reasons were given with it.</p>');
         // The film never clicks: links to open things stay out of the picture.
         if(present)for(const link of all('a,button'))if(/^(?:Open\b|How this was learned)/u.test(link.textContent.trim()))link.style.visibility='hidden';
-        if(!viewName&&planned&&!['customer','plan'].includes(beat.act)){const checking=op?.kind==='document.check'?op:null,docs=checklistModel(trace.rows,checking&&!trace.nsCues.has(checking.id)?checking.id:null);if(docs.length)select('.au-ns-sources')?.insertAdjacentHTML('beforeend',railChecklist(docs,checking?.object.id));}
-        if(beat.act==='plan'){
-          // The plan stage: the recorded questions appear as they are first
-          // evaluated, then the documents each question requires.
-          const stage=select('.au-ns-reading');if(stage)stage.innerHTML=procedurePanel(checklistModel(trace.rows,null),beat.through);
+        if(!viewName&&planned&&!beat.planning&&!['customer','plan'].includes(beat.act)){const checking=op?.kind==='document.check'?op:null,docs=checklistModel(trace.rows,checking&&!trace.nsCues.has(checking.id)?checking.id:null);if(docs.length)select('.au-ns-sources')?.insertAdjacentHTML('beforeend',railChecklist(docs,checking?.object.id));}
+        const plan=beat.planning?(record===later?laterPlan:mainPlan):null;
+        if(plan){
+          // The plan stage: the checklist comes off the shelf, then the recorded
+          // questions appear as they are first evaluated, then the documents.
+          const stage=select('.au-ns-reading');if(stage)stage.innerHTML=procedurePanel(checklistModel(trace.rows,null,plan),beat.through,plan);
           select('[data-au-ns-plan]')?.remove();select('.au-ns-facts')?.remove();select('.au-ns-fact-connector')?.remove();
-          const seen=new Set(trace.rows.filter(row=>row.kind==='node.evaluate'&&(!reuse||row.seq>reuse.seq)).map(row=>row.object.id));
+          if(['plan-shelf','plan-pick','plan-reuse'].includes(phase)&&shelfCards.length){const canvas=select('.au-ns-canvas');if(canvas){canvas.style.position='relative';canvas.insertAdjacentHTML('beforeend',shelfMarkup(plan.version.knowledge_id));}}
+          const seen=new Set(trace.rows.filter(row=>row.kind==='node.evaluate'&&(!plan.reuse||row.seq>plan.reuse.seq)).map(row=>row.object.id));
           for(const node of all('[data-au-ns-node]')){node.dataset.auNsPlanned=String(seen.has(node.dataset.auNsNode));if(trace.rows.some(row=>row.kind==='node.evaluate'&&row.seq===beat.through&&row.object.id===node.dataset.auNsNode))node.dataset.auNsNew='';}
         }
-        const ns=select('[data-au-ns]'),tabs=container.querySelector('.au-ns-tabs');if(tabs)tabs.innerHTML=ns?northStarTabsMarkup(ns.dataset.auNsRoleActive,Boolean(viewName)):'';
+        const ns=select('[data-au-ns]'),tabs=container.querySelector('.au-ns-tabs');
+        // The film keeps one tab bar in every scene; a beat may name its own active role.
+        const role=beat.tab??(beat.planning||['library','map'].includes(beat.view)?'builder':ns?ns.dataset.auNsRoleActive:'');
+        if(tabs)tabs.innerHTML=ns||present?northStarTabsMarkup(role,Boolean(viewName)&&!present):'';
         positionDesk(false);
         markBeat(beat,phase,op,viewName);
         frameNodes={desk:ns,paper:select('[data-au-ns-paper]'),mark:select('[data-au-ns-quote]'),fact:op&&select(`[data-au-ns-fact="${op.id}"]`),link:select('.au-ns-fact-connector'),plan:select('[data-au-ns-plan]'),canvas:select('.au-ns-canvas,.au-ns-completed-canvas'),work:select('.au-ns-work')};
+        if(plan){
+          const shelf=select('[data-au-ns-shelf]'),card=shelf?.querySelector('[data-selected]'),panel=select('[data-au-ns-procedure]');
+          if(shelf&&card&&panel){const from=card.getBoundingClientRect(),to=panel.getBoundingClientRect();frameNodes.shelf={shelf,card,others:[...shelf.querySelectorAll('.au-shelf-card:not([data-selected])')],head:shelf.querySelector('header'),panel,from,to};}
+          else if(panel)frameNodes.shelf={panel};
+          // A question leaves the checklist as a slip and lands as a circle.
+          const fresh=select('[data-au-ns-node][data-au-ns-new]'),title=panel?.querySelector('h2');
+          if(phase.startsWith('plan-node')&&fresh&&title){
+            const slip=doc.createElement('div');slip.className='au-ns-slip';slip.setAttribute('aria-hidden','true');slip.innerHTML=`${northStarIcon('builder')}<span>${h(fresh.querySelector('.au-ns-node-label')?.textContent||'')}</span>`;host.appendChild(slip);
+            const from=title.getBoundingClientRect(),target=(fresh.querySelector('.au-ns-circle')||fresh).getBoundingClientRect();
+            slip.style.left=`${from.left}px`;slip.style.top=`${from.top}px`;frameNodes.slip={slip,dx:target.left+target.width/2-from.left-slip.offsetWidth/2,dy:target.top+target.height/2-from.top-slip.offsetHeight/2};
+          }
+        }
+        if(viewName==='map')frameNodes.map=mapGeometry();
         const {mark,paper}=frameNodes;
         if(mark){
           mark.dataset.arrived=['ready','cursor','camera-in','source-open'].includes(phase.replace(/^customer-/,''))?'false':'true';
@@ -5699,7 +5752,7 @@
       }
       // Narration and its single focal target share the recorded presentation
       // clock. The guide lives outside the replaceable scene and its clones.
-      const guideContext={firstCompletionId:completed[0]?.id,firstFactId:firstFact.id,decisivePredicate:failedIds.has(firstFact.object.id)?firstFact.object.id:null,firstCheckId:planned?checks[0]?.id:null,questionCount:graphNodes.length,documentCount:requirements.length,testCount:tests.length,procedureScope:procedureVersion?procedureScope(procedureVersion):null};
+      const guideContext={firstCompletionId:completed[0]?.id,firstFactId:firstFact.id,decisivePredicate:failedIds.has(firstFact.object.id)?firstFact.object.id:null,firstCheckId:planned?checks[0]?.id:null,questionCount:graphNodes.length,documentCount:requirements.length,testCount:tests.length,procedureScope:procedureVersion?procedureScope(procedureVersion):null,knowledgeUses:knowledgeMap?.uses.length||0,knowledgeCases:knowledgeMap?.caseCount||0};
       guideContext.decisiveRule=Boolean(P.documentaryRuleFocus(legalAuthorityRows(main.state).find(row=>row.article==='269d')?.text,{...guideContext,article:'269d'}));
       guideContext.assessmentSupportsInvalidity=guideContext.decisiveRule&&main.state.outcome?.assessment_scope==='rent_increase_reasons_nullity_assessment'&&String(main.state.outcome?.summary||'').includes('supporting invalidity under CO 269d(2)(b)');
       const guideWindows=[];
@@ -5731,6 +5784,10 @@
           case 'plan':return select('[data-au-ns-plan]');
           case 'spine':return select('.au-ns-spine');
           case 'procedure':return select('[data-au-ns-procedure]');
+          case 'shelf':return select('[data-au-ns-shelf] .au-ns-shelf-row');
+          case 'shelf-card':return select('[data-au-ns-shelf] [data-selected]');
+          case 'map':return select('.au-km-lanes');
+          case 'map-counters':return select('[data-au-map-counters]');
           case 'photo':return select('[data-au-photo-frame]');
           case 'photo-findings':return select('[data-au-photo-findings]');
           case 'checklist-row':return select(`[data-au-ns-checklist] [data-au-ns-checklist-doc="${cue.targetId}"]`)||select('[data-au-ns-checklist]');
@@ -5823,7 +5880,7 @@
             below:{x:clampX(cx-cw/2),y:bottom+gap,ok:bottom+gap+ch<=maxY},above:{x:clampX(cx-cw/2),y:top-gap-ch,ok:top-gap-ch>=minY},
             right:{x:right+gap,y:clampY(cy-ch/2),ok:right+gap+cw<=width-margin},left:{x:left-gap-cw,y:clampY(cy-ch/2),ok:left-gap-cw>=margin}};
           // A corner caption keeps a long hold clear of the content it explains.
-          options.corner={x:width-margin-cw,y:maxY-ch-12};options.corner.ok=!(options.corner.x<right&&options.corner.x+cw>left&&options.corner.y<bottom&&options.corner.y+ch>top);
+          options.corner={x:width-margin-cw,y:maxY-ch-12};options.corner.ok=!cue.spotlight||!(options.corner.x<right&&options.corner.x+cw>left&&options.corner.y<bottom&&options.corner.y+ch>top);
           side=[cue.side,...(bottom-top>300?['right','left','below','above']:['below','above','right','left'])].find(key=>options[key]?.ok)||'inside';
           ({x,y}=side==='inside'?{x:clampX(right-cw-12),y:clampY(bottom-ch-12)}:options[side]);
           if(cue.align==='end'&&['right','left'].includes(side))y=clampY(bottom-ch-24);
@@ -5831,6 +5888,33 @@
         }
         guideLayer.dataset.auGuideSide=side;
         nodes.card.style.transform=`translate(${Math.round(x)}px,${Math.round(y)}px)`;
+      }
+      // The knowledge map's moving parts, measured once per scene. Each recorded
+      // use has one ring around the case it reached and one pulse on its wire.
+      function mapGeometry(){
+        const root=select('[data-au-map]'),svg=root?.querySelector('[data-au-map-wires]');if(!root||!svg||!knowledgeMap)return null;
+        const box=root.getBoundingClientRect(),rel=r=>({x:r.left-box.left,y:r.top-box.top,w:r.width,h:r.height});
+        svg.setAttribute('viewBox',`0 0 ${box.width} ${box.height}`);svg.setAttribute('width',String(box.width));svg.setAttribute('height',String(box.height));
+        const make=(tag,attrs)=>{const el=doc.createElementNS('http://www.w3.org/2000/svg',tag);for(const [key,value] of Object.entries(attrs))el.setAttribute(key,String(value));svg.appendChild(el);return el;};
+        const cards=new Map(),cases=new Map(),wires=new Map(),learned=[];
+        for(const card of knowledgeMap.checklists){
+          const el=root.querySelector(`[data-au-map-card="${card.id}"]`),c=rel(el.getBoundingClientRect());cards.set(card.id,{el,...c});
+          card.cases.forEach((row,i)=>{
+            const node=root.querySelector(`[data-au-map-case="${row.id}"]`),dot=rel(node.querySelector('.au-km-dot').getBoundingClientRect()),cx=dot.x+dot.w/2,cy=dot.y+dot.h/2,r=dot.w/2;
+            cases.set(row.id,{el:node,cx,cy});
+            if(!i){
+              const end=rel(node.getBoundingClientRect());learned.push({id:card.id,claim:row.id,path:make('path',{d:`M${end.x+end.w+8} ${cy}H${c.x-8}`,class:'au-km-learned'})});
+              wires.set(`${card.id}|${row.id}`,make('path',{d:`M${c.x+40} ${c.y-2}Q${(c.x+40+cx)/2} ${c.y-64} ${cx} ${cy-r-6}`,class:'au-km-wire',pathLength:1}));
+            }else{
+              const sx=c.x+c.w+6,sy=c.y+c.h/2;
+              wires.set(`${card.id}|${row.id}`,make('path',{d:i===1?`M${sx} ${sy}L${cx-r-6} ${cy}`:`M${sx} ${sy-18}Q${(sx+cx)/2} ${cy-96} ${cx} ${cy-r-6}`,class:'au-km-wire',pathLength:1}));
+            }
+          });
+        }
+        const counts=new Map();
+        const uses=knowledgeMap.uses.map((use,index)=>{const n=(counts.get(use.claim)||0)+1;counts.set(use.claim,n);const place=cases.get(use.claim);return {...use,index,wire:wires.get(`${use.id}|${use.claim}`),place,ring:make('circle',{cx:place.cx,cy:place.cy,r:10+6*n,class:'au-km-ring'}),pulse:make('circle',{cx:place.cx,cy:place.cy,r:5,class:'au-km-pulse'})};});
+        const firstUse=new Map();uses.forEach(use=>{if(!firstUse.has(use.wire))firstUse.set(use.wire,use.index);});
+        return {root,cards,cases,learned,uses,firstUse,count:key=>root.querySelector(`[data-au-map-count="${key}"]`)};
       }
       const guideResize=()=>render(clock.now(),true);root.addEventListener('resize',guideResize);
       function render(at=clock.now(),force=false) {
@@ -5885,11 +5969,30 @@
           // recorded check result is shown.
           const checking=select('[data-au-ns-checklist-current][data-state=needed] .au-ns-check-mark');
           if(checking){const q=phase==='document'?p:0;checking.style.background=`rgba(46,107,53,${q})`;checking.style.borderColor=q?'#2e6b35':'#82072a';opacity(checking.querySelector('svg'),q);}
-          if(b.act==='plan'){
+          if(b.planning){
+            const p=reduced?.matches?1:transition?0:sample.progress;
+            // The checklist card comes off the shelf and opens into this case's plan.
+            const sh=n.shelf,shelfPhase=['plan-shelf','plan-pick'].includes(phase);
+            if(sh?.shelf){
+              opacity(sh.shelf,shelfPhase?1:0);
+              if(phase==='plan-shelf'){
+                opacity(sh.head,Math.min(1,p*4));
+                [...sh.shelf.querySelectorAll('.au-shelf-card')].forEach((card,i)=>{const q=P.ease(Math.max(0,Math.min(1,(p-.08-.12*i)/.26)));opacity(card,q);card.style.transform=`translateY(${18*(1-q)}px)`;});
+                const lift=P.ease(Math.max(0,Math.min(1,(p-.66)/.24)));sh.card.dataset.lit=String(lift>0);sh.card.style.transform=`translateY(${-12*lift}px)`;
+              }else if(phase==='plan-pick'){
+                const e=P.ease(p),scale=1;
+                for(const card of sh.others)opacity(card,1-Math.min(1,p*2.5));opacity(sh.head,1-Math.min(1,p*2.5));
+                sh.card.dataset.lit='true';sh.card.style.transformOrigin='0 0';
+                sh.card.style.transform=`translate(${(sh.to.left-sh.from.left)*e}px,${-12+(sh.to.top-sh.from.top+12)*e-70*Math.sin(Math.PI*e)}px) scale(${scale})`;
+                opacity(sh.card,p<.82?1:1-(p-.82)/.18);
+              }
+            }
+            if(sh?.panel)opacity(sh.panel,phase==='plan-shelf'?0:phase==='plan-pick'?Math.max(0,(p-.78)/.22):1);
+            if(n.slip){const fly=phase==='plan-node'?Math.min(1,p/.72):1,e=P.ease(fly);n.slip.slip.style.transform=`translate(${n.slip.dx*e}px,${n.slip.dy*e-46*Math.sin(Math.PI*e)}px)`;opacity(n.slip.slip,phase==='plan-node'?(p<.72?1:Math.max(0,1-(p-.72)/.2)):0);}
             for(const node of all('[data-au-ns-node]')){
-              const fresh=node.hasAttribute('data-au-ns-new')&&phase==='plan-node',next=node.nextElementSibling,arrow=node.querySelector('.au-ns-arrow');
-              opacity(node,node.dataset.auNsPlanned==='true'?fresh?p:1:0);node.style.transform=fresh?`translateY(${10*(1-p)}px)`:'none';
-              if(arrow)arrow.style.opacity=next?.dataset.auNsPlanned==='true'?String(next.hasAttribute('data-au-ns-new')&&phase==='plan-node'?p:1):'0';
+              const fresh=node.hasAttribute('data-au-ns-new')&&phase==='plan-node',landing=fresh?Math.max(0,Math.min(1,(p-.62)/.38)):1,next=node.nextElementSibling,arrow=node.querySelector('.au-ns-arrow');
+              opacity(node,node.dataset.auNsPlanned==='true'?landing:0);node.style.transform=fresh?`scale(${.86+.14*landing})`:'none';
+              if(arrow)arrow.style.opacity=next?.dataset.auNsPlanned==='true'?String(next.hasAttribute('data-au-ns-new')&&phase==='plan-node'?Math.max(0,Math.min(1,(p-.62)/.38)):1):'0';
             }
             for(const row of all('[data-au-ns-procedure] li[data-au-ns-new]')){opacity(row,phase==='plan-document'?p:1);row.style.transform=phase==='plan-document'?`translateY(${10*(1-p)}px)`:'none';}
           }
@@ -5934,6 +6037,29 @@
             opacity(select('[data-au-photo-findings]'),phase==='photo-region'?p:done?1:0);
             for(const row of all('[data-au-photo-finding]')){const index=Number(row.dataset.auPhotoFinding),shown=phase==='photo-finding'?index<b.finding?1:index===b.finding?p:0:phase==='photo-rest'?1:0;opacity(row,shown);row.style.transform=`translateY(${8*(1-shown)}px)`;}
             const frame=select('[data-au-photo-frame]');if(frame)frame.style.transform=`scale(${1+.035*(scanning?P.ease(sample.progress):done?1:0)})`;
+          }
+          if(b.view==='map'&&n.map){
+            const p=reduced?.matches?1:transition?0:sample.progress;
+            const m=n.map,event=Number.isSafeInteger(b.event)?b.event:-1,use=Number.isSafeInteger(b.use)?b.use:-1,usePhase=['map-use','map-use-rest','map-rest'].includes(phase);
+            const learnedDone=phase==='map-learned'?event:phase==='map-learned-rest'?event+1:usePhase?m.learned.length:0;
+            const lit=new Set();
+            m.learned.forEach((row,i)=>{
+              const q=i<learnedDone?1:i===event&&phase==='map-learned'?P.ease(p):0,card=m.cards.get(row.id);
+              opacity(row.path,Math.min(1,q*2));const pop=Math.max(0,Math.min(1,(q-.35)/.65));opacity(card.el,pop);card.el.style.transform=`scale(${.9+.1*pop})`;
+              if(q>=.35)lit.add(row.claim);
+            });
+            const usesDone=phase==='map-use'?use:usePhase?use+1:0;let landed=0;
+            for(const u of m.uses){
+              const active=phase==='map-use'&&u.index===use,done=u.index<usesDone||active&&p>=.8;
+              if(m.firstUse.get(u.wire)===u.index)u.wire.style.strokeDashoffset=String(1-(u.index<usesDone?1:active?Math.min(1,p/.55):0));
+              const ringIn=done?(active?Math.min(1,(p-.8)/.2):1):0;u.ring.style.opacity=String(ringIn);u.ring.style.transform=`scale(${.6+.4*ringIn})`;
+              if(active&&p<.8){const length=u.wire.getTotalLength(),point=u.wire.getPointAtLength(length*P.ease(p/.8));u.pulse.setAttribute('cx',String(point.x));u.pulse.setAttribute('cy',String(point.y));u.pulse.style.opacity='1';}else u.pulse.style.opacity='0';
+              if(done){landed++;lit.add(u.claim);}
+            }
+            for(const [id,place] of m.cases){const on=lit.has(id);place.el.dataset.lit=String(on);}
+            opacity(m.root,phase==='map-open'?p:1);
+            const counts={checklists:m.learned.filter((row,i)=>i<learnedDone||i===event&&phase==='map-learned'&&p>=.35).length,cases:lit.size,uses:landed};
+            for(const [key,value] of Object.entries(counts)){const el=m.count(key);if(el&&el.textContent!==String(value))el.textContent=String(value);}
           }
           if(b.view==='cases'){
             const items=all('.au-claim-list > *'),row=b.row;

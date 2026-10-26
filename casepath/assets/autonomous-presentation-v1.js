@@ -6,7 +6,7 @@
 })(typeof globalThis === 'object' ? globalThis : this, function () {
   'use strict';
   const EASING = 'cubic-bezier(.2,.8,.2,1)';
-  const ACTS = Object.freeze(['customer','plan','reading','process','decision','learning','photo','library','cases']);
+  const ACTS = Object.freeze(['customer','plan','reading','process','decision','photo','learning','library','cases']);
   // Editorial labels describe the recorded scene; they never claim live work.
   const CHAPTERS = Object.freeze({
     customer: Object.freeze({number:'01',label:'The request',title:'A customer asks for help.'}),
@@ -14,9 +14,9 @@
     reading: Object.freeze({number:'03',label:'The checks',title:'Find the proof in the documents.'}),
     process: Object.freeze({number:'03',label:'The checks',title:'Find the proof in the documents.'}),
     decision: Object.freeze({number:'04',label:'The answer',title:'Suggest an answer a person can check.'}),
-    learning: Object.freeze({number:'05',label:'The next case',title:'Reuse what was learned.'}),
-    photo: Object.freeze({number:'06',label:'Photos',title:'Read photos like documents.'}),
-    library: Object.freeze({number:'07',label:'Learning',title:'Learn once. Reuse across cases.'}),
+    photo: Object.freeze({number:'05',label:'Photos',title:'Read photos like documents.'}),
+    learning: Object.freeze({number:'06',label:'The next case',title:'Reuse what was learned.'}),
+    library: Object.freeze({number:'07',label:'Knowledge',title:'Learned once. Reused every time.'}),
     cases: Object.freeze({number:'08',label:'CasePath',title:'Every answer shows its proof.'})
   });
   function chapter(act) {
@@ -194,18 +194,20 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
   }
 
   if (b.act === 'plan') {
-    if (phase === 'plan-reuse') {
-      return cue('procedure', 'CasePath knows this kind of case.', context.procedureScope
-        ? `It reuses its ${String(context.procedureScope).toLowerCase()} checklist, learned from an earlier case.` : 'It reuses a checklist learned from an earlier case.',
-        'Reused checklist', 'procedure', {mode: 'hold'});
+    if (phase === 'plan-shelf') {
+      return cue('shelf', 'CasePath keeps a shelf of learned checklists.', 'Each one was learned from an earlier case.', 'Knowledge', 'shelf', {mode: 'hold'});
+    }
+    if (phase === 'plan-pick' || phase === 'plan-reuse') {
+      return cue('procedure', context.procedureScope ? `It takes the ${String(context.procedureScope).toLowerCase()} checklist.` : 'It takes the matching checklist.',
+        'Learned once, from an earlier case.', 'Reused checklist', phase === 'plan-pick' ? 'shelf-card' : 'procedure', {mode: 'hold'});
     }
     if (phase.startsWith('plan-node')) {
-      return cue('questions', context.questionCount ? `It breaks the case into ${context.questionCount} questions.` : 'It breaks the case into questions.', 'Each circle is one question.', 'The process', 'spine');
+      return cue('questions', 'The checklist becomes this case’s questions.', 'Each circle is one question.', 'The process', 'spine');
     }
     if (phase === 'plan-rest') {
       return cue('plan-ready', 'The plan is ready.', context.questionCount && context.documentCount ? `${context.questionCount} questions. ${context.documentCount} documents to check.` : 'Now the assistants go to work.', 'The plan', 'procedure', {mode: 'hold'});
     }
-    return cue('requirements', 'Then it lists the documents it needs.', 'Each document helps answer one question.', 'Evidence checklist', 'procedure');
+    return cue('requirements', 'Then the documents to check.', 'Each document answers one question.', 'Evidence checklist', 'procedure');
   }
 
   if (b.act === 'reading' || b.act === 'process') {
@@ -283,24 +285,16 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
   }
 
   if (b.act === 'learning') {
-    if (['later-case-rest', 'memory-open', 'memory-overview'].includes(phase)) {
-      return cue('later-evidence', 'A new case of the same kind arrives.', 'A different tenant, with their own documents.', 'A later case', 'memory-source', {mode: 'hold'});
+    if (phase === 'plan-shelf') {
+      return cue('later-arrives', 'A new case of the same kind arrives.', 'A different tenant, with their own documents.', 'The next case', 'shelf', {mode: 'hold'});
     }
-    if (['memory-transfer', 'memory-landed'].includes(phase)) {
-      const landed = phase === 'memory-landed', first = !(Number.isSafeInteger(b.item) && b.item > 0);
-      if (!first) return live('reuse-items', 'Checklist reuse', landed ? 'memory-target' : 'memory-item');
-      return cue('reuse-checklist', 'CasePath reuses what it learned.', 'The same checks, on the new documents.', 'Checklist reuse', landed ? 'memory-target' : 'memory-item', {
-        ...(Number.isSafeInteger(b.item) && b.item >= 0 ? {targetId: b.item} : {}),
-        part: landed ? 'destination' : 'origin',
-        spotlight: Number.isSafeInteger(b.item) && b.item >= 0
-      });
+    if (phase === 'plan-pick' || phase === 'plan-reuse') {
+      return cue('later-reuse', 'The same checklist comes off the shelf.', 'It is not learned again.', 'Checklist reuse', phase === 'plan-pick' ? 'shelf-card' : 'procedure', {mode: 'hold'});
     }
-    if (['memory-notice', 'memory-notice-rest'].includes(phase)) {
-      return cue('fresh-facts', 'The checks are reused. The facts are new.', 'Every fact comes from the new case’s own documents.', 'Checklist reuse', 'count', {mode: 'hold', side: 'below', align: 'end'});
+    if (phase === 'plan-rest') {
+      return cue('later-ready', 'Same checklist. New case.', 'Its facts come from its own documents.', 'Checklist reuse', 'procedure', {mode: 'hold'});
     }
-    if (['answer', 'answer-rest'].includes(phase)) {
-      return cue('later-assessment', 'The new case gets its own answer.', 'Based on its own documents.', "The later case's assessment", 'lead', {mode: 'hold'});
-    }
+    return live('later-plan', 'The next case', phase.startsWith('plan-node') ? 'spine' : 'procedure');
   }
 
   if (b.act === 'photo') {
@@ -311,7 +305,17 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
   }
 
   if (b.act === 'library') {
-    return cue('library', 'It learns across different kinds of case.', 'Each checklist is learned once, then reused.', 'Knowledge', 'library-index', {mode: 'hold', side: 'corner', ...(b.family ? {targetId: b.family} : {})});
+    if (['map-open', 'map-lead', 'map-learned', 'map-learned-rest'].includes(phase)) {
+      return cue('map', 'Everything CasePath has learned.', 'Each checklist comes from the first case of its kind.', 'Knowledge', 'map', {spotlight: false, side: 'corner'});
+    }
+    if (phase.startsWith('map-use') && Number.isSafeInteger(b.use) && b.use < 3) {
+      return cue('map-use', 'Every new case reuses one.', 'Each line is one recorded use.', 'Knowledge', 'map', {spotlight: false, side: 'corner'});
+    }
+    if (phase === 'map-rest') {
+      return cue('map-total', 'Learned once. Reused every time.', context.knowledgeUses && context.knowledgeCases
+        ? `${context.knowledgeUses} recorded uses across ${context.knowledgeCases} cases.` : 'Each checklist was reused in later cases.', 'Knowledge', 'map', {mode: 'hold', spotlight: false, side: 'corner'});
+    }
+    return live('map-uses', 'Knowledge', 'map');
   }
 
   if (b.act === 'cases') {

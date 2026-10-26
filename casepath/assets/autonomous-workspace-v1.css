@@ -2311,6 +2311,12 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
  html[data-casepath-presentation] .au-ns-view-content { max-height:calc(100dvh - 200px); overflow:auto; scrollbar-width:thin; }
  html[data-casepath-presentation] .au-ns-view-content:has([data-au-desk-answer]) { max-height:calc(100dvh - 200px); }
  html[data-casepath-presentation] .au-cinema-finale { min-height:calc(100dvh - 150px); }
+ /* The film shows one five-tab bar in every scene, never the page menu or tools. */
+ html[data-casepath-film] .au-workspace .au-identity-header { height:75px; min-height:75px; padding:0 27px; display:flex; gap:0; border-bottom:1px solid #ebebee; background:#fff; color:#141516; }
+ html[data-casepath-film] .au-workspace .au-identity-header .au-brand { font:400 25px/1 Mulish,sans-serif !important; width:235px; flex-shrink:0; letter-spacing:0 !important; color:#141516; }
+ html[data-casepath-film] .au-workspace .au-ns-tabs > [aria-current] { -webkit-text-stroke:.35px currentColor; } /* bolder without shifting the other tabs */
+ html[data-casepath-film] .au-workspace .au-identity-header :is(.au-nav,.au-header-new,.au-access-label,.au-case-return,.au-ns-header-tools) { display:none !important; }
+ html[data-casepath-film] .au-workspace .au-ns-tabs { height:75px; display:flex; align-items:stretch; gap:32px; }
  /* The closing card centres on the screen, not on the narrower case column. */
  html[data-casepath-presentation] .au-cinema-finale { position:fixed; inset:75px 0 36px 0; min-height:0; }
  html[data-casepath-presentation] .au-executive-cases .au-request-row { padding-block:2px; }
@@ -2394,3 +2400,54 @@ html[data-casepath-presentation] .au-workspace [data-au-recorded-draft] pre { fo
  html[data-casepath-presentation] .au-desk-plain { margin:20px 0 6px; color:#141516; font:700 22px/1.35 Mulish,sans-serif; letter-spacing:-.2px; }
  html[data-casepath-presentation] .au-desk-plain + .au-desk-lead { color:#61636b; font-size:14px; line-height:1.5; }
 }
+
+/* The knowledge shelf: learned checklists as cards, the film's recurring object. */
+html[data-casepath-presentation] .au-ns-shelf { position:absolute; left:0; right:0; top:120px; bottom:0; z-index:4; display:flex; flex-direction:column; align-items:center; padding-top:28px; pointer-events:none; }
+html[data-casepath-presentation] .au-ns-shelf > header { text-align:center; }
+html[data-casepath-presentation] .au-ns-shelf > header p { margin:0; color:#82072a; font:700 12px/1.2 Mulish,sans-serif; letter-spacing:.12em; text-transform:uppercase; }
+html[data-casepath-presentation] .au-ns-shelf > header h2 { margin:8px 0 0; color:#141516; font:500 26px/1.2 Mulish,sans-serif; letter-spacing:-.3px; }
+html[data-casepath-presentation] .au-ns-shelf-row { display:flex; gap:28px; margin-top:30px; padding:0 24px 18px; border-bottom:2px solid #e7e2e4; }
+html[data-casepath-presentation] .au-shelf-card { box-sizing:border-box; width:290px; padding:16px 20px 18px; background:#fff; border:1px solid #e3dfe1; border-top:4px solid #82072a; border-radius:10px; box-shadow:0 10px 28px rgba(40,0,12,.08); }
+html[data-casepath-presentation] .au-shelf-card[data-lit=true] { border-color:#82072a; box-shadow:0 18px 40px rgba(130,7,42,.22); }
+html[data-casepath-presentation] .au-shelf-kicker { display:flex; align-items:center; gap:8px; margin:0; color:#82072a; font:700 11px/1.2 Mulish,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+html[data-casepath-presentation] .au-shelf-card .au-ns-icon { width:16px; height:16px; flex:none; }
+html[data-casepath-presentation] .au-shelf-card h3 { margin:8px 0 12px; color:#141516; font:700 22px/1.2 Mulish,sans-serif; letter-spacing:-.2px; }
+html[data-casepath-presentation] .au-shelf-card ul { list-style:none; margin:0; padding:0; display:grid; gap:7px; }
+html[data-casepath-presentation] .au-shelf-card li { display:flex; align-items:center; gap:9px; color:#4c4b4d; font:400 14px/1.3 Mulish,sans-serif; }
+html[data-casepath-presentation] .au-shelf-card li b { color:#141516; font-weight:700; margin-right:-4px; }
+html[data-casepath-presentation] .au-shelf-origin { margin:12px 0 0; color:#6b696c; font:400 12.5px/1.4 Mulish,sans-serif; }
+html[data-casepath-presentation] .au-ns-procedure-kicker { display:flex; align-items:center; gap:8px; }
+html[data-casepath-presentation] .au-ns-procedure-kicker .au-ns-icon { width:15px; height:15px; }
+html[data-casepath-presentation] .au-ns-slip { position:fixed; z-index:6; display:flex; align-items:center; gap:8px; padding:9px 16px; background:#fff; border:1.5px solid #82072a; border-radius:999px; color:#82072a; font:600 14.5px/1.2 Mulish,sans-serif; white-space:nowrap; box-shadow:0 10px 24px rgba(130,7,42,.18); pointer-events:none; }
+html[data-casepath-presentation] .au-ns-slip .au-ns-icon { width:16px; height:16px; }
+
+/* The knowledge map: every checklist, the case it came from, and every recorded use. */
+html[data-casepath-presentation] .au-km { position:fixed; left:0; right:0; top:75px; bottom:36px; box-sizing:border-box; padding:34px 72px 0; background:#fff; }
+html[data-casepath-presentation] .au-km-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:30px; }
+html[data-casepath-presentation] .au-km-head p { margin:0; color:#82072a; font:700 12px/1.2 Mulish,sans-serif; letter-spacing:.12em; text-transform:uppercase; }
+html[data-casepath-presentation] .au-km-head h1 { margin:8px 0 0; color:#141516; font:500 30px/1.15 Mulish,sans-serif; letter-spacing:-.4px; }
+html[data-casepath-presentation] .au-km-counters { display:flex; gap:46px; margin:0; }
+html[data-casepath-presentation] .au-km-counters div { display:flex; align-items:baseline; gap:9px; }
+html[data-casepath-presentation] .au-km-counters dd { margin:0; min-width:1.2ch; text-align:right; color:#141516; font:300 48px/1 Mulish,sans-serif; font-variant-numeric:tabular-nums; }
+html[data-casepath-presentation] .au-km-counters dt { color:#4c4b4d; font:400 15px/1 Mulish,sans-serif; }
+html[data-casepath-presentation] .au-km-lanes { display:grid; row-gap:26px; }
+html[data-casepath-presentation] .au-km-lane { display:grid; justify-content:center; grid-template-columns:210px 290px 230px 230px; column-gap:74px; align-items:center; min-height:150px; }
+html[data-casepath-presentation] .au-km-lane > * { grid-row:1; }
+html[data-casepath-presentation] .au-km-case { display:grid; grid-template-columns:20px minmax(0,1fr); column-gap:12px; align-items:start; opacity:.3; }
+html[data-casepath-presentation] .au-km-case[data-lit=true] { opacity:1; }
+html[data-casepath-presentation] .au-km-dot { box-sizing:border-box; width:20px; height:20px; margin-top:1px; grid-row:1 / span 2; border:1.5px solid #141516; border-radius:50%; background:#fff; }
+html[data-casepath-presentation] .au-km-case[data-lit=true] .au-km-dot { background:#82072a; border-color:#82072a; }
+html[data-casepath-presentation] .au-km-case small { color:#82072a; font:700 10.5px/1.6 Mulish,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+html[data-casepath-presentation] .au-km-case p { margin:0; color:#141516; font:400 13.5px/1.35 Mulish,sans-serif; }
+html[data-casepath-presentation] .au-km-card { box-sizing:border-box; padding:14px 18px 16px; background:#fff; border:1px solid #e3dfe1; border-top:4px solid #82072a; border-radius:10px; box-shadow:0 10px 28px rgba(40,0,12,.08); opacity:0; }
+html[data-casepath-presentation] .au-km-card p { display:flex; align-items:center; gap:8px; margin:0; color:#82072a; font:700 11px/1.2 Mulish,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+html[data-casepath-presentation] .au-km-card .au-ns-icon { width:15px; height:15px; }
+html[data-casepath-presentation] .au-km-card h3 { margin:6px 0 10px; color:#141516; font:700 20px/1.2 Mulish,sans-serif; }
+html[data-casepath-presentation] .au-km-card ul { list-style:none; display:flex; gap:14px; margin:0; padding:0; color:#4c4b4d; font:400 13px/1.2 Mulish,sans-serif; }
+html[data-casepath-presentation] .au-km-card b { color:#141516; }
+html[data-casepath-presentation] .au-km-wires { position:absolute; left:0; top:0; overflow:visible; pointer-events:none; }
+html[data-casepath-presentation] .au-km-learned { fill:none; stroke:#8f8b8d; stroke-width:1.5; stroke-dasharray:5 5; opacity:0; }
+html[data-casepath-presentation] .au-km-wire { fill:none; stroke:#82072a; stroke-width:1.6; stroke-dasharray:1; stroke-dashoffset:1; opacity:.8; }
+html[data-casepath-presentation] .au-km-ring { fill:none; stroke:#82072a; stroke-width:1.5; opacity:0; transform-box:fill-box; transform-origin:center; }
+html[data-casepath-presentation] .au-km-pulse { fill:#82072a; opacity:0; }
+
