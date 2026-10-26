@@ -5906,7 +5906,7 @@
             cases.set(row.id,{el:node,cx,cy});
             if(!i){
               const end=rel(node.getBoundingClientRect());learned.push({id:card.id,claim:row.id,path:make('path',{d:`M${end.x+end.w+8} ${cy}H${c.x-8}`,class:'au-km-learned'})});
-              wires.set(`${card.id}|${row.id}`,make('path',{d:`M${c.x+40} ${c.y-2}Q${(c.x+40+cx)/2} ${c.y-64} ${cx} ${cy-r-6}`,class:'au-km-wire',pathLength:1}));
+              wires.set(`${card.id}|${row.id}`,make('path',{d:`M${c.x-8} ${c.y+c.h-20}C${c.x-68} ${cy+150} ${cx} ${cy+150} ${cx} ${cy+r+6}`,class:'au-km-wire',pathLength:1}));
             }else{
               const sx=c.x+c.w+6,sy=c.y+c.h/2;
               wires.set(`${card.id}|${row.id}`,make('path',{d:i===1?`M${sx} ${sy}L${cx-r-6} ${cy}`:`M${sx} ${sy-18}Q${(sx+cx)/2} ${cy-96} ${cx} ${cy-r-6}`,class:'au-km-wire',pathLength:1}));
@@ -6053,9 +6053,9 @@
             const usesDone=phase==='map-use'?use:usePhase?use+1:0;let landed=0;
             for(const u of m.uses){
               const active=phase==='map-use'&&u.index===use,done=u.index<usesDone||active&&p>=.8;
-              if(m.firstUse.get(u.wire)===u.index)u.wire.style.strokeDashoffset=String(1-(u.index<usesDone?1:active?Math.min(1,p/.55):0));
+              if(m.firstUse.get(u.wire)===u.index)u.wire.style.strokeDashoffset=String(1-(u.index<usesDone?1:active?Math.min(1,p/.8):0));
               const ringIn=done?(active?Math.min(1,(p-.8)/.2):1):0;u.ring.style.opacity=String(ringIn);u.ring.style.transform=`scale(${.6+.4*ringIn})`;
-              if(active&&p<.8){const length=u.wire.getTotalLength(),point=u.wire.getPointAtLength(length*P.ease(p/.8));u.pulse.setAttribute('cx',String(point.x));u.pulse.setAttribute('cy',String(point.y));u.pulse.style.opacity='1';}else u.pulse.style.opacity='0';
+              if(active&&p<.8){const length=u.wire.getTotalLength(),point=u.wire.getPointAtLength(length*p/.8);u.pulse.setAttribute('cx',String(point.x));u.pulse.setAttribute('cy',String(point.y));u.pulse.style.opacity='1';}else u.pulse.style.opacity='0';
               if(done){landed++;lit.add(u.claim);}
             }
             for(const [id,place] of m.cases){const on=lit.has(id);place.el.dataset.lit=String(on);}

@@ -226,10 +226,12 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   assert.deepEqual(bindings.failures,[]);assert.ok(bindings.checked>0);
   assert.ok(proof.manifest.duration<170000,'the complete recorded story stays below 170 seconds');assert.match(bindings.draft,/Not sent — you decide/);assert.ok(bindings.draft.includes(recorded.cases[7].envelope.state.outcome.request_draft.body));
   assert.deepEqual(bindings.tests.map(t=>t.step),[2,2,2,3,3]);assert.ok(bindings.tests.every(t=>t.ring===20&&t.label===String(t.step)));
-  // The plan shows only what the recording required: one row per document.require, one circle per evaluated step.
-  const mainOps=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).filter(row=>row.type==='operation');
-  assert.equal(bindings.plan.documents.length,mainOps.filter(o=>o.kind==='document.require').length);assert.equal(new Set(bindings.plan.documents).size,bindings.plan.documents.length);
-  assert.equal(bindings.plan.planned,new Set(mainOps.filter(o=>o.kind==='node.evaluate').map(o=>o.object.id)).size);assert.match(bindings.plan.heading,/rent increase/i);
+  // The plan shows only what the recording required after the checklist was reused: one row per required catalogue document, one circle per evaluated step.
+  const planned=row=>{const ops=row.trace.trim().split('\n').map(JSON.parse).filter(op=>op.type==='operation'),reuse=ops.find(op=>op.kind==='knowledge.reuse').seq,graph=row.envelope.state.graph,ids=(kind,keep)=>new Set(ops.filter(op=>op.kind===kind&&op.seq>reuse&&keep(op.object.id)).map(op=>op.object.id));
+   return {documents:ids('document.require',id=>(graph.document_catalog||[]).some(doc=>doc.document_type===id)),steps:ids('node.evaluate',id=>(graph.nodes||[]).some(node=>node.node_id===id))};};
+  const mainPlanned=planned(recorded.cases[7]);
+  assert.deepEqual(new Set(bindings.plan.documents),mainPlanned.documents);assert.equal(new Set(bindings.plan.documents).size,bindings.plan.documents.length);
+  assert.equal(bindings.plan.planned,mainPlanned.steps.size);assert.match(bindings.plan.heading,/rent increase/i);
   assert.match(bindings.checklist,/3 of 3 checked/);
   // The photo scene draws every measured mark from the service reading, revealed by the scan, never before it.
   const photoReading=Object.entries(photo.responses).find(([key])=>key.endsWith('/photo-reading'))[1];
@@ -237,7 +239,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   assert.match(bindings.photo.image,/^blob:/);assert.match(bindings.photo.findings,/Dark spots found/);assert.match(bindings.photo.findings,/Photo taken 14 March 2025/);
   assert.ok(proof.manifest.acts.find(a=>a.id==='customer').end-proof.manifest.acts.find(a=>a.id==='customer').start<13000,'intake stops before repeated document reading');
   assert.equal(bindings.label,'New case');assert.ok(bindings.title.length);
-  const laterOps=recorded.cases[8].trace.trim().split('\n').map(JSON.parse).filter(row=>row.type==='operation');assert.equal(bindings.laterDocuments,new Set(laterOps.filter(o=>o.kind==='document.require'&&o.seq>laterOps.find(r=>r.kind==='knowledge.reuse').seq&&(recorded.cases[8].envelope.state.graph.document_catalog||[]).some(row=>row.document_type===o.object.id)).map(o=>o.object.id)).size);
+  assert.equal(bindings.laterDocuments,planned(recorded.cases[8]).documents.size);
   assert.ok(proof.manifest.beats.filter(b=>b.phase==='source-swap').every(b=>b.duration===(b.act==='process'?250:500)));
   await page.evaluate(at=>CasepathPresentation.active.seek(at),proof.manifest.beats.find(b=>b.phase==='fact-rest').start);
   const op=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).find(row=>row.id===proof.factOperation);assert.deepEqual(proof.citation,op.source);const reading=proof.manifest.beats.find(b=>b.act==='reading'&&b.phase==='fact-rest'),readingOp=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).find(row=>row.id===reading.operation);const recordingRows=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).filter(row=>row.type==='operation'),catalogue=require('../casepath/assets/autonomous-workspace-v1.js').northStarPlanModel(recorded.cases[7].envelope.state,recordingRows),nextCompletion=proof.manifest.beats.find(b=>b.phase==='node-rest'&&b.start>reading.end),completionOp=recordingRows.find(row=>row.id===nextCompletion.operation);
