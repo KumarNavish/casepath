@@ -309,7 +309,7 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
       return cue('map', 'Everything CasePath has learned.', 'Each checklist comes from the first case of its kind.', 'Knowledge', 'map', {spotlight: false, side: 'corner'});
     }
     if (phase.startsWith('map-use') && Number.isSafeInteger(b.use) && b.use < 3) {
-      return cue('map-use', 'Every new case reuses one.', 'Each line is one recorded use.', 'Knowledge', 'map', {spotlight: false, side: 'corner'});
+      return cue('map-use', 'Every new case reuses one.', 'Each ring is one recorded use.', 'Knowledge', 'map', {spotlight: false, side: 'corner'});
     }
     if (phase === 'map-rest') {
       return cue('map-total', 'Learned once. Reused every time.', context.knowledgeUses && context.knowledgeCases

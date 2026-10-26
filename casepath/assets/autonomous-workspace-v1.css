@@ -2433,7 +2433,7 @@ html[data-casepath-presentation] .au-km-counters dt { color:#4c4b4d; font:400 15
 html[data-casepath-presentation] .au-km-lanes { display:grid; row-gap:26px; }
 html[data-casepath-presentation] .au-km-lane { display:grid; justify-content:center; grid-template-columns:210px 290px 230px 230px; column-gap:74px; align-items:center; min-height:150px; }
 html[data-casepath-presentation] .au-km-lane > * { grid-row:1; }
-html[data-casepath-presentation] .au-km-case { display:grid; grid-template-columns:20px minmax(0,1fr); column-gap:12px; align-items:start; opacity:.3; }
+html[data-casepath-presentation] .au-km-case { display:grid; grid-template-columns:20px minmax(0,1fr); column-gap:24px; align-items:start; opacity:.3; }
 html[data-casepath-presentation] .au-km-case[data-lit=true] { opacity:1; }
 html[data-casepath-presentation] .au-km-dot { box-sizing:border-box; width:20px; height:20px; margin-top:1px; grid-row:1 / span 2; border:1.5px solid #141516; border-radius:50%; background:#fff; }
 html[data-casepath-presentation] .au-km-case[data-lit=true] .au-km-dot { background:#82072a; border-color:#82072a; }

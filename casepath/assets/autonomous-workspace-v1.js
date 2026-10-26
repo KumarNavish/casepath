@@ -5662,7 +5662,7 @@
         }
         const ns=select('[data-au-ns]'),tabs=container.querySelector('.au-ns-tabs');
         // The film keeps one tab bar in every scene; a beat may name its own active role.
-        const role=beat.tab??(beat.planning||['library','map'].includes(beat.view)?'builder':ns?ns.dataset.auNsRoleActive:'');
+        const role=beat.tab??(beat.planning||['library','map'].includes(beat.view)?'builder':beat.act==='customer'?(phase==='ready'?'':'reader'):ns?ns.dataset.auNsRoleActive:'');
         if(tabs)tabs.innerHTML=ns||present?northStarTabsMarkup(role,Boolean(viewName)&&!present):'';
         positionDesk(false);
         markBeat(beat,phase,op,viewName);
@@ -6061,7 +6061,7 @@
             for(const [id,place] of m.cases){const on=lit.has(id);place.el.dataset.lit=String(on);}
             opacity(m.root,phase==='map-open'?p:1);
             const counts={checklists:m.learned.filter((row,i)=>i<learnedDone||i===event&&phase==='map-learned'&&p>=.35).length,cases:lit.size,uses:landed};
-            for(const [key,value] of Object.entries(counts)){const el=m.count(key);if(el&&el.textContent!==String(value))el.textContent=String(value);}
+            for(const [key,value] of Object.entries(counts)){const el=m.count(key),unit=el?.nextElementSibling,word=value===1?key.replace(/s$/,''):key;if(el&&el.textContent!==String(value))el.textContent=String(value);if(unit&&unit.textContent!==word)unit.textContent=word;}
           }
           if(b.view==='cases'){
             const items=all('.au-claim-list > *'),row=b.row;
