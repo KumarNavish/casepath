@@ -14,7 +14,7 @@ export function auditChecklistGeometry(options = {}) {
     labelViews: {}, failures: [], totalFailures: 0, truncated: false
   };
   if (!root) return result;
-  const excluded = '.au-executive-transition,.au-executive-ink,.au-ns-cursor,'
+  const excluded = '.au-executive-transition,.au-executive-ink,.au-ns-cursor,.au-ns-slip,.au-shelf-card[data-flying=true],'
     + '.au-ns-memory-flight,.au-ns-fact-connector,.au-ns-memory-link,.au-ns-node-badge,svg,'
     + '[hidden],dialog:not([open]),.au-ns-source-scroll,.au-ns-page pre';
   const styles = new Map(), bounds = new Map(), visibility = new Map();

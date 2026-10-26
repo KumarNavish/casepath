@@ -5978,11 +5978,11 @@
               if(phase==='plan-shelf'){
                 opacity(sh.head,Math.min(1,p*4));
                 [...sh.shelf.querySelectorAll('.au-shelf-card')].forEach((card,i)=>{const q=P.ease(Math.max(0,Math.min(1,(p-.08-.12*i)/.26)));opacity(card,q);card.style.transform=`translateY(${18*(1-q)}px)`;});
-                const lift=P.ease(Math.max(0,Math.min(1,(p-.66)/.24)));sh.card.dataset.lit=String(lift>0);sh.card.style.transform=`translateY(${-12*lift}px)`;
+                const lift=P.ease(Math.max(0,Math.min(1,(p-.66)/.24)));sh.card.dataset.lit=String(lift>0);sh.card.dataset.flying='false';sh.card.style.transform=`translateY(${-12*lift}px)`;
               }else if(phase==='plan-pick'){
                 const e=P.ease(p),scale=1;
                 for(const card of sh.others)opacity(card,1-Math.min(1,p*2.5));opacity(sh.head,1-Math.min(1,p*2.5));
-                sh.card.dataset.lit='true';sh.card.style.transformOrigin='0 0';
+                sh.card.dataset.lit='true';sh.card.dataset.flying='true';sh.card.style.transformOrigin='0 0';
                 sh.card.style.transform=`translate(${(sh.to.left-sh.from.left)*e}px,${-12+(sh.to.top-sh.from.top+12)*e-70*Math.sin(Math.PI*e)}px) scale(${scale})`;
                 opacity(sh.card,p<.82?1:1-(p-.82)/.18);
               }
