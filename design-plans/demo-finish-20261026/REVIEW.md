@@ -210,4 +210,16 @@ See [film.json](proof/film.json). It records:
 
 ## Verification
 
-VERIFICATION
+On the sealed assets of `ea57a2fa`:
+
+- **Film capture.** 4,896 frames, 163.2 s, with no writes, page errors or
+  missing fixture reads. The asset hashes in [film.json](proof/film.json)
+  equal the committed assets.
+- **Front-end suites.** All 33 non-browser suites pass (939 tests). The
+  presentation browser test passes. It checks every film frame, the plan and
+  map bindings, and backward-seek determinism.
+- **Sealing.** The `CONTRIBUTING.md` sealing commands ran, and the release
+  manifest verifies.
+- **Pending.** The review and unified-product browser suites, and the full
+  `./bin/casepath test` in a fresh clone, are still running. The full suite
+  refuses to run in a Git worktree.
