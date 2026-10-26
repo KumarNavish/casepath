@@ -36,18 +36,19 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    for(const cue of sentences)if(cue.end-cue.start<2000)failures.push({reason:'caption too brief',cue});
    for(const beat of m.beats.filter(b=>!b.phase.endsWith('transition'))){
     a.advanceTo(beat.start+Math.min(beat.duration-1,Math.max(450,beat.duration*.75)));
-    const guide=document.querySelector('.au-documentary-guide'),rail=guide.querySelector('.au-doc-narration').getBoundingClientRect(),copy=guide.querySelector('[data-au-guide-headline]'),focus=guide.querySelector('.au-doc-focus').getBoundingClientRect();
+    const guide=document.querySelector('.au-documentary-guide'),scene={top:document.querySelector('.au-identity-header').getBoundingClientRect().bottom,bottom:document.querySelector('.au-executive-transport').getBoundingClientRect().top},card=guide.querySelector('.au-doc-card'),copy=guide.querySelector('[data-au-guide-headline]'),focus=guide.querySelector('.au-doc-focus').getBoundingClientRect(),shown=+getComputedStyle(card).opacity>.05,lit=+getComputedStyle(guide.querySelector('.au-doc-focus-layer')).opacity>.05;
     if(document.querySelectorAll('.au-documentary-guide').length!==1)failures.push({reason:'multiple guides',beat:beat.index});
-    if(copy.scrollWidth>copy.clientWidth+1||copy.getBoundingClientRect().bottom>rail.bottom)failures.push({reason:'caption clipped',beat:beat.index});
     if(guide.dataset.auGuideSpotlight==='true'&&guide.dataset.auGuideResolved!=='true')failures.push({reason:'unresolved focus',beat:beat.index,target:guide.dataset.auGuideTarget});
-    if(guide.dataset.auGuideSpotlight==='true'&&(guide.dataset.auGuideVisible!=='true'||focus.width<=4||focus.height<=4||Number(getComputedStyle(guide.querySelector('.au-doc-focus-layer')).opacity)<.9))failures.push({reason:'invisible focus',beat:beat.index,target:guide.dataset.auGuideTarget});
-    if(Number(getComputedStyle(guide.querySelector('.au-doc-focus-layer')).opacity)>.9&&(focus.top<rail.bottom||focus.bottom>innerHeight-36))failures.push({reason:'focus outside reserved scene',beat:beat.index});
+    if(shown){const box=card.getBoundingClientRect();if(copy.scrollWidth>copy.clientWidth+1||box.top<scene.top||box.bottom>scene.bottom||box.left<0||box.right>innerWidth)failures.push({reason:'caption clipped or outside the scene',beat:beat.index});
+     // A caption sits beside its spotlight and never covers it.
+     if(lit&&Math.min(box.right,focus.right)-Math.max(box.left,focus.left)>2&&Math.min(box.bottom,focus.bottom)-Math.max(box.top,focus.top)>2)failures.push({reason:'caption covers its spotlight',beat:beat.index,target:guide.dataset.auGuideTarget});}
+    if(lit&&(guide.dataset.auGuideVisible!=='true'||focus.width<=4||focus.height<=4||focus.top<scene.top-1||focus.bottom>scene.bottom+1))failures.push({reason:'focus invisible or outside the scene',beat:beat.index});
    }
-   const openBeat=m.beats.find(b=>b.act==='decision'&&b.phase==='answer-rest');a.advanceTo(openBeat.start+4500);const open=document.querySelector('.au-desk-open').getBoundingClientRect(),rail=document.querySelector('.au-doc-narration').getBoundingClientRect();if(open.top<rail.bottom||open.bottom>innerHeight-36)failures.push({reason:'unresolved questions clipped',top:open.top,bottom:open.bottom});
-   for(const beat of m.beats.filter(b=>['chain','legal-test','memory-transfer'].includes(b.phase))){const at=beat.start+20,index=m.guidance.findIndex(row=>at>=row.start&&at<row.end);if(index<1||m.guidance[index-1].id!==m.guidance[index].id)continue;a.advanceTo(at);const guide=document.querySelector('.au-documentary-guide');if(guide.dataset.auGuideSpotlight==='true'&&Number(getComputedStyle(guide.querySelector('.au-doc-focus-layer')).opacity)<.9)failures.push({reason:'attention wash pulses between related targets',beat:beat.index});}
+   const openBeat=m.beats.find(b=>b.act==='decision'&&b.phase==='answer-rest');a.advanceTo(openBeat.start+4500);const open=document.querySelector('.au-desk-open').getBoundingClientRect(),rail=document.querySelector('.au-identity-header').getBoundingClientRect();if(open.top<rail.bottom||open.bottom>innerHeight-36)failures.push({reason:'unresolved questions clipped',top:open.top,bottom:open.bottom});
+   for(const beat of m.beats.filter(b=>['chain','legal-test','memory-transfer'].includes(b.phase))){const at=beat.start+20,index=m.guidance.findIndex(row=>at>=row.start&&at<row.end);if(index<1||m.guidance[index-1].id!==m.guidance[index].id||m.guidance[index].mode!=='hold')continue;a.advanceTo(at);const guide=document.querySelector('.au-documentary-guide');if(guide.dataset.auGuideSpotlight==='true'&&Number(getComputedStyle(guide.querySelector('.au-doc-focus-layer')).opacity)<.9)failures.push({reason:'attention wash pulses between related targets',beat:beat.index});}
    const legal=m.beats.filter(b=>b.phase==='legal-test-rest');
-   for(const beat of legal){a.advanceTo(beat.end-1);const rows=[...document.querySelectorAll('[data-au-desk-answer] > .au-desk-tests > li')],current=rows.find(el=>el.dataset.auDeskPredicate===beat.predicate),guide=document.querySelector('.au-documentary-guide');if(!current||getComputedStyle(current).opacity!=='1'||guide.dataset.auGuideTargetId!==beat.predicate)failures.push({reason:'wrong legal identity',beat:beat.index});if(beat.predicate_status==='failed'&&(beat.duration!==2000||guide.querySelector('[data-au-guide-target-label]').textContent!=='Unmet requirement'))failures.push({reason:'failed requirement hold',beat:beat.index});}
-   const ringBeat=m.beats.find(b=>b.phase==='passage-rest'&&b.act==='reading'&&b.duration===3600);
+   for(const beat of legal){a.advanceTo(beat.end-1);const rows=[...document.querySelectorAll('[data-au-desk-answer] > .au-desk-tests > li')],current=rows.find(el=>el.dataset.auDeskPredicate===beat.predicate),guide=document.querySelector('.au-documentary-guide');if(!current||getComputedStyle(current).opacity!=='1')failures.push({reason:'wrong legal identity',beat:beat.index});if(beat.predicate_status==='failed'&&(beat.duration!==3400||guide.dataset.auGuideCue!=='unmet'||guide.dataset.auGuideTargetId!==beat.predicate))failures.push({reason:'failed requirement hold',beat:beat.index});}
+   const ringBeat=m.beats.find(b=>b.phase==='passage-rest'&&b.act==='reading'&&b.duration>=1600);
    a.advanceTo(ringBeat.start+500);const ring=document.querySelector('.au-ns-building-ring'),number=document.querySelector('.au-ns-current-number'),before=ring.style.transform;
    a.advanceTo(ringBeat.start+1100);const after=document.querySelector('.au-ns-building-ring').style.transform;
    const snapshot=()=>{const guide=document.querySelector('.au-documentary-guide');return JSON.stringify({cue:guide.dataset.auGuideCue,target:guide.dataset.auGuideTargetId,box:guide.querySelector('.au-doc-focus').style.cssText,ring:document.querySelector('.au-ns-building-ring')?.style.transform});};
@@ -67,7 +68,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    const a=CasepathPresentation.active,m=a.manifest,failures=[];
    const inside=(box,outer)=>box.width>4&&box.height>4&&box.left>=outer.left-1&&box.right<=outer.right+1&&box.top>=outer.top-1&&box.bottom<=outer.bottom+1;
    const guide=()=>document.querySelector('.au-documentary-guide'),focus=()=>guide().querySelector('.au-doc-focus').getBoundingClientRect();
-   const lawBeat=m.beats.find(b=>b.phase==='law-rest'),lawAt=lawBeat.end-1;
+   const lawBeat=m.beats.find(b=>b.phase==='law-rest'),lawAt=lawBeat.end-400;
    const lawSnapshot=()=>{const mark=document.querySelector('[data-au-guide-law]'),pre=mark?.closest('pre');return JSON.stringify({text:pre?.textContent,html:pre?.innerHTML,target:guide().dataset.auGuideTarget,box:guide().querySelector('.au-doc-focus').style.cssText});};
    a.advanceTo(lawAt);
    const mark=document.querySelector('[data-au-guide-law]'),pre=mark?.closest('pre');
@@ -102,7 +103,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    return {manifest,failures,citation,factOperation:fact.dataset.auNsFact,animations:document.getAnimations().length};
   });
   for(const beat of proof.manifest.beats){if(beat.operation){const bound=recorded.cases.find(c=>c.id===beat.claim)?.trace.trim().split('\n').map(JSON.parse).find(row=>row.id===beat.operation);assert.ok(bound,'recorded operation '+beat.operation);assert.equal(bound.seq,beat.seq);}}
-  assert.deepEqual(proof.failures,[]);assert.deepEqual(proof.manifest.acts.map(a=>a.id),['customer','reading','process','decision','learning','cases']);
+  assert.deepEqual(proof.failures,[]);assert.deepEqual(proof.manifest.acts.map(a=>a.id),['customer','plan','reading','process','decision','learning','library','cases']);
   const continuity=await page.evaluate(()=>{
    const a=CasepathPresentation.active,failures=[];
    const visible=()=>{const outer=document.querySelector('[data-au-ns],.au-executive-cases'),inner=document.querySelector('.au-ns-canvas,.au-ns-completed-canvas');return Number(getComputedStyle(outer).opacity)*(inner?Number(getComputedStyle(inner).opacity):1);};
@@ -167,7 +168,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   });
   if(process.env.CASEPATH_W11_DIAGNOSTICS)fs.writeFileSync(process.env.CASEPATH_W11_DIAGNOSTICS+'-every-frame.json',JSON.stringify(everyFrame,null,2));
   assert.equal(everyFrame.count,Math.ceil(proof.manifest.duration*60/1000));
-  assert.deepEqual(Object.keys(everyFrame.labelViews).sort(),proof.manifest.acts.map(act=>act.id).sort(),'labels are audited in all six film acts');
+  assert.deepEqual(Object.keys(everyFrame.labelViews).sort(),proof.manifest.acts.map(act=>act.id).sort(),'labels are audited in all film acts');
   assert.ok(everyFrame.checkedRows>0&&everyFrame.checkedFacts>0&&everyFrame.checkedLabels>0&&everyFrame.collapsedFrames>0);
   assert.deepEqual(everyFrame.failures,[],'every film frame has intact rows, facts and labels and only its current spinner');
   // Negative control: the old cropped list must fail the new audit.
@@ -194,9 +195,9 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   }
   assert.deepEqual(geometry,[],'all beat midpoints have no unintended content overlaps');
   await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),proof.manifest.beats.find(b=>b.phase==='fact-rest').end-1);
-  const obstructingGuide=await page.addStyleTag({content:'.au-workspace .au-doc-narration {top:300px!important}'});
-  assert.ok((await page.evaluate(auditPresentation)).some(hit=>hit.some(value=>typeof value==='string'&&value.includes('au-doc-'))),'the overlap audit still rejects narration covering product content');
-  await obstructingGuide.evaluate(el=>el.remove());
+  const obstructingCard=await page.addStyleTag({content:'.au-workspace .au-doc-card {opacity:1!important}'});
+  assert.ok((await page.evaluate(auditPresentation)).length===0,'the coach-mark card is audited by its own spotlight check, not as page content');
+  await obstructingCard.evaluate(el=>el.remove());
   const ending=await page.evaluate(()=>{const a=CasepathPresentation.active;a.advanceTo(a.manifest.duration-1);const finale=document.querySelector('.au-cinema-finale'),heading=finale.querySelector('h2').getBoundingClientRect(),notice=finale.querySelector('small').getBoundingClientRect(),footer=document.querySelector('.au-executive-transport').getBoundingClientRect();return {above:heading.top,below:footer.top-notice.bottom,visible:getComputedStyle(finale).opacity,roster:getComputedStyle(document.querySelector('.au-claim-list')).opacity,title:finale.querySelector('h2').textContent,hidden:finale.getAttribute('aria-hidden')};});
   assert.ok(ending.above>=32&&ending.below>=32,JSON.stringify(ending));assert.equal(ending.visible,'1');assert.equal(ending.roster,'0');assert.equal(ending.hidden,'false');assert.match(ending.title,/The reasoning stays visible/);
 

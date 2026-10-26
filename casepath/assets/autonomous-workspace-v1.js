@@ -1663,7 +1663,7 @@
   function northStarMarkup(state, trace, presentation) {
     const m=northStarModel(state,trace),ready=Boolean(trace.nsReady),opening=trace.nsOpening||'',files=deskOperationModel(state,trace).files,index=REFERENCE_DEMO_CASES.findIndex(row=>row.claim_id===state.claim_id),roster=presentation.tour?.cases||REFERENCE_DEMO_CASES;
     const active=m.source?.artifact_id,sourceRows=opening==='replay'?'':files.map(file=>`<li${file.ids.includes(active)?' aria-current="true"':''}><span>${northStarIcon(file.source.role==='customer_message'?'message':'file')}</span><button type="button" data-au-source="${h(file.ids.at(-1))}" title="${h(file.source.file_name)}">${h(deskFileLabel(file.source))}${file.source.received_at?`<small>Received ${h(file.source.received_at)}</small>`:''}</button></li>`).join('');
-    const buildingId=m.done.has(m.nodeId)?null:m.nodeId;
+    const buildingId=trace.nsPlanning||m.done.has(m.nodeId)?null:m.nodeId;
     const spine=ready||opening==='saved'?'':m.nodes.map((node,i)=>{const done=m.done.has(node.node_id),building=!done&&node.node_id===buildingId;return `<li data-au-ns-node="${h(node.node_id)}" data-state="${done?'done':building?'building':'waiting'}"><span class="au-ns-circle" aria-hidden="true">${done?i+1:building?'<svg class="au-ns-building-ring" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19"/></svg>'+(trace.executive?'<b class="au-ns-current-number">'+(i+1)+'</b>':''):''}</span><span class="au-ns-node-label" title="${h(node.label||node.title||node.node_id)}">${h(northStarQuestion(node,m.catalogue?.plans.get(node.node_id)?.at(-1)?.operation.result||m.rows?.find(op=>op.kind==='step.complete'&&op.object.id===node.node_id)?.result))}</span>${done?'<small class="au-ns-step-status">Checked</small>':trace.executive&&building?'<small class="au-ns-step-status">Checking</small>':''}${i<m.nodes.length-1?'<svg class="au-ns-arrow" viewBox="0 0 70 16" aria-hidden="true"><path d="M1 8h66m-6-5 6 5-6 5"/></svg>':''}</li>`;}).join('');
     const pin=m.pin,preview=m.source&&northStarSourcePreview(m.source,pin),sourceText=preview?(pin?northStarSourceBody(preview,pin):h(preview.text)):'';
     const opened=[...new Map([...trace.sources.values()].map(source=>[source.file_name||source.artifact_id,source])).values()],sourceIndex=opened.findIndex(source=>source.artifact_id===m.source?.artifact_id);
@@ -5373,30 +5373,53 @@
       const firstOpen=rows.find(op=>op.kind==='source.open');
       const failedIds=new Set(list(main.state.outcome?.legal_predicates).filter(test=>test.status==='failed').map(test=>test.predicate_id));
       if(!firstOpen||completed.length<2)throw new Error('The recorded demonstration lacks its source-to-step chain.');
-      const reading=(act,record,op,{fact=false,document=false}={})=>{
-        motion(act,'camera-in',700,record,op);motion(act,'cursor',550,record,op);motion(act,'highlight',250,record,op);add(act,'passage-rest',act==='reading'?3600:900,record,op);
-        if(fact){motion(act,'fact',350,record,op);motion(act,'connector',400,record,op);add(act,'fact-rest',act==='reading'?1800:900,record,op);}
-        if(document){motion(act,'document',300,record,op);hold(act,'document-rest',record,op);}
+      // The plan is the recorded process and its document requirements, in the
+      // order the record evaluated them. Each check is a recorded document.check.
+      const graphNodes=list(main.state.graph?.nodes),catalogue=list(main.state.graph?.document_catalog),catalogTypes=new Set(catalogue.map(row=>row.document_type));
+      const firstOf=(kind,keep)=>{const seen=new Set();return rows.filter(op=>op.kind===kind&&keep(op)&&!seen.has(op.object.id)&&seen.add(op.object.id));};
+      const reuse=rows.find(op=>op.kind==='knowledge.reuse');
+      const evaluations=firstOf('node.evaluate',op=>graphNodes.some(node=>node.node_id===op.object.id)&&(!reuse||op.seq>reuse.seq));
+      const requirements=firstOf('document.require',op=>catalogTypes.has(op.object.id)&&(!reuse||op.seq>reuse.seq));
+      const checks=firstOf('document.check',op=>catalogTypes.has(op.object.id)&&op.result?.assessment==='sufficient'&&northStarPin(op,main.trace.sources));
+      const procedureVersion=reuse&&knowledgeLearningModel(knowledgeCache.value).versions.find(version=>version.knowledge_id===reuse.object.id&&String(version.version)===String(reuse.input?.version));
+      const planned=Boolean(procedureVersion&&evaluations.length===graphNodes.length&&requirements.length);
+      const reading=(act,record,op,{fact=false,document=false,lead=700,rest}={})=>{
+        motion(act,'camera-in',lead,record,op);motion(act,'cursor',550,record,op);motion(act,'highlight',250,record,op);add(act,'passage-rest',rest??(act==='reading'?2600:900),record,op);
+        if(fact){motion(act,'fact',350,record,op);motion(act,'connector',400,record,op);add(act,'fact-rest',act==='reading'?3000:900,record,op);}
+        if(document){motion(act,'document',400,record,op);add(act,'document-rest',document===true?900:document,record,op);}
         motion(act,'plan-tick',300,record,op);motion(act,'camera-out',700,record,op);
       };
       const complete=(act,op)=>{
-        if(act==='process'||act==='reading'){
-          motion(act,'source-swap',250,main,op);motion(act,'cursor',550,main,op);motion(act,'highlight',250,main,op);hold(act,'passage-rest',main,op);motion(act,'plan-recede',400,main,op);motion(act,'node-accepted',300,main,op);hold(act,'node-rest',main,op);return;
+        if(act==='process'){
+          motion(act,'source-swap',250,main,op);add(act,'camera-in',2600,main,op);motion(act,'cursor',550,main,op);motion(act,'highlight',250,main,op);add(act,'passage-rest',900,main,op);motion(act,'plan-recede',400,main,op);motion(act,'node-accepted',300,main,op);add(act,'node-rest',2800,main,op);return;
+        }
+        if(act==='reading'){
+          motion(act,'source-swap',500,main,op);motion(act,'cursor',550,main,op);motion(act,'highlight',250,main,op);add(act,'passage-rest',1400,main,op);motion(act,'plan-recede',400,main,op);motion(act,'node-accepted',300,main,op);add(act,'node-rest',2200,main,op);return;
         }
         reading(act,main,op);motion(act,'combine',400,main,op);motion(act,'plan-recede',400,main,op);motion(act,'node-accepted',300,main,op);hold(act,'node-rest',main,op);
       };
-      add('customer','ready',4200,main);
-      motion('customer','customer-source-open',400,main);
-      motion('customer','customer-cursor',550,main);motion('customer','customer-highlight',250,main);hold('customer','customer-passage-rest',main);
+      add('customer','ready',6000,main);
+      motion('customer','customer-source-open',400,main);add('customer','customer-source-open',2400,main,null,{entryRevealed:true,lead:true});
+      motion('customer','customer-cursor',550,main);motion('customer','customer-highlight',250,main);add('customer','customer-passage-rest',2200,main);
+      if(planned){
+        const plan={planning:true};
+        add('plan','plan-reuse',4600,main,null,{...plan,through:reuse.seq});
+        add('plan','plan-node-lead',2200,main,null,{...plan,through:reuse.seq});
+        for(const op of evaluations){motion('plan','plan-node',500,main,null,{...plan,through:op.seq});add('plan','plan-node-rest',700,main,null,{...plan,through:op.seq});}
+        add('plan','plan-document-lead',2200,main,null,{...plan,through:evaluations.at(-1).seq});
+        for(const op of requirements){motion('plan','plan-document',450,main,null,{...plan,through:op.seq});add('plan','plan-document-rest',800,main,null,{...plan,through:op.seq});}
+        add('plan','plan-rest',3000,main,null,{...plan,through:requirements.at(-1).seq});
+        checks.forEach((op,i)=>reading('reading',main,op,i?{document:900,lead:800,rest:600}:{document:2800,lead:2600,rest:1400}));
+      }
       // Keep accepted history monotonic. Evidence may have been extracted
       // before intake completed; review that exact operation against the already
       // accepted prefix, without changing its identity or inventing a new read.
-      let firstFact=null,previousCompletion=0;
+      let firstFact=null,previousCompletion=planned?checks.at(-1)?.seq||0:0;
       for(const op of completed){
         const candidates=rows.filter(row=>row.kind==='fact.extract'&&row.seq<op.seq&&main.catalogue.links.get(row.id)===op.object.id&&northStarPin(row,main.trace.sources));
         const fact=candidates.findLast(row=>failedIds.has(row.object.id))||candidates.at(-1);
         if(!firstFact&&fact){
-          firstFact=fact;const from=beats.length;reading('reading',main,fact,{fact:true});
+          firstFact=fact;const from=beats.length;reading('reading',main,fact,{fact:true,lead:2600,rest:1600});
           for(const beat of beats.slice(from)){beat.through=Math.max(previousCompletion,fact.seq);beat.review=previousCompletion>fact.seq;}
           complete('reading',op);
         }
@@ -5405,33 +5428,56 @@
       }
       if(!firstFact)throw new Error('The recorded demonstration lacks an ordered source-to-step chain.');
       // The completed view and all legal tests are the existing product views.
-      motion('decision','completed',400,main,null,{view:'step'});hold('decision','overview',main,null,{view:'step'});
+      motion('decision','completed',400,main,null,{view:'step'});add('decision','overview',2000,main,null,{view:'step'});
       const finalTrace={...main.trace,headState:main.state,finished:true,verifiedResult:true},decisive=northStarCompletedModel(main.state,finalTrace,null,null,knowledgeCache.value);
-      for(const column of decisive.columns){motion('decision','chain',400,main,null,{view:'step',column:column.id});hold('decision','chain-rest',main,null,{view:'step',column:column.id});}
-      motion('decision','source-check',400,main,null,{view:'verified'});add('decision','source-check-rest',4200,main,null,{view:'verified'});
-      motion('decision','law',400,main,null,{view:'law'});add('decision','law-rest',5400,main,null,{view:'law'});
-      motion('decision','documents',400,main,null,{view:'documents'});hold('decision','documents-rest',main,null,{view:'documents'});
+      for(const column of decisive.columns){motion('decision','chain',400,main,null,{view:'step',column:column.id});add('decision','chain-rest',1400,main,null,{view:'step',column:column.id});}
+      motion('decision','source-check',400,main,null,{view:'verified'});add('decision','source-check-rest',3400,main,null,{view:'verified'});
+      motion('decision','law',400,main,null,{view:'law'});add('decision','law-rest',4400,main,null,{view:'law'});
       const predicateStep=id=>{const nodes=decisive.desk.nodes.filter(node=>decisive.predicatesByNode.get(node.node_id).some(test=>test.predicate_id===id));return nodes.length===1?decisive.desk.nodes.indexOf(nodes[0]):Infinity;};
       const tests=list(main.state.outcome?.legal_predicates).slice().sort((a,b)=>predicateStep(a.predicate_id)-predicateStep(b.predicate_id));
-      for(let i=0;i<tests.length;i++){const identity={view:'answer',test:i,predicate:tests[i].predicate_id,predicate_status:tests[i].status};motion('decision','legal-test',350,main,null,identity);add('decision','legal-test-rest',tests[i].status==='failed'?2000:900,main,null,identity);}
-      motion('decision','answer',400,main,null,{view:'answer',test:tests.length});add('decision','answer-rest',6000,main,null,{view:'answer',test:tests.length});
-      motion('decision','draft',400,main,null,{view:'draft'});add('decision','draft-rest',6000,main,null,{view:'draft'});
+      add('decision','legal-test-lead',2600,main,null,{view:'answer',test:0});
+      for(let i=0;i<tests.length;i++){const identity={view:'answer',test:i,predicate:tests[i].predicate_id,predicate_status:tests[i].status};motion('decision','legal-test',350,main,null,identity);add('decision','legal-test-rest',tests[i].status==='failed'?3400:700,main,null,identity);}
+      motion('decision','answer',400,main,null,{view:'answer',test:tests.length});add('decision','answer-rest',6200,main,null,{view:'answer',test:tests.length});
+      motion('decision','draft',400,main,null,{view:'draft'});add('decision','draft-rest',5200,main,null,{view:'draft'});
       const memory=northStarMemoryModel(later.state,{...later.trace,headState:later.state,finished:true,verifiedResult:true},knowledgeCache.value);
       if(!memory)throw new Error('The later recording has no verified checklist reuse.');
-      add('learning','later-case-rest',1800,later,null,{view:'knowledge'});
-      motion('learning','memory-open',400,later,null,{view:'knowledge'});hold('learning','memory-overview',later,null,{view:'knowledge'});
-      for(let item=0;item<memory.links.length;item++){motion('learning','memory-transfer',1000,later,null,{view:'knowledge',item});add('learning','memory-landed',1500,later,null,{view:'knowledge',item});}
-      motion('learning','memory-notice',400,later,null,{view:'knowledge'});add('learning','memory-notice-rest',2400,later,null,{view:'knowledge'});
-      motion('learning','answer',400,later,null,{view:'answer',test:list(later.state.outcome?.legal_predicates).length});add('learning','answer-rest',4800,later,null,{view:'answer',test:list(later.state.outcome?.legal_predicates).length});
+      add('learning','later-case-rest',2400,later,null,{view:'knowledge'});
+      motion('learning','memory-open',400,later,null,{view:'knowledge'});add('learning','memory-overview',1800,later,null,{view:'knowledge'});
+      for(let item=0;item<memory.links.length;item++){motion('learning','memory-transfer',1000,later,null,{view:'knowledge',item});add('learning','memory-landed',item?900:1900,later,null,{view:'knowledge',item});}
+      motion('learning','memory-notice',400,later,null,{view:'knowledge'});add('learning','memory-notice-rest',2800,later,null,{view:'knowledge'});
+      motion('learning','answer',400,later,null,{view:'answer',test:list(later.state.outcome?.legal_predicates).length});add('learning','answer-rest',4200,later,null,{view:'answer',test:list(later.state.outcome?.legal_predicates).length});
+      // Every reusable checklist in the record, the showcase's own family first.
+      const families=knowledgeLibrary(knowledgeCache.value).filter(entry=>isDeskChecklist(entry.current)).map(entry=>entry.family);
+      const ownFamily=procedureVersion?libraryFamily(procedureVersion):null;
+      families.sort((a,b)=>(b===ownFamily)-(a===ownFamily));
+      families.forEach((family,i)=>{motion('library',i?'library-switch':'library-open',400,main,null,{view:'library',family});add('library','library-rest',i?2600:3800,main,null,{view:'library',family});});
       motion('cases','case-list',400,main,null,{view:'cases'});
       for(let row=0;row<9;row++)motion('cases','case-row',250,main,null,{view:'cases',row});
-      add('cases','case-list-rest',2200,main,null,{view:'cases'});motion('cases','wordmark',650,main,null,{view:'cases'});add('cases','wordmark-rest',4500,main,null,{view:'cases'});
+      add('cases','case-list-rest',2600,main,null,{view:'cases'});motion('cases','wordmark',650,main,null,{view:'cases'});add('cases','wordmark-rest',4500,main,null,{view:'cases'});
+      // Checklist rows come only from recorded document.require and
+      // document.check operations in the shown prefix. A check in progress is
+      // not counted until its recorded result is shown.
+      const questionOf=node=>node?northStarQuestion(node,main.catalogue?.plans.get(node.node_id)?.at(-1)?.operation.result||rows.find(op=>op.kind==='step.complete'&&op.object.id===node.node_id)?.result):'';
+      function checklistModel(prefix,pendingId){
+        const docs=new Map();
+        for(const op of prefix){
+          if(op.kind==='document.require'&&catalogTypes.has(op.object.id)&&(!reuse||op.seq>reuse.seq)&&!docs.has(op.object.id)){
+            const node=graphNodes.find(row=>row.node_id===list(op.input?.required_at_node_ids)[0]);
+            docs.set(op.object.id,{type:op.object.id,seq:op.seq,node,step:node?graphNodes.indexOf(node)+1:null,checked:false,label:northStarDocumentLabel(catalogue.find(row=>row.document_type===op.object.id)||{document_type:op.object.id})});
+          }
+          if(op.kind==='document.check'&&docs.has(op.object.id)&&op.result?.assessment==='sufficient'&&op.id!==pendingId)docs.get(op.object.id).checked=true;
+        }
+        return [...docs.values()];
+      }
+      const originTitle=procedureVersion?caseLabel(procedureVersion.source_claim_id,{title:catalogRow(claims,procedureVersion.source_claim_id)?.title}).primary:'';
+      const procedurePanel=(docs,through)=>`<section class="au-ns-procedure" data-au-ns-procedure><p class="au-ns-procedure-kicker">Reused checklist</p><h2>${h(procedureScope(procedureVersion))}</h2>${originTitle?`<p class="au-ns-procedure-origin">Learned from “${h(originTitle)}”</p>`:''}<h3${docs.length?'':' hidden'}>Evidence this case needs</h3><ol>${docs.map(doc=>`<li data-au-ns-checklist-doc="${h(doc.type)}"${doc.seq===through?' data-au-ns-new':''}><span class="au-ns-check-mark" aria-hidden="true">${northStarIcon('file')}</span><span><b>${h(doc.label)}</b><small>Needed for step ${h(doc.step)} · ${h(questionOf(doc.node))}</small></span></li>`).join('')}</ol></section>`;
+      const railChecklist=(docs,current)=>`<section class="au-executive-checklist" data-au-ns-checklist><h2>Evidence checklist <span>${docs.filter(doc=>doc.checked).length} of ${docs.length} checked</span></h2><ol>${docs.map(doc=>`<li data-au-ns-checklist-doc="${h(doc.type)}" data-state="${doc.checked?'checked':'needed'}"${doc.type===current?' data-au-ns-checklist-current':''}><span class="au-ns-check-mark" aria-hidden="true">${doc.checked||doc.type===current?northStarIcon('check'):''}</span><span>${h(doc.label)}</span></li>`).join('')}</ol></section>`;
       const staged=[];
       for(const beat of beats){
         const previous=staged.at(-1),actChange=previous&&previous.act!==beat.act;
-        const sceneChange=previous&&(previous.view!==beat.view||beat.phase==='customer-source-open'||beat.phase==='camera-in'&&previous.op?.id!==beat.op?.id);
+        const sceneChange=previous&&(previous.view!==beat.view||beat.phase==='customer-source-open'&&!beat.lead||beat.phase==='camera-in'&&previous.op?.id!==beat.op?.id||beat.phase==='library-switch');
         if(actChange||sceneChange){
-          staged.push({...beat,phase:actChange?'act-transition':'scene-transition',nextPhase:beat.phase,duration:500,motion:true,entryRevealed:true});
+          staged.push({...beat,phase:actChange?'act-transition':'scene-transition',nextPhase:beat.phase,duration:700,motion:true,entryRevealed:true});
           staged.push({...beat,entryRevealed:true});
         }else staged.push(beat);
       }
@@ -5489,7 +5535,7 @@
           customerPin={artifact_id:customer.artifact_id,sha256:customer.sha256,text_sha256:customer.text_sha256,offset_unit:'unicode_code_point',start_char:start,end_char:start+Array.from(request).length,quote:request};
           trace.sources.set(customer.artifact_id,customer);trace.displaySource={artifact_id:customer.artifact_id};
         }
-        const identity=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id)),viewName==='knowledge'&&Number.isSafeInteger(beat.item)?beat.item:''].join(':');
+        const identity=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id)),viewName==='knowledge'&&Number.isSafeInteger(beat.item)?beat.item:'',beat.family||'',beat.act==='plan'].join(':');
         markBeat(beat,phase,op,viewName);
         if(!force&&sceneIdentity===identity)return;
         sceneIdentity=identity;
@@ -5499,8 +5545,15 @@
           const records=sessionCases(session).map(row=>catalogRow(claims,row.claim_id)).filter(Boolean);
           setScene(`<section class="au-executive-cases"><header class="au-executive-roster-heading"><h1 class="au-page-heading" tabindex="-1">9 recorded examples</h1><p class="au-executive-roster-note">Fictional cases · open any case to inspect its steps and sources.</p></header><div class="au-claim-list" data-au-claims>${claimsMarkup(records,{scope:'originals',page:1,pageSize:9})}</div><div class="au-cinema-finale" aria-hidden="true"><p class="au-cinema-finale-brand">CasePath</p><h2>From source to answer.<br><span>The reasoning stays visible.</span></h2><div class="au-cinema-finale-path">Sources <b>→</b> Facts <b>→</b> Process <b>→</b> Your review</div><p>Reuse the checks. Recheck the evidence. You decide.</p><small>Recorded fictional examples · Human review remains required.</small></div></section>${transport()}`);
           nav('work');
+        }else if(viewName==='library'){
+          // The product's own Knowledge page, one recorded checklist at a time.
+          if(!select('[data-au-library]'))setScene(`<section class="au-executive-cases au-executive-library">${knowledgeLibraryMarkup(knowledgeCache.value,claims)}</section>${transport()}`);
+          for(const row of all('[data-au-library-jump]'))row.setAttribute('aria-current',String(row.dataset.auLibraryJump===beat.family));
+          for(const row of all('[data-au-library-entry]'))if(row.dataset.auLibraryEntry===beat.family)row.setAttribute('data-pinned','true');else row.removeAttribute('data-pinned');
+          nav('knowledge');
         }else{
-          const cacheKey=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id))].join(':');
+          trace.nsPlanning=beat.act==='plan';
+          const cacheKey=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id)),trace.nsPlanning].join(':');
           if(!markupCache.has(cacheKey))markupCache.set(cacheKey,viewName?northStarCompletedMarkup(current,trace,detail,opts):northStarMarkup(current,trace,opts));
           setScene(markupCache.get(cacheKey)+transport());
         }
@@ -5511,7 +5564,15 @@
           paper.innerHTML=northStarPurposeMarkup(main.state.claim_id);
         }
         all('.au-ns-footer').forEach(el=>el.remove());
-        if(!viewName){const count=new Set(trace.rows.filter(op=>op.kind==='document.check'&&op.source&&op.result?.assessment==='sufficient'&&(op.id!==beat.op?.id||!['camera-in','cursor','highlight','passage-rest'].includes(phase))).map(op=>op.object.id)).size;select('.au-ns-sources')?.insertAdjacentHTML('beforeend',`<button type="button" class="au-executive-documents" data-au-detail="documents">Documents <span>${count} checked</span></button>`);}
+        if(!viewName&&planned&&!['customer','plan'].includes(beat.act)){const checking=op?.kind==='document.check'?op:null,docs=checklistModel(trace.rows,checking&&!trace.nsCues.has(checking.id)?checking.id:null);if(docs.length)select('.au-ns-sources')?.insertAdjacentHTML('beforeend',railChecklist(docs,checking?.object.id));}
+        if(beat.act==='plan'){
+          // The plan stage: the recorded questions appear as they are first
+          // evaluated, then the documents each question requires.
+          const stage=select('.au-ns-reading');if(stage)stage.innerHTML=procedurePanel(checklistModel(trace.rows,null),beat.through);
+          select('[data-au-ns-plan]')?.remove();select('.au-ns-facts')?.remove();select('.au-ns-fact-connector')?.remove();
+          const seen=new Set(trace.rows.filter(row=>row.kind==='node.evaluate'&&(!reuse||row.seq>reuse.seq)).map(row=>row.object.id));
+          for(const node of all('[data-au-ns-node]')){node.dataset.auNsPlanned=String(seen.has(node.dataset.auNsNode));if(trace.rows.some(row=>row.kind==='node.evaluate'&&row.seq===beat.through&&row.object.id===node.dataset.auNsNode))node.dataset.auNsNew='';}
+        }
         const ns=select('[data-au-ns]'),tabs=container.querySelector('.au-ns-tabs');if(tabs)tabs.innerHTML=ns?northStarTabsMarkup(ns.dataset.auNsRoleActive,Boolean(viewName)):'';
         positionDesk(false);
         markBeat(beat,phase,op,viewName);
@@ -5591,29 +5652,41 @@
       }
       // Narration and its single focal target share the recorded presentation
       // clock. The guide lives outside the replaceable scene and its clones.
-      const guideContext={firstCompletionId:completed[0]?.id,firstFactId:firstFact.id,decisivePredicate:failedIds.has(firstFact.object.id)?firstFact.object.id:null};
+      const guideContext={firstCompletionId:completed[0]?.id,firstFactId:firstFact.id,decisivePredicate:failedIds.has(firstFact.object.id)?firstFact.object.id:null,firstCheckId:planned?checks[0]?.id:null,questionCount:graphNodes.length,documentCount:requirements.length,procedureScope:procedureVersion?procedureScope(procedureVersion):null};
       guideContext.decisiveRule=Boolean(P.documentaryRuleFocus(legalAuthorityRows(main.state).find(row=>row.article==='269d')?.text,{...guideContext,article:'269d'}));
       guideContext.assessmentSupportsInvalidity=guideContext.decisiveRule&&main.state.outcome?.assessment_scope==='rent_increase_reasons_nullity_assessment'&&String(main.state.outcome?.summary||'').includes('supporting invalidity under CO 269d(2)(b)');
       const guideWindows=[];
       for(const beat of story.beats){
         const starts=[beat.start];
         if(['answer-rest','draft-rest'].includes(beat.phase)&&beat.act==='decision'&&beat.duration>3000)starts.push(beat.start+3000);
+        if(beat.phase==='ready'&&beat.duration>2600)starts.push(beat.start+2600);
         for(let i=0;i<starts.length;i++){
           const start=starts[i],end=starts[i+1]??beat.end,cue=P.documentaryCue(beat,start-beat.start,guideContext),previous=guideWindows.at(-1);
           if(previous?.id===cue.id&&previous.target===cue.target&&previous.targetId===cue.targetId&&previous.part===cue.part&&previous.spotlight===cue.spotlight)previous.end=end;
           else guideWindows.push({...cue,start,end,beatIndex:beat.index});
         }
       }
+      // One coach mark at a time: the scene dims around a single spotlight and
+      // a short caption sits beside it. It never covers or rewrites the target.
       const guideLayer=doc.createElement('div');guideLayer.className='au-documentary-guide';
-      guideLayer.innerHTML='<section class="au-doc-narration" aria-live="polite" aria-atomic="true"><div class="au-doc-chapter"></div><div class="au-doc-copy"><p data-au-guide-headline></p><small data-au-guide-label></small></div></section><div class="au-doc-focus-layer" aria-hidden="true"><div class="au-doc-focus"><span data-au-guide-target-label></span></div></div><svg class="au-doc-leader" aria-hidden="true"><path/><circle r="3"/></svg>';
+      guideLayer.innerHTML='<div class="au-doc-focus-layer" aria-hidden="true"><div class="au-doc-focus"></div></div><section class="au-doc-card" aria-live="polite" aria-atomic="true"><small class="au-doc-chapter"></small><p data-au-guide-headline></p><span data-au-guide-detail></span></section>';
       container.appendChild(guideLayer);
-      const guideNodes={rail:guideLayer.querySelector('.au-doc-narration'),chapter:guideLayer.querySelector('.au-doc-chapter'),copy:guideLayer.querySelector('.au-doc-copy'),headline:guideLayer.querySelector('[data-au-guide-headline]'),label:guideLayer.querySelector('[data-au-guide-label]'),layer:guideLayer.querySelector('.au-doc-focus-layer'),focus:guideLayer.querySelector('.au-doc-focus'),targetLabel:guideLayer.querySelector('[data-au-guide-target-label]'),leader:guideLayer.querySelector('.au-doc-leader')};
+      const guideNodes={card:guideLayer.querySelector('.au-doc-card'),chapter:guideLayer.querySelector('.au-doc-chapter'),headline:guideLayer.querySelector('[data-au-guide-headline]'),detail:guideLayer.querySelector('[data-au-guide-detail]'),layer:guideLayer.querySelector('.au-doc-focus-layer'),focus:guideLayer.querySelector('.au-doc-focus')};
+      const cutAt=row=>Boolean(row)&&['act-transition','scene-transition'].includes(story.beats[row.beatIndex]?.phase);
+      const settled=row=>row.start+(cutAt(row)?story.beats[row.beatIndex].duration:0);
       function guideTarget(cue,beat){
         const byId=(selector,attribute,id)=>all(selector).find(element=>element.getAttribute(attribute)===String(id));
         const nodeId=beat.op?.kind==='step.complete'?beat.op.object.id:beat.op&&beat.record.catalogue.links.get(beat.op.id);
         const item=all('[data-au-memory-item]')[Number.isSafeInteger(cue.item)?cue.item:beat.item];
         switch(cue.target){
           case 'source':return frameNodes.mark;
+          case 'sources':return select('.au-ns-sources');
+          case 'plan':return select('[data-au-ns-plan]');
+          case 'spine':return select('.au-ns-spine');
+          case 'procedure':return select('[data-au-ns-procedure]');
+          case 'checklist-row':return select(`[data-au-ns-checklist] [data-au-ns-checklist-doc="${cue.targetId}"]`)||select('[data-au-ns-checklist]');
+          case 'tests':return select('[data-au-desk-answer] > .au-desk-tests');
+          case 'library-entry':return select('[data-au-library-entry][data-pinned=true] .au-library-entry-head');
           case 'node':return byId('[data-au-ns-node]','data-au-ns-node',nodeId);
           case 'fact':return byId('[data-au-ns-fact]','data-au-ns-fact',cue.targetId||firstFact.id)||frameNodes.fact||all('[data-au-ns-fact]').at(-1);
           case 'chain':return cue.column||cue.targetId||beat.column?byId('[data-au-ns-chain]','data-au-ns-chain',cue.column||cue.targetId||beat.column):select('[data-au-ns-chain-strip]');
@@ -5635,24 +5708,38 @@
         }
       }
       function renderGuide(sample,beat,transition){
-        const cue=P.documentaryCue(beat,sample.elapsed,guideContext),found=guideWindows.findIndex(row=>sample.at>=row.start&&sample.at<row.end),windowIndex=found<0?guideWindows.length-1:found,window=guideWindows[windowIndex],chapter=P.chapter(beat.act),nodes=guideNodes;
-        let sentenceIndex=windowIndex;while(sentenceIndex>0&&guideWindows[sentenceIndex-1].id===cue.id)sentenceIndex--;
+        const cue=P.documentaryCue(beat,sample.elapsed,guideContext),found=guideWindows.findIndex(row=>sample.at>=row.start&&sample.at<row.end),windowIndex=found<0?guideWindows.length-1:found,window=guideWindows[windowIndex],chapter=P.chapter(beat.act),nodes=guideNodes,still=Boolean(reduced?.matches);
+        // after(t,ms) eases 0→1 from t=0; reduced motion switches at once.
+        const after=(t,ms)=>still?(t>=0?1:0):P.ease(Math.max(0,Math.min(1,t/ms)));
+        // A sentence spans neighbouring windows with its id and no cut between.
+        // A lead sentence introduces live work, then clears the screen for it;
+        // a hold sentence frames a result until it ends.
+        const sentence=index=>{
+          const id=guideWindows[index].id;let first=index,last=index;
+          while(first>0&&guideWindows[first-1].id===id&&!cutAt(guideWindows[first]))first--;
+          while(last<guideWindows.length-1&&guideWindows[last+1].id===id&&!cutAt(guideWindows[last+1]))last++;
+          const head=guideWindows[first],start=settled(head),end=guideWindows[last].end,lead=head.mode!=='hold';
+          return {first,last,start,end,lead,visibleEnd:lead?start+Math.max(0,Math.min(2600,end-start-400)):end,spot:guideWindows.slice(first,last+1).some(row=>row.spotlight),card:head.card!==false};
+        };
+        const now=sentence(windowIndex),before=now.first>0?sentence(now.first-1):null,next=now.last<guideWindows.length-1?sentence(now.last+1):null;
+        const joinsBefore=Boolean(before&&!before.lead&&before.spot&&!cutAt(guideWindows[now.first])),joinsNext=Boolean(next&&!now.lead&&next.spot&&!cutAt(guideWindows[next.first]));
+        const dimLevel=Math.min(joinsBefore?1:after(sample.at-now.start,400),now.lead?1-after(sample.at-now.visibleEnd,450):joinsNext?1:after(now.end-sample.at,300));
+        const cardLevel=now.card?Math.min(after(sample.at-now.start,350),now.lead?1-after(sample.at-now.visibleEnd,350):next?after(now.end-sample.at,300):1):0;
         if(!guideLayer.isConnected)container.appendChild(guideLayer);
+        const chapterText=`${chapter.number} · ${chapter.label}`,detail=cue.detail||'';
+        if(nodes.chapter.textContent!==chapterText)nodes.chapter.textContent=chapterText;
         if(nodes.headline.textContent!==cue.headline)nodes.headline.textContent=cue.headline;
-        if(nodes.label.textContent!==cue.label)nodes.label.textContent=cue.label;
-        const chapterText=`${chapter.number} / ${chapter.label}`;if(nodes.chapter.textContent!==chapterText)nodes.chapter.textContent=chapterText;
-        guideLayer.dataset.auGuideCue=cue.id;guideLayer.dataset.auGuideTarget=cue.target;guideLayer.dataset.auGuideTargetId=String(cue.targetId??'');guideLayer.dataset.auGuideSpotlight=String(cue.spotlight);
+        if(nodes.detail.textContent!==detail)nodes.detail.textContent=detail;nodes.detail.hidden=!detail;
+        guideLayer.dataset.auGuideCue=cue.id;guideLayer.dataset.auGuideTarget=cue.target;guideLayer.dataset.auGuideTargetId=String(cue.targetId??'');guideLayer.dataset.auGuideSpotlight=String(cue.spotlight);guideLayer.dataset.auGuideLabel=cue.label;
         guideLayer.dataset.auGuideTime=String(sample.at);
-        const fade=reduced?.matches?1:transition?P.ease(sample.progress):P.ease(Math.min(1,(sample.at-guideWindows[sentenceIndex].start)/350));
-        nodes.copy.style.opacity=String(transition ? .45+.55*fade : 1);
-        if(frameNodes.pointer)frameNodes.pointer.style.visibility=cue.target==='source'?'':'hidden';
-        const target=guideTarget(cue,beat),rail=nodes.rail.getBoundingClientRect(),footer=select('.au-executive-transport')?.getBoundingClientRect();
+        const target=guideTarget(cue,beat),header=container.querySelector('.au-identity-header')?.getBoundingClientRect(),footer=select('.au-executive-transport')?.getBoundingClientRect();
+        const topLimit=header?.bottom||75,bottomLimit=footer?.top||root.innerHeight-36;
         const pane=cue.target!=='source'&&target?.closest('.au-ns-view-content,.au-ns-law-source');
         if(pane&&pane.scrollHeight>pane.clientHeight+1){
           const bounds=pane.getBoundingClientRect(),item=target.getBoundingClientRect();
           if(item.top<bounds.top+10||item.bottom>bounds.bottom-10)pane.scrollTop+=item.height>bounds.height-20?item.top-bounds.top-10:(item.top+item.bottom-bounds.top-bounds.bottom)/2;
         }
-        // A focus window cannot extend beyond the source or answer's scroll
+        // A spotlight cannot extend beyond the source or answer's scroll
         // viewport. It never changes source text or its citation offsets.
         const boundsFor=element=>{
           const box=element?.getBoundingClientRect();let left=box?.left??0,top=box?.top??0,right=box?.right??0,bottom=box?.bottom??0;
@@ -5661,28 +5748,37 @@
             if(/auto|scroll|hidden|clip/.test(style.overflowY)){const bounds=parent.getBoundingClientRect();top=Math.max(top,bounds.top);bottom=Math.min(bottom,bounds.bottom);}
             if(/auto|scroll|hidden|clip/.test(style.overflowX)){const bounds=parent.getBoundingClientRect();left=Math.max(left,bounds.left);right=Math.min(right,bounds.right);}
           }
-          return {left:Math.max(10,left-10),right:Math.min(root.innerWidth-10,right+10),top:Math.max(rail.bottom+12,top-10),bottom:Math.min((footer?.top||root.innerHeight-36)-10,bottom+10)};
+          return {left:Math.max(10,left-10),right:Math.min(root.innerWidth-10,right+10),top:Math.max(topLimit+10,top-10),bottom:Math.min(bottomLimit-10,bottom+10)};
         };
         let {left,top,right,bottom}=boundsFor(target);
         const previous=guideWindows[windowIndex-1];
-        if(!reduced?.matches&&!transition&&previous?.id===cue.id&&sample.at-window.start<400){
-          const oldTarget=guideTarget(previous,story.beats[previous.beatIndex]),old=oldTarget&&boundsFor(oldTarget),p=P.ease(Math.max(0,(sample.at-window.start)/400));
+        if(!still&&!transition&&previous?.spotlight&&!cutAt(window)&&sample.at-window.start<450){
+          const oldTarget=guideTarget(previous,story.beats[previous.beatIndex]),old=oldTarget&&boundsFor(oldTarget),p=P.ease(Math.max(0,(sample.at-window.start)/450));
           if(old&&old.right>old.left&&old.bottom>old.top){left=old.left+(left-old.left)*p;top=old.top+(top-old.top)*p;right=old.right+(right-old.right)*p;bottom=old.bottom+(bottom-old.bottom)*p;}
         }
-        const visible=Boolean(cue.spotlight&&target&&right-left>4&&bottom-top>4&&!transition);
+        const resolved=Boolean(target&&right-left>4&&bottom-top>4),spot=Boolean(cue.spotlight&&resolved&&!transition&&dimLevel>0);
         guideLayer.dataset.auGuideResolved=String(Boolean(target));
-        guideLayer.dataset.auGuideVisible=String(visible);
-        nodes.layer.style.opacity=visible?String(fade):'0';nodes.leader.style.opacity=visible?String(fade):'0';
-        if(!visible)return;
-        nodes.layer.style.top=`${rail.bottom}px`;nodes.layer.style.bottom=`${root.innerHeight-(footer?.top||root.innerHeight-36)}px`;
-        nodes.focus.style.cssText=`left:${left}px;top:${top-rail.bottom}px;width:${right-left}px;height:${bottom-top}px;`;
-        nodes.targetLabel.textContent=cue.target==='source'?'Exact source passage':cue.target==='node'?target.dataset.state==='building'?'Checking this question':'Question checked':cue.target==='predicate'?cue.part==='unmet'?'Unmet requirement':'Supported requirement':cue.target==='fact'?'Proposed fact':cue.target==='memory-target'?'Reused checklist item':cue.label;
-        // A quiet vertical leader lands on the same exact region as the focus.
-        // Its origin stays below the narration and never crosses the sentence.
-        const x=Math.max(left+20,Math.min(right-20,(left+right)/2)),startY=rail.bottom-3,endY=top-2;
-        nodes.leader.setAttribute('viewBox',`0 0 ${root.innerWidth} ${root.innerHeight}`);
-        nodes.leader.querySelector('path').setAttribute('d',`M${x} ${startY}V${endY}`);
-        const dot=nodes.leader.querySelector('circle');dot.setAttribute('cx',String(x));dot.setAttribute('cy',String(endY));
+        guideLayer.dataset.auGuideVisible=String(spot);
+        nodes.layer.style.top=`${topLimit}px`;nodes.layer.style.bottom=`${root.innerHeight-bottomLimit}px`;
+        nodes.layer.style.opacity=spot?String(dimLevel):'0';
+        if(spot)nodes.focus.style.cssText=`left:${left}px;top:${top-topLimit}px;width:${right-left}px;height:${bottom-top}px;`;
+        const showCard=!transition&&cue.card!==false&&(resolved||!cue.spotlight),cardOpacity=showCard?cardLevel:0;
+        nodes.card.style.opacity=String(cardOpacity);guideLayer.dataset.auGuideCard=String(cardOpacity>0);
+        if(!showCard)return;
+        // The caption sits beside its target, inside the scene, never on it.
+        const cw=nodes.card.offsetWidth,ch=nodes.card.offsetHeight,gap=18,margin=24,minY=topLimit+14,maxY=bottomLimit-14,width=root.innerWidth;
+        const clampX=x=>Math.max(margin,Math.min(width-margin-cw,x)),clampY=y=>Math.max(minY,Math.min(maxY-ch,y));
+        let x=(width-cw)/2,y=maxY-ch-12,side='free';
+        if(resolved){
+          const cx=(left+right)/2,cy=(top+bottom)/2,options={
+            below:{x:clampX(cx-cw/2),y:bottom+gap,ok:bottom+gap+ch<=maxY},above:{x:clampX(cx-cw/2),y:top-gap-ch,ok:top-gap-ch>=minY},
+            right:{x:right+gap,y:clampY(cy-ch/2),ok:right+gap+cw<=width-margin},left:{x:left-gap-cw,y:clampY(cy-ch/2),ok:left-gap-cw>=margin}};
+          side=[cue.side,...(bottom-top>300?['right','left','below','above']:['below','above','right','left'])].find(key=>options[key]?.ok)||'inside';
+          ({x,y}=side==='inside'?{x:clampX(right-cw-12),y:clampY(bottom-ch-12)}:options[side]);
+          if(cue.align==='end'&&['right','left'].includes(side))y=clampY(bottom-ch-24);
+        }
+        guideLayer.dataset.auGuideSide=side;
+        nodes.card.style.transform=`translate(${Math.round(x)}px,${Math.round(y)}px)`;
       }
       const guideResize=()=>render(clock.now(),true);root.addEventListener('resize',guideResize);
       function render(at=clock.now(),force=false) {
@@ -5705,7 +5801,7 @@
               if(element===header){const originals=[element,...element.querySelectorAll('*')],copies=[clone,...clone.querySelectorAll('*')];originals.forEach((node,i)=>{const style=root.getComputedStyle(node);for(const key of ['display','font','color','height','min-height','width','gap','flex','flex-shrink','align-items','justify-content','padding','margin','border','letter-spacing'])copies[i].style.setProperty(key,style.getPropertyValue(key));});}
               clone.style.cssText+=`;position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;height:${rect.height}px;margin:0;box-sizing:border-box;background:white;pointer-events:none;`;
               for(const node of [clone,...clone.querySelectorAll('*')])for(const attr of [...node.attributes])if(attr.name.startsWith('data-au-')||attr.name==='id')node.removeAttribute(attr.name);
-              outgoing.appendChild(clone);outgoing._scrollCopies=(outgoing._scrollCopies||[]).concat(scrollCopies);
+              if(element===header)clone.classList.add('au-transition-header');outgoing.appendChild(clone);outgoing._scrollCopies=(outgoing._scrollCopies||[]).concat(scrollCopies);
             }
           }
         }
@@ -5729,8 +5825,22 @@
           opacity(n.ink,['ready','camera-in','cursor','source-open','source-swap'].includes(phase)?0:phase==='highlight'?p:1);
           if(n.pointer){opacity(n.pointer,phase==='ready'||phase==='camera-in'||phase==='source-open'||phase==='source-swap'?0:phase==='cursor'?p:1);n.pointer.style.transform=phase==='cursor'?`translate(0,${-40*(1-p)}px)`:'none';}
           if(phase==='source-open')opacity(n.paper,b.entryRevealed?1:p);
-          if(sourceSwap){opacity(n.paper,p);opacity(transitionLayer,1-p);}
-          if(phase==='document')opacity(select('.au-executive-documents span'),p);
+          // A change of scene dips: the outgoing view leaves before the next arrives,
+          // so two screens are never visible at once.
+          const dipOut=reduced?.matches?1:P.ease(Math.min(1,sample.progress*2)),dipIn=reduced?.matches?1:P.ease(Math.max(0,sample.progress*2-1));
+          if(sourceSwap){opacity(n.paper,dipIn);opacity(transitionLayer,1-dipOut);}
+          // The checklist row of the document being checked fills only when the
+          // recorded check result is shown.
+          const checking=select('[data-au-ns-checklist-current][data-state=needed] .au-ns-check-mark');
+          if(checking){const q=phase==='document'?p:0;checking.style.background=`rgba(46,107,53,${q})`;checking.style.borderColor=q?'#2e6b35':'#82072a';opacity(checking.querySelector('svg'),q);}
+          if(b.act==='plan'){
+            for(const node of all('[data-au-ns-node]')){
+              const fresh=node.hasAttribute('data-au-ns-new')&&phase==='plan-node',next=node.nextElementSibling,arrow=node.querySelector('.au-ns-arrow');
+              opacity(node,node.dataset.auNsPlanned==='true'?fresh?p:1:0);node.style.transform=fresh?`translateY(${10*(1-p)}px)`:'none';
+              if(arrow)arrow.style.opacity=next?.dataset.auNsPlanned==='true'?String(next.hasAttribute('data-au-ns-new')&&phase==='plan-node'?p:1):'0';
+            }
+            for(const row of all('[data-au-ns-procedure] li[data-au-ns-new]')){opacity(row,phase==='plan-document'?p:1);row.style.transform=phase==='plan-document'?`translateY(${10*(1-p)}px)`:'none';}
+          }
           if(phase==='plan-tick'){const tick=select('[data-au-ns-plan-current] .au-ns-plan-status');if(tick)tick.style.transform=`scale(${.8+.2*p})`;}
           if(phase==='plan-recede')opacity(n.plan,1-.4*p);
           if(['node-accepted','node-rest'].includes(phase))opacity(n.plan,.6);
@@ -5739,11 +5849,12 @@
           }
           // The source grows inside its surrounding whitespace; the rail, plan
           // and fact cards stay in place, with the source overlays in its layer.
-          if(n.paper){const scale=phase==='camera-in'?1+.025*p:phase==='camera-out'?1+.025*(1-p):['cursor','highlight','passage-rest','fact','connector','fact-rest','document','document-rest','plan-tick'].includes(phase)?1.025:1;n.paper.style.transform=`scale(${scale})`;n.paper.style.transformOrigin='50% 50%';}
+          if(n.paper){const zoom=.045,scale=phase==='camera-in'?1+zoom*p:phase==='camera-out'||phase==='plan-recede'?1+zoom*(1-p):['cursor','highlight','passage-rest','fact','connector','fact-rest','document','document-rest','plan-tick'].includes(phase)?1+zoom:1;n.paper.style.transform=`scale(${scale})`;n.paper.style.transformOrigin='50% 50%';}
           if(b.column){for(const column of all('[data-au-ns-chain]'))opacity(column,column.dataset.auNsChain===b.column?phase==='chain'?.6+.4*p:1:.6);}
           if(b.view==='answer'){
             const revealed=new Set(tests.slice(0,b.test).map(row=>row.predicate_id));
-            for(const element of all('[data-au-desk-answer] > .au-desk-tests > li'))opacity(element,revealed.has(element.dataset.auDeskPredicate)?1:element.dataset.auDeskPredicate===b.predicate?(phase==='legal-test'?p:1):0);
+            // Tests still to come stay faint, so the agenda is visible before each check.
+            for(const element of all('[data-au-desk-answer] > .au-desk-tests > li'))opacity(element,revealed.has(element.dataset.auDeskPredicate)?1:element.dataset.auDeskPredicate===b.predicate?(phase==='legal-test'?.22+.78*p:1):.22);
             const afterTests=['answer','answer-rest','draft','draft-rest'].includes(phase);
             const pane=select('.au-ns-view-content');if(pane)pane.scrollTop=0;
             opacity(select('.au-desk-test-status'),afterTests?1:0);opacity(select('.au-desk-next'),afterTests?1:0);opacity(select('.au-desk-lead'),afterTests?(phase==='answer'?p:1):0);opacity(select('.au-desk-open'),afterTests?1:0);opacity(select('.au-desk-actions'),phase==='draft'?p:phase==='draft-rest'?1:0);opacity(select('.au-desk-why'),phase==='draft-rest'?1:0);
@@ -5770,8 +5881,13 @@
           }
           if(['completed','documents','case-list','law','draft','source-check'].includes(phase))opacity(n.canvas||select('.au-executive-cases'),b.entryRevealed?1:p);
           const header=container.querySelector('.au-identity-header');opacity(header,1);
-          if(transition){const fade=reduced?.matches?1:P.ease(sample.progress);opacity(n.desk||select('.au-executive-cases'),fade);opacity(transitionLayer,1-fade);opacity(header,fade);}
-          all('[data-au-operation-skip]').forEach(el=>el.hidden=['answer','cases'].includes(b.view));
+          if(transition){
+            // The top bar stays put unless the scene leaves or enters the case view.
+            const outside=view=>['cases','library'].includes(view),headerChanges=outside(b.view)!==outside(story.beats[b.index-1]?.view);
+            opacity(n.desk||select('.au-executive-cases'),dipIn);opacity(transitionLayer,1-dipOut);opacity(header,headerChanges?dipIn:1);
+            const headerCopy=transitionLayer?.querySelector('.au-transition-header');if(headerCopy)headerCopy.style.visibility=headerChanges?'':'hidden';
+          }
+          all('[data-au-operation-skip]').forEach(el=>el.hidden=['answer','library','cases'].includes(b.view));
           all('[data-au-desk-watch]').forEach(el=>el.hidden=!clock.paused);
           renderGuide(sample,b,transition);
           if(sample.at>=story.duration){clock.pause();waiting=false;pausedPresentation=session;demoSession=null;syncControls();}
